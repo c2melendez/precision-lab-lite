@@ -28,10 +28,23 @@ export interface ParsedExpression {
   rightAlgebrite: string;
 }
 
+// Fix (suite de regresión, casos E019-E021: "asin"/"acos"/"atan" no se
+// reconocían como funciones — el parser solo tenía registrado el nombre
+// largo "arcsin"/"arccos"/"arctan", así que "asin(1)" se leía como
+// multiplicación implícita ("asin" * "(1)") en vez de una llamada a
+// función, y quedaba sin evaluar. Se registran como alias reconocidos por
+// el parser (evita el falso positivo de multiplicación implícita) y se
+// traducen al nombre que Algebrite sí conoce nativamente.
+const FUNCTION_NAME_ALIASES: Record<string, string> = {
+  asin: "arcsin",
+  acos: "arccos",
+  atan: "arctan",
+};
+
 function tokensToAlgebrite(tokens: Token[]): string {
   return tokens
     .map((t) => {
-      if (t.type === "function") return t.value; // el "(" siguiente ya viene en el token de lparen
+      if (t.type === "function") return FUNCTION_NAME_ALIASES[t.value] ?? t.value; // el "(" siguiente ya viene en el token de lparen
       // Fase 3: τ/φ no son nativas de Algebrite — se sustituyen por su
       // valor exacto (2π / razón áurea) antes de ensamblar el string.
       if (t.type === "identifier" && t.value in CONSTANT_SUBSTITUTIONS) {
@@ -87,6 +100,20 @@ function rewriteCombinatorics(algebrite: string): string {
   result = rewriteBinaryFunction(result, "nPr", (n, r) => `(factorial(${n})/factorial((${n})-(${r})))`);
   result = rewriteBinaryFunction(result, "nCr", (n, r) => `(factorial(${n})/(factorial(${r})*factorial((${n})-(${r}))))`);
   return result;
+}
+
+/**
+ * Fix (suite de regresión, caso E014: "log(8,2)" daba ln(8) en vez de
+ * log base 2 de 8). `log` con 2 argumentos ya se parseaba bien (arity
+ * [1,2] en constants.ts), pero el `log()` nativo de Algebrite solo conoce
+ * la forma de 1 argumento (natural) — el segundo argumento se descartaba
+ * en silencio. Mismo patrón que nPr/nCr: se reescribe a la identidad de
+ * cambio de base (log(a)/log(b)) antes de mandarlo a Algebrite. `log(x)`
+ * de 1 argumento no tiene coma, así que `rewriteBinaryFunction` lo deja
+ * intacto (ver su rama de "forma malformada" arriba).
+ */
+function rewriteLogBase(algebrite: string): string {
+  return rewriteBinaryFunction(algebrite, "log", (a, b) => `(log(${a})/log(${b}))`);
 }
 
 function extractFreeVariables(tokens: Token[]): string[] {
@@ -151,7 +178,7 @@ export function parseExpression(
     const tokens = expandPostfixOperators(tokenize(side));
     validateFunctionArity(tokens);
     const withImplicitMul = insertImplicitMultiplication(tokens);
-    const algebrite = rewriteCombinatorics(applyAngleMode(tokensToAlgebrite(withImplicitMul), angleMode));
+    const algebrite = rewriteLogBase(rewriteCombinatorics(applyAngleMode(tokensToAlgebrite(withImplicitMul), angleMode)));
     return { algebrite, tokens: withImplicitMul };
   }
 

@@ -43,6 +43,28 @@ export function solveAlgebra(
   });
 
   let solutions: string[];
+  const hasVariable = new RegExp(`\\b${variable}\\b`).test(standardForm);
+  if (standardForm.trim() === "0") {
+    // Fix (suite de regresión, S008): antes esto caía a solveEquation(),
+    // que fallaba con el MISMO mensaje genérico que una contradicción (no
+    // hay forma de distinguir "es una identidad" de "el motor no supo").
+    // Si la forma estándar ya simplificó a 0, es una identidad real:
+    // cualquier x la cumple.
+    throw {
+      code: ErrorCode.UNSUPPORTED_OPERATION,
+      message: `La ecuación es una identidad: se cumple para cualquier valor de "${variable}" (ambos lados son iguales).`,
+    } as AppError;
+  }
+  if (!hasVariable) {
+    // Fix (suite de regresión, S009): forma estándar es una constante
+    // distinta de cero sin la variable (ej. "x=x+1" -> "-1=0") — es una
+    // contradicción real, no una falla del solver. Mismo motivo que
+    // arriba: antes tiraba el mismo mensaje genérico que una identidad.
+    throw {
+      code: ErrorCode.UNSUPPORTED_OPERATION,
+      message: `La ecuación no tiene solución: se reduce a "${standardForm} = 0", que es falso sin importar el valor de "${variable}" (contradicción).`,
+    } as AppError;
+  }
   try {
     solutions = solveEquation(standardForm, variable);
   } catch {

@@ -34,8 +34,48 @@ export interface CalculusResult {
 // Algebrite") ya no aplica: la pantalla única (vía normalize.ts) acepta
 // cualquier N escrito a mano en \frac{d^N}{dx^N}, así que CalculusMode.tsx
 // (el formulario dedicado) no debería quedar más limitado que eso.
+// Fix (suite de regresión, casos D013-D015: d/dx[sec(x)], d/dx[csc(x)],
+// d/dx[cot(x)] quedaban sin evaluar, ej. "d(sec(x),x)"). El `d()` nativo
+// de Algebrite solo deriva sin/cos/tan de fábrica — no conoce las
+// recíprocas. Se reescriben a su forma equivalente en sin/cos/tan antes
+// de derivar (mismo criterio que nPr/nCr/log-con-base: reescribir a algo
+// que Algebrite SÍ sabe resolver, en vez de dejar una expresión sin
+// evaluar). Solo afecta el cálculo de la derivada — evaluate() y el
+// resto de la app siguen viendo sec/csc/cot tal cual.
+function rewriteReciprocalTrig(expr: string): string {
+  let result = expr;
+  result = rewriteUnaryFunction(result, "sec", (a) => `(1/cos(${a}))`);
+  result = rewriteUnaryFunction(result, "csc", (a) => `(1/sin(${a}))`);
+  result = rewriteUnaryFunction(result, "cot", (a) => `(1/tan(${a}))`);
+  return result;
+}
+
+function rewriteUnaryFunction(expr: string, fnName: string, build: (a: string) => string): string {
+  let result = "";
+  let i = 0;
+  while (i < expr.length) {
+    if (expr.startsWith(`${fnName}(`, i)) {
+      const start = i + fnName.length;
+      let depth = 1;
+      let j = start + 1;
+      while (j < expr.length && depth > 0) {
+        if (expr[j] === "(") depth++;
+        else if (expr[j] === ")") depth--;
+        j++;
+      }
+      const arg = expr.slice(start + 1, j - 1);
+      result += build(rewriteUnaryFunction(arg, fnName, build));
+      i = j;
+    } else {
+      result += expr[i];
+      i++;
+    }
+  }
+  return result;
+}
+
 export function calcDerivative(exprAlgebrite: string, variable: string, order: number): CalculusResult {
-  const result = symbolicDerivative(exprAlgebrite, variable, order);
+  const result = symbolicDerivative(rewriteReciprocalTrig(exprAlgebrite), variable, order);
   return {
     resultLatex: result,
     confidence: "SYMBOLIC",
