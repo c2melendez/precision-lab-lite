@@ -10,6 +10,8 @@ import { toFractionResult, fractionToLatex } from "../engine/fractions";
 import { compileNumeric, numericLimit, numericLimitAtInfinity } from "../engine/numericFallback";
 import { tryStatFunction, splitTopLevelArgs } from "../engine/statFunctions";
 import { tryComplexFunction } from "../engine/complexFunctions";
+import { tryPlusMinus } from "../engine/plusMinus";
+import { solveInequality } from "../engine/inequality";
 import { solveAlgebra } from "../engine/stepEngine/algebra";
 import {
   calcDerivative,
@@ -80,7 +82,14 @@ export type ComputeRequest =
       b?: (string | number)[][];
       exponent?: number;
     }
-  | { type: "graph"; requestId: string; expressionAlgebrite: string; variable: string; view: [number, number] };
+  | { type: "graph"; requestId: string; expressionAlgebrite: string; variable: string; view: [number, number] }
+  | {
+      type: "solveInequality";
+      requestId: string;
+      diffAlgebrite: string;
+      operator: "<" | ">" | "<=" | ">=";
+      variable: string;
+    };
 
 self.onmessage = (event: MessageEvent<ComputeRequest>) => {
   const msg = event.data;
@@ -112,6 +121,8 @@ function handle(msg: ComputeRequest): MathResult {
       return handleMatrixOp(msg, msg.requestId);
     case "graph":
       return handleGraph(msg.expressionAlgebrite, msg.variable, msg.view, msg.requestId);
+    case "solveInequality":
+      return handleSolveInequality(msg.diffAlgebrite, msg.operator, msg.variable, msg.requestId);
     default: {
       const unknownMsg = msg as { requestId?: string };
       return errorResult(
@@ -144,6 +155,40 @@ function handleSolveAlgebra(
       fraction: allNumeric && solutionsAlgebrite.length === 1 ? toFractionResult(solutionsAlgebrite[0]) : undefined,
       steps,
       hasDetailedSteps: false, // ver stepEngine/algebra.ts: pasos de alto nivel, no aislamiento término a término
+      confidence: "SYMBOLIC",
+      requestId,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(
+      appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION,
+      appErr.message ?? String(err),
+      requestId,
+    );
+  }
+}
+
+/**
+ * Fix (decisión de Carlos, cierre de la suite de paridad de teclado):
+ * solver básico de desigualdades — ver engine/inequality.ts para el
+ * análisis de signos por intervalos. El resultado es texto plano (ej.
+ * "x < 3" o "-2 < x < 2"), no una expresión Algebrite, así que se
+ * muestra directamente sin pasar por toLatex()/toFractionResult() (que
+ * esperan sintaxis de Algebrite, no una descripción de intervalo).
+ */
+function handleSolveInequality(
+  diffAlgebrite: string,
+  operator: "<" | ">" | "<=" | ">=",
+  variable: string,
+  requestId: string,
+): MathResult {
+  try {
+    const { resultText, steps } = solveInequality(diffAlgebrite, operator, variable);
+    return {
+      success: true,
+      resultLatex: `\\text{${resultText}}`,
+      steps,
+      hasDetailedSteps: false,
       confidence: "SYMBOLIC",
       requestId,
     };
@@ -302,6 +347,34 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
         success: true,
         resultLatex: toLatex(complexResult),
         fraction: toFractionResult(complexResult),
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "NUMERIC_FALLBACK",
+        requestId,
+      };
+    }
+
+    // Fix (decisión de Carlos, cierre de la suite de paridad de teclado):
+    // ±(expr) — mismo patrón que arriba, Algebrite no conoce "pm". Da las
+    // dos ramas como lista de Algebrite (mismo formato que "sort"), que
+    // toLatex() ya sabe convertir a una notación matemática real.
+    //
+    // BUG real encontrado verificando con navegador real (no solo con
+    // vitest — el "Invalid argument" solo aparecía en el flujo completo
+    // de la app, no llamando a las funciones sueltas): a diferencia de
+    // "sort" (arriba, líneas 315-316), acá se llamaba a
+    // toFractionResult() incondicionalmente. toFractionResult() envuelve
+    // Fraction.js, que espera un número/fracción plano, NO una lista tipo
+    // "[5,-5]" — Fraction.js tira "Invalid argument" y quedaba envuelto
+    // como PARSE_ERROR genérico. ±() siempre da una lista de 2 elementos
+    // (nunca un solo número), así que la pestaña de fracción no aplica
+    // — se omite directamente, igual que hace "sort".
+    const plusMinusResult = tryPlusMinus(expr);
+    if (plusMinusResult !== null) {
+      return {
+        success: true,
+        resultLatex: toLatex(plusMinusResult),
+        fraction: undefined,
         steps: [],
         hasDetailedSteps: false,
         confidence: "NUMERIC_FALLBACK",

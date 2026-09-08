@@ -161,6 +161,31 @@ export function BasicScientificMode() {
       return;
     }
 
+    // Fix (decisión de Carlos, cierre de la suite de paridad de teclado):
+    // desigualdad de una variable — mismo criterio de "una sola variable"
+    // que la rama de ecuación de arriba.
+    if (parsed.isInequality) {
+      if (parsed.freeVariables.length !== 1) {
+        fail(
+          ErrorCode.PARSE_ERROR,
+          parsed.freeVariables.length === 0
+            ? "No se detectó ninguna variable en la desigualdad."
+            : `Hay más de una variable (${parsed.freeVariables.join(", ")}) — el solver básico de desigualdades solo admite una.`,
+          requestId,
+        );
+        return;
+      }
+      worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica (desigualdad)", latex, e.data);
+      worker.postMessage({
+        type: "solveInequality",
+        requestId,
+        diffAlgebrite: parsed.algebrite,
+        operator: parsed.inequalityOperator,
+        variable: parsed.freeVariables[0],
+      });
+      return;
+    }
+
     // Rama 3: expresión simple (comportamiento original, sin cambios).
     worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica", latex, e.data);
     worker.postMessage({ type: "evaluate", requestId, expressionAlgebrite: parsed.algebrite });

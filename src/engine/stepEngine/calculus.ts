@@ -19,6 +19,7 @@ import {
   ErrorCode,
 } from "../algebriteClient";
 import { compileNumeric, numericLimit, numericLimitAtInfinity, simpsonIntegral } from "../numericFallback";
+import { rewriteReciprocalFunctions } from "../parsing";
 import type { Step, AppError, ResultConfidence } from "../../types";
 
 export interface CalculusResult {
@@ -37,45 +38,15 @@ export interface CalculusResult {
 // Fix (suite de regresión, casos D013-D015: d/dx[sec(x)], d/dx[csc(x)],
 // d/dx[cot(x)] quedaban sin evaluar, ej. "d(sec(x),x)"). El `d()` nativo
 // de Algebrite solo deriva sin/cos/tan de fábrica — no conoce las
-// recíprocas. Se reescriben a su forma equivalente en sin/cos/tan antes
-// de derivar (mismo criterio que nPr/nCr/log-con-base: reescribir a algo
-// que Algebrite SÍ sabe resolver, en vez de dejar una expresión sin
-// evaluar). Solo afecta el cálculo de la derivada — evaluate() y el
-// resto de la app siguen viendo sec/csc/cot tal cual.
-function rewriteReciprocalTrig(expr: string): string {
-  let result = expr;
-  result = rewriteUnaryFunction(result, "sec", (a) => `(1/cos(${a}))`);
-  result = rewriteUnaryFunction(result, "csc", (a) => `(1/sin(${a}))`);
-  result = rewriteUnaryFunction(result, "cot", (a) => `(1/tan(${a}))`);
-  return result;
-}
-
-function rewriteUnaryFunction(expr: string, fnName: string, build: (a: string) => string): string {
-  let result = "";
-  let i = 0;
-  while (i < expr.length) {
-    if (expr.startsWith(`${fnName}(`, i)) {
-      const start = i + fnName.length;
-      let depth = 1;
-      let j = start + 1;
-      while (j < expr.length && depth > 0) {
-        if (expr[j] === "(") depth++;
-        else if (expr[j] === ")") depth--;
-        j++;
-      }
-      const arg = expr.slice(start + 1, j - 1);
-      result += build(rewriteUnaryFunction(arg, fnName, build));
-      i = j;
-    } else {
-      result += expr[i];
-      i++;
-    }
-  }
-  return result;
-}
-
+// recíprocas. Se reescriben a su forma equivalente en sin/cos/tan/etc.
+// antes de derivar. Ampliado luego (cierre de la suite de paridad de
+// teclado) a csch/sech/coth y arcsec/arccsc/arccot, y movido a
+// engine/parsing/index.ts como `rewriteReciprocalFunctions` para que
+// TODO el pipeline (evaluate/derivada/integral/límite) las resuelva por
+// igual, no solo la derivada — se importa desde ahí en vez de duplicar
+// la lógica acá.
 export function calcDerivative(exprAlgebrite: string, variable: string, order: number): CalculusResult {
-  const result = symbolicDerivative(rewriteReciprocalTrig(exprAlgebrite), variable, order);
+  const result = symbolicDerivative(rewriteReciprocalFunctions(exprAlgebrite), variable, order);
   return {
     resultLatex: result,
     confidence: "SYMBOLIC",
@@ -105,6 +76,7 @@ export function calcLimit(
   pointNumeric: number,
   direction: LimitDirection = "both",
 ): CalculusResult {
+  exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
@@ -156,6 +128,7 @@ export function calcLimit(
 }
 
 export function calcIndefiniteIntegral(exprAlgebrite: string, variable: string): CalculusResult {
+  exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
   const result = indefiniteIntegral(exprAlgebrite, variable);
   return {
     resultLatex: `${result} + C`,
@@ -173,6 +146,7 @@ export function calcDefiniteIntegral(
   lower: number,
   upper: number,
 ): CalculusResult {
+  exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
   try {
     const antiderivative = indefiniteIntegral(exprAlgebrite, variable);
     // FIX (Fase 2 externa, hallazgo nuevo): subst() de Algebrite toma

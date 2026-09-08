@@ -41,7 +41,7 @@ interface ComplexParts {
 
 /** Extrae (re, im) del string ya evaluado por Algebrite. Lanza si no
  * matchea la forma canónica esperada (ver limitación arriba). */
-function parseComplex(algebriteResult: string): ComplexParts {
+export function parseComplex(algebriteResult: string): ComplexParts {
   const s = algebriteResult.replace(/\s+/g, "");
 
   // Forma pura real (sin "i" como unidad imaginaria — ojo: esto NO

@@ -142,7 +142,18 @@ export function preprocessLatex(latex: string): string {
   // \sqrt[3]{x} — que es la del radicando, no hay ninguna antes del "[3]" —
   // y consume solo esa parte, descartando el índice "[3]" en silencio y
   // convirtiendo la raíz cúbica en una raíz cuadrada sin ningún error.
-  expr = expr.replace(/\\sqrt\[([^\]]*)\]\{([^{}]*)\}/g, "($2)^(1/($1))");
+  // Fix (suite de paridad de teclado v1.0, hallazgo dinámico nuevo — más
+  // serio que un simple error de parseo: da un NÚMERO PLAUSIBLE pero
+  // matemáticamente incorrecto, sin avisar). "\sqrt[3]{27}^{2}" (raíz
+  // cúbica seguida de la tecla de potencia general) daba 3^(1/3)≈1.44 en
+  // vez de 9. Causa: esta conversión producía "(27)^(1/(3))" SIN un
+  // paréntesis que envuelva la potencia completa, así que un "^" pegado
+  // después ("...^(2)") se combina por asociatividad-derecha de Algebrite
+  // como 27^((1/3)^2) en vez de (27^(1/3))^2 — el exponente exterior se
+  // "cuela" dentro del exponente de la raíz en vez de aplicarse al
+  // resultado. Se envuelve toda la expresión en un paréntesis extra para
+  // que cualquier "^" posterior solo pueda aplicarse por fuera.
+  expr = expr.replace(/\\sqrt\[([^\]]*)\]\{([^{}]*)\}/g, "(($2)^(1/($1)))");
   // BUG real (preexistente, encontrado al verificar el fix de arriba):
   // una sola pasada de replaceBalanced NO es recursiva — \sqrt{\sqrt{x}}
   // procesaba solo el \sqrt externo, dejando un "\sqrt{x}" literal sin
@@ -218,6 +229,21 @@ export function preprocessLatex(latex: string): string {
     }
   }
 
+  // log con base: plantilla real de la tecla "\log_{#0}\left(#1\right)"
+  // (subíndice LaTeX, no la forma con coma "log(x,base)" que ya soporta
+  // FUNCTION_ARITY/rewriteLogBase más abajo en index.ts). Sin esta regla
+  // el "_" del subíndice llegaba crudo al tokenizador y tronaba con
+  // "Carácter no reconocido: _" — la tecla "log con base" del teclado no
+  // parseaba en absoluto. Se reescribe a la forma de coma que
+  // rewriteLogBase ya sabe convertir a log(a)/log(b).
+  {
+    const logBaseMatch = expr.match(/\\log_\{([^{}]*)\}\\left\((.*)\\right\)$/s);
+    if (logBaseMatch) {
+      const [, base, arg] = logBaseMatch;
+      expr = `log(${arg},${base})`;
+    }
+  }
+
   // Lim: plantilla "\lim_{#0}#1", #0 tipo "x\to0" -> limit((cuerpo),x,0).
   // A diferencia de integral/sum, limit() de Algebrite frecuentemente NO
   // evalúa (confirmado probando el paquete real) — el fallback numérico
@@ -233,7 +259,19 @@ export function preprocessLatex(latex: string): string {
   // limit() sin tronar (los ignora, los devuelve tal cual sin evaluar,
   // que es justo la señal que ya usa tryLimitFallback para intervenir).
   {
-    const limMatch = expr.match(/\\lim_\{([^{}]*)\}(.*)$/s);
+    // Fix (suite de paridad de teclado v1.0, hallazgo dinámico nuevo): el
+    // límite lateral con signo entre llaves (\lim_{x\to0^{+}}..., que es
+    // justo lo que produce la tecla real al completar el placeholder
+    // editable — ver comentario de "dirMatch" más abajo) nunca llegaba a
+    // esta rama: [^{}]* excluye CUALQUIER llave, así que en cuanto el
+    // subíndice contiene el "^{+}" anidado, el match completo falla (no
+    // hay error visible acá, simplemente `limMatch` da null) y el \lim
+    // queda sin normalizar, tronando más abajo en el tokenizador con
+    // "Carácter no reconocido: \\". El manejo de "^{+}" con llaves que ya
+    // existía en `dirMatch` (líneas de abajo) nunca se alcanzaba por
+    // esto — se ensancha el patrón para tolerar UN nivel de llaves
+    // anidadas (el único caso real: el signo del límite lateral).
+    const limMatch = expr.match(/\\lim_\{((?:[^{}]|\{[^{}]*\})*)\}(.*)$/s);
     if (limMatch) {
       const [, varTo, body] = limMatch;
       const toIndex = varTo.indexOf("\\to");
@@ -271,12 +309,43 @@ export function preprocessLatex(latex: string): string {
     .replace(/\\gcd/g, "gcd")
     .replace(/\\min/g, "min")
     .replace(/\\max/g, "max")
+    // Fix (decisión de Carlos, cierre de la suite de paridad de teclado):
+    // ±() no tenía ninguna semántica — \pm ni se despojaba del backslash,
+    // así que tronaba igual que csc/sec/cot antes del fix de arriba.
+    .replace(/\\pm/g, "pm")
+    // Fix (decisión de Carlos, cierre de la suite de paridad de teclado):
+    // ≤/≥ insertan los macros LaTeX \le/\ge (ver teclas "≤"/"≥" en
+    // MathKeyboard.tsx) — se convierten a <=/>= en ASCII plano, mismo
+    // símbolo que < y > (que las teclas insertan ya en texto plano, sin
+    // macro). Tiene que pasar ANTES que cualquier otra cosa toque el "="
+    // (splitEquation en index.ts), porque "<=" contiene un "=" literal
+    // que si no se distingue a tiempo, se partiría como si fuera una
+    // ecuación con "<" colgando de un lado.
+    .replace(/\\le(?![a-zA-Z])/g, "<=")
+    .replace(/\\ge(?![a-zA-Z])/g, ">=")
     .replace(/\\sin\^\{-1\}/g, "arcsin")
     .replace(/\\cos\^\{-1\}/g, "arccos")
     .replace(/\\tan\^\{-1\}/g, "arctan")
+    // Fix (cierre de la suite de paridad de teclado): \csc^{-1}/\sec^{-1}/
+    // \cot^{-1} (inversas de las recíprocas) tampoco tenían regla — se
+    // agregan con el mismo criterio que sin/cos/tan. Van ANTES que la
+    // regla de \csc/\sec/\cot a secas (más abajo), para no dejar un "^{-1}"
+    // colgando sobre "csc" ya convertido.
+    .replace(/\\csc\^\{-1\}/g, "arccsc")
+    .replace(/\\sec\^\{-1\}/g, "arcsec")
+    .replace(/\\cot\^\{-1\}/g, "arccot")
     .replace(/\\sin/g, "sin")
     .replace(/\\cos/g, "cos")
     .replace(/\\tan/g, "tan")
+    // Fix (cierre de la suite de paridad de teclado, hallazgo nuevo: ni
+    // siquiera \csc(x)/\sec(x)/\cot(x) BÁSICOS —sin inversa— parseaban).
+    // La tecla real de "Directas" inserta \csc\left(#0\right) con
+    // backslash, pero antes solo sin/cos/tan tenían regla de despojo —
+    // csc/sec/cot se quedaban con el "\" crudo y tronaban en el
+    // tokenizador. Van DESPUÉS de las reglas de ^{-1} de arriba.
+    .replace(/\\csc/g, "csc")
+    .replace(/\\sec/g, "sec")
+    .replace(/\\cot/g, "cot")
     .replace(/\\ln/g, "ln")
     .replace(/\\log/g, "log")
     .replace(/\^\{([^{}]*)\}/g, "^($1)")

@@ -79,7 +79,7 @@ describe("parseExpression", () => {
   });
 
   it("\\sqrt[3]{8} es raíz cúbica, NO raíz cuadrada (bug detectado en revisión: el índice se perdía en silencio)", () => {
-    expect(parseExpression("\\sqrt[3]{8}").algebrite).toBe("(8)^(1/(3))");
+    expect(parseExpression("\\sqrt[3]{8}").algebrite).toBe("((8)^(1/(3)))");
   });
 
   it("\\sqrt{9} (sin índice) sigue funcionando como raíz cuadrada normal", () => {
@@ -190,8 +190,57 @@ describe("parseExpression", () => {
       expect(parseExpression("\\sqrt{\\sqrt{x}}").algebrite).toBe("sqrt(sqrt(x))");
     });
 
-    it("\\sqrt[3]{x} (raíz enésima) no se ve afectado por ninguno de los dos fixes", () => {
-      expect(parseExpression("\\sqrt[3]{x}").algebrite).toBe("(x)^(1/(3))");
+  it("\\sqrt[3]{27}^{2} = 9, no 3^(1/3) (bug real detectado por la suite de paridad de teclado: la potencia exterior se colaba dentro del exponente de la raíz por asociatividad-derecha de ^)", () => {
+    expect(parseExpression("\\sqrt[3]{27}^{2}").algebrite).toBe("((27)^(1/(3)))^(2)");
+  });
+
+  it("\\sqrt[3]{x} (raíz enésima) no se ve afectado por ninguno de los dos fixes", () => {
+      expect(parseExpression("\\sqrt[3]{x}").algebrite).toBe("((x)^(1/(3)))");
     });
+  });
+});
+
+describe("cierre de la suite de paridad de teclado v1.0", () => {
+  it("\\lim_{x\\to0^{+}}\\frac{1}{x} parsea (antes tronaba: [^{}]* no toleraba el signo entre llaves que produce la tecla real)", () => {
+    expect(parseExpression("\\lim_{x\\to0^{+}}\\frac{1}{x}").algebrite).toBe("limit((((1)/(x))),x,0,1)");
+  });
+
+  it("\\lim_{x\\to0^{-}}\\frac{1}{x} parsea con el signo correcto", () => {
+    expect(parseExpression("\\lim_{x\\to0^{-}}\\frac{1}{x}").algebrite).toBe("limit((((1)/(x))),x,0,-1)");
+  });
+
+  it("\\log_{2}\\left(8\\right) (tecla real de log con base, notación de subíndice) parsea y da 3", () => {
+    const parsed = parseExpression("\\log_{2}\\left(8\\right)");
+    expect(parsed.algebrite).toBe("(log(8)/log(2))");
+  });
+
+  it("\\csc\\left(x\\right)/\\sec\\left(x\\right)/\\cot\\left(x\\right) básicos (sin inversa) parsean (antes tronaban: solo sin/cos/tan tenían regla de despojo de backslash)", () => {
+    expect(parseExpression("\\csc\\left(1\\right)").algebrite).toBe("(1/sin(1))");
+    expect(parseExpression("\\sec\\left(1\\right)").algebrite).toBe("(1/cos(1))");
+    expect(parseExpression("\\cot\\left(1\\right)").algebrite).toBe("(1/tan(1))");
+  });
+
+  it("\\csc^{-1}/\\sec^{-1}/\\cot^{-1} (inversas de las recíprocas) parsean y reescriben a la identidad equivalente", () => {
+    expect(parseExpression("\\csc^{-1}\\left(2\\right)").algebrite).toBe("(arcsin(1/(2)))");
+    expect(parseExpression("\\sec^{-1}\\left(2\\right)").algebrite).toBe("(arccos(1/(2)))");
+    expect(parseExpression("\\cot^{-1}\\left(1\\right)").algebrite).toBe("(arctan(1/(1)))");
+  });
+
+  it("csch/sech/coth (hiperbólicas recíprocas) parsean y reescriben a la identidad equivalente", () => {
+    expect(parseExpression("csch\\left(1\\right)").algebrite).toBe("(1/sinh(1))");
+    expect(parseExpression("sech\\left(1\\right)").algebrite).toBe("(1/cosh(1))");
+    expect(parseExpression("coth\\left(1\\right)").algebrite).toBe("(1/tanh(1))");
+  });
+
+  it("arcsec/arccsc no colisionan con el rewrite de sec/csc (el nombre largo se reescribe completo antes de que el corto pueda matchear a mitad de palabra)", () => {
+    expect(parseExpression("\\sec^{-1}\\left(x\\right)").algebrite).not.toContain("1/cos(");
+  });
+
+  it("±(5) (decisión de Carlos: da las dos ramas) parsea a pm(5)", () => {
+    expect(parseExpression("\\pm\\left(5\\right)").algebrite).toBe("pm(5)");
+  });
+
+  it("\\pm no colisiona con \\left/\\right (mismo tipo de bug que \\le/\\ge encontrado en esta sesión)", () => {
+    expect(parseExpression("\\pm\\left(5\\right)\\left(1\\right)").algebrite).not.toContain("\\");
   });
 });

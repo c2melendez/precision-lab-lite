@@ -12,6 +12,7 @@ import { tokenize, type Token } from "./tokenize";
 import { insertImplicitMultiplication } from "./implicitMultiplication";
 import { validateFunctionArity } from "./functionArity";
 import { splitEquation } from "./equationSplit";
+import { splitInequality, type InequalityOperator } from "./inequalitySplit";
 import { expandPostfixOperators } from "./postfixOperators";
 import { KNOWN_FUNCTION_NAMES, CONSTANT_SUBSTITUTIONS } from "./constants";
 
@@ -26,6 +27,12 @@ export interface ParsedExpression {
   leftAlgebrite: string;
   /** Lado derecho en sintaxis Algebrite ("0" si no es ecuación). */
   rightAlgebrite: string;
+  /** Fix (decisión de Carlos, cierre de la suite de paridad de teclado):
+   * true si la expresión original contenía <, >, <= o >= (es una
+   * desigualdad) — mutuamente excluyente con isEquation. */
+  isInequality: boolean;
+  /** Operador detectado, solo con sentido si isInequality. */
+  inequalityOperator?: InequalityOperator;
 }
 
 // Fix (suite de regresión, casos E019-E021: "asin"/"acos"/"atan" no se
@@ -116,6 +123,65 @@ function rewriteLogBase(algebrite: string): string {
   return rewriteBinaryFunction(algebrite, "log", (a, b) => `(log(${a})/log(${b}))`);
 }
 
+// Fix (cierre de la suite de paridad de teclado v1.0): ni sec/csc/cot,
+// ni sus hiperbólicas recíprocas (csch/sech/coth), ni sus inversas
+// (arcsec/arccsc/arccot) tienen cómputo nativo en Algebrite — cualquier
+// evaluate/derivada/integral/límite sobre ellas quedaba sin resolver.
+// Se reescriben a la identidad equivalente en sin/cos/tan/sinh/cosh/tanh
+// ANTES de tocar Algebrite, con el mismo criterio que log-con-base y
+// nPr/nCr (parser SÍ las reconoce como funciones — ver FUNCTION_ARITY —
+// pero el cómputo real ocurre en la forma reescrita).
+//
+// Límite conocido y documentado de la identidad arccot(x)=arctan(1/x):
+// en x=0 matemáticamente arccot(0)=π/2, pero arctan(1/0) es indefinido —
+// mismo comportamiento que usan la mayoría de calculadoras con esta
+// convención; no se resuelve el caso especial x=0 para no introducir
+// lógica condicional en tiempo de reescritura simbólica (antes de
+// conocer el valor numérico).
+export function rewriteReciprocalFunctions(expr: string): string {
+  let result = expr;
+  // Orden importante: "arcsec"/"arccsc"/"arccot" contienen "sec"/"csc"/
+  // "cot" como substring (arcSEC, arcCSC, arcCOT) — si se reescribieran
+  // primero las cortas, el escaneo caracter-por-caracter de
+  // rewriteUnaryFunction encontraría "sec(" a mitad de "arcsec(" antes de
+  // completar el nombre largo. Reescribiendo las inversas PRIMERO, el
+  // texto reemplazado ya no contiene "sec(" suelto y no hay colisión.
+  result = rewriteUnaryFunction(result, "arcsec", (a) => `(arccos(1/(${a})))`);
+  result = rewriteUnaryFunction(result, "arccsc", (a) => `(arcsin(1/(${a})))`);
+  result = rewriteUnaryFunction(result, "arccot", (a) => `(arctan(1/(${a})))`);
+  result = rewriteUnaryFunction(result, "sec", (a) => `(1/cos(${a}))`);
+  result = rewriteUnaryFunction(result, "csc", (a) => `(1/sin(${a}))`);
+  result = rewriteUnaryFunction(result, "cot", (a) => `(1/tan(${a}))`);
+  result = rewriteUnaryFunction(result, "sech", (a) => `(1/cosh(${a}))`);
+  result = rewriteUnaryFunction(result, "csch", (a) => `(1/sinh(${a}))`);
+  result = rewriteUnaryFunction(result, "coth", (a) => `(1/tanh(${a}))`);
+  return result;
+}
+
+function rewriteUnaryFunction(expr: string, fnName: string, build: (a: string) => string): string {
+  let result = "";
+  let i = 0;
+  while (i < expr.length) {
+    if (expr.startsWith(`${fnName}(`, i)) {
+      const start = i + fnName.length;
+      let depth = 1;
+      let j = start + 1;
+      while (j < expr.length && depth > 0) {
+        if (expr[j] === "(") depth++;
+        else if (expr[j] === ")") depth--;
+        j++;
+      }
+      const arg = expr.slice(start + 1, j - 1);
+      result += build(rewriteUnaryFunction(arg, fnName, build));
+      i = j;
+    } else {
+      result += expr[i];
+      i++;
+    }
+  }
+  return result;
+}
+
 function extractFreeVariables(tokens: Token[]): string[] {
   const vars = new Set<string>();
   for (const t of tokens) {
@@ -172,15 +238,36 @@ export function parseExpression(
   const unicodeNormalized = normalizeUnicode(preprocessed);
   validateDecimalPoints(unicodeNormalized);
 
-  const { left, right, isEquation } = splitEquation(unicodeNormalized);
-
   function pipelineOneSide(side: string): { algebrite: string; tokens: Token[] } {
     const tokens = expandPostfixOperators(tokenize(side));
     validateFunctionArity(tokens);
     const withImplicitMul = insertImplicitMultiplication(tokens);
-    const algebrite = rewriteLogBase(rewriteCombinatorics(applyAngleMode(tokensToAlgebrite(withImplicitMul), angleMode)));
+    const algebrite = rewriteReciprocalFunctions(rewriteLogBase(rewriteCombinatorics(applyAngleMode(tokensToAlgebrite(withImplicitMul), angleMode))));
     return { algebrite, tokens: withImplicitMul };
   }
+
+  // Fix (decisión de Carlos, cierre de la suite de paridad de teclado):
+  // se revisa desigualdad ANTES que "=" — "<="/">=" contienen un "="
+  // literal que splitEquation partiría mal si no se distingue primero.
+  const inequalitySplit = splitInequality(unicodeNormalized);
+  if (inequalitySplit) {
+    const leftResult = pipelineOneSide(inequalitySplit.left);
+    const rightResult = pipelineOneSide(inequalitySplit.right);
+    const freeVariables = [
+      ...new Set([...extractFreeVariables(leftResult.tokens), ...extractFreeVariables(rightResult.tokens)]),
+    ];
+    return {
+      algebrite: `(${leftResult.algebrite})-(${rightResult.algebrite})`,
+      isEquation: false,
+      isInequality: true,
+      inequalityOperator: inequalitySplit.operator,
+      freeVariables,
+      leftAlgebrite: leftResult.algebrite,
+      rightAlgebrite: rightResult.algebrite,
+    };
+  }
+
+  const { left, right, isEquation } = splitEquation(unicodeNormalized);
 
   const leftResult = pipelineOneSide(left);
   const freeVariables = extractFreeVariables(leftResult.tokens);
@@ -189,6 +276,7 @@ export function parseExpression(
     return {
       algebrite: leftResult.algebrite,
       isEquation: false,
+      isInequality: false,
       freeVariables,
       leftAlgebrite: leftResult.algebrite,
       rightAlgebrite: "0",
@@ -201,6 +289,7 @@ export function parseExpression(
   return {
     algebrite: `(${leftResult.algebrite})-(${rightResult.algebrite})`,
     isEquation: true,
+    isInequality: false,
     freeVariables: [...new Set(freeVariables)],
     leftAlgebrite: leftResult.algebrite,
     rightAlgebrite: rightResult.algebrite,
