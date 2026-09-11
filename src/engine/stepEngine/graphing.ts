@@ -38,6 +38,13 @@ export interface GraphAnalysis {
 
 const DEFAULT_VIEW: [number, number] = [-10, 10];
 const SAMPLE_COUNT = 2000;
+// Fix (suite de regresión v1.1): umbral de magnitud para descartar
+// candidatos a raíz que en realidad son un salto de signo cruzando una
+// asíntota (ver comentario junto a xIntercepts más abajo). Con 2000
+// muestras en una ventana típica, una raíz real con pendiente
+// razonable tiene al menos un extremo con |y| bien por debajo de esto;
+// una asíntota (1/x, tan(x), etc.) salta a cientos o miles.
+const _ROOT_CANDIDATE_MAX_MAGNITUDE = 50;
 const H = 1e-4; // paso para diferencias finitas
 
 function finiteDiff1(f: (x: number) => number, x: number): number {
@@ -116,11 +123,40 @@ export function analyzeGraph(
   const rangeDescription = `Aproximadamente [${Math.min(...validYs).toFixed(4)}, ${Math.max(...validYs).toFixed(4)}] dentro del rango visible (basado en muestreo, no es un análisis simbólico exacto).`;
 
   // Intercepciones en x: cambios de signo + bisección.
+  // Fix (suite de regresión v1.1, caso confirmado con 1/(x-2) y tan(x)):
+  // el filtrado de arriba (`if (Number.isFinite(y))`) DESCARTA los
+  // puntos no finitos del array en vez de marcarlos como hueco — así
+  // que "samples" puede tener saltos silenciosos donde hubo una
+  // discontinuidad. Antes de este fix, un cambio de signo entre dos
+  // muestras que en realidad estaban separadas por una asíntota (ej.
+  // 1/(x-2) pasa de negativo a positivo cruzando x=2, tan(x) pasa de
+  // +∞ a -∞ cruzando x=π/2) se reportaba como una RAÍZ FALSA — nunca
+  // cruzan cero ahí, es un polo. Se descarta el chequeo de signo
+  // cuando la distancia entre dos muestras consecutivas es
+  // significativamente mayor al paso uniforme esperado (`step`),
+  // señal de que se saltaron puntos no finitos en el medio.
   const xIntercepts: number[] = [];
   for (let i = 1; i < samples.length; i++) {
     const [p, q] = [samples[i - 1], samples[i]];
+    const gapIsContiguous = q.x - p.x <= step * 1.5;
+    if (!gapIsContiguous) continue;
     if (Math.sign(p.y) !== Math.sign(q.y) && p.y !== 0) {
-      xIntercepts.push(bisectRoot(f, p.x, q.x));
+      // Segunda defensa (además del chequeo de hueco de arriba): cerca
+      // de una asíntota (ej. tan(x) en x=π/2) la función puede dar un
+      // número FINITO pero gigantesco justo antes y después del polo
+      // (ej. +1255 y luego -237, sin pasar nunca por Infinity/NaN), así
+      // que el chequeo de hueco de arriba no lo agarra — ambos puntos
+      // están "definidos". Cerca de una raíz DE VERDAD, con un paso de
+      // muestreo fino, al menos uno de los dos extremos tiene que tener
+      // magnitud chica (por definición, está cerca de cruzar cero).
+      // Cerca de un polo ambos extremos tienen magnitud grande — un
+      // punto medio no es confiable acá (la función es tan inestable
+      // cerca del polo que el punto medio también puede salir grande
+      // "por casualidad", como se vio verificando tan(x) a mano).
+      const minMag = Math.min(Math.abs(p.y), Math.abs(q.y));
+      if (minMag <= _ROOT_CANDIDATE_MAX_MAGNITUDE) {
+        xIntercepts.push(bisectRoot(f, p.x, q.x));
+      }
     } else if (q.y === 0) {
       xIntercepts.push(q.x);
     }
