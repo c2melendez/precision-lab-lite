@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/precision-lab-lite/sw.js', { scope: '/precision-lab-lite/' })})}
