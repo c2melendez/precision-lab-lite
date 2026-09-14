@@ -61,4 +61,9 @@ describe("analyzeGraph", () => {
     const analysis = analyzeGraph("1/x", "x", [-3, 3]);
     expect(analysis.xIntercepts).toEqual([]);
   });
+
+  it("sqrt(x) SÍ detecta la raíz real en el borde del dominio, x=0 (regresión introducida por el fix de arriba: el bucle nunca revisaba el primer punto muestreado, solo lo usaba como 'p', nunca como 'q')", () => {
+    const analysis = analyzeGraph("sqrt(x)", "x", [-5, 5]);
+    expect(analysis.xIntercepts).toEqual([0]);
+  });
 });

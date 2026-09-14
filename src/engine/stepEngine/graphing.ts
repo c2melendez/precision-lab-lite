@@ -136,8 +136,23 @@ export function analyzeGraph(
   // significativamente mayor al paso uniforme esperado (`step`),
   // señal de que se saltaron puntos no finitos en el medio.
   const xIntercepts: number[] = [];
+  // Fix: el primer punto definido del arreglo (ej. sqrt(x) en x=0,
+  // justo en el borde del dominio) nunca se revisaba, porque el bucle
+  // de abajo solo chequea "q.y === 0" a partir de i=1 — samples[0]
+  // nunca actúa como "q", solo como "p" en la primera vuelta.
+  if (samples.length > 0 && samples[0].y === 0) xIntercepts.push(samples[0].x);
   for (let i = 1; i < samples.length; i++) {
     const [p, q] = [samples[i - 1], samples[i]];
+    // Fix (regresión introducida por el fix de arriba): "q.y === 0"
+    // exacto es una raíz real SIEMPRE, incluso si p y q no son
+    // contiguos (ej. sqrt(x) en x=0: el punto anterior definido está
+    // del lado negativo, filtrado por dominio — no hay "hueco" real,
+    // es el borde del dominio). Este chequeo va ANTES del gate de
+    // continuidad, que solo aplica al caso de cambio de signo.
+    if (q.y === 0) {
+      xIntercepts.push(q.x);
+      continue;
+    }
     const gapIsContiguous = q.x - p.x <= step * 1.5;
     if (!gapIsContiguous) continue;
     if (Math.sign(p.y) !== Math.sign(q.y) && p.y !== 0) {
@@ -157,8 +172,6 @@ export function analyzeGraph(
       if (minMag <= _ROOT_CANDIDATE_MAX_MAGNITUDE) {
         xIntercepts.push(bisectRoot(f, p.x, q.x));
       }
-    } else if (q.y === 0) {
-      xIntercepts.push(q.x);
     }
   }
 

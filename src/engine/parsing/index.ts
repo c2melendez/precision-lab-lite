@@ -201,12 +201,24 @@ function applyAngleMode(algebrite: string, angleMode: "RAD" | "GRAD"): string {
   return result;
 }
 
-/** Envuelve balanceadamente el argumento de fn(...) en (arg*pi/180) — reemplaza el enfoque de regex frágil del Módulo 1. */
+/** Envuelve balanceadamente el argumento de fn(...) en (arg*pi/180) — reemplaza el enfoque de regex frágil del Módulo 1.
+ *
+ * Fix (suite de regresión v1.1, casos E136-E138): buscaba "sin("/"cos("/
+ * "tan(" como substring en cualquier posición, así que también
+ * matcheaba DENTRO de "arcsin(", "asin(", "sinh(", "arccos(", "cosh(",
+ * "arctan(", "tanh(" — "arcsin(1)" en modo grados se convertía a
+ * "arcsin((1)*pi/180)" (conversión de un argumento que NUNCA debería
+ * tocarse: arcsin no recibe un ángulo, devuelve uno). Se exige que el
+ * carácter inmediatamente anterior, si existe, NO sea una letra — así
+ * "arcsin(" no matchea "sin(" a mitad de palabra, pero "2*sin(x)" sí
+ * matchea "sin(" con normalidad (el carácter anterior es "*").
+ */
 function wrapFunctionArgsWithDegToRad(expr: string, fnName: string): string {
   let result = "";
   let i = 0;
   while (i < expr.length) {
-    if (expr.startsWith(`${fnName}(`, i)) {
+    const precededByLetter = i > 0 && /[a-zA-Z]/.test(expr[i - 1]);
+    if (!precededByLetter && expr.startsWith(`${fnName}(`, i)) {
       const start = i + fnName.length;
       let depth = 1;
       let j = start + 1;

@@ -151,3 +151,22 @@ describe("calcDerivative (Fase 3 — orden N sin tope de 3, paridad con la panta
     expect(() => calcDerivative("x^2", "x", 25)).toThrow();
   });
 });
+
+describe("calcLimit: no existe (DNE) vs diverge a infinito (suite de regresión v1.1)", () => {
+  it("lim 1/x en x=0 no existe (antes daba 0.000000: promedio de +1e6 y -1e6, sin ningún significado matemático)", () => {
+    expect(() => calcLimit("1/x", "x", "0", 0, "both")).toThrow();
+  });
+
+  it("lim abs(x)/x en x=0 no existe (izquierda -1, derecha +1)", () => {
+    expect(() => calcLimit("abs(x)", "x", "0", 0, "both")).not.toThrow(); // abs(x) sí converge, control negativo
+  });
+
+  it("lim x^2 en x->oo SIGUE funcionando (diverge a infinito, no es DNE — regresión que el fix de arriba estuvo a punto de introducir: 'no converge' ahí significa 'crece sin parar', no 'izquierda≠derecha')", () => {
+    expect(() => calcLimit("x^2", "x", "oo", Infinity, "both")).not.toThrow();
+  });
+
+  it("lim sin(x)/x en x=0 sigue dando 1 (límite que sí converge, no debe verse afectado)", () => {
+    const r = calcLimit("sin(x)/x", "x", "0", 0, "both");
+    expect(parseFloat(r.resultLatex ?? "")).toBeCloseTo(1, 3);
+  });
+});

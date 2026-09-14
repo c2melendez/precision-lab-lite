@@ -69,6 +69,13 @@ export const FUNCTION_ARITY: Record<string, number[]> = {
   ln: [1],
   log: [1, 2],
   sqrt: [1],
+  // Fix (suite de regresión v1.1, caso E107): "cbrt" no estaba
+  // registrada — "cbrt(27)" quedaba sin reconocer como función
+  // (multiplicación implícita, "27*cbrt" sin evaluar). Mismo hallazgo y
+  // mismo fix que ya se hizo del lado de Python — Algebrite tampoco la
+  // conoce nativamente, se reescribe antes de evaluar (ver
+  // rewriteReciprocalFunctions en index.ts).
+  cbrt: [1],
   abs: [1],
   exp: [1],
   sign: [1],

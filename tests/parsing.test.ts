@@ -244,3 +244,20 @@ describe("cierre de la suite de paridad de teclado v1.0", () => {
     expect(parseExpression("\\pm\\left(5\\right)\\left(1\\right)").algebrite).not.toContain("\\");
   });
 });
+
+describe("suite de regresión v1.1: conversión a grados no confunde subcadenas", () => {
+  it("sin(90) en modo grados SÍ se convierte (arcsin no debe romper esto)", () => {
+    expect(parseExpression("sin(90)", "GRAD").algebrite).toBe("sin((90)*pi/180)");
+  });
+
+  it("arcsin(1)/asin(1) en modo grados NO se tocan (bug real: \"sin(\" matcheaba a mitad de \"arcsin(\"/\"asin(\", dando arcsin((1)*pi/180)≈0.017 en vez de dejarlo intacto)", () => {
+    expect(parseExpression("arcsin(1)", "GRAD").algebrite).toBe("arcsin(1)");
+    expect(parseExpression("asin(1)", "GRAD").algebrite).toBe("arcsin(1)");
+  });
+
+  it("sinh(1)/cosh(1)/tanh(1) en modo grados tampoco se tocan (mismo bug de subcadena)", () => {
+    expect(parseExpression("sinh(1)", "GRAD").algebrite).toBe("sinh(1)");
+    expect(parseExpression("cosh(1)", "GRAD").algebrite).toBe("cosh(1)");
+    expect(parseExpression("tanh(1)", "GRAD").algebrite).toBe("tanh(1)");
+  });
+});

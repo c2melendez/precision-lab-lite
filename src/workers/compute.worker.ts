@@ -11,6 +11,7 @@ import { compileNumeric, numericLimit, numericLimitAtInfinity } from "../engine/
 import { tryStatFunction, splitTopLevelArgs } from "../engine/statFunctions";
 import { tryComplexFunction } from "../engine/complexFunctions";
 import { tryPlusMinus } from "../engine/plusMinus";
+import { tryCbrtSign } from "../engine/cbrtSign";
 import { solveInequality } from "../engine/inequality";
 import { solveAlgebra } from "../engine/stepEngine/algebra";
 import {
@@ -375,6 +376,21 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
         success: true,
         resultLatex: toLatex(plusMinusResult),
         fraction: undefined,
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "NUMERIC_FALLBACK",
+        requestId,
+      };
+    }
+
+    // Fix (suite de regresión v1.1, E107/E109-E111): cbrt/sign — ver
+    // cabecera de engine/cbrtSign.ts.
+    const cbrtSignResult = tryCbrtSign(expr);
+    if (cbrtSignResult !== null) {
+      return {
+        success: true,
+        resultLatex: toLatex(cbrtSignResult),
+        fraction: toFractionResult(cbrtSignResult),
         steps: [],
         hasDetailedSteps: false,
         confidence: "NUMERIC_FALLBACK",

@@ -106,6 +106,28 @@ export function calcLimit(
     if (!Number.isFinite(value)) {
       throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "No se pudo estimar el límite numéricamente (valores no finitos)." } as AppError;
     }
+    // Fix (suite de regresión v1.1, casos L004/L010: lim 1/x y lim
+    // abs(x)/x en x=0 daban "0.000000" en vez de "no existe"). Cuando
+    // `direction === "both"` y los lados izquierdo/derecho NO
+    // convergen (`converged === false`), `value` es el PROMEDIO de las
+    // dos estimaciones laterales — para 1/x eso es (1e6 + (-1e6))/2 = 0,
+    // un número sin ningún significado matemático que antes se
+    // presentaba igual como si fuera la respuesta (el aviso de que
+    // "podría no existir" quedaba escondido solo en el texto de un
+    // paso). Ahora se trata como lo que es: el límite no existe.
+    //
+    // Alcance: SOLO para el punto finito (`!isInfinite`) — para
+    // x→∞/-∞, `converged=false` significa otra cosa (la magnitud sigue
+    // creciendo sin parar entre las dos últimas muestras, ej. x² en
+    // x→∞ da 1e12 y luego 1e14, nunca "converge" en ese sentido) y esa
+    // SÍ es una respuesta válida de "diverge a infinito", no "no
+    // existe" — aplicar el mismo chequeo ahí rompía L007/L012.
+    if (!isInfinite && direction === "both" && !converged) {
+      throw {
+        code: ErrorCode.UNSUPPORTED_OPERATION,
+        message: "El límite no existe: los límites laterales izquierdo y derecho no coinciden.",
+      } as AppError;
+    }
     return {
       resultLatex: value.toFixed(6),
       confidence: "NUMERIC_FALLBACK",
