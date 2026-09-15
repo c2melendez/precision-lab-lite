@@ -2,7 +2,21 @@
 
 App instalable (PWA) con calculadora científica, álgebra, cálculo, sistemas de ecuaciones, matrices y graficación — 100% en el navegador (sin backend), alojada en GitHub Pages.
 
-Ver `spec_calculadora_v10_sin_backend.md` para la especificación técnica completa.
+Ver `spec_calculadora_v10_sin_backend.md` para la especificación técnica completa. El historial completo de fases de desarrollo (Módulo 1 en adelante) sigue más abajo en este mismo archivo, tal cual se fue registrando; esta sección de arriba se mantiene al día como resumen del estado real, verificado con ejecución.
+
+## Alcance actual del motor (verificado, auditoría de septiembre 2026)
+
+Motor: Algebrite, cliente, sin backend (`src/engine/`). Auditado contra `spec_motor_matematico_pendiente.md` y `spec_teclado_virtual.md` con `npm run typecheck`, `npx vitest run` y `npm run build` reales, no solo lectura de código.
+
+- **Hiperbólicas inversas recíprocas** (`asech`, `acsch`, `acoth`) — computables, vía reescritura a `acosh(1/x)`/`asinh(1/x)`/`atanh(1/x)` (`rewriteReciprocalFunctions`) + fallback numérico. Paridad numérica verificada contra el backend de `precision-lab` (mismos inputs, mismo resultado hasta ~15 cifras). Junto con `asinh/acosh/atanh` (ya computables desde antes), las 6 hiperbólicas inversas quedan simétricas con las otras 3 secciones de Trigonometría.
+- **Sistema de ecuaciones lineales, hasta 5×5** — `gaussJordan` (`src/engine/stepEngine/linearSystem.ts`) es genérico en N, sin tope programado; el límite de 4 vive solo en `LinearSystemsMode.tsx`, modo inalcanzable desde la navegación actual. Los 3 casos (solución única, compatible indeterminado, incompatible) se distinguen explícitamente — ver `tests/linearSystem5x5.test.ts`.
+- **Sistema de inecuaciones lineales** (`src/engine/stepEngine/linearInequalitySystem.ts`) — alcance: exactamente 2 variables (3+ se rechaza explícitamente), representación por vértices del polígono factible, resultado en 3 estados (`bounded`/`unbounded`/`empty`). Cualquier término no lineal se rechaza con mensaje claro, nunca en silencio.
+  - **Corrección de auditoría:** el diseño original no distinguía una región **vacía** (ej. `x≥5, x≤1`, dos rectas paralelas sin intersección factible) de una región **no acotada** (ej. `x≥0, x≤1`, una franja infinita) — ambos casos daban 0 vértices y el chequeo de acotación original solo miraba la dirección de fuga (cono de recesión), nunca si el sistema tenía algún punto factible real. Reemplazado por recorte de semiplanos (Sutherland-Hodgman) contra una caja grande, que da la factibilidad real en un solo paso. Ver `tests/linearInequalitySystem.test.ts`.
+- **Notación de grados D°M′S″** — Nivel 1 (`°` suelto, ×π/180 o el equivalente en el modo de ángulo activo) y Nivel 2 (`D°M′S″` compuesto, convertido a grados decimales antes del Nivel 1) implementados en `normalize.ts`. Verificado contra valores conocidos: `90° = π/2 rad`, `45°30′ = 45.5°`. Ver `tests/degreesNotation.test.ts`.
+
+**Pendiente de confirmación con el usuario:** el diseño de representación de la Fase C (vértices del polígono, exactamente 2 variables, steps en dos niveles) se implementó documentando en el propio código que fue "confirmado explícitamente" antes de escribirse — no hay forma de verificar esa confirmación de manera independiente desde el código; queda registrado aquí para que quede explícito.
+
+**Estado verificado al cierre de esta auditoría:** `npm run typecheck` limpio, `npx vitest run` 158/158, `npm run build` limpio (mismo warning preexistente de tamaño de chunk, no es error).
 
 ## Estado del proyecto — Módulo 1 (Cierre)
 

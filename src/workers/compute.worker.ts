@@ -12,6 +12,8 @@ import { tryStatFunction, splitTopLevelArgs } from "../engine/statFunctions";
 import { tryComplexFunction } from "../engine/complexFunctions";
 import { tryPlusMinus } from "../engine/plusMinus";
 import { tryCbrtSign } from "../engine/cbrtSign";
+import { solveLinearInequalitySystem } from "../engine/stepEngine/linearInequalitySystem";
+import type { InequalityOperator } from "../engine/parsing/inequalitySplit";
 import { solveInequality } from "../engine/inequality";
 import { solveAlgebra } from "../engine/stepEngine/algebra";
 import {
@@ -90,6 +92,17 @@ export type ComputeRequest =
       diffAlgebrite: string;
       operator: "<" | ">" | "<=" | ">=";
       variable: string;
+    }
+  | {
+      // Corrección post-auditoría (Módulo C, spec_motor_matematico_pendiente.md
+      // §4): faltaba el mensaje de worker que conecta el motor ya construido
+      // (solveLinearInequalitySystem) con la UI — el motor existía pero nada
+      // lo llamaba. Mismo formato de payload que "solveInequality" pero en
+      // plural, uno por renglón del sistema.
+      type: "linearInequalitySystem";
+      requestId: string;
+      inequalities: { diffAlgebrite: string; operator: InequalityOperator }[];
+      variables: string[];
     };
 
 self.onmessage = (event: MessageEvent<ComputeRequest>) => {
@@ -124,6 +137,8 @@ function handle(msg: ComputeRequest): MathResult {
       return handleGraph(msg.expressionAlgebrite, msg.variable, msg.view, msg.requestId);
     case "solveInequality":
       return handleSolveInequality(msg.diffAlgebrite, msg.operator, msg.variable, msg.requestId);
+    case "linearInequalitySystem":
+      return handleLinearInequalitySystem(msg.inequalities, msg.variables, msg.requestId);
     default: {
       const unknownMsg = msg as { requestId?: string };
       return errorResult(
@@ -499,6 +514,48 @@ function handleLinearSystem(equationsAlgebrite: string[], variables: string[], r
       steps: solution.steps,
       hasDetailedSteps: true,
       confidence: "SYMBOLIC",
+      requestId,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), requestId);
+  }
+}
+
+/**
+ * Corrección post-auditoría (Módulo C): el motor (solveLinearInequalitySystem)
+ * estaba completo y verificado de forma aislada pero nunca se llamaba desde
+ * ningún flujo real. Traduce InequalitySystemSolution (tipo nuevo, sin valor
+ * escalar — cambio contractual ya declarado en el cierre del Módulo C) a un
+ * MathResult que ResultPanel/HistoryLog ya saben renderizar como texto.
+ */
+function handleLinearInequalitySystem(
+  inequalities: { diffAlgebrite: string; operator: InequalityOperator }[],
+  variables: string[],
+  requestId: string,
+): MathResult {
+  try {
+    const solution = solveLinearInequalitySystem(inequalities, variables);
+    if (solution.kind === "empty") {
+      return errorResult(
+        ErrorCode.UNSUPPORTED_OPERATION,
+        "El sistema de inecuaciones no tiene solución (la región factible está vacía).",
+        requestId,
+      );
+    }
+    const verticesLatex = solution.vertices?.length
+      ? `\\{${solution.vertices.map((p) => `(${p.x},\\ ${p.y})`).join(",\\ ")}\\}`
+      : "\\text{sin vértices finitos}";
+    const resultLatex =
+      solution.kind === "unbounded"
+        ? `\\text{Región no acotada.\\ Vértices finitos: } ${verticesLatex}`
+        : `\\text{Vértices del polígono factible: } ${verticesLatex}`;
+    return {
+      success: true,
+      resultLatex,
+      steps: solution.steps,
+      hasDetailedSteps: true,
+      confidence: "PARTIAL", // frontera abierta/cerrada no distinguida todavía — ver comentario en linearInequalitySystem.ts
       requestId,
     };
   } catch (err) {

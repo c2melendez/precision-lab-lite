@@ -32,6 +32,12 @@ interface ScreenProps {
    * visible dentro del display cuando hay contenido (igual que la
    * captura de referencia, tooltip "clear field"). */
   onClearField: () => void;
+  /** Módulo 6 (spec §7): "fused" (default) es el diseño de Fase E de
+   * siempre. "separated" vuelve a 3 tarjetas independientes (como se
+   * veía antes de Fase E) — mismas piezas (HistoryLog/NaturalInput/
+   * ResultPanel), cada una con su propio fondo/borde/sombra en vez de
+   * compartir el contenedor fusionado. */
+  layoutMode?: "fused" | "separated";
 }
 
 export function Screen({
@@ -44,7 +50,44 @@ export function Screen({
   angleMode,
   onToggleAngleMode,
   onClearField,
+  layoutMode = "fused",
 }: ScreenProps) {
+  const inputField = (
+    <div className="relative">
+      <NaturalInput value={latex} onChange={onChangeLatex} placeholder={placeholder} fieldRef={fieldRef} bare />
+      {latex.length > 0 && (
+        <button
+          type="button"
+          onClick={onClearField}
+          aria-label="Borrar campo"
+          title="clear field"
+          className="absolute right-0 top-0 rounded p-1 text-muted hover:text-ink"
+        >
+          ✕
+        </button>
+      )}
+    </div>
+  );
+
+  if (layoutMode === "separated") {
+    return (
+      <div className="flex flex-col gap-3">
+        <div className="flex justify-end">
+          <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
+        </div>
+        {sessionHistory.length > 0 && (
+          <div className="max-h-28 overflow-y-auto rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
+            <HistoryLog entries={sessionHistory} />
+          </div>
+        )}
+        <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
+        <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
+          <ResultPanel result={result} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-inner shadow-black/10">
       <div className="mb-1.5 flex justify-end">
@@ -57,20 +100,7 @@ export function Screen({
         </div>
       )}
 
-      <div className="relative">
-        <NaturalInput value={latex} onChange={onChangeLatex} placeholder={placeholder} fieldRef={fieldRef} bare />
-        {latex.length > 0 && (
-          <button
-            type="button"
-            onClick={onClearField}
-            aria-label="Borrar campo"
-            title="clear field"
-            className="absolute right-0 top-0 rounded p-1 text-muted hover:text-ink"
-          >
-            ✕
-          </button>
-        )}
-      </div>
+      {inputField}
       <ResultPanel result={result} />
     </div>
   );

@@ -77,6 +77,43 @@ function replaceBalanced(
 export function preprocessLatex(latex: string): string {
   let expr = latex;
 
+  // Módulo D (spec_motor_matematico_pendiente.md §5) — notación de
+  // grados. AMBIGUO de la spec ya delegado a mí ("decide tú dónde vive
+  // esta lógica"): va acá, mismo lugar que la conversión ya existente de
+  // \sqrt[n]{x} con índice variable — es el mismo tipo de paso (regex de
+  // preprocesado de texto, antes de tokenizar).
+  //
+  // Nivel 2 primero (D°M′S″ y D°M′ compuestos) — convierte a un valor
+  // decimal de grados TODAVÍA marcado con ° al final (D+M/60+S/3600)°,
+  // para que el paso de Nivel 1 (abajo) lo termine de convertir a
+  // radianes. Debe ir ANTES que Nivel 1, si no éste consumiría el "D°"
+  // suelto antes de que el Nivel 2 pueda ver el M′/S″ que le sigue.
+  expr = expr.replace(
+    /(-?\d+(?:\.\d+)?)°(\d+(?:\.\d+)?)′(\d+(?:\.\d+)?)″/g,
+    "($1+$2/60+$3/3600)°",
+  );
+  expr = expr.replace(/(-?\d+(?:\.\d+)?)°(\d+(?:\.\d+)?)′/g, "($1+$2/60)°");
+
+  // Nivel 1 — ° solo: ×(π/180), SIEMPRE (independiente de angleMode
+  // RAD/GRAD). DECISIÓN DEDUCIBLE, riesgo documentado en el cierre del
+  // módulo: "°" es el símbolo universal de grados sexagesimales —
+  // "45°" significa 45 grados sin importar en qué modo esté la
+  // calculadora, así que esta conversión NO consulta angleMode. Esto es
+  // distinto de cómo GRAD ya funciona hoy (envuelve TODO el argumento de
+  // una función trig directa en *pi/180 cuando no hay ° explícito) — si
+  // "°" apareciera DENTRO del argumento de sin/cos/tan Y angleMode
+  // fuera "GRAD" a la vez, el argumento completo se envolvería una
+  // SEGUNDA vez en *pi/180 más abajo (applyAngleMode), dando una
+  // conversión doble. Caso de uso normal (angleMode RAD, que es el
+  // default) no tiene este problema — se documenta como riesgo conocido,
+  // no se resuelve en este módulo (requeriría detectar si un literal °
+  // vive dentro de un argumento de trig directa, cambio más grande que
+  // "primera versión").
+  // Primero la forma parentizada (la que deja el Nivel 2 arriba):
+  expr = expr.replace(/\(([^()]*)\)°/g, "(($1)*pi/180)");
+  // Luego un número suelto seguido de °, uso directo sin DMS:
+  expr = expr.replace(/(-?\d+(?:\.\d+)?)°/g, "(($1)*pi/180)");
+
   // d/dx: plantilla "\frac{d}{dx}\left(#0\right)" -> d((cuerpo),x), nativo
   // en Algebrite. Debe ir ANTES que el bucle \frac de abajo — si no, ese
   // bucle ya convirtió "\frac{d}{dx}" a "(d)/(dx)" antes de llegar aquí,
@@ -334,6 +371,31 @@ export function preprocessLatex(latex: string): string {
     .replace(/\\csc\^\{-1\}/g, "arccsc")
     .replace(/\\sec\^\{-1\}/g, "arcsec")
     .replace(/\\cot\^\{-1\}/g, "arccot")
+    // Módulo 2 (spec §5.1 — Hiperbólicas inversas): sinh⁻¹/cosh⁻¹/tanh⁻¹
+    // se insertan SIN backslash (mismo criterio que sinh/cosh/tanh en
+    // "Hiperbólicas", que ya insertan "sinh(#0)" plano, sin "\" — a
+    // diferencia de sin/cos/tan que sí usan el macro LaTeX). No existía
+    // ninguna regla para el patrón "sinh^{-1}"; sin ella el ^{-1} caería
+    // en la conversión genérica de más abajo y produciría "sinh^(-1)(...)",
+    // que el motor no reconoce como función. asinh/acosh/atanh YA son
+    // computables (numericFallback.ts) — esto es routing puro, ningún
+    // cambio de motor. csch⁻¹/sech⁻¹/coth⁻¹ no tienen regla — la tecla se
+    // monta `unavailable` (insertLatex vacío), nunca llegan aquí.
+    .replace(/sinh\^\{-1\}/g, "asinh")
+    .replace(/cosh\^\{-1\}/g, "acosh")
+    .replace(/tanh\^\{-1\}/g, "atanh")
+    // Módulo A (spec_motor_matematico_pendiente.md §2), activación de
+    // tecla pedida por el usuario tras cerrar el módulo de motor: mismo
+    // patrón que sinh/cosh/tanh de arriba, ahora para las 3 recíprocas.
+    // Destino "acsch/asech/acoth" (Algebrite no los reconoce en sí
+    // mismos, pero rewriteReciprocalFunctions en index.ts los reescribe a
+    // asinh(1/x)/acosh(1/x)/atanh(1/x) — Módulo A, ya verificado con
+    // ejecución real). Orden sin colisión: "csch"/"sech"/"coth" sueltos
+    // (Hiperbólicas directas) no llevan "^{-1}" pegado, así que no hay
+    // riesgo de que esta regla los capture por error.
+    .replace(/csch\^\{-1\}/g, "acsch")
+    .replace(/sech\^\{-1\}/g, "asech")
+    .replace(/coth\^\{-1\}/g, "acoth")
     .replace(/\\sin/g, "sin")
     .replace(/\\cos/g, "cos")
     .replace(/\\tan/g, "tan")

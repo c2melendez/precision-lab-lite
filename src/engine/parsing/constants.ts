@@ -76,6 +76,16 @@ export const FUNCTION_ARITY: Record<string, number[]> = {
   // conoce nativamente, se reescribe antes de evaluar (ver
   // rewriteReciprocalFunctions en index.ts).
   cbrt: [1],
+  // Módulo A (spec_motor_matematico_pendiente.md §2): asinh/acosh/atanh
+  // ya eran computables; faltaban las 3 recíprocas para la sección
+  // "Hiperbólicas inversas" del teclado. Sin este registro, el
+  // tokenizer nunca las clasifica como función (ver tokenize.ts,
+  // KNOWN_FUNCTION_NAMES) y rewriteReciprocalFunctions nunca llega a
+  // ejecutarse — hallazgo verificado en el tokenizer, no estaba en la
+  // lista de entregables del módulo pero es requisito para que funcione.
+  asech: [1],
+  acsch: [1],
+  acoth: [1],
   abs: [1],
   exp: [1],
   sign: [1],

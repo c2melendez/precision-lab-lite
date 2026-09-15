@@ -149,6 +149,15 @@ export function rewriteReciprocalFunctions(expr: string): string {
   result = rewriteUnaryFunction(result, "arcsec", (a) => `(arccos(1/(${a})))`);
   result = rewriteUnaryFunction(result, "arccsc", (a) => `(arcsin(1/(${a})))`);
   result = rewriteUnaryFunction(result, "arccot", (a) => `(arctan(1/(${a})))`);
+  // Módulo A (spec §2): mismo problema de substring que arcsec/arccsc/
+  // arccot de arriba — "asech" contiene "sech", "acsch" contiene "csch",
+  // "acoth" contiene "coth" — se reescriben ANTES que sus versiones
+  // cortas por la misma razón. asinh/acosh/atanh (el resultado de estas
+  // 3 reescrituras) ya son computables vía numericFallback.ts, no se
+  // tocan.
+  result = rewriteUnaryFunction(result, "asech", (a) => `(acosh(1/(${a})))`);
+  result = rewriteUnaryFunction(result, "acsch", (a) => `(asinh(1/(${a})))`);
+  result = rewriteUnaryFunction(result, "acoth", (a) => `(atanh(1/(${a})))`);
   result = rewriteUnaryFunction(result, "sec", (a) => `(1/cos(${a}))`);
   result = rewriteUnaryFunction(result, "csc", (a) => `(1/sin(${a}))`);
   result = rewriteUnaryFunction(result, "cot", (a) => `(1/tan(${a}))`);
@@ -201,7 +210,8 @@ function applyAngleMode(algebrite: string, angleMode: "RAD" | "GRAD"): string {
   return result;
 }
 
-/** Envuelve balanceadamente el argumento de fn(...) en (arg*pi/180) — reemplaza el enfoque de regex frágil del Módulo 1.
+/** Envuelve balanceadamente el argumento de fn(...) en (arg*pi/180) —
+ * reemplaza el enfoque de regex frágil del Módulo 1.
  *
  * Fix (suite de regresión v1.1, casos E136-E138): buscaba "sin("/"cos("/
  * "tan(" como substring en cualquier posición, así que también
@@ -212,7 +222,23 @@ function applyAngleMode(algebrite: string, angleMode: "RAD" | "GRAD"): string {
  * carácter inmediatamente anterior, si existe, NO sea una letra — así
  * "arcsin(" no matchea "sin(" a mitad de palabra, pero "2*sin(x)" sí
  * matchea "sin(" con normalidad (el carácter anterior es "*").
- */
+ *
+ * Corrección del pendiente #6 (bug real de doble conversión, confirmado
+ * con ejecución: sin(45°) en modo GRAD daba 0.0137 en vez de 0.7071):
+ * si el argumento YA contiene una conversión explícita de grados
+ * (literal "*pi/180", que es exactamente lo que produce el paso de
+ * Nivel 1 de la tecla ° en normalize.ts) NO se vuelve a envolver — ya
+ * está en radianes, envolverlo de nuevo aplicaría el factor dos veces.
+ * Heurística basada en substring, no en un análisis semántico completo
+ * — un caso extremadamente improbable donde el usuario mismo escriba
+ * literalmente "*pi/180" dentro de un argumento en modo GRAD sin haber
+ * usado la tecla ° también evitaría el envoltorio automático, pero en
+ * ese caso el usuario ya está haciendo su propia conversión a mano, así
+ * que el resultado seguiría siendo matemáticamente correcto.
+ *
+ * Las dos correcciones de arriba son independientes (una por dónde
+ * matchea el nombre de la función, otra por qué hacer con el argumento
+ * ya matcheado) y se aplican juntas. */
 function wrapFunctionArgsWithDegToRad(expr: string, fnName: string): string {
   let result = "";
   let i = 0;
@@ -228,7 +254,7 @@ function wrapFunctionArgsWithDegToRad(expr: string, fnName: string): string {
         j++;
       }
       const arg = expr.slice(start + 1, j - 1);
-      result += `${fnName}((${arg})*pi/180)`;
+      result += arg.includes("*pi/180") ? `${fnName}(${arg})` : `${fnName}((${arg})*pi/180)`;
       i = j;
     } else {
       result += expr[i];

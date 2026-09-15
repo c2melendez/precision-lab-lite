@@ -1,11 +1,14 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { MathKeyboard } from "../../components/MathKeyboard";
+import { KeyboardBasicPanel } from "../../components/KeyboardBasicPanel";
 import { Screen } from "../../components/Screen";
 import { type SessionHistoryEntry } from "../../components/HistoryLog";
 import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { parseExpression } from "../../engine/parsing";
 import { splitSystemLatex } from "../../engine/parsing/systemSplit";
 import { addHistoryEntry } from "../../store/historyDb";
+import { useKeyboardPanelStore } from "../../store/useKeyboardPanelStore";
+import { useLayoutModeStore } from "../../store/useLayoutModeStore";
 
 // Modo 1 de la spec v10 §5. Orquesta NaturalInput + MathKeyboard +
 // ResultPanel, delegando todo el cómputo al Web Worker (nunca al hilo
@@ -76,25 +79,64 @@ export function BasicScientificMode() {
   // Rama 1: sistema (entorno \begin{cases} detectado). Mismo pipeline que
   // LinearSystemsMode.tsx, ver comentario ahí para el detalle de por qué
   // se exige #variables === #ecuaciones.
+  //
+  // Corrección post-auditoría (Módulo C, spec_motor_matematico_pendiente.md
+  // §4): antes esta función SIEMPRE rechazaba un renglón que no fuera
+  // ecuación ("debe ser una ecuación con ="), así que el motor de sistemas
+  // de inecuaciones (solveLinearInequalitySystem, ya construido y probado
+  // de forma aislada) nunca se alcanzaba desde ningún flujo real. Ahora se
+  // parsean todos los renglones primero y se decide la rama según su tipo:
+  // todos ecuación -> sistema de ecuaciones (sin cambios); todos inecuación
+  // -> sistema de inecuaciones (nuevo); mezcla -> error explícito.
   const runSystem = useCallback(
     (rows: string[]) => {
       const requestId = makeRequestId();
-      const allVariables = new Set<string>();
-      const equationsAlgebrite: string[] = [];
+      const parsedRows: ReturnType<typeof parseExpression>[] = [];
 
-      for (const eq of rows) {
-        let parsed;
+      for (const row of rows) {
         try {
-          parsed = parseExpression(eq, angleMode);
+          parsedRows.push(parseExpression(row, angleMode));
         } catch (err) {
           const appErr = err as { code?: ErrorCode; message?: string };
           fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Ecuación inválida.", requestId);
           return;
         }
-        if (!parsed.isEquation) {
-          fail(ErrorCode.PARSE_ERROR, `Cada renglón del sistema debe ser una ecuación con "=": "${eq}".`, requestId);
-          return;
-        }
+      }
+
+      const allEquations = parsedRows.every((p) => p.isEquation);
+      const allInequalities = parsedRows.every((p) => p.isInequality);
+
+      if (allInequalities) {
+        // Alcance confirmado en linearInequalitySystem.ts: exactamente 2
+        // variables — el propio motor rechaza cualquier otro conteo con
+        // un mensaje explícito, no hace falta duplicar esa validación acá.
+        const allVariables = new Set<string>();
+        parsedRows.forEach((p) => p.freeVariables.forEach((v) => allVariables.add(v)));
+        const variables = [...allVariables].sort();
+        const inequalities = parsedRows.map((p) => ({
+          diffAlgebrite: p.algebrite,
+          operator: p.inequalityOperator!,
+        }));
+
+        const worker = getWorker();
+        worker.onmessage = (e: MessageEvent<MathResult>) =>
+          onSuccess("Científica (sistema de inecuaciones)", rows.join("; "), e.data);
+        worker.postMessage({ type: "linearInequalitySystem", requestId, inequalities, variables });
+        return;
+      }
+
+      if (!allEquations) {
+        fail(
+          ErrorCode.PARSE_ERROR,
+          `Cada renglón del sistema debe ser, todos, ecuaciones (con "=") o, todos, inecuaciones (con <, >, ≤, ≥) — no se puede mezclar ambos tipos en el mismo sistema.`,
+          requestId,
+        );
+        return;
+      }
+
+      const allVariables = new Set<string>();
+      const equationsAlgebrite: string[] = [];
+      for (const parsed of parsedRows) {
         parsed.freeVariables.forEach((v) => allVariables.add(v));
         equationsAlgebrite.push(parsed.algebrite);
       }
@@ -207,42 +249,118 @@ export function BasicScientificMode() {
   // a MathKeyboard). Ahora, si el campo todavía no tiene un sistema,
   // inserta la plantilla \begin{cases}; si ya la tiene con 2+ renglones,
   // resuelve — mismo patrón que handleSolveEquation con "=0".
-  const handleSolveSystem = useCallback(() => {
-    if (!splitSystemLatex(latex)) {
-      mathField?.insert("\\begin{cases}#0\\\\#1\\end{cases}");
-      return;
-    }
-    handleCalculate();
-  }, [latex, handleCalculate, mathField]);
+  //
+  // Pendiente #2 (revisión post-Módulo D, pedido por el usuario): recibe
+  // la cantidad de ecuaciones elegida en el selector 2-5 de MathKeyboard.
+  // Solo se usa para armar la plantilla nueva — si el campo YA tiene un
+  // sistema escrito, se ignora y se resuelve el existente (el usuario
+  // pudo haber tocado cualquier número del selector sin querer cambiar
+  // nada, no debería alterar lo que ya escribió).
+  const handleSolveSystem = useCallback(
+    (rows: number = 2) => {
+      if (!splitSystemLatex(latex)) {
+        const n = Math.min(5, Math.max(2, Math.round(rows)));
+        const placeholders = Array.from({ length: n }, (_, i) => `#${i}`).join("\\\\");
+        mathField?.insert(`\\begin{cases}${placeholders}\\end{cases}`);
+        return;
+      }
+      handleCalculate();
+    },
+    [latex, handleCalculate, mathField],
+  );
 
   const handleSimplify = useCallback(() => handleCalculate(), [handleCalculate]);
 
+  const setKeyboardContent = useKeyboardPanelStore((s) => s.setContent);
+  const clearKeyboardContent = useKeyboardPanelStore((s) => s.clearContent);
+  const setBasicKeyboardContent = useKeyboardPanelStore((s) => s.setBasicContent);
+  const clearBasicKeyboardContent = useKeyboardPanelStore((s) => s.clearBasicContent);
+  const setCompactActions = useKeyboardPanelStore((s) => s.setCompactActions);
+  const clearCompactActions = useKeyboardPanelStore((s) => s.clearCompactActions);
+  const layoutMode = useLayoutModeStore((s) => s.layoutMode);
+
+  // Bug real detectado al revisar esta integración: si el mismo efecto
+  // hace setContent() Y devuelve clearContent() como cleanup, cada vez
+  // que cambia una dependencia (ej. `latex` en cada tecleo, porque
+  // handleCalculate depende de latex) React ejecuta el cleanup ANTES de
+  // volver a correr el efecto — eso pone isOpen:false de puertas para
+  // afuera y el panel se cerraría solo mientras el usuario escribe.
+  // Se separan en dos efectos: uno sincroniza el contenido en cada
+  // cambio (nunca toca isOpen), el otro limpia SOLO al desmontar el modo
+  // (deps [], nunca se re-dispara por un cambio de latex/mathField).
+  //
+  // Módulo 1: MathKeyboard ya no recibe onBackspace/onEnter (⌫/⏎ se
+  // mudaron al panel básico) — cambio contractual, ver cierre. El panel
+  // básico (KeyboardBasicPanel) se registra aparte, en basicContent.
+  useEffect(() => {
+    setKeyboardContent(
+      <MathKeyboard
+        field={mathField}
+        onClearField={() => setLatex("")}
+        onSolveEquation={handleSolveEquation}
+        onSolveSystem={handleSolveSystem}
+        onSimplify={handleSimplify}
+        hideCoreGrid
+      />,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mathField, handleCalculate, handleSolveEquation, handleSolveSystem, handleSimplify]);
+
+  useEffect(() => {
+    return () => clearKeyboardContent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Módulo 1: mismo patrón de dos efectos (sincroniza sin tocar isOpen +
+  // cleanup aparte al desmontar) para el panel básico.
+  useEffect(() => {
+    setBasicKeyboardContent(
+      <KeyboardBasicPanel
+        field={mathField}
+        onBackspace={() => setLatex((prev) => prev.slice(0, -1))}
+        onEnter={handleCalculate}
+        lastAnswerLatex={result?.resultLatex ?? null}
+      />,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mathField, handleCalculate, result]);
+
+  useEffect(() => {
+    return () => clearBasicKeyboardContent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Corrección post-Módulo 7: fila compacta del dock en móvil necesita
+  // los mismos callbacks que KeyboardBasicPanel, expuestos aparte
+  // (KeyboardDock no tiene acceso a las props internas de basicContent
+  // ya armado). Mismo patrón de dos efectos.
+  useEffect(() => {
+    setCompactActions({
+      onEnter: handleCalculate,
+      onBackspace: () => setLatex((prev) => prev.slice(0, -1)),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [handleCalculate]);
+
+  useEffect(() => {
+    return () => clearCompactActions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <div className="mx-auto flex max-w-md flex-col gap-3 p-4 md:max-w-lg lg:max-w-3xl lg:grid lg:grid-cols-[1.4fr_1fr] lg:items-start lg:gap-6 dt:max-w-4xl dt:gap-10">
-      <div className="lg:col-start-1">
-        <Screen
-          latex={latex}
-          onChangeLatex={setLatex}
-          placeholder="Escribe una expresión, ecuación o sistema…"
-          fieldRef={setMathField}
-          result={result}
-          sessionHistory={sessionHistory}
-          angleMode={angleMode}
-          onToggleAngleMode={() => setAngleMode((m) => (m === "RAD" ? "GRAD" : "RAD"))}
-          onClearField={() => setLatex("")}
-        />
-      </div>
-      <div className="lg:col-start-2">
-        <MathKeyboard
-          field={mathField}
-          onBackspace={() => setLatex((prev) => prev.slice(0, -1))}
-          onEnter={handleCalculate}
-          onClearField={() => setLatex("")}
-          onSolveEquation={handleSolveEquation}
-          onSolveSystem={handleSolveSystem}
-          onSimplify={handleSimplify}
-        />
-      </div>
+    <div className="mx-auto flex max-w-md flex-col gap-3 p-4 md:max-w-lg lg:max-w-3xl dt:max-w-4xl">
+      <Screen
+        latex={latex}
+        onChangeLatex={setLatex}
+        placeholder="Escribe una expresión, ecuación o sistema…"
+        fieldRef={setMathField}
+        result={result}
+        sessionHistory={sessionHistory}
+        angleMode={angleMode}
+        onToggleAngleMode={() => setAngleMode((m) => (m === "RAD" ? "GRAD" : "RAD"))}
+        onClearField={() => setLatex("")}
+        layoutMode={layoutMode}
+      />
     </div>
   );
 }

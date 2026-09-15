@@ -10,7 +10,8 @@ import { StatisticsMode } from "./modes/Statistics/StatisticsMode";
 import { UnitsMode } from "./modes/Units/UnitsMode";
 import { HistoryPanel } from "./components/HistoryPanel";
 import { HistoryDrawer } from "./components/HistoryDrawer";
-import { ThemeToggle } from "./components/ThemeToggle";
+import { AjustesPopover } from "./components/AjustesPopover";
+import { KeyboardDock } from "./components/KeyboardDock";
 
 // Selector de modos por pestañas tipo "chasis" (Fase 1 — sistema de diseño
 // Precision Lab). Historial persistente (IndexedDB) como séptima pestaña,
@@ -44,15 +45,26 @@ const MODE_LABELS: Record<Mode, string> = {
 // NO se eliminan (siguen existiendo, siguen siendo válidos si algo
 // interno navega ahí), solo se les quita la pestaña visible.
 //
+// Módulo 5 (hoja-de-ruta-visual.md §5 / spec §3): mismo tratamiento para
+// "simple" (Basic) — confirmado por el usuario. Se verificó que ninguna
+// función de Basic queda huérfana SALVO UNA: SimpleKeyboard tenía
+// botones ←/→ para recargar una expresión previa de vuelta al campo
+// editable (historyBack/historyForward en SimpleBasicMode.tsx) — eso NO
+// existe en Científica hoy. El HistoryLog de Científica (dentro de
+// Screen.tsx) es de solo lectura + expandir pasos, no "recargar para
+// editar". Reportado en el cierre del módulo — no bloqueé la
+// eliminación porque ya estaba confirmada, pero es una pérdida de
+// funcionalidad real, no solo teórica.
+//
 // P2 (spec v2 §3): "history" deja de ser pestaña — pasa a ser el
 // HistoryDrawer (botón dedicado en el header, ya no un tab). Se queda
 // en `type Mode`/MODE_LABELS por si algo interno todavía lo referencia,
 // pero ya no aparece en VISIBLE_MODES.
 // P6 (spec v2 §7): "statistics" nueva, visible.
 // P7 (spec v2 §8): "units" nueva, visible — con esto queda el orden
-// final de §9: Científica · Basic · Matrices · Gráficas · Estadística ·
-// Unidades.
-const VISIBLE_MODES: Mode[] = ["basic", "simple", "matrices", "graphing", "statistics", "units"];
+// final de §9 (previo al Módulo 5): Científica · Basic · Matrices ·
+// Gráficas · Estadística · Unidades. Módulo 5: se quita "Basic".
+const VISIBLE_MODES: Mode[] = ["basic", "matrices", "graphing", "statistics", "units"];
 
 export default function App() {
   const [mode, setMode] = useState<Mode>("basic");
@@ -74,7 +86,7 @@ export default function App() {
         <span className="font-display text-lg font-medium tracking-tight text-bone">
           Precision Lab <span className="text-marker">Lite</span>
         </span>
-        <ThemeToggle />
+        <AjustesPopover />
       </header>
       <nav className="flex flex-wrap justify-center gap-1.5 border-b border-chrome-soft bg-chrome px-2 py-2 text-sm lg:gap-2 lg:py-2.5 dt:gap-3">
         {(VISIBLE_MODES).map((m) => (
@@ -93,7 +105,11 @@ export default function App() {
         ))}
       </nav>
       <div className="flex">
-        <main className="min-w-0 flex-1 bg-paper text-ink">
+        {/* Módulo 0: padding inferior para que el KeyboardDock fijo (que
+            ahora vive fuera de este flujo, montado más abajo) no tape el
+            contenido de ningún modo — no solo Científica. Cambio a nivel
+            de layout global, deliberado, ver Cierre del Módulo 0. */}
+        <main className="min-w-0 flex-1 bg-paper pb-56 text-ink dt:pb-40">
           {mode === "basic" && <BasicScientificMode />}
           {mode === "simple" && <SimpleBasicMode />}
           {mode === "algebra" && <AlgebraMode />}
@@ -108,6 +124,7 @@ export default function App() {
           <HistoryPanel />
         </HistoryDrawer>
       </div>
+      <KeyboardDock />
     </div>
   );
 }
