@@ -18,6 +18,16 @@ Motor: Algebrite, cliente, sin backend (`src/engine/`). Auditado contra `spec_mo
 
 **Estado verificado al cierre de esta auditoría:** `npm run typecheck` limpio, `npx vitest run` 158/158, `npm run build` limpio (mismo warning preexistente de tamaño de chunk, no es error).
 
+## Módulo de cierre — honestidad visual de teclas no disponibles y de alcance limitado
+
+Cierre pequeño, deliberadamente acotado, previo a correr las tandas de EDO/variable compleja/reordenamiento/tooltips, rediseño visual y graficación/matrices/estadística/unidades. No adelanta ninguna fase de esas specs.
+
+- **Teclas `unavailable` en el panel de categorías** (`MathKeyboard.tsx`, renderizador genérico de `CATEGORY_MENUS`): antes se veían idénticas a una tecla activa — la única señal de que no funcionan (`Π`, `∂/∂x`) era un aviso emergente después de tocarlas. Ahora usan el mismo patrón gris/borde punteado que ya usaba `KeyboardBasicPanel.tsx` para `°` antes del Módulo D (`border-dashed border-bone/30 bg-chrome-soft/40 text-bone/40`) — consistente en todo el proyecto, sin estilo nuevo inventado.
+- **"Sist. inecuaciones" (2 variables):** el botón es funcional (no `unavailable`) pero no comunicaba que el motor solo resuelve exactamente 2 variables. Se agregó una etiqueta "2 var." en el propio botón y se amplió el texto del `aria-label` ("Sistema de inecuaciones de 2 variables...") para que la limitación también llegue a lectores de pantalla — sin tocar el campo `ariaLabel` de `KeyDef` ni agregar un campo `description` nuevo, para no adelantar la decisión todavía abierta de `spec_edo_complejos_tooltips.md` sección 5.2 (Fase H, tooltips).
+- `CATEGORIES_BASIC_MODE`/`CATEGORIES_FULL` quedaron byte-idénticos a como estaban — verificado explícitamente, ya que `spec_edo_complejos_tooltips.md` Fase G asume ese estado exacto como punto de partida de su propio reordenamiento.
+- Paridad confirmada con `precision-lab` (mismo cambio en `NaturalMathKeyboard.tsx`).
+- Verificado: `npm run typecheck` limpio, `npx vitest run` 174/174, `npm run build` limpio.
+
 ## Estado del proyecto — Módulo 1 (Cierre)
 
 **Archivos nuevos:** toda la estructura del repo (ver árbol abajo).
