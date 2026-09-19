@@ -55,7 +55,9 @@ export function KeyboardPanel({ isOpen, onClose, children }: KeyboardPanelProps)
         "lg:h-[45vh]",
         // Desktop dt (≥1440px): popover anclado, no full-width, no
         // full-height — flota sobre el dock en vez de cubrir la pantalla.
-        "dt:inset-x-auto dt:bottom-24 dt:right-6 dt:h-auto dt:max-h-[70vh] dt:w-[420px] dt:rounded-2xl dt:border",
+        // V5: el dock desktop completo ronda 15rem; el popover se
+        // ancla por encima de él para que ninguna categoría quede oculta.
+        "dt:inset-x-auto dt:bottom-64 dt:right-6 dt:h-auto dt:max-h-[65vh] dt:w-[420px] dt:rounded-2xl dt:border",
       ].join(" ")}
     >
       {/* Drag handle — solo afordance visual en este módulo, oculto en dt

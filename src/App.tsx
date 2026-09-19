@@ -79,7 +79,10 @@ export default function App() {
   const layoutMode = useLayoutModeStore((s) => s.layoutMode);
   const isFloatingWideEnough = useMinWidthMediaQuery(FLOATING_MIN_WIDTH_PX);
   const hasFixedDock = !(layoutMode === "stacked" || (layoutMode === "floating" && isFloatingWideEnough));
-  const mainBottomPadding = hasFixedDock ? "pb-56 dt:pb-40" : "pb-8";
+  // V5: desde md el dock muestra cuatro filas de ocho teclas, recientes
+  // y las pestañas Básico/Funciones. Reserva su altura completa para que
+  // no tape la zona inferior de la pantalla dividida.
+  const mainBottomPadding = hasFixedDock ? "pb-56 md:pb-72" : "pb-8";
   const pendingArgandPoint = useArgandBridgeStore((s) => s.pendingArgandPoint);
   const pendingGraphExpression = usePendingGraphStore((s) => s.pendingExpression);
 

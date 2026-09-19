@@ -27,9 +27,9 @@ const STORAGE_KEY = "precision-lab-layout-mode";
 const VALID_LAYOUT_MODES: readonly LayoutMode[] = ["fused", "separated", "split", "focus", "floating", "stacked"];
 
 function readInitialLayoutMode(): LayoutMode {
-  if (typeof localStorage === "undefined") return "fused";
+  if (typeof localStorage === "undefined") return "split";
   const stored = localStorage.getItem(STORAGE_KEY);
-  return (VALID_LAYOUT_MODES as readonly string[]).includes(stored ?? "") ? (stored as LayoutMode) : "fused";
+  return (VALID_LAYOUT_MODES as readonly string[]).includes(stored ?? "") ? (stored as LayoutMode) : "split";
 }
 
 interface LayoutModeState {

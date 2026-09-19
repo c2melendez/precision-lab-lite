@@ -380,6 +380,7 @@ export function BasicScientificMode() {
       <KeyboardBasicPanel
         field={mathField}
         onBackspace={() => setLatex((prev) => prev.slice(0, -1))}
+        onClear={() => setLatex("")}
         onEnter={handleCalculate}
         lastAnswerLatex={result?.resultLatex ?? null}
       />,

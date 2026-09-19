@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { useKeyboardPanelStore } from "../store/useKeyboardPanelStore";
 import { useLayoutModeStore } from "../store/useLayoutModeStore";
 import { useMinWidthMediaQuery, FLOATING_MIN_WIDTH_PX } from "../hooks/useMinWidthMediaQuery";
@@ -73,6 +75,7 @@ import { RecentKeysBar } from "./RecentKeysBar";
  */
 
 export function KeyboardDock() {
+  const [activeSection, setActiveSection] = useState<"basic" | "functions">("basic");
   const isOpen = useKeyboardPanelStore((s) => s.isOpen);
   const content = useKeyboardPanelStore((s) => s.content);
   const basicContent = useKeyboardPanelStore((s) => s.basicContent);
@@ -104,15 +107,42 @@ export function KeyboardDock() {
     <>
       {(content || basicContent) && (
         <KeyboardPanel isOpen={isOpen} onClose={close}>
-          {/* Grid básico completo — Fase Y: el panel es ahora la ÚNICA
-              fuente del teclado en cualquier breakpoint (antes existía
-              una copia siempre-visible de basicContent en la barra
-              compacta a partir de md, que Fase Y elimina por completo —
-              ver comentario donde se quitó, más abajo). Por eso ya NO
-              se oculta en md+: si se ocultara ahí, el numpad básico
-              quedaría inalcanzable en tablet/desktop. */}
-          {basicContent && <div className="mb-3">{basicContent}</div>}
-          {content}
+          {basicContent && content && (
+            <div
+              role="tablist"
+              aria-label="Secciones del teclado matemático"
+              className="mb-3 grid grid-cols-2 gap-1 rounded-lg bg-chrome-deep p-1"
+            >
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeSection === "basic"}
+                onClick={() => setActiveSection("basic")}
+                className={
+                  activeSection === "basic"
+                    ? "rounded-md bg-marker px-3 py-2 text-xs font-semibold text-chrome"
+                    : "rounded-md px-3 py-2 text-xs font-medium text-bone/70 hover:bg-chrome-soft hover:text-bone"
+                }
+              >
+                Básico
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeSection === "functions"}
+                onClick={() => setActiveSection("functions")}
+                className={
+                  activeSection === "functions"
+                    ? "rounded-md bg-marker px-3 py-2 text-xs font-semibold text-chrome"
+                    : "rounded-md px-3 py-2 text-xs font-medium text-bone/70 hover:bg-chrome-soft hover:text-bone"
+                }
+              >
+                Funciones
+              </button>
+            </div>
+          )}
+          {(!content || activeSection === "basic") && basicContent}
+          {(!basicContent || activeSection === "functions") && content}
         </KeyboardPanel>
       )}
 

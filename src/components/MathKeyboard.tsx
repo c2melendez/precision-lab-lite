@@ -130,6 +130,23 @@ const SYMBOLS_ROW_1: KeyDef[] = [
   key("DEL", "", "borrar todo el campo", false, undefined, "borra todo lo escrito en el campo actual"),
 ];
 
+export const SYMBOL_VARIABLES: KeyDef[] = [
+  key({ italic: "x" }, "x", "variable x", false, undefined, "variable x"),
+  key({ italic: "y" }, "y", "variable y", false, undefined, "variable y"),
+  key({ italic: "z" }, "z", "variable z", false, undefined, "variable z, usada también en números complejos"),
+  key("θ", "\\theta", "theta", false, undefined, "variable angular theta"),
+  key("Φ", "\\Phi", "Phi mayúscula", false, undefined, "ángulo azimutal Phi mayúscula en coordenadas polares"),
+  key({ italic: "r" }, "r", "variable r", false, undefined, "variable radial en coordenadas polares"),
+];
+
+export const SYMBOL_CONSTANTS: KeyDef[] = [
+  key("π", "\\pi", "pi", false, undefined, "constante pi (≈3.14159)"),
+  key("e", "e", "e", false, undefined, "constante de Euler (≈2.71828)"),
+  key({ italic: "i" }, "i", "número imaginario", false, undefined, "unidad imaginaria (raíz cuadrada de -1)"),
+  key("∞", "\\infty", "infinito", false, undefined, "representa infinito"),
+  key("φ", "\\frac{1+\\sqrt{5}}{2}", "número áureo phi", false, undefined, "número áureo: (1 + √5) / 2"),
+];
+
 // Se mantiene solo para AlgebraMode/CalculusMode/LinearSystemsMode
 // (código muerto) — BasicScientificMode ya no la renderiza (hideCoreGrid
 // también oculta esta fila, ver JSX), su contenido vive ahora en
@@ -153,7 +170,9 @@ const SYMBOLS_ROW_2: KeyDef[] = [
  * precision-lab (main), mismo criterio — ver comentario allá.
  */
 const VARIABLE_CONSTANT_LATEX = new Set(
-  SYMBOLS_ROW_2.filter((k) => k.insertLatex !== "'" && k.insertLatex !== "").map((k) => k.insertLatex),
+  [...SYMBOL_VARIABLES, ...SYMBOL_CONSTANTS, ...SYMBOLS_ROW_2]
+    .filter((k) => k.insertLatex !== "'" && k.insertLatex !== "")
+    .map((k) => k.insertLatex),
 );
 
 export function isVariableOrConstantKey(k: KeyDef): boolean {
@@ -253,7 +272,7 @@ const TRIG_DESCRIPTIONS: Record<string, string> = {
   coth: "cotangente hiperbólica",
 };
 
-const CATEGORY_MENUS: Record<string, { section: string; keys: KeyDef[] }[]> = {
+export const CATEGORY_MENUS: Record<string, { section: string; keys: KeyDef[] }[]> = {
   Trigonométricas: [
     {
       section: "Directas",
@@ -468,6 +487,8 @@ CATEGORY_MENUS.Álgebra = [
     keys: [
       key("|a|", "\\left|#0\\right|", "valor absoluto de a", false, undefined, "distancia de un número a cero (siempre positiva)"),
       key("a!", "#0!", "factorial de a", false, undefined, "producto de todos los enteros positivos hasta a"),
+      key("sgn(a)", "\\mathrm{sign}\\left(#0\\right)", "signo de a", false, undefined, "devuelve −1, 0 o 1 según el signo del valor"),
+      key("mod(a,b)", "\\mathrm{mod}\\left(#0,#1\\right)", "módulo o residuo", false, undefined, "devuelve el residuo de dividir a entre b"),
     ],
   },
   {
@@ -660,39 +681,71 @@ export function MathKeyboard({
       {openCategory && (
         <div className="mb-1.5 rounded-lg bg-chrome-soft p-3 shadow-lg">
           {(openCategory as string) === "Símbolos" ? (
-            <div className="flex flex-col gap-1">
-              <div className="grid grid-cols-9 gap-1">
-                {SYMBOLS_ROW_1.map((k, i) => (
-                  <button
-                    key={`sym1-${i}`}
-                    onClick={() => pressSymbol(k)}
-                    aria-label={k.ariaLabel}
-                    title={k.description}
-                    className="rounded-md bg-chrome py-2 text-[11px] text-bone hover:bg-chrome/70"
-                  >
-                    <KeyGlyph glyph={k.glyph} />
-                  </button>
-                ))}
+            hideCoreGrid ? (
+              <div className="flex flex-col gap-2">
+                <div>
+                  <div className="mb-1 text-[9px] uppercase tracking-wide text-bone/50">Variables</div>
+                  <div className="grid grid-cols-6 gap-1">
+                    {SYMBOL_VARIABLES.map((k, i) => (
+                      <button
+                        key={`variable-${i}`}
+                        onClick={() => press(k)}
+                        aria-label={k.ariaLabel}
+                        title={k.description ?? k.ariaLabel}
+                        className="rounded-md border border-marker/35 bg-marker-soft/15 py-2 text-sm font-medium text-marker hover:bg-marker-soft/25"
+                      >
+                        <KeyGlyph glyph={k.glyph} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div className="mb-1 text-[9px] uppercase tracking-wide text-bone/50">Constantes y valores</div>
+                  <div className="grid grid-cols-5 gap-1">
+                    {SYMBOL_CONSTANTS.map((k, i) => (
+                      <button
+                        key={`constant-${i}`}
+                        onClick={() => press(k)}
+                        aria-label={k.ariaLabel}
+                        title={k.description ?? k.ariaLabel}
+                        className="rounded-md border border-graph/35 bg-graph/15 py-2 text-sm font-medium text-graph hover:bg-graph/25"
+                      >
+                        <KeyGlyph glyph={k.glyph} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
-              {/* SYMBOLS_ROW_2 solo se muestra cuando NO se ocultó el
-                  núcleo — en BasicScientificMode ya no tiene contenido
-                  relevante (todo reubicado al panel básico). */}
-              {!hideCoreGrid && (
+            ) : (
+              <div className="flex flex-col gap-1">
                 <div className="grid grid-cols-9 gap-1">
-                  {SYMBOLS_ROW_2.map((k, i) => (
+                  {SYMBOLS_ROW_1.map((k, i) => (
                     <button
-                      key={`sym2-${i}`}
+                      key={`sym1-${i}`}
                       onClick={() => pressSymbol(k)}
                       aria-label={k.ariaLabel}
-                    title={k.description}
+                      title={k.description ?? k.ariaLabel}
                       className="rounded-md bg-chrome py-2 text-[11px] text-bone hover:bg-chrome/70"
                     >
                       <KeyGlyph glyph={k.glyph} />
                     </button>
                   ))}
                 </div>
-              )}
-            </div>
+                <div className="grid grid-cols-9 gap-1">
+                  {SYMBOLS_ROW_2.map((k, i) => (
+                    <button
+                      key={`sym2-${i}`}
+                      onClick={() => pressSymbol(k)}
+                      aria-label={k.ariaLabel}
+                      title={k.description ?? k.ariaLabel}
+                      className="rounded-md bg-chrome py-2 text-[11px] text-bone hover:bg-chrome/70"
+                    >
+                      <KeyGlyph glyph={k.glyph} />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )
           ) : (
             CATEGORY_MENUS[openCategory].map((group) =>
               group.section === "Ecuaciones" ? (
@@ -713,6 +766,7 @@ export function MathKeyboard({
                         setOpenCategory(null);
                       }}
                       aria-label="Resolver ecuación"
+                      title="Resuelve una ecuación escrita con signo igual"
                       className="rounded-md bg-marker-soft/10 py-2 text-xs text-marker hover:bg-marker-soft/20"
                     >
                       f(x)=0
@@ -723,6 +777,7 @@ export function MathKeyboard({
                         setOpenCategory(null);
                       }}
                       aria-label="Resolver inecuación"
+                      title="Resuelve una inecuación escrita con signos de comparación"
                       className="rounded-md bg-marker-soft/10 py-2 text-xs text-marker hover:bg-marker-soft/20"
                     >
                       f(x)&gt;0
@@ -733,6 +788,7 @@ export function MathKeyboard({
                         setShowSystemSizeMenu(true);
                       }}
                       aria-label="Resolver sistema de ecuaciones"
+                      title="Abre una plantilla para un sistema de 2 a 5 ecuaciones"
                       className="rounded-md bg-alpha-soft py-2 text-xs text-alpha hover:bg-alpha-soft/80"
                     >
                       Sistema
@@ -749,6 +805,7 @@ export function MathKeyboard({
                         setShowSystemSizeMenu(true);
                       }}
                       aria-label="Sistema de inecuaciones de 2 variables — escribe inecuaciones dentro de las llaves"
+                      title="Resuelve un sistema de inecuaciones con exactamente dos variables"
                       className="relative rounded-md bg-alpha-soft py-2 text-[10px] text-alpha hover:bg-alpha-soft/80"
                     >
                       Sist. inecuaciones
@@ -766,6 +823,7 @@ export function MathKeyboard({
                         setOpenCategory(null);
                       }}
                       aria-label="Simplificar expresión"
+                      title="Reduce y combina términos equivalentes"
                       className="rounded-md bg-graph/15 py-2 text-xs text-graph hover:bg-graph/25"
                     >
                       a+a → 2a
@@ -773,6 +831,7 @@ export function MathKeyboard({
                     <button
                       onClick={() => press(key("LCM", "\\mathrm{lcm}\\left(#0,#1\\right)", "mínimo común múltiplo"))}
                       aria-label="Mínimo común múltiplo"
+                      title="Calcula el menor múltiplo común de dos enteros"
                       className="rounded-md border border-marker bg-marker-soft/10 py-2 text-xs font-medium text-marker hover:bg-marker-soft/20"
                     >
                       LCM
@@ -780,6 +839,7 @@ export function MathKeyboard({
                     <button
                       onClick={() => press(key("GCD", "\\gcd\\left(#0,#1\\right)", "máximo común divisor"))}
                       aria-label="Máximo común divisor"
+                      title="Calcula el mayor divisor común de dos enteros"
                       className="rounded-md border border-marker bg-marker-soft/10 py-2 text-xs font-medium text-marker hover:bg-marker-soft/20"
                     >
                       GCD
@@ -795,7 +855,7 @@ export function MathKeyboard({
                         key={`${group.section}-${i}`}
                         onClick={() => press(k)}
                         aria-label={k.ariaLabel}
-                    title={k.description}
+                    title={k.description ?? k.ariaLabel}
                         className={
                           // Módulo de cierre (honestidad visual): mismo patrón
                           // gris/borde punteado que ya usa KeyboardBasicPanel.tsx
@@ -822,6 +882,7 @@ export function MathKeyboard({
         <button
           onClick={onSolveEquation}
           aria-label="Resolver ecuación"
+          title="Resuelve una ecuación escrita con signo igual"
           className="rounded-md bg-marker-soft/15 py-2 text-[11px] font-medium text-marker hover:bg-marker-soft/25"
         >
           f(x)=0
@@ -830,6 +891,7 @@ export function MathKeyboard({
           onClick={() => setShowSystemSizeMenu((v) => !v)}
           aria-expanded={showSystemSizeMenu}
           aria-label="Resolver sistema de ecuaciones — elegir cantidad"
+          title="Elige entre 2 y 5 ecuaciones para el sistema"
           className="flex items-center justify-center gap-1 rounded-md bg-alpha-soft py-2 text-[10px] font-medium text-alpha hover:bg-alpha-soft/80"
         >
           <span className="text-base font-light">{"{"}</span>
@@ -856,6 +918,7 @@ export function MathKeyboard({
                   setShowSystemSizeMenu(false);
                 }}
                 aria-label={`Sistema de ${n} ecuaciones`}
+                title={`Insertar sistema de ${n} ecuaciones`}
                 className="h-6 w-6 rounded bg-alpha-soft text-xs font-medium text-alpha hover:bg-alpha-soft/70"
               >
                 {n}
@@ -866,6 +929,7 @@ export function MathKeyboard({
         <button
           onClick={onSimplify}
           aria-label="Simplificar expresión"
+          title="Reduce y combina términos equivalentes"
           className="rounded-md bg-graph/15 py-2 text-[11px] font-medium text-graph hover:bg-graph/25"
         >
           a+a → 2a
@@ -889,7 +953,7 @@ export function MathKeyboard({
                 key={i}
                 onClick={() => press(k)}
                 aria-label={k.ariaLabel}
-                    title={k.description}
+                    title={k.description ?? k.ariaLabel}
                 className={
                   k.unavailable
                     ? "rounded-md bg-chrome-soft py-1.5 text-[11px] text-bone/40 hover:bg-chrome-soft/70"
@@ -908,7 +972,7 @@ export function MathKeyboard({
                 key={i}
                 onClick={() => press(k)}
                 aria-label={k.ariaLabel}
-                    title={k.description}
+                    title={k.description ?? k.ariaLabel}
                 className={
                   k.unavailable
                     ? "rounded-md bg-chrome-soft py-1.5 text-[10px] text-bone/40 hover:bg-chrome-soft/70"
@@ -967,7 +1031,7 @@ export function MathKeyboard({
                         : "rounded-md bg-chrome-soft py-2.5 text-[11px] text-marker hover:bg-chrome-soft/70";
                 return (
                   <button key={j} onClick={() => pressBase(k)} aria-label={k.ariaLabel}
-                    title={k.description} className={className}>
+                    title={k.description ?? k.ariaLabel} className={className}>
                     <KeyGlyph glyph={k.glyph} />
                   </button>
                 );
@@ -981,7 +1045,7 @@ export function MathKeyboard({
                 key={i}
                 onClick={() => press(k)}
                 aria-label={k.ariaLabel}
-                    title={k.description}
+                    title={k.description ?? k.ariaLabel}
                 className="rounded-md bg-paper-soft py-1.5 text-sm text-ink hover:bg-paper-line/60"
               >
                 <KeyGlyph glyph={k.glyph} />
