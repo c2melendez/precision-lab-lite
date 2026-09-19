@@ -11,6 +11,7 @@ import { addHistoryEntry } from "../../store/historyDb";
 import { useKeyboardPanelStore } from "../../store/useKeyboardPanelStore";
 import { useLayoutModeStore } from "../../store/useLayoutModeStore";
 import { useArgandBridgeStore } from "../../store/useArgandBridgeStore";
+import { usePendingGraphStore } from "../../store/usePendingGraphStore";
 
 // Modo 1 de la spec v10 §5. Orquesta NaturalInput + MathKeyboard +
 // ResultPanel, delegando todo el cómputo al Web Worker (nunca al hilo
@@ -318,6 +319,19 @@ export function BasicScientificMode() {
     worker.postMessage({ type: "argandPoint", requestId, expressionAlgebrite: parsed.algebrite });
   }, [latex, angleMode, getWorker, fail, onSuccess, setPendingArgandPoint]);
 
+  // GraphPlaceholder.tsx, botón "Graficar" del cuadrante de gráfica
+  // (decisión de producto confirmada por Carlos: explícito, no
+  // automático). A diferencia de handleGraphComplex (que evalúa a un
+  // número concreto), esto no computa nada aquí -- solo llena
+  // usePendingGraphStore con el LaTeX tal cual; GraphingMode.tsx es
+  // quien parsea, valida (una sola variable libre) y grafica de
+  // verdad, reusando exactamente su propio camino normal de graficar.
+  const setPendingGraphExpression = usePendingGraphStore((s) => s.setPendingExpression);
+  const handleGraphExpression = useCallback(() => {
+    if (!latex.trim()) return;
+    setPendingGraphExpression(latex);
+  }, [latex, setPendingGraphExpression]);
+
   const setKeyboardContent = useKeyboardPanelStore((s) => s.setContent);
   const clearKeyboardContent = useKeyboardPanelStore((s) => s.clearContent);
   const setBasicKeyboardContent = useKeyboardPanelStore((s) => s.setBasicContent);
@@ -408,6 +422,7 @@ export function BasicScientificMode() {
         onToggleAngleMode={() => setAngleMode((m) => (m === "RAD" ? "GRAD" : "RAD"))}
         onClearField={() => setLatex("")}
         layoutMode={layoutMode}
+        onGraphExpression={handleGraphExpression}
       />
     </div>
   );

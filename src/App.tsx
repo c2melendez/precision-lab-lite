@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useArgandBridgeStore } from "./store/useArgandBridgeStore";
+import { usePendingGraphStore } from "./store/usePendingGraphStore";
 import { useActiveModeStore } from "./store/useActiveModeStore";
 import { BasicScientificMode } from "./modes/BasicScientific/BasicScientificMode";
 import { SimpleBasicMode } from "./modes/SimpleBasic/SimpleBasicMode";
@@ -80,6 +81,7 @@ export default function App() {
   const hasFixedDock = !(layoutMode === "stacked" || (layoutMode === "floating" && isFloatingWideEnough));
   const mainBottomPadding = hasFixedDock ? "pb-56 dt:pb-40" : "pb-8";
   const pendingArgandPoint = useArgandBridgeStore((s) => s.pendingArgandPoint);
+  const pendingGraphExpression = usePendingGraphStore((s) => s.pendingExpression);
 
   // Fase F (Módulo F3): "Graficar" llena el store puente; acá se
   // consume UNA vez (cambia a la pestaña de graficación) -- el punto en
@@ -88,6 +90,14 @@ export default function App() {
   useEffect(() => {
     if (pendingArgandPoint !== null) setMode("graphing");
   }, [pendingArgandPoint]);
+
+  // Botón "Graficar" explícito en GraphPlaceholder.tsx (decisión de
+  // producto confirmada por Carlos) -- mismo criterio que el efecto de
+  // arriba: solo cambia de pestaña, GraphingMode.tsx consume y limpia
+  // la expresión pendiente él mismo.
+  useEffect(() => {
+    if (pendingGraphExpression !== null) setMode("graphing");
+  }, [pendingGraphExpression]);
 
   // Fase X, Módulo X0 (Smart Docks): sincroniza el modo activo al store
   // global para que MathKeyboard.tsx (que no recibe `mode` como prop)

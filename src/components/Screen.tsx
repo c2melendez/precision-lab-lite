@@ -58,6 +58,11 @@ interface ScreenProps {
    * (Pantalla dividida) implementado en este módulo. "focus"/"floating"/
    * "stacked" están en el tipo pero sin render propio todavía. */
   layoutMode?: LayoutMode;
+  /** Botón "Graficar" explícito en el cuadrante de gráfica (decisión de
+   * producto confirmada por Carlos) — opcional porque no todos los
+   * modos que usan Screen lo implementan todavía (alcance V1: solo
+   * BasicScientificMode.tsx). Paridad con precision-lab (main). */
+  onGraphExpression?: () => void;
 }
 
 export function Screen({
@@ -71,7 +76,12 @@ export function Screen({
   onToggleAngleMode,
   onClearField,
   layoutMode = "fused",
+  onGraphExpression,
 }: ScreenProps) {
+  // Botón "Graficar" (cuadrante de gráfica, las 6 disposiciones): solo
+  // tiene sentido ofrecerlo cuando hay algo escrito. GraphingMode.tsx
+  // valida de verdad si es graficable al recibir el click.
+  const canGraph = Boolean(onGraphExpression) && latex.trim().length > 0;
   const inputField = (
     <div className="relative">
       <NaturalInput value={latex} onChange={onChangeLatex} placeholder={placeholder} fieldRef={fieldRef} bare />
@@ -110,7 +120,7 @@ export function Screen({
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
           <ResultPanel result={result} />
         </div>
-        <GraphPlaceholder />
+        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
         <StackedKeyboardSection />
       </div>
     );
@@ -128,6 +138,8 @@ export function Screen({
         result={result}
         angleMode={angleMode}
         onToggleAngleMode={onToggleAngleMode}
+        canGraph={canGraph}
+        onGraphExpression={onGraphExpression}
       />
     );
   }
@@ -146,6 +158,8 @@ export function Screen({
         result={result}
         angleMode={angleMode}
         onToggleAngleMode={onToggleAngleMode}
+        canGraph={canGraph}
+        onGraphExpression={onGraphExpression}
       />
     );
   }
@@ -165,7 +179,7 @@ export function Screen({
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
           <ResultPanel result={result} />
         </div>
-        <GraphPlaceholder />
+        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
       </div>
     );
   }
@@ -195,7 +209,7 @@ export function Screen({
             <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
               <ResultPanel result={result} />
             </div>
-            <GraphPlaceholder />
+            <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
           </div>
         </div>
       </div>
@@ -220,7 +234,7 @@ export function Screen({
         {inputField}
         <ResultPanel result={result} />
       </div>
-      <GraphPlaceholder />
+      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
     </div>
   );
 }
@@ -283,11 +297,13 @@ interface FocusLikeContentProps {
   result: MathResult | null;
   angleMode: "RAD" | "GRAD";
   onToggleAngleMode: () => void;
+  canGraph: boolean;
+  onGraphExpression?: () => void;
 }
 
 /** Módulo P2 ("Enfoque"): sin historial, resultado destacado, gráfica
  * con más área. Reusado tal cual por Flotante cuando degrada (P0/P4). */
-function FocusScreenContent({ inputField, result, angleMode, onToggleAngleMode }: FocusLikeContentProps) {
+function FocusScreenContent({ inputField, result, angleMode, onToggleAngleMode, canGraph, onGraphExpression }: FocusLikeContentProps) {
   return (
     <div className="flex flex-1 flex-col gap-3">
       <div className="flex justify-end">
@@ -297,7 +313,7 @@ function FocusScreenContent({ inputField, result, angleMode, onToggleAngleMode }
       <div className="rounded-xl bg-paper-soft px-5 py-4 text-center shadow-sm">
         <ResultPanel result={result} />
       </div>
-      <GraphPlaceholder />
+      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
     </div>
   );
 }
@@ -311,7 +327,7 @@ function FocusScreenContent({ inputField, result, angleMode, onToggleAngleMode }
  * localStorage, confirmado por el usuario, con clamp contra el viewport
  * actual al montar y al redimensionar la ventana del navegador).
  */
-function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMode }: FocusLikeContentProps) {
+function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMode, canGraph, onGraphExpression }: FocusLikeContentProps) {
   const isWideEnough = useMinWidthMediaQuery(FLOATING_MIN_WIDTH_PX);
 
   const keyboardWindow = useFloatingLayoutStore((s) => s.keyboardWindow);
@@ -346,6 +362,8 @@ function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMod
         result={result}
         angleMode={angleMode}
         onToggleAngleMode={onToggleAngleMode}
+        canGraph={canGraph}
+        onGraphExpression={onGraphExpression}
       />
     );
   }
@@ -396,7 +414,7 @@ function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMod
         </button>
       )}
       <FloatingWindow title="Gráfica" rect={graphWindow} onChange={(rect) => setWindow("graph", rect)}>
-        <GraphPlaceholder />
+        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
       </FloatingWindow>
     </div>
   );

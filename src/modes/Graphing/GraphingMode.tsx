@@ -8,6 +8,7 @@ import type { GraphAnalysis, GraphSurface3D } from "../../engine/stepEngine/grap
 import { addHistoryEntry } from "../../store/historyDb";
 import { useGraphColorPaletteStore } from "../../store/useGraphColorPaletteStore";
 import { useArgandBridgeStore } from "../../store/useArgandBridgeStore";
+import { usePendingGraphStore } from "../../store/usePendingGraphStore";
 
 // Modo 6 de la spec v10 §10 (Módulo 7 — el de mayor riesgo del proyecto,
 // según la propia spec). Ver README del Módulo 7 sobre el cambio de
@@ -79,6 +80,27 @@ export function GraphingMode() {
       setPendingArgandPoint(null);
     }
   }, [pendingArgandPoint, setPendingArgandPoint]);
+
+  // Botón "Graficar" explícito en GraphPlaceholder.tsx (decisión de
+  // producto confirmada por Carlos), ver usePendingGraphStore.ts. Se
+  // sobreescribe la primera expresión (misma convención que "nueva
+  // gráfica" -- una sola entrada al llegar de otro modo) y se manda a
+  // graficar de inmediato con `submitEntry`, que ya hace toda la
+  // validación real (parseExpression + freeVariables.length === 1) --
+  // no se duplica esa lógica aquí. Si no es graficable, el error
+  // aparece en la propia ficha de la expresión, por el canal normal.
+  const pendingGraphExpression = usePendingGraphStore((s) => s.pendingExpression);
+  const clearPendingGraphExpression = usePendingGraphStore((s) => s.clearPendingExpression);
+  useEffect(() => {
+    if (pendingGraphExpression === null) return;
+    setKind("cartesian");
+    const updated = { ...entries[0], latex: pendingGraphExpression };
+    setEntries((prev) => (prev.length > 0 ? [updated, ...prev.slice(1)] : [updated]));
+    submitEntry(updated);
+    clearPendingGraphExpression();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingGraphExpression, clearPendingGraphExpression]);
+
   const workerRef = useRef<Worker | null>(null);
   const requestToEntryRef = useRef<Map<string, string>>(new Map());
 
