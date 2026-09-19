@@ -1,6 +1,7 @@
 import { useKeyboardPanelStore } from "../store/useKeyboardPanelStore";
 import { useLayoutModeStore } from "../store/useLayoutModeStore";
 import { useMinWidthMediaQuery, FLOATING_MIN_WIDTH_PX } from "../hooks/useMinWidthMediaQuery";
+import { KeyboardIcon } from "./KeyboardIcon";
 import { KeyboardPanel } from "./KeyboardPanel";
 import { RecentKeysBar } from "./RecentKeysBar";
 
@@ -159,11 +160,12 @@ export function KeyboardDock() {
             aria-label={isOpen ? "Cerrar teclado" : "Expandir teclado"}
             className={
               canExpand
-                ? "rounded-md bg-marker py-2 text-sm font-semibold text-chrome hover:bg-marker/90"
-                : "rounded-md bg-chrome-soft py-2 text-sm text-bone/30"
+                ? "flex items-center justify-center gap-1 rounded-md bg-marker py-2 text-sm font-semibold text-chrome hover:bg-marker/90"
+                : "flex items-center justify-center gap-1 rounded-md bg-chrome-soft py-2 text-sm text-bone/30"
             }
           >
-            {isOpen ? "Cerrar" : "Expandir"} {isOpen ? "▾" : "▴"}
+            <KeyboardIcon className="h-4 w-4" />
+            {isOpen ? "Cerrar" : "Expandir"}
           </button>
         </div>
 
@@ -182,8 +184,8 @@ export function KeyboardDock() {
                 : "flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium text-bone/20"
             }
           >
+            <KeyboardIcon className="h-3.5 w-3.5" />
             <span>Más funciones</span>
-            <span aria-hidden="true">{isOpen ? "▾" : "▴"}</span>
           </button>
         </div>
       </div>

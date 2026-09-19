@@ -7,6 +7,7 @@ import { ResultPanel } from "./ResultPanel";
 import { HistoryLog, type SessionHistoryEntry } from "./HistoryLog";
 import { AngleModePopover } from "./AngleModePopover";
 import { GraphPlaceholder } from "./GraphPlaceholder";
+import { KeyboardIcon } from "./KeyboardIcon";
 import type { MathResult } from "../types";
 import type { LayoutMode } from "../store/useLayoutModeStore";
 import { useKeyboardPanelStore } from "../store/useKeyboardPanelStore";
@@ -260,7 +261,10 @@ function StackedKeyboardSection() {
           aria-expanded={isOpen}
           className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-ink disabled:text-muted/40"
         >
-          <span>Teclado</span>
+          <span className="flex items-center gap-2">
+            <KeyboardIcon className="h-4 w-4 text-marker" />
+            Teclado
+          </span>
           <span aria-hidden="true">{isOpen ? "▾" : "▴"}</span>
         </button>
         {isOpen && canExpand && (
@@ -318,6 +322,9 @@ function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMod
 
   const basicContent = useKeyboardPanelStore((s) => s.basicContent);
   const content = useKeyboardPanelStore((s) => s.content);
+  const isOpen = useKeyboardPanelStore((s) => s.isOpen);
+  const toggle = useKeyboardPanelStore((s) => s.toggle);
+  const canExpand = basicContent !== null || content !== null;
 
   useEffect(() => {
     if (!isWideEnough) return;
@@ -358,10 +365,36 @@ function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMod
       {/* Fase X, Módulo X0 — mismo criterio que precision-lab (main): el
           dock de recientes va fuera de la FloatingWindow, justo encima. */}
       <RecentKeysBar />
-      <FloatingWindow title="Teclado" rect={keyboardWindow} onChange={(rect) => setWindow("keyboard", rect)}>
-        {basicContent}
-        {content}
-      </FloatingWindow>
+      {/* Fase Y (spec_rediseno_visual.md sección 11) — restricción dura:
+          el teclado SIEMPRE inicia colapsado, en las 6 disposiciones sin
+          excepción, Flotante incluida. Antes de este fix, la
+          FloatingWindow de abajo se renderizaba sin condición alguna —
+          mismo bug que se encontró y corrigió en precision-lab (main).
+          Ahora: colapsado por defecto (botón dedicado, mismo ícono que
+          KeyboardDock.tsx), se abre por foco en el campo de entrada
+          (NaturalInput.tsx) o al presionar este botón. */}
+      {isOpen && canExpand ? (
+        <FloatingWindow title="Teclado" rect={keyboardWindow} onChange={(rect) => setWindow("keyboard", rect)}>
+          {basicContent}
+          {content}
+        </FloatingWindow>
+      ) : (
+        <button
+          type="button"
+          onClick={toggle}
+          disabled={!canExpand}
+          aria-expanded={isOpen}
+          aria-label="Abrir teclado"
+          className={
+            canExpand
+              ? "flex items-center justify-center gap-2 self-start rounded-lg bg-marker px-4 py-2 text-sm font-semibold text-chrome hover:bg-marker/90"
+              : "flex items-center justify-center gap-2 self-start rounded-lg bg-chrome-soft px-4 py-2 text-sm text-bone/30"
+          }
+        >
+          <KeyboardIcon className="h-4 w-4" />
+          Teclado
+        </button>
+      )}
       <FloatingWindow title="Gráfica" rect={graphWindow} onChange={(rect) => setWindow("graph", rect)}>
         <GraphPlaceholder />
       </FloatingWindow>

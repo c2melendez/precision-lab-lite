@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import "mathlive";
+import { useKeyboardPanelStore } from "../store/useKeyboardPanelStore";
 
 // Wrapper único sobre el <math-field> de MathLive (spec v10 §5). Expone
 // getValue()/setValue() en LaTeX y un evento onChange, para que el resto de
@@ -53,6 +54,20 @@ export function NaturalInput({ value, onChange, placeholder, fieldRef, bare = fa
     el.addEventListener("input", handler);
     return () => el.removeEventListener("input", handler);
   }, [onChange]);
+
+  // Fase Y (spec_rediseno_visual.md sección 11) — mismo criterio que
+  // precision-lab (main), NaturalMathField.tsx: el foco en el campo de
+  // entrada es uno de los 2 mecanismos obligatorios de apertura del
+  // teclado.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    function handleFocus(): void {
+      useKeyboardPanelStore.getState().open();
+    }
+    el.addEventListener("focus", handleFocus);
+    return () => el.removeEventListener("focus", handleFocus);
+  }, []);
 
   useEffect(() => {
     const el = ref.current;

@@ -5,6 +5,15 @@ import type { Step } from "../types";
 // provee title/rule/latexBefore: en ese caso solo se muestra el resultado
 // del paso y su explicación, sin dejar espacios vacíos ni etiquetas "N/A".
 // Ver auditoría Fase 0, Opción 2 de paridad del modelo de datos.
+//
+// Fase BB, Módulo BB0 (spec_rediseno_visual.md sección 14) — confirmado
+// por Carlos: mismo criterio que precision-lab (main). Se deja de
+// renderizar `step.rule` como insignia técnica. Nota real: en Lite
+// ningún módulo de engine/stepEngine/*.ts asigna nunca `rule` (el campo
+// existe en `types.ts` pero está huérfano) — este cambio no altera nada
+// visible hoy, pero evita que aparezca sin querer si algún motor futuro
+// empieza a poblarlo con un identificador técnico. `Step.rule` se
+// mantiene en el tipo, sin cambios de contrato.
 
 export function StepList({ steps, activeIndex }: { steps: Step[]; activeIndex?: number }) {
   if (steps.length === 0) return null;
@@ -31,7 +40,6 @@ export function StepList({ steps, activeIndex }: { steps: Step[]; activeIndex?: 
                   {step.title}
                 </p>
               )}
-              {step.rule && <p className="font-mono text-xs text-muted">{step.rule}</p>}
               {step.latexBefore ? (
                 <p className="mt-1 font-mono text-sm text-ink">
                   {step.latexBefore} <span className="text-muted">→</span> {step.latex}
