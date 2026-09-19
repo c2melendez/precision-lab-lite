@@ -104,11 +104,14 @@ export function KeyboardDock() {
     <>
       {(content || basicContent) && (
         <KeyboardPanel isOpen={isOpen} onClose={close}>
-          {/* Grid básico completo — visible en móvil SIEMPRE, y en
-              cualquier breakpoint cuando layoutMode es "focus" (Módulo
-              P2): ahí el dock no lo muestra directamente, así que debe
-              seguir siendo alcanzable aquí dentro. */}
-          {basicContent && <div className={forceCompactDock ? "mb-3" : "mb-3 md:hidden"}>{basicContent}</div>}
+          {/* Grid básico completo — Fase Y: el panel es ahora la ÚNICA
+              fuente del teclado en cualquier breakpoint (antes existía
+              una copia siempre-visible de basicContent en la barra
+              compacta a partir de md, que Fase Y elimina por completo —
+              ver comentario donde se quitó, más abajo). Por eso ya NO
+              se oculta en md+: si se ocultara ahí, el numpad básico
+              quedaría inalcanzable en tablet/desktop. */}
+          {basicContent && <div className="mb-3">{basicContent}</div>}
           {content}
         </KeyboardPanel>
       )}
@@ -116,14 +119,6 @@ export function KeyboardDock() {
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-chrome-soft bg-chrome px-3 pb-[env(safe-area-inset-bottom)] pt-2">
         {/* Fase X, Módulo X0 — mismo criterio que precision-lab (main). */}
         <RecentKeysBar />
-        {basicContent ? (
-          <div className={forceCompactDock ? "hidden" : "mx-auto hidden max-w-md md:block"}>{basicContent}</div>
-        ) : (
-          <div className={forceCompactDock ? "hidden" : "hidden py-2 text-center text-xs text-bone/40 md:block"}>
-            Sin teclado en este modo
-          </div>
-        )}
-
         {/* Fila compacta — móvil siempre, y cualquier breakpoint en Focus. */}
         <div className={forceCompactDock ? "grid grid-cols-3 gap-1.5" : "grid grid-cols-3 gap-1.5 md:hidden"}>
           <button
@@ -169,26 +164,32 @@ export function KeyboardDock() {
           </button>
         </div>
 
-        {/* Botón "Más funciones" — tablet+ normalmente; oculto en Focus
-            (ahí "Expandir" de la fila compacta cumple ese rol siempre). */}
+        {/* Botón dedicado de teclado en tablet+ (Fase Y): antes solo se
+            habilitaba con `hasAdvancedContent`, dejando modos con SOLO
+            teclado básico (sin categorías) sin ninguna forma de abrir el
+            teclado en este breakpoint una vez que se quitó la copia
+            siempre-visible de `basicContent` que había aquí antes. Ahora
+            usa `canExpand` (básico O avanzado) — es el único botón
+            dedicado en este breakpoint, así que debe cubrir ambos casos. */}
         <div className={forceCompactDock ? "hidden" : "mt-1.5 hidden justify-center md:flex"}>
           <button
             type="button"
             onClick={toggle}
-            disabled={!hasAdvancedContent}
+            disabled={!canExpand}
             aria-expanded={isOpen}
-            aria-label={isOpen ? "Cerrar más funciones" : "Abrir más funciones"}
+            aria-label={isOpen ? "Cerrar teclado" : "Abrir teclado"}
             className={
-              hasAdvancedContent
+              canExpand
                 ? "flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium text-bone/70 hover:bg-chrome-soft hover:text-bone"
                 : "flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium text-bone/20"
             }
           >
             <KeyboardIcon className="h-3.5 w-3.5" />
-            <span>Más funciones</span>
+            <span>{isOpen ? "Cerrar teclado" : "Teclado"}</span>
           </button>
         </div>
       </div>
     </>
   );
+
 }
