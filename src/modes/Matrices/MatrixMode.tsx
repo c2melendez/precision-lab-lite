@@ -22,7 +22,7 @@ import { addHistoryEntry } from "../../store/historyDb";
 // implementó aquí por el alcance que tomaría (un store de matrices
 // nombradas + referencias en las operaciones).
 
-type Op = "add" | "subtract" | "multiply" | "kron" | "transpose" | "determinant" | "inverse" | "power" | "ref" | "rref" | "dot" | "cross" | "norm";
+type Op = "add" | "subtract" | "multiply" | "kron" | "transpose" | "determinant" | "inverse" | "power" | "ref" | "rref" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank";
 
 const OP_LABELS: Record<Op, string> = {
   add: "A + B",
@@ -39,6 +39,12 @@ const OP_LABELS: Record<Op, string> = {
   dot: "A · B",
   cross: "A ⨯ B",
   norm: "‖A‖",
+  // Módulo K1 (spec_graficacion_matrices_estadistica_unidades.md, sección
+  // 3.2): solo 2x2/3x3 — alcance determinado en la auditoría K0.
+  eigen: "Eigenvalores",
+  // Módulo L0 (spec_graficacion_matrices_estadistica_unidades.md, sección 5).
+  trace: "tr(A)",
+  rank: "rango(A)",
 };
 
 const NEEDS_B: Op[] = ["add", "subtract", "multiply", "kron", "dot", "cross"];
@@ -136,15 +142,20 @@ export function MatrixMode() {
     <div className="mx-auto flex max-w-md flex-col gap-3 p-4 lg:max-w-4xl lg:grid lg:grid-cols-[1.4fr_1fr] lg:items-start lg:gap-6 dt:gap-10">
       <div className="flex flex-col gap-3 lg:col-start-1">
         <div className="flex flex-wrap justify-center gap-2 text-sm">
-          {(Object.keys(OP_LABELS) as Op[]).map((o) => (
-            <button
-              key={o}
-              onClick={() => setOp(o)}
-              className={`rounded-full px-3 py-1 ${o === op ? "bg-marker text-chrome" : "bg-paper-soft text-muted"}`}
-            >
-              {OP_LABELS[o]}
-            </button>
-          ))}
+          {(Object.keys(OP_LABELS) as Op[]).map((o) => {
+            const eigenDisabled = o === "eigen" && !(rowsA === colsA && (rowsA === 2 || rowsA === 3));
+            return (
+              <button
+                key={o}
+                onClick={() => !eigenDisabled && setOp(o)}
+                disabled={eigenDisabled}
+                title={eigenDisabled ? "Eigenvalores solo está disponible para matrices 2×2 o 3×3 cuadradas." : undefined}
+                className={`rounded-full px-3 py-1 ${o === op ? "bg-marker text-chrome" : "bg-paper-soft text-muted"} ${eigenDisabled ? "cursor-not-allowed opacity-40" : ""}`}
+              >
+                {OP_LABELS[o]}
+              </button>
+            );
+          })}
         </div>
 
         <div className="flex items-center justify-center gap-4">

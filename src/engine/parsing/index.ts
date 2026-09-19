@@ -48,7 +48,7 @@ const FUNCTION_NAME_ALIASES: Record<string, string> = {
   atan: "arctan",
 };
 
-function tokensToAlgebrite(tokens: Token[]): string {
+export function tokensToAlgebrite(tokens: Token[]): string {
   return tokens
     .map((t) => {
       if (t.type === "function") return FUNCTION_NAME_ALIASES[t.value] ?? t.value; // el "(" siguiente ya viene en el token de lparen
@@ -265,6 +265,28 @@ function wrapFunctionArgsWithDegToRad(expr: string, fnName: string): string {
 }
 
 /**
+ * Convierte un fragmento algebraico YA en notación lineal (sin "=", sin
+ * primas de EDO) a sintaxis Algebrite: tokeniza, expande operadores
+ * postfijos, valida aridad, inserta multiplicación implícita y aplica
+ * las mismas reescrituras (recíprocas/log base/combinatoria/ángulo) que
+ * usa cada lado de una ecuación normal en parseExpression(). Extraído
+ * como función propia (antes vivía inline como `pipelineOneSide` dentro
+ * de parseExpression) para que Fase E (Módulo E2, engine/stepEngine/
+ * ode.ts) pueda convertir coeficientes/lado derecho de una EDO con la
+ * MISMA lógica que el resto del proyecto, en vez de asumir que el texto
+ * ya viene en sintaxis Algebrite válida -- hallazgo real: no venía
+ * (multiplicación implícita sin insertar, ej. "2x" en vez de "2*x").
+ */
+export function parseAlgebraicFragment(text: string, angleMode: "RAD" | "GRAD" = "RAD"): string {
+  const tokens = expandPostfixOperators(tokenize(text));
+  validateFunctionArity(tokens);
+  const withImplicitMul = insertImplicitMultiplication(tokens);
+  return rewriteReciprocalFunctions(
+    rewriteLogBase(rewriteCombinatorics(applyAngleMode(tokensToAlgebrite(withImplicitMul), angleMode))),
+  );
+}
+
+/**
  * Parser completo de sintaxis de entrada (Módulo 2). Lanza AppError con
  * ErrorCode.PARSE_ERROR ante cualquier violación de las reglas de la spec.
  */
@@ -280,7 +302,14 @@ export function parseExpression(
     const tokens = expandPostfixOperators(tokenize(side));
     validateFunctionArity(tokens);
     const withImplicitMul = insertImplicitMultiplication(tokens);
-    const algebrite = rewriteReciprocalFunctions(rewriteLogBase(rewriteCombinatorics(applyAngleMode(tokensToAlgebrite(withImplicitMul), angleMode))));
+    // DEDUCIBLE (Fase E, extracción de parseAlgebraicFragment): se
+    // recalcula tokenize+implicitMul una segunda vez dentro de
+    // parseAlgebraicFragment en vez de reutilizar `withImplicitMul` de
+    // arriba -- pequeña redundancia de cómputo (no de resultado) a cambio
+    // de que parseAlgebraicFragment sea una función independiente y
+    // reutilizable (ode.ts la necesita con esta firma exacta: texto ->
+    // texto, sin depender de tokens ya calculados en otro lado).
+    const algebrite = parseAlgebraicFragment(side, angleMode);
     return { algebrite, tokens: withImplicitMul };
   }
 

@@ -114,6 +114,18 @@ export function preprocessLatex(latex: string): string {
   // Luego un número suelto seguido de °, uso directo sin DMS:
   expr = expr.replace(/(-?\d+(?:\.\d+)?)°/g, "(($1)*pi/180)");
 
+  // Fase E (spec_edo_complejos_tooltips.md §2.3): "dy/dx" (tecla nueva,
+  // notación alternativa de EDO) -> "y'" (prima), ANTES del \frac{d}{dx}
+  // de arriba y del bucle \frac genérico de abajo. Debe ir antes de
+  // ambos: no matchea el patrón d/dx de arriba (numerador es "dy", no
+  // "d" exacto) así que sin este bloque caería al bucle \frac genérico y
+  // se convertiría en "(dy)/(dx)" (dos variables sueltas divididas, no
+  // lo que se quiere). No hace falta razonar sobre balanceo de
+  // paréntesis aquí -- a diferencia de d/dx, "dy/dx" nunca lleva un
+  // cuerpo \left(...\right) pegado (es notación suelta, no un operador
+  // que envuelve algo), así que un reemplazo simple basta.
+  expr = expr.replace(/\\frac\{dy\}\{dx\}/g, "y'");
+
   // d/dx: plantilla "\frac{d}{dx}\left(#0\right)" -> d((cuerpo),x), nativo
   // en Algebrite. Debe ir ANTES que el bucle \frac de abajo — si no, ese
   // bucle ya convirtió "\frac{d}{dx}" a "(d)/(dx)" antes de llegar aquí,

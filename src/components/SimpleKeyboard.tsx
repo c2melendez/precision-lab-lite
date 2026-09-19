@@ -1,4 +1,6 @@
+import type { MouseEvent as ReactMouseEvent } from "react";
 import { KeyGlyph, BOX } from "./KeyGlyph";
+import { triggerKeyFeedback } from "../utils/keyFeedback";
 
 // Fase B (spec UX §5): teclado reducido para el modo Basic — sin trig,
 // log, ni cálculo. Mismo mecanismo de inserción que MathKeyboard
@@ -63,8 +65,13 @@ export function SimpleKeyboard({ field, onBackspace, onEnter, onHistoryBack, onH
     if (cell.insert) field?.insert(cell.insert);
   }
 
+  // Fase V, Módulo V0: mismo patrón de delegación que en main.
+  function handleKeyboardClickCapture(e: ReactMouseEvent<HTMLDivElement>) {
+    if ((e.target as HTMLElement).closest("button")) triggerKeyFeedback();
+  }
+
   return (
-    <div className="rounded-xl bg-chrome p-3">
+    <div className="rounded-xl bg-chrome p-3" onClickCapture={handleKeyboardClickCapture}>
       {ROWS.map((row, i) => (
         <div key={i} className="mb-1.5 grid grid-cols-4 gap-1.5 last:mb-0">
           {row.map((cell, j) => (

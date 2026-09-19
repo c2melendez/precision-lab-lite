@@ -19,7 +19,7 @@
 // explícito para una iteración posterior, una vez que el resto del
 // proyecto esté verificado contra Algebrite real.
 
-import { compileNumeric } from "../numericFallback";
+import { compileNumeric, compileNumeric2D } from "../numericFallback";
 import { ErrorCode, type AppError } from "../../types";
 
 export interface GraphAnalysis {
@@ -262,4 +262,257 @@ function dedupePoints(points: { x: number; y: number }[], tolerance = 1e-2): { x
     if (!out.some((o) => Math.abs(o.x - p.x) < tolerance)) out.push(p);
   }
   return out;
+}
+
+// Módulo I0 (spec_graficacion_matrices_estadistica_unidades.md, Fase I):
+// gráfica polar r=f(θ). AUDITORÍA DE ALCANCE POR MOTOR (regla 3 del
+// Mensaje 0): esta función NO reutiliza analyzeGraph() completa — ese
+// análisis (dominio/rango en x, intercepciones en x, extremos,
+// inflexión, vértice) está definido para y=f(x) y no tiene un
+// equivalente directo y con sentido para r=f(θ) sin inventar semántica
+// nueva fuera de alcance de este módulo. Lo que SÍ se reutiliza,
+// intacto, es el pipeline de muestreo numérico (`compileNumeric` +
+// bucle de muestreo) y la forma de la interfaz `GraphAnalysis` —
+// devuelve un objeto con esa misma forma (para no romper `GraphViewer`,
+// que ya sabe dibujar `analysis.samples` como un path y usa el resto
+// de campos solo si son no nulos/no vacíos) pero con
+// domainDescription/rangeDescription redactados en términos de θ y el
+// resto de campos específicos de y=f(x) en su valor neutro.
+export function analyzeGraphPolar(
+  exprAlgebrite: string,
+  variable: string,
+  thetaRange: [number, number] = [0, 2 * Math.PI],
+): GraphAnalysis {
+  let r: (theta: number) => number;
+  try {
+    r = compileNumeric(exprAlgebrite, variable);
+  } catch (err) {
+    throw err as AppError;
+  }
+
+  const [thetaMin, thetaMax] = thetaRange;
+  if (thetaMin === thetaMax) {
+    throw {
+      code: ErrorCode.DOMAIN_ERROR,
+      message: '"Desde" y "hasta" de θ no pueden ser el mismo valor — el muestreo necesita un rango.',
+    } as AppError;
+  }
+  const step = (thetaMax - thetaMin) / SAMPLE_COUNT;
+  const samples: { x: number; y: number }[] = [];
+
+  for (let i = 0; i <= SAMPLE_COUNT; i++) {
+    const theta = thetaMin + i * step;
+    let rValue: number;
+    try {
+      rValue = r(theta);
+    } catch {
+      rValue = NaN;
+    }
+    if (Number.isFinite(rValue)) {
+      samples.push({ x: rValue * Math.cos(theta), y: rValue * Math.sin(theta) });
+    }
+  }
+
+  if (samples.length === 0) {
+    throw {
+      code: ErrorCode.DOMAIN_ERROR,
+      message: "r(θ) no está definida en ningún punto del rango de θ elegido.",
+    } as AppError;
+  }
+
+  const excludedCount = SAMPLE_COUNT + 1 - samples.length;
+  const domainDescription =
+    excludedCount === 0
+      ? `θ ∈ [${thetaMin}, ${thetaMax}] (sin discontinuidades detectadas por muestreo).`
+      : `${samples.length} de ${SAMPLE_COUNT + 1} puntos muestreados en θ ∈ [${thetaMin}, ${thetaMax}] están definidos.`;
+  const rValues = samples.map((p) => Math.hypot(p.x, p.y));
+  const rangeDescription = `r aproximadamente en [${Math.min(...rValues).toFixed(4)}, ${Math.max(...rValues).toFixed(4)}] dentro del rango de θ elegido (basado en muestreo, no es un análisis simbólico exacto).`;
+
+  return {
+    domainDescription,
+    rangeDescription,
+    // Sin equivalente con sentido en polar (ver comentario de cabecera
+    // de esta función) — valores neutros, ya soportados por
+    // GraphViewer/GraphingMode (arrays vacíos / null se muestran como
+    // "ninguna"/"—"/"no aplica").
+    xIntercepts: [],
+    yIntercept: null,
+    localMaxima: [],
+    localMinima: [],
+    globalMax: null,
+    globalMin: null,
+    inflectionPoints: [],
+    vertex: null,
+    samples,
+  };
+}
+
+// Módulo J1 (spec_graficacion_matrices_estadistica_unidades.md, sección
+// 3.2, confirmado en J0): paramétrico 2D en Lite — (x(t), y(t)).
+// AUDITORÍA DE ALCANCE POR MOTOR (J0): `compileNumeric` es de una sola
+// variable — se compilan x(t) e y(t) por separado, cada una en función
+// de "parameter" únicamente, exactamente igual que ya se hizo para
+// r(θ) en I0. No requiere ningún cambio a `numericFallback.ts` ni a
+// `GraphViewer.tsx` (mismo mecanismo `samples → path` genérico).
+export function analyzeGraphParametric(
+  xExprAlgebrite: string,
+  yExprAlgebrite: string,
+  parameter: string,
+  tRange: [number, number] = [0, 2 * Math.PI],
+): GraphAnalysis {
+  let xFn: (t: number) => number;
+  let yFn: (t: number) => number;
+  try {
+    xFn = compileNumeric(xExprAlgebrite, parameter);
+    yFn = compileNumeric(yExprAlgebrite, parameter);
+  } catch (err) {
+    throw err as AppError;
+  }
+
+  const [tMin, tMax] = tRange;
+  if (tMin === tMax) {
+    throw {
+      code: ErrorCode.DOMAIN_ERROR,
+      message: `"Desde" y "hasta" de ${parameter} no pueden ser el mismo valor — el muestreo necesita un rango.`,
+    } as AppError;
+  }
+  const step = (tMax - tMin) / SAMPLE_COUNT;
+  const samples: { x: number; y: number }[] = [];
+
+  for (let i = 0; i <= SAMPLE_COUNT; i++) {
+    const t = tMin + i * step;
+    let x: number;
+    let y: number;
+    try {
+      x = xFn(t);
+      y = yFn(t);
+    } catch {
+      x = NaN;
+      y = NaN;
+    }
+    // Igual criterio que compute_graph_parametric en main: un punto
+    // paramétrico se descarta completo si CUALQUIERA de las dos
+    // componentes no es real en ese t — no hay "eje independiente" que
+    // se pueda mantener fijo como en y=f(x).
+    if (Number.isFinite(x) && Number.isFinite(y)) {
+      samples.push({ x, y });
+    }
+  }
+
+  if (samples.length === 0) {
+    throw {
+      code: ErrorCode.DOMAIN_ERROR,
+      message: `(x(${parameter}), y(${parameter})) no está definida en ningún punto del rango elegido.`,
+    } as AppError;
+  }
+
+  const excludedCount = SAMPLE_COUNT + 1 - samples.length;
+  const domainDescription =
+    excludedCount === 0
+      ? `${parameter} ∈ [${tMin}, ${tMax}] (sin discontinuidades detectadas por muestreo).`
+      : `${samples.length} de ${SAMPLE_COUNT + 1} puntos muestreados en ${parameter} ∈ [${tMin}, ${tMax}] están definidos.`;
+  const xValues = samples.map((p) => p.x);
+  const yValues = samples.map((p) => p.y);
+  const rangeDescription = `x aproximadamente en [${Math.min(...xValues).toFixed(4)}, ${Math.max(...xValues).toFixed(4)}], y aproximadamente en [${Math.min(...yValues).toFixed(4)}, ${Math.max(...yValues).toFixed(4)}] dentro del rango elegido (basado en muestreo, no es un análisis simbólico exacto).`;
+
+  return {
+    domainDescription,
+    rangeDescription,
+    // Sin equivalente con sentido para una curva paramétrica (mismo
+    // criterio documentado en analyzeGraphPolar) — valores neutros.
+    xIntercepts: [],
+    yIntercept: null,
+    localMaxima: [],
+    localMinima: [],
+    globalMax: null,
+    globalMin: null,
+    inflectionPoints: [],
+    vertex: null,
+    samples,
+  };
+}
+
+// Módulo J2 (spec_graficacion_matrices_estadistica_unidades.md, sección
+// 3.2, Opción B confirmada en J0): superficie z=f(x,y). Tipo DELIBERADAMENTE
+// separado de GraphAnalysis (no forzado a esa forma) — el análisis de
+// dominio/rango/intercepciones/extremos que tiene sentido para y=f(x) o
+// para una curva 2D no tiene equivalente natural en una malla 2D de
+// valores z, y `GraphAnalysis.samples` es una lista plana de puntos (x,y),
+// no una grilla con profundidad. Forzar esto dentro de GraphAnalysis
+// habría significado inventar semántica sin sentido matemático — el mismo
+// principio ya aplicado en analyzeGraphPolar/analyzeGraphParametric,
+// llevado un paso más porque aquí ni siquiera la FORMA del dato coincide.
+export interface GraphSurface3D {
+  xValues: number[];
+  yValues: number[];
+  // Fila = un valor de y fijo, cada entrada = z en ese (x,y). null donde
+  // la superficie no está definida (mismo criterio que main: NaN/null se
+  // interpreta como hueco, no como error de toda la superficie).
+  zGrid: (number | null)[][];
+  domainDescription: string;
+  rangeDescription: string;
+}
+
+const SURFACE_GRID_SIZE = 30; // análogo a _GRAPH_3D_GRID_SIZE=40 en main — 30x30=900, tope defensivo fijo para SVG (main usa Plotly con WebGL, Lite dibuja cada segmento como <line> real).
+
+export function analyzeGraphSurface3D(
+  exprAlgebrite: string,
+  varX: string,
+  varY: string,
+  xRange: [number, number] = [-5, 5],
+  yRange: [number, number] = [-5, 5],
+): GraphSurface3D {
+  let f: (x: number, y: number) => number;
+  try {
+    f = compileNumeric2D(exprAlgebrite, varX, varY);
+  } catch (err) {
+    throw err as AppError;
+  }
+
+  const [xMin, xMax] = xRange;
+  const [yMin, yMax] = yRange;
+  if (xMin === xMax || yMin === yMax) {
+    throw {
+      code: ErrorCode.DOMAIN_ERROR,
+      message: 'El rango de "x" y de "y" necesitan "desde" distinto de "hasta" para poder muestrear la superficie.',
+    } as AppError;
+  }
+
+  const n = SURFACE_GRID_SIZE;
+  const xValues = Array.from({ length: n }, (_, i) => xMin + (i * (xMax - xMin)) / (n - 1));
+  const yValues = Array.from({ length: n }, (_, i) => yMin + (i * (yMax - yMin)) / (n - 1));
+
+  let noneCount = 0;
+  const zGrid: (number | null)[][] = yValues.map((y) =>
+    xValues.map((x) => {
+      let z: number;
+      try {
+        z = f(x, y);
+      } catch {
+        z = NaN;
+      }
+      if (!Number.isFinite(z)) {
+        noneCount++;
+        return null;
+      }
+      return z;
+    }),
+  );
+
+  const domainDescription =
+    noneCount === 0
+      ? `x ∈ [${xMin}, ${xMax}], y ∈ [${yMin}, ${yMax}] (sin discontinuidades detectadas por muestreo en una grilla ${n}×${n}).`
+      : `${n * n - noneCount} de ${n * n} puntos de la grilla ${n}×${n} están definidos.`;
+
+  if (noneCount === n * n) {
+    throw {
+      code: ErrorCode.DOMAIN_ERROR,
+      message: "z=f(x,y) no está definida en ningún punto de la grilla elegida.",
+    } as AppError;
+  }
+
+  const zValues = zGrid.flat().filter((z): z is number => z !== null);
+  const rangeDescription = `z aproximadamente en [${Math.min(...zValues).toFixed(4)}, ${Math.max(...zValues).toFixed(4)}] dentro de la grilla muestreada (basado en muestreo, no es un análisis simbólico exacto).`;
+
+  return { xValues, yValues, zGrid, domainDescription, rangeDescription };
 }

@@ -6,9 +6,11 @@ import { type SessionHistoryEntry } from "../../components/HistoryLog";
 import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { parseExpression } from "../../engine/parsing";
 import { splitSystemLatex } from "../../engine/parsing/systemSplit";
+import { detectODE } from "../../engine/parsing/odeDetect";
 import { addHistoryEntry } from "../../store/historyDb";
 import { useKeyboardPanelStore } from "../../store/useKeyboardPanelStore";
 import { useLayoutModeStore } from "../../store/useLayoutModeStore";
+import { useArgandBridgeStore } from "../../store/useArgandBridgeStore";
 
 // Modo 1 de la spec v10 §5. Orquesta NaturalInput + MathKeyboard +
 // ResultPanel, delegando todo el cómputo al Web Worker (nunca al hilo
@@ -44,6 +46,7 @@ export function BasicScientificMode() {
   const workerRef = useRef<Worker | null>(null);
   const [mathField, setMathField] = useState<MathFieldRef>(null);
   const [sessionHistory, setSessionHistory] = useState<SessionHistoryEntry[]>([]);
+  const setPendingArgandPoint = useArgandBridgeStore((s) => s.setPendingArgandPoint);
 
   const getWorker = useCallback(() => {
     if (!workerRef.current) {
@@ -166,6 +169,22 @@ export function BasicScientificMode() {
       return;
     }
 
+    // Fase E (spec_edo_complejos_tooltips.md §2.2, Módulo E2): hallazgo
+    // real de auditoría -- parseExpression() de abajo trataría "y'=2x"
+    // como una ecuación de álgebra común (splitEquation corta en el
+    // primer "=" sin saber que hay una derivada) y fallaría en
+    // tokenize() (la prima no es un token reconocido ahí), mucho antes
+    // de llegar a ningún motor EDO. Por eso se detecta ANTES, con el
+    // mismo criterio que splitSystemLatex arriba.
+    const odeExpression = detectODE(latex);
+    if (odeExpression !== null) {
+      const requestId = makeRequestId();
+      const worker = getWorker();
+      worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica (EDO)", latex, e.data);
+      worker.postMessage({ type: "ode", requestId, expression: odeExpression });
+      return;
+    }
+
     const requestId = makeRequestId();
     let parsed;
     try {
@@ -271,6 +290,34 @@ export function BasicScientificMode() {
 
   const handleSimplify = useCallback(() => handleCalculate(), [handleCalculate]);
 
+  // Fase F (spec_edo_complejos_tooltips.md §3.4, Módulo F3): "Graficar"
+  // -- evalúa el campo a un número complejo concreto (mensaje de worker
+  // dedicado "argandPoint", ver compute.worker.ts) y llena el puente de
+  // navegación (useArgandBridgeStore.ts) que App.tsx/GraphingMode.tsx
+  // consumen para cambiar de pestaña y mostrar el punto.
+  const handleGraphComplex = useCallback(() => {
+    const requestId = makeRequestId();
+    let parsed;
+    try {
+      parsed = parseExpression(latex, angleMode);
+    } catch (err) {
+      const appErr = err as { code?: ErrorCode; message?: string };
+      fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Expresión inválida.", requestId);
+      return;
+    }
+    const worker = getWorker();
+    worker.onmessage = (e: MessageEvent<MathResult>) => {
+      if (e.data.success && e.data.graphAnalysis) {
+        const { re, im } = e.data.graphAnalysis as { re: number; im: number };
+        setPendingArgandPoint({ re, im, expressionText: latex });
+        onSuccess("Científica (Argand)", latex, e.data);
+      } else {
+        onSuccess("Científica (Argand)", latex, e.data);
+      }
+    };
+    worker.postMessage({ type: "argandPoint", requestId, expressionAlgebrite: parsed.algebrite });
+  }, [latex, angleMode, getWorker, fail, onSuccess, setPendingArgandPoint]);
+
   const setKeyboardContent = useKeyboardPanelStore((s) => s.setContent);
   const clearKeyboardContent = useKeyboardPanelStore((s) => s.clearContent);
   const setBasicKeyboardContent = useKeyboardPanelStore((s) => s.setBasicContent);
@@ -300,11 +347,12 @@ export function BasicScientificMode() {
         onSolveEquation={handleSolveEquation}
         onSolveSystem={handleSolveSystem}
         onSimplify={handleSimplify}
+        onGraphComplex={handleGraphComplex}
         hideCoreGrid
       />,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mathField, handleCalculate, handleSolveEquation, handleSolveSystem, handleSimplify]);
+  }, [mathField, handleCalculate, handleSolveEquation, handleSolveSystem, handleSimplify, handleGraphComplex]);
 
   useEffect(() => {
     return () => clearKeyboardContent();

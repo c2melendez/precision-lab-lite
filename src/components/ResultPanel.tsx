@@ -82,11 +82,13 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
           Aproximado numéricamente (no resuelto simbólicamente)
         </p>
       )}
+      {/* Fase R, Módulo R0: a11y-scale-result-3xl reemplaza a text-3xl —
+          mismo tamaño exacto por defecto, ahora escalable. */}
       <div className="flex items-end justify-between gap-3">
         {isPlainNumber ? (
-          <span className="ml-auto font-mono text-3xl font-medium text-ink">{latex}</span>
+          <span className="a11y-scale-result-3xl ml-auto font-mono font-medium text-ink">{latex}</span>
         ) : (
-          <StaticMath latex={latex} className="ml-auto font-mono text-3xl text-ink" />
+          <StaticMath latex={latex} className="a11y-scale-result-3xl ml-auto font-mono text-ink" />
         )}
       </div>
       {format === "frac" && result.fraction?.mixedLatex !== null && result.fraction && (

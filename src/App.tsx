@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useArgandBridgeStore } from "./store/useArgandBridgeStore";
+import { useActiveModeStore } from "./store/useActiveModeStore";
 import { BasicScientificMode } from "./modes/BasicScientific/BasicScientificMode";
 import { SimpleBasicMode } from "./modes/SimpleBasic/SimpleBasicMode";
 import { AlgebraMode } from "./modes/Algebra/AlgebraMode";
@@ -12,6 +14,8 @@ import { HistoryPanel } from "./components/HistoryPanel";
 import { HistoryDrawer } from "./components/HistoryDrawer";
 import { AjustesPopover } from "./components/AjustesPopover";
 import { KeyboardDock } from "./components/KeyboardDock";
+import { useLayoutModeStore } from "./store/useLayoutModeStore";
+import { useMinWidthMediaQuery, FLOATING_MIN_WIDTH_PX } from "./hooks/useMinWidthMediaQuery";
 
 // Selector de modos por pestañas tipo "chasis" (Fase 1 — sistema de diseño
 // Precision Lab). Historial persistente (IndexedDB) como séptima pestaña,
@@ -69,6 +73,30 @@ const VISIBLE_MODES: Mode[] = ["basic", "matrices", "graphing", "statistics", "u
 export default function App() {
   const [mode, setMode] = useState<Mode>("basic");
   const [historyOpen, setHistoryOpen] = useState(false);
+  // Módulo P3/P4: sin dock fijo en "stacked", ni en "floating" realmente
+  // activo (viewport ancho) — mismo criterio que KeyboardDock.tsx.
+  const layoutMode = useLayoutModeStore((s) => s.layoutMode);
+  const isFloatingWideEnough = useMinWidthMediaQuery(FLOATING_MIN_WIDTH_PX);
+  const hasFixedDock = !(layoutMode === "stacked" || (layoutMode === "floating" && isFloatingWideEnough));
+  const mainBottomPadding = hasFixedDock ? "pb-56 dt:pb-40" : "pb-8";
+  const pendingArgandPoint = useArgandBridgeStore((s) => s.pendingArgandPoint);
+
+  // Fase F (Módulo F3): "Graficar" llena el store puente; acá se
+  // consume UNA vez (cambia a la pestaña de graficación) -- el punto en
+  // sí (re/im) lo vuelve a leer GraphingMode directamente del mismo
+  // store, esto solo se encarga del cambio de pestaña.
+  useEffect(() => {
+    if (pendingArgandPoint !== null) setMode("graphing");
+  }, [pendingArgandPoint]);
+
+  // Fase X, Módulo X0 (Smart Docks): sincroniza el modo activo al store
+  // global para que MathKeyboard.tsx (que no recibe `mode` como prop)
+  // sepa en qué "cajón" del historial registrar cada tecla. Ver
+  // useActiveModeStore.ts para por qué no se reutiliza `mode` directo.
+  const setActiveModeForRecentKeys = useActiveModeStore((s) => s.setActiveMode);
+  useEffect(() => {
+    setActiveModeForRecentKeys(mode);
+  }, [mode, setActiveModeForRecentKeys]);
 
   return (
     <div className="min-h-screen bg-chrome pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)]">
@@ -108,8 +136,9 @@ export default function App() {
         {/* Módulo 0: padding inferior para que el KeyboardDock fijo (que
             ahora vive fuera de este flujo, montado más abajo) no tape el
             contenido de ningún modo — no solo Científica. Cambio a nivel
-            de layout global, deliberado, ver Cierre del Módulo 0. */}
-        <main className="min-w-0 flex-1 bg-paper pb-56 text-ink dt:pb-40">
+            de layout global, deliberado, ver Cierre del Módulo 0. Módulo
+            P3: en "stacked" no hay dock fijo que compensar. */}
+        <main className={`min-w-0 flex-1 bg-paper text-ink ${mainBottomPadding}`}>
           {mode === "basic" && <BasicScientificMode />}
           {mode === "simple" && <SimpleBasicMode />}
           {mode === "algebra" && <AlgebraMode />}

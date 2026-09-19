@@ -26,11 +26,25 @@ interface GraphViewerProps {
   curves: GraphCurve[];
   selectedId: string | null;
   view: [number, number];
+  // Fase F (spec_edo_complejos_tooltips.md §3.4, Módulo F3): reutiliza
+  // este mismo componente (mismo mecanismo de "pintar un círculo suelto"
+  // que ya usan xIntercepts/localMaxima/etc. más abajo) para un número
+  // complejo evaluado en vez de un punto notable de una curva. `curves`
+  // puede venir vacío (graficar SOLO el punto, sin ninguna curva de
+  // fondo) -- por eso `allYs` de abajo incluye `argandPoint.im` cuando
+  // está presente, para que el punto nunca quede fuera del rango
+  // vertical calculado incluso sin curvas.
+  argandPoint?: { re: number; im: number } | null;
+  /** "Re"/"Im" en vez de las líneas de eje sin etiqueta de siempre --
+   * opcional, default sin etiquetas (comportamiento exactamente igual
+   * al de antes de este módulo cuando se omite). */
+  axisLabels?: { x: string; y: string };
 }
 
-export function GraphViewer({ curves, selectedId, view }: GraphViewerProps) {
+export function GraphViewer({ curves, selectedId, view, argandPoint = null, axisLabels }: GraphViewerProps) {
   const [xMin, xMax] = view;
   const allYs = curves.flatMap((c) => c.analysis.samples.map((p) => p.y));
+  if (argandPoint) allYs.push(argandPoint.im);
   const yMin = Math.min(...allYs, -1);
   const yMax = Math.max(...allYs, 1);
 
@@ -87,6 +101,27 @@ export function GraphViewer({ curves, selectedId, view }: GraphViewerProps) {
             {selected.analysis.vertex && (
               <circle cx={toScreenX(selected.analysis.vertex.x)} cy={toScreenY(selected.analysis.vertex.y)} r={5} fill="#ef4444" />
             )}
+          </>
+        )}
+        {argandPoint && (
+          <circle
+            cx={toScreenX(argandPoint.re)}
+            cy={toScreenY(argandPoint.im)}
+            r={5}
+            fill="#3b82f6"
+            stroke="#1e3a8a"
+            strokeWidth={1.5}
+          />
+        )}
+
+        {axisLabels && (
+          <>
+            <text x={WIDTH - PADDING - 2} y={axisXScreen - 4} fontSize={10} fill="#94a3b8" textAnchor="end">
+              {axisLabels.x}
+            </text>
+            <text x={axisYScreen + 4} y={PADDING + 8} fontSize={10} fill="#94a3b8">
+              {axisLabels.y}
+            </text>
           </>
         )}
       </svg>

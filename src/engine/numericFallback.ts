@@ -162,6 +162,127 @@ export function compileNumeric(expr: string, variable: string): Fn {
   return compiled;
 }
 
+/**
+ * Módulo J2 (spec_graficacion_matrices_estadistica_unidades.md, sección
+ * 3.2, decisión de diseño confirmada en J0): compilador numérico DE DOS
+ * VARIABLES, para superficies z=f(x,y). Deliberadamente una función
+ * NUEVA Y AISLADA — una copia del parser de `compileNumeric` adaptada a
+ * `(x,y)=>number`, en vez de generalizar `compileNumeric` para aceptar
+ * N variables. `compileNumeric` es compartido por límites, integrales y
+ * graficación 2D/polar/paramétrica ya en producción; generalizarlo
+ * arriesgaría esa superficie entera por un caso de uso (3D) que es el
+ * único que necesita dos variables. Esta duplicación es el precio
+ * consciente de cumplir la condición dura de J0 (no romper nada
+ * existente) de la forma más segura posible.
+ */
+export function compileNumeric2D(expr: string, varX: string, varY: string): (x: number, y: number) => number {
+  let pos = 0;
+  const s = expr;
+
+  function peek(): string {
+    return s[pos];
+  }
+  function eof(): boolean {
+    return pos >= s.length;
+  }
+
+  function parseExpr(): (x: number, y: number) => number {
+    let left = parseTerm();
+    while (!eof() && (peek() === "+" || peek() === "-")) {
+      const op = peek();
+      pos++;
+      const right = parseTerm();
+      const prevLeft = left;
+      left = op === "+" ? (x, y) => prevLeft(x, y) + right(x, y) : (x, y) => prevLeft(x, y) - right(x, y);
+    }
+    return left;
+  }
+
+  function parseTerm(): (x: number, y: number) => number {
+    let left = parseUnary();
+    while (!eof() && (peek() === "*" || peek() === "/")) {
+      const op = peek();
+      pos++;
+      const right = parseUnary();
+      const prevLeft = left;
+      left = op === "*" ? (x, y) => prevLeft(x, y) * right(x, y) : (x, y) => prevLeft(x, y) / right(x, y);
+    }
+    return left;
+  }
+
+  function parseUnary(): (x: number, y: number) => number {
+    if (peek() === "+") {
+      pos++;
+      return parseUnary();
+    }
+    if (peek() === "-") {
+      pos++;
+      const inner = parseUnary();
+      return (x, y) => -inner(x, y);
+    }
+    return parsePower();
+  }
+
+  function parsePower(): (x: number, y: number) => number {
+    const base = parseAtom();
+    if (!eof() && peek() === "^") {
+      pos++;
+      const exponent = parseUnary();
+      return (x, y) => Math.pow(base(x, y), exponent(x, y));
+    }
+    return base;
+  }
+
+  function parseAtom(): (x: number, y: number) => number {
+    if (eof()) throw parseError("Expresión numérica incompleta.");
+
+    if (peek() === "(") {
+      pos++;
+      const inner = parseExpr();
+      if (peek() !== ")") throw parseError('Se esperaba ")".');
+      pos++;
+      return inner;
+    }
+
+    if (/[0-9]/.test(peek())) {
+      const match = s.slice(pos).match(/^[0-9]+(\.[0-9]+)?/)!;
+      pos += match[0].length;
+      const value = parseFloat(match[0]);
+      return () => value;
+    }
+
+    if (/[a-zA-Z]/.test(peek())) {
+      const match = s.slice(pos).match(/^[a-zA-Z]+/)!;
+      const name = match[0];
+      pos += name.length;
+
+      if (name === "pi") return () => Math.PI;
+      if (name === "e" && peek() !== "(") return () => Math.E;
+
+      if (UNARY_FUNCTIONS[name]) {
+        if (peek() !== "(") throw parseError(`Se esperaba "(" después de "${name}".`);
+        pos++;
+        const arg = parseExpr();
+        if (peek() !== ")") throw parseError('Se esperaba ")".');
+        pos++;
+        const fn = UNARY_FUNCTIONS[name];
+        return (x, y) => fn(arg(x, y));
+      }
+
+      if (name === varX) return (x) => x;
+      if (name === varY) return (_x, y) => y;
+
+      throw parseError(`No se puede evaluar numéricamente la variable/función desconocida "${name}".`);
+    }
+
+    throw parseError(`Carácter numérico inesperado: "${peek()}".`);
+  }
+
+  const compiled = parseExpr();
+  if (pos !== s.length) throw parseError("Expresión numérica con caracteres sobrantes al final.");
+  return compiled;
+}
+
 /** Integración numérica por la regla de Simpson compuesta. */
 export function simpsonIntegral(f: Fn, a: number, b: number, n = 1000): number {
   const evenN = n % 2 === 0 ? n : n + 1;

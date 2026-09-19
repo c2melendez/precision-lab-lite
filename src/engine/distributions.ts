@@ -97,3 +97,75 @@ export function zScore(mu: number, sigma: number, x: number): number {
   validateNormalParams(sigma);
   return (x - mu) / sigma;
 }
+
+// Módulo N0 (spec_graficacion_matrices_estadistica_unidades.md, sección
+// 7): Poisson (discreta, mismo patrón que Binomial), uniforme y
+// exponencial (continuas, mismo patrón que Normal).
+
+function validatePoissonParams(lam: number): void {
+  if (lam <= 0) throw new Error("λ debe ser mayor que 0.");
+}
+
+export function poissonPMF(lam: number, k: number): number {
+  validatePoissonParams(lam);
+  if (!Number.isInteger(k) || k < 0) throw new Error("k debe ser un entero no negativo.");
+  return (Math.exp(-lam) * lam ** k) / factorial(k);
+}
+
+export function poissonCDF(lam: number, k: number): number {
+  validatePoissonParams(lam);
+  let sum = 0;
+  for (let i = 0; i <= k; i++) sum += poissonPMF(lam, i);
+  return sum;
+}
+
+export function poissonMean(lam: number): number {
+  validatePoissonParams(lam);
+  return lam;
+}
+
+export function poissonVariance(lam: number): number {
+  validatePoissonParams(lam);
+  return lam;
+}
+
+function validateUniformParams(a: number, b: number): void {
+  if (a >= b) throw new Error("a debe ser menor que b.");
+}
+
+export function uniformCDF(a: number, b: number, x: number): number {
+  validateUniformParams(a, b);
+  if (x <= a) return 0;
+  if (x >= b) return 1;
+  return (x - a) / (b - a);
+}
+
+export function uniformMean(a: number, b: number): number {
+  validateUniformParams(a, b);
+  return (a + b) / 2;
+}
+
+export function uniformVariance(a: number, b: number): number {
+  validateUniformParams(a, b);
+  return (b - a) ** 2 / 12;
+}
+
+function validateExponentialParams(lam: number): void {
+  if (lam <= 0) throw new Error("λ debe ser mayor que 0.");
+}
+
+export function exponentialCDF(lam: number, x: number): number {
+  validateExponentialParams(lam);
+  if (x < 0) return 0;
+  return 1 - Math.exp(-lam * x);
+}
+
+export function exponentialMean(lam: number): number {
+  validateExponentialParams(lam);
+  return 1 / lam;
+}
+
+export function exponentialVariance(lam: number): number {
+  validateExponentialParams(lam);
+  return 1 / lam ** 2;
+}

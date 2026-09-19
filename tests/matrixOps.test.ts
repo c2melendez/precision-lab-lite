@@ -10,6 +10,8 @@ import {
   ref,
   rref,
   kroneckerProduct,
+  trace,
+  rank,
 } from "../src/engine/matrixOps";
 
 // NO EJECUTADO en el entorno de generación. Correr con `npm run test`.
@@ -137,5 +139,64 @@ describe("matrixOps", () => {
     expect(result[0][1].toFraction()).toBe("5"); // A[0][0]*B[0][1] = 1*5
     expect(result[2][1].toFraction()).toBe("15"); // A[1][0]*B[0][1] = 3*5
     expect(result[3][2].toFraction()).toBe("24"); // A[1][1]*B[1][0] = 4*6
+  });
+});
+
+// Módulo L0 (spec_graficacion_matrices_estadistica_unidades.md, sección
+// 5): rango y traza. Mismo caso de referencia usado en
+// backend/tests/test_matrices.py de main (trace([[4,6],[3,8]])=12) para
+// tener equivalencia matemática directa entre motores.
+describe("trace/rank", () => {
+  it("traza de [[4,6],[3,8]] es 12 — mismo caso verificado en main", () => {
+    const A = toFractionMatrix([
+      [4, 6],
+      [3, 8],
+    ]);
+    const { value } = trace(A);
+    expect(value.toFraction()).toBe("12");
+  });
+
+  it("traza rechaza matrices no cuadradas", () => {
+    const A = toFractionMatrix([
+      [1, 2, 3],
+      [4, 5, 6],
+    ]);
+    expect(() => trace(A)).toThrow();
+  });
+
+  it("rango de la identidad 2x2 es 2 (caso 'solución única')", () => {
+    const A = toFractionMatrix([
+      [1, 0],
+      [0, 1],
+    ]);
+    expect(rank(A).value).toBe(2);
+  });
+
+  it("rango de una matriz con fila dependiente es 1 (caso 'compatible indeterminado')", () => {
+    const A = toFractionMatrix([
+      [1, 2],
+      [2, 4],
+    ]);
+    expect(rank(A).value).toBe(1);
+  });
+
+  it("rango de la matriz nula es 0 (caso degenerado)", () => {
+    const A = toFractionMatrix([
+      [0, 0],
+      [0, 0],
+    ]);
+    expect(rank(A).value).toBe(0);
+  });
+
+  it("no rompe ref/kroneckerProduct existentes (regresión, rank() reutiliza ref() sin tocarlo)", () => {
+    const identity = toFractionMatrix([
+      ["1", "0"],
+      ["0", "1"],
+    ]);
+    const { result } = ref(identity);
+    expect(result.map((r) => r.map((v) => v.toFraction()))).toEqual([
+      ["1", "0"],
+      ["0", "1"],
+    ]);
   });
 });

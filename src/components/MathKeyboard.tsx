@@ -1,5 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { KeyGlyph, type Glyph, BOX } from "./KeyGlyph";
+import { triggerKeyFeedback } from "../utils/keyFeedback";
+import { useActiveModeStore } from "../store/useActiveModeStore";
+import { useKeyboardPanelStore } from "../store/useKeyboardPanelStore";
+import { useRecentKeysStore } from "../store/useRecentKeysStore";
 
 // Fase A (spec UX estilo ClassCalc) — reemplaza el teclado SHIFT/ALPHA de
 // la Fase 1/3 por el patrón real de ClassCalc: rejilla base fija (más
@@ -50,6 +54,10 @@ export interface KeyDef {
    * aviso en vez de insertar algo que el motor no puede resolver. */
   unavailable?: boolean;
   secondaryAction?: KeySecondaryAction;
+  /** Fase H (spec_edo_complejos_tooltips.md §5.2, Módulo H0/H1): mismo
+   * criterio que precision-lab (main) -- campo nuevo, separado de
+   * ariaLabel (decisión confirmada por el usuario). Opcional. */
+  description?: string;
 }
 
 export const key = (
@@ -58,12 +66,14 @@ export const key = (
   ariaLabel: string,
   unavailable?: boolean,
   secondaryAction?: KeySecondaryAction,
+  description?: string,
 ): KeyDef => ({
   glyph,
   insertLatex,
   ariaLabel,
   unavailable,
   secondaryAction,
+  description,
 });
 
 export type { MathField };
@@ -116,67 +126,159 @@ const CORE_GRID: KeyDef[][] = [
 // — NO x/y, spec §5.2). ∛a (índice fijo en 3) se descarta directamente —
 // queda cubierta editando el índice de ⁿ√a (índice editable). Solo queda
 // DEL, que no tiene categoría temática (borra todo el campo).
-const SYMBOLS_ROW_1: KeyDef[] = [key("DEL", "", "borrar todo el campo")];
+const SYMBOLS_ROW_1: KeyDef[] = [
+  key("DEL", "", "borrar todo el campo", false, undefined, "borra todo lo escrito en el campo actual"),
+];
 
 // Se mantiene solo para AlgebraMode/CalculusMode/LinearSystemsMode
 // (código muerto) — BasicScientificMode ya no la renderiza (hideCoreGrid
 // también oculta esta fila, ver JSX), su contenido vive ahora en
 // KeyboardBasicPanel + φ/r nuevas.
 const SYMBOLS_ROW_2: KeyDef[] = [
-  key({ italic: "i" }, "i", "número imaginario"),
-  key("π", "\\pi", "pi"),
-  key("e", "e", "e"),
-  key("∞", "\\infty", "infinito"),
-  key({ italic: "x" }, "x", "variable x"),
-  key({ italic: "y" }, "y", "variable y"),
-  key({ italic: "z" }, "z", "variable z"),
-  key("θ", "\\theta", "theta"),
-  key("⌫", "", "borrar"),
+  key({ italic: "i" }, "i", "número imaginario", false, undefined, "unidad imaginaria (raíz cuadrada de -1)"),
+  key("π", "\\pi", "pi", false, undefined, "constante pi (≈3.14159)"),
+  key("e", "e", "e", false, undefined, "constante de Euler (≈2.71828)"),
+  key("∞", "\\infty", "infinito", false, undefined, "símbolo de infinito, para límites y sumatorias"),
+  key({ italic: "x" }, "x", "variable x", false, undefined, "variable x"),
+  key({ italic: "y" }, "y", "variable y", false, undefined, "variable y"),
+  key({ italic: "z" }, "z", "variable z", false, undefined, "variable z"),
+  key("θ", "\\theta", "theta", false, undefined, "letra griega theta, usada para ángulos"),
+  key("⌫", "", "borrar", false, undefined, "borra el último carácter escrito"),
 ];
 
+/**
+ * Fase X, Módulo X0 (spec_rediseno_visual.md sección 10 — Smart Docks):
+ * clasificación DEDUCIBLE de "variable/constante" vs. "operación",
+ * derivada de SYMBOLS_ROW_2 por `insertLatex` exacto. Paridad con
+ * precision-lab (main), mismo criterio — ver comentario allá.
+ */
+const VARIABLE_CONSTANT_LATEX = new Set(
+  SYMBOLS_ROW_2.filter((k) => k.insertLatex !== "'" && k.insertLatex !== "").map((k) => k.insertLatex),
+);
+
+export function isVariableOrConstantKey(k: KeyDef): boolean {
+  return VARIABLE_CONSTANT_LATEX.has(k.insertLatex);
+}
+
 const RELATIONAL_ROW: KeyDef[] = [
-  key("<", "<", "menor que"),
-  key(">", ">", "mayor que"),
-  key("≤", "\\le", "menor o igual que"),
-  key("≥", "\\ge", "mayor o igual que"),
+  key("<", "<", "menor que", false, undefined, "compara si el valor de la izquierda es menor que el de la derecha"),
+  key(">", ">", "mayor que", false, undefined, "compara si el valor de la izquierda es mayor que el de la derecha"),
+  key("≤", "\\le", "menor o igual que", false, undefined, "compara si el valor de la izquierda es menor o igual que el de la derecha"),
+  key("≥", "\\ge", "mayor o igual que", false, undefined, "compara si el valor de la izquierda es mayor o igual que el de la derecha"),
 ];
 
 const CALCULUS_ROW_1: KeyDef[] = [
-  key("∫", "\\int #0\\,dx", "integral indefinida"),
-  key({ base: "∫", sub: BOX, sup: BOX }, "\\int_{#0}^{#1}#2\\,dx", "integral definida"),
-  key("Σ", "\\sum_{#0}^{#1}#2", "sumatoria"),
+  key("∫", "\\int #0\\,dx", "integral indefinida", false, undefined, "antiderivada de una expresión respecto a x"),
+  key(
+    { base: "∫", sub: BOX, sup: BOX },
+    "\\int_{#0}^{#1}#2\\,dx",
+    "integral definida",
+    false,
+    undefined,
+    "área bajo la curva entre dos límites (edita los cuadros de límite inferior y superior)",
+  ),
+  key("Σ", "\\sum_{#0}^{#1}#2", "sumatoria", false, undefined, "suma de una expresión repetida según un índice, entre un valor inicial y uno final"),
   key("Π", "", "productoria", true),
-  key("LCM", "\\mathrm{lcm}\\left(#0,#1\\right)", "mínimo común múltiplo"),
-  key("GCD", "\\gcd\\left(#0,#1\\right)", "máximo común divisor"),
+  key("LCM", "\\mathrm{lcm}\\left(#0,#1\\right)", "mínimo común múltiplo", false, undefined, "el menor número que es múltiplo de ambos valores a la vez"),
+  key("GCD", "\\gcd\\left(#0,#1\\right)", "máximo común divisor", false, undefined, "el mayor número que divide a ambos valores sin dejar residuo"),
 ];
 
 const CALCULUS_ROW_2: KeyDef[] = [
-  key({ frac: ["d", "dx"] }, "\\frac{d}{dx}\\left(#0\\right)", "derivada"),
-  key({ frac: ["d²", "dx²"] }, "\\frac{d^2}{dx^2}\\left(#0\\right)", "derivada segunda"),
-  key({ frac: ["dⁿ", "dxⁿ"] }, "\\frac{d^3}{dx^3}\\left(#0\\right)", "derivada de orden n (edita el 3 por el orden que quieras)"),
+  key(
+    { frac: ["d", "dx"] },
+    "\\frac{d}{dx}\\left(#0\\right)",
+    "derivada",
+    false,
+    undefined,
+    "razón de cambio instantánea de una expresión respecto a x",
+  ),
+  key(
+    { frac: ["d²", "dx²"] },
+    "\\frac{d^2}{dx^2}\\left(#0\\right)",
+    "derivada segunda",
+    false,
+    undefined,
+    "derivada de la derivada -- mide cómo cambia la pendiente",
+  ),
+  key(
+    { frac: ["dⁿ", "dxⁿ"] },
+    "\\frac{d^3}{dx^3}\\left(#0\\right)",
+    "derivada de orden n (edita el 3 por el orden que quieras)",
+    false,
+    undefined,
+    "deriva la expresión repetidamente -- edita el número de orden en la plantilla",
+  ),
   key({ frac: ["∂", "∂x"] }, "", "derivada parcial", true),
-  key({ base: "lim", sub: "x→a" }, "\\lim_{#0\\to#1}#2", "límite"),
-  key({ base: "lim", sub: "x→∞" }, "\\lim_{#0\\to\\infty}#1", "límite al infinito"),
-  key({ base: "lim", sub: "x→a±" }, "\\lim_{#0\\to#1^{#2}}#3", "límite lateral (edita + o - en el exponente)"),
+  key(
+    { base: "lim", sub: "x→a" },
+    "\\lim_{#0\\to#1}#2",
+    "límite",
+    false,
+    undefined,
+    "valor al que se aproxima una expresión cuando la variable se acerca a un punto",
+  ),
+  key(
+    { base: "lim", sub: "x→∞" },
+    "\\lim_{#0\\to\\infty}#1",
+    "límite al infinito",
+    false,
+    undefined,
+    "valor al que se aproxima una expresión cuando la variable crece sin límite",
+  ),
+  key(
+    { base: "lim", sub: "x→a±" },
+    "\\lim_{#0\\to#1^{#2}}#3",
+    "límite lateral (edita + o - en el exponente)",
+    false,
+    undefined,
+    "límite acercándose solo por la derecha (+) o solo por la izquierda (-) de un punto",
+  ),
 ];
+
+// Fase H (spec_edo_complejos_tooltips.md §5.1/5.3, Módulo H1): mismo
+// lookup que main -- una entrada por nombre de función cubre directas/
+// hiperbólicas, y las inversas arman el texto con el sufijo en el .map().
+const TRIG_DESCRIPTIONS: Record<string, string> = {
+  sin: "seno de un ángulo",
+  cos: "coseno de un ángulo",
+  tan: "tangente de un ángulo",
+  csc: "cosecante de un ángulo (recíproco del seno)",
+  sec: "secante de un ángulo (recíproco del coseno)",
+  cot: "cotangente de un ángulo (recíproco de la tangente)",
+  sinh: "seno hiperbólico",
+  cosh: "coseno hiperbólico",
+  tanh: "tangente hiperbólica",
+  csch: "cosecante hiperbólica",
+  sech: "secante hiperbólica",
+  coth: "cotangente hiperbólica",
+};
 
 const CATEGORY_MENUS: Record<string, { section: string; keys: KeyDef[] }[]> = {
   Trigonométricas: [
     {
       section: "Directas",
       keys: ["sin", "cos", "tan", "csc", "sec", "cot"].map((f) =>
-        key(f, `\\${f}\\left(#0\\right)`, f),
+        key(f, `\\${f}\\left(#0\\right)`, f, false, undefined, TRIG_DESCRIPTIONS[f]),
       ),
     },
     {
       section: "Inversas",
       keys: ["sin", "cos", "tan", "csc", "sec", "cot"].map((f) =>
-        key({ sup: "-1", base: f }, `\\${f}^{-1}\\left(#0\\right)`, `${f} inversa`),
+        key(
+          { sup: "-1", base: f },
+          `\\${f}^{-1}\\left(#0\\right)`,
+          `${f} inversa`,
+          false,
+          undefined,
+          `función inversa de la ${TRIG_DESCRIPTIONS[f]} -- da el ángulo cuyo/a ${f} es el valor ingresado`,
+        ),
       ),
     },
     {
       section: "Hiperbólicas",
-      keys: ["sinh", "cosh", "tanh", "csch", "sech", "coth"].map((f) => key(f, `${f}\\left(#0\\right)`, f)),
+      keys: ["sinh", "cosh", "tanh", "csch", "sech", "coth"].map((f) =>
+        key(f, `${f}\\left(#0\\right)`, f, false, undefined, TRIG_DESCRIPTIONS[f]),
+      ),
     },
     // Módulo A (spec_motor_matematico_pendiente.md §2, activación pedida
     // por el usuario): csch⁻¹/sech⁻¹/coth⁻¹ ya son computables — el motor
@@ -187,7 +289,14 @@ const CATEGORY_MENUS: Record<string, { section: string; keys: KeyDef[] }[]> = {
     {
       section: "Hiperbólicas inversas",
       keys: ["sinh", "cosh", "tanh", "csch", "sech", "coth"].map((f) =>
-        key({ sup: "-1", base: f }, `${f}^{-1}\\left(#0\\right)`, `${f} inversa`),
+        key(
+          { sup: "-1", base: f },
+          `${f}^{-1}\\left(#0\\right)`,
+          `${f} inversa`,
+          false,
+          undefined,
+          `función inversa de la ${TRIG_DESCRIPTIONS[f]}`,
+        ),
       ),
     },
   ],
@@ -197,12 +306,94 @@ CATEGORY_MENUS.Complejos = [
   {
     section: "Funciones",
     keys: [
-      key("Re()", "\\mathrm{re}\\left(#0\\right)", "parte real"),
-      key("Im()", "\\mathrm{im}\\left(#0\\right)", "parte imaginaria"),
-      key("arg()", "\\mathrm{arg}\\left(#0\\right)", "argumento"),
-      key("conj()", "\\mathrm{conj}\\left(#0\\right)", "conjugado"),
-      key("|z|", "\\left|#0\\right|", "módulo"),
-      key("⇄ Polar", "\\mathrm{topolar}\\left(#0\\right)", "convertir a forma polar"),
+      key("Re()", "\\mathrm{re}\\left(#0\\right)", "parte real", false, undefined, "componente real de un número complejo"),
+      key("Im()", "\\mathrm{im}\\left(#0\\right)", "parte imaginaria", false, undefined, "componente imaginaria de un número complejo"),
+      key("arg()", "\\mathrm{arg}\\left(#0\\right)", "argumento", false, undefined, "ángulo del número complejo respecto al eje real positivo"),
+      key("conj()", "\\mathrm{conj}\\left(#0\\right)", "conjugado", false, undefined, "el mismo número complejo con la parte imaginaria de signo opuesto"),
+      key("|z|", "\\left|#0\\right|", "módulo", false, undefined, "distancia del número complejo al origen"),
+      key(
+        "⇄ Polar",
+        "\\mathrm{topolar}\\left(#0\\right)",
+        "convertir a forma polar",
+        false,
+        undefined,
+        "reescribe el número complejo como módulo y ángulo en vez de parte real e imaginaria",
+      ),
+    ],
+  },
+  // Fase F (Módulo F2/F3): Log/zⁿ/ⁿ√z/Graficar activas (F1/F3 ya las
+  // construyeron). Res/Sing quedan `unavailable` -- F0 encontró que
+  // fraction.js no sirve para descomposición simbólica en fracciones
+  // parciales (solo aritmética de fracciones numéricas), y no hay otra
+  // vía verificable en este entorno sin Algebrite real.
+  {
+    section: "Avanzado",
+    keys: [
+      key(
+        "Log(z)",
+        "\\mathrm{log}\\left(#0\\right)",
+        "logaritmo complejo (rama principal)",
+        false,
+        undefined,
+        "extensión del logaritmo a números complejos -- usa el módulo y el argumento del número",
+      ),
+      key({ sup: "n", base: "z" }, "#0^{#1}", "potencia compleja", false, undefined, "un número complejo elevado a cualquier exponente"),
+      key(
+        { sqrt: "z", index: "n" },
+        "\\mathrm{root}\\left(#0,#1\\right)",
+        "raíz n-ésima compleja (rama principal)",
+        false,
+        undefined,
+        "raíz de cualquier índice de un número complejo -- edita el número (base) y el índice (n)",
+      ),
+      key(
+        "cosθ+i·sinθ",
+        "\\cos\\left(\\theta\\right)+i\\cdot\\sin\\left(\\theta\\right)",
+        "identidad de Euler expandida",
+        false,
+        undefined,
+        "plantilla de referencia: forma trigonométrica de un número complejo de módulo 1",
+      ),
+      key(
+        "r·e^{iθ}",
+        "#0\\cdot e^{i\\cdot#1}",
+        "forma polar de un número complejo",
+        false,
+        undefined,
+        "escribe un número complejo a partir de su módulo (r) y su ángulo (θ)",
+      ),
+      key(
+        { sup: "iθ", base: "e" },
+        "e^{i\\theta}",
+        "exponencial compleja",
+        false,
+        undefined,
+        "forma exponencial de un número complejo de módulo 1 (equivalente a cosθ+i·sinθ)",
+      ),
+      key(
+        "Res(□,z=□)",
+        "\\mathrm{Res}\\left(#0,z=#1\\right)",
+        "residuo en un polo (funciones racionales)",
+        true,
+        undefined,
+        "coeficiente clave del comportamiento de una función racional cerca de un polo -- edita la expresión y el punto z",
+      ),
+      key(
+        "Sing(□)",
+        "\\mathrm{Sing}\\left(#0\\right)",
+        "singularidades (funciones racionales)",
+        true,
+        undefined,
+        "lista los puntos donde una función racional no está definida",
+      ),
+      key(
+        "Graficar",
+        "",
+        "graficar en el plano de Argand",
+        false,
+        undefined,
+        "muestra el número complejo ya evaluado como un punto en el plano (eje real / eje imaginario)",
+      ),
     ],
   },
 ];
@@ -235,34 +426,48 @@ CATEGORY_MENUS.Álgebra = [
   {
     section: "Logaritmos",
     keys: [
-      key("ln", "\\ln\\left(#0\\right)", "logaritmo natural"),
-      key("log", "\\log\\left(#0\\right)", "logaritmo base 10"),
-      key({ sub: BOX, base: "log" }, "\\log_{#0}\\left(#1\\right)", "logaritmo con base"),
-      key("log₂", "\\log_{2}\\left(#0\\right)", "logaritmo base 2"),
+      key("ln", "\\ln\\left(#0\\right)", "logaritmo natural", false, undefined, "logaritmo en base e (≈2.718)"),
+      key("log", "\\log\\left(#0\\right)", "logaritmo base 10", false, undefined, "logaritmo en base 10"),
+      key(
+        { sub: BOX, base: "log" },
+        "\\log_{#0}\\left(#1\\right)",
+        "logaritmo con base",
+        false,
+        undefined,
+        "logaritmo con una base elegida por vos (edita el subíndice)",
+      ),
+      key("log₂", "\\log_{2}\\left(#0\\right)", "logaritmo base 2", false, undefined, "logaritmo en base 2"),
     ],
   },
   {
     section: "Exponenciales",
     keys: [
-      key({ sup: "n", base: "e" }, "e^{#0}", "e a la n"),
-      key({ sup: "n", base: "10" }, "10^{#0}", "10 a la n"),
-      key({ sup: "2", base: BOX }, "#0^2", "a al cuadrado"),
-      key({ sup: "n", base: BOX }, "#0^{#1}", "a a la n"),
-      key("exp", "\\exp\\left(#0\\right)", "exponencial"),
+      key({ sup: "n", base: "e" }, "e^{#0}", "e a la n", false, undefined, "el número e elevado a un exponente"),
+      key({ sup: "n", base: "10" }, "10^{#0}", "10 a la n", false, undefined, "10 elevado a un exponente"),
+      key({ sup: "2", base: BOX }, "#0^2", "a al cuadrado", false, undefined, "un valor multiplicado por sí mismo"),
+      key({ sup: "n", base: BOX }, "#0^{#1}", "a a la n", false, undefined, "un valor elevado a cualquier exponente editable"),
+      key("exp", "\\exp\\left(#0\\right)", "exponencial", false, undefined, "e elevado al valor ingresado (equivalente a e^x)"),
     ],
   },
   {
     section: "Radicales",
     keys: [
-      key({ sqrt: BOX }, "\\sqrt{#0}", "raíz cuadrada de a"),
-      key({ sqrt: BOX, index: BOX }, "\\sqrt[#0]{#1}", "raíz de índice n editable"),
+      key({ sqrt: BOX }, "\\sqrt{#0}", "raíz cuadrada de a", false, undefined, "raíz cuadrada de un valor"),
+      key(
+        { sqrt: BOX, index: BOX },
+        "\\sqrt[#0]{#1}",
+        "raíz de índice n editable",
+        false,
+        undefined,
+        "raíz de cualquier índice (edita el índice pequeño de la esquina)",
+      ),
     ],
   },
   {
     section: "Generales",
     keys: [
-      key("|a|", "\\left|#0\\right|", "valor absoluto de a"),
-      key("a!", "#0!", "factorial de a"),
+      key("|a|", "\\left|#0\\right|", "valor absoluto de a", false, undefined, "distancia de un número a cero (siempre positiva)"),
+      key("a!", "#0!", "factorial de a", false, undefined, "producto de todos los enteros positivos hasta a"),
     ],
   },
   {
@@ -281,15 +486,68 @@ CATEGORY_MENUS.Álgebra = [
 // Sumas y productos/Derivadas/Límites). La tira vieja (CALCULUS_ROW_1/2
 // tal cual, con LCM/GCD incluidas) se sigue renderizando sin cambios
 // para GraphMode/código muerto — ver `!hideCoreGrid` en el JSX.
+// Fase E (spec_edo_complejos_tooltips.md §2.3), Módulo E2 CERRADO: el
+// motor EDO de Lite (engine/stepEngine/ode.ts) ya cubre exactamente lo
+// que estas 5 teclas producen -- y'=f(x), y''+ay'+by=0, y''+ay'+by=c
+// (b≠0), la condición inicial y(a)=b, y la notación alternativa dy/dx
+// (normalizada a y' en normalize.ts). Activadas. "y(a)=b" y "dy/dx" no
+// son operaciones en sí mismas (no tienen un caso propio en ode.ts) pero
+// sí producen texto que detectODE/solveODE reconocen correctamente
+// combinadas con las otras 3 -- se activan igual que en main (E1/E3).
+const ODE_ROW: KeyDef[] = [
+  key(
+    "y'=□",
+    "y'=#0",
+    "ecuación diferencial de primer orden",
+    false,
+    undefined,
+    "relaciona la razón de cambio de y con x -- se resuelve integrando",
+  ),
+  key(
+    "y''+ay'+by=0",
+    "y''+#0y'+#1y=0",
+    "ecuación diferencial lineal homogénea de segundo orden",
+    false,
+    undefined,
+    "ecuación con segunda derivada y coeficientes constantes, igualada a cero",
+  ),
+  key(
+    "y''+ay'+by=c",
+    "y''+#0y'+#1y=#2",
+    "ecuación diferencial lineal no homogénea de segundo orden",
+    false,
+    undefined,
+    "igual que la anterior, pero igualada a un valor constante c en vez de cero",
+  ),
+  key(
+    "y(a)=b",
+    "y(#0)=#1",
+    "condición inicial (se escribe junto a la ecuación diferencial)",
+    false,
+    undefined,
+    "fija el valor de y en un punto específico, separada de la ecuación por una coma",
+  ),
+  key(
+    { frac: ["dy", "dx"] },
+    "\\frac{dy}{dx}",
+    "notación alternativa de derivada para ecuaciones diferenciales",
+    false,
+    undefined,
+    "otra forma de escribir y' (misma derivada de y respecto a x)",
+  ),
+];
+
 CATEGORY_MENUS.Cálculo = [
   { section: "Integrales", keys: CALCULUS_ROW_1.slice(0, 2) },
   { section: "Sumas y productos", keys: CALCULUS_ROW_1.slice(2, 4) },
   { section: "Derivadas", keys: CALCULUS_ROW_2.slice(0, 4) },
   { section: "Límites", keys: CALCULUS_ROW_2.slice(4, 7) },
+  // Fase E: 5ª sección -- motor (E2) ya cerrado, las 5 teclas activas.
+  { section: "Ecuaciones diferenciales", keys: ODE_ROW },
 ];
 
 const CATEGORIES_FULL = ["Trigonométricas", "Símbolos", "Complejos"] as const;
-const CATEGORIES_BASIC_MODE = ["Trigonométricas", "Álgebra", "Cálculo", "Símbolos", "Complejos"] as const;
+const CATEGORIES_BASIC_MODE = ["Símbolos", "Álgebra", "Trigonométricas", "Cálculo", "Complejos"] as const;
 
 interface MathKeyboardProps {
   field: MathField;
@@ -307,6 +565,9 @@ interface MathKeyboardProps {
   onSolveEquation?: () => void;
   onSolveSystem?: (rows?: number) => void;
   onSimplify?: () => void;
+  // Fase F (Módulo F3): mismo patrón que "⏎" (onEnter) más abajo -- glyph
+  // reservado + insertLatex vacío, interceptado en press().
+  onGraphComplex?: () => void;
   /** Módulo 1: true para BasicScientificMode — oculta CORE_GRID/
    * RELATIONAL_ROW/SYMBOLS_ROW_2 (ya viven en KeyboardBasicPanel, dentro
    * del dock) y agrega la pestaña temporal "Funciones". Default false —
@@ -328,6 +589,7 @@ export function MathKeyboard({
   onSolveEquation,
   onSolveSystem,
   onSimplify,
+  onGraphComplex,
   hideCoreGrid = false,
 }: MathKeyboardProps) {
   const CATEGORIES = hideCoreGrid ? CATEGORIES_BASIC_MODE : CATEGORIES_FULL;
@@ -336,16 +598,39 @@ export function MathKeyboard({
   // Pendiente #2: menú chico "¿cuántas ecuaciones?" al tocar "Sistema".
   const [showSystemSizeMenu, setShowSystemSizeMenu] = useState(false);
 
+  // Fase X, Módulo X0 (Smart Docks) — alcance confirmado por Carlos:
+  // separado por modo.
+  const activeMode = useActiveModeStore((s) => s.activeMode);
+  const recordKey = useRecentKeysStore((s) => s.recordKey);
+
   function press(k: KeyDef) {
     if (k.unavailable) {
       setNotice(`${k.ariaLabel}: todavía no disponible.`);
       window.setTimeout(() => setNotice(null), 2500);
       return;
     }
+    if (k.glyph === "Graficar" && k.insertLatex === "") return onGraphComplex?.();
     field?.focus();
-    if (k.insertLatex) field?.insert(k.insertLatex);
+    if (k.insertLatex) {
+      field?.insert(k.insertLatex);
+      recordKey(activeMode, k, isVariableOrConstantKey(k) ? "variable" : "operation");
+    }
     setOpenCategory(null);
   }
+
+  // Fase X, Módulo X0: registra `press` como manejador de inserción del
+  // modo activo, para RecentKeysBar.tsx. Mismo patrón obligatorio de
+  // dos-efectos-separados (ver cabecera de useKeyboardPanelStore.ts) —
+  // paridad con precision-lab (main).
+  const setInsertHandler = useKeyboardPanelStore((s) => s.setInsertHandler);
+  useEffect(() => {
+    setInsertHandler(press);
+  });
+  const clearInsertHandler = useKeyboardPanelStore((s) => s.clearInsertHandler);
+  useEffect(() => {
+    return () => clearInsertHandler();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function pressBase(k: KeyDef) {
     if (k.glyph === "⏎") return onEnter?.();
@@ -358,8 +643,14 @@ export function MathKeyboard({
     press(k);
   }
 
+  // Fase V, Módulo V0 (paridad con NaturalMathKeyboard.tsx de main):
+  // delegación de eventos en vez de tocar cada onClick individual.
+  function handleKeyboardClickCapture(e: ReactMouseEvent<HTMLDivElement>) {
+    if ((e.target as HTMLElement).closest("button")) triggerKeyFeedback();
+  }
+
   return (
-    <div className="relative rounded-xl bg-chrome p-3">
+    <div className="relative rounded-xl bg-chrome p-3" onClickCapture={handleKeyboardClickCapture}>
       {notice && (
         <div className="absolute bottom-full left-3 right-3 mb-1.5 rounded-lg bg-chrome-soft px-3 py-2 text-center text-xs text-bone shadow-lg">
           {notice}
@@ -376,6 +667,7 @@ export function MathKeyboard({
                     key={`sym1-${i}`}
                     onClick={() => pressSymbol(k)}
                     aria-label={k.ariaLabel}
+                    title={k.description}
                     className="rounded-md bg-chrome py-2 text-[11px] text-bone hover:bg-chrome/70"
                   >
                     <KeyGlyph glyph={k.glyph} />
@@ -392,6 +684,7 @@ export function MathKeyboard({
                       key={`sym2-${i}`}
                       onClick={() => pressSymbol(k)}
                       aria-label={k.ariaLabel}
+                    title={k.description}
                       className="rounded-md bg-chrome py-2 text-[11px] text-bone hover:bg-chrome/70"
                     >
                       <KeyGlyph glyph={k.glyph} />
@@ -502,6 +795,7 @@ export function MathKeyboard({
                         key={`${group.section}-${i}`}
                         onClick={() => press(k)}
                         aria-label={k.ariaLabel}
+                    title={k.description}
                         className={
                           // Módulo de cierre (honestidad visual): mismo patrón
                           // gris/borde punteado que ya usa KeyboardBasicPanel.tsx
@@ -595,6 +889,7 @@ export function MathKeyboard({
                 key={i}
                 onClick={() => press(k)}
                 aria-label={k.ariaLabel}
+                    title={k.description}
                 className={
                   k.unavailable
                     ? "rounded-md bg-chrome-soft py-1.5 text-[11px] text-bone/40 hover:bg-chrome-soft/70"
@@ -613,6 +908,7 @@ export function MathKeyboard({
                 key={i}
                 onClick={() => press(k)}
                 aria-label={k.ariaLabel}
+                    title={k.description}
                 className={
                   k.unavailable
                     ? "rounded-md bg-chrome-soft py-1.5 text-[10px] text-bone/40 hover:bg-chrome-soft/70"
@@ -670,7 +966,8 @@ export function MathKeyboard({
                         ? "rounded-md bg-chrome-soft/80 py-2.5 text-sm font-medium text-bone hover:bg-chrome-soft/60"
                         : "rounded-md bg-chrome-soft py-2.5 text-[11px] text-marker hover:bg-chrome-soft/70";
                 return (
-                  <button key={j} onClick={() => pressBase(k)} aria-label={k.ariaLabel} className={className}>
+                  <button key={j} onClick={() => pressBase(k)} aria-label={k.ariaLabel}
+                    title={k.description} className={className}>
                     <KeyGlyph glyph={k.glyph} />
                   </button>
                 );
@@ -684,6 +981,7 @@ export function MathKeyboard({
                 key={i}
                 onClick={() => press(k)}
                 aria-label={k.ariaLabel}
+                    title={k.description}
                 className="rounded-md bg-paper-soft py-1.5 text-sm text-ink hover:bg-paper-line/60"
               >
                 <KeyGlyph glyph={k.glyph} />

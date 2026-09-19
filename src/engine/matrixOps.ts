@@ -389,6 +389,38 @@ export function rref(a: Matrix): { result: Matrix; steps: Step[] } {
   return { result: m, steps };
 }
 
+// Módulo L0 (spec_graficacion_matrices_estadistica_unidades.md, sección
+// 5): rango y traza expuestos como operaciones con resultado visible.
+// `rank` reutiliza `ref()` (la misma eliminación que ya usa `gaussJordan`
+// internamente para clasificar sistemas) en vez de reimplementarla — se
+// cuentan las filas no nulas de la forma escalonada resultante, sin
+// tocar `ref()` ni `gaussJordan` mismos.
+
+export function trace(a: Matrix): { value: Fraction; steps: Step[] } {
+  const { rows, cols } = dims(a);
+  if (rows !== cols) {
+    throw { code: ErrorCode.DIMENSION_MISMATCH, message: "La traza solo está definida para matrices cuadradas." } as AppError;
+  }
+  let sum = new Fraction(0);
+  for (let i = 0; i < rows; i++) sum = sum.add(a[i][i]);
+  return {
+    value: sum,
+    steps: [{ id: "trace", latex: `\\operatorname{tr}(A) = ${sum.toFraction(true)}`, explanation: "Suma de los elementos de la diagonal principal." }],
+  };
+}
+
+export function rank(a: Matrix): { value: number; steps: Step[] } {
+  const { result, steps: refSteps } = ref(a);
+  const value = result.filter((row) => row.some((v) => !v.equals(0))).length;
+  return {
+    value,
+    steps: [
+      ...refSteps,
+      { id: "rank", latex: `\\operatorname{rango}(A) = ${value}`, explanation: "Número de filas no nulas en la forma escalonada (ref)." },
+    ],
+  };
+}
+
 /** Producto de Kronecker A⊗B. */
 export function kroneckerProduct(a: Matrix, b: Matrix): { result: Matrix; steps: Step[] } {
   const da = dims(a);

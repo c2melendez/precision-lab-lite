@@ -36,6 +36,14 @@ export const STAT_FUNCTION_NAMES = [
   // libre) ni su firma.
   "variancePop",
   "stdevPop",
+  // Módulo M0 (spec_graficacion_matrices_estadistica_unidades.md, sección
+  // 6.1): "percentile" toma (p, ...datos) como primer argumento, mismo
+  // orden que Percentile en main (stat_functions.py) para paridad de firma.
+  "percentile",
+  "q1",
+  "q2",
+  "q3",
+  "iqr",
 ] as const;
 export type StatFunctionName = (typeof STAT_FUNCTION_NAMES)[number];
 
@@ -137,6 +145,81 @@ export function mad(values: number[]): number {
   return mean(values.map((v) => Math.abs(v - m)));
 }
 
+// Módulo M0 (spec_graficacion_matrices_estadistica_unidades.md, sección
+// 6.1): cuartiles/percentiles/RIQ. Misma convención DEDUCIBLE que main
+// (interpolación lineal, numpy.percentile default) — documentado ahí,
+// no repetido acá salvo por este resumen.
+export function percentile(values: number[], p: number): number {
+  if (values.length === 0) throw new Error("percentile necesita al menos un valor.");
+  if (p < 0 || p > 100) throw new Error("El percentil debe estar entre 0 y 100.");
+  const sorted = [...values].sort((a, b) => a - b);
+  const n = sorted.length;
+  if (n === 1) return sorted[0];
+  const index = (p / 100) * (n - 1);
+  const lower = Math.floor(index);
+  const upper = Math.ceil(index);
+  if (lower === upper) return sorted[lower];
+  const frac = index - lower;
+  return sorted[lower] + frac * (sorted[upper] - sorted[lower]);
+}
+
+export function q1(values: number[]): number {
+  return percentile(values, 25);
+}
+
+export function q3(values: number[]): number {
+  return percentile(values, 75);
+}
+
+export function iqr(values: number[]): number {
+  return q3(values) - q1(values);
+}
+
+// Módulo M1 (spec_graficacion_matrices_estadistica_unidades.md, sección
+// 6.2): correlación y regresión lineal simple. Opera sobre PARES (x,y) —
+// funciones nuevas, no encajan en el patrón `values: number[]` del resto
+// de este archivo, así que no reutilizan `tryStatFunction` (que solo
+// despacha funciones de una lista).
+export function correlation(x: number[], y: number[]): number {
+  if (x.length !== y.length) throw new Error(`x e y deben tener la misma longitud; recibidas ${x.length} y ${y.length}.`);
+  if (x.length < 2) throw new Error("La correlación necesita al menos 2 pares (x,y).");
+  const mx = mean(x);
+  const my = mean(y);
+  let sxy = 0;
+  let sxx = 0;
+  let syy = 0;
+  for (let i = 0; i < x.length; i++) {
+    const dx = x[i] - mx;
+    const dy = y[i] - my;
+    sxy += dx * dy;
+    sxx += dx * dx;
+    syy += dy * dy;
+  }
+  if (sxx === 0 || syy === 0) throw new Error("La correlación no está definida cuando x o y son constantes (varianza cero).");
+  return sxy / Math.sqrt(sxx * syy);
+}
+
+export function regressionSlope(x: number[], y: number[]): number {
+  if (x.length !== y.length) throw new Error(`x e y deben tener la misma longitud; recibidas ${x.length} y ${y.length}.`);
+  if (x.length < 2) throw new Error("La regresión necesita al menos 2 pares (x,y).");
+  const mx = mean(x);
+  const my = mean(y);
+  let sxy = 0;
+  let sxx = 0;
+  for (let i = 0; i < x.length; i++) {
+    sxy += (x[i] - mx) * (y[i] - my);
+    sxx += (x[i] - mx) ** 2;
+  }
+  if (sxx === 0) throw new Error("La pendiente no está definida cuando todos los x son iguales (recta vertical).");
+  return sxy / sxx;
+}
+
+export function regressionIntercept(x: number[], y: number[]): number {
+  const mx = mean(x);
+  const my = mean(y);
+  return my - regressionSlope(x, y) * mx;
+}
+
 /** Evita basura de flotantes tipo 2.0000000000000004. */
 function formatNumber(n: number): string {
   return Number(n.toPrecision(12)).toString();
@@ -150,7 +233,12 @@ function formatNumber(n: number): string {
  * como símbolo desconocido, que es lo que pasaba antes de esta fase).
  */
 export function tryStatFunction(expr: string): string | null {
-  const match = expr.match(/^([a-zA-Z]+)\((.*)\)$/s);
+  // Módulo M0: el regex original ([a-zA-Z]+) no aceptaba dígitos en el
+  // nombre — bug real encontrado por el test de "q1(...)"/"q3(...)"
+  // (que antes devolvía null silenciosamente, nunca un error visible).
+  // "q1"/"q3" son los únicos nombres de esta lista con dígito, así que
+  // ningún nombre existente cambia de comportamiento con este fix.
+  const match = expr.match(/^([a-zA-Z][a-zA-Z0-9]*)\((.*)\)$/s);
   if (!match) return null;
   const [, name, argsStr] = match;
   if (!isStatFunctionName(name)) return null;
@@ -193,6 +281,21 @@ export function tryStatFunction(expr: string): string | null {
       return formatNumber(variancePopulation(values));
     case "mad":
       return formatNumber(mad(values));
+    case "percentile": {
+      if (values.length < 2) {
+        throw new Error("percentile necesita al menos un valor de datos después de p.");
+      }
+      const [p, ...data] = values;
+      return formatNumber(percentile(data, p));
+    }
+    case "q1":
+      return formatNumber(q1(values));
+    case "q2":
+      return formatNumber(median(values));
+    case "q3":
+      return formatNumber(q3(values));
+    case "iqr":
+      return formatNumber(iqr(values));
     default:
       return null;
   }

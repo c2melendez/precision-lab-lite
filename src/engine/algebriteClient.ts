@@ -189,4 +189,68 @@ export function toDecimalApprox(algebriteResult: string): string | null {
   }
 }
 
+/**
+ * Módulo K1 (spec_graficacion_matrices_estadistica_unidades.md, sección
+ * 3.2, diseño confirmado en K0): tres primitivas nuevas, agregadas aquí
+ * (no en un archivo aparte) porque la regla de capa dura de este
+ * archivo (ver cabecera) exige que TODO acceso a Algebrite pase por
+ * acá. `engine/eigenOps.ts` las importa, nunca importa "algebrite"
+ * directamente.
+ */
+
+/** Expande una expresión polinómica a su forma canónica (necesario antes de roots()). */
+export function expand(expressionAlgebrite: string): string {
+  try {
+    const result: string = Algebrite.run(`expand(${expressionAlgebrite})`);
+    if (typeof result !== "string" || /stop|Stop/.test(result)) {
+      throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, `No se pudo expandir: ${result}`);
+    }
+    return result;
+  } catch (err) {
+    if ((err as AppError).code) throw err;
+    throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, `Fallo al expandir: ${String(err)}`);
+  }
+}
+
+/**
+ * MCD de dos polinomios (K0: usado para detectar multiplicidad de una
+ * raíz — una raíz repetida de p también lo es de mcd(p, p'), con
+ * multiplicidad uno menos). Confirmado contra el paquete real:
+ * gcd(coprimos) devuelve una constante ("1"), gcd con raíz compartida
+ * devuelve el factor lineal correspondiente.
+ */
+export function polynomialGcd(pAlgebrite: string, qAlgebrite: string): string {
+  try {
+    const result: string = Algebrite.run(`gcd(${pAlgebrite},${qAlgebrite})`);
+    if (typeof result !== "string" || /stop|Stop/.test(result)) {
+      throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, `No se pudo calcular el MCD: ${result}`);
+    }
+    return result;
+  } catch (err) {
+    if ((err as AppError).code) throw err;
+    throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, `Fallo al calcular MCD: ${String(err)}`);
+  }
+}
+
+/**
+ * Sustituye `variable` por `value` (puede ser una expresión exacta —
+ * racional, irracional, compleja) en `expressionAlgebrite` y fuerza una
+ * aproximación decimal. Confirmado contra el paquete real que esto
+ * funciona incluso cuando `value` es `i`, `2^(1/2)`, etc. — es la única
+ * forma encontrada en K0 de evaluar numéricamente en un punto que no es
+ * un float de JS de entrada.
+ */
+export function substituteAndFloat(expressionAlgebrite: string, variable: string, valueAlgebrite: string): string {
+  try {
+    const result: string = Algebrite.run(`float(subst(${valueAlgebrite},${variable},${expressionAlgebrite}))`);
+    if (typeof result !== "string" || result.length === 0) {
+      throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, "No se pudo evaluar numéricamente.");
+    }
+    return result;
+  } catch (err) {
+    if ((err as AppError).code) throw err;
+    throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, `Fallo al evaluar: ${String(err)}`);
+  }
+}
+
 export { ErrorCode };

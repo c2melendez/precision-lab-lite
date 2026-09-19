@@ -27,7 +27,7 @@
 
 import { evaluate } from "./algebriteClient";
 
-export const COMPLEX_FUNCTION_NAMES = ["re", "im", "arg", "conj", "topolar"] as const;
+export const COMPLEX_FUNCTION_NAMES = ["re", "im", "arg", "conj", "topolar", "log", "root"] as const;
 export type ComplexFunctionName = (typeof COMPLEX_FUNCTION_NAMES)[number];
 
 function isComplexFunctionName(name: string): name is ComplexFunctionName {
@@ -84,6 +84,40 @@ function formatNumber(n: number): string {
   return Number(n.toPrecision(12)).toString();
 }
 
+/** Construye "A+B*i" en sintaxis Algebrite a partir de (re, im), mismo
+ * formato que produce `conj()` más abajo -- reutilizado por root()/log().
+ * "snap" a 0 los componentes despreciables frente a la escala del número
+ * (hallazgo real: root(-4,2) da re=1.2246...e-16 en vez de 0 exacto, por
+ * ruido de punto flotante de Math.cos/sin -- sin este ajuste se vería
+ * "1.22464679915e-16+2*i" en vez de "2*i"). */
+function formatComplex(re: number, im: number): string {
+  const scale = Math.max(1, Math.hypot(re, im));
+  const eps = 1e-9 * scale;
+  const reAdj = Math.abs(re) < eps ? 0 : re;
+  const imAdj = Math.abs(im) < eps ? 0 : im;
+  const reFormatted = formatNumber(reAdj);
+  if (imAdj === 0) return reFormatted;
+  const imFormatted = formatNumber(Math.abs(imAdj));
+  const imTerm = imAdj > 0 ? `${imFormatted}*i` : `-${imFormatted}*i`;
+  if (reAdj === 0) return imTerm;
+  return imAdj > 0 ? `${reFormatted}+${imTerm}` : `${reFormatted}${imTerm}`;
+}
+
+/** Scanner de paréntesis balanceados -- necesario para root(z,n) porque
+ * `z` puede a su vez contener comas de otras llamadas a función (ej.
+ * "root(root(z,2),3)"). Mismo criterio que el scanner equivalente en
+ * `calculusIntent.ts` (main, Fase F). */
+function splitTopLevelComma(text: string): [string, string | null] {
+  let depth = 0;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === "(" || ch === "{" || ch === "[") depth++;
+    else if (ch === ")" || ch === "}" || ch === "]") depth--;
+    else if (ch === "," && depth === 0) return [text.slice(0, i), text.slice(i + 1)];
+  }
+  return [text, null];
+}
+
 /**
  * Mismo contrato que tryStatFunction: null si `expr` no es un llamado
  * completo a una de estas funciones (el flujo normal sigue su curso),
@@ -95,8 +129,51 @@ export function tryComplexFunction(expr: string): string | null {
   const [, name, argStr] = match;
   if (!isComplexFunctionName(name)) return null;
 
+  // Fase F (spec_edo_complejos_tooltips.md §3.2, Módulo F0/F1): Log(z) y
+  // root(z,n) se calculan en JS puro sobre la forma polar (mismo criterio
+  // ya establecido arriba para re/im/arg/conj/topolar -- Algebrite nunca
+  // se usa para la parte compleja en sí, solo para reducir la expresión
+  // de entrada a la forma canónica A+B*i). Rama principal, igual
+  // convención que sympy.root() en main (verificado en F0) -- para z
+  // real negativo, la raíz devuelta es la compleja principal, no la real.
+  if (name === "root") {
+    const [exprPart, nPart] = splitTopLevelComma(argStr);
+    if (nPart === null) {
+      throw new Error('root(z,n) requiere 2 argumentos: la expresión y el índice "n".');
+    }
+    const { re, im } = parseComplex(evaluate(exprPart.trim()));
+    const n = Number(evaluate(nPart.trim()));
+    if (!Number.isFinite(n) || n === 0) {
+      throw new Error(`Índice de raíz inválido: "${nPart.trim()}".`);
+    }
+    const r = Math.hypot(re, im);
+    const theta = Math.atan2(im, re);
+    const rOut = Math.pow(r, 1 / n);
+    const thetaOut = theta / n;
+    return formatComplex(rOut * Math.cos(thetaOut), rOut * Math.sin(thetaOut));
+  }
+
   const inner = evaluate(argStr.trim());
   const { re, im } = parseComplex(inner);
+
+  if (name === "log") {
+    // Hallazgo real de auditoría (Módulo F1/F2): "log" YA es una tecla
+    // existente en este repo ("logaritmo base 10", CORE_GRID y Álgebra >
+    // Logaritmos) que llega a Algebrite nativo sin pasar por acá -- mismo
+    // nombre de función que el "Log(z)" complejo nuevo, porque
+    // conceptualmente ES la misma función extendida a dominio complejo.
+    // Para no cambiar el comportamiento de "log(5)" (real, positivo) que
+    // ya funcionaba antes de este módulo, SOLO se intercepta acá cuando
+    // el dominio complejo realmente hace falta (im≠0 o re<0) -- en
+    // cualquier otro caso se retorna null y el flujo normal (Algebrite
+    // nativo, sin cambios) sigue como siempre.
+    if (im === 0 && re >= 0) return null;
+    const r = Math.hypot(re, im);
+    if (r === 0) {
+      throw new Error("log(0) no está definido (el módulo del número complejo es 0).");
+    }
+    return formatComplex(Math.log(r), Math.atan2(im, re));
+  }
 
   switch (name) {
     case "re":

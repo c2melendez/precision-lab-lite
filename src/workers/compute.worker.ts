@@ -9,7 +9,7 @@ import { evaluate, toLatex, toDecimalApprox, ErrorCode as ClientErrorCode } from
 import { toFractionResult, fractionToLatex } from "../engine/fractions";
 import { compileNumeric, numericLimit, numericLimitAtInfinity } from "../engine/numericFallback";
 import { tryStatFunction, splitTopLevelArgs } from "../engine/statFunctions";
-import { tryComplexFunction } from "../engine/complexFunctions";
+import { tryComplexFunction, parseComplex } from "../engine/complexFunctions";
 import { tryPlusMinus } from "../engine/plusMinus";
 import { tryCbrtSign } from "../engine/cbrtSign";
 import { solveLinearInequalitySystem } from "../engine/stepEngine/linearInequalitySystem";
@@ -38,9 +38,13 @@ import {
   dotProduct,
   crossProduct,
   vectorNorm,
+  trace,
+  rank,
 } from "../engine/matrixOps";
-import { analyzeGraph } from "../engine/stepEngine/graphing";
-import { ErrorCode, makeRequestId, type MathResult, type AppError } from "../types";
+import { analyzeGraph, analyzeGraphPolar, analyzeGraphParametric, analyzeGraphSurface3D } from "../engine/stepEngine/graphing";
+import { computeEigenvalues } from "../engine/eigenOps";
+import { solveODE } from "../engine/stepEngine/ode";
+import { ErrorCode, makeRequestId, type MathResult, type AppError, type ResultConfidence } from "../types";
 
 export type ComputeRequest =
   | { type: "evaluate"; requestId: string; expressionAlgebrite: string }
@@ -80,12 +84,49 @@ export type ComputeRequest =
   | {
       type: "matrixOp";
       requestId: string;
-      op: "add" | "subtract" | "multiply" | "transpose" | "determinant" | "inverse" | "power" | "ref" | "rref" | "kron" | "dot" | "cross" | "norm";
+      op: "add" | "subtract" | "multiply" | "transpose" | "determinant" | "inverse" | "power" | "ref" | "rref" | "kron" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank";
       a: (string | number)[][];
       b?: (string | number)[][];
       exponent?: number;
     }
   | { type: "graph"; requestId: string; expressionAlgebrite: string; variable: string; view: [number, number] }
+  | {
+      // Módulo I0 (spec_graficacion_matrices_estadistica_unidades.md,
+      // Fase I): gráfica polar r=f(θ) — mensaje separado de "graph" en
+      // vez de un campo "kind" opcional ahí, porque el payload es
+      // distinto (thetaRange, no view en x) y esto mantiene el
+      // discriminated union exhaustivo y explícito.
+      type: "graphPolar";
+      requestId: string;
+      expressionAlgebrite: string;
+      variable: string;
+      thetaRange: [number, number];
+    }
+  | {
+      // Módulo J1 (spec_graficacion_matrices_estadistica_unidades.md,
+      // sección 3.2): paramétrico 2D — mismo criterio que "graphPolar",
+      // mensaje propio en vez de sobrecargar "graph".
+      type: "graphParametric";
+      requestId: string;
+      xExpressionAlgebrite: string;
+      yExpressionAlgebrite: string;
+      parameter: string;
+      tRange: [number, number];
+    }
+  | {
+      // Módulo J2 (spec_graficacion_matrices_estadistica_unidades.md,
+      // sección 3.2, Opción B): superficie 3D z=f(x,y). Payload
+      // completamente distinto a los otros mensajes de graficación (dos
+      // variables, dos rangos, sin "samples" planos sino una grilla) —
+      // mismo criterio de mensaje propio.
+      type: "graphSurface3D";
+      requestId: string;
+      expressionAlgebrite: string;
+      varX: string;
+      varY: string;
+      xRange: [number, number];
+      yRange: [number, number];
+    }
   | {
       type: "solveInequality";
       requestId: string;
@@ -103,6 +144,30 @@ export type ComputeRequest =
       requestId: string;
       inequalities: { diffAlgebrite: string; operator: InequalityOperator }[];
       variables: string[];
+    }
+  | {
+      // Fase E (spec_edo_complejos_tooltips.md §2, Módulo E2): la EDO
+      // llega YA normalizada (preprocessLatex, ver BasicScientificMode.tsx)
+      // pero SIN pasar por parseExpression()/splitEquation -- ese pipeline
+      // trataría "y'=2x" como una ecuación de álgebra normal a despejar
+      // (splitEquation corta en el primer "=" sin saber que hay una
+      // derivada involucrada) y fallaría de forma confusa en tokenize()
+      // (la prima "'" no es un token reconocido ahí). Por eso este
+      // mensaje lleva el texto crudo (post-preprocessLatex), no
+      // left/rightAlgebrite como "solveAlgebra".
+      type: "ode";
+      requestId: string;
+      expression: string;
+    }
+  | {
+      // Fase F (spec_edo_complejos_tooltips.md §3.4, Módulo F3): botón
+      // "Graficar" -- evalúa la expresión a un número complejo concreto
+      // (re/im) para que la UI la pase al puente de navegación
+      // (useArgandBridgeStore.ts) hacia GraphingMode. Reutiliza
+      // evaluate()+parseComplex() (mismo motor que tryComplexFunction).
+      type: "argandPoint";
+      requestId: string;
+      expressionAlgebrite: string;
     };
 
 self.onmessage = (event: MessageEvent<ComputeRequest>) => {
@@ -135,10 +200,33 @@ function handle(msg: ComputeRequest): MathResult {
       return handleMatrixOp(msg, msg.requestId);
     case "graph":
       return handleGraph(msg.expressionAlgebrite, msg.variable, msg.view, msg.requestId);
+    case "graphPolar":
+      return handleGraphPolar(msg.expressionAlgebrite, msg.variable, msg.thetaRange, msg.requestId);
+    case "graphParametric":
+      return handleGraphParametric(
+        msg.xExpressionAlgebrite,
+        msg.yExpressionAlgebrite,
+        msg.parameter,
+        msg.tRange,
+        msg.requestId,
+      );
+    case "graphSurface3D":
+      return handleGraphSurface3D(
+        msg.expressionAlgebrite,
+        msg.varX,
+        msg.varY,
+        msg.xRange,
+        msg.yRange,
+        msg.requestId,
+      );
     case "solveInequality":
       return handleSolveInequality(msg.diffAlgebrite, msg.operator, msg.variable, msg.requestId);
     case "linearInequalitySystem":
       return handleLinearInequalitySystem(msg.inequalities, msg.variables, msg.requestId);
+    case "ode":
+      return runCalculus(msg.requestId, () => solveODE(msg.expression));
+    case "argandPoint":
+      return handleArgandPoint(msg.expressionAlgebrite, msg.requestId);
     default: {
       const unknownMsg = msg as { requestId?: string };
       return errorResult(
@@ -575,6 +663,7 @@ function handleMatrixOp(
     let resultLatex: string;
     let steps: MathResult["steps"];
     let fraction: MathResult["fraction"];
+    let confidence: ResultConfidence = "SYMBOLIC";
 
     switch (msg.op) {
       case "add": {
@@ -657,6 +746,60 @@ function handleMatrixOp(
         steps = s;
         break;
       }
+      case "trace": {
+        const { value, steps: s } = trace(a);
+        resultLatex = value.toFraction(true);
+        fraction = toFractionResult(value.toFraction());
+        steps = s;
+        break;
+      }
+      case "rank": {
+        const { value, steps: s } = rank(a);
+        resultLatex = String(value);
+        steps = s;
+        break;
+      }
+      case "eigen": {
+        // Módulo K1 (spec_graficacion_matrices_estadistica_unidades.md,
+        // sección 3.2, diseño confirmado en K0): resultLatex resume todos
+        // los pares (λ, multiplicidad); cada eigenvector, si se pudo
+        // calcular (K0: solo para λ reales), se detalla como un Step
+        // aparte — mismo patrón usado por gaussJordan para desglosar un
+        // resultado compuesto en pasos legibles.
+        const { pairs, allExact, characteristicPolynomial } = computeEigenvalues(a);
+        confidence = allExact && pairs.every((p) => p.isComplex || p.eigenvector !== null) ? "SYMBOLIC" : "NUMERIC_FALLBACK";
+        resultLatex = pairs
+          .map((p) => {
+            const valueStr = p.exact !== null ? p.exact : p.approx.toFixed(6);
+            const multStr = p.multiplicity > 1 ? ` (multiplicidad ${p.multiplicity})` : "";
+            return `\\lambda = ${valueStr}${multStr}`;
+          })
+          .join(",\\quad ");
+        steps = [
+          {
+            id: "char-poly",
+            latex: `\\det(A-\\lambda I) = ${characteristicPolynomial} = 0`,
+            explanation: "Polinomio característico, construido por expansión de cofactores.",
+          },
+          ...pairs.map((p, i) => {
+            const valueStr = p.exact !== null ? p.exact : `${p.approx.toFixed(6)} (aproximado)`;
+            const vectorStr = p.isComplex
+              ? "no calculado en Lite para eigenvalores complejos (ver limitación declarada)"
+              : p.eigenvector
+                ? `[${p.eigenvector.map((x) => x.toFixed(4)).join(", ")}]`
+                : "no se pudo calcular";
+            return {
+              id: `eigen-${i}`,
+              latex: `\\lambda_{${i + 1}} = ${valueStr},\\ v_{${i + 1}} = ${vectorStr}`,
+              explanation:
+                p.multiplicity > 1
+                  ? `Multiplicidad algebraica ${p.multiplicity}. Eigenvector: ${vectorStr}.`
+                  : `Eigenvector correspondiente: ${vectorStr}.`,
+            };
+          }),
+        ];
+        break;
+      }
     }
 
     return {
@@ -665,7 +808,7 @@ function handleMatrixOp(
       fraction,
       steps,
       hasDetailedSteps: true,
-      confidence: "SYMBOLIC",
+      confidence,
       requestId,
     };
   } catch (err) {
@@ -703,6 +846,90 @@ function handleGraph(
   }
 }
 
+function handleGraphPolar(
+  exprAlgebrite: string,
+  variable: string,
+  thetaRange: [number, number],
+  requestId: string,
+): MathResult {
+  try {
+    const analysis = analyzeGraphPolar(exprAlgebrite, variable, thetaRange);
+    const summary = [
+      `Dominio: ${analysis.domainDescription}`,
+      `Rango de r: ${analysis.rangeDescription}`,
+    ].join(" · ");
+    return {
+      success: true,
+      resultLatex: summary,
+      steps: [],
+      hasDetailedSteps: false,
+      confidence: "NUMERIC_FALLBACK",
+      requestId,
+      graphAnalysis: analysis,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), requestId);
+  }
+}
+
+function handleGraphParametric(
+  xExprAlgebrite: string,
+  yExprAlgebrite: string,
+  parameter: string,
+  tRange: [number, number],
+  requestId: string,
+): MathResult {
+  try {
+    const analysis = analyzeGraphParametric(xExprAlgebrite, yExprAlgebrite, parameter, tRange);
+    const summary = [
+      `Dominio: ${analysis.domainDescription}`,
+      `Rango: ${analysis.rangeDescription}`,
+    ].join(" · ");
+    return {
+      success: true,
+      resultLatex: summary,
+      steps: [],
+      hasDetailedSteps: false,
+      confidence: "NUMERIC_FALLBACK",
+      requestId,
+      graphAnalysis: analysis,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), requestId);
+  }
+}
+
+function handleGraphSurface3D(
+  exprAlgebrite: string,
+  varX: string,
+  varY: string,
+  xRange: [number, number],
+  yRange: [number, number],
+  requestId: string,
+): MathResult {
+  try {
+    const surface = analyzeGraphSurface3D(exprAlgebrite, varX, varY, xRange, yRange);
+    const summary = [
+      `Dominio: ${surface.domainDescription}`,
+      `Rango: ${surface.rangeDescription}`,
+    ].join(" · ");
+    return {
+      success: true,
+      resultLatex: summary,
+      steps: [],
+      hasDetailedSteps: false,
+      confidence: "NUMERIC_FALLBACK",
+      requestId,
+      graphSurface3D: surface,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), requestId);
+  }
+}
+
 function errorResult(code: ErrorCode, message: string, requestId: string): MathResult {
   return {
     success: false,
@@ -714,4 +941,32 @@ function errorResult(code: ErrorCode, message: string, requestId: string): MathR
     confidence: "SYMBOLIC",
     requestId,
   };
+}
+
+function handleArgandPoint(expr: string, requestId: string): MathResult {
+  try {
+    const raw = evaluate(expr);
+    const { re, im } = parseComplex(raw);
+    return {
+      success: true,
+      resultLatex: toLatex(raw),
+      steps: [],
+      hasDetailedSteps: false,
+      confidence: "SYMBOLIC",
+      requestId,
+      // Mismo campo (`graphAnalysis: unknown`) que ya usa el Modo
+      // Graficación para pasar datos estructurados propios -- acá lleva
+      // {re, im} en vez de un GraphAnalysis real; BasicScientificMode.tsx
+      // lo castea al consumirlo, mismo criterio que GraphingMode.tsx.
+      graphAnalysis: { re, im },
+    };
+  } catch (err) {
+    const appErr = err as { code?: ClientErrorCode; message?: string };
+    return errorResult(
+      (appErr.code as unknown as ErrorCode) ?? ClientErrorCode.PARSE_ERROR,
+      appErr.message ??
+        "No se pudo interpretar esta expresión como un número complejo concreto (¿tiene variables sin evaluar?).",
+      requestId,
+    );
+  }
 }

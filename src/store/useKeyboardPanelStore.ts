@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import type { ReactNode } from "react";
 
+import type { KeyDef } from "../components/MathKeyboard";
+
 /**
  * useKeyboardPanelStore.ts — Módulo 0.
  *
@@ -72,6 +74,15 @@ interface KeyboardPanelState {
   clearBasicContent: () => void;
   setCompactActions: (actions: { onEnter: () => void; onBackspace: () => void }) => void;
   clearCompactActions: () => void;
+  /** Fase X, Módulo X0 (Smart Docks): función de inserción del modo
+   * activo, registrada por MathKeyboard.tsx (misma vía que `content`)
+   * para que RecentKeysBar.tsx reinserte una tecla reciente sin conocer
+   * el `field`/handlers del modo activo. Mismo patrón obligatorio de
+   * dos-efectos-separados que `content`/`compactActions` (ver cabecera).
+   * Paridad con precision-lab (main), mismo archivo/campo. */
+  insertHandler: ((k: KeyDef) => void) | null;
+  setInsertHandler: (fn: (k: KeyDef) => void) => void;
+  clearInsertHandler: () => void;
 }
 
 export const useKeyboardPanelStore = create<KeyboardPanelState>((set) => ({
@@ -88,4 +99,7 @@ export const useKeyboardPanelStore = create<KeyboardPanelState>((set) => ({
   clearBasicContent: () => set({ basicContent: null }),
   setCompactActions: (compactActions) => set({ compactActions }),
   clearCompactActions: () => set({ compactActions: null }),
+  insertHandler: null,
+  setInsertHandler: (insertHandler) => set({ insertHandler }),
+  clearInsertHandler: () => set({ insertHandler: null }),
 }));

@@ -52,6 +52,8 @@ export interface MathResult {
   requestId: string;
   /** Presente solo en resultados del Modo Graficación — datos para GraphViewer. Tipado como unknown aquí para evitar un import circular con stepEngine/graphing.ts; se castea en GraphingMode.tsx. */
   graphAnalysis?: unknown;
+  /** Módulo J2: presente solo en resultados de superficie 3D (kind="3d") — GraphSurface3D, no GraphAnalysis (forma de dato distinta, ver graphing.ts). Mismo criterio de `unknown` que graphAnalysis. */
+  graphSurface3D?: unknown;
 }
 
 export function makeRequestId(): string {
