@@ -1,5 +1,15 @@
 import { expect, test } from "@playwright/test";
 
+test("respeta el tema oscuro guardado", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("precision-lab-theme", "dark"));
+  await page.goto("./");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  const chrome = await page.locator("html").evaluate((element) =>
+    getComputedStyle(element).getPropertyValue("--color-chrome").trim(),
+  );
+  expect(chrome).toBe("20 23 28");
+});
+
 test("la tarjeta Entrada calcula sin abrir el teclado", async ({ page }, testInfo) => {
   await page.goto("./");
   const entry = page.getByRole("region", { name: "Entrada", exact: true });

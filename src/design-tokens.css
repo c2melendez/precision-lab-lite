@@ -32,7 +32,7 @@
   --color-muted: 138 131 113;
 }
 
-:root,
+:root:not([data-theme]),
 [data-theme="v4-blue"] {
   --color-chrome: 255 255 255;
   --color-chrome-soft: 241 245 249;
