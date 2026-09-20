@@ -92,6 +92,9 @@ export function NaturalInput({ value, onChange, placeholder, fieldRef, bare = fa
           "--caret-color": "#E8A33D",
           "--selection-background-color": "#FBEFDA",
           "--selection-color": "#8A5A0E",
+          // Keep long formulas/placeholders inside the editor instead of
+          // expanding the mobile visual viewport and displacing the dock.
+          overflow: "hidden",
         } as React.CSSProperties
       }
       // "virtual-keyboard-mode" en off: el teclado propio de la app

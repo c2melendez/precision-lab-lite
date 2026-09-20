@@ -3,6 +3,15 @@ import { expect, test } from "@playwright/test";
 test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, testInfo) => {
   await page.goto("./");
 
+  const overflow = await page.evaluate(() => ({
+    width: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+    elements: Array.from(document.querySelectorAll("body *"))
+      .filter((element) => element.getBoundingClientRect().right > document.documentElement.clientWidth + 1)
+      .map((element) => ({ tag: element.tagName, className: element.className })),
+  }));
+  expect(overflow.scrollWidth, JSON.stringify(overflow)).toBeLessThanOrEqual(overflow.width + 1);
+
   const openKeyboard = page.getByRole("button", { name: /Abrir teclado|Expandir teclado/i }).first();
   await expect(openKeyboard).toBeVisible();
   await openKeyboard.click();
