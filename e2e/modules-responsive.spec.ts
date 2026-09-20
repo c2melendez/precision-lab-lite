@@ -7,6 +7,10 @@ test("los cinco módulos mantienen controles dentro de la pantalla", async ({ pa
     await navigation.click();
     await expect(navigation).toHaveAttribute("aria-current", "page");
     await expect(page.locator("main")).toBeVisible();
+    if (name !== "Científica") {
+      await expect(page.getByRole("button", { name: /Abrir teclado|Expandir teclado|Cerrar teclado/ })).toHaveCount(0);
+      await expect(page.locator("main")).toHaveClass(/pb-8/);
+    }
     const overflow = await page.evaluate(() => ({
       width: document.documentElement.clientWidth,
       scroll: document.documentElement.scrollWidth,
@@ -17,4 +21,9 @@ test("los cinco módulos mantienen controles dentro de la pantalla", async ({ pa
     expect(overflow.scroll, `${name}: ${JSON.stringify(overflow)}`).toBeLessThanOrEqual(overflow.width + 1);
     await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true });
   }
+  // El registro del teclado debe recuperarse después de cambiar de módulo.
+  await page.locator("nav").getByRole("button", { name: "Científica", exact: true }).click();
+  await page.getByRole("button", { name: /Abrir teclado|Expandir teclado/ }).first().click();
+  await expect(page.getByRole("dialog", { name: "Teclado matemático" })).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Básico", exact: true })).toBeVisible();
 });

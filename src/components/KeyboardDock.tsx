@@ -88,6 +88,7 @@ export function KeyboardDock() {
   const close = useKeyboardPanelStore((s) => s.close);
   const layoutMode = useLayoutModeStore((s) => s.layoutMode);
   const isFloatingWideEnough = useMinWidthMediaQuery(FLOATING_MIN_WIDTH_PX);
+  const hasDockContent = content !== null || basicContent !== null || compactActions !== null;
 
   useLayoutEffect(() => {
     const dock = dockRef.current;
@@ -97,7 +98,9 @@ export function KeyboardDock() {
     const observer = new ResizeObserver(measure);
     observer.observe(dock);
     return () => observer.disconnect();
-  }, [layoutMode, isFloatingWideEnough]);
+  }, [layoutMode, isFloatingWideEnough, hasDockContent]);
+
+  if (!hasDockContent) return null;
 
   // Módulo P3: Apilado maneja su propia sección de teclado inline (ver
   // comentario de cabecera) — este dock fijo se retira por completo.

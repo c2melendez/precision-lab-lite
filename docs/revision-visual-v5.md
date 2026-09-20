@@ -24,10 +24,12 @@ La integración funcional del teclado no equivale todavía a una reproducción v
 
 Estas diferencias se documentan para la siguiente integración visual. No se considera aprobada la paridad visual completa ni se publica esta rama por el solo hecho de que pasen las pruebas funcionales.
 
-El nuevo tema conserva los temas anteriores como opciones. La selección y el cursor del editor utilizan ahora los colores del tema activo. El teclado desktop se amplió conservando las filas, funciones y tooltips existentes. El contenido detallado de las tarjetas del mockup todavía no se reproduce íntegramente. Las disposiciones Apilada y Flotante mantienen sus contenedores anteriores.
+El nuevo tema conserva los temas anteriores como opciones. La selección y el cursor del editor utilizan ahora los colores del tema activo. El teclado desktop se amplió conservando las filas, funciones y tooltips existentes. El contenido detallado de las tarjetas del mockup todavía no se reproduce íntegramente. Las disposiciones Apilada y Flotante comparten las seis pestañas, permiten cerrar y reabrir el teclado y conservan la inserción sin cerrarlo.
+
+Se revisaron capturas de las vistas iniciales de los cinco módulos en desktop, tablet y móvil. Se retiró la barra deshabilitada en módulos que no registran teclado global, junto con su espacio inferior reservado. La medición del dock se reactiva al regresar a Científica.
 
 ## Alcance de las pruebas
 
 La prueba del primer cálculo reveló una recarga del servidor de desarrollo: la traza mostró dos conexiones de Vite y un cambio del hash de dependencias mientras se iniciaba el worker. Se cambió Playwright a build + preview, sin reutilizar servidores, para comprobar el artefacto compilado. CI repite cada caso dos veces y no permite reintentos automáticos.
 
-La prueba responsive verifica apertura, cierre, acceso a teclas seleccionadas, clasificación de símbolos, ausencia de desbordamiento y anclaje desktop. No demuestra cobertura completa tecla–motor, corrección de todos los cálculos ni fidelidad visual píxel por píxel. La compilación y la suite funcional se ejecutan por separado en CI.
+La prueba responsive verifica apertura, cierre, acceso a teclas seleccionadas, clasificación de símbolos, ausencia de desbordamiento y anclaje desktop. También verifica navegación por las cinco vistas iniciales y recuperación del teclado al regresar a Científica. No demuestra cobertura completa tecla–motor, corrección de todos los cálculos ni fidelidad visual píxel por píxel. Los tres tamaños se ejecutan con Chromium; no constituye validación en Safari o Firefox. La compilación y la suite funcional se ejecutan por separado en CI.
