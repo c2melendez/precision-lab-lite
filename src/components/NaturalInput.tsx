@@ -84,8 +84,8 @@ export function NaturalInput({ value, onChange, placeholder, fieldRef, bare = fa
       }}
       className={
         bare
-          ? "w-full bg-transparent px-0 py-1 text-right text-2xl text-ink"
-          : "w-full rounded-lg border border-paper-line bg-paper-soft px-4 py-3 text-2xl text-ink shadow-sm"
+          ? "block min-w-0 max-w-full w-full bg-transparent px-0 py-1 text-right text-2xl text-ink"
+          : "block min-w-0 max-w-full w-full rounded-lg border border-paper-line bg-paper-soft px-4 py-3 text-2xl text-ink shadow-sm"
       }
       style={
         {

@@ -16,7 +16,7 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
   await expect(functionsTab).toHaveAttribute("aria-selected", "false");
 
   await expect(dialog.getByRole("button", { name: "borrar todo el campo" })).toBeVisible();
-  await expect(dialog.getByRole("button", { name: "igual" })).toHaveAttribute(
+  await expect(dialog.getByRole("button", { name: "igual", exact: true })).toHaveAttribute(
     "title",
     "inserta un signo de igualdad sin ejecutar el cálculo",
   );
