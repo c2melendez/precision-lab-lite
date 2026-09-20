@@ -4,7 +4,8 @@ export default defineConfig({
   testDir: "./e2e",
   outputDir: "test-results",
   fullyParallel: true,
-  retries: process.env.CI ? 1 : 0,
+  retries: 0,
+  repeatEach: process.env.CI ? 2 : 1,
   reporter: process.env.CI ? [["line"], ["html", { outputFolder: "playwright-report", open: "never" }]] : "line",
   use: {
     baseURL: "http://127.0.0.1:5173/precision-lab-lite/",
@@ -26,8 +27,10 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run dev -- --host 127.0.0.1",
+    // Exercise the shipped bundle: dependency discovery in the development
+    // server can reload the page when the compute worker first starts.
+    command: "npm run build && npm run preview -- --host 127.0.0.1 --port 5173 --strictPort",
     url: "http://127.0.0.1:5173/precision-lab-lite/",
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
   },
 });

@@ -28,4 +28,6 @@ El nuevo tema conserva los temas anteriores como opciones. La selección y el cu
 
 ## Alcance de las pruebas
 
+La prueba del primer cálculo reveló una recarga del servidor de desarrollo: la traza mostró dos conexiones de Vite y un cambio del hash de dependencias mientras se iniciaba el worker. Se cambió Playwright a build + preview, sin reutilizar servidores, para comprobar el artefacto compilado. CI repite cada caso dos veces y no permite reintentos automáticos.
+
 La prueba responsive verifica apertura, cierre, acceso a teclas seleccionadas, clasificación de símbolos, ausencia de desbordamiento y anclaje desktop. No demuestra cobertura completa tecla–motor, corrección de todos los cálculos ni fidelidad visual píxel por píxel. La compilación y la suite funcional se ejecutan por separado en CI.
