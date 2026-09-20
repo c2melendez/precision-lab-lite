@@ -50,6 +50,11 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
   expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(viewport!.width + 1);
   expect(bounds!.y).toBeGreaterThanOrEqual(0);
   expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(viewport!.height + 1);
+  if (viewport!.width >= 1440) {
+    const dock = await page.getByTestId("keyboard-dock").boundingBox();
+    expect(dock).not.toBeNull();
+    expect(dock!.y - (bounds!.y + bounds!.height)).toBeCloseTo(12, 0);
+  }
 
   const hasHorizontalOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,

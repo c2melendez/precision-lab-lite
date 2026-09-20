@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 
 /**
  * KeyboardPanel.tsx — Módulo 0 (hoja-de-ruta-visual.md §0.3 / spec §2, §8).
@@ -22,9 +22,10 @@ interface KeyboardPanelProps {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
+  dockHeight?: number;
 }
 
-export function KeyboardPanel({ isOpen, onClose, children }: KeyboardPanelProps) {
+export function KeyboardPanel({ isOpen, onClose, children, dockHeight = 0 }: KeyboardPanelProps) {
   const panelRef = useRef<HTMLDivElement | null>(null);
 
   // Cierre con Escape — accesibilidad mínima de un panel tipo popover/sheet.
@@ -45,6 +46,7 @@ export function KeyboardPanel({ isOpen, onClose, children }: KeyboardPanelProps)
       role="dialog"
       aria-label="Teclado matemático"
       aria-modal="false"
+      style={{ "--keyboard-panel-bottom": `${dockHeight + 12}px` } as CSSProperties}
       className={[
         // Base (móvil, <768px): bottom sheet ~66vh, ancho completo.
         "fixed inset-x-0 bottom-0 z-40 flex flex-col rounded-t-2xl border-t border-chrome-soft bg-chrome shadow-2xl",
@@ -55,9 +57,9 @@ export function KeyboardPanel({ isOpen, onClose, children }: KeyboardPanelProps)
         "lg:h-[45vh]",
         // Desktop dt (≥1440px): popover anclado, no full-width, no
         // full-height — flota sobre el dock en vez de cubrir la pantalla.
-        // V5: el dock desktop completo ronda 15rem; el popover se
-        // ancla por encima de él para que ninguna categoría quede oculta.
-        "dt:inset-x-auto dt:bottom-64 dt:right-6 dt:h-auto dt:max-h-[65vh] dt:w-[420px] dt:rounded-2xl dt:border",
+        // La barra cambia de altura cuando aparecen teclas recientes.
+        // Mantener el panel sobre su borde real, no sobre el antiguo grid fijo.
+        "dt:inset-x-auto dt:bottom-[var(--keyboard-panel-bottom)] dt:right-6 dt:h-auto dt:max-h-[65vh] dt:w-[420px] dt:rounded-2xl dt:border",
       ].join(" ")}
     >
       {/* Drag handle — solo afordance visual en este módulo, oculto en dt

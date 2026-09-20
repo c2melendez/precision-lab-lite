@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 import { useKeyboardPanelStore } from "../store/useKeyboardPanelStore";
 import { useLayoutModeStore } from "../store/useLayoutModeStore";
@@ -75,6 +75,8 @@ import { RecentKeysBar } from "./RecentKeysBar";
  */
 
 export function KeyboardDock() {
+  const dockRef = useRef<HTMLDivElement>(null);
+  const [dockHeight, setDockHeight] = useState(0);
   const [activeSection, setActiveSection] = useState<"basic" | "functions">("basic");
   const isOpen = useKeyboardPanelStore((s) => s.isOpen);
   const content = useKeyboardPanelStore((s) => s.content);
@@ -84,6 +86,16 @@ export function KeyboardDock() {
   const close = useKeyboardPanelStore((s) => s.close);
   const layoutMode = useLayoutModeStore((s) => s.layoutMode);
   const isFloatingWideEnough = useMinWidthMediaQuery(FLOATING_MIN_WIDTH_PX);
+
+  useLayoutEffect(() => {
+    const dock = dockRef.current;
+    if (!dock) return;
+    const measure = () => setDockHeight(dock.getBoundingClientRect().height);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(dock);
+    return () => observer.disconnect();
+  }, [layoutMode, isFloatingWideEnough]);
 
   // Módulo P3: Apilado maneja su propia sección de teclado inline (ver
   // comentario de cabecera) — este dock fijo se retira por completo.
@@ -106,7 +118,7 @@ export function KeyboardDock() {
   return (
     <>
       {(content || basicContent) && (
-        <KeyboardPanel isOpen={isOpen} onClose={close}>
+        <KeyboardPanel isOpen={isOpen} onClose={close} dockHeight={dockHeight}>
           {basicContent && content && (
             <div
               role="tablist"
@@ -146,7 +158,7 @@ export function KeyboardDock() {
         </KeyboardPanel>
       )}
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-chrome-soft bg-chrome px-3 pb-[env(safe-area-inset-bottom)] pt-2">
+      <div ref={dockRef} data-testid="keyboard-dock" className="fixed inset-x-0 bottom-0 z-30 border-t border-chrome-soft bg-chrome px-3 pb-[env(safe-area-inset-bottom)] pt-2">
         {/* Fase X, Módulo X0 — mismo criterio que precision-lab (main). */}
         <RecentKeysBar />
         {/* Fila compacta — móvil siempre, y cualquier breakpoint en Focus. */}
