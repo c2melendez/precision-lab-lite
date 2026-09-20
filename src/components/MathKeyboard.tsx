@@ -570,7 +570,9 @@ CATEGORY_MENUS.Cálculo = [
 const CATEGORIES_FULL = ["Trigonométricas", "Símbolos", "Complejos"] as const;
 const CATEGORIES_BASIC_MODE = ["Símbolos", "Álgebra", "Trigonométricas", "Cálculo", "Complejos"] as const;
 
-interface MathKeyboardProps {
+export type KeyboardCategory = (typeof CATEGORIES_BASIC_MODE)[number];
+export interface MathKeyboardProps {
+  activeCategory?: KeyboardCategory;
   field: MathField;
   onBackspace?: () => void;
   onEnter?: () => void;
@@ -612,9 +614,11 @@ export function MathKeyboard({
   onSimplify,
   onGraphComplex,
   hideCoreGrid = false,
+  activeCategory,
 }: MathKeyboardProps) {
   const CATEGORIES = hideCoreGrid ? CATEGORIES_BASIC_MODE : CATEGORIES_FULL;
-  const [openCategory, setOpenCategory] = useState<(typeof CATEGORIES)[number] | null>(null);
+  const [localCategory, setOpenCategory] = useState<(typeof CATEGORIES)[number] | null>(null);
+  const openCategory = activeCategory ?? localCategory;
   const [notice, setNotice] = useState<string | null>(null);
   // Pendiente #2: menú chico "¿cuántas ecuaciones?" al tocar "Sistema".
   const [showSystemSizeMenu, setShowSystemSizeMenu] = useState(false);
@@ -995,7 +999,7 @@ export function MathKeyboard({
       )}
 
       {/* Pestañas de categoría */}
-      <div className="mb-1.5 flex flex-wrap gap-x-3 gap-y-1 px-1">
+      {!activeCategory && <div className="mb-1.5 flex flex-wrap gap-x-3 gap-y-1 px-1">
         {CATEGORIES.map((cat) => (
           <button
             key={cat}
@@ -1008,6 +1012,7 @@ export function MathKeyboard({
         ))}
       </div>
 
+      }
       {/* Núcleo fijo + relacionales — ocultos cuando hideCoreGrid=true
           (BasicScientificMode: viven en KeyboardBasicPanel/dock). */}
       {!hideCoreGrid && (

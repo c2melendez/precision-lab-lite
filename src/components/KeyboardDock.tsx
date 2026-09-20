@@ -1,4 +1,6 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { isValidElement, useLayoutEffect, useRef, useState } from "react";
+import { MathKeyboard, type MathKeyboardProps } from "./MathKeyboard";
+import { ScientificKeyboardSections } from "./ScientificKeyboardSections";
 
 import { useKeyboardPanelStore } from "../store/useKeyboardPanelStore";
 import { useLayoutModeStore } from "../store/useLayoutModeStore";
@@ -114,11 +116,16 @@ export function KeyboardDock() {
   const hasAdvancedContent = content !== null;
   const hasBasicContent = basicContent !== null;
   const canExpand = hasAdvancedContent || hasBasicContent;
+  const directCategories = basicContent && isValidElement<MathKeyboardProps>(content)
+    && content.type === MathKeyboard && content.props.hideCoreGrid;
 
   return (
     <>
       {(content || basicContent) && (
         <KeyboardPanel isOpen={isOpen} onClose={close} dockHeight={dockHeight}>
+          {directCategories && isValidElement<MathKeyboardProps>(content)
+            ? <ScientificKeyboardSections basic={basicContent} advanced={content} />
+            : <>
           {basicContent && content && (
             <div
               role="tablist"
@@ -155,6 +162,7 @@ export function KeyboardDock() {
           )}
           {(!content || activeSection === "basic") && basicContent}
           {(!basicContent || activeSection === "functions") && content}
+          </>}
         </KeyboardPanel>
       )}
 
