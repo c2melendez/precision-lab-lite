@@ -424,6 +424,7 @@ export function BasicScientificMode() {
         onClearField={() => setLatex("")}
         layoutMode={layoutMode}
         onGraphExpression={handleGraphExpression}
+        onCalculate={handleCalculate}
       />
     </div>
   );

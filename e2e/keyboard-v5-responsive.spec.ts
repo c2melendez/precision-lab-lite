@@ -1,5 +1,21 @@
 import { expect, test } from "@playwright/test";
 
+test("la tarjeta Entrada calcula sin abrir el teclado", async ({ page }, testInfo) => {
+  await page.goto("./");
+  const entry = page.getByRole("region", { name: "Entrada", exact: true });
+  const calculate = entry.getByRole("button", { name: "Calcular", exact: true });
+  await expect(calculate).toBeDisabled();
+  await page.locator("math-field").first().evaluate((field) => {
+    (field as HTMLElement & { value: string }).value = "2+2";
+    field.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  await expect(calculate).toBeEnabled();
+  await calculate.click();
+  await expect(page.getByRole("region", { name: "Resultado", exact: true })).toContainText("4");
+  await expect(page.getByRole("dialog", { name: "Teclado matemático" })).toBeHidden();
+  await page.screenshot({ path: testInfo.outputPath("entrada-resultado.png"), fullPage: true });
+});
+
 test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, testInfo) => {
   await page.goto("./");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "v4-blue");

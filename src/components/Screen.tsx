@@ -63,6 +63,7 @@ interface ScreenProps {
    * modos que usan Screen lo implementan todavía (alcance V1: solo
    * BasicScientificMode.tsx). Paridad con precision-lab (main). */
   onGraphExpression?: () => void;
+  onCalculate?: () => void;
 }
 
 export function Screen({
@@ -77,6 +78,7 @@ export function Screen({
   onClearField,
   layoutMode = "fused",
   onGraphExpression,
+  onCalculate,
 }: ScreenProps) {
   // Botón "Graficar" (cuadrante de gráfica, las 6 disposiciones): solo
   // tiene sentido ofrecerlo cuando hay algo escrito. GraphingMode.tsx
@@ -196,19 +198,42 @@ export function Screen({
         <div className="flex justify-end">
           <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
         </div>
-        <div className="flex flex-col gap-3 dt:grid dt:grid-cols-[1.2fr_1fr] dt:items-start dt:gap-4">
-          <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 dt:grid dt:grid-cols-[minmax(0,.92fr)_minmax(0,1.08fr)] dt:items-start dt:gap-4">
+          <div className="flex min-w-0 flex-col gap-3">
             {sessionHistory.length > 0 && (
               <div className="max-h-28 overflow-y-auto rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
                 <HistoryLog entries={sessionHistory} />
               </div>
             )}
-            <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
+            <section aria-label="Entrada" className="rounded-xl border border-paper-line bg-paper-soft shadow-sm">
+              <div className="flex items-center justify-between border-b border-paper-line px-4 py-3">
+                <h2 className="border-l-4 border-marker pl-2 text-sm font-semibold">Entrada</h2>
+                <button type="button" onClick={() => useKeyboardPanelStore.getState().open()}
+                  aria-label="Abrir teclado matemático" title="Abrir teclado matemático"
+                  className="flex items-center gap-2 rounded-lg border border-paper-line px-3 py-2 text-xs text-marker hover:bg-marker-soft">
+                  <KeyboardIcon className="h-4 w-4" /> Teclado
+                </button>
+              </div>
+              <div className="px-4 py-3">{inputField}</div>
+              {onCalculate && (
+                <div className="flex justify-end px-4 pb-4">
+                  <button type="button" onClick={onCalculate} disabled={!latex.trim()}
+                    className="rounded-lg bg-marker px-5 py-2 text-sm font-semibold text-chrome hover:bg-marker/90 disabled:opacity-40">
+                    Calcular
+                  </button>
+                </div>
+              )}
+            </section>
           </div>
-          <div className="flex flex-col gap-3">
-            <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
-              <ResultPanel result={result} />
-            </div>
+          <div className="flex min-w-0 flex-col gap-3">
+            <section aria-label="Resultado" className="min-w-0 rounded-xl border border-paper-line bg-paper-soft shadow-sm">
+              <h2 className="border-b border-paper-line px-4 py-3 text-sm font-semibold">
+                <span className="border-l-4 border-marker pl-2">Resultado</span>
+              </h2>
+              <div className="overflow-x-auto px-4 py-4" aria-live="polite">
+                <ResultPanel result={result} />
+              </div>
+            </section>
             <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
           </div>
         </div>
