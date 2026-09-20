@@ -123,7 +123,7 @@ export function KeyboardDock() {
             <div
               role="tablist"
               aria-label="Secciones del teclado matemático"
-              className="mb-3 grid grid-cols-2 gap-1 rounded-lg bg-chrome-deep p-1"
+              className="mb-3 grid grid-cols-2 gap-1 rounded-lg bg-chrome-deep p-1 dt:w-80"
             >
               <button
                 type="button"

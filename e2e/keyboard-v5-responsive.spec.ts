@@ -32,6 +32,7 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
     "inserta un signo de igualdad sin ejecutar el cálculo",
   );
   await expect(dialog.getByRole("button", { name: "calcular" })).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath("teclado-v5-basico.png"), fullPage: true });
 
   await functionsTab.click();
   await expect(functionsTab).toHaveAttribute("aria-selected", "true");
@@ -52,6 +53,8 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
   expect(bounds!.y).toBeGreaterThanOrEqual(0);
   expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(viewport!.height + 1);
   if (viewport!.width >= 1440) {
+    expect(bounds!.width).toBeGreaterThanOrEqual(viewport!.width - 65);
+    expect(bounds!.height).toBeLessThanOrEqual(viewport!.height * 0.45 + 1);
     const dock = await page.getByTestId("keyboard-dock").boundingBox();
     expect(dock).not.toBeNull();
     expect(dock!.y - (bounds!.y + bounds!.height)).toBeCloseTo(12, 0);
@@ -64,5 +67,9 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
 
   await page.screenshot({ path: testInfo.outputPath("teclado-v5-abierto.png"), fullPage: true });
   await dialog.getByRole("button", { name: "Cerrar teclado" }).click();
+  await expect(dialog).not.toBeVisible();
+  await openKeyboard.click();
+  await expect(dialog).toBeVisible();
+  await page.keyboard.press("Escape");
   await expect(dialog).not.toBeVisible();
 });
