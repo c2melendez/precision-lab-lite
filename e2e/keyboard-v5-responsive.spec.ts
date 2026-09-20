@@ -29,8 +29,8 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
   await dialog.getByRole("button", { name: "Símbolos" }).click();
   await expect(dialog.getByText("Variables", { exact: true })).toBeVisible();
   await expect(dialog.getByText("Constantes y valores", { exact: true })).toBeVisible();
-  await expect(dialog.getByRole("button", { name: "Phi mayúscula, ángulo polar" })).toBeVisible();
-  await expect(dialog.getByRole("button", { name: "Phi minúscula, número áureo" })).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "Phi mayúscula", exact: true })).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "número áureo phi", exact: true })).toBeVisible();
 
   const viewport = page.viewportSize();
   const bounds = await dialog.boundingBox();
@@ -47,4 +47,6 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
   expect(hasHorizontalOverflow).toBe(false);
 
   await page.screenshot({ path: testInfo.outputPath("teclado-v5-abierto.png"), fullPage: true });
+  await dialog.getByRole("button", { name: "Cerrar teclado" }).click();
+  await expect(dialog).not.toBeVisible();
 });
