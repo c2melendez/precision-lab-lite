@@ -13,6 +13,7 @@ import type { LayoutMode } from "../store/useLayoutModeStore";
 import { useKeyboardPanelStore } from "../store/useKeyboardPanelStore";
 import { useFloatingLayoutStore } from "../store/useFloatingLayoutStore";
 import { FloatingWindow } from "./FloatingWindow";
+import { RegisteredKeyboardSections } from "./ScientificKeyboardSections";
 import { useMinWidthMediaQuery, FLOATING_MIN_WIDTH_PX } from "../hooks/useMinWidthMediaQuery";
 
 // Fase E (spec UX estilo ClassCalc — mockup confirmado con el usuario):
@@ -298,6 +299,7 @@ function StackedKeyboardSection() {
           onClick={toggle}
           disabled={!canExpand}
           aria-expanded={isOpen}
+          aria-label={isOpen ? "Cerrar teclado" : "Abrir teclado"}
           className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-ink disabled:text-muted/40"
         >
           <span className="flex items-center gap-2">
@@ -307,9 +309,8 @@ function StackedKeyboardSection() {
           <span aria-hidden="true">{isOpen ? "▾" : "▴"}</span>
         </button>
         {isOpen && canExpand && (
-          <div className="border-t border-paper-line px-3 pb-3 pt-2">
-            {basicContent}
-            {content}
+          <div role="region" aria-label="Teclado matemático" className="border-t border-paper-line px-3 pb-3 pt-2">
+            <RegisteredKeyboardSections basic={basicContent} advanced={content} />
           </div>
         )}
       </div>
@@ -417,9 +418,8 @@ function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMod
           KeyboardDock.tsx), se abre por foco en el campo de entrada
           (NaturalInput.tsx) o al presionar este botón. */}
       {isOpen && canExpand ? (
-        <FloatingWindow title="Teclado" rect={keyboardWindow} onChange={(rect) => setWindow("keyboard", rect)}>
-          {basicContent}
-          {content}
+        <FloatingWindow title="Teclado" rect={keyboardWindow} onChange={(rect) => setWindow("keyboard", rect)} onClose={() => useKeyboardPanelStore.getState().close()}>
+          <RegisteredKeyboardSections basic={basicContent} advanced={content} />
         </FloatingWindow>
       ) : (
         <button

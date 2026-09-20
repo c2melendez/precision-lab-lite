@@ -1,5 +1,19 @@
-import { cloneElement, useId, useState, type ReactElement, type ReactNode } from "react";
-import type { KeyboardCategory, MathKeyboardProps } from "./MathKeyboard";
+import { cloneElement, isValidElement, useEffect, useId, useState, type ReactElement, type ReactNode } from "react";
+import { MathKeyboard, type KeyboardCategory, type MathKeyboardProps } from "./MathKeyboard";
+import { useKeyboardPanelStore } from "../store/useKeyboardPanelStore";
+
+export function RegisteredKeyboardSections({ basic, advanced }: { basic: ReactNode; advanced: ReactNode }) {
+  useEffect(() => {
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") useKeyboardPanelStore.getState().close();
+    };
+    window.addEventListener("keydown", escape);
+    return () => window.removeEventListener("keydown", escape);
+  }, []);
+  return basic && isValidElement<MathKeyboardProps>(advanced) && advanced.type === MathKeyboard && advanced.props.hideCoreGrid
+    ? <ScientificKeyboardSections basic={basic} advanced={advanced} />
+    : <>{basic}{advanced}</>;
+}
 
 const SECTIONS = ["Básico", "Símbolos", "Álgebra", "Trigonométricas", "Cálculo", "Complejos"] as const;
 
