@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, testInfo) => {
   await page.goto("./");
+  await expect(page.locator("math-field").first()).toHaveClass(/w-full/);
 
   const overflow = await page.evaluate(() => ({
     width: document.documentElement.clientWidth,
