@@ -17,12 +17,14 @@ La integración funcional del teclado no equivale todavía a una reproducción v
 
 | Aspecto | V4 de referencia | Integración actual de Lite |
 | --- | --- | --- |
-| Paleta principal | Superficies claras, azul | Carbón, marfil y ámbar heredados |
+| Paleta principal | Superficies claras, azul | Nuevo tema Azul claro como opción inicial; se respetan preferencias guardadas |
 | Teclado desktop | Panel inferior amplio | Popover de 420 px |
 | Categorías | Pestañas directas | Básico / Funciones y categorías internas |
-| Área de trabajo | Dos columnas amplias | Contenido centrado con ancho máximo heredado |
+| Área de trabajo | Dos columnas amplias | Contenedor desktop ampliado a 1440 px con márgenes laterales de 32 px |
 
 Estas diferencias se documentan para la siguiente integración visual. No se considera aprobada la paridad visual completa ni se publica esta rama por el solo hecho de que pasen las pruebas funcionales.
+
+El nuevo tema conserva los temas anteriores como opciones. La selección y el cursor del editor utilizan ahora los colores del tema activo. La anchura del teclado y la distribución interna de teclas permanecen pendientes de la integración visual completa.
 
 ## Alcance de las pruebas
 

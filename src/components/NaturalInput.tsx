@@ -90,9 +90,9 @@ export function NaturalInput({ value, onChange, placeholder, fieldRef, bare = fa
       }
       style={
         {
-          "--caret-color": "#E8A33D",
-          "--selection-background-color": "#FBEFDA",
-          "--selection-color": "#8A5A0E",
+          "--caret-color": "rgb(var(--color-marker))",
+          "--selection-background-color": "rgb(var(--color-marker-soft))",
+          "--selection-color": "rgb(var(--color-marker-text))",
           // Keep long formulas/placeholders inside the editor instead of
           // expanding the mobile visual viewport and displacing the dock.
           overflow: "hidden",

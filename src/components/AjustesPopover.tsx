@@ -31,6 +31,7 @@ import {
  */
 
 type ConcreteTheme =
+  | "v4-blue"
   | "dark"
   | "light"
   | "high-contrast"
@@ -153,6 +154,7 @@ function applyReducedMotion(enabled: boolean) {
 }
 
 const THEMES: { id: Theme; label: string }[] = [
+  { id: "v4-blue", label: "Azul claro" },
   { id: "auto", label: "Automático (sistema)" },
   { id: "dark", label: "Oscuro" },
   { id: "light", label: "Claro" },
@@ -179,12 +181,12 @@ function applyTheme(selection: Theme) {
 
 function readInitialTheme(): Theme {
   const stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-  return stored && THEMES.some((t) => t.id === stored) ? stored : "dark";
+  return stored && THEMES.some((t) => t.id === stored) ? stored : "v4-blue";
 }
 
 export function AjustesPopover() {
   const [open, setOpen] = useState(false);
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("v4-blue");
   const [density, setDensity] = useState<Density>("comfortable");
   const [textSize, setTextSize] = useState<TextSize>("normal");
   const [dyslexiaFriendly, setDyslexiaFriendly] = useState(false);
