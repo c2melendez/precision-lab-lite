@@ -32,8 +32,9 @@ test("M11: las seis disposiciones cargan, conservan entrada/gráfica y no genera
 test("M11: teclado permanece colapsado al iniciar en todas las disposiciones", async ({ page }) => {
   for (const layout of LAYOUTS) {
     await loadLayout(page, layout);
-    await expect(page.getByRole("region", { name: "Teclado matemático" })).toHaveCount(0);
+    await expect(page.getByRole("dialog", { name: "Teclado matemático" })).toHaveCount(0);
     await expect(page.getByRole("dialog", { name: "Teclado" })).toHaveCount(0);
+    await expect(page.getByRole("region", { name: "Teclado matemático" })).toHaveCount(0);
   }
 });
 
@@ -44,17 +45,26 @@ test("M11: Enfoque usa dock compacto y sigue permitiendo abrir teclado", async (
   const expand = page.getByRole("button", { name: /Expandir teclado/i }).first();
   await expect(expand).toBeVisible();
   await expand.click();
-  await expect(page.getByRole("region", { name: "Teclado matemático" })).toBeVisible();
+  await expect(page.getByRole("dialog", { name: "Teclado matemático" })).toBeVisible();
 });
 
-test("M11: Apilado retira dock fijo y usa teclado inline", async ({ page }) => {
+test("M11: Apilado usa teclado inline, no un contenedor fixed", async ({ page }) => {
   await loadLayout(page, "stacked");
-  await expect(page.getByTestId("keyboard-dock")).toHaveCount(0);
-  const toggle = page.getByRole("button", { name: /^Teclado$/ }).first();
+  const toggle = page.getByRole("button", { name: /^(Teclado|Abrir teclado)$/ }).first();
   await expect(toggle).toBeVisible();
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  const isInsideFixed = await toggle.evaluate((el) => {
+    let node: HTMLElement | null = el as HTMLElement;
+    while (node) {
+      if (getComputedStyle(node).position === "fixed") return true;
+      node = node.parentElement;
+    }
+    return false;
+  });
+  expect(isInsideFixed).toBe(false);
   await toggle.click();
   await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  await expect(page.getByRole("region", { name: "Teclado matemático" })).toBeVisible();
 });
 
 test("M11: Flotante respeta breakpoint y mantiene ventanas dentro del viewport", async ({ page }) => {
@@ -65,7 +75,6 @@ test("M11: Flotante respeta breakpoint y mantiene ventanas dentro del viewport",
   if ((viewport?.width ?? 0) >= 1024) {
     const graph = page.getByRole("dialog", { name: "Gráfica" });
     await expect(graph).toBeVisible();
-    await expect(page.getByTestId("keyboard-dock")).toHaveCount(0);
     const openKeyboard = page.getByRole("button", { name: "Abrir teclado", exact: true });
     await expect(openKeyboard).toBeVisible();
     await openKeyboard.click();
@@ -82,7 +91,8 @@ test("M11: Flotante respeta breakpoint y mantiene ventanas dentro del viewport",
     }
   } else {
     await expect(page.getByRole("dialog", { name: "Gráfica" })).toHaveCount(0);
-    await expect(page.getByTestId("keyboard-dock")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Calcular", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Borrar", exact: true })).toBeVisible();
     await expect(page.getByRole("button", { name: /Expandir teclado/i }).first()).toBeVisible();
   }
 });
