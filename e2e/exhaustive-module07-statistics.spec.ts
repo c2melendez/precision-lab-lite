@@ -8,7 +8,7 @@ test("suite original módulo 7: Estadística calcula media y expone submodos", a
   await expect(page.getByRole("button", { name: "Distribución", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Correlación", exact: true })).toBeVisible();
 
-  const input = page.getByPlaceholder("Escribe un valor y presiona Enter");
+  const input = page.locator('input[placeholder="Escribe un valor y presiona Enter"], input[placeholder="+"]').first();
   for (const value of ["1","2","3","4","5"]) {
     await input.fill(value);
     await input.press("Enter");
