@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { parseExpression } from "../src/engine/parsing";
 import { evaluate } from "../src/engine/algebriteClient";
-import { calcDefiniteIntegral, calcDerivative, calcLimit } from "../src/engine/stepEngine/calculus";
+import { calcDefiniteIntegral, calcDerivative, calcIndefiniteIntegral, calcLimit } from "../src/engine/stepEngine/calculus";
 
 describe("Suite exhaustiva original — Módulo 3: Cálculo", () => {
   it("derivada conocida x^3 -> 3x^2", () => {
@@ -10,6 +10,12 @@ describe("Suite exhaustiva original — Módulo 3: Cálculo", () => {
 
   it("derivada orden 4 de x^5 -> 120x", () => {
     expect(calcDerivative("x^5", "x", 4).resultLatex.replace(/\s/g, "")).toMatch(/120\*?x/);
+  });
+
+  it("integral indefinida de x^2 contiene x^3/3 + C", () => {
+    const r = calcIndefiniteIntegral("x^2", "x").resultLatex.replace(/\s/g, "");
+    expect(r).toContain("+C");
+    expect(r).toMatch(/x\^3\/3|1\/3\*x\^3/);
   });
 
   it("integral definida 0..2 de x^2 -> 8/3", () => {
