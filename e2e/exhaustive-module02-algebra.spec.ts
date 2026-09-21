@@ -27,7 +27,8 @@ test("suite original módulo 2: teclado de Álgebra expone operaciones requerida
   const field = page.locator("math-field").first();
   await field.evaluate((node) => { (node as HTMLElement & { value: string }).value = ""; });
   await page.getByRole("button", { name: "logaritmo base 10", exact: true }).first().click();
-  await expect(field).toHaveJSProperty("value", /\\log/);
+  const inserted = await field.evaluate((node) => (node as HTMLElement & { value: string }).value);
+  expect(inserted).toContain("\\log");
 
   await page.getByRole("button", { name: "Resolver sistema de ecuaciones", exact: true }).first().click();
   await expect(page.getByRole("button", { name: "Sistema de 5 ecuaciones", exact: true })).toBeVisible();
