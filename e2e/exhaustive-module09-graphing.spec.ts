@@ -19,7 +19,7 @@ test("suite original módulo 9: modos gráficos están activos y 2D renderiza", 
 
   await setMathField(page, 0, "x^2");
   await page.getByRole("button", { name: "Graficar esta expresión", exact: true }).first().click();
-  await expect(page.locator("svg path").first()).toBeVisible({ timeout: 15000 });
+  await expect(page.locator('svg[viewBox="0 0 340 280"] path').first()).toBeVisible({ timeout: 15000 });
 });
 
 test("suite original módulo 9: múltiples curvas 2D se renderizan juntas", async ({ page }) => {
@@ -31,7 +31,7 @@ test("suite original módulo 9: múltiples curvas 2D se renderizan juntas", asyn
   const graphButtons = page.getByRole("button", { name: "Graficar esta expresión", exact: true });
   await graphButtons.nth(0).click();
   await graphButtons.nth(1).click();
-  await expect(page.locator("svg path")).toHaveCount(2, { timeout: 15000 });
+  await expect(page.locator('svg[viewBox="0 0 340 280"] path')).toHaveCount(2, { timeout: 15000 });
 });
 
 test("suite original módulo 9: discontinuidad no se une visualmente a través de la asíntota", async ({ page }) => {
@@ -40,7 +40,7 @@ test("suite original módulo 9: discontinuidad no se une visualmente a través d
   await setMathField(page, 0, "\\frac{1}{x-2}");
   await page.getByRole("button", { name: "Graficar esta expresión", exact: true }).first().click();
 
-  const curve = page.locator("svg path").first();
+  const curve = page.locator('svg[viewBox="0 0 340 280"] path').first();
   await expect(curve).toBeVisible({ timeout: 15000 });
   const d = await curve.getAttribute("d");
   const moveCount = (d?.match(/M\s/g) ?? []).length;
