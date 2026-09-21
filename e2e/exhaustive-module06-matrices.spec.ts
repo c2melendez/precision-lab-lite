@@ -17,8 +17,9 @@ test("suite original módulo 6: matrices expone rango, traza y eigen y calcula r
   await cells.nth(3).fill("4");
   await page.getByRole("button", { name: "Calcular", exact: true }).click();
 
-  // ResultPanel de Lite no usa role="region"; el valor visible vive en
-  // el nodo a11y-scale-result-3xl. Validamos el DOM real del producto.
-  const resultValue = page.locator(".a11y-scale-result-3xl").last();
-  await expect(resultValue).toContainText("1", { timeout: 12000 });
+  // ResultPanel renderiza resultados simbólicos en MathLive/Shadow DOM.
+  // La fuente de verdad accesible es la propiedad value del host readonly.
+  const resultField = page.locator("math-field[read-only]").last();
+  await expect(resultField).toBeVisible({ timeout: 12000 });
+  await expect(resultField).toHaveJSProperty("value", "1");
 });
