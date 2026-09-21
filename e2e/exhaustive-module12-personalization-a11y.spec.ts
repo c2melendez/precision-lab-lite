@@ -89,7 +89,7 @@ test("M12: densidad, texto, dislexia, feedback, paleta y layout persisten tras r
   await settingRowButton(page, "Espaciado amigable con dislexia").click();
   await settingRowButton(page, "Vibración al presionar tecla").click();
   await settingRowButton(page, "Sonido de clic").click();
-  await menuButton(menu, "Apta para daltonismo").click();
+  await menu.getByText("Apta para daltonismo", { exact: true }).locator("..").click();
   await menuButton(menu, "Enfoque").click();
 
   await expect(page.locator("html")).toHaveAttribute("data-density", "compact");
@@ -123,7 +123,7 @@ test("M12: densidad, texto, dislexia, feedback, paleta y layout persisten tras r
   menu = await openSettings(page);
   await expect(menuButton(menu, "Compacta")).toHaveAttribute("aria-pressed", "true");
   await expect(menuButton(menu, "Muy grande")).toHaveAttribute("aria-pressed", "true");
-  await expect(menuButton(menu, "Apta para daltonismo")).toHaveAttribute("aria-pressed", "true");
+  await expect(menu.getByText("Apta para daltonismo", { exact: true }).locator("..")).toHaveAttribute("aria-pressed", "true");
   await expect(menuButton(menu, "Enfoque")).toHaveAttribute("aria-pressed", "true");
   await expect(settingRowButton(page, "Espaciado amigable con dislexia")).toHaveAttribute("aria-pressed", "true");
   await expect(settingRowButton(page, "Vibración al presionar tecla")).toHaveAttribute("aria-pressed", "false");
@@ -193,8 +193,9 @@ test("M12: el resultado dinámico queda dentro de una región anunciable", async
   await dialog.getByRole("button", { name: "2", exact: true }).click();
   await dialog.getByRole("button", { name: "calcular", exact: true }).click();
 
-  const resultNode = page.locator("math-field[read-only]").last();
+  const resultNode = page.locator(".a11y-scale-result-3xl").last();
   await expect(resultNode).toBeVisible({ timeout: 12000 });
+  await expect(resultNode).toContainText("4");
 
   const announcement = await resultNode.evaluate((el) => {
     let node: Element | null = el;
