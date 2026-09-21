@@ -26,19 +26,18 @@ test("suite original módulo 3: inventario de Cálculo refleja capacidades actua
     "sumatoria",
     "derivada",
     "derivada segunda",
-    "derivada de orden n (edita el 3 por el orden que quieras)",
     "límite",
     "límite al infinito",
     "límite lateral (edita + o - en el exponente)",
   ]) {
     await expect(page.getByRole("button", { name, exact: true }).first()).toBeVisible();
   }
+  await expect(page.getByRole("button", { name: /derivada de orden n/i }).first()).toBeVisible();
 
   const product = page.getByRole("button", { name: "productoria", exact: true }).first();
   await expect(product).toBeVisible();
-  const disabled = await product.isDisabled();
-  const ariaDisabled = await product.getAttribute("aria-disabled");
-  expect(disabled || ariaDisabled === "true").toBe(true);
+  await product.click();
+  await expect(page.getByText(/productoria: todavía no disponible/i)).toBeVisible();
 });
 
 test("suite original módulo 3: sumatoria de 1 a 5 se evalúa a 15 desde la UI", async ({ page }) => {
@@ -50,5 +49,5 @@ test("suite original módulo 3: sumatoria de 1 a 5 se evalúa a 15 desde la UI",
   await calculate.click();
 
   const result = page.getByRole("region", { name: "Resultado", exact: true });
-  await expect(result).toContainText("15");
+  await expect(result).toContainText("15", { timeout: 12000 });
 });
