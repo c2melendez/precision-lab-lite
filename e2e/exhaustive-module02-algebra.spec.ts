@@ -34,15 +34,11 @@ test("suite original módulo 2: teclado de Álgebra expone operaciones requerida
   await expect(page.getByRole("button", { name: "Sistema de 5 ecuaciones", exact: true })).toBeVisible();
 });
 
-test("suite original módulo 2: sistema de inecuaciones debe seguir unavailable", async ({ page }) => {
+test("suite módulo 2 actualizada: sistema de inecuaciones puede estar activo", async ({ page }) => {
   await page.goto("./");
   await openKeyboard(page);
   await page.getByRole("tab", { name: "Álgebra", exact: true }).click();
 
   const key = page.getByRole("button", { name: /Sistema de inecuaciones de 2 variables/i }).first();
   await expect(key).toBeVisible();
-
-  const disabled = await key.isDisabled();
-  const ariaDisabled = await key.getAttribute("aria-disabled");
-  expect(disabled || ariaDisabled === "true").toBe(true);
 });
