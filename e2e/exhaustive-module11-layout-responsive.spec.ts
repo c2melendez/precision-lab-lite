@@ -50,7 +50,7 @@ test("M11: Enfoque usa dock compacto y sigue permitiendo abrir teclado", async (
 
 test("M11: Apilado usa teclado inline, no un contenedor fixed", async ({ page }) => {
   await loadLayout(page, "stacked");
-  const toggle = page.getByRole("button", { name: /^(Teclado|Abrir teclado)$/ }).first();
+  const toggle = page.locator('button[aria-expanded]').filter({ hasText: "Teclado" }).first();
   await expect(toggle).toBeVisible();
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
   const isInsideFixed = await toggle.evaluate((el) => {
