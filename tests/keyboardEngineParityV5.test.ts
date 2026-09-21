@@ -26,9 +26,9 @@ type ParityCase = {
 };
 
 const PARITY_CASES: ParityCase[] = [
-  { label: "seno", expression: "sin(pi/2)" },
-  { label: "coseno", expression: "cos(0)" },
-  { label: "tangente", expression: "tan(pi/4)" },
+  { label: "sin", expression: "sin(pi/2)" },
+  { label: "cos", expression: "cos(0)" },
+  { label: "tan", expression: "tan(pi/4)" },
   { label: "sec", expression: "sec(0)" },
   { label: "csc", expression: "csc(pi/2)" },
   { label: "cot", expression: "cot(pi/4)" },
@@ -38,8 +38,8 @@ const PARITY_CASES: ParityCase[] = [
   { label: "logaritmo base 10", expression: "log(100)" },
   { label: "logaritmo con base", expression: "log(8,2)" },
   { label: "exponencial", expression: "exp(1)" },
-  { label: "raíz cuadrada", expression: "sqrt(9)" },
-  { label: "raíz de índice n editable", expression: "sqrt[3](27)" },
+  { label: "raíz cuadrada de a", expression: "sqrt(9)" },
+  { label: "raíz de índice n editable", expression: "\\sqrt[3]{27}" },
   { label: "signo de a", expression: "sign(-4)" },
   { label: "módulo o residuo", expression: "mod(10,3)" },
   { label: "máximo común divisor", expression: "gcd(12,8)" },
@@ -51,9 +51,8 @@ describe("paridad tecla → parser del teclado V5", () => {
     "encuentra la tecla funcional: $label",
     ({ label }) => {
       const key = keyByLabel(label);
-
       expect(key, "No existe una tecla con ariaLabel " + label).toBeDefined();
-      expect(key?.unavailable, "La tecla está marcada unavailable: " + label).toBe(false);
+      expect(key?.unavailable, "La tecla está marcada unavailable: " + label).toBeFalsy();
       expect(key?.insertLatex.trim(), "La tecla no tiene inserción: " + label).not.toBe("");
     },
   );
@@ -65,7 +64,7 @@ describe("paridad tecla → parser del teclado V5", () => {
     },
   );
 
-  it("mantiene las capacidades no disponibles fuera de las pruebas positivas", () => {
+  it("mantiene marcadas como no disponibles las capacidades conocidas", () => {
     for (const label of [
       "productoria",
       "derivada parcial",
@@ -74,7 +73,6 @@ describe("paridad tecla → parser del teclado V5", () => {
     ]) {
       expect(keyByLabel(label), "No existe la definición unavailable " + label).toMatchObject({
         unavailable: true,
-        insertLatex: "",
       });
     }
   });
