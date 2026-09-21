@@ -66,3 +66,5 @@ test("módulo 10: acciones no aritméticas de Álgebra exponen tooltip", async (
     expect(title, `Falta tooltip en ${name}`).toBeTruthy();
   }
 });
+
+// QA rerun marker: módulo 10
