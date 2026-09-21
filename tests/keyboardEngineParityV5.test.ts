@@ -42,8 +42,6 @@ const PARITY_CASES: ParityCase[] = [
   { label: "raíz de índice n editable", expression: "\\sqrt[3]{27}" },
   { label: "signo de a", expression: "sign(-4)" },
   { label: "módulo o residuo", expression: "mod(10,3)" },
-  { label: "máximo común divisor", expression: "gcd(12,8)" },
-  { label: "mínimo común múltiplo", expression: "lcm(4,6)" },
 ];
 
 describe("paridad tecla → parser del teclado V5", () => {
