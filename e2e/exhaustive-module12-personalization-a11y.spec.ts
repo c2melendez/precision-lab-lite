@@ -1,8 +1,8 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
 const COMMON_THEMES: Array<[string, string]> = [
-  ["Oscuro", "dark"],
   ["Claro", "light"],
+  ["Oscuro", "dark"],
   ["Alto contraste", "high-contrast"],
   ["Azul SaaS", "saas-blue"],
   ["Medianoche Púrpura", "midnight-purple"],
@@ -30,7 +30,7 @@ async function openSettings(page: Page): Promise<Locator> {
 }
 
 function menuButton(menu: Locator, label: string): Locator {
-  return menu.getByRole("button").filter({ hasText: label }).first();
+  return menu.getByRole("button", { name: label, exact: true }).first();
 }
 
 function settingRowButton(page: Page, label: string): Locator {
@@ -176,23 +176,26 @@ test("M12: Ajustes y teclado tienen nombres/estado accesibles y cierran con Esca
 
 test("M12: el resultado dinámico queda dentro de una región anunciable", async ({ page }) => {
   await openHome(page);
-  const field = page.locator("math-field:not([read-only])").first();
-  await field.evaluate((el) => {
-    const math = el as HTMLElement & { value: string };
-    math.value = "2+2";
-    el.dispatchEvent(new Event("input", { bubbles: true }));
-  });
+  const opener = page.getByRole("button", { name: /abrir teclado|expandir teclado/i }).first();
+  await expect(opener).toBeVisible();
+  await opener.click();
 
-  const form = field.locator("xpath=ancestor::form[1]");
-  const submit = form.getByRole("button", { name: /Evaluar|Calcular/i }).first();
-  await expect(submit).toBeEnabled();
-  await submit.click();
+  const dialog = page.getByRole("dialog", { name: "Teclado matemático" });
+  await expect(dialog).toBeVisible();
+  const basic = dialog.getByRole("tab", { name: "Básico", exact: true });
+  if (await basic.count()) await basic.click();
 
-  const readonlyMath = page.locator("math-field[read-only]").last();
-  const katex = page.locator(".katex").last();
-  await expect.poll(async () => (await readonlyMath.count()) + (await katex.count()), { timeout: 12000 }).toBeGreaterThan(0);
+  const clear = dialog.getByRole("button", { name: "borrar todo el campo", exact: true });
+  if (await clear.count()) await clear.click();
 
-  const resultNode = (await readonlyMath.count()) ? readonlyMath : katex;
+  await dialog.getByRole("button", { name: "2", exact: true }).click();
+  await dialog.getByRole("button", { name: "sumar", exact: true }).click();
+  await dialog.getByRole("button", { name: "2", exact: true }).click();
+  await dialog.getByRole("button", { name: "calcular", exact: true }).click();
+
+  const resultNode = page.locator("math-field[read-only]").last();
+  await expect(resultNode).toBeVisible({ timeout: 12000 });
+
   const announcement = await resultNode.evaluate((el) => {
     let node: Element | null = el;
     while (node) {
