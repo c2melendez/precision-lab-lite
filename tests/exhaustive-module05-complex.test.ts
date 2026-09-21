@@ -42,3 +42,5 @@ describe("Suite exhaustiva original — Módulo 5: Complejos", () => {
     expect(p.im).toBeCloseTo(Math.PI, 10);
   });
 });
+
+// QA rerun marker: módulo 5 validado contra el estado actual del proyecto.
