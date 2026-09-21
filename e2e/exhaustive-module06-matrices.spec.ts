@@ -17,6 +17,8 @@ test("suite original módulo 6: matrices expone rango, traza y eigen y calcula r
   await cells.nth(3).fill("4");
   await page.getByRole("button", { name: "Calcular", exact: true }).click();
 
-  const result = page.getByRole("region", { name: "Resultado", exact: true });
-  await expect(result).toContainText("1", { timeout: 12000 });
+  // ResultPanel de Lite no usa role="region"; el valor visible vive en
+  // el nodo a11y-scale-result-3xl. Validamos el DOM real del producto.
+  const resultValue = page.locator(".a11y-scale-result-3xl").last();
+  await expect(resultValue).toContainText("1", { timeout: 12000 });
 });
