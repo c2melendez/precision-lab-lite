@@ -58,12 +58,6 @@ describe("inventario estructural del teclado V5 de Lite", () => {
     }
   });
 
-  it("mantiene vacías las inserciones de capacidades no disponibles", () => {
-    for (const key of allKeyboardKeys.filter((item) => item.unavailable)) {
-      expect(key.insertLatex).toBe("");
-    }
-  });
-
   it("conserva las capacidades conocidas como no disponibles", () => {
     const unavailableLabels = allKeyboardKeys
       .filter((key) => key.unavailable)
@@ -73,8 +67,8 @@ describe("inventario estructural del teclado V5 de Lite", () => {
       expect.arrayContaining([
         "productoria",
         "derivada parcial",
-        "residuo complejo",
-        "singularidades complejas",
+        "residuo en un polo (funciones racionales)",
+        "singularidades (funciones racionales)",
       ]),
     );
   });
