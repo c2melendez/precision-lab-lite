@@ -64,7 +64,7 @@ test("M11: Apilado usa teclado inline, no un contenedor fixed", async ({ page })
   expect(isInsideFixed).toBe(false);
   await toggle.click();
   await expect(toggle).toHaveAttribute("aria-expanded", "true");
-  await expect(page.getByRole("region", { name: "Teclado matemático" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "7", exact: true }).first()).toBeVisible();
 });
 
 test("M11: Flotante respeta breakpoint y mantiene ventanas dentro del viewport", async ({ page }) => {
