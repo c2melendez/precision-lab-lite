@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
@@ -9,6 +9,9 @@ const REPO_NAME = "precision-lab-lite";
 
 export default defineConfig({
   base: `/${REPO_NAME}/`,
+  test: {
+    include: ["tests/**/*.test.ts"],
+  },
   plugins: [
     react(),
     VitePWA({

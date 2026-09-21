@@ -23,12 +23,13 @@ interface FloatingWindowProps {
   rect: FloatingRect;
   onChange: (rect: FloatingRect) => void;
   children: ReactNode;
+  onClose?: () => void;
 }
 
 const MIN_WIDTH = 220;
 const MIN_HEIGHT = 160;
 
-export function FloatingWindow({ title, rect, onChange, children }: FloatingWindowProps) {
+export function FloatingWindow({ title, rect, onChange, children, onClose }: FloatingWindowProps) {
   // Refs, no estado — el drag/resize no necesita re-render propio, solo
   // llamar a onChange con el rect actualizado (el padre es quien re-
   // renderiza vía el store).
@@ -104,6 +105,9 @@ export function FloatingWindow({ title, rect, onChange, children }: FloatingWind
         className="flex shrink-0 cursor-move touch-none items-center justify-between bg-chrome px-2.5 py-1.5"
       >
         <span className="text-[11px] font-medium text-bone/80">{title}</span>
+        {onClose && <button type="button" aria-label={`Cerrar ${title.toLowerCase()}`} title={`Cerrar ${title.toLowerCase()}`}
+          onPointerDown={(event) => event.stopPropagation()} onClick={onClose}
+          className="rounded px-2 py-1 text-bone hover:bg-chrome-soft">✕</button>}
         <span aria-hidden="true" className="text-bone/40">
           ⠿
         </span>

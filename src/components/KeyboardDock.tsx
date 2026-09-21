@@ -1,3 +1,7 @@
+import { isValidElement, useLayoutEffect, useRef, useState } from "react";
+import { MathKeyboard, type MathKeyboardProps } from "./MathKeyboard";
+import { ScientificKeyboardSections } from "./ScientificKeyboardSections";
+
 import { useKeyboardPanelStore } from "../store/useKeyboardPanelStore";
 import { useLayoutModeStore } from "../store/useLayoutModeStore";
 import { useMinWidthMediaQuery, FLOATING_MIN_WIDTH_PX } from "../hooks/useMinWidthMediaQuery";
@@ -73,6 +77,9 @@ import { RecentKeysBar } from "./RecentKeysBar";
  */
 
 export function KeyboardDock() {
+  const dockRef = useRef<HTMLDivElement>(null);
+  const [dockHeight, setDockHeight] = useState(0);
+  const [activeSection, setActiveSection] = useState<"basic" | "functions">("basic");
   const isOpen = useKeyboardPanelStore((s) => s.isOpen);
   const content = useKeyboardPanelStore((s) => s.content);
   const basicContent = useKeyboardPanelStore((s) => s.basicContent);
@@ -81,6 +88,19 @@ export function KeyboardDock() {
   const close = useKeyboardPanelStore((s) => s.close);
   const layoutMode = useLayoutModeStore((s) => s.layoutMode);
   const isFloatingWideEnough = useMinWidthMediaQuery(FLOATING_MIN_WIDTH_PX);
+  const hasDockContent = content !== null || basicContent !== null || compactActions !== null;
+
+  useLayoutEffect(() => {
+    const dock = dockRef.current;
+    if (!dock) return;
+    const measure = () => setDockHeight(dock.getBoundingClientRect().height);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(dock);
+    return () => observer.disconnect();
+  }, [layoutMode, isFloatingWideEnough, hasDockContent]);
+
+  if (!hasDockContent) return null;
 
   // Módulo P3: Apilado maneja su propia sección de teclado inline (ver
   // comentario de cabecera) — este dock fijo se retira por completo.
@@ -99,24 +119,57 @@ export function KeyboardDock() {
   const hasAdvancedContent = content !== null;
   const hasBasicContent = basicContent !== null;
   const canExpand = hasAdvancedContent || hasBasicContent;
+  const directCategories = basicContent && isValidElement<MathKeyboardProps>(content)
+    && content.type === MathKeyboard && content.props.hideCoreGrid;
 
   return (
     <>
       {(content || basicContent) && (
-        <KeyboardPanel isOpen={isOpen} onClose={close}>
-          {/* Grid básico completo — Fase Y: el panel es ahora la ÚNICA
-              fuente del teclado en cualquier breakpoint (antes existía
-              una copia siempre-visible de basicContent en la barra
-              compacta a partir de md, que Fase Y elimina por completo —
-              ver comentario donde se quitó, más abajo). Por eso ya NO
-              se oculta en md+: si se ocultara ahí, el numpad básico
-              quedaría inalcanzable en tablet/desktop. */}
-          {basicContent && <div className="mb-3">{basicContent}</div>}
-          {content}
+        <KeyboardPanel isOpen={isOpen} onClose={close} dockHeight={dockHeight}>
+          {directCategories && isValidElement<MathKeyboardProps>(content)
+            ? <ScientificKeyboardSections basic={basicContent} advanced={content} />
+            : <>
+          {basicContent && content && (
+            <div
+              role="tablist"
+              aria-label="Secciones del teclado matemático"
+              className="mb-3 grid grid-cols-2 gap-1 rounded-lg bg-chrome-deep p-1 dt:w-80"
+            >
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeSection === "basic"}
+                onClick={() => setActiveSection("basic")}
+                className={
+                  activeSection === "basic"
+                    ? "rounded-md bg-marker px-3 py-2 text-xs font-semibold text-chrome"
+                    : "rounded-md px-3 py-2 text-xs font-medium text-bone/70 hover:bg-chrome-soft hover:text-bone"
+                }
+              >
+                Básico
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeSection === "functions"}
+                onClick={() => setActiveSection("functions")}
+                className={
+                  activeSection === "functions"
+                    ? "rounded-md bg-marker px-3 py-2 text-xs font-semibold text-chrome"
+                    : "rounded-md px-3 py-2 text-xs font-medium text-bone/70 hover:bg-chrome-soft hover:text-bone"
+                }
+              >
+                Funciones
+              </button>
+            </div>
+          )}
+          {(!content || activeSection === "basic") && basicContent}
+          {(!basicContent || activeSection === "functions") && content}
+          </>}
         </KeyboardPanel>
       )}
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-chrome-soft bg-chrome px-3 pb-[env(safe-area-inset-bottom)] pt-2">
+      <div ref={dockRef} data-testid="keyboard-dock" className="fixed inset-x-0 bottom-0 z-30 border-t border-chrome-soft bg-chrome px-3 pb-[env(safe-area-inset-bottom)] pt-2">
         {/* Fase X, Módulo X0 — mismo criterio que precision-lab (main). */}
         <RecentKeysBar />
         {/* Fila compacta — móvil siempre, y cualquier breakpoint en Focus. */}

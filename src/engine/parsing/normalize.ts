@@ -352,6 +352,8 @@ export function preprocessLatex(latex: string): string {
     .replace(/\\div/g, "/")
     .replace(/\\pi/g, "pi")
     .replace(/\\infty/g, "oo")
+    .replace(/\\theta/g, "theta")
+    .replace(/\\Phi/g, "Phi")
     // FIX (auditoría Fase 0 v2, Fase 10): mismo bug que \mathrm arriba —
     // \gcd/\min/\max son macros LaTeX nativos (no \mathrm{...}) que
     // tampoco se manejaban, con el mismo efecto (error de parseo).

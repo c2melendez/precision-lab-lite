@@ -14,7 +14,6 @@
  * y borde, no por matiz. `muted` desaparece (no hay grises intermedios).
  */
 
-:root,
 [data-theme="dark"] {
   --color-chrome: 20 23 28;
   --color-chrome-soft: 31 35 43;
@@ -31,6 +30,25 @@
   --color-alpha: 155 127 214;
   --color-alpha-soft: 36 28 51;
   --color-muted: 138 131 113;
+}
+
+:root:not([data-theme]),
+[data-theme="v4-blue"] {
+  --color-chrome: 255 255 255;
+  --color-chrome-soft: 241 245 249;
+  --color-paper: 248 250 252;
+  --color-paper-soft: 255 255 255;
+  --color-paper-line: 219 228 239;
+  --color-ink: 15 23 42;
+  --color-bone: 15 23 42;
+  --color-marker: 37 99 235;
+  --color-marker-soft: 219 234 254;
+  --color-marker-text: 29 78 216;
+  --color-graph: 15 118 110;
+  --color-graph-soft: 204 251 241;
+  --color-alpha: 109 40 217;
+  --color-alpha-soft: 237 233 254;
+  --color-muted: 100 116 139;
 }
 
 [data-theme="light"] {

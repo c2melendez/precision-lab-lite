@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 
 /**
  * KeyboardPanel.tsx — Módulo 0 (hoja-de-ruta-visual.md §0.3 / spec §2, §8).
@@ -6,7 +6,7 @@ import { useEffect, useRef, type ReactNode } from "react";
  * Contenedor puro del panel expandido — no sabe qué teclado renderiza
  * (recibe `children`), no reordena ni reclasifica ninguna tecla (eso es
  * Módulos 1-4). Cambia de forma según breakpoint:
- * - `dt` (≥1440px): popover anclado cerca del dock, no tapa Screen.
+ * - `dt` (≥1440px): panel inferior amplio, alineado con el área de trabajo.
  * - laptop (lg, 1024-1439px): bottom sheet parcial (~45%).
  * - tablet (md, 768-1023px): bottom sheet (~55%).
  * - móvil (<768px): bottom sheet (~66%) con drag handle.
@@ -22,9 +22,10 @@ interface KeyboardPanelProps {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
+  dockHeight?: number;
 }
 
-export function KeyboardPanel({ isOpen, onClose, children }: KeyboardPanelProps) {
+export function KeyboardPanel({ isOpen, onClose, children, dockHeight = 0 }: KeyboardPanelProps) {
   const panelRef = useRef<HTMLDivElement | null>(null);
 
   // Cierre con Escape — accesibilidad mínima de un panel tipo popover/sheet.
@@ -45,6 +46,7 @@ export function KeyboardPanel({ isOpen, onClose, children }: KeyboardPanelProps)
       role="dialog"
       aria-label="Teclado matemático"
       aria-modal="false"
+      style={{ "--keyboard-panel-bottom": `${dockHeight + 12}px` } as CSSProperties}
       className={[
         // Base (móvil, <768px): bottom sheet ~66vh, ancho completo.
         "fixed inset-x-0 bottom-0 z-40 flex flex-col rounded-t-2xl border-t border-chrome-soft bg-chrome shadow-2xl",
@@ -53,13 +55,14 @@ export function KeyboardPanel({ isOpen, onClose, children }: KeyboardPanelProps)
         "md:h-[55vh]",
         // Laptop (lg, 1024-1439px): ~45%.
         "lg:h-[45vh]",
-        // Desktop dt (≥1440px): popover anclado, no full-width, no
-        // full-height — flota sobre el dock en vez de cubrir la pantalla.
-        "dt:inset-x-auto dt:bottom-24 dt:right-6 dt:h-auto dt:max-h-[70vh] dt:w-[420px] dt:rounded-2xl dt:border",
+        // Desktop: panel inferior amplio con los márgenes del área de trabajo.
+        // La barra cambia de altura cuando aparecen teclas recientes.
+        // Mantener el panel sobre su borde real, no sobre el antiguo grid fijo.
+        "dt:inset-x-8 dt:bottom-[var(--keyboard-panel-bottom)] dt:mx-auto dt:h-auto dt:max-h-[45vh] dt:max-w-[1376px] dt:rounded-2xl dt:border",
       ].join(" ")}
     >
       {/* Drag handle — solo afordance visual en este módulo, oculto en dt
-          (ahí el panel es un popover anclado, no una hoja arrastrable). */}
+          (ahí el panel inferior se abre con el botón dedicado). */}
       <div className="flex justify-center pt-2 dt:hidden">
         <div className="h-1.5 w-10 rounded-full bg-bone/30" />
       </div>

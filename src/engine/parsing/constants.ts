@@ -9,6 +9,7 @@
  */
 export const RESERVED_MULTI_LETTER_IDENTIFIERS = [
   "theta",
+  "Phi",
   "alpha",
   "beta",
   "gamma",

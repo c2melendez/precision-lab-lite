@@ -37,6 +37,12 @@ describe("parseExpression", () => {
     expect(parseExpression("2theta").algebrite).toBe("2*theta");
   });
 
+  it("normaliza las teclas griegas angulares θ y Φ como variables", () => {
+    expect(parseExpression("\\theta").algebrite).toBe("theta");
+    expect(parseExpression("\\Phi").algebrite).toBe("Phi");
+    expect(parseExpression("2\\Phi").algebrite).toBe("2*Phi");
+  });
+
   it('"theta*x" queda sin cambios (ya tiene * explícito)', () => {
     const result = parseExpression("theta*x").algebrite;
     expect(result).toBe("theta*x");

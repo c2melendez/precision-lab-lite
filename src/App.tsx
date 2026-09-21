@@ -16,6 +16,7 @@ import { HistoryDrawer } from "./components/HistoryDrawer";
 import { AjustesPopover } from "./components/AjustesPopover";
 import { KeyboardDock } from "./components/KeyboardDock";
 import { useLayoutModeStore } from "./store/useLayoutModeStore";
+import { useKeyboardPanelStore } from "./store/useKeyboardPanelStore";
 import { useMinWidthMediaQuery, FLOATING_MIN_WIDTH_PX } from "./hooks/useMinWidthMediaQuery";
 
 // Selector de modos por pestañas tipo "chasis" (Fase 1 — sistema de diseño
@@ -78,8 +79,11 @@ export default function App() {
   // activo (viewport ancho) — mismo criterio que KeyboardDock.tsx.
   const layoutMode = useLayoutModeStore((s) => s.layoutMode);
   const isFloatingWideEnough = useMinWidthMediaQuery(FLOATING_MIN_WIDTH_PX);
-  const hasFixedDock = !(layoutMode === "stacked" || (layoutMode === "floating" && isFloatingWideEnough));
-  const mainBottomPadding = hasFixedDock ? "pb-56 dt:pb-40" : "pb-8";
+  const hasDockContent = useKeyboardPanelStore((s) =>
+    s.content !== null || s.basicContent !== null || s.compactActions !== null);
+  const hasFixedDock = hasDockContent && !(layoutMode === "stacked" || (layoutMode === "floating" && isFloatingWideEnough));
+  // Reserva espacio inferior solo cuando el módulo registra un dock.
+  const mainBottomPadding = hasFixedDock ? "pb-56 md:pb-72" : "pb-8";
   const pendingArgandPoint = useArgandBridgeStore((s) => s.pendingArgandPoint);
   const pendingGraphExpression = usePendingGraphStore((s) => s.pendingExpression);
 

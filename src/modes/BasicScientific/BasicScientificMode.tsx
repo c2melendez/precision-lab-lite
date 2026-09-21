@@ -380,6 +380,7 @@ export function BasicScientificMode() {
       <KeyboardBasicPanel
         field={mathField}
         onBackspace={() => setLatex((prev) => prev.slice(0, -1))}
+        onClear={() => setLatex("")}
         onEnter={handleCalculate}
         lastAnswerLatex={result?.resultLatex ?? null}
       />,
@@ -410,7 +411,7 @@ export function BasicScientificMode() {
   }, []);
 
   return (
-    <div className="mx-auto flex max-w-md flex-col gap-3 p-4 md:max-w-lg lg:max-w-3xl dt:max-w-4xl">
+    <div className="mx-auto flex max-w-md flex-col gap-3 p-4 md:max-w-lg lg:max-w-3xl dt:max-w-[1440px] dt:px-8">
       <Screen
         latex={latex}
         onChangeLatex={setLatex}
@@ -423,6 +424,7 @@ export function BasicScientificMode() {
         onClearField={() => setLatex("")}
         layoutMode={layoutMode}
         onGraphExpression={handleGraphExpression}
+        onCalculate={handleCalculate}
       />
     </div>
   );

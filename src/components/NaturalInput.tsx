@@ -16,6 +16,7 @@ declare global {
     interface IntrinsicElements {
       "math-field": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
         placeholder?: string;
+        class?: string;
         "virtual-keyboard-mode"?: string;
       };
     }
@@ -82,16 +83,19 @@ export function NaturalInput({ value, onChange, placeholder, fieldRef, bare = fa
         (ref as React.MutableRefObject<typeof el>).current = el;
         fieldRef?.(el);
       }}
-      className={
+      class={
         bare
-          ? "w-full bg-transparent px-0 py-1 text-right text-2xl text-ink"
-          : "w-full rounded-lg border border-paper-line bg-paper-soft px-4 py-3 text-2xl text-ink shadow-sm"
+          ? "block min-w-0 max-w-full w-full bg-transparent px-0 py-1 text-right text-2xl text-ink"
+          : "block min-w-0 max-w-full w-full rounded-lg border border-paper-line bg-paper-soft px-4 py-3 text-2xl text-ink shadow-sm"
       }
       style={
         {
-          "--caret-color": "#E8A33D",
-          "--selection-background-color": "#FBEFDA",
-          "--selection-color": "#8A5A0E",
+          "--caret-color": "rgb(var(--color-marker))",
+          "--selection-background-color": "rgb(var(--color-marker-soft))",
+          "--selection-color": "rgb(var(--color-marker-text))",
+          // Keep long formulas/placeholders inside the editor instead of
+          // expanding the mobile visual viewport and displacing the dock.
+          overflow: "hidden",
         } as React.CSSProperties
       }
       // "virtual-keyboard-mode" en off: el teclado propio de la app
