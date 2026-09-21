@@ -44,8 +44,8 @@ describe("Suite exhaustiva original — Módulo 10: teclado ↔ motor (Lite)", (
   });
 
   it("porcentaje real: 50% = 0.5", () => {
-    const parsed = parseExpression("50\\%");
-    expect(Number(evaluate(`float(${parsed.algebrite})`))).toBeCloseTo(0.5, 12);
+    const parsed = parseExpression("50%");
+    expect(parseFloat(evaluate(`float(${parsed.algebrite})`))).toBeCloseTo(0.5, 12);
   });
 
   it("± real: ±(5) produce ambas ramas", () => {
@@ -60,7 +60,7 @@ describe("Suite exhaustiva original — Módulo 10: teclado ↔ motor (Lite)", (
       ["45°30′15″", (45 + 30/60 + 15/3600) * Math.PI / 180],
     ] as const) {
       const parsed = parseExpression(latex);
-      expect(Number(evaluate(`float(${parsed.algebrite})`))).toBeCloseTo(expected, 6);
+      expect(parseFloat(evaluate(`float(${parsed.algebrite})`))).toBeCloseTo(expected, 6);
     }
   });
 
