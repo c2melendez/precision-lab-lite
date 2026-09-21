@@ -1,36 +1,32 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const port = 4173;
+const baseURL = `http://127.0.0.1:${port}/precision-lab-lite/`;
+
 export default defineConfig({
   testDir: "./e2e",
-  outputDir: "test-results",
+  timeout: 30_000,
+  expect: { timeout: 7_500 },
   fullyParallel: true,
-  retries: 0,
-  repeatEach: process.env.CI ? 2 : 1,
-  reporter: process.env.CI ? [["line"], ["html", { outputFolder: "playwright-report", open: "never" }]] : "line",
+  forbidOnly: Boolean(process.env.CI),
+  retries: process.env.CI ? 1 : 0,
+  workers: process.env.CI ? 2 : undefined,
+  reporter: [["list"], ["html", { open: "never" }]],
   use: {
-    baseURL: "http://127.0.0.1:5173/precision-lab-lite/",
+    baseURL,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
+    video: "retain-on-failure",
   },
   projects: [
-    {
-      name: "desktop-1440",
-      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } },
-    },
-    {
-      name: "tablet-1024",
-      use: { ...devices["Desktop Chrome"], viewport: { width: 1024, height: 768 } },
-    },
-    {
-      name: "mobile-390",
-      use: { ...devices["iPhone 13"], browserName: "chromium", viewport: { width: 390, height: 844 } },
-    },
+    { name: "desktop-chromium", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } } },
+    { name: "tablet-chromium", use: { ...devices["iPad (gen 7)"] } },
+    { name: "mobile-chromium", use: { ...devices["Pixel 7"] } },
   ],
   webServer: {
-    // Exercise the shipped bundle: dependency discovery in the development
-    // server can reload the page when the compute worker first starts.
-    command: "npm run build && npm run preview -- --host 127.0.0.1 --port 5173 --strictPort",
-    url: "http://127.0.0.1:5173/precision-lab-lite/",
-    reuseExistingServer: false,
+    command: `npm run dev -- --host 127.0.0.1 --port ${port}`,
+    url: baseURL,
+    reuseExistingServer: !process.env.CI,
+    timeout: 120_000,
   },
 });
