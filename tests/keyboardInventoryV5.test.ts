@@ -13,6 +13,7 @@ const EDITOR_ACTIONS = new Set([
   "borrar todo el campo",
   "insertar el último resultado",
   "calcular",
+  "graficar en el plano de Argand",
 ]);
 
 const allKeyboardKeys: KeyDef[] = [
