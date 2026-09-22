@@ -245,6 +245,91 @@ describe("computeEigenvalues", () => {
     for (const p of pairs) expectResidualSmall(A, p, 2e-4);
   });
 
+  it("M24: identidad 6x6 agrupa λ=1 con multiplicidad 6 y conserva eigenvector válido", () => {
+    const A = toFractionMatrix(Array.from({ length: 6 }, (_, r) =>
+      Array.from({ length: 6 }, (_, col) => (r === col ? 1 : 0)),
+    ));
+    const { pairs } = computeEigenvalues(A);
+    expect(pairs).toHaveLength(1);
+    expect(pairs[0].approx).toBeCloseTo(1, 10);
+    expect(pairs[0].multiplicity).toBe(6);
+    expectResidualSmall(A, pairs[0], 1e-8);
+  });
+
+  it("M24: diagonal casi repetida no fusiona eigenvalores distintos", () => {
+    const A = toFractionMatrix([
+      [1,0,0,0],
+      [0,"1.000001",0,0],
+      [0,0,2,0],
+      [0,0,0,3],
+    ]);
+    const { pairs } = computeEigenvalues(A);
+    expect(pairs).toHaveLength(4);
+    expect(pairs[0].approx).toBeCloseTo(1, 8);
+    expect(pairs[1].approx).toBeCloseTo(1.000001, 8);
+    expect(pairs[0].multiplicity).toBe(1);
+    expect(pairs[1].multiplicity).toBe(1);
+  });
+
+  it("M24: Jordan 4x4 defectivo reporta multiplicidad 4 y al menos un eigenvector", () => {
+    const A = toFractionMatrix([
+      [2,1,0,0],
+      [0,2,1,0],
+      [0,0,2,1],
+      [0,0,0,2],
+    ]);
+    const { pairs } = computeEigenvalues(A);
+    expect(pairs).toHaveLength(1);
+    expect(pairs[0].approx).toBeCloseTo(2, 10);
+    expect(pairs[0].multiplicity).toBe(4);
+    expectResidualSmall(A, pairs[0], 1e-8);
+  });
+
+  it("M24: matriz defectiva densa similar a Jordan mantiene λ=2 y residual controlado", () => {
+    const A = toFractionMatrix([
+      [1,"2/3","1/3","1/3"],
+      ["-4/5","32/15","2/3","-2/15"],
+      [-1,"-1/3","10/3","-5/3"],
+      ["1/5","-8/15","1/3","23/15"],
+    ]);
+    const { pairs } = computeEigenvalues(A);
+    expect(pairs.length).toBeGreaterThanOrEqual(1);
+    expect(pairs.reduce((sum, p) => sum + p.multiplicity, 0)).toBe(4);
+    for (const p of pairs) {
+      expect(p.approx).toBeCloseTo(2, 3);
+      expect(Math.abs(p.approxIm)).toBeLessThan(5e-3);
+      if (p.eigenvector || p.complexEigenvector) expectResidualSmall(A, p, 5e-4);
+    }
+    expect(pairs.some((p) => p.eigenvector !== null || p.complexEigenvector !== null)).toBe(true);
+  });
+
+  it("M24: escalas grandes y pequeñas conservan eigenvalores triangulares", () => {
+    const large = toFractionMatrix([
+      [100000000,0,0,0],
+      [0,200000000,0,0],
+      [0,0,300000000,0],
+      [0,0,0,400000000],
+    ]);
+    const small = toFractionMatrix([
+      ["1/100000000",0,0,0],
+      [0,"1/50000000",0,0],
+      [0,0,"3/100000000",0],
+      [0,0,0,"1/25000000"],
+    ]);
+    expect(computeEigenvalues(large).pairs.map((p) => p.approx)).toEqual([
+      expect.closeTo(1e8, 0),
+      expect.closeTo(2e8, 0),
+      expect.closeTo(3e8, 0),
+      expect.closeTo(4e8, 0),
+    ]);
+    expect(computeEigenvalues(small).pairs.map((p) => p.approx)).toEqual([
+      expect.closeTo(1e-8, 12),
+      expect.closeTo(2e-8, 12),
+      expect.closeTo(3e-8, 12),
+      expect.closeTo(4e-8, 12),
+    ]);
+  });
+
   it("M23: rechaza 1x1, no cuadradas y tamaños mayores a 6", () => {
     expect(() => computeEigenvalues(toFractionMatrix([[5]]))).toThrow();
     expect(() => computeEigenvalues(toFractionMatrix([[1,2,3],[4,5,6]]))).toThrow();

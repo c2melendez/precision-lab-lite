@@ -121,3 +121,31 @@ test("M23: eigen 4x4 usa fallback numérico y muestra eigenvectores", async ({ p
   await expect(procedure).toContainText("Eigenvector correspondiente:");
   await expect(procedure).not.toContainText("no se pudo calcular");
 });
+
+
+test("M24: eigen repetido 4x4 identidad agrupa multiplicidad y conserva eigenvector", async ({ page }) => {
+  await page.goto("./");
+  await page.getByRole("button", { name: "Matrices", exact: true }).click();
+
+  const incRows = page.getByRole("button", { name: "Aumentar Filas A", exact: true });
+  const incCols = page.getByRole("button", { name: "Aumentar Col A", exact: true });
+  for (let i = 0; i < 2; i++) {
+    await incRows.click();
+    await incCols.click();
+  }
+
+  const eigen = page.getByRole("button", { name: "Eigenvalores y eigenvectores", exact: true });
+  await eigen.click();
+
+  const cells = page.locator('input[placeholder="0"]');
+  await expect(cells).toHaveCount(16);
+  for (const index of [0,5,10,15]) await cells.nth(index).fill("1");
+
+  await page.getByRole("button", { name: "Calcular", exact: true }).click();
+
+  const procedure = page.getByRole("list", { name: "Procedimiento paso a paso" });
+  await expect(procedure).toBeVisible({ timeout: 12000 });
+  await expect(procedure).toContainText("Multiplicidad algebraica 4");
+  await expect(procedure).toContainText("Eigenvector:");
+  await expect(procedure).not.toContainText("no se pudo calcular");
+});
