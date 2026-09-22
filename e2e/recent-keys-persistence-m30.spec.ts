@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("M30: teclas recientes rehidratan, reordenan y persisten tras reload", async ({ page }) => {
   await page.addInitScript(() => {
+    if (localStorage.getItem("precision-lab-recent-keys")) return;
     localStorage.setItem(
       "precision-lab-recent-keys",
       JSON.stringify({
