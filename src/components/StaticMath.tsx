@@ -54,7 +54,7 @@ export function StaticMath({ latex, className }: StaticMathProps) {
       read-only
       tabIndex={-1}
       aria-readonly="true"
-      className={className}
+      class={className}
       style={
         {
           background: "transparent",

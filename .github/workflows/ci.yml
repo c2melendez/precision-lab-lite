@@ -2,8 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, qa/exhaustive-suite-module-01]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -20,6 +21,17 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - name: QA dependency audit (JSON)
+        continue-on-error: true
+        run: npm audit --package-lock-only --json > npm-audit.json
+      - name: Upload npm audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lite-npm-audit
+          path: npm-audit.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Typecheck
         run: npm run typecheck
       - name: Unit and parity tests

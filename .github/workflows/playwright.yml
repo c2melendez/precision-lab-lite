@@ -2,7 +2,7 @@ name: Playwright E2E
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, qa/exhaustive-suite-module-01]
   pull_request:
   workflow_dispatch:
 

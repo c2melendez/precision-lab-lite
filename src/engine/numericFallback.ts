@@ -14,16 +14,27 @@ import { ErrorCode, type AppError } from "../types";
 
 type Fn = (x: number) => number;
 
+const SINGULAR_EPSILON = 1e-12;
+
+const safeTan = (x: number): number =>
+  Math.abs(Math.cos(x)) < SINGULAR_EPSILON ? NaN : Math.tan(x);
+const safeSec = (x: number): number =>
+  Math.abs(Math.cos(x)) < SINGULAR_EPSILON ? NaN : 1 / Math.cos(x);
+const safeCsc = (x: number): number =>
+  Math.abs(Math.sin(x)) < SINGULAR_EPSILON ? NaN : 1 / Math.sin(x);
+const safeCot = (x: number): number =>
+  Math.abs(Math.sin(x)) < SINGULAR_EPSILON ? NaN : Math.cos(x) / Math.sin(x);
+
 const UNARY_FUNCTIONS: Record<string, Fn> = {
   sin: Math.sin,
   cos: Math.cos,
-  tan: Math.tan,
+  tan: safeTan,
   arcsin: Math.asin,
   arccos: Math.acos,
   arctan: Math.atan,
-  sec: (x) => 1 / Math.cos(x),
-  csc: (x) => 1 / Math.sin(x),
-  cot: (x) => 1 / Math.tan(x),
+  sec: safeSec,
+  csc: safeCsc,
+  cot: safeCot,
   // Fase 3: sinh/cosh/tanh SÍ los evalúa Algebrite con float(...), pero se
   // incluyen aquí también por si el fallback numérico los recibe desde
   // otra ruta (ej. una integral/límite con una hiperbólica adentro).
@@ -85,7 +96,12 @@ export function compileNumeric(expr: string, variable: string): Fn {
       pos++;
       const right = parseUnary();
       const prevLeft = left;
-      left = op === "*" ? (x) => prevLeft(x) * right(x) : (x) => prevLeft(x) / right(x);
+      left = op === "*"
+        ? (x) => prevLeft(x) * right(x)
+        : (x) => {
+            const denominator = right(x);
+            return Math.abs(denominator) < SINGULAR_EPSILON ? NaN : prevLeft(x) / denominator;
+          };
     }
     return left;
   }
@@ -205,7 +221,12 @@ export function compileNumeric2D(expr: string, varX: string, varY: string): (x: 
       pos++;
       const right = parseUnary();
       const prevLeft = left;
-      left = op === "*" ? (x, y) => prevLeft(x, y) * right(x, y) : (x, y) => prevLeft(x, y) / right(x, y);
+      left = op === "*"
+        ? (x, y) => prevLeft(x, y) * right(x, y)
+        : (x, y) => {
+            const denominator = right(x, y);
+            return Math.abs(denominator) < SINGULAR_EPSILON ? NaN : prevLeft(x, y) / denominator;
+          };
     }
     return left;
   }

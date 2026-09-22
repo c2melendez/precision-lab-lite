@@ -364,16 +364,44 @@ vite.config.ts   (incluye configuración PWA)
 - Los íconos de PWA en `public/icons/` son placeholders — reemplázalos por íconos reales de 192x192, 512x512 y 512x512 maskable antes de publicar.
 - No se ha podido compilar ni probar visualmente en este entorno (sin acceso a red) — ver "Estado del proyecto" arriba.
 
-## Correcciones posteriores a Track D (suite exhaustiva M1–M15)
+## Revalidación post-fix Track D — 21 de septiembre de 2026
 
-Esta versión incorpora las correcciones de producto derivadas de Track D:
+Se revisó el paquete corregido después de M1–M15 y se confirmó por código que están presentes los fixes de accesibilidad base, Productoria y discontinuidades:
 
-- el campo MathLive principal tiene nombre accesible estable (`Entrada matemática`);
-- `ResultPanel` usa una región `role="status"`/`aria-live="polite"` uniforme, también en disposición Fusionada;
-- Productoria Π queda activa y se evalúa como producto finito con límites enteros y tope de 10 000 términos;
-- `product(...)` queda registrado explícitamente como función de aridad 4 en el parser, evitando que la multiplicación implícita altere su semántica;
-- `GraphViewer` abre un nuevo subpath SVG ante huecos de muestreo o saltos asintóticos, evitando unir ramas a través de una asíntota;
-- los polos exactos de `tan`/`sec` ya no se presentan como números finitos gigantes; se devuelven como error de dominio.
+- `NaturalInput` aporta un nombre accesible estable al `math-field` principal.
+- `ResultPanel` centraliza `role="status"`, `aria-live="polite"` y `aria-atomic="true"`, evitando depender del layout.
+- `GraphViewer` genera subpaths separados ante huecos/saltos asintóticos.
+- Productoria está habilitada y dispone de parser/evaluador finito acotado.
 
-Los cambios conservan la arquitectura sin backend de Lite y reutilizan el pipeline existente de normalización + worker.
+El entorno local no pudo completar `npm ci`; por tanto Vitest/typecheck/build/Playwright deben confirmarse mediante GitHub Actions. No se marca Lite completamente verde hasta que esa ejecución termine.
 
+
+## Cierre Track D — 22 de septiembre de 2026
+
+Esta sección **supersede los estados pendientes anteriores de Track D**. La revalidación final se ejecutó con dependencias reales en GitHub Actions, siguiendo el Log técnico de ejecución y decisiones QA.
+
+### Gates finales
+
+- Frontend: `npm ci` ✅, typecheck ✅, **437/437** unitarias ✅, build ✅.
+- M3/M10 dirigido final: **23 passed + 1 flaky, 0 failed**, exit 0.
+- Playwright completo: **130 passed + 2 flaky, 0 failed**, resultado success sobre 132 tests en Desktop, Tablet y Mobile.
+- Los dos flaky finales corresponden a Productoria/Sumatoria M3 en desktop y pasan al retry.
+- Playwright quedó restaurado a `npx playwright test`.
+- Los workflows temporales de diagnóstico/auditoría usados durante el aislamiento fueron retirados; se conservan los workflows normales `ci.yml` y `playwright.yml`.
+
+### Seguridad de dependencias
+
+El audit completo inicial registró 10 advisories. Se eliminó `react-router-dom` porque no era usado por el producto y se actualizó MathLive de forma controlada. Tras revalidar typecheck, unitarias, build, Playwright y audit:
+
+- audit completo: **7** — 1 critical, 2 high, 4 moderate;
+- audit de producción/runtime: **0 vulnerabilidades**.
+
+Los 7 advisories restantes corresponden a tooling/desarrollo (Vitest/Vite, vite-plugin-pwa y transitivas). No se ejecutó `npm audit fix --force`; las correcciones principales requieren upgrades mayores y se dejan para una migración controlada independiente.
+
+### Harness estabilizado
+
+Durante el cierre se corrigieron falsos negativos de E2E relacionados con sincronización MathLive/React, lectura de `StaticMath`, overlays del teclado nativo de MathLive y el bottom-sheet del teclado propio en móvil. No fue necesario reimplementar Π, Σ, %, ± ni el motor EDO.
+
+### Estado de integración
+
+Los defectos funcionales que motivaron M1–M15 fueron corregidos/revalidados y la regresión completa termina con `success`. El PR canónico de Track D queda listo para revisión/integración, sujeto únicamente a las políticas normales del repositorio.

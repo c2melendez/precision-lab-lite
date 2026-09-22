@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import "mathlive";
 import { useKeyboardPanelStore } from "../store/useKeyboardPanelStore";
 
@@ -19,7 +19,7 @@ declare global {
   /** Stable accessible name for the primary MathLive field. */
   ariaLabel?: string;
         class?: string;
-        "virtual-keyboard-mode"?: string;
+        "math-virtual-keyboard-policy"?: "auto" | "manual" | "sandboxed";
       };
     }
   }
@@ -50,7 +50,12 @@ export interface NaturalInputHandle {
 }
 
 export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrada matemática", fieldRef, bare = false }: NaturalInputProps) {
-  const ref = useRef<HTMLElement & { value: string; insert: (s: string) => void; focus: () => void }>(null);
+  const ref = useRef<HTMLElement & {
+    value: string;
+    insert: (s: string) => void;
+    focus: () => void;
+    mathVirtualKeyboardPolicy?: "auto" | "manual" | "sandboxed";
+  }>(null);
 
   useEffect(() => {
     const el = ref.current;
@@ -67,11 +72,14 @@ export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrad
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const field = el;
     function handleFocus(): void {
+      field.mathVirtualKeyboardPolicy = "manual";
+      window.mathVirtualKeyboard.hide();
       useKeyboardPanelStore.getState().open();
     }
-    el.addEventListener("focus", handleFocus);
-    return () => el.removeEventListener("focus", handleFocus);
+    field.addEventListener("focus", handleFocus);
+    return () => field.removeEventListener("focus", handleFocus);
   }, []);
 
   useEffect(() => {
@@ -81,12 +89,32 @@ export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrad
     }
   }, [value]);
 
+  // Una callback-ref inline cambia de identidad en cada render; React
+  // desmonta lógicamente la ref anterior (null) y vuelve a adjuntar la
+  // nueva. Como BasicScientificMode guarda este elemento en estado y el
+  // teclado vive en un store global, esa oscilación null→element podía
+  // dejar callbacks del dock apuntando a un render intermedio justo al
+  // calcular. Mantener la callback estable evita ese ciclo.
+  const attachMathField = useCallback(
+    (el: (HTMLElement & {
+      value: string;
+      insert: (s: string) => void;
+      focus: () => void;
+      mathVirtualKeyboardPolicy?: "auto" | "manual" | "sandboxed";
+    }) | null) => {
+      (ref as React.MutableRefObject<typeof el>).current = el;
+      if (el) {
+        el.mathVirtualKeyboardPolicy = "manual";
+        window.mathVirtualKeyboard.hide();
+      }
+      fieldRef?.(el);
+    },
+    [fieldRef],
+  );
+
   return (
     <math-field
-      ref={(el: (HTMLElement & { value: string; insert: (s: string) => void; focus: () => void }) | null) => {
-        (ref as React.MutableRefObject<typeof el>).current = el;
-        fieldRef?.(el);
-      }}
+      ref={attachMathField}
       class={
         bare
           ? "block min-w-0 max-w-full w-full bg-transparent px-0 py-1 text-right text-2xl text-ink"
@@ -102,10 +130,9 @@ export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrad
           overflow: "hidden",
         } as React.CSSProperties
       }
-      // "virtual-keyboard-mode" en off: el teclado propio de la app
-      // (MathKeyboard) reemplaza al teclado virtual por defecto de MathLive
-      // — spec v10 §5.
-      virtual-keyboard-mode="off"
+      // El teclado propio de la app reemplaza al teclado nativo de MathLive.
+      // "manual" evita que el panel nativo aparezca automáticamente al foco.
+      math-virtual-keyboard-policy="manual"
       aria-label={ariaLabel}
       placeholder={placeholder}
     />

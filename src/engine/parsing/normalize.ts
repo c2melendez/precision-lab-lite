@@ -360,12 +360,22 @@ export function preprocessLatex(latex: string): string {
     }
   }
 
+  // MathLive serializa el símbolo de porcentaje como \\% en LaTeX.
+  // El tokenizador científico espera el operador postfix literal "%".
+  expr = expr;
+
+  // Según la posición del placeholder, MathLive puede simplificar
+  // \\pm\\left(5\\right) a \\pm 5. Normalizamos también esa forma
+  // a la función unaria interna pm(5), preservando las dos ramas.
+  expr = expr.replace(/\\pm\s+([A-Za-z0-9.]+)/g, "pm($1)");
+
   expr = expr
     .replace(/\\left\|/g, "abs(")
     .replace(/\\right\|/g, ")")
     .replace(/\\cdot/g, "*")
     .replace(/\\times/g, "*")
     .replace(/\\div/g, "/")
+    .replace(/\\%/g, "%")
     .replace(/\\pi/g, "pi")
     .replace(/\\infty/g, "oo")
     .replace(/\\theta/g, "theta")

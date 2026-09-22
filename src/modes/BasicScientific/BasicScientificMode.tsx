@@ -164,7 +164,12 @@ export function BasicScientificMode() {
   );
 
   const handleCalculate = useCallback(() => {
-    const systemRows = splitSystemLatex(latex);
+    // El botón Calcular debe evaluar exactamente lo que el usuario ve en
+    // MathLive. field.insert()/setValue() pueden actualizar el custom
+    // element antes de que React haya propagado el último onChange; leer
+    // el valor vivo elimina esa ventana de estado obsoleto.
+    const currentLatex = mathField?.value ?? latex;
+    const systemRows = splitSystemLatex(currentLatex);
     if (systemRows) {
       runSystem(systemRows);
       return;
@@ -177,11 +182,11 @@ export function BasicScientificMode() {
     // tokenize() (la prima no es un token reconocido ahí), mucho antes
     // de llegar a ningún motor EDO. Por eso se detecta ANTES, con el
     // mismo criterio que splitSystemLatex arriba.
-    const odeExpression = detectODE(latex);
+    const odeExpression = detectODE(currentLatex);
     if (odeExpression !== null) {
       const requestId = makeRequestId();
       const worker = getWorker();
-      worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica (EDO)", latex, e.data);
+      worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica (EDO)", currentLatex, e.data);
       worker.postMessage({ type: "ode", requestId, expression: odeExpression });
       return;
     }
@@ -189,7 +194,7 @@ export function BasicScientificMode() {
     const requestId = makeRequestId();
     let parsed;
     try {
-      parsed = parseExpression(latex, angleMode);
+      parsed = parseExpression(currentLatex, angleMode);
     } catch (err) {
       const appErr = err as { code?: ErrorCode; message?: string };
       fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Expresión inválida.", requestId);
@@ -212,7 +217,7 @@ export function BasicScientificMode() {
         );
         return;
       }
-      worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica (ecuación)", latex, e.data);
+      worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica (ecuación)", currentLatex, e.data);
       worker.postMessage({
         type: "solveAlgebra",
         requestId,
@@ -237,7 +242,7 @@ export function BasicScientificMode() {
         );
         return;
       }
-      worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica (desigualdad)", latex, e.data);
+      worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica (desigualdad)", currentLatex, e.data);
       worker.postMessage({
         type: "solveInequality",
         requestId,
@@ -249,9 +254,17 @@ export function BasicScientificMode() {
     }
 
     // Rama 3: expresión simple (comportamiento original, sin cambios).
-    worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica", latex, e.data);
+    worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica", currentLatex, e.data);
     worker.postMessage({ type: "evaluate", requestId, expressionAlgebrite: parsed.algebrite });
-  }, [latex, angleMode, getWorker, fail, onSuccess, runSystem]);
+  }, [latex, mathField, angleMode, getWorker, fail, onSuccess, runSystem]);
+
+  // El dock del teclado vive en un store compartido y puede conservar un
+  // ReactNode creado por el render inmediatamente anterior. Mantener una
+  // función estable que delega al handleCalculate MÁS RECIENTE elimina el
+  // race entre field.insert()/onChange y el click inmediato en Calcular.
+  const calculateRef = useRef(handleCalculate);
+  calculateRef.current = handleCalculate;
+  const handleKeyboardEnter = useCallback(() => calculateRef.current(), []);
 
   // Íconos de resolución (spec §3.4). "f(x)=0": si aún no hay "=" en el
   // campo, lo inserta (mismo comportamiento previo); si ya hay una
@@ -381,12 +394,12 @@ export function BasicScientificMode() {
         field={mathField}
         onBackspace={() => setLatex((prev) => prev.slice(0, -1))}
         onClear={() => setLatex("")}
-        onEnter={handleCalculate}
+        onEnter={handleKeyboardEnter}
         lastAnswerLatex={result?.resultLatex ?? null}
       />,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mathField, handleCalculate, result]);
+  }, [mathField, handleKeyboardEnter, result]);
 
   useEffect(() => {
     return () => clearBasicKeyboardContent();
@@ -399,11 +412,11 @@ export function BasicScientificMode() {
   // ya armado). Mismo patrón de dos efectos.
   useEffect(() => {
     setCompactActions({
-      onEnter: handleCalculate,
+      onEnter: handleKeyboardEnter,
       onBackspace: () => setLatex((prev) => prev.slice(0, -1)),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [handleCalculate]);
+  }, [handleKeyboardEnter]);
 
   useEffect(() => {
     return () => clearCompactActions();

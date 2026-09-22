@@ -121,21 +121,87 @@ Decisión DEDUCIBLE tomada: el texto exacto de la etiqueta ("2 var.") y su posic
 
 Riesgo pendiente, sin resolver en este módulo: la etiqueta "2 var." es CSS puro (`absolute`, sin overflow controlado) — no se verificó visualmente en un viewport real (sin captura de pantalla ni Chromium en esta sesión), solo que compila y no rompe tests. Vale una revisión visual rápida antes de darlo por definitivo.
 
-# Corrección de producto posterior a Track D — M1–M15
+## Revalidación post-fix Track D — 21 de septiembre de 2026
 
-Se aplican los fixes derivados de los módulos que quedaron rojos en Lite, manteniendo intactos los módulos ya verdes.
+Se revisó el paquete corregido después de M1–M15 y se confirmó por código que están presentes los fixes de accesibilidad base, Productoria y discontinuidades:
 
-## Correcciones
+- `NaturalInput` aporta un nombre accesible estable al `math-field` principal.
+- `ResultPanel` centraliza `role="status"`, `aria-live="polite"` y `aria-atomic="true"`, evitando depender del layout.
+- `GraphViewer` genera subpaths separados ante huecos/saltos asintóticos.
+- Productoria está habilitada y dispone de parser/evaluador finito acotado.
 
-1. `NaturalInput.tsx`: `aria-label="Entrada matemática"` por defecto, configurable vía prop.
-2. `ResultPanel.tsx`: región `role="status"`, `aria-live="polite"`, `aria-atomic="true"` en todas las disposiciones.
-3. Productoria Π: tecla habilitada, normalización `\prod` → `product(...)` y evaluación finita exacta en worker con límites enteros/tope 10 000.
-4. `GraphViewer.tsx`: el path SVG se segmenta con nuevos comandos `M` cuando existe un hueco real de muestreo o un salto de signo con magnitud asintótica; evita conectar ramas de `1/(x-2)`/`tan(x)`.
-5. Evaluación científica: polos exactos de `tan` y de `sec=1/cos` devuelven `DOMAIN_ERROR` en vez de un flotante enorme.
+El entorno local no pudo completar `npm ci`; por tanto Vitest/typecheck/build/Playwright deben confirmarse mediante GitHub Actions. No se marca Lite completamente verde hasta que esa ejecución termine.
 
-## Verificación
+### Cierre de revalidación local — 21 de septiembre de 2026
 
-Además de los centinelas QA M9/M10/M12, se añadió `tests/trackDRegressions.test.ts` para comprobar la normalización de `\prod` y la segmentación SVG de discontinuidades. Durante la revisión del fix se detectó y corrigió un hueco adicional: `product` debía registrarse con aridad 4 en `src/engine/parsing/constants.ts`; sin esa entrada, el parser podía degradar la llamada agregada mediante multiplicación implícita.
+- Se reintentó `npm audit --package-lock-only --json`.
+- Resultado de infraestructura: `getaddrinfo EAI_AGAIN registry.npmjs.org`.
+- Por tanto el conteo histórico de vulnerabilidades no se promueve a estado actual confirmado; el gate npm permanece **pendiente por conectividad**, no aprobado ni fallido por producto.
+- `npm ci` tampoco pudo completarse en este entorno, por lo que Vitest/typecheck/build/Playwright continúan pendientes de un runner con acceso al registro.
 
-La compilación y Vitest completos se ejecutan en GitHub Actions porque este entorno local no pudo completar `npm ci` por falta de acceso al registro npm.
+## Preparación de revalidación frontend/E2E dirigida
 
+Siguiendo la estrategia ya utilizada en M7–M12, Playwright quedó temporalmente aislado a:
+
+- M3 Cálculo;
+- M9 Graficación;
+- M10 Teclado ↔ motor;
+- M12 Personalización / accesibilidad base.
+
+El workflow Playwright conserva `workflow_dispatch` y el CI fue ampliado con `workflow_dispatch` para poder ejecutar manualmente la rama `qa/exhaustive-suite-module-01` cuando los eventos generados por la integración no disparan Actions.
+
+Durante esta preparación se detectó y corrigió un falso negativo del harness M3: el E2E todavía esperaba que Productoria mostrara “todavía no disponible”. La expectativa se actualizó al contrato actual y se añadió un centinela UI explícito: `\\prod_{i=1}^{5}i = 120`.
+
+Después de certificar estos módulos debe restaurarse Playwright a `npx playwright test` y ejecutarse la regresión completa.
+
+### Auditoría npm Lite
+
+El CI QA genera `npm-audit.json` mediante `npm audit --package-lock-only --json` y lo conserva como artefacto `lite-npm-audit`. El paso permanece `continue-on-error` para que las vulnerabilidades no impidan typecheck/Vitest/build, pero el artefacto debe revisarse como gate de seguridad independiente.
+
+## Seguridad runtime post-Track D
+
+La auditoría npm con conectividad real confirmó inicialmente 10 vulnerabilidades totales (7 moderate, 2 high, 1 critical). Al separar dependencias de producción mediante `npm audit --omit=dev`, el runtime presentaba 3 vulnerabilidades moderadas asociadas a `mathlive` y `react-router-dom` / `react-router`.
+
+Se verificó que `react-router-dom` estaba declarado pero no era importado por el producto. En una rama temporal se:
+
+- eliminó `react-router-dom`;
+- actualizó `mathlive` de `^0.100.0` a `^0.110.0`;
+- regeneró `package-lock.json`;
+- ejecutó CI completo;
+- ejecutó Playwright;
+- repitió `npm audit --omit=dev`.
+
+Antes de incorporar el cambio a la rama QA, los tres gates quedaron verdes y el audit runtime pasó a **0 vulnerabilidades**. El cambio se integró a `qa/exhaustive-suite-module-01` mediante el PR temporal #6.
+
+Las vulnerabilidades restantes del audit completo corresponden a tooling/desarrollo y se mantienen separadas del gate de runtime; no se aplicó `npm audit fix --force` de forma indiscriminada.
+
+
+## Cierre Track D — 22 de septiembre de 2026
+
+Esta sección **supersede los estados pendientes anteriores de Track D**. La revalidación final se ejecutó con dependencias reales en GitHub Actions, siguiendo el Log técnico de ejecución y decisiones QA.
+
+### Gates finales
+
+- Frontend: `npm ci` ✅, typecheck ✅, **437/437** unitarias ✅, build ✅.
+- M3/M10 dirigido final: **23 passed + 1 flaky, 0 failed**, exit 0.
+- Playwright completo: **130 passed + 2 flaky, 0 failed**, resultado success sobre 132 tests en Desktop, Tablet y Mobile.
+- Los dos flaky finales corresponden a Productoria/Sumatoria M3 en desktop y pasan al retry.
+- Playwright quedó restaurado a `npx playwright test`.
+- Los workflows temporales de diagnóstico/auditoría usados durante el aislamiento fueron retirados; se conservan los workflows normales `ci.yml` y `playwright.yml`.
+
+### Seguridad de dependencias
+
+El audit completo inicial registró 10 advisories. Se eliminó `react-router-dom` porque no era usado por el producto y se actualizó MathLive de forma controlada. Tras revalidar typecheck, unitarias, build, Playwright y audit:
+
+- audit completo: **7** — 1 critical, 2 high, 4 moderate;
+- audit de producción/runtime: **0 vulnerabilidades**.
+
+Los 7 advisories restantes corresponden a tooling/desarrollo (Vitest/Vite, vite-plugin-pwa y transitivas). No se ejecutó `npm audit fix --force`; las correcciones principales requieren upgrades mayores y se dejan para una migración controlada independiente.
+
+### Harness estabilizado
+
+Durante el cierre se corrigieron falsos negativos de E2E relacionados con sincronización MathLive/React, lectura de `StaticMath`, overlays del teclado nativo de MathLive y el bottom-sheet del teclado propio en móvil. No fue necesario reimplementar Π, Σ, %, ± ni el motor EDO.
+
+### Estado de integración
+
+Los defectos funcionales que motivaron M1–M15 fueron corregidos/revalidados y la regresión completa termina con `success`. El PR canónico de Track D queda listo para revisión/integración, sujeto únicamente a las políticas normales del repositorio.
