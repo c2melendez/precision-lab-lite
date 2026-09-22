@@ -174,7 +174,7 @@ test("M12: Ajustes y teclado tienen nombres/estado accesibles y cierran con Esca
   await expect(keyboard).toHaveCount(0);
 });
 
-test("M12: el resultado dinámico queda dentro de una región anunciable", async ({ page }) => {
+test("M12: el resultado dinámico es anunciable en las seis disposiciones", async ({ page }) => {
   await openHome(page);
   const opener = page.getByRole("button", { name: /abrir teclado|expandir teclado/i }).first();
   await expect(opener).toBeVisible();
@@ -197,15 +197,26 @@ test("M12: el resultado dinámico queda dentro de una región anunciable", async
   await expect(resultNode).toBeVisible({ timeout: 12000 });
   await expect(resultNode).toContainText("4");
 
-  const announcement = await resultNode.evaluate((el) => {
-    let node: Element | null = el;
-    while (node) {
-      const live = node.getAttribute("aria-live");
-      const role = node.getAttribute("role");
-      if (live || role === "status" || role === "alert") return { live, role };
-      node = node.parentElement;
-    }
-    return null;
-  });
-  expect(announcement, "El resultado debe estar contenido en aria-live/status/alert").not.toBeNull();
+  const layouts = ["Fusionada", "Separada", "Dividida", "Enfoque", "Apilado", "Flotante"];
+  const missing: string[] = [];
+
+  for (const layout of layouts) {
+    const menu = await openSettings(page);
+    await menu.getByRole("button", { name: layout, exact: true }).click();
+    await expect(resultNode).toBeVisible();
+
+    const announcement = await resultNode.evaluate((el) => {
+      let node: Element | null = el;
+      while (node) {
+        const live = node.getAttribute("aria-live");
+        const role = node.getAttribute("role");
+        if (live || role === "status" || role === "alert") return { live, role };
+        node = node.parentElement;
+      }
+      return null;
+    });
+    if (!announcement) missing.push(layout);
+  }
+
+  expect(missing, "Disposiciones sin aria-live/status/alert para el resultado").toEqual([]);
 });
