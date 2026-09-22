@@ -17,11 +17,11 @@ type Fn = (x: number) => number;
 const UNARY_FUNCTIONS: Record<string, Fn> = {
   sin: Math.sin,
   cos: Math.cos,
-  tan: Math.tan,
+  tan: (x) => (Math.abs(Math.cos(x)) < 1e-12 ? NaN : Math.tan(x)),
   arcsin: Math.asin,
   arccos: Math.acos,
   arctan: Math.atan,
-  sec: (x) => 1 / Math.cos(x),
+  sec: (x) => (Math.abs(Math.cos(x)) < 1e-12 ? NaN : 1 / Math.cos(x)),
   csc: (x) => 1 / Math.sin(x),
   cot: (x) => 1 / Math.tan(x),
   // Fase 3: sinh/cosh/tanh SÍ los evalúa Algebrite con float(...), pero se
