@@ -1,0 +1,59 @@
+name: QA Lite M3 Post-Security Gate
+
+on:
+  push:
+    branches: [qa/exhaustive-suite-module-01]
+    paths:
+      - .github/workflows/qa-lite-m3-post-security.yml
+      - e2e/exhaustive-module03-calculus.spec.ts
+      - package.json
+      - package-lock.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  m3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa/exhaustive-suite-module-01
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Install Playwright
+        run: |
+          npm install --no-save --package-lock=false @playwright/test@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Run M3
+        id: m3
+        continue-on-error: true
+        shell: bash
+        run: npx playwright test e2e/exhaustive-module03-calculus.spec.ts --reporter=line 2>&1 | tee m3-post-security.log
+      - name: Publish full log
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OUTCOME: ${{ steps.m3.outcome }}
+        shell: bash
+        run: |
+          {
+            echo "<!-- qa-lite-m3-post-security -->"
+            echo "## QA Lite — M3 post-security gate"
+            echo
+            echo "- SHA: `$GITHUB_SHA`"
+            echo "- outcome: **$OUTCOME**"
+            echo
+            echo '~~~text'
+            tail -n 600 m3-post-security.log
+            echo '~~~'
+          } > /tmp/m3.md
+          gh pr comment 2 --repo c2melendez/precision-lab-lite --body-file /tmp/m3.md
