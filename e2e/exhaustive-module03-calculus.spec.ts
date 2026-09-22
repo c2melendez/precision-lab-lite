@@ -17,6 +17,17 @@ async function setExpression(page: import("@playwright/test").Page, value: strin
   }, value);
 }
 
+async function calculateExpression(page: import("@playwright/test").Page, value: string) {
+  await page.addInitScript(() => localStorage.setItem("precision-lab-layout-mode", "fused"));
+  await page.goto("./");
+  const field = page.locator("math-field").first();
+  await field.focus();
+  const keyboard = page.getByRole("dialog", { name: "Teclado matemático" });
+  await expect(keyboard).toBeVisible();
+  await setExpression(page, value);
+  await keyboard.getByRole("button", { name: "calcular", exact: true }).click();
+}
+
 test("suite original módulo 3: inventario de Cálculo refleja capacidades actuales", async ({ page }) => {
   await openCalculus(page);
 
@@ -41,24 +52,14 @@ test("suite original módulo 3: inventario de Cálculo refleja capacidades actua
 });
 
 test("suite original módulo 3: productoria de 1 a 5 se evalúa a 120 desde la UI", async ({ page }) => {
-  await page.goto("./");
-  await setExpression(page, "\\prod_{i=1}^{5}i");
-
-  const calculate = page.getByRole("button", { name: /calcular|evaluar/i }).first();
-  await expect(calculate).toBeEnabled();
-  await calculate.click();
+  await calculateExpression(page, "\\prod_{i=1}^{5}i");
 
   const result = page.getByRole("region", { name: "Resultado", exact: true });
   await expect(result).toContainText("120", { timeout: 12000 });
 });
 
 test("suite original módulo 3: sumatoria de 1 a 5 se evalúa a 15 desde la UI", async ({ page }) => {
-  await page.goto("./");
-  await setExpression(page, "\\sum_{i=1}^{5}i");
-
-  const calculate = page.getByRole("button", { name: /calcular|evaluar/i }).first();
-  await expect(calculate).toBeEnabled();
-  await calculate.click();
+  await calculateExpression(page, "\\sum_{i=1}^{5}i");
 
   const result = page.getByRole("region", { name: "Resultado", exact: true });
   await expect(result).toContainText("15", { timeout: 12000 });
