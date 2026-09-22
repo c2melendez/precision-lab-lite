@@ -123,7 +123,12 @@ test("M12: resultado calculado queda dentro de una región anunciable", async ({
     el.value = v as string;
     el.dispatchEvent(new Event("input", { bubbles: true }));
   }, "2+2");
-  await page.getByRole("button", { name: /calcular/i }).first().click();
+  const form = input.locator("xpath=ancestor::form[1]");
+  if (await form.count()) {
+    await form.evaluate((el) => (el as HTMLFormElement).requestSubmit());
+  } else {
+    await page.getByRole("button", { name: /calcular|evaluar/i }).first().click();
+  }
 
   // Debe existir una región live/status/alert que represente el resultado dinámico.
   await expect.poll(async () => {
