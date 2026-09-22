@@ -21,21 +21,15 @@ async function calculateExpression(page: import("@playwright/test").Page, value:
   await page.addInitScript(() => localStorage.setItem("precision-lab-layout-mode", "fused"));
   await page.goto("./");
   const field = page.locator("math-field").first();
-  await field.focus();
-  const keyboard = page.getByRole("dialog", { name: "Teclado matemático" });
-  await expect(keyboard).toBeVisible();
   await setExpression(page, value);
-  // Señal observable de que React ya consumió el evento input:
-  // GraphPlaceholder solo muestra "Graficar" cuando el estado `latex`
-  // dejó de estar vacío. Después de esa renderización, esperamos un frame
-  // adicional para que el efecto que sincroniza onEnter/handleCalculate
-  // en el dock también quede aplicado.
-  await expect(page.getByRole("button", { name: "Graficar", exact: true }).first()).toBeVisible();
-  // useEffect registra el callback de cálculo en el dock después del paint.
-  // Un breve turno de evento adicional evita disparar el callback anterior
-  // cuando el runner está bajo carga (flaky observado solo en Desktop).
-  await page.waitForTimeout(500);
-  await keyboard.getByRole("button", { name: "calcular", exact: true }).click();
+  // Espera a que React haya consumido el input: el botón de la pantalla
+  // solo se habilita cuando el estado `latex` ya contiene la expresión.
+  // Se usa este botón (conectado directamente a handleCalculate) y no la
+  // tecla Enter del dock, cuyo callback se resincroniza mediante useEffect
+  // y producía una carrera artificial en Desktop bajo carga.
+  const calculate = page.getByRole("button", { name: "Calcular", exact: true }).first();
+  await expect(calculate).toBeEnabled();
+  await calculate.click();
 }
 
 test("suite original módulo 3: inventario de Cálculo refleja capacidades actuales", async ({ page }) => {
