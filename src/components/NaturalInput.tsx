@@ -11,6 +11,9 @@ import { useKeyboardPanelStore } from "../store/useKeyboardPanelStore";
 // con el caret y la selección de MathLive en marker.
 
 declare global {
+  interface Window {
+    mathVirtualKeyboard?: { hide: () => void };
+  }
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
@@ -19,7 +22,7 @@ declare global {
   /** Stable accessible name for the primary MathLive field. */
   ariaLabel?: string;
         class?: string;
-        "virtual-keyboard-mode"?: string;
+        "math-virtual-keyboard-policy"?: "auto" | "manual" | "sandboxed";
       };
     }
   }
@@ -50,7 +53,12 @@ export interface NaturalInputHandle {
 }
 
 export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrada matemática", fieldRef, bare = false }: NaturalInputProps) {
-  const ref = useRef<HTMLElement & { value: string; insert: (s: string) => void; focus: () => void }>(null);
+  const ref = useRef<HTMLElement & {
+    value: string;
+    insert: (s: string) => void;
+    focus: () => void;
+    mathVirtualKeyboardPolicy?: "auto" | "manual" | "sandboxed";
+  }>(null);
 
   useEffect(() => {
     const el = ref.current;
@@ -68,6 +76,8 @@ export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrad
     const el = ref.current;
     if (!el) return;
     function handleFocus(): void {
+      el.mathVirtualKeyboardPolicy = "manual";
+      window.mathVirtualKeyboard?.hide();
       useKeyboardPanelStore.getState().open();
     }
     el.addEventListener("focus", handleFocus);
@@ -83,8 +93,17 @@ export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrad
 
   return (
     <math-field
-      ref={(el: (HTMLElement & { value: string; insert: (s: string) => void; focus: () => void }) | null) => {
+      ref={(el: (HTMLElement & {
+        value: string;
+        insert: (s: string) => void;
+        focus: () => void;
+        mathVirtualKeyboardPolicy?: "auto" | "manual" | "sandboxed";
+      }) | null) => {
         (ref as React.MutableRefObject<typeof el>).current = el;
+        if (el) {
+          el.mathVirtualKeyboardPolicy = "manual";
+          window.mathVirtualKeyboard?.hide();
+        }
         fieldRef?.(el);
       }}
       class={
@@ -102,10 +121,9 @@ export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrad
           overflow: "hidden",
         } as React.CSSProperties
       }
-      // "virtual-keyboard-mode" en off: el teclado propio de la app
-      // (MathKeyboard) reemplaza al teclado virtual por defecto de MathLive
-      // — spec v10 §5.
-      virtual-keyboard-mode="off"
+      // El teclado propio de la app reemplaza al teclado nativo de MathLive.
+      // "manual" evita que el panel nativo aparezca automáticamente al foco.
+      math-virtual-keyboard-policy="manual"
       aria-label={ariaLabel}
       placeholder={placeholder}
     />
