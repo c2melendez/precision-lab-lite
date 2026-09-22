@@ -192,6 +192,22 @@ test("M25: matrices C y F persisten, se seleccionan explícitamente y calculan C
   await expect(persistedCells.nth(3)).toHaveValue("2");
   await expect(persistedCells.nth(4)).toHaveValue("10");
   await expect(persistedCells.nth(7)).toHaveValue("20");
+
+  const duplicateTarget = page.getByRole("combobox", { name: "Duplicar principal en" });
+  await duplicateTarget.selectOption("D");
+  await page.getByRole("button", { name: "Duplicar C en D", exact: true }).click();
+
+  await page.getByRole("combobox", { name: "Matriz principal" }).selectOption("D");
+  const copiedCells = page.locator('input[placeholder="0"]');
+  await expect(copiedCells.nth(0)).toHaveValue("1");
+  await expect(copiedCells.nth(3)).toHaveValue("2");
+
+  await page.reload();
+  await page.getByRole("button", { name: "Matrices", exact: true }).click();
+  await expect(page.getByRole("combobox", { name: "Matriz principal" })).toHaveValue("D");
+  const reloadedCopy = page.locator('input[placeholder="0"]');
+  await expect(reloadedCopy.nth(0)).toHaveValue("1");
+  await expect(reloadedCopy.nth(3)).toHaveValue("2");
 });
 
 
