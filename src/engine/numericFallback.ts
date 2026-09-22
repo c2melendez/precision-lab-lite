@@ -85,7 +85,12 @@ export function compileNumeric(expr: string, variable: string): Fn {
       pos++;
       const right = parseUnary();
       const prevLeft = left;
-      left = op === "*" ? (x) => prevLeft(x) * right(x) : (x) => prevLeft(x) / right(x);
+      left = op === "*"
+        ? (x) => prevLeft(x) * right(x)
+        : (x) => {
+            const denominator = right(x);
+            return Math.abs(denominator) < 1e-12 ? NaN : prevLeft(x) / denominator;
+          };
     }
     return left;
   }
@@ -205,7 +210,12 @@ export function compileNumeric2D(expr: string, varX: string, varY: string): (x: 
       pos++;
       const right = parseUnary();
       const prevLeft = left;
-      left = op === "*" ? (x, y) => prevLeft(x, y) * right(x, y) : (x, y) => prevLeft(x, y) / right(x, y);
+      left = op === "*"
+        ? (x, y) => prevLeft(x, y) * right(x, y)
+        : (x, y) => {
+            const denominator = right(x, y);
+            return Math.abs(denominator) < 1e-12 ? NaN : prevLeft(x, y) / denominator;
+          };
     }
     return left;
   }
