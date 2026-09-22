@@ -31,7 +31,10 @@ async function calculateExpression(page: import("@playwright/test").Page, value:
   // adicional para que el efecto que sincroniza onEnter/handleCalculate
   // en el dock también quede aplicado.
   await expect(page.getByRole("button", { name: "Graficar", exact: true }).first()).toBeVisible();
-  await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())));
+  // useEffect registra el callback de cálculo en el dock después del paint.
+  // Un breve turno de evento adicional evita disparar el callback anterior
+  // cuando el runner está bajo carga (flaky observado solo en Desktop).
+  await page.waitForTimeout(100);
   await keyboard.getByRole("button", { name: "calcular", exact: true }).click();
 }
 
