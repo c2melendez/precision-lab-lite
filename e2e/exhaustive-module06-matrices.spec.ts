@@ -4,7 +4,7 @@ test("suite original módulo 6: matrices expone rango, traza y eigen y calcula r
   await page.goto("./");
   await page.getByRole("button", { name: "Matrices", exact: true }).click();
 
-  await expect(page.getByRole("button", { name: "Eigenvalores", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Eigenvalores y eigenvectores", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "tr(A)", exact: true })).toBeVisible();
   const rankButton = page.getByRole("button", { name: "rango(A)", exact: true });
   await expect(rankButton).toBeVisible();
