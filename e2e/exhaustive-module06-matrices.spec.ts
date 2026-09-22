@@ -57,7 +57,7 @@ test("M21: Lite permite 6x6, calcula rango 6 y mantiene la grilla dentro del vie
   await expect(resultField).toHaveJSProperty("value", "6");
 
   const eigen = page.getByRole("button", { name: "Eigenvalores y eigenvectores", exact: true });
-  await expect(eigen).toBeDisabled();
+  await expect(eigen).toBeEnabled();
 
   const overflow = await page.evaluate(() => ({
     viewport: document.documentElement.clientWidth,
@@ -89,4 +89,35 @@ test("M22: eigenvectores complejos 2x2 se muestran en Lite", async ({ page }) =>
   await expect(procedure).toContainText("Eigenvector correspondiente:");
   await expect(procedure).toContainText("i");
   await expect(procedure).not.toContainText("no calculado en Lite");
+});
+
+
+test("M23: eigen 4x4 usa fallback numérico y muestra eigenvectores", async ({ page }) => {
+  await page.goto("./");
+  await page.getByRole("button", { name: "Matrices", exact: true }).click();
+
+  const incRows = page.getByRole("button", { name: "Aumentar Filas A", exact: true });
+  const incCols = page.getByRole("button", { name: "Aumentar Col A", exact: true });
+  for (let i = 0; i < 2; i++) {
+    await incRows.click();
+    await incCols.click();
+  }
+
+  const eigen = page.getByRole("button", { name: "Eigenvalores y eigenvectores", exact: true });
+  await expect(eigen).toBeEnabled();
+  await eigen.click();
+
+  const cells = page.locator('input[placeholder="0"]');
+  await expect(cells).toHaveCount(16);
+  for (const [index, value] of [[0,"1"],[5,"2"],[10,"3"],[15,"4"]] as const) {
+    await cells.nth(index).fill(value);
+  }
+
+  await page.getByRole("button", { name: "Calcular", exact: true }).click();
+
+  await expect(page.getByText("Aproximado numéricamente (no resuelto simbólicamente)")).toBeVisible({ timeout: 12000 });
+  const procedure = page.getByRole("list", { name: "Procedimiento paso a paso" });
+  await expect(procedure).toBeVisible({ timeout: 12000 });
+  await expect(procedure).toContainText("Eigenvector correspondiente:");
+  await expect(procedure).not.toContainText("no se pudo calcular");
 });
