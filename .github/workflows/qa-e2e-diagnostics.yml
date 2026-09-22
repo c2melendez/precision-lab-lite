@@ -61,3 +61,5 @@ jobs:
           git diff --cached --quiet && exit 0
           git commit -m "QA E2E snapshot [skip ci]"
           git push origin HEAD:qa/exhaustive-suite-module-01
+
+# retrigger 2
