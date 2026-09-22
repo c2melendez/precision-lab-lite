@@ -253,7 +253,7 @@ function handleComplexResidue(
 ): MathResult {
   try {
     const raw = residueAtRational(expressionAlgebrite, pointAlgebrite);
-    const isNumeric = /^-?\\d+(\\.\\d+)?$/.test(raw) || /^-?\\d+\\/\\d+$/.test(raw);
+    const isNumeric = /^-?\d+(\.\d+)?$/.test(raw) || /^-?\d+\/\d+$/.test(raw);
     return {
       success: true,
       resultLatex: toLatex(raw),
