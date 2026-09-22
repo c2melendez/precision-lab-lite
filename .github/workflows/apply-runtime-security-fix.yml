@@ -1,0 +1,41 @@
+name: Apply Lite Runtime Security Fix
+
+on:
+  push:
+    branches: [qa/security-runtime-fix]
+    paths:
+      - .github/workflows/apply-runtime-security-fix.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa/security-runtime-fix
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install current lockfile
+        run: npm ci
+      - name: Remove unused router and upgrade MathLive
+        run: |
+          npm uninstall react-router-dom
+          npm install mathlive@^0.110.0
+      - name: Verify lockfile install
+        run: npm ci
+      - name: Commit dependency update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Security: remove unused router and update MathLive"
+          git push origin HEAD:qa/security-runtime-fix
