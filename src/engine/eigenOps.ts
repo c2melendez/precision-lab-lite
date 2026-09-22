@@ -4,8 +4,9 @@
 // `import Algebrite from "algebrite"` directo acá.
 //
 // Alcance determinado en K0, no supuesto:
-// - Eigenvalores: 2x2 y 3x3 únicamente. Exactos cuando roots() da una
+// - Eigenvalores 2x2/3x3: ruta simbólica exacta cuando roots() da una
 //   forma limpia (racional, irracional simple, compleja simple).
+// - M23: 4x4–6x6 usan ruta numérica Faddeev–LeVerrier + Durand–Kerner.
 //   Fallback a numérico cuando el resultado simbólico es "casus
 //   irreducibilis" (cúbica con 3 raíces reales irracionales que
 //   roots() expresa con cos/sin/potencias fraccionarias de -1 —
@@ -13,8 +14,7 @@
 // - Multiplicidad: detectada vía mcd(p, p') repetido, porque roots()
 //   SIEMPRE colapsa a raíces distintas (confirmado en K0).
 // - Eigenvectores: numéricos (float). M22 amplía el espacio nulo a
-//   aritmética compleja para matrices 2x2/3x3, preservando el límite
-//   dimensional de eigen establecido en K0.
+//   aritmética compleja. M23 reutiliza ese espacio nulo para 4x4–6x6.
 
 import Fraction from "fraction.js";
 import type { Matrix } from "./matrixOps";
@@ -233,14 +233,218 @@ function nullSpaceVector(M: number[][], epsilon = 1e-6): number[] | null {
   return norm > epsilon ? v.map((x) => x / norm) : null;
 }
 
+
+function numericIdentity(n: number): number[][] {
+  return Array.from({ length: n }, (_, r) =>
+    Array.from({ length: n }, (_, col) => (r === col ? 1 : 0)),
+  );
+}
+
+function numericMultiply(a: number[][], b: number[][]): number[][] {
+  const rows = a.length;
+  const cols = b[0].length;
+  const inner = b.length;
+  return Array.from({ length: rows }, (_, r) =>
+    Array.from({ length: cols }, (_, col) => {
+      let sum = 0;
+      for (let k = 0; k < inner; k++) sum += a[r][k] * b[k][col];
+      return sum;
+    }),
+  );
+}
+
+function numericTrace(a: number[][]): number {
+  return a.reduce((sum, row, i) => sum + row[i], 0);
+}
+
+/** M23: coeficientes del polinomio característico mónico mediante Faddeev–LeVerrier.
+ * Devuelve [1, c1, ..., cn] para x^n + c1*x^(n-1) + ... + cn. */
+function characteristicCoefficientsNumeric(matrix: Matrix): number[] {
+  const n = matrix.length;
+  const A = matrix.map((row) => row.map((f) => f.valueOf()));
+  let B = numericIdentity(n);
+  const coeffs = [1];
+
+  for (let k = 1; k <= n; k++) {
+    const AB = numericMultiply(A, B);
+    const ck = -numericTrace(AB) / k;
+    coeffs.push(Math.abs(ck) < 1e-12 ? 0 : ck);
+    B = AB.map((row, r) =>
+      row.map((value, col) => value + (r === col ? ck : 0)),
+    );
+  }
+  return coeffs;
+}
+
+function complexAdd(a: ComplexNumber, b: ComplexNumber): ComplexNumber {
+  return { re: a.re + b.re, im: a.im + b.im };
+}
+
+function evaluatePolynomialComplex(coeffs: number[], z: ComplexNumber): ComplexNumber {
+  let result: ComplexNumber = { re: coeffs[0], im: 0 };
+  for (let i = 1; i < coeffs.length; i++) {
+    result = complexAdd(complexMul(result, z), { re: coeffs[i], im: 0 });
+  }
+  return result;
+}
+
+/** M23: raíces complejas de un polinomio mónico de grado 4–6 por Durand–Kerner. */
+function durandKernerRoots(coeffs: number[]): ComplexNumber[] {
+  const degree = coeffs.length - 1;
+  const radius = 1 + Math.max(...coeffs.slice(1).map((x) => Math.abs(x)));
+  let roots = Array.from({ length: degree }, (_, k) => {
+    const angle = (2 * Math.PI * k) / degree + 0.3141592653589793;
+    return { re: radius * Math.cos(angle), im: radius * Math.sin(angle) };
+  });
+
+  const tolerance = 1e-12;
+  const maxIterations = 2000;
+
+  for (let iteration = 0; iteration < maxIterations; iteration++) {
+    let maxDelta = 0;
+    const next = roots.map((root, i) => {
+      let denom: ComplexNumber = { re: 1, im: 0 };
+      for (let j = 0; j < degree; j++) {
+        if (j === i) continue;
+        let diff = complexSub(root, roots[j]);
+        if (complexAbs(diff) < 1e-14) {
+          diff = { re: diff.re + 1e-10 * (i + 1), im: diff.im + 1e-10 * (j + 1) };
+        }
+        denom = complexMul(denom, diff);
+      }
+      const correction = complexDiv(evaluatePolynomialComplex(coeffs, root), denom);
+      maxDelta = Math.max(maxDelta, complexAbs(correction));
+      return complexSub(root, correction);
+    });
+    roots = next;
+    if (maxDelta < tolerance) break;
+  }
+
+  return roots;
+}
+
+function clusterNumericRoots(roots: ComplexNumber[], tolerance = 1e-5): Array<{ root: ComplexNumber; multiplicity: number }> {
+  const clusters: Array<{ members: ComplexNumber[] }> = [];
+  for (const root of roots) {
+    const found = clusters.find((cluster) => {
+      const center = cluster.members.reduce(
+        (acc, z) => ({ re: acc.re + z.re, im: acc.im + z.im }),
+        { re: 0, im: 0 },
+      );
+      center.re /= cluster.members.length;
+      center.im /= cluster.members.length;
+      return complexAbs(complexSub(root, center)) < tolerance;
+    });
+    if (found) found.members.push(root);
+    else clusters.push({ members: [root] });
+  }
+
+  return clusters.map(({ members }) => {
+    const sum = members.reduce(
+      (acc, z) => ({ re: acc.re + z.re, im: acc.im + z.im }),
+      { re: 0, im: 0 },
+    );
+    let re = sum.re / members.length;
+    let im = sum.im / members.length;
+    if (Math.abs(re) < 1e-10) re = 0;
+    if (Math.abs(im) < 1e-10) im = 0;
+    return { root: { re, im }, multiplicity: members.length };
+  });
+}
+
+function formatNumericCharacteristicPolynomial(coeffs: number[]): string {
+  const degree = coeffs.length - 1;
+  const terms: string[] = ["x^" + degree];
+  for (let i = 1; i < coeffs.length; i++) {
+    const coefficient = coeffs[i];
+    if (Math.abs(coefficient) < 1e-10) continue;
+    const power = degree - i;
+    const sign = coefficient >= 0 ? "+" : "-";
+    const magnitude = Math.abs(coefficient);
+    const rounded = Math.abs(magnitude - Math.round(magnitude)) < 1e-10
+      ? String(Math.round(magnitude))
+      : magnitude.toPrecision(8).replace(/\.?0+$/, "");
+    const variable = power === 0 ? "" : power === 1 ? "*x" : `*x^${power}`;
+    terms.push(`${sign}${rounded}${variable}`);
+  }
+  return terms.join("");
+}
+
+function computeEigenvaluesNumeric(matrix: Matrix): {
+  pairs: EigenPair[];
+  allExact: boolean;
+  characteristicPolynomial: string;
+} {
+  const coeffs = characteristicCoefficientsNumeric(matrix);
+  const roots = clusterNumericRoots(durandKernerRoots(coeffs));
+
+  const pairs: EigenPair[] = roots.map(({ root, multiplicity }) => {
+    const re = root.re;
+    const im = root.im;
+    const isComplex = Math.abs(im) > 1e-7;
+    let eigenvector: number[] | null = null;
+    let complexEigenvector: ComplexVectorComponent[] | null = null;
+    const epsilon = 1e-5;
+
+    if (isComplex) {
+      const shifted: ComplexNumber[][] = matrix.map((row, i) =>
+        row.map((f, j) => ({
+          re: f.valueOf() - (i === j ? re : 0),
+          im: i === j ? -im : 0,
+        })),
+      );
+      complexEigenvector = nullSpaceVectorComplex(shifted, epsilon);
+    } else {
+      const shifted = matrix.map((row, i) =>
+        row.map((f, j) => f.valueOf() - (i === j ? re : 0)),
+      );
+      eigenvector = nullSpaceVector(shifted, epsilon);
+      if (eigenvector === null) {
+        const complexShifted: ComplexNumber[][] = matrix.map((row, i) =>
+          row.map((f, j) => ({
+            re: f.valueOf() - (i === j ? re : 0),
+            im: 0,
+          })),
+        );
+        const fallback = nullSpaceVectorComplex(complexShifted, epsilon);
+        if (fallback && fallback.every((z) => Math.abs(z.im) < 1e-6)) {
+          eigenvector = fallback.map((z) => z.re);
+        }
+      }
+    }
+
+    return {
+      exact: null,
+      approx: re,
+      approxIm: im,
+      multiplicity,
+      isComplex,
+      eigenvector,
+      complexEigenvector,
+    };
+  });
+
+  pairs.sort((a, b) => a.approx - b.approx || a.approxIm - b.approxIm);
+
+  return {
+    pairs,
+    allExact: false,
+    characteristicPolynomial: formatNumericCharacteristicPolynomial(coeffs),
+  };
+}
+
 export function computeEigenvalues(matrix: Matrix): { pairs: EigenPair[]; allExact: boolean; characteristicPolynomial: string } {
   const n = matrix.length;
-  if (n !== 2 && n !== 3) {
+  if (matrix.some((row) => row.length !== n) || n < 2 || n > 6) {
     throw {
       code: ErrorCode.UNSUPPORTED_OPERATION,
-      message: "Los eigenvalores solo están soportados para matrices 2×2 y 3×3 en esta versión (determinado en la auditoría del Módulo K0).",
+      message: "Los eigenvalores requieren una matriz cuadrada de tamaño 2×2 a 6×6.",
     } as AppError;
   }
+
+  // M23: 4×4–6×6 usan una ruta numérica separada. 2×2/3×3 conservan
+  // exactamente el solver simbólico validado en K0/M22.
+  if (n >= 4) return computeEigenvaluesNumeric(matrix);
 
   const charPolyRaw = buildCharacteristicPolynomialExpr(matrix);
   const charPoly = expand(charPolyRaw);
