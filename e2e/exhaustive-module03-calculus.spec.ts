@@ -34,7 +34,7 @@ async function calculateExpression(page: import("@playwright/test").Page, value:
   // useEffect registra el callback de cálculo en el dock después del paint.
   // Un breve turno de evento adicional evita disparar el callback anterior
   // cuando el runner está bajo carga (flaky observado solo en Desktop).
-  await page.waitForTimeout(100);
+  await page.waitForTimeout(500);
   await keyboard.getByRole("button", { name: "calcular", exact: true }).click();
 }
 
