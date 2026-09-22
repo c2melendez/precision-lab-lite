@@ -45,6 +45,7 @@ import {
 } from "../engine/matrixOps";
 import { analyzeGraph, analyzeGraphPolar, analyzeGraphParametric, analyzeGraphSurface3D } from "../engine/stepEngine/graphing";
 import { computeEigenvalues } from "../engine/eigenOps";
+import { evaluateMatrixExpression, matrixExpressionValueToLatex } from "../engine/matrixExpression";
 import { solveODE } from "../engine/stepEngine/ode";
 import { ErrorCode, makeRequestId, type MathResult, type AppError, type ResultConfidence } from "../types";
 
@@ -90,6 +91,12 @@ export type ComputeRequest =
       a: (string | number)[][];
       b?: (string | number)[][];
       exponent?: number;
+    }
+  | {
+      type: "matrixExpression";
+      requestId: string;
+      expression: string;
+      matrices: Record<"A" | "B" | "C" | "D" | "E" | "F", (string | number)[][]>;
     }
   | { type: "graph"; requestId: string; expressionAlgebrite: string; variable: string; view: [number, number] }
   | {
@@ -202,6 +209,8 @@ function handle(msg: ComputeRequest): MathResult {
       return handleLinearSystem(msg.equationsAlgebrite, msg.variables, msg.requestId);
     case "matrixOp":
       return handleMatrixOp(msg, msg.requestId);
+    case "matrixExpression":
+      return handleMatrixExpression(msg.expression, msg.matrices, msg.requestId);
     case "graph":
       return handleGraph(msg.expressionAlgebrite, msg.variable, msg.view, msg.requestId);
     case "graphPolar":
@@ -724,6 +733,45 @@ function handleLinearInequalitySystem(
   } catch (err) {
     const appErr = err as AppError;
     return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), requestId);
+  }
+}
+
+function handleMatrixExpression(
+  expression: string,
+  rawMatrices: Record<"A" | "B" | "C" | "D" | "E" | "F", (string | number)[][]>,
+  requestId: string,
+): MathResult {
+  try {
+    const matrices = Object.fromEntries(
+      Object.entries(rawMatrices).map(([name, values]) => [name, toFractionMatrix(values)]),
+    );
+    const value = evaluateMatrixExpression(expression, matrices);
+    const resultLatex = matrixExpressionValueToLatex(value);
+    return {
+      success: true,
+      resultLatex,
+      fraction:
+        value.kind === "scalar"
+          ? toFractionResult(value.value.toFraction())
+          : undefined,
+      steps: [
+        {
+          id: "matrix-expression",
+          latex: resultLatex,
+          explanation: `Resultado de la expresión matricial: ${expression}`,
+        },
+      ],
+      hasDetailedSteps: false,
+      confidence: "SYMBOLIC",
+      requestId,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(
+      appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION,
+      appErr.message ?? String(err),
+      requestId,
+    );
   }
 }
 
