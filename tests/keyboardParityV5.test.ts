@@ -43,7 +43,7 @@ describe("paridad del teclado V5 de Lite", () => {
 
     const calculus = CATEGORY_MENUS["Cálculo"].flatMap((group) => group.keys);
     expect(calculus.find((key) => key.ariaLabel === "límite")?.unavailable).toBe(false);
-    expect(calculus.find((key) => key.ariaLabel === "derivada parcial")?.unavailable).toBe(true);
+    expect(calculus.find((key) => key.ariaLabel === "derivada parcial")?.unavailable).toBe(false);
     const product = calculus.find((key) => key.ariaLabel === "productoria");
     expect(product?.unavailable).toBeFalsy();
     expect(product?.insertLatex).toContain("\\prod");
