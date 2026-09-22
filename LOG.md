@@ -131,3 +131,10 @@ Se revisó el paquete corregido después de M1–M15 y se confirmó por código 
 - Productoria está habilitada y dispone de parser/evaluador finito acotado.
 
 El entorno local no pudo completar `npm ci`; por tanto Vitest/typecheck/build/Playwright deben confirmarse mediante GitHub Actions. No se marca Lite completamente verde hasta que esa ejecución termine.
+
+### Cierre de revalidación local — 21 de septiembre de 2026
+
+- Se reintentó `npm audit --package-lock-only --json`.
+- Resultado de infraestructura: `getaddrinfo EAI_AGAIN registry.npmjs.org`.
+- Por tanto el conteo histórico de vulnerabilidades no se promueve a estado actual confirmado; el gate npm permanece **pendiente por conectividad**, no aprobado ni fallido por producto.
+- `npm ci` tampoco pudo completarse en este entorno, por lo que Vitest/typecheck/build/Playwright continúan pendientes de un runner con acceso al registro.
