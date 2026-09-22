@@ -83,6 +83,6 @@ test("M20: Res y Sing funcionan por el flujo real del math-field", async ({ page
 
   await setWithoutOpeningKeyboard("\\mathrm{Sing}\\left(\\frac{1}{(z-1)(z+2)}\\right)");
   await calculate.click();
-  await expect(result).toContainText("-2", { timeout: 12000 });
+  await expect(result).toContainText(/[-−]2/, { timeout: 12000 });
   await expect(result).toContainText("1", { timeout: 12000 });
 });
