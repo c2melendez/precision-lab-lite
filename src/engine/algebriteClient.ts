@@ -253,4 +253,63 @@ export function substituteAndFloat(expressionAlgebrite: string, variable: string
   }
 }
 
+/** M20: primitivas simbólicas acotadas para análisis complejo racional. */
+export function rationalDenominator(expressionAlgebrite: string): string {
+  try {
+    const result: string = Algebrite.run(`denominator(${expressionAlgebrite})`);
+    if (typeof result !== "string" || result.length === 0 || /stop|Stop/.test(result)) {
+      throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, "No se pudo extraer el denominador racional.");
+    }
+    return result;
+  } catch (err) {
+    if ((err as AppError).code) throw err;
+    throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, `Fallo al extraer denominador: ${String(err)}`);
+  }
+}
+
+export function polynomialRoots(expressionAlgebrite: string, variable: string): string {
+  try {
+    const result: string = Algebrite.run(`roots(${expressionAlgebrite},${variable})`);
+    if (typeof result !== "string" || result.length === 0 || /stop|Stop/.test(result)) {
+      throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, "No se pudieron calcular las raíces del denominador.");
+    }
+    return result;
+  } catch (err) {
+    if ((err as AppError).code) throw err;
+    throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, `Fallo al calcular raíces: ${String(err)}`);
+  }
+}
+
+export function substituteExact(
+  expressionAlgebrite: string,
+  variable: string,
+  valueAlgebrite: string,
+): string {
+  try {
+    const result: string = Algebrite.run(
+      `simplify(subst(${valueAlgebrite},${variable},${expressionAlgebrite}))`,
+    );
+    if (typeof result !== "string" || result.length === 0 || /stop|Stop/.test(result)) {
+      throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, "No se pudo sustituir exactamente el punto.");
+    }
+    return result;
+  } catch (err) {
+    if ((err as AppError).code) throw err;
+    throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, `Fallo en sustitución exacta: ${String(err)}`);
+  }
+}
+
+export function simplifyExpression(expressionAlgebrite: string): string {
+  try {
+    const result: string = Algebrite.run(`simplify(${expressionAlgebrite})`);
+    if (typeof result !== "string" || result.length === 0 || /stop|Stop/.test(result)) {
+      throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, "No se pudo simplificar la expresión.");
+    }
+    return result;
+  } catch (err) {
+    if ((err as AppError).code) throw err;
+    throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, `Fallo al simplificar: ${String(err)}`);
+  }
+}
+
 export { ErrorCode };
