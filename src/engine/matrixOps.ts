@@ -208,36 +208,60 @@ export function transposeMatrix(a: Matrix): { result: Matrix; steps: Step[] } {
   return { result, steps: [{ id: "transpose", latex: matrixToLatex(result), explanation: "Filas y columnas intercambiadas." }] };
 }
 
-/** Determinante por expansión de cofactores — aceptable hasta 4x4 (spec v10 §9). */
+/** Determinante exacto por eliminación gaussiana.
+ * M21: reemplaza expansión de cofactores (crecimiento factorial) para
+ * escalar de forma segura a matrices 5×5/6×6 manteniendo Fraction exacto. */
 export function determinant(a: Matrix): { value: Fraction; steps: Step[] } {
   const { rows, cols } = dims(a);
   if (rows !== cols) {
     throw { code: ErrorCode.DIMENSION_MISMATCH, message: "El determinante solo está definido para matrices cuadradas." } as AppError;
   }
 
-  function minor(m: Matrix, skipRow: number, skipCol: number): Matrix {
-    return m
-      .filter((_, r) => r !== skipRow)
-      .map((row) => row.filter((_, c) => c !== skipCol));
-  }
+  const m = cloneMatrix(a);
+  let sign = 1;
+  let det = new Fraction(1);
 
-  function det(m: Matrix): Fraction {
-    const n = m.length;
-    if (n === 1) return m[0][0];
-    if (n === 2) return m[0][0].mul(m[1][1]).sub(m[0][1].mul(m[1][0]));
-    let sum = new Fraction(0);
-    for (let c = 0; c < n; c++) {
-      const cofactorSign = c % 2 === 0 ? 1 : -1;
-      sum = sum.add(m[0][c].mul(cofactorSign).mul(det(minor(m, 0, c))));
+  for (let col = 0; col < rows; col++) {
+    let pivotRow = -1;
+    for (let r = col; r < rows; r++) {
+      if (!m[r][col].equals(0)) {
+        pivotRow = r;
+        break;
+      }
     }
-    return sum;
+
+    if (pivotRow === -1) {
+      det = new Fraction(0);
+      break;
+    }
+
+    if (pivotRow !== col) {
+      [m[pivotRow], m[col]] = [m[col], m[pivotRow]];
+      sign *= -1;
+    }
+
+    const pivot = m[col][col];
+    det = det.mul(pivot);
+
+    for (let r = col + 1; r < rows; r++) {
+      if (m[r][col].equals(0)) continue;
+      const factor = m[r][col].div(pivot);
+      for (let k = col; k < cols; k++) {
+        m[r][k] = m[r][k].sub(factor.mul(m[col][k]));
+      }
+    }
   }
 
-  const value = det(a);
+  if (sign < 0) det = det.neg();
+
   return {
-    value,
+    value: det,
     steps: [
-      { id: "determinant", latex: `\\det(A) = ${value.toFraction(true)}`, explanation: "Calculado por expansión de cofactores." },
+      {
+        id: "determinant",
+        latex: `\\det(A) = ${det.toFraction(true)}`,
+        explanation: "Calculado por eliminación gaussiana exacta; los intercambios de fila ajustan el signo.",
+      },
     ],
   };
 }
