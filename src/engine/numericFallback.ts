@@ -14,16 +14,27 @@ import { ErrorCode, type AppError } from "../types";
 
 type Fn = (x: number) => number;
 
+const SINGULAR_EPSILON = 1e-12;
+
+const safeTan = (x: number): number =>
+  Math.abs(Math.cos(x)) < SINGULAR_EPSILON ? NaN : Math.tan(x);
+const safeSec = (x: number): number =>
+  Math.abs(Math.cos(x)) < SINGULAR_EPSILON ? NaN : 1 / Math.cos(x);
+const safeCsc = (x: number): number =>
+  Math.abs(Math.sin(x)) < SINGULAR_EPSILON ? NaN : 1 / Math.sin(x);
+const safeCot = (x: number): number =>
+  Math.abs(Math.sin(x)) < SINGULAR_EPSILON ? NaN : Math.cos(x) / Math.sin(x);
+
 const UNARY_FUNCTIONS: Record<string, Fn> = {
   sin: Math.sin,
   cos: Math.cos,
-  tan: Math.tan,
+  tan: safeTan,
   arcsin: Math.asin,
   arccos: Math.acos,
   arctan: Math.atan,
-  sec: (x) => 1 / Math.cos(x),
-  csc: (x) => 1 / Math.sin(x),
-  cot: (x) => 1 / Math.tan(x),
+  sec: safeSec,
+  csc: safeCsc,
+  cot: safeCot,
   // Fase 3: sinh/cosh/tanh SÍ los evalúa Algebrite con float(...), pero se
   // incluyen aquí también por si el fallback numérico los recibe desde
   // otra ruta (ej. una integral/límite con una hiperbólica adentro).
