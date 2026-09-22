@@ -63,6 +63,19 @@ export function GraphingMode() {
   const [xRange3D, setXRange3D] = useState<[number, number]>([-5, 5]);
   const [yRange3D, setYRange3D] = useState<[number, number]>([-5, 5]);
 
+  // M35: una entrada conserva su análisis y contenido, pero su color debe
+  // reflejar siempre la paleta activa. Antes el color se fijaba solo al
+  // crear la expresión, por lo que cambiar Ajustes no recoloreaba curvas
+  // existentes. Reasignamos por índice cuando cambia la paleta.
+  useEffect(() => {
+    setEntries((prev) =>
+      prev.map((entry, index) => {
+        const nextColor = colors[index % colors.length];
+        return entry.color === nextColor ? entry : { ...entry, color: nextColor };
+      }),
+    );
+  }, [colors]);
+
   // Fase F (Módulo F3): punto de Argand pendiente de mostrar, ver
   // useArgandBridgeStore.ts. Se copia a estado local al consumirlo (y se
   // limpia el store) para que quede fijo en pantalla aunque el store se
