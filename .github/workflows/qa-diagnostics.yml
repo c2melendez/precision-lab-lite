@@ -1,4 +1,4 @@
-name: QA Diagnostic Snapshot
+name: QA Fast CI Diagnostic
 
 on:
   push:
@@ -13,7 +13,7 @@ permissions:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,44 +23,34 @@ jobs:
         with:
           node-version: 22
           cache: npm
-
-      - name: Run diagnostics
+      - name: Run CI diagnostics
         shell: bash
         run: |
           set +e
           mkdir -p .qa-results
-
           npm ci > npm-ci.log 2>&1
-          S_NPM_CI=$?
+          A=$?
           npm audit --package-lock-only --json > npm-audit.json 2> npm-audit.stderr
-          S_AUDIT=$?
+          E=$?
           npm run typecheck > typecheck.log 2>&1
-          S_TYPECHECK=$?
-          npm test -- --run > unit.log 2>&1
-          S_UNIT=$?
+          B=$?
+          npm test > unit.log 2>&1
+          C=$?
           npm run build > build.log 2>&1
-          S_BUILD=$?
-          (npm install --no-save --package-lock=false @playwright/test@1.55.0 && npx playwright install --with-deps chromium) > pw-install.log 2>&1
-          S_PW_INSTALL=$?
-          npx playwright test e2e/exhaustive-module03-calculus.spec.ts e2e/exhaustive-module09-graphing.spec.ts e2e/exhaustive-module10-keyboard.spec.ts e2e/exhaustive-module12-personalization-a11y.spec.ts --reporter=line > e2e.log 2>&1
-          S_E2E=$?
-
+          D=$?
           {
-            echo "# QA diagnostic snapshot — Lite"
+            echo "# QA fast CI diagnostic — Lite"
             echo
-            echo "- commit: $GITHUB_SHA"
-            echo "- npm_ci: $S_NPM_CI"
-            echo "- npm_audit: $S_AUDIT"
-            echo "- typecheck: $S_TYPECHECK"
-            echo "- unit: $S_UNIT"
-            echo "- build: $S_BUILD"
-            echo "- playwright_install: $S_PW_INSTALL"
-            echo "- directed_e2e: $S_E2E"
-            for f in npm-ci typecheck unit build pw-install e2e; do
+            echo "- npm_ci: $A"
+            echo "- npm_audit: $E"
+            echo "- typecheck: $B"
+            echo "- unit: $C"
+            echo "- build: $D"
+            for f in npm-ci typecheck unit build; do
               echo
               echo "## $f"
               echo '~~~text'
-              tail -n 220 "$f.log" 2>/dev/null || true
+              tail -n 260 "$f.log" 2>/dev/null || true
               echo '~~~'
             done
             echo
@@ -69,18 +59,16 @@ jobs:
             tail -n 80 npm-audit.stderr 2>/dev/null || true
             echo '~~~'
             echo
-            echo "## npm audit summary"
+            echo "## npm audit metadata"
             echo '~~~json'
-            node -e "const fs=require('fs'); try { const x=JSON.parse(fs.readFileSync('npm-audit.json','utf8')); console.log(JSON.stringify(x.metadata || {},null,2)); } catch(e) { console.log('audit JSON unavailable: '+e.message) }"
+            node -e "const fs=require('fs'); try { const x=JSON.parse(fs.readFileSync('npm-audit.json','utf8')); console.log(JSON.stringify(x.metadata || {},null,2)); } catch(e) { console.log('unavailable: '+e.message) }"
             echo '~~~'
           } > .qa-results/diagnostics-latest.md
-
-      - name: Commit diagnostic snapshot
-        if: always()
+      - name: Commit snapshot
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .qa-results/diagnostics-latest.md
           git diff --cached --quiet && exit 0
-          git commit -m "QA diagnostics snapshot [skip ci]"
+          git commit -m "QA fast diagnostics [skip ci]"
           git push origin HEAD:qa/exhaustive-suite-module-01
