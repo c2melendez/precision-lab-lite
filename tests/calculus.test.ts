@@ -135,6 +135,9 @@ describe("calcLimit (Fase 3 — infinito y lateral, paridad con la pantalla úni
 });
 
 describe("calcDerivative (Fase 3 — orden N sin tope de 3, paridad con la pantalla única)", () => {
+  it("M17: derivada respecto a x mantiene y como constante", () => {
+    expect(calcDerivative("x^2*y", "x", 1).resultLatex.replace(/\\s/g, "")).toMatch(/2\\*?x\\*?y|2\\*?y\\*?x/);
+  });
   it("orden 1 (control, comportamiento previo sin cambios)", () => {
     expect(calcDerivative("x^2", "x", 1).resultLatex.replace(/\s/g, "")).toMatch(/2\*?x/);
   });
