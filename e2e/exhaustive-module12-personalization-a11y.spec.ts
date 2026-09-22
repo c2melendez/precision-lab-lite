@@ -140,3 +140,5 @@ test("M12: resultado calculado queda dentro de una región anunciable", async ({
     );
   }).toBe(true);
 });
+
+// QA rerun marker: módulo 12
