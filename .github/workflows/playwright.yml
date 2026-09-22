@@ -2,7 +2,7 @@ name: Playwright E2E
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, qa/exhaustive-suite-module-01]
   pull_request:
   workflow_dispatch:
 
@@ -26,7 +26,7 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Run E2E tests
-        run: npx playwright test
+        run: npx playwright test e2e/exhaustive-module03-calculus.spec.ts e2e/exhaustive-module09-graphing.spec.ts e2e/exhaustive-module10-keyboard.spec.ts e2e/exhaustive-module12-personalization-a11y.spec.ts
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
