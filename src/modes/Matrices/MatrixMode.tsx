@@ -117,6 +117,7 @@ export function MatrixMode() {
   const [op, setOp] = useState<Op>("add");
   const [exponent, setExponent] = useState(2);
   const [matrixExpression, setMatrixExpression] = useState("A+B");
+  const [copyTarget, setCopyTarget] = useState<MatrixName>("C");
   const [result, setResult] = useState<MathResult | null>(null);
   const workerRef = useRef<Worker | null>(null);
 
@@ -128,6 +129,7 @@ export function MatrixMode() {
   const setDimensions = useNamedMatricesStore((state) => state.setDimensions);
   const setValues = useNamedMatricesStore((state) => state.setValues);
   const resetMatrix = useNamedMatricesStore((state) => state.resetMatrix);
+  const copyMatrix = useNamedMatricesStore((state) => state.copyMatrix);
 
   const matrixA = matrices[primary];
   const matrixB = matrices[secondary];
@@ -216,6 +218,9 @@ export function MatrixMode() {
 
   const choosePrimary = (name: MatrixName) => {
     setPrimary(name);
+    if (copyTarget === name) {
+      setCopyTarget(MATRIX_NAMES.find((candidate) => candidate !== name) ?? "A");
+    }
     setResult(null);
   };
   const chooseSecondary = (name: MatrixName) => {
@@ -293,6 +298,18 @@ export function MatrixMode() {
           {NEEDS_B.includes(op) && (
             <MatrixSelector label="Matriz secundaria" value={secondary} onChange={chooseSecondary} />
           )}
+          <MatrixSelector label="Duplicar principal en" value={copyTarget} onChange={setCopyTarget} />
+          <button
+            type="button"
+            disabled={copyTarget === primary}
+            onClick={() => {
+              copyMatrix(primary, copyTarget);
+              setResult(null);
+            }}
+            className="rounded-md border border-paper-line px-2 py-1 text-xs font-medium text-ink hover:bg-paper-line/40 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Duplicar {primary} en {copyTarget}
+          </button>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
