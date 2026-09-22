@@ -9,11 +9,18 @@ async function openCalculus(page: import("@playwright/test").Page) {
 }
 
 async function setExpression(page: import("@playwright/test").Page, value: string) {
+  await page.evaluate(() => customElements.whenDefined("math-field"));
   const field = page.locator("math-field").first();
+  await expect(field).toBeVisible();
+  await field.focus();
+  // MathLive 0.110 actualiza el custom element de forma asíncrona.
+  // Esperar un turno tras el foco garantiza que NaturalInput ya registró
+  // su listener "input" antes de la inyección del valor del centinela.
+  await page.waitForTimeout(100);
   await field.evaluate((node, v) => {
     const el = node as HTMLElement & { value: string };
     el.value = v as string;
-    el.dispatchEvent(new Event("input", { bubbles: true }));
+    el.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText" }));
   }, value);
 }
 
