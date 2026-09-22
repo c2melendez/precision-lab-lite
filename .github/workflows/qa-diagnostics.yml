@@ -5,6 +5,7 @@ on:
     branches: [qa/exhaustive-suite-module-01]
     paths:
       - .github/workflows/qa-diagnostics.yml
+      - e2e/exhaustive-module10-keyboard.spec.ts
   workflow_dispatch:
 
 permissions:
@@ -34,7 +35,7 @@ jobs:
         run: |
           set +e
           mkdir -p .qa-results
-          npx playwright test e2e/diagnostic-trackd-ui.spec.ts --project=desktop-chromium --reporter=line > e2e-directed.log 2>&1
+          npx playwright test e2e/exhaustive-module10-keyboard.spec.ts --project=desktop-chromium --reporter=line > e2e-directed.log 2>&1
           CODE=$?
           {
             echo "# QA directed E2E diagnostic — Lite"
