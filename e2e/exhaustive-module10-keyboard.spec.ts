@@ -15,22 +15,24 @@ async function clearBasic(dialog: import("@playwright/test").Locator) {
 async function resultValue(page: import("@playwright/test").Page): Promise<string> {
   const status = page.getByRole("status").first();
   await expect(status).toBeVisible({ timeout: 12000 });
-  const result = status.locator("span.a11y-scale-result-3xl, math-field[read-only]").first();
-  try {
-    await expect(result).toBeVisible({ timeout: 12000 });
-  } catch {
-    const bodyText = await page.locator("body").innerText();
-    throw new Error("Resultado exitoso no renderizado. UI actual: " + bodyText.slice(-1800));
+
+  // Resultado simbólico: ResultPanel usa StaticMath -> <math-field read-only>.
+  // MathLive vive en Shadow DOM; leer su propiedad value es el contrato
+  // estable documentado para la suite, no textContent.
+  const staticField = status.locator("math-field[read-only]").first();
+  if (await staticField.count()) {
+    return String(await staticField.evaluate((el) =>
+      (el as HTMLElement & { value?: string }).value ?? "",
+    ));
   }
-  return String(await result.evaluate((el) => {
-    const maybeField = el as HTMLElement & { value?: string };
-    return typeof maybeField.value === "string" && maybeField.value
-      ? maybeField.value
-      : (el.textContent ?? "");
-  }));
+
+  // Resultado numérico: ResultPanel usa un <span>.
+  const plain = status.locator(".a11y-scale-result-3xl").first();
+  await expect(plain).toBeVisible();
+  return (await plain.innerText()).trim();
 }
 
-test("módulo 10 diagnóstico: 2+2 desde teclas reales produce 4", async ({ page }) => {
+test("módulo 10: round-trip 2+2 desde teclas reales produce 4", async ({ page }) => {
   const dialog = await openKeyboard(page);
   await dialog.getByRole("tab", { name: "Básico", exact: true }).click();
   await clearBasic(dialog);
