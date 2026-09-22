@@ -1,4 +1,4 @@
-name: QA Navigation Diagnostic
+name: QA Lite M3 M10 Revalidation
 
 on:
   push:
@@ -10,9 +10,9 @@ permissions:
   contents: write
 
 jobs:
-  diagnose:
+  revalidate:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,16 +22,27 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: |
-          npm install --no-save --package-lock=false @playwright/test@1.55.0
-          npx playwright install --with-deps chromium
-      - name: Run navigation diagnostic
+      - name: Install
+        run: npm ci
+      - name: Typecheck and unit sentinels
         shell: bash
         run: |
           set +e
-          npx playwright test e2e/diagnostic-navigation.spec.ts --project=desktop-chromium --reporter=line > nav.log 2>&1
-          echo $? > nav.exit
+          npm run typecheck > typecheck.log 2>&1
+          echo $? > typecheck.exit
+          npm test -- tests/parsing.test.ts tests/plusMinus.test.ts > unit.log 2>&1
+          echo $? > unit.exit
+          exit 0
+      - name: Install Playwright
+        run: |
+          npm install --no-save --package-lock=false @playwright/test@1.55.0
+          npx playwright install --with-deps chromium
+      - name: M3 M10 all viewports
+        shell: bash
+        run: |
+          set +e
+          npx playwright test e2e/exhaustive-module03-calculus.spec.ts e2e/exhaustive-module10-keyboard.spec.ts --reporter=line > e2e.log 2>&1
+          echo $? > e2e.exit
           exit 0
       - name: Write snapshot
         if: always()
@@ -39,15 +50,28 @@ jobs:
         run: |
           mkdir -p .qa-results
           {
-            echo "# QA navigation diagnostic — Lite"
+            echo "# QA Lite M3/M10 revalidation"
             echo
             echo "- workflow_sha: $GITHUB_SHA"
-            echo "- exit: $(cat nav.exit 2>/dev/null || echo missing)"
+            echo "- typecheck_exit: $(cat typecheck.exit 2>/dev/null || echo missing)"
+            echo "- unit_exit: $(cat unit.exit 2>/dev/null || echo missing)"
+            echo "- e2e_exit: $(cat e2e.exit 2>/dev/null || echo missing)"
             echo
+            echo "## Typecheck"
             echo '~~~text'
-            tail -n 500 nav.log 2>/dev/null || true
+            tail -n 180 typecheck.log 2>/dev/null || true
             echo '~~~'
-          } > .qa-results/navigation-latest.md
+            echo
+            echo "## Unit sentinels"
+            echo '~~~text'
+            tail -n 260 unit.log 2>/dev/null || true
+            echo '~~~'
+            echo
+            echo "## E2E"
+            echo '~~~text'
+            tail -n 900 e2e.log 2>/dev/null || true
+            echo '~~~'
+          } > .qa-results/e2e-directed-latest.md
       - name: Commit snapshot
         if: always()
         shell: bash
@@ -55,7 +79,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -C qa/exhaustive-suite-module-01
-          git add .qa-results/navigation-latest.md
+          git add .qa-results/e2e-directed-latest.md
           git diff --cached --quiet && exit 0
-          git commit -m "QA navigation diagnostics [skip ci]"
+          git commit -m "QA Lite M3 M10 revalidation [skip ci]"
           git push origin HEAD:qa/exhaustive-suite-module-01
