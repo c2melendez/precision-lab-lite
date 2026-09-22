@@ -11,6 +11,7 @@ import { compileNumeric, numericLimit, numericLimitAtInfinity } from "../engine/
 import { tryStatFunction, splitTopLevelArgs } from "../engine/statFunctions";
 import { tryComplexFunction, parseComplex } from "../engine/complexFunctions";
 import { tryPlusMinus } from "../engine/plusMinus";
+import { tryFiniteProduct } from "../engine/product";
 import { tryCbrtSign } from "../engine/cbrtSign";
 import { solveLinearInequalitySystem } from "../engine/stepEngine/linearInequalitySystem";
 import type { InequalityOperator } from "../engine/parsing/inequalitySplit";
@@ -458,6 +459,19 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       };
     }
 
+    const productResult = tryFiniteProduct(expr);
+    if (productResult !== null) {
+      return {
+        success: true,
+        resultLatex: toLatex(productResult),
+        fraction: toFractionResult(productResult),
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
+
     // Fix (decisión de Carlos, cierre de la suite de paridad de teclado):
     // ±(expr) — mismo patrón que arriba, Algebrite no conoce "pm". Da las
     // dos ramas como lista de Algebrite (mismo formato que "sort"), que
@@ -499,6 +513,18 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
         confidence: "NUMERIC_FALLBACK",
         requestId,
       };
+    }
+
+    // Algebrite can approximate exact poles such as tan(pi/2) or
+    // sec(pi/2)=1/cos(pi/2) to huge finite values. Treat exact cosine
+    // zeros as domain errors instead of presenting a misleading number.
+    const poleMatch = expr.match(/^(?:tan\((.*)\)|\(1\/cos\((.*)\)\))$/s);
+    if (poleMatch) {
+      const arg = poleMatch[1] ?? poleMatch[2];
+      const angle = Number(evaluate(`float(${arg})`));
+      if (Number.isFinite(angle) && Math.abs(Math.cos(angle)) < 1e-12) {
+        throw { code: ErrorCode.DOMAIN_ERROR, message: "La función no está definida en ese punto." } as AppError;
+      }
     }
 
     let raw = evaluate(expr);
