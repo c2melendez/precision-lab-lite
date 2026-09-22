@@ -258,6 +258,14 @@ export function BasicScientificMode() {
     worker.postMessage({ type: "evaluate", requestId, expressionAlgebrite: parsed.algebrite });
   }, [latex, mathField, angleMode, getWorker, fail, onSuccess, runSystem]);
 
+  // El dock del teclado vive en un store compartido y puede conservar un
+  // ReactNode creado por el render inmediatamente anterior. Mantener una
+  // función estable que delega al handleCalculate MÁS RECIENTE elimina el
+  // race entre field.insert()/onChange y el click inmediato en Calcular.
+  const calculateRef = useRef(handleCalculate);
+  calculateRef.current = handleCalculate;
+  const handleKeyboardEnter = useCallback(() => calculateRef.current(), []);
+
   // Íconos de resolución (spec §3.4). "f(x)=0": si aún no hay "=" en el
   // campo, lo inserta (mismo comportamiento previo); si ya hay una
   // ecuación, ahora SÍ la resuelve de verdad (antes caía silenciosamente
@@ -386,12 +394,12 @@ export function BasicScientificMode() {
         field={mathField}
         onBackspace={() => setLatex((prev) => prev.slice(0, -1))}
         onClear={() => setLatex("")}
-        onEnter={handleCalculate}
+        onEnter={handleKeyboardEnter}
         lastAnswerLatex={result?.resultLatex ?? null}
       />,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mathField, handleCalculate, result]);
+  }, [mathField, handleKeyboardEnter, result]);
 
   useEffect(() => {
     return () => clearBasicKeyboardContent();
@@ -404,11 +412,11 @@ export function BasicScientificMode() {
   // ya armado). Mismo patrón de dos efectos.
   useEffect(() => {
     setCompactActions({
-      onEnter: handleCalculate,
+      onEnter: handleKeyboardEnter,
       onBackspace: () => setLatex((prev) => prev.slice(0, -1)),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [handleCalculate]);
+  }, [handleKeyboardEnter]);
 
   useEffect(() => {
     return () => clearCompactActions();
