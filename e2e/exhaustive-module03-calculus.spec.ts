@@ -37,7 +37,19 @@ test("suite original módulo 3: inventario de Cálculo refleja capacidades actua
   const product = page.getByRole("button", { name: "productoria", exact: true }).first();
   await expect(product).toBeVisible();
   await product.click();
-  await expect(page.getByText(/productoria: todavía no disponible/i)).toBeVisible();
+  await expect(page.getByText(/productoria: todavía no disponible/i)).toHaveCount(0);
+});
+
+test("suite original módulo 3: productoria de 1 a 5 se evalúa a 120 desde la UI", async ({ page }) => {
+  await page.goto("./");
+  await setExpression(page, "\\prod_{i=1}^{5}i");
+
+  const calculate = page.getByRole("button", { name: /calcular|evaluar/i }).first();
+  await expect(calculate).toBeEnabled();
+  await calculate.click();
+
+  const result = page.getByRole("region", { name: "Resultado", exact: true });
+  await expect(result).toContainText("120", { timeout: 12000 });
 });
 
 test("suite original módulo 3: sumatoria de 1 a 5 se evalúa a 15 desde la UI", async ({ page }) => {
