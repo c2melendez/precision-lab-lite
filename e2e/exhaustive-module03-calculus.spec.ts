@@ -59,14 +59,15 @@ test("suite original módulo 3: inventario de Cálculo refleja capacidades actua
 async function renderedResultValue(page: import("@playwright/test").Page): Promise<string> {
   const status = page.getByRole("status").first();
   await expect(status).toBeVisible({ timeout: 12000 });
-  const result = status.locator("span.a11y-scale-result-3xl, math-field[read-only]").first();
-  await expect(result).toBeVisible({ timeout: 12000 });
-  return String(await result.evaluate((el) => {
-    const maybeField = el as HTMLElement & { value?: string };
-    return typeof maybeField.value === "string" && maybeField.value
-      ? maybeField.value
-      : (el.textContent ?? "");
-  }));
+  const staticField = status.locator("math-field[read-only]").first();
+  if (await staticField.count()) {
+    return String(await staticField.evaluate((el) =>
+      (el as HTMLElement & { value?: string }).value ?? "",
+    ));
+  }
+  const plain = status.locator(".a11y-scale-result-3xl").first();
+  await expect(plain).toBeVisible();
+  return (await plain.innerText()).trim();
 }
 
 test("suite original módulo 3: productoria de 1 a 5 se evalúa a 120 desde la UI", async ({ page }) => {
