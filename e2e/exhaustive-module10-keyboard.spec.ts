@@ -12,6 +12,15 @@ async function clearBasic(dialog: import("@playwright/test").Locator) {
   await dialog.getByRole("button", { name: "borrar todo el campo", exact: true }).click();
 }
 
+async function hideMathLiveKeyboard(page: import("@playwright/test").Page) {
+  // Precision Lab usa su propio KeyboardPanel. MathLive está configurado
+  // en manual, pero field.insert()/focus puede volver visible su panel en
+  // el runner. Ocultarlo aquí evita que un overlay ajeno al producto
+  // intercepte el click del botón Calcular del teclado propio.
+  await page.evaluate(() => window.mathVirtualKeyboard?.hide());
+  await page.locator(".ML__keyboard.is-visible").waitFor({ state: "hidden", timeout: 5000 }).catch(() => undefined);
+}
+
 async function resultValue(page: import("@playwright/test").Page): Promise<string> {
   const resultRegion = page.locator('section[aria-label="Resultado"]').first();
   await expect(resultRegion).toBeVisible({ timeout: 12000 });
@@ -44,6 +53,7 @@ test("módulo 10: round-trip 2+2 desde teclas reales produce 4", async ({ page }
   const field = page.locator("math-field").first();
   const fieldValue = await field.evaluate((el) => String((el as HTMLElement & { value?: string }).value ?? ""));
   expect(fieldValue.replace(/\s/g, "")).toMatch(/2\+2/);
+  await hideMathLiveKeyboard(page);
   await dialog.getByRole("button", { name: "calcular", exact: true }).click();
   const value = (await resultValue(page)).replace(/\s/g, "");
   expect(value).toContain("4");
@@ -60,6 +70,7 @@ test("módulo 10: la tecla % calcula porcentaje real (50% = 0.5)", async ({ page
   const percentLatex = await percentField.evaluate((el) => String((el as HTMLElement & { value?: string }).value ?? ""));
   expect(percentLatex).toMatch(/50/);
   expect(percentLatex).toMatch(/%/);
+  await hideMathLiveKeyboard(page);
   await dialog.getByRole("button", { name: "calcular", exact: true }).click();
 
   const value = await resultValue(page);
@@ -76,6 +87,7 @@ test("módulo 10: ±(5) produce dos ramas matemáticas distintas", async ({ page
   const pmLatex = await pmField.evaluate((el) => String((el as HTMLElement & { value?: string }).value ?? ""));
   expect(pmLatex).toMatch(/\\pm|±/);
   expect(pmLatex).toContain("5");
+  await hideMathLiveKeyboard(page);
   await dialog.getByRole("button", { name: "calcular", exact: true }).click();
 
   const value = (await resultValue(page)).replace(/\s/g, "");
