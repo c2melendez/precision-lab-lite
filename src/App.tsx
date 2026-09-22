@@ -114,23 +114,30 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-chrome pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)]">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-[60] focus:rounded focus:bg-marker focus:px-3 focus:py-2 focus:text-chrome"
+      >
+        Saltar al contenido principal
+      </a>
       <header className="flex items-center justify-between gap-2 border-b border-chrome-soft p-4">
         <button
           type="button"
           onClick={() => setHistoryOpen((o) => !o)}
           aria-label="Historial"
           aria-expanded={historyOpen}
+          aria-controls="history-panel"
           className="flex w-[92px] items-center gap-1.5 rounded-md px-2 py-1.5 text-bone/80 hover:bg-chrome-soft hover:text-bone dt:w-[140px]"
         >
           <span aria-hidden="true">▤</span>
           <span className="text-xs">Historial</span>
         </button>
-        <span className="font-display text-lg font-medium tracking-tight text-bone">
+        <h1 className="font-display text-lg font-medium tracking-tight text-bone">
           Precision Lab <span className="text-marker">Lite</span>
-        </span>
+        </h1>
         <AjustesPopover />
       </header>
-      <nav className="flex flex-wrap justify-center gap-1.5 border-b border-chrome-soft bg-chrome px-2 py-2 text-sm lg:gap-2 lg:py-2.5 dt:gap-3">
+      <nav aria-label="Modos de la calculadora" className="flex flex-wrap justify-center gap-1.5 border-b border-chrome-soft bg-chrome px-2 py-2 text-sm lg:gap-2 lg:py-2.5 dt:gap-3">
         {(VISIBLE_MODES).map((m) => (
           <button
             key={m}
@@ -152,7 +159,7 @@ export default function App() {
             contenido de ningún modo — no solo Científica. Cambio a nivel
             de layout global, deliberado, ver Cierre del Módulo 0. Módulo
             P3: en "stacked" no hay dock fijo que compensar. */}
-        <main className={`min-w-0 flex-1 bg-paper text-ink ${mainBottomPadding}`}>
+        <main id="main-content" tabIndex={-1} className={`min-w-0 flex-1 bg-paper text-ink ${mainBottomPadding} focus:outline-none`}>
           {mode === "basic" && <BasicScientificMode />}
           {mode === "simple" && <SimpleBasicMode />}
           {mode === "algebra" && <AlgebraMode />}
