@@ -842,14 +842,46 @@ function handleMatrixOp(
         // aparte — mismo patrón usado por gaussJordan para desglosar un
         // resultado compuesto en pasos legibles.
         const { pairs, allExact, characteristicPolynomial } = computeEigenvalues(a);
-        confidence = allExact && pairs.every((p) => p.isComplex || p.eigenvector !== null) ? "SYMBOLIC" : "NUMERIC_FALLBACK";
+
+        const formatComplex = (re: number, im: number) => {
+          const r = Math.abs(re) < 1e-9 ? 0 : re;
+          const ii = Math.abs(im) < 1e-9 ? 0 : im;
+          if (ii === 0) return r.toFixed(4);
+          if (r === 0) return `${ii.toFixed(4)}i`;
+          return `${r.toFixed(4)}${ii >= 0 ? "+" : ""}${ii.toFixed(4)}i`;
+        };
+
+        const vectorForPair = (p: (typeof pairs)[number]) => {
+          if (p.isComplex) {
+            return p.complexEigenvector
+              ? `[${p.complexEigenvector.map((z) => formatComplex(z.re, z.im)).join(", ")}]`
+              : "no se pudo calcular";
+          }
+          return p.eigenvector
+            ? `[${p.eigenvector.map((x) => x.toFixed(4)).join(", ")}]`
+            : "no se pudo calcular";
+        };
+
+        confidence =
+          allExact &&
+          pairs.every((p) =>
+            p.isComplex ? p.complexEigenvector !== null : p.eigenvector !== null,
+          )
+            ? "SYMBOLIC"
+            : "NUMERIC_FALLBACK";
+
         resultLatex = pairs
           .map((p) => {
-            const valueStr = p.exact !== null ? p.exact : p.approx.toFixed(6);
+            const approxValue =
+              Math.abs(p.approxIm) > 1e-9
+                ? formatComplex(p.approx, p.approxIm)
+                : p.approx.toFixed(6);
+            const valueStr = p.exact !== null ? p.exact : approxValue;
             const multStr = p.multiplicity > 1 ? ` (multiplicidad ${p.multiplicity})` : "";
             return `\\lambda = ${valueStr}${multStr}`;
           })
           .join(",\\quad ");
+
         steps = [
           {
             id: "char-poly",
@@ -857,12 +889,12 @@ function handleMatrixOp(
             explanation: "Polinomio característico, construido por expansión de cofactores.",
           },
           ...pairs.map((p, i) => {
-            const valueStr = p.exact !== null ? p.exact : `${p.approx.toFixed(6)} (aproximado)`;
-            const vectorStr = p.isComplex
-              ? "no calculado en Lite para eigenvalores complejos (ver limitación declarada)"
-              : p.eigenvector
-                ? `[${p.eigenvector.map((x) => x.toFixed(4)).join(", ")}]`
-                : "no se pudo calcular";
+            const approxValue =
+              Math.abs(p.approxIm) > 1e-9
+                ? formatComplex(p.approx, p.approxIm)
+                : p.approx.toFixed(6);
+            const valueStr = p.exact !== null ? p.exact : `${approxValue} (aproximado)`;
+            const vectorStr = vectorForPair(p);
             return {
               id: `eigen-${i}`,
               latex: `\\lambda_{${i + 1}} = ${valueStr},\\ v_{${i + 1}} = ${vectorStr}`,
