@@ -18,10 +18,11 @@ async function setExpression(page: import("@playwright/test").Page, value: strin
 }
 
 async function calculateExpression(page: import("@playwright/test").Page, value: string) {
-  await page.addInitScript(() => localStorage.setItem("precision-lab-layout-mode", "fused"));
+  await page.addInitScript(() => localStorage.setItem("precision-lab-layout-mode", "split"));
   await page.goto("./");
   const field = page.locator("math-field").first();
   await setExpression(page, value);
+  // Split conserva un botón Calcular de pantalla en Desktop/Tablet/Mobile.
   // Espera a que React haya consumido el input: el botón de la pantalla
   // solo se habilita cuando el estado `latex` ya contiene la expresión.
   // Se usa este botón (conectado directamente a handleCalculate) y no la
