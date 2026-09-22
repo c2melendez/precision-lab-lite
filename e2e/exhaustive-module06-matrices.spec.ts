@@ -65,3 +65,28 @@ test("M21: Lite permite 6x6, calcula rango 6 y mantiene la grilla dentro del vie
   }));
   expect(overflow.scrollWidth).toBeLessThanOrEqual(overflow.viewport + 2);
 });
+
+
+test("M22: eigenvectores complejos 2x2 se muestran en Lite", async ({ page }) => {
+  await page.goto("./");
+  await page.getByRole("button", { name: "Matrices", exact: true }).click();
+
+  const eigen = page.getByRole("button", { name: "Eigenvalores y eigenvectores", exact: true });
+  await expect(eigen).toBeEnabled();
+  await eigen.click();
+
+  const cells = page.locator('input[placeholder="0"]');
+  await expect(cells).toHaveCount(4);
+  await cells.nth(0).fill("0");
+  await cells.nth(1).fill("-1");
+  await cells.nth(2).fill("1");
+  await cells.nth(3).fill("0");
+
+  await page.getByRole("button", { name: "Calcular", exact: true }).click();
+
+  const procedure = page.getByRole("list", { name: "Procedimiento paso a paso" });
+  await expect(procedure).toBeVisible({ timeout: 12000 });
+  await expect(procedure).toContainText("Eigenvector correspondiente:");
+  await expect(procedure).toContainText("i");
+  await expect(procedure).not.toContainText("no calculado en Lite");
+});

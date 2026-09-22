@@ -31,17 +31,74 @@ describe("computeEigenvalues", () => {
     }
   });
 
-  it("2x2 con eigenvalores complejos [[0,-1],[1,0]] (rotación 90°): i y -i, sin eigenvector calculado (límite declarado)", () => {
+  it("M22: 2x2 rotación 90° calcula eigenvectores complejos válidos para ±i", () => {
     const A = toFractionMatrix([
       [0, -1],
       [1, 0],
     ]);
     const { pairs } = computeEigenvalues(A);
     expect(pairs.length).toBe(2);
+
     for (const p of pairs) {
       expect(p.isComplex).toBe(true);
       expect(p.eigenvector).toBeNull();
-      expect(Math.abs(p.approx)).toBeLessThan(1e-6); // parte real de ±i es 0
+      expect(p.complexEigenvector).not.toBeNull();
+      expect(Math.abs(p.approx)).toBeLessThan(1e-6);
+      expect(Math.abs(Math.abs(p.approxIm) - 1)).toBeLessThan(1e-6);
+
+      const v = p.complexEigenvector!;
+      for (let i = 0; i < 2; i++) {
+        const av = A[i].reduce(
+          (acc, aij, j) => ({
+            re: acc.re + aij.valueOf() * v[j].re,
+            im: acc.im + aij.valueOf() * v[j].im,
+          }),
+          { re: 0, im: 0 },
+        );
+        const lv = {
+          re: p.approx * v[i].re - p.approxIm * v[i].im,
+          im: p.approx * v[i].im + p.approxIm * v[i].re,
+        };
+        expect(av.re).toBeCloseTo(lv.re, 5);
+        expect(av.im).toBeCloseTo(lv.im, 5);
+      }
+    }
+  });
+
+  it("M22: 3x3 con bloque de rotación conserva eigenvector complejo y eigenvector real", () => {
+    const A = toFractionMatrix([
+      [0, -1, 0],
+      [1, 0, 0],
+      [0, 0, 2],
+    ]);
+    const { pairs } = computeEigenvalues(A);
+    expect(pairs).toHaveLength(3);
+
+    const complexPairs = pairs.filter((p) => p.isComplex);
+    const realPairs = pairs.filter((p) => !p.isComplex);
+    expect(complexPairs).toHaveLength(2);
+    expect(realPairs).toHaveLength(1);
+    expect(complexPairs.every((p) => p.complexEigenvector !== null)).toBe(true);
+    expect(realPairs[0].eigenvector).not.toBeNull();
+    expect(realPairs[0].approx).toBeCloseTo(2, 6);
+
+    for (const p of complexPairs) {
+      const v = p.complexEigenvector!;
+      for (let i = 0; i < 3; i++) {
+        const av = A[i].reduce(
+          (acc, aij, j) => ({
+            re: acc.re + aij.valueOf() * v[j].re,
+            im: acc.im + aij.valueOf() * v[j].im,
+          }),
+          { re: 0, im: 0 },
+        );
+        const lv = {
+          re: p.approx * v[i].re - p.approxIm * v[i].im,
+          im: p.approx * v[i].im + p.approxIm * v[i].re,
+        };
+        expect(av.re).toBeCloseTo(lv.re, 5);
+        expect(av.im).toBeCloseTo(lv.im, 5);
+      }
     }
   });
 
