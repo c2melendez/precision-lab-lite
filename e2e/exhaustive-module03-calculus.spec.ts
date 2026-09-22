@@ -55,6 +55,10 @@ async function calculateExpression(page: import("@playwright/test").Page, value:
   await page.locator(".ML__keyboard.is-visible").waitFor({ state: "hidden", timeout: 5000 }).catch(() => undefined);
   const calculate = keyboardDialog.getByRole("button", { name: "calcular", exact: true });
   await expect(calculate).toBeVisible();
+  // El valor del custom element puede estar listo un frame antes que el
+  // estado React que habilita Calcular. Esperar al estado habilitado elimina
+  // la carrera residual observada en Productoria/Sumatoria bajo carga CI.
+  await expect(calculate).toBeEnabled({ timeout: 10_000 });
   await calculate.click();
 }
 
