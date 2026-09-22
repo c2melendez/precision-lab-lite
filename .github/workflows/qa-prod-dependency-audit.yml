@@ -1,0 +1,55 @@
+name: QA Production Dependency Audit
+
+on:
+  push:
+    branches: [qa/exhaustive-suite-module-01]
+    paths:
+      - .github/workflows/qa-prod-dependency-audit.yml
+      - package.json
+      - package-lock.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa/exhaustive-suite-module-01
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Production audit
+        continue-on-error: true
+        run: npm audit --omit=dev --package-lock-only --json > npm-audit-prod.json
+      - name: Summarize
+        shell: bash
+        run: |
+          node <<'NODE' > /tmp/prod-audit.md
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('npm-audit-prod.json','utf8'));
+          console.log('<!-- qa-lite-prod-audit -->');
+          console.log('## QA Lite — audit de dependencias de producción');
+          console.log('');
+          const m=x.metadata?.vulnerabilities || {};
+          console.log('- SHA: `'+process.env.GITHUB_SHA+'`');
+          console.log('- total runtime: **'+(m.total??0)+'** — critical '+(m.critical??0)+', high '+(m.high??0)+', moderate '+(m.moderate??0)+', low '+(m.low??0));
+          console.log('');
+          console.log('| paquete | severidad | directo | fixAvailable |');
+          console.log('|---|---|---:|---|');
+          for (const [name,v] of Object.entries(x.vulnerabilities||{})) {
+            console.log('| '+name+' | '+v.severity+' | '+v.isDirect+' | `'+JSON.stringify(v.fixAvailable).replaceAll('|','/')+'` |');
+          }
+          NODE
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr comment 2 --repo c2melendez/precision-lab-lite --body-file /tmp/prod-audit.md
