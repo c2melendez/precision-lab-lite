@@ -34,7 +34,7 @@ jobs:
         run: |
           set +e
           mkdir -p .qa-results
-          npx playwright test e2e/exhaustive-module03-calculus.spec.ts e2e/exhaustive-module09-graphing.spec.ts e2e/exhaustive-module10-keyboard.spec.ts e2e/exhaustive-module12-personalization-a11y.spec.ts --reporter=line > e2e-directed.log 2>&1
+          npx playwright test e2e/diagnostic-trackd-ui.spec.ts --project=desktop-chromium --reporter=line > e2e-directed.log 2>&1
           CODE=$?
           {
             echo "# QA directed E2E diagnostic — Lite"
