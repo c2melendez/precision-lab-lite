@@ -1,4 +1,4 @@
-name: QA Fast CI Diagnostic
+name: QA Fast E2E Diagnostic
 
 on:
   push:
@@ -13,7 +13,7 @@ permissions:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,54 +23,34 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - name: Run CI diagnostics
+      - name: Install app
+        run: npm ci
+      - name: Install Playwright
+        run: |
+          npm install --no-save --package-lock=false @playwright/test@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Run directed E2E
         shell: bash
         run: |
           set +e
           mkdir -p .qa-results
-          npm ci > npm-ci.log 2>&1
-          A=$?
-          npm audit --package-lock-only --json > npm-audit.json 2> npm-audit.stderr
-          E=$?
-          npm run typecheck > typecheck.log 2>&1
-          B=$?
-          npm test > unit.log 2>&1
-          C=$?
-          npm run build > build.log 2>&1
-          D=$?
+          npx playwright test e2e/exhaustive-module03-calculus.spec.ts e2e/exhaustive-module09-graphing.spec.ts e2e/exhaustive-module10-keyboard.spec.ts e2e/exhaustive-module12-personalization-a11y.spec.ts --reporter=line > e2e-directed.log 2>&1
+          CODE=$?
           {
-            echo "# QA fast CI diagnostic — Lite"
+            echo "# QA directed E2E diagnostic — Lite"
             echo
-            echo "- npm_ci: $A"
-            echo "- npm_audit: $E"
-            echo "- typecheck: $B"
-            echo "- unit: $C"
-            echo "- build: $D"
-            for f in npm-ci typecheck unit build; do
-              echo
-              echo "## $f"
-              echo '~~~text'
-              tail -n 260 "$f.log" 2>/dev/null || true
-              echo '~~~'
-            done
+            echo "- exit_code: $CODE"
             echo
-            echo "## npm audit stderr"
             echo '~~~text'
-            tail -n 80 npm-audit.stderr 2>/dev/null || true
+            tail -n 500 e2e-directed.log
             echo '~~~'
-            echo
-            echo "## npm audit metadata"
-            echo '~~~json'
-            node -e "const fs=require('fs'); try { const x=JSON.parse(fs.readFileSync('npm-audit.json','utf8')); console.log(JSON.stringify(x.metadata || {},null,2)); } catch(e) { console.log('unavailable: '+e.message) }"
-            echo '~~~'
-          } > .qa-results/diagnostics-latest.md
+          } > .qa-results/e2e-directed-latest.md
+          exit 0
       - name: Commit snapshot
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .qa-results/diagnostics-latest.md
+          git add .qa-results/e2e-directed-latest.md
           git diff --cached --quiet && exit 0
-          git commit -m "QA fast diagnostics [skip ci]"
+          git commit -m "QA E2E diagnostics [skip ci]"
           git push origin HEAD:qa/exhaustive-suite-module-01
-
-# retrigger 9
