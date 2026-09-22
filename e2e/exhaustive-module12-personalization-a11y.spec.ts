@@ -197,6 +197,11 @@ test("M12: el resultado dinámico es anunciable en las seis disposiciones", asyn
   await expect(resultNode).toBeVisible({ timeout: 12000 });
   await expect(resultNode).toContainText("4");
 
+  // En móvil el foco del math-field deja abierto el KeyboardPanel y éste
+  // intercepta los controles de Ajustes. Cerrar con Escape es parte del
+  // contrato M12 ya probado y evita un falso positivo del harness.
+  await page.keyboard.press("Escape");
+
   // M11 ya certificó que Flotante degrada a Enfoque por debajo de 1024 px.
   // No intentamos activar una disposición no disponible en móvil: eso sería
   // un falso positivo del harness, no un defecto de accesibilidad.
