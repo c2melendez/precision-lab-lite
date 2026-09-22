@@ -127,6 +127,7 @@ export const FUNCTION_ARITY: Record<string, number[]> = {
   // median/etc — ver constants.ts arriba).
   integral: [2],
   sum: [4],
+  product: [4],
   limit: [3, 4],
   d: [2, 3],
   // Fase 2 externa: producida únicamente por la reescritura de \int_{a}^{b}
