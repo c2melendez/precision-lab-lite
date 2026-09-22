@@ -197,7 +197,13 @@ test("M12: el resultado dinámico es anunciable en las seis disposiciones", asyn
   await expect(resultNode).toBeVisible({ timeout: 12000 });
   await expect(resultNode).toContainText("4");
 
-  const layouts = ["Fusionada", "Separada", "Dividida", "Enfoque", "Apilado", "Flotante"];
+  // M11 ya certificó que Flotante degrada a Enfoque por debajo de 1024 px.
+  // No intentamos activar una disposición no disponible en móvil: eso sería
+  // un falso positivo del harness, no un defecto de accesibilidad.
+  const isNarrow = (page.viewportSize()?.width ?? 1440) < 1024;
+  const layouts = isNarrow
+    ? ["Fusionada", "Separada", "Dividida", "Enfoque", "Apilado"]
+    : ["Fusionada", "Separada", "Dividida", "Enfoque", "Apilado", "Flotante"];
   const missing: string[] = [];
 
   for (const layout of layouts) {
