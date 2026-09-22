@@ -23,6 +23,21 @@ async function resultValue(page: import("@playwright/test").Page): Promise<strin
   }));
 }
 
+test("módulo 10 diagnóstico: 2+2 desde teclas reales produce 4", async ({ page }) => {
+  const dialog = await openKeyboard(page);
+  await dialog.getByRole("tab", { name: "Básico", exact: true }).click();
+  await clearBasic(dialog);
+  await dialog.getByRole("button", { name: "2", exact: true }).click();
+  await dialog.getByRole("button", { name: "sumar", exact: true }).click();
+  await dialog.getByRole("button", { name: "2", exact: true }).click();
+  const field = page.locator("math-field").first();
+  const fieldValue = await field.evaluate((el) => String((el as HTMLElement & { value?: string }).value ?? ""));
+  expect(fieldValue.replace(/\\s/g, "")).toMatch(/2\\+2/);
+  await dialog.getByRole("button", { name: "calcular", exact: true }).click();
+  const value = (await resultValue(page)).replace(/\\s/g, "");
+  expect(value).toContain("4");
+});
+
 test("módulo 10: la tecla % calcula porcentaje real (50% = 0.5)", async ({ page }) => {
   const dialog = await openKeyboard(page);
   await dialog.getByRole("tab", { name: "Básico", exact: true }).click();
@@ -30,6 +45,10 @@ test("módulo 10: la tecla % calcula porcentaje real (50% = 0.5)", async ({ page
   await dialog.getByRole("button", { name: "5", exact: true }).click();
   await dialog.getByRole("button", { name: "0", exact: true }).click();
   await dialog.getByRole("button", { name: "porcentaje", exact: true }).click();
+  const percentField = page.locator("math-field").first();
+  const percentLatex = await percentField.evaluate((el) => String((el as HTMLElement & { value?: string }).value ?? ""));
+  expect(percentLatex).toMatch(/50/);
+  expect(percentLatex).toMatch(/%/);
   await dialog.getByRole("button", { name: "calcular", exact: true }).click();
 
   const value = await resultValue(page);
@@ -42,6 +61,10 @@ test("módulo 10: ±(5) produce dos ramas matemáticas distintas", async ({ page
   await clearBasic(dialog);
   await dialog.getByRole("button", { name: "más/menos", exact: true }).click();
   await dialog.getByRole("button", { name: "5", exact: true }).click();
+  const pmField = page.locator("math-field").first();
+  const pmLatex = await pmField.evaluate((el) => String((el as HTMLElement & { value?: string }).value ?? ""));
+  expect(pmLatex).toMatch(/\\\\pm|±/);
+  expect(pmLatex).toContain("5");
   await dialog.getByRole("button", { name: "calcular", exact: true }).click();
 
   const value = (await resultValue(page)).replace(/\s/g, "");
