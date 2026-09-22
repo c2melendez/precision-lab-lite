@@ -120,3 +120,14 @@ Nivel de evidencia: NIVEL 1 (ejecución real). `npm run typecheck` limpio, `npx 
 Decisión DEDUCIBLE tomada: el texto exacto de la etiqueta ("2 var.") y su posición (esquina inferior derecha del botón, `absolute -bottom-1 right-1`) se decidieron sin pedir confirmación previa por ser un detalle menor de layout — reversible con un cambio de una línea si Carlos prefiere otra redacción o posición.
 
 Riesgo pendiente, sin resolver en este módulo: la etiqueta "2 var." es CSS puro (`absolute`, sin overflow controlado) — no se verificó visualmente en un viewport real (sin captura de pantalla ni Chromium en esta sesión), solo que compila y no rompe tests. Vale una revisión visual rápida antes de darlo por definitivo.
+
+## Revalidación post-fix Track D — 21 de septiembre de 2026
+
+Se revisó el paquete corregido después de M1–M15 y se confirmó por código que están presentes los fixes de accesibilidad base, Productoria y discontinuidades:
+
+- `NaturalInput` aporta un nombre accesible estable al `math-field` principal.
+- `ResultPanel` centraliza `role="status"`, `aria-live="polite"` y `aria-atomic="true"`, evitando depender del layout.
+- `GraphViewer` genera subpaths separados ante huecos/saltos asintóticos.
+- Productoria está habilitada y dispone de parser/evaluador finito acotado.
+
+El entorno local no pudo completar `npm ci`; por tanto Vitest/typecheck/build/Playwright deben confirmarse mediante GitHub Actions. No se marca Lite completamente verde hasta que esa ejecución termine.
