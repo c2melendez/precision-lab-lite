@@ -16,34 +16,29 @@ test("M29: Flotante recupera geometría persistida y la recorta al viewport", as
   });
 
   await page.goto("./");
-  await expect(page.getByRole("dialog", { name: "Gráfica" })).toBeVisible();
 
-  const openKeyboard = page.getByRole("button", { name: "Abrir teclado", exact: true });
-  await expect(openKeyboard).toBeVisible();
-  await openKeyboard.click();
+  const graph = page.getByRole("dialog", { name: "Gráfica" });
+  await expect(graph).toBeVisible();
 
-  const dialogs = [
-    page.getByRole("dialog", { name: "Gráfica" }),
-    page.getByRole("dialog", { name: "Teclado" }),
-  ];
-
-  for (const dialog of dialogs) {
-    const box = await dialog.boundingBox();
-    expect(box).not.toBeNull();
-    expect(box!.x).toBeGreaterThanOrEqual(0);
-    expect(box!.y).toBeGreaterThanOrEqual(0);
-    expect(box!.x + box!.width).toBeLessThanOrEqual((viewport?.width ?? 0) + 1);
-    expect(box!.y + box!.height).toBeLessThanOrEqual((viewport?.height ?? 0) + 1);
-  }
+  const graphBox = await graph.boundingBox();
+  expect(graphBox).not.toBeNull();
+  expect(graphBox!.x).toBeGreaterThanOrEqual(0);
+  expect(graphBox!.y).toBeGreaterThanOrEqual(0);
+  expect(graphBox!.x + graphBox!.width).toBeLessThanOrEqual((viewport?.width ?? 0) + 1);
+  expect(graphBox!.y + graphBox!.height).toBeLessThanOrEqual((viewport?.height ?? 0) + 1);
 
   const stored = await page.evaluate(() =>
     JSON.parse(localStorage.getItem("precision-lab-floating-layout") ?? "{}"),
   );
 
-  expect(stored.keyboardWindow.x).toBeGreaterThanOrEqual(8);
-  expect(stored.keyboardWindow.y).toBeGreaterThanOrEqual(8);
-  expect(stored.graphWindow.x).toBeGreaterThanOrEqual(8);
-  expect(stored.graphWindow.y).toBeGreaterThanOrEqual(8);
+  for (const rect of [stored.keyboardWindow, stored.graphWindow]) {
+    expect(rect.x).toBeGreaterThanOrEqual(8);
+    expect(rect.y).toBeGreaterThanOrEqual(8);
+    expect(rect.width).toBeGreaterThanOrEqual(220);
+    expect(rect.height).toBeGreaterThanOrEqual(160);
+    expect(rect.x + rect.width).toBeLessThanOrEqual((viewport?.width ?? 0) - 8 + 1);
+    expect(rect.y + rect.height).toBeLessThanOrEqual((viewport?.height ?? 0) - 8 + 1);
+  }
 
   await page.reload();
   await expect(page.getByRole("dialog", { name: "Gráfica" })).toBeVisible();
