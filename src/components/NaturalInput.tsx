@@ -11,9 +11,6 @@ import { useKeyboardPanelStore } from "../store/useKeyboardPanelStore";
 // con el caret y la selección de MathLive en marker.
 
 declare global {
-  interface Window {
-    mathVirtualKeyboard?: { hide: () => void };
-  }
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
@@ -75,13 +72,14 @@ export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrad
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const field = el;
     function handleFocus(): void {
-      el.mathVirtualKeyboardPolicy = "manual";
-      window.mathVirtualKeyboard?.hide();
+      field.mathVirtualKeyboardPolicy = "manual";
+      window.mathVirtualKeyboard.hide();
       useKeyboardPanelStore.getState().open();
     }
-    el.addEventListener("focus", handleFocus);
-    return () => el.removeEventListener("focus", handleFocus);
+    field.addEventListener("focus", handleFocus);
+    return () => field.removeEventListener("focus", handleFocus);
   }, []);
 
   useEffect(() => {
@@ -102,7 +100,7 @@ export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrad
         (ref as React.MutableRefObject<typeof el>).current = el;
         if (el) {
           el.mathVirtualKeyboardPolicy = "manual";
-          window.mathVirtualKeyboard?.hide();
+          window.mathVirtualKeyboard.hide();
         }
         fieldRef?.(el);
       }}
