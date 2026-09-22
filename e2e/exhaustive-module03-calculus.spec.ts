@@ -25,6 +25,11 @@ async function calculateExpression(page: import("@playwright/test").Page, value:
   const keyboard = page.getByRole("dialog", { name: "Teclado matemático" });
   await expect(keyboard).toBeVisible();
   await setExpression(page, value);
+  // Deja que React sincronice el estado `latex` y los callbacks del dock
+  // antes de disparar calcular. Evita la carrera que hacía Π flaky.
+  await page.evaluate(() => new Promise<void>((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+  }));
   await keyboard.getByRole("button", { name: "calcular", exact: true }).click();
 }
 
@@ -52,7 +57,9 @@ test("suite original módulo 3: inventario de Cálculo refleja capacidades actua
 });
 
 async function renderedResultValue(page: import("@playwright/test").Page): Promise<string> {
-  const result = page.locator(".a11y-scale-result-3xl").first();
+  const status = page.getByRole("status").first();
+  await expect(status).toBeVisible({ timeout: 12000 });
+  const result = status.locator("span.a11y-scale-result-3xl, math-field[read-only]").first();
   await expect(result).toBeVisible({ timeout: 12000 });
   return String(await result.evaluate((el) => {
     const maybeField = el as HTMLElement & { value?: string };
