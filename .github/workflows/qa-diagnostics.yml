@@ -1,4 +1,4 @@
-name: QA M10 Exact-Commit Diagnostic
+name: QA M3 M10 Final Revalidation
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 jobs:
-  diagnose:
+  revalidate:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -25,22 +25,22 @@ jobs:
           cache: npm
       - name: Install
         run: npm ci
-      - name: Parser sentinels
+      - name: Parser regression sentinels
         shell: bash
         run: |
           set +e
-          npm test -- tests/parsing.test.ts > parser.log 2>&1
+          npm test -- tests/parsing.test.ts tests/plusMinus.test.ts > parser.log 2>&1
           echo $? > parser.exit
           exit 0
       - name: Install Playwright
         run: |
           npm install --no-save --package-lock=false @playwright/test@1.55.0
           npx playwright install --with-deps chromium
-      - name: M10 desktop
+      - name: M3 and M10 all viewports
         shell: bash
         run: |
           set +e
-          npx playwright test e2e/exhaustive-module10-keyboard.spec.ts --project=desktop-chromium --reporter=line > e2e.log 2>&1
+          npx playwright test e2e/exhaustive-module03-calculus.spec.ts e2e/exhaustive-module10-keyboard.spec.ts --reporter=line > e2e.log 2>&1
           echo $? > e2e.exit
           exit 0
       - name: Write snapshot
@@ -49,7 +49,7 @@ jobs:
         run: |
           mkdir -p .qa-results
           {
-            echo "# QA M10 exact-commit diagnostic — Lite"
+            echo "# QA M3/M10 final revalidation — Lite"
             echo
             echo "- workflow_sha: $GITHUB_SHA"
             echo "- parser_exit: $(cat parser.exit 2>/dev/null || echo missing)"
@@ -57,12 +57,12 @@ jobs:
             echo
             echo "## Parser"
             echo '~~~text'
-            tail -n 260 parser.log 2>/dev/null || true
+            tail -n 300 parser.log 2>/dev/null || true
             echo '~~~'
             echo
             echo "## E2E"
             echo '~~~text'
-            tail -n 520 e2e.log 2>/dev/null || true
+            tail -n 700 e2e.log 2>/dev/null || true
             echo '~~~'
           } > .qa-results/e2e-directed-latest.md
       - name: Commit snapshot
@@ -74,5 +74,5 @@ jobs:
           git switch -C qa/exhaustive-suite-module-01
           git add .qa-results/e2e-directed-latest.md
           git diff --cached --quiet && exit 0
-          git commit -m "QA M10 exact diagnostics [skip ci]"
+          git commit -m "QA M3 M10 final revalidation [skip ci]"
           git push origin HEAD:qa/exhaustive-suite-module-01
