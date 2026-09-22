@@ -227,7 +227,14 @@ const CALCULUS_ROW_2: KeyDef[] = [
     undefined,
     "deriva la expresión repetidamente -- edita el número de orden en la plantilla",
   ),
-  key({ frac: ["∂", "∂x"] }, "", "derivada parcial", true),
+  key(
+    { frac: ["∂", "∂x"] },
+    "\\frac{\\partial}{\\partial x}\\left(#0\\right)",
+    "derivada parcial",
+    false,
+    undefined,
+    "derivada parcial respecto de x; mantiene las demás variables como constantes",
+  ),
   key(
     { base: "lim", sub: "x→a" },
     "\\lim_{#0\\to#1}#2",

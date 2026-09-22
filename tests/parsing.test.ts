@@ -83,6 +83,11 @@ describe("parseExpression", () => {
   it("\\frac{3}{4} se convierte a división explícita", () => {
     expect(parseExpression("\\frac{3}{4}").algebrite).toBe("((3)/(4))");
   });
+  it("M17: ∂/∂x se enruta a d(expr,x)", () => {
+    expect(
+      parseExpression("\\frac{\\partial}{\\partial x}\\left(x^2y\\right)").algebrite,
+    ).toBe("d((x^2*y),x)");
+  });
 
   it("\\sqrt[3]{8} es raíz cúbica, NO raíz cuadrada (bug detectado en revisión: el índice se perdía en silencio)", () => {
     expect(parseExpression("\\sqrt[3]{8}").algebrite).toBe("((8)^(1/(3)))");

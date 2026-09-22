@@ -39,9 +39,8 @@ describe("Suite exhaustiva original — Módulo 10: teclado ↔ motor (Lite)", (
     expect(product?.insertLatex.trim()).not.toBe("");
   });
 
-  it("mantiene divergencias documentadas de Lite sin convertirlas en teclas activas falsas", () => {
+  it("mantiene las dos divergencias documentadas de Lite sin convertirlas en teclas activas falsas", () => {
     for (const label of [
-      "derivada parcial",
       "residuo en un polo (funciones racionales)",
       "singularidades (funciones racionales)",
     ]) {
