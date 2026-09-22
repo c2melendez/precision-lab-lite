@@ -1,0 +1,65 @@
+name: QA Dependency Audit Reporter
+
+on:
+  push:
+    branches: [qa/exhaustive-suite-module-01]
+    paths:
+      - .github/workflows/qa-dependency-audit.yml
+      - package.json
+      - package-lock.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa/exhaustive-suite-module-01
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+      - name: Audit JSON
+        continue-on-error: true
+        run: npm audit --package-lock-only --json > npm-audit.json
+      - name: Summarize audit
+        shell: bash
+        run: |
+          node <<'NODE' > /tmp/audit-summary.md
+          const fs=require('fs');
+          const p='npm-audit.json';
+          const x=JSON.parse(fs.readFileSync(p,'utf8'));
+          console.log('<!-- qa-lite-dependency-audit -->');
+          console.log('## QA Lite — dependency audit');
+          console.log('');
+          console.log('- SHA: `'+process.env.GITHUB_SHA+'`');
+          const m=x.metadata?.vulnerabilities || {};
+          console.log('- total: **'+(m.total ?? '?')+'** — critical '+(m.critical??0)+', high '+(m.high??0)+', moderate '+(m.moderate??0)+', low '+(m.low??0));
+          console.log('');
+          console.log('| paquete | severidad | directo | fixAvailable | vía |');
+          console.log('|---|---|---:|---|---|');
+          for (const [name,v] of Object.entries(x.vulnerabilities||{}).sort((a,b)=>{
+            const rank={critical:4,high:3,moderate:2,low:1,info:0};
+            return (rank[b[1].severity]||0)-(rank[a[1].severity]||0);
+          })) {
+            let via=(v.via||[]).map(z=>typeof z==='string'?z:(z.title||z.name||z.source)).slice(0,4).join('; ');
+            via=via.replaceAll('|','/');
+            let fix=JSON.stringify(v.fixAvailable);
+            if (fix.length>90) fix=fix.slice(0,87)+'...';
+            console.log('| '+name+' | '+v.severity+' | '+String(v.isDirect)+' | `'+fix.replaceAll('|','/')+'` | '+via+' |');
+          }
+          NODE
+      - name: Publish to PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr comment 2 --repo c2melendez/precision-lab-lite --body-file /tmp/audit-summary.md
