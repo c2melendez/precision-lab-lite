@@ -119,17 +119,15 @@ test("M12: resultado calculado en Fusionada queda dentro de una región anunciab
   await page.addInitScript(() => localStorage.setItem("precision-lab-layout-mode", "fused"));
   await page.goto("./");
   const input = page.locator("math-field").first();
+  await input.focus();
+  const keyboard = page.getByRole("dialog", { name: "Teclado matemático" });
+  await expect(keyboard).toBeVisible();
   await input.evaluate((node, v) => {
     const el = node as HTMLElement & { value: string };
     el.value = v as string;
     el.dispatchEvent(new Event("input", { bubbles: true }));
   }, "2+2");
-  const form = input.locator("xpath=ancestor::form[1]");
-  if (await form.count()) {
-    await form.evaluate((el) => (el as HTMLFormElement).requestSubmit());
-  } else {
-    await page.getByRole("button", { name: /calcular|evaluar/i }).first().click();
-  }
+  await keyboard.getByRole("button", { name: "calcular", exact: true }).click();
 
   const renderedResult = page.locator(".a11y-scale-result-3xl").first();
   await expect(renderedResult).toBeVisible({ timeout: 12000 });
@@ -146,4 +144,25 @@ test("M12: resultado calculado en Fusionada queda dentro de una región anunciab
   expect(announced).toBe(true);
 });
 
-// QA rerun marker: módulo 12
+
+test("M12: vibración y sonido guardan preferencia y sobreviven recarga", async ({ page }) => {
+  await page.goto("./");
+  const { menu } = await openSettings(page);
+  await clickSettingRow(menu, "Vibración al presionar tecla");
+  await clickSettingRow(menu, "Sonido de clic");
+
+  expect(await page.evaluate(() => localStorage.getItem("precision-lab-key-vibration"))).toBe("false");
+  expect(await page.evaluate(() => localStorage.getItem("precision-lab-key-sound"))).toBe("true");
+
+  await page.reload();
+  await expect(page.locator("math-field").first()).toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem("precision-lab-key-vibration"))).toBe("false");
+  expect(await page.evaluate(() => localStorage.getItem("precision-lab-key-sound"))).toBe("true");
+
+  const reopened = await openSettings(page);
+  const vibrationRow = reopened.menu.getByText("Vibración al presionar tecla", { exact: true }).locator("..");
+  const soundRow = reopened.menu.getByText("Sonido de clic", { exact: true }).locator("..");
+  await expect(vibrationRow.getByRole("button")).toHaveAttribute("aria-pressed", "false");
+  await expect(soundRow.getByRole("button")).toHaveAttribute("aria-pressed", "true");
+});
+
