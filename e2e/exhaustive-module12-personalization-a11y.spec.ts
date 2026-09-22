@@ -226,3 +226,23 @@ test("M12: el resultado dinámico es anunciable en las seis disposiciones", asyn
 
   expect(missing, "Disposiciones sin aria-live/status/alert para el resultado").toEqual([]);
 });
+
+
+test("M12: la primera curva usa visualmente la paleta Azul SaaS por defecto", async ({ page }) => {
+  await page.goto("./");
+  await page.getByRole("button", { name: "Gráficas", exact: true }).click();
+
+  const field = page.locator("math-field").first();
+  await field.evaluate((node) => {
+    const el = node as HTMLElement & { value: string };
+    el.value = "x^2";
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  await page.getByRole("button", { name: "Graficar esta expresión", exact: true }).first().click();
+
+  const curve = page.locator('svg[viewBox="0 0 340 280"] path').first();
+  await expect(curve).toBeVisible({ timeout: 15000 });
+  expect((await curve.getAttribute("stroke"))?.toLowerCase()).toBe("#2563eb");
+  expect(await page.evaluate(() => localStorage.getItem("precision-lab-graph-palette"))).toBeNull();
+});
+
