@@ -13,9 +13,14 @@ async function clearBasic(dialog: import("@playwright/test").Locator) {
 }
 
 async function resultValue(page: import("@playwright/test").Page): Promise<string> {
-  const result = page.locator("math-field[read-only]").last();
+  const result = page.locator(".a11y-scale-result-3xl").first();
   await expect(result).toBeVisible({ timeout: 12000 });
-  return String(await result.evaluate(el => (el as HTMLElement & { value: string }).value));
+  return String(await result.evaluate((el) => {
+    const maybeField = el as HTMLElement & { value?: string };
+    return typeof maybeField.value === "string" && maybeField.value
+      ? maybeField.value
+      : (el.textContent ?? "");
+  }));
 }
 
 test("módulo 10: la tecla % calcula porcentaje real (50% = 0.5)", async ({ page }) => {
