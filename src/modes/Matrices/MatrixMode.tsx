@@ -41,7 +41,7 @@ const OP_LABELS: Record<Op, string> = {
   norm: "‖A‖",
   // Módulo K1 (spec_graficacion_matrices_estadistica_unidades.md, sección
   // 3.2): solo 2x2/3x3 — alcance determinado en la auditoría K0.
-  eigen: "Eigenvalores",
+  eigen: "Eigenvalores y eigenvectores",
   // Módulo L0 (spec_graficacion_matrices_estadistica_unidades.md, sección 5).
   trace: "tr(A)",
   rank: "rango(A)",
@@ -149,7 +149,7 @@ export function MatrixMode() {
                 key={o}
                 onClick={() => !eigenDisabled && setOp(o)}
                 disabled={eigenDisabled}
-                title={eigenDisabled ? "Eigenvalores solo está disponible para matrices 2×2 o 3×3 cuadradas." : undefined}
+                title={eigenDisabled ? "Eigenvalores y eigenvectores solo están disponibles para matrices 2×2 o 3×3 cuadradas." : undefined}
                 className={`rounded-full px-3 py-1 ${o === op ? "bg-marker text-chrome" : "bg-paper-soft text-muted"} ${eigenDisabled ? "cursor-not-allowed opacity-40" : ""}`}
               >
                 {OP_LABELS[o]}
