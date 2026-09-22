@@ -115,7 +115,8 @@ test("M12: campo matemático principal tiene nombre accesible", async ({ page })
   expect((aria ?? "").trim().length).toBeGreaterThan(0);
 });
 
-test("M12: resultado calculado queda dentro de una región anunciable", async ({ page }) => {
+test("M12: resultado calculado en Fusionada queda dentro de una región anunciable", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("precision-lab-layout-mode", "fused"));
   await page.goto("./");
   const input = page.locator("math-field").first();
   await input.evaluate((node, v) => {
@@ -130,15 +131,19 @@ test("M12: resultado calculado queda dentro de una región anunciable", async ({
     await page.getByRole("button", { name: /calcular|evaluar/i }).first().click();
   }
 
-  // Debe existir una región live/status/alert que represente el resultado dinámico.
-  await expect.poll(async () => {
-    return page.locator('[aria-live], [role="status"], [role="alert"]').evaluateAll((els) =>
-      els.some((el) => {
-        const text = (el.textContent ?? "").replace(/\s+/g, " ");
-        return text.includes("4") || text.includes("2+2");
-      }),
-    );
-  }).toBe(true);
+  const renderedResult = page.locator(".a11y-scale-result-3xl").first();
+  await expect(renderedResult).toBeVisible({ timeout: 12000 });
+  const announced = await renderedResult.evaluate((el) => {
+    let node: HTMLElement | null = el as HTMLElement;
+    while (node) {
+      if (node.hasAttribute("aria-live") || node.getAttribute("role") === "status" || node.getAttribute("role") === "alert") {
+        return true;
+      }
+      node = node.parentElement;
+    }
+    return false;
+  });
+  expect(announced).toBe(true);
 });
 
 // QA rerun marker: módulo 12
