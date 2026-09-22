@@ -363,3 +363,16 @@ vite.config.ts   (incluye configuración PWA)
 - `latexToAlgebrite.ts` es una conversión simplificada, no el parser robusto de la spec — ver TODO en el archivo.
 - Los íconos de PWA en `public/icons/` son placeholders — reemplázalos por íconos reales de 192x192, 512x512 y 512x512 maskable antes de publicar.
 - No se ha podido compilar ni probar visualmente en este entorno (sin acceso a red) — ver "Estado del proyecto" arriba.
+
+## Correcciones posteriores a Track D (suite exhaustiva M1–M15)
+
+Esta versión incorpora las correcciones derivadas de los hallazgos que afectaban específicamente a Precision Lab Lite:
+
+- el `math-field` principal expone un nombre accesible estable;
+- `ResultPanel` anuncia resultados dinámicos mediante `role="status"` y `aria-live="polite"`, independientemente del layout que lo contenga;
+- Productoria Π deja de estar marcada `unavailable`, normaliza la notación del teclado y se evalúa mediante una ruta finita y acotada;
+- `GraphViewer` separa subpaths al detectar huecos/discontinuidades, evitando unir visualmente ramas a través de una asíntota;
+- los polos exactos de `tan`/`sec` dejan de mostrarse como números finitos enormes y producen un error de dominio controlado;
+- las pruebas de inventario/paridad se actualizaron para reflejar que Π es una capacidad activa.
+
+La Productoria se limita a índices válidos, límites enteros y un rango máximo de 10 000 términos.
