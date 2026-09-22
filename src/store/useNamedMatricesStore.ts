@@ -19,6 +19,7 @@ interface NamedMatricesState {
   setDimensions: (name: MatrixName, rows: number, cols: number) => void;
   setValues: (name: MatrixName, values: string[][]) => void;
   resetMatrix: (name: MatrixName) => void;
+  copyMatrix: (source: MatrixName, target: MatrixName) => void;
   resetAll: () => void;
 }
 
@@ -139,6 +140,19 @@ export const useNamedMatricesStore = create<NamedMatricesState>((set, get) => ({
 
   resetMatrix: (name) => {
     const matrices = { ...get().matrices, [name]: defaultEntry() };
+    persist({ matrices, primary: get().primary, secondary: get().secondary });
+    set({ matrices });
+  },
+
+  copyMatrix: (source, target) => {
+    if (source === target) return;
+    const sourceEntry = get().matrices[source];
+    const copied: NamedMatrixEntry = {
+      rows: sourceEntry.rows,
+      cols: sourceEntry.cols,
+      values: sourceEntry.values.map((row) => [...row]),
+    };
+    const matrices = { ...get().matrices, [target]: copied };
     persist({ matrices, primary: get().primary, secondary: get().secondary });
     set({ matrices });
   },

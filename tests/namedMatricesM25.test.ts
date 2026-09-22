@@ -56,6 +56,22 @@ describe("M25 — matrices nombradas A-F", () => {
     expect(matrixOperationLabel("rank", "C", "F")).toBe("rango(C)");
   });
 
+  it("M27: duplica dimensiones y valores sin enlazar original y copia", () => {
+    const store = useNamedMatricesStore.getState();
+    store.setDimensions("C", 3, 2);
+    store.setValues("C", [["1", "2"], ["3", "4"], ["5", "6"]]);
+    store.copyMatrix("C", "E");
+
+    const copied = useNamedMatricesStore.getState().matrices.E;
+    expect(copied.rows).toBe(3);
+    expect(copied.cols).toBe(2);
+    expect(copied.values).toEqual([["1", "2"], ["3", "4"], ["5", "6"]]);
+
+    useNamedMatricesStore.getState().setValues("E", [["9", "2"], ["3", "4"], ["5", "6"]]);
+    expect(useNamedMatricesStore.getState().matrices.C.values[0][0]).toBe("1");
+    expect(useNamedMatricesStore.getState().matrices.E.values[0][0]).toBe("9");
+  });
+
   it("limpia solo la matriz indicada", () => {
     const store = useNamedMatricesStore.getState();
     store.setValues("C", [["1", "2"], ["3", "4"]]);
