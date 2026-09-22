@@ -157,3 +157,20 @@ Después de certificar estos módulos debe restaurarse Playwright a `npx playwri
 ### Auditoría npm Lite
 
 El CI QA genera `npm-audit.json` mediante `npm audit --package-lock-only --json` y lo conserva como artefacto `lite-npm-audit`. El paso permanece `continue-on-error` para que las vulnerabilidades no impidan typecheck/Vitest/build, pero el artefacto debe revisarse como gate de seguridad independiente.
+
+## Seguridad runtime post-Track D
+
+La auditoría npm con conectividad real confirmó inicialmente 10 vulnerabilidades totales (7 moderate, 2 high, 1 critical). Al separar dependencias de producción mediante `npm audit --omit=dev`, el runtime presentaba 3 vulnerabilidades moderadas asociadas a `mathlive` y `react-router-dom` / `react-router`.
+
+Se verificó que `react-router-dom` estaba declarado pero no era importado por el producto. En una rama temporal se:
+
+- eliminó `react-router-dom`;
+- actualizó `mathlive` de `^0.100.0` a `^0.110.0`;
+- regeneró `package-lock.json`;
+- ejecutó CI completo;
+- ejecutó Playwright;
+- repitió `npm audit --omit=dev`.
+
+Antes de incorporar el cambio a la rama QA, los tres gates quedaron verdes y el audit runtime pasó a **0 vulnerabilidades**. El cambio se integró a `qa/exhaustive-suite-module-01` mediante el PR temporal #6.
+
+Las vulnerabilidades restantes del audit completo corresponden a tooling/desarrollo y se mantienen separadas del gate de runtime; no se aplicó `npm audit fix --force` de forma indiscriminada.
