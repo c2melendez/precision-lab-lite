@@ -1,4 +1,4 @@
-name: QA Lite M3 M10 Revalidation
+name: QA Lite M3 M10 Revalidation Final
 
 on:
   push:
@@ -50,7 +50,7 @@ jobs:
         run: |
           mkdir -p .qa-results
           {
-            echo "# QA Lite M3/M10 revalidation"
+            echo "# QA Lite M3/M10 final revalidation"
             echo
             echo "- workflow_sha: $GITHUB_SHA"
             echo "- typecheck_exit: $(cat typecheck.exit 2>/dev/null || echo missing)"
@@ -64,7 +64,7 @@ jobs:
             echo
             echo "## Unit sentinels"
             echo '~~~text'
-            tail -n 260 unit.log 2>/dev/null || true
+            tail -n 280 unit.log 2>/dev/null || true
             echo '~~~'
             echo
             echo "## E2E"
@@ -81,5 +81,5 @@ jobs:
           git switch -C qa/exhaustive-suite-module-01
           git add .qa-results/e2e-directed-latest.md
           git diff --cached --quiet && exit 0
-          git commit -m "QA Lite M3 M10 revalidation [skip ci]"
+          git commit -m "QA Lite M3 M10 final result [skip ci]"
           git push origin HEAD:qa/exhaustive-suite-module-01
