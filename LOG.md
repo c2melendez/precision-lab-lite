@@ -138,3 +138,22 @@ El entorno local no pudo completar `npm ci`; por tanto Vitest/typecheck/build/Pl
 - Resultado de infraestructura: `getaddrinfo EAI_AGAIN registry.npmjs.org`.
 - Por tanto el conteo histórico de vulnerabilidades no se promueve a estado actual confirmado; el gate npm permanece **pendiente por conectividad**, no aprobado ni fallido por producto.
 - `npm ci` tampoco pudo completarse en este entorno, por lo que Vitest/typecheck/build/Playwright continúan pendientes de un runner con acceso al registro.
+
+## Preparación de revalidación frontend/E2E dirigida
+
+Siguiendo la estrategia ya utilizada en M7–M12, Playwright quedó temporalmente aislado a:
+
+- M3 Cálculo;
+- M9 Graficación;
+- M10 Teclado ↔ motor;
+- M12 Personalización / accesibilidad base.
+
+El workflow Playwright conserva `workflow_dispatch` y el CI fue ampliado con `workflow_dispatch` para poder ejecutar manualmente la rama `qa/exhaustive-suite-module-01` cuando los eventos generados por la integración no disparan Actions.
+
+Durante esta preparación se detectó y corrigió un falso negativo del harness M3: el E2E todavía esperaba que Productoria mostrara “todavía no disponible”. La expectativa se actualizó al contrato actual y se añadió un centinela UI explícito: `\\prod_{i=1}^{5}i = 120`.
+
+Después de certificar estos módulos debe restaurarse Playwright a `npx playwright test` y ejecutarse la regresión completa.
+
+### Auditoría npm Lite
+
+El CI QA genera `npm-audit.json` mediante `npm audit --package-lock-only --json` y lo conserva como artefacto `lite-npm-audit`. El paso permanece `continue-on-error` para que las vulnerabilidades no impidan typecheck/Vitest/build, pero el artefacto debe revisarse como gate de seguridad independiente.
