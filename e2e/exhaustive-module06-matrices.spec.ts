@@ -38,15 +38,18 @@ test("M21: Lite permite 6x6, calcula rango 6 y mantiene la grilla dentro del vie
   }
 
   await expect(page.getByText("6", { exact: true }).first()).toBeVisible();
+
+  // Seleccionar una operación que solo usa A oculta la matriz B 2x2
+  // inicial; así el locator representa exactamente las 36 celdas de A.
+  const rankButton = page.getByRole("button", { name: "rango(A)", exact: true });
+  await rankButton.click();
+
   const cells = page.locator('input[placeholder="0"]');
   await expect(cells).toHaveCount(36);
 
   for (const index of [0, 7, 14, 21, 28, 35]) {
     await cells.nth(index).fill("1");
   }
-
-  const rankButton = page.getByRole("button", { name: "rango(A)", exact: true });
-  await rankButton.click();
   await page.getByRole("button", { name: "Calcular", exact: true }).click();
 
   const resultField = page.locator("math-field[read-only]").last();
