@@ -51,11 +51,8 @@ describe("Suite exhaustiva original — Módulo 10: inventario teclado Lite", ()
     }
   });
 
-  it("Lite marca exactamente sus dos divergencias documentadas", () => {
+  it("M20 cierra las divergencias documentadas: no quedan teclas unavailable", () => {
     const unavailable = [...new Set(allKeys.filter(k => k.unavailable).map(k => k.ariaLabel))].sort();
-    expect(unavailable).toEqual([
-      "residuo en un polo (funciones racionales)",
-      "singularidades (funciones racionales)",
-    ].sort());
+    expect(unavailable).toEqual([]);
   });
 });
