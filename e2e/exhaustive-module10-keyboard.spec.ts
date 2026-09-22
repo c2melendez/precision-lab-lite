@@ -13,7 +13,9 @@ async function clearBasic(dialog: import("@playwright/test").Locator) {
 }
 
 async function resultValue(page: import("@playwright/test").Page): Promise<string> {
-  const result = page.locator(".a11y-scale-result-3xl").first();
+  const status = page.getByRole("status").first();
+  await expect(status).toBeVisible({ timeout: 12000 });
+  const result = status.locator("span.a11y-scale-result-3xl, math-field[read-only]").first();
   try {
     await expect(result).toBeVisible({ timeout: 12000 });
   } catch {
