@@ -366,6 +366,7 @@ export function preprocessLatex(latex: string): string {
     .replace(/\\cdot/g, "*")
     .replace(/\\times/g, "*")
     .replace(/\\div/g, "/")
+    .replace(/\\\\%/g, "%")
     .replace(/\\pi/g, "pi")
     .replace(/\\infty/g, "oo")
     .replace(/\\theta/g, "theta")
