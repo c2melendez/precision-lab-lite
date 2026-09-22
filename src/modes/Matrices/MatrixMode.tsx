@@ -5,7 +5,7 @@ import { StepList } from "../../components/StepList";
 import { makeRequestId, type MathResult } from "../../types";
 import { addHistoryEntry } from "../../store/historyDb";
 
-// Modo 5 de la spec v10 §9 (Módulo 6). Tamaño hasta 4x4 con pasos
+// Modo 5 de la spec v10 §9 (Módulo 6). M21 amplía el tamaño general hasta 6x6 con pasos
 // detallados, según el mismo criterio que el resto de la spec.
 //
 // Fase C (spec UX estilo ClassCalc §4): se agregaron ref/rref/A⊗B (antes
@@ -49,7 +49,7 @@ const OP_LABELS: Record<Op, string> = {
 
 const NEEDS_B: Op[] = ["add", "subtract", "multiply", "kron", "dot", "cross"];
 const MIN_SIZE = 1;
-const MAX_SIZE = 4;
+const MAX_SIZE = 6;
 
 function Stepper({ label, value, onChange }: { label: string; value: number; onChange: (n: number) => void }) {
   return (
