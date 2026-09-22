@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import "mathlive";
 import { useKeyboardPanelStore } from "../store/useKeyboardPanelStore";
 
@@ -89,21 +89,32 @@ export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrad
     }
   }, [value]);
 
+  // Una callback-ref inline cambia de identidad en cada render; React
+  // desmonta lógicamente la ref anterior (null) y vuelve a adjuntar la
+  // nueva. Como BasicScientificMode guarda este elemento en estado y el
+  // teclado vive en un store global, esa oscilación null→element podía
+  // dejar callbacks del dock apuntando a un render intermedio justo al
+  // calcular. Mantener la callback estable evita ese ciclo.
+  const attachMathField = useCallback(
+    (el: (HTMLElement & {
+      value: string;
+      insert: (s: string) => void;
+      focus: () => void;
+      mathVirtualKeyboardPolicy?: "auto" | "manual" | "sandboxed";
+    }) | null) => {
+      (ref as React.MutableRefObject<typeof el>).current = el;
+      if (el) {
+        el.mathVirtualKeyboardPolicy = "manual";
+        window.mathVirtualKeyboard.hide();
+      }
+      fieldRef?.(el);
+    },
+    [fieldRef],
+  );
+
   return (
     <math-field
-      ref={(el: (HTMLElement & {
-        value: string;
-        insert: (s: string) => void;
-        focus: () => void;
-        mathVirtualKeyboardPolicy?: "auto" | "manual" | "sandboxed";
-      }) | null) => {
-        (ref as React.MutableRefObject<typeof el>).current = el;
-        if (el) {
-          el.mathVirtualKeyboardPolicy = "manual";
-          window.mathVirtualKeyboard.hide();
-        }
-        fieldRef?.(el);
-      }}
+      ref={attachMathField}
       class={
         bare
           ? "block min-w-0 max-w-full w-full bg-transparent px-0 py-1 text-right text-2xl text-ink"
