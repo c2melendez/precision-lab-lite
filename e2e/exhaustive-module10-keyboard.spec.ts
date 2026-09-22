@@ -2,10 +2,17 @@ import { expect, test } from "@playwright/test";
 
 async function openKeyboard(page: import("@playwright/test").Page) {
   await page.goto("./");
-  const opener = page.getByRole("button", { name: /abrir teclado|expandir teclado/i }).first();
-  await expect(opener).toBeVisible();
-  await opener.click();
-  return page.getByRole("dialog", { name: "Teclado matemático" });
+  const field = page.locator("math-field").first();
+  await expect(field).toBeVisible();
+  await field.focus();
+  const dialog = page.getByRole("dialog", { name: "Teclado matemático" });
+  if (!(await dialog.isVisible().catch(() => false))) {
+    const opener = page.getByRole("button", { name: /abrir teclado|expandir teclado/i }).first();
+    await expect(opener).toBeVisible();
+    await opener.click();
+  }
+  await expect(dialog).toBeVisible();
+  return dialog;
 }
 
 async function clearBasic(dialog: import("@playwright/test").Locator) {
