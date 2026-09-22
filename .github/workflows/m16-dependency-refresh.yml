@@ -22,7 +22,9 @@ jobs:
           node-version: 22
           cache: npm
       - name: Refresh lockfile
-        run: npm install --package-lock-only --ignore-scripts --no-fund --no-audit
+        run: |
+          rm -f package-lock.json
+          npm install --package-lock-only --ignore-scripts --no-fund --no-audit
       - name: Reproducible install
         run: npm ci
       - name: Runtime audit
