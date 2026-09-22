@@ -57,7 +57,9 @@ test("suite original módulo 3: inventario de Cálculo refleja capacidades actua
 });
 
 async function renderedResultValue(page: import("@playwright/test").Page): Promise<string> {
-  const status = page.getByRole("status").first();
+  const resultRegion = page.locator('section[aria-label="Resultado"]').first();
+  await expect(resultRegion).toBeVisible({ timeout: 12000 });
+  const status = resultRegion.locator('[role="status"]').first();
   await expect(status).toBeVisible({ timeout: 12000 });
   const staticField = status.locator("math-field[read-only]").first();
   if (await staticField.count()) {
