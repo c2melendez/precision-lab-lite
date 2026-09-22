@@ -156,15 +156,101 @@ describe("computeEigenvalues", () => {
     expect(approxSorted[2]).toBeCloseTo(2 + Math.sqrt(2), 6);
   });
 
-  it("rechaza matrices que no son 2x2 ni 3x3 (alcance determinado en K0)", () => {
-    const A1 = toFractionMatrix([[5]]);
-    expect(() => computeEigenvalues(A1)).toThrow();
-    const A4 = toFractionMatrix([
-      [1, 0, 0, 0],
-      [0, 1, 0, 0],
-      [0, 0, 1, 0],
-      [0, 0, 0, 1],
+  function expectResidualSmall(
+    A: ReturnType<typeof toFractionMatrix>,
+    p: ReturnType<typeof computeEigenvalues>["pairs"][number],
+    tolerance = 1e-4,
+  ) {
+    if (p.isComplex) {
+      expect(p.complexEigenvector).not.toBeNull();
+      const v = p.complexEigenvector!;
+      let residualSquared = 0;
+      for (let i = 0; i < A.length; i++) {
+        const av = A[i].reduce(
+          (acc, aij, j) => ({
+            re: acc.re + aij.valueOf() * v[j].re,
+            im: acc.im + aij.valueOf() * v[j].im,
+          }),
+          { re: 0, im: 0 },
+        );
+        const lv = {
+          re: p.approx * v[i].re - p.approxIm * v[i].im,
+          im: p.approx * v[i].im + p.approxIm * v[i].re,
+        };
+        residualSquared += (av.re - lv.re) ** 2 + (av.im - lv.im) ** 2;
+      }
+      expect(Math.sqrt(residualSquared)).toBeLessThan(tolerance);
+    } else {
+      expect(p.eigenvector).not.toBeNull();
+      const v = p.eigenvector!;
+      let residualSquared = 0;
+      for (let i = 0; i < A.length; i++) {
+        const av = A[i].reduce((sum, aij, j) => sum + aij.valueOf() * v[j], 0);
+        residualSquared += (av - p.approx * v[i]) ** 2;
+      }
+      expect(Math.sqrt(residualSquared)).toBeLessThan(tolerance);
+    }
+  }
+
+  it("M23: 4x4 diagonal usa ruta numérica y produce eigenpares válidos", () => {
+    const A = toFractionMatrix([
+      [1,0,0,0],
+      [0,2,0,0],
+      [0,0,3,0],
+      [0,0,0,4],
     ]);
-    expect(() => computeEigenvalues(A4)).toThrow();
+    const { pairs, allExact } = computeEigenvalues(A);
+    expect(allExact).toBe(false);
+    expect(pairs).toHaveLength(4);
+    expect(pairs.map((p) => p.approx)).toEqual([
+      expect.closeTo(1, 5),
+      expect.closeTo(2, 5),
+      expect.closeTo(3, 5),
+      expect.closeTo(4, 5),
+    ]);
+    for (const p of pairs) expectResidualSmall(A, p);
+  });
+
+  it("M23: 6x6 diagonal escala hasta el nuevo máximo", () => {
+    const A = toFractionMatrix([
+      [1,0,0,0,0,0],
+      [0,2,0,0,0,0],
+      [0,0,3,0,0,0],
+      [0,0,0,4,0,0],
+      [0,0,0,0,5,0],
+      [0,0,0,0,0,6],
+    ]);
+    const { pairs, allExact } = computeEigenvalues(A);
+    expect(allExact).toBe(false);
+    expect(pairs).toHaveLength(6);
+    for (let i = 0; i < 6; i++) expect(pairs[i].approx).toBeCloseTo(i + 1, 4);
+    for (const p of pairs) expectResidualSmall(A, p, 2e-4);
+  });
+
+  it("M23: 4x4 con dos bloques de rotación calcula cuatro eigenpares complejos", () => {
+    const A = toFractionMatrix([
+      [0,-1,0,0],
+      [1,0,0,0],
+      [0,0,0,-2],
+      [0,0,2,0],
+    ]);
+    const { pairs } = computeEigenvalues(A);
+    expect(pairs).toHaveLength(4);
+    expect(pairs.every((p) => p.isComplex)).toBe(true);
+    const magnitudes = pairs.map((p) => Math.abs(p.approxIm)).sort((a,b) => a-b);
+    expect(magnitudes[0]).toBeCloseTo(1, 4);
+    expect(magnitudes[1]).toBeCloseTo(1, 4);
+    expect(magnitudes[2]).toBeCloseTo(2, 4);
+    expect(magnitudes[3]).toBeCloseTo(2, 4);
+    for (const p of pairs) expectResidualSmall(A, p, 2e-4);
+  });
+
+  it("M23: rechaza 1x1, no cuadradas y tamaños mayores a 6", () => {
+    expect(() => computeEigenvalues(toFractionMatrix([[5]]))).toThrow();
+    expect(() => computeEigenvalues(toFractionMatrix([[1,2,3],[4,5,6]]))).toThrow();
+    const A7 = toFractionMatrix(Array.from({ length: 7 }, (_, r) =>
+      Array.from({ length: 7 }, (_, col) => (r === col ? r + 1 : 0)),
+    ));
+    expect(() => computeEigenvalues(A7)).toThrow();
   });
 });

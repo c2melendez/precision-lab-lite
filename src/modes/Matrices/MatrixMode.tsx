@@ -39,8 +39,7 @@ const OP_LABELS: Record<Op, string> = {
   dot: "A · B",
   cross: "A ⨯ B",
   norm: "‖A‖",
-  // Módulo K1 (spec_graficacion_matrices_estadistica_unidades.md, sección
-  // 3.2): solo 2x2/3x3 — alcance determinado en la auditoría K0.
+  // M23: 2x2/3x3 conservan solver simbólico; 4x4–6x6 usan solver numérico.
   eigen: "Eigenvalores y eigenvectores",
   // Módulo L0 (spec_graficacion_matrices_estadistica_unidades.md, sección 5).
   trace: "tr(A)",
@@ -143,13 +142,13 @@ export function MatrixMode() {
       <div className="flex flex-col gap-3 lg:col-start-1">
         <div className="flex flex-wrap justify-center gap-2 text-sm">
           {(Object.keys(OP_LABELS) as Op[]).map((o) => {
-            const eigenDisabled = o === "eigen" && !(rowsA === colsA && (rowsA === 2 || rowsA === 3));
+            const eigenDisabled = o === "eigen" && !(rowsA === colsA && rowsA >= 2 && rowsA <= 6);
             return (
               <button
                 key={o}
                 onClick={() => !eigenDisabled && setOp(o)}
                 disabled={eigenDisabled}
-                title={eigenDisabled ? "Eigenvalores y eigenvectores solo están disponibles para matrices 2×2 o 3×3 cuadradas." : undefined}
+                title={eigenDisabled ? "Eigenvalores y eigenvectores requieren una matriz cuadrada de 2×2 a 6×6." : undefined}
                 className={`rounded-full px-3 py-1 ${o === op ? "bg-marker text-chrome" : "bg-paper-soft text-muted"} ${eigenDisabled ? "cursor-not-allowed opacity-40" : ""}`}
               >
                 {OP_LABELS[o]}
