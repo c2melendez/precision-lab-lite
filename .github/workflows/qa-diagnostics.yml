@@ -5,6 +5,8 @@ on:
     branches: [qa/exhaustive-suite-module-01]
     paths:
       - .github/workflows/qa-diagnostics.yml
+      - e2e/exhaustive-module03-calculus.spec.ts
+      - e2e/exhaustive-module10-keyboard.spec.ts
 
 permissions:
   contents: read
