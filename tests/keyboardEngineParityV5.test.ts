@@ -62,14 +62,15 @@ describe("paridad tecla → parser del teclado V5", () => {
     },
   );
 
-  it("mantiene marcadas como no disponibles las capacidades conocidas", () => {
+  it("M20 activa Res y Sing como capacidades funcionales", () => {
     for (const label of [
       "residuo en un polo (funciones racionales)",
       "singularidades (funciones racionales)",
     ]) {
-      expect(keyByLabel(label), "No existe la definición unavailable " + label).toMatchObject({
-        unavailable: true,
-      });
+      const key = keyByLabel(label);
+      expect(key, "No existe la tecla " + label).toBeDefined();
+      expect(key?.unavailable, "La tecla sigue marcada unavailable: " + label).toBeFalsy();
+      expect(key?.insertLatex.trim(), "La tecla no inserta plantilla: " + label).not.toBe("");
     }
   });
 });
