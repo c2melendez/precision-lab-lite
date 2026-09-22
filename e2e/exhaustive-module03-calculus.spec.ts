@@ -25,11 +25,13 @@ async function calculateExpression(page: import("@playwright/test").Page, value:
   const keyboard = page.getByRole("dialog", { name: "Teclado matemático" });
   await expect(keyboard).toBeVisible();
   await setExpression(page, value);
-  // Deja que React sincronice el estado `latex` y los callbacks del dock
-  // antes de disparar calcular. Evita la carrera que hacía Π flaky.
-  await page.evaluate(() => new Promise<void>((resolve) => {
-    requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
-  }));
+  // Señal observable de que React ya consumió el evento input:
+  // GraphPlaceholder solo muestra "Graficar" cuando el estado `latex`
+  // dejó de estar vacío. Después de esa renderización, esperamos un frame
+  // adicional para que el efecto que sincroniza onEnter/handleCalculate
+  // en el dock también quede aplicado.
+  await expect(page.getByRole("button", { name: "Graficar", exact: true }).first()).toBeVisible();
+  await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())));
   await keyboard.getByRole("button", { name: "calcular", exact: true }).click();
 }
 
