@@ -444,8 +444,13 @@ export function StatisticsMode() {
             <button className={btnClass} onClick={() => runDescriptive("iqr")}>RIQ</button>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="text-sm text-muted">Percentil</span>
+            <label htmlFor="lite-percentile-p" className="text-sm text-muted">Percentil</label>
             <input
+              id="lite-percentile-p"
+              type="number"
+              min="0"
+              max="100"
+              aria-label="Percentil"
               value={percentileP}
               onChange={(e) => setPercentileP(e.target.value)}
               className="w-16 rounded border border-paper-line bg-paper-soft px-2 py-1 text-sm"
