@@ -9,11 +9,15 @@ async function openODE(page: import("@playwright/test").Page) {
 }
 
 async function setExpression(page: import("@playwright/test").Page, value: string) {
+  await page.evaluate(() => customElements.whenDefined("math-field"));
   const field = page.locator("math-field").first();
+  await expect(field).toBeVisible();
+  await field.focus();
+  await page.waitForTimeout(100);
   await field.evaluate((node, v) => {
     const el = node as HTMLElement & { value: string };
     el.value = v as string;
-    el.dispatchEvent(new Event("input", { bubbles: true }));
+    el.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText" }));
   }, value);
 }
 
