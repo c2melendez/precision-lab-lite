@@ -13,21 +13,43 @@ async function setExpression(page: import("@playwright/test").Page, value: strin
   const field = page.locator("math-field").first();
   await expect(field).toBeVisible();
   await field.focus();
-  // MathLive 0.110 actualiza el custom element de forma asíncrona.
-  // Esperar un turno tras el foco garantiza que NaturalInput ya registró
-  // su listener "input" antes de la inyección del valor del centinela.
-  await page.waitForTimeout(100);
+
+  // M16: usar la API de inserción del propio MathLive en lugar de depender
+  // únicamente de asignar .value. Esto reproduce mejor la ruta que usa el
+  // teclado de Precision Lab y evita la carrera MathLive -> input -> React
+  // observada en Productoria/Sumatoria bajo carga del runner.
   await field.evaluate(async (node, v) => {
-    const el = node as HTMLElement & { value: string };
-    el.value = v as string;
+    const el = node as HTMLElement & {
+      value: string;
+      insert?: (latex: string) => void;
+    };
+
+    el.value = "";
+    el.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "deleteContent" }));
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    );
+
+    if (typeof el.insert === "function") {
+      el.insert(v as string);
+    } else {
+      el.value = v as string;
+    }
     el.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText" }));
-    // React y MathLive pueden consumir el primer evento en turnos distintos
-    // bajo carga del runner. Dos frames permiten que el listener/estado se
-    // estabilice; un segundo input conserva la misma expresión y elimina
-    // la carrera sin alterar el producto.
-    await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
-    el.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText" }));
+
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    );
+
+    // Fallback defensivo: algunas versiones de MathLive pueden normalizar
+    // la inserción. Si el valor no coincide exactamente, fijarlo una vez y
+    // emitir el evento final que consume React.
+    if (el.value !== (v as string)) {
+      el.value = v as string;
+      el.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText" }));
+    }
   }, value);
+
   await expect.poll(
     async () => field.evaluate((el) => String((el as HTMLElement & { value?: string }).value ?? "")),
     { timeout: 10000 },
@@ -55,6 +77,11 @@ async function calculateExpression(page: import("@playwright/test").Page, value:
   await page.locator(".ML__keyboard.is-visible").waitFor({ state: "hidden", timeout: 5000 }).catch(() => undefined);
   const calculate = keyboardDialog.getByRole("button", { name: "calcular", exact: true });
   await expect(calculate).toBeVisible();
+  await expect(calculate).toBeEnabled();
+
+  // Dar a React un frame posterior a la confirmación del valor del
+  // math-field antes de ejecutar el callback registrado en el dock.
+  await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())));
   await calculate.click();
 }
 
