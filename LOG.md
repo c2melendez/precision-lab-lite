@@ -120,3 +120,22 @@ Nivel de evidencia: NIVEL 1 (ejecución real). `npm run typecheck` limpio, `npx 
 Decisión DEDUCIBLE tomada: el texto exacto de la etiqueta ("2 var.") y su posición (esquina inferior derecha del botón, `absolute -bottom-1 right-1`) se decidieron sin pedir confirmación previa por ser un detalle menor de layout — reversible con un cambio de una línea si Carlos prefiere otra redacción o posición.
 
 Riesgo pendiente, sin resolver en este módulo: la etiqueta "2 var." es CSS puro (`absolute`, sin overflow controlado) — no se verificó visualmente en un viewport real (sin captura de pantalla ni Chromium en esta sesión), solo que compila y no rompe tests. Vale una revisión visual rápida antes de darlo por definitivo.
+
+# Corrección de producto posterior a Track D — M1–M15
+
+Se aplican los fixes derivados de los módulos que quedaron rojos en Lite, manteniendo intactos los módulos ya verdes.
+
+## Correcciones
+
+1. `NaturalInput.tsx`: `aria-label="Entrada matemática"` por defecto, configurable vía prop.
+2. `ResultPanel.tsx`: región `role="status"`, `aria-live="polite"`, `aria-atomic="true"` en todas las disposiciones.
+3. Productoria Π: tecla habilitada, normalización `\prod` → `product(...)` y evaluación finita exacta en worker con límites enteros/tope 10 000.
+4. `GraphViewer.tsx`: el path SVG se segmenta con nuevos comandos `M` cuando existe un hueco real de muestreo o un salto de signo con magnitud asintótica; evita conectar ramas de `1/(x-2)`/`tan(x)`.
+5. Evaluación científica: polos exactos de `tan` y de `sec=1/cos` devuelven `DOMAIN_ERROR` en vez de un flotante enorme.
+
+## Verificación
+
+Además de los centinelas QA M9/M10/M12, se añadió `tests/trackDRegressions.test.ts` para comprobar la normalización de `\prod` y la segmentación SVG de discontinuidades. Durante la revisión del fix se detectó y corrigió un hueco adicional: `product` debía registrarse con aridad 4 en `src/engine/parsing/constants.ts`; sin esa entrada, el parser podía degradar la llamada agregada mediante multiplicación implícita.
+
+La compilación y Vitest completos se ejecutan en GitHub Actions porque este entorno local no pudo completar `npm ci` por falta de acceso al registro npm.
+
