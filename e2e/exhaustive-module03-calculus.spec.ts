@@ -45,6 +45,16 @@ async function calculateExpression(page: import("@playwright/test").Page, value:
   // Se usa este botón (conectado directamente a handleCalculate) y no la
   // tecla Enter del dock, cuyo callback se resincroniza mediante useEffect
   // y producía una carrera artificial en Desktop bajo carga.
+  // El foco del math-field abre deliberadamente el teclado propio.
+  // Para probar el botón de pantalla debemos cerrar ese panel primero;
+  // en móvil ocupa ~66vh y, correctamente, intercepta el área inferior.
+  const keyboardDialog = page.getByRole("dialog", { name: "Teclado matemático" });
+  if (await keyboardDialog.isVisible().catch(() => false)) {
+    await keyboardDialog.getByRole("button", { name: "Cerrar teclado", exact: true }).click();
+    await expect(keyboardDialog).toHaveCount(0);
+  }
+  await page.evaluate(() => window.mathVirtualKeyboard?.hide());
+
   const inputRegion = page.locator('section[aria-label="Entrada"]').first();
   await expect(inputRegion).toBeVisible();
   const calculate = inputRegion.getByRole("button", { name: "Calcular", exact: true });
