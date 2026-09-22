@@ -75,13 +75,19 @@ async function calculateExpression(page: import("@playwright/test").Page, value:
   await expect(keyboardDialog).toBeVisible({ timeout: 10000 });
   await page.evaluate(() => window.mathVirtualKeyboard?.hide());
   await page.locator(".ML__keyboard.is-visible").waitFor({ state: "hidden", timeout: 5000 }).catch(() => undefined);
+  // El botón Calcular de la región Entrada sí refleja el estado React
+  // (`latex`): permanece disabled mientras el evento de MathLive todavía
+  // no fue consumido por NaturalInput/onChange. No lo clickeamos porque el
+  // bottom-sheet puede cubrirlo; lo usamos únicamente como señal observable
+  // de que React ya está sincronizado con el valor del math-field.
+  const screenCalculate = page
+    .getByRole("region", { name: "Entrada" })
+    .getByRole("button", { name: "Calcular", exact: true });
+  await expect(screenCalculate).toBeEnabled({ timeout: 10000 });
+
   const calculate = keyboardDialog.getByRole("button", { name: "calcular", exact: true });
   await expect(calculate).toBeVisible();
   await expect(calculate).toBeEnabled();
-
-  // Dar a React un frame posterior a la confirmación del valor del
-  // math-field antes de ejecutar el callback registrado en el dock.
-  await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())));
   await calculate.click();
 }
 
