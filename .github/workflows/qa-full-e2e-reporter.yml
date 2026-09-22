@@ -57,3 +57,5 @@ jobs:
             echo '~~~'
           } > /tmp/qa-comment.md
           gh pr comment 2 --repo c2melendez/precision-lab-lite --body-file /tmp/qa-comment.md
+
+# retrigger after M4 mobile harness 76eddb4
