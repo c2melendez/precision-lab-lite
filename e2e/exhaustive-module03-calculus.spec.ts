@@ -44,6 +44,14 @@ async function calculateExpression(page: import("@playwright/test").Page, value:
   // cubre M10): necesitamos una barrera observable de que React consumió
   // el último evento input antes de calcular.
   const keyboardDialog = page.getByRole("dialog", { name: "Teclado matemático" });
+  // En el primer render de Desktop el focus puede ocurrir antes de que
+  // NaturalInput registre su listener de foco. No dependemos de esa carrera:
+  // si el diálogo no abrió por foco, usamos el control explícito de la UI.
+  if (!(await keyboardDialog.isVisible().catch(() => false))) {
+    const opener = page.getByRole("button", { name: /abrir teclado|expandir teclado/i }).first();
+    await expect(opener).toBeVisible({ timeout: 10000 });
+    await opener.click();
+  }
   await expect(keyboardDialog).toBeVisible({ timeout: 10000 });
   await page.evaluate(() => window.mathVirtualKeyboard?.hide());
   await page.locator(".ML__keyboard.is-visible").waitFor({ state: "hidden", timeout: 5000 }).catch(() => undefined);
