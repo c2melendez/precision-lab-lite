@@ -616,7 +616,7 @@ export function GraphingMode() {
             axisLabels={argandPoint ? { x: "Re", y: "Im" } : undefined}
           />
         ) : (
-          <div className="flex h-52 items-center justify-center rounded-xl bg-chrome text-sm text-bone/50">
+          <div className="flex h-52 items-center justify-center rounded-xl bg-chrome text-sm text-bone">
             Escribe una expresión y presiona ⏎ para graficarla.
           </div>
         )}
