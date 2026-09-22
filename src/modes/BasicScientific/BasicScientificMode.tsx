@@ -7,6 +7,7 @@ import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { parseExpression } from "../../engine/parsing";
 import { splitSystemLatex } from "../../engine/parsing/systemSplit";
 import { detectODE } from "../../engine/parsing/odeDetect";
+import { detectComplexAnalysisIntent } from "../../engine/parsing/complexAnalysisIntent";
 import { addHistoryEntry } from "../../store/historyDb";
 import { useKeyboardPanelStore } from "../../store/useKeyboardPanelStore";
 import { useLayoutModeStore } from "../../store/useLayoutModeStore";
@@ -172,6 +173,52 @@ export function BasicScientificMode() {
     const systemRows = splitSystemLatex(currentLatex);
     if (systemRows) {
       runSystem(systemRows);
+      return;
+    }
+
+    try {
+      const complexIntent = detectComplexAnalysisIntent(currentLatex);
+      if (complexIntent !== null) {
+        const requestId = makeRequestId();
+        const parsedExpression = parseExpression(complexIntent.expressionLatex, angleMode);
+        if (parsedExpression.isEquation || parsedExpression.isInequality) {
+          fail(ErrorCode.PARSE_ERROR, "Res/Sing requiere una expresión, no una ecuación o desigualdad.", requestId);
+          return;
+        }
+
+        const worker = getWorker();
+        worker.onmessage = (e: MessageEvent<MathResult>) =>
+          onSuccess(
+            complexIntent.kind === "residue" ? "Científica (residuo)" : "Científica (singularidades)",
+            currentLatex,
+            e.data,
+          );
+
+        if (complexIntent.kind === "residue") {
+          const parsedPoint = parseExpression(complexIntent.pointLatex, angleMode);
+          if (parsedPoint.isEquation || parsedPoint.isInequality || parsedPoint.freeVariables.length > 0) {
+            fail(ErrorCode.PARSE_ERROR, "El punto del residuo debe ser un valor concreto de z.", requestId);
+            return;
+          }
+          worker.postMessage({
+            type: "complexResidue",
+            requestId,
+            expressionAlgebrite: parsedExpression.algebrite,
+            pointAlgebrite: parsedPoint.algebrite,
+          });
+        } else {
+          worker.postMessage({
+            type: "complexSingularities",
+            requestId,
+            expressionAlgebrite: parsedExpression.algebrite,
+          });
+        }
+        return;
+      }
+    } catch (err) {
+      const requestId = makeRequestId();
+      const appErr = err as { code?: ErrorCode; message?: string };
+      fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Entrada Res/Sing inválida.", requestId);
       return;
     }
 

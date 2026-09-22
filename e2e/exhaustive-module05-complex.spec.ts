@@ -9,12 +9,22 @@ async function openComplex(page: import("@playwright/test").Page) {
 }
 
 async function setExpression(page: import("@playwright/test").Page, value: string) {
+  await page.evaluate(() => customElements.whenDefined("math-field"));
   const field = page.locator("math-field").first();
-  await field.evaluate((node, v) => {
+  await expect(field).toBeVisible();
+  await field.focus();
+  await page.waitForTimeout(100);
+  await field.evaluate(async (node, v) => {
     const el = node as HTMLElement & { value: string };
     el.value = v as string;
-    el.dispatchEvent(new Event("input", { bubbles: true }));
+    el.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText" }));
+    await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+    el.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText" }));
   }, value);
+  await expect.poll(
+    async () => field.evaluate((el) => String((el as HTMLElement & { value?: string }).value ?? "")),
+    { timeout: 10000 },
+  ).toBe(value);
 }
 
 test("suite original módulo 5: inventario complejo compartido está activo", async ({ page }) => {
@@ -29,6 +39,8 @@ test("suite original módulo 5: inventario complejo compartido está activo", as
     "logaritmo complejo (rama principal)",
     "potencia compleja",
     "raíz n-ésima compleja (rama principal)",
+    "residuo en un polo (funciones racionales)",
+    "singularidades (funciones racionales)",
     "graficar en el plano de Argand",
   ]) {
     const key = page.getByRole("button", { name, exact: true }).first();
@@ -45,4 +57,32 @@ test("suite original módulo 5: Argand 3+4i usa ejes Re e Im", async ({ page }) 
 
   await expect(page.getByText("Re", { exact: true }).first()).toBeVisible({ timeout: 12000 });
   await expect(page.getByText("Im", { exact: true }).first()).toBeVisible({ timeout: 12000 });
+});
+
+
+test("M20: Res y Sing funcionan por el flujo real del math-field", async ({ page }) => {
+  await page.goto("./");
+
+  const field = page.locator("math-field").first();
+  const entry = page.getByRole("region", { name: "Entrada", exact: true });
+  const calculate = entry.getByRole("button", { name: "Calcular", exact: true });
+  const result = page.getByRole("region", { name: "Resultado", exact: true });
+
+  async function setWithoutOpeningKeyboard(value: string) {
+    await field.evaluate((node, v) => {
+      const el = node as HTMLElement & { value: string };
+      el.value = v as string;
+      el.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText" }));
+    }, value);
+    await expect(calculate).toBeEnabled({ timeout: 10000 });
+  }
+
+  await setWithoutOpeningKeyboard("\\mathrm{Res}\\left(\\frac{1}{z-2},z=2\\right)");
+  await calculate.click();
+  await expect(result).toContainText("1", { timeout: 12000 });
+
+  await setWithoutOpeningKeyboard("\\mathrm{Sing}\\left(\\frac{1}{(z-1)(z+2)}\\right)");
+  await calculate.click();
+  await expect(result).toContainText(/[-−]2/, { timeout: 12000 });
+  await expect(result).toContainText("1", { timeout: 12000 });
 });

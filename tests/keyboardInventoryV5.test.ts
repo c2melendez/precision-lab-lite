@@ -59,16 +59,11 @@ describe("inventario estructural del teclado V5 de Lite", () => {
     }
   });
 
-  it("conserva las capacidades conocidas como no disponibles", () => {
+  it("M20 no deja capacidades del teclado marcadas como no disponibles", () => {
     const unavailableLabels = allKeyboardKeys
       .filter((key) => key.unavailable)
       .map((key) => key.ariaLabel);
 
-    expect(unavailableLabels).toEqual(
-      expect.arrayContaining([
-        "residuo en un polo (funciones racionales)",
-        "singularidades (funciones racionales)",
-      ]),
-    );
+    expect(unavailableLabels).toEqual([]);
   });
 });

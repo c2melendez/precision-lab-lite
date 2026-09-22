@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { tryComplexFunction, parseComplex } from "../src/engine/complexFunctions";
 import { evaluate } from "../src/engine/algebriteClient";
+import { residueAtRational, singularitiesOfRational } from "../src/engine/complexAnalysis";
 
 function parts(expr: string) {
   const raw = tryComplexFunction(expr);
@@ -40,6 +41,11 @@ describe("Suite exhaustiva original — Módulo 5: Complejos", () => {
     const p = parts("log(-1)");
     expect(p.re).toBeCloseTo(0, 10);
     expect(p.im).toBeCloseTo(Math.PI, 10);
+  });
+
+  it("M20: residuo y singularidades racionales igualan el contrato Plus", () => {
+    expect(residueAtRational("1/(z-2)", "2")).toBe("1");
+    expect(singularitiesOfRational("1/((z-1)*(z+2))")).toEqual(["-2", "1"]);
   });
 });
 
