@@ -1,11 +1,10 @@
-name: QA Fast E2E Diagnostic
+name: QA M10 Exact-Commit Diagnostic
 
 on:
   push:
     branches: [qa/exhaustive-suite-module-01]
     paths:
       - .github/workflows/qa-diagnostics.yml
-      - e2e/exhaustive-module10-keyboard.spec.ts
   workflow_dispatch:
 
 permissions:
@@ -18,45 +17,62 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: qa/exhaustive-suite-module-01
+          ref: ${{ github.sha }}
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-      - name: Install app
+      - name: Install
         run: npm ci
+      - name: Parser sentinels
+        shell: bash
+        run: |
+          set +e
+          npm test -- tests/parsing.test.ts > parser.log 2>&1
+          echo $? > parser.exit
+          exit 0
       - name: Install Playwright
         run: |
           npm install --no-save --package-lock=false @playwright/test@1.55.0
           npx playwright install --with-deps chromium
-      - name: Run directed E2E
+      - name: M10 desktop
         shell: bash
         run: |
           set +e
+          npx playwright test e2e/exhaustive-module10-keyboard.spec.ts --project=desktop-chromium --reporter=line > e2e.log 2>&1
+          echo $? > e2e.exit
+          exit 0
+      - name: Write snapshot
+        if: always()
+        shell: bash
+        run: |
           mkdir -p .qa-results
-          npx playwright test e2e/exhaustive-module10-keyboard.spec.ts --project=desktop-chromium --reporter=line > e2e-directed.log 2>&1
-          CODE=$?
           {
-            echo "# QA directed E2E diagnostic — Lite"
+            echo "# QA M10 exact-commit diagnostic — Lite"
             echo
-            echo "- exit_code: $CODE"
+            echo "- workflow_sha: $GITHUB_SHA"
+            echo "- parser_exit: $(cat parser.exit 2>/dev/null || echo missing)"
+            echo "- e2e_exit: $(cat e2e.exit 2>/dev/null || echo missing)"
             echo
+            echo "## Parser"
             echo '~~~text'
-            tail -n 500 e2e-directed.log
+            tail -n 260 parser.log 2>/dev/null || true
+            echo '~~~'
+            echo
+            echo "## E2E"
+            echo '~~~text'
+            tail -n 520 e2e.log 2>/dev/null || true
             echo '~~~'
           } > .qa-results/e2e-directed-latest.md
-          exit 0
       - name: Commit snapshot
+        if: always()
+        shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C qa/exhaustive-suite-module-01
           git add .qa-results/e2e-directed-latest.md
           git diff --cached --quiet && exit 0
-          git commit -m "QA E2E diagnostics [skip ci]"
+          git commit -m "QA M10 exact diagnostics [skip ci]"
           git push origin HEAD:qa/exhaustive-suite-module-01
-
-
-
-
-# validate-m10-fixes-v2
