@@ -134,6 +134,10 @@ describe("parseExpression", () => {
       expect(parseExpression("50\\%").algebrite).toBe("(50)/100");
     });
 
+    it('serialización real de ± desde MathLive se convierte a pm(5)', () => {
+      expect(parseExpression("\\pm\\left(5\\right)").algebrite).toBe("pm(5)");
+    });
+
     it('"50%x" inserta la multiplicación implícita tras el porcentaje', () => {
       expect(parseExpression("50%x").algebrite).toBe("(50)/100*x");
     });
