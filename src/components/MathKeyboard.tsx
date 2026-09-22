@@ -604,6 +604,9 @@ export interface MathKeyboardProps {
    * AlgebraMode/CalculusMode/LinearSystemsMode no lo pasan, ven el
    * teclado completo de siempre. */
   hideCoreGrid?: boolean;
+  /** M30: permite que el modo propietario registre el handler de Smart Dock
+   * durante toda su vida, incluso cuando este teclado no está montado. */
+  registerInsertHandler?: boolean;
 }
 
 /** Cuántas filas puede pedir el selector de "Sistema" — spec §6 (5×5 ya
@@ -621,6 +624,7 @@ export function MathKeyboard({
   onSimplify,
   onGraphComplex,
   hideCoreGrid = false,
+  registerInsertHandler = true,
   activeCategory,
 }: MathKeyboardProps) {
   const CATEGORIES = hideCoreGrid ? CATEGORIES_BASIC_MODE : CATEGORIES_FULL;
@@ -656,13 +660,13 @@ export function MathKeyboard({
   // paridad con precision-lab (main).
   const setInsertHandler = useKeyboardPanelStore((s) => s.setInsertHandler);
   useEffect(() => {
-    setInsertHandler(press);
+    if (registerInsertHandler) setInsertHandler(press);
   });
   const clearInsertHandler = useKeyboardPanelStore((s) => s.clearInsertHandler);
   useEffect(() => {
+    if (!registerInsertHandler) return;
     return () => clearInsertHandler();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [registerInsertHandler, clearInsertHandler]);
 
   function pressBase(k: KeyDef) {
     if (k.glyph === "⏎") return onEnter?.();

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { MathKeyboard } from "../../components/MathKeyboard";
+import { MathKeyboard, isVariableOrConstantKey, type KeyDef } from "../../components/MathKeyboard";
 import { KeyboardBasicPanel } from "../../components/KeyboardBasicPanel";
 import { Screen } from "../../components/Screen";
 import { type SessionHistoryEntry } from "../../components/HistoryLog";
@@ -10,6 +10,7 @@ import { detectODE } from "../../engine/parsing/odeDetect";
 import { detectComplexAnalysisIntent } from "../../engine/parsing/complexAnalysisIntent";
 import { addHistoryEntry } from "../../store/historyDb";
 import { useKeyboardPanelStore } from "../../store/useKeyboardPanelStore";
+import { useRecentKeysStore } from "../../store/useRecentKeysStore";
 import { useLayoutModeStore } from "../../store/useLayoutModeStore";
 import { useArgandBridgeStore } from "../../store/useArgandBridgeStore";
 import { usePendingGraphStore } from "../../store/usePendingGraphStore";
@@ -392,6 +393,30 @@ export function BasicScientificMode() {
     setPendingGraphExpression(latex);
   }, [latex, setPendingGraphExpression]);
 
+  // M30: el Smart Dock de teclas recientes debe funcionar incluso cuando
+  // MathKeyboard está cerrado/no montado. El modo científico mantiene un
+  // handler estable durante toda su vida y MathKeyboard no lo reemplaza.
+  const setInsertHandler = useKeyboardPanelStore((s) => s.setInsertHandler);
+  const clearInsertHandler = useKeyboardPanelStore((s) => s.clearInsertHandler);
+  const recordRecentKey = useRecentKeysStore((s) => s.recordKey);
+  const handleRecentKeyInsert = useCallback(
+    (k: KeyDef) => {
+      if (!k.insertLatex) return;
+      mathField?.focus();
+      mathField?.insert(k.insertLatex);
+      recordRecentKey("basic", k, isVariableOrConstantKey(k) ? "variable" : "operation");
+    },
+    [mathField, recordRecentKey],
+  );
+
+  useEffect(() => {
+    setInsertHandler(handleRecentKeyInsert);
+  }, [handleRecentKeyInsert, setInsertHandler]);
+
+  useEffect(() => {
+    return () => clearInsertHandler();
+  }, [clearInsertHandler]);
+
   const setKeyboardContent = useKeyboardPanelStore((s) => s.setContent);
   const clearKeyboardContent = useKeyboardPanelStore((s) => s.clearContent);
   const setBasicKeyboardContent = useKeyboardPanelStore((s) => s.setBasicContent);
@@ -423,6 +448,7 @@ export function BasicScientificMode() {
         onSimplify={handleSimplify}
         onGraphComplex={handleGraphComplex}
         hideCoreGrid
+        registerInsertHandler={false}
       />,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
