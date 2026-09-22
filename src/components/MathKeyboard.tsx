@@ -197,7 +197,7 @@ const CALCULUS_ROW_1: KeyDef[] = [
     "área bajo la curva entre dos límites (edita los cuadros de límite inferior y superior)",
   ),
   key("Σ", "\\sum_{#0}^{#1}#2", "sumatoria", false, undefined, "suma de una expresión repetida según un índice, entre un valor inicial y uno final"),
-  key("Π", "", "productoria", true),
+  key("Π", "\\prod_{#0}^{#1}#2", "productoria", false, undefined, "producto de una expresión repetida según un índice, entre un valor inicial y uno final"),
   key("LCM", "\\mathrm{lcm}\\left(#0,#1\\right)", "mínimo común múltiplo", false, undefined, "el menor número que es múltiplo de ambos valores a la vez"),
   key("GCD", "\\gcd\\left(#0,#1\\right)", "máximo común divisor", false, undefined, "el mayor número que divide a ambos valores sin dejar residuo"),
 ];
