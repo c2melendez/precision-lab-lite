@@ -7,6 +7,8 @@
 // - Eigenvalores 2x2/3x3: ruta simbólica exacta cuando roots() da una
 //   forma limpia (racional, irracional simple, compleja simple).
 // - M23: 4x4–6x6 usan ruta numérica Faddeev–LeVerrier + Durand–Kerner.
+// - M24: escalado previo, reinicios deterministas, pulido Newton, ruta
+//   triangular exacta y selección adaptativa de eigenvector por residual.
 //   Fallback a numérico cuando el resultado simbólico es "casus
 //   irreducibilis" (cúbica con 3 raíces reales irracionales que
 //   roots() expresa con cos/sin/potencias fraccionarias de -1 —
@@ -257,18 +259,40 @@ function numericTrace(a: number[][]): number {
   return a.reduce((sum, row, i) => sum + row[i], 0);
 }
 
-/** M23: coeficientes del polinomio característico mónico mediante Faddeev–LeVerrier.
- * Devuelve [1, c1, ..., cn] para x^n + c1*x^(n-1) + ... + cn. */
-function characteristicCoefficientsNumeric(matrix: Matrix): number[] {
+function numericInfinityNorm(a: number[][]): number {
+  return Math.max(
+    0,
+    ...a.map((row) => row.reduce((sum, value) => sum + Math.abs(value), 0)),
+  );
+}
+
+/** M24: detecta matrices triangulares exactas. Sus eigenvalores son la diagonal,
+ * evitando la inestabilidad de hallar raíces múltiples con Durand–Kerner. */
+function triangularDiagonal(matrix: Matrix): number[] | null {
   const n = matrix.length;
-  const A = matrix.map((row) => row.map((f) => f.valueOf()));
+  let upper = true;
+  let lower = true;
+  for (let r = 0; r < n; r++) {
+    for (let col = 0; col < n; col++) {
+      if (r > col && !matrix[r][col].equals(0)) upper = false;
+      if (r < col && !matrix[r][col].equals(0)) lower = false;
+    }
+  }
+  if (!upper && !lower) return null;
+  return matrix.map((row, i) => row[i].valueOf());
+}
+
+/** Coeficientes del polinomio característico mónico mediante Faddeev–LeVerrier.
+ * Devuelve [1, c1, ..., cn] para x^n + c1*x^(n-1) + ... + cn. */
+function characteristicCoefficientsFromNumeric(A: number[][]): number[] {
+  const n = A.length;
   let B = numericIdentity(n);
   const coeffs = [1];
 
   for (let k = 1; k <= n; k++) {
     const AB = numericMultiply(A, B);
     const ck = -numericTrace(AB) / k;
-    coeffs.push(Math.abs(ck) < 1e-12 ? 0 : ck);
+    coeffs.push(Math.abs(ck) < 1e-14 ? 0 : ck);
     B = AB.map((row, r) =>
       row.map((value, col) => value + (r === col ? ck : 0)),
     );
@@ -288,42 +312,98 @@ function evaluatePolynomialComplex(coeffs: number[], z: ComplexNumber): ComplexN
   return result;
 }
 
-/** M23: raíces complejas de un polinomio mónico de grado 4–6 por Durand–Kerner. */
-function durandKernerRoots(coeffs: number[]): ComplexNumber[] {
+function derivativeCoefficients(coeffs: number[]): number[] {
   const degree = coeffs.length - 1;
-  const radius = 1 + Math.max(...coeffs.slice(1).map((x) => Math.abs(x)));
-  let roots = Array.from({ length: degree }, (_, k) => {
-    const angle = (2 * Math.PI * k) / degree + 0.3141592653589793;
-    return { re: radius * Math.cos(angle), im: radius * Math.sin(angle) };
-  });
-
-  const tolerance = 1e-12;
-  const maxIterations = 2000;
-
-  for (let iteration = 0; iteration < maxIterations; iteration++) {
-    let maxDelta = 0;
-    const next = roots.map((root, i) => {
-      let denom: ComplexNumber = { re: 1, im: 0 };
-      for (let j = 0; j < degree; j++) {
-        if (j === i) continue;
-        let diff = complexSub(root, roots[j]);
-        if (complexAbs(diff) < 1e-14) {
-          diff = { re: diff.re + 1e-10 * (i + 1), im: diff.im + 1e-10 * (j + 1) };
-        }
-        denom = complexMul(denom, diff);
-      }
-      const correction = complexDiv(evaluatePolynomialComplex(coeffs, root), denom);
-      maxDelta = Math.max(maxDelta, complexAbs(correction));
-      return complexSub(root, correction);
-    });
-    roots = next;
-    if (maxDelta < tolerance) break;
-  }
-
-  return roots;
+  return coeffs.slice(0, -1).map((coefficient, i) => coefficient * (degree - i));
 }
 
-function clusterNumericRoots(roots: ComplexNumber[], tolerance = 1e-5): Array<{ root: ComplexNumber; multiplicity: number }> {
+function polynomialResidual(coeffs: number[], roots: ComplexNumber[]): number {
+  return Math.max(0, ...roots.map((root) => complexAbs(evaluatePolynomialComplex(coeffs, root))));
+}
+
+function polishRootNewton(
+  coeffs: number[],
+  initial: ComplexNumber,
+  iterations = 12,
+): ComplexNumber {
+  const derivative = derivativeCoefficients(coeffs);
+  let root = initial;
+  for (let i = 0; i < iterations; i++) {
+    const value = evaluatePolynomialComplex(coeffs, root);
+    const slope = evaluatePolynomialComplex(derivative, root);
+    if (complexAbs(slope) < 1e-14) break;
+    const correction = complexDiv(value, slope);
+    root = complexSub(root, correction);
+    if (complexAbs(correction) < 1e-13) break;
+  }
+  return root;
+}
+
+interface RootSolveResult {
+  roots: ComplexNumber[];
+  converged: boolean;
+  maxResidual: number;
+}
+
+/** M24: Durand–Kerner con reinicios deterministas y selección por residual.
+ * Los reinicios reducen sensibilidad a una sola distribución inicial. */
+function durandKernerRoots(coeffs: number[]): RootSolveResult {
+  const degree = coeffs.length - 1;
+  const radius = 1 + Math.max(...coeffs.slice(1).map((x) => Math.abs(x)));
+  const phaseOffsets = [0.137, 0.3141592653589793, 0.731, 1.111];
+  const tolerance = 1e-12;
+  const maxIterations = 3000;
+
+  let best: RootSolveResult | null = null;
+
+  for (const phase of phaseOffsets) {
+    let roots = Array.from({ length: degree }, (_, k) => {
+      const angle = (2 * Math.PI * k) / degree + phase;
+      return { re: radius * Math.cos(angle), im: radius * Math.sin(angle) };
+    });
+    let converged = false;
+
+    for (let iteration = 0; iteration < maxIterations; iteration++) {
+      let maxDelta = 0;
+      const next = roots.map((root, i) => {
+        let denom: ComplexNumber = { re: 1, im: 0 };
+        for (let j = 0; j < degree; j++) {
+          if (j === i) continue;
+          let diff = complexSub(root, roots[j]);
+          if (complexAbs(diff) < 1e-14) {
+            diff = {
+              re: diff.re + 1e-10 * (i + 1),
+              im: diff.im + 1e-10 * (j + 1),
+            };
+          }
+          denom = complexMul(denom, diff);
+        }
+        if (complexAbs(denom) < 1e-20) return root;
+        const correction = complexDiv(evaluatePolynomialComplex(coeffs, root), denom);
+        maxDelta = Math.max(maxDelta, complexAbs(correction));
+        return complexSub(root, correction);
+      });
+      roots = next;
+      if (maxDelta < tolerance) {
+        converged = true;
+        break;
+      }
+    }
+
+    roots = roots.map((root) => polishRootNewton(coeffs, root));
+    const maxResidual = polynomialResidual(coeffs, roots);
+    const candidate = { roots, converged, maxResidual };
+    if (best === null || candidate.maxResidual < best.maxResidual) best = candidate;
+    if (converged && maxResidual < 1e-9) break;
+  }
+
+  return best!;
+}
+
+function clusterNumericRoots(
+  roots: ComplexNumber[],
+  tolerance: number,
+): Array<{ root: ComplexNumber; multiplicity: number }> {
   const clusters: Array<{ members: ComplexNumber[] }> = [];
   for (const root of roots) {
     const found = clusters.find((cluster) => {
@@ -333,7 +413,8 @@ function clusterNumericRoots(roots: ComplexNumber[], tolerance = 1e-5): Array<{ 
       );
       center.re /= cluster.members.length;
       center.im /= cluster.members.length;
-      return complexAbs(complexSub(root, center)) < tolerance;
+      const scale = Math.max(1, complexAbs(center), complexAbs(root));
+      return complexAbs(complexSub(root, center)) <= tolerance * scale;
     });
     if (found) found.members.push(root);
     else clusters.push({ members: [root] });
@@ -350,6 +431,29 @@ function clusterNumericRoots(roots: ComplexNumber[], tolerance = 1e-5): Array<{ 
     if (Math.abs(im) < 1e-10) im = 0;
     return { root: { re, im }, multiplicity: members.length };
   });
+}
+
+function clusterRealDiagonal(
+  values: number[],
+  tolerance = 1e-9,
+): Array<{ root: ComplexNumber; multiplicity: number }> {
+  const sorted = [...values].sort((a, b) => a - b);
+  const clusters: Array<{ values: number[] }> = [];
+  for (const value of sorted) {
+    const found = clusters.find((cluster) => {
+      const center = cluster.values.reduce((sum, x) => sum + x, 0) / cluster.values.length;
+      return Math.abs(value - center) <= tolerance * Math.max(1, Math.abs(value), Math.abs(center));
+    });
+    if (found) found.values.push(value);
+    else clusters.push({ values: [value] });
+  }
+  return clusters.map((cluster) => ({
+    root: {
+      re: cluster.values.reduce((sum, x) => sum + x, 0) / cluster.values.length,
+      im: 0,
+    },
+    multiplicity: cluster.values.length,
+  }));
 }
 
 function formatNumericCharacteristicPolynomial(coeffs: number[]): string {
@@ -370,46 +474,121 @@ function formatNumericCharacteristicPolynomial(coeffs: number[]): string {
   return terms.join("");
 }
 
+function complexVectorResidual(
+  matrix: Matrix,
+  lambda: ComplexNumber,
+  vector: ComplexVectorComponent[],
+): number {
+  let residualSquared = 0;
+  let vectorNormSquared = 0;
+  const numeric = matrix.map((row) => row.map((f) => f.valueOf()));
+  const matrixNorm = Math.max(1, numericInfinityNorm(numeric));
+
+  for (let i = 0; i < matrix.length; i++) {
+    const av = matrix[i].reduce(
+      (acc, aij, j) => ({
+        re: acc.re + aij.valueOf() * vector[j].re,
+        im: acc.im + aij.valueOf() * vector[j].im,
+      }),
+      { re: 0, im: 0 },
+    );
+    const lv = complexMul(lambda, vector[i]);
+    residualSquared += (av.re - lv.re) ** 2 + (av.im - lv.im) ** 2;
+    vectorNormSquared += vector[i].re ** 2 + vector[i].im ** 2;
+  }
+
+  const denom = (matrixNorm + complexAbs(lambda)) * Math.sqrt(Math.max(vectorNormSquared, 1e-30));
+  return Math.sqrt(residualSquared) / Math.max(denom, 1e-30);
+}
+
+/** M24: prueba varias tolerancias de rango y elige el eigenvector con menor residual. */
+function bestComplexEigenvector(
+  matrix: Matrix,
+  lambda: ComplexNumber,
+): ComplexVectorComponent[] | null {
+  const numeric = matrix.map((row) => row.map((f) => f.valueOf()));
+  const matrixNorm = Math.max(1, numericInfinityNorm(numeric));
+  const shifted: ComplexNumber[][] = matrix.map((row, i) =>
+    row.map((f, j) => ({
+      re: f.valueOf() - (i === j ? lambda.re : 0),
+      im: i === j ? -lambda.im : 0,
+    })),
+  );
+
+  const epsilons = [1e-10, 1e-9, 1e-8, 1e-7, 1e-6, 1e-5, 1e-4].map(
+    (epsilon) => epsilon * matrixNorm,
+  );
+  let best: { vector: ComplexVectorComponent[]; residual: number } | null = null;
+
+  for (const epsilon of epsilons) {
+    const vector = nullSpaceVectorComplex(shifted, epsilon);
+    if (!vector) continue;
+    const residual = complexVectorResidual(matrix, lambda, vector);
+    if (best === null || residual < best.residual) best = { vector, residual };
+  }
+
+  if (!best) return null;
+  return best.residual <= 5e-6 ? best.vector : null;
+}
+
 function computeEigenvaluesNumeric(matrix: Matrix): {
   pairs: EigenPair[];
   allExact: boolean;
   characteristicPolynomial: string;
 } {
-  const coeffs = characteristicCoefficientsNumeric(matrix);
-  const roots = clusterNumericRoots(durandKernerRoots(coeffs));
+  const numeric = matrix.map((row) => row.map((f) => f.valueOf()));
+  const scale = Math.max(1, numericInfinityNorm(numeric));
+  const scaled = numeric.map((row) => row.map((value) => value / scale));
+  const scaledCoeffs = characteristicCoefficientsFromNumeric(scaled);
 
-  const pairs: EigenPair[] = roots.map(({ root, multiplicity }) => {
-    const re = root.re;
-    const im = root.im;
-    const isComplex = Math.abs(im) > 1e-7;
+  let rootClusters: Array<{ root: ComplexNumber; multiplicity: number }>;
+  const diagonal = triangularDiagonal(matrix);
+
+  if (diagonal) {
+    rootClusters = clusterRealDiagonal(diagonal);
+  } else {
+    const solved = durandKernerRoots(scaledCoeffs);
+    const scaledResidual = solved.maxResidual;
+    if (!Number.isFinite(scaledResidual) || scaledResidual > 1e-5) {
+      throw {
+        code: ErrorCode.UNSUPPORTED_OPERATION,
+        message: "El solver numérico de eigen no convergió con residual suficiente para esta matriz.",
+      } as AppError;
+    }
+
+    const unscaledRoots = solved.roots.map((root) => ({
+      re: root.re * scale,
+      im: root.im * scale,
+    }));
+
+    // Tolerancia adaptativa: crece suavemente con el residual de raíces,
+    // pero queda acotada para no fusionar eigenvalores cercanos legítimos.
+    const clusterTolerance = Math.min(
+      1e-4,
+      Math.max(1e-8, 10 * Math.sqrt(Math.max(scaledResidual, 1e-16))),
+    );
+    rootClusters = clusterNumericRoots(unscaledRoots, clusterTolerance);
+  }
+
+  // Coeficientes solo para mostrar el polinomio en escala original.
+  const originalCoeffs = characteristicCoefficientsFromNumeric(numeric);
+
+  const pairs: EigenPair[] = rootClusters.map(({ root, multiplicity }) => {
+    let re = root.re;
+    let im = root.im;
+    if (Math.abs(re) < 1e-10 * scale) re = 0;
+    if (Math.abs(im) < 1e-10 * scale) im = 0;
+
+    const isComplex = Math.abs(im) > 1e-7 * Math.max(1, Math.abs(re), Math.abs(im));
+    const vector = bestComplexEigenvector(matrix, { re, im });
     let eigenvector: number[] | null = null;
     let complexEigenvector: ComplexVectorComponent[] | null = null;
-    const epsilon = 1e-5;
 
-    if (isComplex) {
-      const shifted: ComplexNumber[][] = matrix.map((row, i) =>
-        row.map((f, j) => ({
-          re: f.valueOf() - (i === j ? re : 0),
-          im: i === j ? -im : 0,
-        })),
-      );
-      complexEigenvector = nullSpaceVectorComplex(shifted, epsilon);
-    } else {
-      const shifted = matrix.map((row, i) =>
-        row.map((f, j) => f.valueOf() - (i === j ? re : 0)),
-      );
-      eigenvector = nullSpaceVector(shifted, epsilon);
-      if (eigenvector === null) {
-        const complexShifted: ComplexNumber[][] = matrix.map((row, i) =>
-          row.map((f, j) => ({
-            re: f.valueOf() - (i === j ? re : 0),
-            im: 0,
-          })),
-        );
-        const fallback = nullSpaceVectorComplex(complexShifted, epsilon);
-        if (fallback && fallback.every((z) => Math.abs(z.im) < 1e-6)) {
-          eigenvector = fallback.map((z) => z.re);
-        }
+    if (vector) {
+      if (!isComplex && vector.every((z) => Math.abs(z.im) < 1e-6)) {
+        eigenvector = vector.map((z) => z.re);
+      } else {
+        complexEigenvector = vector;
       }
     }
 
@@ -429,7 +608,7 @@ function computeEigenvaluesNumeric(matrix: Matrix): {
   return {
     pairs,
     allExact: false,
-    characteristicPolynomial: formatNumericCharacteristicPolynomial(coeffs),
+    characteristicPolynomial: formatNumericCharacteristicPolynomial(originalCoeffs),
   };
 }
 
