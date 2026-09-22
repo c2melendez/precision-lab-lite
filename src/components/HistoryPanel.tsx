@@ -32,7 +32,7 @@ export function HistoryPanel() {
             await clearHistory();
             load();
           }}
-          className="text-sm text-red-400 hover:text-red-300"
+          className="text-sm text-red-700 hover:text-red-800"
         >
           Borrar todo
         </button>

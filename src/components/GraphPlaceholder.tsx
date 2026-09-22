@@ -55,7 +55,7 @@ export function GraphPlaceholder({ canGraph = false, onGraph }: GraphPlaceholder
       className="flex min-h-[110px] flex-1 flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-paper-line bg-paper-soft/60 px-4 py-6 text-center"
     >
       <span className="text-xs font-medium text-muted">Gráfica</span>
-      <span className="text-[11px] text-muted/70">Escribe una expresión y presiona Graficar.</span>
+      <span className="text-[11px] text-muted">Escribe una expresión y presiona Graficar.</span>
     </div>
   );
 }
