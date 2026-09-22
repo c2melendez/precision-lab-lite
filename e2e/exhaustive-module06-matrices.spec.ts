@@ -227,7 +227,7 @@ test("M26: expresiones matriciales A-F evalúan matrices y escalares por el work
   await expression.fill("det(C)+tr(F)");
   await page.getByRole("button", { name: "Evaluar expresión", exact: true }).click();
 
-  const scalarResult = page.getByRole("status");
+  const scalarResult = page.getByRole("status").filter({ hasText: "32" }).first();
   await expect(scalarResult).toBeVisible({ timeout: 12000 });
   await expect(scalarResult).toContainText("32");
 });
