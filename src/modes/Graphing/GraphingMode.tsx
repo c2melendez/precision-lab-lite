@@ -444,7 +444,7 @@ export function GraphingMode() {
                 submitEntry(entry);
               }}
               aria-label="Graficar esta expresión"
-              className="shrink-0 text-xs text-marker hover:text-marker-text"
+              className="flex h-6 w-6 shrink-0 items-center justify-center rounded text-xs text-marker hover:bg-paper-soft hover:text-marker-text"
             >
               ⏎
             </button>
@@ -454,7 +454,7 @@ export function GraphingMode() {
                 removeExpression(entry.id);
               }}
               aria-label="Eliminar expresión"
-              className="shrink-0 text-muted hover:text-red-500"
+              className="flex h-6 w-6 shrink-0 items-center justify-center rounded text-muted hover:bg-paper-soft hover:text-red-600"
             >
               ×
             </button>
@@ -603,7 +603,7 @@ export function GraphingMode() {
           selectedSurface3D ? (
             <GraphViewer3D surface={selectedSurface3D} />
           ) : (
-            <div className="flex h-52 items-center justify-center rounded-xl bg-chrome text-sm text-bone/50">
+            <div className="flex h-52 items-center justify-center rounded-xl bg-chrome text-sm text-bone">
               Escribe z=f(x,y) y presiona ⏎ para graficarla.
             </div>
           )
