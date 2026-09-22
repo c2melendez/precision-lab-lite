@@ -10,6 +10,7 @@ import { toFractionResult, fractionToLatex } from "../engine/fractions";
 import { compileNumeric, numericLimit, numericLimitAtInfinity } from "../engine/numericFallback";
 import { tryStatFunction, splitTopLevelArgs } from "../engine/statFunctions";
 import { tryComplexFunction, parseComplex } from "../engine/complexFunctions";
+import { residueAtRational, singularitiesOfRational } from "../engine/complexAnalysis";
 import { tryPlusMinus } from "../engine/plusMinus";
 import { tryFiniteProduct } from "../engine/product";
 import { tryCbrtSign } from "../engine/cbrtSign";
@@ -169,7 +170,9 @@ export type ComputeRequest =
       type: "argandPoint";
       requestId: string;
       expressionAlgebrite: string;
-    };
+    }
+  | { type: "complexResidue"; requestId: string; expressionAlgebrite: string; pointAlgebrite: string }
+  | { type: "complexSingularities"; requestId: string; expressionAlgebrite: string };
 
 self.onmessage = (event: MessageEvent<ComputeRequest>) => {
   const msg = event.data;
@@ -228,6 +231,10 @@ function handle(msg: ComputeRequest): MathResult {
       return runCalculus(msg.requestId, () => solveODE(msg.expression));
     case "argandPoint":
       return handleArgandPoint(msg.expressionAlgebrite, msg.requestId);
+    case "complexResidue":
+      return handleComplexResidue(msg.expressionAlgebrite, msg.pointAlgebrite, msg.requestId);
+    case "complexSingularities":
+      return handleComplexSingularities(msg.expressionAlgebrite, msg.requestId);
     default: {
       const unknownMsg = msg as { requestId?: string };
       return errorResult(
@@ -239,6 +246,48 @@ function handle(msg: ComputeRequest): MathResult {
   }
 }
 
+function handleComplexResidue(
+  expressionAlgebrite: string,
+  pointAlgebrite: string,
+  requestId: string,
+): MathResult {
+  try {
+    const raw = residueAtRational(expressionAlgebrite, pointAlgebrite);
+    const isNumeric = /^-?\\d+(\\.\\d+)?$/.test(raw) || /^-?\\d+\\/\\d+$/.test(raw);
+    return {
+      success: true,
+      resultLatex: toLatex(raw),
+      fraction: isNumeric ? toFractionResult(raw) : undefined,
+      steps: [],
+      hasDetailedSteps: false,
+      confidence: "SYMBOLIC",
+      requestId,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), requestId);
+  }
+}
+
+function handleComplexSingularities(expressionAlgebrite: string, requestId: string): MathResult {
+  try {
+    const points = singularitiesOfRational(expressionAlgebrite);
+    const resultLatex = points.length === 0
+      ? "\\varnothing"
+      : `\\{${points.map((point) => toLatex(point)).join(",\\ ")}\\}`;
+    return {
+      success: true,
+      resultLatex,
+      steps: [],
+      hasDetailedSteps: false,
+      confidence: "SYMBOLIC",
+      requestId,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), requestId);
+  }
+}
 function handleSolveAlgebra(
   leftAlgebrite: string,
   rightAlgebrite: string,
