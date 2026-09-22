@@ -126,6 +126,35 @@ export function preprocessLatex(latex: string): string {
   // que envuelve algo), así que un reemplazo simple basta.
   expr = expr.replace(/\\frac\{dy\}\{dx\}/g, "y'");
 
+  // M17 — paridad Plus/Lite: derivada parcial. Lite ya dispone del motor
+  // simbólico d(expr,var); faltaba enrutar la notación de teclado ∂/∂x.
+  // Se transforma al mismo marcador interno que la derivada ordinaria,
+  // manteniendo las demás variables como constantes.
+  {
+    const partialMatch = expr.match(/\\frac\{\\partial\}\{\\partial\s*([a-zA-Z])\}\\left\(/);
+    if (partialMatch) {
+      const start = partialMatch.index!;
+      const variable = partialMatch[1];
+      let depth = 1;
+      let j = start + partialMatch[0].length;
+      while (j < expr.length && depth > 0) {
+        if (expr.startsWith("\\left(", j)) {
+          depth++;
+          j += 6;
+        } else if (expr.startsWith("\\right)", j)) {
+          depth--;
+          j += 7;
+        } else {
+          j++;
+        }
+      }
+      if (depth !== 0) {
+        throw parseError('Paréntesis sin balancear tras "∂/∂x".');
+      }
+      const body = expr.slice(start + partialMatch[0].length, j - 7);
+      expr = `${expr.slice(0, start)}d((${body}),${variable})${expr.slice(j)}`;
+    }
+  }
   // d/dx: plantilla "\frac{d}{dx}\left(#0\right)" -> d((cuerpo),x), nativo
   // en Algebrite. Debe ir ANTES que el bucle \frac de abajo — si no, ese
   // bucle ya convirtió "\frac{d}{dx}" a "(d)/(dx)" antes de llegar aquí,
