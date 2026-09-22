@@ -76,7 +76,7 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
   const { latex, isPlainNumber } = renderValue();
 
   return (
-    <div className="pt-1">
+    <div className="pt-1" role="status" aria-live="polite" aria-atomic="true">
       {result.confidence === "NUMERIC_FALLBACK" && (
         <p className="mb-1.5 inline-block rounded bg-marker-soft px-2 py-0.5 text-xs text-marker-text">
           Aproximado numéricamente (no resuelto simbólicamente)
