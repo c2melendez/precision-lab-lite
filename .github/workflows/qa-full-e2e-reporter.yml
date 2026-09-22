@@ -1,0 +1,59 @@
+name: QA Full E2E Reporter
+
+on:
+  push:
+    branches: [qa/exhaustive-suite-module-01]
+    paths:
+      - .github/workflows/qa-full-e2e-reporter.yml
+      - .github/workflows/playwright.yml
+      - e2e/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  full-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa/exhaustive-suite-module-01
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install app
+        run: npm ci
+      - name: Install Playwright
+        run: |
+          npm install --no-save --package-lock=false @playwright/test@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Full Playwright regression
+        id: e2e
+        continue-on-error: true
+        shell: bash
+        run: npx playwright test --reporter=line 2>&1 | tee full-e2e.log
+      - name: Publish result to PR 2
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          E2E: ${{ steps.e2e.outcome }}
+        shell: bash
+        run: |
+          {
+            echo "<!-- qa-lite-full-e2e -->"
+            echo "## QA Lite — regresión Playwright completa"
+            echo
+            echo "- SHA: `$GITHUB_SHA`"
+            echo "- resultado: **$E2E**"
+            echo
+            echo "### Resumen"
+            echo '~~~text'
+            grep -E "([0-9]+ passed|[0-9]+ failed|[0-9]+ flaky|Running [0-9]+ tests|› e2e/)" full-e2e.log | tail -n 180 || true
+            echo '~~~'
+          } > /tmp/qa-comment.md
+          gh pr comment 2 --repo c2melendez/precision-lab-lite --body-file /tmp/qa-comment.md
