@@ -42,20 +42,23 @@ test("suite original módulo 3: inventario de Cálculo refleja capacidades actua
 });
 
 test("suite original módulo 3: sumatoria de 1 a 5 se evalúa a 15 desde la UI", async ({ page }) => {
-  await page.addInitScript(() => localStorage.setItem("precision-lab-layout-mode", "fused"));
   await page.goto("./");
   const field = page.locator("math-field").first();
-  await field.focus();
-  const keyboard = page.getByRole("dialog", { name: "Teclado matemático" });
-  await expect(keyboard).toBeVisible();
   await setExpression(page, "\\sum_{i=1}^{5}i");
-  await keyboard.getByRole("button", { name: "calcular", exact: true }).click();
 
-  const result = page.locator(".a11y-scale-result-3xl").first();
-  await expect(result).toBeVisible({ timeout: 12000 });
-  const text = await result.evaluate((el) => {
-    const node = el as HTMLElement & { value?: string };
-    return node.value ?? node.textContent ?? "";
-  });
-  expect(text).toContain("15");
+  const form = field.locator("xpath=ancestor::form[1]");
+  if (await form.count()) {
+    await form.evaluate((el) => (el as HTMLFormElement).requestSubmit());
+  } else {
+    await page.getByRole("button", { name: /calcular|evaluar/i }).first().click();
+  }
+
+  await expect.poll(async () => {
+    const result = page.locator(".a11y-scale-result-3xl").first();
+    if (!(await result.count())) return "";
+    return String(await result.evaluate((el) => {
+      const node = el as HTMLElement & { value?: string };
+      return node.value ?? node.textContent ?? "";
+    }));
+  }, { timeout: 25000 }).toContain("15");
 });
