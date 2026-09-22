@@ -39,12 +39,14 @@ describe("Suite exhaustiva original — Módulo 10: teclado ↔ motor (Lite)", (
     expect(product?.insertLatex.trim()).not.toBe("");
   });
 
-  it("mantiene las dos divergencias documentadas de Lite sin convertirlas en teclas activas falsas", () => {
+  it("M20 activa las dos capacidades complejas antes documentadas como divergencias", () => {
     for (const label of [
       "residuo en un polo (funciones racionales)",
       "singularidades (funciones racionales)",
     ]) {
-      expect(keyByLabel(label)?.unavailable).toBe(true);
+      expect(keyByLabel(label)).toBeDefined();
+      expect(keyByLabel(label)?.unavailable).toBeFalsy();
+      expect(keyByLabel(label)?.insertLatex.trim()).not.toBe("");
     }
   });
 
