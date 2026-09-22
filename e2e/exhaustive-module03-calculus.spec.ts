@@ -53,6 +53,15 @@ async function calculateExpression(page: import("@playwright/test").Page, value:
   await expect(keyboardDialog).toBeVisible({ timeout: 10000 });
   await page.evaluate(() => window.mathVirtualKeyboard?.hide());
   await page.locator(".ML__keyboard.is-visible").waitFor({ state: "hidden", timeout: 5000 }).catch(() => undefined);
+  // El botón del teclado no tiene estado disabled, así que no sirve como
+  // señal de que React ya consumió el evento de MathLive. El botón de la
+  // sección Entrada sí depende de `latex.trim()`: esperar a que se habilite
+  // garantiza que el estado React está sincronizado antes de ejecutar.
+  const screenCalculate = page
+    .locator('section[aria-label="Entrada"]')
+    .getByRole("button", { name: "calcular", exact: true });
+  await expect(screenCalculate).toBeEnabled({ timeout: 10_000 });
+
   const calculate = keyboardDialog.getByRole("button", { name: "calcular", exact: true });
   await expect(calculate).toBeVisible();
   await calculate.click();
