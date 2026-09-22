@@ -35,7 +35,9 @@ async function calculateExpression(page: import("@playwright/test").Page, value:
   // Se usa este botón (conectado directamente a handleCalculate) y no la
   // tecla Enter del dock, cuyo callback se resincroniza mediante useEffect
   // y producía una carrera artificial en Desktop bajo carga.
-  const calculate = page.getByRole("button", { name: "Calcular", exact: true }).first();
+  const inputRegion = page.locator('section[aria-label="Entrada"]').first();
+  await expect(inputRegion).toBeVisible();
+  const calculate = inputRegion.getByRole("button", { name: "Calcular", exact: true });
   await expect(calculate).toBeEnabled();
   await calculate.click();
 }
