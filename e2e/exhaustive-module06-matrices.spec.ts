@@ -193,3 +193,41 @@ test("M25: matrices C y F persisten, se seleccionan explícitamente y calculan C
   await expect(persistedCells.nth(4)).toHaveValue("10");
   await expect(persistedCells.nth(7)).toHaveValue("20");
 });
+
+
+test("M26: expresiones matriciales A-F evalúan matrices y escalares por el worker", async ({ page }) => {
+  await page.goto("./");
+  await page.getByRole("button", { name: "Matrices", exact: true }).click();
+
+  const primary = page.getByRole("combobox", { name: "Matriz principal" });
+  const secondary = page.getByRole("combobox", { name: "Matriz secundaria" });
+  await primary.selectOption("C");
+  await secondary.selectOption("F");
+
+  const cells = page.locator('input[placeholder="0"]');
+  await expect(cells).toHaveCount(8);
+
+  // C = diag(1,2), F = diag(10,20)
+  for (const [index, value] of [[0,"1"],[3,"2"],[4,"10"],[7,"20"]] as const) {
+    await cells.nth(index).fill(value);
+  }
+
+  const expression = page.getByLabel("Expresión matricial A–F");
+  await expression.fill("(C+F)*C");
+  await page.getByRole("button", { name: "Evaluar expresión", exact: true }).click();
+
+  let resultField = page.locator("math-field[read-only]").last();
+  await expect(resultField).toBeVisible({ timeout: 12000 });
+  let value = await resultField.evaluate((el) =>
+    String((el as HTMLElement & { value?: string }).value ?? ""),
+  );
+  expect(value).toContain("11");
+  expect(value).toContain("44");
+
+  await expression.fill("det(C)+tr(F)");
+  await page.getByRole("button", { name: "Evaluar expresión", exact: true }).click();
+
+  resultField = page.locator("math-field[read-only]").last();
+  await expect(resultField).toBeVisible({ timeout: 12000 });
+  await expect(resultField).toHaveJSProperty("value", "32");
+});
