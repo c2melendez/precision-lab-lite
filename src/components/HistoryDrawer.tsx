@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 // P2 (spec v2 §3): drawer unificado de Historial.
 // - lg/dt: <aside> en flujo normal dentro de un flex row junto a <main>
@@ -18,6 +18,31 @@ interface HistoryDrawerProps {
 }
 
 export function HistoryDrawer({ isOpen, onClose, children }: HistoryDrawerProps) {
+  const drawerRef = useRef<HTMLElement | null>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    previousFocusRef.current = document.activeElement as HTMLElement | null;
+
+    const closeButton = drawerRef.current?.querySelector<HTMLElement>("[data-history-close]");
+    if (window.matchMedia("(max-width: 1023px)").matches) {
+      requestAnimationFrame(() => closeButton?.focus());
+    }
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      onClose();
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      requestAnimationFrame(() => previousFocusRef.current?.focus());
+    };
+  }, [isOpen]);
+
   return (
     <>
       {isOpen && (
@@ -29,6 +54,8 @@ export function HistoryDrawer({ isOpen, onClose, children }: HistoryDrawerProps)
       )}
 
       <aside
+        ref={drawerRef}
+        id="history-panel"
         aria-label="Historial"
         className={
           isOpen
@@ -40,6 +67,7 @@ export function HistoryDrawer({ isOpen, onClose, children }: HistoryDrawerProps)
           <span className="text-sm font-medium text-bone">Historial</span>
           <button
             type="button"
+            data-history-close
             onClick={onClose}
             aria-label="Cerrar historial"
             className="rounded p-1 text-bone/70 hover:text-bone"
