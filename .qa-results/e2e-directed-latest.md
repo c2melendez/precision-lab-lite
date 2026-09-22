@@ -6,8 +6,8 @@
 
 Running 5 tests using 2 workers
 
-[1A[2K[1/5] [desktop-chromium] › e2e/exhaustive-module10-keyboard.spec.ts:26:1 › módulo 10 diagnóstico: 2+2 desde teclas reales produce 4
-[1A[2K[2/5] [desktop-chromium] › e2e/exhaustive-module10-keyboard.spec.ts:41:1 › módulo 10: la tecla % calcula porcentaje real (50% = 0.5)
+[1A[2K[1/5] [desktop-chromium] › e2e/exhaustive-module10-keyboard.spec.ts:41:1 › módulo 10: la tecla % calcula porcentaje real (50% = 0.5)
+[1A[2K[2/5] [desktop-chromium] › e2e/exhaustive-module10-keyboard.spec.ts:26:1 › módulo 10 diagnóstico: 2+2 desde teclas reales produce 4
 [1A[2K[3/5] [desktop-chromium] › e2e/exhaustive-module10-keyboard.spec.ts:26:1 › módulo 10 diagnóstico: 2+2 desde teclas reales produce 4 (retry #1)
 [1A[2K  1) [desktop-chromium] › e2e/exhaustive-module10-keyboard.spec.ts:26:1 › módulo 10 diagnóstico: 2+2 desde teclas reales produce 4 
 
@@ -241,5 +241,5 @@ Running 5 tests using 2 workers
     [desktop-chromium] › e2e/exhaustive-module10-keyboard.spec.ts:26:1 › módulo 10 diagnóstico: 2+2 desde teclas reales produce 4 
     [desktop-chromium] › e2e/exhaustive-module10-keyboard.spec.ts:41:1 › módulo 10: la tecla % calcula porcentaje real (50% = 0.5) 
     [desktop-chromium] › e2e/exhaustive-module10-keyboard.spec.ts:58:1 › módulo 10: ±(5) produce dos ramas matemáticas distintas 
-  2 passed (32.2s)
+  2 passed (32.1s)
 ~~~
