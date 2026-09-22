@@ -26,7 +26,7 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Stress M3 without retries
-        run: npx playwright test e2e/exhaustive-module03-calculus.spec.ts --repeat-each=10 --retries=0
+        run: npx playwright test e2e/exhaustive-module03-calculus.spec.ts --repeat-each=10 --retries=0 --workers=1
       - name: Upload stress report
         if: always()
         uses: actions/upload-artifact@v4
