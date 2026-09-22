@@ -14,7 +14,12 @@ async function clearBasic(dialog: import("@playwright/test").Locator) {
 
 async function resultValue(page: import("@playwright/test").Page): Promise<string> {
   const result = page.locator(".a11y-scale-result-3xl").first();
-  await expect(result).toBeVisible({ timeout: 12000 });
+  try {
+    await expect(result).toBeVisible({ timeout: 12000 });
+  } catch {
+    const bodyText = await page.locator("body").innerText();
+    throw new Error("Resultado exitoso no renderizado. UI actual: " + bodyText.slice(-1800));
+  }
   return String(await result.evaluate((el) => {
     const maybeField = el as HTMLElement & { value?: string };
     return typeof maybeField.value === "string" && maybeField.value
@@ -32,9 +37,9 @@ test("módulo 10 diagnóstico: 2+2 desde teclas reales produce 4", async ({ page
   await dialog.getByRole("button", { name: "2", exact: true }).click();
   const field = page.locator("math-field").first();
   const fieldValue = await field.evaluate((el) => String((el as HTMLElement & { value?: string }).value ?? ""));
-  expect(fieldValue.replace(/\\s/g, "")).toMatch(/2\+2/);
+  expect(fieldValue.replace(/\s/g, "")).toMatch(/2\+2/);
   await dialog.getByRole("button", { name: "calcular", exact: true }).click();
-  const value = (await resultValue(page)).replace(/\\s/g, "");
+  const value = (await resultValue(page)).replace(/\s/g, "");
   expect(value).toContain("4");
 });
 
