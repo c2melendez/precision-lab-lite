@@ -3,6 +3,7 @@ name: M16 M3 stress
 on:
   push:
     branches: [m16-stabilization]
+  pull_request:
   workflow_dispatch:
 
 permissions:
