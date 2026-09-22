@@ -1,4 +1,4 @@
-// Grilla de entrada de matriz — spec v10 §9 (hasta 4x4). Usa <input>
+// Grilla de entrada de matriz — M21: hasta 6x6. Usa <input>
 // simples en vez de NaturalInput por celda: TODO declarado, ver README del
 // Módulo 6 sobre por qué no se usó MathLive aquí.
 
@@ -30,7 +30,7 @@ export function MatrixGridInput({ rows, cols, values, onChange, label }: MatrixG
               key={`${r}-${c}`}
               value={values[r]?.[c] ?? ""}
               onChange={(e) => setCell(r, c, e.target.value)}
-              className="w-14 rounded bg-chrome-soft px-1 py-1 text-center text-bone"
+              className="w-10 rounded bg-chrome-soft px-1 py-1 text-center text-bone sm:w-12 lg:w-14"
               placeholder="0"
             />
           )),
