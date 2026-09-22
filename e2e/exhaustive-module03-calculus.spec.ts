@@ -32,6 +32,17 @@ async function setExpression(page: import("@playwright/test").Page, value: strin
     async () => field.evaluate((el) => String((el as HTMLElement & { value?: string }).value ?? "")),
     { timeout: 10000 },
   ).toBe(value);
+
+  // M16: el valor de MathLive no es suficiente como señal de que React ya
+  // consumió el evento. En layout "split", Screen habilita este botón solo
+  // cuando el estado controlado `latex` deja de estar vacío. Esperar su
+  // estado enabled convierte la sincronización MathLive -> React en una
+  // condición observable y elimina la carrera residual de Productoria/
+  // Sumatoria que aparecía como flaky en Desktop bajo carga de CI.
+  const screenCalculate = page
+    .locator('section[aria-label="Entrada"]')
+    .getByRole("button", { name: "Calcular", exact: true });
+  await expect(screenCalculate).toBeEnabled({ timeout: 10000 });
 }
 
 async function calculateExpression(page: import("@playwright/test").Page, value: string) {
