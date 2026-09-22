@@ -51,11 +51,10 @@ describe("Suite exhaustiva original — Módulo 10: inventario teclado Lite", ()
     }
   });
 
-  it("Lite marca exactamente sus cuatro divergencias documentadas", () => {
+  it("Lite marca exactamente sus tres divergencias documentadas", () => {
     const unavailable = [...new Set(allKeys.filter(k => k.unavailable).map(k => k.ariaLabel))].sort();
     expect(unavailable).toEqual([
       "derivada parcial",
-      "productoria",
       "residuo en un polo (funciones racionales)",
       "singularidades (funciones racionales)",
     ].sort());
