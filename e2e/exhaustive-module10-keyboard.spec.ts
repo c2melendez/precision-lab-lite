@@ -13,7 +13,9 @@ async function clearBasic(dialog: import("@playwright/test").Locator) {
 }
 
 async function resultValue(page: import("@playwright/test").Page): Promise<string> {
-  const status = page.getByRole("status").first();
+  const resultRegion = page.locator('section[aria-label="Resultado"]').first();
+  await expect(resultRegion).toBeVisible({ timeout: 12000 });
+  const status = resultRegion.locator('[role="status"]').first();
   await expect(status).toBeVisible({ timeout: 12000 });
 
   // Resultado simbólico: ResultPanel usa StaticMath -> <math-field read-only>.
