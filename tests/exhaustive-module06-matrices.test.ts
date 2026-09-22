@@ -67,6 +67,13 @@ describe("Suite exhaustiva original — Módulo 6: Matrices", () => {
     expect(vals[2]).toBeCloseTo(5,6);
   });
 
+  it("M22: eigen 2x2 complejo calcula eigenvectores en Lite", () => {
+    const { pairs } = computeEigenvalues(toFractionMatrix([[0,-1],[1,0]]));
+    expect(pairs).toHaveLength(2);
+    expect(pairs.every((p) => p.isComplex)).toBe(true);
+    expect(pairs.every((p) => p.complexEigenvector !== null)).toBe(true);
+  });
+
   it("eigen fuera de 2x2/3x3 se rechaza explícitamente", () => {
     expect(() => computeEigenvalues(toFractionMatrix([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]))).toThrow();
   });
