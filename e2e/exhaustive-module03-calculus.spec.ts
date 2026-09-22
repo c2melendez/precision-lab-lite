@@ -79,6 +79,7 @@ test("suite original módulo 3: inventario de Cálculo refleja capacidades actua
     "sumatoria",
     "derivada",
     "derivada segunda",
+    "derivada parcial",
     "límite",
     "límite al infinito",
     "límite lateral (edita + o - en el exponente)",
@@ -86,6 +87,10 @@ test("suite original módulo 3: inventario de Cálculo refleja capacidades actua
     await expect(page.getByRole("button", { name, exact: true }).first()).toBeVisible();
   }
   await expect(page.getByRole("button", { name: /derivada de orden n/i }).first()).toBeVisible();
+
+  const partial = page.getByRole("button", { name: "derivada parcial", exact: true }).first();
+  await partial.click();
+  await expect(page.getByText(/derivada parcial: todavía no disponible/i)).toHaveCount(0);
 
   const product = page.getByRole("button", { name: "productoria", exact: true }).first();
   await expect(product).toBeVisible();
