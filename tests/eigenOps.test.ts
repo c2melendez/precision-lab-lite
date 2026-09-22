@@ -311,10 +311,10 @@ describe("computeEigenvalues", () => {
       [0,0,0,400000000],
     ]);
     const small = toFractionMatrix([
-      ["1e-8",0,0,0],
-      [0,"2e-8",0,0],
-      [0,0,"3e-8",0],
-      [0,0,0,"4e-8"],
+      ["1/100000000",0,0,0],
+      [0,"1/50000000",0,0],
+      [0,0,"3/100000000",0],
+      [0,0,0,"1/25000000"],
     ]);
     expect(computeEigenvalues(large).pairs.map((p) => p.approx)).toEqual([
       expect.closeTo(1e8, 0),
