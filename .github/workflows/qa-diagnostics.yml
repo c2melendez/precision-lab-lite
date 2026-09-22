@@ -1,12 +1,10 @@
-name: QA Lite Final Gate Reporter
+name: QA Lite M3 Stability Probe
 
 on:
   push:
     branches: [qa/exhaustive-suite-module-01]
     paths:
       - .github/workflows/qa-diagnostics.yml
-      - e2e/exhaustive-module03-calculus.spec.ts
-      - e2e/exhaustive-module10-keyboard.spec.ts
 
 permissions:
   contents: read
@@ -14,9 +12,9 @@ permissions:
   pull-requests: write
 
 jobs:
-  gate:
+  probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,47 +23,33 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - name: Install
-        run: npm ci
-      - name: Typecheck
-        id: tc
-        continue-on-error: true
-        run: npm run typecheck
-      - name: Unit sentinels
-        id: unit
-        continue-on-error: true
-        run: npm test -- tests/parsing.test.ts tests/plusMinus.test.ts
-      - name: Install Playwright
-        run: |
+      - run: npm ci
+      - run: |
           npm install --no-save --package-lock=false @playwright/test@1.55.0
           npx playwright install --with-deps chromium
-      - name: M3 M10 all viewports
-        id: e2e
+      - name: Repeat M3 desktop
+        id: probe
         continue-on-error: true
         shell: bash
         run: |
-          npx playwright test e2e/exhaustive-module03-calculus.spec.ts e2e/exhaustive-module10-keyboard.spec.ts --reporter=line 2>&1 | tee e2e.log
-      - name: Publish result to PR 2
+          npx playwright test e2e/exhaustive-module03-calculus.spec.ts --project=desktop-chromium --repeat-each=8 --retries=0 --workers=1 --reporter=line 2>&1 | tee probe.log
+      - name: Publish probe
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
-          TC: ${{ steps.tc.outcome }}
-          UNIT: ${{ steps.unit.outcome }}
-          E2E: ${{ steps.e2e.outcome }}
+          OUTCOME: ${{ steps.probe.outcome }}
         shell: bash
         run: |
           {
-            echo "<!-- qa-lite-final-gate -->"
-            echo "## QA Lite — M3/M10 gate"
+            echo "<!-- qa-lite-m3-stability -->"
+            echo "## QA Lite — M3 stability probe"
             echo
             echo "- SHA: \`$GITHUB_SHA\`"
-            echo "- typecheck: **$TC**"
-            echo "- unit sentinels: **$UNIT**"
-            echo "- E2E M3/M10 Desktop+Tablet+Mobile: **$E2E**"
+            echo "- resultado: **$OUTCOME**"
+            echo "- ejecución: Desktop, 8 repeticiones, retries=0, workers=1"
             echo
-            echo "### Resumen Playwright"
             echo '~~~text'
-            grep -E "([0-9]+ passed|[0-9]+ failed|[0-9]+ flaky|Running [0-9]+ tests|› e2e/)" e2e.log | tail -n 120 || true
+            grep -E "([0-9]+ passed|[0-9]+ failed|Running [0-9]+ tests|› e2e/)" probe.log | tail -n 140 || true
             echo '~~~'
-          } > /tmp/qa-comment.md
-          gh pr comment 2 --repo c2melendez/precision-lab-lite --body-file /tmp/qa-comment.md
+          } > /tmp/probe.md
+          gh pr comment 2 --repo c2melendez/precision-lab-lite --body-file /tmp/probe.md
