@@ -29,6 +29,8 @@ test("suite original módulo 5: inventario complejo compartido está activo", as
     "logaritmo complejo (rama principal)",
     "potencia compleja",
     "raíz n-ésima compleja (rama principal)",
+    "residuo en un polo (funciones racionales)",
+    "singularidades (funciones racionales)",
     "graficar en el plano de Argand",
   ]) {
     const key = page.getByRole("button", { name, exact: true }).first();
@@ -45,4 +47,18 @@ test("suite original módulo 5: Argand 3+4i usa ejes Re e Im", async ({ page }) 
 
   await expect(page.getByText("Re", { exact: true }).first()).toBeVisible({ timeout: 12000 });
   await expect(page.getByText("Im", { exact: true }).first()).toBeVisible({ timeout: 12000 });
+});
+
+
+test("M20: Res y Sing funcionan por el flujo real del math-field", async ({ page }) => {
+  await openComplex(page);
+
+  await setExpression(page, "\\mathrm{Res}\\left(\\frac{1}{z-2},z=2\\right)");
+  await page.getByRole("button", { name: "calcular", exact: true }).first().click();
+  await expect(page.getByText("1", { exact: true }).first()).toBeVisible({ timeout: 12000 });
+
+  await setExpression(page, "\\mathrm{Sing}\\left(\\frac{1}{(z-1)(z+2)}\\right)");
+  await page.getByRole("button", { name: "calcular", exact: true }).first().click();
+  await expect(page.getByText(/-2/).first()).toBeVisible({ timeout: 12000 });
+  await expect(page.getByText(/1/).first()).toBeVisible({ timeout: 12000 });
 });
