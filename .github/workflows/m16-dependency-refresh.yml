@@ -3,6 +3,8 @@ name: M16 dependency refresh
 on:
   push:
     branches: [qa/m16-post-trackd-stabilization]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
