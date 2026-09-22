@@ -51,6 +51,11 @@ test("suite original módulo 3: sumatoria de 1 a 5 se evalúa a 15 desde la UI",
   await setExpression(page, "\\sum_{i=1}^{5}i");
   await keyboard.getByRole("button", { name: "calcular", exact: true }).click();
 
-  const result = page.getByRole("status").last();
-  await expect(result).toContainText("15", { timeout: 12000 });
+  const result = page.locator(".a11y-scale-result-3xl").first();
+  await expect(result).toBeVisible({ timeout: 12000 });
+  const text = await result.evaluate((el) => {
+    const node = el as HTMLElement & { value?: string };
+    return node.value ?? node.textContent ?? "";
+  });
+  expect(text).toContain("15");
 });
