@@ -37,24 +37,36 @@ async function setExpression(page: import("@playwright/test").Page, value: strin
 async function calculateExpression(page: import("@playwright/test").Page, value: string) {
   await page.addInitScript(() => localStorage.setItem("precision-lab-layout-mode", "split"));
   await page.goto("./");
-  const field = page.locator("math-field").first();
   await setExpression(page, value);
-  // Split conserva un botón Calcular de pantalla en Desktop/Tablet/Mobile.
-  // Espera a que React haya consumido el input: el botón de la pantalla
-  // solo se habilita cuando el estado `latex` ya contiene la expresión.
-  // Se usa este botón (conectado directamente a handleCalculate) y no la
-  // tecla Enter del dock, cuyo callback se resincroniza mediante useEffect
-  // y producía una carrera artificial en Desktop bajo carga.
-  // El foco del math-field abre deliberadamente el teclado propio.
-  // Ejecutamos desde ese mismo teclado: evita depender de un botón de
-  // pantalla que queda físicamente debajo del bottom-sheet en móvil y,
-  // además, recorre la misma ruta de usuario validada en M10.
+
+  // El foco del math-field abre deliberadamente el teclado propio. Para M3
+  // no necesitamos certificar aquí la tecla Enter del teclado (eso ya lo
+  // cubre M10): necesitamos una barrera observable de que React consumió
+  // el último evento input antes de calcular.
   const keyboardDialog = page.getByRole("dialog", { name: "Teclado matemático" });
+  // En el primer render de Desktop el focus puede ocurrir antes de que
+  // NaturalInput registre su listener de foco. No dependemos de esa carrera:
+  // si el diálogo no abrió por foco, usamos el control explícito de la UI.
+  if (!(await keyboardDialog.isVisible().catch(() => false))) {
+    const opener = page.getByRole("button", { name: /abrir teclado|expandir teclado/i }).first();
+    await expect(opener).toBeVisible({ timeout: 10000 });
+    await opener.click();
+  }
   await expect(keyboardDialog).toBeVisible({ timeout: 10000 });
   await page.evaluate(() => window.mathVirtualKeyboard?.hide());
   await page.locator(".ML__keyboard.is-visible").waitFor({ state: "hidden", timeout: 5000 }).catch(() => undefined);
-  const calculate = keyboardDialog.getByRole("button", { name: "calcular", exact: true });
-  await expect(calculate).toBeVisible();
+
+  // Cerrar el bottom-sheet deja accesible el botón de pantalla también en
+  // móvil. En layout split ese botón depende de `latex.trim()`: esperar a
+  // que esté habilitado prueba directamente que el estado React ya contiene
+  // la expresión inyectada, no solo que math-field.value fue actualizado.
+  await keyboardDialog.getByRole("button", { name: "Cerrar teclado" }).click();
+  await expect(keyboardDialog).toBeHidden({ timeout: 10000 });
+
+  const inputRegion = page.locator('section[aria-label="Entrada"]').first();
+  const calculate = inputRegion.getByRole("button", { name: "Calcular", exact: true });
+  await expect(calculate).toBeVisible({ timeout: 10000 });
+  await expect(calculate).toBeEnabled({ timeout: 10000 });
   await calculate.click();
 }
 

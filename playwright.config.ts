@@ -24,9 +24,13 @@ export default defineConfig({
     { name: "mobile-chromium", use: { ...devices["Pixel 7"], browserName: "chromium" } },
   ],
   webServer: {
-    command: `npm run dev -- --host 127.0.0.1 --port ${port}`,
+    // M16: los E2E certifican el artefacto de producción, no el servidor
+    // de desarrollo con HMR. En CI se observó un reload asíncrono de Vite
+    // dev después de un cálculo válido (el historial ya contenía 120),
+    // generando flakiness artificial en Productoria/Sumatoria Desktop.
+    command: `npm run build && npm run preview -- --host 127.0.0.1 --port ${port}`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
+    timeout: 180_000,
   },
 });
