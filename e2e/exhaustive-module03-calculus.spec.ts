@@ -51,16 +51,23 @@ test("suite original módulo 3: inventario de Cálculo refleja capacidades actua
   await expect(page.getByText(/productoria: todavía no disponible/i)).toHaveCount(0);
 });
 
+async function renderedResultValue(page: import("@playwright/test").Page): Promise<string> {
+  const result = page.locator(".a11y-scale-result-3xl").first();
+  await expect(result).toBeVisible({ timeout: 12000 });
+  return String(await result.evaluate((el) => {
+    const maybeField = el as HTMLElement & { value?: string };
+    return typeof maybeField.value === "string" && maybeField.value
+      ? maybeField.value
+      : (el.textContent ?? "");
+  }));
+}
+
 test("suite original módulo 3: productoria de 1 a 5 se evalúa a 120 desde la UI", async ({ page }) => {
   await calculateExpression(page, "\\prod_{i=1}^{5}i");
-
-  const result = page.getByRole("region", { name: "Resultado", exact: true });
-  await expect(result).toContainText("120", { timeout: 12000 });
+  expect((await renderedResultValue(page)).replace(/\\s/g, "")).toContain("120");
 });
 
 test("suite original módulo 3: sumatoria de 1 a 5 se evalúa a 15 desde la UI", async ({ page }) => {
   await calculateExpression(page, "\\sum_{i=1}^{5}i");
-
-  const result = page.getByRole("region", { name: "Resultado", exact: true });
-  await expect(result).toContainText("15", { timeout: 12000 });
+  expect((await renderedResultValue(page)).replace(/\\s/g, "")).toContain("15");
 });
