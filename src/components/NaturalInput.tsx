@@ -16,6 +16,8 @@ declare global {
     interface IntrinsicElements {
       "math-field": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
         placeholder?: string;
+  /** Stable accessible name for the primary MathLive field. */
+  ariaLabel?: string;
         class?: string;
         "virtual-keyboard-mode"?: string;
       };
@@ -27,6 +29,8 @@ interface NaturalInputProps {
   value: string;
   onChange: (latex: string) => void;
   placeholder?: string;
+  /** Stable accessible name for the primary MathLive field. */
+  ariaLabel?: string;
   /** Fase A: expone el elemento real de MathLive para que MathKeyboard use
    * field.insert() con plantillas #? — igual que Precision Lab (Python).
    * Antes el teclado insertaba con concatenación de texto ingenua; esto
@@ -45,7 +49,7 @@ export interface NaturalInputHandle {
   clear: () => void;
 }
 
-export function NaturalInput({ value, onChange, placeholder, fieldRef, bare = false }: NaturalInputProps) {
+export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrada matemática", fieldRef, bare = false }: NaturalInputProps) {
   const ref = useRef<HTMLElement & { value: string; insert: (s: string) => void; focus: () => void }>(null);
 
   useEffect(() => {
@@ -102,6 +106,7 @@ export function NaturalInput({ value, onChange, placeholder, fieldRef, bare = fa
       // (MathKeyboard) reemplaza al teclado virtual por defecto de MathLive
       // — spec v10 §5.
       virtual-keyboard-mode="off"
+      aria-label={ariaLabel}
       placeholder={placeholder}
     />
   );

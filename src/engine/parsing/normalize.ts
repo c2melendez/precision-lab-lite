@@ -278,6 +278,22 @@ export function preprocessLatex(latex: string): string {
     }
   }
 
+  // Π: misma sintaxis estructurada que Σ, evaluada por el helper de
+  // productoria del worker para conservar forma exacta y límites enteros.
+  {
+    const productMatch = expr.match(/\\prod_\{([^{}]*)\}\^\{([^{}]*)\}(.*)$/s);
+    if (productMatch) {
+      const [, varStart, end, body] = productMatch;
+      const eqIndex = varStart.indexOf("=");
+      if (eqIndex === -1) {
+        throw parseError('Π espera la forma "variable=inicio" (ej. i=1) en el límite inferior.');
+      }
+      const productVar = varStart.slice(0, eqIndex);
+      const start = varStart.slice(eqIndex + 1);
+      expr = `product((${body}),${productVar},${start},${end})`;
+    }
+  }
+
   // log con base: plantilla real de la tecla "\log_{#0}\left(#1\right)"
   // (subíndice LaTeX, no la forma con coma "log(x,base)" que ya soporta
   // FUNCTION_ARITY/rewriteLogBase más abajo en index.ts). Sin esta regla

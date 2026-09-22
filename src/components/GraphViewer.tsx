@@ -22,6 +22,22 @@ const WIDTH = 340;
 const HEIGHT = 280;
 const PADDING = 24;
 
+
+export function buildSegmentedPath(samples: { x: number; y: number }[], view: [number, number]): string {
+  if (samples.length === 0) return "";
+  const expectedStep = Math.abs(view[1] - view[0]) / 2000;
+  return samples
+    .map((p, i) => {
+      if (i === 0) return `M ${p.x} ${p.y}`;
+      const prev = samples[i - 1];
+      const gap = Math.abs(p.x - prev.x) > expectedStep * 1.5;
+      const asymptoticJump =
+        Math.sign(p.y) !== Math.sign(prev.y) && Math.min(Math.abs(p.y), Math.abs(prev.y)) > 50;
+      return `${gap || asymptoticJump ? "M" : "L"} ${p.x} ${p.y}`;
+    })
+    .join(" ");
+}
+
 interface GraphViewerProps {
   curves: GraphCurve[];
   selectedId: string | null;
@@ -66,9 +82,10 @@ export function GraphViewer({ curves, selectedId, view, argandPoint = null, axis
         )}
 
         {curves.map((curve) => {
-          const pathD = curve.analysis.samples
-            .map((p, i) => `${i === 0 ? "M" : "L"} ${toScreenX(p.x).toFixed(1)} ${toScreenY(p.y).toFixed(1)}`)
-            .join(" ");
+          const rawPath = buildSegmentedPath(curve.analysis.samples, view);
+          const pathD = rawPath.replace(/([ML]) ([^ ]+) ([^ ]+)/g, (_m, cmd, x, y) =>
+            `${cmd} ${toScreenX(Number(x)).toFixed(1)} ${toScreenY(Number(y)).toFixed(1)}`,
+          );
           return (
             <path
               key={curve.id}

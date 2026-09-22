@@ -363,3 +363,17 @@ vite.config.ts   (incluye configuración PWA)
 - `latexToAlgebrite.ts` es una conversión simplificada, no el parser robusto de la spec — ver TODO en el archivo.
 - Los íconos de PWA en `public/icons/` son placeholders — reemplázalos por íconos reales de 192x192, 512x512 y 512x512 maskable antes de publicar.
 - No se ha podido compilar ni probar visualmente en este entorno (sin acceso a red) — ver "Estado del proyecto" arriba.
+
+## Correcciones posteriores a Track D (suite exhaustiva M1–M15)
+
+Esta versión incorpora las correcciones de producto derivadas de Track D:
+
+- el campo MathLive principal tiene nombre accesible estable (`Entrada matemática`);
+- `ResultPanel` usa una región `role="status"`/`aria-live="polite"` uniforme, también en disposición Fusionada;
+- Productoria Π queda activa y se evalúa como producto finito con límites enteros y tope de 10 000 términos;
+- `product(...)` queda registrado explícitamente como función de aridad 4 en el parser, evitando que la multiplicación implícita altere su semántica;
+- `GraphViewer` abre un nuevo subpath SVG ante huecos de muestreo o saltos asintóticos, evitando unir ramas a través de una asíntota;
+- los polos exactos de `tan`/`sec` ya no se presentan como números finitos gigantes; se devuelven como error de dominio.
+
+Los cambios conservan la arquitectura sin backend de Lite y reutilizan el pipeline existente de normalización + worker.
+
