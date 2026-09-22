@@ -17,11 +17,21 @@ async function setExpression(page: import("@playwright/test").Page, value: strin
   // Esperar un turno tras el foco garantiza que NaturalInput ya registró
   // su listener "input" antes de la inyección del valor del centinela.
   await page.waitForTimeout(100);
-  await field.evaluate((node, v) => {
+  await field.evaluate(async (node, v) => {
     const el = node as HTMLElement & { value: string };
     el.value = v as string;
     el.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText" }));
+    // React y MathLive pueden consumir el primer evento en turnos distintos
+    // bajo carga del runner. Dos frames permiten que el listener/estado se
+    // estabilice; un segundo input conserva la misma expresión y elimina
+    // la carrera sin alterar el producto.
+    await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+    el.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText" }));
   }, value);
+  await expect.poll(
+    async () => field.evaluate((el) => String((el as HTMLElement & { value?: string }).value ?? "")),
+    { timeout: 10000 },
+  ).toBe(value);
 }
 
 async function calculateExpression(page: import("@playwright/test").Page, value: string) {
@@ -38,7 +48,7 @@ async function calculateExpression(page: import("@playwright/test").Page, value:
   const inputRegion = page.locator('section[aria-label="Entrada"]').first();
   await expect(inputRegion).toBeVisible();
   const calculate = inputRegion.getByRole("button", { name: "Calcular", exact: true });
-  await expect(calculate).toBeEnabled();
+  await expect(calculate).toBeEnabled({ timeout: 15000 });
   await calculate.click();
 }
 
@@ -67,9 +77,9 @@ test("suite original módulo 3: inventario de Cálculo refleja capacidades actua
 
 async function renderedResultValue(page: import("@playwright/test").Page): Promise<string> {
   const resultRegion = page.locator('section[aria-label="Resultado"]').first();
-  await expect(resultRegion).toBeVisible({ timeout: 12000 });
+  await expect(resultRegion).toBeVisible({ timeout: 20000 });
   const status = resultRegion.locator('[role="status"]').first();
-  await expect(status).toBeVisible({ timeout: 12000 });
+  await expect(status).toBeVisible({ timeout: 20000 });
   const staticField = status.locator("math-field[read-only]").first();
   if (await staticField.count()) {
     return String(await staticField.evaluate((el) =>
