@@ -74,8 +74,24 @@ describe("Suite exhaustiva original — Módulo 6: Matrices", () => {
     expect(pairs.every((p) => p.complexEigenvector !== null)).toBe(true);
   });
 
-  it("eigen fuera de 2x2/3x3 se rechaza explícitamente", () => {
-    expect(() => computeEigenvalues(toFractionMatrix([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]))).toThrow();
+  it("M23: eigen 4x4–6x6 usa fallback numérico", () => {
+    const A4 = toFractionMatrix([[1,0,0,0],[0,2,0,0],[0,0,3,0],[0,0,0,4]]);
+    const r4 = computeEigenvalues(A4);
+    expect(r4.allExact).toBe(false);
+    expect(r4.pairs).toHaveLength(4);
+    expect(r4.pairs.map((p) => p.approx)).toEqual([
+      expect.closeTo(1, 4),
+      expect.closeTo(2, 4),
+      expect.closeTo(3, 4),
+      expect.closeTo(4, 4),
+    ]);
+
+    const A6 = toFractionMatrix(Array.from({ length: 6 }, (_, r) =>
+      Array.from({ length: 6 }, (_, c) => (r === c ? r + 1 : 0)),
+    ));
+    const r6 = computeEigenvalues(A6);
+    expect(r6.allExact).toBe(false);
+    expect(r6.pairs).toHaveLength(6);
   });
 
   it("inversa singular y errores dimensionales se rechazan", () => {
