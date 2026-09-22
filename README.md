@@ -363,3 +363,14 @@ vite.config.ts   (incluye configuración PWA)
 - `latexToAlgebrite.ts` es una conversión simplificada, no el parser robusto de la spec — ver TODO en el archivo.
 - Los íconos de PWA en `public/icons/` son placeholders — reemplázalos por íconos reales de 192x192, 512x512 y 512x512 maskable antes de publicar.
 - No se ha podido compilar ni probar visualmente en este entorno (sin acceso a red) — ver "Estado del proyecto" arriba.
+
+## Revalidación post-fix Track D — 21 de septiembre de 2026
+
+Se revisó el paquete corregido después de M1–M15 y se confirmó por código que están presentes los fixes de accesibilidad base, Productoria y discontinuidades:
+
+- `NaturalInput` aporta un nombre accesible estable al `math-field` principal.
+- `ResultPanel` centraliza `role="status"`, `aria-live="polite"` y `aria-atomic="true"`, evitando depender del layout.
+- `GraphViewer` genera subpaths separados ante huecos/saltos asintóticos.
+- Productoria está habilitada y dispone de parser/evaluador finito acotado.
+
+El entorno local no pudo completar `npm ci`; por tanto Vitest/typecheck/build/Playwright deben confirmarse mediante GitHub Actions. No se marca Lite completamente verde hasta que esa ejecución termine.
