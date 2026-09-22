@@ -64,7 +64,6 @@ describe("paridad tecla → parser del teclado V5", () => {
 
   it("mantiene marcadas como no disponibles las capacidades conocidas", () => {
     for (const label of [
-      "productoria",
       "derivada parcial",
       "residuo en un polo (funciones racionales)",
       "singularidades (funciones racionales)",

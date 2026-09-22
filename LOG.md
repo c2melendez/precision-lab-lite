@@ -120,3 +120,29 @@ Nivel de evidencia: NIVEL 1 (ejecución real). `npm run typecheck` limpio, `npx 
 Decisión DEDUCIBLE tomada: el texto exacto de la etiqueta ("2 var.") y su posición (esquina inferior derecha del botón, `absolute -bottom-1 right-1`) se decidieron sin pedir confirmación previa por ser un detalle menor de layout — reversible con un cambio de una línea si Carlos prefiere otra redacción o posición.
 
 Riesgo pendiente, sin resolver en este módulo: la etiqueta "2 var." es CSS puro (`absolute`, sin overflow controlado) — no se verificó visualmente en un viewport real (sin captura de pantalla ni Chromium en esta sesión), solo que compila y no rompe tests. Vale una revisión visual rápida antes de darlo por definitivo.
+
+# Corrección de producto posterior a Track D — M1–M15
+
+Esta fase aplica correcciones de producto sobre los hallazgos exclusivos o compartidos de Lite, conservando la batería QA de Track D.
+
+## Hallazgos abordados
+
+- M1: `tan(pi/2)` y `sec(pi/2)` no deben degradarse a flotantes finitos engañosos.
+- M3/M10: Productoria Π estaba visible pero marcada `unavailable`.
+- M9: el SVG unía ramas a través de discontinuidades.
+- M12-001: campo matemático principal sin nombre accesible.
+- M12-002: resultado dinámico de Fusionada fuera de una región anunciable.
+
+## Correcciones
+
+1. `NaturalInput` acepta `ariaLabel` y usa por defecto `Entrada matemática`.
+2. `ResultPanel` actúa como región `role="status"`, `aria-live="polite"`.
+3. Π se activa en `MathKeyboard`, se normaliza a `product(...)` y se evalúa con `tryFiniteProduct`.
+4. La Productoria valida índice, límites enteros y máximo 10 000 términos.
+5. `GraphViewer` genera nuevos comandos `M` en huecos de muestreo y saltos asintóticos, evitando puentes falsos.
+6. El worker reconoce polos exactos de `tan` y `sec` y responde `DOMAIN_ERROR`.
+7. Las pruebas V5 de inventario/paridad ya no consideran Productoria una capacidad no disponible.
+
+## Verificación
+
+El entorno local no pudo completar `npm ci` por falta de acceso al registro npm. La compilación, Vitest y Playwright de la rama corregida se delegan a los workflows de GitHub Actions, donde la rama conserva la suite exhaustiva de Track D.

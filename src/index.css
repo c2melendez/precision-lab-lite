@@ -13,3 +13,14 @@ body {
 body {
   font-family: theme("fontFamily.sans");
 }
+
+/*
+ * Precision Lab usa exclusivamente su teclado matemático propio.
+ * MathLive puede inyectar un teclado virtual global en dispositivos táctiles
+ * incluso cuando el campo intenta desactivarlo por atributo; se bloquea aquí
+ * para que nunca tape ni intercepte controles del teclado V5.
+ */
+.ML__keyboard {
+  display: none !important;
+  pointer-events: none !important;
+}

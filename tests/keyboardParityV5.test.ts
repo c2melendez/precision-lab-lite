@@ -44,6 +44,7 @@ describe("paridad del teclado V5 de Lite", () => {
     const calculus = CATEGORY_MENUS["Cálculo"].flatMap((group) => group.keys);
     expect(calculus.find((key) => key.ariaLabel === "límite")?.unavailable).toBe(false);
     expect(calculus.find((key) => key.ariaLabel === "derivada parcial")?.unavailable).toBe(true);
-    expect(calculus.find((key) => key.ariaLabel === "productoria")?.unavailable).toBe(true);
+    expect(calculus.find((key) => key.ariaLabel === "productoria")?.unavailable).toBeFalsy();
+    expect(calculus.find((key) => key.ariaLabel === "productoria")?.insertLatex).toBe("\\prod_{#0}^{#1}#2");
   });
 });

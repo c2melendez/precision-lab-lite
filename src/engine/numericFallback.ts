@@ -17,11 +17,11 @@ type Fn = (x: number) => number;
 const UNARY_FUNCTIONS: Record<string, Fn> = {
   sin: Math.sin,
   cos: Math.cos,
-  tan: Math.tan,
+  tan: (x) => (Math.abs(Math.cos(x)) < 1e-12 ? NaN : Math.tan(x)),
   arcsin: Math.asin,
   arccos: Math.acos,
   arctan: Math.atan,
-  sec: (x) => 1 / Math.cos(x),
+  sec: (x) => (Math.abs(Math.cos(x)) < 1e-12 ? NaN : 1 / Math.cos(x)),
   csc: (x) => 1 / Math.sin(x),
   cot: (x) => 1 / Math.tan(x),
   // Fase 3: sinh/cosh/tanh SÍ los evalúa Algebrite con float(...), pero se
@@ -85,7 +85,12 @@ export function compileNumeric(expr: string, variable: string): Fn {
       pos++;
       const right = parseUnary();
       const prevLeft = left;
-      left = op === "*" ? (x) => prevLeft(x) * right(x) : (x) => prevLeft(x) / right(x);
+      left = op === "*"
+        ? (x) => prevLeft(x) * right(x)
+        : (x) => {
+            const denominator = right(x);
+            return Math.abs(denominator) < 1e-12 ? NaN : prevLeft(x) / denominator;
+          };
     }
     return left;
   }
@@ -205,7 +210,12 @@ export function compileNumeric2D(expr: string, varX: string, varY: string): (x: 
       pos++;
       const right = parseUnary();
       const prevLeft = left;
-      left = op === "*" ? (x, y) => prevLeft(x, y) * right(x, y) : (x, y) => prevLeft(x, y) / right(x, y);
+      left = op === "*"
+        ? (x, y) => prevLeft(x, y) * right(x, y)
+        : (x, y) => {
+            const denominator = right(x, y);
+            return Math.abs(denominator) < 1e-12 ? NaN : prevLeft(x, y) / denominator;
+          };
     }
     return left;
   }

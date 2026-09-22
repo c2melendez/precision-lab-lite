@@ -20,6 +20,9 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - name: QA dependency audit
+        continue-on-error: true
+        run: npm audit --audit-level=moderate
       - name: Typecheck
         run: npm run typecheck
       - name: Unit and parity tests
