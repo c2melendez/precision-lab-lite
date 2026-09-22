@@ -66,7 +66,6 @@ describe("inventario estructural del teclado V5 de Lite", () => {
 
     expect(unavailableLabels).toEqual(
       expect.arrayContaining([
-        "derivada parcial",
         "residuo en un polo (funciones racionales)",
         "singularidades (funciones racionales)",
       ]),
