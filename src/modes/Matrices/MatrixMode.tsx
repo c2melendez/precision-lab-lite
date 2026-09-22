@@ -116,6 +116,7 @@ function MatrixSelector({
 export function MatrixMode() {
   const [op, setOp] = useState<Op>("add");
   const [exponent, setExponent] = useState(2);
+  const [matrixExpression, setMatrixExpression] = useState("A+B");
   const [result, setResult] = useState<MathResult | null>(null);
   const workerRef = useRef<Worker | null>(null);
 
@@ -186,6 +187,33 @@ export function MatrixMode() {
     }
   }, [op, primary, secondary, matrixA, matrixB, exponent, getWorker]);
 
+  const handleExpressionCompute = useCallback(() => {
+    const expression = matrixExpression.trim();
+    if (!expression) return;
+
+    const requestId = makeRequestId();
+    const worker = getWorker();
+    worker.onmessage = (e: MessageEvent<MathResult>) => {
+      setResult(e.data);
+      if (e.data.success) {
+        addHistoryEntry({
+          mode: "Matrices (expresión A–F)",
+          input: expression,
+          resultSummary: e.data.resultLatex ?? "",
+        });
+      }
+    };
+
+    worker.postMessage({
+      type: "matrixExpression",
+      requestId,
+      expression,
+      matrices: Object.fromEntries(
+        MATRIX_NAMES.map((name) => [name, matrices[name].values]),
+      ),
+    });
+  }, [matrixExpression, matrices, getWorker]);
+
   const choosePrimary = (name: MatrixName) => {
     setPrimary(name);
     setResult(null);
@@ -221,6 +249,40 @@ export function MatrixMode() {
               </button>
             );
           })}
+        </div>
+
+        <div className="rounded-xl border border-paper-line bg-paper-soft p-3">
+          <label htmlFor="matrix-expression" className="mb-1 block text-sm font-medium text-ink">
+            Expresión matricial A–F
+          </label>
+          <div className="flex gap-2">
+            <input
+              id="matrix-expression"
+              value={matrixExpression}
+              onChange={(event) => setMatrixExpression(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  handleExpressionCompute();
+                }
+              }}
+              placeholder="Ej. (A+B)*C, det(A)+tr(B), inv(D)"
+              spellCheck={false}
+              autoComplete="off"
+              className="min-w-0 flex-1 rounded-md border border-paper-line bg-paper px-3 py-2 font-mono text-sm text-ink"
+            />
+            <button
+              type="button"
+              onClick={handleExpressionCompute}
+              disabled={matrixExpression.trim() === ""}
+              className="shrink-0 rounded-md bg-graph px-3 py-2 text-sm font-semibold text-paper hover:bg-graph/90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Evaluar expresión
+            </button>
+          </div>
+          <p className="mt-1.5 text-xs text-muted">
+            Admite +, −, *, ^0…10, paréntesis y det/inv/tr/rank/ref/rref/transpose. Usa matrices A–F guardadas.
+          </p>
         </div>
 
         <div
