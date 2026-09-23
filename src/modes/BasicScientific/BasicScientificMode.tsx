@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useComputeWorker } from "../../hooks/useComputeWorker";
 import { MathKeyboard, isVariableOrConstantKey, type KeyDef } from "../../components/MathKeyboard";
 import { KeyboardBasicPanel } from "../../components/KeyboardBasicPanel";
 import { Screen } from "../../components/Screen";
@@ -46,20 +47,11 @@ export function BasicScientificMode() {
   const [latex, setLatex] = useState("");
   const [result, setResult] = useState<MathResult | null>(null);
   const [angleMode, setAngleMode] = useState<"RAD" | "GRAD">("RAD");
-  const workerRef = useRef<Worker | null>(null);
   const [mathField, setMathField] = useState<MathFieldRef>(null);
   const [sessionHistory, setSessionHistory] = useState<SessionHistoryEntry[]>([]);
   const setPendingArgandPoint = useArgandBridgeStore((s) => s.setPendingArgandPoint);
 
-  const getWorker = useCallback(() => {
-    if (!workerRef.current) {
-      workerRef.current = new Worker(
-        new URL("../../workers/compute.worker.ts", import.meta.url),
-        { type: "module" },
-      );
-    }
-    return workerRef.current;
-  }, []);
+  const { getWorker } = useComputeWorker();
 
   const fail = useCallback((code: ErrorCode, message: string, requestId: string) => {
     setResult({
