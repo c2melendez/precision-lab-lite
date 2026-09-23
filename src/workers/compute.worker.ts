@@ -460,6 +460,32 @@ function tryNumericFallback(expr: string): string | null {
 
 function handleEvaluate(expr: string, requestId: string): MathResult {
   try {
+    // S16 REG-005: un entero literal puede exceder Number.MAX_SAFE_INTEGER.
+    // No debe pasar por conversiones numéricas de JS/Fraction.js ni por
+    // una aproximación que lo corrompa silenciosamente. Para un literal
+    // entero, la forma exacta ya es el propio texto normalizado.
+    if (/^-?\d+$/.test(expr)) {
+      try {
+        const exactInteger = BigInt(expr);
+        const maxSafe = BigInt(Number.MAX_SAFE_INTEGER);
+        if (exactInteger > maxSafe || exactInteger < -maxSafe) {
+          return {
+            success: true,
+            resultLatex: expr,
+            fraction: undefined,
+            decimalApprox: undefined,
+            steps: [],
+            hasDetailedSteps: false,
+            confidence: "SYMBOLIC",
+            requestId,
+          };
+        }
+      } catch {
+        // Si BigInt no pudiera interpretar el literal, seguir por la ruta
+        // normal para que el parser produzca el error correspondiente.
+      }
+    }
+
     // Fase 10: mean/median/mode/stdev/variance/sort/mad/min/max no son
     // nativas de Algebrite (confirmado, ver statFunctions.ts) — se
     // resuelven aparte, antes de intentar el camino normal.
