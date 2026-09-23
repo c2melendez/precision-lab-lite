@@ -82,7 +82,8 @@ export function preprocessLatex(latex: string): string {
   // el pipeline de grados/DMS.
   expr = expr
     .replace(/\^\{\\circ\}/g, "°")
-    .replace(/\^\\circ/g, "°");
+    .replace(/\^\\circ/g, "°")
+    .replace(/\\degree/g, "°");
 
   // Módulo D (spec_motor_matematico_pendiente.md §5) — notación de
   // grados. AMBIGUO de la spec ya delegado a mí ("decide tú dónde vive
