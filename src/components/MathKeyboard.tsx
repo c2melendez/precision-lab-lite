@@ -706,6 +706,7 @@ export function MathKeyboard({
                         key={`variable-${i}`}
                         onClick={() => press(k)}
                         aria-label={k.ariaLabel}
+                        aria-disabled={k.unavailable ? "true" : undefined}
                         title={k.description ?? k.ariaLabel}
                         className="rounded-md border border-marker/35 bg-marker-soft/15 py-2 text-sm font-medium text-marker hover:bg-marker-soft/25"
                       >
@@ -722,6 +723,7 @@ export function MathKeyboard({
                         key={`constant-${i}`}
                         onClick={() => press(k)}
                         aria-label={k.ariaLabel}
+                        aria-disabled={k.unavailable ? "true" : undefined}
                         title={k.description ?? k.ariaLabel}
                         className="rounded-md border border-graph/35 bg-graph/15 py-2 text-sm font-medium text-graph hover:bg-graph/25"
                       >
@@ -739,6 +741,7 @@ export function MathKeyboard({
                       key={`sym1-${i}`}
                       onClick={() => pressSymbol(k)}
                       aria-label={k.ariaLabel}
+                        aria-disabled={k.unavailable ? "true" : undefined}
                       title={k.description ?? k.ariaLabel}
                       className="rounded-md bg-chrome py-2 text-[11px] text-bone hover:bg-chrome/70"
                     >
@@ -752,6 +755,7 @@ export function MathKeyboard({
                       key={`sym2-${i}`}
                       onClick={() => pressSymbol(k)}
                       aria-label={k.ariaLabel}
+                        aria-disabled={k.unavailable ? "true" : undefined}
                       title={k.description ?? k.ariaLabel}
                       className="rounded-md bg-chrome py-2 text-[11px] text-bone hover:bg-chrome/70"
                     >
@@ -870,6 +874,7 @@ export function MathKeyboard({
                         key={`${group.section}-${i}`}
                         onClick={() => press(k)}
                         aria-label={k.ariaLabel}
+                        aria-disabled={k.unavailable ? "true" : undefined}
                     title={k.description ?? k.ariaLabel}
                         className={
                           // Módulo de cierre (honestidad visual): mismo patrón
@@ -968,6 +973,7 @@ export function MathKeyboard({
                 key={i}
                 onClick={() => press(k)}
                 aria-label={k.ariaLabel}
+                        aria-disabled={k.unavailable ? "true" : undefined}
                     title={k.description ?? k.ariaLabel}
                 className={
                   k.unavailable
@@ -987,6 +993,7 @@ export function MathKeyboard({
                 key={i}
                 onClick={() => press(k)}
                 aria-label={k.ariaLabel}
+                        aria-disabled={k.unavailable ? "true" : undefined}
                     title={k.description ?? k.ariaLabel}
                 className={
                   k.unavailable
@@ -1047,6 +1054,7 @@ export function MathKeyboard({
                         : "rounded-md bg-chrome-soft py-2.5 text-[11px] text-marker hover:bg-chrome-soft/70";
                 return (
                   <button key={j} onClick={() => pressBase(k)} aria-label={k.ariaLabel}
+                        aria-disabled={k.unavailable ? "true" : undefined}
                     title={k.description ?? k.ariaLabel} className={className}>
                     <KeyGlyph glyph={k.glyph} />
                   </button>
@@ -1061,6 +1069,7 @@ export function MathKeyboard({
                 key={i}
                 onClick={() => press(k)}
                 aria-label={k.ariaLabel}
+                        aria-disabled={k.unavailable ? "true" : undefined}
                     title={k.description ?? k.ariaLabel}
                 className="rounded-md bg-paper-soft py-1.5 text-sm text-ink hover:bg-paper-line/60"
               >
