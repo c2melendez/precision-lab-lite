@@ -23,7 +23,7 @@ export default defineConfig({
   },
   projects: [{ name: "pwa-chromium" }],
   webServer: {
-    command: `printf "s22-v1" > public/s22-version.txt && npm run build && npm run preview -- --host 127.0.0.1 --port ${port}`,
+    command: `printf '<svg xmlns="http://www.w3.org/2000/svg"><text>s22-v1</text></svg>' > public/s22-version.svg && npm run build && npm run preview -- --host 127.0.0.1 --port ${port}`,
     url: baseURL,
     reuseExistingServer: false,
     timeout: 180_000,
