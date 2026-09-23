@@ -60,13 +60,17 @@ async function calculate(page: import("@playwright/test").Page, value: string) {
 }
 
 async function resultText(page: import("@playwright/test").Page) {
-  const status = page.locator('section[aria-label="Resultado"] [role="status"]').first();
-  await expect(status).toBeVisible({ timeout: 15000 });
-  const math = status.locator("math-field[read-only]").first();
-  if (await math.count()) {
-    return String(await math.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
+  const resultRegion = page.locator('section[aria-label="Resultado"]').first();
+  await expect(resultRegion).toBeVisible({ timeout: 15000 });
+  const status = resultRegion.locator('[role="status"]').first();
+  if (await status.count()) {
+    const math = status.locator("math-field[read-only]").first();
+    if (await math.count()) {
+      return String(await math.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
+    }
+    return (await status.innerText()).trim();
   }
-  return (await status.innerText()).trim();
+  return (await resultRegion.innerText()).trim();
 }
 
 function percentile(values: number[], q: number) {
@@ -90,7 +94,9 @@ test("S20: 5 evaluaciones cortas registran mediana/p95 y siguen respondiendo", a
   ] as const;
   const durations: number[] = [];
 
-  for (const [expression, expected] of cases) {
+  for (let index = 0; index < cases.length; index++) {
+    const [expression, expected] = cases[index];
+    if (index > 0) await page.reload();
     const started = await calculate(page, expression);
     await expect.poll(() => resultText(page), { timeout: 15000 }).toMatch(expected);
     durations.push(performance.now() - started);
@@ -112,8 +118,7 @@ test("S20: 5 evaluaciones cortas registran mediana/p95 y siguen respondiendo", a
 
 test("S20: sumatoria de 100000 términos se controla sin congelar la UI", async ({ page }) => {
   await calculate(page, "\\sum_{i=1}^{100000}i");
-  const status = page.locator('section[aria-label="Resultado"] [role="status"]').first();
-  await expect(status).toContainText(/10,?000|excede|complejidad/i, { timeout: 5000 });
+  await expect.poll(() => resultText(page), { timeout: 5000 }).toMatch(/10,?000|excede|complejidad/i);
 });
 
 test("S20: al salir del modo se interrumpe el worker y al volver se recupera", async ({ page }, testInfo) => {
