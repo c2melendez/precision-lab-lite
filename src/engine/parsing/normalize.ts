@@ -81,8 +81,8 @@ export function preprocessLatex(latex: string): string {
   // (y puede usar ^\\circ). Unificarlo con el marcador ° que ya procesa
   // el pipeline de grados/DMS.
   expr = expr
-    .replace(/\^\{\\\\circ\}/g, "°")
-    .replace(/\^\\\\circ/g, "°");
+    .replace(/\^\{\\circ\}/g, "°")
+    .replace(/\^\\circ/g, "°");
 
   // Módulo D (spec_motor_matematico_pendiente.md §5) — notación de
   // grados. AMBIGUO de la spec ya delegado a mí ("decide tú dónde vive
@@ -334,10 +334,10 @@ export function preprocessLatex(latex: string): string {
   // llaves y con \\left(...\\right) o paréntesis simples.
   {
     const logBasePatterns = [
-      /\\\\log\\s*_\\s*\\{([^{}]+)\\}\\s*\\\\left\\((.*)\\\\right\\)$/s,
-      /\\\\log\\s*_\\s*\\{([^{}]+)\\}\\s*\\((.*)\\)$/s,
-      /\\\\log\\s*_\\s*([0-9a-zA-Z]+)\\s*\\\\left\\((.*)\\\\right\\)$/s,
-      /\\\\log\\s*_\\s*([0-9a-zA-Z]+)\\s*\\((.*)\\)$/s,
+      /\\log\s*_\s*\{([^{}]+)\}\s*\\left\((.*)\\right\)$/s,
+      /\\log\s*_\s*\{([^{}]+)\}\s*\((.*)\)$/s,
+      /\\log\s*_\s*([0-9a-zA-Z]+)\s*\\left\((.*)\\right\)$/s,
+      /\\log\s*_\s*([0-9a-zA-Z]+)\s*\((.*)\)$/s,
     ];
     for (const pattern of logBasePatterns) {
       const match = expr.match(pattern);
