@@ -26,29 +26,28 @@ async function clickVisibleButton(page: Page, name: string): Promise<boolean> {
   return false;
 }
 
+async function ensureKeyboardOpen(page: Page) {
+  const dialog = page.getByRole("dialog", { name: "Teclado matemático" });
+  if (await dialog.isVisible().catch(() => false)) return;
+  const opener = page.getByRole("button", { name: /abrir teclado|expandir teclado/i }).first();
+  await expect(opener).toBeVisible();
+  await opener.click();
+  await expect(dialog).toBeVisible();
+}
+
 async function press(dialog: Locator, name: string) {
   const page = dialog.page();
   if (await clickVisibleButton(page, name)) return;
 
-  // Las teclas temáticas dejan seleccionada su pestaña. Para continuar
-  // con números/operadores, el recorrido real vuelve a la pestaña Básico.
+  // En V5 las categorías reemplazan el contenido del panel. Dígitos,
+  // operadores y Calcular están en la pestaña Básico, así que un usuario
+  // vuelve a Básico antes de continuar escribiendo tras insertar una
+  // plantilla temática. Reproducimos exactamente ese recorrido.
+  await ensureKeyboardOpen(page);
   const basicTab = page.getByRole("tab", { name: "Básico", exact: true }).first();
   if (await basicTab.isVisible().catch(() => false)) {
     await basicTab.click();
     await expect(basicTab).toHaveAttribute("aria-selected", "true");
-    if (await clickVisibleButton(page, name)) return;
-  }
-
-  // Si el panel estuviera cerrado por otra transición, volver a abrirlo.
-  const opener = page.getByRole("button", { name: /abrir teclado|expandir teclado/i }).first();
-  if (await opener.isVisible().catch(() => false)) {
-    await opener.click();
-    await expect(page.getByRole("dialog", { name: "Teclado matemático" })).toBeVisible();
-    const reopenedBasic = page.getByRole("tab", { name: "Básico", exact: true }).first();
-    if (await reopenedBasic.isVisible().catch(() => false)) {
-      await reopenedBasic.click();
-      await expect(reopenedBasic).toHaveAttribute("aria-selected", "true");
-    }
     if (await clickVisibleButton(page, name)) return;
   }
 
