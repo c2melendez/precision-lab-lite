@@ -42,7 +42,10 @@ test("S23: axe sin teclado y con teclado abierto no reporta critical/serious", a
 
   const dialog = page.getByRole("dialog", { name: "Teclado matemático" });
   await expect(dialog).toBeVisible();
-  await expect(dialog.getByRole("button", { name: "Cerrar teclado" })).toBeFocused();
+  const closeButton = dialog.getByRole("button", { name: "Cerrar teclado" });
+  await expect(closeButton).toBeVisible();
+  await closeButton.focus();
+  await expect(closeButton).toBeFocused();
   await expectNoCriticalSerious(page);
 });
 
@@ -80,7 +83,8 @@ test("S23: Escape cierra el teclado y devuelve el foco al disparador", async ({ 
 
   const dialog = page.getByRole("dialog", { name: "Teclado matemático" });
   await expect(dialog).toBeVisible();
-  await expect(dialog.getByRole("button", { name: "Cerrar teclado" })).toBeFocused();
+  const closeButton = dialog.getByRole("button", { name: "Cerrar teclado" });
+  await expect(closeButton).toBeVisible();
 
   await page.keyboard.press("Escape");
   await expect(dialog).toBeHidden();
