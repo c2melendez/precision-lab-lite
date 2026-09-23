@@ -13,6 +13,7 @@ import { tryComplexFunction, parseComplex } from "../engine/complexFunctions";
 import { residueAtRational, singularitiesOfRational } from "../engine/complexAnalysis";
 import { tryPlusMinus } from "../engine/plusMinus";
 import { tryFiniteProduct } from "../engine/product";
+import { validateFiniteSumRange } from "../engine/sum";
 import { tryCbrtSign } from "../engine/cbrtSign";
 import { solveLinearInequalitySystem } from "../engine/stepEngine/linearInequalitySystem";
 import type { InequalityOperator } from "../engine/parsing/inequalitySplit";
@@ -542,6 +543,8 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
         requestId,
       };
     }
+
+    validateFiniteSumRange(expr);
 
     const productResult = tryFiniteProduct(expr);
     if (productResult !== null) {
