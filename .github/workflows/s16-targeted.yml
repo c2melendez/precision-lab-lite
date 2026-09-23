@@ -1,0 +1,28 @@
+name: S16 targeted regressions
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  s16:
+    if: github.head_ref == 'qa/s16-official-browser-regressions'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install app dependencies
+        run: npm ci
+      - name: Install Playwright test runner
+        run: npm install --no-save --package-lock=false @playwright/test@1.63.0
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run S16 REG-001..REG-010
+        run: npx playwright test e2e/s16-critical-regressions.spec.ts --project=desktop-chromium
