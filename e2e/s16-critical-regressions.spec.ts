@@ -181,10 +181,6 @@ test("S16 REG-008: sin(90°) => 1 usando tecla grados", async ({ page }) => {
   await press(dialog, "9");
   await press(dialog, "0");
   await press(dialog, "grados");
-  const degreeLatex = await page.locator("math-field").first().evaluate((el) =>
-    String((el as HTMLElement & { value?: string }).value ?? ""),
-  );
-  console.log("S16_REG008_LATEX=", JSON.stringify(degreeLatex));
   await calculate(page, dialog);
   expect((await resultValue(page)).replace(/\s/g, "")).toContain("1");
 });
