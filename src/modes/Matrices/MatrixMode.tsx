@@ -1,4 +1,5 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
+import { useComputeWorker } from "../../hooks/useComputeWorker";
 import { MatrixGridInput } from "../../components/MatrixGridInput";
 import { ResultPanel } from "../../components/ResultPanel";
 import { StepList } from "../../components/StepList";
@@ -119,7 +120,6 @@ export function MatrixMode() {
   const [matrixExpression, setMatrixExpression] = useState("A+B");
   const [copyTarget, setCopyTarget] = useState<MatrixName>("C");
   const [result, setResult] = useState<MathResult | null>(null);
-  const workerRef = useRef<Worker | null>(null);
 
   const matrices = useNamedMatricesStore((state) => state.matrices);
   const primary = useNamedMatricesStore((state) => state.primary);
@@ -134,15 +134,7 @@ export function MatrixMode() {
   const matrixA = matrices[primary];
   const matrixB = matrices[secondary];
 
-  const getWorker = useCallback(() => {
-    if (!workerRef.current) {
-      workerRef.current = new Worker(
-        new URL("../../workers/compute.worker.ts", import.meta.url),
-        { type: "module" },
-      );
-    }
-    return workerRef.current;
-  }, []);
+  const { getWorker } = useComputeWorker();
 
   const handleCompute = useCallback(() => {
     const requestId = makeRequestId();
