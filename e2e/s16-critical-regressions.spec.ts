@@ -30,17 +30,29 @@ async function press(dialog: Locator, name: string) {
   const page = dialog.page();
   if (await clickVisibleButton(page, name)) return;
 
-  // Insertar una plantilla temática cierra el panel expandido. La ruta
-  // real de usuario para continuar escribiendo es volver a abrir el
-  // teclado y pulsar la siguiente tecla; hacemos exactamente eso.
+  // Las teclas temáticas dejan seleccionada su pestaña. Para continuar
+  // con números/operadores, el recorrido real vuelve a la pestaña Básico.
+  const basicTab = page.getByRole("tab", { name: "Básico", exact: true }).first();
+  if (await basicTab.isVisible().catch(() => false)) {
+    await basicTab.click();
+    await expect(basicTab).toHaveAttribute("aria-selected", "true");
+    if (await clickVisibleButton(page, name)) return;
+  }
+
+  // Si el panel estuviera cerrado por otra transición, volver a abrirlo.
   const opener = page.getByRole("button", { name: /abrir teclado|expandir teclado/i }).first();
   if (await opener.isVisible().catch(() => false)) {
     await opener.click();
     await expect(page.getByRole("dialog", { name: "Teclado matemático" })).toBeVisible();
+    const reopenedBasic = page.getByRole("tab", { name: "Básico", exact: true }).first();
+    if (await reopenedBasic.isVisible().catch(() => false)) {
+      await reopenedBasic.click();
+      await expect(reopenedBasic).toHaveAttribute("aria-selected", "true");
+    }
     if (await clickVisibleButton(page, name)) return;
   }
 
-  throw new Error(`No se encontró una tecla visible con aria-label "${name}" ni tras reabrir el teclado`);
+  throw new Error(`No se encontró una tecla visible con aria-label "${name}" tras volver a Básico`);
 }
 
 async function category(dialog: Locator, name: string) {
