@@ -34,7 +34,7 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
 
   if (!result.success) {
     return (
-      <div className="py-1 text-right text-red-600">
+      <div role="alert" aria-live="assertive" aria-atomic="true" className="py-1 text-right text-red-600">
         <p className="text-sm font-semibold">No se pudo calcular ({result.errorCode})</p>
         <p className="text-xs text-red-500">{result.errorMessage}</p>
       </div>
