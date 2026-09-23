@@ -31,7 +31,8 @@ async function expectNoHorizontalOverflow(page: Page, label: string) {
   expect(metrics.scrollWidth, `${label}: horizontal overflow`).toBeLessThanOrEqual(metrics.viewport + 2);
 }
 
-test("S26 baseline: superficies visibles en cuatro viewports", async ({ page }, testInfo) => {\n  test.setTimeout(180_000);
+test("S26 baseline: superficies visibles en cuatro viewports", async ({ page }, testInfo) => {
+  test.setTimeout(180_000);
   test.skip(testInfo.project.name !== "desktop-chromium", "S26 baseline se ejecuta una sola vez por workflow");
   await page.emulateMedia({ reducedMotion: "reduce" });
 
@@ -75,7 +76,8 @@ test("S26 baseline: superficies visibles en cuatro viewports", async ({ page }, 
   }
 });
 
-test("S26 baseline: seis layouts y breakpoint flotante", async ({ page }, testInfo) => {\n  test.setTimeout(180_000);
+test("S26 baseline: seis layouts y breakpoint flotante", async ({ page }, testInfo) => {
+  test.setTimeout(180_000);
   test.skip(testInfo.project.name !== "desktop-chromium", "S26 baseline se ejecuta una sola vez por workflow");
   await page.emulateMedia({ reducedMotion: "reduce" });
 
