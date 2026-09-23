@@ -14,35 +14,47 @@ async function clear(dialog: Locator) {
   await dialog.getByRole("button", { name: "borrar todo el campo", exact: true }).click();
 }
 
+async function clickVisibleButton(page: Page, name: string): Promise<boolean> {
+  const matches = page.getByRole("button", { name, exact: true });
+  for (let i = 0; i < await matches.count(); i += 1) {
+    const candidate = matches.nth(i);
+    if (await candidate.isVisible()) {
+      await candidate.click();
+      return true;
+    }
+  }
+  return false;
+}
+
 async function press(dialog: Locator, name: string) {
-  const scoped = dialog.getByRole("button", { name, exact: true });
-  for (let i = 0; i < await scoped.count(); i += 1) {
-    const candidate = scoped.nth(i);
-    if (await candidate.isVisible()) {
-      await candidate.click();
-      return;
-    }
+  const page = dialog.page();
+  if (await clickVisibleButton(page, name)) return;
+
+  // Insertar una plantilla temática cierra el panel expandido. La ruta
+  // real de usuario para continuar escribiendo es volver a abrir el
+  // teclado y pulsar la siguiente tecla; hacemos exactamente eso.
+  const opener = page.getByRole("button", { name: /abrir teclado|expandir teclado/i }).first();
+  if (await opener.isVisible().catch(() => false)) {
+    await opener.click();
+    await expect(page.getByRole("dialog", { name: "Teclado matemático" })).toBeVisible();
+    if (await clickVisibleButton(page, name)) return;
   }
 
-  // Las categorías temáticas se cierran al insertar una plantilla.
-  // En ese estado el panel Básico sigue visible, pero puede quedar fuera
-  // del nodo role=dialog. Buscar la tecla visible en toda la página
-  // preserva el recorrido real de UI sin inyectar LaTeX directamente.
-  const pageWide = dialog.page().getByRole("button", { name, exact: true });
-  for (let i = 0; i < await pageWide.count(); i += 1) {
-    const candidate = pageWide.nth(i);
-    if (await candidate.isVisible()) {
-      await candidate.click();
-      return;
-    }
-  }
-
-  throw new Error(`No se encontró una tecla visible con aria-label "${name}"`);
+  throw new Error(`No se encontró una tecla visible con aria-label "${name}" ni tras reabrir el teclado`);
 }
 
 async function category(dialog: Locator, name: string) {
-  await dialog.getByRole("tab", { name, exact: true }).click();
-  await expect(dialog.getByRole("tab", { name, exact: true })).toHaveAttribute("aria-selected", "true");
+  const page = dialog.page();
+  let tab = page.getByRole("tab", { name, exact: true });
+  if (!(await tab.first().isVisible().catch(() => false))) {
+    const opener = page.getByRole("button", { name: /abrir teclado|expandir teclado/i }).first();
+    await expect(opener).toBeVisible();
+    await opener.click();
+    await expect(page.getByRole("dialog", { name: "Teclado matemático" })).toBeVisible();
+    tab = page.getByRole("tab", { name, exact: true });
+  }
+  await tab.first().click();
+  await expect(tab.first()).toHaveAttribute("aria-selected", "true");
 }
 
 async function hideMathLiveKeyboard(page: Page) {
