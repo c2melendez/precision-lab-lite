@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from "react";
+import { useComputeWorker } from "../../hooks/useComputeWorker";
 import { NaturalInput } from "../../components/NaturalInput";
 import { SimpleKeyboard } from "../../components/SimpleKeyboard";
 import { ResultPanel } from "../../components/ResultPanel";
@@ -19,7 +20,6 @@ export function SimpleBasicMode() {
   const [latex, setLatex] = useState("");
   const [result, setResult] = useState<MathResult | null>(null);
   const [mathField, setMathField] = useState<MathFieldRef>(null);
-  const workerRef = useRef<Worker | null>(null);
 
   // Recall de expresiones anteriores con ←/→ (distinto del HistoryLog de
   // Scientific: aquí solo se navega el campo de entrada, no se muestra un
@@ -27,15 +27,7 @@ export function SimpleBasicMode() {
   const pastInputsRef = useRef<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number | null>(null);
 
-  const getWorker = useCallback(() => {
-    if (!workerRef.current) {
-      workerRef.current = new Worker(
-        new URL("../../workers/compute.worker.ts", import.meta.url),
-        { type: "module" },
-      );
-    }
-    return workerRef.current;
-  }, []);
+  const { getWorker } = useComputeWorker();
 
   const handleCalculate = useCallback(() => {
     const requestId = makeRequestId();
