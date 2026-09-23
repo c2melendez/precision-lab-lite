@@ -152,6 +152,16 @@ export function GraphingMode() {
     return workerRef.current;
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (workerRef.current) {
+        workerRef.current.terminate();
+        workerRef.current = null;
+      }
+      requestToEntryRef.current.clear();
+    };
+  }, []);
+
   const graphEntry = useCallback(
     (
       entry: ExpressionEntry,
