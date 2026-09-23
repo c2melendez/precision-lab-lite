@@ -1,4 +1,5 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
+import { useComputeWorker } from "../../hooks/useComputeWorker";
 import { Screen } from "../../components/Screen";
 import { type SessionHistoryEntry } from "../../components/HistoryLog";
 import { StepList } from "../../components/StepList";
@@ -41,17 +42,8 @@ export function CalculusMode() {
   const [angleMode, setAngleMode] = useState<"RAD" | "GRAD">("RAD");
   const [, setMathField] = useState<MathFieldRef>(null);
   const [sessionHistory, setSessionHistory] = useState<SessionHistoryEntry[]>([]);
-  const workerRef = useRef<Worker | null>(null);
 
-  const getWorker = useCallback(() => {
-    if (!workerRef.current) {
-      workerRef.current = new Worker(
-        new URL("../../workers/compute.worker.ts", import.meta.url),
-        { type: "module" },
-      );
-    }
-    return workerRef.current;
-  }, []);
+  const { getWorker } = useComputeWorker();
 
   const fail = useCallback((code: ErrorCode, message: string, requestId: string) => {
     setResult({

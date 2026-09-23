@@ -1,4 +1,5 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
+import { useComputeWorker } from "../../hooks/useComputeWorker";
 import { NaturalInput } from "../../components/NaturalInput";
 import { ResultPanel } from "../../components/ResultPanel";
 import { StepList } from "../../components/StepList";
@@ -23,17 +24,8 @@ export function LinearSystemsMode() {
   const [count, setCount] = useState(2);
   const [equations, setEquations] = useState<string[]>(["", ""]);
   const [result, setResult] = useState<MathResult | null>(null);
-  const workerRef = useRef<Worker | null>(null);
 
-  const getWorker = useCallback(() => {
-    if (!workerRef.current) {
-      workerRef.current = new Worker(
-        new URL("../../workers/compute.worker.ts", import.meta.url),
-        { type: "module" },
-      );
-    }
-    return workerRef.current;
-  }, []);
+  const { getWorker } = useComputeWorker();
 
   const setCountAndResize = (n: number) => {
     setCount(n);

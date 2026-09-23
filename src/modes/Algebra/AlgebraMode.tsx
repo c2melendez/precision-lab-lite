@@ -1,4 +1,5 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
+import { useComputeWorker } from "../../hooks/useComputeWorker";
 import { NaturalInput } from "../../components/NaturalInput";
 import { MathKeyboard } from "../../components/MathKeyboard";
 import { ResultPanel } from "../../components/ResultPanel";
@@ -13,18 +14,9 @@ import { addHistoryEntry } from "../../store/historyDb";
 export function AlgebraMode() {
   const [latex, setLatex] = useState("");
   const [result, setResult] = useState<MathResult | null>(null);
-  const workerRef = useRef<Worker | null>(null);
   const [mathField, setMathField] = useState<{ insert: (s: string) => void; focus: () => void } | null>(null);
 
-  const getWorker = useCallback(() => {
-    if (!workerRef.current) {
-      workerRef.current = new Worker(
-        new URL("../../workers/compute.worker.ts", import.meta.url),
-        { type: "module" },
-      );
-    }
-    return workerRef.current;
-  }, []);
+  const { getWorker } = useComputeWorker();
 
   const fail = useCallback((code: ErrorCode, message: string, requestId: string) => {
     setResult({
