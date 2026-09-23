@@ -77,6 +77,13 @@ function replaceBalanced(
 export function preprocessLatex(latex: string): string {
   let expr = latex;
 
+  // S16 REG-008: MathLive serializa la tecla visual ° como ^{\\circ}
+  // (y puede usar ^\\circ). Unificarlo con el marcador ° que ya procesa
+  // el pipeline de grados/DMS.
+  expr = expr
+    .replace(/\^\{\\\\circ\}/g, "°")
+    .replace(/\^\\\\circ/g, "°");
+
   // Módulo D (spec_motor_matematico_pendiente.md §5) — notación de
   // grados. AMBIGUO de la spec ya delegado a mí ("decide tú dónde vive
   // esta lógica"): va acá, mismo lugar que la conversión ya existente de
@@ -323,18 +330,22 @@ export function preprocessLatex(latex: string): string {
     }
   }
 
-  // log con base: plantilla real de la tecla "\log_{#0}\left(#1\right)"
-  // (subíndice LaTeX, no la forma con coma "log(x,base)" que ya soporta
-  // FUNCTION_ARITY/rewriteLogBase más abajo en index.ts). Sin esta regla
-  // el "_" del subíndice llegaba crudo al tokenizador y tronaba con
-  // "Carácter no reconocido: _" — la tecla "log con base" del teclado no
-  // parseaba en absoluto. Se reescribe a la forma de coma que
-  // rewriteLogBase ya sabe convertir a log(a)/log(b).
+  // S16 REG-004: MathLive puede serializar el subíndice de log con o sin
+  // llaves y con \\left(...\\right) o paréntesis simples.
   {
-    const logBaseMatch = expr.match(/\\log_\{([^{}]*)\}\\left\((.*)\\right\)$/s);
-    if (logBaseMatch) {
-      const [, base, arg] = logBaseMatch;
-      expr = `log(${arg},${base})`;
+    const logBasePatterns = [
+      /\\\\log\\s*_\\s*\\{([^{}]+)\\}\\s*\\\\left\\((.*)\\\\right\\)$/s,
+      /\\\\log\\s*_\\s*\\{([^{}]+)\\}\\s*\\((.*)\\)$/s,
+      /\\\\log\\s*_\\s*([0-9a-zA-Z]+)\\s*\\\\left\\((.*)\\\\right\\)$/s,
+      /\\\\log\\s*_\\s*([0-9a-zA-Z]+)\\s*\\((.*)\\)$/s,
+    ];
+    for (const pattern of logBasePatterns) {
+      const match = expr.match(pattern);
+      if (match) {
+        const [, base, arg] = match;
+        expr = `log(${arg},${base})`;
+        break;
+      }
     }
   }
 
@@ -478,7 +489,9 @@ export function preprocessLatex(latex: string): string {
     .replace(/\\sec/g, "sec")
     .replace(/\\cot/g, "cot")
     .replace(/\\ln/g, "ln")
-    .replace(/\\log/g, "log")
+    // S16 REG-002: el macro visual \\log del teclado significa base 10.
+    // Se conserva separado de log(...) plano y de ln(...).
+    .replace(/\\log/g, "log10")
     .replace(/\^\{([^{}]*)\}/g, "^($1)")
     .replace(/\\left\(/g, "(")
     .replace(/\\right\)/g, ")")
