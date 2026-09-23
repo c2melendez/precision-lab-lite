@@ -1,0 +1,46 @@
+name: S22 PWA Offline
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "public/**"
+      - "e2e-pwa/**"
+      - "playwright.pwa.config.ts"
+      - "vite.config.ts"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/s22-pwa.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pwa-offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install app dependencies
+        run: npm ci
+      - name: Install Playwright test runner
+        run: npm install --no-save --package-lock=false @playwright/test@1.63.0
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run S22 PWA/offline certification
+        run: npx playwright test --config=playwright.pwa.config.ts
+      - name: Upload S22 evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: s22-lite-pwa-offline-report
+          path: |
+            playwright-report-pwa/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 14
