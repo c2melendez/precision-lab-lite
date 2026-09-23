@@ -15,7 +15,8 @@ SHA de preparación S26 integrado en main: `9d901b0db3b1b9995374757dc5213146c252
 - [x] Hoja de ruta y handoff definidos.
 - [x] Inventario de superficies reales creado en `INVENTORY.md`.
 - [x] Matriz visual ampliada a superficies, estados, layouts y personalización reales.
-- [ ] S26.0 — Baseline y congelamiento: **EN CURSO**.
+- [x] Suite `e2e/s26-baseline.spec.ts` añadida para baseline reproducible.
+- [ ] S26.0 — Baseline y congelamiento: **EJECUCIÓN CI EN CURSO**.
 - [ ] S26.1 — Inventario y matriz: **ESTRUCTURA CERRADA / EVIDENCIA EN CURSO**.
 - [ ] S26.2 — Diseño objetivo.
 - [ ] S26.3 — Implementación por bloques.
@@ -42,11 +43,15 @@ SHA de preparación S26 integrado en main: `9d901b0db3b1b9995374757dc5213146c252
 - Baseline funcional previo a S26 registrado y protegido.
 - Rutas matemáticas protegidas definidas en `MATHEMATICAL_INTEGRITY_POLICY.md`.
 - PR S26 de ejecución abierto como draft para impedir cierre prematuro.
+- Suite de baseline añadida: cinco superficies visibles × cuatro viewports.
+- Captura adicional de historial, ajustes y teclado.
+- Cobertura de seis layouts en Desktop/Mobile.
+- Captura explícita de `floating` a 1023 px y 1024 px.
 
-### Pendiente
-- Generar/capturar baseline visual reproducible.
-- Asociar evidencia a cada fila de `VISUAL_MATRIX.md`.
-- Verificar transición del layout `floating` alrededor de su breakpoint real.
+### En validación
+- Workflow Playwright E2E del SHA actual.
+- Cross-browser y CI del mismo SHA.
+- Evidencia adjunta al reporte Playwright mediante `testInfo.attach`.
 
 ## S26.1 — Inventario y matriz
 
@@ -60,9 +65,9 @@ SHA de preparación S26 integrado en main: `9d901b0db3b1b9995374757dc5213146c252
 - Matriz ampliada con estados funcionales y cobertura transversal.
 
 ### Pendiente para cerrar S26.1
-- Ejecutar baseline sobre la aplicación real.
-- Adjuntar evidencia inicial por viewport/estado.
-- Registrar cualquier discrepancia entre código inventariado y comportamiento runtime.
+- Confirmar PASS del baseline runtime.
+- Revisar screenshots producidos y registrar discrepancias.
+- Enlazar filas de `VISUAL_MATRIX.md` con evidencia/test concreto.
 
 ## Rutas protegidas tocadas
 
@@ -70,8 +75,8 @@ Ninguna.
 
 ## Cambios funcionales
 
-Ninguno. Hasta este punto S26 solo modifica documentación QA.
+Ninguno. S26 sigue limitado a QA/documentación; no se ha modificado producto ni motor matemático.
 
 ## Instrucción de continuidad
 
-Continuar con baseline ejecutable S26.0/S26.1. No iniciar S26.2 ni modificar UI hasta capturar el estado visual actual y registrar discrepancias runtime.
+Primero resolver cualquier fallo del baseline S26. Luego revisar evidencia y cerrar S26.0/S26.1. No iniciar S26.2 hasta que el baseline runtime sea reproducible.
