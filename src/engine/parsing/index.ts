@@ -123,6 +123,13 @@ function rewriteLogBase(algebrite: string): string {
   return rewriteBinaryFunction(algebrite, "log", (a, b) => `(log(${a})/log(${b}))`);
 }
 
+/** S16 REG-002: el macro visual \\log se normaliza a log10(...).
+ * Algebrite usa log(...) como log natural, así que el log común se
+ * expresa por cambio de base sin alterar ln(...) ni log(...) plano. */
+function rewriteCommonLog(algebrite: string): string {
+  return rewriteUnaryFunction(algebrite, "log10", (a) => `(log(${a})/log(10))`);
+}
+
 // Fix (cierre de la suite de paridad de teclado v1.0): ni sec/csc/cot,
 // ni sus hiperbólicas recíprocas (csch/sech/coth), ni sus inversas
 // (arcsec/arccsc/arccot) tienen cómputo nativo en Algebrite — cualquier
@@ -282,7 +289,9 @@ export function parseAlgebraicFragment(text: string, angleMode: "RAD" | "GRAD" =
   validateFunctionArity(tokens);
   const withImplicitMul = insertImplicitMultiplication(tokens);
   return rewriteReciprocalFunctions(
-    rewriteLogBase(rewriteCombinatorics(applyAngleMode(tokensToAlgebrite(withImplicitMul), angleMode))),
+    rewriteCommonLog(
+      rewriteLogBase(rewriteCombinatorics(applyAngleMode(tokensToAlgebrite(withImplicitMul), angleMode))),
+    ),
   );
 }
 
