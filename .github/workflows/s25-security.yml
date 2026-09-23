@@ -1,0 +1,49 @@
+name: S25 Security Gate
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "index.html"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/s25-security.yml"
+  push:
+    branches: [main, master]
+    paths:
+      - "src/**"
+      - "index.html"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/s25-security.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frontend-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: npm audit report
+        run: npm audit --json > npm-audit.json || true
+      - name: Block high/critical npm vulnerabilities
+        run: npm audit --audit-level=high
+      - name: Production build
+        run: npm run build
+      - name: Verify referrer policy metadata
+        run: grep -q 'name="referrer" content="strict-origin-when-cross-origin"' dist/index.html
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: s25-lite-npm-audit
+          path: npm-audit.json
+          if-no-files-found: ignore
+          retention-days: 14
