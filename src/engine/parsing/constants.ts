@@ -69,6 +69,10 @@ export const FUNCTION_ARITY: Record<string, number[]> = {
   atanh: [1],
   ln: [1],
   log: [1, 2],
+  // Marcador interno producido por el macro visual \\log del teclado.
+  // No se envía a Algebrite tal cual: index.ts lo reescribe por cambio
+  // de base para conservar semántica base 10.
+  log10: [1],
   sqrt: [1],
   // Fix (suite de regresión v1.1, caso E107): "cbrt" no estaba
   // registrada — "cbrt(27)" quedaba sin reconocer como función
