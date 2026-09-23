@@ -211,7 +211,7 @@ export function Screen({
                 <h2 className="border-l-4 border-marker pl-2 text-sm font-semibold">Entrada</h2>
                 <button type="button" onClick={() => useKeyboardPanelStore.getState().open()}
                   aria-label="Abrir teclado matemático" title="Abrir teclado matemático"
-                  className="flex items-center gap-2 rounded-lg border border-paper-line px-3 py-2 text-xs text-marker hover:bg-marker-soft">
+                  className="flex items-center gap-2 rounded-lg border border-paper-line px-3 py-2 text-xs text-marker-text hover:bg-marker-soft">
                   <KeyboardIcon className="h-4 w-4" /> Teclado
                 </button>
               </div>
