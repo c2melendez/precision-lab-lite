@@ -89,18 +89,35 @@ test("S22: manifest, service worker y operación local sobreviven recarga offlin
 });
 
 test("S22: actualización de build reemplaza cache y la nueva versión sigue disponible offline", async ({ page, context }) => {
+  // Restablecer v1 hace que el test y sus retries sean independientes.
+  writeFileSync(
+    "public/s22-version.svg",
+    '<svg xmlns="http://www.w3.org/2000/svg"><text>s22-v1</text></svg>',
+  );
+  execFileSync("npm", ["run", "build"], {
+    cwd: process.cwd(),
+    stdio: "inherit",
+    env: process.env,
+  });
+
   await page.goto("./");
   await waitForServiceWorkerControl(page);
 
   const readVersion = () =>
     page.evaluate(async () => {
-      const response = await fetch(new URL("s22-version.txt", window.location.href), { cache: "no-store" });
-      return (await response.text()).trim();
+      const response = await fetch(new URL("s22-version.svg", window.location.href));
+      const body = await response.text();
+      if (body.includes("s22-v2")) return "s22-v2";
+      if (body.includes("s22-v1")) return "s22-v1";
+      return "unknown";
     });
 
   await expect.poll(readVersion).toBe("s22-v1");
 
-  writeFileSync("public/s22-version.txt", "s22-v2");
+  writeFileSync(
+    "public/s22-version.svg",
+    '<svg xmlns="http://www.w3.org/2000/svg"><text>s22-v2</text></svg>',
+  );
   execFileSync("npm", ["run", "build"], {
     cwd: process.cwd(),
     stdio: "inherit",
@@ -139,8 +156,9 @@ test("S22: actualización de build reemplaza cache y la nueva versión sigue dis
   await expect(page.locator("math-field").first()).toBeVisible();
 
   const cachedVersion = await page.evaluate(async () => {
-    const response = await fetch(new URL("s22-version.txt", window.location.href));
-    return (await response.text()).trim();
+    const response = await fetch(new URL("s22-version.svg", window.location.href));
+    const body = await response.text();
+    return body.includes("s22-v2") ? "s22-v2" : "unknown";
   });
   expect(cachedVersion).toBe("s22-v2");
 
