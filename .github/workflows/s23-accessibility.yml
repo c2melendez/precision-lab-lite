@@ -1,0 +1,39 @@
+name: S23 Accessibility Gate
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "e2e/s23-accessibility.spec.ts"
+      - "playwright.config.ts"
+      - ".github/workflows/s23-accessibility.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  accessibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save --package-lock=false @playwright/test@1.63.0 @axe-core/playwright@4.13.0
+      - run: npx playwright install --with-deps chromium
+      - name: Run S23 accessibility
+        run: npx playwright test e2e/s23-accessibility.spec.ts --project=desktop-chromium
+      - name: Upload S23 evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: s23-lite-accessibility-report
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 14
