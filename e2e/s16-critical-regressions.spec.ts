@@ -15,7 +15,29 @@ async function clear(dialog: Locator) {
 }
 
 async function press(dialog: Locator, name: string) {
-  await dialog.getByRole("button", { name, exact: true }).click();
+  const scoped = dialog.getByRole("button", { name, exact: true });
+  for (let i = 0; i < await scoped.count(); i += 1) {
+    const candidate = scoped.nth(i);
+    if (await candidate.isVisible()) {
+      await candidate.click();
+      return;
+    }
+  }
+
+  // Las categorías temáticas se cierran al insertar una plantilla.
+  // En ese estado el panel Básico sigue visible, pero puede quedar fuera
+  // del nodo role=dialog. Buscar la tecla visible en toda la página
+  // preserva el recorrido real de UI sin inyectar LaTeX directamente.
+  const pageWide = dialog.page().getByRole("button", { name, exact: true });
+  for (let i = 0; i < await pageWide.count(); i += 1) {
+    const candidate = pageWide.nth(i);
+    if (await candidate.isVisible()) {
+      await candidate.click();
+      return;
+    }
+  }
+
+  throw new Error(`No se encontró una tecla visible con aria-label "${name}"`);
 }
 
 async function category(dialog: Locator, name: string) {
