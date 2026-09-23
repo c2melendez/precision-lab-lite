@@ -27,15 +27,26 @@ interface KeyboardPanelProps {
 
 export function KeyboardPanel({ isOpen, onClose, children, dockHeight = 0 }: KeyboardPanelProps) {
   const panelRef = useRef<HTMLDivElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
 
-  // Cierre con Escape — accesibilidad mínima de un panel tipo popover/sheet.
+  // Gestión de foco + Escape: al abrir, el foco entra en el diálogo;
+  // al cerrar/desmontar, vuelve al elemento que lo abrió.
   useEffect(() => {
     if (!isOpen) return;
+    openerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const frame = window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
     }
+
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("keydown", onKeyDown);
+      openerRef.current?.focus();
+    };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
@@ -43,6 +54,7 @@ export function KeyboardPanel({ isOpen, onClose, children, dockHeight = 0 }: Key
   return (
     <div
       ref={panelRef}
+      id="math-keyboard-panel"
       role="dialog"
       aria-label="Teclado matemático"
       aria-modal="false"
@@ -70,6 +82,7 @@ export function KeyboardPanel({ isOpen, onClose, children, dockHeight = 0 }: Key
       <div className="flex items-center justify-between px-4 pb-2 pt-1">
         <span className="text-sm font-medium text-bone/80">Teclado</span>
         <button
+          ref={closeButtonRef}
           type="button"
           onClick={onClose}
           aria-label="Cerrar teclado"
