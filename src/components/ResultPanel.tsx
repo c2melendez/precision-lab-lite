@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { StaticMath } from "./StaticMath";
 import type { MathResult } from "../types";
-import { decimalDegreesToDms, parseDecimalDegreesInput } from "./dmsDisplay";
+import { decimalDegreesToDms, isInverseTrigAngleExpression, parseDecimalDegreesInput } from "./dmsDisplay";
 
 // spec v10 §11: el usuario alterna entre formatos sin recalcular.
 //
@@ -20,7 +20,7 @@ import { decimalDegreesToDms, parseDecimalDegreesInput } from "./dmsDisplay";
 
 type AnswerFormat = "dec" | "frac" | "scn" | "sqrt" | "dms";
 
-export function ResultPanel({ result, inputLatex = "" }: { result: MathResult | null; inputLatex?: string }) {
+export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { result: MathResult | null; inputLatex?: string; angleMode?: "RAD" | "GRAD" }) {
   const [format, setFormat] = useState<AnswerFormat>("dec");
   // Antes: "frac" siempre mostraba mixta cuando estaba disponible
   // (mixedLatex ?? improperLatex), sin forma de pedir la impropia. El
@@ -28,8 +28,23 @@ export function ResultPanel({ result, inputLatex = "" }: { result: MathResult | 
   // chico que solo aparece cuando realmente hay una forma mixta posible
   // (fracción impropia: |numerador| >= denominador).
   const [showMixed, setShowMixed] = useState(true);
-  const dmsDegrees = parseDecimalDegreesInput(inputLatex);
+  const explicitDegreeInput = parseDecimalDegreesInput(inputLatex);
+  const inverseAngleResult = angleMode === "GRAD" && isInverseTrigAngleExpression(inputLatex);
+  const inverseDegreeSource = (
+    result?.fraction?.decimal ?? result?.decimalApprox ?? result?.resultLatex ?? ""
+  ).replace(/…/g, "").trim();
+  const inverseDegrees = inverseAngleResult && Number.isFinite(Number(inverseDegreeSource))
+    ? Number(inverseDegreeSource)
+    : null;
+  const dmsDegrees = explicitDegreeInput ?? inverseDegrees;
   const dmsValue = dmsDegrees === null ? null : decimalDegreesToDms(dmsDegrees);
+
+  function withAngleUnit(value: { latex: string; isPlainNumber: boolean }): { latex: string; isPlainNumber: boolean } {
+    if (!inverseAngleResult || format === "dms") return value;
+    return value.isPlainNumber
+      ? { latex: `${value.latex}°`, isPlainNumber: true }
+      : { latex: `{${value.latex}}^{\\circ}`, isPlainNumber: false };
+  }
 
   if (!result) {
     return <p className="py-1 text-right text-sm text-muted">Escribe una expresión y presiona Calcular.</p>;
@@ -49,7 +64,7 @@ export function ResultPanel({ result, inputLatex = "" }: { result: MathResult | 
     if (format === "frac" && result?.fraction) {
       const hasMixed = result.fraction.mixedLatex !== null;
       const latex = hasMixed && showMixed ? result.fraction.mixedLatex! : result.fraction.improperLatex;
-      return { latex, isPlainNumber: false };
+      return withAngleUnit({ latex, isPlainNumber: false });
     }
     if (format === "scn") {
       // fraction.decimal y decimalApprox pueden traer "…" al final cuando
@@ -60,21 +75,23 @@ export function ResultPanel({ result, inputLatex = "" }: { result: MathResult | 
         "",
       );
       const n = Number(source);
-      return Number.isFinite(n)
-        ? { latex: n.toExponential(6), isPlainNumber: true }
-        : { latex: result?.resultLatex ?? "", isPlainNumber: false };
+      return withAngleUnit(
+        Number.isFinite(n)
+          ? { latex: n.toExponential(6), isPlainNumber: true }
+          : { latex: result?.resultLatex ?? "", isPlainNumber: false },
+      );
     }
     if (format === "dec") {
       // Orden de fallback: fracción exacta -> decimal, luego float()
       // forzado sobre un resultado simbólico (Fase E), y solo si ninguno
       // de los dos existe, el resultado tal cual (mejor que nada).
-      if (result?.fraction) return { latex: result.fraction.decimal, isPlainNumber: true };
-      if (result?.decimalApprox) return { latex: result.decimalApprox, isPlainNumber: true };
-      return { latex: result?.resultLatex ?? "", isPlainNumber: false };
+      if (result?.fraction) return withAngleUnit({ latex: result.fraction.decimal, isPlainNumber: true });
+      if (result?.decimalApprox) return withAngleUnit({ latex: result.decimalApprox, isPlainNumber: true });
+      return withAngleUnit({ latex: result?.resultLatex ?? "", isPlainNumber: false });
     }
     // "sqrt", o "frac" sin datos de fracción disponibles: se muestra el
     // resultado tal cual lo devolvió el motor (ya es LaTeX real).
-    return { latex: result?.resultLatex ?? "", isPlainNumber: false };
+    return withAngleUnit({ latex: result?.resultLatex ?? "", isPlainNumber: false });
   }
 
   const { latex, isPlainNumber } = renderValue();
