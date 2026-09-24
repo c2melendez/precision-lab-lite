@@ -351,7 +351,7 @@ function FocusScreenContent({ inputField, result, inputLatex, angleMode, onToggl
       <div className="flex justify-end">
         <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
       </div>
-      {inputSurface}
+      {inputField}
       <div className="rounded-xl bg-paper-soft px-5 py-4 text-center shadow-sm">
         <ResultPanel result={result} inputLatex={inputLatex} angleMode={angleMode} />
       </div>
@@ -400,7 +400,7 @@ function FloatingScreenContent({ inputField, result, inputLatex, angleMode, onTo
   if (!isWideEnough) {
     return (
       <FocusScreenContent
-        inputField={inputSurface}
+        inputField={inputField}
         result={result}
         inputLatex={inputLatex}
         angleMode={angleMode}
@@ -419,7 +419,7 @@ function FloatingScreenContent({ inputField, result, inputLatex, angleMode, onTo
           Restablecer posición de ventanas
         </button>
       </div>
-      {inputSurface}
+      {inputField}
       <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
         <ResultPanel result={result} inputLatex={inputLatex} angleMode={angleMode} />
       </div>
