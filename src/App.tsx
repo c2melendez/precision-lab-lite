@@ -16,6 +16,7 @@ import { HistoryPanel } from "./components/HistoryPanel";
 import { HistoryDrawer } from "./components/HistoryDrawer";
 import { AjustesPopover } from "./components/AjustesPopover";
 import { KeyboardDock } from "./components/KeyboardDock";
+import { GlobalKeyboardFallback } from "./components/GlobalKeyboardFallback";
 import { ProjectBrand } from "./components/ProjectBrand";
 import { ModeIcon, type ModeIconName } from "./components/ModeIcon";
 import { useLayoutModeStore } from "./store/useLayoutModeStore";
@@ -196,6 +197,7 @@ export default function App() {
           <HistoryPanel />
         </HistoryDrawer>
       </div>
+      <GlobalKeyboardFallback mode={mode} />
       <KeyboardDock />
     </div>
   );
