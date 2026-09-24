@@ -112,9 +112,12 @@ export function GlobalKeyboardFallback({ mode }: { mode: string }) {
   };
 
   useEffect(() => {
-    // Los modos propietarios (Científica y cualquier otro que registre
-    // contenido especializado) siempre tienen prioridad.
+    if (mode === "basic") return;
     if (content !== null || basicContent !== null) return;
+
+    const timer = window.setTimeout(() => {
+      const current = useKeyboardPanelStore.getState();
+      if (current.content !== null || current.basicContent !== null) return;
 
     const basic = (
       <KeyboardBasicPanel
@@ -137,6 +140,8 @@ export function GlobalKeyboardFallback({ mode }: { mode: string }) {
       />,
     );
     setCompactActions({ onEnter: enter, onBackspace: backspace });
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [mode, content, basicContent, field, setBasicContent, setContent, setCompactActions]);
 
   return null;
