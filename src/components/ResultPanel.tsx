@@ -97,42 +97,57 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
   const { latex, isPlainNumber } = renderValue();
 
   return (
-    <div className="pt-1" role="status" aria-live="polite" aria-atomic="true">
-      {result.confidence === "NUMERIC_FALLBACK" && (
-        <p className="mb-1.5 inline-block rounded bg-marker-soft px-2 py-0.5 text-xs text-marker-text">
-          Aproximado numéricamente (no resuelto simbólicamente)
-        </p>
-      )}
-      {/* Fase R, Módulo R0: a11y-scale-result-3xl reemplaza a text-3xl —
-          mismo tamaño exacto por defecto, ahora escalable. */}
-      <div className="flex items-end justify-between gap-3">
-        {isPlainNumber ? (
-          <span className="a11y-scale-result-3xl ml-auto font-mono font-medium text-ink">{latex}</span>
-        ) : (
-          <StaticMath latex={latex} className="a11y-scale-result-3xl ml-auto font-mono text-ink" />
+    <div className="space-y-3 pt-1" role="status" aria-live="polite" aria-atomic="true">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Resultado</p>
+        {result.confidence === "NUMERIC_FALLBACK" && (
+          <span className="rounded-md bg-marker-soft px-2 py-1 text-[11px] font-medium text-marker-text">
+            Aproximado
+          </span>
         )}
       </div>
-      {format === "frac" && result.fraction?.mixedLatex !== null && result.fraction && (
-        <div className="mt-1 flex justify-end">
+
+      <div className="min-h-14 rounded-xl border border-paper-line bg-paper px-4 py-3">
+        <div className="flex min-h-8 items-center justify-end">
+          {isPlainNumber ? (
+            <span className="a11y-scale-result-3xl font-mono font-semibold tracking-tight text-ink">{latex}</span>
+          ) : (
+            <StaticMath latex={latex} className="a11y-scale-result-3xl font-mono text-ink" />
+          )}
+        </div>
+        {result.confidence === "NUMERIC_FALLBACK" && (
+          <p className="mt-1 text-right text-[11px] text-muted">
+            Resuelto numéricamente, sin forma simbólica cerrada.
+          </p>
+        )}
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-wrap gap-1.5 text-xs" aria-label="Formato del resultado">
+          {(["dec", "frac", "scn", "sqrt", ...(dmsValue ? ["dms" as const] : [])] as AnswerFormat[]).map((f) => (
+            <button
+              key={f}
+              onClick={() => setFormat(f)}
+              aria-pressed={format === f}
+              className={
+                format === f
+                  ? "min-h-8 rounded-full border border-marker bg-marker-soft px-3 font-semibold text-marker-text"
+                  : "min-h-8 rounded-full border border-paper-line bg-paper px-3 text-muted hover:border-marker/50 hover:text-ink"
+              }
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+
+        {format === "frac" && result.fraction?.mixedLatex !== null && result.fraction && (
           <button
             onClick={() => setShowMixed((v) => !v)}
-            className="text-xs text-muted underline decoration-dotted hover:text-marker"
+            className="min-h-8 rounded-full px-2 text-xs text-muted underline decoration-dotted hover:text-marker"
           >
             {showMixed ? "ver como impropia" : "ver como mixta"}
           </button>
-        </div>
-      )}
-      <div className="mt-1.5 flex justify-end gap-3 text-xs text-muted">
-        {(["dec", "frac", "scn", "sqrt", ...(dmsValue ? ["dms" as const] : [])] as AnswerFormat[]).map((f) => (
-          <button
-            key={f}
-            onClick={() => setFormat(f)}
-            aria-pressed={format === f}
-            className={format === f ? "font-semibold text-marker" : "hover:text-ink"}
-          >
-            {f}
-          </button>
-        ))}
+        )}
       </div>
     </div>
   );
