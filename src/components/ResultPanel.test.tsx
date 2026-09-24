@@ -31,4 +31,33 @@ describe("S26.3 ResultPanel — DMS contextual", () => {
     expect(text).toContain("31");
     expect(text).toContain("30.0");
   });
+
+  describe("S26.3 — trig inversa en DEG", () => {
+    const angleResult: MathResult = {
+      ...result,
+      resultLatex: "30",
+      decimalApprox: "30",
+    };
+
+    it("asin(0.5) en GRAD muestra grados y habilita DMS", () => {
+      const { container } = render(
+        <ResultPanel result={angleResult} inputLatex="asin(0.5)" angleMode="GRAD" />,
+      );
+      expect(container.textContent).toContain("30°");
+      expect(screen.getByRole("button", { name: "dms" })).toBeInTheDocument();
+
+      fireEvent.click(screen.getByRole("button", { name: "dms" }));
+      const text = container.textContent?.replace(/\s+/g, "") ?? "";
+      expect(text).toContain("30");
+      expect(text).toContain("0.0");
+    });
+
+    it("asin(0.5) en RAD no se etiqueta como grados ni habilita DMS", () => {
+      const { container } = render(
+        <ResultPanel result={{ ...angleResult, resultLatex: "\\frac{\\pi}{6}", decimalApprox: "0.523599" }} inputLatex="asin(0.5)" angleMode="RAD" />,
+      );
+      expect(screen.queryByRole("button", { name: "dms" })).not.toBeInTheDocument();
+      expect(container.textContent).not.toContain("°");
+    });
+  });
 });
