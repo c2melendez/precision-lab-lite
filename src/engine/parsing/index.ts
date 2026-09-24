@@ -209,10 +209,43 @@ function extractFreeVariables(tokens: Token[]): string[] {
 /** Convierte los argumentos de trig DIRECTAS (sin/cos/tan) de grados a radianes cuando angleMode === "GRAD" (spec v10 §5: alcance exacto de angle_unit). "GRAD" es una decisión deliberada del proyecto para significar grados sexagesimales, no gradianes — ver spec_calculadora_v10_sin_backend.md. */
 function applyAngleMode(algebrite: string, angleMode: "RAD" | "GRAD"): string {
   if (angleMode === "RAD") return algebrite;
+
+  // En modo grados, las funciones directas reciben grados y las inversas
+  // convencionales devuelven grados. El orden importa: primero se convierte
+  // el argumento de sin/cos/tan a radianes y después se convierte la salida
+  // de arcsin/arccos/arctan a grados. Así sin(asin(0.5)) conserva 0.5.
   const directTrig = ["sin", "cos", "tan"];
   let result = algebrite;
   for (const fn of directTrig) {
     result = wrapFunctionArgsWithDegToRad(result, fn);
+  }
+  for (const fn of ["arcsin", "arccos", "arctan"]) {
+    result = wrapInverseTrigResultToDegrees(result, fn);
+  }
+  return result;
+}
+
+function wrapInverseTrigResultToDegrees(expr: string, fnName: string): string {
+  let result = "";
+  let i = 0;
+  while (i < expr.length) {
+    const precededByLetter = i > 0 && /[a-zA-Z]/.test(expr[i - 1]);
+    if (!precededByLetter && expr.startsWith(`${fnName}(`, i)) {
+      const start = i + fnName.length;
+      let depth = 1;
+      let j = start + 1;
+      while (j < expr.length && depth > 0) {
+        if (expr[j] === "(") depth++;
+        else if (expr[j] === ")") depth--;
+        j++;
+      }
+      const arg = expr.slice(start + 1, j - 1);
+      result += `((${fnName}(${arg}))*180/pi)`;
+      i = j;
+    } else {
+      result += expr[i];
+      i++;
+    }
   }
   return result;
 }
