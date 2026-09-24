@@ -63,8 +63,8 @@ export function isInverseTrigAngleExpression(input: string): boolean {
     .replace(/\s+/g, "");
 
   // Formas lineales que manejan ambos motores.
-  if (/^(?:asin|acos|atan|arcsin|arccos|arctan)\(.+\)$/.test(value)) return true;
+  if (/^(?:asin|acos|atan|asec|acsc|acot|arcsin|arccos|arctan|arcsec|arccsc|arccot)\(.+\)$/.test(value)) return true;
 
   // Notación típica de MathLive para las teclas trigonométricas inversas.
-  return /^\\(?:sin|cos|tan)\^\{-?1\}\(.+\)$/.test(value);
+  return /^\\(?:sin|cos|tan|sec|csc|cot)\^\{-?1\}\(.+\)$/.test(value);
 }
