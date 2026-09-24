@@ -214,12 +214,12 @@ function applyAngleMode(algebrite: string, angleMode: "RAD" | "GRAD"): string {
   // convencionales devuelven grados. El orden importa: primero se convierte
   // el argumento de sin/cos/tan a radianes y después se convierte la salida
   // de arcsin/arccos/arctan a grados. Así sin(asin(0.5)) conserva 0.5.
-  const directTrig = ["sin", "cos", "tan"];
+  const directTrig = ["sin", "cos", "tan", "sec", "csc", "cot"];
   let result = algebrite;
   for (const fn of directTrig) {
     result = wrapFunctionArgsWithDegToRad(result, fn);
   }
-  for (const fn of ["arcsin", "arccos", "arctan"]) {
+  for (const fn of ["arcsin", "arccos", "arctan", "arcsec", "arccsc", "arccot"]) {
     result = wrapInverseTrigResultToDegrees(result, fn);
   }
   return result;
