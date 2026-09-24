@@ -11,10 +11,13 @@ import { MatrixMode } from "./modes/Matrices/MatrixMode";
 import { GraphingMode } from "./modes/Graphing/GraphingMode";
 import { StatisticsMode } from "./modes/Statistics/StatisticsMode";
 import { UnitsMode } from "./modes/Units/UnitsMode";
+import { GeometryMode } from "./modes/Geometry/GeometryMode";
 import { HistoryPanel } from "./components/HistoryPanel";
 import { HistoryDrawer } from "./components/HistoryDrawer";
 import { AjustesPopover } from "./components/AjustesPopover";
 import { KeyboardDock } from "./components/KeyboardDock";
+import { ProjectBrand } from "./components/ProjectBrand";
+import { ModeIcon, type ModeIconName } from "./components/ModeIcon";
 import { useLayoutModeStore } from "./store/useLayoutModeStore";
 import { useKeyboardPanelStore } from "./store/useKeyboardPanelStore";
 import { useMinWidthMediaQuery, FLOATING_MIN_WIDTH_PX } from "./hooks/useMinWidthMediaQuery";
@@ -29,7 +32,7 @@ import { useMinWidthMediaQuery, FLOATING_MIN_WIDTH_PX } from "./hooks/useMinWidt
 // todavía (decisión explícita: se pospone hasta que el ícono "sistema"
 // del teclado de Científica tenga lógica real de resolución).
 
-type Mode = "basic" | "simple" | "algebra" | "calculus" | "systems" | "matrices" | "graphing" | "statistics" | "units" | "history";
+type Mode = "basic" | "simple" | "algebra" | "calculus" | "systems" | "matrices" | "graphing" | "statistics" | "geometry" | "units" | "history";
 
 const MODE_LABELS: Record<Mode, string> = {
   basic: "Científica",
@@ -40,6 +43,7 @@ const MODE_LABELS: Record<Mode, string> = {
   matrices: "Matrices",
   graphing: "Gráficas",
   statistics: "Estadística",
+  geometry: "Geometría",
   units: "Unidades",
   history: "Historial",
 };
@@ -70,7 +74,16 @@ const MODE_LABELS: Record<Mode, string> = {
 // P7 (spec v2 §8): "units" nueva, visible — con esto queda el orden
 // final de §9 (previo al Módulo 5): Científica · Basic · Matrices ·
 // Gráficas · Estadística · Unidades. Módulo 5: se quita "Basic".
-const VISIBLE_MODES: Mode[] = ["basic", "matrices", "graphing", "statistics", "units"];
+const VISIBLE_MODES: Mode[] = ["basic", "matrices", "graphing", "statistics", "geometry", "units"];
+
+const MODE_ICONS: Partial<Record<Mode, ModeIconName>> = {
+  basic: "scientific",
+  matrices: "matrix",
+  graphing: "graph",
+  statistics: "statistics",
+  geometry: "geometry",
+  units: "units",
+};
 
 export default function App() {
   const [mode, setMode] = useState<Mode>("basic");
@@ -120,38 +133,46 @@ export default function App() {
       >
         Saltar al contenido principal
       </a>
-      <header className="flex items-center justify-between gap-2 border-b border-chrome-soft p-4">
-        <button
-          type="button"
-          onClick={() => setHistoryOpen((o) => !o)}
-          aria-label="Historial"
-          aria-expanded={historyOpen}
-          aria-controls="history-panel"
-          className="flex w-[92px] items-center gap-1.5 rounded-md px-2 py-1.5 text-bone/80 hover:bg-chrome-soft hover:text-bone dt:w-[140px]"
-        >
-          <span aria-hidden="true">▤</span>
-          <span className="text-xs">Historial</span>
-        </button>
-        <h1 className="font-display text-lg font-medium tracking-tight text-bone">
-          Precision Lab <span className="text-marker">Lite</span>
-        </h1>
-        <AjustesPopover />
+      <header className="border-b border-chrome-soft bg-chrome px-3 py-3 sm:px-4">
+        <div className="mx-auto flex max-w-[1376px] items-center justify-between gap-2">
+          <ProjectBrand />
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+            <button
+              type="button"
+              onClick={() => setHistoryOpen((o) => !o)}
+              aria-label="Historial"
+              aria-expanded={historyOpen}
+              aria-controls="history-panel"
+              className="flex min-h-11 items-center gap-1.5 rounded-md px-2.5 text-bone/80 hover:bg-chrome-soft hover:text-bone focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marker"
+            >
+              <span aria-hidden="true">▤</span>
+              <span className="hidden text-xs sm:inline">Historial</span>
+            </button>
+            <AjustesPopover />
+          </div>
+        </div>
       </header>
-      <nav aria-label="Modos de la calculadora" className="flex flex-wrap justify-center gap-1.5 border-b border-chrome-soft bg-chrome px-2 py-2 text-sm lg:gap-2 lg:py-2.5 dt:gap-3">
-        {(VISIBLE_MODES).map((m) => (
-          <button
-            key={m}
-            onClick={() => setMode(m)}
-            aria-current={m === mode ? "page" : undefined}
-            className={
-              m === mode
-                ? "rounded-md border-b-2 border-marker bg-marker-soft px-3 py-1.5 font-medium text-marker-text"
-                : "rounded-md border-b-2 border-transparent px-3 py-1.5 text-bone/70 hover:bg-chrome-soft hover:text-bone"
-            }
-          >
-            {MODE_LABELS[m]}
-          </button>
-        ))}
+      <nav aria-label="Modos de la calculadora" className="border-b border-chrome-soft bg-chrome">
+        <div className="mx-auto flex max-w-[1376px] flex-nowrap gap-1 overflow-x-auto px-3 py-1.5 text-sm sm:justify-center sm:px-4 lg:gap-2">
+          {VISIBLE_MODES.map((m) => {
+            const icon = MODE_ICONS[m];
+            return (
+              <button
+                key={m}
+                onClick={() => setMode(m)}
+                aria-current={m === mode ? "page" : undefined}
+                className={
+                  m === mode
+                    ? "flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-lg border-b-2 border-marker bg-marker-soft px-3 font-medium text-marker-text"
+                    : "flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-lg border-b-2 border-transparent px-3 text-bone/70 hover:bg-chrome-soft hover:text-bone"
+                }
+              >
+                {icon && <ModeIcon name={icon} className="h-4 w-4" />}
+                <span>{MODE_LABELS[m]}</span>
+              </button>
+            );
+          })}
+        </div>
       </nav>
       <div className="flex">
         {/* Módulo 0: padding inferior para que el KeyboardDock fijo (que
@@ -168,6 +189,7 @@ export default function App() {
           {mode === "matrices" && <MatrixMode />}
           {mode === "graphing" && <GraphingMode />}
           {mode === "statistics" && <StatisticsMode />}
+          {mode === "geometry" && <GeometryMode />}
           {mode === "units" && <UnitsMode />}
         </main>
         <HistoryDrawer isOpen={historyOpen} onClose={() => setHistoryOpen(false)}>
