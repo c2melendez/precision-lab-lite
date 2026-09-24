@@ -150,3 +150,16 @@ Alcance certificado:
 - Composiciones como `sin(asin(0.5))` preservan semántica correcta.
 - CI, Playwright, diferencial, mutación, fuzzing, rendimiento, cross-browser, accesibilidad y seguridad: PASS.
 
+
+### Subbloque Resultado + Formatos — CERRADO
+Estado: PASS completo en Lite y Plus.
+
+Certificado:
+- jerarquía visual de Resultado alineada;
+- selector de formatos convertido a chips sin cambiar nombres ni acciones;
+- DMS contextual preservado;
+- fracción mixta/impropia preservada;
+- aviso de fallback numérico Lite preservado como contrato funcional;
+- región accesible Resultado Plus sin duplicación;
+- CI, Playwright y gates aplicables: PASS.
+
