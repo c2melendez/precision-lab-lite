@@ -60,3 +60,21 @@ Se aplica a cualquier módulo que produzca resultados numéricos:
 - Unidades
 
 Cada formato aparece solo cuando sea matemáticamente aplicable.
+
+## S26.3 — Salidas angulares de trigonometría inversa
+
+Regla de producto:
+- En modo RAD, las funciones inversas `asin/acos/atan` (y alias `arcsin/arccos/arctan`) devuelven radianes.
+- En modo DEG/GRAD, devuelven grados sexagesimales.
+- Las funciones directas siguen interpretando sus argumentos conforme al modo angular.
+- Una salida angular en grados habilita el formato DMS aun cuando la entrada no contenga el símbolo `°`.
+- DMS usa `°`, `′`, `″` y no comillas/comas genéricas.
+
+Ejemplos contractuales:
+- RAD: `asin(0.5) = π/6 ≈ 0.523599`.
+- DEG: `asin(0.5) = 30°`.
+- DEG + DMS: `30° 0′ 0.0″`.
+- DEG: `acos(0) = 90°`.
+- DEG: `atan(1) = 45°`.
+
+Este cambio amplía explícitamente el contrato matemático anterior y por ello autoriza cambios acotados en las rutas protegidas, siempre acompañados de regresiones automáticas.
