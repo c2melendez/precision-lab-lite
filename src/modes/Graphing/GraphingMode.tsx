@@ -663,39 +663,50 @@ export function GraphingMode() {
         )}
 
         {selectedAnalysis && (
-          <>
-            <p className="inline-block rounded bg-marker-soft px-2 py-1 text-xs text-marker-text">
+          <section aria-label="Análisis de gráfica" className="space-y-3 rounded-xl border border-paper-line bg-paper-soft p-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Análisis</h3>
+                <p className="mt-0.5 text-[11px] text-muted">Dominio, rango y puntos notables</p>
+              </div>
+              <span className="rounded-full bg-marker-soft px-2.5 py-1 text-[11px] text-marker-text">
+                Aproximado
+              </span>
+            </div>
+            <p className="text-xs text-muted">
               Análisis aproximado por muestreo numérico, no simbólico exacto.
             </p>
-            <div className="flex flex-col gap-1 rounded-xl bg-paper-soft p-4 text-sm text-ink">
-              <p><span className="text-muted">Dominio:</span> {selectedAnalysis.domainDescription}</p>
-              <p><span className="text-muted">Rango:</span> {selectedAnalysis.rangeDescription}</p>
+            <div className="grid gap-x-5 gap-y-2 rounded-xl border border-paper-line bg-paper p-3 text-sm text-ink sm:grid-cols-[auto_minmax(0,1fr)]">
+              <span className="text-muted">Dominio:</span>
+              <span className="min-w-0 break-words">{selectedAnalysis.domainDescription}</span>
+              <span className="text-muted">Rango:</span>
+              <span className="min-w-0 break-words">{selectedAnalysis.rangeDescription}</span>
               {kind === "cartesian" && (
                 <>
-                  <p>
-                    <span className="text-muted">Intercepciones en x:</span>{" "}
+                  <span className="text-muted">Intercepciones en x:</span>
+                  <span className="min-w-0 break-words">
                     {selectedAnalysis.xIntercepts.length ? selectedAnalysis.xIntercepts.map((x) => x.toFixed(3)).join(", ") : "ninguna en la vista actual"}
-                  </p>
-                  <p>
-                    <span className="text-muted">Intercepción en y:</span>{" "}
+                  </span>
+                  <span className="text-muted">Intercepción en y:</span>
+                  <span className="min-w-0 break-words">
                     {selectedAnalysis.yIntercept !== null ? selectedAnalysis.yIntercept.toFixed(3) : "no definida en x=0"}
-                  </p>
-                  <p>
-                    <span className="text-muted">Máximo global:</span>{" "}
+                  </span>
+                  <span className="text-muted">Máximo global:</span>
+                  <span className="min-w-0 break-words">
                     {selectedAnalysis.globalMax ? `(${selectedAnalysis.globalMax.x.toFixed(3)}, ${selectedAnalysis.globalMax.y.toFixed(3)})` : "—"}
-                  </p>
-                  <p>
-                    <span className="text-muted">Mínimo global:</span>{" "}
+                  </span>
+                  <span className="text-muted">Mínimo global:</span>
+                  <span className="min-w-0 break-words">
                     {selectedAnalysis.globalMin ? `(${selectedAnalysis.globalMin.x.toFixed(3)}, ${selectedAnalysis.globalMin.y.toFixed(3)})` : "—"}
-                  </p>
-                  <p>
-                    <span className="text-muted">Vértice:</span>{" "}
+                  </span>
+                  <span className="text-muted">Vértice:</span>
+                  <span className="min-w-0 break-words">
                     {selectedAnalysis.vertex ? `(${selectedAnalysis.vertex.x.toFixed(3)}, ${selectedAnalysis.vertex.y.toFixed(3)})` : "no aplica"}
-                  </p>
+                  </span>
                 </>
               )}
             </div>
-          </>
+          </section>
         )}
       </section>
     </div>
