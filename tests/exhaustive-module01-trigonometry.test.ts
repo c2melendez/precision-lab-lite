@@ -81,3 +81,19 @@ describe("S26.3 — inversas devuelven grados en modo GRAD", () => {
     expect(numeric("sin(asin(0.5))", "GRAD")).toBeCloseTo(0.5, 10);
   });
 });
+
+
+describe("S26.3 — plantillas explícitas con símbolo °", () => {
+  for (const [expression, expected] of [
+    ["sin(30°)", 0.5],
+    ["cos(60°)", 0.5],
+    ["tan(45°)", 1],
+    ["sec(60°)", 2],
+    ["csc(30°)", 2],
+    ["cot(45°)", 1],
+  ] as Array<[string, number]>) {
+    it(`${expression} se interpreta correctamente en GRAD sin doble conversión`, () => {
+      expect(numeric(expression, "GRAD")).toBeCloseTo(expected, 10);
+    });
+  }
+});
