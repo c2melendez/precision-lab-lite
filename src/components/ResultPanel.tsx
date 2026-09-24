@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { StaticMath } from "./StaticMath";
 import type { MathResult } from "../types";
+import { decimalDegreesToDms, parseDecimalDegreesInput } from "./dmsDisplay";
 
 // spec v10 §11: el usuario alterna entre formatos sin recalcular.
 //
@@ -17,9 +18,9 @@ import type { MathResult } from "../types";
 // Screen.tsx, que es quien da el contenedor "pantalla" único (spec UX
 // estilo ClassCalc, decisión del mockup).
 
-type AnswerFormat = "dec" | "frac" | "scn" | "sqrt";
+type AnswerFormat = "dec" | "frac" | "scn" | "sqrt" | "dms";
 
-export function ResultPanel({ result }: { result: MathResult | null }) {
+export function ResultPanel({ result, inputLatex = "" }: { result: MathResult | null; inputLatex?: string }) {
   const [format, setFormat] = useState<AnswerFormat>("dec");
   // Antes: "frac" siempre mostraba mixta cuando estaba disponible
   // (mixedLatex ?? improperLatex), sin forma de pedir la impropia. El
@@ -27,6 +28,8 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
   // chico que solo aparece cuando realmente hay una forma mixta posible
   // (fracción impropia: |numerador| >= denominador).
   const [showMixed, setShowMixed] = useState(true);
+  const dmsDegrees = parseDecimalDegreesInput(inputLatex);
+  const dmsValue = dmsDegrees === null ? null : decimalDegreesToDms(dmsDegrees);
 
   if (!result) {
     return <p className="py-1 text-right text-sm text-muted">Escribe una expresión y presiona Calcular.</p>;
@@ -42,6 +45,7 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
   }
 
   function renderValue(): { latex: string; isPlainNumber: boolean } {
+    if (format === "dms" && dmsValue) return { latex: dmsValue.latex, isPlainNumber: false };
     if (format === "frac" && result?.fraction) {
       const hasMixed = result.fraction.mixedLatex !== null;
       const latex = hasMixed && showMixed ? result.fraction.mixedLatex! : result.fraction.improperLatex;
@@ -102,7 +106,7 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
         </div>
       )}
       <div className="mt-1.5 flex justify-end gap-3 text-xs text-muted">
-        {(["dec", "frac", "scn", "sqrt"] as AnswerFormat[]).map((f) => (
+        {(["dec", "frac", "scn", "sqrt", ...(dmsValue ? ["dms" as const] : [])] as AnswerFormat[]).map((f) => (
           <button
             key={f}
             onClick={() => setFormat(f)}
