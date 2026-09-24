@@ -387,15 +387,19 @@ export function GraphingMode() {
   const selectedSurface3D = selectedEntry?.surface3D ?? null;
 
   return (
-    <div className="flex flex-col gap-3 p-4 md:flex-row md:items-start lg:gap-6 dt:mx-auto dt:max-w-[1440px] dt:gap-10">
+    <div className="mx-auto flex w-full max-w-[1376px] flex-col gap-4 p-4 md:flex-row md:items-start lg:gap-6">
       {/* Sidebar de expresiones (spec §6, + selector de tipo Módulo I0) */}
-      <div className="flex w-full flex-col gap-2 md:w-56">
-        <div className="flex gap-1">
+      <aside aria-label="Expresiones y tipo de gráfica" className="flex w-full shrink-0 flex-col gap-3 rounded-xl border border-paper-line bg-paper-soft p-3 shadow-sm md:w-[280px]">
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Expresiones</h2>
+          <span className="text-[11px] text-muted">{entries.length}/{6}</span>
+        </div>
+        <div className="flex gap-1 overflow-x-auto pb-1" role="tablist" aria-label="Tipo de gráfica">
           <button
             type="button"
             onClick={() => switchKind("cartesian")}
             aria-pressed={kind === "cartesian"}
-            className={`rounded px-2 py-1 text-xs ${
+            className={`min-h-8 shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
               kind === "cartesian" ? "bg-marker text-white" : "border border-paper-line text-muted hover:bg-paper-soft"
             }`}
           >
@@ -405,7 +409,7 @@ export function GraphingMode() {
             type="button"
             onClick={() => switchKind("polar")}
             aria-pressed={kind === "polar"}
-            className={`rounded px-2 py-1 text-xs ${
+            className={`min-h-8 shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
               kind === "polar" ? "bg-marker text-white" : "border border-paper-line text-muted hover:bg-paper-soft"
             }`}
           >
@@ -415,7 +419,7 @@ export function GraphingMode() {
             type="button"
             onClick={() => switchKind("parametric")}
             aria-pressed={kind === "parametric"}
-            className={`rounded px-2 py-1 text-xs ${
+            className={`min-h-8 shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
               kind === "parametric" ? "bg-marker text-white" : "border border-paper-line text-muted hover:bg-paper-soft"
             }`}
           >
@@ -425,7 +429,7 @@ export function GraphingMode() {
             type="button"
             onClick={() => switchKind("3d")}
             aria-pressed={kind === "3d"}
-            className={`rounded px-2 py-1 text-xs ${
+            className={`min-h-8 shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
               kind === "3d" ? "bg-marker text-white" : "border border-paper-line text-muted hover:bg-paper-soft"
             }`}
           >
@@ -602,10 +606,14 @@ export function GraphingMode() {
             </div>
           </div>
         )}
-      </div>
+      </aside>
 
       {/* Lienzo (spec §6) */}
-      <div className="flex flex-1 flex-col gap-2">
+      <section aria-label="Vista de gráfica" className="flex min-w-0 flex-1 flex-col gap-3 rounded-xl border border-paper-line bg-paper p-3 shadow-sm">
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Vista</h2>
+          <span className="text-[11px] text-muted">{kind === "3d" ? "Superficie 3D" : kind === "polar" ? "Polar" : kind === "parametric" ? "Paramétrica" : "Cartesiana"}</span>
+        </div>
         <div className="flex items-center justify-end gap-1.5">
           {kind !== "3d" && (
             <>
@@ -689,7 +697,7 @@ export function GraphingMode() {
             </div>
           </>
         )}
-      </div>
+      </section>
     </div>
   );
 }
