@@ -76,6 +76,17 @@ export const key = (
   description,
 });
 
+
+const DIRECT_TRIG_ARIA = new Set(["sin", "cos", "tan", "sec", "csc", "cot"]);
+
+export function angleAwareTrigInsertLatex(
+  k: KeyDef,
+  isDegrees: boolean,
+): string {
+  if (!isDegrees || !DIRECT_TRIG_ARIA.has(k.ariaLabel)) return k.insertLatex;
+  return k.insertLatex.replace("#0", "#0^{\\circ}");
+}
+
 export type { MathField };
 export { BOX };
 
@@ -607,6 +618,9 @@ export interface MathKeyboardProps {
   /** M30: permite que el modo propietario registre el handler de Smart Dock
    * durante toda su vida, incluso cuando este teclado no está montado. */
   registerInsertHandler?: boolean;
+  /** S26.3: controla la plantilla visual de trigonometría directa.
+   * En GRAD inserta sin/cos/tan/sec/csc/cot con ° dentro del argumento. */
+  angleMode?: "RAD" | "GRAD";
 }
 
 /** Cuántas filas puede pedir el selector de "Sistema" — spec §6 (5×5 ya
@@ -625,6 +639,7 @@ export function MathKeyboard({
   onGraphComplex,
   hideCoreGrid = false,
   registerInsertHandler = true,
+  angleMode = "RAD",
   activeCategory,
 }: MathKeyboardProps) {
   const CATEGORIES = hideCoreGrid ? CATEGORIES_BASIC_MODE : CATEGORIES_FULL;
@@ -648,7 +663,7 @@ export function MathKeyboard({
     if (k.glyph === "Graficar" && k.insertLatex === "") return onGraphComplex?.();
     field?.focus();
     if (k.insertLatex) {
-      field?.insert(k.insertLatex);
+      field?.insert(angleAwareTrigInsertLatex(k, angleMode === "GRAD"));
       recordKey(activeMode, k, isVariableOrConstantKey(k) ? "variable" : "operation");
     }
     setOpenCategory(null);
