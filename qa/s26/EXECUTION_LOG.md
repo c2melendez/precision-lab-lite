@@ -163,3 +163,16 @@ Certificado:
 - región accesible Resultado Plus sin duplicación;
 - CI, Playwright y gates aplicables: PASS.
 
+
+### Subbloque Entrada + Pasos — CERRADO
+Estado: PASS completo en Lite y Plus.
+
+Certificado:
+- superficie visual de Entrada alineada entre ambos proyectos;
+- jerarquía Entrada → Resultado → Formatos → Pasos consistente;
+- timeline de Pasos numerado y visualmente homologado;
+- contratos accesibles preservados;
+- layouts split/focus/floating/stacked/separated/fused sin regresiones funcionales;
+- corrección adicional en Plus para EDO y'=2x y serializaciones MathLive equivalentes (y′, y^{\\prime}, y^′);
+- Playwright E2E, CI, mutación, diferencial, fuzzing, rendimiento, cross-browser, accesibilidad y seguridad: PASS.
+
