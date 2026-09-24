@@ -133,3 +133,20 @@ Criterio de aceptación:
 - El placeholder permanece antes del símbolo de grado.
 - Las inversas no reciben `°` en el argumento; su salida se expresa en la unidad angular activa.
 - Las pruebas cubren teclado, escritura manual sin `°`, símbolo explícito `°` y ausencia de doble conversión.
+
+### Subbloque angular — CERRADO
+Estado: PASS completo en Lite y Plus.
+
+Alcance certificado:
+- RAD/DEG/GRAD coherente para trigonometría directa.
+- Plantillas visuales con `°` dentro del argumento en DEG/GRAD.
+- RAD conserva plantillas sin `°`.
+- Las seis trigonométricas directas están cubiertas: sin/cos/tan/sec/csc/cot.
+- Las seis inversas convencionales devuelven la unidad angular activa.
+- DEG/GRAD etiqueta salida con grados y habilita DMS.
+- RAD conserva radianes.
+- Símbolo `°` explícito entendido por ambos motores sin doble conversión.
+- Casos decimales de inversas cubiertos, incluyendo `asin(0.5)` y `arcsin(0.5)`.
+- Composiciones como `sin(asin(0.5))` preservan semántica correcta.
+- CI, Playwright, diferencial, mutación, fuzzing, rendimiento, cross-browser, accesibilidad y seguridad: PASS.
+
