@@ -121,7 +121,7 @@ export function Screen({
         )}
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
-          <ResultPanel result={result} />
+          <ResultPanel result={result} inputLatex={latex} />
         </div>
         <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
         <StackedKeyboardSection />
@@ -139,6 +139,7 @@ export function Screen({
       <FloatingScreenContent
         inputField={inputField}
         result={result}
+        inputLatex={latex}
         angleMode={angleMode}
         onToggleAngleMode={onToggleAngleMode}
         canGraph={canGraph}
@@ -159,6 +160,7 @@ export function Screen({
       <FocusScreenContent
         inputField={inputField}
         result={result}
+        inputLatex={latex}
         angleMode={angleMode}
         onToggleAngleMode={onToggleAngleMode}
         canGraph={canGraph}
@@ -180,7 +182,7 @@ export function Screen({
         )}
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
-          <ResultPanel result={result} />
+          <ResultPanel result={result} inputLatex={latex} />
         </div>
         <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
       </div>
@@ -232,7 +234,7 @@ export function Screen({
                 <span className="border-l-4 border-marker pl-2">Resultado</span>
               </h2>
               <div className="overflow-x-auto px-4 py-4" aria-live="polite">
-                <ResultPanel result={result} />
+                <ResultPanel result={result} inputLatex={latex} />
               </div>
             </section>
             <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
@@ -258,7 +260,7 @@ export function Screen({
         )}
 
         {inputField}
-        <ResultPanel result={result} />
+        <ResultPanel result={result} inputLatex={latex} />
       </div>
       <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
     </div>
@@ -321,6 +323,7 @@ function StackedKeyboardSection() {
 interface FocusLikeContentProps {
   inputField: ReactNode;
   result: MathResult | null;
+  inputLatex: string;
   angleMode: "RAD" | "GRAD";
   onToggleAngleMode: () => void;
   canGraph: boolean;
@@ -329,7 +332,7 @@ interface FocusLikeContentProps {
 
 /** Módulo P2 ("Enfoque"): sin historial, resultado destacado, gráfica
  * con más área. Reusado tal cual por Flotante cuando degrada (P0/P4). */
-function FocusScreenContent({ inputField, result, angleMode, onToggleAngleMode, canGraph, onGraphExpression }: FocusLikeContentProps) {
+function FocusScreenContent({ inputField, result, inputLatex, angleMode, onToggleAngleMode, canGraph, onGraphExpression }: FocusLikeContentProps) {
   return (
     <div className="flex flex-1 flex-col gap-3">
       <div className="flex justify-end">
@@ -337,7 +340,7 @@ function FocusScreenContent({ inputField, result, angleMode, onToggleAngleMode, 
       </div>
       <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
       <div className="rounded-xl bg-paper-soft px-5 py-4 text-center shadow-sm">
-        <ResultPanel result={result} />
+        <ResultPanel result={result} inputLatex={inputLatex} />
       </div>
       <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
     </div>
@@ -353,7 +356,7 @@ function FocusScreenContent({ inputField, result, angleMode, onToggleAngleMode, 
  * localStorage, confirmado por el usuario, con clamp contra el viewport
  * actual al montar y al redimensionar la ventana del navegador).
  */
-function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMode, canGraph, onGraphExpression }: FocusLikeContentProps) {
+function FloatingScreenContent({ inputField, result, inputLatex, angleMode, onToggleAngleMode, canGraph, onGraphExpression }: FocusLikeContentProps) {
   const isWideEnough = useMinWidthMediaQuery(FLOATING_MIN_WIDTH_PX);
 
   const keyboardWindow = useFloatingLayoutStore((s) => s.keyboardWindow);
@@ -386,6 +389,7 @@ function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMod
       <FocusScreenContent
         inputField={inputField}
         result={result}
+        inputLatex={inputLatex}
         angleMode={angleMode}
         onToggleAngleMode={onToggleAngleMode}
         canGraph={canGraph}
@@ -404,7 +408,7 @@ function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMod
       </div>
       <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
       <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
-        <ResultPanel result={result} />
+        <ResultPanel result={result} inputLatex={inputLatex} />
       </div>
       {/* Fase X, Módulo X0 — mismo criterio que precision-lab (main): el
           dock de recientes va fuera de la FloatingWindow, justo encima. */}
