@@ -15,7 +15,7 @@ test("suite original módulo 6: matrices expone rango, traza y eigen y calcula r
   await cells.nth(1).fill("2");
   await cells.nth(2).fill("2");
   await cells.nth(3).fill("4");
-  await page.getByRole("button", { name: "Calcular", exact: true }).click();
+  await page.locator("#main-content").getByRole("button", { name: "Calcular", exact: true }).click();
 
   // ResultPanel renderiza resultados simbólicos en MathLive/Shadow DOM.
   // La fuente de verdad accesible es la propiedad value del host readonly.
@@ -50,7 +50,7 @@ test("M21: Lite permite 6x6, calcula rango 6 y mantiene la grilla dentro del vie
   for (const index of [0, 7, 14, 21, 28, 35]) {
     await cells.nth(index).fill("1");
   }
-  await page.getByRole("button", { name: "Calcular", exact: true }).click();
+  await page.locator("#main-content").getByRole("button", { name: "Calcular", exact: true }).click();
 
   const resultField = page.locator("math-field[read-only]").last();
   await expect(resultField).toBeVisible({ timeout: 12000 });
@@ -82,7 +82,7 @@ test("M22: eigenvectores complejos 2x2 se muestran en Lite", async ({ page }) =>
   await cells.nth(2).fill("1");
   await cells.nth(3).fill("0");
 
-  await page.getByRole("button", { name: "Calcular", exact: true }).click();
+  await page.locator("#main-content").getByRole("button", { name: "Calcular", exact: true }).click();
 
   const procedure = page.getByRole("list", { name: "Procedimiento paso a paso" });
   await expect(procedure).toBeVisible({ timeout: 12000 });
@@ -113,7 +113,7 @@ test("M23: eigen 4x4 usa fallback numérico y muestra eigenvectores", async ({ p
     await cells.nth(index).fill(value);
   }
 
-  await page.getByRole("button", { name: "Calcular", exact: true }).click();
+  await page.locator("#main-content").getByRole("button", { name: "Calcular", exact: true }).click();
 
   await expect(page.getByText("Aproximado numéricamente (no resuelto simbólicamente)")).toBeVisible({ timeout: 12000 });
   const procedure = page.getByRole("list", { name: "Procedimiento paso a paso" });
@@ -141,7 +141,7 @@ test("M24: eigen repetido 4x4 identidad agrupa multiplicidad y conserva eigenvec
   await expect(cells).toHaveCount(16);
   for (const index of [0,5,10,15]) await cells.nth(index).fill("1");
 
-  await page.getByRole("button", { name: "Calcular", exact: true }).click();
+  await page.locator("#main-content").getByRole("button", { name: "Calcular", exact: true }).click();
 
   const procedure = page.getByRole("list", { name: "Procedimiento paso a paso" });
   await expect(procedure).toBeVisible({ timeout: 12000 });
@@ -170,7 +170,7 @@ test("M25: matrices C y F persisten, se seleccionan explícitamente y calculan C
     await cells.nth(index).fill(value);
   }
 
-  await page.getByRole("button", { name: "Calcular", exact: true }).click();
+  await page.locator("#main-content").getByRole("button", { name: "Calcular", exact: true }).click();
   const resultField = page.locator("math-field[read-only]").last();
   await expect(resultField).toBeVisible({ timeout: 12000 });
   const resultValue = await resultField.evaluate((el) =>
