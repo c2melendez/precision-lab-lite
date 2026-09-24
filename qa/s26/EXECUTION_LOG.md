@@ -16,8 +16,8 @@ SHA de preparación S26 integrado en main: `9d901b0db3b1b9995374757dc5213146c252
 - [x] Inventario de superficies reales creado en `INVENTORY.md`.
 - [x] Matriz visual ampliada a superficies, estados, layouts y personalización reales.
 - [x] Suite `e2e/s26-baseline.spec.ts` añadida para baseline reproducible.
-- [ ] S26.0 — Baseline y congelamiento: **EJECUCIÓN CI EN CURSO**.
-- [ ] S26.1 — Inventario y matriz: **ESTRUCTURA CERRADA / EVIDENCIA EN CURSO**.
+- [x] S26.0 — Baseline y congelamiento: **CERRADO**.
+- [x] S26.1 — Inventario y matriz: **CERRADO**.
 - [ ] S26.2 — Diseño objetivo.
 - [ ] S26.3 — Implementación por bloques.
 - [ ] S26.4 — Regresión visual automatizada.
@@ -48,10 +48,11 @@ SHA de preparación S26 integrado en main: `9d901b0db3b1b9995374757dc5213146c252
 - Cobertura de seis layouts en Desktop/Mobile.
 - Captura explícita de `floating` a 1023 px y 1024 px.
 
-### En validación
-- Workflow Playwright E2E del SHA actual.
-- Cross-browser y CI del mismo SHA.
-- Evidencia adjunta al reporte Playwright mediante `testInfo.attach`.
+### Validación final
+- CI: PASS.
+- Playwright E2E: PASS.
+- Cross-browser aplicable: PASS.
+- Evidencia visual adjunta al reporte Playwright mediante `testInfo.attach`.
 
 ## S26.1 — Inventario y matriz
 
@@ -64,10 +65,11 @@ SHA de preparación S26 integrado en main: `9d901b0db3b1b9995374757dc5213146c252
 - Estrategia combinatoria para temas/densidad/movimiento/paletas.
 - Matriz ampliada con estados funcionales y cobertura transversal.
 
-### Pendiente para cerrar S26.1
-- Confirmar PASS del baseline runtime.
-- Revisar screenshots producidos y registrar discrepancias.
-- Enlazar filas de `VISUAL_MATRIX.md` con evidencia/test concreto.
+### Cierre S26.1
+- Baseline runtime confirmado en PASS.
+- Matriz enlazada a pruebas funcionales mediante `TEST_MAPPING.md`.
+- No se detectaron regresiones funcionales ni cambios en rutas matemáticas protegidas.
+- Siguiente fase: S26.2 Diseño objetivo.
 
 ## Rutas protegidas tocadas
 
@@ -79,4 +81,4 @@ Ninguno. S26 sigue limitado a QA/documentación; no se ha modificado producto ni
 
 ## Instrucción de continuidad
 
-Primero resolver cualquier fallo del baseline S26. Luego revisar evidencia y cerrar S26.0/S26.1. No iniciar S26.2 hasta que el baseline runtime sea reproducible.
+S26.0 y S26.1 están cerrados. Continuar con S26.2 — Diseño objetivo, sin modificar rutas matemáticas protegidas.
