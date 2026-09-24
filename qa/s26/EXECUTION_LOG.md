@@ -109,8 +109,8 @@ Objetivos:
 Motivo: ampliación funcional explícitamente aprobada durante S26.3.
 
 Cambio matemático:
-- RAD conserva salidas de `asin/acos/atan` en radianes.
-- DEG/GRAD devuelve esas salidas en grados sexagesimales.
+- RAD conserva salidas de las seis trigonométricas inversas convencionales en radianes.
+- DEG/GRAD devuelve en grados sexagesimales las salidas de seno/coseno/tangente inversos y secante/cosecante/cotangente inversos.
 - Las salidas angulares en grados pueden alternarse a DMS.
 - Las trigonométricas directas conservan su semántica de entrada por modo angular.
 
@@ -122,7 +122,14 @@ Pruebas añadidas:
 - `src/components/ResultPanel.test.tsx`
 
 Criterio de aceptación:
-- asin/acos/atan en DEG/GRAD devuelven grados.
+- las seis trigonométricas inversas convencionales en DEG/GRAD devuelven grados.
 - composición directa(inversa) conserva resultado correcto.
 - RAD no cambia.
 - UI etiqueta grados con `°` y ofrece DMS solo cuando el resultado es angular.
+
+### Plantillas visuales DEG/GRAD
+- En DEG/GRAD, el teclado inserta `°` dentro del argumento de sin/cos/tan/sec/csc/cot.
+- En RAD, conserva la plantilla sin `°`.
+- El placeholder permanece antes del símbolo de grado.
+- Las inversas no reciben `°` en el argumento; su salida se expresa en la unidad angular activa.
+- Las pruebas cubren teclado, escritura manual sin `°`, símbolo explícito `°` y ausencia de doble conversión.
