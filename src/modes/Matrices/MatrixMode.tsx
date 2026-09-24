@@ -222,7 +222,7 @@ export function MatrixMode() {
 
   return (
     <div className="mx-auto grid w-full max-w-[1376px] gap-4 p-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:items-start">
-      <section aria-label="Entrada de matrices" className="flex flex-col gap-4 rounded-xl border border-paper-line bg-paper-soft p-4 shadow-sm">
+      <section aria-label="Entrada de matrices" className="flex min-w-0 flex-col gap-4 rounded-xl border border-paper-line bg-paper-soft p-4 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-3 border-b border-paper-line pb-3">
           <div>
             <h2 className="text-base font-semibold text-ink">Matrices</h2>
@@ -261,7 +261,7 @@ export function MatrixMode() {
           <label htmlFor="matrix-expression" className="mb-1 block text-sm font-medium text-ink">
             Expresión matricial A–F
           </label>
-          <div className="flex gap-2">
+          <div className="flex min-w-0 flex-col gap-2 sm:flex-row">
             <input
               id="matrix-expression"
               value={matrixExpression}
@@ -281,7 +281,7 @@ export function MatrixMode() {
               type="button"
               onClick={handleExpressionCompute}
               disabled={matrixExpression.trim() === ""}
-              className="shrink-0 rounded-md bg-graph px-3 py-2 text-sm font-semibold text-paper hover:bg-graph/90 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full shrink-0 rounded-md bg-graph px-3 py-2 text-sm font-semibold text-paper hover:bg-graph/90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
               Evaluar expresión
             </button>
@@ -399,7 +399,7 @@ export function MatrixMode() {
         </button>
       </section>
 
-      <section aria-label="Resultado y pasos de matrices" className="flex min-w-0 flex-col gap-3 rounded-xl border border-paper-line bg-paper p-4 shadow-sm">
+      <section aria-label="Resultado y pasos de matrices" className="flex min-w-0 max-w-full flex-col gap-3 overflow-hidden rounded-xl border border-paper-line bg-paper p-4 shadow-sm">
         <div className="border-b border-paper-line pb-3">
           <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Resultado</h3>
           <p className="mt-0.5 text-[11px] text-muted">Resultado, formato y procedimiento</p>
