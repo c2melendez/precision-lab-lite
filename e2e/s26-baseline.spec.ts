@@ -12,6 +12,7 @@ const MODES = [
   { id: "matrices", label: "Matrices" },
   { id: "graficas", label: "Gráficas" },
   { id: "estadistica", label: "Estadística" },
+  { id: "geometria", label: "Geometría" },
   { id: "unidades", label: "Unidades" },
 ] as const;
 
