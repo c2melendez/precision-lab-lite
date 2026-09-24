@@ -394,11 +394,9 @@ export function GraphingMode() {
           <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Expresiones</h2>
           <span className="text-[11px] text-muted">{entries.length} {entries.length === 1 ? "expresión" : "expresiones"}</span>
         </div>
-        <div className="flex gap-1 overflow-x-auto pb-1" role="tablist" aria-label="Tipo de gráfica">
+        <div className="flex gap-1 overflow-x-auto pb-1" role="group" aria-label="Tipo de gráfica">
           <button
             type="button"
-            role="tab"
-            aria-selected={kind === "cartesian"}
             onClick={() => switchKind("cartesian")}
             aria-pressed={kind === "cartesian"}
             className={`min-h-8 shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
@@ -409,8 +407,6 @@ export function GraphingMode() {
           </button>
           <button
             type="button"
-            role="tab"
-            aria-selected={kind === "polar"}
             onClick={() => switchKind("polar")}
             aria-pressed={kind === "polar"}
             className={`min-h-8 shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
@@ -421,8 +417,6 @@ export function GraphingMode() {
           </button>
           <button
             type="button"
-            role="tab"
-            aria-selected={kind === "parametric"}
             onClick={() => switchKind("parametric")}
             aria-pressed={kind === "parametric"}
             className={`min-h-8 shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
@@ -433,8 +427,6 @@ export function GraphingMode() {
           </button>
           <button
             type="button"
-            role="tab"
-            aria-selected={kind === "3d"}
             onClick={() => switchKind("3d")}
             aria-pressed={kind === "3d"}
             className={`min-h-8 shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
