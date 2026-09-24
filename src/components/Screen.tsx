@@ -121,7 +121,7 @@ export function Screen({
         )}
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
-          <ResultPanel result={result} inputLatex={latex} />
+          <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
         <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
         <StackedKeyboardSection />
@@ -182,7 +182,7 @@ export function Screen({
         )}
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
-          <ResultPanel result={result} inputLatex={latex} />
+          <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
         <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
       </div>
@@ -234,7 +234,7 @@ export function Screen({
                 <span className="border-l-4 border-marker pl-2">Resultado</span>
               </h2>
               <div className="overflow-x-auto px-4 py-4" aria-live="polite">
-                <ResultPanel result={result} inputLatex={latex} />
+                <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
               </div>
             </section>
             <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
@@ -260,7 +260,7 @@ export function Screen({
         )}
 
         {inputField}
-        <ResultPanel result={result} inputLatex={latex} />
+        <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
       </div>
       <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
     </div>
@@ -340,7 +340,7 @@ function FocusScreenContent({ inputField, result, inputLatex, angleMode, onToggl
       </div>
       <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
       <div className="rounded-xl bg-paper-soft px-5 py-4 text-center shadow-sm">
-        <ResultPanel result={result} inputLatex={inputLatex} />
+        <ResultPanel result={result} inputLatex={inputLatex} angleMode={angleMode} />
       </div>
       <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
     </div>
@@ -408,7 +408,7 @@ function FloatingScreenContent({ inputField, result, inputLatex, angleMode, onTo
       </div>
       <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
       <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
-        <ResultPanel result={result} inputLatex={inputLatex} />
+        <ResultPanel result={result} inputLatex={inputLatex} angleMode={angleMode} />
       </div>
       {/* Fase X, Módulo X0 — mismo criterio que precision-lab (main): el
           dock de recientes va fuera de la FloatingWindow, justo encima. */}
