@@ -140,3 +140,38 @@ Antes de cerrar S26:
 - verificar paridad con motor/ruta;
 - registrar excepciones por módulo;
 - no aceptar una tecla decorativa sin función documentada.
+
+## S26.3 — Plantillas trigonométricas sensibles al modo angular
+
+Para funciones trigonométricas directas:
+- `sin`
+- `cos`
+- `tan`
+- `sec`
+- `csc`
+- `cot`
+
+el teclado adapta la plantilla según la unidad angular activa.
+
+### DEG/GRAD
+Inserta el símbolo de grados **dentro del argumento**, con el placeholder antes del símbolo:
+- `sin(□°)`
+- `cos(□°)`
+- `tan(□°)`
+- `sec(□°)`
+- `csc(□°)`
+- `cot(□°)`
+
+La representación MathLive equivalente utiliza `#0^{\\circ}`.
+
+### RAD
+Conserva las plantillas sin símbolo de grado:
+- `sin(□)`
+- `cos(□)`
+- etc.
+
+### Inversas
+Las inversas no reciben `°` dentro de su argumento, porque consumen una razón/valor y producen un ángulo. La unidad de **salida** depende de RAD/DEG según el contrato de resultados.
+
+### Integridad
+El `°` explícito representa semánticamente grados sexagesimales. Los motores deben reconocerlo sin aplicar una segunda conversión cuando el modo DEG/GRAD ya está activo.
