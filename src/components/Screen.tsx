@@ -102,6 +102,17 @@ export function Screen({
     </div>
   );
 
+  const inputSurface = (
+    <section aria-label="Entrada" className="rounded-xl border border-paper-line bg-paper-soft shadow-sm">
+      <div className="flex items-center justify-between border-b border-paper-line px-4 py-2.5">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Entrada</p>
+        <span className="text-[11px] text-muted">Expresión matemática</span>
+      </div>
+      <div className="px-4 py-3">{inputField}</div>
+    </section>
+  );
+
+
   // "stacked" (Apilado, Módulo P3): una sola columna — input, resultado,
   // gráfica, y el teclado como sección COLAPSADA dentro del mismo flujo
   // (no overlay/bottom sheet). Por eso NO usa <KeyboardPanel> (siempre
@@ -119,7 +130,7 @@ export function Screen({
             <HistoryLog entries={sessionHistory} />
           </div>
         )}
-        <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
+        {inputSurface}
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
           <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
@@ -137,7 +148,7 @@ export function Screen({
   if (layoutMode === "floating") {
     return (
       <FloatingScreenContent
-        inputField={inputField}
+        inputField={inputSurface}
         result={result}
         inputLatex={latex}
         angleMode={angleMode}
@@ -158,7 +169,7 @@ export function Screen({
   if (layoutMode === "focus") {
     return (
       <FocusScreenContent
-        inputField={inputField}
+        inputField={inputSurface}
         result={result}
         inputLatex={latex}
         angleMode={angleMode}
@@ -180,7 +191,7 @@ export function Screen({
             <HistoryLog entries={sessionHistory} />
           </div>
         )}
-        <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
+        {inputSurface}
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
           <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
@@ -259,8 +270,10 @@ export function Screen({
           </div>
         )}
 
-        {inputField}
-        <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
+        {inputSurface}
+        <div className="mt-3">
+          <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
+        </div>
       </div>
       <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
     </div>
@@ -338,7 +351,7 @@ function FocusScreenContent({ inputField, result, inputLatex, angleMode, onToggl
       <div className="flex justify-end">
         <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
       </div>
-      <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
+      {inputSurface}
       <div className="rounded-xl bg-paper-soft px-5 py-4 text-center shadow-sm">
         <ResultPanel result={result} inputLatex={inputLatex} angleMode={angleMode} />
       </div>
@@ -387,7 +400,7 @@ function FloatingScreenContent({ inputField, result, inputLatex, angleMode, onTo
   if (!isWideEnough) {
     return (
       <FocusScreenContent
-        inputField={inputField}
+        inputField={inputSurface}
         result={result}
         inputLatex={inputLatex}
         angleMode={angleMode}
@@ -406,7 +419,7 @@ function FloatingScreenContent({ inputField, result, inputLatex, angleMode, onTo
           Restablecer posición de ventanas
         </button>
       </div>
-      <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
+      {inputSurface}
       <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
         <ResultPanel result={result} inputLatex={inputLatex} angleMode={angleMode} />
       </div>
