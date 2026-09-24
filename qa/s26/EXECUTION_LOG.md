@@ -82,3 +82,25 @@ Ninguno. S26 sigue limitado a QA/documentación; no se ha modificado producto ni
 ## Instrucción de continuidad
 
 S26.0 y S26.1 están cerrados. Continuar con S26.2 — Diseño objetivo, sin modificar rutas matemáticas protegidas.
+
+## S26.3 — Implementación por bloques
+
+### Bloque 1 — Shell, identidad, navegación y teclado global — CERRADO
+- Navegación final: Científica → Matrices → Gráficas → Estadística → Geometría → Unidades.
+- Identidad persistente PL / PL+ integrada.
+- Geometría incorporada como sexto módulo visible.
+- Teclado existente reutilizado como entrada global; no se duplicó la botonería.
+- Científica conserva prioridad sobre su teclado propietario.
+- Accesibilidad y semántica de marca preservadas.
+- Regresiones detectadas y corregidas: contraste del monograma Lite, h1 de branding Plus y selectores ambiguos de Matrices.
+- Gates posteriores al bloque: PASS completos en ambos repos.
+
+### Bloque 2 — Científica / Entrada / Resultado / Pasos / Formatos — EN CURSO
+Objetivos:
+- conservar dec / frac / scn / exacto-radical;
+- añadir presentación mixta cuando el racional impropio lo permita;
+- añadir presentación DMS cuando el valor sea angular y tenga simbología válida;
+- no introducir ceros finales innecesarios;
+- preservar resultados exactos y aproximados;
+- armonizar Entrada / Resultado / Pasos con el contrato visual;
+- no tocar motor matemático salvo defecto reproducible.
