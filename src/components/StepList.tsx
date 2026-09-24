@@ -19,8 +19,8 @@ export function StepList({ steps, activeIndex }: { steps: Step[]; activeIndex?: 
   if (steps.length === 0) return null;
 
   return (
-    <ol className="relative flex flex-col gap-3.5 pl-5" aria-label="Procedimiento paso a paso">
-      <div className="absolute bottom-1 left-[9px] top-1 w-px bg-paper-line" aria-hidden="true" />
+    <ol className="relative flex flex-col gap-4 pl-7" aria-label="Procedimiento paso a paso">
+      <div className="absolute bottom-2 left-[11px] top-2 w-px bg-paper-line" aria-hidden="true" />
 
       {steps.map((step, i) => {
         const isActive = activeIndex === i;
@@ -29,12 +29,14 @@ export function StepList({ steps, activeIndex }: { steps: Step[]; activeIndex?: 
             <span
               className={
                 isActive
-                  ? "absolute -left-5 top-0.5 h-3 w-3 rounded-full bg-marker ring-4 ring-marker-soft"
-                  : "absolute -left-5 top-0.5 h-3 w-3 rounded-full border-2 border-paper-line bg-paper"
+                  ? "absolute -left-7 top-0 grid h-6 w-6 place-items-center rounded-full bg-marker text-[10px] font-bold text-chrome ring-4 ring-marker-soft"
+                  : "absolute -left-7 top-0 grid h-6 w-6 place-items-center rounded-full border border-paper-line bg-paper text-[10px] font-semibold text-muted"
               }
               aria-hidden="true"
-            />
-            <div className={isActive ? "-mx-2.5 rounded-lg border-l-[3px] border-marker bg-marker-soft p-2.5" : ""}>
+            >
+              {i + 1}
+            </span>
+            <div className={isActive ? "rounded-xl border border-marker/30 bg-marker-soft p-3" : "rounded-xl border border-paper-line bg-paper/60 p-3"}>
               {step.title && (
                 <p className={isActive ? "text-sm font-medium text-marker-text" : "text-sm font-medium text-muted"}>
                   {step.title}
