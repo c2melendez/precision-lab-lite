@@ -392,7 +392,7 @@ export function GraphingMode() {
       <aside aria-label="Expresiones y tipo de gráfica" className="flex w-full shrink-0 flex-col gap-3 rounded-xl border border-paper-line bg-paper-soft p-3 shadow-sm md:w-[280px]">
         <div className="flex items-center justify-between gap-2">
           <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Expresiones</h2>
-          <span className="text-[11px] text-muted">{entries.length}/{6}</span>
+          <span className="text-[11px] text-muted">{entries.length} {entries.length === 1 ? "expresión" : "expresiones"}</span>
         </div>
         <div className="flex gap-1 overflow-x-auto pb-1" role="tablist" aria-label="Tipo de gráfica">
           <button
