@@ -63,6 +63,31 @@ Cada bloque debe cerrar con:
 - Playwright;
 - sin cambios injustificados en rutas protegidas.
 
+### S26.3.5 — Preview S26
+Antes de congelar los baselines visuales, desplegar una versión de preview separada de producción para revisión humana.
+
+Objetivos:
+- permitir revisar visualmente el rediseño sin afectar la versión pública estable;
+- validar la dirección visual conjunta de Lite y Plus antes de S26.4;
+- recoger ajustes de composición, jerarquía, responsive y consistencia entre módulos;
+- mantener producción estable mientras `qa/s26-execution` continúa siendo la rama de trabajo.
+
+Momento recomendado:
+- habilitar el preview cuando Gráficas + Matrices estén rediseñadas y verdes;
+- actualizar el preview conforme se cierren Estadística, Unidades, Historial/Ajustes y Teclado/responsive;
+- no considerar el preview como evidencia suficiente para cerrar una celda de la matriz visual: sigue siendo obligatoria la certificación automatizada posterior.
+
+Separación de entornos:
+1. Producción estable.
+2. Preview S26 para revisión visual.
+3. `qa/s26-execution` para trabajo activo.
+
+Criterio de salida:
+- revisión visual humana completada;
+- ajustes derivados del preview aplicados o documentados;
+- preview estable en Desktop 1440, laptop, tablet y móvil;
+- listo para congelar baselines en S26.4.
+
 ### S26.4 — Regresión visual automatizada
 Baselines Playwright por viewport y estado.
 
