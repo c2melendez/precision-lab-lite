@@ -63,3 +63,21 @@ describe("Suite exhaustiva original — Módulo 1: Trigonometría", () => {
     });
   }
 });
+
+
+describe("S26.3 — inversas devuelven grados en modo GRAD", () => {
+  for (const [expression, expected] of [
+    ["asin(1)", 90],
+    ["acos(1)", 0],
+    ["atan(1)", 45],
+    ["arcsin(0.5)", 30],
+  ] as Array<[string, number]>) {
+    it(`${expression} devuelve grados`, () => {
+      expect(numeric(expression, "GRAD")).toBeCloseTo(expected, 10);
+    });
+  }
+
+  it("preserva composición directa(inversa) en modo grados", () => {
+    expect(numeric("sin(asin(0.5))", "GRAD")).toBeCloseTo(0.5, 10);
+  });
+});
