@@ -117,7 +117,7 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
         </div>
         {result.confidence === "NUMERIC_FALLBACK" && (
           <p className="mt-1 text-right text-[11px] text-muted">
-            Resuelto numéricamente, sin forma simbólica cerrada.
+            Aproximado numéricamente (no resuelto simbólicamente)
           </p>
         )}
       </div>
