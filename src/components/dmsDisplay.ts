@@ -54,3 +54,17 @@ export function decimalDegreesToDms(value: number): DmsValue | null {
     latex: `${degreeText}^{\\circ}\\ ${minutes}^{\\prime}\\ ${secondsText}^{\\prime\\prime}`,
   };
 }
+
+
+export function isInverseTrigAngleExpression(input: string): boolean {
+  const value = input
+    .trim()
+    .replace(/\\left|\\right/g, "")
+    .replace(/\s+/g, "");
+
+  // Formas lineales que manejan ambos motores.
+  if (/^(?:asin|acos|atan|arcsin|arccos|arctan)\(.+\)$/.test(value)) return true;
+
+  // Notación típica de MathLive para las teclas trigonométricas inversas.
+  return /^\\(?:sin|cos|tan)\^\{-?1\}\(.+\)$/.test(value);
+}
