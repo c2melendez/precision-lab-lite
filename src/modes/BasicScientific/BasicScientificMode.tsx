@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useComputeWorker } from "../../hooks/useComputeWorker";
-import { MathKeyboard, isVariableOrConstantKey, type KeyDef } from "../../components/MathKeyboard";
+import { angleAwareTrigInsertLatex, MathKeyboard, isVariableOrConstantKey, type KeyDef } from "../../components/MathKeyboard";
 import { KeyboardBasicPanel } from "../../components/KeyboardBasicPanel";
 import { Screen } from "../../components/Screen";
 import { type SessionHistoryEntry } from "../../components/HistoryLog";
@@ -395,10 +395,10 @@ export function BasicScientificMode() {
     (k: KeyDef) => {
       if (!k.insertLatex) return;
       mathField?.focus();
-      mathField?.insert(k.insertLatex);
+      mathField?.insert(angleAwareTrigInsertLatex(k, angleMode === "GRAD"));
       recordRecentKey("basic", k, isVariableOrConstantKey(k) ? "variable" : "operation");
     },
-    [mathField, recordRecentKey],
+    [mathField, recordRecentKey, angleMode],
   );
 
   useEffect(() => {
@@ -439,12 +439,13 @@ export function BasicScientificMode() {
         onSolveSystem={handleSolveSystem}
         onSimplify={handleSimplify}
         onGraphComplex={handleGraphComplex}
+        angleMode={angleMode}
         hideCoreGrid
         registerInsertHandler={false}
       />,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mathField, handleCalculate, handleSolveEquation, handleSolveSystem, handleSimplify, handleGraphComplex]);
+  }, [mathField, handleCalculate, handleSolveEquation, handleSolveSystem, handleSimplify, handleGraphComplex, angleMode]);
 
   useEffect(() => {
     return () => clearKeyboardContent();
