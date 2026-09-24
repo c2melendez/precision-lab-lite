@@ -176,3 +176,15 @@ Certificado:
 - corrección adicional en Plus para EDO y'=2x y serializaciones MathLive equivalentes (y′, y^{\\prime}, y^′);
 - Playwright E2E, CI, mutación, diferencial, fuzzing, rendimiento, cross-browser, accesibilidad y seguridad: PASS.
 
+
+### Subbloque Gráficas — shell + selector + rail/visor base — CERRADO
+Estado: PASS completo en Lite y Plus.
+
+Certificado:
+- shell visual de Gráficas ampliado y alineado al workspace S26;
+- selector de tipo 2D/Polar/Paramétrica/3D armonizado;
+- Lite: rail de expresiones separado de la superficie de vista/análisis;
+- semántica accesible del selector preservada sin romper contratos E2E;
+- Plus: corrección de JSX en AnalysisPanel verificada;
+- CI, Playwright, accesibilidad, cross-browser, seguridad y gates aplicables: PASS.
+
