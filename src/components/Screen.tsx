@@ -126,7 +126,7 @@ export function Screen({
           <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
         </div>
         {sessionHistory.length > 0 && (
-          <div className="max-h-28 overflow-y-auto rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
+          <div className="max-h-20 overflow-y-auto rounded-xl border border-paper-line bg-paper-soft/70 px-4 py-2 shadow-sm">
             <HistoryLog entries={sessionHistory} />
           </div>
         )}
@@ -187,7 +187,7 @@ export function Screen({
           <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
         </div>
         {sessionHistory.length > 0 && (
-          <div className="max-h-28 overflow-y-auto rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
+          <div className="max-h-20 overflow-y-auto rounded-xl border border-paper-line bg-paper-soft/70 px-4 py-2 shadow-sm">
             <HistoryLog entries={sessionHistory} />
           </div>
         )}
@@ -212,10 +212,10 @@ export function Screen({
         <div className="flex justify-end">
           <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
         </div>
-        <div className="flex flex-col gap-3 dt:grid dt:grid-cols-[minmax(0,.92fr)_minmax(0,1.08fr)] dt:items-start dt:gap-4">
+        <div className="flex flex-col gap-3 dt:grid dt:grid-cols-[minmax(0,1.38fr)_minmax(340px,1fr)] dt:items-start dt:gap-4">
           <div className="flex min-w-0 flex-col gap-3">
             {sessionHistory.length > 0 && (
-              <div className="max-h-28 overflow-y-auto rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
+              <div className="max-h-20 overflow-y-auto rounded-xl border border-paper-line bg-paper-soft/70 px-4 py-2 shadow-sm">
                 <HistoryLog entries={sessionHistory} />
               </div>
             )}
@@ -265,7 +265,7 @@ export function Screen({
         </div>
 
         {sessionHistory.length > 0 && (
-          <div className="mb-2 max-h-28 overflow-y-auto border-b border-paper-line pb-2">
+          <div className="mb-2 max-h-20 overflow-y-auto rounded-lg border border-paper-line bg-paper/60 px-3 py-2 opacity-80">
             <HistoryLog entries={sessionHistory} />
           </div>
         )}
