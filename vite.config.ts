@@ -20,7 +20,7 @@ export default defineConfig({
       includeAssets: ["icons/precision-lab-lite.svg", "icons/precision-lab-lite-maskable.svg", "icons/icon-192.png", "icons/icon-512.png"],
       manifest: {
         name: "Precision Lab Lite",
-        short_name: "Precision Lab Lite",
+        short_name: "Precision Lab",
         description:
           "Calculadora científica, álgebra, cálculo, matrices y graficación — 100% en el navegador.",
         theme_color: "#14171C",
