@@ -190,7 +190,7 @@ test("M12: Configuración es ventana independiente, limita temas y el sidebar si
   await expect(sidebar).toHaveCSS("background-color", "rgb(241, 245, 249)");
 
   await menu.getByRole("button", { name: "Oscuro", exact: true }).click();
-  await expect(sidebar).toHaveCSS("background-color", "rgb(7, 24, 43)");
+  await expect(sidebar).toHaveCSS("background-color", "rgb(2, 22, 44)");
 
   await menu.getByRole("button", { name: "Sistema", exact: true }).click();
   expect(await page.evaluate(() => localStorage.getItem("precision-lab-theme"))).toBe("auto");
