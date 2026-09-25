@@ -33,7 +33,7 @@
   --color-marker: 59 130 246;
   --color-marker-soft: 30 64 175;
   --color-marker-text: 219 234 254;
-  --color-graph: 56 189 248;
+  --color-graph: 37 99 235;
   --color-graph-soft: 12 74 110;
   --color-alpha: 199 210 254;
   --color-alpha-soft: 49 46 129;
@@ -60,11 +60,11 @@
   --color-marker: 37 99 235;
   --color-marker-soft: 219 234 254;
   --color-marker-text: 29 78 216;
-  --color-graph: 14 165 233;
+  --color-graph: 37 99 235;
   --color-graph-soft: 224 242 254;
   --color-alpha: 79 70 229;
   --color-alpha-soft: 224 231 255;
-  --color-muted: 100 116 139;
+  --color-muted: 71 85 105;
 }
 
 [data-theme="light"] {
@@ -86,11 +86,11 @@
   --color-marker: 37 99 235;
   --color-marker-soft: 219 234 254;
   --color-marker-text: 29 78 216;
-  --color-graph: 14 165 233;
+  --color-graph: 37 99 235;
   --color-graph-soft: 224 242 254;
   --color-alpha: 79 70 229;
   --color-alpha-soft: 224 231 255;
-  --color-muted: 100 116 139;
+  --color-muted: 71 85 105;
 }
 
 [data-theme="high-contrast"] {
