@@ -481,7 +481,7 @@ export function StatisticsMode() {
                 className={
                   varianceKind === "population"
                     ? "rounded px-2 py-0.5 text-xs bg-marker text-chrome"
-                    : "rounded px-2 py-0.5 text-xs text-bone/60"
+                    : "rounded px-2 py-0.5 text-xs text-muted"
                 }
               >
                 Poblac.
@@ -491,7 +491,7 @@ export function StatisticsMode() {
                 className={
                   varianceKind === "sample"
                     ? "rounded px-2 py-0.5 text-xs bg-marker text-chrome"
-                    : "rounded px-2 py-0.5 text-xs text-bone/60"
+                    : "rounded px-2 py-0.5 text-xs text-muted"
                 }
               >
                 Muestral
@@ -530,32 +530,32 @@ export function StatisticsMode() {
           <div className="flex flex-wrap gap-1 rounded-lg bg-chrome-soft p-1 text-sm">
             <button
               onClick={() => setDistribution("binomial")}
-              className={distribution === "binomial" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-bone/60"}
+              className={distribution === "binomial" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-muted"}
             >
               Binomial
             </button>
             <button
               onClick={() => setDistribution("normal")}
-              className={distribution === "normal" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-bone/60"}
+              className={distribution === "normal" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-muted"}
             >
               Normal
             </button>
             {/* Módulo N0 (spec_graficacion_matrices_estadistica_unidades.md, sección 7). */}
             <button
               onClick={() => setDistribution("poisson")}
-              className={distribution === "poisson" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-bone/60"}
+              className={distribution === "poisson" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-muted"}
             >
               Poisson
             </button>
             <button
               onClick={() => setDistribution("uniform")}
-              className={distribution === "uniform" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-bone/60"}
+              className={distribution === "uniform" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-muted"}
             >
               Uniforme
             </button>
             <button
               onClick={() => setDistribution("exponential")}
-              className={distribution === "exponential" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-bone/60"}
+              className={distribution === "exponential" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-muted"}
             >
               Exponencial
             </button>
