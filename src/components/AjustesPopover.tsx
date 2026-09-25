@@ -169,12 +169,9 @@ const PRIMARY_THEMES: { id: Theme; label: string; description: string }[] = [
 ];
 
 const LAYOUT_OPTIONS: { id: LayoutMode; label: string; description: string }[] = [
-  { id: "fused", label: "Por defecto", description: "Entrada, resultado y contexto en una composición equilibrada." },
+  { id: "fused", label: "Default", description: "Entrada, resultado y contexto en una composición equilibrada." },
   { id: "stacked", label: "Compacto", description: "Prioriza el flujo vertical y reduce ocupación lateral." },
   { id: "split", label: "Lateral", description: "Distribuye el trabajo en columnas cuando existe espacio." },
-  { id: "focus", label: "Centrado", description: "Concentra la atención en el contenido principal." },
-  { id: "separated", label: "Extendido", description: "Separa las superficies para dar más aire visual." },
-  { id: "floating", label: "Flotante", description: "Permite paneles flotantes en pantallas suficientemente anchas." },
 ];
 
 function LayoutPreview({ mode, active }: { mode: LayoutMode; active: boolean }) {
@@ -440,7 +437,7 @@ export function AjustesPopover() {
                     <section aria-labelledby="settings-layout-heading">
                       <div className="mb-2">
                         <h3 id="settings-layout-heading" className="text-xs font-semibold uppercase tracking-wide text-muted">Diseño</h3>
-                        <p className="mt-1 text-[11px] text-muted">Las seis disposiciones quedan disponibles; Flotante degrada de forma segura cuando el ancho no es suficiente.</p>
+                        <p className="mt-1 text-[11px] text-muted">Tres disposiciones optimizadas para el área de trabajo.</p>
                       </div>
                       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-6">
                         {LAYOUT_OPTIONS.map((option) => {
