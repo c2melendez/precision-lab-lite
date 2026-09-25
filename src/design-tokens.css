@@ -15,6 +15,14 @@
  */
 
 [data-theme="dark"] {
+  --sidebar-bg: 7 24 43;
+  --sidebar-border: 30 58 87;
+  --sidebar-text: 241 245 249;
+  --sidebar-muted: 203 213 225;
+  --sidebar-hover: 16 50 80;
+  --sidebar-active: 37 99 235;
+  --sidebar-active-text: 255 255 255;
+  --sidebar-accent: 125 211 252;
   --color-chrome: 20 23 28;
   --color-chrome-soft: 31 35 43;
   --color-paper: 247 243 234;
@@ -34,6 +42,14 @@
 
 :root:not([data-theme]),
 [data-theme="v4-blue"] {
+  --sidebar-bg: 241 245 249;
+  --sidebar-border: 203 213 225;
+  --sidebar-text: 30 41 59;
+  --sidebar-muted: 71 85 105;
+  --sidebar-hover: 226 232 240;
+  --sidebar-active: 37 99 235;
+  --sidebar-active-text: 255 255 255;
+  --sidebar-accent: 29 78 216;
   --color-chrome: 255 255 255;
   --color-chrome-soft: 241 245 249;
   --color-paper: 248 250 252;
@@ -52,6 +68,14 @@
 }
 
 [data-theme="light"] {
+  --sidebar-bg: 241 245 249;
+  --sidebar-border: 203 213 225;
+  --sidebar-text: 30 41 59;
+  --sidebar-muted: 71 85 105;
+  --sidebar-hover: 226 232 240;
+  --sidebar-active: 37 99 235;
+  --sidebar-active-text: 255 255 255;
+  --sidebar-accent: 29 78 216;
   --color-chrome: 222 215 195;
   --color-chrome-soft: 210 201 175;
   --color-paper: 255 255 255;
@@ -446,3 +470,23 @@
   animation-iteration-count: 1 !important;
   scroll-behavior: auto !important;
 }
+
+
+/* S26.3R — sidebar ligado al tema activo (Claro/Oscuro/Sistema). */
+.precision-sidebar {
+  background-color: rgb(var(--sidebar-bg));
+  border-color: rgb(var(--sidebar-border));
+  color: rgb(var(--sidebar-text));
+}
+.precision-sidebar-divider { border-color: rgb(var(--sidebar-border)); }
+.precision-sidebar-action { color: rgb(var(--sidebar-muted)); }
+.precision-sidebar-action:hover {
+  background-color: rgb(var(--sidebar-hover));
+  color: rgb(var(--sidebar-text));
+}
+.precision-sidebar-active {
+  background-color: rgb(var(--sidebar-active));
+  color: rgb(var(--sidebar-active-text));
+}
+.precision-sidebar-focus:focus-visible { outline-color: rgb(var(--sidebar-accent)); }
+.precision-sidebar-accent { color: rgb(var(--sidebar-accent)); }
