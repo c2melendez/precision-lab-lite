@@ -17,10 +17,10 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["icons/icon-192.png", "icons/icon-512.png"],
+      includeAssets: ["icons/precision-lab-lite.svg", "icons/precision-lab-lite-maskable.svg", "icons/icon-192.png", "icons/icon-512.png"],
       manifest: {
         name: "Precision Lab Lite",
-        short_name: "Precision Lab",
+        short_name: "Precision Lab Lite",
         description:
           "Calculadora científica, álgebra, cálculo, matrices y graficación — 100% en el navegador.",
         theme_color: "#14171C",
@@ -29,6 +29,18 @@ export default defineConfig({
         start_url: BASE_PATH,
         scope: BASE_PATH,
         icons: [
+          {
+            src: "icons/precision-lab-lite.svg",
+            sizes: "any",
+            type: "image/svg+xml",
+            purpose: "any",
+          },
+          {
+            src: "icons/precision-lab-lite-maskable.svg",
+            sizes: "any",
+            type: "image/svg+xml",
+            purpose: "maskable",
+          },
           {
             src: "icons/icon-192.png",
             sizes: "192x192",
