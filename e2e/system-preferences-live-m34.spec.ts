@@ -92,6 +92,7 @@ test("M34: tema automático y movimiento siguen al sistema hasta override manual
 
   // Con reducción del sistema activa, el toggle arranca activado.
   // Al tocarlo, el usuario crea override manual "false".
+  await menu.getByRole("button", { name: "Accesibilidad", exact: true }).click();
   const motionToggle = menu
     .getByText("Reducir movimiento", { exact: true })
     .locator("..")
@@ -116,6 +117,7 @@ test("M34: tema automático y movimiento siguen al sistema hasta override manual
   await expect(html).toHaveAttribute("data-reduced-motion", "false");
 
   // Igual para tema: una selección manual deja de seguir al sistema.
+  await menu.getByRole("button", { name: "Apariencia", exact: true }).click();
   await menu.getByRole("button", { name: "Sepia Cuaderno", exact: true }).click();
   await expect(html).toHaveAttribute("data-theme", "sepia");
 
