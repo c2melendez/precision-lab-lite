@@ -145,7 +145,7 @@ export function GraphingMode() {
           }),
         );
         if (e.data.success) {
-          addHistoryEntry({ mode: "Graficación", input: "", resultSummary: e.data.resultLatex ?? "" });
+          addHistoryEntry({ module: "Gráficas", mode: "Graficación", input: "", resultSummary: e.data.resultLatex ?? "" });
         }
       };
     }
