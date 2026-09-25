@@ -1,15 +1,5 @@
 import { useEffect, useRef, type ReactNode } from "react";
-
-// P2 (spec v2 §3): drawer unificado de Historial.
-// - lg/dt: <aside> en flujo normal dentro de un flex row junto a <main>
-//   (ver App.tsx) — al abrir consume ancho real y "empuja" el contenido,
-//   no flota encima.
-// - phone/tablet (<lg): overlay — fixed inset-0 en phone (pantalla
-//   completa), deslizante desde la derecha cubriendo ~78% en tablet.
-//   Cerrable con el botón X o tocando el backdrop.
-// No reescribe HistoryPanel.tsx — solo lo envuelve vía `children`.
-// HistoryLog.tsx (mini-cinta de sesión embebida en Screen.tsx) NO es
-// parte de este drawer — es un componente distinto, no se toca aquí.
+import { createPortal } from "react-dom";
 
 interface HistoryDrawerProps {
   isOpen: boolean;
@@ -18,17 +8,18 @@ interface HistoryDrawerProps {
 }
 
 export function HistoryDrawer({ isOpen, onClose, children }: HistoryDrawerProps) {
-  const drawerRef = useRef<HTMLElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!isOpen) return;
     previousFocusRef.current = document.activeElement as HTMLElement | null;
 
-    const closeButton = drawerRef.current?.querySelector<HTMLElement>("[data-history-close]");
-    if (window.matchMedia("(max-width: 1023px)").matches) {
-      requestAnimationFrame(() => closeButton?.focus());
-    }
+    requestAnimationFrame(() => {
+      dialogRef.current
+        ?.querySelector<HTMLElement>("[data-history-close]")
+        ?.focus();
+    });
 
     function onKeyDown(event: KeyboardEvent) {
       if (event.key !== "Escape") return;
@@ -41,42 +32,46 @@ export function HistoryDrawer({ isOpen, onClose, children }: HistoryDrawerProps)
       window.removeEventListener("keydown", onKeyDown);
       requestAnimationFrame(() => previousFocusRef.current?.focus());
     };
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
-  return (
-    <>
-      {isOpen && (
-        <div
-          onClick={onClose}
-          aria-hidden="true"
-          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
-        />
-      )}
+  if (!isOpen) return null;
 
-      <aside
-        ref={drawerRef}
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[85] flex items-center justify-center bg-slate-950/35 p-3 backdrop-blur-[1px] sm:p-6"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <div
+        ref={dialogRef}
         id="history-panel"
-        aria-label="Historial"
-        className={
-          isOpen
-            ? "fixed inset-0 z-50 flex flex-col bg-chrome md:inset-y-0 md:left-auto md:right-0 md:w-[78%] lg:static lg:inset-auto lg:z-auto lg:w-[260px] lg:shrink-0 lg:border-l lg:border-chrome-soft dt:w-[280px]"
-            : "hidden lg:block lg:w-0 lg:shrink-0 lg:overflow-hidden lg:transition-[width] lg:duration-200"
-        }
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="history-title"
+        className="flex h-[min(720px,calc(100vh-1.5rem))] w-[min(760px,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-2xl border border-paper-line bg-paper-soft text-ink shadow-2xl sm:h-[min(680px,calc(100vh-3rem))] sm:w-[min(760px,calc(100vw-3rem))]"
       >
-        <div className="flex items-center justify-between border-b border-chrome-soft p-3 lg:hidden">
-          <span className="text-sm font-medium text-bone">Historial</span>
+        <header className="flex h-14 shrink-0 items-center justify-between border-b border-paper-line bg-paper px-4 sm:px-5">
+          <div>
+            <h2 id="history-title" className="text-base font-semibold">Historial</h2>
+            <p className="text-[11px] text-muted">Cálculos recientes guardados en este dispositivo.</p>
+          </div>
           <button
             type="button"
             data-history-close
             onClick={onClose}
             aria-label="Cerrar historial"
-            className="rounded p-1 text-bone/70 hover:text-bone"
+            className="grid h-9 w-9 place-items-center rounded-lg border border-paper-line bg-paper-soft text-lg font-semibold text-muted hover:text-ink"
           >
-            ✕
+            ×
           </button>
+        </header>
+
+        <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-5">
+          {children}
         </div>
-        <div className="flex-1 overflow-y-auto lg:w-[260px] dt:w-[280px]">{children}</div>
-      </aside>
-    </>
+      </div>
+    </div>,
+    document.body,
   );
 }
