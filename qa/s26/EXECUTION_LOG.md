@@ -282,3 +282,65 @@ Decisión:
 Corrección iniciada:
 - pestañas del teclado convertidas en cabecera sticky y horizontalmente desplazable;
 - contrato reconciliado para incluir Geometría como sexto módulo visible antes de Unidades.
+
+### Cierre de sesión / Handoff — 2026-09-24
+
+Estado de proceso: **PAUSA CONTROLADA PARA RECONFIRMACIÓN VISUAL S26.2R**.
+
+La sesión se cierra deliberadamente para continuar en otra conversación sin perder trazabilidad.
+
+#### Regla de reanudación
+La próxima sesión **NO debe empezar modificando código**.
+
+Primero debe:
+1. leer `MOCKUP_REGENERATION_BRIEF.md`;
+2. regenerar mockups definitivos consolidados;
+3. mostrar teclado colapsado y desplegado;
+4. reconciliar todos los módulos y breakpoints;
+5. presentar al usuario;
+6. esperar aprobación explícita.
+
+Solo tras la aprobación se retoma S26.3.
+
+#### Estado de código de referencia
+Último SHA de producto relevante antes del cierre documental:
+`aaf3dc0f3caebe8ec4c0a554066e4db9e3dd2f46`
+
+Preview:
+https://precision-lab-lite-s26.onrender.com
+
+#### Estado técnico
+- Científica: reconciliación visual iniciada; proporción Desktop ajustada ~58/42 y historial subordinado.
+- Estadística: shell S26 Entrada/Resultado implementado y certificado verde.
+- Unidades: shell S26 implementado; CI/Cross-browser/S22/S23/S25 PASS, Playwright FAIL.
+- Playwright: 241 PASS, 3 FAIL del mismo test de Unidades en desktop/tablet/mobile.
+- Causa exacta: `#units-category` quedó oculto en tablet/desktop por `sm:hidden`; la suite original espera ese select visible. Además cambió el texto exacto del resultado esperado `1000 Metros (m)`.
+- No hay evidencia de regresión en `convert()`; el fallo es contrato E2E/UI tras el rediseño.
+- Preview Render está activo y se usa para revisión humana.
+
+#### Decisión sobre el teclado
+El teclado visible actualmente en Preview **NO constituye el diseño visual final aprobado**.
+
+Debe conservarse su funcionalidad/paridad, pero su composición visual deberá adaptarse al próximo mockup definitivo. El contrato final del teclado se congelará únicamente después de la revisión del usuario.
+
+#### Documentos de continuidad obligatorios
+- `qa/s26/HANDOFF_PROMPT.md`
+- `qa/s26/MOCKUP_REGENERATION_BRIEF.md`
+- `qa/s26/VISUAL_REFERENCE_CHECKLIST.md`
+- `qa/s26/ROADMAP.md`
+- `qa/s26/KEYBOARD_CONTRACT.md`
+- `qa/s26/DESIGN_TARGET.md`
+- `qa/s26/RESULT_FORMATS.md`
+- `qa/s26/GRAPH_3D_CONTRACT.md`
+- `qa/s26/GEOMETRY_CONTRACT.md`
+- `qa/s26/BRAND_IDENTITY.md`
+- `qa/s26/MATHEMATICAL_INTEGRITY_POLICY.md`
+- `qa/s26/TEST_MAPPING.md`
+
+#### No cerrar
+- S26.3: no cerrado visualmente.
+- S26.3.5 Preview: revisión humana FAIL visual.
+- S26.4: NO iniciar.
+- S26.5: pendiente.
+- S26.6: pendiente.
+
