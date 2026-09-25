@@ -125,9 +125,9 @@ export default function App() {
           aria-label="Navegación principal"
           data-sidebar-state={sidebarExpanded ? "expanded" : "compact"}
           data-sidebar-responsive="auto"
-          className={`sticky top-0 z-10 flex h-screen shrink-0 flex-col border-r border-[#0b467d] bg-[#052b52] text-white transition-[width] duration-200 ${sidebarExpanded ? "w-60" : "w-[72px]"}`}
+          className={`precision-sidebar sticky top-0 z-10 flex h-screen shrink-0 flex-col border-r transition-[width] duration-200 ${sidebarExpanded ? "w-60" : "w-[72px]"}`}
         >
-          <header className={`relative flex shrink-0 border-b border-white/15 ${sidebarExpanded ? "min-h-[112px] flex-col items-center px-2 py-3 md:min-h-[104px] md:items-start md:px-3" : "min-h-[112px] flex-col items-center px-2 py-3"}`}>
+          <header className={`relative flex shrink-0 border-b precision-sidebar-divider ${sidebarExpanded ? "min-h-[112px] flex-col items-center px-2 py-3 md:min-h-[104px] md:items-start md:px-3" : "min-h-[112px] flex-col items-center px-2 py-3"}`}>
             <ProjectBrand showName={sidebarExpanded} />
             <button
               type="button"
@@ -135,7 +135,7 @@ export default function App() {
               aria-label={sidebarExpanded ? "Contraer navegación" : "Expandir navegación"}
               aria-expanded={sidebarExpanded}
               title={sidebarExpanded ? "Contraer navegación" : "Expandir navegación"}
-              className={`grid h-11 w-11 shrink-0 place-items-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300 ${sidebarExpanded ? "mt-2 md:absolute md:right-2 md:top-2 md:mt-0" : "mt-2"}`}
+              className={`precision-sidebar-action precision-sidebar-focus grid h-11 w-11 shrink-0 place-items-center rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${sidebarExpanded ? "mt-2 md:absolute md:right-2 md:top-2 md:mt-0" : "mt-2"}`}
             >
               <span aria-hidden="true" className="text-xl leading-none">☰</span>
             </button>
@@ -156,8 +156,8 @@ export default function App() {
                       title={!sidebarExpanded ? MODE_LABELS[m] : undefined}
                       className={
                         active
-                          ? "flex min-h-11 w-full items-center gap-3 rounded-lg bg-[#1268db] px-3 font-medium text-white shadow-sm"
-                          : "flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-white/80 hover:bg-white/10 hover:text-white"
+                          ? "precision-sidebar-active flex min-h-11 w-full items-center gap-3 rounded-lg px-3 font-medium shadow-sm"
+                          : "precision-sidebar-action flex min-h-11 w-full items-center gap-3 rounded-lg px-3"
                       }
                     >
                       {icon && <ModeIcon name={icon} className="h-5 w-5 shrink-0" />}
@@ -169,7 +169,7 @@ export default function App() {
             </ul>
           </nav>
 
-          <div className={`space-y-1 border-t border-white/15 px-2 py-3 ${hasFixedDock ? "mb-24" : ""}`}>
+          <div className={`space-y-1 border-t precision-sidebar-divider px-2 py-3 ${hasFixedDock ? "mb-24" : ""}`}>
             <button
               type="button"
               onClick={() => setHistoryOpen((o) => !o)}
@@ -177,12 +177,12 @@ export default function App() {
               aria-expanded={historyOpen}
               aria-controls="history-panel"
               title={!sidebarExpanded ? "Historial" : undefined}
-              className="flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-white/80 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300"
+              className="precision-sidebar-action precision-sidebar-focus flex min-h-11 w-full items-center gap-3 rounded-lg px-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
             >
               <span aria-hidden="true" className="grid h-5 w-5 shrink-0 place-items-center">▤</span>
               {sidebarExpanded && <span className="whitespace-nowrap text-sm">Historial</span>}
             </button>
-            <div className="flex min-h-11 items-center gap-3 rounded-lg px-3 text-white/80" title={!sidebarExpanded ? "Configuración" : undefined}>
+            <div className="precision-sidebar-action flex min-h-11 items-center gap-3 rounded-lg px-3" title={!sidebarExpanded ? "Configuración" : undefined}>
               <div className="grid h-5 w-5 shrink-0 place-items-center">
                 <AjustesPopover />
               </div>
