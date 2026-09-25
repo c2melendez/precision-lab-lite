@@ -46,6 +46,37 @@ Baseline funcional previo a S26: `e175f3d98e8b2eeea130faa5287e5927666befb6`
 - documentar diferencias necesarias entre Lite y Plus;
 - aprobar visualmente antes de implementación.
 
+### S26.2R — Reconfirmación definitiva del contrato visual
+
+**Obligatoria antes de continuar S26.3 tras la revisión humana del Preview.**
+
+Motivo:
+- el contrato S26.2 evolucionó por piezas durante varias sesiones;
+- el Preview reveló inconsistencias entre módulos;
+- el teclado implementado conserva una arquitectura visual anterior que no representa el mockup definitivo deseado.
+
+Procedimiento:
+1. regenerar mockups definitivos consolidados para todos los módulos;
+2. incluir teclado global colapsado y desplegado;
+3. incluir seis categorías del teclado;
+4. incluir Desktop 1440×900 y estrategia laptop/tablet/mobile;
+5. reconfirmar los seis layouts;
+6. presentar al usuario;
+7. **detenerse y esperar aprobación explícita**;
+8. actualizar contratos escritos para que coincidan exactamente con los mockups aprobados;
+9. congelar el contrato visual definitivo;
+10. solo entonces reanudar S26.3.
+
+Documento operativo:
+- `qa/s26/MOCKUP_REGENERATION_BRIEF.md`
+- `qa/s26/VISUAL_REFERENCE_CHECKLIST.md`
+
+Criterio de salida:
+- mockups definitivos aprobados por el usuario;
+- teclado definitivo visualmente aprobado;
+- contratos escritos reconciliados;
+- ninguna ambigüedad entre mockup y código objetivo.
+
 ### S26.3 — Implementación por bloques
 Orden sugerido:
 1. shell/navegación común;
