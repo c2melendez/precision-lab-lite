@@ -7,9 +7,12 @@ test("M14: Lite conserva branding e icono propios y no adopta el nombre Plus", a
   await expect(page.locator("header")).toContainText("Lite");
   await expect(page.locator("body")).not.toContainText("Precision Lab Plus");
 
-  const touchHref = await page.locator('link[rel="apple-touch-icon"]').getAttribute("href");
-  expect(touchHref).toBeTruthy();
-  expect(touchHref).toContain("icons/icon-192.png");
-  const icon = await page.request.get(new URL(touchHref!, page.url()).toString());
+  const iconHref = await page.locator('link[rel="icon"]').getAttribute("href");
+  expect(iconHref).toBeTruthy();
+  expect(iconHref).toContain("icons/precision-lab-lite.svg");
+  const icon = await page.request.get(new URL(iconHref!, page.url()).toString());
   expect(icon.ok()).toBeTruthy();
+
+  const brandImage = page.locator('header img[src*="precision-lab-lite.svg"]');
+  await expect(brandImage).toBeVisible();
 });
