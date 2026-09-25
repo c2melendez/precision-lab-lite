@@ -102,8 +102,8 @@ export default function App() {
           data-sidebar-state={sidebarExpanded ? "expanded" : "compact"}
           className={`sticky top-0 z-40 flex h-screen shrink-0 flex-col border-r border-chrome-soft bg-chrome transition-[width] duration-200 ${sidebarExpanded ? "w-[72px] md:w-60" : "w-[72px]"}`}
         >
-          <div className={`flex min-h-[72px] items-center justify-center gap-2 border-b border-chrome-soft px-3 ${sidebarExpanded ? "flex-col md:flex-row md:justify-start" : ""}`}>
-            <div className={`min-w-0 overflow-hidden ${sidebarExpanded ? "w-9 md:w-auto md:flex-1" : "hidden"}`}>
+          <header className={`flex min-h-[72px] items-center justify-center gap-2 border-b border-chrome-soft px-3 ${sidebarExpanded ? "flex-col md:flex-row md:justify-start" : ""}`}>
+            <div className={`min-w-0 overflow-hidden ${sidebarExpanded ? "w-full md:w-auto md:flex-1" : "w-full"}`}>
               <ProjectBrand />
             </div>
             <button
@@ -116,9 +116,9 @@ export default function App() {
             >
               <span aria-hidden="true" className="text-xl leading-none">☰</span>
             </button>
-          </div>
+          </header>
 
-          <nav aria-label="Módulos" className="min-h-0 flex-1 overflow-y-auto px-2 py-3">
+          <nav aria-label="Modos de la calculadora" className="min-h-0 flex-1 overflow-y-auto px-2 py-3">
             <ul className="space-y-1">
               {VISIBLE_MODES.map((m) => {
                 const icon = MODE_ICONS[m];
