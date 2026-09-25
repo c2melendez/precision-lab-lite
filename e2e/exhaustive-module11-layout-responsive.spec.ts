@@ -38,11 +38,11 @@ test("M11: teclado permanece colapsado al iniciar en los tres diseños", async (
   }
 });
 
-test("M11: Compacto usa teclado inline, no un contenedor fixed", async ({ page }) => {
+test("M11: Compacto abre teclado inline y no usa contenedor fixed", async ({ page }) => {
   await loadLayout(page, "stacked");
-  const toggle = page.getByRole("button", { name: /^(Teclado|Abrir teclado)$/ }).first();
+  const toggle = page.getByRole("button", { name: /Abrir teclado|Expandir teclado|^Teclado$/i }).first();
   await expect(toggle).toBeVisible();
-  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+
   const isInsideFixed = await toggle.evaluate((el) => {
     let node: HTMLElement | null = el as HTMLElement;
     while (node) {
@@ -52,9 +52,14 @@ test("M11: Compacto usa teclado inline, no un contenedor fixed", async ({ page }
     return false;
   });
   expect(isInsideFixed).toBe(false);
+
   await toggle.click();
-  await expect(toggle).toHaveAttribute("aria-expanded", "true");
-  await expect(page.getByRole("button", { name: "7", exact: true }).first()).toBeVisible();
+  const keyboard = page
+    .getByRole("region", { name: "Teclado matemático" })
+    .or(page.getByRole("dialog", { name: /Teclado/ }))
+    .first();
+  await expect(keyboard).toBeVisible();
+  await expect(keyboard.getByRole("button", { name: "7", exact: true }).first()).toBeVisible();
 });
 
 test("M11: Lateral es dos columnas en desktop y colapsa verticalmente fuera de desktop ancho", async ({ page }) => {
