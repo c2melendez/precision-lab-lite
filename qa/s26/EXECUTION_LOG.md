@@ -218,3 +218,15 @@ Cobertura certificada:
 - gates aplicables completos en verde.
 
 Siguiente bloque: Matrices.
+
+### Subbloque Matrices — shell visual base — CERRADO
+Estado: PASS completo en Lite y Plus.
+
+Certificado:
+- shell principal reorganizado al patrón S26;
+- entrada y resultado separados visualmente;
+- responsive desktop/tablet/móvil preservado;
+- overflow móvil de Lite corregido;
+- operaciones, payloads, worker/API y lógica matemática sin cambios;
+- gates aplicables completos en verde.
+
