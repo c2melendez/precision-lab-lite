@@ -447,8 +447,8 @@ function FloatingScreenContent({ inputField, result, inputLatex, angleMode, onTo
           aria-label="Abrir teclado"
           className={
             canExpand
-              ? "flex items-center justify-center gap-2 self-start rounded-lg bg-marker px-4 py-2 text-sm font-semibold text-chrome hover:bg-marker/90"
-              : "flex items-center justify-center gap-2 self-start rounded-lg bg-chrome-soft px-4 py-2 text-sm text-bone/30"
+              ? "relative z-40 flex items-center justify-center gap-2 self-start rounded-lg bg-marker px-4 py-2 text-sm font-semibold text-chrome hover:bg-marker/90"
+              : "relative z-40 flex items-center justify-center gap-2 self-start rounded-lg bg-chrome-soft px-4 py-2 text-sm text-bone/30"
           }
         >
           <KeyboardIcon className="h-4 w-4" />
