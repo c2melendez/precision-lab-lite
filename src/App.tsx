@@ -146,7 +146,7 @@ export default function App() {
             </ul>
           </nav>
 
-          <div className="space-y-1 border-t border-chrome-soft px-2 py-3">
+          <div className={`space-y-1 border-t border-chrome-soft px-2 py-3 ${hasFixedDock ? "mb-24" : ""}`}>
             <button
               type="button"
               onClick={() => setHistoryOpen((o) => !o)}
