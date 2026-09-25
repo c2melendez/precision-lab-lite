@@ -179,7 +179,7 @@ export function StatisticsMode() {
       }
       const result = okResult(fmt(out));
       setDescriptiveResult(result);
-      addHistoryEntry({ mode: "Estadística (Descriptiva)", input: dataChips.join(", "), resultSummary: result.resultLatex ?? "" });
+      addHistoryEntry({ module: "Estadística", mode: "Estadística (Descriptiva)", input: dataChips.join(", "), resultSummary: result.resultLatex ?? "" });
     } catch (e) {
       setDescriptiveResult(errResult(e instanceof Error ? e.message : "Error desconocido."));
     }
@@ -223,7 +223,7 @@ export function StatisticsMode() {
       }
       const result = okResult(fmt(out));
       setCombinatoricsResult(result);
-      addHistoryEntry({ mode: "Estadística (Combinatoria)", input: label, resultSummary: result.resultLatex ?? "" });
+      addHistoryEntry({ module: "Estadística", mode: "Estadística (Combinatoria)", input: label, resultSummary: result.resultLatex ?? "" });
     } catch (e) {
       setCombinatoricsResult(errResult(e instanceof Error ? e.message : "Error desconocido."));
     }
@@ -397,7 +397,7 @@ export function StatisticsMode() {
       }
       const result = okResult(fmt(out));
       setCorrelationResult(result);
-      addHistoryEntry({ mode: "Estadística (Correlación)", input: `X:${xChips.join(",")} Y:${yChips.join(",")}`, resultSummary: result.resultLatex ?? "" });
+      addHistoryEntry({ module: "Estadística", mode: "Estadística (Correlación)", input: `X:${xChips.join(",")} Y:${yChips.join(",")}`, resultSummary: result.resultLatex ?? "" });
     } catch (e) {
       setCorrelationResult(errResult(e instanceof Error ? e.message : "Error desconocido."));
     }
