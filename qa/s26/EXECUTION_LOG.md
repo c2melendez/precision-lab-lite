@@ -231,7 +231,7 @@ Certificado:
 - gates aplicables completos en verde.
 
 
-### Subbloque Matrices — cuadrículas y contención responsive — EN VALIDACIÓN
+### Subbloque Matrices — cuadrículas y contención responsive — CERRADO
 Cambios:
 - cuadrículas agrupadas en tarjetas visuales;
 - dimensiones visibles de forma compacta;
@@ -241,4 +241,20 @@ Cambios:
 
 Estado:
 - Lite: PASS completo.
-- Plus: todos los gates PASS excepto S19 Mutation Baseline, aún en ejecución.
+- Plus: PASS completo, incluido S19 Mutation Baseline.
+
+### Bloque Matrices — CERRADO
+Estado: PASS completo en Lite y Plus.
+
+Cobertura cerrada:
+- shell S26;
+- entrada/resultado separados;
+- cuadrículas y dimensiones refinadas;
+- contención responsive de matrices grandes;
+- banco A–F y expresión matricial preservados en Lite;
+- operaciones existentes preservadas en Plus;
+- sin cambios en motores matemáticos;
+- todos los gates aplicables en verde.
+
+Hito alcanzado: Gráficas + Matrices cerradas y verdes.
+Siguiente paso de proceso: S26.3.5 — Preview S26.
