@@ -100,7 +100,7 @@ export default function App() {
         <aside
           aria-label="Navegación principal"
           data-sidebar-state={sidebarExpanded ? "expanded" : "compact"}
-          className={`sticky top-0 z-40 flex h-screen shrink-0 flex-col border-r border-chrome-soft bg-chrome transition-[width] duration-200 ${sidebarExpanded ? "w-[72px] md:w-60" : "w-[72px]"}`}
+          className={`sticky top-0 z-10 flex h-screen shrink-0 flex-col border-r border-chrome-soft bg-chrome transition-[width] duration-200 ${sidebarExpanded ? "w-[72px] md:w-60" : "w-[72px]"}`}
         >
           <header className={`flex min-h-[72px] items-center justify-center gap-2 border-b border-chrome-soft px-3 ${sidebarExpanded ? "flex-col md:flex-row md:justify-start" : ""}`}>
             <div className={`min-w-0 overflow-hidden ${sidebarExpanded ? "w-full md:w-auto md:flex-1" : "w-full"}`}>
@@ -168,7 +168,7 @@ export default function App() {
           </div>
         </aside>
 
-        <main id="main-content" tabIndex={-1} className={`min-h-screen min-w-0 flex-1 bg-paper text-ink ${mainBottomPadding} focus:outline-none`}>
+        <main id="main-content" tabIndex={-1} className={`min-h-screen min-w-0 flex-1 overflow-x-hidden bg-paper text-ink ${mainBottomPadding} focus:outline-none`}>
           {mode === "basic" && <BasicScientificMode />}
           {mode === "simple" && <SimpleBasicMode />}
           {mode === "algebra" && <AlgebraMode />}
