@@ -258,3 +258,27 @@ Cobertura cerrada:
 
 Hito alcanzado: Gráficas + Matrices cerradas y verdes.
 Siguiente paso de proceso: S26.3.5 — Preview S26.
+
+### S26.3.5 — Preview S26 Lite — REVISIÓN HUMANA: FAIL VISUAL
+
+Fecha: 2026-09-24.
+
+La revisión humana del preview Lite confirma que la implementación es funcionalmente estable pero todavía no satisface el contrato visual S26 de forma integral.
+
+Hallazgos confirmados:
+- Científica aún no alcanza la composición final pactada en todos sus estados; el historial/ribbon puede competir con Entrada/Resultado y generar espacio muerto;
+- Estadística conserva una composición anterior y carece del shell S26 con resultado claramente separado;
+- Unidades conserva una composición anterior y el resultado no tiene todavía la jerarquía final acordada;
+- Geometría es una base parcial; no puede contarse como módulo visual completo mientras Triángulos/Círculos/Áreas compuestas/Sólidos/Constructor sigan pendientes;
+- teclado: aunque el panel Desktop ya respeta 45vh, las pestañas estaban dentro del área desplazable y desaparecían al hacer scroll, contradiciendo el requisito de tabs siempre visibles;
+- falta armonización transversal final de los seis layouts y de todas las superficies.
+
+Decisión:
+- NO avanzar a S26.4;
+- conservar como válidos los PASS funcionales previos, pero reabrir aceptación visual final;
+- completar Científica, Estadística, Unidades, Geometría por etapas, Historial/Ajustes y responsive/seis layouts;
+- repetir revisión humana del Preview antes de congelar baselines.
+
+Corrección iniciada:
+- pestañas del teclado convertidas en cabecera sticky y horizontalmente desplazable;
+- contrato reconciliado para incluir Geometría como sexto módulo visible antes de Unidades.
