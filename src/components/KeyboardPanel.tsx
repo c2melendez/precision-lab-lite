@@ -59,7 +59,7 @@ export function KeyboardPanel({ isOpen, onClose, children, dockHeight = 0, sideb
       style={{ "--keyboard-panel-bottom": `${dockHeight + 12}px` } as CSSProperties}
       className={[
         // Base (móvil, <768px): bottom sheet ~66vh, ancho completo.
-        `fixed bottom-0 right-0 z-40 flex flex-col rounded-t-2xl border-t border-chrome-soft bg-chrome shadow-2xl ${sidebarExpanded ? "left-60" : "left-[72px]"}`,
+        `fixed inset-x-0 bottom-0 z-40 flex flex-col rounded-t-2xl border-t border-chrome-soft bg-chrome shadow-2xl ${sidebarExpanded ? "md:left-60 dt:left-[17rem]" : "md:left-[72px] dt:left-[104px]"}`,
         "h-[66vh]",
         // Tablet (md, 768-1023px): ~55%.
         "md:h-[55vh]",
