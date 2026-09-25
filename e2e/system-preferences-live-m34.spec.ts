@@ -118,12 +118,12 @@ test("M34: tema automático y movimiento siguen al sistema hasta override manual
 
   // Igual para tema: una selección manual deja de seguir al sistema.
   await menu.getByRole("button", { name: "Apariencia", exact: true }).click();
-  await menu.getByRole("button", { name: "Sepia Cuaderno", exact: true }).click();
-  await expect(html).toHaveAttribute("data-theme", "sepia");
+  await menu.getByRole("button", { name: "Oscuro", exact: true }).click();
+  await expect(html).toHaveAttribute("data-theme", "dark");
 
   await page.evaluate(() =>
     (window as Window & { __m34SetSystemPreference: (kind: "dark" | "reduce", value: boolean) => void })
       .__m34SetSystemPreference("dark", false),
   );
-  await expect(html).toHaveAttribute("data-theme", "sepia");
+  await expect(html).toHaveAttribute("data-theme", "dark");
 });
