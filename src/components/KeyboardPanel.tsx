@@ -23,9 +23,10 @@ interface KeyboardPanelProps {
   onClose: () => void;
   children: ReactNode;
   dockHeight?: number;
+  sidebarExpanded: boolean;
 }
 
-export function KeyboardPanel({ isOpen, onClose, children, dockHeight = 0 }: KeyboardPanelProps) {
+export function KeyboardPanel({ isOpen, onClose, children, dockHeight = 0, sidebarExpanded }: KeyboardPanelProps) {
   const panelRef = useRef<HTMLDivElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const openerRef = useRef<HTMLElement | null>(null);
@@ -58,7 +59,7 @@ export function KeyboardPanel({ isOpen, onClose, children, dockHeight = 0 }: Key
       style={{ "--keyboard-panel-bottom": `${dockHeight + 12}px` } as CSSProperties}
       className={[
         // Base (móvil, <768px): bottom sheet ~66vh, ancho completo.
-        "fixed inset-x-0 bottom-0 z-40 flex flex-col rounded-t-2xl border-t border-chrome-soft bg-chrome shadow-2xl",
+        `fixed bottom-0 right-0 z-40 flex flex-col rounded-t-2xl border-t border-chrome-soft bg-chrome shadow-2xl ${sidebarExpanded ? "left-60" : "left-[72px]"}`,
         "h-[66vh]",
         // Tablet (md, 768-1023px): ~55%.
         "md:h-[55vh]",
@@ -67,7 +68,7 @@ export function KeyboardPanel({ isOpen, onClose, children, dockHeight = 0 }: Key
         // Desktop: panel inferior amplio con los márgenes del área de trabajo.
         // La barra cambia de altura cuando aparecen teclas recientes.
         // Mantener el panel sobre su borde real, no sobre el antiguo grid fijo.
-        "dt:inset-x-8 dt:bottom-[var(--keyboard-panel-bottom)] dt:mx-auto dt:h-auto dt:max-h-[45vh] dt:max-w-[1376px] dt:rounded-2xl dt:border",
+        "dt:bottom-[var(--keyboard-panel-bottom)] dt:left-auto dt:right-8 dt:h-auto dt:max-h-[45vh] dt:w-[calc(100%_-_var(--sidebar-width,_72px)_-_64px)] dt:max-w-[1376px] dt:rounded-2xl dt:border",
       ].join(" ")}
     >
       {/* Drag handle — solo afordance visual en este módulo, oculto en dt
