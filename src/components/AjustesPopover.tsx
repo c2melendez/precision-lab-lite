@@ -371,6 +371,14 @@ export function AjustesPopover() {
           aria-label="Configuración"
           className="fixed inset-x-3 bottom-3 top-3 z-[70] grid grid-cols-1 overflow-hidden rounded-xl border border-paper-line bg-paper-soft text-ink shadow-2xl sm:absolute sm:inset-auto sm:bottom-0 sm:left-full sm:ml-2 sm:max-h-[calc(100vh-2rem)] sm:w-[min(46rem,calc(100vw-7rem))] sm:grid-cols-[9.5rem_minmax(0,1fr)]"
         >
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            aria-label="Cerrar configuración"
+            className="absolute right-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-md border border-paper-line bg-paper text-sm font-semibold text-muted hover:text-ink"
+          >
+            ×
+          </button>
           <nav aria-label="Secciones de configuración" className="border-b border-paper-line bg-paper p-2 sm:border-b-0 sm:border-r">
             <div className="flex gap-1 overflow-x-auto sm:flex-col">
               {([
