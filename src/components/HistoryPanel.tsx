@@ -24,32 +24,42 @@ export function HistoryPanel() {
   }, []);
 
   return (
-    <div className="mx-auto flex max-w-md flex-col gap-3 p-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-ink">Historial</h2>
+    <div className="mx-auto flex max-w-2xl flex-col gap-4">
+      <div className="flex items-center justify-end">
         <button
           onClick={async () => {
             await clearHistory();
             load();
           }}
-          className="text-sm text-red-700 hover:text-red-800"
+          className="rounded-lg border border-paper-line bg-paper px-3 py-2 text-xs font-medium text-red-700 hover:bg-red-50 dark:text-red-300 dark:hover:bg-red-950/30"
         >
           Borrar todo
         </button>
       </div>
 
-      {loading && <p className="text-muted">Cargando…</p>}
+      {loading && (
+        <div className="rounded-xl border border-paper-line bg-paper p-4 text-sm text-muted">Cargando…</div>
+      )}
       {!loading && entries.length === 0 && (
-        <p className="text-muted">Todavía no hay cálculos guardados.</p>
+        <div className="rounded-xl border border-dashed border-paper-line bg-paper p-6 text-center">
+          <p className="text-sm font-medium text-ink">Todavía no hay cálculos guardados.</p>
+          <p className="mt-1 text-xs text-muted">Los cálculos que guardes aparecerán aquí, del más reciente al más antiguo.</p>
+        </div>
       )}
 
       <ul className="flex flex-col gap-2">
         {entries.map((entry) => (
-          <li key={entry.id} className="rounded-xl bg-paper-soft p-3">
-            <p className="text-xs uppercase tracking-wide text-muted">{entry.mode}</p>
-            <p className="text-ink">{entry.input}</p>
-            <p className="text-sm text-marker">{entry.resultSummary}</p>
-            <p className="text-xs text-muted">{new Date(entry.timestamp).toLocaleString()}</p>
+          <li key={entry.id} className="rounded-xl border border-paper-line bg-paper p-3 shadow-sm">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted">{entry.mode}</p>
+                <p className="mt-1 break-words text-sm font-medium text-ink">{entry.input}</p>
+                <p className="mt-1 break-words text-sm text-marker">{entry.resultSummary}</p>
+              </div>
+              <time className="shrink-0 text-[10px] text-muted" dateTime={new Date(entry.timestamp).toISOString()}>
+                {new Date(entry.timestamp).toLocaleString()}
+              </time>
+            </div>
           </li>
         ))}
       </ul>
