@@ -143,7 +143,7 @@ export function KeyboardDock({ sidebarExpanded }: { sidebarExpanded: boolean }) 
                 className={
                   activeSection === "basic"
                     ? "rounded-md bg-marker px-3 py-2 text-xs font-semibold text-chrome"
-                    : "rounded-md px-3 py-2 text-xs font-medium text-bone/70 hover:bg-chrome-soft hover:text-bone"
+                    : "rounded-md px-3 py-2 text-xs font-medium text-ink hover:bg-chrome-soft hover:text-ink"
                 }
               >
                 Básico
@@ -156,7 +156,7 @@ export function KeyboardDock({ sidebarExpanded }: { sidebarExpanded: boolean }) 
                 className={
                   activeSection === "functions"
                     ? "rounded-md bg-marker px-3 py-2 text-xs font-semibold text-chrome"
-                    : "rounded-md px-3 py-2 text-xs font-medium text-bone/70 hover:bg-chrome-soft hover:text-bone"
+                    : "rounded-md px-3 py-2 text-xs font-medium text-ink hover:bg-chrome-soft hover:text-ink"
                 }
               >
                 Funciones
@@ -233,7 +233,7 @@ export function KeyboardDock({ sidebarExpanded }: { sidebarExpanded: boolean }) 
             aria-label={isOpen ? "Cerrar teclado" : "Abrir teclado"}
             className={
               canExpand
-                ? "flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium text-bone/70 hover:bg-chrome-soft hover:text-bone"
+                ? "flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium text-ink hover:bg-chrome-soft hover:text-ink"
                 : "flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium text-bone/20"
             }
           >
