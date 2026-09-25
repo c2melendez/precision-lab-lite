@@ -44,7 +44,7 @@ export function UnitsMode() {
 
         <div className="space-y-2">
           <span className={labelClass}>Categoría</span>
-          <div className="flex gap-2 overflow-x-auto pb-1" role="group" aria-label="Categorías de unidades">
+          <div className="hidden gap-2 overflow-x-auto pb-1" role="group" aria-label="Categorías de unidades">
             {CATEGORIES.map((c) => (
               <button
                 key={c}
@@ -66,7 +66,7 @@ export function UnitsMode() {
             id="units-category"
             value={category}
             onChange={(e) => handleCategoryChange(e.target.value as UnitCategory)}
-            className={`${selectClass} sm:hidden`}
+            className={selectClass}
           >
             {CATEGORIES.map((c) => (
               <option key={c} value={c}>{CATEGORY_LABELS[c]}</option>
@@ -136,9 +136,8 @@ export function UnitsMode() {
             <div className="rounded-xl border border-paper-line bg-paper-soft px-4 py-5">
               <p className="text-xs uppercase tracking-wide text-muted">{CATEGORY_LABELS[category]}</p>
               <p className="mt-2 break-words text-3xl font-semibold tracking-tight text-ink">
-                {Number(result.toPrecision(10))}
+                {Number(result.toPrecision(10))} <span className="text-base font-medium text-muted">{UNITS[category][toUnit].label}</span>
               </p>
-              <p className="mt-1 text-sm text-muted">{UNITS[category][toUnit].label}</p>
             </div>
             <p className="text-xs text-muted">
               {valueStr || "—"} {UNITS[category][fromUnit].label} → {UNITS[category][toUnit].label}
