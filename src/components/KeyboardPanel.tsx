@@ -78,7 +78,7 @@ export function KeyboardPanel({ isOpen, onClose, children, dockHeight = 0, sideb
       </div>
 
       <div className="flex items-center justify-between px-4 pb-2 pt-1">
-        <span className="text-sm font-medium text-bone/80">Teclado</span>
+        <span className="text-sm font-medium text-ink">Teclado</span>
         <button
           ref={closeButtonRef}
           type="button"
