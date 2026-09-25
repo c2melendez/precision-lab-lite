@@ -100,19 +100,17 @@ export default function App() {
         <aside
           aria-label="Navegación principal"
           data-sidebar-state={sidebarExpanded ? "expanded" : "compact"}
-          className={`sticky top-0 z-10 flex h-screen shrink-0 flex-col border-r border-chrome-soft bg-chrome transition-[width] duration-200 ${sidebarExpanded ? "w-[72px] md:w-60" : "w-[72px]"}`}
+          className={`sticky top-0 z-10 flex h-screen shrink-0 flex-col border-r border-[#0b467d] bg-[#052b52] text-white transition-[width] duration-200 ${sidebarExpanded ? "w-[72px] md:w-60" : "w-[72px]"}`}
         >
-          <header className={`flex min-h-[72px] items-center justify-center gap-2 border-b border-chrome-soft px-3 ${sidebarExpanded ? "flex-col md:flex-row md:justify-start" : ""}`}>
-            <div className={`min-w-0 overflow-hidden ${sidebarExpanded ? "w-full md:w-auto md:flex-1" : "w-full"}`}>
-              <ProjectBrand />
-            </div>
+          <header className={`relative flex shrink-0 border-b border-white/15 ${sidebarExpanded ? "min-h-[112px] flex-col items-center px-2 py-3 md:min-h-[104px] md:items-start md:px-3" : "min-h-[112px] flex-col items-center px-2 py-3"}`}>
+            <ProjectBrand showName={sidebarExpanded} />
             <button
               type="button"
               onClick={() => setSidebarExpanded((current) => !current)}
               aria-label={sidebarExpanded ? "Contraer navegación" : "Expandir navegación"}
               aria-expanded={sidebarExpanded}
               title={sidebarExpanded ? "Contraer navegación" : "Expandir navegación"}
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-lg text-bone/80 hover:bg-chrome-soft hover:text-bone focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marker"
+              className={`grid h-11 w-11 shrink-0 place-items-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300 ${sidebarExpanded ? "mt-2 md:absolute md:right-2 md:top-2 md:mt-0" : "mt-2"}`}
             >
               <span aria-hidden="true" className="text-xl leading-none">☰</span>
             </button>
@@ -133,12 +131,12 @@ export default function App() {
                       title={!sidebarExpanded ? MODE_LABELS[m] : undefined}
                       className={
                         active
-                          ? "flex min-h-11 w-full items-center gap-3 rounded-lg bg-marker-soft px-3 font-medium text-marker-text"
-                          : "flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-bone/70 hover:bg-chrome-soft hover:text-bone"
+                          ? "flex min-h-11 w-full items-center gap-3 rounded-lg bg-[#1478ff] px-3 font-medium text-white shadow-sm"
+                          : "flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-white/80 hover:bg-white/10 hover:text-white"
                       }
                     >
                       {icon && <ModeIcon name={icon} className="h-5 w-5 shrink-0" />}
-                      {sidebarExpanded && <span className="hidden truncate text-sm md:inline">{MODE_LABELS[m]}</span>}
+                      {sidebarExpanded && <span className="hidden whitespace-nowrap text-sm md:inline">{MODE_LABELS[m]}</span>}
                     </button>
                   </li>
                 );
@@ -146,7 +144,7 @@ export default function App() {
             </ul>
           </nav>
 
-          <div className={`space-y-1 border-t border-chrome-soft px-2 py-3 ${hasFixedDock ? "mb-24" : ""}`}>
+          <div className={`space-y-1 border-t border-white/15 px-2 py-3 ${hasFixedDock ? "mb-24" : ""}`}>
             <button
               type="button"
               onClick={() => setHistoryOpen((o) => !o)}
@@ -154,16 +152,16 @@ export default function App() {
               aria-expanded={historyOpen}
               aria-controls="history-panel"
               title={!sidebarExpanded ? "Historial" : undefined}
-              className="flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-bone/70 hover:bg-chrome-soft hover:text-bone focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marker"
+              className="flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-white/80 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300"
             >
               <span aria-hidden="true" className="grid h-5 w-5 shrink-0 place-items-center">▤</span>
-              {sidebarExpanded && <span className="hidden truncate text-sm md:inline">Historial</span>}
+              {sidebarExpanded && <span className="hidden whitespace-nowrap text-sm md:inline">Historial</span>}
             </button>
-            <div className="flex min-h-11 items-center gap-3 rounded-lg px-3 text-bone/70" title={!sidebarExpanded ? "Configuración" : undefined}>
+            <div className="flex min-h-11 items-center gap-3 rounded-lg px-3 text-white/80" title={!sidebarExpanded ? "Configuración" : undefined}>
               <div className="grid h-5 w-5 shrink-0 place-items-center">
                 <AjustesPopover />
               </div>
-              {sidebarExpanded && <span className="hidden truncate text-sm md:inline">Configuración</span>}
+              {sidebarExpanded && <span className="hidden whitespace-nowrap text-sm md:inline">Configuración</span>}
             </div>
           </div>
         </aside>
