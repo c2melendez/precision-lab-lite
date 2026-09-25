@@ -12,6 +12,8 @@ test("M33: Ajustes persiste preferencias visuales y de accesibilidad tras reload
 
   await menu.getByRole("button", { name: "Sepia Cuaderno", exact: true }).click();
   await menu.getByRole("button", { name: "Compacta", exact: true }).click();
+
+  await menu.getByRole("button", { name: "Accesibilidad", exact: true }).click();
   await menu.getByRole("button", { name: "Muy grande", exact: true }).click();
 
   const dyslexiaToggle = menu
@@ -26,6 +28,7 @@ test("M33: Ajustes persiste preferencias visuales y de accesibilidad tras reload
     .getByRole("button");
   await motionToggle.click();
 
+  await menu.getByRole("button", { name: "Gráficas", exact: true }).click();
   await menu.getByRole("button", { name: /Apta para daltonismo/i }).click();
 
   const persisted = await page.evaluate(() => ({
@@ -75,6 +78,8 @@ test("M33: Ajustes persiste preferencias visuales y de accesibilidad tras reload
 
   await expect(reloadedMenu.getByRole("button", { name: /Sepia Cuaderno/i })).toHaveAttribute("aria-pressed", "true");
   await expect(reloadedMenu.getByRole("button", { name: "Compacta", exact: true })).toHaveAttribute("aria-pressed", "true");
+
+  await reloadedMenu.getByRole("button", { name: "Accesibilidad", exact: true }).click();
   await expect(reloadedMenu.getByRole("button", { name: "Muy grande", exact: true })).toHaveAttribute("aria-pressed", "true");
   await expect(
     reloadedMenu.getByText("Espaciado amigable con dislexia", { exact: true }).locator("..").getByRole("button"),
@@ -82,5 +87,6 @@ test("M33: Ajustes persiste preferencias visuales y de accesibilidad tras reload
   await expect(
     reloadedMenu.getByText("Reducir movimiento", { exact: true }).locator("..").getByRole("button"),
   ).toHaveAttribute("aria-pressed", "true");
+  await reloadedMenu.getByRole("button", { name: "Gráficas", exact: true }).click();
   await expect(reloadedMenu.getByRole("button", { name: /Apta para daltonismo/i })).toHaveAttribute("aria-pressed", "true");
 });
