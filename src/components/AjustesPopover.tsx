@@ -329,7 +329,7 @@ export function AjustesPopover() {
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-40 mt-1.5 w-56 rounded-lg border border-chrome-soft bg-chrome p-3 shadow-xl"
+          className="absolute left-0 top-full z-40 mt-1.5 w-56 rounded-lg border border-chrome-soft bg-chrome p-3 shadow-xl"
         >
           <div className="mb-3">
             <div className="mb-1.5 text-[10px] uppercase tracking-wide text-bone/50">Tema</div>
