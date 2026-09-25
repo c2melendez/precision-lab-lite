@@ -24,7 +24,7 @@ test("M12: preferencias visuales se aplican y persisten tras recarga", async ({ 
 
   await menu.getByRole("button", { name: "Claro", exact: true }).click();
   await menu.getByRole("button", { name: "Compacta", exact: true }).click();
-  await menu.getByRole("button", { name: "Extendido", exact: true }).click();
+  await menu.getByRole("button", { name: "Lateral", exact: true }).click();
 
   await menu.getByRole("button", { name: "Accesibilidad", exact: true }).click();
   await menu.getByRole("button", { name: "Muy grande", exact: true }).click();
@@ -60,7 +60,7 @@ test("M12: preferencias visuales se aplican y persisten tras recarga", async ({ 
   expect(attrs.lsDyslexia).toBe("true");
   expect(attrs.lsReduced).toBe("true");
   expect(attrs.lsPalette).toBe("colorblind-safe");
-  expect(attrs.lsLayout).toBe("separated");
+  expect(attrs.lsLayout).toBe("split");
 
   await page.reload();
   await expect(page.locator("math-field").first()).toBeVisible();
@@ -184,7 +184,7 @@ test("M12: Configuración es ventana independiente, limita temas y el sidebar si
   await expect(menu.getByRole("button", { name: "Oscuro", exact: true })).toBeVisible();
   await expect(menu.getByRole("button", { name: "Sistema", exact: true })).toBeVisible();
   await expect(menu.getByRole("button", { name: "Sepia Cuaderno", exact: true })).toHaveCount(0);
-  await expect(menu.locator("[data-layout-option]")).toHaveCount(6);
+  await expect(menu.locator("[data-layout-option]")).toHaveCount(3);
 
   await menu.getByRole("button", { name: "Claro", exact: true }).click();
   await expect(sidebar).toHaveCSS("background-color", "rgb(7, 43, 82)");
