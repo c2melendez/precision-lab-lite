@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useLayoutModeStore, type LayoutMode } from "../store/useLayoutModeStore";
 import { GRAPH_COLOR_PALETTES, useGraphColorPaletteStore } from "../store/useGraphColorPaletteStore";
 import {
@@ -154,21 +155,9 @@ function applyReducedMotion(enabled: boolean) {
 }
 
 const THEMES: { id: Theme; label: string }[] = [
-  { id: "v4-blue", label: "Azul claro" },
-  { id: "auto", label: "Automático (sistema)" },
-  { id: "dark", label: "Oscuro" },
   { id: "light", label: "Claro" },
-  { id: "high-contrast", label: "Alto contraste" },
-  { id: "saas-blue", label: "Azul SaaS" },
-  { id: "midnight-purple", label: "Medianoche Púrpura" },
-  { id: "graphite", label: "Grafito Monocromo" },
-  { id: "cyan-tech", label: "Cian Tecnológico" },
-  { id: "deep-forest", label: "Bosque Profundo" },
-  { id: "mint", label: "Menta" },
-  { id: "sepia", label: "Sepia Cuaderno" },
-  { id: "coral", label: "Coral" },
-  { id: "amber-light", label: "Ámbar Claro" },
-  { id: "high-contrast-blue", label: "Alto Contraste Azul" },
+  { id: "dark", label: "Oscuro" },
+  { id: "auto", label: "Sistema" },
 ];
 
 type SettingsSection = "appearance" | "accessibility" | "keyboard" | "graph";
@@ -219,13 +208,13 @@ function applyTheme(selection: Theme) {
 
 function readInitialTheme(): Theme {
   const stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-  return stored && THEMES.some((t) => t.id === stored) ? stored : "v4-blue";
+  return stored && THEMES.some((t) => t.id === stored) ? stored : "auto";
 }
 
 export function AjustesPopover() {
   const [open, setOpen] = useState(false);
   const [section, setSection] = useState<SettingsSection>("appearance");
-  const [theme, setTheme] = useState<Theme>("v4-blue");
+  const [theme, setTheme] = useState<Theme>("auto");
   const [density, setDensity] = useState<Density>("comfortable");
   const [textSize, setTextSize] = useState<TextSize>("normal");
   const [dyslexiaFriendly, setDyslexiaFriendly] = useState(false);
@@ -233,6 +222,7 @@ export function AjustesPopover() {
   const [vibrationEnabled, setVibrationEnabled] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(false);
   const popoverRef = useRef<HTMLDivElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
   const layoutMode = useLayoutModeStore((s) => s.layoutMode);
   const setLayoutMode = useLayoutModeStore((s) => s.setLayoutMode);
   const graphPaletteId = useGraphColorPaletteStore((s) => s.paletteId);
@@ -297,7 +287,9 @@ export function AjustesPopover() {
   useEffect(() => {
     if (!open) return;
     function onPointerDown(e: PointerEvent) {
-      if (popoverRef.current && !popoverRef.current.contains(e.target as Node)) setOpen(false);
+      const target = e.target as Node;
+      if (popoverRef.current?.contains(target) || dialogRef.current?.contains(target)) return;
+      setOpen(false);
     }
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") setOpen(false);
@@ -360,255 +352,247 @@ export function AjustesPopover() {
         onClick={() => setOpen((o) => !o)}
         aria-label="Ajustes"
         aria-expanded={open}
-        className="rounded-md bg-white/10 p-1.5 text-white hover:bg-white/15"
+        className="rounded-md bg-white/10 p-1.5 text-current hover:bg-white/15"
       >
         <span aria-hidden="true">⚙</span>
       </button>
 
-      {open && (
-        <div
-          role="menu"
-          aria-label="Configuración"
-          className="fixed inset-x-3 bottom-3 top-3 z-[70] grid grid-cols-1 overflow-hidden rounded-xl border border-paper-line bg-paper-soft text-ink shadow-2xl sm:absolute sm:inset-auto sm:bottom-0 sm:left-full sm:ml-2 sm:max-h-[calc(100vh-2rem)] sm:w-[min(46rem,calc(100vw-7rem))] sm:grid-cols-[9.5rem_minmax(0,1fr)]"
-        >
-          <button
-            type="button"
-            onClick={() => setOpen(false)}
-            aria-label="Cerrar configuración"
-            className="absolute right-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-md border border-paper-line bg-paper text-sm font-semibold text-muted hover:text-ink"
+      {open && createPortal(
+        <div className="fixed inset-0 z-[90] flex items-center justify-center bg-slate-950/35 p-3 backdrop-blur-[1px] sm:p-6">
+          <div
+            ref={dialogRef}
+            role="menu"
+            aria-label="Configuración"
+            className="flex h-[min(720px,calc(100vh-1.5rem))] w-[min(900px,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-2xl border border-paper-line bg-paper-soft text-ink shadow-2xl sm:h-[min(700px,calc(100vh-3rem))] sm:w-[min(900px,calc(100vw-3rem))]"
           >
-            ×
-          </button>
-          <nav aria-label="Secciones de configuración" className="border-b border-paper-line bg-paper p-2 sm:border-b-0 sm:border-r">
-            <div className="flex gap-1 overflow-x-auto sm:flex-col">
-              {([
-                ["appearance", "Apariencia"],
-                ["accessibility", "Accesibilidad"],
-                ["keyboard", "Teclado"],
-                ["graph", "Gráficas"],
-              ] as const).map(([id, label]) => (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => setSection(id)}
-                  aria-current={section === id ? "page" : undefined}
-                  className={
-                    section === id
-                      ? "shrink-0 rounded-lg bg-marker-soft px-3 py-2 text-left text-xs font-semibold text-marker-text"
-                      : "shrink-0 rounded-lg px-3 py-2 text-left text-xs font-medium text-muted hover:bg-paper-line/50 hover:text-ink"
-                  }
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </nav>
+            <header className="flex h-14 shrink-0 items-center justify-between border-b border-paper-line bg-paper px-4 sm:px-5">
+              <div>
+                <h2 className="text-base font-semibold">Configuración</h2>
+                <p className="text-[11px] text-muted">Preferencias visuales y de interacción de Precision Lab.</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Cerrar configuración"
+                className="grid h-9 w-9 place-items-center rounded-lg border border-paper-line bg-paper-soft text-lg font-semibold text-muted hover:text-ink"
+              >
+                ×
+              </button>
+            </header>
 
-          <div className="min-h-0 overflow-y-auto p-4">
-            {section === "appearance" && (
-              <div className="space-y-5">
-                <div>
-                  <h2 className="text-sm font-semibold">Apariencia</h2>
-                  <p className="mt-1 text-xs text-muted">Tema, densidad visual y distribución del área de trabajo.</p>
+            <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-[11rem_minmax(0,1fr)]">
+              <nav aria-label="Secciones de configuración" className="border-b border-paper-line bg-paper p-2 md:border-b-0 md:border-r md:p-3">
+                <div className="flex gap-1 overflow-x-auto md:flex-col md:overflow-visible">
+                  {([
+                    ["appearance", "Apariencia"],
+                    ["accessibility", "Accesibilidad"],
+                    ["keyboard", "Teclado"],
+                    ["graph", "Gráficas"],
+                  ] as const).map(([id, label]) => (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => setSection(id)}
+                      aria-current={section === id ? "page" : undefined}
+                      className={
+                        section === id
+                          ? "shrink-0 rounded-lg bg-marker-soft px-3 py-2.5 text-left text-xs font-semibold text-marker-text"
+                          : "shrink-0 rounded-lg px-3 py-2.5 text-left text-xs font-medium text-muted hover:bg-paper-line/50 hover:text-ink"
+                      }
+                    >
+                      {label}
+                    </button>
+                  ))}
                 </div>
+              </nav>
 
-                <section aria-labelledby="settings-theme-heading">
-                  <h3 id="settings-theme-heading" className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Tema</h3>
-                  <div className="grid gap-2 sm:grid-cols-3">
-                    {PRIMARY_THEMES.map((t) => (
-                      <button
-                        key={t.id}
-                        type="button"
-                        aria-label={t.label}
-                        onClick={() => pickTheme(t.id)}
-                        aria-pressed={theme === t.id}
-                        className={
-                          theme === t.id
-                            ? "rounded-lg border border-marker bg-marker-soft p-3 text-left"
-                            : "rounded-lg border border-paper-line bg-paper p-3 text-left hover:border-marker/50"
-                        }
-                      >
-                        <span className="block text-sm font-semibold">{t.label}</span>
-                        <span className="mt-1 block text-[11px] leading-snug text-muted">{t.description}</span>
-                      </button>
+              <div className="min-h-0 overflow-y-auto p-4 sm:p-5">
+                {section === "appearance" && (
+                  <div className="space-y-5">
+                    <div>
+                      <h2 className="text-lg font-semibold">Apariencia</h2>
+                      <p className="mt-1 text-xs text-muted">Tema, densidad y distribución del área de trabajo.</p>
+                    </div>
+
+                    <section aria-labelledby="settings-theme-heading">
+                      <h3 id="settings-theme-heading" className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Tema</h3>
+                      <div className="grid gap-2 sm:grid-cols-3">
+                        {PRIMARY_THEMES.map((t) => (
+                          <button
+                            key={t.id}
+                            type="button"
+                            aria-label={t.label}
+                            onClick={() => pickTheme(t.id)}
+                            aria-pressed={theme === t.id}
+                            className={
+                              theme === t.id
+                                ? "rounded-xl border border-marker bg-marker-soft p-3 text-left"
+                                : "rounded-xl border border-paper-line bg-paper p-3 text-left hover:border-marker/50"
+                            }
+                          >
+                            <span className="block text-sm font-semibold">{t.label}</span>
+                            <span className="mt-1 block text-[11px] leading-snug text-muted">{t.description}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </section>
+
+                    <section aria-labelledby="settings-layout-heading">
+                      <div className="mb-2">
+                        <h3 id="settings-layout-heading" className="text-xs font-semibold uppercase tracking-wide text-muted">Diseño</h3>
+                        <p className="mt-1 text-[11px] text-muted">Las seis disposiciones quedan disponibles; Flotante degrada de forma segura cuando el ancho no es suficiente.</p>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-6">
+                        {LAYOUT_OPTIONS.map((option) => {
+                          const selected = layoutMode === option.id;
+                          return (
+                            <button
+                              key={option.id}
+                              type="button"
+                              aria-label={option.label}
+                              title={option.description}
+                              data-layout-option={option.id}
+                              onClick={() => setLayoutMode(option.id)}
+                              aria-pressed={selected}
+                              className={
+                                selected
+                                  ? "rounded-xl border border-marker bg-marker-soft p-2 text-center"
+                                  : "rounded-xl border border-paper-line bg-paper p-2 text-center hover:border-marker/50"
+                              }
+                            >
+                              <LayoutPreview mode={option.id} active={selected} />
+                              <span className="mt-2 block whitespace-nowrap text-[11px] font-semibold">{option.label}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </section>
+
+                    <section aria-labelledby="settings-density-heading">
+                      <h3 id="settings-density-heading" className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Densidad</h3>
+                      <div className="grid grid-cols-2 gap-2 sm:max-w-sm">
+                        {(["comfortable", "compact"] as const).map((value) => (
+                          <button
+                            key={value}
+                            type="button"
+                            onClick={() => pickDensity(value)}
+                            aria-pressed={density === value}
+                            className={
+                              density === value
+                                ? "rounded-lg border border-marker bg-marker-soft px-3 py-2 text-xs font-semibold text-marker-text"
+                                : "rounded-lg border border-paper-line bg-paper px-3 py-2 text-xs text-ink hover:border-marker/50"
+                            }
+                          >
+                            {value === "comfortable" ? "Cómoda" : "Compacta"}
+                          </button>
+                        ))}
+                      </div>
+                    </section>
+                  </div>
+                )}
+
+                {section === "accessibility" && (
+                  <div className="space-y-4">
+                    <div>
+                      <h2 className="text-lg font-semibold">Accesibilidad</h2>
+                      <p className="mt-1 text-xs text-muted">Opciones de lectura y movimiento sin alterar el contenido matemático.</p>
+                    </div>
+                    <div>
+                      <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Tamaño de texto (números y teclado)</div>
+                      <div className="grid grid-cols-3 gap-2">
+                        {TEXT_SIZES.map((t) => (
+                          <button
+                            key={t.id}
+                            type="button"
+                            onClick={() => pickTextSize(t.id)}
+                            aria-pressed={textSize === t.id}
+                            className={
+                              textSize === t.id
+                                ? "rounded-lg border border-marker bg-marker-soft px-2 py-2 text-xs font-semibold text-marker-text"
+                                : "rounded-lg border border-paper-line bg-paper px-2 py-2 text-xs text-ink"
+                            }
+                          >{t.label}</button>
+                        ))}
+                      </div>
+                    </div>
+                    {[
+                      ["Espaciado amigable con dislexia", dyslexiaFriendly, toggleDyslexiaFriendly],
+                      ["Reducir movimiento", reducedMotion, toggleReducedMotion],
+                    ].map(([label, enabled, action]) => (
+                      <div key={label as string} className="flex items-center justify-between gap-3 rounded-lg border border-paper-line bg-paper p-3">
+                        <span className="text-xs font-medium">{label as string}</span>
+                        <button
+                          type="button"
+                          onClick={action as () => void}
+                          aria-pressed={enabled as boolean}
+                          className={(enabled as boolean) ? "rounded-md bg-marker px-3 py-1.5 text-xs font-semibold text-chrome" : "rounded-md bg-paper-line px-3 py-1.5 text-xs font-medium text-ink"}
+                        >
+                          {(enabled as boolean) ? "Activado" : "Desactivado"}
+                        </button>
+                      </div>
                     ))}
                   </div>
+                )}
 
-                  <div className="mt-3">
-                    <div className="mb-1.5 text-[10px] uppercase tracking-wide text-muted">Temas adicionales</div>
-                    <div className="grid gap-1.5 sm:grid-cols-2">
-                      {THEMES.filter((t) => !PRIMARY_THEMES.some((primary) => primary.id === t.id)).map((t) => (
+                {section === "keyboard" && (
+                  <div className="space-y-4">
+                    <div>
+                      <h2 className="text-lg font-semibold">Teclado</h2>
+                      <p className="mt-1 text-xs text-muted">Feedback de las teclas del teclado matemático global.</p>
+                    </div>
+                    {[
+                      ["Vibración al presionar tecla", vibrationEnabled, toggleVibration],
+                      ["Sonido de clic", soundEnabled, toggleSound],
+                    ].map(([label, enabled, action]) => (
+                      <div key={label as string} className="flex items-center justify-between gap-3 rounded-lg border border-paper-line bg-paper p-3">
+                        <span className="text-xs font-medium">{label as string}</span>
                         <button
-                          key={t.id}
                           type="button"
-                          onClick={() => pickTheme(t.id)}
-                          aria-pressed={theme === t.id}
+                          onClick={action as () => void}
+                          aria-pressed={enabled as boolean}
+                          className={(enabled as boolean) ? "rounded-md bg-marker px-3 py-1.5 text-xs font-semibold text-chrome" : "rounded-md bg-paper-line px-3 py-1.5 text-xs font-medium text-ink"}
+                        >
+                          {(enabled as boolean) ? "Activado" : "Desactivado"}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {section === "graph" && (
+                  <div className="space-y-4">
+                    <div>
+                      <h2 className="text-lg font-semibold">Gráficas</h2>
+                      <p className="mt-1 text-xs text-muted">Paleta usada por las curvas y superficies gráficas.</p>
+                    </div>
+                    <div className="grid gap-2">
+                      {GRAPH_COLOR_PALETTES.map((palette) => (
+                        <button
+                          key={palette.id}
+                          type="button"
+                          onClick={() => setGraphPaletteId(palette.id)}
+                          aria-pressed={graphPaletteId === palette.id}
                           className={
-                            theme === t.id
-                              ? "rounded-md border border-marker bg-marker-soft px-2.5 py-2 text-left text-xs font-medium text-marker-text"
-                              : "rounded-md border border-paper-line px-2.5 py-2 text-left text-xs text-ink hover:bg-paper"
+                            graphPaletteId === palette.id
+                              ? "flex items-center gap-3 rounded-lg border border-marker bg-marker-soft p-3 text-left"
+                              : "flex items-center gap-3 rounded-lg border border-paper-line bg-paper p-3 text-left hover:border-marker/50"
                           }
                         >
-                          {theme === t.id ? "✓ " : ""}{t.label}
+                          <span className="flex shrink-0 gap-1">
+                            {palette.colors.map((color, index) => <span key={index} className="h-4 w-4 rounded-full" style={{ backgroundColor: color }} />)}
+                          </span>
+                          <span className="text-xs font-medium">{palette.label}</span>
+                          {palette.colorBlindSafe && <span className="ml-auto text-[10px] text-muted">daltonismo</span>}
                         </button>
                       ))}
                     </div>
                   </div>
-                </section>
-
-                <section aria-labelledby="settings-layout-heading">
-                  <div className="mb-2">
-                    <h3 id="settings-layout-heading" className="text-xs font-semibold uppercase tracking-wide text-muted">Diseño</h3>
-                    <p className="mt-1 text-[11px] text-muted">Flotante degrada automáticamente a un modo seguro cuando el ancho no es suficiente.</p>
-                  </div>
-                  <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                    {LAYOUT_OPTIONS.map((option) => {
-                      const selected = layoutMode === option.id;
-                      return (
-                        <button
-                          key={option.id}
-                          type="button"
-                          aria-label={option.label}
-                          data-layout-option={option.id}
-                          onClick={() => setLayoutMode(option.id)}
-                          aria-pressed={selected}
-                          className={
-                            selected
-                              ? "rounded-lg border border-marker bg-marker-soft p-2 text-left"
-                              : "rounded-lg border border-paper-line bg-paper p-2 text-left hover:border-marker/50"
-                          }
-                        >
-                          <LayoutPreview mode={option.id} active={selected} />
-                          <span className="mt-2 block text-xs font-semibold">{option.label}</span>
-                          <span className="mt-0.5 block text-[10px] leading-snug text-muted">{option.description}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </section>
-
-                <section aria-labelledby="settings-density-heading">
-                  <h3 id="settings-density-heading" className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Densidad</h3>
-                  <div className="grid grid-cols-2 gap-2">
-                    {(["comfortable", "compact"] as const).map((value) => (
-                      <button
-                        key={value}
-                        type="button"
-                        onClick={() => pickDensity(value)}
-                        aria-pressed={density === value}
-                        className={
-                          density === value
-                            ? "rounded-lg border border-marker bg-marker-soft px-3 py-2 text-xs font-semibold text-marker-text"
-                            : "rounded-lg border border-paper-line bg-paper px-3 py-2 text-xs text-ink hover:border-marker/50"
-                        }
-                      >
-                        {value === "comfortable" ? "Cómoda" : "Compacta"}
-                      </button>
-                    ))}
-                  </div>
-                </section>
+                )}
               </div>
-            )}
-
-            {section === "accessibility" && (
-              <div className="space-y-4">
-                <div>
-                  <h2 className="text-sm font-semibold">Accesibilidad</h2>
-                  <p className="mt-1 text-xs text-muted">Opciones de lectura y movimiento sin alterar el contenido matemático.</p>
-                </div>
-                <div>
-                  <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Tamaño de texto (números y teclado)</div>
-                  <div className="grid grid-cols-3 gap-2">
-                    {TEXT_SIZES.map((t) => (
-                      <button
-                        key={t.id}
-                        type="button"
-                        onClick={() => pickTextSize(t.id)}
-                        aria-pressed={textSize === t.id}
-                        className={
-                          textSize === t.id
-                            ? "rounded-lg border border-marker bg-marker-soft px-2 py-2 text-xs font-semibold text-marker-text"
-                            : "rounded-lg border border-paper-line bg-paper px-2 py-2 text-xs text-ink"
-                        }
-                      >{t.label}</button>
-                    ))}
-                  </div>
-                </div>
-                {[
-                  ["Espaciado amigable con dislexia", dyslexiaFriendly, toggleDyslexiaFriendly],
-                  ["Reducir movimiento", reducedMotion, toggleReducedMotion],
-                ].map(([label, enabled, action]) => (
-                  <div key={label as string} className="flex items-center justify-between gap-3 rounded-lg border border-paper-line bg-paper p-3">
-                    <span className="text-xs font-medium">{label as string}</span>
-                    <button
-                      type="button"
-                      onClick={action as () => void}
-                      aria-pressed={enabled as boolean}
-                      className={(enabled as boolean) ? "rounded-md bg-marker px-3 py-1.5 text-xs font-semibold text-chrome" : "rounded-md bg-paper-line px-3 py-1.5 text-xs font-medium text-ink"}
-                    >
-                      {(enabled as boolean) ? "Activado" : "Desactivado"}
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {section === "keyboard" && (
-              <div className="space-y-4">
-                <div>
-                  <h2 className="text-sm font-semibold">Teclado</h2>
-                  <p className="mt-1 text-xs text-muted">Feedback de las teclas del teclado matemático global.</p>
-                </div>
-                {[
-                  ["Vibración al presionar tecla", vibrationEnabled, toggleVibration],
-                  ["Sonido de clic", soundEnabled, toggleSound],
-                ].map(([label, enabled, action]) => (
-                  <div key={label as string} className="flex items-center justify-between gap-3 rounded-lg border border-paper-line bg-paper p-3">
-                    <span className="text-xs font-medium">{label as string}</span>
-                    <button
-                      type="button"
-                      onClick={action as () => void}
-                      aria-pressed={enabled as boolean}
-                      className={(enabled as boolean) ? "rounded-md bg-marker px-3 py-1.5 text-xs font-semibold text-chrome" : "rounded-md bg-paper-line px-3 py-1.5 text-xs font-medium text-ink"}
-                    >
-                      {(enabled as boolean) ? "Activado" : "Desactivado"}
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {section === "graph" && (
-              <div className="space-y-4">
-                <div>
-                  <h2 className="text-sm font-semibold">Gráficas</h2>
-                  <p className="mt-1 text-xs text-muted">Paleta usada por las curvas y superficies gráficas.</p>
-                </div>
-                <div className="grid gap-2">
-                  {GRAPH_COLOR_PALETTES.map((palette) => (
-                    <button
-                      key={palette.id}
-                      type="button"
-                      onClick={() => setGraphPaletteId(palette.id)}
-                      aria-pressed={graphPaletteId === palette.id}
-                      className={
-                        graphPaletteId === palette.id
-                          ? "flex items-center gap-3 rounded-lg border border-marker bg-marker-soft p-3 text-left"
-                          : "flex items-center gap-3 rounded-lg border border-paper-line bg-paper p-3 text-left hover:border-marker/50"
-                      }
-                    >
-                      <span className="flex shrink-0 gap-1">
-                        {palette.colors.map((color, index) => <span key={index} className="h-4 w-4 rounded-full" style={{ backgroundColor: color }} />)}
-                      </span>
-                      <span className="text-xs font-medium">{palette.label}</span>
-                      {palette.colorBlindSafe && <span className="ml-auto text-[10px] text-muted">daltonismo</span>}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+            </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );
