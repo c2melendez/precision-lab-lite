@@ -173,7 +173,7 @@ export function KeyboardBasicPanel({ field, onBackspace, onClear, onEnter, lastA
     // mismo tamaño exacto por defecto (ver design-tokens.css), pero
     // ahora escalable vía la opción de accesibilidad tipográfica.
     if (k.unavailable) return "rounded-md border border-dashed border-bone/30 bg-chrome-soft/40 py-2.5 a11y-key-sm text-bone/40";
-    if (glyphStr === "⏎") return "col-span-2 rounded-md bg-graph py-2.5 a11y-key-sm font-semibold text-paper hover:bg-graph/90";
+    if (glyphStr === "⏎") return "col-span-2 rounded-md bg-graph py-2.5 a11y-key-sm font-semibold text-white hover:bg-graph/90";
     if (glyphStr === "=") return "rounded-md border border-marker py-2.5 a11y-key-sm font-medium text-marker hover:bg-marker-soft/10";
     if (["×", "−", "+", "÷"].includes(glyphStr)) return "rounded-md bg-marker py-2.5 a11y-key-base font-semibold text-chrome hover:bg-marker/90";
     if (/^[0-9.%]$/.test(glyphStr)) return "rounded-md bg-chrome-soft/80 py-2.5 a11y-key-sm font-medium text-bone hover:bg-chrome-soft/60";
