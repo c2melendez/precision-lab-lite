@@ -148,6 +148,7 @@ export function MatrixMode() {
           ? JSON.stringify({ [primary]: matrixA.values, [secondary]: matrixB.values })
           : JSON.stringify({ [primary]: matrixA.values });
         addHistoryEntry({
+          module: "Matrices",
           mode: `Matrices (${label})`,
           input,
           resultSummary: e.data.resultLatex ?? "",
@@ -191,6 +192,7 @@ export function MatrixMode() {
       setResult(e.data);
       if (e.data.success) {
         addHistoryEntry({
+          module: "Matrices",
           mode: "Matrices (expresión A–F)",
           input: expression,
           resultSummary: e.data.resultLatex ?? "",
