@@ -230,3 +230,15 @@ Certificado:
 - operaciones, payloads, worker/API y lógica matemática sin cambios;
 - gates aplicables completos en verde.
 
+
+### Subbloque Matrices — cuadrículas y contención responsive — EN VALIDACIÓN
+Cambios:
+- cuadrículas agrupadas en tarjetas visuales;
+- dimensiones visibles de forma compacta;
+- scroll horizontal contenido dentro de la tarjeta cuando una matriz grande no cabe;
+- mejora de etiquetas accesibles de celdas en Lite;
+- sin cambios en operaciones, API/worker ni motor matemático.
+
+Estado:
+- Lite: PASS completo.
+- Plus: todos los gates PASS excepto S19 Mutation Baseline, aún en ejecución.
