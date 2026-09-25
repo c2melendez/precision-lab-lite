@@ -144,3 +144,29 @@ S26 solo se cierra si:
 Una captura visual nunca sustituye una prueba funcional. Toda UI matemática modificada debe tener al menos un recorrido funcional que pruebe:
 
 **UI → estado → adapter/API/worker → motor → resultado → UI**
+
+
+## Reconciliación S26.2R / S26.3R — 2026-09-25
+
+Autoridad visual vigente: contrato final S26.2R aprobado por el usuario.
+
+Orden operativo vigente de S26.3R:
+1. Shell global + sidebar expandido/compacto — **PASS DEFINITIVO**.
+2. Configuración + Apariencia + selector de layouts — **EN CURSO**.
+3. Historial.
+4. Capa común de Resultado y formatos.
+5. Teclado global — shell, apertura/cierre y responsive.
+6. Teclado global — paridad de las seis categorías.
+7. Científica.
+8. Matrices.
+9. Estadística.
+10. Unidades.
+11. Gráficas 2D.
+12. Gráficas 3D.
+13. Geometría.
+14. Armonización responsive transversal.
+15. Preview S26.3.5 + revisión humana.
+16. Correcciones del Preview.
+17. Preparación de S26.4.
+
+Regla: cada bloque cierra con diff acotado, gates aplicables, revisión contractual y actualización del log.
