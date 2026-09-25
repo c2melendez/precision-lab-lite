@@ -87,10 +87,16 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
   expect(bounds!.y).toBeGreaterThanOrEqual(0);
   expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(viewport!.height + 1);
   if (viewport!.width >= 1440) {
-    expect(bounds!.width).toBeGreaterThanOrEqual(viewport!.width - 65);
-    expect(bounds!.height).toBeLessThanOrEqual(viewport!.height * 0.45 + 1);
+    const sidebar = await page.locator('aside[aria-label="Navegación principal"]').boundingBox();
     const dock = await page.getByTestId("keyboard-dock").boundingBox();
+    expect(sidebar).not.toBeNull();
     expect(dock).not.toBeNull();
+
+    const sidebarRight = sidebar!.x + sidebar!.width;
+    expect(dock!.x).toBeCloseTo(sidebarRight, 0);
+    expect(bounds!.x).toBeGreaterThanOrEqual(sidebarRight);
+    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(viewport!.width + 1);
+    expect(bounds!.height).toBeLessThanOrEqual(viewport!.height * 0.45 + 1);
     expect(dock!.y - (bounds!.y + bounds!.height)).toBeCloseTo(12, 0);
   }
 
