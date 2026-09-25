@@ -365,7 +365,7 @@ export function AjustesPopover() {
             <div className="grid grid-cols-3 gap-1 rounded-md bg-chrome-soft p-0.5">
               <button
                 type="button"
-                onClick={() => setLayoutMode("fused")}
+                onClick={() => { setLayoutMode("fused"); setOpen(false); }}
                 aria-pressed={layoutMode === "fused"}
                 className={
                   layoutMode === "fused"
@@ -377,7 +377,7 @@ export function AjustesPopover() {
               </button>
               <button
                 type="button"
-                onClick={() => setLayoutMode("separated")}
+                onClick={() => { setLayoutMode("separated"); setOpen(false); }}
                 aria-pressed={layoutMode === "separated"}
                 className={
                   layoutMode === "separated"
@@ -389,7 +389,7 @@ export function AjustesPopover() {
               </button>
               <button
                 type="button"
-                onClick={() => setLayoutMode("split")}
+                onClick={() => { setLayoutMode("split"); setOpen(false); }}
                 aria-pressed={layoutMode === "split"}
                 className={
                   layoutMode === "split"
@@ -401,7 +401,7 @@ export function AjustesPopover() {
               </button>
               <button
                 type="button"
-                onClick={() => setLayoutMode("focus")}
+                onClick={() => { setLayoutMode("focus"); setOpen(false); }}
                 aria-pressed={layoutMode === "focus"}
                 className={
                   layoutMode === "focus"
@@ -413,7 +413,7 @@ export function AjustesPopover() {
               </button>
               <button
                 type="button"
-                onClick={() => setLayoutMode("stacked")}
+                onClick={() => { setLayoutMode("stacked"); setOpen(false); }}
                 aria-pressed={layoutMode === "stacked"}
                 className={
                   layoutMode === "stacked"
@@ -425,7 +425,7 @@ export function AjustesPopover() {
               </button>
               <button
                 type="button"
-                onClick={() => setLayoutMode("floating")}
+                onClick={() => { setLayoutMode("floating"); setOpen(false); }}
                 aria-pressed={layoutMode === "floating"}
                 className={
                   layoutMode === "floating"
