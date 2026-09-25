@@ -10,7 +10,7 @@ test("M33: Ajustes persiste preferencias visuales y de accesibilidad tras reload
   const menu = page.getByRole("menu");
   await expect(menu).toBeVisible();
 
-  await menu.getByRole("button", { name: "Sepia Cuaderno", exact: true }).click();
+  await menu.getByRole("button", { name: "Oscuro", exact: true }).click();
   await menu.getByRole("button", { name: "Compacta", exact: true }).click();
 
   await menu.getByRole("button", { name: "Accesibilidad", exact: true }).click();
@@ -48,14 +48,14 @@ test("M33: Ajustes persiste preferencias visuales y de accesibilidad tras reload
   }));
 
   expect(persisted).toEqual({
-    theme: "sepia",
+    theme: "dark",
     density: "compact",
     textSize: "xlarge",
     dyslexia: "true",
     reducedMotion: "true",
     graphPalette: "colorblind-safe",
     html: {
-      theme: "sepia",
+      theme: "dark",
       density: "compact",
       textSize: "xlarge",
       dyslexia: "true",
@@ -66,7 +66,7 @@ test("M33: Ajustes persiste preferencias visuales y de accesibilidad tras reload
   await page.reload();
   await expect(page.locator("math-field").first()).toBeVisible();
 
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "sepia");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await expect(page.locator("html")).toHaveAttribute("data-density", "compact");
   await expect(page.locator("html")).toHaveAttribute("data-text-size", "xlarge");
   await expect(page.locator("html")).toHaveAttribute("data-dyslexia-friendly", "true");
@@ -76,7 +76,7 @@ test("M33: Ajustes persiste preferencias visuales y de accesibilidad tras reload
   const reloadedMenu = page.getByRole("menu");
   await expect(reloadedMenu).toBeVisible();
 
-  await expect(reloadedMenu.getByRole("button", { name: /Sepia Cuaderno/i })).toHaveAttribute("aria-pressed", "true");
+  await expect(reloadedMenu.getByRole("button", { name: "Oscuro", exact: true })).toHaveAttribute("aria-pressed", "true");
   await expect(reloadedMenu.getByRole("button", { name: "Compacta", exact: true })).toHaveAttribute("aria-pressed", "true");
 
   await reloadedMenu.getByRole("button", { name: "Accesibilidad", exact: true }).click();
