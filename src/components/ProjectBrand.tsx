@@ -3,7 +3,7 @@ interface ProjectBrandProps {
 }
 
 export function ProjectBrand({ showName = true }: ProjectBrandProps) {
-  const brandIcon = `${import.meta.env.BASE_URL}icons/precision-lab-lite.svg`;
+  const brandIcon = new URL("icons/precision-lab-lite.svg", document.baseURI).toString();
   return (
     <div className="flex min-w-0 flex-col items-start gap-1.5" aria-label="Precision Lab Lite">
       <img
