@@ -403,21 +403,35 @@ export function StatisticsMode() {
     }
   }
 
+  const activeResult =
+    subMode === "descriptive"
+      ? descriptiveResult
+      : subMode === "combinatorics"
+        ? combinatoricsResult
+        : subMode === "distribution"
+          ? distributionResult
+          : correlationResult;
+
   const inputClass = "rounded-lg bg-chrome-soft px-2 py-1.5 text-sm text-bone";
   const btnClass = "rounded-lg bg-chrome-soft py-2 text-center text-xs text-bone hover:bg-chrome-soft/70";
   const btnPrimaryClass = "rounded-lg bg-marker-soft/10 py-2 text-center text-xs font-medium text-marker hover:bg-marker-soft/20";
 
   return (
-    <div className="mx-auto flex max-w-md flex-col gap-3 p-4 md:max-w-lg lg:max-w-2xl dt:max-w-3xl">
-      <div className="flex gap-1 rounded-lg bg-chrome p-1 text-sm">
+    <div className="mx-auto grid w-full max-w-[1376px] gap-4 p-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:items-start">
+      <section aria-label="Controles de estadística" className="min-w-0 space-y-4 rounded-xl border border-paper-line bg-paper-soft p-4 shadow-sm">
+        <div>
+          <h2 className="text-lg font-semibold text-ink">Estadística</h2>
+          <p className="text-sm text-muted">Descriptiva, combinatoria, distribuciones y correlación</p>
+        </div>
+      <div className="flex gap-1 overflow-x-auto rounded-lg border border-paper-line bg-paper p-1 text-sm">
         {TABS.map((t) => (
           <button
             key={t.id}
             onClick={() => setSubMode(t.id)}
             className={
               subMode === t.id
-                ? "flex-1 rounded-md bg-marker-soft/15 py-1.5 text-marker"
-                : "flex-1 rounded-md py-1.5 text-bone/60 hover:text-bone"
+                ? "min-h-11 flex-1 shrink-0 rounded-md bg-marker-soft/15 px-3 py-1.5 font-medium text-marker"
+                : "min-h-11 flex-1 shrink-0 rounded-md px-3 py-1.5 text-muted hover:bg-paper-line/40 hover:text-ink"
             }
           >
             {t.label}
@@ -488,7 +502,6 @@ export function StatisticsMode() {
             <button className={btnPrimaryClass} onClick={() => runDescriptive("variance")}>σ²/s²</button>
             <button className={btnPrimaryClass} onClick={() => runDescriptive("stdev")}>σ/s</button>
           </div>
-          <ResultPanel result={descriptiveResult} />
         </div>
       )}
 
@@ -509,7 +522,6 @@ export function StatisticsMode() {
             <button className={btnPrimaryClass} onClick={() => runCombinatorics("nPr")}>nPr</button>
             <button className={btnPrimaryClass} onClick={() => runCombinatorics("factorial")}>n!</button>
           </div>
-          <ResultPanel result={combinatoricsResult} />
         </div>
       )}
 
@@ -669,7 +681,6 @@ export function StatisticsMode() {
               </div>
             </>
           )}
-          <ResultPanel result={distributionResult} />
         </div>
       )}
 
@@ -677,14 +688,22 @@ export function StatisticsMode() {
         <div className="space-y-3">
           <DataListInput values={xChips} onChange={setXChips} label="X" />
           <DataListInput values={yChips} onChange={setYChips} label="Y" />
-          <div className="grid grid-cols-3 gap-1.5">
+          <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-3">
             <button className={btnClass} onClick={() => runCorrelation("correlation")}>r</button>
             <button className={btnClass} onClick={() => runCorrelation("slope")}>Pendiente</button>
             <button className={btnClass} onClick={() => runCorrelation("intercept")}>Intercepto</button>
           </div>
-          <ResultPanel result={correlationResult} />
         </div>
       )}
+      </section>
+
+      <section aria-label="Resultado de estadística" className="min-w-0 rounded-xl border border-paper-line bg-paper p-4 shadow-sm lg:sticky lg:top-4">
+        <div className="mb-3 border-b border-paper-line pb-2">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Resultado</h2>
+          <p className="mt-0.5 text-[11px] text-muted">Salida de la operación estadística seleccionada</p>
+        </div>
+        <ResultPanel result={activeResult} />
+      </section>
     </div>
   );
 }
