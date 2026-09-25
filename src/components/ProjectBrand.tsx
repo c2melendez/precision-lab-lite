@@ -5,7 +5,7 @@ interface ProjectBrandProps {
 export function ProjectBrand({ showName = true }: ProjectBrandProps) {
   const brandIcon = new URL("icons/precision-lab-lite.svg", document.baseURI).toString();
   return (
-    <div className="flex min-w-0 flex-col items-start gap-1.5" aria-label="Precision Lab Lite">
+    <div className="flex min-w-0 flex-col items-start gap-1.5">
       <img
         src={brandIcon}
         alt=""
@@ -13,7 +13,7 @@ export function ProjectBrand({ showName = true }: ProjectBrandProps) {
         className="h-10 w-10 shrink-0 rounded-xl shadow-sm"
       />
       {showName && (
-        <h1 className="hidden whitespace-nowrap font-display text-[15px] font-semibold leading-tight tracking-tight text-white md:block">
+        <h1 className="whitespace-nowrap font-display text-[15px] font-semibold leading-tight tracking-tight text-white">
           Precision Lab <span className="text-sky-300">Lite</span>
         </h1>
       )}
