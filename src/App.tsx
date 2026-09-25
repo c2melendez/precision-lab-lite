@@ -100,10 +100,10 @@ export default function App() {
         <aside
           aria-label="Navegación principal"
           data-sidebar-state={sidebarExpanded ? "expanded" : "compact"}
-          className={`sticky top-0 z-40 flex h-screen shrink-0 flex-col border-r border-chrome-soft bg-chrome transition-[width] duration-200 ${sidebarExpanded ? "w-60" : "w-[72px]"}`}
+          className={`sticky top-0 z-40 flex h-screen shrink-0 flex-col border-r border-chrome-soft bg-chrome transition-[width] duration-200 ${sidebarExpanded ? "w-[72px] md:w-60" : "w-[72px]"}`}
         >
-          <div className="flex min-h-[72px] items-center gap-2 border-b border-chrome-soft px-3">
-            <div className={`min-w-0 flex-1 overflow-hidden ${sidebarExpanded ? "" : "w-9 flex-none"}`}>
+          <div className={`flex min-h-[72px] items-center justify-center gap-2 border-b border-chrome-soft px-3 ${sidebarExpanded ? "flex-col md:flex-row md:justify-start" : ""}`}>
+            <div className={`min-w-0 overflow-hidden ${sidebarExpanded ? "w-9 md:w-auto md:flex-1" : "hidden"}`}>
               <ProjectBrand />
             </div>
             <button
@@ -129,7 +129,7 @@ export default function App() {
                       type="button"
                       onClick={() => setMode(m)}
                       aria-current={active ? "page" : undefined}
-                      aria-label={!sidebarExpanded ? MODE_LABELS[m] : undefined}
+                      aria-label={MODE_LABELS[m]}
                       title={!sidebarExpanded ? MODE_LABELS[m] : undefined}
                       className={
                         active
@@ -138,7 +138,7 @@ export default function App() {
                       }
                     >
                       {icon && <ModeIcon name={icon} className="h-5 w-5 shrink-0" />}
-                      {sidebarExpanded && <span className="truncate text-sm">{MODE_LABELS[m]}</span>}
+                      {sidebarExpanded && <span className="hidden truncate text-sm md:inline">{MODE_LABELS[m]}</span>}
                     </button>
                   </li>
                 );
@@ -157,13 +157,13 @@ export default function App() {
               className="flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-bone/70 hover:bg-chrome-soft hover:text-bone focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marker"
             >
               <span aria-hidden="true" className="grid h-5 w-5 shrink-0 place-items-center">▤</span>
-              {sidebarExpanded && <span className="truncate text-sm">Historial</span>}
+              {sidebarExpanded && <span className="hidden truncate text-sm md:inline">Historial</span>}
             </button>
             <div className="flex min-h-11 items-center gap-3 rounded-lg px-3 text-bone/70" title={!sidebarExpanded ? "Configuración" : undefined}>
               <div className="grid h-5 w-5 shrink-0 place-items-center">
                 <AjustesPopover />
               </div>
-              {sidebarExpanded && <span className="truncate text-sm">Configuración</span>}
+              {sidebarExpanded && <span className="hidden truncate text-sm md:inline">Configuración</span>}
             </div>
           </div>
         </aside>
