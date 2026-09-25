@@ -172,3 +172,26 @@ test("M12: vibración y sonido guardan preferencia y sobreviven recarga", async 
   await expect(soundRow.getByRole("button")).toHaveAttribute("aria-pressed", "true");
 });
 
+
+
+test("M12: Configuración es ventana independiente, limita temas y el sidebar sigue el tema", async ({ page }) => {
+  await page.goto("./");
+  const sidebar = page.locator('aside[aria-label="Navegación principal"]');
+  const { menu } = await openSettings(page);
+
+  expect(await menu.evaluate((node) => Boolean(node.closest("aside")))).toBe(false);
+  await expect(menu.getByRole("button", { name: "Claro", exact: true })).toBeVisible();
+  await expect(menu.getByRole("button", { name: "Oscuro", exact: true })).toBeVisible();
+  await expect(menu.getByRole("button", { name: "Sistema", exact: true })).toBeVisible();
+  await expect(menu.getByRole("button", { name: "Sepia Cuaderno", exact: true })).toHaveCount(0);
+  await expect(menu.locator("[data-layout-option]")).toHaveCount(6);
+
+  await menu.getByRole("button", { name: "Claro", exact: true }).click();
+  await expect(sidebar).toHaveCSS("background-color", "rgb(241, 245, 249)");
+
+  await menu.getByRole("button", { name: "Oscuro", exact: true }).click();
+  await expect(sidebar).toHaveCSS("background-color", "rgb(7, 24, 43)");
+
+  await menu.getByRole("button", { name: "Sistema", exact: true }).click();
+  expect(await page.evaluate(() => localStorage.getItem("precision-lab-theme"))).toBe("auto");
+});
