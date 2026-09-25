@@ -187,7 +187,7 @@ test("M12: Configuración es ventana independiente, limita temas y el sidebar si
   await expect(menu.locator("[data-layout-option]")).toHaveCount(6);
 
   await menu.getByRole("button", { name: "Claro", exact: true }).click();
-  await expect(sidebar).toHaveCSS("background-color", "rgb(241, 245, 249)");
+  await expect(sidebar).toHaveCSS("background-color", "rgb(7, 43, 82)");
 
   await menu.getByRole("button", { name: "Oscuro", exact: true }).click();
   await expect(sidebar).toHaveCSS("background-color", "rgb(2, 22, 44)");
