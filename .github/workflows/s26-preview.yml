@@ -1,0 +1,75 @@
+name: S26 Preview
+
+on:
+  push:
+    branches: [qa/s26-execution]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout S26 branch
+        uses: actions/checkout@v7
+        with:
+          ref: qa/s26-execution
+          path: preview
+
+      - name: Checkout production main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          path: production
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            preview/package-lock.json
+            production/package-lock.json
+
+      - name: Build production root
+        working-directory: production
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build S26 preview
+        working-directory: preview
+        env:
+          VITE_BASE_PATH: /precision-lab-lite/s26-preview/
+        run: |
+          npm ci
+          npm run build
+
+      - name: Compose Pages artifact
+        run: |
+          mkdir -p site/s26-preview
+          cp -R production/dist/. site/
+          cp -R preview/dist/. site/s26-preview/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./site
+
+  deploy:
+    needs: build-preview
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}s26-preview/
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
