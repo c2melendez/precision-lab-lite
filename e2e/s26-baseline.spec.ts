@@ -16,7 +16,7 @@ const MODES = [
   { id: "unidades", label: "Unidades" },
 ] as const;
 
-const LAYOUTS = ["fused", "separated", "split", "focus", "stacked", "floating"] as const;
+const LAYOUTS = ["fused", "stacked", "split"] as const;
 
 async function capture(page: Page, testInfo: TestInfo, name: string) {
   const path = testInfo.outputPath(`${name}.png`);
@@ -77,7 +77,7 @@ test("S26 baseline: superficies visibles en cuatro viewports", async ({ page }, 
   }
 });
 
-test("S26 baseline: seis layouts y breakpoint flotante", async ({ page }, testInfo) => {
+test("S26 baseline: tres layouts aprobados", async ({ page }, testInfo) => {
   test.setTimeout(180_000);
   test.skip(testInfo.project.name !== "desktop-chromium", "S26 baseline se ejecuta una sola vez por workflow");
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -95,15 +95,5 @@ test("S26 baseline: seis layouts y breakpoint flotante", async ({ page }, testIn
       await expectNoHorizontalOverflow(page, `${layout}/${viewport.id}`);
       await capture(page, testInfo, `layout--${layout}--${viewport.id}`);
     }
-  }
-
-  for (const width of [1023, 1024]) {
-    await page.setViewportSize({ width, height: 800 });
-    await page.goto("./");
-    await page.evaluate(() => localStorage.setItem("precision-lab-layout-mode", "floating"));
-    await page.reload();
-    await expect(page.locator("main")).toBeVisible();
-    await expectNoHorizontalOverflow(page, `floating/${width}`);
-    await capture(page, testInfo, `layout--floating--breakpoint-${width}`);
   }
 });
