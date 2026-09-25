@@ -61,3 +61,24 @@ test("M19: Historial se cierra con Escape y devuelve el foco al disparador", asy
   await expect(page.locator("#history-panel")).not.toBeVisible();
   await expect(trigger).toBeFocused();
 });
+
+
+test("M19: Historial se renderiza fuera del sidebar sin desplazar el contenido", async ({ page }) => {
+  await page.goto("./");
+  const main = page.locator("main");
+  const before = await main.boundingBox();
+  expect(before).not.toBeNull();
+
+  const trigger = page.getByRole("button", { name: "Historial", exact: true });
+  await trigger.click();
+
+  const panel = page.locator("#history-panel");
+  await expect(panel).toBeVisible();
+  expect(await panel.evaluate((node) => Boolean(node.closest("aside")))).toBe(false);
+  await expect(panel).toHaveAttribute("role", "dialog");
+  await expect(panel).toHaveAttribute("aria-modal", "true");
+
+  const after = await main.boundingBox();
+  expect(after).not.toBeNull();
+  expect(Math.abs((after?.width ?? 0) - (before?.width ?? 0))).toBeLessThanOrEqual(1);
+});
