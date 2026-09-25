@@ -9,7 +9,7 @@ Estado: **CONTRATO VISUAL**
 S26.2 no cambia capacidad matemática. Reorganiza y unifica la presentación de funciones ya existentes.
 
 Objetivos:
-- una sola identidad visual para los cinco modos visibles;
+- una sola identidad visual para los seis modos visibles;
 - jerarquía clara entre entrada, resultado, pasos/análisis y gráfica;
 - teclado virtual como herramienta bajo demanda, nunca como bloque que domine la pantalla al iniciar;
 - escritorio 1440 como composición rica, degradando sin pérdida funcional a laptop/tablet/móvil;
@@ -35,7 +35,8 @@ Orden fijo:
 2. Matrices
 3. Gráficas
 4. Estadística
-5. Unidades
+5. Geometría
+6. Unidades
 
 Desktop/Laptop:
 - una sola fila;
@@ -164,7 +165,23 @@ Mobile:
 - inputs en una columna cuando el ancho no permita dos campos cómodos;
 - botones de operaciones en grid 2 columnas; 3 solo si mantienen ancho táctil adecuado.
 
-## 8. Unidades
+## 8. Geometría
+
+Geometría forma parte del alcance visual principal S26.
+
+Desktop/Laptop:
+- selector de submódulos coherente con la navegación interna del producto;
+- Entrada y Resultado en dos columnas cuando haya espacio;
+- vista geométrica/constructor como superficie visual propia, no placeholder permanente.
+
+Tablet/Mobile:
+- submódulos con scroll horizontal si es necesario;
+- Entrada → Vista/Constructor → Resultado;
+- controles táctiles adecuados.
+
+La implementación completa de Triángulos, Círculos, Áreas compuestas, Sólidos y Constructor se desarrolla por etapas; mientras una sección no esté terminada debe identificarse explícitamente como pendiente y no contarse como aceptación visual final.
+
+## 9. Unidades
 
 Desktop/Laptop:
 - tarjeta compacta pero no excesivamente estrecha;
@@ -182,7 +199,7 @@ Tablet/Mobile:
 
 El resultado debe ser el elemento de mayor jerarquía de la tarjeta.
 
-## 9. Historial
+## 10. Historial
 
 Desktop >=1024:
 - drawer lateral persistente en su comportamiento actual;
@@ -201,7 +218,7 @@ Entradas:
 - acción disponible de reutilización si existe;
 - jerarquía compacta.
 
-## 10. Ajustes
+## 11. Ajustes
 
 Mantener un único popover/panel de configuración.
 
@@ -220,7 +237,7 @@ Mobile:
 - scroll interno;
 - no cortar opciones por safe-area.
 
-## 11. Teclado virtual
+## 12. Teclado virtual
 
 Restricción dura:
 - **inicia colapsado en las seis disposiciones**.
@@ -240,7 +257,7 @@ Mobile:
 
 No volver a introducir teclado fijo permanente.
 
-## 12. Seis layouts
+## 13. Seis layouts
 
 ### fused
 Entrada + resultado en superficie unificada; gráfica separada.
@@ -265,7 +282,7 @@ Nunca permitir ventanas fuera del viewport.
 
 Las seis variantes deben compartir tokens, radios, títulos y jerarquía; cambia la composición, no la identidad visual.
 
-## 13. Sistema visual
+## 14. Sistema visual
 
 - superficies principales: `paper` / `paper-soft`;
 - chrome reservado para teclado o superficies de alta separación;
@@ -276,7 +293,7 @@ Las seis variantes deben compartir tokens, radios, títulos y jerarquía; cambia
 - sombras sutiles; evitar múltiples niveles decorativos;
 - título de tarjeta con borde/acento lateral cuando haya sección explícita.
 
-## 14. Estados
+## 15. Estados
 
 Toda superficie debe contemplar:
 - vacío;
@@ -289,7 +306,7 @@ Toda superficie debe contemplar:
 
 No introducir placeholders falsos para estados que el motor no genera.
 
-## 15. Accesibilidad
+## 16. Accesibilidad
 
 - contraste AA;
 - focus-visible consistente;
@@ -299,7 +316,7 @@ No introducir placeholders falsos para estados que el motor no genera.
 - no depender exclusivamente del color;
 - reduced-motion respetado.
 
-## 16. Restricciones técnicas
+## 17. Restricciones técnicas
 
 No tocar sin defecto reproducible:
 - `src/engine/**`
@@ -309,7 +326,7 @@ No tocar sin defecto reproducible:
 
 La implementación S26.3 debe concentrarse en componentes/layout/tokens.
 
-## 17. Orden de implementación S26.3
+## 18. Orden de implementación S26.3
 
 1. Shell + navegación + ancho global.
 2. Científica + Screen/Result/Steps/GraphPlaceholder.
@@ -327,7 +344,7 @@ Cada bloque debe:
 - capturar baseline posterior;
 - no pasar al siguiente bloque con regresiones abiertas.
 
-## 18. Criterio de aceptación S26.2
+## 19. Criterio de aceptación S26.2
 
 S26.2 queda aprobado cuando este contrato:
 - cubre todas las superficies visibles;
