@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useArgandBridgeStore } from "./store/useArgandBridgeStore";
 import { usePendingGraphStore } from "./store/usePendingGraphStore";
 import { useActiveModeStore } from "./store/useActiveModeStore";
@@ -51,15 +51,22 @@ const MODE_ICONS: Partial<Record<Mode, ModeIconName>> = {
 };
 
 const SIDEBAR_STORAGE_KEY = "precision-lab-sidebar-expanded";
+const SIDEBAR_AUTO_COLLAPSE_QUERY = "(max-width: 1199px)";
+
+function readSidebarPreference(): boolean {
+  if (typeof window === "undefined") return true;
+  return localStorage.getItem(SIDEBAR_STORAGE_KEY) !== "false";
+}
 
 function readInitialSidebarExpanded(): boolean {
   if (typeof window === "undefined") return true;
-  return localStorage.getItem(SIDEBAR_STORAGE_KEY) !== "false";
+  return readSidebarPreference() && !window.matchMedia(SIDEBAR_AUTO_COLLAPSE_QUERY).matches;
 }
 
 export default function App() {
   const [mode, setMode] = useState<Mode>("basic");
   const [historyOpen, setHistoryOpen] = useState(false);
+  const sidebarPreferenceRef = useRef(readSidebarPreference());
   const [sidebarExpanded, setSidebarExpanded] = useState(readInitialSidebarExpanded);
   const layoutMode = useLayoutModeStore((s) => s.layoutMode);
   const isFloatingWideEnough = useMinWidthMediaQuery(FLOATING_MIN_WIDTH_PX);
@@ -71,8 +78,25 @@ export default function App() {
   const pendingGraphExpression = usePendingGraphStore((s) => s.pendingExpression);
 
   useEffect(() => {
-    localStorage.setItem(SIDEBAR_STORAGE_KEY, String(sidebarExpanded));
-  }, [sidebarExpanded]);
+    const media = window.matchMedia(SIDEBAR_AUTO_COLLAPSE_QUERY);
+    const applyResponsiveState = (isConstrained: boolean) => {
+      setSidebarExpanded(isConstrained ? false : sidebarPreferenceRef.current);
+    };
+
+    applyResponsiveState(media.matches);
+    const onChange = (event: MediaQueryListEvent) => applyResponsiveState(event.matches);
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, []);
+
+  const toggleSidebar = () => {
+    setSidebarExpanded((current) => {
+      const next = !current;
+      sidebarPreferenceRef.current = next;
+      localStorage.setItem(SIDEBAR_STORAGE_KEY, String(next));
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (pendingArgandPoint !== null) setMode("graphing");
@@ -100,13 +124,14 @@ export default function App() {
         <aside
           aria-label="Navegación principal"
           data-sidebar-state={sidebarExpanded ? "expanded" : "compact"}
+          data-sidebar-responsive="auto"
           className={`sticky top-0 z-10 flex h-screen shrink-0 flex-col border-r border-[#0b467d] bg-[#052b52] text-white transition-[width] duration-200 ${sidebarExpanded ? "w-60" : "w-[72px]"}`}
         >
           <header className={`relative flex shrink-0 border-b border-white/15 ${sidebarExpanded ? "min-h-[112px] flex-col items-center px-2 py-3 md:min-h-[104px] md:items-start md:px-3" : "min-h-[112px] flex-col items-center px-2 py-3"}`}>
             <ProjectBrand showName={sidebarExpanded} />
             <button
               type="button"
-              onClick={() => setSidebarExpanded((current) => !current)}
+              onClick={toggleSidebar}
               aria-label={sidebarExpanded ? "Contraer navegación" : "Expandir navegación"}
               aria-expanded={sidebarExpanded}
               title={sidebarExpanded ? "Contraer navegación" : "Expandir navegación"}
@@ -136,7 +161,7 @@ export default function App() {
                       }
                     >
                       {icon && <ModeIcon name={icon} className="h-5 w-5 shrink-0" />}
-                      {sidebarExpanded && <span className="hidden whitespace-nowrap text-sm md:inline">{MODE_LABELS[m]}</span>}
+                      {sidebarExpanded && <span className="whitespace-nowrap text-sm">{MODE_LABELS[m]}</span>}
                     </button>
                   </li>
                 );
@@ -155,13 +180,13 @@ export default function App() {
               className="flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-white/80 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300"
             >
               <span aria-hidden="true" className="grid h-5 w-5 shrink-0 place-items-center">▤</span>
-              {sidebarExpanded && <span className="hidden whitespace-nowrap text-sm md:inline">Historial</span>}
+              {sidebarExpanded && <span className="whitespace-nowrap text-sm">Historial</span>}
             </button>
             <div className="flex min-h-11 items-center gap-3 rounded-lg px-3 text-white/80" title={!sidebarExpanded ? "Configuración" : undefined}>
               <div className="grid h-5 w-5 shrink-0 place-items-center">
                 <AjustesPopover />
               </div>
-              {sidebarExpanded && <span className="hidden whitespace-nowrap text-sm md:inline">Configuración</span>}
+              {sidebarExpanded && <span className="whitespace-nowrap text-sm">Configuración</span>}
             </div>
           </div>
         </aside>
