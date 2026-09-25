@@ -68,7 +68,7 @@ export function KeyboardPanel({ isOpen, onClose, children, dockHeight = 0, sideb
         // Desktop: panel inferior amplio con los márgenes del área de trabajo.
         // La barra cambia de altura cuando aparecen teclas recientes.
         // Mantener el panel sobre su borde real, no sobre el antiguo grid fijo.
-        "dt:bottom-[var(--keyboard-panel-bottom)] dt:left-auto dt:right-8 dt:h-auto dt:max-h-[45vh] dt:w-[calc(100%_-_var(--sidebar-width,_72px)_-_64px)] dt:max-w-[1376px] dt:rounded-2xl dt:border",
+        "dt:bottom-[var(--keyboard-panel-bottom)] dt:right-8 dt:h-auto dt:max-h-[45vh] dt:rounded-2xl dt:border",
       ].join(" ")}
     >
       {/* Drag handle — solo afordance visual en este módulo, oculto en dt
