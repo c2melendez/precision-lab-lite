@@ -13,7 +13,7 @@ test("M14: Lite conserva identidad PL y sidebar contractual responsive", async (
   const startsCompact = viewport!.width < 1200;
   await expect(sidebar).toHaveAttribute("data-sidebar-responsive", "auto");
   await expect(sidebar).toHaveAttribute("data-sidebar-state", startsCompact ? "compact" : "expanded");
-  await expect(sidebar).toHaveCSS("background-color", "rgb(241, 245, 249)");
+  await expect(sidebar).toHaveCSS("background-color", "rgb(7, 43, 82)");
   await expect(brandImage).toBeVisible();
   await expect(page.locator("body")).not.toContainText("Precision Lab Plus");
 
