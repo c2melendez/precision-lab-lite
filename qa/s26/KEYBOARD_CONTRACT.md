@@ -175,3 +175,30 @@ Las inversas no reciben `°` dentro de su argumento, porque consumen una razón/
 
 ### Integridad
 El `°` explícito representa semánticamente grados sexagesimales. Los motores deben reconocerlo sin aplicar una segunda conversión cuando el modo DEG/GRAD ya está activo.
+
+## Autoridad visual y teclado legado
+
+Decisión de cierre de sesión 2026-09-24:
+
+El teclado que todavía puede verse en los previews S26 proviene en parte de la arquitectura visual anterior. **No se considera aprobado como diseño final.**
+
+La frase “conservar botonería y funcionalidad existentes” significa:
+- conservar capacidades;
+- conservar teclas funcionales aprobadas;
+- conservar tooltips;
+- conservar categorías;
+- conservar paridad con el motor.
+
+**No significa conservar la distribución visual, densidad, jerarquía o composición del teclado legado.**
+
+Antes de continuar cambios de teclado:
+1. regenerar el mockup definitivo;
+2. mostrar estado colapsado y desplegado;
+3. mostrar las seis categorías;
+4. mostrar Desktop y móvil;
+5. mostrar el mismo teclado abierto desde los seis módulos;
+6. recibir aprobación explícita del usuario.
+
+Después de aprobar el mockup, el código existente debe adaptarse al mockup, no al revés.
+
+Queda prohibido cerrar visualmente el teclado basándose solo en gates verdes si el Preview no coincide con el mockup aprobado.
