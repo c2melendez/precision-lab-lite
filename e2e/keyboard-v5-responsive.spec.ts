@@ -7,7 +7,7 @@ test("respeta el tema oscuro guardado", async ({ page }) => {
   const chrome = await page.locator("html").evaluate((element) =>
     getComputedStyle(element).getPropertyValue("--color-chrome").trim(),
   );
-  expect(chrome).toBe("20 23 28");
+  expect(chrome).toBe("15 23 42");
 });
 
 test("la tarjeta Entrada calcula sin abrir el teclado", async ({ page }, testInfo) => {
@@ -28,7 +28,7 @@ test("la tarjeta Entrada calcula sin abrir el teclado", async ({ page }, testInf
 
 test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, testInfo) => {
   await page.goto("./");
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "v4-blue");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   await expect(page.locator("math-field").first()).toHaveClass(/w-full/);
 
   const overflow = await page.evaluate(() => ({
