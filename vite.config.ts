@@ -6,9 +6,10 @@ import { VitePWA } from "vite-plugin-pwa";
 // repositorio de GitHub antes de desplegar, o los assets no cargarán bajo
 // https://<usuario>.github.io/<repo>/
 const REPO_NAME = "precision-lab-lite";
+const BASE_PATH = process.env.VITE_BASE_PATH ?? `/${REPO_NAME}/`;
 
 export default defineConfig({
-  base: `/${REPO_NAME}/`,
+  base: BASE_PATH,
   test: {
     include: ["tests/**/*.test.ts"],
   },
@@ -25,8 +26,8 @@ export default defineConfig({
         theme_color: "#14171C",
         background_color: "#14171C",
         display: "standalone",
-        start_url: `/${REPO_NAME}/`,
-        scope: `/${REPO_NAME}/`,
+        start_url: BASE_PATH,
+        scope: BASE_PATH,
         icons: [
           {
             src: "icons/icon-192.png",
