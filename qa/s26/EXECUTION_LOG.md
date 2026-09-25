@@ -344,3 +344,33 @@ Debe conservarse su funcionalidad/paridad, pero su composición visual deberá a
 - S26.5: pendiente.
 - S26.6: pendiente.
 
+
+
+## S26.3R — Bloque 1 — Shell + Sidebar + Identidad visual — PASS DEFINITIVO
+
+Fecha de cierre: 2026-09-25.
+
+Contrato aplicado:
+- navegación lateral azul contractual;
+- orden visible: Científica → Gráficas → Matrices → Estadística → Geometría → Unidades;
+- identidad PL / PL+ persistente;
+- nombre completo visible en estado expandido;
+- icono de producto visible también en estado compacto;
+- paridad de iconos entre Lite y Plus, con Geometría = cubo;
+- Historial y Configuración anclados en la zona inferior;
+- dock/panel de teclado reconciliados para no invadir el sidebar;
+- auto-colapso responsive por debajo de 1200 px;
+- preferencia manual restaurada cuando vuelve a existir ancho suficiente;
+- H1 de producto preservado de forma accesible en estado compacto.
+
+HEAD certificado:
+- Lite: `fa0ede18dfa67ef8e384f4b2f2170b074722520f`;
+- Plus: `09deab33673a035a0327234ee29c6a95a2df5b21`.
+
+Gates:
+- Lite: CI, Playwright E2E, S22 PWA Offline, S23 Accessibility, S25 Security y Cross-browser smoke: PASS.
+- Plus: CI, Playwright E2E, S17, S18, S19, S20, S21, S23 y S25: PASS.
+
+Decisión:
+- Bloque 1 queda congelado salvo defecto reproducible.
+- Siguiente bloque contractual: Configuración + Apariencia + selector de layouts.
