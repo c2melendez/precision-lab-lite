@@ -24,11 +24,15 @@ test("M12: preferencias visuales se aplican y persisten tras recarga", async ({ 
 
   await menu.getByRole("button", { name: "Claro", exact: true }).click();
   await menu.getByRole("button", { name: "Compacta", exact: true }).click();
+  await menu.getByRole("button", { name: "Extendido", exact: true }).click();
+
+  await menu.getByRole("button", { name: "Accesibilidad", exact: true }).click();
   await menu.getByRole("button", { name: "Muy grande", exact: true }).click();
   await clickSettingRow(menu, "Espaciado amigable con dislexia");
   await clickSettingRow(menu, "Reducir movimiento");
+
+  await menu.getByRole("button", { name: "Gráficas", exact: true }).click();
   await menu.getByRole("button", { name: /Apta para daltonismo/i }).click();
-  await menu.getByRole("button", { name: "Separada", exact: true }).click();
 
   const attrs = await page.evaluate(() => ({
     theme: document.documentElement.getAttribute("data-theme"),
@@ -80,7 +84,7 @@ test("M12: tema Automático sigue prefers-color-scheme", async ({ page }) => {
   await page.emulateMedia({ colorScheme: "dark" });
   await page.goto("./");
   let opened = await openSettings(page);
-  await opened.menu.getByRole("button", { name: "Automático (sistema)", exact: true }).click();
+  await opened.menu.getByRole("button", { name: "Sistema", exact: true }).click();
   expect(await page.evaluate(() => document.documentElement.getAttribute("data-theme"))).toBe("dark");
   expect(await page.evaluate(() => localStorage.getItem("precision-lab-theme"))).toBe("auto");
 
@@ -148,6 +152,7 @@ test("M12: resultado calculado en Fusionada queda dentro de una región anunciab
 test("M12: vibración y sonido guardan preferencia y sobreviven recarga", async ({ page }) => {
   await page.goto("./");
   const { menu } = await openSettings(page);
+  await menu.getByRole("button", { name: "Teclado", exact: true }).click();
   await clickSettingRow(menu, "Vibración al presionar tecla");
   await clickSettingRow(menu, "Sonido de clic");
 
@@ -160,6 +165,7 @@ test("M12: vibración y sonido guardan preferencia y sobreviven recarga", async 
   expect(await page.evaluate(() => localStorage.getItem("precision-lab-key-sound"))).toBe("true");
 
   const reopened = await openSettings(page);
+  await reopened.menu.getByRole("button", { name: "Teclado", exact: true }).click();
   const vibrationRow = reopened.menu.getByText("Vibración al presionar tecla", { exact: true }).locator("..");
   const soundRow = reopened.menu.getByText("Sonido de clic", { exact: true }).locator("..");
   await expect(vibrationRow.getByRole("button")).toHaveAttribute("aria-pressed", "false");
