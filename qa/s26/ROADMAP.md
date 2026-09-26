@@ -228,3 +228,13 @@ Bloque 5 queda **desbloqueado y EN CURSO**. Su alcance es únicamente shell glob
 - Autoridad funcional/semántica: `KEYBOARD_CONTRACT.md`.
 - La implementación actual no es autoridad visual.
 - B6 debe cerrar con matriz tecla por tecla Lite↔Plus, gates automáticos y revisión humana de Preview.
+
+
+### B6 Básico — implementación
+
+- Inventario congelado: 31 teclas en 4 filas.
+- Enter unificado visualmente en Lite/Plus.
+- Tooltips reales obligatorios en todas las teclas básicas.
+- Lite alineado a la gramática visual theme-aware de Plus.
+- Matriz: `B6_BASIC_RECONCILIATION.md`.
+- Estado: **IMPLEMENTADO — pendiente gates + Preview/revisión humana**.
