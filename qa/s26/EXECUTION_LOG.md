@@ -438,3 +438,15 @@ Gates Plus: CI, Playwright, S17, S18, S19, S20, S21, S23, S25 — PASS.
 Ejecutar `PARITY_CHECKPOINT_B1_B4.md`, corregir GAPs y recertificar si se modifica código.
 
 **No iniciar Bloque 5 antes de cerrar esa auditoría.**
+
+
+## 2026-09-26 — Checkpoint B1–B4 cerrado / inicio B5
+
+- Se ejecutó reconciliación estática Lite ↔ Plus contra `PARITY_CHECKPOINT_B1_B4.md`.
+- Resultado: **PASS sin GAPs bloqueantes** en B1–B4.
+- B1/B2/B3/B4 mantienen paridad contractual; las diferencias documentadas de capacidades Plus/Lite permanecen intencionales.
+- Regla angular verificada por código compartido equivalente: salida en grados expone solo DD/DMS; RAD conserva formatos numéricos normales.
+- No se modificaron rutas matemáticas protegidas durante el checkpoint.
+- Bloque 5 quedó **DESBLOQUEADO / EN CURSO**.
+- Alcance B5: shell global del teclado, apertura/cierre y responsive. La paridad de las seis categorías se reserva para B6.
+- Lite ya dispone de cobertura equivalente/reforzada en `e2e/keyboard-v5-responsive.spec.ts` y `e2e/keyboard-layouts.spec.ts`.
