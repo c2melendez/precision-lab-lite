@@ -7,7 +7,7 @@ test("M33: Ajustes persiste preferencias visuales y de accesibilidad tras reload
   const openSettings = page.getByRole("button", { name: "Ajustes", exact: true });
   await openSettings.click();
 
-  const menu = page.getByRole("menu");
+  const menu = page.getByRole("dialog", { name: "Configuración" });
   await expect(menu).toBeVisible();
 
   await menu.getByRole("button", { name: "Oscuro", exact: true }).click();
@@ -73,7 +73,7 @@ test("M33: Ajustes persiste preferencias visuales y de accesibilidad tras reload
   await expect(page.locator("html")).toHaveAttribute("data-reduced-motion", "true");
 
   await openSettings.click();
-  const reloadedMenu = page.getByRole("menu");
+  const reloadedMenu = page.getByRole("dialog", { name: "Configuración" });
   await expect(reloadedMenu).toBeVisible();
 
   await expect(reloadedMenu.getByRole("button", { name: "Oscuro", exact: true })).toHaveAttribute("aria-pressed", "true");
