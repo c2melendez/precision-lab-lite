@@ -4,7 +4,7 @@ async function openSettings(page: import("@playwright/test").Page) {
   const button = page.getByRole("button", { name: "Ajustes", exact: true });
   await expect(button).toBeVisible();
   await button.click();
-  const menu = page.getByRole("menu");
+  const menu = page.getByRole("dialog", { name: "Configuración" });
   await expect(menu).toBeVisible();
   return { button, menu };
 }
