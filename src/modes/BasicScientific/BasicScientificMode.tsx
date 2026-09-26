@@ -15,6 +15,7 @@ import { useRecentKeysStore } from "../../store/useRecentKeysStore";
 import { useLayoutModeStore } from "../../store/useLayoutModeStore";
 import { useArgandBridgeStore } from "../../store/useArgandBridgeStore";
 import { usePendingGraphStore } from "../../store/usePendingGraphStore";
+import { usePendingHistoryReuseStore } from "../../store/usePendingHistoryReuseStore";
 
 // Modo 1 de la spec v10 §5. Orquesta NaturalInput + MathKeyboard +
 // ResultPanel, delegando todo el cómputo al Web Worker (nunca al hilo
@@ -50,6 +51,20 @@ export function BasicScientificMode() {
   const [mathField, setMathField] = useState<MathFieldRef>(null);
   const [sessionHistory, setSessionHistory] = useState<SessionHistoryEntry[]>([]);
   const setPendingArgandPoint = useArgandBridgeStore((s) => s.setPendingArgandPoint);
+  const takePendingHistoryReuse = usePendingHistoryReuseStore((s) => s.takePending);
+
+  useEffect(() => {
+    const entry = takePendingHistoryReuse();
+    if (!entry) return;
+    setLatex(entry.input);
+    setResult(null);
+    requestAnimationFrame(() => {
+      if (mathField) {
+        mathField.value = entry.input;
+        mathField.focus();
+      }
+    });
+  }, [takePendingHistoryReuse]);
 
   const { getWorker } = useComputeWorker();
 
