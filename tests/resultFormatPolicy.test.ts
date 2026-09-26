@@ -30,12 +30,12 @@ describe("S26 Bloque 4 — política de formatos de resultado", () => {
     })).toEqual(["exact", "dec", "frac", "scn"]);
   });
 
-  it("añade DMS únicamente cuando la salida angular lo habilita", () => {
+  it("una salida angular en grados expone únicamente DD y DMS", () => {
     expect(getAvailableResultFormats({
       hasExact: true,
       hasDecimal: true,
-      hasFraction: false,
+      hasFraction: true,
       hasDms: true,
-    })).toEqual(["exact", "dec", "scn", "dms"]);
+    })).toEqual(["dd", "dms"]);
   });
 });
