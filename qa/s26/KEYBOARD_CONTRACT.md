@@ -176,29 +176,53 @@ Las inversas no reciben `°` dentro de su argumento, porque consumen una razón/
 ### Integridad
 El `°` explícito representa semánticamente grados sexagesimales. Los motores deben reconocerlo sin aplicar una segunda conversión cuando el modo DEG/GRAD ya está activo.
 
-## Autoridad visual y teclado legado
+## Autoridad visual B6 — teclado aprobado
 
-Decisión de cierre de sesión 2026-09-24:
+Decisión explícita del usuario, 2026-09-26:
 
-El teclado que todavía puede verse en los previews S26 proviene en parte de la arquitectura visual anterior. **No se considera aprobado como diseño final.**
+Para B6, la autoridad del teclado se congela usando **en conjunto**:
 
-La frase “conservar botonería y funcionalidad existentes” significa:
-- conservar capacidades;
-- conservar teclas funcionales aprobadas;
-- conservar tooltips;
-- conservar categorías;
-- conservar paridad con el motor.
+1. `VISUAL_CONTRACT_FINAL_S26_2R.md` — reglas visuales, responsive, jerarquía y restricciones;
+2. la captura aprobada **`Mockups definitivos de Precision Lab.png`** — composición visual, densidad, disposición, estados abierto/cerrado y adaptación Desktop/Tablet/Mobile;
+3. este `KEYBOARD_CONTRACT.md` — inventario funcional/semántico, categorías, tooltips, inserciones y reglas tecla→motor;
+4. decisiones explícitas posteriores del usuario — prevalecen si modifican una decisión anterior.
 
-**No significa conservar la distribución visual, densidad, jerarquía o composición del teclado legado.**
+### Regla de interpretación
 
-Antes de continuar cambios de teclado:
-1. regenerar el mockup definitivo;
-2. mostrar estado colapsado y desplegado;
-3. mostrar las seis categorías;
-4. mostrar Desktop y móvil;
-5. mostrar el mismo teclado abierto desde los seis módulos;
-6. recibir aprobación explícita del usuario.
+- Las capturas son autoridad **visual**, no matemática.
+- El contrato del teclado es autoridad **funcional y semántica**.
+- La implementación actual no define el diseño aprobado: debe adaptarse a estas autoridades.
+- Si una tecla aparece en el contrato pero no es legible o no aparece explícita en la captura, **no se elimina**: se conserva su capacidad y se ubica respetando la composición aprobada.
+- Si una captura muestra una notación simplificada o históricamente incorrecta (p. ej. nombres internos como `asin`), prevalece la notación natural y las reglas funcionales vigentes.
+- No se introduce un séptimo grupo ni un teclado específico por módulo.
+- Lite y Plus deben compartir el mismo teclado visual y semántico; solo pueden diferir en capacidades de motor documentadas y nunca en el significado de una misma tecla.
 
-Después de aprobar el mockup, el código existente debe adaptarse al mockup, no al revés.
+### Qué queda congelado en B6
 
-Queda prohibido cerrar visualmente el teclado basándose solo en gates verdes si el Preview no coincide con el mockup aprobado.
+B6 debe producir y certificar:
+
+- seis categorías: Básico, Símbolos, Álgebra, Trigonométricas, Cálculo y Complejos;
+- orden y agrupación visual compatibles con la captura aprobada;
+- inventario tecla por tecla;
+- etiqueta visible;
+- tooltip;
+- LaTeX/plantilla insertada;
+- normalización hacia parser/adapter;
+- acción esperada;
+- soporte Lite;
+- soporte Plus;
+- estado PASS / GAP / diferencia intencional;
+- pruebas automáticas que impidan desviaciones futuras.
+
+### Criterio de cierre visual
+
+B6 **no puede cerrarse únicamente con gates verdes**. Para PASS definitivo deben coincidir:
+
+1. implementación;
+2. contrato;
+3. captura aprobada;
+4. matriz Lite↔Plus;
+5. Preview/revisión humana.
+
+La captura aprobada ya existe y **no debe regenerarse como requisito previo**. Si durante B6 se necesita ampliar una categoría que no se ve completa en la lámina general, esa ampliación debe derivarse del contrato vigente y conservar la misma gramática visual, sin reinterpretar el teclado legado como autoridad.
+
