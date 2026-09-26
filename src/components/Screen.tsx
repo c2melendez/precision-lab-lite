@@ -240,14 +240,9 @@ export function Screen({
             </section>
           </div>
           <div className="flex min-w-0 flex-col gap-3">
-            <section aria-label="Resultado" className="min-w-0 rounded-xl border border-paper-line bg-paper-soft shadow-sm">
-              <h2 className="border-b border-paper-line px-4 py-3 text-sm font-semibold">
-                <span className="border-l-4 border-marker pl-2">Resultado</span>
-              </h2>
-              <div className="overflow-x-auto px-4 py-4" aria-live="polite">
-                <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
-              </div>
-            </section>
+            <div className="min-w-0 rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
+              <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
+            </div>
             <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
           </div>
         </div>
