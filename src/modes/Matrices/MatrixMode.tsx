@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useComputeWorker } from "../../hooks/useComputeWorker";
 import { MatrixGridInput } from "../../components/MatrixGridInput";
 import { ResultPanel } from "../../components/ResultPanel";
@@ -10,6 +10,7 @@ import {
   type MatrixName,
   useNamedMatricesStore,
 } from "../../store/useNamedMatricesStore";
+import { usePendingHistoryReuseStore } from "../../store/usePendingHistoryReuseStore";
 
 // Modo Matrices — M25 añade un banco persistente de matrices A–F.
 // Las operaciones y el worker siguen recibiendo arrays ordinarios: la
@@ -130,6 +131,44 @@ export function MatrixMode() {
   const setValues = useNamedMatricesStore((state) => state.setValues);
   const resetMatrix = useNamedMatricesStore((state) => state.resetMatrix);
   const copyMatrix = useNamedMatricesStore((state) => state.copyMatrix);
+  const takePendingHistoryReuse = usePendingHistoryReuseStore((s) => s.takePending);
+
+  useEffect(() => {
+    const entry = takePendingHistoryReuse();
+    if (!entry) return;
+    try {
+      const parsed = JSON.parse(entry.input) as Record<string, unknown>;
+      const matrixEntries = Object.entries(parsed).filter(([, value]) => Array.isArray(value));
+      for (const [name, value] of matrixEntries) {
+        if (!MATRIX_NAMES.includes(name as MatrixName)) continue;
+        const rows = value as unknown[][];
+        const cols = Array.isArray(rows[0]) ? rows[0].length : 0;
+        if (!rows.length || !cols) continue;
+        setDimensions(name as MatrixName, rows.length, cols);
+        setValues(name as MatrixName, rows.map((row) => row.map((cell) => String(cell))));
+      }
+    } catch {
+      setMatrixExpression(entry.input);
+    }
+
+    const label = entry.mode.toLowerCase();
+    if (label.includes("det(")) setOp("determinant");
+    else if (label.includes("×") || label.includes("multiply")) setOp("multiply");
+    else if (label.includes("−") || label.includes("subtract")) setOp("subtract");
+    else if (label.includes("⊗") || label.includes("kron")) setOp("kron");
+    else if (label.includes("⁻¹") || label.includes("inverse")) setOp("inverse");
+    else if (label.includes("rref")) setOp("rref");
+    else if (label.includes("ref(")) setOp("ref");
+    else if (label.includes("tr(")) setOp("trace");
+    else if (label.includes("rango") || label.includes("rank")) setOp("rank");
+    else if (label.includes("eigen")) setOp("eigen");
+    else if (label.includes("·") || label.includes("dot")) setOp("dot");
+    else if (label.includes("⨯") || label.includes("cross")) setOp("cross");
+    else if (label.includes("‖") || label.includes("norm")) setOp("norm");
+    else if (label.includes("ᵀ") || label.includes("transpose")) setOp("transpose");
+    else if (label.includes("+")) setOp("add");
+    setResult(null);
+  }, [setDimensions, setValues, takePendingHistoryReuse]);
 
   const matrixA = matrices[primary];
   const matrixB = matrices[secondary];
