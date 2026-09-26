@@ -51,6 +51,7 @@ export function BasicScientificMode() {
   const [mathField, setMathField] = useState<MathFieldRef>(null);
   const [sessionHistory, setSessionHistory] = useState<SessionHistoryEntry[]>([]);
   const setPendingArgandPoint = useArgandBridgeStore((s) => s.setPendingArgandPoint);
+  const pendingHistoryReuse = usePendingHistoryReuseStore((s) => s.pending);
   const takePendingHistoryReuse = usePendingHistoryReuseStore((s) => s.takePending);
 
   useEffect(() => {
@@ -64,7 +65,7 @@ export function BasicScientificMode() {
         mathField.focus();
       }
     });
-  }, [takePendingHistoryReuse]);
+  }, [pendingHistoryReuse, takePendingHistoryReuse]);
 
   const { getWorker } = useComputeWorker();
 
