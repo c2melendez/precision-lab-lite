@@ -14,6 +14,7 @@ import { UnitsMode } from "./modes/Units/UnitsMode";
 import { GeometryMode } from "./modes/Geometry/GeometryMode";
 import { HistoryPanel } from "./components/HistoryPanel";
 import type { HistoryEntry } from "./store/historyDb";
+import { usePendingHistoryReuseStore } from "./store/usePendingHistoryReuseStore";
 import { HistoryDrawer } from "./components/HistoryDrawer";
 import { AjustesPopover } from "./components/AjustesPopover";
 import { KeyboardDock } from "./components/KeyboardDock";
@@ -90,7 +91,10 @@ export default function App() {
     return () => media.removeEventListener("change", onChange);
   }, []);
 
+  const setPendingHistoryReuse = usePendingHistoryReuseStore((s) => s.setPending);
+
   const reuseHistoryEntry = (entry: HistoryEntry) => {
+    setPendingHistoryReuse(entry);
     const target: Mode =
       entry.module === "Matrices"
         ? "matrices"
