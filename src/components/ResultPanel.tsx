@@ -96,7 +96,7 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
       return withAngleUnit({ latex: result?.resultLatex ?? "", isPlainNumber: false }, selectedFormat);
     }
     // "exact": resultado simbólico/radical exacto tal cual lo devolvió el motor.
-    return withAngleUnit({ latex: result?.resultLatex ?? "", isPlainNumber: false });
+    return withAngleUnit({ latex: result?.resultLatex ?? "", isPlainNumber: false }, selectedFormat);
   }
 
   const numericSource = (
