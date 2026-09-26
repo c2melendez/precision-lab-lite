@@ -29,7 +29,8 @@ export function ResultFormatSelector({ formats, value, onChange }: ResultFormatS
           type="button"
           onClick={() => onChange(format)}
           aria-pressed={value === format}
-          aria-label={format}
+          aria-label={LABELS[format]}
+          data-format={format}
           title={LABELS[format]}
           className={
             value === format
