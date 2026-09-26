@@ -109,7 +109,7 @@ test("M28: historial distingue módulos de origen en una misma ventana", async (
     await expect(panel.getByText(module, { exact: true })).toBeVisible();
   }
   await expect(panel.getByText("Álgebra", { exact: true })).toBeVisible();
-  await expect(panel.getByText("Matrices (determinante)", { exact: true })).toBeVisible();
+  await expect(panel.getByText("Operación de matrices · determinante", { exact: true })).toBeVisible();
 });
 
 
