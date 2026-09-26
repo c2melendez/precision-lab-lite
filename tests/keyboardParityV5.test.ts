@@ -48,4 +48,18 @@ describe("paridad del teclado V5 de Lite", () => {
     expect(product?.unavailable).toBeFalsy();
     expect(product?.insertLatex).toContain("\\prod");
   });
+  it("B6 congela el inventario visual y exige tooltip real en todas las teclas de Básico", () => {
+    expect(BASIC_V5_ROWS.map((row) => row.map((key) => String(key.glyph)))).toEqual([
+      ["7", "8", "9", "(", ")", "⌫", "DEL", "ANS"],
+      ["4", "5", "6", "×", "÷", "%", "<", ">"],
+      ["1", "2", "3", "+", "−", ".", "=", "′"],
+      ["0", "°", "DMS", "±()", "≤", "≥", "Enter"],
+    ]);
+    expect(basicKeys).toHaveLength(31);
+    for (const key of basicKeys) {
+      expect(key.description, `tooltip faltante en ${key.ariaLabel}`).toBeTruthy();
+    }
+    expect(byLabel("calcular")?.glyph).toBe("Enter");
+  });
+
 });
