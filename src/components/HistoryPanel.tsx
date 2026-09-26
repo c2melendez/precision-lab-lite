@@ -45,22 +45,43 @@ function parseMatrices(input: string): Array<{ name: string; values: unknown[][]
   }
 }
 
+function parseMatrixResult(value: string): unknown[][] | null {
+  try {
+    const parsed = JSON.parse(value);
+    if (Array.isArray(parsed) && parsed.every((row) => Array.isArray(row))) return parsed as unknown[][];
+  } catch {
+    // Puede venir como LaTeX.
+  }
+  const match = value.match(/\\begin\{(?:bmatrix|pmatrix|matrix)\}([\s\S]*?)\\end\{(?:bmatrix|pmatrix|matrix)\}/);
+  if (!match) return null;
+  return match[1]
+    .split(/\\\\/)
+    .map((row) => row.split("&").map((cell) => cell.trim()))
+    .filter((row) => row.length > 0);
+}
+
+function MatrixGridPreview({ name, values }: { name: string; values: unknown[][] }) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-xs font-semibold text-muted">{name} =</span>
+      <div className="rounded-lg border border-paper-line bg-paper-soft px-2 py-1">
+        {values.map((row, index) => (
+          <div key={index} className="grid grid-flow-col auto-cols-min justify-center gap-2 font-mono text-xs text-ink">
+            {row.map((value, column) => <span key={column}>{String(value)}</span>)}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function MatrixPreview({ input }: { input: string }) {
   const matrices = parseMatrices(input);
   if (!matrices) return <p className="mt-1 break-words text-sm font-medium text-ink">{input}</p>;
   return (
     <div className="mt-2 flex flex-wrap gap-3">
       {matrices.map(({ name, values }) => (
-        <div key={name} className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-muted">{name} =</span>
-          <div className="rounded-lg border border-paper-line bg-paper-soft px-2 py-1">
-            {values.map((row, index) => (
-              <div key={index} className="grid grid-flow-col auto-cols-min justify-center gap-2 font-mono text-xs text-ink">
-                {row.map((value, column) => <span key={column}>{String(value)}</span>)}
-              </div>
-            ))}
-          </div>
-        </div>
+        <MatrixGridPreview key={name} name={name} values={values} />
       ))}
     </div>
   );
@@ -131,12 +152,19 @@ export function HistoryPanel({ onReuse }: HistoryPanelProps) {
                     ? <MatrixPreview input={entry.input} />
                     : <div className="mt-2 text-sm font-medium text-ink"><MathOrText value={entry.input} className="text-sm font-medium text-ink" /></div>}
 
-                  {entry.resultSummary && (
-                    <div className="mt-2 flex items-baseline gap-2">
-                      <span className="text-[10px] font-semibold uppercase tracking-wide text-muted">Resultado</span>
-                      <MathOrText value={entry.resultSummary} className="text-sm font-medium text-marker-text" />
-                    </div>
-                  )}
+                  {entry.resultSummary && (() => {
+                    const matrixResult = isMatrix ? parseMatrixResult(entry.resultSummary) : null;
+                    return matrixResult ? (
+                      <div className="mt-3">
+                        <MatrixGridPreview name="Resultado" values={matrixResult} />
+                      </div>
+                    ) : (
+                      <div className="mt-2 flex items-baseline gap-2">
+                        <span className="text-[10px] font-semibold uppercase tracking-wide text-muted">Resultado</span>
+                        <MathOrText value={entry.resultSummary} className="text-sm font-medium text-marker-text" />
+                      </div>
+                    );
+                  })()}
                 </div>
 
                 <div className="flex shrink-0 flex-col items-end gap-2">
