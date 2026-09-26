@@ -1,10 +1,11 @@
-export type ResultFormatId = "exact" | "dec" | "frac" | "scn" | "dms";
+export type ResultFormatId = "exact" | "dec" | "frac" | "scn" | "dd" | "dms";
 
 const LABELS: Record<ResultFormatId, string> = {
   exact: "Exacto",
   dec: "Decimal",
   frac: "Fracción",
   scn: "Científica",
+  dd: "DD",
   dms: "DMS",
 };
 
