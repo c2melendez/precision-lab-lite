@@ -117,3 +117,25 @@ No iniciar Bloque 5 hasta:
 
 Siguiente bloque después del checkpoint:
 **Bloque 5 — teclado global: shell, apertura/cierre y responsive.**
+
+## Resultado del checkpoint — 2026-09-26
+
+Estado: **PASS — sin GAPs bloqueantes detectados en B1–B4**.
+
+Clasificación consolidada:
+- B1 Shell / Sidebar / Identidad — **PARIDAD**.
+- B2 Configuración / Apariencia / Layout — **PARIDAD**.
+- B3 Historial — **PARIDAD**, con la diferencia conocida de cobertura incompleta de Geometría/Unidades documentada como limitación vigente, no divergencia entre motores.
+- B4 Resultado + formatos — **PARIDAD** en presentación común y política DD/DMS; diferencias de Plus (Pasos, Resumen, warnings, Copiar) y Lite (fallback numérico local) se mantienen como **DIFERENCIAS INTENCIONALES**.
+
+Evidencia de revisión:
+- shell 240/72 px, auto-colapso <1200 y H1 accesible equivalente;
+- modal de Configuración y modal de Historial con Escape/restauración de foco equivalentes;
+- stores de reutilización de Historial equivalentes;
+- política `getAvailableResultFormats` idéntica: si hay magnitud angular en grados, expone solo `DD` y `DMS`;
+- conversión DD↔DMS e identificación de inversas trigonométricas idénticas en ambos proyectos.
+
+Decisión:
+- checkpoint B1–B4 **CERRADO**;
+- Bloque 5 **DESBLOQUEADO**;
+- no se requirió modificar rutas matemáticas protegidas durante el checkpoint.
