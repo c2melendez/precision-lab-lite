@@ -40,8 +40,11 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
   const dmsDegrees = explicitDegreeInput ?? inverseDegrees;
   const dmsValue = dmsDegrees === null ? null : decimalDegreesToDms(dmsDegrees);
 
-  function withAngleUnit(value: { latex: string; isPlainNumber: boolean }): { latex: string; isPlainNumber: boolean } {
-    if (!inverseAngleResult || format === "dms") return value;
+  function withAngleUnit(
+    value: { latex: string; isPlainNumber: boolean },
+    selectedFormat: AnswerFormat,
+  ): { latex: string; isPlainNumber: boolean } {
+    if (!inverseAngleResult || selectedFormat === "dms") return value;
     return value.isPlainNumber
       ? { latex: `${value.latex}°`, isPlainNumber: true }
       : { latex: `{${value.latex}}^{\\circ}`, isPlainNumber: false };
@@ -60,14 +63,14 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
     );
   }
 
-  function renderValue(): { latex: string; isPlainNumber: boolean } {
-    if (format === "dms" && dmsValue) return { latex: dmsValue.latex, isPlainNumber: false };
-    if (format === "frac" && result?.fraction) {
+  function renderValue(selectedFormat: AnswerFormat): { latex: string; isPlainNumber: boolean } {
+    if (selectedFormat === "dms" && dmsValue) return { latex: dmsValue.latex, isPlainNumber: false };
+    if (selectedFormat === "frac" && result?.fraction) {
       const hasMixed = result.fraction.mixedLatex !== null;
       const latex = hasMixed && showMixed ? result.fraction.mixedLatex! : result.fraction.improperLatex;
-      return withAngleUnit({ latex, isPlainNumber: false });
+      return withAngleUnit({ latex, isPlainNumber: false }, selectedFormat);
     }
-    if (format === "scn") {
+    if (selectedFormat === "scn") {
       // fraction.decimal y decimalApprox pueden traer "…" al final cuando
       // el motor truncó un decimal periódico (fractions.ts / Fase E en
       // algebriteClient.ts) — Number() necesita el string limpio.
@@ -80,15 +83,16 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
         Number.isFinite(n)
           ? { latex: n.toExponential(6), isPlainNumber: true }
           : { latex: result?.resultLatex ?? "", isPlainNumber: false },
+        selectedFormat,
       );
     }
-    if (format === "dec") {
+    if (selectedFormat === "dec") {
       // Orden de fallback: fracción exacta -> decimal, luego float()
       // forzado sobre un resultado simbólico (Fase E), y solo si ninguno
       // de los dos existe, el resultado tal cual (mejor que nada).
-      if (result?.fraction) return withAngleUnit({ latex: result.fraction.decimal, isPlainNumber: true });
-      if (result?.decimalApprox) return withAngleUnit({ latex: result.decimalApprox, isPlainNumber: true });
-      return withAngleUnit({ latex: result?.resultLatex ?? "", isPlainNumber: false });
+      if (result?.fraction) return withAngleUnit({ latex: result.fraction.decimal, isPlainNumber: true }, selectedFormat);
+      if (result?.decimalApprox) return withAngleUnit({ latex: result.decimalApprox, isPlainNumber: true }, selectedFormat);
+      return withAngleUnit({ latex: result?.resultLatex ?? "", isPlainNumber: false }, selectedFormat);
     }
     // "exact": resultado simbólico/radical exacto tal cual lo devolvió el motor.
     return withAngleUnit({ latex: result?.resultLatex ?? "", isPlainNumber: false });
@@ -106,19 +110,7 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
   ];
 
   const activeFormat = availableFormats.includes(format) ? format : "exact";
-  if (activeFormat !== format) {
-    // Evita dejar seleccionado un formato que dejó de ser aplicable al cambiar de resultado.
-    queueMicrotask(() => setFormat(activeFormat));
-  }
-
-  const originalFormat = format;
-  if (activeFormat !== originalFormat) {
-    // renderValue depende del estado; para este render usamos Exacto como fallback visual.
-  }
-
-  const { latex, isPlainNumber } = activeFormat === format
-    ? renderValue()
-    : withAngleUnit({ latex: result?.resultLatex ?? "", isPlainNumber: false });
+  const { latex, isPlainNumber } = renderValue(activeFormat);
 
   return (
     <div className="space-y-3 pt-1" role="status" aria-live="polite" aria-atomic="true">
