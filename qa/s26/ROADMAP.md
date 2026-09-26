@@ -170,3 +170,40 @@ Orden operativo vigente de S26.3R:
 17. Preparación de S26.4.
 
 Regla: cada bloque cierra con diff acotado, gates aplicables, revisión contractual y actualización del log.
+
+
+## Estado S26.3R — 2026-09-26
+
+1. Shell + sidebar — **PASS DEFINITIVO**.
+2. Configuración + Apariencia + layouts — **PASS DEFINITIVO**.
+3. Historial — **PASS DEFINITIVO**.
+4. Resultado + formatos — **PASS DEFINITIVO**.
+5. Teclado global shell/open-close/responsive — **BLOQUEADO TEMPORALMENTE**.
+6. Paridad de seis categorías del teclado — pendiente.
+7. Científica — pendiente.
+8. Matrices — pendiente.
+9. Estadística — pendiente.
+10. Unidades — pendiente.
+11. Gráficas 2D — pendiente.
+12. Gráficas 3D — pendiente.
+13. Geometría — pendiente.
+14. Armonización responsive transversal — pendiente.
+15. Preview S26.3.5 — pendiente.
+16. Correcciones Preview — pendiente.
+17. Preparación S26.4 — pendiente.
+
+### Checkpoint obligatorio antes del Bloque 5
+
+**Checkpoint de Paridad S26.3R — Bloques 1–4**
+
+Documento:
+- `qa/s26/PARITY_CHECKPOINT_B1_B4.md`
+
+Regla:
+**NO iniciar Bloque 5 hasta cerrar el checkpoint, corregir GAPs y recertificar si hubo cambios.**
+
+HEAD de código certificado:
+- Lite: `c878da8183cdab6ca791afcacee6841199a5c067`
+- Plus: `40fcf3b3aa2d83fa58943fec603198dd0bb291bb`
+
+Los commits posteriores de documentación no sustituyen esos HEAD de certificación funcional.
