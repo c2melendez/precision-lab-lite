@@ -3,6 +3,7 @@ import { StaticMath } from "./StaticMath";
 import type { MathResult } from "../types";
 import { decimalDegreesToDms, isInverseTrigAngleExpression, parseDecimalDegreesInput } from "./dmsDisplay";
 import { ResultFormatSelector, type ResultFormatId } from "./ResultFormatSelector";
+import { getAvailableResultFormats } from "./resultFormatPolicy";
 
 // spec v10 §11: el usuario alterna entre formatos sin recalcular.
 //
@@ -102,12 +103,12 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
     result?.fraction?.decimal ?? result?.decimalApprox ?? result?.resultLatex ?? ""
   ).replace(/…/g, "").trim();
   const hasNumericValue = Number.isFinite(Number(numericSource));
-  const availableFormats: AnswerFormat[] = [
-    "exact",
-    ...(hasNumericValue ? ["dec" as const, "scn" as const] : []),
-    ...(result.fraction ? ["frac" as const] : []),
-    ...(dmsValue ? ["dms" as const] : []),
-  ];
+  const availableFormats = getAvailableResultFormats({
+    hasExact: Boolean(result.resultLatex),
+    hasDecimal: hasNumericValue,
+    hasFraction: Boolean(result.fraction),
+    hasDms: Boolean(dmsValue),
+  }) as AnswerFormat[];
 
   const activeFormat = availableFormats.includes(format) ? format : "exact";
   const { latex, isPlainNumber } = renderValue(activeFormat);
