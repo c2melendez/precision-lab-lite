@@ -178,7 +178,7 @@ Regla: cada bloque cierra con diff acotado, gates aplicables, revisión contract
 2. Configuración + Apariencia + layouts — **PASS DEFINITIVO**.
 3. Historial — **PASS DEFINITIVO**.
 4. Resultado + formatos — **PASS DEFINITIVO**.
-5. Teclado global shell/open-close/responsive — **EN CURSO**.
+5. Teclado global shell/open-close/responsive — **PASS DEFINITIVO**.
 6. Paridad de seis categorías del teclado — pendiente.
 7. Científica — pendiente.
 8. Matrices — pendiente.
@@ -220,3 +220,11 @@ Resultado: **PASS, sin GAPs bloqueantes detectados**.
 - Diferencias Plus/Lite ya documentadas se mantienen como intencionales.
 
 Bloque 5 queda **desbloqueado y EN CURSO**. Su alcance es únicamente shell global, apertura/cierre y responsive. La paridad tecla por tecla de las seis categorías permanece reservada para B6.
+
+
+### B6 — autoridad visual congelada
+
+- Autoridad visual conjunta: `VISUAL_CONTRACT_FINAL_S26_2R.md` + `Mockups definitivos de Precision Lab.png`.
+- Autoridad funcional/semántica: `KEYBOARD_CONTRACT.md`.
+- La implementación actual no es autoridad visual.
+- B6 debe cerrar con matriz tecla por tecla Lite↔Plus, gates automáticos y revisión humana de Preview.
