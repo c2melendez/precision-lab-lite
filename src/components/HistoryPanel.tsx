@@ -112,7 +112,7 @@ export function HistoryPanel({ onReuse }: HistoryPanelProps) {
   }, []);
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-4">
+    <div className="flex w-full flex-col gap-4">
       <div className="flex items-center justify-end">
         <button
           onClick={async () => {
@@ -121,7 +121,7 @@ export function HistoryPanel({ onReuse }: HistoryPanelProps) {
           }}
           className="rounded-lg border border-paper-line bg-paper px-3 py-2 text-xs font-medium text-ink hover:bg-paper-line/40"
         >
-          Borrar todo
+          Borrar historial
         </button>
       </div>
 
