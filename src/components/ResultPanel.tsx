@@ -45,7 +45,7 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
     value: { latex: string; isPlainNumber: boolean },
     selectedFormat: AnswerFormat,
   ): { latex: string; isPlainNumber: boolean } {
-    if (!inverseAngleResult || selectedFormat === "dms") return value;
+    if (!inverseAngleResult || selectedFormat === "dms" || selectedFormat === "dd") return value;
     return value.isPlainNumber
       ? { latex: `${value.latex}°`, isPlainNumber: true }
       : { latex: `{${value.latex}}^{\\circ}`, isPlainNumber: false };
@@ -65,6 +65,10 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
   }
 
   function renderValue(selectedFormat: AnswerFormat): { latex: string; isPlainNumber: boolean } {
+    if (selectedFormat === "dd" && dmsDegrees !== null) {
+      const cleanDegrees = Math.round((dmsDegrees + Number.EPSILON) * 1e12) / 1e12;
+      return { latex: `${cleanDegrees}°`, isPlainNumber: true };
+    }
     if (selectedFormat === "dms" && dmsValue) return { latex: dmsValue.latex, isPlainNumber: false };
     if (selectedFormat === "frac" && result?.fraction) {
       const hasMixed = result.fraction.mixedLatex !== null;
