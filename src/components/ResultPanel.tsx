@@ -23,7 +23,7 @@ import { getAvailableResultFormats } from "./resultFormatPolicy";
 type AnswerFormat = ResultFormatId;
 
 export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { result: MathResult | null; inputLatex?: string; angleMode?: "RAD" | "GRAD" }) {
-  const [format, setFormat] = useState<AnswerFormat>("exact");
+  const [format, setFormat] = useState<AnswerFormat>("dec");
   // Antes: "frac" siempre mostraba mixta cuando estaba disponible
   // (mixedLatex ?? improperLatex), sin forma de pedir la impropia. El
   // usuario pidió explícitamente poder elegir — ahora hay un toggle
