@@ -2,6 +2,7 @@ import { useState } from "react";
 import { StaticMath } from "./StaticMath";
 import type { MathResult } from "../types";
 import { decimalDegreesToDms, isInverseTrigAngleExpression, parseDecimalDegreesInput } from "./dmsDisplay";
+import { ResultFormatSelector, type ResultFormatId } from "./ResultFormatSelector";
 
 // spec v10 §11: el usuario alterna entre formatos sin recalcular.
 //
@@ -18,10 +19,10 @@ import { decimalDegreesToDms, isInverseTrigAngleExpression, parseDecimalDegreesI
 // Screen.tsx, que es quien da el contenedor "pantalla" único (spec UX
 // estilo ClassCalc, decisión del mockup).
 
-type AnswerFormat = "dec" | "frac" | "scn" | "sqrt" | "dms";
+type AnswerFormat = ResultFormatId;
 
 export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { result: MathResult | null; inputLatex?: string; angleMode?: "RAD" | "GRAD" }) {
-  const [format, setFormat] = useState<AnswerFormat>("dec");
+  const [format, setFormat] = useState<AnswerFormat>("exact");
   // Antes: "frac" siempre mostraba mixta cuando estaba disponible
   // (mixedLatex ?? improperLatex), sin forma de pedir la impropia. El
   // usuario pidió explícitamente poder elegir — ahora hay un toggle
@@ -89,12 +90,35 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
       if (result?.decimalApprox) return withAngleUnit({ latex: result.decimalApprox, isPlainNumber: true });
       return withAngleUnit({ latex: result?.resultLatex ?? "", isPlainNumber: false });
     }
-    // "sqrt", o "frac" sin datos de fracción disponibles: se muestra el
-    // resultado tal cual lo devolvió el motor (ya es LaTeX real).
+    // "exact": resultado simbólico/radical exacto tal cual lo devolvió el motor.
     return withAngleUnit({ latex: result?.resultLatex ?? "", isPlainNumber: false });
   }
 
-  const { latex, isPlainNumber } = renderValue();
+  const numericSource = (
+    result?.fraction?.decimal ?? result?.decimalApprox ?? result?.resultLatex ?? ""
+  ).replace(/…/g, "").trim();
+  const hasNumericValue = Number.isFinite(Number(numericSource));
+  const availableFormats: AnswerFormat[] = [
+    "exact",
+    ...(hasNumericValue ? ["dec" as const, "scn" as const] : []),
+    ...(result.fraction ? ["frac" as const] : []),
+    ...(dmsValue ? ["dms" as const] : []),
+  ];
+
+  const activeFormat = availableFormats.includes(format) ? format : "exact";
+  if (activeFormat !== format) {
+    // Evita dejar seleccionado un formato que dejó de ser aplicable al cambiar de resultado.
+    queueMicrotask(() => setFormat(activeFormat));
+  }
+
+  const originalFormat = format;
+  if (activeFormat !== originalFormat) {
+    // renderValue depende del estado; para este render usamos Exacto como fallback visual.
+  }
+
+  const { latex, isPlainNumber } = activeFormat === format
+    ? renderValue()
+    : withAngleUnit({ latex: result?.resultLatex ?? "", isPlainNumber: false });
 
   return (
     <div className="space-y-3 pt-1" role="status" aria-live="polite" aria-atomic="true">
@@ -123,24 +147,13 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex flex-wrap gap-1.5 text-xs" aria-label="Formato del resultado">
-          {(["dec", "frac", "scn", "sqrt", ...(dmsValue ? ["dms" as const] : [])] as AnswerFormat[]).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFormat(f)}
-              aria-pressed={format === f}
-              className={
-                format === f
-                  ? "min-h-8 rounded-full border border-marker bg-marker-soft px-3 font-semibold text-marker-text"
-                  : "min-h-8 rounded-full border border-paper-line bg-paper px-3 text-muted hover:border-marker/50 hover:text-ink"
-              }
-            >
-              {f}
-            </button>
-          ))}
-        </div>
+        <ResultFormatSelector
+          formats={availableFormats}
+          value={activeFormat}
+          onChange={setFormat}
+        />
 
-        {format === "frac" && result.fraction?.mixedLatex !== null && result.fraction && (
+        {activeFormat === "frac" && result.fraction?.mixedLatex !== null && result.fraction && (
           <button
             onClick={() => setShowMixed((v) => !v)}
             className="min-h-8 rounded-full px-2 text-xs text-muted underline decoration-dotted hover:text-marker"
