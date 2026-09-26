@@ -87,7 +87,7 @@ test("M34: tema automático y movimiento siguen al sistema hasta override manual
 
   const settings = page.getByRole("button", { name: "Ajustes", exact: true });
   await settings.click();
-  const menu = page.getByRole("menu");
+  const menu = page.getByRole("dialog", { name: "Configuración" });
   await expect(menu).toBeVisible();
 
   // Con reducción del sistema activa, el toggle arranca activado.
