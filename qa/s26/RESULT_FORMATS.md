@@ -79,3 +79,31 @@ Ejemplos contractuales:
 - DEG: `asec(2) = 60°`, `acsc(2) = 30°`, `acot(1) = 45°`.
 
 Este cambio amplía explícitamente el contrato matemático anterior y por ello autoriza cambios acotados en las rutas protegidas, siempre acompañados de regresiones automáticas.
+
+
+## S26.3R — Regla angular DD/DMS exclusiva
+
+Cuando el resultado represente una magnitud angular en grados, el selector deja de tratarlo como un número genérico.
+
+Debe ofrecer exclusivamente:
+- **DD** (`dd`): grados decimales con `°`;
+- **DMS** (`dms`): `°`, `′`, `″`.
+
+No deben mostrarse en ese contexto:
+- Exacto;
+- Decimal;
+- Fracción;
+- Científica.
+
+Ejemplos:
+- `56.55° → DD: 56.55°`
+- `56.55° → DMS: 56° 33′ 0.0″`
+- DEG: `asin(0.5) → DD: 30°`
+- DEG: `asin(0.5) → DMS: 30° 0′ 0.0″`
+
+En RAD esta regla no se activa.
+
+Paridad obligatoria:
+- Lite y Plus exponen el mismo conjunto DD/DMS;
+- ambos usan la misma simbología;
+- representaciones internas/radianes convertidos/fallbacks no compiten visualmente con DD/DMS.
