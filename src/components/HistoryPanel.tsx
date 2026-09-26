@@ -6,7 +6,11 @@ import { getAllHistoryEntries, clearHistory, type HistoryEntry } from "../store/
 // la Fase 1 (mismo bug ya corregido antes en ResultPanel.tsx y
 // MatrixGridInput.tsx, pero este archivo había quedado sin actualizar).
 
-export function HistoryPanel() {
+interface HistoryPanelProps {
+  onReuse: (entry: HistoryEntry) => void;
+}
+
+export function HistoryPanel({ onReuse }: HistoryPanelProps) {
   const [entries, setEntries] = useState<HistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -61,9 +65,19 @@ export function HistoryPanel() {
                 <p className="mt-1 break-words text-sm font-medium text-ink">{entry.input}</p>
                 <p className="mt-1 break-words text-sm text-marker">{entry.resultSummary}</p>
               </div>
-              <time className="shrink-0 text-[10px] text-muted" dateTime={new Date(entry.timestamp).toISOString()}>
-                {new Date(entry.timestamp).toLocaleString()}
-              </time>
+              <div className="flex shrink-0 flex-col items-end gap-2">
+                <time className="text-[10px] text-muted" dateTime={new Date(entry.timestamp).toISOString()}>
+                  {new Date(entry.timestamp).toLocaleString()}
+                </time>
+                <button
+                  type="button"
+                  onClick={() => onReuse(entry)}
+                  aria-label={`Reusar entrada: ${entry.input}`}
+                  className="rounded-lg border border-paper-line bg-paper-soft px-3 py-1.5 text-xs font-medium text-ink hover:bg-paper-line/40"
+                >
+                  Reusar
+                </button>
+              </div>
             </div>
           </li>
         ))}
