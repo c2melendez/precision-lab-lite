@@ -372,6 +372,7 @@ export function StatisticsMode() {
   const [xChips, setXChips] = useState<string[]>([]);
   const [yChips, setYChips] = useState<string[]>([]);
   const [correlationResult, setCorrelationResult] = useState<MathResult | null>(null);
+  const pendingHistoryReuse = usePendingHistoryReuseStore((s) => s.pending);
   const takePendingHistoryReuse = usePendingHistoryReuseStore((s) => s.takePending);
 
   useEffect(() => {
@@ -409,7 +410,7 @@ export function StatisticsMode() {
       }
       setCombinatoricsResult(null);
     }
-  }, [takePendingHistoryReuse]);
+  }, [pendingHistoryReuse, takePendingHistoryReuse]);
 
   function runCorrelation(query: "correlation" | "slope" | "intercept") {
     let x: number[];
