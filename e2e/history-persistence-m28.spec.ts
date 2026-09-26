@@ -111,3 +111,51 @@ test("M28: historial distingue módulos de origen en una misma ventana", async (
   await expect(panel.getByText("Álgebra", { exact: true })).toBeVisible();
   await expect(panel.getByText("Matrices (determinante)", { exact: true })).toBeVisible();
 });
+
+
+test("M28: Reusar vuelve al módulo de origen y muestra matriz, fecha y hora", async ({ page }) => {
+  await page.goto("./");
+
+  await page.evaluate(async () => {
+    const request = indexedDB.open("calculadora-historial", 1);
+    const db = await new Promise<IDBDatabase>((resolve, reject) => {
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+      request.onupgradeneeded = () => {
+        const db = request.result;
+        const store = db.createObjectStore("history", { keyPath: "id" });
+        store.createIndex("by-timestamp", "timestamp");
+      };
+    });
+
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction("history", "readwrite");
+      tx.objectStore("history").put({
+        id: "reuse-matrix",
+        module: "Matrices",
+        mode: "Matrices (A × B)",
+        input: JSON.stringify({ A: [[1, 2], [3, 4]], B: [[5, 6], [7, 8]] }),
+        resultSummary: "\\begin{bmatrix}19&22\\\\43&50\\end{bmatrix}",
+        timestamp: new Date(2026, 8, 25, 20, 16, 21).getTime(),
+      });
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+      tx.onabort = () => reject(tx.error);
+    });
+
+    db.close();
+  });
+
+  await page.reload();
+  await page.getByRole("button", { name: "Historial", exact: true }).click();
+  const panel = page.locator("#history-panel");
+  await expect(panel).toBeVisible();
+  await expect(panel.getByText("A =", { exact: true })).toBeVisible();
+  await expect(panel.getByText("B =", { exact: true })).toBeVisible();
+  await expect(panel.locator("time")).toContainText(/\d{2}\/\d{2}\/\d{4}/);
+  await expect(panel.locator("time")).toContainText(/\d{2}:\d{2}/);
+
+  await panel.getByRole("button", { name: /Reusar entrada/ }).click();
+  await expect(panel).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Matrices", exact: true }).first()).toBeVisible();
+});
