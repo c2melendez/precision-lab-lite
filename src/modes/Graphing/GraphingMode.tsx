@@ -105,6 +105,7 @@ export function GraphingMode() {
   // aparece en la propia ficha de la expresión, por el canal normal.
   const pendingGraphExpression = usePendingGraphStore((s) => s.pendingExpression);
   const clearPendingGraphExpression = usePendingGraphStore((s) => s.clearPendingExpression);
+  const pendingHistoryReuse = usePendingHistoryReuseStore((s) => s.pending);
   const takePendingHistoryReuse = usePendingHistoryReuseStore((s) => s.takePending);
   useEffect(() => {
     const historyEntry = takePendingHistoryReuse();
@@ -114,7 +115,7 @@ export function GraphingMode() {
     setKind(yLatex ? "parametric" : "cartesian");
     setEntries((current) => [next, ...current.slice(1)]);
     setSelectedId(next.id);
-  }, [takePendingHistoryReuse]);
+  }, [pendingHistoryReuse, takePendingHistoryReuse]);
 
   useEffect(() => {
     if (pendingGraphExpression === null) return;
