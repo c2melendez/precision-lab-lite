@@ -113,17 +113,20 @@ export function HistoryPanel({ onReuse }: HistoryPanelProps) {
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <div className="flex items-center justify-end">
-        <button
-          onClick={async () => {
-            await clearHistory();
-            load();
-          }}
-          className="rounded-lg border border-paper-line bg-paper px-3 py-2 text-xs font-medium text-ink hover:bg-paper-line/40"
-        >
-          Borrar historial
-        </button>
-      </div>
+      {!loading && entries.length > 0 && (
+        <div className="flex items-center justify-end">
+          <button
+            onClick={async () => {
+              await clearHistory();
+              load();
+            }}
+            aria-label="Borrar historial"
+            className="rounded-lg border border-paper-line bg-paper px-3 py-2 text-xs font-medium text-ink hover:bg-paper-line/40"
+          >
+            Borrar historial
+          </button>
+        </div>
+      )}
 
       {loading && <div className="rounded-xl border border-paper-line bg-paper p-4 text-sm text-muted">Cargando…</div>}
       {!loading && entries.length === 0 && (
