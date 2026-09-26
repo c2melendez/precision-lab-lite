@@ -5,7 +5,7 @@
 // simbólicas que necesiten Algebrite) — se arma un `MathResult` a mano
 // para reutilizar ResultPanel.tsx sin tocarlo.
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DataListInput, parseDataList } from "../../components/DataListInput";
 import { ResultPanel } from "../../components/ResultPanel";
 import {
@@ -47,6 +47,7 @@ import {
 } from "../../engine/distributions";
 import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { addHistoryEntry } from "../../store/historyDb";
+import { usePendingHistoryReuseStore } from "../../store/usePendingHistoryReuseStore";
 
 type SubMode = "descriptive" | "combinatorics" | "distribution" | "correlation";
 type VarianceKind = "population" | "sample";
@@ -371,6 +372,44 @@ export function StatisticsMode() {
   const [xChips, setXChips] = useState<string[]>([]);
   const [yChips, setYChips] = useState<string[]>([]);
   const [correlationResult, setCorrelationResult] = useState<MathResult | null>(null);
+  const takePendingHistoryReuse = usePendingHistoryReuseStore((s) => s.takePending);
+
+  useEffect(() => {
+    const entry = takePendingHistoryReuse();
+    if (!entry) return;
+    const mode = entry.mode.toLowerCase();
+
+    if (mode.includes("descriptiva")) {
+      setSubMode("descriptive");
+      setDataChips(entry.input.split(",").map((value) => value.trim()).filter(Boolean));
+      setDescriptiveResult(null);
+      return;
+    }
+
+    if (mode.includes("correlación")) {
+      setSubMode("correlation");
+      const match = entry.input.match(/^X:(.*?)\s+Y:(.*)$/i);
+      if (match) {
+        setXChips(match[1].split(",").map((value) => value.trim()).filter(Boolean));
+        setYChips(match[2].split(",").map((value) => value.trim()).filter(Boolean));
+      }
+      setCorrelationResult(null);
+      return;
+    }
+
+    if (mode.includes("combinatoria")) {
+      setSubMode("combinatorics");
+      const factorial = entry.input.match(/^(\d+)!$/);
+      const pair = entry.input.match(/^nC[rR]\((\d+),(\d+)\)$|^nP[rR]\((\d+),(\d+)\)$/);
+      if (factorial) {
+        setNStr(factorial[1]);
+      } else if (pair) {
+        setNStr(pair[1] ?? pair[3]);
+        setRStr(pair[2] ?? pair[4]);
+      }
+      setCombinatoricsResult(null);
+    }
+  }, [takePendingHistoryReuse]);
 
   function runCorrelation(query: "correlation" | "slope" | "intercept") {
     let x: number[];
