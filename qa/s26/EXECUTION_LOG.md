@@ -450,3 +450,11 @@ Ejecutar `PARITY_CHECKPOINT_B1_B4.md`, corregir GAPs y recertificar si se modifi
 - Bloque 5 quedó **DESBLOQUEADO / EN CURSO**.
 - Alcance B5: shell global del teclado, apertura/cierre y responsive. La paridad de las seis categorías se reserva para B6.
 - Lite ya dispone de cobertura equivalente/reforzada en `e2e/keyboard-v5-responsive.spec.ts` y `e2e/keyboard-layouts.spec.ts`.
+
+
+## 2026-09-26 — Inicio B6 con autoridad visual aprobada
+
+- Decisión explícita: usar `Mockups definitivos de Precision Lab.png` junto con `VISUAL_CONTRACT_FINAL_S26_2R.md` como autoridad visual.
+- `KEYBOARD_CONTRACT.md` queda como autoridad funcional/semántica.
+- Se elimina como requisito previo regenerar el mockup: la captura aprobada ya existe.
+- Próximo trabajo: reconciliación categoría por categoría y tecla por tecla Lite↔Plus.
