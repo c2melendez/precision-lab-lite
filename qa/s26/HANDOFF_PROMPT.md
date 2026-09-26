@@ -1,25 +1,86 @@
-# S26 — Prompt de continuidad para otra sesión
+# S26 — Prompt de continuidad actualizado
 
-Continúa el módulo S26 de Precision Lab para el proyecto **Precision Lab Lite**.
+Proyecto: **Precision Lab Lite**  
+Branch: `qa/s26-execution`  
+HEAD de código certificado al cierre del Bloque 4: `c878da8183cdab6ca791afcacee6841199a5c067`
 
-Antes de hacer cambios:
-1. lee `qa/s26/ROADMAP.md`;
-2. lee `qa/s26/VISUAL_MATRIX.md`;
-3. lee `qa/s26/MATHEMATICAL_INTEGRITY_POLICY.md`;
-4. lee `qa/s26/EXECUTION_LOG_TEMPLATE.md` o el log S26 más reciente;
-5. consulta GitHub y verifica branch, PR, SHA y gates actuales;
-6. identifica el último submódulo S26 cerrado y continúa desde allí.
+## INSTRUCCIÓN DE ARRANQUE
 
-Reglas obligatorias:
-- no reducir S26 a la pantalla científica;
-- cubrir gráfica, matrices, estadística, conversión, historial, configuración y teclado;
-- cubrir Desktop 1440, laptop, tablet y móvil;
-- no tocar rutas matemáticas protegidas salvo defecto reproducible;
-- toda modificación visual con impacto funcional debe tener test funcional asociado;
-- una captura visual no sustituye una prueba funcional;
-- antes de cerrar S26 ejecutar recertificación matemática completa;
-- mantener un log de decisiones, archivos modificados, defectos, tests y SHAs.
+**No empieces implementando el Bloque 5.**
 
-Baseline previo a S26: `e175f3d98e8b2eeea130faa5287e5927666befb6`.
+Primero ejecuta el **Checkpoint de Paridad S26.3R — Bloques 1–4**.
 
-Si la conversación anterior no está disponible, estos archivos son la fuente de continuidad y deben prevalecer sobre suposiciones.
+Lee:
+1. `qa/s26/PARITY_CHECKPOINT_B1_B4.md`
+2. `qa/s26/RESULT_FORMATS.md`
+3. `qa/s26/ROADMAP.md`
+4. final de `qa/s26/EXECUTION_LOG.md`
+5. `qa/s26/DESIGN_TARGET.md`
+6. `qa/s26/KEYBOARD_CONTRACT.md`
+7. `qa/s26/MATHEMATICAL_INTEGRITY_POLICY.md`
+
+## Estado
+
+S26.2R: aprobado/congelado.
+
+S26.3R:
+- B1 Shell/Sidebar: PASS DEFINITIVO.
+- B2 Configuración: PASS DEFINITIVO.
+- B3 Historial: PASS DEFINITIVO.
+- B4 Resultados/Formatos: PASS DEFINITIVO.
+- B5 Teclado shell/open-close/responsive: pendiente y bloqueado hasta cerrar paridad B1–B4.
+
+## Checkpoint
+
+Auditar Lite vs Plus:
+- B1 shell/sidebar/branding/responsive;
+- B2 configuración/tema/layouts/persistencia;
+- B3 historial/Reusar/routing/autofill/matrices/fecha-hora;
+- B4 resultados/formatos/estructurados/angular.
+
+Clasificación:
+- PARIDAD;
+- DIFERENCIA INTENCIONAL;
+- GAP.
+
+Corrige todos los GAPs antes de B5 y recertifica si tocas código.
+
+## Regla angular definitiva
+
+Salida angular en grados:
+- solo DD y DMS;
+- DD = grados decimales con `°`;
+- DMS = `°`, `′`, `″`;
+- ocultar Exacto/Decimal/Fracción/Científica.
+
+RAD conserva formatos numéricos normales.
+
+## Diferencias intencionales conocidas
+
+Plus:
+- SymPy/backend;
+- Pasos;
+- Resumen;
+- warnings;
+- Copiar resultado / Copiar LaTeX;
+- resultados estructurados API.
+
+Lite:
+- cálculo local;
+- aviso de fallback numérico.
+
+No elimines capacidades reales para forzar paridad.
+
+## Documentación obligatoria
+
+Tras cualquier corrección:
+- actualizar `EXECUTION_LOG.md`;
+- actualizar `ROADMAP.md`;
+- actualizar `PARITY_CHECKPOINT_B1_B4.md`;
+- registrar HEAD certificado;
+- distinguir commits documentales de HEAD de código certificado.
+
+## Después del checkpoint
+
+Bloque 5:
+**Teclado global — shell, apertura/cierre y responsive.**

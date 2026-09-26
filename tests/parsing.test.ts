@@ -269,9 +269,12 @@ describe("suite de regresión v1.1: conversión a grados no confunde subcadenas"
     expect(parseExpression("sin(90)", "GRAD").algebrite).toBe("sin((90)*pi/180)");
   });
 
-  it("arcsin(1)/asin(1) en modo grados NO se tocan (bug real: \"sin(\" matcheaba a mitad de \"arcsin(\"/\"asin(\", dando arcsin((1)*pi/180)≈0.017 en vez de dejarlo intacto)", () => {
-    expect(parseExpression("arcsin(1)", "GRAD").algebrite).toBe("arcsin(1)");
-    expect(parseExpression("asin(1)", "GRAD").algebrite).toBe("arcsin(1)");
+  it("arcsin(1)/asin(1) en modo grados convierten la SALIDA, nunca el argumento", () => {
+    for (const expression of ["arcsin(1)", "asin(1)"]) {
+      const parsed = parseExpression(expression, "GRAD").algebrite;
+      expect(parsed).toBe("((arcsin(1))*180/pi)");
+      expect(parsed).not.toContain("arcsin((1)*pi/180)");
+    }
   });
 
   it("sinh(1)/cosh(1)/tanh(1) en modo grados tampoco se tocan (mismo bug de subcadena)", () => {

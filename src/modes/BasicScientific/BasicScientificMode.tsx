@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useComputeWorker } from "../../hooks/useComputeWorker";
-import { MathKeyboard, isVariableOrConstantKey, type KeyDef } from "../../components/MathKeyboard";
+import { angleAwareTrigInsertLatex, MathKeyboard, isVariableOrConstantKey, type KeyDef } from "../../components/MathKeyboard";
 import { KeyboardBasicPanel } from "../../components/KeyboardBasicPanel";
 import { Screen } from "../../components/Screen";
 import { type SessionHistoryEntry } from "../../components/HistoryLog";
@@ -15,6 +15,7 @@ import { useRecentKeysStore } from "../../store/useRecentKeysStore";
 import { useLayoutModeStore } from "../../store/useLayoutModeStore";
 import { useArgandBridgeStore } from "../../store/useArgandBridgeStore";
 import { usePendingGraphStore } from "../../store/usePendingGraphStore";
+import { usePendingHistoryReuseStore } from "../../store/usePendingHistoryReuseStore";
 
 // Modo 1 de la spec v10 §5. Orquesta NaturalInput + MathKeyboard +
 // ResultPanel, delegando todo el cómputo al Web Worker (nunca al hilo
@@ -50,6 +51,21 @@ export function BasicScientificMode() {
   const [mathField, setMathField] = useState<MathFieldRef>(null);
   const [sessionHistory, setSessionHistory] = useState<SessionHistoryEntry[]>([]);
   const setPendingArgandPoint = useArgandBridgeStore((s) => s.setPendingArgandPoint);
+  const pendingHistoryReuse = usePendingHistoryReuseStore((s) => s.pending);
+  const takePendingHistoryReuse = usePendingHistoryReuseStore((s) => s.takePending);
+
+  useEffect(() => {
+    const entry = takePendingHistoryReuse();
+    if (!entry) return;
+    setLatex(entry.input);
+    setResult(null);
+    requestAnimationFrame(() => {
+      if (mathField) {
+        mathField.value = entry.input;
+        mathField.focus();
+      }
+    });
+  }, [pendingHistoryReuse, takePendingHistoryReuse]);
 
   const { getWorker } = useComputeWorker();
 
@@ -69,7 +85,7 @@ export function BasicScientificMode() {
   const onSuccess = useCallback((mode: string, inputDisplay: string, data: MathResult) => {
     setResult(data);
     if (data.success) {
-      addHistoryEntry({ mode, input: inputDisplay, resultSummary: data.resultLatex ?? "" });
+      addHistoryEntry({ module: "Científica", mode, input: inputDisplay, resultSummary: data.resultLatex ?? "" });
       setSessionHistory((prev) => [...prev, { id: data.requestId, input: inputDisplay, result: data }]);
     }
   }, []);
@@ -395,10 +411,10 @@ export function BasicScientificMode() {
     (k: KeyDef) => {
       if (!k.insertLatex) return;
       mathField?.focus();
-      mathField?.insert(k.insertLatex);
+      mathField?.insert(angleAwareTrigInsertLatex(k, angleMode === "GRAD"));
       recordRecentKey("basic", k, isVariableOrConstantKey(k) ? "variable" : "operation");
     },
-    [mathField, recordRecentKey],
+    [mathField, recordRecentKey, angleMode],
   );
 
   useEffect(() => {
@@ -439,12 +455,13 @@ export function BasicScientificMode() {
         onSolveSystem={handleSolveSystem}
         onSimplify={handleSimplify}
         onGraphComplex={handleGraphComplex}
+        angleMode={angleMode}
         hideCoreGrid
         registerInsertHandler={false}
       />,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mathField, handleCalculate, handleSolveEquation, handleSolveSystem, handleSimplify, handleGraphComplex]);
+  }, [mathField, handleCalculate, handleSolveEquation, handleSolveSystem, handleSimplify, handleGraphComplex, angleMode]);
 
   useEffect(() => {
     return () => clearKeyboardContent();

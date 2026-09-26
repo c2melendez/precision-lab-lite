@@ -80,7 +80,7 @@ export function SimpleKeyboard({ field, onBackspace, onEnter, onHistoryBack, onH
               onClick={() => press(cell)}
               className={
                 cell.action === "enter"
-                  ? "rounded-md bg-graph py-2.5 text-base font-semibold text-paper hover:bg-graph/90"
+                  ? "rounded-md bg-graph py-2.5 text-base font-semibold text-white hover:bg-graph/90"
                   : /^[0-9.]$/.test(String(cell.label))
                     ? "rounded-md bg-chrome-soft/80 py-2.5 text-base font-medium text-bone hover:bg-chrome-soft/60"
                     : "rounded-md bg-chrome-soft py-2.5 text-sm text-bone hover:bg-chrome-soft/70"

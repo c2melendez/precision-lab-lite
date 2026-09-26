@@ -76,7 +76,7 @@ import { RecentKeysBar } from "./RecentKeysBar";
  * por un frame.
  */
 
-export function KeyboardDock() {
+export function KeyboardDock({ sidebarExpanded }: { sidebarExpanded: boolean }) {
   const dockRef = useRef<HTMLDivElement>(null);
   const [dockHeight, setDockHeight] = useState(0);
   const [activeSection, setActiveSection] = useState<"basic" | "functions">("basic");
@@ -125,7 +125,7 @@ export function KeyboardDock() {
   return (
     <>
       {(content || basicContent) && (
-        <KeyboardPanel isOpen={isOpen} onClose={close} dockHeight={dockHeight}>
+        <KeyboardPanel isOpen={isOpen} onClose={close} dockHeight={dockHeight} sidebarExpanded={sidebarExpanded}>
           {directCategories && isValidElement<MathKeyboardProps>(content)
             ? <ScientificKeyboardSections basic={basicContent} advanced={content} />
             : <>
@@ -143,7 +143,7 @@ export function KeyboardDock() {
                 className={
                   activeSection === "basic"
                     ? "rounded-md bg-marker px-3 py-2 text-xs font-semibold text-chrome"
-                    : "rounded-md px-3 py-2 text-xs font-medium text-bone/70 hover:bg-chrome-soft hover:text-bone"
+                    : "rounded-md px-3 py-2 text-xs font-medium text-ink hover:bg-chrome-soft hover:text-ink"
                 }
               >
                 Básico
@@ -156,7 +156,7 @@ export function KeyboardDock() {
                 className={
                   activeSection === "functions"
                     ? "rounded-md bg-marker px-3 py-2 text-xs font-semibold text-chrome"
-                    : "rounded-md px-3 py-2 text-xs font-medium text-bone/70 hover:bg-chrome-soft hover:text-bone"
+                    : "rounded-md px-3 py-2 text-xs font-medium text-ink hover:bg-chrome-soft hover:text-ink"
                 }
               >
                 Funciones
@@ -169,7 +169,7 @@ export function KeyboardDock() {
         </KeyboardPanel>
       )}
 
-      <div ref={dockRef} data-testid="keyboard-dock" className="fixed inset-x-0 bottom-0 z-30 border-t border-chrome-soft bg-chrome px-3 pb-[env(safe-area-inset-bottom)] pt-2">
+      <div ref={dockRef} data-testid="keyboard-dock" className={`fixed bottom-0 right-0 z-30 border-t border-chrome-soft bg-chrome px-3 pb-[env(safe-area-inset-bottom)] pt-2 ${sidebarExpanded ? "left-60" : "left-[72px]"}`}>
         {/* Fase X, Módulo X0 — mismo criterio que precision-lab (main). */}
         <RecentKeysBar />
         {/* Fila compacta — móvil siempre, y cualquier breakpoint en Focus. */}
@@ -233,7 +233,7 @@ export function KeyboardDock() {
             aria-label={isOpen ? "Cerrar teclado" : "Abrir teclado"}
             className={
               canExpand
-                ? "flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium text-bone/70 hover:bg-chrome-soft hover:text-bone"
+                ? "flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium text-ink hover:bg-chrome-soft hover:text-ink"
                 : "flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium text-bone/20"
             }
           >

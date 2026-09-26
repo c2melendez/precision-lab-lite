@@ -21,9 +21,12 @@ test("M35: la paleta seleccionada recolorea curvas existentes y nuevas", async (
   await expect(paths.nth(0)).toHaveAttribute("stroke", "#2563EB");
 
   await page.getByRole("button", { name: "Ajustes", exact: true }).click();
-  const menu = page.getByRole("menu");
+  const menu = page.getByRole("dialog", { name: "Configuración" });
   await expect(menu).toBeVisible();
+  await menu.getByRole("button", { name: "Gráficas", exact: true }).click();
   await menu.getByRole("button", { name: /Apta para daltonismo/i }).click();
+  await menu.getByRole("button", { name: "Cerrar configuración", exact: true }).click();
+  await expect(menu).toHaveCount(0);
 
   // Cambiar la preferencia debe afectar de inmediato las curvas ya
   // renderizadas, no solo las que se agreguen después.

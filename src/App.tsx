@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useArgandBridgeStore } from "./store/useArgandBridgeStore";
 import { usePendingGraphStore } from "./store/usePendingGraphStore";
 import { useActiveModeStore } from "./store/useActiveModeStore";
@@ -11,25 +11,21 @@ import { MatrixMode } from "./modes/Matrices/MatrixMode";
 import { GraphingMode } from "./modes/Graphing/GraphingMode";
 import { StatisticsMode } from "./modes/Statistics/StatisticsMode";
 import { UnitsMode } from "./modes/Units/UnitsMode";
+import { GeometryMode } from "./modes/Geometry/GeometryMode";
 import { HistoryPanel } from "./components/HistoryPanel";
+import type { HistoryEntry } from "./store/historyDb";
+import { usePendingHistoryReuseStore } from "./store/usePendingHistoryReuseStore";
 import { HistoryDrawer } from "./components/HistoryDrawer";
 import { AjustesPopover } from "./components/AjustesPopover";
 import { KeyboardDock } from "./components/KeyboardDock";
+import { GlobalKeyboardFallback } from "./components/GlobalKeyboardFallback";
+import { ProjectBrand } from "./components/ProjectBrand";
+import { ModeIcon, type ModeIconName } from "./components/ModeIcon";
 import { useLayoutModeStore } from "./store/useLayoutModeStore";
 import { useKeyboardPanelStore } from "./store/useKeyboardPanelStore";
 import { useMinWidthMediaQuery, FLOATING_MIN_WIDTH_PX } from "./hooks/useMinWidthMediaQuery";
 
-// Selector de modos por pestañas tipo "chasis" (Fase 1 — sistema de diseño
-// Precision Lab). Historial persistente (IndexedDB) como séptima pestaña,
-// más ajustes responsive (safe-area para notch/barra de gestos en móvil).
-//
-// Fase B (spec UX estilo ClassCalc): se agregó "simple" (modo Basic, 4
-// operaciones) como pestaña adicional — sin fusionar Álgebra/Cálculo/
-// Sistemas dentro de Científica ni cambiar a un dropdown de 4 modos
-// todavía (decisión explícita: se pospone hasta que el ícono "sistema"
-// del teclado de Científica tenga lógica real de resolución).
-
-type Mode = "basic" | "simple" | "algebra" | "calculus" | "systems" | "matrices" | "graphing" | "statistics" | "units" | "history";
+type Mode = "basic" | "simple" | "algebra" | "calculus" | "systems" | "matrices" | "graphing" | "statistics" | "geometry" | "units" | "history";
 
 const MODE_LABELS: Record<Mode, string> = {
   basic: "Científica",
@@ -40,73 +36,98 @@ const MODE_LABELS: Record<Mode, string> = {
   matrices: "Matrices",
   graphing: "Gráficas",
   statistics: "Estadística",
+  geometry: "Geometría",
   units: "Unidades",
   history: "Historial",
 };
 
-// Punto 4 del rediseño de teclado (pedido de Carlos): Álgebra/Cálculo/
-// Sistemas ya no deben verse en el frontend — su función quedó cubierta
-// por el router de Fase 1/2 dentro de "Científica" (ecuación/sistema/
-// derivada/integral/límite, todo en una sola pantalla). Los modos en sí
-// NO se eliminan (siguen existiendo, siguen siendo válidos si algo
-// interno navega ahí), solo se les quita la pestaña visible.
-//
-// Módulo 5 (hoja-de-ruta-visual.md §5 / spec §3): mismo tratamiento para
-// "simple" (Basic) — confirmado por el usuario. Se verificó que ninguna
-// función de Basic queda huérfana SALVO UNA: SimpleKeyboard tenía
-// botones ←/→ para recargar una expresión previa de vuelta al campo
-// editable (historyBack/historyForward en SimpleBasicMode.tsx) — eso NO
-// existe en Científica hoy. El HistoryLog de Científica (dentro de
-// Screen.tsx) es de solo lectura + expandir pasos, no "recargar para
-// editar". Reportado en el cierre del módulo — no bloqueé la
-// eliminación porque ya estaba confirmada, pero es una pérdida de
-// funcionalidad real, no solo teórica.
-//
-// P2 (spec v2 §3): "history" deja de ser pestaña — pasa a ser el
-// HistoryDrawer (botón dedicado en el header, ya no un tab). Se queda
-// en `type Mode`/MODE_LABELS por si algo interno todavía lo referencia,
-// pero ya no aparece en VISIBLE_MODES.
-// P6 (spec v2 §7): "statistics" nueva, visible.
-// P7 (spec v2 §8): "units" nueva, visible — con esto queda el orden
-// final de §9 (previo al Módulo 5): Científica · Basic · Matrices ·
-// Gráficas · Estadística · Unidades. Módulo 5: se quita "Basic".
-const VISIBLE_MODES: Mode[] = ["basic", "matrices", "graphing", "statistics", "units"];
+const VISIBLE_MODES: Mode[] = ["basic", "graphing", "matrices", "statistics", "geometry", "units"];
+
+const MODE_ICONS: Partial<Record<Mode, ModeIconName>> = {
+  basic: "scientific",
+  graphing: "graph",
+  matrices: "matrix",
+  statistics: "statistics",
+  geometry: "geometry",
+  units: "units",
+};
+
+const SIDEBAR_STORAGE_KEY = "precision-lab-sidebar-expanded";
+const SIDEBAR_AUTO_COLLAPSE_QUERY = "(max-width: 1199px)";
+
+function readSidebarPreference(): boolean {
+  if (typeof window === "undefined") return true;
+  return localStorage.getItem(SIDEBAR_STORAGE_KEY) !== "false";
+}
+
+function readInitialSidebarExpanded(): boolean {
+  if (typeof window === "undefined") return true;
+  return readSidebarPreference() && !window.matchMedia(SIDEBAR_AUTO_COLLAPSE_QUERY).matches;
+}
 
 export default function App() {
   const [mode, setMode] = useState<Mode>("basic");
   const [historyOpen, setHistoryOpen] = useState(false);
-  // Módulo P3/P4: sin dock fijo en "stacked", ni en "floating" realmente
-  // activo (viewport ancho) — mismo criterio que KeyboardDock.tsx.
+  const sidebarPreferenceRef = useRef(readSidebarPreference());
+  const [sidebarExpanded, setSidebarExpanded] = useState(readInitialSidebarExpanded);
   const layoutMode = useLayoutModeStore((s) => s.layoutMode);
   const isFloatingWideEnough = useMinWidthMediaQuery(FLOATING_MIN_WIDTH_PX);
   const hasDockContent = useKeyboardPanelStore((s) =>
     s.content !== null || s.basicContent !== null || s.compactActions !== null);
   const hasFixedDock = hasDockContent && !(layoutMode === "stacked" || (layoutMode === "floating" && isFloatingWideEnough));
-  // Reserva espacio inferior solo cuando el módulo registra un dock.
   const mainBottomPadding = hasFixedDock ? "pb-56 md:pb-72" : "pb-8";
   const pendingArgandPoint = useArgandBridgeStore((s) => s.pendingArgandPoint);
   const pendingGraphExpression = usePendingGraphStore((s) => s.pendingExpression);
 
-  // Fase F (Módulo F3): "Graficar" llena el store puente; acá se
-  // consume UNA vez (cambia a la pestaña de graficación) -- el punto en
-  // sí (re/im) lo vuelve a leer GraphingMode directamente del mismo
-  // store, esto solo se encarga del cambio de pestaña.
+  useEffect(() => {
+    const media = window.matchMedia(SIDEBAR_AUTO_COLLAPSE_QUERY);
+    const applyResponsiveState = (isConstrained: boolean) => {
+      setSidebarExpanded(isConstrained ? false : sidebarPreferenceRef.current);
+    };
+
+    applyResponsiveState(media.matches);
+    const onChange = (event: MediaQueryListEvent) => applyResponsiveState(event.matches);
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, []);
+
+  const setPendingHistoryReuse = usePendingHistoryReuseStore((s) => s.setPending);
+
+  const reuseHistoryEntry = (entry: HistoryEntry) => {
+    setPendingHistoryReuse(entry);
+    const target: Mode =
+      entry.module === "Matrices"
+        ? "matrices"
+        : entry.module === "Estadística"
+          ? "statistics"
+          : entry.module === "Gráficas"
+            ? "graphing"
+            : entry.module === "Geometría"
+              ? "geometry"
+              : entry.module === "Unidades"
+                ? "units"
+                : "basic";
+    setMode(target);
+    setHistoryOpen(false);
+  };
+
+  const toggleSidebar = () => {
+    setSidebarExpanded((current) => {
+      const next = !current;
+      sidebarPreferenceRef.current = next;
+      localStorage.setItem(SIDEBAR_STORAGE_KEY, String(next));
+      return next;
+    });
+  };
+
   useEffect(() => {
     if (pendingArgandPoint !== null) setMode("graphing");
   }, [pendingArgandPoint]);
 
-  // Botón "Graficar" explícito en GraphPlaceholder.tsx (decisión de
-  // producto confirmada por Carlos) -- mismo criterio que el efecto de
-  // arriba: solo cambia de pestaña, GraphingMode.tsx consume y limpia
-  // la expresión pendiente él mismo.
   useEffect(() => {
     if (pendingGraphExpression !== null) setMode("graphing");
   }, [pendingGraphExpression]);
 
-  // Fase X, Módulo X0 (Smart Docks): sincroniza el modo activo al store
-  // global para que MathKeyboard.tsx (que no recibe `mode` como prop)
-  // sepa en qué "cajón" del historial registrar cada tecla. Ver
-  // useActiveModeStore.ts para por qué no se reutiliza `mode` directo.
   const setActiveModeForRecentKeys = useActiveModeStore((s) => s.setActiveMode);
   useEffect(() => {
     setActiveModeForRecentKeys(mode);
@@ -120,46 +141,79 @@ export default function App() {
       >
         Saltar al contenido principal
       </a>
-      <header className="flex items-center justify-between gap-2 border-b border-chrome-soft p-4">
-        <button
-          type="button"
-          onClick={() => setHistoryOpen((o) => !o)}
-          aria-label="Historial"
-          aria-expanded={historyOpen}
-          aria-controls="history-panel"
-          className="flex w-[92px] items-center gap-1.5 rounded-md px-2 py-1.5 text-bone/80 hover:bg-chrome-soft hover:text-bone dt:w-[140px]"
+
+      <div className="flex min-h-screen">
+        <aside
+          aria-label="Navegación principal"
+          data-sidebar-state={sidebarExpanded ? "expanded" : "compact"}
+          data-sidebar-responsive="auto"
+          className={`precision-sidebar sticky top-0 z-10 flex h-screen shrink-0 flex-col border-r transition-[width] duration-200 ${sidebarExpanded ? "w-60" : "w-[72px]"}`}
         >
-          <span aria-hidden="true">▤</span>
-          <span className="text-xs">Historial</span>
-        </button>
-        <h1 className="font-display text-lg font-medium tracking-tight text-bone">
-          Precision Lab <span className="text-marker">Lite</span>
-        </h1>
-        <AjustesPopover />
-      </header>
-      <nav aria-label="Modos de la calculadora" className="flex flex-wrap justify-center gap-1.5 border-b border-chrome-soft bg-chrome px-2 py-2 text-sm lg:gap-2 lg:py-2.5 dt:gap-3">
-        {(VISIBLE_MODES).map((m) => (
-          <button
-            key={m}
-            onClick={() => setMode(m)}
-            aria-current={m === mode ? "page" : undefined}
-            className={
-              m === mode
-                ? "rounded-md border-b-2 border-marker bg-marker-soft px-3 py-1.5 font-medium text-marker-text"
-                : "rounded-md border-b-2 border-transparent px-3 py-1.5 text-bone/70 hover:bg-chrome-soft hover:text-bone"
-            }
-          >
-            {MODE_LABELS[m]}
-          </button>
-        ))}
-      </nav>
-      <div className="flex">
-        {/* Módulo 0: padding inferior para que el KeyboardDock fijo (que
-            ahora vive fuera de este flujo, montado más abajo) no tape el
-            contenido de ningún modo — no solo Científica. Cambio a nivel
-            de layout global, deliberado, ver Cierre del Módulo 0. Módulo
-            P3: en "stacked" no hay dock fijo que compensar. */}
-        <main id="main-content" tabIndex={-1} className={`min-w-0 flex-1 bg-paper text-ink ${mainBottomPadding} focus:outline-none`}>
+          <header className={`relative flex shrink-0 border-b precision-sidebar-divider ${sidebarExpanded ? "min-h-[112px] flex-col items-center px-2 py-3 md:min-h-[104px] md:items-start md:px-3" : "min-h-[112px] flex-col items-center px-2 py-3"}`}>
+            <ProjectBrand showName={sidebarExpanded} />
+            <button
+              type="button"
+              onClick={toggleSidebar}
+              aria-label={sidebarExpanded ? "Contraer navegación" : "Expandir navegación"}
+              aria-expanded={sidebarExpanded}
+              title={sidebarExpanded ? "Contraer navegación" : "Expandir navegación"}
+              className={`precision-sidebar-action precision-sidebar-focus grid h-11 w-11 shrink-0 place-items-center rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${sidebarExpanded ? "mt-2 md:absolute md:right-2 md:top-2 md:mt-0" : "mt-2"}`}
+            >
+              <span aria-hidden="true" className="text-xl leading-none">☰</span>
+            </button>
+          </header>
+
+          <nav aria-label="Modos de la calculadora" className="min-h-0 flex-1 overflow-y-auto px-2 py-3">
+            <ul className="space-y-1">
+              {VISIBLE_MODES.map((m) => {
+                const icon = MODE_ICONS[m];
+                const active = m === mode;
+                return (
+                  <li key={m}>
+                    <button
+                      type="button"
+                      onClick={() => setMode(m)}
+                      aria-current={active ? "page" : undefined}
+                      aria-label={MODE_LABELS[m]}
+                      title={!sidebarExpanded ? MODE_LABELS[m] : undefined}
+                      className={
+                        active
+                          ? "precision-sidebar-active flex min-h-11 w-full items-center gap-3 rounded-lg px-3 font-medium shadow-sm"
+                          : "precision-sidebar-action flex min-h-11 w-full items-center gap-3 rounded-lg px-3"
+                      }
+                    >
+                      {icon && <ModeIcon name={icon} className="h-5 w-5 shrink-0" />}
+                      {sidebarExpanded && <span className="whitespace-nowrap text-sm">{MODE_LABELS[m]}</span>}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          <div className={`space-y-1 border-t precision-sidebar-divider px-2 py-3 ${hasFixedDock ? "mb-24" : ""}`}>
+            <button
+              type="button"
+              onClick={() => setHistoryOpen((o) => !o)}
+              aria-label="Historial"
+              aria-expanded={historyOpen}
+              aria-controls="history-panel"
+              title={!sidebarExpanded ? "Historial" : undefined}
+              className="precision-sidebar-action precision-sidebar-focus flex min-h-11 w-full items-center gap-3 rounded-lg px-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
+              <span aria-hidden="true" className="grid h-5 w-5 shrink-0 place-items-center">▤</span>
+              {sidebarExpanded && <span className="whitespace-nowrap text-sm">Historial</span>}
+            </button>
+            <div className="precision-sidebar-action flex min-h-11 items-center gap-3 rounded-lg px-3" title={!sidebarExpanded ? "Configuración" : undefined}>
+              <div className="grid h-5 w-5 shrink-0 place-items-center">
+                <AjustesPopover />
+              </div>
+              {sidebarExpanded && <span className="whitespace-nowrap text-sm">Configuración</span>}
+            </div>
+          </div>
+        </aside>
+
+        <main id="main-content" tabIndex={-1} className={`min-h-screen min-w-0 flex-1 overflow-x-hidden bg-paper text-ink ${mainBottomPadding} focus:outline-none`}>
           {mode === "basic" && <BasicScientificMode />}
           {mode === "simple" && <SimpleBasicMode />}
           {mode === "algebra" && <AlgebraMode />}
@@ -168,13 +222,16 @@ export default function App() {
           {mode === "matrices" && <MatrixMode />}
           {mode === "graphing" && <GraphingMode />}
           {mode === "statistics" && <StatisticsMode />}
+          {mode === "geometry" && <GeometryMode />}
           {mode === "units" && <UnitsMode />}
         </main>
+
         <HistoryDrawer isOpen={historyOpen} onClose={() => setHistoryOpen(false)}>
-          <HistoryPanel />
+          <HistoryPanel onReuse={reuseHistoryEntry} />
         </HistoryDrawer>
       </div>
-      <KeyboardDock />
+      <GlobalKeyboardFallback mode={mode} />
+      <KeyboardDock sidebarExpanded={sidebarExpanded} />
     </div>
   );
 }

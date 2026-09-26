@@ -4,7 +4,7 @@ async function openSettings(page: import("@playwright/test").Page) {
   const button = page.getByRole("button", { name: "Ajustes", exact: true });
   await expect(button).toBeVisible();
   await button.click();
-  const menu = page.getByRole("menu");
+  const menu = page.getByRole("dialog", { name: "Configuración" });
   await expect(menu).toBeVisible();
   return { button, menu };
 }
@@ -24,11 +24,15 @@ test("M12: preferencias visuales se aplican y persisten tras recarga", async ({ 
 
   await menu.getByRole("button", { name: "Claro", exact: true }).click();
   await menu.getByRole("button", { name: "Compacta", exact: true }).click();
+  await menu.getByRole("button", { name: "Lateral", exact: true }).click();
+
+  await menu.getByRole("button", { name: "Accesibilidad", exact: true }).click();
   await menu.getByRole("button", { name: "Muy grande", exact: true }).click();
   await clickSettingRow(menu, "Espaciado amigable con dislexia");
   await clickSettingRow(menu, "Reducir movimiento");
+
+  await menu.getByRole("button", { name: "Gráficas", exact: true }).click();
   await menu.getByRole("button", { name: /Apta para daltonismo/i }).click();
-  await menu.getByRole("button", { name: "Separada", exact: true }).click();
 
   const attrs = await page.evaluate(() => ({
     theme: document.documentElement.getAttribute("data-theme"),
@@ -56,7 +60,7 @@ test("M12: preferencias visuales se aplican y persisten tras recarga", async ({ 
   expect(attrs.lsDyslexia).toBe("true");
   expect(attrs.lsReduced).toBe("true");
   expect(attrs.lsPalette).toBe("colorblind-safe");
-  expect(attrs.lsLayout).toBe("separated");
+  expect(attrs.lsLayout).toBe("split");
 
   await page.reload();
   await expect(page.locator("math-field").first()).toBeVisible();
@@ -80,7 +84,7 @@ test("M12: tema Automático sigue prefers-color-scheme", async ({ page }) => {
   await page.emulateMedia({ colorScheme: "dark" });
   await page.goto("./");
   let opened = await openSettings(page);
-  await opened.menu.getByRole("button", { name: "Automático (sistema)", exact: true }).click();
+  await opened.menu.getByRole("button", { name: "Sistema", exact: true }).click();
   expect(await page.evaluate(() => document.documentElement.getAttribute("data-theme"))).toBe("dark");
   expect(await page.evaluate(() => localStorage.getItem("precision-lab-theme"))).toBe("auto");
 
@@ -148,6 +152,7 @@ test("M12: resultado calculado en Fusionada queda dentro de una región anunciab
 test("M12: vibración y sonido guardan preferencia y sobreviven recarga", async ({ page }) => {
   await page.goto("./");
   const { menu } = await openSettings(page);
+  await menu.getByRole("button", { name: "Teclado", exact: true }).click();
   await clickSettingRow(menu, "Vibración al presionar tecla");
   await clickSettingRow(menu, "Sonido de clic");
 
@@ -160,9 +165,33 @@ test("M12: vibración y sonido guardan preferencia y sobreviven recarga", async 
   expect(await page.evaluate(() => localStorage.getItem("precision-lab-key-sound"))).toBe("true");
 
   const reopened = await openSettings(page);
+  await reopened.menu.getByRole("button", { name: "Teclado", exact: true }).click();
   const vibrationRow = reopened.menu.getByText("Vibración al presionar tecla", { exact: true }).locator("..");
   const soundRow = reopened.menu.getByText("Sonido de clic", { exact: true }).locator("..");
   await expect(vibrationRow.getByRole("button")).toHaveAttribute("aria-pressed", "false");
   await expect(soundRow.getByRole("button")).toHaveAttribute("aria-pressed", "true");
 });
 
+
+
+test("M12: Configuración es ventana independiente, limita temas y el sidebar sigue el tema", async ({ page }) => {
+  await page.goto("./");
+  const sidebar = page.locator('aside[aria-label="Navegación principal"]');
+  const { menu } = await openSettings(page);
+
+  expect(await menu.evaluate((node) => Boolean(node.closest("aside")))).toBe(false);
+  await expect(menu.getByRole("button", { name: "Claro", exact: true })).toBeVisible();
+  await expect(menu.getByRole("button", { name: "Oscuro", exact: true })).toBeVisible();
+  await expect(menu.getByRole("button", { name: "Sistema", exact: true })).toBeVisible();
+  await expect(menu.getByRole("button", { name: "Sepia Cuaderno", exact: true })).toHaveCount(0);
+  await expect(menu.locator("[data-layout-option]")).toHaveCount(3);
+
+  await menu.getByRole("button", { name: "Claro", exact: true }).click();
+  await expect(sidebar).toHaveCSS("background-color", "rgb(7, 43, 82)");
+
+  await menu.getByRole("button", { name: "Oscuro", exact: true }).click();
+  await expect(sidebar).toHaveCSS("background-color", "rgb(2, 22, 44)");
+
+  await menu.getByRole("button", { name: "Sistema", exact: true }).click();
+  expect(await page.evaluate(() => localStorage.getItem("precision-lab-theme"))).toBe("auto");
+});

@@ -29,7 +29,12 @@ const VALID_LAYOUT_MODES: readonly LayoutMode[] = ["fused", "separated", "split"
 function readInitialLayoutMode(): LayoutMode {
   if (typeof localStorage === "undefined") return "split";
   const stored = localStorage.getItem(STORAGE_KEY);
-  return (VALID_LAYOUT_MODES as readonly string[]).includes(stored ?? "") ? (stored as LayoutMode) : "split";
+  if (stored === "fused" || stored === "stacked" || stored === "split") return stored;
+  if ((VALID_LAYOUT_MODES as readonly string[]).includes(stored ?? "")) {
+    localStorage.setItem(STORAGE_KEY, "fused");
+    return "fused";
+  }
+  return "split";
 }
 
 interface LayoutModeState {

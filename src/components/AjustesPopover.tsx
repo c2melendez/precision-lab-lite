@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { useLayoutModeStore } from "../store/useLayoutModeStore";
+import { createPortal } from "react-dom";
+import { useLayoutModeStore, type LayoutMode } from "../store/useLayoutModeStore";
 import { GRAPH_COLOR_PALETTES, useGraphColorPaletteStore } from "../store/useGraphColorPaletteStore";
 import {
   readSoundEnabled,
@@ -154,22 +155,45 @@ function applyReducedMotion(enabled: boolean) {
 }
 
 const THEMES: { id: Theme; label: string }[] = [
-  { id: "v4-blue", label: "Azul claro" },
-  { id: "auto", label: "Automático (sistema)" },
-  { id: "dark", label: "Oscuro" },
   { id: "light", label: "Claro" },
-  { id: "high-contrast", label: "Alto contraste" },
-  { id: "saas-blue", label: "Azul SaaS" },
-  { id: "midnight-purple", label: "Medianoche Púrpura" },
-  { id: "graphite", label: "Grafito Monocromo" },
-  { id: "cyan-tech", label: "Cian Tecnológico" },
-  { id: "deep-forest", label: "Bosque Profundo" },
-  { id: "mint", label: "Menta" },
-  { id: "sepia", label: "Sepia Cuaderno" },
-  { id: "coral", label: "Coral" },
-  { id: "amber-light", label: "Ámbar Claro" },
-  { id: "high-contrast-blue", label: "Alto Contraste Azul" },
+  { id: "dark", label: "Oscuro" },
+  { id: "auto", label: "Sistema" },
 ];
+
+type SettingsSection = "appearance" | "accessibility" | "keyboard" | "graph";
+
+const PRIMARY_THEMES: { id: Theme; label: string; description: string }[] = [
+  { id: "light", label: "Claro", description: "Interfaz clara para espacios bien iluminados." },
+  { id: "dark", label: "Oscuro", description: "Interfaz oscura con menor luminancia." },
+  { id: "auto", label: "Sistema", description: "Sigue automáticamente el tema del dispositivo." },
+];
+
+const LAYOUT_OPTIONS: { id: LayoutMode; label: string; description: string }[] = [
+  { id: "fused", label: "Default", description: "Entrada, resultado y contexto en una composición equilibrada." },
+  { id: "stacked", label: "Compacto", description: "Prioriza el flujo vertical y reduce ocupación lateral." },
+  { id: "split", label: "Lateral", description: "Distribuye el trabajo en columnas cuando existe espacio." },
+];
+
+function LayoutPreview({ mode, active }: { mode: LayoutMode; active: boolean }) {
+  const frame = active ? "border-marker bg-marker-soft" : "border-paper-line bg-paper";
+  const block = active ? "bg-marker/80" : "bg-muted/35";
+  if (mode === "split") {
+    return <div aria-hidden="true" className={`grid h-10 grid-cols-2 gap-1 rounded-md border p-1 ${frame}`}><span className={`rounded-sm ${block}`} /><span className={`rounded-sm ${block}`} /></div>;
+  }
+  if (mode === "stacked") {
+    return <div aria-hidden="true" className={`grid h-10 grid-rows-3 gap-1 rounded-md border p-1 ${frame}`}><span className={`rounded-sm ${block}`} /><span className={`rounded-sm ${block}`} /><span className={`rounded-sm ${block}`} /></div>;
+  }
+  if (mode === "focus") {
+    return <div aria-hidden="true" className={`flex h-10 items-center justify-center rounded-md border p-1 ${frame}`}><span className={`h-7 w-3/5 rounded-sm ${block}`} /></div>;
+  }
+  if (mode === "floating") {
+    return <div aria-hidden="true" className={`relative h-10 rounded-md border p-1 ${frame}`}><span className={`absolute left-2 top-2 h-5 w-1/2 rounded-sm ${block}`} /><span className={`absolute bottom-2 right-2 h-5 w-1/2 rounded-sm border border-paper-soft ${block}`} /></div>;
+  }
+  if (mode === "separated") {
+    return <div aria-hidden="true" className={`grid h-10 grid-cols-3 gap-1 rounded-md border p-1 ${frame}`}><span className={`rounded-sm ${block}`} /><span className={`rounded-sm ${block}`} /><span className={`rounded-sm ${block}`} /></div>;
+  }
+  return <div aria-hidden="true" className={`h-10 rounded-md border p-1 ${frame}`}><span className={`block h-full rounded-sm ${block}`} /></div>;
+}
 
 function applyTheme(selection: Theme) {
   // Persistimos la SELECCIÓN ("auto" incluido), pero `data-theme` siempre
@@ -181,12 +205,13 @@ function applyTheme(selection: Theme) {
 
 function readInitialTheme(): Theme {
   const stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-  return stored && THEMES.some((t) => t.id === stored) ? stored : "v4-blue";
+  return stored && THEMES.some((t) => t.id === stored) ? stored : "auto";
 }
 
 export function AjustesPopover() {
   const [open, setOpen] = useState(false);
-  const [theme, setTheme] = useState<Theme>("v4-blue");
+  const [section, setSection] = useState<SettingsSection>("appearance");
+  const [theme, setTheme] = useState<Theme>("auto");
   const [density, setDensity] = useState<Density>("comfortable");
   const [textSize, setTextSize] = useState<TextSize>("normal");
   const [dyslexiaFriendly, setDyslexiaFriendly] = useState(false);
@@ -194,6 +219,8 @@ export function AjustesPopover() {
   const [vibrationEnabled, setVibrationEnabled] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(false);
   const popoverRef = useRef<HTMLDivElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
   const layoutMode = useLayoutModeStore((s) => s.layoutMode);
   const setLayoutMode = useLayoutModeStore((s) => s.setLayoutMode);
   const graphPaletteId = useGraphColorPaletteStore((s) => s.paletteId);
@@ -257,8 +284,15 @@ export function AjustesPopover() {
 
   useEffect(() => {
     if (!open) return;
+    previousFocusRef.current = document.activeElement as HTMLElement | null;
+    requestAnimationFrame(() => {
+      dialogRef.current?.querySelector<HTMLElement>("[data-settings-close]")?.focus();
+    });
+
     function onPointerDown(e: PointerEvent) {
-      if (popoverRef.current && !popoverRef.current.contains(e.target as Node)) setOpen(false);
+      const target = e.target as Node;
+      if (popoverRef.current?.contains(target) || dialogRef.current?.contains(target)) return;
+      setOpen(false);
     }
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") setOpen(false);
@@ -268,6 +302,7 @@ export function AjustesPopover() {
     return () => {
       window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("keydown", onKeyDown);
+      requestAnimationFrame(() => previousFocusRef.current?.focus());
     };
   }, [open]);
 
@@ -321,267 +356,249 @@ export function AjustesPopover() {
         onClick={() => setOpen((o) => !o)}
         aria-label="Ajustes"
         aria-expanded={open}
-        className="rounded-md bg-chrome-soft p-1.5 text-bone hover:bg-chrome-soft/70"
+        className="rounded-md bg-white/10 p-1.5 text-current hover:bg-white/15"
       >
         <span aria-hidden="true">⚙</span>
       </button>
 
-      {open && (
-        <div
-          role="menu"
-          className="absolute right-0 top-full z-40 mt-1.5 w-56 rounded-lg border border-chrome-soft bg-chrome p-3 shadow-xl"
-        >
-          <div className="mb-3">
-            <div className="mb-1.5 text-[10px] uppercase tracking-wide text-bone/50">Tema</div>
-            {/* Corrección post-auditoría: con 13 temas (antes 4) la lista ya
-             * no entra siempre en la altura del viewport en móvil dentro
-             * de un popover anclado al header — se agrega scroll propio
-             * para no empujar "Vista de resultado" fuera de pantalla. */}
-            <div className="flex max-h-48 flex-col gap-0.5 overflow-y-auto">
-              {THEMES.map((t) => (
-                <button
-                  key={t.id}
-                  type="button"
-                  onClick={() => pickTheme(t.id)}
-                  aria-pressed={theme === t.id}
-                  className={
-                    theme === t.id
-                      ? "rounded px-2 py-1 text-left text-xs font-medium text-marker"
-                      : "rounded px-2 py-1 text-left text-xs text-bone/80 hover:bg-chrome-soft"
-                  }
-                >
-                  {theme === t.id ? "✓ " : ""}
-                  {t.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            {/* Fase P: grilla de 6 disposiciones, todas con render propio
-                desde el Módulo P4 (Fusionada/Separada preexistentes;
-                Dividida P1, Enfoque P2, Apilado P3, Flotante P4). */}
-            <div className="mb-1.5 text-[10px] uppercase tracking-wide text-bone/50">Disposición de pantalla</div>
-            <div className="grid grid-cols-3 gap-1 rounded-md bg-chrome-soft p-0.5">
+      {open && createPortal(
+        <div className="fixed inset-0 z-[90] flex items-center justify-center bg-slate-950/35 p-3 backdrop-blur-[1px] sm:p-6">
+          <div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="settings-title"
+            className="flex h-[min(720px,calc(100vh-1.5rem))] w-[min(900px,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-2xl border border-paper-line bg-paper-soft text-ink shadow-2xl sm:h-[min(700px,calc(100vh-3rem))] sm:w-[min(900px,calc(100vw-3rem))]"
+          >
+            <header className="flex h-14 shrink-0 items-center justify-between border-b border-paper-line bg-paper px-4 sm:px-5">
+              <div>
+                <h2 id="settings-title" className="text-base font-semibold">Configuración</h2>
+                <p className="text-[11px] text-muted">Preferencias visuales y de interacción de Precision Lab.</p>
+              </div>
               <button
                 type="button"
-                onClick={() => setLayoutMode("fused")}
-                aria-pressed={layoutMode === "fused"}
-                className={
-                  layoutMode === "fused"
-                    ? "rounded bg-marker py-1 text-xs font-medium text-chrome"
-                    : "rounded py-1 text-xs text-bone/70 hover:bg-chrome/40"
-                }
+                data-settings-close
+                onClick={() => setOpen(false)}
+                aria-label="Cerrar configuración"
+                className="grid h-9 w-9 place-items-center rounded-lg border border-paper-line bg-paper-soft text-lg font-semibold text-muted hover:text-ink"
               >
-                Fusionada
+                ×
               </button>
-              <button
-                type="button"
-                onClick={() => setLayoutMode("separated")}
-                aria-pressed={layoutMode === "separated"}
-                className={
-                  layoutMode === "separated"
-                    ? "rounded bg-marker py-1 text-xs font-medium text-chrome"
-                    : "rounded py-1 text-xs text-bone/70 hover:bg-chrome/40"
-                }
-              >
-                Separada
-              </button>
-              <button
-                type="button"
-                onClick={() => setLayoutMode("split")}
-                aria-pressed={layoutMode === "split"}
-                className={
-                  layoutMode === "split"
-                    ? "rounded bg-marker py-1 text-xs font-medium text-chrome"
-                    : "rounded py-1 text-xs text-bone/70 hover:bg-chrome/40"
-                }
-              >
-                Dividida
-              </button>
-              <button
-                type="button"
-                onClick={() => setLayoutMode("focus")}
-                aria-pressed={layoutMode === "focus"}
-                className={
-                  layoutMode === "focus"
-                    ? "rounded bg-marker py-1 text-xs font-medium text-chrome"
-                    : "rounded py-1 text-xs text-bone/70 hover:bg-chrome/40"
-                }
-              >
-                Enfoque
-              </button>
-              <button
-                type="button"
-                onClick={() => setLayoutMode("stacked")}
-                aria-pressed={layoutMode === "stacked"}
-                className={
-                  layoutMode === "stacked"
-                    ? "rounded bg-marker py-1 text-xs font-medium text-chrome"
-                    : "rounded py-1 text-xs text-bone/70 hover:bg-chrome/40"
-                }
-              >
-                Apilado
-              </button>
-              <button
-                type="button"
-                onClick={() => setLayoutMode("floating")}
-                aria-pressed={layoutMode === "floating"}
-                className={
-                  layoutMode === "floating"
-                    ? "rounded bg-marker py-1 text-xs font-medium text-chrome"
-                    : "rounded py-1 text-xs text-bone/70 hover:bg-chrome/40"
-                }
-              >
-                Flotante
-              </button>
-            </div>
-          </div>
+            </header>
 
-          <div>
-            <div className="mb-1.5 text-[10px] uppercase tracking-wide text-bone/50">Densidad</div>
-            <div className="flex gap-1 rounded-md bg-chrome-soft p-0.5">
-              <button
-                type="button"
-                onClick={() => pickDensity("comfortable")}
-                aria-pressed={density === "comfortable"}
-                className={
-                  density === "comfortable"
-                    ? "flex-1 rounded bg-marker py-1 text-xs font-medium text-chrome"
-                    : "flex-1 rounded py-1 text-xs text-bone/70 hover:bg-chrome/40"
-                }
-              >
-                Cómoda
-              </button>
-              <button
-                type="button"
-                onClick={() => pickDensity("compact")}
-                aria-pressed={density === "compact"}
-                className={
-                  density === "compact"
-                    ? "flex-1 rounded bg-marker py-1 text-xs font-medium text-chrome"
-                    : "flex-1 rounded py-1 text-xs text-bone/70 hover:bg-chrome/40"
-                }
-              >
-                Compacta
-              </button>
-            </div>
-          </div>
+            <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-[11rem_minmax(0,1fr)]">
+              <nav aria-label="Secciones de configuración" className="border-b border-paper-line bg-paper p-2 md:border-b-0 md:border-r md:p-3">
+                <div className="flex gap-1 overflow-x-auto md:flex-col md:overflow-visible">
+                  {([
+                    ["appearance", "Apariencia"],
+                    ["accessibility", "Accesibilidad"],
+                    ["keyboard", "Teclado"],
+                    ["graph", "Gráficas"],
+                  ] as const).map(([id, label]) => (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => setSection(id)}
+                      aria-current={section === id ? "page" : undefined}
+                      className={
+                        section === id
+                          ? "shrink-0 rounded-lg bg-marker-soft px-3 py-2.5 text-left text-xs font-semibold text-marker-text"
+                          : "shrink-0 rounded-lg px-3 py-2.5 text-left text-xs font-medium text-muted hover:bg-paper-line/50 hover:text-ink"
+                      }
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </nav>
 
-          <div>
-            <div className="mb-1.5 text-[10px] uppercase tracking-wide text-bone/50">
-              Tamaño de texto (números y teclado)
-            </div>
-            <div className="grid grid-cols-3 gap-1 rounded-md bg-chrome-soft p-0.5">
-              {TEXT_SIZES.map((t) => (
-                <button
-                  key={t.id}
-                  type="button"
-                  onClick={() => pickTextSize(t.id)}
-                  aria-pressed={textSize === t.id}
-                  className={
-                    textSize === t.id
-                      ? "rounded bg-marker py-1 text-xs font-medium text-chrome"
-                      : "rounded py-1 text-xs text-bone/70 hover:bg-chrome/40"
-                  }
-                >
-                  {t.label}
-                </button>
-              ))}
-            </div>
-          </div>
+              <div className="min-h-0 overflow-y-auto p-4 sm:p-5">
+                {section === "appearance" && (
+                  <div className="space-y-5">
+                    <div>
+                      <h2 className="text-lg font-semibold">Apariencia</h2>
+                      <p className="mt-1 text-xs text-muted">Tema, densidad y distribución del área de trabajo.</p>
+                    </div>
 
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-wide text-bone/50">Espaciado amigable con dislexia</span>
-            <button
-              type="button"
-              onClick={toggleDyslexiaFriendly}
-              aria-pressed={dyslexiaFriendly}
-              className={
-                dyslexiaFriendly
-                  ? "rounded bg-marker px-2.5 py-1 text-xs font-medium text-chrome"
-                  : "rounded bg-chrome-soft px-2.5 py-1 text-xs text-bone/70 hover:bg-chrome/40"
-              }
-            >
-              {dyslexiaFriendly ? "Activado" : "Desactivado"}
-            </button>
-          </div>
+                    <section aria-labelledby="settings-theme-heading">
+                      <h3 id="settings-theme-heading" className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Tema</h3>
+                      <div className="grid gap-2 sm:grid-cols-3">
+                        {PRIMARY_THEMES.map((t) => (
+                          <button
+                            key={t.id}
+                            type="button"
+                            aria-label={t.label}
+                            onClick={() => pickTheme(t.id)}
+                            aria-pressed={theme === t.id}
+                            className={
+                              theme === t.id
+                                ? "rounded-xl border border-marker bg-marker-soft p-3 text-left"
+                                : "rounded-xl border border-paper-line bg-paper p-3 text-left hover:border-marker/50"
+                            }
+                          >
+                            <span className="block text-sm font-semibold">{t.label}</span>
+                            <span className="mt-1 block text-[11px] leading-snug text-muted">{t.description}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </section>
 
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-wide text-bone/50">Reducir movimiento</span>
-            <button
-              type="button"
-              onClick={toggleReducedMotion}
-              aria-pressed={reducedMotion}
-              className={
-                reducedMotion
-                  ? "rounded bg-marker px-2.5 py-1 text-xs font-medium text-chrome"
-                  : "rounded bg-chrome-soft px-2.5 py-1 text-xs text-bone/70 hover:bg-chrome/40"
-              }
-            >
-              {reducedMotion ? "Activado" : "Desactivado"}
-            </button>
-          </div>
+                    <section aria-labelledby="settings-layout-heading">
+                      <div className="mb-2">
+                        <h3 id="settings-layout-heading" className="text-xs font-semibold uppercase tracking-wide text-muted">Diseño</h3>
+                        <p className="mt-1 text-[11px] text-muted">Tres disposiciones optimizadas para el área de trabajo.</p>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-6">
+                        {LAYOUT_OPTIONS.map((option) => {
+                          const selected = layoutMode === option.id;
+                          return (
+                            <button
+                              key={option.id}
+                              type="button"
+                              aria-label={option.label}
+                              title={option.description}
+                              data-layout-option={option.id}
+                              onClick={() => setLayoutMode(option.id)}
+                              aria-pressed={selected}
+                              className={
+                                selected
+                                  ? "rounded-xl border border-marker bg-marker-soft p-2 text-center"
+                                  : "rounded-xl border border-paper-line bg-paper p-2 text-center hover:border-marker/50"
+                              }
+                            >
+                              <LayoutPreview mode={option.id} active={selected} />
+                              <span className="mt-2 block whitespace-nowrap text-[11px] font-semibold">{option.label}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </section>
 
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-wide text-bone/50">Vibración al presionar tecla</span>
-            <button
-              type="button"
-              onClick={toggleVibration}
-              aria-pressed={vibrationEnabled}
-              className={
-                vibrationEnabled
-                  ? "rounded bg-marker px-2.5 py-1 text-xs font-medium text-chrome"
-                  : "rounded bg-chrome-soft px-2.5 py-1 text-xs text-bone/70 hover:bg-chrome/40"
-              }
-            >
-              {vibrationEnabled ? "Activado" : "Desactivado"}
-            </button>
-          </div>
+                    <section aria-labelledby="settings-density-heading">
+                      <h3 id="settings-density-heading" className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Densidad</h3>
+                      <div className="grid grid-cols-2 gap-2 sm:max-w-sm">
+                        {(["comfortable", "compact"] as const).map((value) => (
+                          <button
+                            key={value}
+                            type="button"
+                            onClick={() => pickDensity(value)}
+                            aria-pressed={density === value}
+                            className={
+                              density === value
+                                ? "rounded-lg border border-marker bg-marker-soft px-3 py-2 text-xs font-semibold text-marker-text"
+                                : "rounded-lg border border-paper-line bg-paper px-3 py-2 text-xs text-ink hover:border-marker/50"
+                            }
+                          >
+                            {value === "comfortable" ? "Cómoda" : "Compacta"}
+                          </button>
+                        ))}
+                      </div>
+                    </section>
+                  </div>
+                )}
 
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-wide text-bone/50">Sonido de clic</span>
-            <button
-              type="button"
-              onClick={toggleSound}
-              aria-pressed={soundEnabled}
-              className={
-                soundEnabled
-                  ? "rounded bg-marker px-2.5 py-1 text-xs font-medium text-chrome"
-                  : "rounded bg-chrome-soft px-2.5 py-1 text-xs text-bone/70 hover:bg-chrome/40"
-              }
-            >
-              {soundEnabled ? "Activado" : "Desactivado"}
-            </button>
-          </div>
-
-          <div>
-            <div className="mb-1.5 text-[10px] uppercase tracking-wide text-bone/50">Color de la gráfica</div>
-            <div className="flex flex-col gap-1">
-              {GRAPH_COLOR_PALETTES.map((palette) => (
-                <button
-                  key={palette.id}
-                  type="button"
-                  onClick={() => setGraphPaletteId(palette.id)}
-                  aria-pressed={graphPaletteId === palette.id}
-                  className={
-                    graphPaletteId === palette.id
-                      ? "flex items-center gap-2 rounded-md bg-marker-soft px-2 py-1.5 text-left"
-                      : "flex items-center gap-2 rounded-md px-2 py-1.5 text-left hover:bg-chrome-soft"
-                  }
-                >
-                  <span className="flex shrink-0 gap-0.5">
-                    {palette.colors.map((c, i) => (
-                      <span key={i} className="h-3 w-3 rounded-full" style={{ backgroundColor: c }} />
+                {section === "accessibility" && (
+                  <div className="space-y-4">
+                    <div>
+                      <h2 className="text-lg font-semibold">Accesibilidad</h2>
+                      <p className="mt-1 text-xs text-muted">Opciones de lectura y movimiento sin alterar el contenido matemático.</p>
+                    </div>
+                    <div>
+                      <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Tamaño de texto (números y teclado)</div>
+                      <div className="grid grid-cols-3 gap-2">
+                        {TEXT_SIZES.map((t) => (
+                          <button
+                            key={t.id}
+                            type="button"
+                            onClick={() => pickTextSize(t.id)}
+                            aria-pressed={textSize === t.id}
+                            className={
+                              textSize === t.id
+                                ? "rounded-lg border border-marker bg-marker-soft px-2 py-2 text-xs font-semibold text-marker-text"
+                                : "rounded-lg border border-paper-line bg-paper px-2 py-2 text-xs text-ink"
+                            }
+                          >{t.label}</button>
+                        ))}
+                      </div>
+                    </div>
+                    {[
+                      ["Espaciado amigable con dislexia", dyslexiaFriendly, toggleDyslexiaFriendly],
+                      ["Reducir movimiento", reducedMotion, toggleReducedMotion],
+                    ].map(([label, enabled, action]) => (
+                      <div key={label as string} className="flex items-center justify-between gap-3 rounded-lg border border-paper-line bg-paper p-3">
+                        <span className="text-xs font-medium">{label as string}</span>
+                        <button
+                          type="button"
+                          onClick={action as () => void}
+                          aria-pressed={enabled as boolean}
+                          className={(enabled as boolean) ? "rounded-md bg-marker px-3 py-1.5 text-xs font-semibold text-chrome" : "rounded-md bg-paper-line px-3 py-1.5 text-xs font-medium text-ink"}
+                        >
+                          {(enabled as boolean) ? "Activado" : "Desactivado"}
+                        </button>
+                      </div>
                     ))}
-                  </span>
-                  <span className="text-xs text-bone/80">{palette.label}</span>
-                  {palette.colorBlindSafe && <span className="ml-auto text-[10px] text-bone/40">daltonismo</span>}
-                </button>
-              ))}
+                  </div>
+                )}
+
+                {section === "keyboard" && (
+                  <div className="space-y-4">
+                    <div>
+                      <h2 className="text-lg font-semibold">Teclado</h2>
+                      <p className="mt-1 text-xs text-muted">Feedback de las teclas del teclado matemático global.</p>
+                    </div>
+                    {[
+                      ["Vibración al presionar tecla", vibrationEnabled, toggleVibration],
+                      ["Sonido de clic", soundEnabled, toggleSound],
+                    ].map(([label, enabled, action]) => (
+                      <div key={label as string} className="flex items-center justify-between gap-3 rounded-lg border border-paper-line bg-paper p-3">
+                        <span className="text-xs font-medium">{label as string}</span>
+                        <button
+                          type="button"
+                          onClick={action as () => void}
+                          aria-pressed={enabled as boolean}
+                          className={(enabled as boolean) ? "rounded-md bg-marker px-3 py-1.5 text-xs font-semibold text-chrome" : "rounded-md bg-paper-line px-3 py-1.5 text-xs font-medium text-ink"}
+                        >
+                          {(enabled as boolean) ? "Activado" : "Desactivado"}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {section === "graph" && (
+                  <div className="space-y-4">
+                    <div>
+                      <h2 className="text-lg font-semibold">Gráficas</h2>
+                      <p className="mt-1 text-xs text-muted">Paleta usada por las curvas y superficies gráficas.</p>
+                    </div>
+                    <div className="grid gap-2">
+                      {GRAPH_COLOR_PALETTES.map((palette) => (
+                        <button
+                          key={palette.id}
+                          type="button"
+                          onClick={() => setGraphPaletteId(palette.id)}
+                          aria-pressed={graphPaletteId === palette.id}
+                          className={
+                            graphPaletteId === palette.id
+                              ? "flex items-center gap-3 rounded-lg border border-marker bg-marker-soft p-3 text-left"
+                              : "flex items-center gap-3 rounded-lg border border-paper-line bg-paper p-3 text-left hover:border-marker/50"
+                          }
+                        >
+                          <span className="flex shrink-0 gap-1">
+                            {palette.colors.map((color, index) => <span key={index} className="h-4 w-4 rounded-full" style={{ backgroundColor: color }} />)}
+                          </span>
+                          <span className="text-xs font-medium">{palette.label}</span>
+                          {palette.colorBlindSafe && <span className="ml-auto text-[10px] text-muted">daltonismo</span>}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );

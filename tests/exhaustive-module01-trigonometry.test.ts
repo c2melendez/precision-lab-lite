@@ -42,6 +42,9 @@ describe("Suite exhaustiva original — Módulo 1: Trigonometría", () => {
     ["sin(30)", 0.5],
     ["cos(60)", 0.5],
     ["tan(45)", 1],
+    ["sec(60)", 2],
+    ["csc(30)", 2],
+    ["cot(45)", 1],
   ] as Array<[string, number]>) {
     it(`${expression} en grados`, () => {
       expect(numeric(expression, "GRAD")).toBeCloseTo(expected, 10);
@@ -60,6 +63,43 @@ describe("Suite exhaustiva original — Módulo 1: Trigonometría", () => {
     it(`${expression} no produce un valor finito silencioso`, () => {
       const result = numeric(expression);
       expect(Number.isFinite(result)).toBe(false);
+    });
+  }
+});
+
+
+describe("S26.3 — inversas devuelven grados en modo GRAD", () => {
+  for (const [expression, expected] of [
+    ["asin(1)", 90],
+    ["acos(1)", 0],
+    ["atan(1)", 45],
+    ["arcsin(0.5)", 30],
+    ["arcsec(2)", 60],
+    ["arccsc(2)", 30],
+    ["arccot(1)", 45],
+  ] as Array<[string, number]>) {
+    it(`${expression} devuelve grados`, () => {
+      expect(numeric(expression, "GRAD")).toBeCloseTo(expected, 10);
+    });
+  }
+
+  it("preserva composición directa(inversa) en modo grados", () => {
+    expect(numeric("sin(asin(0.5))", "GRAD")).toBeCloseTo(0.5, 10);
+  });
+});
+
+
+describe("S26.3 — plantillas explícitas con símbolo °", () => {
+  for (const [expression, expected] of [
+    ["sin(30°)", 0.5],
+    ["cos(60°)", 0.5],
+    ["tan(45°)", 1],
+    ["sec(60°)", 2],
+    ["csc(30°)", 2],
+    ["cot(45°)", 1],
+  ] as Array<[string, number]>) {
+    it(`${expression} se interpreta correctamente en GRAD sin doble conversión`, () => {
+      expect(numeric(expression, "GRAD")).toBeCloseTo(expected, 10);
     });
   }
 });

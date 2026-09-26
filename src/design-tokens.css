@@ -15,58 +15,82 @@
  */
 
 [data-theme="dark"] {
-  --color-chrome: 20 23 28;
-  --color-chrome-soft: 31 35 43;
-  --color-paper: 247 243 234;
-  --color-paper-soft: 255 255 255;
-  --color-paper-line: 228 220 200;
-  --color-ink: 28 31 38;
-  --color-bone: 236 231 218;
-  --color-marker: 232 163 61;
-  --color-marker-soft: 251 239 218;
-  --color-marker-text: 138 90 14;
-  --color-graph: 62 124 116;
-  --color-graph-soft: 228 238 236;
-  --color-alpha: 155 127 214;
-  --color-alpha-soft: 36 28 51;
-  --color-muted: 138 131 113;
+  --sidebar-bg: 2 22 44;
+  --sidebar-border: 15 52 96;
+  --sidebar-text: 241 245 249;
+  --sidebar-muted: 148 163 184;
+  --sidebar-hover: 15 35 65;
+  --sidebar-active: 37 99 235;
+  --sidebar-active-text: 255 255 255;
+  --sidebar-accent: 96 165 250;
+  --color-chrome: 15 23 42;
+  --color-chrome-soft: 30 41 59;
+  --color-paper: 17 24 39;
+  --color-paper-soft: 30 41 59;
+  --color-paper-line: 51 65 85;
+  --color-ink: 241 245 249;
+  --color-bone: 203 213 225;
+  --color-marker: 59 130 246;
+  --color-marker-soft: 30 64 175;
+  --color-marker-text: 219 234 254;
+  --color-graph: 37 99 235;
+  --color-graph-soft: 12 74 110;
+  --color-alpha: 199 210 254;
+  --color-alpha-soft: 49 46 129;
+  --color-muted: 148 163 184;
 }
 
 :root:not([data-theme]),
 [data-theme="v4-blue"] {
-  --color-chrome: 255 255 255;
-  --color-chrome-soft: 241 245 249;
-  --color-paper: 248 250 252;
+  --sidebar-bg: 7 43 82;
+  --sidebar-border: 11 70 125;
+  --sidebar-text: 241 245 249;
+  --sidebar-muted: 203 213 225;
+  --sidebar-hover: 16 50 80;
+  --sidebar-active: 37 99 235;
+  --sidebar-active-text: 255 255 255;
+  --sidebar-accent: 125 211 252;
+  --color-chrome: 241 245 249;
+  --color-chrome-soft: 248 250 252;
+  --color-paper: 247 250 252;
   --color-paper-soft: 255 255 255;
-  --color-paper-line: 219 228 239;
-  --color-ink: 15 23 42;
-  --color-bone: 15 23 42;
+  --color-paper-line: 217 228 239;
+  --color-ink: 30 41 59;
+  --color-bone: 71 85 105;
   --color-marker: 37 99 235;
   --color-marker-soft: 219 234 254;
   --color-marker-text: 29 78 216;
-  --color-graph: 15 118 110;
-  --color-graph-soft: 204 251 241;
-  --color-alpha: 109 40 217;
-  --color-alpha-soft: 237 233 254;
-  --color-muted: 100 116 139;
+  --color-graph: 37 99 235;
+  --color-graph-soft: 224 242 254;
+  --color-alpha: 79 70 229;
+  --color-alpha-soft: 224 231 255;
+  --color-muted: 71 85 105;
 }
 
 [data-theme="light"] {
-  --color-chrome: 222 215 195;
-  --color-chrome-soft: 210 201 175;
-  --color-paper: 255 255 255;
+  --sidebar-bg: 7 43 82;
+  --sidebar-border: 11 70 125;
+  --sidebar-text: 241 245 249;
+  --sidebar-muted: 203 213 225;
+  --sidebar-hover: 16 50 80;
+  --sidebar-active: 37 99 235;
+  --sidebar-active-text: 255 255 255;
+  --sidebar-accent: 125 211 252;
+  --color-chrome: 241 245 249;
+  --color-chrome-soft: 248 250 252;
+  --color-paper: 247 250 252;
   --color-paper-soft: 255 255 255;
-  --color-paper-line: 228 220 200;
-  --color-ink: 28 31 38;
-  --color-bone: 43 42 34;
-  --color-marker: 217 138 30;
-  --color-marker-soft: 243 228 198;
-  --color-marker-text: 138 90 14;
-  --color-graph: 62 124 116;
-  --color-graph-soft: 228 238 236;
-  --color-alpha: 107 79 160;
-  --color-alpha-soft: 231 223 245;
-  --color-muted: 111 105 88;
+  --color-paper-line: 217 228 239;
+  --color-ink: 30 41 59;
+  --color-bone: 71 85 105;
+  --color-marker: 37 99 235;
+  --color-marker-soft: 219 234 254;
+  --color-marker-text: 29 78 216;
+  --color-graph: 37 99 235;
+  --color-graph-soft: 224 242 254;
+  --color-alpha: 79 70 229;
+  --color-alpha-soft: 224 231 255;
+  --color-muted: 71 85 105;
 }
 
 [data-theme="high-contrast"] {
@@ -446,3 +470,23 @@
   animation-iteration-count: 1 !important;
   scroll-behavior: auto !important;
 }
+
+
+/* S26.3R — sidebar ligado al tema activo (Claro/Oscuro/Sistema). */
+.precision-sidebar {
+  background-color: rgb(var(--sidebar-bg));
+  border-color: rgb(var(--sidebar-border));
+  color: rgb(var(--sidebar-text));
+}
+.precision-sidebar-divider { border-color: rgb(var(--sidebar-border)); }
+.precision-sidebar-action { color: rgb(var(--sidebar-muted)); }
+.precision-sidebar-action:hover {
+  background-color: rgb(var(--sidebar-hover));
+  color: rgb(var(--sidebar-text));
+}
+.precision-sidebar-active {
+  background-color: rgb(var(--sidebar-active));
+  color: rgb(var(--sidebar-active-text));
+}
+.precision-sidebar-focus:focus-visible { outline-color: rgb(var(--sidebar-accent)); }
+.precision-sidebar-accent { color: rgb(var(--sidebar-accent)); }

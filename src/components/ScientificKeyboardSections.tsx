@@ -24,7 +24,7 @@ export function ScientificKeyboardSections({ basic, advanced }: {
   const [section, setSection] = useState<"Básico" | KeyboardCategory>("Básico");
   const id = useId();
   return <>
-    <div role="tablist" aria-label="Categorías del teclado matemático" className="mb-3 flex flex-wrap gap-1 p-1">
+    <div role="tablist" aria-label="Categorías del teclado matemático" className="sticky top-0 z-20 mb-3 flex flex-nowrap gap-1 overflow-x-auto border-b border-chrome-soft bg-chrome/95 p-1 pb-2 backdrop-blur">
       {SECTIONS.map((name, index) => <button key={name} type="button" role="tab"
         id={`${id}-tab-${index}`} aria-controls={`${id}-panel`} aria-selected={section === name}
         tabIndex={section === name ? 0 : -1}
@@ -39,8 +39,8 @@ export function ScientificKeyboardSections({ basic, advanced }: {
           document.getElementById(`${id}-tab-${next}`)?.focus();
         }}
         className={section === name
-          ? "rounded-lg bg-marker px-3 py-2 text-xs font-semibold text-chrome"
-          : "rounded-lg bg-chrome-soft px-3 py-2 text-xs text-bone hover:bg-marker-soft hover:text-marker-text"}>
+          ? "shrink-0 rounded-lg bg-marker px-3 py-2 text-xs font-semibold text-chrome"
+          : "shrink-0 rounded-lg bg-chrome-soft px-3 py-2 text-xs text-bone hover:bg-marker-soft hover:text-marker-text"}>
         {name}
       </button>)}
     </div>

@@ -87,11 +87,12 @@ test("M34: tema automático y movimiento siguen al sistema hasta override manual
 
   const settings = page.getByRole("button", { name: "Ajustes", exact: true });
   await settings.click();
-  const menu = page.getByRole("menu");
+  const menu = page.getByRole("dialog", { name: "Configuración" });
   await expect(menu).toBeVisible();
 
   // Con reducción del sistema activa, el toggle arranca activado.
   // Al tocarlo, el usuario crea override manual "false".
+  await menu.getByRole("button", { name: "Accesibilidad", exact: true }).click();
   const motionToggle = menu
     .getByText("Reducir movimiento", { exact: true })
     .locator("..")
@@ -116,12 +117,13 @@ test("M34: tema automático y movimiento siguen al sistema hasta override manual
   await expect(html).toHaveAttribute("data-reduced-motion", "false");
 
   // Igual para tema: una selección manual deja de seguir al sistema.
-  await menu.getByRole("button", { name: "Sepia Cuaderno", exact: true }).click();
-  await expect(html).toHaveAttribute("data-theme", "sepia");
+  await menu.getByRole("button", { name: "Apariencia", exact: true }).click();
+  await menu.getByRole("button", { name: "Oscuro", exact: true }).click();
+  await expect(html).toHaveAttribute("data-theme", "dark");
 
   await page.evaluate(() =>
     (window as Window & { __m34SetSystemPreference: (kind: "dark" | "reduce", value: boolean) => void })
       .__m34SetSystemPreference("dark", false),
   );
-  await expect(html).toHaveAttribute("data-theme", "sepia");
+  await expect(html).toHaveAttribute("data-theme", "dark");
 });

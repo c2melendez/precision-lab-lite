@@ -102,6 +102,17 @@ export function Screen({
     </div>
   );
 
+  const inputSurface = (
+    <section aria-label="Entrada" className="rounded-xl border border-paper-line bg-paper-soft shadow-sm">
+      <div className="flex items-center justify-between border-b border-paper-line px-4 py-2.5">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Entrada</p>
+        <span className="text-[11px] text-muted">Expresión matemática</span>
+      </div>
+      <div className="px-4 py-3">{inputField}</div>
+    </section>
+  );
+
+
   // "stacked" (Apilado, Módulo P3): una sola columna — input, resultado,
   // gráfica, y el teclado como sección COLAPSADA dentro del mismo flujo
   // (no overlay/bottom sheet). Por eso NO usa <KeyboardPanel> (siempre
@@ -115,13 +126,13 @@ export function Screen({
           <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
         </div>
         {sessionHistory.length > 0 && (
-          <div className="max-h-28 overflow-y-auto rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
+          <div className="max-h-20 overflow-y-auto rounded-xl border border-paper-line bg-paper-soft/70 px-4 py-2 shadow-sm">
             <HistoryLog entries={sessionHistory} />
           </div>
         )}
-        <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
+        {inputSurface}
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
-          <ResultPanel result={result} />
+          <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
         <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
         <StackedKeyboardSection />
@@ -137,8 +148,9 @@ export function Screen({
   if (layoutMode === "floating") {
     return (
       <FloatingScreenContent
-        inputField={inputField}
+        inputField={inputSurface}
         result={result}
+        inputLatex={latex}
         angleMode={angleMode}
         onToggleAngleMode={onToggleAngleMode}
         canGraph={canGraph}
@@ -157,8 +169,9 @@ export function Screen({
   if (layoutMode === "focus") {
     return (
       <FocusScreenContent
-        inputField={inputField}
+        inputField={inputSurface}
         result={result}
+        inputLatex={latex}
         angleMode={angleMode}
         onToggleAngleMode={onToggleAngleMode}
         canGraph={canGraph}
@@ -174,13 +187,13 @@ export function Screen({
           <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
         </div>
         {sessionHistory.length > 0 && (
-          <div className="max-h-28 overflow-y-auto rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
+          <div className="max-h-20 overflow-y-auto rounded-xl border border-paper-line bg-paper-soft/70 px-4 py-2 shadow-sm">
             <HistoryLog entries={sessionHistory} />
           </div>
         )}
-        <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
+        {inputSurface}
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
-          <ResultPanel result={result} />
+          <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
         <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
       </div>
@@ -199,10 +212,10 @@ export function Screen({
         <div className="flex justify-end">
           <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
         </div>
-        <div className="flex flex-col gap-3 dt:grid dt:grid-cols-[minmax(0,.92fr)_minmax(0,1.08fr)] dt:items-start dt:gap-4">
+        <div className="flex flex-col gap-3 dt:grid dt:grid-cols-[minmax(0,1.38fr)_minmax(340px,1fr)] dt:items-start dt:gap-4">
           <div className="flex min-w-0 flex-col gap-3">
             {sessionHistory.length > 0 && (
-              <div className="max-h-28 overflow-y-auto rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
+              <div className="max-h-20 overflow-y-auto rounded-xl border border-paper-line bg-paper-soft/70 px-4 py-2 shadow-sm">
                 <HistoryLog entries={sessionHistory} />
               </div>
             )}
@@ -227,13 +240,8 @@ export function Screen({
             </section>
           </div>
           <div className="flex min-w-0 flex-col gap-3">
-            <section aria-label="Resultado" className="min-w-0 rounded-xl border border-paper-line bg-paper-soft shadow-sm">
-              <h2 className="border-b border-paper-line px-4 py-3 text-sm font-semibold">
-                <span className="border-l-4 border-marker pl-2">Resultado</span>
-              </h2>
-              <div className="overflow-x-auto px-4 py-4" aria-live="polite">
-                <ResultPanel result={result} />
-              </div>
+            <section aria-label="Resultado" className="min-w-0 rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
+              <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
             </section>
             <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
           </div>
@@ -252,13 +260,15 @@ export function Screen({
         </div>
 
         {sessionHistory.length > 0 && (
-          <div className="mb-2 max-h-28 overflow-y-auto border-b border-paper-line pb-2">
+          <div className="mb-2 max-h-20 overflow-y-auto rounded-lg border border-paper-line bg-paper/60 px-3 py-2 opacity-80">
             <HistoryLog entries={sessionHistory} />
           </div>
         )}
 
-        {inputField}
-        <ResultPanel result={result} />
+        {inputSurface}
+        <div className="mt-3">
+          <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
+        </div>
       </div>
       <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
     </div>
@@ -321,6 +331,7 @@ function StackedKeyboardSection() {
 interface FocusLikeContentProps {
   inputField: ReactNode;
   result: MathResult | null;
+  inputLatex: string;
   angleMode: "RAD" | "GRAD";
   onToggleAngleMode: () => void;
   canGraph: boolean;
@@ -329,15 +340,15 @@ interface FocusLikeContentProps {
 
 /** Módulo P2 ("Enfoque"): sin historial, resultado destacado, gráfica
  * con más área. Reusado tal cual por Flotante cuando degrada (P0/P4). */
-function FocusScreenContent({ inputField, result, angleMode, onToggleAngleMode, canGraph, onGraphExpression }: FocusLikeContentProps) {
+function FocusScreenContent({ inputField, result, inputLatex, angleMode, onToggleAngleMode, canGraph, onGraphExpression }: FocusLikeContentProps) {
   return (
     <div className="flex flex-1 flex-col gap-3">
       <div className="flex justify-end">
         <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
       </div>
-      <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
+      {inputField}
       <div className="rounded-xl bg-paper-soft px-5 py-4 text-center shadow-sm">
-        <ResultPanel result={result} />
+        <ResultPanel result={result} inputLatex={inputLatex} angleMode={angleMode} />
       </div>
       <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
     </div>
@@ -353,7 +364,7 @@ function FocusScreenContent({ inputField, result, angleMode, onToggleAngleMode, 
  * localStorage, confirmado por el usuario, con clamp contra el viewport
  * actual al montar y al redimensionar la ventana del navegador).
  */
-function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMode, canGraph, onGraphExpression }: FocusLikeContentProps) {
+function FloatingScreenContent({ inputField, result, inputLatex, angleMode, onToggleAngleMode, canGraph, onGraphExpression }: FocusLikeContentProps) {
   const isWideEnough = useMinWidthMediaQuery(FLOATING_MIN_WIDTH_PX);
 
   const keyboardWindow = useFloatingLayoutStore((s) => s.keyboardWindow);
@@ -386,6 +397,7 @@ function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMod
       <FocusScreenContent
         inputField={inputField}
         result={result}
+        inputLatex={inputLatex}
         angleMode={angleMode}
         onToggleAngleMode={onToggleAngleMode}
         canGraph={canGraph}
@@ -402,9 +414,9 @@ function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMod
           Restablecer posición de ventanas
         </button>
       </div>
-      <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
+      {inputField}
       <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
-        <ResultPanel result={result} />
+        <ResultPanel result={result} inputLatex={inputLatex} angleMode={angleMode} />
       </div>
       {/* Fase X, Módulo X0 — mismo criterio que precision-lab (main): el
           dock de recientes va fuera de la FloatingWindow, justo encima. */}
@@ -430,8 +442,8 @@ function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMod
           aria-label="Abrir teclado"
           className={
             canExpand
-              ? "flex items-center justify-center gap-2 self-start rounded-lg bg-marker px-4 py-2 text-sm font-semibold text-chrome hover:bg-marker/90"
-              : "flex items-center justify-center gap-2 self-start rounded-lg bg-chrome-soft px-4 py-2 text-sm text-bone/30"
+              ? "relative z-40 flex items-center justify-center gap-2 self-start rounded-lg bg-marker px-4 py-2 text-sm font-semibold text-chrome hover:bg-marker/90"
+              : "relative z-40 flex items-center justify-center gap-2 self-start rounded-lg bg-chrome-soft px-4 py-2 text-sm text-bone/30"
           }
         >
           <KeyboardIcon className="h-4 w-4" />

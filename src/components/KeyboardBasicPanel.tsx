@@ -52,7 +52,7 @@ export const BASIC_V5_ROWS: KeyDef[][] = [
     key("±()", "\\pm\\left(#0\\right)", "más/menos", false, undefined, "inserta las alternativas positiva y negativa"),
     key("≤", "\\le", "menor o igual que", false, undefined, "compara si el valor izquierdo es menor o igual que el derecho"),
     key("≥", "\\ge", "mayor o igual que", false, undefined, "compara si el valor izquierdo es mayor o igual que el derecho"),
-    key("⏎", "", "calcular", false, undefined, "ejecuta o resuelve la expresión actual"),
+    key("Enter", "", "calcular", false, undefined, "ejecuta o resuelve la expresión actual"),
   ],
 ];
 
@@ -145,7 +145,7 @@ export function KeyboardBasicPanel({ field, onBackspace, onClear, onEnter, lastA
     }
     if (k.glyph === "⌫") return onBackspace();
     if (k.glyph === "DEL") return onClear();
-    if (k.glyph === "⏎") return onEnter();
+    if (k.ariaLabel === "calcular") return onEnter();
     if (k.glyph === "ANS") {
       if (!lastAnswerLatex) {
         setNotice("Sin resultado previo todavía.");
@@ -168,17 +168,17 @@ export function KeyboardBasicPanel({ field, onBackspace, onClear, onEnter, lastA
 
   function keyClass(k: KeyDef): string {
     const glyphStr = String(k.glyph);
-    // Fase R, Módulo R0: las clases text-sm/text-base/text-[11px] de
-    // aquí se reemplazan por a11y-key-sm/a11y-key-base/a11y-key-tiny —
-    // mismo tamaño exacto por defecto (ver design-tokens.css), pero
-    // ahora escalable vía la opción de accesibilidad tipográfica.
-    if (k.unavailable) return "rounded-md border border-dashed border-bone/30 bg-chrome-soft/40 py-2.5 a11y-key-sm text-bone/40";
-    if (glyphStr === "⏎") return "col-span-2 rounded-md bg-graph py-2.5 a11y-key-sm font-semibold text-paper hover:bg-graph/90";
-    if (glyphStr === "=") return "rounded-md border border-marker py-2.5 a11y-key-sm font-medium text-marker hover:bg-marker-soft/10";
-    if (["×", "−", "+", "÷"].includes(glyphStr)) return "rounded-md bg-marker py-2.5 a11y-key-base font-semibold text-chrome hover:bg-marker/90";
-    if (/^[0-9.%]$/.test(glyphStr)) return "rounded-md bg-chrome-soft/80 py-2.5 a11y-key-sm font-medium text-bone hover:bg-chrome-soft/60";
-    if (["<", ">", "≤", "≥"].includes(glyphStr)) return "rounded-md bg-paper-soft py-2.5 a11y-key-sm text-ink hover:bg-paper-line/60";
-    return "rounded-md bg-chrome-soft py-2.5 a11y-key-tiny text-marker hover:bg-chrome-soft/70";
+    // B6: gramática visual aprobada compartida con Plus. Se usan tokens
+    // de superficie/marker para que Claro/Oscuro/Sistema sigan adaptándose
+    // sin mantener una variante visual heredada específica de Lite.
+    const base = "min-h-[38px] rounded-lg border shadow-sm transition-colors";
+    if (k.unavailable) return `${base} border-dashed border-paper-line bg-paper text-muted/60 a11y-key-sm`;
+    if (k.ariaLabel === "calcular") return `col-span-2 ${base} border-graph bg-graph text-white a11y-key-sm font-semibold hover:bg-graph/90`;
+    if (glyphStr === "=") return `${base} border-marker/50 bg-paper-soft text-marker a11y-key-sm font-semibold hover:bg-marker-soft/30`;
+    if (["×", "−", "+", "÷"].includes(glyphStr)) return `${base} border-marker/25 bg-marker-soft text-marker-text a11y-key-base font-semibold hover:bg-marker-soft/70`;
+    if (["<", ">", "≤", "≥"].includes(glyphStr)) return `${base} border-marker/45 bg-paper-soft text-marker a11y-key-sm font-semibold hover:bg-marker-soft/20`;
+    if (/^[0-9.%]$/.test(glyphStr)) return `${base} border-paper-line bg-paper-soft text-ink a11y-key-sm font-medium hover:border-marker/40 hover:bg-paper`;
+    return `${base} border-paper-line bg-paper-soft text-ink a11y-key-tiny hover:border-marker/40 hover:bg-paper`;
   }
 
   // Fase V, Módulo V0: mismo patrón de delegación que en main.
