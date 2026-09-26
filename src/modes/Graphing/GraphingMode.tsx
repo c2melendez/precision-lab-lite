@@ -9,6 +9,7 @@ import { addHistoryEntry } from "../../store/historyDb";
 import { useGraphColorPaletteStore } from "../../store/useGraphColorPaletteStore";
 import { useArgandBridgeStore } from "../../store/useArgandBridgeStore";
 import { usePendingGraphStore } from "../../store/usePendingGraphStore";
+import { usePendingHistoryReuseStore } from "../../store/usePendingHistoryReuseStore";
 
 // Modo 6 de la spec v10 §10 (Módulo 7 — el de mayor riesgo del proyecto,
 // según la propia spec). Ver README del Módulo 7 sobre el cambio de
@@ -104,6 +105,17 @@ export function GraphingMode() {
   // aparece en la propia ficha de la expresión, por el canal normal.
   const pendingGraphExpression = usePendingGraphStore((s) => s.pendingExpression);
   const clearPendingGraphExpression = usePendingGraphStore((s) => s.clearPendingExpression);
+  const takePendingHistoryReuse = usePendingHistoryReuseStore((s) => s.takePending);
+  useEffect(() => {
+    const historyEntry = takePendingHistoryReuse();
+    if (!historyEntry) return;
+    const [xLatex, yLatex = ""] = historyEntry.input.split(";").map((part) => part.trim());
+    const next = { ...entries[0], latex: xLatex, yLatex, analysis: null, surface3D: null, error: null };
+    setKind(yLatex ? "parametric" : "cartesian");
+    setEntries((current) => [next, ...current.slice(1)]);
+    setSelectedId(next.id);
+  }, [takePendingHistoryReuse]);
+
   useEffect(() => {
     if (pendingGraphExpression === null) return;
     setKind("cartesian");
@@ -115,7 +127,7 @@ export function GraphingMode() {
   }, [pendingGraphExpression, clearPendingGraphExpression]);
 
   const workerRef = useRef<Worker | null>(null);
-  const requestToEntryRef = useRef<Map<string, string>>(new Map());
+  const requestToEntryRef = useRef<Map<string, { entryId: string; input: string }>>(new Map());
 
   const getWorker = useCallback(() => {
     if (!workerRef.current) {
@@ -124,8 +136,9 @@ export function GraphingMode() {
         { type: "module" },
       );
       workerRef.current.onmessage = (e: MessageEvent<MathResult>) => {
-        const entryId = requestToEntryRef.current.get(e.data.requestId);
-        if (!entryId) return;
+        const pendingRequest = requestToEntryRef.current.get(e.data.requestId);
+        if (!pendingRequest) return;
+        const { entryId, input } = pendingRequest;
         requestToEntryRef.current.delete(e.data.requestId);
         setEntries((prev) =>
           prev.map((entry) => {
@@ -145,7 +158,7 @@ export function GraphingMode() {
           }),
         );
         if (e.data.success) {
-          addHistoryEntry({ module: "Gráficas", mode: "Graficación", input: "", resultSummary: e.data.resultLatex ?? "" });
+          addHistoryEntry({ module: "Gráficas", mode: "Graficación", input, resultSummary: e.data.resultLatex ?? "" });
         }
       };
     }
@@ -196,7 +209,7 @@ export function GraphingMode() {
         }
         const [varX, varY] = parsed.freeVariables;
         const requestId = makeRequestId();
-        requestToEntryRef.current.set(requestId, entry.id);
+        requestToEntryRef.current.set(requestId, { entryId: entry.id, input: kind === "parametric" ? `${entry.latex}; ${entry.yLatex}` : entry.latex });
         getWorker().postMessage({
           type: "graphSurface3D",
           requestId,
@@ -246,7 +259,7 @@ export function GraphingMode() {
           return;
         }
         const requestId = makeRequestId();
-        requestToEntryRef.current.set(requestId, entry.id);
+        requestToEntryRef.current.set(requestId, { entryId: entry.id, input: kind === "parametric" ? `${entry.latex}; ${entry.yLatex}` : entry.latex });
         getWorker().postMessage({
           type: "graphParametric",
           requestId,
@@ -288,7 +301,7 @@ export function GraphingMode() {
         return;
       }
       const requestId = makeRequestId();
-      requestToEntryRef.current.set(requestId, entry.id);
+      requestToEntryRef.current.set(requestId, { entryId: entry.id, input: kind === "parametric" ? `${entry.latex}; ${entry.yLatex}` : entry.latex });
       if (kind === "polar") {
         getWorker().postMessage({
           type: "graphPolar",
