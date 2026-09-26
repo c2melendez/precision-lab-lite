@@ -110,7 +110,7 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
     hasDms: Boolean(dmsValue),
   }) as AnswerFormat[];
 
-  const activeFormat = availableFormats.includes(format) ? format : "exact";
+  const activeFormat = availableFormats.includes(format) ? format : (availableFormats[0] ?? "exact");
   const { latex, isPlainNumber } = renderValue(activeFormat);
 
   return (
