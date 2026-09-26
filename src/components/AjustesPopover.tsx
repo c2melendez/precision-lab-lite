@@ -220,6 +220,7 @@ export function AjustesPopover() {
   const [soundEnabled, setSoundEnabled] = useState(false);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const dialogRef = useRef<HTMLDivElement | null>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
   const layoutMode = useLayoutModeStore((s) => s.layoutMode);
   const setLayoutMode = useLayoutModeStore((s) => s.setLayoutMode);
   const graphPaletteId = useGraphColorPaletteStore((s) => s.paletteId);
@@ -283,6 +284,11 @@ export function AjustesPopover() {
 
   useEffect(() => {
     if (!open) return;
+    previousFocusRef.current = document.activeElement as HTMLElement | null;
+    requestAnimationFrame(() => {
+      dialogRef.current?.querySelector<HTMLElement>("[data-settings-close]")?.focus();
+    });
+
     function onPointerDown(e: PointerEvent) {
       const target = e.target as Node;
       if (popoverRef.current?.contains(target) || dialogRef.current?.contains(target)) return;
@@ -296,6 +302,7 @@ export function AjustesPopover() {
     return () => {
       window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("keydown", onKeyDown);
+      requestAnimationFrame(() => previousFocusRef.current?.focus());
     };
   }, [open]);
 
@@ -358,17 +365,19 @@ export function AjustesPopover() {
         <div className="fixed inset-0 z-[90] flex items-center justify-center bg-slate-950/35 p-3 backdrop-blur-[1px] sm:p-6">
           <div
             ref={dialogRef}
-            role="menu"
-            aria-label="Configuración"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="settings-title"
             className="flex h-[min(720px,calc(100vh-1.5rem))] w-[min(900px,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-2xl border border-paper-line bg-paper-soft text-ink shadow-2xl sm:h-[min(700px,calc(100vh-3rem))] sm:w-[min(900px,calc(100vw-3rem))]"
           >
             <header className="flex h-14 shrink-0 items-center justify-between border-b border-paper-line bg-paper px-4 sm:px-5">
               <div>
-                <h2 className="text-base font-semibold">Configuración</h2>
+                <h2 id="settings-title" className="text-base font-semibold">Configuración</h2>
                 <p className="text-[11px] text-muted">Preferencias visuales y de interacción de Precision Lab.</p>
               </div>
               <button
                 type="button"
+                data-settings-close
                 onClick={() => setOpen(false)}
                 aria-label="Cerrar configuración"
                 className="grid h-9 w-9 place-items-center rounded-lg border border-paper-line bg-paper-soft text-lg font-semibold text-muted hover:text-ink"
