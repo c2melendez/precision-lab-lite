@@ -13,6 +13,7 @@ import { StatisticsMode } from "./modes/Statistics/StatisticsMode";
 import { UnitsMode } from "./modes/Units/UnitsMode";
 import { GeometryMode } from "./modes/Geometry/GeometryMode";
 import { HistoryPanel } from "./components/HistoryPanel";
+import type { HistoryEntry } from "./store/historyDb";
 import { HistoryDrawer } from "./components/HistoryDrawer";
 import { AjustesPopover } from "./components/AjustesPopover";
 import { KeyboardDock } from "./components/KeyboardDock";
@@ -88,6 +89,23 @@ export default function App() {
     media.addEventListener("change", onChange);
     return () => media.removeEventListener("change", onChange);
   }, []);
+
+  const reuseHistoryEntry = (entry: HistoryEntry) => {
+    const target: Mode =
+      entry.module === "Matrices"
+        ? "matrices"
+        : entry.module === "Estadística"
+          ? "statistics"
+          : entry.module === "Gráficas"
+            ? "graphing"
+            : entry.module === "Geometría"
+              ? "geometry"
+              : entry.module === "Unidades"
+                ? "units"
+                : "basic";
+    setMode(target);
+    setHistoryOpen(false);
+  };
 
   const toggleSidebar = () => {
     setSidebarExpanded((current) => {
@@ -205,7 +223,7 @@ export default function App() {
         </main>
 
         <HistoryDrawer isOpen={historyOpen} onClose={() => setHistoryOpen(false)}>
-          <HistoryPanel />
+          <HistoryPanel onReuse={reuseHistoryEntry} />
         </HistoryDrawer>
       </div>
       <GlobalKeyboardFallback mode={mode} />
