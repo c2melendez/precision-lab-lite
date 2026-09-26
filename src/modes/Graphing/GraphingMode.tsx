@@ -302,7 +302,7 @@ export function GraphingMode() {
         return;
       }
       const requestId = makeRequestId();
-      requestToEntryRef.current.set(requestId, { entryId: entry.id, input: kind === "parametric" ? `${entry.latex}; ${entry.yLatex}` : entry.latex });
+      requestToEntryRef.current.set(requestId, { entryId: entry.id, input: entry.latex });
       if (kind === "polar") {
         getWorker().postMessage({
           type: "graphPolar",
