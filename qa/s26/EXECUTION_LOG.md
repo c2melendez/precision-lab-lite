@@ -458,3 +458,14 @@ Ejecutar `PARITY_CHECKPOINT_B1_B4.md`, corregir GAPs y recertificar si se modifi
 - `KEYBOARD_CONTRACT.md` queda como autoridad funcional/semántica.
 - Se elimina como requisito previo regenerar el mockup: la captura aprobada ya existe.
 - Próximo trabajo: reconciliación categoría por categoría y tecla por tecla Lite↔Plus.
+
+
+## 2026-09-26 — B6 Básico implementado
+
+- Se reconciliaron Lite y Plus contra captura + contrato.
+- Se congelaron 31 teclas y sus cuatro filas mediante tests.
+- Plus recibió tooltips descriptivos faltantes.
+- Enter quedó como glyph visual común; `=` conserva inserción sin ejecución.
+- Lite dejó la gramática dark legacy del panel Básico y usa tokens `paper/marker/graph` equivalentes a Plus.
+- Se creó `B6_BASIC_RECONCILIATION.md`.
+- No avanzar a Símbolos hasta revisar gates y Preview de este subbloque.
