@@ -374,3 +374,67 @@ Gates:
 Decisión:
 - Bloque 1 queda congelado salvo defecto reproducible.
 - Siguiente bloque contractual: Configuración + Apariencia + selector de layouts.
+
+
+## S26.3R — Estado certificado Bloques 2–4 — 2026-09-26
+
+### Bloque 2 — Configuración — PASS DEFINITIVO
+
+- ventana independiente;
+- Claro/Oscuro/Sistema;
+- sidebar sensible al tema;
+- Default=fused, Compacto=stacked, Lateral=split;
+- legacy separated/focus/floating → fused;
+- instalación nueva: split;
+- foco/cierre/responsive preservados.
+
+HEAD histórico:
+- Lite: `3ceff37f912cb66c3cb46a8e21de46843cdb387f`
+- Plus: `ee6136235af29cc52336c16c2c44aadfbd574722`
+
+### Bloque 3 — Historial — PASS DEFINITIVO
+
+- operaciones naturales;
+- módulo de origen;
+- matrices visibles;
+- fecha/hora;
+- resultado natural;
+- Reusar;
+- routing/autofill;
+- integral completa al reutilizar en Plus;
+- E2E/gates completos.
+
+HEAD histórico:
+- Lite: `167df02c734543e093eca726ca9e06488acfb58f`
+- Plus: `d1ca0ac6226f8d68c0c85a510f70d1e0fdf5873f`
+
+### Bloque 4 — Resultado + formatos — PASS DEFINITIVO
+
+- selector común;
+- etiquetas naturales;
+- formatos solo cuando aplican;
+- mixta/impropia;
+- resultados estructurados Plus alineados;
+- encabezado único;
+- alineación/escala armonizadas;
+- región semántica de resultado preservada;
+- regla DD/DMS exclusiva para grados.
+
+Regla angular:
+- grados → solo DD / DMS;
+- DD con `°`;
+- DMS con `°`, `′`, `″`;
+- RAD conserva formatos numéricos normales.
+
+HEAD de código certificado:
+- Lite: `c878da8183cdab6ca791afcacee6841199a5c067`
+- Plus: `40fcf3b3aa2d83fa58943fec603198dd0bb291bb`
+
+Gates Lite: CI, Playwright, S22, S23, S25, Cross-browser — PASS.
+Gates Plus: CI, Playwright, S17, S18, S19, S20, S21, S23, S25 — PASS.
+
+### Próximo paso obligatorio
+
+Ejecutar `PARITY_CHECKPOINT_B1_B4.md`, corregir GAPs y recertificar si se modifica código.
+
+**No iniciar Bloque 5 antes de cerrar esa auditoría.**
