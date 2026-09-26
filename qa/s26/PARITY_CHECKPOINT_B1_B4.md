@@ -1,176 +1,119 @@
-# S26.3 — Checkpoint de Paridad Bloques 1–4
+# S26.3R — Checkpoint de Paridad Bloques 1–4
 
-Estado: **VALIDACIÓN TÉCNICA COMPLETA; pendiente cierre de S19 Mutation en Plus**
-
-Fecha: 2026-09-26
+Fecha de preparación: 2026-09-26  
+Branch: `qa/s26-execution`
 
 ## Objetivo
 
-Verificar que Precision Lab Lite y Precision Lab Plus mantengan paridad visual, funcional, responsive y de accesibilidad en los bloques S26.3 ya cerrados antes de iniciar el Bloque 5.
+Antes de iniciar el Bloque 5, auditar paridad real Lite ↔ Plus en los Bloques 1–4 ya implementados.
 
-Clasificación:
-- **PARIDAD**: ambas aplicaciones deben comportarse de la misma forma.
-- **DIFERENCIA INTENCIONAL**: diferencia válida por arquitectura/capacidad real de cada motor.
-- **GAP CORREGIDO**: divergencia encontrada y corregida durante este checkpoint.
-- **DIFERIDO**: diferencia fuera del alcance de Bloques 1–4, reservada para su bloque específico.
+Clasificación obligatoria:
+- **PARIDAD**: debe coincidir;
+- **DIFERENCIA INTENCIONAL**: diferencia válida por capacidades reales;
+- **GAP**: divergencia no justificada que debe corregirse antes del Bloque 5.
 
-## Bloque 1 — Shell global / sidebar
+## HEAD de código certificado previo al checkpoint
 
-### PARIDAD
-- sidebar expandido: 240 px;
-- sidebar compacto: 72 px;
-- auto-collapse por debajo de 1200 px;
-- preferencia de sidebar restaurada al volver a ancho suficiente;
-- orden visible: Científica, Gráficas, Matrices, Estadística, Geometría, Unidades;
-- Historial y Configuración al pie;
-- marca persistente PL / PL+;
-- H1 conserva semántica en modo compacto;
-- navegación compacta mediante iconos + title/aria-label;
-- mismo criterio de sidebar temático.
+- Lite: `c878da8183cdab6ca791afcacee6841199a5c067`
+- Plus: `40fcf3b3aa2d83fa58943fec603198dd0bb291bb`
 
-### GAP CORREGIDO
-- Plus reservaba espacio inferior para el dock aun sin contenido registrado.
-- Se alineó con Lite: solo se reserva espacio cuando existe content/basicContent/compactActions.
+Estos son HEAD de código certificado. Los commits posteriores de documentación no sustituyen esta referencia.
 
-### DIFERENCIA INTENCIONAL
-- nombre e icono final distinguen Lite de Plus.
-- arquitectura de estado de modo distinta (estado local Lite vs useUIStore Plus), sin diferencia contractual visible.
+## Bloque 1 — Shell / Sidebar / Identidad
 
-### DIFERIDO
-Los anchos internos de módulos no se consideran GAP de Bloque 1 cuando pertenecen a bloques específicos:
-- Científica: se armoniza definitivamente en su bloque específico.
-- Estadística: Bloque 9.
-- Unidades: Bloque 10.
-Matrices, Gráficas y Geometría ya muestran una base de ancho común cercana a 1376 px.
+Verificar:
+- Científica → Gráficas → Matrices → Estadística → Geometría → Unidades;
+- 240 px expandido / 72 px compacto;
+- auto-colapso <1200 px y restauración de preferencia;
+- PL / PL+ persistente;
+- iconos equivalentes;
+- Historial y Configuración abajo;
+- H1 accesible en compacto;
+- convivencia con dock/panel de teclado;
+- Desktop/Laptop/Tablet/Mobile.
 
-## Bloque 2 — Configuración
+## Bloque 2 — Configuración / Apariencia / Layout
 
-### PARIDAD
-- ventana/modal independiente fuera del sidebar mediante portal;
-- temas visibles: Claro / Oscuro / Sistema;
-- layouts visibles: Default / Compacto / Lateral;
-- mapping: fused / stacked / split;
-- instalaciones nuevas: split;
-- layouts legacy separated/focus/floating migran a fused;
-- persistencia mediante las mismas claves;
-- sidebar responde al tema;
-- mismas secciones de apariencia, accesibilidad, teclado y gráficas;
-- mismo comportamiento responsive.
-
-### GAP CORREGIDO
-Configuración estaba renderizada en ambos motores como role="menu" pese a ser una ventana modal.
-Se corrigió en Lite y Plus:
-- role="dialog";
-- aria-modal="true";
-- aria-labelledby;
-- foco inicial al botón Cerrar configuración;
-- restauración de foco al control previo al cerrar;
-- Escape preservado.
-
-### DIFERENCIA INTENCIONAL
-- detalles legacy internos de temas no visibles no forman parte del contrato vigente de tres temas.
+Verificar:
+- ventana independiente;
+- Claro / Oscuro / Sistema;
+- sidebar sensible al tema;
+- Default=fused, Compacto=stacked, Lateral=split;
+- migración separated/focus/floating → fused;
+- instalación nueva: split;
+- X/Escape/foco;
+- responsive;
+- misma jerarquía visual.
 
 ## Bloque 3 — Historial
 
-### PARIDAD
-- HistoryDrawer idéntico en ambas aplicaciones;
-- portal fuera del sidebar;
-- mismo tamaño, backdrop y scroll interno;
-- Escape;
-- foco inicial/restaurado;
-- fecha y hora;
-- módulo de origen separado de la operación;
-- nombres naturales de operaciones;
-- matrices de entrada visibles;
-- resultado matricial visual;
+Verificar:
+- ventana independiente centrada;
+- operación natural;
+- módulo de origen;
+- fecha/hora;
+- matrices visuales;
+- resultado matemático natural;
 - Reusar;
-- navegación al módulo de origen;
-- autofill al reutilizar;
-- soporte actual certificado para Científica, Matrices, Estadística y Gráficas.
+- routing al módulo de origen;
+- autofill editable;
+- integral completa al reutilizar;
+- mismo comportamiento al reutilizar dentro del módulo actual.
 
-### GAP CORREGIDO
-- Lite limitaba el contenido interior a max-w-2xl mientras Plus usaba todo el ancho útil del modal.
-- Lite usaba “Borrar todo”; se unificó a “Borrar historial”.
-- se unificó el estado vacío:
-  - “Todavía no hay cálculos guardados.”
-  - “Los cálculos que guardes aparecerán aquí, del más reciente al más antiguo.”
-
-### DIFERENCIA INTENCIONAL
-- Lite usa IndexedDB para su persistencia.
-- Plus usa su store persistido.
-- Plus necesita normalización backend→LaTeX; Lite guarda expresiones en una representación diferente.
-Estas diferencias son internas y no deben producir divergencia visible.
-
-### DIFERIDO
-Geometría y Unidades todavía no tienen el mismo nivel de integración histórica que los cuatro módulos ya certificados. Se validarán cuando sus bloques funcionales específicos sean implementados.
+Diferencia conocida:
+- Geometría/Unidades todavía no alimentan Historial con la misma cobertura completa. Documentarla; no ocultarla.
 
 ## Bloque 4 — Resultados + formatos
 
-### PARIDAD
-- mismo selector visual de formatos;
-- nombres naturales: Exacto / Decimal / Fracción / Científica;
-- formatos aparecen solo cuando son aplicables;
-- fracción mixta/impropia cuando existe;
-- salida angular en grados restringida exclusivamente a:
-  - DD — grados decimales;
-  - DMS — grados, minutos y segundos;
-- DMS usa °, ′ y ″;
-- misma jerarquía visual del resultado escalar;
-- alineación del valor a la derecha;
+Verificar:
+- encabezado único;
+- caja visual equivalente;
+- alineación derecha;
 - escala tipográfica equivalente;
-- encabezado único de Resultado;
-- matrices/soluciones estructuradas conservan su presentación apropiada;
-- no se altera el valor matemático al cambiar formato.
+- selector contextual;
+- Exacto / Decimal / Fracción / Científica cuando apliquen;
+- mixta/impropia;
+- matrices/soluciones estructuradas;
+- DD/DMS exclusivo para magnitudes angulares en grados;
+- DD usa °;
+- DMS usa °, ′, ″;
+- RAD conserva formatos numéricos normales.
 
-### GAP CORREGIDO
-- Lite podía exponer NaN o forma exacta no útil al tratar una entrada angular.
-- Plus podía exponer la representación interna en radianes para una entrada expresada en grados.
-- ambos motores ahora presentan únicamente DD/DMS cuando el resultado es angular en grados.
-- Lite tenía encabezado visual duplicado de Resultado en split; se eliminó manteniendo aria-label="Resultado".
-- Plus tenía menor escala y alineación distinta para escalares; se armonizó con Lite.
+Diferencias intencionales:
+- Plus conserva Pasos, Resumen, warnings y Copiar;
+- Lite conserva aviso de fallback numérico.
 
-### DIFERENCIA INTENCIONAL
-Plus conserva capacidades propias del backend:
-- pasos detallados;
-- badge Resumen;
-- warnings;
-- Copiar resultado;
-- Copiar como LaTeX;
-- resultados estructurados provenientes de API.
-Estas capacidades no deben eliminarse para forzar una falsa igualdad con Lite.
+## Regla angular vigente
 
-## Evidencia de certificación
+Cuando el resultado sea una magnitud angular en grados, ofrecer solo:
+- **DD** — grados decimales, p. ej. `56.55°`;
+- **DMS** — p. ej. `56° 33′ 0.0″`.
 
-### Lite
-HEAD de código del checkpoint: `90b5e3146f7a598ab89d6cb5029c102c67a6e7da`
+No mostrar Exacto / Decimal / Fracción / Científica en ese contexto.
 
-Gates observados:
-- CI: PASS
-- Cross-browser: PASS
-- S22 PWA Offline: PASS
-- S23 Accessibility: PASS
-- S25 Security: PASS
-- Playwright E2E: PASS
+Ejemplos:
+- `56.55° ↔ 56° 33′ 0.0″`
+- DEG: `asin(0.5) → 30° ↔ 30° 0′ 0.0″`
 
-### Plus
-HEAD de código del checkpoint: `6564531de850aec435e91188a38b069b0c055142`
+## Método obligatorio
 
-Gates observados:
-- CI: PASS
-- Playwright E2E: PASS
-- S17 API fuzzing: PASS
-- S18 Differential Properties: PASS
-- S20 Performance Robustness: PASS
-- S21 Cross-browser Compatibility: PASS
-- S23 Accessibility: PASS
-- S25 Security: PASS
-- S19 Mutation Baseline: **EN EJECUCIÓN al redactar este checkpoint**
+Para cada bloque:
+1. contrato S26.2R;
+2. implementación Lite;
+3. implementación Plus;
+4. pruebas;
+5. runtime visual;
+6. responsive;
+7. accesibilidad;
+8. clasificación PARIDAD / DIFERENCIA INTENCIONAL / GAP.
 
-## Criterio de cierre
+## Regla de salida
 
-El checkpoint pasa a **PASS DEFINITIVO** cuando S19 Mutation Baseline de Plus finalice en verde sobre el HEAD indicado o un HEAD posterior sin cambios funcionales en Bloques 1–4.
+No iniciar Bloque 5 hasta:
+- completar la matriz B1–B4;
+- corregir GAPs;
+- recertificar si hubo cambios;
+- registrar nuevos HEAD certificados.
 
-Después del cierre:
-1. congelar Bloques 1–4;
-2. actualizar EXECUTION_LOG y ROADMAP;
-3. iniciar Bloque 5 — shell global del teclado, apertura/cierre/responsive.
+Siguiente bloque después del checkpoint:
+**Bloque 5 — teclado global: shell, apertura/cierre y responsive.**
