@@ -210,7 +210,7 @@ export function GraphingMode() {
         }
         const [varX, varY] = parsed.freeVariables;
         const requestId = makeRequestId();
-        requestToEntryRef.current.set(requestId, { entryId: entry.id, input: kind === "parametric" ? `${entry.latex}; ${entry.yLatex}` : entry.latex });
+        requestToEntryRef.current.set(requestId, { entryId: entry.id, input: entry.latex });
         getWorker().postMessage({
           type: "graphSurface3D",
           requestId,
