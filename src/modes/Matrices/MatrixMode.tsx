@@ -169,7 +169,7 @@ export function MatrixMode() {
     else if (label.includes("ᵀ") || label.includes("transpose")) setOp("transpose");
     else if (label.includes("+")) setOp("add");
     setResult(null);
-  }, [setDimensions, setValues, takePendingHistoryReuse]);
+  }, [pendingHistoryReuse, setDimensions, setValues, takePendingHistoryReuse]);
 
   const matrixA = matrices[primary];
   const matrixB = matrices[secondary];
