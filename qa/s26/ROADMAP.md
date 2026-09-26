@@ -178,7 +178,7 @@ Regla: cada bloque cierra con diff acotado, gates aplicables, revisión contract
 2. Configuración + Apariencia + layouts — **PASS DEFINITIVO**.
 3. Historial — **PASS DEFINITIVO**.
 4. Resultado + formatos — **PASS DEFINITIVO**.
-5. Teclado global shell/open-close/responsive — **BLOQUEADO TEMPORALMENTE**.
+5. Teclado global shell/open-close/responsive — **EN CURSO**.
 6. Paridad de seis categorías del teclado — pendiente.
 7. Científica — pendiente.
 8. Matrices — pendiente.
@@ -207,3 +207,16 @@ HEAD de código certificado:
 - Plus: `40fcf3b3aa2d83fa58943fec603198dd0bb291bb`
 
 Los commits posteriores de documentación no sustituyen esos HEAD de certificación funcional.
+
+
+### Checkpoint B1–B4 cerrado — 2026-09-26
+
+Resultado: **PASS, sin GAPs bloqueantes detectados**.
+
+- B1: PARIDAD.
+- B2: PARIDAD.
+- B3: PARIDAD; cobertura incompleta de Geometría/Unidades permanece documentada como limitación compartida.
+- B4: PARIDAD; DD/DMS exclusivo en grados verificado en ambos proyectos.
+- Diferencias Plus/Lite ya documentadas se mantienen como intencionales.
+
+Bloque 5 queda **desbloqueado y EN CURSO**. Su alcance es únicamente shell global, apertura/cierre y responsive. La paridad tecla por tecla de las seis categorías permanece reservada para B6.
