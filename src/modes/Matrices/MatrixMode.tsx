@@ -131,6 +131,7 @@ export function MatrixMode() {
   const setValues = useNamedMatricesStore((state) => state.setValues);
   const resetMatrix = useNamedMatricesStore((state) => state.resetMatrix);
   const copyMatrix = useNamedMatricesStore((state) => state.copyMatrix);
+  const pendingHistoryReuse = usePendingHistoryReuseStore((s) => s.pending);
   const takePendingHistoryReuse = usePendingHistoryReuseStore((s) => s.takePending);
 
   useEffect(() => {
