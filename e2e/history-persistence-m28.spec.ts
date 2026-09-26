@@ -42,7 +42,7 @@ test("M28: historial IndexedDB sobrevive reload y puede borrarse desde la UI", a
   await expect(panel).toContainText("persistencia-m28");
   await expect(panel).toContainText("OK-M28");
 
-  await panel.getByRole("button", { name: "Borrar todo" }).click();
+  await panel.getByRole("button", { name: "Borrar historial" }).click();
 
   await expect(panel).toContainText("Todavía no hay cálculos guardados.");
 
