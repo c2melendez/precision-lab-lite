@@ -79,6 +79,7 @@ test("módulo 10: ±(5) produce dos ramas matemáticas distintas", async ({ page
   const dialog = await openKeyboard(page);
   await clearBasic(dialog);
   await dialog.getByRole("tab", { name: "Más", exact: true }).click();
+  await dialog.getByLabel("Subcategorías de Más").getByRole("button", { name: "Signos", exact: true }).click();
   await dialog.getByRole("button", { name: "más/menos", exact: true }).click();
   await dialog.getByRole("button", { name: "5", exact: true }).click();
   const pmField = page.locator("math-field").first();
@@ -97,6 +98,7 @@ test("módulo 10: ±(5) produce dos ramas matemáticas distintas", async ({ page
 test("módulo 10: Productoria Π ya no aparece como pendiente", async ({ page }) => {
   const dialog = await openKeyboard(page);
   await dialog.getByRole("tab", { name: "Cálculo", exact: true }).click();
+  await dialog.getByLabel("Subcategorías de Cálculo").getByRole("button", { name: "Sumas y productos", exact: true }).click();
   const product = dialog.getByRole("button", { name: "productoria", exact: true });
   await expect(product).toBeVisible();
   await product.click();
@@ -106,6 +108,7 @@ test("módulo 10: Productoria Π ya no aparece como pendiente", async ({ page })
 test("módulo 10: acciones no aritméticas de Álgebra exponen tooltip", async ({ page }) => {
   const dialog = await openKeyboard(page);
   await dialog.getByRole("tab", { name: "Álgebra", exact: true }).click();
+  await dialog.getByLabel("Subcategorías de Álgebra").getByRole("button", { name: "Ecuaciones", exact: true }).click();
 
   for (const name of [
     "Resolver ecuación",
