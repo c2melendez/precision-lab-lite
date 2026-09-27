@@ -806,7 +806,7 @@ export function MathKeyboard({
             hideCoreGrid ? (
               <div className="flex flex-col gap-2">
                 <div>
-                  <div className="mb-1 text-[9px] uppercase tracking-wide text-bone/50">Variables</div>
+                  <div className="mb-1 text-[9px] uppercase tracking-wide text-muted">Variables</div>
                   <div className="grid grid-cols-6 gap-1">
                     {SYMBOL_VARIABLES.map((k, i) => (
                       <button
@@ -823,7 +823,7 @@ export function MathKeyboard({
                   </div>
                 </div>
                 <div>
-                  <div className="mb-1 text-[9px] uppercase tracking-wide text-bone/50">Constantes y valores</div>
+                  <div className="mb-1 text-[9px] uppercase tracking-wide text-muted">Constantes y valores</div>
                   <div className="grid grid-cols-5 gap-1">
                     {SYMBOL_CONSTANTS.map((k, i) => (
                       <button
@@ -840,7 +840,7 @@ export function MathKeyboard({
                   </div>
                 </div>
                 <div>
-                  <div className="mb-1 text-[9px] uppercase tracking-wide text-bone/50">Funciones</div>
+                  <div className="mb-1 text-[9px] uppercase tracking-wide text-muted">Funciones</div>
                   <div className="grid grid-cols-3 gap-1">
                     {SYMBOL_FUNCTIONS.map((k, i) => (
                       <button
@@ -901,7 +901,7 @@ export function MathKeyboard({
                 // falta una acción distinta, solo un botón que deja claro
                 // que las inecuaciones también funcionan).
                 <div key={group.section} className="mb-2 last:mb-0">
-                  <div className="mb-1.5 text-[9px] uppercase tracking-wide text-bone/50">{group.section}</div>
+                  <div className="mb-1.5 text-[9px] uppercase tracking-wide text-muted">{group.section}</div>
                   <div className="grid grid-cols-3 gap-1.5">
                     <button
                       onClick={() => {
@@ -991,7 +991,7 @@ export function MathKeyboard({
                 </div>
               ) : (
                 <div key={group.section} className="mb-2 last:mb-0">
-                  <div className="mb-1.5 text-[9px] uppercase tracking-wide text-bone/50">{group.section}</div>
+                  <div className="mb-1.5 text-[9px] uppercase tracking-wide text-muted">{group.section}</div>
                   <div className="grid grid-cols-3 gap-1.5">
                     {group.keys.map((k, i) => (
                       <button
