@@ -10,6 +10,22 @@ async function openKeyboard(page: import("@playwright/test").Page) {
   return dialog;
 }
 
+async function expectNoOverlap(dialog: import("@playwright/test").Locator) {
+  const context = dialog.getByTestId("keyboard-b6-context");
+  const core = dialog.getByTestId("keyboard-b6-core");
+  await expect(context).toBeVisible();
+  await expect(core).toBeVisible();
+
+  const contextBox = await context.boundingBox();
+  const coreBox = await core.boundingBox();
+  expect(contextBox).not.toBeNull();
+  expect(coreBox).not.toBeNull();
+
+  if (contextBox && coreBox) {
+    expect(contextBox.y + contextBox.height).toBeLessThanOrEqual(coreBox.y + 1);
+  }
+}
+
 test("S26 B6: anexo contextual no oculta el teclado básico", async ({ page }) => {
   const dialog = await openKeyboard(page);
 
@@ -19,12 +35,14 @@ test("S26 B6: anexo contextual no oculta el teclado básico", async ({ page }) =
   await expect(dialog.getByRole("button", { name: "Resolver ecuación", exact: true })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "7", exact: true })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "calcular", exact: true })).toBeVisible();
+  await expectNoOverlap(dialog);
 
   await dialog.getByRole("tab", { name: "Cálculo", exact: true }).click();
   await dialog.getByLabel("Subcategorías de Cálculo").getByRole("button", { name: "Límites", exact: true }).click();
 
   await expect(dialog.getByRole("button", { name: "7", exact: true })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "calcular", exact: true })).toBeVisible();
+  await expectNoOverlap(dialog);
 });
 
 test("S26 B6: categorías y subcategorías muestran icono y texto", async ({ page }) => {
