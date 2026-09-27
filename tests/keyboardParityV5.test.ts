@@ -7,15 +7,33 @@ const basicKeys = BASIC_V5_ROWS.flat();
 const byLabel = (label: string) => basicKeys.find((key) => key.ariaLabel === label);
 
 describe("paridad del teclado V5 de Lite", () => {
-  it("concentra controles en Básico y deja igual como inserción", () => {
+  it("B6 mantiene edición/ejecución en el núcleo y mueve lo contextual", () => {
+    expect(byLabel("borrar")).toBeDefined();
     expect(byLabel("borrar todo el campo")).toBeDefined();
     expect(byLabel("insertar el último resultado")).toBeDefined();
-    expect(byLabel("grados minutos segundos")?.insertLatex).toBe("#0°#1′#2″");
-    expect(byLabel("prima")?.insertLatex).toBe("'");
     expect(byLabel("igual")?.insertLatex).toBe("=");
     expect(byLabel("calcular")?.insertLatex).toBe("");
-    expect(basicKeys.some((key) => key.ariaLabel === "variable x")).toBe(false);
-    expect(basicKeys.some((key) => key.ariaLabel === "pi")).toBe(false);
+
+    for (const moved of [
+      "grados minutos segundos",
+      "prima",
+      "menor que",
+      "mayor que",
+      "menor o igual que",
+      "mayor o igual que",
+    ]) {
+      expect(byLabel(moved)).toBeUndefined();
+    }
+
+    const units = CATEGORY_MENUS["Unidades"].flatMap((group) => group.keys);
+    expect(units.find((key) => key.ariaLabel === "grados minutos segundos")?.insertLatex).toBe("#0°#1′#2″");
+    expect(units.find((key) => key.ariaLabel === "prima")?.insertLatex).toBe("'");
+
+    const algebra = CATEGORY_MENUS["Álgebra"].flatMap((group) => group.keys);
+    expect(algebra.find((key) => key.ariaLabel === "menor que")?.insertLatex).toBe("<");
+    expect(algebra.find((key) => key.ariaLabel === "mayor que")?.insertLatex).toBe(">");
+    expect(algebra.find((key) => key.ariaLabel === "menor o igual que")?.insertLatex).toBe("\\le");
+    expect(algebra.find((key) => key.ariaLabel === "mayor o igual que")?.insertLatex).toBe("\\ge");
   });
 
   it("separa variables y constantes con Phi angular y phi áureo", () => {
@@ -48,14 +66,14 @@ describe("paridad del teclado V5 de Lite", () => {
     expect(product?.unavailable).toBeFalsy();
     expect(product?.insertLatex).toContain("\\prod");
   });
-  it("B6 congela el inventario visual y exige tooltip real en todas las teclas de Básico", () => {
+  it("B6 congela el núcleo permanente y exige tooltip real", () => {
     expect(BASIC_V5_ROWS.map((row) => row.map((key) => String(key.glyph)))).toEqual([
-      ["7", "8", "9", "(", ")", "⌫", "DEL", "ANS"],
-      ["4", "5", "6", "×", "÷", "%", "<", ">"],
-      ["1", "2", "3", "+", "−", ".", "=", "′"],
-      ["0", "°", "DMS", "±()", "≤", "≥", "Enter"],
+      ["7", "8", "9", "(", ")", "⌫"],
+      ["4", "5", "6", "×", "÷", "%"],
+      ["1", "2", "3", "+", "−", "."],
+      ["0", "ANS", "DEL", "=", "Enter"],
     ]);
-    expect(basicKeys).toHaveLength(31);
+    expect(basicKeys).toHaveLength(23);
     for (const key of basicKeys) {
       expect(key.description, `tooltip faltante en ${key.ariaLabel}`).toBeTruthy();
     }
