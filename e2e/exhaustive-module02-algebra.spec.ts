@@ -15,7 +15,7 @@ test("suite original módulo 2: teclado de Álgebra expone operaciones requerida
     "logaritmo base 10",
     "logaritmo natural",
     "logaritmo con base",
-    "exponencial",
+    "e a la n",
     "Resolver ecuación",
     "Resolver sistema de ecuaciones",
     "Resolver inecuación",
