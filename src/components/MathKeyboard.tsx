@@ -1024,64 +1024,68 @@ export function MathKeyboard({
         </div>
       )}
 
-      {/* Íconos de resolución (spec §3.4) */}
-      <div className="relative mb-1.5 grid grid-cols-3 gap-1.5">
-        <button
-          onClick={onSolveEquation}
-          aria-label="Resolver ecuación"
-          title="Resuelve una ecuación escrita con signo igual"
-          className="rounded-md bg-marker-soft/15 py-2 text-[11px] font-medium text-marker hover:bg-marker-soft/25"
-        >
-          f(x)=0
-        </button>
-        <button
-          onClick={() => setShowSystemSizeMenu((v) => !v)}
-          aria-expanded={showSystemSizeMenu}
-          aria-label="Resolver sistema de ecuaciones — elegir cantidad"
-          title="Elige entre 2 y 5 ecuaciones para el sistema"
-          className="flex items-center justify-center gap-1 rounded-md bg-alpha-soft py-2 text-[10px] font-medium text-alpha hover:bg-alpha-soft/80"
-        >
-          <span className="text-base font-light">{"{"}</span>
-          <span className="text-left leading-tight">
+      {/* Acciones rápidas legacy: en B6 viven exclusivamente en Álgebra → Ecuaciones. */}
+      {!hideCoreGrid && (
+        <>
+        <div className="relative mb-1.5 grid grid-cols-3 gap-1.5">
+          <button
+            onClick={onSolveEquation}
+            aria-label="Resolver ecuación"
+            title="Resuelve una ecuación escrita con signo igual"
+            className="rounded-md bg-marker-soft/15 py-2 text-[11px] font-medium text-marker hover:bg-marker-soft/25"
+          >
             f(x)=0
-            <br />
-            g(x)=0
-          </span>
-        </button>
-        {showSystemSizeMenu && (
-          // Pendiente #2 (revisión post-Módulo D): menú chico que
-          // pregunta cuántas ecuaciones antes de insertar la plantilla
-          // \begin{cases}. Solo importa cuando el campo todavía no tiene
-          // un sistema escrito — si ya lo tiene, onSolveSystem lo
-          // resuelve directo e ignora el número (mismo criterio que ya
-          // tenía handleSolveSystem antes de este cambio).
-          <div className="absolute left-1/3 top-full z-10 mt-1 flex gap-1 rounded-md bg-chrome-soft p-1.5 shadow-lg">
-            <span className="self-center px-1 text-[10px] text-bone/60">Ecuaciones:</span>
-            {SYSTEM_ROW_OPTIONS.map((n) => (
-              <button
-                key={n}
-                onClick={() => {
-                  onSolveSystem?.(n);
-                  setShowSystemSizeMenu(false);
-                }}
-                aria-label={`Sistema de ${n} ecuaciones`}
-                title={`Insertar sistema de ${n} ecuaciones`}
-                className="h-6 w-6 rounded bg-alpha-soft text-xs font-medium text-alpha hover:bg-alpha-soft/70"
-              >
-                {n}
-              </button>
-            ))}
-          </div>
-        )}
-        <button
-          onClick={onSimplify}
-          aria-label="Simplificar expresión"
-          title="Reduce y combina términos equivalentes"
-          className="rounded-md border border-graph/30 bg-paper py-2 text-[11px] font-semibold text-graph hover:bg-graph/10"
-        >
-          a+a → 2a
-        </button>
-      </div>
+          </button>
+          <button
+            onClick={() => setShowSystemSizeMenu((v) => !v)}
+            aria-expanded={showSystemSizeMenu}
+            aria-label="Resolver sistema de ecuaciones — elegir cantidad"
+            title="Elige entre 2 y 5 ecuaciones para el sistema"
+            className="flex items-center justify-center gap-1 rounded-md bg-alpha-soft py-2 text-[10px] font-medium text-alpha hover:bg-alpha-soft/80"
+          >
+            <span className="text-base font-light">{"{"}</span>
+            <span className="text-left leading-tight">
+              f(x)=0
+              <br />
+              g(x)=0
+            </span>
+          </button>
+          {showSystemSizeMenu && (
+            // Pendiente #2 (revisión post-Módulo D): menú chico que
+            // pregunta cuántas ecuaciones antes de insertar la plantilla
+            // \begin{cases}. Solo importa cuando el campo todavía no tiene
+            // un sistema escrito — si ya lo tiene, onSolveSystem lo
+            // resuelve directo e ignora el número (mismo criterio que ya
+            // tenía handleSolveSystem antes de este cambio).
+            <div className="absolute left-1/3 top-full z-10 mt-1 flex gap-1 rounded-md bg-chrome-soft p-1.5 shadow-lg">
+              <span className="self-center px-1 text-[10px] text-bone/60">Ecuaciones:</span>
+              {SYSTEM_ROW_OPTIONS.map((n) => (
+                <button
+                  key={n}
+                  onClick={() => {
+                    onSolveSystem?.(n);
+                    setShowSystemSizeMenu(false);
+                  }}
+                  aria-label={`Sistema de ${n} ecuaciones`}
+                  title={`Insertar sistema de ${n} ecuaciones`}
+                  className="h-6 w-6 rounded bg-alpha-soft text-xs font-medium text-alpha hover:bg-alpha-soft/70"
+                >
+                  {n}
+                </button>
+              ))}
+            </div>
+          )}
+          <button
+            onClick={onSimplify}
+            aria-label="Simplificar expresión"
+            title="Reduce y combina términos equivalentes"
+            className="rounded-md border border-graph/30 bg-paper py-2 text-[11px] font-semibold text-graph hover:bg-graph/10"
+          >
+            a+a → 2a
+          </button>
+        </div>
+        </>
+      )}
 
       {/* Tira de Cálculo — Módulo 4: oculta cuando hideCoreGrid=true
           (BasicScientificMode), porque su contenido (menos LCM/GCD, que
