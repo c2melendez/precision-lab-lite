@@ -683,6 +683,8 @@ const CATEGORIES_BASIC_MODE = ["Símbolos", "Álgebra", "Trigonométricas", "Cá
 export type KeyboardCategory = (typeof CATEGORIES_BASIC_MODE)[number];
 export interface MathKeyboardProps {
   activeCategory?: KeyboardCategory;
+  /** B6: subcategoría controlada por la navegación exterior. */
+  activeSubcategory?: string;
   field: MathField;
   onBackspace?: () => void;
   onEnter?: () => void;
@@ -733,6 +735,7 @@ export function MathKeyboard({
   registerInsertHandler = true,
   angleMode = "RAD",
   activeCategory,
+  activeSubcategory,
 }: MathKeyboardProps) {
   const CATEGORIES = hideCoreGrid ? CATEGORIES_BASIC_MODE : CATEGORIES_FULL;
   const [localCategory, setOpenCategory] = useState<(typeof CATEGORIES)[number] | null>(null);
@@ -804,9 +807,8 @@ export function MathKeyboard({
         <div className="mb-1.5 rounded-lg bg-chrome-soft p-3 shadow-lg">
           {(openCategory as string) === "Símbolos" ? (
             hideCoreGrid ? (
-              <div className="flex flex-col gap-2">
-                <div>
-                  <div className="mb-1 text-[9px] uppercase tracking-wide text-muted">Variables</div>
+              <div className="min-h-[3.25rem]">
+                {(!activeSubcategory || activeSubcategory === "Variables") && (
                   <div className="grid grid-cols-6 gap-1">
                     {SYMBOL_VARIABLES.map((k, i) => (
                       <button
@@ -821,10 +823,9 @@ export function MathKeyboard({
                       </button>
                     ))}
                   </div>
-                </div>
-                <div>
-                  <div className="mb-1 text-[9px] uppercase tracking-wide text-muted">Constantes y valores</div>
-                  <div className="grid grid-cols-5 gap-1">
+                )}
+                {activeSubcategory === "Constantes y valores" && (
+                  <div className="grid grid-cols-6 gap-1">
                     {SYMBOL_CONSTANTS.map((k, i) => (
                       <button
                         key={`constant-${i}`}
@@ -838,9 +839,8 @@ export function MathKeyboard({
                       </button>
                     ))}
                   </div>
-                </div>
-                <div>
-                  <div className="mb-1 text-[9px] uppercase tracking-wide text-muted">Funciones</div>
+                )}
+                {activeSubcategory === "Funciones" && (
                   <div className="grid grid-cols-3 gap-1">
                     {SYMBOL_FUNCTIONS.map((k, i) => (
                       <button
@@ -855,7 +855,7 @@ export function MathKeyboard({
                       </button>
                     ))}
                   </div>
-                </div>
+                )}
               </div>
             ) : (
               <div className="flex flex-col gap-1">
@@ -890,7 +890,10 @@ export function MathKeyboard({
               </div>
             )
           ) : (
-            CATEGORY_MENUS[openCategory].map((group) =>
+            (activeSubcategory
+              ? CATEGORY_MENUS[openCategory].filter((group) => group.section === activeSubcategory)
+              : CATEGORY_MENUS[openCategory]
+            ).map((group) =>
               group.section === "Ecuaciones" ? (
                 // Módulo 3: no son teclas que insertan LaTeX — disparan
                 // los mismos callbacks que los 3 íconos de resolución de
