@@ -73,15 +73,30 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
     const tab = dialog.getByRole("tab", { name: category, exact: true });
     await tab.click();
     await expect(tab).toHaveAttribute("aria-selected", "true");
+    await expect(dialog.getByLabel(`Subcategorías de ${category}`)).toBeVisible();
     await expect(dialog.getByRole("tabpanel")).toBeVisible();
-    expect(await dialog.getByRole("tabpanel").getByRole("button").count()).toBeGreaterThan(3);
   }
+
+  // Una familia no expone todas sus teclas a la vez.
+  await algebraTab.click();
+  await expect(dialog.getByRole("button", { name: "Constantes", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(dialog.getByRole("button", { name: "logaritmo natural", exact: true })).toHaveCount(0);
+  await dialog.getByRole("button", { name: "Logaritmos", exact: true }).click();
+  await expect(dialog.getByRole("button", { name: "logaritmo natural", exact: true })).toBeVisible();
+
   await symbolsTab.click();
   await expect(symbolsTab).toHaveAttribute("aria-selected", "true");
-  await expect(dialog.getByText("Variables", { exact: true })).toBeVisible();
-  await expect(dialog.getByText("Constantes y valores", { exact: true })).toBeVisible();
+  await expect(dialog.getByLabel("Subcategorías de Símbolos")).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "Variables", exact: true })).toHaveAttribute("aria-pressed", "true");
   await expect(dialog.getByRole("button", { name: "Phi mayúscula", exact: true })).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "número áureo phi", exact: true })).toHaveCount(0);
+
+  await dialog.getByRole("button", { name: "Constantes y valores", exact: true }).click();
   await expect(dialog.getByRole("button", { name: "número áureo phi", exact: true })).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "Phi mayúscula", exact: true })).toHaveCount(0);
+
+  await dialog.getByRole("button", { name: "Funciones", exact: true }).click();
+  await expect(dialog.getByRole("button", { name: "función f", exact: true })).toBeVisible();
 
   // Después de certificar el contenido de Símbolos, valida navegación
   // por teclado entre las familias sin confundir el panel seleccionado.
