@@ -108,16 +108,26 @@ test("módulo 10: Productoria Π ya no aparece como pendiente", async ({ page })
 test("módulo 10: acciones no aritméticas de Álgebra exponen tooltip", async ({ page }) => {
   const dialog = await openKeyboard(page);
   await dialog.getByRole("tab", { name: "Álgebra", exact: true }).click();
-  await dialog.getByLabel("Subcategorías de Álgebra").getByRole("button", { name: "Ecuaciones", exact: true }).click();
+  const subcategories = dialog.getByLabel("Subcategorías de Álgebra");
+  await subcategories.getByRole("button", { name: "Ecuaciones", exact: true }).click();
 
   for (const name of [
     "Resolver ecuación",
     "Resolver inecuación",
     "Resolver sistema de ecuaciones",
+    "Resolver sistema de inecuaciones",
     "Simplificar expresión",
-    "Mínimo común múltiplo",
-    "Máximo común divisor",
+    "Factorizar expresión",
+    "Evaluar función en un punto",
   ]) {
+    const button = dialog.getByRole("button", { name, exact: true }).first();
+    await expect(button).toBeVisible();
+    const title = await button.getAttribute("title");
+    expect(title, `Falta tooltip en ${name}`).toBeTruthy();
+  }
+
+  await subcategories.getByRole("button", { name: "Aritmética", exact: true }).click();
+  for (const name of ["Mínimo común múltiplo", "Máximo común divisor"]) {
     const button = dialog.getByRole("button", { name, exact: true }).first();
     await expect(button).toBeVisible();
     const title = await button.getAttribute("title");
