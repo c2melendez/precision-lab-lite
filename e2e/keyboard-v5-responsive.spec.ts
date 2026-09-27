@@ -78,14 +78,17 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
   }
   await symbolsTab.click();
   await expect(symbolsTab).toHaveAttribute("aria-selected", "true");
-  await symbolsTab.press("Home");
-  await expect(algebraTab).toBeFocused();
-  await algebraTab.press("ArrowRight");
-  await expect(dialog.getByRole("tab", { name: "Trigonométricas" })).toBeFocused();
   await expect(dialog.getByText("Variables", { exact: true })).toBeVisible();
   await expect(dialog.getByText("Constantes y valores", { exact: true })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "Phi mayúscula", exact: true })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "número áureo phi", exact: true })).toBeVisible();
+
+  // Después de certificar el contenido de Símbolos, valida navegación
+  // por teclado entre las familias sin confundir el panel seleccionado.
+  await symbolsTab.press("Home");
+  await expect(algebraTab).toBeFocused();
+  await algebraTab.press("ArrowRight");
+  await expect(dialog.getByRole("tab", { name: "Trigonométricas" })).toBeFocused();
 
   const viewport = page.viewportSize();
   const bounds = await dialog.boundingBox();
