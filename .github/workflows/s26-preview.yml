@@ -67,9 +67,18 @@ jobs:
   deploy:
     needs: build-preview
     runs-on: ubuntu-latest
+    # S26 usa un entorno separado. El entorno github-pages de producción
+    # puede estar restringido a main; cuando qa/s26-execution intentaba
+    # usarlo, el job fallaba antes de recibir runner (steps: null).
+    # deploy-pages admite otro environment; el artefacto sigue publicando
+    # el sitio único de Pages con producción en / y S26 en /s26-preview/.
     environment:
-      name: github-pages
+      name: s26-preview
       url: ${{ steps.deployment.outputs.page_url }}s26-preview/
+    permissions:
+      pages: write
+      id-token: write
     steps:
       - id: deployment
+        name: Deploy S26 preview to Pages
         uses: actions/deploy-pages@v5
