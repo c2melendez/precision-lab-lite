@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import type { ReactNode } from "react";
 
 import { NaturalInput } from "./NaturalInput";
-import { RecentKeysBar } from "./RecentKeysBar";
 import { ResultPanel } from "./ResultPanel";
 import { HistoryLog, type SessionHistoryEntry } from "./HistoryLog";
 import { AngleModePopover } from "./AngleModePopover";
@@ -301,8 +300,6 @@ function StackedKeyboardSection() {
 
   return (
     <div className="flex flex-col gap-1.5">
-      {/* Fase X, Módulo X0 — mismo criterio que precision-lab (main). */}
-      <RecentKeysBar />
       <div className="rounded-xl border border-paper-line bg-paper-soft">
         <button
           type="button"
@@ -418,9 +415,6 @@ function FloatingScreenContent({ inputField, result, inputLatex, angleMode, onTo
       <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
         <ResultPanel result={result} inputLatex={inputLatex} angleMode={angleMode} />
       </div>
-      {/* Fase X, Módulo X0 — mismo criterio que precision-lab (main): el
-          dock de recientes va fuera de la FloatingWindow, justo encima. */}
-      <RecentKeysBar />
       {/* Fase Y (spec_rediseno_visual.md sección 11) — restricción dura:
           el teclado SIEMPRE inicia colapsado, en las 6 disposiciones sin
           excepción, Flotante incluida. Antes de este fix, la
