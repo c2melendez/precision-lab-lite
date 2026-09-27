@@ -56,6 +56,39 @@ describe("inventario estructural del teclado V5 de Lite", () => {
     expect(labels).not.toContain("mayor o igual que");
   });
 
+
+  it("B6 expone las siete familias contextuales y amplía Símbolos", () => {
+    expect(Object.keys(CATEGORY_MENUS)).toEqual(expect.arrayContaining([
+      "Álgebra",
+      "Trigonométricas",
+      "Cálculo",
+      "Complejos",
+      "Unidades",
+      "Más",
+    ]));
+
+    const variableLabels = SYMBOL_VARIABLES.map((key) => key.ariaLabel);
+    for (const label of ["variable t", "variable a", "variable b", "variable c", "variable n"]) {
+      expect(variableLabels).toContain(label);
+    }
+
+    expect(SYMBOL_CONSTANTS.map((key) => key.ariaLabel)).toContain("tau");
+
+    const algebra = (CATEGORY_MENUS.Álgebra ?? []).flatMap((group) => group.keys);
+    expect(algebra.map((key) => key.ariaLabel)).not.toContain("exponencial");
+    expect(algebra.map((key) => key.ariaLabel)).toContain("operador de potencia");
+
+    const units = (CATEGORY_MENUS.Unidades ?? []).flatMap((group) => group.keys);
+    expect(units.map((key) => key.ariaLabel)).toEqual(expect.arrayContaining([
+      "grados",
+      "prima",
+      "grados minutos segundos",
+      "fracción",
+      "fracción mixta",
+      "pi",
+    ]));
+  });
+
   it("no deja teclas sin etiqueta accesible", () => {
     for (const key of allKeyboardKeys) {
       expect(key.ariaLabel.trim()).not.toBe("");
