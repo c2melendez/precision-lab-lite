@@ -215,8 +215,8 @@ const CALCULUS_ROW_1: KeyDef[] = [
   ),
   key("Σ", "\\sum_{#0}^{#1}#2", "sumatoria", false, undefined, "suma de una expresión repetida según un índice, entre un valor inicial y uno final"),
   key("Π", "\\prod_{#0}^{#1}#2", "productoria", false, undefined, "producto de una expresión repetida según un índice, entre un valor inicial y uno final"),
-  key("LCM", "\\mathrm{lcm}\\left(#0,#1\\right)", "mínimo común múltiplo", false, undefined, "el menor número que es múltiplo de ambos valores a la vez"),
-  key("GCD", "\\gcd\\left(#0,#1\\right)", "máximo común divisor", false, undefined, "el mayor número que divide a ambos valores sin dejar residuo"),
+  key("LCM", "\\mathrm{lcm}\\left(#0\\right)", "mínimo común múltiplo", false, undefined, "mínimo común múltiplo de dos o más valores separados por comas"),
+  key("GCD", "\\gcd\\left(#0\\right)", "máximo común divisor", false, undefined, "máximo común divisor de dos o más valores separados por comas"),
 ];
 
 const CALCULUS_ROW_2: KeyDef[] = [
@@ -914,7 +914,7 @@ export function MathKeyboard({
                       a+a → 2a
                     </button>
                     <button
-                      onClick={() => press(key("LCM", "\\mathrm{lcm}\\left(#0,#1\\right)", "mínimo común múltiplo"))}
+                      onClick={() => press(key("LCM", "\\mathrm{lcm}\\left(#0\\right)", "mínimo común múltiplo", false, undefined, "MCM de dos o más valores separados por comas"))}
                       aria-label="Mínimo común múltiplo"
                       title="Calcula el menor múltiplo común de dos enteros"
                       className="rounded-md border border-marker bg-marker-soft/10 py-2 text-xs font-medium text-marker hover:bg-marker-soft/20"
@@ -922,7 +922,7 @@ export function MathKeyboard({
                       LCM
                     </button>
                     <button
-                      onClick={() => press(key("GCD", "\\gcd\\left(#0,#1\\right)", "máximo común divisor"))}
+                      onClick={() => press(key("GCD", "\\gcd\\left(#0\\right)", "máximo común divisor", false, undefined, "MCD de dos o más valores separados por comas"))}
                       aria-label="Máximo común divisor"
                       title="Calcula el mayor divisor común de dos enteros"
                       className="rounded-md border border-marker bg-marker-soft/10 py-2 text-xs font-medium text-marker hover:bg-marker-soft/20"
