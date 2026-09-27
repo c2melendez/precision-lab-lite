@@ -39,7 +39,7 @@ Básico deja de ser una pestaña independiente y pasa a ser el núcleo siempre v
 
 ### Operadores y edición
 
-`+` · `−` · `×` · `÷` · `%` · `ANS` · `DEL`
+`+` · `−` · `×` · `÷` · `%` · `ANS` · `⌫` · `DEL`
 
 ### Igualdad y ejecución
 
