@@ -147,7 +147,7 @@ export function ScientificKeyboardSections({ basic, advanced }: {
         ))}
       </div>
 
-      <div className="grid min-h-0 grid-cols-1 gap-2 overflow-hidden dt:grid-cols-[10.5rem_minmax(0,1fr)]">
+      <div data-testid="keyboard-b6-context" className="grid min-h-0 grid-cols-1 gap-2 overflow-hidden rounded-xl [contain:layout_paint] dt:grid-cols-[10.5rem_minmax(0,1fr)]">
         <div
           aria-label={`Subcategorías de ${family}`}
           className="flex min-h-0 gap-1 overflow-x-auto rounded-xl border border-paper-line bg-paper-soft p-1.5 dt:flex-col dt:overflow-x-hidden dt:overflow-y-auto"
@@ -172,7 +172,6 @@ export function ScientificKeyboardSections({ basic, advanced }: {
 
         <div
           id={`${id}-context`}
-          data-testid="keyboard-b6-context"
           role="tabpanel"
           aria-labelledby={`${id}-family-${FAMILIES.indexOf(family)}`}
           aria-label={`${family}: ${subcategory}`}
@@ -187,7 +186,7 @@ export function ScientificKeyboardSections({ basic, advanced }: {
 
       <div
         data-testid="keyboard-b6-core"
-        className="mt-2 min-w-0 shrink-0 rounded-xl border border-paper-line bg-paper p-2"
+        className="min-w-0 shrink-0 rounded-xl border border-paper-line bg-paper p-2"
       >
         {basic}
       </div>
