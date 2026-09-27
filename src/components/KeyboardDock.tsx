@@ -169,8 +169,6 @@ export function KeyboardDock({ sidebarExpanded }: { sidebarExpanded: boolean }) 
       )}
 
       <div ref={dockRef} data-testid="keyboard-dock" className={`fixed bottom-0 right-0 z-30 border-t border-chrome-soft bg-chrome px-3 pb-[env(safe-area-inset-bottom)] pt-2 ${sidebarExpanded ? "left-60" : "left-[72px]"}`}>
-        {/* Fase X, Módulo X0 — mismo criterio que precision-lab (main). */}
-        <RecentKeysBar />
         {/* Fila compacta — móvil siempre, y cualquier breakpoint en Focus. */}
         <div className={forceCompactDock ? "grid grid-cols-3 gap-1.5" : "grid grid-cols-3 gap-1.5 md:hidden"}>
           <button
