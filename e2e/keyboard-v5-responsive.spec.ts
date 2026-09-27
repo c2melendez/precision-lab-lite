@@ -129,3 +129,29 @@ test("B6: Enter físico ejecuta el mismo cálculo que Enter virtual", async ({ p
   await field.press("Enter");
   await expect(page.getByRole("region", { name: "Resultado", exact: true })).toContainText("4");
 });
+
+
+test("B6: los seis módulos comparten núcleo y siete familias", async ({ page }) => {
+  await page.goto("./");
+
+  for (const name of ["Científica", "Gráficas", "Matrices", "Estadística", "Geometría", "Unidades"]) {
+    const navigation = page.locator("nav").getByRole("button", { name, exact: true });
+    await navigation.click();
+    await expect(navigation).toHaveAttribute("aria-current", "page");
+
+    const opener = page.getByRole("button", { name: /Abrir teclado|Expandir teclado|^Teclado$/i }).first();
+    await expect(opener, `${name}: apertura global`).toBeVisible();
+    await opener.click();
+
+    const keyboard = page.getByRole("dialog", { name: "Teclado matemático" });
+    await expect(keyboard, `${name}: panel global`).toBeVisible();
+    await expect(keyboard.getByTestId("keyboard-b6-core"), `${name}: núcleo B6`).toBeVisible();
+    await expect(keyboard.getByRole("tab"), `${name}: siete familias B6`).toHaveCount(7);
+    for (const family of ["Álgebra", "Trigonométricas", "Cálculo", "Complejos", "Símbolos", "Unidades", "Más"]) {
+      await expect(keyboard.getByRole("tab", { name: family, exact: true }), `${name}: ${family}`).toBeVisible();
+    }
+
+    await page.keyboard.press("Escape");
+    await expect(keyboard).toBeHidden();
+  }
+});
