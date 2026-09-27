@@ -164,6 +164,12 @@ export const SYMBOL_CONSTANTS: KeyDef[] = [
   key("τ", "2\\pi", "tau", false, undefined, "constante tau, equivalente a 2π"),
 ];
 
+export const SYMBOL_FUNCTIONS: KeyDef[] = [
+  key("f(x)", "f\\left(#0\\right)", "función f", false, undefined, "inserta la función f con argumento editable"),
+  key("g(x)", "g\\left(#0\\right)", "función g", false, undefined, "inserta la función g con argumento editable"),
+  key("h(x)", "h\\left(#0\\right)", "función h", false, undefined, "inserta la función h con argumento editable"),
+];
+
 // Se mantiene solo para AlgebraMode/CalculusMode/LinearSystemsMode
 // (código muerto) — BasicScientificMode ya no la renderiza (hideCoreGrid
 // también oculta esta fila, ver JSX), su contenido vive ahora en
