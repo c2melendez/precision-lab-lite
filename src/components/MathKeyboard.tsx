@@ -148,6 +148,11 @@ export const SYMBOL_VARIABLES: KeyDef[] = [
   key("θ", "\\theta", "theta", false, undefined, "variable angular theta"),
   key("Φ", "\\Phi", "Phi mayúscula", false, undefined, "ángulo azimutal Phi mayúscula en coordenadas polares"),
   key({ italic: "r" }, "r", "variable r", false, undefined, "variable radial en coordenadas polares"),
+  key({ italic: "t" }, "t", "variable t", false, undefined, "parámetro t, usado especialmente en gráficas paramétricas"),
+  key({ italic: "a" }, "a", "variable a", false, undefined, "parámetro genérico a"),
+  key({ italic: "b" }, "b", "variable b", false, undefined, "parámetro genérico b"),
+  key({ italic: "c" }, "c", "variable c", false, undefined, "parámetro genérico c"),
+  key({ italic: "n" }, "n", "variable n", false, undefined, "índice entero o contador n"),
 ];
 
 export const SYMBOL_CONSTANTS: KeyDef[] = [
@@ -156,6 +161,7 @@ export const SYMBOL_CONSTANTS: KeyDef[] = [
   key({ italic: "i" }, "i", "número imaginario", false, undefined, "unidad imaginaria (raíz cuadrada de -1)"),
   key("∞", "\\infty", "infinito", false, undefined, "representa infinito"),
   key("φ", "\\frac{1+\\sqrt{5}}{2}", "número áureo phi", false, undefined, "número áureo: (1 + √5) / 2"),
+  key("τ", "2\\pi", "tau", false, undefined, "constante tau, equivalente a 2π"),
 ];
 
 // Se mantiene solo para AlgebraMode/CalculusMode/LinearSystemsMode
@@ -483,7 +489,7 @@ CATEGORY_MENUS.Álgebra = [
       key({ sup: "n", base: "10" }, "10^{#0}", "10 a la n", false, undefined, "10 elevado a un exponente"),
       key({ sup: "2", base: BOX }, "#0^2", "a al cuadrado", false, undefined, "un valor multiplicado por sí mismo"),
       key({ sup: "n", base: BOX }, "#0^{#1}", "a a la n", false, undefined, "un valor elevado a cualquier exponente editable"),
-      key("exp", "\\exp\\left(#0\\right)", "exponencial", false, undefined, "e elevado al valor ingresado (equivalente a e^x)"),
+      key("^", "^", "operador de potencia", false, undefined, "inserta el operador lineal de potencia, equivalente a la tecla física ^"),
     ],
   },
   {
@@ -585,8 +591,49 @@ CATEGORY_MENUS.Cálculo = [
   { section: "Ecuaciones diferenciales", keys: ODE_ROW },
 ];
 
+// S26 B6 — familias contextuales que salen del núcleo permanente.
+// Estas definiciones son canónicas para Científica y se comparten por
+// duplicación de acceso, nunca por cambio de significado.
+const B6_RELATIONS: KeyDef[] = [
+  key("<", "<", "menor que", false, undefined, "compara si el valor izquierdo es menor que el derecho"),
+  key(">", ">", "mayor que", false, undefined, "compara si el valor izquierdo es mayor que el derecho"),
+  key("≤", "\\le", "menor o igual que", false, undefined, "compara si el valor izquierdo es menor o igual que el derecho"),
+  key("≥", "\\ge", "mayor o igual que", false, undefined, "compara si el valor izquierdo es mayor o igual que el derecho"),
+  key("=", "=", "igual", false, undefined, "inserta un signo de igualdad sin ejecutar el cálculo"),
+];
+
+const B6_ANGLE_KEYS: KeyDef[] = [
+  key("°", "°", "grados", false, undefined, "inserta el símbolo de grados"),
+  key("′", "'", "prima", false, undefined, "agrega una prima para escribir ecuaciones diferenciales o minutos angulares"),
+  key("DMS", "#0°#1′#2″", "grados minutos segundos", false, undefined, "inserta la plantilla editable grados, minutos y segundos"),
+];
+
+const B6_FRACTIONS: KeyDef[] = [
+  key("a/b", "\\frac{#0}{#1}", "fracción", false, undefined, "inserta una fracción editable con numerador y denominador"),
+  key("a b/c", "#0\\frac{#1}{#2}", "fracción mixta", false, undefined, "inserta una fracción mixta editable"),
+];
+
+CATEGORY_MENUS.Álgebra = [
+  ...(CATEGORY_MENUS.Álgebra ?? []),
+  { section: "Relaciones", keys: B6_RELATIONS },
+];
+
+CATEGORY_MENUS.Unidades = [
+  { section: "Ángulos", keys: B6_ANGLE_KEYS },
+  { section: "Fracciones", keys: B6_FRACTIONS },
+  {
+    section: "Constante útil",
+    keys: [key("π", "\\pi", "pi", false, undefined, "constante pi (≈3.14159)")],
+  },
+];
+
+CATEGORY_MENUS.Más = [
+  { section: "Fracciones", keys: B6_FRACTIONS },
+  { section: "Relaciones y ángulos", keys: [...B6_RELATIONS.slice(0, 4), ...B6_ANGLE_KEYS] },
+];
+
 const CATEGORIES_FULL = ["Trigonométricas", "Símbolos", "Complejos"] as const;
-const CATEGORIES_BASIC_MODE = ["Símbolos", "Álgebra", "Trigonométricas", "Cálculo", "Complejos"] as const;
+const CATEGORIES_BASIC_MODE = ["Símbolos", "Álgebra", "Trigonométricas", "Cálculo", "Complejos", "Unidades", "Más"] as const;
 
 export type KeyboardCategory = (typeof CATEGORIES_BASIC_MODE)[number];
 export interface MathKeyboardProps {
