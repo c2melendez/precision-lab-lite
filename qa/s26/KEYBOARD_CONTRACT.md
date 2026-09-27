@@ -1,6 +1,6 @@
 # S26 B6 — Contrato consolidado del teclado global
 
-**Estado:** aprobado para implementación  
+**Estado:** implementado y certificado automáticamente; pendiente confirmación visual humana final  
 **Ámbito:** Precision Lab Lite y Precision Lab Plus  
 **Autoridad visual:** `VISUAL_CONTRACT_FINAL_S26_2R.md` + mockups aprobados  
 **Autoridad funcional/semántica:** este documento
@@ -324,3 +324,22 @@ Este checkpoint sustituye cualquier interpretación visual anterior incompatible
 - `convertir a forma polar` pertenece a Complejos → Funciones.
 - Gates automáticos B6 están verdes en los HEADs certificados registrados en `SESSION_CLOSURE_2026-09-27.md`.
 - Falta solo confirmación visual humana final para declarar B6 PASS DEFINITIVO.
+
+
+## 18. Estado de certificación — 2026-09-27
+
+HEAD de referencia: `cdd8e35ac6ddcb670f6dbdfe0bf79fa1fde7c9ec`.
+
+Automatización:
+CI, Playwright E2E, S22 PWA Offline, S23 Accessibility, S25 Security y Cross-browser smoke: PASS. S26 Preview: build-preview/composición/upload de artefacto PASS; deploy Pages FAIL.
+
+B6 queda **PASS AUTOMÁTICO / pendiente confirmación visual humana final**.
+
+No declarar PASS DEFINITIVO hasta que el usuario revise el teclado posterior a:
+- familias arriba;
+- subcategorías separadas;
+- una sola subcategoría visible;
+- núcleo permanente debajo;
+- retiro del SmartDock;
+- retiro de la tira rápida global de Ecuaciones;
+- selector Sistema 2–5 dentro de Álgebra → Ecuaciones.
