@@ -105,7 +105,7 @@ export function ScientificKeyboardSections({ basic, advanced }: {
   };
 
   return (
-    <div data-testid="keyboard-b6-layout" className="flex min-h-0 flex-col gap-2">
+    <div data-testid="keyboard-b6-layout" className="grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)_auto] gap-2">
       <div
         role="tablist"
         aria-label="Familias del teclado matemático"
@@ -147,10 +147,10 @@ export function ScientificKeyboardSections({ basic, advanced }: {
         ))}
       </div>
 
-      <div className="grid min-h-0 grid-cols-1 gap-2 dt:grid-cols-[10.5rem_minmax(0,1fr)]">
+      <div className="grid min-h-0 grid-cols-1 gap-2 overflow-hidden dt:grid-cols-[10.5rem_minmax(0,1fr)]">
         <div
           aria-label={`Subcategorías de ${family}`}
-          className="flex gap-1 overflow-x-auto rounded-xl border border-paper-line bg-paper-soft p-1.5 dt:flex-col dt:overflow-visible"
+          className="flex min-h-0 gap-1 overflow-x-auto rounded-xl border border-paper-line bg-paper-soft p-1.5 dt:flex-col dt:overflow-x-hidden dt:overflow-y-auto"
         >
           {availableSubcategories.map((name) => (
             <button
@@ -175,7 +175,7 @@ export function ScientificKeyboardSections({ basic, advanced }: {
           role="tabpanel"
           aria-labelledby={`${id}-family-${FAMILIES.indexOf(family)}`}
           aria-label={`${family}: ${subcategory}`}
-          className="min-w-0 max-h-[30vh] overflow-y-auto rounded-xl border border-paper-line bg-paper p-2 dt:max-h-[18rem]"
+          className="min-h-0 min-w-0 overflow-y-auto rounded-xl border border-paper-line bg-paper p-2"
         >
           {cloneElement(advanced, {
             activeCategory: family,
@@ -186,7 +186,7 @@ export function ScientificKeyboardSections({ basic, advanced }: {
 
       <div
         data-testid="keyboard-b6-core"
-        className="sticky bottom-0 z-20 min-w-0 shrink-0 rounded-xl border border-paper-line bg-paper p-2 shadow-[0_-8px_18px_-14px_rgba(0,0,0,0.45)]"
+        className="min-w-0 shrink-0 rounded-xl border border-paper-line bg-paper p-2"
       >
         {basic}
       </div>
