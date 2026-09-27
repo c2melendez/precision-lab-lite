@@ -1,228 +1,292 @@
-# S26.2 — Contrato del teclado virtual
+# S26 B6 — Contrato consolidado del teclado global
 
-## Principio
+**Estado:** aprobado para implementación  
+**Ámbito:** Precision Lab Lite y Precision Lab Plus  
+**Autoridad visual:** `VISUAL_CONTRACT_FINAL_S26_2R.md` + mockups aprobados  
+**Autoridad funcional/semántica:** este documento
 
-El rediseño **conserva la botonería y la funcionalidad existentes**. Cambian tema, espaciado, jerarquía, tipografía, estados visuales y adaptación responsive; no se elimina ninguna tecla funcional sin una decisión explícita y prueba de paridad.
+## 1. Principio general
 
-## Categorías obligatorias
+Precision Lab utiliza **un único teclado matemático global**, compartido por Lite y Plus y accesible desde Científica, Gráficas, Matrices, Estadística, Geometría y Unidades.
 
-1. Básico
-2. Símbolos
-3. Álgebra
-4. Trigonométricas
-5. Cálculo
-6. Complejos
+Los módulos pueden conservar controles propios de su flujo, pero no deben reconstruir teclados matemáticos paralelos. Las teclas duplicadas entre familias son accesos alternativos a una misma definición canónica: misma etiqueta funcional, tooltip, inserción, parser y acción.
 
-El teclado inicia en **Básico** y permanece colapsado hasta que el usuario lo abra.
-
-## Disponibilidad global
-
-El mismo teclado debe poder abrirse desde:
-- Científica
-- Matrices
-- Gráficas
-- Estadística
-- Geometría
-- Unidades
-
-Cada módulo puede limitar qué acciones interpreta, pero el teclado sigue siendo el mecanismo de entrada global. No se crea un segundo teclado reducido por módulo.
-
-## Tooltips
-
-**Todas las teclas** conservan ayuda contextual. El comportamiento actual de tooltips es la referencia funcional:
-- mouse: hover/focus;
-- teclado: focus;
-- táctil: interacción equivalente ya existente (p. ej. long-press cuando aplique);
-- textos concisos en español.
-
-Correcciones explícitas:
-- `°`: “inserta el símbolo de grados”.
-- `′` (prima): “agrega una prima para escribir ecuaciones diferenciales”.
-- `=`: “inserta un signo de igualdad sin ejecutar el cálculo”.
-
-La tecla `=` **no ejecuta**. La ejecución corresponde a Enter/↵ o a la acción primaria del módulo.
-
-## Básico
-
-Se conserva la botonería existente, incluyendo:
-- dígitos;
-- paréntesis;
-- operadores;
-- porcentaje;
-- comparadores;
-- ANS;
-- DEL;
-- DMS;
-- grados `°`;
-- prima `′`;
-- igualdad `=`;
-- Enter/↵.
-
-## Símbolos
-
-Conservar variables y constantes existentes, incluyendo su agrupación visual:
-- variables (x, y, z, θ, Φ, r y las ya existentes);
-- constantes/valores (π, e, i, ∞, φ y las ya existentes).
-
-Los colores históricos de agrupación pueden cambiar para adoptar la nueva identidad visual.
-
-## Álgebra
-
-Conservar logaritmos, exponenciales, radicales y generales actuales.
-
-### Grupo Ecuaciones — botones obligatorios
-- Ecuación lineal / resolver: `f(x)=0`.
-- Inecuación lineal: representación tipo `f(x)≥0`.
-- Sistema de ecuaciones lineales: bloque con `f(x)=0`, `g(x)=0`.
-- Sistema de inequaciones lineales: bloque equivalente con signos ≥/≤.
-- Evaluar función en un punto: representación `f(a)` / `x=a`.
-- Simplificar: ejemplo visual `a+a→2a`.
-- Factorizar: ejemplo visual `x²+2x+1→(x+1)²`.
-- LCM / mínimo común múltiplo.
-- GCD / máximo común divisor.
-
-## Trigonométricas
-
-Conservar toda la botonería existente:
-- directas;
-- inversas;
-- hiperbólicas;
-- hiperbólicas inversas.
-
-## Cálculo
-
-Conservar integrales, sumas/productos, derivadas y ecuaciones diferenciales existentes.
-
-### Límites — cuatro variantes mínimas
-1. `lim_{x→a} f(x)`
-2. `lim_{x→∞} f(x)`
-3. `lim_{x→a^-} f(x)`
-4. `lim_{x→a^+} f(x)`
-
-No se eliminan otras variantes ya soportadas por el motor.
-
-## Complejos
-
-Conservar toda la botonería existente:
-- Re()
-- Im()
-- arg()
-- conj()
-- |z|
-- polar
-- Log(z)
-- potencias/raíces
-- forma trigonométrica/exponencial
-- residuos/singularidades
-- Graficar
-- cualquier otra tecla ya presente.
-
-## Responsive
+## 2. Arquitectura espacial aprobada
 
 ### Desktop
-- panel alineado al workspace;
-- máximo aproximado 45% de la altura disponible;
-- tabs siempre visibles;
-- contenido interno con scroll si es necesario.
 
-### Tablet/Mobile
-- panel/bottom sheet con scroll interno;
-- tabs desplazables horizontalmente si no caben;
-- targets táctiles ≈44 px;
-- la expresión activa nunca queda permanentemente oculta.
+**Izquierda selecciona. Centro permanece. Derecha cambia.**
 
-## Regla de integridad
+- **Izquierda — navegación:** familias y subcategorías.
+- **Centro — núcleo permanente:** números, edición y operadores.
+- **Derecha — panel dinámico:** teclas de la subcategoría elegida.
 
-Antes de cerrar S26:
-- inventariar tecla por tecla;
-- verificar tooltip;
-- verificar inserción/acción;
-- verificar paridad con motor/ruta;
-- registrar excepciones por módulo;
-- no aceptar una tecla decorativa sin función documentada.
+### Tablet / Mobile
 
-## S26.3 — Plantillas trigonométricas sensibles al modo angular
+Se conserva la misma jerarquía lógica. Si no existe ancho suficiente, el panel dinámico derecho puede bajar debajo del núcleo permanente.
 
-Para funciones trigonométricas directas:
-- `sin`
-- `cos`
-- `tan`
-- `sec`
-- `csc`
-- `cot`
+### Regla de espacio
 
-el teclado adapta la plantilla según la unidad angular activa.
+El teclado se adapta al espacio libre; **nunca debe tapar permanentemente Entrada, Resultado, Pasos o Gráfica**. Las teclas usan densidad compacta. El panel dinámico se reorganiza antes de recurrir a scroll interno.
 
-### DEG/GRAD
-Inserta el símbolo de grados **dentro del argumento**, con el placeholder antes del símbolo:
-- `sin(□°)`
-- `cos(□°)`
-- `tan(□°)`
-- `sec(□°)`
-- `csc(□°)`
-- `cot(□°)`
+## 3. Núcleo permanente
 
-La representación MathLive equivalente utiliza `#0^{\\circ}`.
+Básico deja de ser una pestaña independiente y pasa a ser el núcleo siempre visible.
 
-### RAD
-Conserva las plantillas sin símbolo de grado:
-- `sin(□)`
-- `cos(□)`
-- etc.
+### Números y entrada
+
+`0 1 2 3 4 5 6 7 8 9` · `.` · `(` · `)`
+
+### Operadores y edición
+
+`+` · `−` · `×` · `÷` · `%` · `ANS` · `DEL`
+
+### Igualdad y ejecución
+
+- `=` **solo inserta igualdad; nunca ejecuta**.
+- `Enter` ejecuta/evalúa.
+- La tecla virtual `Enter` y la tecla física Enter/Return deben invocar **el mismo flujo de evaluación**, salvo en un control multilínea donde Enter tenga semántica explícita de salto de línea.
+
+## 4. Familias principales
+
+**Álgebra · Trigonometría · Cálculo · Complejos · Símbolos · Unidades · Más**
+
+## 5. Álgebra
+
+### Constantes
+`π` · `e` · `∞`
+
+### Relaciones
+`<` · `>` · `≤` · `≥` · `=`
+
+### Logaritmos
+`ln(x)` · `log(x)` · `log₂(x)` · `log_b(x)`
+
+### Potencias y exponenciales
+`x²` · `xʸ` · `eˣ` · `10ˣ` · `^`
+
+- `^` es el operador lineal de potencia y debe tener paridad con la tecla física `^`.
+- **EXP queda eliminada** para evitar ambigüedad. La exponencial natural se representa como `eˣ`.
+
+### Radicales
+`√x` · `ⁿ√x`
+
+No se requiere una tecla `∛x` independiente: la raíz n-ésima cubre ese caso.
+
+### Funciones algebraicas
+`|x|` · `x!`
+
+### Transformación
+`Simplificar` · `Factorizar` · `Expandir`
+
+### Aritmética de enteros
+`MCM(…)` · `MCD(…)` · `sgn(a)` · `mod(a,b)`
+
+- MCM/LCM y MCD/GCD son **de aridad variable**, con mínimo dos argumentos.
+- `sgn(a)` es unaria.
+- `mod(a,b)` es binaria.
+- La etiqueta visible puede ser MCM/MCD aunque el motor utilice `lcm`/`gcd` internamente.
+
+### Ecuaciones e inecuaciones
+- `f(x)=0`
+- acceso a resolución de inecuaciones, representación tipo `f(x)≥0`
+
+### Sistemas
+- sistema de ecuaciones `f=0, g=0`
+- sistema de inecuaciones
+
+### Evaluación
+`f(a)`
+
+## 6. Trigonometría
+
+### Constantes
+`π` · `e` · `∞`
+
+### Directas
+`sin(x)` · `cos(x)` · `tan(x)`
+
+### Recíprocas
+`csc(x)` · `sec(x)` · `cot(x)`
 
 ### Inversas
-Las inversas no reciben `°` dentro de su argumento, porque consumen una razón/valor y producen un ángulo. La unidad de **salida** depende de RAD/DEG según el contrato de resultados.
+`sin⁻¹(x)` · `cos⁻¹(x)` · `tan⁻¹(x)`
 
-### Integridad
-El `°` explícito representa semánticamente grados sexagesimales. Los motores deben reconocerlo sin aplicar una segunda conversión cuando el modo DEG/GRAD ya está activo.
+La interfaz muestra notación natural, no `asin`/`acos`/`atan` como etiqueta principal.
 
-## Autoridad visual B6 — teclado aprobado
+### Hiperbólicas
+`sinh(x)` · `cosh(x)` · `tanh(x)`
 
-Decisión explícita del usuario, 2026-09-26:
+### Hiperbólicas inversas
+`sinh⁻¹(x)` · `cosh⁻¹(x)` · `tanh⁻¹(x)`
 
-Para B6, la autoridad del teclado se congela usando **en conjunto**:
+Pueden normalizarse internamente a `asinh`/`acosh`/`atanh`.
 
-1. `VISUAL_CONTRACT_FINAL_S26_2R.md` — reglas visuales, responsive, jerarquía y restricciones;
-2. la captura aprobada **`Mockups definitivos de Precision Lab.png`** — composición visual, densidad, disposición, estados abierto/cerrado y adaptación Desktop/Tablet/Mobile;
-3. este `KEYBOARD_CONTRACT.md` — inventario funcional/semántico, categorías, tooltips, inserciones y reglas tecla→motor;
-4. decisiones explícitas posteriores del usuario — prevalecen si modifican una decisión anterior.
+### DEG / RAD
 
-### Regla de interpretación
+DEG/RAD es un **estado global**, no una subcategoría.
 
-- Las capturas son autoridad **visual**, no matemática.
-- El contrato del teclado es autoridad **funcional y semántica**.
-- La implementación actual no define el diseño aprobado: debe adaptarse a estas autoridades.
-- Si una tecla aparece en el contrato pero no es legible o no aparece explícita en la captura, **no se elimina**: se conserva su capacidad y se ubica respetando la composición aprobada.
-- Si una captura muestra una notación simplificada o históricamente incorrecta (p. ej. nombres internos como `asin`), prevalece la notación natural y las reglas funcionales vigentes.
-- No se introduce un séptimo grupo ni un teclado específico por módulo.
-- Lite y Plus deben compartir el mismo teclado visual y semántico; solo pueden diferir en capacidades de motor documentadas y nunca en el significado de una misma tecla.
+- En DEG, las funciones trigonométricas directas respetan grados y las inversas producen resultados angulares según el contrato DD/DMS.
+- En RAD no se añade `°`.
+- Hiperbólicas e hiperbólicas inversas no dependen del modo angular.
 
-### Qué queda congelado en B6
+## 7. Cálculo
 
-B6 debe producir y certificar:
+### Constantes
+`π` · `e` · `∞`
 
-- seis categorías: Básico, Símbolos, Álgebra, Trigonométricas, Cálculo y Complejos;
-- orden y agrupación visual compatibles con la captura aprobada;
-- inventario tecla por tecla;
-- etiqueta visible;
-- tooltip;
-- LaTeX/plantilla insertada;
-- normalización hacia parser/adapter;
-- acción esperada;
-- soporte Lite;
-- soporte Plus;
-- estado PASS / GAP / diferencia intencional;
-- pruebas automáticas que impidan desviaciones futuras.
+### Integrales
+- integral indefinida
+- integral definida
 
-### Criterio de cierre visual
+La plantilla debe conservar la notación completa, incluido el diferencial cuando corresponda.
 
-B6 **no puede cerrarse únicamente con gates verdes**. Para PASS definitivo deben coincidir:
+### Derivadas
+- derivada ordinaria
+- derivadas de orden superior
+- derivada parcial
 
-1. implementación;
-2. contrato;
-3. captura aprobada;
-4. matriz Lite↔Plus;
-5. Preview/revisión humana.
+### Sumas y productos
+`Σ` · `Π`
 
-La captura aprobada ya existe y **no debe regenerarse como requisito previo**. Si durante B6 se necesita ampliar una categoría que no se ve completa en la lámina general, esa ampliación debe derivarse del contrato vigente y conservar la misma gramática visual, sin reinterpretar el teclado legado como autoridad.
+### Límites
+`x→a` · `x→∞` · `x→a⁻` · `x→a⁺`
 
+Las cuatro variantes son accesos explícitos y no se fusionan en una única tecla genérica.
+
+### Ecuaciones diferenciales
+Se exponen únicamente variantes realmente soportadas por el motor.
+
+## 8. Complejos
+
+### Acceso directo
+`i` · `π` · `e` · `∞`
+
+### Funciones
+`Re(z)` · `Im(z)` · `|z|` · `arg(z)` · `conj(z)`
+
+### Avanzados
+- Rectangular → Polar
+- Polar → Rectangular
+- exponencial compleja
+- raíces complejas
+
+Solo se muestran capacidades soportadas.
+
+## 9. Símbolos
+
+### Variables
+`x` · `y` · `z` · `t` · `r` · `θ` · `Φ` · `a` · `b` · `c` · `n`
+
+Convenciones:
+- `x`: variable/argumento general.
+- `y`: segunda variable cuando corresponda.
+- `t`: parámetro, especialmente paramétrico/temporal.
+- `r`, `θ`, `Φ`: coordenadas/variables polares o espaciales.
+- `a`, `b`, `c`: parámetros genéricos.
+- `n`: índice entero/contador cuando corresponda.
+- `Φ` mayúscula: variable/ángulo polar.
+
+### Funciones
+`f(x)` · `g(x)` · `h(x)`
+
+### Constantes
+`π` · `e` · `i` · `∞` · `φ` · `τ`
+
+- `φ` minúscula: número áureo.
+- `τ = 2π`.
+- Variables y constantes deben distinguirse visualmente según el contrato aprobado.
+
+## 10. Unidades
+
+La familia Unidades del teclado facilita la **entrada**; no sustituye el módulo de Conversión de Unidades.
+
+### Ángulos
+`°` · `′` · `DMS`
+
+### Fracciones
+- fracción simple
+- fracción mixta
+
+### Constante útil
+`π`
+
+## 11. Más
+
+### Fracciones
+- fracción simple
+- fracción mixta
+
+### Relaciones y ángulos
+`<` · `>` · `≤` · `≥` · `°` · `′` · `DMS`
+
+## 12. Regla de duplicación
+
+Se permite duplicar una tecla cuando mejora claramente el flujo y evita saltos innecesarios entre familias.
+
+Toda duplicación debe apuntar a una **misma definición canónica**: misma inserción, tooltip, parser, accesibilidad y acción. La duplicación es de acceso, no de implementación.
+
+Duplicaciones aprobadas incluyen:
+- `π`, `e`, `∞` en Álgebra, Trigonometría y Cálculo;
+- `i`, `π`, `e`, `∞` en Complejos;
+- Relaciones en Álgebra además de Más;
+- `π` en Unidades.
+
+## 13. Tooltips, accesibilidad e integridad
+
+Toda tecla debe tener:
+- etiqueta visible apropiada;
+- `aria-label`/etiqueta accesible;
+- tooltip descriptivo;
+- inserción/acción documentada;
+- ruta real hacia parser/motor cuando corresponda.
+
+No se acepta una tecla puramente decorativa sin función documentada.
+
+## 14. Plantillas trigonométricas sensibles al modo angular
+
+Para `sin`, `cos`, `tan`, `sec`, `csc`, `cot`:
+
+- DEG: plantilla con `#0^{\circ}` dentro del argumento.
+- RAD: plantilla sin símbolo de grado.
+- Inversas: no reciben `°` dentro del argumento; la unidad de salida depende del modo global.
+
+El `°` explícito representa grados sexagesimales y no debe provocar una conversión doble.
+
+## 15. Contrato de paridad B6
+
+Cada tecla se registra en una matriz con:
+
+**Familia | Subcategoría | Etiqueta | Tooltip | Inserción/LaTeX | Normalización parser | Acción | Lite | Plus | Estado**
+
+Estados permitidos:
+- `PASS`
+- `GAP`
+- `DIFERENCIA INTENCIONAL`
+
+Lite y Plus deben compartir el mismo teclado visual y semántico. Las únicas diferencias permitidas son capacidades de motor documentadas; una misma tecla nunca cambia de significado entre ediciones.
+
+## 16. Autoridad visual y precedencia
+
+Para B6 mandan, en este orden compatible:
+
+1. decisiones explícitas posteriores del usuario;
+2. este contrato para función/semántica;
+3. `VISUAL_CONTRACT_FINAL_S26_2R.md` para reglas visuales;
+4. mockups aprobados para composición, densidad y responsive.
+
+La implementación histórica no define el diseño aprobado.
+
+## 17. Criterios de cierre B6
+
+B6 solo puede cerrarse cuando:
+1. el inventario contractual esté implementado;
+2. Lite y Plus mantengan paridad;
+3. todas las teclas tengan tooltip y accesibilidad;
+4. las duplicaciones compartan definición canónica;
+5. el teclado funcione desde todos los módulos;
+6. Desktop, Tablet y Mobile respeten el contrato de espacio;
+7. existan tests automáticos de inventario, inserción y comportamiento;
+8. la revisión visual contra los mockups aprobados sea satisfactoria.
+
+**Regla final:** izquierda selecciona; centro permanece; derecha cambia.
