@@ -1077,7 +1077,7 @@ export function MathKeyboard({
           onClick={onSimplify}
           aria-label="Simplificar expresión"
           title="Reduce y combina términos equivalentes"
-          className="rounded-md bg-graph/15 py-2 text-[11px] font-medium text-graph hover:bg-graph/25"
+          className="rounded-md border border-graph/30 bg-paper py-2 text-[11px] font-semibold text-graph hover:bg-graph/10"
         >
           a+a → 2a
         </button>
