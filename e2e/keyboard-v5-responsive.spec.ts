@@ -63,10 +63,9 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
   ]);
 
   await expect(dialog.getByRole("button", { name: "borrar todo el campo" })).toBeVisible();
-  await expect(dialog.getByRole("button", { name: "igual", exact: true })).toHaveAttribute(
-    "title",
-    "inserta un signo de igualdad sin ejecutar el cálculo",
-  );
+  await expect(
+    dialog.getByTestId("keyboard-b6-core").getByRole("button", { name: "igual", exact: true }),
+  ).toHaveAttribute("title", "inserta un signo de igualdad sin ejecutar el cálculo");
   await expect(dialog.getByRole("button", { name: "calcular" })).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath("teclado-v5-basico.png"), fullPage: true });
 
