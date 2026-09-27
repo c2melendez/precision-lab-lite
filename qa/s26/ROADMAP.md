@@ -251,3 +251,27 @@ Bloque 5 queda **desbloqueado y EN CURSO**. Su alcance es únicamente shell glob
 - No iniciar B7 hasta confirmar visualmente la última versión.
 
 Ver: `SESSION_CLOSURE_2026-09-27.md` y `START_HERE_2026-09-27.md`.
+
+
+## Cierre B6 — 2026-09-27
+
+Estado:
+- B1 Shell/Sidebar — **PASS DEFINITIVO**.
+- B2 Configuración/Apariencia/Layouts — **PASS DEFINITIVO**.
+- B3 Historial/Reusar — **PASS DEFINITIVO**.
+- B4 Resultado/Formatos/DD-DMS — **PASS DEFINITIVO**.
+- B5 Teclado global shell/open-close/responsive — **PASS DEFINITIVO**.
+- B6 Teclado interno/paridad/jerarquía — **PASS AUTOMÁTICO; pendiente confirmación visual humana final**.
+
+HEAD certificado B6: `cdd8e35ac6ddcb670f6dbdfe0bf79fa1fde7c9ec`.
+
+Gates:
+CI, Playwright E2E, S22 PWA Offline, S23 Accessibility, S25 Security y Cross-browser smoke: PASS. S26 Preview: build-preview/composición/upload de artefacto PASS; deploy Pages FAIL.
+
+### Próximo paso obligatorio
+1. revisar B6 visualmente en Desktop, Tablet y Mobile;
+2. si el usuario aprueba, marcar B6 PASS DEFINITIVO;
+3. actualizar log/matriz;
+4. continuar con **B7 — Científica**.
+
+No iniciar S26.4 todavía.
