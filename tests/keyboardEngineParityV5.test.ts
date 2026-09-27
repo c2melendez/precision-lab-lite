@@ -37,7 +37,7 @@ const PARITY_CASES: ParityCase[] = [
   { label: "sinh inversa", expression: "asinh(1)" },
   { label: "logaritmo base 10", expression: "log(100)" },
   { label: "logaritmo con base", expression: "log(8,2)" },
-  { label: "exponencial", expression: "exp(1)" },
+  { label: "e a la n", expression: "e^1" },
   { label: "raíz cuadrada de a", expression: "sqrt(9)" },
   { label: "raíz de índice n editable", expression: "\\sqrt[3]{27}" },
   { label: "signo de a", expression: "sign(-4)" },
