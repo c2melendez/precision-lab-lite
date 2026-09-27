@@ -127,7 +127,7 @@ test("módulo 10: acciones no aritméticas de Álgebra exponen tooltip", async (
   }
 
   await subcategories.getByRole("button", { name: "Aritmética", exact: true }).click();
-  for (const name of ["Mínimo común múltiplo", "Máximo común divisor"]) {
+  for (const name of ["mínimo común múltiplo", "máximo común divisor"]) {
     const button = dialog.getByRole("button", { name, exact: true }).first();
     await expect(button).toBeVisible();
     const title = await button.getAttribute("title");
