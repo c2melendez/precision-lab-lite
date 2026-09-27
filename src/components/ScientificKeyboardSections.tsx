@@ -131,7 +131,8 @@ export function ScientificKeyboardSections({ basic, advanced }: {
 
         <div
           id={`${id}-context`}
-          role="region"
+          role="tabpanel"
+          aria-labelledby={`${id}-family-${FAMILIES.indexOf(family)}`}
           aria-label={`${family}: ${subcategory}`}
           className="min-w-0 rounded-xl border border-paper-line bg-paper p-2"
         >
