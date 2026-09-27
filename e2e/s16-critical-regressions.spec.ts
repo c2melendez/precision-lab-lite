@@ -30,29 +30,16 @@ async function press(dialog: Locator, name: string) {
   const page = dialog.page();
   if (await clickVisibleButton(page, name)) return;
 
-  // Las teclas temáticas dejan seleccionada su pestaña. Para continuar
-  // con números/operadores, el recorrido real vuelve a la pestaña Básico.
-  const basicTab = page.getByRole("tab", { name: "Básico", exact: true }).first();
-  if (await basicTab.isVisible().catch(() => false)) {
-    await basicTab.click();
-    await expect(basicTab).toHaveAttribute("aria-selected", "true");
-    if (await clickVisibleButton(page, name)) return;
-  }
-
-  // Si el panel estuviera cerrado por otra transición, volver a abrirlo.
+  // B6 mantiene números, operadores y edición siempre visibles; no existe
+  // una pestaña Básico a la cual regresar.
   const opener = page.getByRole("button", { name: /abrir teclado|expandir teclado/i }).first();
   if (await opener.isVisible().catch(() => false)) {
     await opener.click();
     await expect(page.getByRole("dialog", { name: "Teclado matemático" })).toBeVisible();
-    const reopenedBasic = page.getByRole("tab", { name: "Básico", exact: true }).first();
-    if (await reopenedBasic.isVisible().catch(() => false)) {
-      await reopenedBasic.click();
-      await expect(reopenedBasic).toHaveAttribute("aria-selected", "true");
-    }
     if (await clickVisibleButton(page, name)) return;
   }
 
-  throw new Error(`No se encontró una tecla visible con aria-label "${name}" tras volver a Básico`);
+  throw new Error(`No se encontró una tecla visible con aria-label "${name}" en el teclado B6`);
 }
 
 async function category(dialog: Locator, name: string) {
@@ -162,11 +149,11 @@ test("S16 REG-006: 50% => 0.5 desde tecla porcentaje", async ({ page }) => {
   expect(await resultValue(page)).toMatch(/0\.5|\\frac\{1\}\{2\}/);
 });
 
-test("S16 REG-007: exp(1) evalúa un valor conocido", async ({ page }) => {
+test("S16 REG-007: e^1 evalúa un valor conocido", async ({ page }) => {
   const dialog = await openKeyboard(page);
   await clear(dialog);
   await category(dialog, "Álgebra");
-  await press(dialog, "exponencial");
+  await press(dialog, "e a la n");
   await press(dialog, "1");
   await calculate(page, dialog);
   const value = (await resultValue(page)).replace(",", ".");
@@ -180,6 +167,7 @@ test("S16 REG-008: sin(90°) => 1 usando tecla grados", async ({ page }) => {
   await press(dialog, "sin");
   await press(dialog, "9");
   await press(dialog, "0");
+  await category(dialog, "Unidades");
   await press(dialog, "grados");
   await calculate(page, dialog);
   expect((await resultValue(page)).replace(/\s/g, "")).toContain("1");
