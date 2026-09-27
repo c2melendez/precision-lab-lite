@@ -28,6 +28,8 @@ declare global {
 interface NaturalInputProps {
   value: string;
   onChange: (latex: string) => void;
+  /** B6: Enter/Return físico comparte exactamente la acción del Enter virtual. */
+  onEnter?: () => void;
   placeholder?: string;
   /** Stable accessible name for the primary MathLive field. */
   ariaLabel?: string;
@@ -49,7 +51,7 @@ export interface NaturalInputHandle {
   clear: () => void;
 }
 
-export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrada matemática", fieldRef, bare = false }: NaturalInputProps) {
+export function NaturalInput({ value, onChange, onEnter, placeholder, ariaLabel = "Entrada matemática", fieldRef, bare = false }: NaturalInputProps) {
   const ref = useRef<HTMLElement & {
     value: string;
     insert: (s: string) => void;
@@ -69,6 +71,21 @@ export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrad
   // precision-lab (main), NaturalMathField.tsx: el foco en el campo de
   // entrada es uno de los 2 mecanismos obligatorios de apertura del
   // teclado.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !onEnter) return;
+
+    function handleKeyDown(event: KeyboardEvent): void {
+      if (event.key !== "Enter" || event.shiftKey || event.ctrlKey || event.altKey || event.metaKey) return;
+      event.preventDefault();
+      event.stopPropagation();
+      onEnter();
+    }
+
+    el.addEventListener("keydown", handleKeyDown);
+    return () => el.removeEventListener("keydown", handleKeyDown);
+  }, [onEnter]);
+
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
