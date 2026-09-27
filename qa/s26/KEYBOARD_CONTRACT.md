@@ -13,21 +13,31 @@ Los módulos pueden conservar controles propios de su flujo, pero no deben recon
 
 ## 2. Arquitectura espacial aprobada
 
+La captura visual aprobada del 26-09-2026 define **comportamiento y jerarquía**, no inventario histórico de teclas.
+
 ### Desktop
 
-**Izquierda selecciona. Centro permanece. Derecha cambia.**
+1. **Franja superior — familias principales:** Álgebra · Trigonometría · Cálculo · Complejos · Símbolos · Unidades · Más.
+2. **Zona contextual intermedia, columna izquierda — subcategorías:** muestra únicamente las subcategorías de la familia activa.
+3. **Zona contextual intermedia, panel derecho — teclas:** muestra únicamente las teclas de la subcategoría activa.
+4. **Zona inferior — núcleo permanente:** el teclado básico acordado permanece visible y estable debajo de la navegación contextual.
 
-- **Izquierda — navegación:** familias y subcategorías.
-- **Centro — núcleo permanente:** números, edición y operadores.
-- **Derecha — panel dinámico:** teclas de la subcategoría elegida.
+**Regla funcional:** familia → subcategoría → teclas contextuales. El núcleo básico no cambia.
+
+La captura de referencia NO autoriza a recuperar teclas históricas laterales como x/y/z ni otros accesos que ya fueron retirados del núcleo. El inventario funcional vigente de este contrato prevalece.
 
 ### Tablet / Mobile
 
-Se conserva la misma jerarquía lógica. Si no existe ancho suficiente, el panel dinámico derecho puede bajar debajo del núcleo permanente.
+Se conserva exactamente la misma jerarquía lógica. Las familias permanecen en una franja horizontal desplazable. Cuando el ancho sea insuficiente, las subcategorías pueden pasar de columna vertical a una fila/rail horizontal y las teclas contextuales se colocan debajo. El núcleo básico continúa debajo del área contextual.
 
-### Regla de espacio
+### Regla de densidad y espacio
 
-El teclado se adapta al espacio libre; **nunca debe tapar permanentemente Entrada, Resultado, Pasos o Gráfica**. Las teclas usan densidad compacta. El panel dinámico se reorganiza antes de recurrir a scroll interno.
+El objetivo explícito es **reducir densidad visual**:
+- nunca se muestran simultáneamente todas las teclas de todas las subcategorías;
+- solo una familia y una subcategoría están activas a la vez;
+- las teclas usan densidad compacta;
+- el teclado se adapta al espacio libre y **nunca debe tapar permanentemente Entrada, Resultado, Pasos o Gráfica**;
+- el área contextual se reacomoda antes de recurrir a desplazamiento interno.
 
 ## 3. Núcleo permanente
 
@@ -289,4 +299,4 @@ B6 solo puede cerrarse cuando:
 7. existan tests automáticos de inventario, inserción y comportamiento;
 8. la revisión visual contra los mockups aprobados sea satisfactoria.
 
-**Regla final:** izquierda selecciona; centro permanece; derecha cambia.
+**Regla final:** familias arriba; subcategorías a la izquierda; teclas contextuales a la derecha; núcleo básico permanente debajo.
