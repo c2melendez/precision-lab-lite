@@ -37,6 +37,10 @@ async function expectThreeColumnContract(
     expect(coreBox.x + coreBox.width).toBeLessThanOrEqual(dialogBox.x + dialogBox.width + 1);
 
     const viewport = page.viewportSize();
+    if (viewport && viewport.width < 768) {
+      expect(dialogBox.x).toBeLessThanOrEqual(1);
+      expect(dialogBox.width).toBeGreaterThanOrEqual(viewport.width - 2);
+    }
     if (viewport && viewport.width >= 1024) {
       for (const box of [subBox, coreBox, contextBox]) {
         expect(box.x).toBeGreaterThanOrEqual(dialogBox.x - 1);
