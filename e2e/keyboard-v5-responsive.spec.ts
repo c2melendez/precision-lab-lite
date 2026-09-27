@@ -47,10 +47,11 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
   const dialog = page.getByRole("dialog", { name: "Teclado matemático" });
   await expect(dialog).toBeVisible();
 
-  const basicTab = dialog.getByRole("tab", { name: "Básico" });
+  const algebraTab = dialog.getByRole("tab", { name: "Álgebra" });
   const symbolsTab = dialog.getByRole("tab", { name: "Símbolos" });
-  await expect(basicTab).toHaveAttribute("aria-selected", "true");
+  await expect(algebraTab).toHaveAttribute("aria-selected", "true");
   await expect(symbolsTab).toHaveAttribute("aria-selected", "false");
+  await expect(dialog.getByTestId("keyboard-b6-core")).toBeVisible();
 
   await expect(dialog.getByRole("button", { name: "borrar todo el campo" })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "igual", exact: true })).toHaveAttribute(
@@ -60,7 +61,7 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
   await expect(dialog.getByRole("button", { name: "calcular" })).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath("teclado-v5-basico.png"), fullPage: true });
 
-  for (const category of ["Álgebra", "Trigonométricas", "Cálculo", "Complejos"]) {
+  for (const category of ["Álgebra", "Trigonométricas", "Cálculo", "Complejos", "Unidades", "Más"]) {
     const tab = dialog.getByRole("tab", { name: category, exact: true });
     await tab.click();
     await expect(tab).toHaveAttribute("aria-selected", "true");
@@ -70,9 +71,9 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
   await symbolsTab.click();
   await expect(symbolsTab).toHaveAttribute("aria-selected", "true");
   await symbolsTab.press("Home");
-  await expect(basicTab).toBeFocused();
-  await basicTab.press("ArrowRight");
-  await expect(symbolsTab).toBeFocused();
+  await expect(algebraTab).toBeFocused();
+  await algebraTab.press("ArrowRight");
+  await expect(dialog.getByRole("tab", { name: "Trigonométricas" })).toBeFocused();
   await expect(dialog.getByText("Variables", { exact: true })).toBeVisible();
   await expect(dialog.getByText("Constantes y valores", { exact: true })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "Phi mayúscula", exact: true })).toBeVisible();
