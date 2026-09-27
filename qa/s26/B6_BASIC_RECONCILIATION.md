@@ -1,3 +1,5 @@
+> **SUPERSEDIDO POR B6 UNIFICADO — 2026-09-27.** Este documento conserva valor histórico, pero su inventario de 31 teclas y la categoría “Básico” ya no son autoridad. El contrato vigente está en `KEYBOARD_CONTRACT.md` y `B6_KEYBOARD_PARITY_MATRIX.md`. El núcleo actual tiene 23 teclas y las funciones trasladadas viven en familias/subcategorías.
+
 # S26.3R — B6 Básico · Reconciliación contractual Lite ↔ Plus
 
 **Estado:** IMPLEMENTADO — pendiente gates + Preview/revisión humana  
