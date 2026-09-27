@@ -165,3 +165,29 @@ Existe E2E que exige en cada módulo:
 ## Heads de referencia al crear esta matriz
 
 Los heads continuarán avanzando durante B6; usar siempre la rama como autoridad y registrar el head final al recertificar.
+
+
+## Incidencia de gate Lite — 2026-09-26
+
+Primer head evaluado: `cad73caa113c68a924d564d53ef3112623b6b27a`.
+
+Resultado inicial:
+- CI: FAIL en Typecheck.
+- Preview: FAIL al compilar S26.
+- Playwright: FAIL porque el webServer no pudo arrancar.
+- Los gates derivados también quedaron rojos al no poder construir la rama.
+
+Causa raíz:
+`src/components/NaturalInput.tsx(82,7): TS2722: Cannot invoke an object which is possibly 'undefined'.`
+
+Origen:
+el callback opcional `onEnter` se filtraba antes de registrar el listener, pero TypeScript no conservaba ese narrowing dentro de la función anidada.
+
+Corrección:
+se captura `const enter = onEnter` dentro del efecto, se valida `!enter` y el listener invoca `enter()`.
+
+Commit correctivo:
+`eb7014eb0b1ce4c6a0a6b49866c0586d07acf70c`.
+
+Estado posterior:
+nuevo conjunto de workflows disparado; Preview en ejecución y CI/Playwright/resto de gates en cola al momento de esta actualización. B6 permanece EN CURSO hasta observar verde real.
