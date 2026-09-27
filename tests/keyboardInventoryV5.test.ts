@@ -4,6 +4,7 @@ import { BASIC_V5_ROWS } from "../src/components/KeyboardBasicPanel";
 import {
   CATEGORY_MENUS,
   SYMBOL_CONSTANTS,
+  SYMBOL_FUNCTIONS,
   SYMBOL_VARIABLES,
   type KeyDef,
 } from "../src/components/MathKeyboard";
@@ -20,6 +21,7 @@ const allKeyboardKeys: KeyDef[] = [
   ...BASIC_V5_ROWS.flat(),
   ...SYMBOL_VARIABLES,
   ...SYMBOL_CONSTANTS,
+  ...SYMBOL_FUNCTIONS,
   ...Object.values(CATEGORY_MENUS).flatMap((groups) =>
     groups.flatMap((group) => group.keys),
   ),
@@ -73,6 +75,7 @@ describe("inventario estructural del teclado V5 de Lite", () => {
     }
 
     expect(SYMBOL_CONSTANTS.map((key) => key.ariaLabel)).toContain("tau");
+    expect(SYMBOL_FUNCTIONS.map((key) => key.ariaLabel)).toEqual(["función f", "función g", "función h"]);
 
     const algebra = (CATEGORY_MENUS.Álgebra ?? []).flatMap((group) => group.keys);
     expect(algebra.map((key) => key.ariaLabel)).not.toContain("exponencial");
