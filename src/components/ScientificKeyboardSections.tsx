@@ -79,8 +79,9 @@ function subcategoriesFor(family: KeyboardCategory): string[] {
 
 /**
  * S26 B6 — jerarquía visual definitiva:
- * familias arriba → subcategorías a la izquierda → teclas a la derecha
- * → núcleo básico permanente debajo.
+ * familias arriba → cuerpo de tres columnas en escritorio:
+ * subcategorías a la izquierda → núcleo básico permanente al centro
+ * → teclas contextuales a la derecha.
  *
  * La captura aprobada define la distribución, no el inventario histórico.
  */
@@ -105,7 +106,7 @@ export function ScientificKeyboardSections({ basic, advanced }: {
   };
 
   return (
-    <div data-testid="keyboard-b6-layout" className="grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)_auto] gap-2">
+    <div data-testid="keyboard-b6-layout" className="grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)] gap-2">
       <div
         role="tablist"
         aria-label="Familias del teclado matemático"
@@ -147,10 +148,11 @@ export function ScientificKeyboardSections({ basic, advanced }: {
         ))}
       </div>
 
-      <div data-testid="keyboard-b6-context" className="grid min-h-0 grid-cols-1 gap-2 overflow-hidden rounded-xl [contain:layout_paint] dt:grid-cols-[10.5rem_minmax(0,1fr)]">
+      <div className="grid min-h-0 grid-cols-1 gap-2 overflow-y-auto rounded-xl [contain:layout_paint] lg:grid-cols-[10rem_minmax(22rem,1fr)_minmax(14rem,18rem)] lg:overflow-hidden">
         <div
+          data-testid="keyboard-b6-subcategories"
           aria-label={`Subcategorías de ${family}`}
-          className="flex min-h-0 gap-1 overflow-x-auto rounded-xl border border-paper-line bg-paper-soft p-1.5 dt:flex-col dt:overflow-x-hidden dt:overflow-y-auto"
+          className="flex min-h-0 gap-1 overflow-x-auto rounded-xl border border-paper-line bg-paper-soft p-1.5 lg:flex-col lg:overflow-x-hidden lg:overflow-y-auto"
         >
           {availableSubcategories.map((name) => (
             <button
@@ -171,7 +173,15 @@ export function ScientificKeyboardSections({ basic, advanced }: {
         </div>
 
         <div
+          data-testid="keyboard-b6-core"
+          className="min-h-0 min-w-0 overflow-y-auto rounded-xl border border-paper-line bg-paper p-2"
+        >
+          {basic}
+        </div>
+
+        <div
           id={`${id}-context`}
+          data-testid="keyboard-b6-context"
           role="tabpanel"
           aria-labelledby={`${id}-family-${FAMILIES.indexOf(family)}`}
           aria-label={`${family}: ${subcategory}`}
@@ -184,12 +194,6 @@ export function ScientificKeyboardSections({ basic, advanced }: {
         </div>
       </div>
 
-      <div
-        data-testid="keyboard-b6-core"
-        className="min-w-0 shrink-0 rounded-xl border border-paper-line bg-paper p-2"
-      >
-        {basic}
-      </div>
     </div>
   );
 }
