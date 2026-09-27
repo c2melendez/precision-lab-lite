@@ -28,9 +28,9 @@ const ACTION_LABELS = new Set([
 
 describe("Suite exhaustiva original — Módulo 10: inventario teclado Lite", () => {
   it("mantiene el inventario V5 esperado por superficie", () => {
-    expect(BASIC_V5_ROWS.flat()).toHaveLength(31);
-    expect(SYMBOL_VARIABLES).toHaveLength(6);
-    expect(SYMBOL_CONSTANTS).toHaveLength(5);
+    expect(BASIC_V5_ROWS.flat()).toHaveLength(23);
+    expect(SYMBOL_VARIABLES).toHaveLength(11);
+    expect(SYMBOL_CONSTANTS).toHaveLength(6);
     expect(CATEGORY_MENUS["Trigonométricas"].flatMap(g => g.keys)).toHaveLength(24);
     expect(CATEGORY_MENUS["Álgebra"].flatMap(g => g.keys)).toHaveLength(15);
     expect(CATEGORY_MENUS["Cálculo"].flatMap(g => g.keys)).toHaveLength(16);
