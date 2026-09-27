@@ -909,7 +909,7 @@ export function MathKeyboard({
                     <button
                       onClick={() => {
                         onSolveEquation?.();
-                        setOpenCategory(null);
+                        if (!hideCoreGrid) setOpenCategory(null);
                       }}
                       aria-label="Resolver ecuación"
                       title="Resuelve una ecuación escrita con signo igual"
@@ -920,7 +920,7 @@ export function MathKeyboard({
                     <button
                       onClick={() => {
                         onSolveEquation?.();
-                        setOpenCategory(null);
+                        if (!hideCoreGrid) setOpenCategory(null);
                       }}
                       aria-label="Resolver inecuación"
                       title="Resuelve una inecuación escrita con signos de comparación"
@@ -930,7 +930,7 @@ export function MathKeyboard({
                     </button>
                     <button
                       onClick={() => {
-                        setOpenCategory(null);
+                        if (!hideCoreGrid) setOpenCategory(null);
                         setShowSystemSizeMenu(true);
                       }}
                       aria-label="Resolver sistema de ecuaciones"
@@ -947,7 +947,7 @@ export function MathKeyboard({
                         // BasicScientificMode.tsx) — esta tecla usa la MISMA
                         // plantilla/selector que "Sistema", solo con un rótulo
                         // que deja claro que también acepta <, >, ≤, ≥.
-                        setOpenCategory(null);
+                        if (!hideCoreGrid) setOpenCategory(null);
                         setShowSystemSizeMenu(true);
                       }}
                       aria-label="Sistema de inecuaciones de 2 variables — escribe inecuaciones dentro de las llaves"
@@ -966,7 +966,7 @@ export function MathKeyboard({
                     <button
                       onClick={() => {
                         onSimplify?.();
-                        setOpenCategory(null);
+                        if (!hideCoreGrid) setOpenCategory(null);
                       }}
                       aria-label="Simplificar expresión"
                       title="Reduce y combina términos equivalentes"
