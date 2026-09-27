@@ -334,6 +334,14 @@ export function BasicScientificMode() {
     handleCalculate();
   }, [latex, handleCalculate, mathField]);
 
+  const handleSolveInequality = useCallback(() => {
+    if (!/[<>]|\\\\(?:le|ge)/.test(latex)) {
+      mathField?.insert("\\ge0");
+      return;
+    }
+    handleCalculate();
+  }, [latex, handleCalculate, mathField]);
+
   // Fase 1: antes este ícono no hacía nada (onSolveSystem nunca se pasaba
   // a MathKeyboard). Ahora, si el campo todavía no tiene un sistema,
   // inserta la plantilla \begin{cases}; si ya la tiene con 2+ renglones,
@@ -358,7 +366,72 @@ export function BasicScientificMode() {
     [latex, handleCalculate, mathField],
   );
 
-  const handleSimplify = useCallback(() => handleCalculate(), [handleCalculate]);
+  const handleSolveInequalitySystem = useCallback(() => {
+    if (!splitSystemLatex(latex)) {
+      mathField?.insert("\\begin{cases}#0\\ge0\\\\#1\\le0\\end{cases}");
+      return;
+    }
+    handleCalculate();
+  }, [latex, handleCalculate, mathField]);
+
+  const runAlgebraTransform = useCallback(
+    (kind: "simplify" | "factor") => {
+      const requestId = makeRequestId();
+      let parsed;
+      try {
+        parsed = parseExpression(latex, angleMode);
+      } catch (err) {
+        const appErr = err as { code?: ErrorCode; message?: string };
+        fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Expresión inválida.", requestId);
+        return;
+      }
+      if (parsed.isEquation || parsed.isInequality) {
+        fail(ErrorCode.PARSE_ERROR, "Esta acción requiere una expresión, no una ecuación o inecuación.", requestId);
+        return;
+      }
+      const worker = getWorker();
+      worker.onmessage = (e: MessageEvent<MathResult>) =>
+        onSuccess(kind === "simplify" ? "Científica (simplificar)" : "Científica (factorizar)", latex, e.data);
+      worker.postMessage({
+        type: "evaluate",
+        requestId,
+        expressionAlgebrite: `${kind}(${parsed.algebrite})`,
+      });
+    },
+    [latex, angleMode, getWorker, fail, onSuccess],
+  );
+
+  const handleSimplify = useCallback(() => runAlgebraTransform("simplify"), [runAlgebraTransform]);
+  const handleFactor = useCallback(() => runAlgebraTransform("factor"), [runAlgebraTransform]);
+
+  const handleEvaluatePoint = useCallback(() => {
+    const point = window.prompt("Valor del punto para x =", "a");
+    if (point === null || point.trim() === "") return;
+
+    const requestId = makeRequestId();
+    let parsed;
+    let parsedPoint;
+    try {
+      parsed = parseExpression(latex, angleMode);
+      parsedPoint = parseExpression(point, angleMode);
+    } catch (err) {
+      const appErr = err as { code?: ErrorCode; message?: string };
+      fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Expresión inválida.", requestId);
+      return;
+    }
+    if (parsed.isEquation || parsed.isInequality || parsedPoint.isEquation || parsedPoint.isInequality) {
+      fail(ErrorCode.PARSE_ERROR, "Evaluar en un punto requiere una expresión y un valor de x.", requestId);
+      return;
+    }
+    const worker = getWorker();
+    worker.onmessage = (e: MessageEvent<MathResult>) =>
+      onSuccess("Científica (evaluar en punto)", `${latex} | x=${point}`, e.data);
+    worker.postMessage({
+      type: "evaluate",
+      requestId,
+      expressionAlgebrite: `subst(${parsedPoint.algebrite},x,(${parsed.algebrite}))`,
+    });
+  }, [latex, angleMode, getWorker, fail, onSuccess]);
 
   // Fase F (spec_edo_complejos_tooltips.md §3.4, Módulo F3): "Graficar"
   // -- evalúa el campo a un número complejo concreto (mensaje de worker
@@ -452,8 +525,12 @@ export function BasicScientificMode() {
         field={mathField}
         onClearField={() => setLatex("")}
         onSolveEquation={handleSolveEquation}
+        onSolveInequality={handleSolveInequality}
         onSolveSystem={handleSolveSystem}
+        onSolveInequalitySystem={handleSolveInequalitySystem}
         onSimplify={handleSimplify}
+        onFactor={handleFactor}
+        onEvaluatePoint={handleEvaluatePoint}
         onGraphComplex={handleGraphComplex}
         angleMode={angleMode}
         hideCoreGrid
@@ -461,7 +538,7 @@ export function BasicScientificMode() {
       />,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mathField, handleCalculate, handleSolveEquation, handleSolveSystem, handleSimplify, handleGraphComplex, angleMode]);
+  }, [mathField, handleCalculate, handleSolveEquation, handleSolveInequality, handleSolveSystem, handleSolveInequalitySystem, handleSimplify, handleFactor, handleEvaluatePoint, handleGraphComplex, angleMode]);
 
   useEffect(() => {
     return () => clearKeyboardContent();
