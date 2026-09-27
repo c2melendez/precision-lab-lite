@@ -92,6 +92,30 @@ describe("inventario estructural del teclado V5 de Lite", () => {
     ]));
   });
 
+  it("B6 mantiene constantes contextuales y cuatro límites explícitos", () => {
+    for (const family of ["Álgebra", "Trigonométricas", "Cálculo"] as const) {
+      const labels = (CATEGORY_MENUS[family] ?? []).flatMap((group) => group.keys).map((key) => key.ariaLabel);
+      expect(labels).toEqual(expect.arrayContaining(["pi", "e", "infinito"]));
+    }
+
+    const complexLabels = (CATEGORY_MENUS.Complejos ?? [])
+      .flatMap((group) => group.keys)
+      .map((key) => key.ariaLabel);
+    expect(complexLabels).toEqual(expect.arrayContaining(["número imaginario", "pi", "e", "infinito"]));
+
+    const limits = (CATEGORY_MENUS.Cálculo ?? [])
+      .find((group) => group.section === "Límites")
+      ?.keys ?? [];
+    expect(limits.map((key) => key.ariaLabel)).toEqual([
+      "límite",
+      "límite al infinito",
+      "límite lateral por la izquierda",
+      "límite lateral por la derecha",
+    ]);
+    expect(limits[2]?.insertLatex).toContain("^{-}");
+    expect(limits[3]?.insertLatex).toContain("^{+}");
+  });
+
   it("no deja teclas sin etiqueta accesible", () => {
     for (const key of allKeyboardKeys) {
       expect(key.ariaLabel.trim()).not.toBe("");
