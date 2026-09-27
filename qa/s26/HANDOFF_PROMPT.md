@@ -1,86 +1,50 @@
-# S26 — Prompt de continuidad actualizado
+# Prompt de continuidad S26 — 2026-09-27
 
-Proyecto: **Precision Lab Lite**  
-Branch: `qa/s26-execution`  
-HEAD de código certificado al cierre del Bloque 4: `c878da8183cdab6ca791afcacee6841199a5c067`
+Continúa Precision Lab S26 usando la rama `qa/s26-execution`.
 
-## INSTRUCCIÓN DE ARRANQUE
+Antes de tocar código:
+- lee `qa/s26/START_HERE_2026-09-27.md`;
+- lee `qa/s26/SESSION_CLOSURE_2026-09-27.md`;
+- usa `qa/s26/KEYBOARD_CONTRACT.md` como autoridad funcional B6;
+- usa el contrato visual S26.2R y la captura aprobada como autoridad de composición, NO como inventario literal;
+- revisa `qa/s26/B6_KEYBOARD_PARITY_MATRIX.md`, `ROADMAP.md` y `EXECUTION_LOG.md`.
 
-**No empieces implementando el Bloque 5.**
+Estado:
+- B1–B5 PASS DEFINITIVO.
+- B6 tiene gates automáticos verdes en el HEAD certificado y requiere únicamente confirmación visual humana final de las últimas correcciones.
+- Precision Lab Lite: HEAD certificado `cdd8e35ac6ddcb670f6dbdfe0bf79fa1fde7c9ec`.
 
-Primero ejecuta el **Checkpoint de Paridad S26.3R — Bloques 1–4**.
+Primera tarea:
+1. verificar visualmente Desktop/Tablet/Mobile;
+2. confirmar familias arriba, subcategorías separadas, teclas contextuales por subcategoría y núcleo básico debajo;
+3. confirmar SmartDock retirado;
+4. confirmar que f(x)=0/Sistema/Simplificar solo aparecen en Álgebra → Ecuaciones;
+5. confirmar selector Sistema 2–5;
+6. confirmar que el teclado no tapa Entrada/Resultado/Gráfica.
 
-Lee:
-1. `qa/s26/PARITY_CHECKPOINT_B1_B4.md`
-2. `qa/s26/RESULT_FORMATS.md`
-3. `qa/s26/ROADMAP.md`
-4. final de `qa/s26/EXECUTION_LOG.md`
-5. `qa/s26/DESIGN_TARGET.md`
-6. `qa/s26/KEYBOARD_CONTRACT.md`
-7. `qa/s26/MATHEMATICAL_INTEGRITY_POLICY.md`
+Si todo es correcto:
+- declarar B6 PASS DEFINITIVO;
+- actualizar matriz/log/roadmap;
+- continuar B7 según ROADMAP.
 
-## Estado
+No volver a:
+- Básico como pestaña;
+- inventario histórico de 31 teclas;
+- layout familias a la izquierda;
+- SmartDock visible;
+- tira global de acciones de Ecuaciones;
+- mostrar todas las subcategorías de una familia a la vez.
 
-S26.2R: aprobado/congelado.
+Conservar decisiones:
+- Enter físico = Enter virtual;
+- = solo inserta;
+- ^ físico/virtual;
+- EXP eliminado;
+- MCM/MCD aridad variable;
+- sgn/mod;
+- cuatro límites;
+- hiperbólicas inversas soportadas;
+- τ, Φ/φ;
+- paridad Lite/Plus y tooltips/accesibilidad.
 
-S26.3R:
-- B1 Shell/Sidebar: PASS DEFINITIVO.
-- B2 Configuración: PASS DEFINITIVO.
-- B3 Historial: PASS DEFINITIVO.
-- B4 Resultados/Formatos: PASS DEFINITIVO.
-- B5 Teclado shell/open-close/responsive: pendiente y bloqueado hasta cerrar paridad B1–B4.
-
-## Checkpoint
-
-Auditar Lite vs Plus:
-- B1 shell/sidebar/branding/responsive;
-- B2 configuración/tema/layouts/persistencia;
-- B3 historial/Reusar/routing/autofill/matrices/fecha-hora;
-- B4 resultados/formatos/estructurados/angular.
-
-Clasificación:
-- PARIDAD;
-- DIFERENCIA INTENCIONAL;
-- GAP.
-
-Corrige todos los GAPs antes de B5 y recertifica si tocas código.
-
-## Regla angular definitiva
-
-Salida angular en grados:
-- solo DD y DMS;
-- DD = grados decimales con `°`;
-- DMS = `°`, `′`, `″`;
-- ocultar Exacto/Decimal/Fracción/Científica.
-
-RAD conserva formatos numéricos normales.
-
-## Diferencias intencionales conocidas
-
-Plus:
-- SymPy/backend;
-- Pasos;
-- Resumen;
-- warnings;
-- Copiar resultado / Copiar LaTeX;
-- resultados estructurados API.
-
-Lite:
-- cálculo local;
-- aviso de fallback numérico.
-
-No elimines capacidades reales para forzar paridad.
-
-## Documentación obligatoria
-
-Tras cualquier corrección:
-- actualizar `EXECUTION_LOG.md`;
-- actualizar `ROADMAP.md`;
-- actualizar `PARITY_CHECKPOINT_B1_B4.md`;
-- registrar HEAD certificado;
-- distinguir commits documentales de HEAD de código certificado.
-
-## Después del checkpoint
-
-Bloque 5:
-**Teclado global — shell, apertura/cierre y responsive.**
+Toda corrección debe mantener los gates verdes y respetar la política de integridad matemática.
