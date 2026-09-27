@@ -40,6 +40,6 @@ test("suite módulo 2 actualizada: sistema de inecuaciones puede estar activo", 
   await page.getByRole("tab", { name: "Álgebra", exact: true }).click();
   await page.getByLabel("Subcategorías de Álgebra").getByRole("button", { name: "Ecuaciones", exact: true }).click();
 
-  const key = page.getByRole("button", { name: /Sistema de inecuaciones de 2 variables/i }).first();
+  const key = page.getByRole("button", { name: "Resolver sistema de inecuaciones", exact: true }).first();
   await expect(key).toBeVisible();
 });
