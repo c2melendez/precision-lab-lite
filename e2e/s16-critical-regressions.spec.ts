@@ -191,7 +191,7 @@ test("S16 REG-009: |-3| => 3 desde plantilla valor absoluto", async ({ page }) =
   const dialog = await openKeyboard(page);
   await clear(dialog);
   await category(dialog, "Álgebra");
-  await subcategory(dialog, "Generales");
+  await subcategory(dialog, "Aritmética");
   await press(dialog, "valor absoluto de a");
   await press(dialog, "restar");
   await press(dialog, "3");
