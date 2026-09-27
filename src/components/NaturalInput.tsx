@@ -73,13 +73,14 @@ export function NaturalInput({ value, onChange, onEnter, placeholder, ariaLabel 
   // teclado.
   useEffect(() => {
     const el = ref.current;
-    if (!el || !onEnter) return;
+    const enter = onEnter;
+    if (!el || !enter) return;
 
     function handleKeyDown(event: KeyboardEvent): void {
       if (event.key !== "Enter" || event.shiftKey || event.ctrlKey || event.altKey || event.metaKey) return;
       event.preventDefault();
       event.stopPropagation();
-      onEnter();
+      enter();
     }
 
     el.addEventListener("keydown", handleKeyDown);
