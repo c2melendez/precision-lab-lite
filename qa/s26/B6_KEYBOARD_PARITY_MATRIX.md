@@ -15,7 +15,7 @@ Estado: **PASS AUTOMATIZADO — pendiente confirmación visual humana final**
 | Subcategorías separadas de familias | Sí | Sí | PASS |
 | Solo una subcategoría visible a la vez | Sí | Sí | PASS |
 | Panel de teclas contextual | Sí | Sí | PASS |
-| Núcleo básico permanente debajo | Sí | Sí | PASS |
+| Núcleo básico permanente al centro en desktop | Sí | Sí | PASS |
 | Responsive Desktop/Tablet/Mobile | Sí | Sí | PASS automático |
 | SmartDock Recientes visible | No | No | PASS — retirado |
 | Tira global f(x)=0/Sistema/Simplificar | No | No | PASS — retirada |
@@ -44,7 +44,7 @@ Subcategorías vigentes:
 - Logaritmos
 - Exponenciales
 - Radicales
-- Generales
+- Aritmética
 - Ecuaciones
 
 Contenido relevante:
@@ -52,8 +52,8 @@ Contenido relevante:
 - ln/log/log₂/log_b;
 - potencias/exponenciales, incluido `^`;
 - radicales;
-- |a|, factorial, sgn, mod;
-- f(x)=0, inecuación, sistema, sistema de inecuaciones, simplificar, LCM/MCM, GCD/MCD;
+- |a|, factorial, sgn, mod, LCM/MCM y GCD/MCD dentro de Aritmética;
+- f(x)=0, inecuación, sistema, sistema de inecuaciones, simplificar, factorizar y evaluar en un punto dentro de Ecuaciones;
 - selector de sistema 2–5 dentro de Ecuaciones.
 
 **Nota de reconciliación:** el mockup histórico menciona etiquetas como “Transformación”, “Sistemas” y “Evaluación”, pero la implementación B6 actual agrupa esas acciones dentro de las subcategorías vigentes. No recrearlas solo por aparecer en una captura antigua sin decisión explícita nueva.
@@ -139,7 +139,7 @@ No crear teclados específicos duplicados por módulo.
 - S23 Accessibility PASS
 - S25 Security PASS
 - S22 PWA Offline PASS
-- S26 Preview workflow: fallo de deploy separado; no es regresión funcional B6
+- S26 Preview workflow: PASS
 
 ### Plus
 - CI PASS
@@ -158,7 +158,7 @@ Revisión humana de la última composición:
 - familias arriba;
 - subcategorías separadas;
 - panel contextual compacto;
-- núcleo debajo;
+- núcleo al centro en desktop;
 - SmartDock ausente;
 - acciones Ecuaciones solo en su subcategoría;
 - selector 2–5 visible;
@@ -191,14 +191,26 @@ HEAD certificado: `cdd8e35ac6ddcb670f6dbdfe0bf79fa1fde7c9ec`.
 | Desktop/Tablet/Mobile automáticos | PASS |
 
 Gates:
-CI, Playwright E2E, S22 PWA Offline, S23 Accessibility, S25 Security y Cross-browser smoke: PASS. S26 Preview: build-preview/composición/upload de artefacto PASS; deploy Pages FAIL.
+CI, Playwright E2E, S22 PWA Offline, S23 Accessibility, S25 Security y Cross-browser smoke: PASS. S26 Preview: PASS.
 
 ### Estado B6
 **PASS AUTOMÁTICO / pendiente confirmación visual humana final.**
 
 Cualquier sección histórica de esta matriz que mencione:
-- “Desktop izquierda/centro/derecha”;
+- “núcleo debajo”;
 - “Básico 31 teclas”;
+- “Generales” como subcategoría vigente;
+- LCM/GCD dentro de Ecuaciones;
 - SmartDock como superficie vigente;
 
 queda supersedida por este cierre y por `KEYBOARD_CONTRACT.md`.
+
+### Reconciliación visual final — 2026-09-27
+
+- Desktop/laptop: **familias arriba → subcategorías | básico | contexto**.
+- Básico: mismo inventario, orden y altura mínima de tecla (38 px) en Lite/Plus.
+- Contextuales genéricas: 3 columnas en ambos motores.
+- Cálculo → Ecuaciones diferenciales y Complejos → Avanzado: densidad protegida por E2E.
+- Plus armonizado con Lite en tipografía de familias, estado visual de subcategorías, radios de panel y tratamiento de teclas contextuales.
+- `dy/dx` usa el mismo glifo fraccionario en ambos.
+- Las dos plantillas ODE de segundo orden conservan una diferencia interna de inserción: Plus usa `\\cdot` explícito y Lite multiplicación implícita; la diferencia es de adapter/motor y no cambia el glifo visible ni la semántica.
