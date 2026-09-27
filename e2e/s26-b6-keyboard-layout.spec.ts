@@ -85,3 +85,29 @@ test("S26 B6: categorías y subcategorías muestran icono y texto", async ({ pag
   await expect(dialog.getByRole("button", { name: "mínimo común múltiplo", exact: true })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "máximo común divisor", exact: true })).toBeVisible();
 });
+
+
+test("S26 B6: densidad contextual conserva tamaño legible", async ({ page }) => {
+  const dialog = await openKeyboard(page);
+  const viewport = page.viewportSize();
+  if (!viewport || viewport.width < 1024) return;
+
+  async function assertContextKeys(category: string, subcategory: string) {
+    await dialog.getByRole("tab", { name: category, exact: true }).click();
+    await dialog.getByLabel(`Subcategorías de ${category}`).getByRole("button", { name: subcategory, exact: true }).click();
+
+    const buttons = dialog.getByTestId("keyboard-b6-context").getByRole("button");
+    await expect(buttons.first()).toBeVisible();
+    const count = await buttons.count();
+    expect(count).toBeGreaterThan(0);
+
+    for (let index = 0; index < count; index += 1) {
+      const box = await buttons.nth(index).boundingBox();
+      expect(box).not.toBeNull();
+      if (box) expect(box.width).toBeGreaterThanOrEqual(56);
+    }
+  }
+
+  await assertContextKeys("Cálculo", "Ecuaciones diferenciales");
+  await assertContextKeys("Complejos", "Avanzado");
+});
