@@ -497,3 +497,34 @@ Ejecutar `PARITY_CHECKPOINT_B1_B4.md`, corregir GAPs y recertificar si se modifi
 
 ### Estado
 **B6 PASS AUTOMATIZADO.** Falta únicamente revisión visual humana final de las últimas correcciones antes de declarar PASS DEFINITIVO y abrir B7.
+
+
+## Cierre técnico B6 — 2026-09-27
+
+HEAD certificado: `cdd8e35ac6ddcb670f6dbdfe0bf79fa1fde7c9ec`.
+
+Cambios consolidados:
+- jerarquía final: familias arriba → subcategorías → teclas contextuales → núcleo básico debajo;
+- Básico dejó de ser pestaña; núcleo canónico de 23 teclas;
+- una sola subcategoría visible a la vez;
+- Enter virtual y físico comparten flujo;
+- `=` solo inserta;
+- `EXP` retirada y `^` conservado;
+- MCM/MCD de aridad variable;
+- `sgn` y `mod` conservadas;
+- límites x→a, x→∞, x→a⁻ y x→a⁺;
+- hiperbólicas inversas conservadas;
+- Símbolos ampliados con variables/parámetros y `τ`;
+- selector de sistema 2–5 dentro de Álgebra → Ecuaciones;
+- tira global f(x)=0 / Sistema / Simplificar retirada de B6;
+- SmartDock Recientes / Var./const. retirado de la UI;
+- suites unitarias/E2E heredadas reconciliadas con familia → subcategoría → tecla;
+- accesibilidad/contraste recertificados.
+
+Gates:
+CI, Playwright E2E, S22 PWA Offline, S23 Accessibility, S25 Security y Cross-browser smoke: PASS. S26 Preview: build-preview/composición/upload de artefacto PASS; deploy Pages FAIL.
+
+Estado:
+**B6 PASS AUTOMÁTICO / pendiente confirmación visual humana final**.
+
+La próxima sesión debe iniciar con revisión visual, no con nueva implementación.
