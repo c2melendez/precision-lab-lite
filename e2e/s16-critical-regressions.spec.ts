@@ -56,6 +56,13 @@ async function category(dialog: Locator, name: string) {
   await expect(tab.first()).toHaveAttribute("aria-selected", "true");
 }
 
+async function subcategory(dialog: Locator, name: string) {
+  const button = dialog.getByRole("button", { name, exact: true }).first();
+  await expect(button).toBeVisible();
+  await button.click();
+  await expect(button).toHaveAttribute("aria-pressed", "true");
+}
+
 async function hideMathLiveKeyboard(page: Page) {
   await page.evaluate(() => window.mathVirtualKeyboard?.hide());
   await page.locator(".ML__keyboard.is-visible").waitFor({ state: "hidden", timeout: 5000 }).catch(() => undefined);
@@ -100,6 +107,7 @@ test("S16 REG-002: log(100) => 2 desde plantilla real", async ({ page }) => {
   const dialog = await openKeyboard(page);
   await clear(dialog);
   await category(dialog, "Álgebra");
+  await subcategory(dialog, "Logaritmos");
   await press(dialog, "logaritmo base 10");
   await press(dialog, "1");
   await press(dialog, "0");
@@ -112,8 +120,10 @@ test("S16 REG-003: ln(e) => 1 desde plantilla y constante reales", async ({ page
   const dialog = await openKeyboard(page);
   await clear(dialog);
   await category(dialog, "Álgebra");
+  await subcategory(dialog, "Logaritmos");
   await press(dialog, "logaritmo natural");
   await category(dialog, "Símbolos");
+  await subcategory(dialog, "Constantes y valores");
   await press(dialog, "e");
   await calculate(page, dialog);
   expect((await resultValue(page)).replace(/\s/g, "")).toContain("1");
@@ -123,6 +133,7 @@ test("S16 REG-004: log base 2 de 8 => 3 desde tecla real", async ({ page }) => {
   const dialog = await openKeyboard(page);
   await clear(dialog);
   await category(dialog, "Álgebra");
+  await subcategory(dialog, "Logaritmos");
   await press(dialog, "logaritmo base 2");
   await press(dialog, "8");
   await calculate(page, dialog);
@@ -153,6 +164,7 @@ test("S16 REG-007: e^1 evalúa un valor conocido", async ({ page }) => {
   const dialog = await openKeyboard(page);
   await clear(dialog);
   await category(dialog, "Álgebra");
+  await subcategory(dialog, "Exponenciales");
   await press(dialog, "e a la n");
   await press(dialog, "1");
   await calculate(page, dialog);
@@ -164,10 +176,12 @@ test("S16 REG-008: sin(90°) => 1 usando tecla grados", async ({ page }) => {
   const dialog = await openKeyboard(page);
   await clear(dialog);
   await category(dialog, "Trigonométricas");
+  await subcategory(dialog, "Directas");
   await press(dialog, "sin");
   await press(dialog, "9");
   await press(dialog, "0");
   await category(dialog, "Unidades");
+  await subcategory(dialog, "Ángulos");
   await press(dialog, "grados");
   await calculate(page, dialog);
   expect((await resultValue(page)).replace(/\s/g, "")).toContain("1");
@@ -177,6 +191,7 @@ test("S16 REG-009: |-3| => 3 desde plantilla valor absoluto", async ({ page }) =
   const dialog = await openKeyboard(page);
   await clear(dialog);
   await category(dialog, "Álgebra");
+  await subcategory(dialog, "Generales");
   await press(dialog, "valor absoluto de a");
   await press(dialog, "restar");
   await press(dialog, "3");
@@ -188,6 +203,7 @@ test("S16 REG-010: sin inversa de 0 => 0 desde plantilla real", async ({ page })
   const dialog = await openKeyboard(page);
   await clear(dialog);
   await category(dialog, "Trigonométricas");
+  await subcategory(dialog, "Inversas");
   await press(dialog, "sin inversa");
   await press(dialog, "0");
   await calculate(page, dialog);
