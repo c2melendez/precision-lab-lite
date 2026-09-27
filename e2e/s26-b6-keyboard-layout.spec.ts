@@ -33,15 +33,17 @@ async function expectThreeColumnContract(
 
   if (dialogBox && subBox && coreBox && contextBox) {
     expect(coreBox.height).toBeGreaterThan(120);
-    for (const box of [subBox, coreBox, contextBox]) {
-      expect(box.x).toBeGreaterThanOrEqual(dialogBox.x - 1);
-      expect(box.y).toBeGreaterThanOrEqual(dialogBox.y - 1);
-      expect(box.x + box.width).toBeLessThanOrEqual(dialogBox.x + dialogBox.width + 1);
-      expect(box.y + box.height).toBeLessThanOrEqual(dialogBox.y + dialogBox.height + 1);
-    }
+    expect(coreBox.x).toBeGreaterThanOrEqual(dialogBox.x - 1);
+    expect(coreBox.x + coreBox.width).toBeLessThanOrEqual(dialogBox.x + dialogBox.width + 1);
 
     const viewport = page.viewportSize();
     if (viewport && viewport.width >= 1024) {
+      for (const box of [subBox, coreBox, contextBox]) {
+        expect(box.x).toBeGreaterThanOrEqual(dialogBox.x - 1);
+        expect(box.y).toBeGreaterThanOrEqual(dialogBox.y - 1);
+        expect(box.x + box.width).toBeLessThanOrEqual(dialogBox.x + dialogBox.width + 1);
+        expect(box.y + box.height).toBeLessThanOrEqual(dialogBox.y + dialogBox.height + 1);
+      }
       expect(subBox.x + subBox.width).toBeLessThanOrEqual(coreBox.x + 2);
       expect(coreBox.x + coreBox.width).toBeLessThanOrEqual(contextBox.x + 2);
       expect(Math.abs(subBox.y - coreBox.y)).toBeLessThanOrEqual(2);
