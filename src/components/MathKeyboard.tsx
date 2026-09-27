@@ -700,8 +700,12 @@ export interface MathKeyboardProps {
    * se ignora y se resuelve el existente, mismo criterio que ya tenía
    * handleSolveSystem en BasicScientificMode.tsx). */
   onSolveEquation?: () => void;
+  onSolveInequality?: () => void;
   onSolveSystem?: (rows?: number) => void;
   onSimplify?: () => void;
+  onFactor?: () => void;
+  onEvaluatePoint?: () => void;
+  onSolveInequalitySystem?: () => void;
   // Fase F (Módulo F3): mismo patrón que "⏎" (onEnter) más abajo -- glyph
   // reservado + insertLatex vacío, interceptado en press().
   onGraphComplex?: () => void;
@@ -730,8 +734,12 @@ export function MathKeyboard({
   onEnter,
   onClearField,
   onSolveEquation,
+  onSolveInequality,
   onSolveSystem,
+  onSolveInequalitySystem,
   onSimplify,
+  onFactor,
+  onEvaluatePoint,
   onGraphComplex,
   hideCoreGrid = false,
   registerInsertHandler = true,
@@ -897,52 +905,57 @@ export function MathKeyboard({
               : CATEGORY_MENUS[openCategory]
             ).map((group) =>
               group.section === "Ecuaciones" ? (
-                // Módulo 3: no son teclas que insertan LaTeX — disparan
-                // los mismos callbacks que los 3 íconos de resolución de
-                // siempre. f(x)>0 llama al MISMO onSolveEquation que
-                // f(x)=0 (decisión DEDUCIBLE: el backend ya auto-detecta
-                // ecuación vs. inecuación por el operador presente en lo
-                // que el usuario ya escribió — log §5 — así que no hace
-                // falta una acción distinta, solo un botón que deja claro
-                // que las inecuaciones también funcionan).
                 <div key={group.section} className="mb-2 last:mb-0">
                   <div className="mb-1.5 text-[9px] uppercase tracking-wide text-muted">{group.section}</div>
-                  <div className="grid grid-cols-3 gap-1.5">
+                  <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => {
                         onSolveEquation?.();
                         if (!hideCoreGrid) setOpenCategory(null);
                       }}
                       aria-label="Resolver ecuación"
-                      title="Resuelve una ecuación escrita con signo igual"
-                      className="rounded-md bg-marker-soft/10 py-2 text-xs text-marker hover:bg-marker-soft/20"
+                      title="Ecuación: f(x)=0"
+                      className="rounded-md border border-paper-line bg-paper-soft px-3 py-2 text-sm text-marker shadow-sm hover:border-marker/50"
                     >
                       f(x)=0
                     </button>
                     <button
                       onClick={() => {
-                        onSolveEquation?.();
+                        onSolveInequality?.();
                         if (!hideCoreGrid) setOpenCategory(null);
                       }}
                       aria-label="Resolver inecuación"
-                      title="Resuelve una inecuación escrita con signos de comparación"
-                      className="rounded-md bg-marker-soft/10 py-2 text-xs text-marker hover:bg-marker-soft/20"
+                      title="Inecuación: f(x)≥0"
+                      className="rounded-md border border-paper-line bg-paper-soft px-3 py-2 text-sm text-marker shadow-sm hover:border-marker/50"
                     >
-                      f(x)&gt;0
+                      f(x)≥0
                     </button>
                     <button
                       onClick={() => {
-                        if (!hideCoreGrid) setOpenCategory(null);
                         setShowSystemSizeMenu(true);
                       }}
+                      aria-expanded={showSystemSizeMenu}
                       aria-label="Resolver sistema de ecuaciones"
-                      title="Abre una plantilla para un sistema de 2 a 5 ecuaciones"
-                      className="rounded-md bg-alpha-soft py-2 text-xs text-alpha hover:bg-alpha-soft/80"
+                      title="Sistema de ecuaciones"
+                      className="flex items-center justify-center gap-2 rounded-md border border-paper-line bg-paper-soft px-3 py-2 text-marker shadow-sm hover:border-marker/50"
                     >
-                      Sistema
+                      <span className="text-2xl font-light leading-none">{"{"}</span>
+                      <span className="text-left text-xs leading-tight">f(x)=0<br />g(x)=0</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        onSolveInequalitySystem?.();
+                        if (!hideCoreGrid) setOpenCategory(null);
+                      }}
+                      aria-label="Resolver sistema de inecuaciones"
+                      title="Sistema de inecuaciones: f(x)≥0, g(x)≤0"
+                      className="flex items-center justify-center gap-2 rounded-md border border-paper-line bg-paper-soft px-3 py-2 text-marker shadow-sm hover:border-marker/50"
+                    >
+                      <span className="text-2xl font-light leading-none">{"{"}</span>
+                      <span className="text-left text-xs leading-tight">f(x)≥0<br />g(x)≤0</span>
                     </button>
                     {showSystemSizeMenu && (
-                      <div className="col-span-3 flex flex-wrap items-center gap-1 rounded-md border border-paper-line bg-paper p-2">
+                      <div className="col-span-2 flex flex-wrap items-center gap-1 rounded-md border border-paper-line bg-paper p-2">
                         <span className="mr-1 text-[10px] font-medium text-muted">Ecuaciones:</span>
                         {SYSTEM_ROW_OPTIONS.map((n) => (
                           <button
@@ -962,38 +975,37 @@ export function MathKeyboard({
                     )}
                     <button
                       onClick={() => {
-                        // Corrección post-auditoría (Módulo C): el motor ya
-                        // detecta solo si un \begin{cases} es de ecuaciones o
-                        // de inecuaciones (ver runSystem en
-                        // BasicScientificMode.tsx) — esta tecla usa la MISMA
-                        // plantilla/selector que "Sistema", solo con un rótulo
-                        // que deja claro que también acepta <, >, ≤, ≥.
-                        if (!hideCoreGrid) setOpenCategory(null);
-                        setShowSystemSizeMenu(true);
-                      }}
-                      aria-label="Sistema de inecuaciones de 2 variables — escribe inecuaciones dentro de las llaves"
-                      title="Resuelve un sistema de inecuaciones con exactamente dos variables"
-                      className="relative rounded-md bg-alpha-soft py-2 text-[10px] text-alpha hover:bg-alpha-soft/80"
-                    >
-                      Sist. inecuaciones
-                      {/* Módulo de cierre (honestidad de alcance): el motor
-                          (linearInequalitySystem.ts) solo resuelve EXACTAMENTE
-                          2 variables — este botón es funcional (no unavailable),
-                          pero no comunicaba esa limitación real antes de tocarlo. */}
-                      <span className="absolute -bottom-1 right-1 rounded-sm bg-alpha/20 px-1 text-[7px] font-medium leading-tight text-alpha">
-                        2 var.
-                      </span>
-                    </button>
-                    <button
-                      onClick={() => {
                         onSimplify?.();
                         if (!hideCoreGrid) setOpenCategory(null);
                       }}
                       aria-label="Simplificar expresión"
-                      title="Reduce y combina términos equivalentes"
-                      className="rounded-md bg-graph/15 py-2 text-xs text-graph hover:bg-graph/25"
+                      title="Simplificar"
+                      className="rounded-md border border-paper-line bg-paper-soft px-3 py-2 text-sm text-graph shadow-sm hover:border-graph/50"
                     >
                       a+a → 2a
+                    </button>
+                    <button
+                      onClick={() => {
+                        onFactor?.();
+                        if (!hideCoreGrid) setOpenCategory(null);
+                      }}
+                      aria-label="Factorizar expresión"
+                      title="Factorizar"
+                      className="rounded-md border border-paper-line bg-paper-soft px-3 py-2 text-sm text-graph shadow-sm hover:border-graph/50"
+                    >
+                      x²+2x+1 → (x+1)²
+                    </button>
+                    <button
+                      onClick={() => {
+                        onEvaluatePoint?.();
+                        if (!hideCoreGrid) setOpenCategory(null);
+                      }}
+                      aria-label="Evaluar función en un punto"
+                      title="Evaluar f(x) en x=a"
+                      className="col-span-2 rounded-md border border-paper-line bg-paper-soft px-3 py-2 text-sm text-marker shadow-sm hover:border-marker/50"
+                    >
+                      <span className="font-medium">f(a)</span>
+                      <span className="ml-2 text-[10px] text-muted">(x=a)</span>
                     </button>
                   </div>
                 </div>
