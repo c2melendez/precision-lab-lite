@@ -608,6 +608,17 @@ CATEGORY_MENUS.Cálculo = [
 // S26 B6 — familias contextuales que salen del núcleo permanente.
 // Estas definiciones son canónicas para Científica y se comparten por
 // duplicación de acceso, nunca por cambio de significado.
+const B6_COMMON_CONSTANTS: KeyDef[] = [
+  key("π", "\\pi", "pi", false, undefined, "constante pi (≈3.14159)"),
+  key("e", "e", "e", false, undefined, "constante de Euler (≈2.71828)"),
+  key("∞", "\\infty", "infinito", false, undefined, "representa infinito"),
+];
+
+const B6_COMPLEX_DIRECT: KeyDef[] = [
+  key({ italic: "i" }, "i", "número imaginario", false, undefined, "unidad imaginaria (raíz cuadrada de -1)"),
+  ...B6_COMMON_CONSTANTS,
+];
+
 const B6_RELATIONS: KeyDef[] = [
   key("<", "<", "menor que", false, undefined, "compara si el valor izquierdo es menor que el derecho"),
   key(">", ">", "mayor que", false, undefined, "compara si el valor izquierdo es mayor que el derecho"),
@@ -628,8 +639,24 @@ const B6_FRACTIONS: KeyDef[] = [
 ];
 
 CATEGORY_MENUS.Álgebra = [
+  { section: "Constantes", keys: B6_COMMON_CONSTANTS },
   ...(CATEGORY_MENUS.Álgebra ?? []),
   { section: "Relaciones", keys: B6_RELATIONS },
+];
+
+CATEGORY_MENUS.Trigonométricas = [
+  { section: "Constantes", keys: B6_COMMON_CONSTANTS },
+  ...(CATEGORY_MENUS.Trigonométricas ?? []),
+];
+
+CATEGORY_MENUS.Cálculo = [
+  { section: "Constantes", keys: B6_COMMON_CONSTANTS },
+  ...(CATEGORY_MENUS.Cálculo ?? []),
+];
+
+CATEGORY_MENUS.Complejos = [
+  { section: "Acceso directo", keys: B6_COMPLEX_DIRECT },
+  ...(CATEGORY_MENUS.Complejos ?? []),
 ];
 
 CATEGORY_MENUS.Unidades = [
