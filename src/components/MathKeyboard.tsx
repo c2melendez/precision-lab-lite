@@ -521,12 +521,14 @@ CATEGORY_MENUS.Álgebra = [
     ],
   },
   {
-    section: "Generales",
+    section: "Aritmética",
     keys: [
       key("|a|", "\\left|#0\\right|", "valor absoluto de a", false, undefined, "distancia de un número a cero (siempre positiva)"),
       key("a!", "#0!", "factorial de a", false, undefined, "producto de todos los enteros positivos hasta a"),
       key("sgn(a)", "\\mathrm{sign}\\left(#0\\right)", "signo de a", false, undefined, "devuelve −1, 0 o 1 según el signo del valor"),
       key("mod(a,b)", "\\mathrm{mod}\\left(#0,#1\\right)", "módulo o residuo", false, undefined, "devuelve el residuo de dividir a entre b"),
+      key("LCM", "\\mathrm{lcm}\\left(#0\\right)", "mínimo común múltiplo", false, undefined, "mínimo común múltiplo de dos o más valores separados por comas"),
+      key("GCD", "\\gcd\\left(#0\\right)", "máximo común divisor", false, undefined, "máximo común divisor de dos o más valores separados por comas"),
     ],
   },
   {
@@ -540,7 +542,7 @@ CATEGORY_MENUS.Álgebra = [
 // contenido YA existente (CALCULUS_ROW_1/2, la tira siempre-visible),
 // solo reagrupado como pestaña propia. Reutiliza los mismos KeyDef, sin
 // reescribir plantillas LaTeX (regla del módulo: "solo reagrupado").
-// LCM/GCD NO se repiten aquí — ya viven en Álgebra > Ecuaciones (Módulo
+// LCM/GCD NO se repiten aquí — ya viven en Álgebra > Aritmética (Módulo
 // 3) y no están en la lista de 4 secciones de este módulo (Integrales/
 // Sumas y productos/Derivadas/Límites). La tira vieja (CALCULUS_ROW_1/2
 // tal cual, con LCM/GCD incluidas) se sigue renderizando sin cambios
@@ -992,22 +994,6 @@ export function MathKeyboard({
                       className="rounded-md bg-graph/15 py-2 text-xs text-graph hover:bg-graph/25"
                     >
                       a+a → 2a
-                    </button>
-                    <button
-                      onClick={() => press(key("LCM", "\\mathrm{lcm}\\left(#0\\right)", "mínimo común múltiplo", false, undefined, "MCM de dos o más valores separados por comas"))}
-                      aria-label="Mínimo común múltiplo"
-                      title="Calcula el mínimo común múltiplo de dos o más valores"
-                      className="rounded-md border border-marker bg-marker-soft/10 py-2 text-xs font-medium text-marker hover:bg-marker-soft/20"
-                    >
-                      LCM
-                    </button>
-                    <button
-                      onClick={() => press(key("GCD", "\\gcd\\left(#0\\right)", "máximo común divisor", false, undefined, "MCD de dos o más valores separados por comas"))}
-                      aria-label="Máximo común divisor"
-                      title="Calcula el máximo común divisor de dos o más valores"
-                      className="rounded-md border border-marker bg-marker-soft/10 py-2 text-xs font-medium text-marker hover:bg-marker-soft/20"
-                    >
-                      GCD
                     </button>
                   </div>
                 </div>
