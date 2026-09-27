@@ -7,7 +7,6 @@ import { useLayoutModeStore } from "../store/useLayoutModeStore";
 import { useMinWidthMediaQuery, FLOATING_MIN_WIDTH_PX } from "../hooks/useMinWidthMediaQuery";
 import { KeyboardIcon } from "./KeyboardIcon";
 import { KeyboardPanel } from "./KeyboardPanel";
-import { RecentKeysBar } from "./RecentKeysBar";
 
 /**
  * KeyboardDock.tsx — Módulo 0 + Módulo 1 + corrección post-Módulo 7 (paridad obligatoria con main).
