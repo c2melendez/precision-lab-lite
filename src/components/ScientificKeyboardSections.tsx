@@ -10,42 +10,100 @@ export function RegisteredKeyboardSections({ basic, advanced }: { basic: ReactNo
     window.addEventListener("keydown", escape);
     return () => window.removeEventListener("keydown", escape);
   }, []);
+
   return basic && isValidElement<MathKeyboardProps>(advanced) && advanced.type === MathKeyboard && advanced.props.hideCoreGrid
     ? <ScientificKeyboardSections basic={basic} advanced={advanced} />
     : <>{basic}{advanced}</>;
 }
 
-const SECTIONS = ["Básico", "Símbolos", "Álgebra", "Trigonométricas", "Cálculo", "Complejos"] as const;
+/**
+ * S26 B6 — arquitectura espacial aprobada:
+ * izquierda selecciona; centro permanece; derecha cambia.
+ *
+ * Básico ya no es una pestaña. El núcleo se mantiene visible mientras
+ * el usuario navega por las siete familias contextuales.
+ */
+const SECTIONS: readonly KeyboardCategory[] = [
+  "Álgebra",
+  "Trigonométricas",
+  "Cálculo",
+  "Complejos",
+  "Símbolos",
+  "Unidades",
+  "Más",
+];
 
 export function ScientificKeyboardSections({ basic, advanced }: {
   basic: ReactNode;
   advanced: ReactElement<MathKeyboardProps>;
 }) {
-  const [section, setSection] = useState<"Básico" | KeyboardCategory>("Básico");
+  const [section, setSection] = useState<KeyboardCategory>("Álgebra");
   const id = useId();
-  return <>
-    <div role="tablist" aria-label="Categorías del teclado matemático" className="sticky top-0 z-20 mb-3 flex flex-nowrap gap-1 overflow-x-auto border-b border-chrome-soft bg-chrome/95 p-1 pb-2 backdrop-blur">
-      {SECTIONS.map((name, index) => <button key={name} type="button" role="tab"
-        id={`${id}-tab-${index}`} aria-controls={`${id}-panel`} aria-selected={section === name}
-        tabIndex={section === name ? 0 : -1}
-        onClick={() => setSection(name)}
-        onKeyDown={(event) => {
-          const next = event.key === "ArrowRight" ? (index + 1) % SECTIONS.length
-            : event.key === "ArrowLeft" ? (index + SECTIONS.length - 1) % SECTIONS.length
-            : event.key === "Home" ? 0 : event.key === "End" ? SECTIONS.length - 1 : -1;
-          if (next < 0) return;
-          event.preventDefault();
-          setSection(SECTIONS[next]);
-          document.getElementById(`${id}-tab-${next}`)?.focus();
-        }}
-        className={section === name
-          ? "shrink-0 rounded-lg bg-marker px-3 py-2 text-xs font-semibold text-chrome"
-          : "shrink-0 rounded-lg bg-chrome-soft px-3 py-2 text-xs text-bone hover:bg-marker-soft hover:text-marker-text"}>
-        {name}
-      </button>)}
+
+  return (
+    <div
+      data-testid="keyboard-b6-layout"
+      className="grid min-h-0 grid-cols-1 gap-3 dt:grid-cols-[10rem_minmax(18rem,0.8fr)_minmax(0,1.2fr)]"
+    >
+      <div
+        role="tablist"
+        aria-label="Familias del teclado matemático"
+        aria-orientation="vertical"
+        className="order-1 flex gap-1 overflow-x-auto rounded-xl border border-paper-line bg-paper-soft p-2 dt:flex-col dt:overflow-visible"
+      >
+        {SECTIONS.map((name, index) => (
+          <button
+            key={name}
+            type="button"
+            role="tab"
+            id={`${id}-tab-${index}`}
+            aria-controls={`${id}-panel`}
+            aria-selected={section === name}
+            tabIndex={section === name ? 0 : -1}
+            onClick={() => setSection(name)}
+            onKeyDown={(event) => {
+              const next = event.key === "ArrowDown" || event.key === "ArrowRight"
+                ? (index + 1) % SECTIONS.length
+                : event.key === "ArrowUp" || event.key === "ArrowLeft"
+                  ? (index + SECTIONS.length - 1) % SECTIONS.length
+                  : event.key === "Home"
+                    ? 0
+                    : event.key === "End"
+                      ? SECTIONS.length - 1
+                      : -1;
+              if (next < 0) return;
+              event.preventDefault();
+              setSection(SECTIONS[next]);
+              document.getElementById(`${id}-tab-${next}`)?.focus();
+            }}
+            className={
+              section === name
+                ? "shrink-0 rounded-lg bg-marker px-3 py-2 text-left text-xs font-semibold text-chrome"
+                : "shrink-0 rounded-lg px-3 py-2 text-left text-xs font-medium text-muted hover:bg-paper hover:text-ink"
+            }
+          >
+            {name}
+          </button>
+        ))}
+      </div>
+
+      <div
+        data-testid="keyboard-b6-core"
+        className="order-2 min-w-0 rounded-xl border border-paper-line bg-paper p-2"
+      >
+        <div className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-muted">Núcleo</div>
+        {basic}
+      </div>
+
+      <div
+        id={`${id}-panel`}
+        role="tabpanel"
+        aria-labelledby={`${id}-tab-${SECTIONS.indexOf(section)}`}
+        className="order-3 min-w-0 rounded-xl border border-paper-line bg-paper p-2"
+      >
+        <div className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-muted">{section}</div>
+        {cloneElement(advanced, { activeCategory: section })}
+      </div>
     </div>
-    <div id={`${id}-panel`} role="tabpanel" aria-labelledby={`${id}-tab-${SECTIONS.indexOf(section)}`}>
-      {section === "Básico" ? basic : cloneElement(advanced, { activeCategory: section })}
-    </div>
-  </>;
+  );
 }
