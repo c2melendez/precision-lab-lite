@@ -16,13 +16,19 @@ async function expectNoOverlap(dialog: import("@playwright/test").Locator) {
   await expect(context).toBeVisible();
   await expect(core).toBeVisible();
 
+  const dialogBox = await dialog.boundingBox();
   const contextBox = await context.boundingBox();
   const coreBox = await core.boundingBox();
+  expect(dialogBox).not.toBeNull();
   expect(contextBox).not.toBeNull();
   expect(coreBox).not.toBeNull();
 
-  if (contextBox && coreBox) {
+  if (dialogBox && contextBox && coreBox) {
+    expect(contextBox.height).toBeGreaterThan(24);
+    expect(coreBox.height).toBeGreaterThan(120);
     expect(contextBox.y + contextBox.height).toBeLessThanOrEqual(coreBox.y + 1);
+    expect(coreBox.y).toBeGreaterThanOrEqual(dialogBox.y);
+    expect(coreBox.y + coreBox.height).toBeLessThanOrEqual(dialogBox.y + dialogBox.height + 1);
   }
 }
 
