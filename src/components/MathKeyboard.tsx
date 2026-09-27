@@ -939,6 +939,25 @@ export function MathKeyboard({
                     >
                       Sistema
                     </button>
+                    {showSystemSizeMenu && (
+                      <div className="col-span-3 flex flex-wrap items-center gap-1 rounded-md border border-paper-line bg-paper p-2">
+                        <span className="mr-1 text-[10px] font-medium text-muted">Ecuaciones:</span>
+                        {SYSTEM_ROW_OPTIONS.map((n) => (
+                          <button
+                            key={n}
+                            onClick={() => {
+                              onSolveSystem?.(n);
+                              setShowSystemSizeMenu(false);
+                            }}
+                            aria-label={`Sistema de ${n} ecuaciones`}
+                            title={`Insertar sistema de ${n} ecuaciones`}
+                            className="h-7 w-7 rounded-md bg-alpha-soft text-xs font-semibold text-alpha hover:bg-alpha-soft/70"
+                          >
+                            {n}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                     <button
                       onClick={() => {
                         // Corrección post-auditoría (Módulo C): el motor ya
