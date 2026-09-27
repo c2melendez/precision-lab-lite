@@ -21,7 +21,7 @@ test("los seis módulos mantienen controles dentro de la pantalla", async ({ pag
   }
   // El fallback global debe insertar sobre inputs nativos.
   await page.locator("nav").getByRole("button", { name: "Geometría", exact: true }).click();
-  const base = page.getByLabel("Base");
+  const base = page.getByLabel("Base").first();
   await base.fill("");
   await base.focus();
   await page.getByRole("button", { name: /Abrir teclado|Expandir teclado/ }).first().click();
@@ -35,5 +35,5 @@ test("los seis módulos mantienen controles dentro de la pantalla", async ({ pag
   await page.locator("nav").getByRole("button", { name: "Científica", exact: true }).click();
   await page.getByRole("button", { name: /Abrir teclado|Expandir teclado/ }).first().click();
   await expect(page.getByRole("dialog", { name: "Teclado matemático" })).toBeVisible();
-  await expect(page.getByRole("tab", { name: "Básico", exact: true })).toBeVisible();
+  await expect(page.getByRole("dialog", { name: "Teclado matemático" }).getByTestId("keyboard-b6-core")).toBeVisible();
 });
