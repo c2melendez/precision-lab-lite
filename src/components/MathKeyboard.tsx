@@ -630,6 +630,10 @@ CATEGORY_MENUS.Unidades = [
 CATEGORY_MENUS.Más = [
   { section: "Fracciones", keys: B6_FRACTIONS },
   { section: "Relaciones y ángulos", keys: [...B6_RELATIONS.slice(0, 4), ...B6_ANGLE_KEYS] },
+  {
+    section: "Signos",
+    keys: [key("±()", "\\pm\\left(#0\\right)", "más/menos", false, undefined, "inserta las alternativas positiva y negativa")],
+  },
 ];
 
 const CATEGORIES_FULL = ["Trigonométricas", "Símbolos", "Complejos"] as const;
