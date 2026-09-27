@@ -41,6 +41,21 @@ describe("inventario estructural del teclado V5 de Lite", () => {
     }
   });
 
+  it("B6 mantiene el núcleo compacto y expulsa teclas contextuales", () => {
+    const labels = BASIC_V5_ROWS.flat().map((key) => key.ariaLabel);
+    expect(BASIC_V5_ROWS.map((row) => row.length)).toEqual([6, 6, 6, 5]);
+    expect(labels).toContain("igual");
+    expect(labels).toContain("calcular");
+    expect(labels).toContain("borrar");
+    expect(labels).not.toContain("grados");
+    expect(labels).not.toContain("grados minutos segundos");
+    expect(labels).not.toContain("prima");
+    expect(labels).not.toContain("menor que");
+    expect(labels).not.toContain("mayor que");
+    expect(labels).not.toContain("menor o igual que");
+    expect(labels).not.toContain("mayor o igual que");
+  });
+
   it("no deja teclas sin etiqueta accesible", () => {
     for (const key of allKeyboardKeys) {
       expect(key.ariaLabel.trim()).not.toBe("");
