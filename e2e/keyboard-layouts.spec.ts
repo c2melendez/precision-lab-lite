@@ -15,13 +15,14 @@ for (const layout of ["fused", "stacked", "split"] as const) {
       .first();
 
     await expect(keyboard).toBeVisible();
-    await expect(keyboard.getByRole("tab")).toHaveCount(6);
+    await expect(keyboard.getByRole("tab")).toHaveCount(7);
 
-    for (const name of ["Símbolos", "Álgebra", "Trigonométricas", "Cálculo", "Complejos", "Básico"]) {
+    for (const name of ["Álgebra", "Trigonométricas", "Cálculo", "Complejos", "Símbolos", "Unidades", "Más"]) {
       await keyboard.getByRole("tab", { name, exact: true }).click();
       await expect(keyboard.getByRole("tab", { name, exact: true })).toHaveAttribute("aria-selected", "true");
     }
 
+    await expect(keyboard.getByTestId("keyboard-b6-core")).toBeVisible();
     await keyboard.getByRole("button", { name: "2", exact: true }).click();
     await expect(page.locator("math-field").first()).toHaveJSProperty("value", "2");
     await page.screenshot({ path: testInfo.outputPath(`${layout}-teclado.png`), fullPage: true });
