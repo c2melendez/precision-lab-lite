@@ -22,8 +22,6 @@ export const BASIC_V5_ROWS: KeyDef[][] = [
     key("(", "(", "paréntesis izquierdo", false, undefined, "abre un grupo o establece prioridad de operación"),
     key(")", ")", "paréntesis derecho", false, undefined, "cierra el grupo iniciado con un paréntesis"),
     key("⌫", "", "borrar", false, undefined, "borra el último carácter escrito"),
-    key("DEL", "", "borrar todo el campo", false, undefined, "borra todo lo escrito en el campo actual"),
-    key("ANS", "", "insertar el último resultado", false, undefined, "inserta el resultado del último cálculo"),
   ],
   [
     key("4", "4", "4", false, undefined, "inserta el número cuatro"),
@@ -32,8 +30,6 @@ export const BASIC_V5_ROWS: KeyDef[][] = [
     key("×", "\\cdot", "multiplicar", false, undefined, "multiplica el valor de la izquierda por el de la derecha"),
     key("÷", "\\frac{#0}{#1}", "dividir", false, undefined, "inserta una fracción editable con numerador y denominador"),
     key("%", "\\%", "porcentaje", false, undefined, "inserta el símbolo de porcentaje"),
-    key("<", "<", "menor que", false, undefined, "compara si el valor izquierdo es menor que el derecho"),
-    key(">", ">", "mayor que", false, undefined, "compara si el valor izquierdo es mayor que el derecho"),
   ],
   [
     key("1", "1", "1", false, undefined, "inserta el número uno"),
@@ -42,16 +38,12 @@ export const BASIC_V5_ROWS: KeyDef[][] = [
     key("+", "+", "sumar", false, undefined, "suma dos valores"),
     key("−", "-", "restar", false, undefined, "resta el valor derecho al izquierdo"),
     key(".", ".", "punto decimal", false, undefined, "inserta el separador decimal"),
-    key("=", "=", "igual", false, undefined, "inserta un signo de igualdad sin ejecutar el cálculo"),
-    key("′", "'", "prima", false, undefined, "agrega una prima para escribir ecuaciones diferenciales"),
   ],
   [
     key("0", "0", "0", false, undefined, "inserta el número cero"),
-    key("°", "°", "grados", false, undefined, "inserta el símbolo de grados"),
-    key("DMS", "#0°#1′#2″", "grados minutos segundos", false, undefined, "inserta la plantilla editable grados, minutos y segundos"),
-    key("±()", "\\pm\\left(#0\\right)", "más/menos", false, undefined, "inserta las alternativas positiva y negativa"),
-    key("≤", "\\le", "menor o igual que", false, undefined, "compara si el valor izquierdo es menor o igual que el derecho"),
-    key("≥", "\\ge", "mayor o igual que", false, undefined, "compara si el valor izquierdo es mayor o igual que el derecho"),
+    key("ANS", "", "insertar el último resultado", false, undefined, "inserta el resultado del último cálculo"),
+    key("DEL", "", "borrar todo el campo", false, undefined, "borra todo lo escrito en el campo actual"),
+    key("=", "=", "igual", false, undefined, "inserta un signo de igualdad sin ejecutar el cálculo"),
     key("Enter", "", "calcular", false, undefined, "ejecuta o resuelve la expresión actual"),
   ],
 ];
@@ -195,7 +187,7 @@ export function KeyboardBasicPanel({ field, onBackspace, onClear, onEnter, lastA
       )}
 
       {BASIC_V5_ROWS.map((row, i) => (
-        <div key={i} className="grid grid-cols-8 gap-1">
+        <div key={i} className="grid grid-cols-6 gap-1">
           {row.map((k, j) => (
             <BasicKey key={j} k={k} onPress={press} onShowTooltip={showTooltip} className={keyClass(k)} />
           ))}
