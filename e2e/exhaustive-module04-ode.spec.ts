@@ -6,6 +6,7 @@ async function openODE(page: import("@playwright/test").Page) {
   await expect(opener).toBeVisible();
   await opener.click();
   await page.getByRole("tab", { name: "Cálculo", exact: true }).click();
+  await page.getByLabel("Subcategorías de Cálculo").getByRole("button", { name: "Ecuaciones diferenciales", exact: true }).click();
 }
 
 async function setExpression(page: import("@playwright/test").Page, value: string) {
