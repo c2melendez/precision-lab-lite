@@ -796,7 +796,7 @@ export function MathKeyboard({
   }
 
   return (
-    <div className="relative rounded-xl bg-chrome p-3" onClickCapture={handleKeyboardClickCapture}>
+    <div className={hideCoreGrid && activeCategory ? "relative p-0" : "relative rounded-xl bg-chrome p-3"} onClickCapture={handleKeyboardClickCapture}>
       {notice && (
         <div className="mb-1.5 rounded-lg bg-chrome-soft px-3 py-2 text-center text-xs text-bone shadow-lg">
           {notice}
@@ -804,7 +804,7 @@ export function MathKeyboard({
       )}
 
       {openCategory && (
-        <div className="mb-1.5 rounded-lg bg-chrome-soft p-3 shadow-lg">
+        <div className={hideCoreGrid && activeCategory ? "p-0" : "mb-1.5 rounded-lg bg-chrome-soft p-3 shadow-lg"}>
           {(openCategory as string) === "Símbolos" ? (
             hideCoreGrid ? (
               <div className="min-h-[3.25rem]">
