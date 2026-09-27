@@ -307,3 +307,20 @@ B6 solo puede cerrarse cuando:
 8. la revisión visual contra los mockups aprobados sea satisfactoria.
 
 **Regla final:** familias arriba; subcategorías a la izquierda; teclas contextuales a la derecha; núcleo básico permanente debajo.
+
+
+## 18. Reconciliación de implementación — 2026-09-27
+
+Este checkpoint sustituye cualquier interpretación visual anterior incompatible con B6.
+
+- Arquitectura: **familias arriba → subcategorías → teclas contextuales → núcleo debajo**.
+- Núcleo actual: **23 teclas**. El documento histórico de Básico con 31 teclas está supersedido.
+- El mockup se usa para comportamiento y jerarquía, no para restaurar inventario antiguo.
+- Álgebra vigente agrupa la UI en: Constantes, Logaritmos, Exponenciales, Radicales, Generales y Ecuaciones.
+- Acciones f(x)=0 / sistema / simplificar no son una tira global; viven en Ecuaciones.
+- Sistema expone selector 2–5 dentro de Ecuaciones.
+- SmartDock Recientes / Var./const. está retirado de la interfaz.
+- Trigonometría conserva las seis hiperbólicas inversas soportadas: sinh⁻¹, cosh⁻¹, tanh⁻¹, csch⁻¹, sech⁻¹, coth⁻¹.
+- `convertir a forma polar` pertenece a Complejos → Funciones.
+- Gates automáticos B6 están verdes en los HEADs certificados registrados en `SESSION_CLOSURE_2026-09-27.md`.
+- Falta solo confirmación visual humana final para declarar B6 PASS DEFINITIVO.
