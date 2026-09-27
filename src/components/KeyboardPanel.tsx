@@ -90,7 +90,7 @@ export function KeyboardPanel({ isOpen, onClose, children, dockHeight = 0, sideb
         </button>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-2 pb-2">{children}</div>
+      <div className="min-h-0 flex-1 overflow-hidden px-2 pb-2">{children}</div>
     </div>
   );
 }
