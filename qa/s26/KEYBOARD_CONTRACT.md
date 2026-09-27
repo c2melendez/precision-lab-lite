@@ -242,6 +242,13 @@ Duplicaciones aprobadas incluyen:
 - Relaciones en Álgebra además de Más;
 - `π` en Unidades.
 
+## 12.1. Acciones contextuales y SmartDock
+
+- Las acciones rápidas heredadas `f(x)=0`, selector de sistema y `Simplificar` **no se muestran globalmente** en B6.
+- Esas acciones viven exclusivamente en la subcategoría correspondiente de **Álgebra → Ecuaciones**.
+- El SmartDock visual de **Recientes / Var./const.** queda retirado de todas las disposiciones para recuperar espacio vertical.
+- El almacenamiento interno de recientes puede permanecer como infraestructura no visible; no forma parte de la interfaz B6.
+
 ## 13. Tooltips, accesibilidad e integridad
 
 Toda tecla debe tener:
