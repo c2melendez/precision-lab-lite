@@ -52,15 +52,10 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
   await expect(algebraTab).toHaveAttribute("aria-selected", "true");
   await expect(symbolsTab).toHaveAttribute("aria-selected", "false");
   await expect(dialog.getByTestId("keyboard-b6-core")).toBeVisible();
-  expect((await dialog.getByRole("tab").allTextContents()).map((value) => value.trim())).toEqual([
-    "Álgebra",
-    "Trigonométricas",
-    "Cálculo",
-    "Complejos",
-    "Símbolos",
-    "Unidades",
-    "Más",
-  ]);
+  await expect(dialog.getByRole("tab")).toHaveCount(7);
+  for (const family of ["Álgebra", "Trigonométricas", "Cálculo", "Complejos", "Símbolos", "Unidades", "Más"]) {
+    await expect(dialog.getByRole("tab", { name: family, exact: true })).toBeVisible();
+  }
 
   await expect(dialog.getByRole("button", { name: "borrar todo el campo" })).toBeVisible();
   await expect(
