@@ -87,7 +87,7 @@ export function Screen({
   const canGraph = Boolean(onGraphExpression) && latex.trim().length > 0;
   const inputField = (
     <div className="relative">
-      <NaturalInput value={latex} onChange={onChangeLatex} placeholder={placeholder} fieldRef={fieldRef} bare />
+      <NaturalInput value={latex} onChange={onChangeLatex} onEnter={onCalculate} placeholder={placeholder} fieldRef={fieldRef} bare />
       {latex.length > 0 && (
         <button
           type="button"
