@@ -172,6 +172,7 @@ export function ScientificKeyboardSections({ basic, advanced }: {
 
         <div
           id={`${id}-context`}
+          data-testid="keyboard-b6-context"
           role="tabpanel"
           aria-labelledby={`${id}-family-${FAMILIES.indexOf(family)}`}
           aria-label={`${family}: ${subcategory}`}
