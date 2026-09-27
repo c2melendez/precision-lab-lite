@@ -33,6 +33,45 @@ const FAMILIES: readonly KeyboardCategory[] = [
 
 const SYMBOL_SUBCATEGORIES = ["Variables", "Constantes y valores", "Funciones"] as const;
 
+const FAMILY_ICONS: Record<KeyboardCategory, string> = {
+  "Álgebra": "x²",
+  "Trigonométricas": "sin",
+  "Cálculo": "∫",
+  "Complejos": "i",
+  "Símbolos": "Ω",
+  "Unidades": "°",
+  "Más": "⋯",
+};
+
+const SUBCATEGORY_ICONS: Record<string, string> = {
+  "Constantes": "π",
+  "Logaritmos": "ln",
+  "Exponenciales": "xⁿ",
+  "Radicales": "√",
+  "Aritmética": "a!",
+  "Ecuaciones": "x=",
+  "Directas": "sin",
+  "Inversas": "sin⁻¹",
+  "Hiperbólicas": "sinh",
+  "Hiperbólicas inversas": "sinh⁻¹",
+  "Integrales": "∫",
+  "Sumas y productos": "Σ",
+  "Derivadas": "d/dx",
+  "Límites": "lim",
+  "Ecuaciones diferenciales": "y′",
+  "Acceso directo": "i",
+  "Funciones": "ƒ",
+  "Avanzado": "zⁿ",
+  "Ángulos": "∠",
+  "Variables": "x",
+  "Constantes y valores": "π",
+  "Relaciones": "≤",
+  "Fracciones": "a/b",
+  "Constante útil": "π",
+  "Relaciones y ángulos": "°",
+  "Signos": "±",
+};
+
 function subcategoriesFor(family: KeyboardCategory): string[] {
   if (family === "Símbolos") return [...SYMBOL_SUBCATEGORIES];
   return (CATEGORY_MENUS[family] ?? []).map((group) => group.section);
@@ -98,11 +137,12 @@ export function ScientificKeyboardSections({ basic, advanced }: {
             }}
             className={
               family === name
-                ? "shrink-0 rounded-lg bg-marker px-3 py-2 text-xs font-semibold text-chrome"
-                : "shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-muted hover:bg-paper hover:text-ink"
+                ? "flex shrink-0 items-center gap-1.5 rounded-lg bg-marker px-3 py-2 text-xs font-semibold text-chrome"
+                : "flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium text-muted hover:bg-paper hover:text-ink"
             }
           >
-            {name}
+            <span aria-hidden="true" className="min-w-5 text-center text-[11px] font-semibold">{FAMILY_ICONS[name]}</span>
+            <span>{name}</span>
           </button>
         ))}
       </div>
@@ -120,11 +160,12 @@ export function ScientificKeyboardSections({ basic, advanced }: {
               onClick={() => setSubcategory(name)}
               className={
                 subcategory === name
-                  ? "shrink-0 rounded-lg border border-marker/30 bg-marker-soft/20 px-2.5 py-2 text-left text-[11px] font-semibold text-marker"
-                  : "shrink-0 rounded-lg px-2.5 py-2 text-left text-[11px] font-medium text-muted hover:bg-paper hover:text-ink"
+                  ? "flex shrink-0 items-center gap-2 rounded-lg border border-marker/30 bg-marker-soft/20 px-2.5 py-2 text-left text-[11px] font-semibold text-marker"
+                  : "flex shrink-0 items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[11px] font-medium text-muted hover:bg-paper hover:text-ink"
               }
             >
-              {name}
+              <span aria-hidden="true" className="min-w-8 text-center text-[10px] font-semibold">{SUBCATEGORY_ICONS[name] ?? "·"}</span>
+              <span>{name}</span>
             </button>
           ))}
         </div>
@@ -134,7 +175,7 @@ export function ScientificKeyboardSections({ basic, advanced }: {
           role="tabpanel"
           aria-labelledby={`${id}-family-${FAMILIES.indexOf(family)}`}
           aria-label={`${family}: ${subcategory}`}
-          className="min-w-0 rounded-xl border border-paper-line bg-paper p-2"
+          className="min-w-0 max-h-[30vh] overflow-y-auto rounded-xl border border-paper-line bg-paper p-2 dt:max-h-[18rem]"
         >
           {cloneElement(advanced, {
             activeCategory: family,
@@ -145,7 +186,7 @@ export function ScientificKeyboardSections({ basic, advanced }: {
 
       <div
         data-testid="keyboard-b6-core"
-        className="min-w-0 rounded-xl border border-paper-line bg-paper p-2"
+        className="sticky bottom-0 z-20 min-w-0 shrink-0 rounded-xl border border-paper-line bg-paper p-2 shadow-[0_-8px_18px_-14px_rgba(0,0,0,0.45)]"
       >
         {basic}
       </div>
