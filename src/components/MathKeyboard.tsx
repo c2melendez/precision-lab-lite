@@ -916,7 +916,7 @@ export function MathKeyboard({
                     <button
                       onClick={() => press(key("LCM", "\\mathrm{lcm}\\left(#0\\right)", "mínimo común múltiplo", false, undefined, "MCM de dos o más valores separados por comas"))}
                       aria-label="Mínimo común múltiplo"
-                      title="Calcula el menor múltiplo común de dos enteros"
+                      title="Calcula el mínimo común múltiplo de dos o más valores"
                       className="rounded-md border border-marker bg-marker-soft/10 py-2 text-xs font-medium text-marker hover:bg-marker-soft/20"
                     >
                       LCM
@@ -924,7 +924,7 @@ export function MathKeyboard({
                     <button
                       onClick={() => press(key("GCD", "\\gcd\\left(#0\\right)", "máximo común divisor", false, undefined, "MCD de dos o más valores separados por comas"))}
                       aria-label="Máximo común divisor"
-                      title="Calcula el mayor divisor común de dos enteros"
+                      title="Calcula el máximo común divisor de dos o más valores"
                       className="rounded-md border border-marker bg-marker-soft/10 py-2 text-xs font-medium text-marker hover:bg-marker-soft/20"
                     >
                       GCD
