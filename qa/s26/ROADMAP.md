@@ -238,3 +238,16 @@ Bloque 5 queda **desbloqueado y EN CURSO**. Su alcance es únicamente shell glob
 - Lite alineado a la gramática visual theme-aware de Plus.
 - Matriz: `B6_BASIC_RECONCILIATION.md`.
 - Estado: **IMPLEMENTADO — pendiente gates + Preview/revisión humana**.
+
+
+## Checkpoint B6 — cierre de sesión 2026-09-27
+
+- B1–B5: **PASS DEFINITIVO**.
+- B6: **PASS AUTOMATIZADO — pendiente confirmación visual humana final**.
+- HEAD certificado de código Precision Lab Lite: `cdd8e35ac6ddcb670f6dbdfe0bf79fa1fde7c9ec`.
+- Arquitectura vigente: familias arriba → subcategorías → teclas contextuales → núcleo básico debajo.
+- SmartDock retirado.
+- Acciones rápidas de Ecuaciones restringidas a Álgebra → Ecuaciones.
+- No iniciar B7 hasta confirmar visualmente la última versión.
+
+Ver: `SESSION_CLOSURE_2026-09-27.md` y `START_HERE_2026-09-27.md`.
