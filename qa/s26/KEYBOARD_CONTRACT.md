@@ -89,13 +89,14 @@ No se requiere una tecla `∛x` independiente: la raíz n-ésima cubre ese caso.
 ### Transformación
 `Simplificar` · `Factorizar` · `Expandir`
 
-### Aritmética de enteros
+### Aritmética
 `MCM(…)` · `MCD(…)` · `sgn(a)` · `mod(a,b)`
 
 - MCM/LCM y MCD/GCD son **de aridad variable**, con mínimo dos argumentos.
 - `sgn(a)` es unaria.
 - `mod(a,b)` es binaria.
 - La etiqueta visible puede ser MCM/MCD aunque el motor utilice `lcm`/`gcd` internamente.
+- MCM/LCM y MCD/GCD pertenecen exclusivamente a **Álgebra → Aritmética**; **no** deben renderizarse dentro de **Álgebra → Ecuaciones**.
 
 ### Ecuaciones e inecuaciones
 - `f(x)=0`
@@ -316,7 +317,7 @@ Este checkpoint sustituye cualquier interpretación visual anterior incompatible
 - Arquitectura: **familias arriba → subcategorías → teclas contextuales → núcleo debajo**.
 - Núcleo actual: **23 teclas**. El documento histórico de Básico con 31 teclas está supersedido.
 - El mockup se usa para comportamiento y jerarquía, no para restaurar inventario antiguo.
-- Álgebra vigente agrupa la UI en: Constantes, Logaritmos, Exponenciales, Radicales, Generales y Ecuaciones.
+- Álgebra vigente agrupa la UI en: Constantes, Logaritmos, Exponenciales, Radicales, Aritmética y Ecuaciones.
 - Acciones f(x)=0 / sistema / simplificar no son una tira global; viven en Ecuaciones.
 - Sistema expone selector 2–5 dentro de Ecuaciones.
 - SmartDock Recientes / Var./const. está retirado de la interfaz.
