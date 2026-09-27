@@ -187,7 +187,7 @@ export function ScientificKeyboardSections({ basic, advanced }: {
 
       <div
         data-testid="keyboard-b6-core"
-        className="min-w-0 shrink-0 rounded-xl border border-paper-line bg-paper p-2"
+        className="mt-2 min-w-0 shrink-0 rounded-xl border border-paper-line bg-paper p-2"
       >
         {basic}
       </div>
