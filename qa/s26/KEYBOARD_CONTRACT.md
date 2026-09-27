@@ -18,17 +18,17 @@ La captura visual aprobada del 26-09-2026 define **comportamiento y jerarquía**
 ### Desktop
 
 1. **Franja superior — familias principales:** Álgebra · Trigonometría · Cálculo · Complejos · Símbolos · Unidades · Más.
-2. **Zona contextual intermedia, columna izquierda — subcategorías:** muestra únicamente las subcategorías de la familia activa.
-3. **Zona contextual intermedia, panel derecho — teclas:** muestra únicamente las teclas de la subcategoría activa.
-4. **Zona inferior — núcleo permanente:** el teclado básico acordado permanece visible y estable debajo de la navegación contextual.
+2. **Cuerpo en tres columnas — izquierda:** subcategorías de la familia activa.
+3. **Cuerpo en tres columnas — centro:** núcleo básico permanente, estable y siempre disponible.
+4. **Cuerpo en tres columnas — derecha:** teclas de la subcategoría activa.
 
-**Regla funcional:** familia → subcategoría → teclas contextuales. El núcleo básico no cambia.
+**Regla funcional:** familia → subcategoría → teclas contextuales. El núcleo básico no cambia ni compite verticalmente con el panel contextual.
 
 La captura de referencia NO autoriza a recuperar teclas históricas laterales como x/y/z ni otros accesos que ya fueron retirados del núcleo. El inventario funcional vigente de este contrato prevalece.
 
 ### Tablet / Mobile
 
-Se conserva exactamente la misma jerarquía lógica. Las familias permanecen en una franja horizontal desplazable. Cuando el ancho sea insuficiente, las subcategorías pueden pasar de columna vertical a una fila/rail horizontal y las teclas contextuales se colocan debajo. El núcleo básico continúa debajo del área contextual.
+Se conserva exactamente la misma jerarquía lógica. Las familias permanecen en una franja horizontal desplazable. Cuando el ancho no permita las tres columnas, el cuerpo puede degradar a una disposición apilada: rail de subcategorías, núcleo básico y panel contextual, manteniendo cada región independiente y sin superposición.
 
 ### Regla de densidad y espacio
 
@@ -307,14 +307,14 @@ B6 solo puede cerrarse cuando:
 7. existan tests automáticos de inventario, inserción y comportamiento;
 8. la revisión visual contra los mockups aprobados sea satisfactoria.
 
-**Regla final:** familias arriba; subcategorías a la izquierda; teclas contextuales a la derecha; núcleo básico permanente debajo.
+**Regla final:** familias arriba; en escritorio, subcategorías a la izquierda, núcleo básico permanente al centro y teclas contextuales a la derecha.
 
 
 ## 18. Reconciliación de implementación — 2026-09-27
 
 Este checkpoint sustituye cualquier interpretación visual anterior incompatible con B6.
 
-- Arquitectura: **familias arriba → subcategorías → teclas contextuales → núcleo debajo**.
+- Arquitectura desktop: **familias arriba → subcategorías | núcleo básico | teclas contextuales**.
 - Núcleo actual: **23 teclas**. El documento histórico de Básico con 31 teclas está supersedido.
 - El mockup se usa para comportamiento y jerarquía, no para restaurar inventario antiguo.
 - Álgebra vigente agrupa la UI en: Constantes, Logaritmos, Exponenciales, Radicales, Aritmética y Ecuaciones.
@@ -340,7 +340,7 @@ No declarar PASS DEFINITIVO hasta que el usuario revise el teclado posterior a:
 - familias arriba;
 - subcategorías separadas;
 - una sola subcategoría visible;
-- núcleo permanente debajo;
+- núcleo permanente al centro en desktop;
 - retiro del SmartDock;
 - retiro de la tira rápida global de Ecuaciones;
 - selector Sistema 2–5 dentro de Álgebra → Ecuaciones.
