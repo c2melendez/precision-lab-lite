@@ -114,3 +114,18 @@ test("el teclado V5 conserva acceso y geometría responsive", async ({ page }, t
   await page.keyboard.press("Escape");
   await expect(dialog).not.toBeVisible();
 });
+
+
+test("B6: Enter físico ejecuta el mismo cálculo que Enter virtual", async ({ page }) => {
+  await page.goto("./");
+  const field = page.locator("math-field").first();
+  await field.evaluate((node) => {
+    const mathField = node as HTMLElement & { setValue?: (value: string) => void; value?: string };
+    if (typeof mathField.setValue === "function") mathField.setValue("2+2");
+    else mathField.value = "2+2";
+    node.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+
+  await field.press("Enter");
+  await expect(page.getByRole("region", { name: "Resultado", exact: true })).toContainText("4");
+});
