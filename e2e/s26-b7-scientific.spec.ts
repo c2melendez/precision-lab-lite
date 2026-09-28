@@ -94,9 +94,9 @@ test("resultado real conserva Resultado antes de Gráfica", async ({ page }) => 
   await setExpression(page, "2+2");
 
   const entry = page.getByRole("region", { name: "Entrada", exact: true });
-  const calculate = page.getByRole("button", { name: /calcular|evaluar/i }).first();
-  await expect(calculate).toBeEnabled();
-  await calculate.click();
+  await expect(entry).toBeVisible();
+  const field = page.locator("math-field").first();
+  await field.press("Enter");
 
   const result = page.getByRole("region", { name: "Resultado", exact: true });
   const graph = page.getByTestId("scientific-graph");
