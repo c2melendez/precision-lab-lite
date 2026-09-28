@@ -152,7 +152,7 @@ export function Screen({
   );
 
   const graphSurface = (
-    <div className="flex min-h-[240px]">
+    <div className="flex h-full min-h-[240px]">
       <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} />
     </div>
   );
