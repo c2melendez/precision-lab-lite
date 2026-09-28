@@ -2,7 +2,7 @@
 
 Proyecto: **Precision Lab Lite**  
 Rama de trabajo: `qa/s26-execution`  
-HEAD certificado de código B6: `cdd8e35ac6ddcb670f6dbdfe0bf79fa1fde7c9ec`
+HEAD certificado de código B6: `f029df3d58c421b478a43dac05dd48306a4687a7`
 
 ## 1. Estado al cierre
 
@@ -12,8 +12,8 @@ S26.3R:
 - B3 Historial — **PASS DEFINITIVO**
 - B4 Resultado / formatos — **PASS DEFINITIVO**
 - B5 Teclado global: shell / apertura / cierre / responsive — **PASS DEFINITIVO**
-- B6 Teclado global: arquitectura, inventario y paridad — **PASS AUTOMATIZADO; pendiente confirmación visual humana final**
-- B7+ — **NO INICIAR hasta cerrar la confirmación visual B6**
+- B6 Teclado global: arquitectura, inventario y paridad — **PASS DEFINITIVO**
+- B7 — **EN CURSO**
 
 ## 2. Arquitectura B6 definitiva
 
@@ -23,7 +23,7 @@ Jerarquía:
 1. **Familias arriba**: Álgebra · Trigonometría · Cálculo · Complejos · Símbolos · Unidades · Más.
 2. **Subcategorías a la izquierda en Desktop**; pueden reflow a rail horizontal en pantallas estrechas.
 3. **Teclas contextuales a la derecha**: solo las de la subcategoría activa.
-4. **Núcleo básico permanente debajo**.
+4. **Núcleo básico permanente al centro en desktop/laptop; contexto a la derecha**.
 5. Solo una familia y una subcategoría activas a la vez para reducir densidad.
 
 El núcleo B6 conserva 23 teclas; NO restaurar el inventario histórico de 31 teclas de Básico.
@@ -107,3 +107,18 @@ Orden:
 - No volver a mostrar todas las teclas de una familia simultáneamente.
 - No usar la captura aprobada para restaurar x/y/z u otras teclas antiguas al núcleo.
 - No declarar B6 PASS definitivo sin revisión humana final posterior a estas últimas correcciones.
+
+
+## 9. Reapertura operativa — B7 Científica
+
+B6 quedó cerrado como **PASS DEFINITIVO** sobre `f029df3d58c421b478a43dac05dd48306a4687a7`.
+
+Siguiente bloque activo: **B7 — Científica**.
+
+Prioridades:
+1. paridad de composición Lite/Plus;
+2. Entrada → Resultado → Pasos → Gráfica;
+3. estados vacío/resultado/carga/error;
+4. cuatro viewports oficiales;
+5. Ejemplos/Opciones avanzadas de Plus subordinados al flujo principal;
+6. sin cambios de motor salvo defecto reproducible.
