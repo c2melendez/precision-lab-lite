@@ -162,7 +162,7 @@ export function ScientificKeyboardSections({ basic, advanced }: {
               onClick={() => setSubcategory(name)}
               className={
                 subcategory === name
-                  ? "flex shrink-0 items-center gap-2 rounded-lg border border-marker/30 bg-marker-soft/20 px-2.5 py-2 text-left text-[11px] font-semibold text-marker"
+                  ? "flex shrink-0 items-center gap-2 rounded-lg border border-marker/30 bg-marker-soft/20 px-2.5 py-2 text-left text-[11px] font-semibold text-ink"
                   : "flex shrink-0 items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[11px] font-medium text-muted hover:bg-paper hover:text-ink"
               }
             >
