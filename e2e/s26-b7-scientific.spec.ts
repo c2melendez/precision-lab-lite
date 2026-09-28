@@ -32,7 +32,7 @@ test.describe("S26 B7 — Científica", () => {
 
       await expect(page.getByRole("region", { name: "Entrada" })).toBeVisible();
       await expect(page.getByText(/Escribe una expresión y presiona Calcular\./i)).toBeVisible();
-      await expect(page.getByRole("note", { name: /Gráfica:/i })).toBeVisible();
+      await expect(page.getByTestId("scientific-graph")).toBeVisible();
 
       const metrics = await page.evaluate(() => ({
         viewport: document.documentElement.clientWidth,
@@ -56,7 +56,7 @@ test.describe("S26 B7 — Científica", () => {
     const shell = page.getByTestId("scientific-mode-shell");
     const input = page.getByRole("region", { name: "Entrada" });
     const resultText = page.getByText(/Escribe una expresión y presiona Calcular\./i);
-    const graph = page.getByRole("note", { name: /Gráfica:/i });
+    const graph = page.getByTestId("scientific-graph");
 
     await expect(shell).toBeVisible();
     await expect(input).toBeVisible();
@@ -94,12 +94,12 @@ test("resultado real conserva Resultado antes de Gráfica", async ({ page }) => 
   await setExpression(page, "2+2");
 
   const entry = page.getByRole("region", { name: "Entrada", exact: true });
-  const calculate = entry.getByRole("button", { name: /calcular|evaluar/i }).first();
+  const calculate = page.getByRole("button", { name: /calcular|evaluar/i }).first();
   await expect(calculate).toBeEnabled();
   await calculate.click();
 
   const result = page.getByRole("region", { name: "Resultado", exact: true });
-  const graph = page.getByRole("note", { name: /Gráfica:/i });
+  const graph = page.getByTestId("scientific-graph");
   await expect(result).toContainText("4");
   await expect(graph).toBeVisible();
 
@@ -127,13 +127,13 @@ test("error controlado conserva la Científica utilizable", async ({ page }) => 
   await setExpression(page, "(");
 
   const entry = page.getByRole("region", { name: "Entrada", exact: true });
-  const calculate = entry.getByRole("button", { name: /calcular|evaluar/i }).first();
+  const calculate = page.getByRole("button", { name: /calcular|evaluar/i }).first();
   await expect(calculate).toBeEnabled();
   await calculate.click();
 
   await expect(page.locator('[role="alert"][aria-live="assertive"]').first()).toBeVisible({ timeout: 15000 });
   await expect(entry).toBeVisible();
-  await expect(page.getByRole("note", { name: /Gráfica:/i })).toBeVisible();
+  await expect(page.getByTestId("scientific-graph")).toBeVisible();
 
   const metrics = await page.evaluate(() => ({
     viewport: document.documentElement.clientWidth,
