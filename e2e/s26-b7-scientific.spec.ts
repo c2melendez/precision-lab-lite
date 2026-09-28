@@ -31,3 +31,43 @@ test.describe("S26 B7 — Científica", () => {
     });
   }
 });
+
+
+  test("orden visual Entrada → Resultado → Gráfica y shell contenido", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("./");
+    await page.evaluate(() => localStorage.setItem("precision-lab-layout-mode", "fused"));
+    await page.reload();
+
+    const scientific = page.locator("nav").getByRole("button", { name: "Científica", exact: true });
+    await scientific.click();
+
+    const shell = page.getByTestId("scientific-mode-shell");
+    const input = page.getByRole("region", { name: "Entrada" });
+    const resultText = page.getByText(/Escribe una expresión y presiona Calcular\./i);
+    const graph = page.getByRole("note", { name: /Gráfica:/i });
+
+    await expect(shell).toBeVisible();
+    await expect(input).toBeVisible();
+    await expect(resultText).toBeVisible();
+    await expect(graph).toBeVisible();
+
+    const [shellBox, inputBox, resultBox, graphBox] = await Promise.all([
+      shell.boundingBox(),
+      input.boundingBox(),
+      resultText.boundingBox(),
+      graph.boundingBox(),
+    ]);
+
+    expect(shellBox).not.toBeNull();
+    expect(inputBox).not.toBeNull();
+    expect(resultBox).not.toBeNull();
+    expect(graphBox).not.toBeNull();
+
+    if (shellBox && inputBox && resultBox && graphBox) {
+      expect(shellBox.x).toBeGreaterThanOrEqual(-1);
+      expect(shellBox.x + shellBox.width).toBeLessThanOrEqual(1441);
+      expect(inputBox.y).toBeLessThan(resultBox.y);
+      expect(resultBox.y).toBeLessThan(graphBox.y);
+    }
+  });
