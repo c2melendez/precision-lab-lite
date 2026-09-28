@@ -193,7 +193,7 @@ Todo el contenido matemático de Pasos debe conservar el mismo criterio de **tex
 
 Cuando un paso mezcle explicación textual y expresión matemática, ambos elementos deben mantener una jerarquía legible y coherente con el sistema visual general de Plus.
 
-Con esta regla queda cerrado el punto previamente pendiente de “Resumen / procedimiento resumido”: B7 no necesita conservar un bloque separado con ese nombre. La información útil de procedimiento se concentra en **Pasos de solución** en Plus, sin duplicar contenido ni introducir una segunda capa paralela.
+Esta aclaración cierra por completo el contrato de **Pasos de solución**. La existencia, eliminación o transformación de cualquier bloque separado denominado “Resumen / procedimiento resumido” no se decide por esta regla y no debe modificarse sin una decisión explícita adicional.
 
 ## 14. Matriz mínima de aceptación / no regresión
 
