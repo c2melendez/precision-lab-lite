@@ -6,7 +6,7 @@ import { ResultPanel } from "./ResultPanel";
 import { StepList } from "./StepList";
 import { HistoryLog, type SessionHistoryEntry } from "./HistoryLog";
 import { AngleModePopover } from "./AngleModePopover";
-import { GraphPlaceholder } from "./GraphPlaceholder";
+import { GraphPlaceholder, type ScientificGraphState } from "./GraphPlaceholder";
 import { KeyboardIcon } from "./KeyboardIcon";
 import type { MathResult } from "../types";
 import type { LayoutMode } from "../store/useLayoutModeStore";
@@ -64,6 +64,7 @@ interface ScreenProps {
    * modos que usan Screen lo implementan todavía (alcance V1: solo
    * BasicScientificMode.tsx). Paridad con precision-lab (main). */
   onGraphExpression?: () => void;
+  graphState?: ScientificGraphState;
   onCalculate?: () => void;
   onReuseSessionEntry?: (entry: SessionHistoryEntry) => void;
 }
@@ -80,13 +81,15 @@ export function Screen({
   onClearField,
   layoutMode = "fused",
   onGraphExpression,
+  graphState,
   onCalculate,
   onReuseSessionEntry,
 }: ScreenProps) {
   // Botón "Graficar" (cuadrante de gráfica, las 6 disposiciones): solo
   // tiene sentido ofrecerlo cuando hay algo escrito. GraphingMode.tsx
   // valida de verdad si es graficable al recibir el click.
-  const canGraph = Boolean(onGraphExpression) && latex.trim().length > 0;
+  const resolvedGraphState: ScientificGraphState = graphState ?? (latex.trim() ? "available" : "empty");
+  const canGraph = Boolean(onGraphExpression) && resolvedGraphState === "available";
   const inputField = (
     <div className="relative">
       <NaturalInput value={latex} onChange={onChangeLatex} onEnter={onCalculate} placeholder={placeholder} fieldRef={fieldRef} bare />
@@ -150,7 +153,7 @@ export function Screen({
 
   const graphSurface = (
     <div className="flex min-h-[240px]">
-      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
+      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} />
     </div>
   );
 
@@ -255,7 +258,7 @@ export function Screen({
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
           <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
-        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
+        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} />
         <StackedKeyboardSection />
       </div>
     );
@@ -316,7 +319,7 @@ export function Screen({
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
           <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
-        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
+        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} />
       </div>
     );
   }
@@ -364,7 +367,7 @@ export function Screen({
             <div className="min-w-0 rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
               <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
             </div>
-            <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
+            <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} />
           </div>
         </div>
       </div>
@@ -391,7 +394,7 @@ export function Screen({
           <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
       </div>
-      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
+      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} />
     </div>
   );
 }
@@ -469,7 +472,7 @@ function FocusScreenContent({ inputField, result, inputLatex, angleMode, onToggl
       <div className="rounded-xl bg-paper-soft px-5 py-4 text-center shadow-sm">
         <ResultPanel result={result} inputLatex={inputLatex} angleMode={angleMode} />
       </div>
-      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
+      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} />
     </div>
   );
 }
@@ -567,7 +570,7 @@ function FloatingScreenContent({ inputField, result, inputLatex, angleMode, onTo
         </button>
       )}
       <FloatingWindow title="Gráfica" rect={graphWindow} onChange={(rect) => setWindow("graph", rect)}>
-        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
+        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} />
       </FloatingWindow>
     </div>
   );
