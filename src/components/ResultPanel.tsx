@@ -52,15 +52,21 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
   }
 
   if (!result) {
-    return <p className="py-1 text-right text-sm text-muted">Escribe una expresión y presiona Calcular.</p>;
+    return (
+      <section aria-label="Resultado">
+        <p className="py-1 text-right text-sm text-muted">Escribe una expresión y presiona Calcular.</p>
+      </section>
+    );
   }
 
   if (!result.success) {
     return (
-      <div role="alert" aria-live="assertive" aria-atomic="true" className="py-1 text-right text-red-600">
-        <p className="text-sm font-semibold">No se pudo calcular ({result.errorCode})</p>
-        <p className="text-xs text-red-500">{result.errorMessage}</p>
-      </div>
+      <section aria-label="Resultado">
+        <div role="alert" aria-live="assertive" aria-atomic="true" className="py-1 text-right text-red-600">
+          <p className="text-sm font-semibold">No se pudo calcular ({result.errorCode})</p>
+          <p className="text-xs text-red-500">{result.errorMessage}</p>
+        </div>
+      </section>
     );
   }
 
