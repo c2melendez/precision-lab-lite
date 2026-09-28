@@ -188,6 +188,20 @@ self.onmessage = (event: MessageEvent<ComputeRequest>) => {
   (self as unknown as Worker).postMessage(result);
 };
 
+function calculusResultForDisplay(
+  result: { resultLatex: string; steps: MathResult["steps"]; confidence: MathResult["confidence"] },
+  kind: "derivative" | "limit" | "indefiniteIntegral" | "definiteIntegral",
+) {
+  let resultLatex = result.resultLatex;
+  if (kind === "indefiniteIntegral") {
+    const base = resultLatex.replace(/\s*\+\s*C\s*$/, "");
+    resultLatex = `${toLatex(base)} + C`;
+  } else {
+    resultLatex = toLatex(resultLatex);
+  }
+  return { ...result, resultLatex };
+}
+
 function handle(msg: ComputeRequest): MathResult {
   switch (msg.type) {
     case "evaluate":
@@ -195,16 +209,22 @@ function handle(msg: ComputeRequest): MathResult {
     case "solveAlgebra":
       return handleSolveAlgebra(msg.leftAlgebrite, msg.rightAlgebrite, msg.variable, msg.requestId);
     case "derivative":
-      return runCalculus(msg.requestId, () => calcDerivative(msg.expressionAlgebrite, msg.variable, msg.order));
+      return runCalculus(msg.requestId, () => calculusResultForDisplay(calcDerivative(msg.expressionAlgebrite, msg.variable, msg.order), "derivative"));
     case "limit":
       return runCalculus(msg.requestId, () =>
-        calcLimit(msg.expressionAlgebrite, msg.variable, msg.pointAlgebrite, msg.pointNumeric, msg.direction),
+        calculusResultForDisplay(
+          calcLimit(msg.expressionAlgebrite, msg.variable, msg.pointAlgebrite, msg.pointNumeric, msg.direction),
+          "limit",
+        ),
       );
     case "indefiniteIntegral":
-      return runCalculus(msg.requestId, () => calcIndefiniteIntegral(msg.expressionAlgebrite, msg.variable));
+      return runCalculus(msg.requestId, () => calculusResultForDisplay(calcIndefiniteIntegral(msg.expressionAlgebrite, msg.variable), "indefiniteIntegral"));
     case "definiteIntegral":
       return runCalculus(msg.requestId, () =>
-        calcDefiniteIntegral(msg.expressionAlgebrite, msg.variable, msg.lower, msg.upper),
+        calculusResultForDisplay(
+          calcDefiniteIntegral(msg.expressionAlgebrite, msg.variable, msg.lower, msg.upper),
+          "definiteIntegral",
+        ),
       );
     case "linearSystem":
       return handleLinearSystem(msg.equationsAlgebrite, msg.variables, msg.requestId);
