@@ -169,30 +169,61 @@ const PRIMARY_THEMES: { id: Theme; label: string; description: string }[] = [
 ];
 
 const LAYOUT_OPTIONS: { id: LayoutMode; label: string; description: string }[] = [
-  { id: "fused", label: "Default", description: "Entrada, resultado y contexto en una composición equilibrada." },
-  { id: "stacked", label: "Compacto", description: "Prioriza el flujo vertical y reduce ocupación lateral." },
-  { id: "split", label: "Lateral", description: "Distribuye el trabajo en columnas cuando existe espacio." },
+  { id: "fused", label: "Balanceada", description: "Entrada, resultado y previas a la izquierda; gráfica amplia a la derecha." },
+  { id: "split", label: "Cálculo amplio", description: "Da más espacio a Entrada sin reducir la presencia de Gráfica." },
+  { id: "focus", label: "Resultado amplio", description: "Prioriza Resultado y conserva una Gráfica sustancial." },
+  { id: "separated", label: "Cuadrícula 2×2", description: "Entrada, Resultado, Previas y Gráfica en una cuadrícula equilibrada." },
 ];
 
 function LayoutPreview({ mode, active }: { mode: LayoutMode; active: boolean }) {
   const frame = active ? "border-marker bg-marker-soft" : "border-paper-line bg-paper";
   const block = active ? "bg-marker/80" : "bg-muted/35";
+
+  if (mode === "fused") {
+    return (
+      <div aria-hidden="true" className={`grid h-10 grid-cols-[1fr_1.15fr] gap-1 rounded-md border p-1 ${frame}`}>
+        <span className="grid grid-rows-3 gap-0.5">
+          <span className={`rounded-sm ${block}`} />
+          <span className={`rounded-sm ${block}`} />
+          <span className={`rounded-sm ${block}`} />
+        </span>
+        <span className={`rounded-sm ${block}`} />
+      </div>
+    );
+  }
+
   if (mode === "split") {
-    return <div aria-hidden="true" className={`grid h-10 grid-cols-2 gap-1 rounded-md border p-1 ${frame}`}><span className={`rounded-sm ${block}`} /><span className={`rounded-sm ${block}`} /></div>;
+    return (
+      <div aria-hidden="true" className={`grid h-10 grid-cols-[1.35fr_1fr] gap-1 rounded-md border p-1 ${frame}`}>
+        <span className={`rounded-sm ${block}`} />
+        <span className="grid grid-rows-2 gap-0.5">
+          <span className={`rounded-sm ${block}`} />
+          <span className={`rounded-sm ${block}`} />
+        </span>
+      </div>
+    );
   }
-  if (mode === "stacked") {
-    return <div aria-hidden="true" className={`grid h-10 grid-rows-3 gap-1 rounded-md border p-1 ${frame}`}><span className={`rounded-sm ${block}`} /><span className={`rounded-sm ${block}`} /><span className={`rounded-sm ${block}`} /></div>;
-  }
+
   if (mode === "focus") {
-    return <div aria-hidden="true" className={`flex h-10 items-center justify-center rounded-md border p-1 ${frame}`}><span className={`h-7 w-3/5 rounded-sm ${block}`} /></div>;
+    return (
+      <div aria-hidden="true" className={`grid h-10 grid-cols-[1fr_1.3fr] gap-1 rounded-md border p-1 ${frame}`}>
+        <span className="grid grid-rows-2 gap-0.5">
+          <span className={`rounded-sm ${block}`} />
+          <span className={`rounded-sm ${block}`} />
+        </span>
+        <span className={`rounded-sm ${block}`} />
+      </div>
+    );
   }
-  if (mode === "floating") {
-    return <div aria-hidden="true" className={`relative h-10 rounded-md border p-1 ${frame}`}><span className={`absolute left-2 top-2 h-5 w-1/2 rounded-sm ${block}`} /><span className={`absolute bottom-2 right-2 h-5 w-1/2 rounded-sm border border-paper-soft ${block}`} /></div>;
-  }
-  if (mode === "separated") {
-    return <div aria-hidden="true" className={`grid h-10 grid-cols-3 gap-1 rounded-md border p-1 ${frame}`}><span className={`rounded-sm ${block}`} /><span className={`rounded-sm ${block}`} /><span className={`rounded-sm ${block}`} /></div>;
-  }
-  return <div aria-hidden="true" className={`h-10 rounded-md border p-1 ${frame}`}><span className={`block h-full rounded-sm ${block}`} /></div>;
+
+  return (
+    <div aria-hidden="true" className={`grid h-10 grid-cols-2 grid-rows-2 gap-1 rounded-md border p-1 ${frame}`}>
+      <span className={`rounded-sm ${block}`} />
+      <span className={`rounded-sm ${block}`} />
+      <span className={`rounded-sm ${block}`} />
+      <span className={`rounded-sm ${block}`} />
+    </div>
+  );
 }
 
 function applyTheme(selection: Theme) {
@@ -446,9 +477,9 @@ export function AjustesPopover() {
                     <section aria-labelledby="settings-layout-heading">
                       <div className="mb-2">
                         <h3 id="settings-layout-heading" className="text-xs font-semibold uppercase tracking-wide text-muted">Diseño</h3>
-                        <p className="mt-1 text-[11px] text-muted">Tres disposiciones optimizadas para el área de trabajo.</p>
+                        <p className="mt-1 text-[11px] text-muted">Cuatro disposiciones para Entrada, Resultado, Entradas previas y Gráfica.</p>
                       </div>
-                      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-6">
+                      <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
                         {LAYOUT_OPTIONS.map((option) => {
                           const selected = layoutMode === option.id;
                           return (
