@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useComputeWorker } from "../../hooks/useComputeWorker";
 import { angleAwareTrigInsertLatex, MathKeyboard, isVariableOrConstantKey, type KeyDef } from "../../components/MathKeyboard";
 import { KeyboardBasicPanel } from "../../components/KeyboardBasicPanel";
 import { Screen } from "../../components/Screen";
+import type { ScientificGraphState } from "../../components/GraphPlaceholder";
 import { type SessionHistoryEntry } from "../../components/HistoryLog";
 import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { parseExpression } from "../../engine/parsing";
@@ -68,6 +69,26 @@ export function BasicScientificMode() {
   }, [pendingHistoryReuse, takePendingHistoryReuse]);
 
   const { getWorker } = useComputeWorker();
+
+  const graphState = useMemo<ScientificGraphState>(() => {
+    const source = latex.trim();
+    if (!source) return "empty";
+
+    if (splitSystemLatex(source)) return "advanced";
+    if (detectODE(source) !== null) return "advanced";
+    if (/\\int|\\lim|\\frac\{d|\\partial/.test(source)) return "advanced";
+    if (/(^|[^A-Za-z])i([^A-Za-z]|$)/.test(source)) return "advanced";
+
+    try {
+      const parsed = parseExpression(source, angleMode);
+      if (parsed.isEquation || parsed.isInequality) return "advanced";
+      if (parsed.freeVariables.length === 0) return "not-needed";
+      if (parsed.freeVariables.length === 1) return "available";
+      return "advanced";
+    } catch {
+      return "unavailable";
+    }
+  }, [latex, angleMode]);
 
   const fail = useCallback((code: ErrorCode, message: string, requestId: string) => {
     setResult({
@@ -596,6 +617,7 @@ export function BasicScientificMode() {
         onClearField={() => setLatex("")}
         layoutMode={layoutMode}
         onGraphExpression={handleGraphExpression}
+        graphState={graphState}
         onCalculate={handleCalculate}
         onReuseSessionEntry={(entry) => {
           setLatex(entry.input);
