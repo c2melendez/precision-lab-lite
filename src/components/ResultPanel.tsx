@@ -118,7 +118,7 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
   const { latex, isPlainNumber } = renderValue(activeFormat);
 
   return (
-    <div className="space-y-3 pt-1" role="status" aria-live="polite" aria-atomic="true">
+    <section aria-label="Resultado" className="space-y-3 pt-1" aria-live="polite" aria-atomic="true">
       <div className="flex items-center justify-between gap-3">
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Resultado</p>
         {result.confidence === "NUMERIC_FALLBACK" && (
@@ -159,6 +159,6 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
           </button>
         )}
       </div>
-    </div>
+    </section>
   );
 }
