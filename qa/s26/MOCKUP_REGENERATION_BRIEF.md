@@ -13,7 +13,7 @@ Motivo: el contrato fue evolucionando por piezas durante S26.2/S26.3 (Científic
 Orden de prioridad para reconstruir los mockups:
 1. decisiones explícitas más recientes del usuario;
 2. `VISUAL_REFERENCE_CHECKLIST.md`;
-3. contratos específicos: `KEYBOARD_CONTRACT.md`, `RESULT_FORMATS.md`, `GRAPH_3D_CONTRACT.md`, `GEOMETRY_CONTRACT.md`, `BRAND_IDENTITY.md`;
+3. contratos específicos: `SCIENTIFIC_VISUAL_CONTRACT.md`, `KEYBOARD_CONTRACT.md`, `RESULT_FORMATS.md`, `GRAPH_3D_CONTRACT.md`, `GEOMETRY_CONTRACT.md`, `BRAND_IDENTITY.md`;
 4. `DESIGN_TARGET.md` y `VISUAL_MATRIX.md`;
 5. capturas históricas S26.2 aportadas por el usuario;
 6. implementación actual, únicamente para preservar funciones existentes.
@@ -46,16 +46,23 @@ Navegación definitiva:
 Generar mockups separados para **Lite y Plus** cuando existan diferencias funcionales/visuales reales.
 
 ### Científica
+Autoridad específica: `SCIENTIFIC_VISUAL_CONTRACT.md`.
+
 Debe mostrar:
 - Entrada protagonista;
-- Resultado;
-- formatos;
+- Resultado y formatos;
 - Pasos (Plus más ricos; Lite según soporte real);
-- acción/área de Gráfica;
+- vista previa / área de Gráfica integrada;
+- controles de gráfica solo cuando estén conectados;
+- acciones rápidas Graficar / Exacto / Aprox. cuando apliquen;
 - RAD/GRAD;
 - historial subordinado;
+- Ejemplos/Opciones avanzadas de Plus como superficies secundarias;
 - estado con resultado;
-- estado vacío.
+- estado vacío;
+- error controlado.
+
+La referencia visual de B7 no autoriza convertir `=` en ejecutar: `=` inserta y Enter/Calcular ejecuta.
 
 ### Matrices
 Debe mostrar:
