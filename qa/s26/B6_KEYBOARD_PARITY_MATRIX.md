@@ -3,8 +3,8 @@
 Fecha de cierre técnico: **2026-09-27**  
 Proyecto: **Precision Lab Lite**  
 Rama: `qa/s26-execution`  
-HEAD certificado de código: `cdd8e35ac6ddcb670f6dbdfe0bf79fa1fde7c9ec`  
-Estado: **PASS AUTOMATIZADO — pendiente confirmación visual humana final**
+HEAD certificado de código: `f029df3d58c421b478a43dac05dd48306a4687a7`  
+Estado: **PASS DEFINITIVO**
 
 ## 1. Arquitectura
 
@@ -152,25 +152,20 @@ No crear teclados específicos duplicados por módulo.
 - S23 PASS
 - S25 PASS
 
-## 7. Pendiente único para PASS DEFINITIVO
+## 7. Cierre definitivo
 
-Revisión humana de la última composición:
-- familias arriba;
-- subcategorías separadas;
-- panel contextual compacto;
-- núcleo al centro en desktop;
-- SmartDock ausente;
-- acciones Ecuaciones solo en su subcategoría;
-- selector 2–5 visible;
-- sin solapar Entrada/Resultado/Gráfica;
-- densidad razonable en Desktop/Tablet/Mobile.
+La revisión humana final fue aprobada después de:
+- arquitectura de tres columnas en desktop/laptop;
+- ajuste de densidad y tamaño de teclas contextuales;
+- paridad de Ecuaciones diferenciales y Complejos;
+- corrección responsive móvil;
+- recertificación de contraste accesible.
 
-Después de esa revisión se puede cambiar el estado a **PASS DEFINITIVO** y abrir B7.
-
+**Resultado: PASS DEFINITIVO.**
 
 ## Cierre de matriz — 2026-09-27
 
-HEAD certificado: `cdd8e35ac6ddcb670f6dbdfe0bf79fa1fde7c9ec`.
+HEAD certificado: `f029df3d58c421b478a43dac05dd48306a4687a7`.
 
 ### Arquitectura final certificada
 | Contrato | Estado |
@@ -194,7 +189,7 @@ Gates:
 CI, Playwright E2E, S22 PWA Offline, S23 Accessibility, S25 Security y Cross-browser smoke: PASS. S26 Preview: PASS.
 
 ### Estado B6
-**PASS AUTOMÁTICO / pendiente confirmación visual humana final.**
+**PASS DEFINITIVO.**
 
 Cualquier sección histórica de esta matriz que mencione:
 - “núcleo debajo”;
@@ -214,3 +209,12 @@ queda supersedida por este cierre y por `KEYBOARD_CONTRACT.md`.
 - Plus armonizado con Lite en tipografía de familias, estado visual de subcategorías, radios de panel y tratamiento de teclas contextuales.
 - `dy/dx` usa el mismo glifo fraccionario en ambos.
 - Las dos plantillas ODE de segundo orden conservan una diferencia interna de inserción: Plus usa `\\cdot` explícito y Lite multiplicación implícita; la diferencia es de adapter/motor y no cambia el glifo visible ni la semántica.
+
+
+### Certificación final de paridad
+
+HEAD de código: `f029df3d58c421b478a43dac05dd48306a4687a7`.
+
+CI, Playwright E2E, S22 PWA Offline, S23 Accessibility, S25 Security, Cross-browser smoke y S26 Preview: PASS.
+
+B6 queda congelado como **PASS DEFINITIVO**. Cualquier cambio futuro al teclado requiere defecto reproducible o nueva decisión explícita.
