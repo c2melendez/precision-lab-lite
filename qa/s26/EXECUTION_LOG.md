@@ -528,3 +528,15 @@ Estado:
 **B6 PASS AUTOMÁTICO / pendiente confirmación visual humana final**.
 
 La próxima sesión debe iniciar con revisión visual, no con nueva implementación.
+
+
+## 2026-09-27 — B6 PASS DEFINITIVO / apertura B7
+
+- Revisión humana final del teclado aprobada.
+- Paridad visual Lite/Plus cerrada: familias, subcategorías, Básico, contextuales, densidad, tamaños, ODE, Complejos y responsive.
+- Contraste de subcategoría activa corregido y recertificado.
+- HEAD certificado B6: `f029df3d58c421b478a43dac05dd48306a4687a7`.
+- Gates: CI, Playwright E2E, S22 PWA Offline, S23 Accessibility, S25 Security, Cross-browser smoke y S26 Preview: PASS.
+- B6: **PASS DEFINITIVO**.
+- B7 — Científica: **EN CURSO**.
+- Política B7: no tocar motor matemático salvo defecto reproducible.
