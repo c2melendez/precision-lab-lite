@@ -583,7 +583,7 @@ export function BasicScientificMode() {
   }, []);
 
   return (
-    <div className="mx-auto flex max-w-md flex-col gap-3 p-4 md:max-w-lg lg:max-w-3xl dt:max-w-[1440px] dt:px-8">
+    <div data-testid="scientific-mode-shell" className="mx-auto flex max-w-md flex-col gap-3 p-4 md:max-w-lg lg:max-w-3xl dt:max-w-[1440px] dt:px-8">
       <Screen
         latex={latex}
         onChangeLatex={setLatex}
