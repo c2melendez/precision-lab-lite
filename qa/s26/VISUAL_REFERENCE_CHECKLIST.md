@@ -67,17 +67,24 @@ Reglas:
 
 ## 5. Científica
 
+Autoridad específica: `SCIENTIFIC_VISUAL_CONTRACT.md`.
+
 Objetivo de jerarquía:
-1. Entrada activa.
+1. Entrada activa y protagonista.
 2. Resultado destacado.
 3. Pasos / desarrollo cuando existan.
-4. Gráfica o acción de graficar.
-5. Historial de sesión subordinado, nunca compitiendo con Entrada/Resultado.
+4. Vista previa / área de Gráfica integrada.
+5. Acciones rápidas.
+6. Historial y superficies auxiliares subordinadas.
 
 - Evitar grandes zonas vacías.
+- En Desktop/Laptop, priorizar cálculo principal + gráfica integrada en dos zonas cuando el ancho lo permita.
 - El selector RAD/GRAD debe ser visible sin dominar el layout.
 - Resultado y formatos deben ser fáciles de localizar.
+- Acciones objetivo, condicionadas a soporte real: Graficar, Exacto y Aprox.
+- La referencia visual no cambia el contrato semántico: `=` inserta; Enter/Calcular ejecuta.
 - En Plus, pasos detallados conservan su ventaja funcional.
+- Ejemplos y Opciones avanzadas de Plus quedan subordinados al flujo principal.
 
 ## 6. Matrices
 
