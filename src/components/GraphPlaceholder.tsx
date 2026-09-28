@@ -1,62 +1,78 @@
 /**
- * src/components/GraphPlaceholder.tsx — Fase P (Rediseño visual), Módulo P1.
+ * B7 — vista previa ligera de Científica.
  *
- * Cuadrante visual reservado para la gráfica. Instrucción explícita del
- * usuario (Track C, sesión de rediseño visual): las 6 disposiciones
- * (Fusionada, Separada, Pantalla dividida, Enfoque, Flotante, Apilado)
- * deben considerar 4 cuadrantes — entrada de datos, resultado, teclado
- * colapsado y gráfica.
- *
- * Decisión de producto (post-integración de Track B): la graficación NO
- * es automática — Carlos confirmó explícitamente "algo que el usuario
- * pida explícitamente (un botón 'Graficar' en el resultado)", no
- * graficar cualquier resultado de un solo variable en silencio. Este
- * componente sigue siendo solo el cuadrante visual (no decide qué
- * graficar, no llama al worker él mismo) — recibe `canGraph`/`onGraph`
- * de quien sí sabe (BasicScientificMode.tsx) y solo se encarga de
- * mostrar el botón o el estado vacío. Paridad con precision-lab (main).
- *
- * Alcance V1, deliberado: solo Científica (BasicScientificMode.tsx)
- * tiene el botón conectado hoy.
+ * Este componente NO analiza matemática por sí mismo. Recibe un estado
+ * semántico del orquestador y ofrece el puente explícito al módulo
+ * Gráficas cuando existe contexto reutilizable.
  */
+export type ScientificGraphState =
+  | "empty"
+  | "available"
+  | "not-needed"
+  | "advanced"
+  | "unavailable";
 
 interface GraphPlaceholderProps {
-  /** true cuando hay una expresión no vacía que tiene sentido intentar
-   * graficar. GraphingMode.tsx (vía parseExpression/freeVariables) es
-   * quien valida de verdad si es graficable — este flag solo evita
-   * mostrar el botón con el campo vacío. */
   canGraph?: boolean;
-  /** Manda la expresión al puente (usePendingGraphStore) y cambia a
-   * modo Graficación; si no es graficable, el error se muestra ahí por
-   * el canal normal, nunca en silencio. */
   onGraph?: () => void;
+  state?: ScientificGraphState;
+  message?: string;
 }
 
-export function GraphPlaceholder({ canGraph = false, onGraph }: GraphPlaceholderProps) {
-  if (canGraph && onGraph) {
-    return (
-      <div data-testid="scientific-graph" className="flex min-h-[110px] flex-1 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-paper-line bg-paper-soft/60 px-4 py-6 text-center">
-        <span className="text-xs font-medium text-muted">Gráfica</span>
-        <button
-          type="button"
-          onClick={onGraph}
-          className="rounded-md bg-marker px-4 py-1.5 text-sm font-semibold text-chrome hover:bg-marker/90"
-        >
-          Graficar
-        </button>
-      </div>
-    );
-  }
+const STATE_COPY: Record<Exclude<ScientificGraphState, "available">, string> = {
+  empty: "Escribe o resuelve una expresión para preparar una vista previa.",
+  "not-needed": "Representación gráfica no necesaria. El resultado no requiere una gráfica para su interpretación.",
+  advanced: "Esta operación requiere una representación más avanzada. Puedes continuar el análisis en Gráficas.",
+  unavailable: "No hay una representación gráfica útil disponible para esta operación.",
+};
+
+export function GraphPlaceholder({
+  canGraph = false,
+  onGraph,
+  state = canGraph ? "available" : "empty",
+  message,
+}: GraphPlaceholderProps) {
+  const canOpenGraphing = Boolean(onGraph) && (state === "available" || state === "advanced");
 
   return (
-    <div
+    <section
       data-testid="scientific-graph"
-      role="note"
-      aria-label="Gráfica: escribe una expresión y presiona Graficar"
-      className="flex min-h-[110px] flex-1 flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-paper-line bg-paper-soft/60 px-4 py-6 text-center"
+      aria-label="Vista previa de gráfica"
+      className="flex min-h-[110px] flex-1 flex-col rounded-xl border border-paper-line bg-paper-soft/60"
     >
-      <span className="text-xs font-medium text-muted">Gráfica</span>
-      <span className="text-[11px] text-muted">Escribe una expresión y presiona Graficar.</span>
-    </div>
+      <div className="flex items-center justify-between border-b border-paper-line px-4 py-2.5">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Vista previa de gráfica</p>
+        <span className="text-[10px] font-medium text-muted">Científica</span>
+      </div>
+
+      <div className="flex flex-1 flex-col items-center justify-center gap-3 px-4 py-6 text-center">
+        {state === "available" ? (
+          <>
+            <div
+              role="img"
+              aria-label="Vista previa pendiente de renderizado contextual"
+              className="grid h-24 w-full max-w-md place-items-center rounded-lg border border-dashed border-paper-line bg-paper/50"
+            >
+              <span className="text-[11px] text-muted">Vista previa contextual</span>
+            </div>
+            <p className="max-w-md text-[11px] text-muted">
+              La vista ampliada conserva la expresión y el contexto matemático de la operación.
+            </p>
+          </>
+        ) : (
+          <p className="max-w-md text-xs leading-relaxed text-muted">{message ?? STATE_COPY[state]}</p>
+        )}
+
+        {canOpenGraphing && (
+          <button
+            type="button"
+            onClick={onGraph}
+            className="rounded-md bg-marker px-3 py-1.5 text-xs font-semibold text-chrome hover:bg-marker/90"
+          >
+            Abrir en Gráficas
+          </button>
+        )}
+      </div>
+    </section>
   );
 }
