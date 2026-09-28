@@ -1,22 +1,8 @@
-import { useState } from "react";
-import { StepList } from "./StepList";
 import { StaticMath } from "./StaticMath";
 import type { MathResult } from "../types";
 
-// Fase A (spec UX §2, decisión confirmada): el historial de una línea
-// CONVIVE con StepList/ResultPanel — no lo reemplaza. Es de sesión (vive
-// en memoria mientras la pestaña está abierta), distinto del historial
-// persistente en IndexedDB de HistoryPanel.tsx (ese es para revisar
-// cálculos de sesiones anteriores; este es para ver el hilo de la sesión
-// actual sin perder el contexto de cada paso).
-//
-// Fase 2.6 (fix real del bug de display, ver StaticMath.tsx): antes
-// usaba convertLatexToMarkup + dangerouslySetInnerHTML (igual que
-// ResultPanel), que seguía rompiéndose en casos reales. Ahora usa
-// <StaticMath>. Los renglones viejos se atenúan progresivamente
-// (opacidad decreciente hacia arriba) para dar la sensación de "cinta"
-// de ClassCalc; ya no trae su propio fondo/padding, vive anidado dentro
-// de Screen.tsx.
+// B7: esta superficie representa únicamente las entradas recientes de la
+// sesión actual. El Historial persistente sigue viviendo aparte.
 
 export interface SessionHistoryEntry {
   id: string;
@@ -24,46 +10,51 @@ export interface SessionHistoryEntry {
   result: MathResult;
 }
 
-export function HistoryLog({ entries }: { entries: SessionHistoryEntry[] }) {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+interface HistoryLogProps {
+  entries: SessionHistoryEntry[];
+  maxVisible?: number;
+  onReuse?: (entry: SessionHistoryEntry) => void;
+}
 
+export function HistoryLog({ entries, maxVisible = 5, onReuse }: HistoryLogProps) {
   if (entries.length === 0) return null;
 
-  // Los últimos 2 renglones se muestran atenuados sobre la línea activa;
-  // el resto del historial de sesión sigue disponible completo en la
-  // pestaña "Historial" (HistoryPanel.tsx / IndexedDB).
-  const visible = entries.slice(-3, -1);
-
-  if (visible.length === 0) return null;
+  const visible = entries.slice(-maxVisible).reverse();
 
   return (
-    <ol aria-label="Historial de esta sesión" className="flex flex-col gap-1.5">
-      {visible.map((entry, i) => {
-        const isExpanded = expandedId === entry.id;
-        const hasSteps = entry.result.success && entry.result.steps.length > 0;
-        const opacity = i === visible.length - 1 ? "opacity-70" : "opacity-40";
+    <ol aria-label="Entradas previas de esta sesión" className="flex min-w-0 flex-col gap-1.5">
+      {visible.map((entry, index) => {
+        const content = (
+          <>
+            <span className="min-w-0 flex-1 overflow-hidden text-left">
+              <StaticMath latex={entry.input} className="text-sm text-ink" />
+            </span>
+            {entry.result.success ? (
+              <StaticMath
+                latex={entry.result.resultLatex ?? ""}
+                className="max-w-[45%] shrink-0 overflow-hidden text-sm font-medium text-marker-text"
+              />
+            ) : (
+              <span className="shrink-0 text-xs text-muted">sin resultado</span>
+            )}
+          </>
+        );
+
         return (
-          <li key={entry.id} className={opacity}>
-            <button
-              onClick={() => hasSteps && setExpandedId(isExpanded ? null : entry.id)}
-              aria-expanded={hasSteps ? isExpanded : undefined}
-              className={`flex w-full items-baseline justify-between gap-3 rounded-md px-1 py-0.5 text-left ${
-                hasSteps ? "hover:bg-paper-line/40" : "cursor-default"
-              }`}
-            >
-              <StaticMath latex={entry.input} className="truncate font-mono text-sm text-muted" />
-              {entry.result.success ? (
-                <StaticMath
-                  latex={entry.result.resultLatex ?? ""}
-                  className="shrink-0 font-mono text-sm font-semibold text-marker-text"
-                />
-              ) : (
-                <span className="shrink-0 font-mono text-sm font-semibold text-marker-text">—</span>
-              )}
-            </button>
-            {isExpanded && hasSteps && (
-              <div className="mt-1 pl-1.5">
-                <StepList steps={entry.result.steps} />
+          <li key={entry.id} className={index === 0 ? "opacity-100" : index < 3 ? "opacity-80" : "opacity-65"}>
+            {onReuse ? (
+              <button
+                type="button"
+                onClick={() => onReuse(entry)}
+                aria-label={`Reusar entrada ${index + 1}`}
+                title="Reusar en Entrada"
+                className="flex w-full min-w-0 items-center justify-between gap-3 rounded-lg px-2 py-1.5 hover:bg-paper-line/40 focus:outline-none focus:ring-2 focus:ring-marker/50"
+              >
+                {content}
+              </button>
+            ) : (
+              <div className="flex min-w-0 items-center justify-between gap-3 rounded-lg px-2 py-1.5">
+                {content}
               </div>
             )}
           </li>
