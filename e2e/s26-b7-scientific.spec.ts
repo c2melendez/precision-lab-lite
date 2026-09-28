@@ -7,6 +7,17 @@ const VIEWPORTS = [
   { id: "mobile-390", width: 390, height: 844 },
 ] as const;
 
+const LAYOUTS = ["fused", "split", "focus", "separated"] as const;
+
+async function openScientific(page: import("@playwright/test").Page, layout = "fused") {
+  await page.goto("./");
+  await page.evaluate((value) => localStorage.setItem("precision-lab-layout-mode", value), layout);
+  await page.reload();
+  const scientific = page.locator("nav").getByRole("button", { name: "Científica", exact: true });
+  await scientific.click();
+  await expect(scientific).toHaveAttribute("aria-current", "page");
+}
+
 async function setExpression(page: import("@playwright/test").Page, value: string) {
   await page.evaluate(() => customElements.whenDefined("math-field"));
   const field = page.locator("math-field").first();
@@ -18,126 +29,87 @@ async function setExpression(page: import("@playwright/test").Page, value: strin
   }, value);
 }
 
-test.describe("S26 B7 — Científica", () => {
+async function expectFourSurfaces(page: import("@playwright/test").Page) {
+  await expect(page.getByRole("region", { name: "Entrada", exact: true })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Resultado", exact: true })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Entradas previas", exact: true })).toBeVisible();
+  await expect(page.getByTestId("scientific-graph")).toBeVisible();
+}
+
+async function expectNoHorizontalOverflow(page: import("@playwright/test").Page) {
+  const metrics = await page.evaluate(() => ({
+    viewport: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+  }));
+  expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.viewport + 2);
+}
+
+test.describe("S26 B7 — Científica Lite", () => {
   for (const viewport of VIEWPORTS) {
-    test(`estado vacío conserva Entrada → Resultado → Gráfica sin overflow (${viewport.id})`, async ({ page }) => {
+    test(`cuatro superficies sin overflow (${viewport.id})`, async ({ page }) => {
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
-      await page.goto("./");
-      await page.evaluate(() => localStorage.setItem("precision-lab-layout-mode", "fused"));
-      await page.reload();
-
-      const scientific = page.locator("nav").getByRole("button", { name: "Científica", exact: true });
-      await scientific.click();
-      await expect(scientific).toHaveAttribute("aria-current", "page");
-
-      await expect(page.getByRole("region", { name: "Entrada" })).toBeVisible();
-      await expect(page.getByText(/Escribe una expresión y presiona Calcular\./i)).toBeVisible();
-      await expect(page.getByTestId("scientific-graph")).toBeVisible();
-
-      const metrics = await page.evaluate(() => ({
-        viewport: document.documentElement.clientWidth,
-        scrollWidth: document.documentElement.scrollWidth,
-      }));
-      expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.viewport + 2);
+      await openScientific(page);
+      await expectFourSurfaces(page);
+      await expectNoHorizontalOverflow(page);
     });
   }
-});
 
+  for (const layout of LAYOUTS) {
+    test(`preset ${layout} conserva las cuatro superficies`, async ({ page }) => {
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await openScientific(page, layout);
+      await expectFourSurfaces(page);
+      await expectNoHorizontalOverflow(page);
+    });
+  }
 
-  test("orden visual Entrada → Resultado → Gráfica y shell contenido", async ({ page }) => {
+  test("Balanceada coloca Gráfica a la derecha del bloque de cálculo", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto("./");
-    await page.evaluate(() => localStorage.setItem("precision-lab-layout-mode", "fused"));
-    await page.reload();
+    await openScientific(page, "fused");
 
-    const scientific = page.locator("nav").getByRole("button", { name: "Científica", exact: true });
-    await scientific.click();
-
-    const shell = page.getByTestId("scientific-mode-shell");
-    const input = page.getByRole("region", { name: "Entrada" });
-    const resultText = page.getByText(/Escribe una expresión y presiona Calcular\./i);
+    const input = page.getByRole("region", { name: "Entrada", exact: true });
     const graph = page.getByTestId("scientific-graph");
-
-    await expect(shell).toBeVisible();
-    await expect(input).toBeVisible();
-    await expect(resultText).toBeVisible();
-    await expect(graph).toBeVisible();
-
-    const [shellBox, inputBox, resultBox, graphBox] = await Promise.all([
-      shell.boundingBox(),
+    const previous = page.getByRole("region", { name: "Entradas previas", exact: true });
+    const [inputBox, graphBox, previousBox] = await Promise.all([
       input.boundingBox(),
-      resultText.boundingBox(),
       graph.boundingBox(),
+      previous.boundingBox(),
     ]);
-
-    expect(shellBox).not.toBeNull();
     expect(inputBox).not.toBeNull();
-    expect(resultBox).not.toBeNull();
     expect(graphBox).not.toBeNull();
-
-    if (shellBox && inputBox && resultBox && graphBox) {
-      expect(shellBox.x).toBeGreaterThanOrEqual(-1);
-      expect(shellBox.x + shellBox.width).toBeLessThanOrEqual(1441);
-      expect(inputBox.y).toBeLessThan(resultBox.y);
-      expect(resultBox.y).toBeLessThan(graphBox.y);
+    expect(previousBox).not.toBeNull();
+    if (inputBox && graphBox && previousBox) {
+      expect(graphBox.x).toBeGreaterThan(inputBox.x + inputBox.width - 2);
+      expect(graphBox.y).toBeLessThanOrEqual(inputBox.y + 2);
+      expect(graphBox.y + graphBox.height).toBeGreaterThanOrEqual(previousBox.y + previousBox.height - 2);
     }
   });
 
+  test("resultado y entrada previa real permanecen utilizables", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await openScientific(page);
+    await setExpression(page, "2+2");
+    const field = page.locator("math-field").first();
+    await field.press("Enter");
 
-test("resultado real conserva Resultado antes de Gráfica", async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("./");
-  await page.evaluate(() => localStorage.setItem("precision-lab-layout-mode", "fused"));
-  await page.reload();
+    await expect(page.getByRole("region", { name: "Resultado", exact: true })).toContainText("4");
+    const previous = page.getByRole("region", { name: "Entradas previas", exact: true });
+    await expect(previous.getByRole("button", { name: /Reusar entrada/i }).first()).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+  });
 
-  await page.locator("nav").getByRole("button", { name: "Científica", exact: true }).click();
-  await setExpression(page, "2+2");
+  test("error controlado conserva la Científica utilizable", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await openScientific(page);
+    await setExpression(page, "(");
 
-  const entry = page.getByRole("region", { name: "Entrada", exact: true });
-  await expect(entry).toBeVisible();
-  const field = page.locator("math-field").first();
-  await field.press("Enter");
+    const calculate = page.getByRole("region", { name: "Entrada", exact: true })
+      .getByRole("button", { name: /calcular|evaluar/i }).first();
+    await expect(calculate).toBeEnabled();
+    await calculate.click();
 
-  const result = page.getByRole("region", { name: "Resultado", exact: true });
-  const graph = page.getByTestId("scientific-graph");
-  await expect(result).toContainText("4");
-  await expect(graph).toBeVisible();
-
-  const [resultBox, graphBox] = await Promise.all([result.boundingBox(), graph.boundingBox()]);
-  expect(resultBox).not.toBeNull();
-  expect(graphBox).not.toBeNull();
-  if (resultBox && graphBox) {
-    expect(resultBox.y).toBeLessThan(graphBox.y);
-  }
-
-  const metrics = await page.evaluate(() => ({
-    viewport: document.documentElement.clientWidth,
-    scrollWidth: document.documentElement.scrollWidth,
-  }));
-  expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.viewport + 2);
-});
-
-test("error controlado conserva la Científica utilizable", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("./");
-  await page.evaluate(() => localStorage.setItem("precision-lab-layout-mode", "fused"));
-  await page.reload();
-
-  await page.locator("nav").getByRole("button", { name: "Científica", exact: true }).click();
-  await setExpression(page, "(");
-
-  const entry = page.getByRole("region", { name: "Entrada", exact: true });
-  const calculate = page.getByRole("button", { name: /calcular|evaluar/i }).first();
-  await expect(calculate).toBeEnabled();
-  await calculate.click();
-
-  await expect(page.locator('[role="alert"][aria-live="assertive"]').first()).toBeVisible({ timeout: 15000 });
-  await expect(entry).toBeVisible();
-  await expect(page.getByTestId("scientific-graph")).toBeVisible();
-
-  const metrics = await page.evaluate(() => ({
-    viewport: document.documentElement.clientWidth,
-    scrollWidth: document.documentElement.scrollWidth,
-  }));
-  expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.viewport + 2);
+    await expect(page.locator('[role="alert"][aria-live="assertive"]').first()).toBeVisible({ timeout: 15000 });
+    await expectFourSurfaces(page);
+    await expectNoHorizontalOverflow(page);
+  });
 });
