@@ -12,20 +12,18 @@ Lee primero, en este orden:
 
 Proyecto: **Precision Lab Lite**  
 Branch: `qa/s26-execution`  
-HEAD certificado de código B6: `cdd8e35ac6ddcb670f6dbdfe0bf79fa1fde7c9ec`
+HEAD certificado de código B6: `f029df3d58c421b478a43dac05dd48306a4687a7`
 
 B1–B5: PASS DEFINITIVO.  
-B6: **PASS AUTOMATIZADO / pendiente verificación visual humana final**.
+B6: **PASS DEFINITIVO**.
 
 ### Acción inmediata
 
-No rediseñar ni reabrir decisiones. Verificar visualmente el teclado actual contra el contrato:
-**familias arriba → subcategorías → teclas contextuales → núcleo básico debajo**.
+Continuar **B7 — Científica**.
 
-Confirmar además:
-- SmartDock ausente;
-- tira global de Ecuaciones ausente;
-- Sistema 2–5 vive en Álgebra → Ecuaciones;
-- densidad/altura correctas y sin solapar Entrada/Resultado/Gráfica.
-
-Si pasa, documentar **B6 PASS DEFINITIVO** y continuar B7.
+No reabrir B6 salvo defecto reproducible. Auditar:
+- Entrada → Resultado → Pasos → Gráfica;
+- estados vacío, resultado, carga y error;
+- Desktop 1440×900, Laptop 1280×800, Tablet 768×1024 y Mobile 390×844;
+- paridad visual/funcional Lite↔Plus;
+- superficies secundarias de Plus (Ejemplos/Opciones avanzadas) sin competir con el flujo principal.
