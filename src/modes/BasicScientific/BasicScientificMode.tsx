@@ -597,6 +597,16 @@ export function BasicScientificMode() {
         layoutMode={layoutMode}
         onGraphExpression={handleGraphExpression}
         onCalculate={handleCalculate}
+        onReuseSessionEntry={(entry) => {
+          setLatex(entry.input);
+          setResult(null);
+          requestAnimationFrame(() => {
+            if (mathField) {
+              mathField.value = entry.input;
+              mathField.focus();
+            }
+          });
+        }}
       />
     </div>
   );
