@@ -92,10 +92,22 @@ export function Screen({
           type="button"
           onClick={onClearField}
           aria-label="Borrar campo"
-          title="clear field"
-          className="absolute right-0 top-0 rounded p-1 text-muted hover:text-ink"
+          title="Borrar campo"
+          className="absolute right-10 top-1/2 -translate-y-1/2 rounded p-1 text-muted hover:text-ink"
         >
           ✕
+        </button>
+      )}
+      {onCalculate && (
+        <button
+          type="button"
+          onClick={onCalculate}
+          disabled={!latex.trim()}
+          aria-label="Calcular"
+          title="Calcular"
+          className="absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-graph text-paper hover:bg-graph/90 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          →
         </button>
       )}
     </div>
