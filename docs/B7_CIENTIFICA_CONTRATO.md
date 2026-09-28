@@ -2,7 +2,7 @@
 
 **Estado:** contrato cerrado para implementación.  
 **Autoridad:** este documento es la referencia B7 para Precision Lab Lite y Precision Lab Plus.  
-**Regla principal:** Lite y Plus deben compartir el mismo comportamiento, jerarquía visual y criterios de aceptación, aunque la implementación interna de sus motores sea distinta.
+**Regla principal:** Lite y Plus deben compartir el mismo comportamiento, jerarquía visual y criterios de aceptación, aunque la implementación interna de sus motores sea distinta, salvo las diferencias de alcance explícitamente aprobadas en este contrato.
 
 ## 1. Alcance y reglas transversales
 
@@ -10,7 +10,7 @@ B7 puede modificar componentes visuales o de presentación nacidos en bloques an
 
 B6 sigue siendo la autoridad funcional del teclado. B7 solo redefine su integración visual dentro de Científica, salvo correcciones indispensables de integración.
 
-La interfaz de Científica se organiza alrededor de cuatro paneles primarios: **Entrada, Resultado, Entradas previas y Gráfica**. El teclado queda fuera de esa cuadrícula en una zona reservada. **Pasos de solución** es secundario y se ubica debajo del área primaria.
+La interfaz de Científica se organiza alrededor de cuatro paneles primarios: **Entrada, Resultado, Entradas previas y Gráfica**. El teclado queda fuera de esa cuadrícula en una zona reservada. En **Plus**, **Pasos de solución** es un bloque secundario situado inmediatamente debajo del área primaria de cuatro paneles. Lite no incorpora este bloque como parte de B7.
 
 ## 2. Diseño y layouts
 
@@ -181,11 +181,19 @@ En Científica se retiran de la vista principal:
 
 Si Sustituciones debe conservarse, pasa a un acceso secundario/contextual; no ocupa espacio fijo.
 
-## 13. Pasos de solución
+## 13. Pasos de solución — solo Plus
 
-Pasos de solución permanece debajo del área primaria y puede crecer verticalmente con scroll sin robar espacio seguro a los cuatro paneles principales.
+**Pasos de solución forma parte únicamente de Precision Lab Plus dentro de B7.** Lite no debe crear un bloque equivalente por paridad artificial.
 
-**Pendiente no bloqueante:** la relación exacta entre el antiguo “Resumen / procedimiento resumido” y Pasos de solución no fue cerrada durante B7. No se debe inventar una conducta nueva ni eliminar información hasta tomar una decisión específica. Este punto queda explícitamente fuera del cambio de implementación B7 inicial.
+En Plus, el bloque se ubica **inmediatamente debajo del layout de cuatro paneles** —Entrada, Resultado, Entradas previas y Gráfica— y queda fuera de esa cuadrícula primaria para no alterar sus proporciones ni competir con el teclado.
+
+El bloque puede crecer verticalmente y disponer de **scroll interno cuando sea necesario**. Ese scroll está permitido aquí porque Pasos es contenido secundario y potencialmente extenso; la restricción de no-scroll de Entradas previas no aplica a este bloque.
+
+Todo el contenido matemático de Pasos debe conservar el mismo criterio de **texto y matemática natural** aprobado para Entrada y Resultado. Fracciones, radicales, potencias, integrales, derivadas, límites, matrices, sistemas, constantes y demás expresiones deben renderizarse matemáticamente; no se permite mostrar sintaxis técnica, comandos LaTeX literales ni una apariencia que quede visualmente desfasada del resto de Científica.
+
+Cuando un paso mezcle explicación textual y expresión matemática, ambos elementos deben mantener una jerarquía legible y coherente con el sistema visual general de Plus.
+
+Con esta regla queda cerrado el punto previamente pendiente de “Resumen / procedimiento resumido”: B7 no necesita conservar un bloque separado con ese nombre. La información útil de procedimiento se concentra en **Pasos de solución** en Plus, sin duplicar contenido ni introducir una segunda capa paralela.
 
 ## 14. Matriz mínima de aceptación / no regresión
 
@@ -203,6 +211,8 @@ B7 no se considera completo hasta validar en Lite y Plus, como mínimo:
 - transferencia canónica de contexto desde Científica hacia Gráficas;
 - inecuaciones con conjuntos solución estructurados y fronteras estrictas/inclusivas correctas;
 - responsive desktop/tablet/mobile y ausencia de solapamiento con teclado;
+- en Plus, Pasos de solución inmediatamente debajo del layout primario, con scroll cuando sea necesario y render matemático natural consistente;
+- en Lite, ausencia de un bloque Pasos añadido artificialmente por paridad;
 - no regresión de módulos que reutilicen Resultado, render matemático, layout o controles compartidos.
 
 ## 15. Orden de implementación
@@ -216,7 +226,8 @@ Para minimizar retrabajo, el orden recomendado es:
 5. preview Gráfica contextual y estados semánticos;
 6. puente Científica → Gráficas;
 7. correcciones de motor necesarias para paridad (especialmente conjuntos solución/fronteras de inecuaciones);
-8. limpieza específica de Plus;
-9. pruebas de paridad, visuales, funcionales y no regresión.
+8. Pasos de solución en Plus con render natural y scroll controlado;
+9. limpieza específica de Plus;
+10. pruebas de paridad, visuales, funcionales y no regresión.
 
-Este orden no cambia el alcance: todos los puntos anteriores forman parte del contrato B7 salvo el pendiente explícito de Resumen/Pasos.
+Todos los puntos anteriores forman parte del contrato B7 cerrado para implementación.
