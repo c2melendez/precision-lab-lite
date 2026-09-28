@@ -35,7 +35,7 @@ interface GraphPlaceholderProps {
 export function GraphPlaceholder({ canGraph = false, onGraph }: GraphPlaceholderProps) {
   if (canGraph && onGraph) {
     return (
-      <div className="flex min-h-[110px] flex-1 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-paper-line bg-paper-soft/60 px-4 py-6 text-center">
+      <div data-testid="scientific-graph" className="flex min-h-[110px] flex-1 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-paper-line bg-paper-soft/60 px-4 py-6 text-center">
         <span className="text-xs font-medium text-muted">Gráfica</span>
         <button
           type="button"
@@ -50,6 +50,7 @@ export function GraphPlaceholder({ canGraph = false, onGraph }: GraphPlaceholder
 
   return (
     <div
+      data-testid="scientific-graph"
       role="note"
       aria-label="Gráfica: escribe una expresión y presiona Graficar"
       className="flex min-h-[110px] flex-1 flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-paper-line bg-paper-soft/60 px-4 py-6 text-center"
