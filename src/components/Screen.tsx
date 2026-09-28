@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import { NaturalInput } from "./NaturalInput";
 import { ResultPanel } from "./ResultPanel";
+import { StepList } from "./StepList";
 import { HistoryLog, type SessionHistoryEntry } from "./HistoryLog";
 import { AngleModePopover } from "./AngleModePopover";
 import { GraphPlaceholder } from "./GraphPlaceholder";
@@ -64,6 +65,7 @@ interface ScreenProps {
    * BasicScientificMode.tsx). Paridad con precision-lab (main). */
   onGraphExpression?: () => void;
   onCalculate?: () => void;
+  onReuseSessionEntry?: (entry: SessionHistoryEntry) => void;
 }
 
 export function Screen({
@@ -79,6 +81,7 @@ export function Screen({
   layoutMode = "fused",
   onGraphExpression,
   onCalculate,
+  onReuseSessionEntry,
 }: ScreenProps) {
   // Botón "Graficar" (cuadrante de gráfica, las 6 disposiciones): solo
   // tiene sentido ofrecerlo cuando hay algo escrito. GraphingMode.tsx
@@ -122,6 +125,113 @@ export function Screen({
       <div className="px-4 py-3">{inputField}</div>
     </section>
   );
+
+  const recentSurface = (
+    <section aria-label="Entradas previas" className="min-h-[120px] rounded-xl border border-paper-line bg-paper-soft shadow-sm">
+      <div className="flex items-center justify-between border-b border-paper-line px-4 py-2.5">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Entradas previas</p>
+        <span className="text-[11px] text-muted">Sesión actual · hasta 5</span>
+      </div>
+      <div className="px-3 py-2">
+        {sessionHistory.length > 0 ? (
+          <HistoryLog entries={sessionHistory} maxVisible={5} onReuse={onReuseSessionEntry} />
+        ) : (
+          <p className="px-1 py-3 text-xs text-muted">Tus cálculos recientes de esta sesión aparecerán aquí.</p>
+        )}
+      </div>
+    </section>
+  );
+
+  const resultSurface = (
+    <div className="min-h-[120px] rounded-xl border border-paper-line bg-paper-soft px-4 py-3 shadow-sm">
+      <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
+    </div>
+  );
+
+  const graphSurface = (
+    <div className="flex min-h-[240px]">
+      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
+    </div>
+  );
+
+  const isB7Layout =
+    layoutMode === "fused" ||
+    layoutMode === "split" ||
+    layoutMode === "focus" ||
+    layoutMode === "separated";
+
+  if (isB7Layout) {
+    const gridClass =
+      layoutMode === "fused"
+        ? "lg:grid-cols-[minmax(0,0.9fr)_minmax(360px,1.1fr)] lg:grid-rows-[auto_auto_minmax(140px,1fr)]"
+        : layoutMode === "split"
+          ? "lg:grid-cols-[minmax(0,1.35fr)_minmax(220px,0.75fr)_minmax(340px,1fr)] lg:grid-rows-[auto_minmax(180px,1fr)]"
+          : layoutMode === "focus"
+            ? "lg:grid-cols-[minmax(230px,0.8fr)_minmax(0,1.35fr)_minmax(340px,1fr)] lg:grid-rows-[auto_minmax(180px,1fr)]"
+            : "lg:grid-cols-2 lg:grid-rows-[auto_minmax(220px,1fr)]";
+
+    const inputPlacement =
+      layoutMode === "fused"
+        ? "lg:col-start-1 lg:row-start-1"
+        : layoutMode === "split"
+          ? "lg:col-start-1 lg:col-span-2 lg:row-start-1"
+          : layoutMode === "focus"
+            ? "lg:col-start-1 lg:row-start-1"
+            : "lg:col-start-1 lg:row-start-1";
+
+    const resultPlacement =
+      layoutMode === "fused"
+        ? "lg:col-start-1 lg:row-start-2"
+        : layoutMode === "split"
+          ? "lg:col-start-1 lg:row-start-2"
+          : layoutMode === "focus"
+            ? "lg:col-start-2 lg:row-start-1 lg:row-span-2"
+            : "lg:col-start-2 lg:row-start-1";
+
+    const recentPlacement =
+      layoutMode === "fused"
+        ? "lg:col-start-1 lg:row-start-3"
+        : layoutMode === "split"
+          ? "lg:col-start-2 lg:row-start-2"
+          : layoutMode === "focus"
+            ? "lg:col-start-1 lg:row-start-2"
+            : "lg:col-start-1 lg:row-start-2";
+
+    const graphPlacement =
+      layoutMode === "fused"
+        ? "lg:col-start-2 lg:row-start-1 lg:row-span-3"
+        : layoutMode === "split"
+          ? "lg:col-start-3 lg:row-start-1 lg:row-span-2"
+          : layoutMode === "focus"
+            ? "lg:col-start-3 lg:row-start-1 lg:row-span-2"
+            : "lg:col-start-2 lg:row-start-2";
+
+    return (
+      <div className="flex min-w-0 flex-col gap-3">
+        <div className="flex justify-end">
+          <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
+        </div>
+
+        <div className={`grid min-w-0 grid-cols-1 gap-3 ${gridClass}`}>
+          <div className={`min-w-0 ${inputPlacement}`}>{inputSurface}</div>
+          <div className={`min-w-0 ${resultPlacement}`}>{resultSurface}</div>
+          <div className={`min-w-0 ${recentPlacement}`}>{recentSurface}</div>
+          <div className={`min-w-0 ${graphPlacement}`}>{graphSurface}</div>
+        </div>
+
+        {result?.success && result.steps.length > 0 && (
+          <section aria-label="Pasos de solución" className="rounded-xl border border-paper-line bg-paper-soft p-4 shadow-sm">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-ink">Pasos de solución</h3>
+              <span className="text-xs text-muted">{result.steps.length} {result.steps.length === 1 ? "paso" : "pasos"}</span>
+            </div>
+            <StepList steps={result.steps} />
+          </section>
+        )}
+      </div>
+    );
+  }
+
 
 
   // "stacked" (Apilado, Módulo P3): una sola columna — input, resultado,
