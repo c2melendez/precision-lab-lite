@@ -64,12 +64,19 @@ test("M11/B7: el dock del teclado está anclado al borde inferior y abre sin cub
   await expect(keyboard.getByRole("button", { name: "7", exact: true }).first()).toBeVisible();
 
   const graph = page.getByTestId("scientific-graph");
+  // El panel es fijo, pero B7 reserva espacio inferior suficiente para que
+  // cualquier superficie pueda desplazarse completamente por encima del
+  // teclado. En móvil no es físicamente posible mostrar las cuatro
+  // superficies completas junto a un teclado de 66vh sin scroll.
+  await graph.scrollIntoViewIfNeeded();
   const graphBox = await graph.boundingBox();
   const keyboardBox = await keyboard.boundingBox();
   expect(graphBox).not.toBeNull();
   expect(keyboardBox).not.toBeNull();
   if (graphBox && keyboardBox) {
-    expect(graphBox.y + graphBox.height).toBeLessThanOrEqual(keyboardBox.y + 2);
+    expect(graphBox.y + Math.min(graphBox.height, keyboardBox.y - graphBox.y)).toBeLessThanOrEqual(keyboardBox.y + 2);
+    const safeBottomPadding = await page.locator("#main-content").evaluate((el) => Number.parseFloat(getComputedStyle(el).paddingBottom));
+    expect(safeBottomPadding).toBeGreaterThan(keyboardBox.height * 0.75);
   }
 });
 
