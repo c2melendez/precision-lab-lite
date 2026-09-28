@@ -32,7 +32,7 @@ export function GraphPlaceholder({
   state = canGraph ? "available" : "empty",
   message,
 }: GraphPlaceholderProps) {
-  const canOpenGraphing = Boolean(onGraph) && (state === "available" || state === "advanced");
+  const canOpenGraphing = Boolean(onGraph) && canGraph && (state === "available" || state === "advanced");
 
   return (
     <section
