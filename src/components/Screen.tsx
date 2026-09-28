@@ -239,9 +239,9 @@ export function Screen({
             </section>
           </div>
           <div className="flex min-w-0 flex-col gap-3">
-            <section aria-label="Resultado" className="min-w-0 rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
+            <div className="min-w-0 rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
               <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
-            </section>
+            </div>
             <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
           </div>
         </div>
