@@ -275,3 +275,28 @@ CI, Playwright E2E, S22 PWA Offline, S23 Accessibility, S25 Security y Cross-bro
 4. continuar con **B7 — Científica**.
 
 No iniciar S26.4 todavía.
+
+
+## B6 — PASS DEFINITIVO — 2026-09-27
+
+- Revisión humana final: aprobada.
+- Arquitectura desktop/laptop: **familias arriba → subcategorías | básico | contexto**.
+- Básico: 23 teclas, cuatro filas, paridad Lite/Plus.
+- Contextuales genéricas: 3 columnas en ambos motores.
+- Responsive móvil: panel a ancho completo; tablet/laptop/desktop protegidos por E2E.
+- Densidad de Ecuaciones diferenciales y Complejos → Avanzado validada.
+- Contraste accesible de subcategoría activa recertificado.
+- HEAD certificado de código: `f029df3d58c421b478a43dac05dd48306a4687a7`.
+- Gates: CI, Playwright E2E, S22 PWA Offline, S23 Accessibility, S25 Security, Cross-browser smoke y S26 Preview: PASS.
+
+**B6 queda cerrado como PASS DEFINITIVO.**
+
+### B7 — Científica — EN CURSO
+
+Alcance:
+- composición Entrada → Resultado → Pasos → Gráfica;
+- estados vacío, resultado, carga y error;
+- responsive Desktop 1440, Laptop 1280, Tablet 768 y Mobile 390;
+- paridad Lite/Plus sin eliminar diferencias funcionales intencionales;
+- en Plus, revisar Ejemplos y Opciones avanzadas como superficies secundarias que no deben competir con Entrada/Resultado;
+- no modificar rutas matemáticas protegidas salvo defecto reproducible.
