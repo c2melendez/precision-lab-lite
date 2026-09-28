@@ -16,6 +16,7 @@ import {
   indefiniteIntegral,
   symbolicLimit,
   evaluate,
+  toLatex,
   ErrorCode,
 } from "../algebriteClient";
 import { compileNumeric, numericLimit, numericLimitAtInfinity, simpsonIntegral } from "../numericFallback";
@@ -47,14 +48,15 @@ export interface CalculusResult {
 // la lógica acá.
 export function calcDerivative(exprAlgebrite: string, variable: string, order: number): CalculusResult {
   const result = symbolicDerivative(rewriteReciprocalFunctions(exprAlgebrite), variable, order);
+  const resultLatex = toLatex(result);
   return {
-    resultLatex: result,
+    resultLatex,
     confidence: "SYMBOLIC",
     steps: [
-      { id: "original", latex: exprAlgebrite, explanation: "Expresión original." },
+      { id: "original", latex: toLatex(exprAlgebrite), explanation: "Expresión original." },
       {
         id: "result",
-        latex: `\\frac{d${order > 1 ? `^${order}` : ""}}{d${variable}${order > 1 ? `^${order}` : ""}} = ${result}`,
+        latex: `\\frac{d${order > 1 ? `^${order}` : ""}}{d${variable}${order > 1 ? `^${order}` : ""}} = ${resultLatex}`,
         explanation: `Derivada de orden ${order} calculada simbólicamente.`,
       },
     ],
@@ -78,19 +80,20 @@ export function calcLimit(
 ): CalculusResult {
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
-  const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
+  const limitLatex = `\\lim_{${variable}\\to ${toLatex(pointAlgebrite)}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${toLatex(exprAlgebrite)}`;
 
   try {
     // symbolicLimit ya detecta el caso "Algebrite devolvió la llamada sin
     // evaluar" (incluido cuando el punto es oo/-oo, confirmado contra el
     // paquete real) y lanza en ese caso — cae directo al catch de abajo.
     const result = symbolicLimit(exprAlgebrite, variable, pointAlgebrite);
+    const resultLatex = toLatex(result);
     return {
-      resultLatex: result,
+      resultLatex,
       confidence: "SYMBOLIC",
       steps: [
         { id: "original", latex: limitLatex, explanation: "Límite planteado." },
-        { id: "result", latex: result, explanation: "Resuelto simbólicamente por Algebrite." },
+        { id: "result", latex: resultLatex, explanation: "Resuelto simbólicamente por Algebrite." },
       ],
     };
   } catch {
@@ -152,12 +155,13 @@ export function calcLimit(
 export function calcIndefiniteIntegral(exprAlgebrite: string, variable: string): CalculusResult {
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
   const result = indefiniteIntegral(exprAlgebrite, variable);
+  const antiderivativeLatex = toLatex(result);
   return {
-    resultLatex: `${result} + C`,
+    resultLatex: `${antiderivativeLatex} + C`,
     confidence: "SYMBOLIC",
     steps: [
-      { id: "original", latex: `\\int ${exprAlgebrite}\\,d${variable}`, explanation: "Integral planteada." },
-      { id: "result", latex: `${result} + C`, explanation: "Antiderivada calculada simbólicamente (+ constante de integración)." },
+      { id: "original", latex: `\\int ${toLatex(exprAlgebrite)}\\,d${variable}`, explanation: "Integral planteada." },
+      { id: "result", latex: `${antiderivativeLatex} + C`, explanation: "Antiderivada calculada simbólicamente (+ constante de integración)." },
     ],
   };
 }
@@ -187,13 +191,15 @@ export function calcDefiniteIntegral(
     const result = evaluate(
       `float(subst(${upper},${variable},${antiderivative})) - float(subst(${lower},${variable},${antiderivative}))`,
     );
+    const resultLatex = toLatex(result);
+    const antiderivativeLatex = toLatex(antiderivative);
     return {
-      resultLatex: result,
+      resultLatex,
       confidence: "SYMBOLIC",
       steps: [
-        { id: "original", latex: `\\int_{${lower}}^{${upper}} ${exprAlgebrite}\\,d${variable}`, explanation: "Integral definida planteada." },
-        { id: "antiderivative", latex: `${antiderivative} + C`, explanation: "Antiderivada." },
-        { id: "result", latex: `= ${result}`, explanation: "Evaluada en los límites (Teorema Fundamental del Cálculo)." },
+        { id: "original", latex: `\\int_{${lower}}^{${upper}} ${toLatex(exprAlgebrite)}\\,d${variable}`, explanation: "Integral definida planteada." },
+        { id: "antiderivative", latex: `${antiderivativeLatex} + C`, explanation: "Antiderivada." },
+        { id: "result", latex: `= ${resultLatex}`, explanation: "Evaluada en los límites (Teorema Fundamental del Cálculo)." },
       ],
     };
   } catch {
@@ -209,7 +215,7 @@ export function calcDefiniteIntegral(
       resultLatex: value.toFixed(6),
       confidence: "NUMERIC_FALLBACK",
       steps: [
-        { id: "original", latex: `\\int_{${lower}}^{${upper}} ${exprAlgebrite}\\,d${variable}`, explanation: "Integral definida planteada." },
+        { id: "original", latex: `\\int_{${lower}}^{${upper}} ${toLatex(exprAlgebrite)}\\,d${variable}`, explanation: "Integral definida planteada." },
         {
           id: "numeric",
           latex: `\\approx ${value.toFixed(6)}`,
