@@ -1,224 +1,314 @@
-# S26 B7 — Contrato visual definitivo del módulo Científica
+# S26 B7 — Contrato visual y funcional definitivo del módulo Científica
 
-Estado: **ACTIVO — autoridad visual específica de B7**  
-Fecha de incorporación: **2026-09-27**  
-Origen: referencia visual aportada por el usuario durante B7.
+Estado: **ACTIVO — autoridad específica de B7**
+Fecha de consolidación: **2026-09-28**
 
-## 1. Alcance y prioridad
+## 1. Alcance y autoridad
 
-Este documento define la composición visual objetivo de **Científica** para Precision Lab Lite y Precision Lab Plus.
+Este documento define la composición, interacción y semántica visual de **Científica** para Precision Lab Lite y Precision Lab Plus.
 
 Orden de autoridad dentro de B7:
 1. decisiones explícitas más recientes del usuario;
 2. este contrato;
 3. `VISUAL_REFERENCE_CHECKLIST.md`;
-4. `RESULT_FORMATS.md`, `KEYBOARD_CONTRACT.md` y demás contratos funcionales;
-5. implementación actual, solo para conservar funciones existentes.
+4. `RESULT_FORMATS.md`, `KEYBOARD_CONTRACT.md`, `MATHEMATICAL_INTEGRITY_POLICY.md` y demás contratos funcionales;
+5. implementación previa, solo cuando no contradiga lo anterior.
 
-La referencia aportada es autoridad de **jerarquía, composición, densidad, agrupación y comportamiento visible**. No es autoridad matemática ni autoriza a copiar resultados ilustrativos incorrectos.
+B6 permanece cerrado. B7 puede modificar componentes compartidos de bloques anteriores cuando sea necesario para cumplir este contrato, siempre con recertificación de no regresión.
 
-## 2. Jerarquía obligatoria
+## 2. Superficies primarias de Científica
 
-La Científica debe comunicar este orden visual:
+La vista principal de Científica se compone de **cuatro superficies primarias**:
 
-1. **Entrada protagonista**.
-2. **Resultado destacado**.
-3. **Pasos de la solución** cuando existan.
-4. **Vista previa / área de Gráfica** integrada al flujo principal.
-5. **Acciones rápidas**.
-6. Historial y superficies auxiliares subordinadas.
+1. **Entrada**
+2. **Resultado**
+3. **Entradas previas de la sesión**
+4. **Gráfica / vista previa**
 
-No deben existir grandes vacíos que separen artificialmente Entrada, Resultado, Pasos y Gráfica.
+**Pasos de solución** es una superficie secundaria debajo del workspace principal. Puede crecer verticalmente y no compite por el viewport principal.
 
-## 3. Composición Desktop / Laptop
+El teclado global queda fuera de estas cuatro superficies y no debe cubrirlas.
 
-En ancho suficiente, la referencia principal es una composición de dos áreas:
+## 3. Diseños de escritorio
 
-### Columna principal
-- encabezado del módulo;
-- control angular accesible;
-- deshacer/rehacer cuando exista soporte real;
-- Entrada de expresión;
-- acción primaria de cálculo;
-- Resultado;
-- acción de copiar resultado cuando exista;
-- representaciones/formato del resultado;
-- Pasos de la solución, numerados y legibles.
+Configuración → Apariencia → Diseño debe ofrecer únicamente cuatro presets para Científica:
 
-### Columna de Gráfica
-- título **Vista previa de gráfica** o equivalente;
-- selector de tipo de gráfica cuando exista soporte real;
-- visor/gráfica o placeholder funcional;
-- controles de zoom/vista cuando estén conectados;
-- lista/leyenda de expresiones cuando corresponda;
-- acciones rápidas asociadas.
+### Balanceada
+Gráfica amplia a la derecha; Entrada, Resultado y Entradas previas en la zona izquierda.
 
-La vista previa de gráfica debe sentirse parte de Científica y no como una pantalla ajena.
+### Cálculo amplio
+Entrada recibe mayor ancho; Gráfica conserva área sustancial; Resultado y Entradas previas se acomodan sin perder legibilidad.
+
+### Resultado amplio
+Resultado recibe mayor protagonismo; Gráfica conserva área sustancial; Entrada y Entradas previas permanecen accesibles.
+
+### Cuadrícula 2×2
+Fila 1: Entrada | Resultado
+Fila 2: Entradas previas | Gráfica
+
+No se ofrece un modo completamente vertical en desktop. Tablet y móvil pueden apilarse responsivamente.
 
 ## 4. Entrada
 
-La Entrada debe ser el elemento más protagonista del módulo.
-
-Debe:
-- ocupar un ancho cómodo;
-- usar notación matemática natural;
-- mantener el selector RAD/GRAD visible sin dominar;
-- conservar acceso al teclado global;
-- evitar múltiples acciones primarias compitiendo entre sí.
-
-### Acción de ejecución
-
-La referencia visual muestra un botón `=`, pero el contrato funcional vigente tiene prioridad:
-
-- `=` **inserta igualdad**;
-- **Enter / Calcular / acción equivalente** ejecuta.
-
-Por tanto, la implementación puede conservar la posición y peso visual del botón principal de la referencia, pero **no debe convertir `=` en ejecutar**.
+- La tipografía matemática natural de Lite es la referencia visual.
+- Debe haber una sola acción primaria de cálculo: **flecha circular azul**.
+- Se elimina el botón rectangular “Calcular” de la superficie principal.
+- Debe existir un único acceso compacto al teclado.
+- `=` inserta igualdad; **Enter** ejecuta.
+- RAD/GRAD permanece visible y discreto.
+- Entrada debe conservar suficiente espacio incluso con teclado abierto.
 
 ## 5. Resultado
 
-Resultado debe presentarse en una tarjeta propia y de alta jerarquía.
+Resultado usa una tarjeta propia y estable en vacío, éxito y error.
 
-Debe contemplar, cuando aplique:
-- resultado principal;
-- representación exacta;
-- aproximación decimal;
-- formatos disponibles;
-- copiar resultado;
-- grados decimales / DMS cuando corresponda;
-- ausencia de formatos irrelevantes según el tipo de resultado.
-
-Lite y Plus deben compartir jerarquía visual aunque sus motores tengan capacidades distintas.
-
-## 6. Pasos de la solución
-
-Los pasos deben:
-- vivir debajo del Resultado en el flujo principal;
-- usar numeración o secuencia visual clara;
-- mostrar matemática natural;
-- evitar bloques de texto densos;
-- conservar el nivel real de detalle soportado por cada motor.
-
-**Plus** puede mostrar desarrollo más rico.  
-**Lite** debe mostrar solo pasos realmente disponibles; no inventar explicaciones para igualar Plus.
-
-## 7. Vista previa de gráfica
-
-La Científica debe reservar un área de gráfica integrada.
-
-Estados válidos:
-- vacío/placeholder;
-- expresión lista para graficar;
-- vista previa real cuando exista soporte;
-- error controlado.
-
-Elementos deseables si están funcionalmente soportados:
-- selector Cartesiana / modo aplicable;
-- zoom `−` / `+`;
-- leyenda de expresiones;
-- activación/desactivación de curvas.
-
-No se deben mostrar controles decorativos que no estén conectados.
-
-En Tablet/Mobile esta columna debe apilarse debajo de Entrada/Resultado/Pasos sin provocar overflow horizontal.
-
-## 8. Acciones rápidas
-
-La referencia incorpora una zona de **Acciones rápidas**.
-
-Acciones objetivo, siempre condicionadas a soporte real:
-- **Graficar**;
-- **Exacto**;
-- **Aprox.**
-
-Estas acciones deben ser secundarias respecto a la ejecución principal, pero visibles y fáciles de localizar.
-
-Si Exacto/Aprox. ya están representados por el selector de formato, no se deben duplicar de forma confusa; puede reutilizarse la misma política de formato.
-
-## 9. Control angular
-
-El modo angular debe permanecer accesible y visible:
-- **RAD**;
-- **GRAD**.
-
-La etiqueta visible debe seguir el contrato del producto y no introducir una tercera nomenclatura incompatible.
-
-Debe ocupar poco espacio y mantener contraste suficiente.
-
-## 10. Ejemplos y Opciones avanzadas en Plus
-
-`Ejemplos` y `Opciones avanzadas (sustituciones)` se conservan, pero son superficies secundarias.
+Formatos contextuales:
+- Exacto
+- Decimal
+- Científica
+- Fracción cuando exista forma exacta
+- Mixta/impropia cuando corresponda
+- DD/DMS para resultados angulares cuando corresponda
 
 Reglas:
-- no deben preceder Entrada/Resultado/Pasos/Gráfica;
-- no deben comprimir el área principal;
-- Opciones avanzadas permanece colapsada por defecto;
-- Ejemplos debe ser compacto;
-- no deben alterar el alto del teclado global.
+- solo aparecen formatos útiles;
+- todos los formatos usan la misma identidad de tipografía matemática natural;
+- no se muestran comandos LaTeX crudos;
+- una integral indefinida incluye **+C**;
+- una integral definida no incluye **+C**;
+- inecuaciones muestran el conjunto solución de forma canónica;
+- sistemas y resultados estructurados conservan su estructura matemática.
 
-## 11. Responsive
+### Copiar
+Se conservan dos acciones minimalistas:
+- **Copiar resultado**: copia la representación activa.
+- **Copiar como LaTeX**: copia el LaTeX canónico de la representación activa.
 
-Viewports oficiales:
-- Desktop 1440×900;
-- Laptop 1280×800;
-- Tablet 768×1024;
-- Mobile 390×844.
+La confirmación es discreta (“Copiado”), sin modal.
 
-### Desktop/Laptop
-Priorizar dos zonas: cálculo principal + gráfica integrada.
+## 6. Entradas previas de la sesión
 
-### Tablet
-Apilar preservando:
-Entrada → Resultado → Pasos → Gráfica → acciones secundarias.
+Es una superficie distinta del Historial persistente.
 
-### Mobile
-Una sola columna, sin overflow horizontal.  
-Resultado y acción primaria deben quedar accesibles antes que superficies auxiliares.
+- Muestra únicamente entradas recientes de la sesión actual.
+- Desktop intenta mostrar hasta 5, reduciendo el número visible si el espacio o longitud de expresiones lo exige.
+- Tablet/móvil pueden mostrar menos.
+- No usa scroll interno.
+- Cuando entra una nueva y se supera la capacidad visible, desaparece la más antigua **solo de esta vista**, no del Historial.
+- Cada entrada es reutilizable con un clic: restaura la expresión completa en Entrada, lista para editar, **sin ejecutar automáticamente**.
+- Se presenta en matemática natural, nunca como sintaxis de backend o texto monoespaciado crudo.
 
-## 12. Paridad Lite / Plus
+El Historial completo sigue siendo persistente hasta que el usuario lo borre.
+
+## 7. Gráfica en Científica
+
+La gráfica de Científica es una **vista previa visual ligera**. No es un mini módulo de Gráficas.
+
+Debe:
+- mostrar ejes/grid limpios cuando corresponda;
+- autoajustar escala a la operación;
+- evitar tablas, listas extensas, máximos/mínimos, asíntotas y análisis detallado;
+- presentar un estado limpio cuando la visualización no aplica, no es necesaria o requiere una vista avanzada.
+
+Estados semánticos:
+- **Vista previa disponible**
+- **Representación gráfica no necesaria**: por ejemplo resultado netamente aritmético/constante.
+- **Representación no aplicable en esta vista**: no existe una visualización honesta y útil en Científica.
+- **Requiere vista avanzada**: el objeto matemático necesita análisis especializado en Gráficas.
+
+La tarjeta permanece en la cuadrícula aunque no haya curva.
+
+## 8. Semántica de la vista previa según operación
+
+La gráfica consume la **operación matemática canónica**, nunca el texto renderizado de Resultado.
+
+### Función directa
+Grafica la función de entrada.
+
+### Derivada
+Muestra función original + derivada; la derivada es más prominente.
+
+### Derivadas de orden superior
+Original + resultado solicitado; evitar acumulación innecesaria de curvas.
+
+### Integral indefinida
+Integrando + una antiderivada representativa con **C=0 solo para visualización**. Resultado conserva +C.
+
+### Integral definida
+Función + límites + región de integración correspondiente. Debe respetar el significado firmado de la integral.
+
+### Límites
+La visualización prioriza el **comportamiento de aproximación**:
+- bilateral: ambos lados de x→a;
+- lateral izquierdo: énfasis solo en x→a⁻;
+- lateral derecho: énfasis solo en x→a⁺;
+- laterales distintos: representar ambos comportamientos y que el bilateral no existe;
+- límite infinito en punto finito: enfatizar aproximación/asíntota;
+- límite al infinito: enfatizar comportamiento lejano.
+
+El encuadre se adapta automáticamente al punto, lado o dirección del límite.
+
+### Simplificación / factorización
+Compara original/transformada solo si aporta información. Debe respetar restricciones de dominio y no sugerir equivalencia donde el dominio cambia.
+
+### EDO
+- solución particular: grafica la solución;
+- familia: unas pocas curvas representativas o relación implícita, claramente marcadas como representativas;
+- no se fuerza la ecuación diferencial original como curva adicional.
+
+### Sistemas de ecuaciones
+- 2 ecuaciones / 2 variables: curvas componentes + intersecciones comunes;
+- sin solución: mostrar ambas sin inventar cruce;
+- coincidentes: una curva + indicación de infinitas soluciones;
+- 3+ variables: no fingir 2D; derivar a Gráficas/3D cuando corresponda.
+
+### Inecuación
+- una variable: recta real cuando sea la representación más clara;
+- dos variables: frontera + región solución;
+- estricta (<, >): frontera visualmente no incluida;
+- inclusiva (≤, ≥): frontera incluida.
+
+### Sistema de inecuaciones
+Todas las fronteras + únicamente la intersección factible. Debe representar correctamente regiones vacías y no acotadas.
+
+### Complejos
+- número complejo aislado: plano de Argand, punto (Re, Im);
+- múltiples raíces/soluciones complejas: puntos en Argand;
+- función compleja de variable real: curvas Re e Im cuando sea útil;
+- función genuina de variable compleja f(z): no fingir una curva cartesiana 2D. Usar una representación compleja compacta solo si es matemáticamente honesta; domain coloring, superficies y mapeos pertenecen a Gráficas.
+
+Regla general: la vista previa selecciona representación según **dominio/codominio**, no fuerza cartesiano real.
+
+## 9. Puente a Gráficas
+
+La tarjeta incluye una acción explícita **Abrir en Gráficas** / **Analizar en Gráficas**. Hacer clic sobre la vista previa también puede navegar, pero el botón explícito permanece.
+
+La transición transfiere el **contexto matemático completo**, no solo la expresión visible:
+- operación;
+- expresión original;
+- resultado canónico;
+- variable(s);
+- límites, dirección de límite, intervalos o restricciones;
+- componentes de sistemas;
+- regiones/inecuaciones;
+- datos complejos relevantes.
+
+Ejemplos:
+- derivada → f y f′;
+- integral definida → función + límites + región;
+- límite → función + punto + dirección;
+- sistema → ecuaciones + soluciones comunes;
+- inecuación → fronteras + conjunto/región solución.
+
+Principio: **Científica muestra; Gráficas analiza.**
+
+## 10. Contrato de datos entre Resultado y Gráfica
+
+No se debe reparsear LaTeX visual ni texto de Resultado para graficar.
+
+Cada cálculo debe conservar una representación canónica reutilizable por:
+- Resultado;
+- Gráfica previa;
+- “Abrir en Gráficas”;
+- Entradas previas / Reusar cuando corresponda.
+
+Esto es obligatorio para evitar fallos como una integral trigonométrica correctamente resuelta pero ilegible por el motor gráfico.
+
+## 11. Inecuaciones: normalización semántica
+
+### Una variable
+Lite y Plus deben exponer un conjunto solución canónico estructurado + LaTeX. La forma relacional textual puede conservarse como secundaria.
+
+### Sistemas
+Deben exponer:
+- tipo de región (acotada / no acotada / vacía);
+- restricciones;
+- fronteras;
+- metadatos de inclusión/exclusión de frontera;
+- vértices cuando existan.
+
+Resultado y Gráfica consumen la misma semántica.
+
+## 12. Pasos de solución
+
+Pasos vive **debajo** de las cuatro superficies.
+
+- matemática natural;
+- secuencia clara;
+- sin inventar detalle;
+- Plus puede ofrecer mayor profundidad que Lite;
+- no debe desplazar ni comprimir la cuadrícula principal.
+
+## 13. Teclado
+
+B6 sigue siendo la autoridad funcional.
+
+En B7:
+- Lite es la referencia visual del dock.
+- Plus elimina el efecto de cápsula/globo flotante.
+- Dock anclado al borde inferior, integrado al ancho útil.
+- Sin sombra grande ni margen inferior artificial.
+- Cerrado: franja discreta.
+- Abierto: se despliega hacia arriba.
+- Nunca se superpone sobre las cuatro superficies.
+- Se conserva íntegramente el inventario, categorías, tooltips, Enter, DEL, MCM/MCD, límites, etc. aprobados en B6.
+
+## 14. Limpieza específica de Plus
+
+En Científica:
+- se elimina el bloque permanente **Ejemplos**;
+- se elimina **Opciones avanzadas / Sustituciones** de la vista principal;
+- si en el futuro una sustitución demuestra valor funcional, deberá reaparecer como acceso secundario/contextual, no como bloque fijo.
+
+## 15. Responsive
+
+Viewports de referencia:
+- Desktop 1440×900
+- Laptop 1280×800
+- Tablet 768×1024
+- Mobile 390×844
+
+Desktop/laptop priorizan los cuatro paneles simultáneos mediante grid.
+
+Tablet/móvil pueden apilar o reducir columnas, manteniendo:
+1. Entrada
+2. Resultado
+3. Entradas previas
+4. Gráfica
+5. Pasos
+6. contenido secundario
+
+Sin overflow horizontal y sin superposición del teclado.
+
+## 16. Paridad Lite / Plus
 
 Se exige paridad en:
-- jerarquía;
-- tarjetas;
-- espaciado;
-- orden;
-- tratamiento de Resultado;
-- lugar de Gráfica;
-- control angular;
-- acciones rápidas cuando existan en ambos.
+- cuatro superficies;
+- presets de Diseño;
+- tipografía matemática;
+- jerarquía de Resultado;
+- recientes reutilizables;
+- estados y semántica de Gráfica;
+- puente a Gráficas;
+- dock inferior;
+- copiado;
+- comportamiento responsive.
 
-Se permiten diferencias por capacidad real:
-- detalle de Pasos;
-- backend/formatos exclusivos;
-- sustituciones de Plus;
-- análisis o vista previa gráfica más rica si solo un motor la soporta.
+Solo se permiten diferencias por capacidad real del motor.
 
-No se eliminarán funciones exclusivas para forzar simetría.
+## 17. Criterio de aceptación
 
-## 13. Integridad matemática de la referencia
-
-La captura aportada usa como ejemplo:
-
-`sin(π/4) + √2`
-
-Visualmente muestra un resultado que no es consistente con sus propios pasos.
-
-El valor matemático correcto es:
-
-`sin(π/4) + √2 = √2/2 + √2 = 3√2/2 ≈ 2.1213203436`.
-
-Por tanto:
-- la composición de la referencia sí es autoridad visual;
-- sus números ilustrativos **no** deben copiarse al producto ni a pruebas.
-
-## 14. Criterio de aceptación B7
-
-B7 Científica solo puede cerrarse cuando:
-1. los cuatro viewports no presentan overflow;
-2. Entrada, Resultado, Pasos y Gráfica respetan la jerarquía;
-3. estados vacío, resultado y error están cubiertos;
-4. acciones rápidas no duplican/confunden funciones existentes;
-5. Plus mantiene Ejemplos/Opciones avanzadas subordinados;
-6. Lite/Plus conservan paridad visual razonable;
-7. gates automáticos aplicables están verdes;
-8. revisión humana final confirma el Preview.
+B7 solo puede cerrarse cuando:
+1. los cuatro viewports oficiales no presentan overflow;
+2. los cuatro presets funcionan y viven en Configuración → Apariencia → Diseño;
+3. Entrada/Resultado/Previas/Gráfica son superficies reales y estables;
+4. Resultado cubre vacío/éxito/error;
+5. recientes son reutilizables sin autoejecución;
+6. render matemático es natural y no expone sintaxis cruda;
+7. la vista previa gráfica usa semántica de operación y estados no engañosos;
+8. “Abrir en Gráficas” transfiere contexto;
+9. teclado no se superpone y conserva B6;
+10. Plus no muestra Ejemplos/Sustituciones en Científica;
+11. Lite/Plus mantienen paridad;
+12. gates automáticos aplicables están verdes;
+13. revisión visual humana final aprueba el Preview.
