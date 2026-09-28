@@ -7,6 +7,17 @@ const VIEWPORTS = [
   { id: "mobile-390", width: 390, height: 844 },
 ] as const;
 
+async function setExpression(page: import("@playwright/test").Page, value: string) {
+  await page.evaluate(() => customElements.whenDefined("math-field"));
+  const field = page.locator("math-field").first();
+  await expect(field).toBeVisible();
+  await field.evaluate((node, v) => {
+    const el = node as HTMLElement & { value: string };
+    el.value = v as string;
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+  }, value);
+}
+
 test.describe("S26 B7 — Científica", () => {
   for (const viewport of VIEWPORTS) {
     test(`estado vacío conserva Entrada → Resultado → Gráfica sin overflow (${viewport.id})`, async ({ page }) => {
@@ -71,3 +82,62 @@ test.describe("S26 B7 — Científica", () => {
       expect(resultBox.y).toBeLessThan(graphBox.y);
     }
   });
+
+
+test("resultado real conserva Resultado antes de Gráfica", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("./");
+  await page.evaluate(() => localStorage.setItem("precision-lab-layout-mode", "fused"));
+  await page.reload();
+
+  await page.locator("nav").getByRole("button", { name: "Científica", exact: true }).click();
+  await setExpression(page, "2+2");
+
+  const entry = page.getByRole("region", { name: "Entrada", exact: true });
+  const calculate = entry.getByRole("button", { name: /calcular|evaluar/i }).first();
+  await expect(calculate).toBeEnabled();
+  await calculate.click();
+
+  const result = page.getByRole("region", { name: "Resultado", exact: true });
+  const graph = page.getByRole("note", { name: /Gráfica:/i });
+  await expect(result).toContainText("4");
+  await expect(graph).toBeVisible();
+
+  const [resultBox, graphBox] = await Promise.all([result.boundingBox(), graph.boundingBox()]);
+  expect(resultBox).not.toBeNull();
+  expect(graphBox).not.toBeNull();
+  if (resultBox && graphBox) {
+    expect(resultBox.y).toBeLessThan(graphBox.y);
+  }
+
+  const metrics = await page.evaluate(() => ({
+    viewport: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+  }));
+  expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.viewport + 2);
+});
+
+test("error controlado conserva la Científica utilizable", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("./");
+  await page.evaluate(() => localStorage.setItem("precision-lab-layout-mode", "fused"));
+  await page.reload();
+
+  await page.locator("nav").getByRole("button", { name: "Científica", exact: true }).click();
+  await setExpression(page, "(");
+
+  const entry = page.getByRole("region", { name: "Entrada", exact: true });
+  const calculate = entry.getByRole("button", { name: /calcular|evaluar/i }).first();
+  await expect(calculate).toBeEnabled();
+  await calculate.click();
+
+  await expect(page.locator('[role="alert"][aria-live="assertive"]').first()).toBeVisible({ timeout: 15000 });
+  await expect(entry).toBeVisible();
+  await expect(page.getByRole("note", { name: /Gráfica:/i })).toBeVisible();
+
+  const metrics = await page.evaluate(() => ({
+    viewport: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+  }));
+  expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.viewport + 2);
+});
