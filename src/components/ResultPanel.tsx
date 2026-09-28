@@ -22,6 +22,29 @@ import { getAvailableResultFormats } from "./resultFormatPolicy";
 
 type AnswerFormat = ResultFormatId;
 
+function mathLatexToPlainText(value: string): string {
+  return value
+    .replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, "($1)/($2)")
+    .replace(/\\sqrt\{([^{}]+)\}/g, "√($1)")
+    .replace(/\\pi/g, "π")
+    .replace(/\\infty/g, "∞")
+    .replace(/\\cdot|\\times/g, "×")
+    .replace(/\^\{\\circ\}/g, "°")
+    .replace(/\\prime/g, "′")
+    .replace(/\\,/g, " ")
+    .replace(/[{}]/g, "")
+    .trim();
+}
+
+async function writeClipboard(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { result: MathResult | null; inputLatex?: string; angleMode?: "RAD" | "GRAD" }) {
   const [format, setFormat] = useState<AnswerFormat>("dec");
   // Antes: "frac" siempre mostraba mixta cuando estaba disponible
@@ -30,6 +53,7 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
   // chico que solo aparece cuando realmente hay una forma mixta posible
   // (fracción impropia: |numerador| >= denominador).
   const [showMixed, setShowMixed] = useState(true);
+  const [copied, setCopied] = useState<"result" | "latex" | null>(null);
   const explicitDegreeInput = parseDecimalDegreesInput(inputLatex);
   const inverseAngleResult = angleMode === "GRAD" && isInverseTrigAngleExpression(inputLatex);
   const inverseDegreeSource = (
@@ -121,7 +145,18 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
   }) as AnswerFormat[];
 
   const activeFormat = availableFormats.includes(format) ? format : (availableFormats[0] ?? "exact");
-  const { latex, isPlainNumber } = renderValue(activeFormat);
+  const { latex } = renderValue(activeFormat);
+  const activeCopyText =
+    activeFormat === "dms" && dmsValue
+      ? dmsValue.text
+      : mathLatexToPlainText(latex);
+
+  async function copyActive(kind: "result" | "latex") {
+    const ok = await writeClipboard(kind === "result" ? activeCopyText : latex);
+    if (!ok) return;
+    setCopied(kind);
+    window.setTimeout(() => setCopied(null), 1200);
+  }
 
   return (
     <section aria-label="Resultado" className="space-y-3 pt-1">
@@ -137,11 +172,7 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
 
       <div className="min-h-14 rounded-xl border border-paper-line bg-paper px-4 py-3">
         <div className="flex min-h-8 items-center justify-end">
-          {isPlainNumber ? (
-            <span className="a11y-scale-result-3xl font-mono font-semibold tracking-tight text-ink">{latex}</span>
-          ) : (
-            <StaticMath latex={latex} className="a11y-scale-result-3xl font-mono text-ink" />
-          )}
+          <StaticMath latex={latex} className="a11y-scale-result-3xl text-ink" />
         </div>
         {result.confidence === "NUMERIC_FALLBACK" && (
           <p className="mt-1 text-right text-[11px] text-muted">
@@ -165,6 +196,23 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
             {showMixed ? "ver como impropia" : "ver como mixta"}
           </button>
         )}
+      </div>
+
+      <div className="flex justify-end gap-1">
+        <button
+          type="button"
+          onClick={() => copyActive("result")}
+          className="rounded-md px-2 py-1 text-[11px] font-medium text-muted hover:bg-paper-line/40 hover:text-ink"
+        >
+          {copied === "result" ? "Copiado" : "Copiar"}
+        </button>
+        <button
+          type="button"
+          onClick={() => copyActive("latex")}
+          className="rounded-md px-2 py-1 text-[11px] font-medium text-muted hover:bg-paper-line/40 hover:text-ink"
+        >
+          {copied === "latex" ? "Copiado" : "LaTeX"}
+        </button>
       </div>
       </div>
     </section>
