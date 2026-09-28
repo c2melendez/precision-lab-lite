@@ -74,8 +74,13 @@ export default function App() {
   const isFloatingWideEnough = useMinWidthMediaQuery(FLOATING_MIN_WIDTH_PX);
   const hasDockContent = useKeyboardPanelStore((s) =>
     s.content !== null || s.basicContent !== null || s.compactActions !== null);
+  const isKeyboardOpen = useKeyboardPanelStore((s) => s.isOpen);
   const hasFixedDock = hasDockContent && !(layoutMode === "stacked" || (layoutMode === "floating" && isFloatingWideEnough));
-  const mainBottomPadding = hasFixedDock ? "pb-56 md:pb-72" : "pb-8";
+  const mainBottomPadding = !hasFixedDock
+    ? "pb-8"
+    : isKeyboardOpen
+      ? "pb-[70vh] md:pb-[60vh] lg:pb-[50vh] dt:pb-[32rem]"
+      : "pb-20 md:pb-16";
   const pendingArgandPoint = useArgandBridgeStore((s) => s.pendingArgandPoint);
   const pendingGraphExpression = usePendingGraphStore((s) => s.pendingExpression);
 
