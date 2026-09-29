@@ -7,6 +7,7 @@ import type { ScientificGraphState } from "../../components/GraphPlaceholder";
 import { type SessionHistoryEntry } from "../../components/HistoryLog";
 import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { parseExpression } from "../../engine/parsing";
+import { compileNumeric } from "../../engine/numericFallback";
 import { splitTopLevelArgs } from "../../engine/statFunctions";
 import { splitSystemLatex } from "../../engine/parsing/systemSplit";
 import { detectODE } from "../../engine/parsing/odeDetect";
@@ -71,7 +72,7 @@ export function BasicScientificMode() {
 
   const { getWorker } = useComputeWorker();
 
-  const graphExpression = useMemo<{ expression: string; variable: string; integral: boolean; bounds: [number, number] | null } | null>(() => {
+  const graphExpression = useMemo<{ expression: string; variable: string; integral: boolean; definite: boolean; bounds: [number, number] | null } | null>(() => {
     try {
       const parsed = parseExpression(latex.trim(), angleMode);
       if (parsed.isEquation || parsed.isInequality) return null;
@@ -80,17 +81,22 @@ export function BasicScientificMode() {
         const integral = definite || parsed.algebrite.startsWith("integral(");
         const args = splitTopLevelArgs(parsed.algebrite.slice(parsed.algebrite.indexOf("(") + 1, -1));
         if (args.length >= 2) {
-          const lower = Number(args[1]);
-          const upper = Number(args[2]);
+          const numericBound = (source: string | undefined) => {
+            if (!source) return NaN;
+            try { return compileNumeric(source.replace(/\s+/g, ""), "x")(0); }
+            catch { return NaN; }
+          };
+          const lower = numericBound(args[1]);
+          const upper = numericBound(args[2]);
           return {
-            expression: args[0], variable: "x", integral,
+            expression: args[0], variable: "x", integral, definite,
             bounds: definite && Number.isFinite(lower) && Number.isFinite(upper)
               ? [lower, upper] as [number, number] : null,
           };
         }
       }
       return parsed.freeVariables.length === 1
-        ? { expression: parsed.algebrite, variable: parsed.freeVariables[0], integral: false, bounds: null } : null;
+        ? { expression: parsed.algebrite, variable: parsed.freeVariables[0], integral: false, definite: false, bounds: null } : null;
     } catch { return null; }
   }, [latex, angleMode]);
 
@@ -646,6 +652,7 @@ export function BasicScientificMode() {
         graphExpression={graphExpression?.expression}
         graphVariable={graphExpression?.variable}
         graphIntegral={graphExpression?.integral}
+        graphDefinite={graphExpression?.definite}
         graphBounds={graphExpression?.bounds}
         onCalculate={handleCalculate}
         onReuseSessionEntry={(entry) => {

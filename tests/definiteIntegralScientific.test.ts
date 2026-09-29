@@ -1,5 +1,6 @@
 import { it, expect } from 'vitest';
 import { parseExpression } from '../src/engine/parsing';
+import { compileNumeric } from '../src/engine/numericFallback';
 it.each([
   '\\int_{0}^{10} x\\,dx',
   '\\int_0^{10}x\\,dx',
@@ -14,6 +15,12 @@ it('parses the canonical antiderivative for plotting',()=>{
  const parsed=parseExpression(latex,'RAD');
  expect(parsed.freeVariables).toEqual(['x']);
  expect(parsed.algebrite).toContain('cos(x)');
+});
+
+it('resolves symbolic constant bounds for the shaded region', () => {
+ const parsed = parseExpression('\\int_0^{\\pi}\\sin(x)\\,dx', 'RAD');
+ expect(parsed.algebrite).toBe('defintegral((sin(x)),0,pi)');
+ expect(compileNumeric('pi', 'x')(0)).toBeCloseTo(Math.PI);
 });
 
 it('evaluates the original interval to 50', async () => {

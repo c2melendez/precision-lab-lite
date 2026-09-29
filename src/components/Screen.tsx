@@ -68,6 +68,7 @@ interface ScreenProps {
   graphExpression?: string | null;
   graphVariable?: string;
   graphIntegral?: boolean;
+  graphDefinite?: boolean;
   graphBounds?: [number, number] | null;
   onCalculate?: () => void;
   onReuseSessionEntry?: (entry: SessionHistoryEntry) => void;
@@ -89,6 +90,7 @@ export function Screen({
   graphExpression,
   graphVariable,
   graphIntegral,
+  graphDefinite,
   graphBounds,
   onCalculate,
   onReuseSessionEntry,
@@ -161,7 +163,7 @@ export function Screen({
 
   const graphSurface = (
     <div className="flex h-full min-h-[240px]">
-      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} integral={graphIntegral} bounds={graphBounds} />
+      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} integral={graphIntegral} definite={graphDefinite} bounds={graphBounds} />
     </div>
   );
 
@@ -266,7 +268,7 @@ export function Screen({
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
           <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
-        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} integral={graphIntegral} bounds={graphBounds} />
+        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} integral={graphIntegral} definite={graphDefinite} bounds={graphBounds} />
         <StackedKeyboardSection />
       </div>
     );
@@ -327,7 +329,7 @@ export function Screen({
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
           <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
-        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} integral={graphIntegral} bounds={graphBounds} />
+        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} integral={graphIntegral} definite={graphDefinite} bounds={graphBounds} />
       </div>
     );
   }
@@ -375,7 +377,7 @@ export function Screen({
             <div className="min-w-0 rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
               <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
             </div>
-            <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} integral={graphIntegral} bounds={graphBounds} />
+            <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} integral={graphIntegral} definite={graphDefinite} bounds={graphBounds} />
           </div>
         </div>
       </div>
@@ -402,7 +404,7 @@ export function Screen({
           <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
       </div>
-      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} integral={graphIntegral} bounds={graphBounds} />
+      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} integral={graphIntegral} definite={graphDefinite} bounds={graphBounds} />
     </div>
   );
 }

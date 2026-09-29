@@ -22,6 +22,7 @@ interface GraphPlaceholderProps {
   expression?: string | null;
   variable?: string;
   integral?: boolean;
+  definite?: boolean;
   bounds?: [number, number] | null;
 }
 
@@ -40,15 +41,19 @@ export function GraphPlaceholder({
   expression,
   variable = "x",
   integral = false,
+  definite = false,
   bounds = null,
 }: GraphPlaceholderProps) {
   const canOpenGraphing = Boolean(onGraph) && canGraph && (state === "available" || state === "advanced");
   const [analysis, setAnalysis] = useState<GraphAnalysis | null>(null);
   const [antiderivative, setAntiderivative] = useState<GraphAnalysis | null>(null);
   const [loading, setLoading] = useState(false);
-  const definite = integral && bounds !== null;
   const view: [number, number] = bounds
-    ? [Math.min(-10, bounds[0], bounds[1]), Math.max(10, bounds[0], bounds[1])]
+    ? (() => {
+        const a = Math.min(...bounds), b = Math.max(...bounds);
+        const padding = Math.max((b - a) * 0.2, 0.5);
+        return [a - padding, b + padding];
+      })()
     : [-10, 10];
 
   useEffect(() => {
@@ -105,7 +110,7 @@ export function GraphPlaceholder({
   const integralCurve = makeCurve(antiderivative?.samples ?? []);
   const regionPoints = bounds && samples.filter((point) => point.x >= Math.min(...bounds) && point.x <= Math.max(...bounds)
     && Number.isFinite(point.y) && Math.abs(point.y) < 100);
-  const region = regionPoints?.length
+  const region = definite && regionPoints?.length
     ? `M${projectX(regionPoints[0].x).toFixed(1)},${projectY(0).toFixed(1)} `
       + regionPoints.map((point) => `L${projectX(point.x).toFixed(1)},${projectY(point.y).toFixed(1)}`).join(" ")
       + ` L${projectX(regionPoints[regionPoints.length - 1].x).toFixed(1)},${projectY(0).toFixed(1)} Z`
@@ -136,14 +141,15 @@ export function GraphPlaceholder({
                   {minY <= 0 && maxY >= 0 && <line x1="0" x2="300" y1={projectY(0)} y2={projectY(0)} stroke="currentColor" opacity="0.2" />}
                   {region && <path data-testid="integral-region" d={region} fill="#16865d" opacity="0.25" />}
                   <path data-testid="integrand-curve" d={curve} fill="none" stroke="currentColor" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
-                  {integralCurve && <path data-testid="antiderivative-curve" d={integralCurve} fill="none" stroke="#f07820" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />}
+                  {!definite && integralCurve && <path data-testid="antiderivative-curve" d={integralCurve} fill="none" stroke="#f07820" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />}
                 </svg>
               ) : <span className="text-xs text-muted">{loading ? "Preparando vista previa…" : "No hay curva real visible para esta expresión"}</span>}
             </div>
             <p className="text-xs text-muted">{definite
-              ? `Área bajo la curva de ${bounds[0]} a ${bounds[1]} en verde`
+              ? bounds ? `Curva original en azul y área entre ${Number(bounds[0].toFixed(4))} y ${Number(bounds[1].toFixed(4))} en verde`
+                : "Curva original; los límites no se pueden representar numéricamente"
               : integral
-              ? <>Integrando <span className="text-graph">azul</span>{antiderivative ? <>, antiderivada <span style={{ color: "#f07820" }}>naranja</span> (C=0)</> : loading ? ", calculando antiderivada…" : ""}{bounds ? `; área de ${bounds[0]} a ${bounds[1]} en verde` : ""}</>
+              ? <>Integrando <span className="text-graph">azul</span>{antiderivative ? <>, antiderivada <span style={{ color: "#f07820" }}>naranja</span> (C=0)</> : loading ? ", calculando antiderivada…" : ""}</>
               : `Curva de la función en ${variable} ∈ [−10, 10]`}</p>
           </>
         ) : (
