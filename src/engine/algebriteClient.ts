@@ -190,8 +190,8 @@ export function toLatex(algebriteResult: string): string {
     if (typeof latex !== "string" || latex.length === 0 || /stop|Stop/.test(latex)) {
       return algebriteResult;
     }
-    return latex.replace(/\b(sin|cos|tan)\(([^()]*)\)\^\{?(\d+)\}?/g, (_match, fn: string, argument: string, power: string) =>
-      `\\${fn}^{${power}}(${argument})`);
+    return latex.replace(/\b(sin|cos|tan)\(([^()]*)\)\^(?:\{(\d+)\}|(\d+))/g, (_match, fn: string, argument: string, groupedPower: string | undefined, barePower: string | undefined) =>
+      `\\${fn}^{${groupedPower ?? barePower}}(${argument})`);
   } catch {
     return algebriteResult;
   }

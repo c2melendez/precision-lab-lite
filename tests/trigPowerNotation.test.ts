@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { parseExpression } from "../src/engine/parsing";
 import { evaluate, toLatex } from "../src/engine/algebriteClient";
+import katex from "katex";
 
 describe("trigonometric power notation", () => {
   it.each([
@@ -16,5 +17,11 @@ describe("trigonometric power notation", () => {
   it("prints powers before the function argument", () => {
     expect(toLatex("-cos(x)+cos(x)^3/3")).toMatch(/\\cos\^\{3\}\(x\)/);
     expect(toLatex("-cos(x)+cos(x)^3/3")).not.toMatch(/cos\(x\)\^3/);
+  });
+
+  it("keeps the denominator of a trig-power fraction and renders it", () => {
+    const latex = toLatex("-cos(x)+1/3*cos(x)^3") + " + C";
+    expect(latex).toContain("\\frac{\\cos^{3}(x)}{3}");
+    expect(katex.renderToString(latex, { throwOnError: true })).toContain("mfrac");
   });
 });
