@@ -5,7 +5,7 @@
 // Módulo 1: "evaluate" (Modo 1). Módulo 3: "solveAlgebra" (Modo 2 - Álgebra).
 // Los demás tipos de operación se añaden en módulos posteriores.
 
-import { evaluate, toLatex, toDecimalApprox, ErrorCode as ClientErrorCode } from "../engine/algebriteClient";
+import { evaluate, indefiniteIntegral, toLatex, toDecimalApprox, ErrorCode as ClientErrorCode } from "../engine/algebriteClient";
 import { toFractionResult, fractionToLatex } from "../engine/fractions";
 import { compileNumeric, numericLimit, numericLimitAtInfinity } from "../engine/numericFallback";
 import { tryStatFunction, splitTopLevelArgs } from "../engine/statFunctions";
@@ -454,7 +454,7 @@ function tryDefiniteIntegral(expr: string): string | null {
   const args = splitTopLevelArgs(match[1]);
   if (args.length !== 3) return null;
   const [body, lower, upper] = args;
-  const antiderivative = evaluate(`integral((${body}),x)`);
+  const antiderivative = indefiniteIntegral(body, "x");
   if (/^integral\(/.test(antiderivative)) {
     throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "Algebrite no pudo resolver esta integral simbólicamente." } as AppError;
   }
@@ -634,7 +634,11 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       }
     }
 
-    let raw = evaluate(expr);
+    const inlineIntegral = expr.match(/^integral\((.*)\)$/s);
+    const integralArgs = inlineIntegral ? splitTopLevelArgs(inlineIntegral[1]) : [];
+    let raw = integralArgs.length === 2
+      ? indefiniteIntegral(integralArgs[0], integralArgs[1])
+      : evaluate(expr);
     let confidence: MathResult["confidence"] = "SYMBOLIC";
     if (/^limit\(/.test(raw)) {
       const limitFallback = tryLimitFallback(raw);

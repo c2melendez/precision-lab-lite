@@ -106,14 +106,52 @@ export function solveEquation(equationAlgebrite: string, variable: string): stri
 export function indefiniteIntegral(expressionAlgebrite: string, variable: string): string {
   try {
     const result: string = Algebrite.run(`integral(${expressionAlgebrite},${variable})`);
-    if (typeof result !== "string" || /stop|Stop|integral\(/.test(result)) {
-      throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, "Algebrite no pudo resolver esta integral.");
+    if (typeof result === "string" && result.length > 0 && !/stop|integral\(/i.test(result)) {
+      return result;
     }
-    return result;
+    const trigPower = trigPowerAntiderivative(expressionAlgebrite, variable);
+    if (trigPower !== null) return trigPower;
+    throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, "Algebrite no pudo resolver esta integral.");
   } catch (err) {
     if ((err as AppError).code) throw err;
     throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, `No se pudo integrar: ${String(err)}`);
   }
+}
+
+/** Reducción de potencias trigonométricas enteras cuando Algebrite se detiene. */
+function trigPowerAntiderivative(expression: string, variable: string): string | null {
+  // El parser añade paréntesis alrededor del integrando en la entrada natural.
+  let body = expression.trim();
+  while (body.startsWith("(") && body.endsWith(")")) {
+    let depth = 0;
+    let wraps = true;
+    for (let i = 0; i < body.length - 1; i++) {
+      depth += body[i] === "(" ? 1 : body[i] === ")" ? -1 : 0;
+      if (depth === 0) { wraps = false; break; }
+    }
+    if (!wraps) break;
+    body = body.slice(1, -1).trim();
+  }
+  const match = body.match(/^(sin|cos|tan)\(([a-zA-Z])\)\^\(?([0-9]+)\)?$/);
+  if (!match || match[2] !== variable) return null;
+  const [, fn, x, rawN] = match;
+  const n = Number(rawN);
+  if (!Number.isSafeInteger(n) || n > 32) return null;
+
+  let even = x;
+  let odd = fn === "sin" ? `-cos(${x})` : fn === "cos" ? `sin(${x})` : `-log(cos(${x}))`;
+  for (let k = 2; k <= n; k++) {
+    const previous = k % 2 === 0 ? even : odd;
+    const next = fn === "sin"
+      ? `(-sin(${x})^${k - 1}*cos(${x})/${k}+(${k - 1})/${k}*(${previous}))`
+      : fn === "cos"
+        ? `(cos(${x})^${k - 1}*sin(${x})/${k}+(${k - 1})/${k}*(${previous}))`
+        : `(tan(${x})^${k - 1}/${k - 1}-(${previous}))`;
+    if (k % 2 === 0) even = next;
+    else odd = next;
+  }
+  const answer = Algebrite.run(n % 2 === 0 ? even : odd);
+  return typeof answer === "string" && !/stop|integral\(/i.test(answer) ? answer : null;
 }
 
 /** Límite simbólico — best-effort; no se asume que Algebrite siempre lo resuelva (ver README, riesgos). */
