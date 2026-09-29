@@ -108,13 +108,45 @@ export function GraphPlaceholder({
   };
   const curve = makeCurve(samples);
   const integralCurve = makeCurve(antiderivative?.samples ?? []);
-  const regionPoints = bounds && samples.filter((point) => point.x >= Math.min(...bounds) && point.x <= Math.max(...bounds)
-    && Number.isFinite(point.y) && Math.abs(point.y) < 100);
-  const region = definite && regionPoints?.length
-    ? `M${projectX(regionPoints[0].x).toFixed(1)},${projectY(0).toFixed(1)} `
-      + regionPoints.map((point) => `L${projectX(point.x).toFixed(1)},${projectY(point.y).toFixed(1)}`).join(" ")
-      + ` L${projectX(regionPoints[regionPoints.length - 1].x).toFixed(1)},${projectY(0).toFixed(1)} Z`
-    : "";
+  const regionSegments = (() => {
+    if (!definite || !bounds) return [] as Array<typeof samples>;
+    const lower = Math.min(...bounds);
+    const upper = Math.max(...bounds);
+    const segments: Array<typeof samples> = [];
+    let current: typeof samples = [];
+    let previousX = NaN;
+    let previousY = NaN;
+
+    const flush = () => {
+      if (current.length > 1) segments.push(current);
+      current = [];
+      previousX = NaN;
+      previousY = NaN;
+    };
+
+    for (const point of samples) {
+      if (point.x < lower || point.x > upper || !Number.isFinite(point.y) || Math.abs(point.y) >= 100) {
+        flush();
+        continue;
+      }
+      const x = projectX(point.x);
+      const y = projectY(point.y);
+      const discontinuity = current.length > 0
+        && (!Number.isFinite(previousX) || x - previousX > 1.2 || Math.abs(y - previousY) > 110);
+      if (discontinuity) flush();
+      current.push(point);
+      previousX = x;
+      previousY = y;
+    }
+    flush();
+    return segments;
+  })();
+
+  const regions = regionSegments.map((points) =>
+    `M${projectX(points[0].x).toFixed(1)},${projectY(0).toFixed(1)} `
+      + points.map((point) => `L${projectX(point.x).toFixed(1)},${projectY(point.y).toFixed(1)}`).join(" ")
+      + ` L${projectX(points[points.length - 1].x).toFixed(1)},${projectY(0).toFixed(1)} Z`,
+  );
 
   return (
     <section
@@ -139,7 +171,9 @@ export function GraphPlaceholder({
                 <svg data-testid="scientific-preview-plot" viewBox="0 0 300 220" preserveAspectRatio="none" className="h-full w-full text-graph" aria-hidden="true">
                   <line x1={projectX(0)} x2={projectX(0)} y1="0" y2="220" stroke="currentColor" opacity="0.2" />
                   {minY <= 0 && maxY >= 0 && <line x1="0" x2="300" y1={projectY(0)} y2={projectY(0)} stroke="currentColor" opacity="0.2" />}
-                  {region && <path data-testid="integral-region" d={region} fill="#16865d" opacity="0.25" />}
+                  {regions.map((region, index) => (
+                    <path key={index} data-testid="integral-region" d={region} fill="#16865d" opacity="0.25" />
+                  ))}
                   <path data-testid="integrand-curve" d={curve} fill="none" stroke="currentColor" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
                   {!definite && integralCurve && <path data-testid="antiderivative-curve" d={integralCurve} fill="none" stroke="#f07820" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />}
                 </svg>
