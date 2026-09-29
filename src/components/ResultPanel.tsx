@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { StaticMath } from "./StaticMath";
 import type { MathResult } from "../types";
 import { decimalDegreesToDms, isInverseTrigAngleExpression, parseDecimalDegreesInput } from "./dmsDisplay";
@@ -43,6 +43,39 @@ async function writeClipboard(text: string): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+function FittedResult({ latex }: { latex: string }) {
+  const container = useRef<HTMLDivElement>(null);
+  const field = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useLayoutEffect(() => {
+    const box = container.current;
+    const math = field.current;
+    if (!box || !math) return;
+    let frame = 0;
+    const measure = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        // Measure at full Plus-sized type, then fit the actual rendered
+        // mathematical layout (including fractions and superscripts).
+        const width = math.scrollWidth / scale;
+        const available = box.clientWidth;
+        setScale(width > available && available > 0 ? Math.max(0.48, available / width) : 1);
+      });
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(box);
+    measure();
+    return () => { observer.disconnect(); cancelAnimationFrame(frame); };
+  }, [latex, scale]);
+
+  return <div ref={container} className="min-w-0 overflow-x-auto text-right">
+    <div ref={field} className="inline-block origin-right whitespace-nowrap" style={{ fontSize: `calc(${(2.26875 * scale).toFixed(4)}rem * var(--a11y-text-scale, 1))` }}>
+      <StaticMath latex={latex} className="text-ink" />
+    </div>
+  </div>;
 }
 
 export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { result: MathResult | null; inputLatex?: string; angleMode?: "RAD" | "GRAD" }) {
@@ -171,9 +204,7 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
       </div>
 
       <div className="min-h-14 rounded-xl border border-paper-line bg-paper px-4 py-3">
-        <div className="flex min-h-8 items-center overflow-x-auto">
-          <StaticMath latex={latex} className="a11y-scale-result-plus ml-auto shrink-0 text-ink" />
-        </div>
+        <FittedResult latex={latex} />
         {result.confidence === "NUMERIC_FALLBACK" && (
           <p className="mt-1 text-right text-[11px] text-muted">
             Aproximado numéricamente (no resuelto simbólicamente)

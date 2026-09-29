@@ -70,13 +70,34 @@ export function BasicScientificMode() {
 
   const { getWorker } = useComputeWorker();
 
+  const graphExpression = useMemo(() => {
+    try {
+      const parsed = parseExpression(latex.trim(), angleMode);
+      if (parsed.isEquation || parsed.isInequality) return null;
+      if (/^(?:def)?integral\(|^(?:d|limit)\(/.test(parsed.algebrite)) {
+        const start = parsed.algebrite.indexOf("(") + 1;
+        let depth = 0;
+        for (let i = start; i < parsed.algebrite.length; i++) {
+          if (parsed.algebrite[i] === "(") depth++;
+          if (parsed.algebrite[i] === ")") depth--;
+          if (parsed.algebrite[i] === "," && depth === 0) {
+            return { expression: parsed.algebrite.slice(start, i), variable: "x" };
+          }
+        }
+      }
+      return parsed.freeVariables.length === 1
+        ? { expression: parsed.algebrite, variable: parsed.freeVariables[0] } : null;
+    } catch { return null; }
+  }, [latex, angleMode]);
+
   const graphState = useMemo<ScientificGraphState>(() => {
     const source = latex.trim();
     if (!source) return "empty";
 
     if (splitSystemLatex(source)) return "advanced";
     if (detectODE(source) !== null) return "advanced";
-    if (/\\int|\\lim|\\frac\{d|\\partial/.test(source)) return "advanced";
+    if (/\\int|\\lim|\\frac\{d/.test(source)) return graphExpression ? "available" : "advanced";
+    if (/\\partial/.test(source)) return "advanced";
     if (/(^|[^A-Za-z])i([^A-Za-z]|$)/.test(source)) return "advanced";
 
     try {
@@ -88,7 +109,7 @@ export function BasicScientificMode() {
     } catch {
       return "unavailable";
     }
-  }, [latex, angleMode]);
+  }, [latex, angleMode, graphExpression]);
 
   const fail = useCallback((code: ErrorCode, message: string, requestId: string) => {
     setResult({
@@ -618,6 +639,8 @@ export function BasicScientificMode() {
         layoutMode={layoutMode}
         onGraphExpression={handleGraphExpression}
         graphState={graphState}
+        graphExpression={graphExpression?.expression}
+        graphVariable={graphExpression?.variable}
         onCalculate={handleCalculate}
         onReuseSessionEntry={(entry) => {
           setLatex(entry.input);

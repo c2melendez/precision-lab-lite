@@ -73,9 +73,40 @@ function replaceBalanced(
   return result;
 }
 
+function rewriteTrigFunctionPowers(input: string): string {
+  const pattern = /(?:\\)?(sin|cos|tan)\s*\^\s*(?:\{(\d+)\}|(\d+))\s*(\\left\(|\()/g;
+  let result = "";
+  let offset = 0;
+  for (const match of input.matchAll(pattern)) {
+    const start = match.index;
+    if (start < offset) continue;
+    const open = start + match[0].length;
+    let depth = 1;
+    let end = open;
+    while (end < input.length && depth > 0) {
+      if (input.startsWith("\\left(", end)) { depth++; end += 6; }
+      else if (input.startsWith("\\right)", end)) { depth--; end += 7; }
+      else if (input[end] === "(") { depth++; end++; }
+      else if (input[end] === ")") { depth--; end++; }
+      else end++;
+    }
+    if (depth !== 0) continue;
+    const closeLength = input.slice(end - 7, end) === "\\right)" ? 7 : 1;
+    const argument = input.slice(open, end - closeLength);
+    result += input.slice(offset, start) + `${match[1]}(${argument})^(${match[2] ?? match[3]})`;
+    offset = end;
+  }
+  return result + input.slice(offset);
+}
+
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
   let expr = latex;
+
+  // Both sin^3(x) and sin(x)^3 denote a power of the function. Rewrite
+  // the former before the generic exponent and macro passes; keep -1 as
+  // inverse trigonometric notation handled by the existing rules below.
+  expr = rewriteTrigFunctionPowers(expr);
 
   // S16 REG-008: MathLive serializa la tecla visual ° como ^{\\circ}
   // (y puede usar ^\\circ). Unificarlo con el marcador ° que ya procesa

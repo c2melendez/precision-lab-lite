@@ -65,6 +65,8 @@ interface ScreenProps {
    * BasicScientificMode.tsx). Paridad con precision-lab (main). */
   onGraphExpression?: () => void;
   graphState?: ScientificGraphState;
+  graphExpression?: string | null;
+  graphVariable?: string;
   onCalculate?: () => void;
   onReuseSessionEntry?: (entry: SessionHistoryEntry) => void;
 }
@@ -82,6 +84,8 @@ export function Screen({
   layoutMode = "fused",
   onGraphExpression,
   graphState,
+  graphExpression,
+  graphVariable,
   onCalculate,
   onReuseSessionEntry,
 }: ScreenProps) {
@@ -153,7 +157,7 @@ export function Screen({
 
   const graphSurface = (
     <div className="flex h-full min-h-[240px]">
-      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} />
+      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} />
     </div>
   );
 
@@ -258,7 +262,7 @@ export function Screen({
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
           <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
-        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} />
+        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} />
         <StackedKeyboardSection />
       </div>
     );
@@ -319,7 +323,7 @@ export function Screen({
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
           <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
-        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} />
+        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} />
       </div>
     );
   }
@@ -367,7 +371,7 @@ export function Screen({
             <div className="min-w-0 rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
               <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
             </div>
-            <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} />
+            <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} />
           </div>
         </div>
       </div>
@@ -394,7 +398,7 @@ export function Screen({
           <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
       </div>
-      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} />
+      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} />
     </div>
   );
 }
