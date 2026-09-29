@@ -133,19 +133,14 @@ test("M12: resultado calculado en Fusionada queda dentro de una región anunciab
   }, "2+2");
   await keyboard.getByRole("button", { name: "calcular", exact: true }).click();
 
-  const renderedResult = page.locator(".a11y-scale-result-3xl").first();
-  await expect(renderedResult).toBeVisible({ timeout: 12000 });
-  const announced = await renderedResult.evaluate((el) => {
-    let node: HTMLElement | null = el as HTMLElement;
-    while (node) {
-      if (node.hasAttribute("aria-live") || node.getAttribute("role") === "status" || node.getAttribute("role") === "alert") {
-        return true;
-      }
-      node = node.parentElement;
-    }
-    return false;
-  });
-  expect(announced).toBe(true);
+  const resultRegion = page.getByRole("region", { name: "Resultado", exact: true });
+  await expect(resultRegion).toBeVisible({ timeout: 12000 });
+
+  const announcedResult = resultRegion.getByRole("status");
+  await expect(announcedResult).toBeVisible();
+  await expect(announcedResult).toHaveAttribute("aria-live", "polite");
+  await expect(announcedResult).toHaveAttribute("aria-atomic", "true");
+  await expect(announcedResult).toContainText("Resultado");
 });
 
 
