@@ -663,7 +663,7 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
     // LaTeX válido y puedan renderizarlo con MathLive en vez de mostrarlo
     // como texto plano (bug detectado por comparación visual con
     // ClassCalc — ver algebriteClient.ts para el detalle).
-    const resultLatex = toLatex(raw);
+    const resultLatex = `${toLatex(raw)}${integralArgs.length === 2 ? " + C" : ""}`;
 
     // Si no hay `fraction` (resultado simbólico, ej. sin(pi/4) ->
     // "2^(1/2)/2"), se intenta igual una aproximación decimal vía
