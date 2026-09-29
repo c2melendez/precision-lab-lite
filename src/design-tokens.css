@@ -408,6 +408,10 @@
      (ResultPanel.tsx, `text-3xl`). */
   font-size: calc(1.875rem * var(--a11y-text-scale, 1));
 }
+.a11y-scale-result-plus {
+  /* Plus muestra el resultado a 1.21 × 1.875rem por el tamaño interno de KaTeX. */
+  font-size: calc(2.26875rem * var(--a11y-text-scale, 1));
+}
 .a11y-scale-result-lg {
   /* Base 1.125rem — tamaño del número principal en precision-lab
      (ResultPanel.tsx, `text-lg`). Divergencia preexistente entre repos,

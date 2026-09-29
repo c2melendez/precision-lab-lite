@@ -172,7 +172,7 @@ export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { re
 
       <div className="min-h-14 rounded-xl border border-paper-line bg-paper px-4 py-3">
         <div className="flex min-h-8 items-center justify-end">
-          <StaticMath latex={latex} className="a11y-scale-result-3xl text-ink" />
+          <StaticMath latex={latex} className="a11y-scale-result-plus text-ink" />
         </div>
         {result.confidence === "NUMERIC_FALLBACK" && (
           <p className="mt-1 text-right text-[11px] text-muted">
