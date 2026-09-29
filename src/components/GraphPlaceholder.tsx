@@ -61,7 +61,7 @@ export function GraphPlaceholder({
   const minY = Math.min(-1, ...visibleYs);
   const maxY = Math.max(1, ...visibleYs);
   const ySpan = maxY - minY;
-  const projectX = (x: number) => 16 + (x + 10) * 26.8;
+  const projectX = (x: number) => 16 + (x + 10) * 13.4;
   const projectY = (y: number) => 204 - (y - minY) * 188 / ySpan;
   let previousX = NaN;
   let previousY = NaN;
