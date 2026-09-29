@@ -7,6 +7,7 @@ import type { ScientificGraphState } from "../../components/GraphPlaceholder";
 import { type SessionHistoryEntry } from "../../components/HistoryLog";
 import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { parseExpression } from "../../engine/parsing";
+import { splitTopLevelArgs } from "../../engine/statFunctions";
 import { splitSystemLatex } from "../../engine/parsing/systemSplit";
 import { detectODE } from "../../engine/parsing/odeDetect";
 import { detectComplexAnalysisIntent } from "../../engine/parsing/complexAnalysisIntent";
@@ -70,23 +71,26 @@ export function BasicScientificMode() {
 
   const { getWorker } = useComputeWorker();
 
-  const graphExpression = useMemo(() => {
+  const graphExpression = useMemo<{ expression: string; variable: string; integral: boolean; bounds: [number, number] | null } | null>(() => {
     try {
       const parsed = parseExpression(latex.trim(), angleMode);
       if (parsed.isEquation || parsed.isInequality) return null;
       if (/^(?:def)?integral\(|^(?:d|limit)\(/.test(parsed.algebrite)) {
-        const start = parsed.algebrite.indexOf("(") + 1;
-        let depth = 0;
-        for (let i = start; i < parsed.algebrite.length; i++) {
-          if (parsed.algebrite[i] === "(") depth++;
-          if (parsed.algebrite[i] === ")") depth--;
-          if (parsed.algebrite[i] === "," && depth === 0) {
-            return { expression: parsed.algebrite.slice(start, i), variable: "x" };
-          }
+        const definite = parsed.algebrite.startsWith("defintegral(");
+        const integral = definite || parsed.algebrite.startsWith("integral(");
+        const args = splitTopLevelArgs(parsed.algebrite.slice(parsed.algebrite.indexOf("(") + 1, -1));
+        if (args.length >= 2) {
+          const lower = Number(args[1]);
+          const upper = Number(args[2]);
+          return {
+            expression: args[0], variable: "x", integral,
+            bounds: definite && Number.isFinite(lower) && Number.isFinite(upper)
+              ? [lower, upper] as [number, number] : null,
+          };
         }
       }
       return parsed.freeVariables.length === 1
-        ? { expression: parsed.algebrite, variable: parsed.freeVariables[0] } : null;
+        ? { expression: parsed.algebrite, variable: parsed.freeVariables[0], integral: false, bounds: null } : null;
     } catch { return null; }
   }, [latex, angleMode]);
 
@@ -641,6 +645,8 @@ export function BasicScientificMode() {
         graphState={graphState}
         graphExpression={graphExpression?.expression}
         graphVariable={graphExpression?.variable}
+        graphIntegral={graphExpression?.integral}
+        graphBounds={graphExpression?.bounds}
         onCalculate={handleCalculate}
         onReuseSessionEntry={(entry) => {
           setLatex(entry.input);

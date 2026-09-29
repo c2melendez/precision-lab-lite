@@ -318,12 +318,16 @@ export function preprocessLatex(latex: string): string {
   // calcDefiniteIntegral (stepEngine/calculus.ts) siempre lo hizo en dos
   // pasos — no es solo estilo, es necesario.
   {
-    const definiteMatch = expr.match(/\\int_\{([^{}]*)\}\^\{([^{}]*)\}(.*)\\,dx$/s);
+    // MathLive may serialize a single-token bound without braces
+    // (\int_0^{10}), and pasted LaTeX may use a normal space before dx.
+    const definiteMatch = expr.match(/\\int\s*_\s*(?:\{([^{}]+)\}|([a-zA-Z0-9]))\s*\^\s*(?:\{([^{}]+)\}|([a-zA-Z0-9]))(.*?)(?:\\,|\s)*dx\s*$/s);
     if (definiteMatch) {
-      const [, lower, upper, body] = definiteMatch;
+      const [, groupedLower, bareLower, groupedUpper, bareUpper, body] = definiteMatch;
+      const lower = groupedLower ?? bareLower;
+      const upper = groupedUpper ?? bareUpper;
       expr = `defintegral((${body}),${lower},${upper})`;
     } else {
-      const intMatch = expr.match(/\\int(.*)\\,dx$/s);
+      const intMatch = expr.match(/\\int(.*?)(?:\\,|\s)*dx\s*$/s);
       if (intMatch) {
         expr = `integral((${intMatch[1]}),x)`;
       }

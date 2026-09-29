@@ -6,6 +6,7 @@
 import { useEffect, useState } from "react";
 import type { GraphAnalysis } from "../engine/stepEngine/graphing";
 import type { MathResult } from "../types";
+import { parseExpression } from "../engine/parsing";
 export type ScientificGraphState =
   | "empty"
   | "available"
@@ -20,6 +21,8 @@ interface GraphPlaceholderProps {
   message?: string;
   expression?: string | null;
   variable?: string;
+  integral?: boolean;
+  bounds?: [number, number] | null;
 }
 
 const STATE_COPY: Record<Exclude<ScientificGraphState, "available">, string> = {
@@ -36,43 +39,73 @@ export function GraphPlaceholder({
   message,
   expression,
   variable = "x",
+  integral = false,
+  bounds = null,
 }: GraphPlaceholderProps) {
   const canOpenGraphing = Boolean(onGraph) && canGraph && (state === "available" || state === "advanced");
   const [analysis, setAnalysis] = useState<GraphAnalysis | null>(null);
+  const [antiderivative, setAntiderivative] = useState<GraphAnalysis | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setAnalysis(null);
+    setAntiderivative(null);
     if (!expression || state !== "available") { setLoading(false); return; }
     const worker = new Worker(new URL("../workers/compute.worker.ts", import.meta.url), { type: "module" });
     const timeout = window.setTimeout(() => {
       setLoading(true);
-      worker.postMessage({ type: "graph", requestId: "scientific-preview", expressionAlgebrite: expression, variable, view: [-10, 10] });
+      worker.postMessage({ type: "graph", requestId: "scientific-preview-integrand", expressionAlgebrite: expression, variable, view: [-10, 10] });
     }, 120);
     worker.onmessage = (event: MessageEvent<MathResult>) => {
-      setAnalysis(event.data.success ? event.data.graphAnalysis as GraphAnalysis : null);
-      setLoading(false);
+      const data = event.data;
+      if (data.requestId === "scientific-preview-integrand") {
+        setAnalysis(data.success ? data.graphAnalysis as GraphAnalysis : null);
+        if (integral && data.success) {
+          worker.postMessage({ type: "evaluate", requestId: "scientific-preview-integral", expressionAlgebrite: `integral(${expression},${variable})` });
+        } else setLoading(false);
+      } else if (data.requestId === "scientific-preview-integral") {
+        try {
+          if (!data.success || !data.resultLatex) throw new Error("No antiderivative");
+          const latex = data.resultLatex.replace(/\s*\+\s*C\s*$/, "");
+          const parsed = parseExpression(latex, "RAD");
+          worker.postMessage({ type: "graph", requestId: "scientific-preview-antiderivative", expressionAlgebrite: parsed.algebrite, variable, view: [-10, 10] });
+        } catch { setLoading(false); }
+      } else if (data.requestId === "scientific-preview-antiderivative") {
+        setAntiderivative(data.success ? data.graphAnalysis as GraphAnalysis : null);
+        setLoading(false);
+      }
     };
     return () => { window.clearTimeout(timeout); worker.terminate(); };
-  }, [expression, variable, state]);
+  }, [expression, variable, state, integral]);
 
   const samples = analysis?.samples ?? [];
-  const visibleYs = samples.map((point) => point.y).filter((value) => Number.isFinite(value) && Math.abs(value) < 100);
+  const visibleYs = [...samples, ...(antiderivative?.samples ?? [])].map((point) => point.y).filter((value) => Number.isFinite(value) && Math.abs(value) < 100);
   const minY = Math.min(-1, ...visibleYs);
   const maxY = Math.max(1, ...visibleYs);
   const ySpan = maxY - minY;
   const projectX = (x: number) => 16 + (x + 10) * 13.4;
   const projectY = (y: number) => 204 - (y - minY) * 188 / ySpan;
-  let previousX = NaN;
-  let previousY = NaN;
-  const curve = samples.reduce((path, point) => {
-    const x = projectX(point.x);
-    const y = projectY(point.y);
-    const discontinuity = !Number.isFinite(previousX) || x - previousX > 1.2 || Math.abs(y - previousY) > 110;
-    previousX = x; previousY = y;
-    return Number.isFinite(y) && y > -500 && y < 700
-      ? `${path}${discontinuity ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)} ` : path;
-  }, "");
+  const makeCurve = (points: typeof samples) => {
+    let previousX = NaN;
+    let previousY = NaN;
+    return points.reduce((path, point) => {
+      const x = projectX(point.x);
+      const y = projectY(point.y);
+      const discontinuity = !Number.isFinite(previousX) || x - previousX > 1.2 || Math.abs(y - previousY) > 110;
+      previousX = x; previousY = y;
+      return Number.isFinite(y) && y > -500 && y < 700
+        ? `${path}${discontinuity ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)} ` : path;
+    }, "");
+  };
+  const curve = makeCurve(samples);
+  const integralCurve = makeCurve(antiderivative?.samples ?? []);
+  const regionPoints = bounds && samples.filter((point) => point.x >= Math.min(...bounds) && point.x <= Math.max(...bounds)
+    && Number.isFinite(point.y) && Math.abs(point.y) < 100);
+  const region = regionPoints?.length
+    ? `M${projectX(regionPoints[0].x).toFixed(1)},${projectY(0).toFixed(1)} `
+      + regionPoints.map((point) => `L${projectX(point.x).toFixed(1)},${projectY(point.y).toFixed(1)}`).join(" ")
+      + ` L${projectX(regionPoints[regionPoints.length - 1].x).toFixed(1)},${projectY(0).toFixed(1)} Z`
+    : "";
 
   return (
     <section
@@ -97,11 +130,15 @@ export function GraphPlaceholder({
                 <svg data-testid="scientific-preview-plot" viewBox="0 0 300 220" preserveAspectRatio="none" className="h-full w-full text-graph" aria-hidden="true">
                   <line x1="150" x2="150" y1="0" y2="220" stroke="currentColor" opacity="0.2" />
                   {minY <= 0 && maxY >= 0 && <line x1="0" x2="300" y1={projectY(0)} y2={projectY(0)} stroke="currentColor" opacity="0.2" />}
-                  <path d={curve} fill="none" stroke="currentColor" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
+                  {region && <path data-testid="integral-region" d={region} fill="#16865d" opacity="0.25" />}
+                  <path data-testid="integrand-curve" d={curve} fill="none" stroke="currentColor" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
+                  {integralCurve && <path data-testid="antiderivative-curve" d={integralCurve} fill="none" stroke="#f07820" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />}
                 </svg>
               ) : <span className="text-xs text-muted">{loading ? "Preparando vista previa…" : "No hay curva real visible para esta expresión"}</span>}
             </div>
-            <p className="text-xs text-muted">{expression?.startsWith("integral(") ? "Curva del integrando" : `Curva de la función en ${variable} ∈ [−10, 10]`}</p>
+            <p className="text-xs text-muted">{integral
+              ? <>Integrando <span className="text-graph">azul</span>{antiderivative ? <>, antiderivada <span style={{ color: "#f07820" }}>naranja</span> (C=0)</> : loading ? ", calculando antiderivada…" : ""}{bounds ? `; área de ${bounds[0]} a ${bounds[1]} en verde` : ""}</>
+              : `Curva de la función en ${variable} ∈ [−10, 10]`}</p>
           </>
         ) : (
           <p className="max-w-md text-xs leading-relaxed text-muted">{message ?? STATE_COPY[state]}</p>
