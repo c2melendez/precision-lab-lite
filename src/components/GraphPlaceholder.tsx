@@ -46,6 +46,10 @@ export function GraphPlaceholder({
   const [analysis, setAnalysis] = useState<GraphAnalysis | null>(null);
   const [antiderivative, setAntiderivative] = useState<GraphAnalysis | null>(null);
   const [loading, setLoading] = useState(false);
+  const definite = integral && bounds !== null;
+  const view: [number, number] = bounds
+    ? [Math.min(-10, bounds[0], bounds[1]), Math.max(10, bounds[0], bounds[1])]
+    : [-10, 10];
 
   useEffect(() => {
     setAnalysis(null);
@@ -54,13 +58,13 @@ export function GraphPlaceholder({
     const worker = new Worker(new URL("../workers/compute.worker.ts", import.meta.url), { type: "module" });
     const timeout = window.setTimeout(() => {
       setLoading(true);
-      worker.postMessage({ type: "graph", requestId: "scientific-preview-integrand", expressionAlgebrite: expression, variable, view: [-10, 10] });
+      worker.postMessage({ type: "graph", requestId: "scientific-preview-integrand", expressionAlgebrite: expression, variable, view });
     }, 120);
     worker.onmessage = (event: MessageEvent<MathResult>) => {
       const data = event.data;
       if (data.requestId === "scientific-preview-integrand") {
         setAnalysis(data.success ? data.graphAnalysis as GraphAnalysis : null);
-        if (integral && data.success) {
+        if (integral && !definite && data.success) {
           worker.postMessage({ type: "evaluate", requestId: "scientific-preview-integral", expressionAlgebrite: `integral(${expression},${variable})` });
         } else setLoading(false);
       } else if (data.requestId === "scientific-preview-integral") {
@@ -68,7 +72,7 @@ export function GraphPlaceholder({
           if (!data.success || !data.resultLatex) throw new Error("No antiderivative");
           const latex = data.resultLatex.replace(/\s*\+\s*C\s*$/, "");
           const parsed = parseExpression(latex, "RAD");
-          worker.postMessage({ type: "graph", requestId: "scientific-preview-antiderivative", expressionAlgebrite: parsed.algebrite, variable, view: [-10, 10] });
+          worker.postMessage({ type: "graph", requestId: "scientific-preview-antiderivative", expressionAlgebrite: parsed.algebrite, variable, view });
         } catch { setLoading(false); }
       } else if (data.requestId === "scientific-preview-antiderivative") {
         setAntiderivative(data.success ? data.graphAnalysis as GraphAnalysis : null);
@@ -76,14 +80,14 @@ export function GraphPlaceholder({
       }
     };
     return () => { window.clearTimeout(timeout); worker.terminate(); };
-  }, [expression, variable, state, integral]);
+  }, [expression, variable, state, integral, bounds?.[0], bounds?.[1]]);
 
   const samples = analysis?.samples ?? [];
   const visibleYs = [...samples, ...(antiderivative?.samples ?? [])].map((point) => point.y).filter((value) => Number.isFinite(value) && Math.abs(value) < 100);
   const minY = Math.min(-1, ...visibleYs);
   const maxY = Math.max(1, ...visibleYs);
   const ySpan = maxY - minY;
-  const projectX = (x: number) => 16 + (x + 10) * 13.4;
+  const projectX = (x: number) => 16 + (x - view[0]) * 268 / (view[1] - view[0]);
   const projectY = (y: number) => 204 - (y - minY) * 188 / ySpan;
   const makeCurve = (points: typeof samples) => {
     let previousX = NaN;
@@ -128,7 +132,7 @@ export function GraphPlaceholder({
             >
               {analysis && curve ? (
                 <svg data-testid="scientific-preview-plot" viewBox="0 0 300 220" preserveAspectRatio="none" className="h-full w-full text-graph" aria-hidden="true">
-                  <line x1="150" x2="150" y1="0" y2="220" stroke="currentColor" opacity="0.2" />
+                  <line x1={projectX(0)} x2={projectX(0)} y1="0" y2="220" stroke="currentColor" opacity="0.2" />
                   {minY <= 0 && maxY >= 0 && <line x1="0" x2="300" y1={projectY(0)} y2={projectY(0)} stroke="currentColor" opacity="0.2" />}
                   {region && <path data-testid="integral-region" d={region} fill="#16865d" opacity="0.25" />}
                   <path data-testid="integrand-curve" d={curve} fill="none" stroke="currentColor" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
@@ -136,7 +140,9 @@ export function GraphPlaceholder({
                 </svg>
               ) : <span className="text-xs text-muted">{loading ? "Preparando vista previa…" : "No hay curva real visible para esta expresión"}</span>}
             </div>
-            <p className="text-xs text-muted">{integral
+            <p className="text-xs text-muted">{definite
+              ? `Área bajo la curva de ${bounds[0]} a ${bounds[1]} en verde`
+              : integral
               ? <>Integrando <span className="text-graph">azul</span>{antiderivative ? <>, antiderivada <span style={{ color: "#f07820" }}>naranja</span> (C=0)</> : loading ? ", calculando antiderivada…" : ""}{bounds ? `; área de ${bounds[0]} a ${bounds[1]} en verde` : ""}</>
               : `Curva de la función en ${variable} ∈ [−10, 10]`}</p>
           </>
