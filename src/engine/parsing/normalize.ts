@@ -107,6 +107,7 @@ const OPERATOR_NAME_ALIASES: Record<string, string> = {
 
 const BARE_FUNCTION_NAMES = [
   "arccos", "arcsin", "arctan", "arccot", "arcsec", "arccsc",
+  "asin", "acos", "atan",
   "asinh", "acosh", "atanh", "acsch", "asech", "acoth",
   "sinh", "cosh", "tanh", "csch", "sech", "coth",
   "sin", "cos", "tan", "csc", "sec", "cot", "ln",
