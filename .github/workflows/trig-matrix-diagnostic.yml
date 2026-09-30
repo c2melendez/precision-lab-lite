@@ -5,6 +5,7 @@ on:
   push:
     branches: [qa/s26-execution]
     paths:
+      - "src/**"
       - "e2e/trig-matrix-diagnostic.spec.ts"
       - ".github/workflows/trig-matrix-diagnostic.yml"
   workflow_dispatch:
