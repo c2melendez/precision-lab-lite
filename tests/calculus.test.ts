@@ -15,6 +15,12 @@ describe("compileNumeric", () => {
     expect(f(0)).toBeCloseTo(0);
   });
 
+  it("evalúa hiperbólicas directas sin depender de Algebrite", () => {
+    expect(compileNumeric("sinh(1)", "__none__")(0)).toBeCloseTo(Math.sinh(1), 12);
+    expect(compileNumeric("cosh(1)", "__none__")(0)).toBeCloseTo(Math.cosh(1), 12);
+    expect(compileNumeric("cosh(1)^2-sinh(1)^2", "__none__")(0)).toBeCloseTo(1, 10);
+  });
+
   it("maneja el signo + unario, ej. +x^2-4 (bug detectado en revisión: antes solo se manejaba el - unario)", () => {
     const f = compileNumeric("+x^2-4", "x");
     expect(f(3)).toBeCloseTo(5); // +9-4
