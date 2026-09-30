@@ -464,8 +464,8 @@ function tryBoundedNumericEquation(
 function trySimpleTranscendentalEquation(
   left: string, right: string, variable: string,
 ): { values?: string[]; noReal?: boolean } | null {
-  if (variable !== "x" || /\\bx\\b/.test(right)) return null;
-  const match = left.match(/^(sin|cos|arcsin|arccos|arctan|asinh|acosh|atanh|sinh|cosh|tanh)\\(x\\)$/);
+  if (variable !== "x" || /\bx\b/.test(right)) return null;
+  const match = left.match(/^(sin|cos|arcsin|arccos|arctan|asinh|acosh|atanh|sinh|cosh|tanh)\(x\)$/);
   const reciprocalKind =
     left === "(arccos(1/(x)))" ? "arcsec"
       : left === "(arcsin(1/(x)))" ? "arccsc"
@@ -521,7 +521,7 @@ function trySimpleTranscendentalEquation(
   if (fn === "acoth") {
     // coth(log(n)) = (n^2+1)/(n^2-1), so preserve exact rational output
     // for common symbolic targets such as arcoth(x)=ln(2) -> x=5/3.
-    const logInteger = right.match(/^log\\((\\d+)\\)$/);
+    const logInteger = right.match(/^log\((\d+)\)$/);
     if (logInteger) {
       const n = Number(logInteger[1]);
       const numerator = n * n + 1;
