@@ -853,11 +853,16 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
         } as AppError;
       }
     }
-    if (ALGEBRITE_UNSUPPORTED_NUMERIC.test(raw)) {
+    if (ALGEBRITE_UNSUPPORTED_NUMERIC.test(raw) || /NaN/i.test(raw)) {
       const numeric = tryNumericFallback(expr);
       if (numeric !== null) {
         raw = numeric;
         confidence = "NUMERIC_FALLBACK";
+      } else if (/NaN/i.test(raw)) {
+        throw {
+          code: ErrorCode.DOMAIN_ERROR,
+          message: "El resultado no está definido numéricamente en el dominio real.",
+        } as AppError;
       }
     }
     const isNumeric = /^-?\d+(\.\d+)?$/.test(raw) || /^-?\d+\/\d+$/.test(raw);
