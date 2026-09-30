@@ -58,4 +58,25 @@ describe("solveInequality (decisión de Carlos: solver básico de <,>,≤,≥)",
     expect(parsed.isInequality).toBe(true);
     expect(parsed.freeVariables.length).toBe(2);
   });
+
+  it("acotada trig: sin(x)>1/2 en [0,2π) respeta raíces exactas", () => {
+    const parsed = parseExpression("\\sin x>\\frac{1}{2}", "RAD");
+    expect(
+      solveInequality(parsed.algebrite, parsed.inequalityOperator!, "x", 0, 2 * Math.PI, true, false).resultText,
+    ).toBe("(π/6, 5π/6)");
+  });
+
+  it("acotada trig: tan(x)>1 excluye automáticamente las asíntotas", () => {
+    const parsed = parseExpression("\\tan x>1", "RAD");
+    expect(
+      solveInequality(parsed.algebrite, parsed.inequalityOperator!, "x", 0, 2 * Math.PI, true, false).resultText,
+    ).toBe("(π/4, π/2) ∪ (5π/4, 3π/2)");
+  });
+
+  it("acotada trig: cot(x)>=1 en (0,π) conserva extremo raíz cerrado", () => {
+    const parsed = parseExpression("\\cot x\\ge1", "RAD");
+    expect(
+      solveInequality(parsed.algebrite, parsed.inequalityOperator!, "x", 0, Math.PI, false, false).resultText,
+    ).toBe("(0, π/4]");
+  });
 });
