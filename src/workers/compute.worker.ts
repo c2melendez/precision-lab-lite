@@ -669,7 +669,7 @@ function trySimpleMonotonicInequality(
   variable: string,
 ): { resultText: string; steps: { id: string; latex: string; explanation: string }[] } | null {
   if (variable !== "x") return null;
-  const match = diff.match(/^\\((arctan|sinh|asinh|tanh|atanh)\\((.*)\\)\\)-\\((.*)\\)$/);
+  const match = diff.match(/^\((arctan|sinh|asinh|tanh|atanh)\((.*)\)\)-\((.*)\)$/);
   if (!match) return null;
   const [, fn, arg, rhs] = match;
   let target: number;
@@ -687,7 +687,7 @@ function trySimpleMonotonicInequality(
   } else {
     threshold = Math.tanh(target);
     if (arg === "x") {
-      const fmt = (x: number) => Number.isInteger(x) ? String(x) : x.toFixed(6).replace(/0+$/, "").replace(/\\.$/, "");
+      const fmt = (x: number) => Number.isInteger(x) ? String(x) : x.toFixed(6).replace(/0+$/, "").replace(/\.$/, "");
       const t = fmt(threshold);
       const text = operator === ">" ? t + " < x < 1"
         : operator === ">=" ? t + " <= x < 1"
