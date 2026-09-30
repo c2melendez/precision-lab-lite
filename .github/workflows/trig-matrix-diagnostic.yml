@@ -1,0 +1,24 @@
+name: Trig Matrix Diagnostic
+
+on:
+  push:
+    branches: [qa/s26-execution]
+    paths:
+      - "e2e/trig-matrix-diagnostic.spec.ts"
+      - ".github/workflows/trig-matrix-diagnostic.yml"
+  workflow_dispatch:
+
+jobs:
+  trig-matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Run trig matrix only
+        run: npx playwright test e2e/trig-matrix-diagnostic.spec.ts --project=desktop-chromium --workers=4
