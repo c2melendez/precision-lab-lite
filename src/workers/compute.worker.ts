@@ -58,6 +58,10 @@ export type ComputeRequest =
       leftAlgebrite: string;
       rightAlgebrite: string;
       variable: string;
+      domainLower?: number;
+      domainUpper?: number;
+      domainLowerInclusive?: boolean;
+      domainUpperInclusive?: boolean;
     }
   | {
       type: "derivative";
@@ -207,7 +211,16 @@ function handle(msg: ComputeRequest): MathResult {
     case "evaluate":
       return handleEvaluate(msg.expressionAlgebrite, msg.requestId);
     case "solveAlgebra":
-      return handleSolveAlgebra(msg.leftAlgebrite, msg.rightAlgebrite, msg.variable, msg.requestId);
+      return handleSolveAlgebra(
+        msg.leftAlgebrite,
+        msg.rightAlgebrite,
+        msg.variable,
+        msg.requestId,
+        msg.domainLower,
+        msg.domainUpper,
+        msg.domainLowerInclusive,
+        msg.domainUpperInclusive,
+      );
     case "derivative":
       return runCalculus(msg.requestId, () => calculusResultForDisplay(calcDerivative(msg.expressionAlgebrite, msg.variable, msg.order), "derivative"));
     case "limit":
@@ -318,6 +331,125 @@ function handleComplexSingularities(expressionAlgebrite: string, requestId: stri
     return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), requestId);
   }
 }
+function gcdInt(a: number, b: number): number {
+  a = Math.abs(Math.trunc(a));
+  b = Math.abs(Math.trunc(b));
+  while (b !== 0) [a, b] = [b, a % b];
+  return a || 1;
+}
+
+function formatPiMultiple(value: number): string {
+  if (Math.abs(value) < 1e-9) return "0";
+  const ratio = value / Math.PI;
+  for (let denominator = 1; denominator <= 24; denominator++) {
+    const numerator = Math.round(ratio * denominator);
+    if (Math.abs(ratio - numerator / denominator) < 1e-7) {
+      const g = gcdInt(numerator, denominator);
+      const n = numerator / g;
+      const d = denominator / g;
+      if (d === 1) {
+        if (n === 1) return "pi";
+        if (n === -1) return "-pi";
+        return `${n}*pi`;
+      }
+      if (n === 1) return `pi/${d}`;
+      if (n === -1) return `-pi/${d}`;
+      return `${n}*pi/${d}`;
+    }
+  }
+  const rounded = Math.abs(value) < 1e-12 ? 0 : Number(value.toFixed(12));
+  return String(rounded);
+}
+
+function tryBoundedNumericEquation(
+  left: string,
+  right: string,
+  variable: string,
+  lower: number | undefined,
+  upper: number | undefined,
+  lowerInclusive = true,
+  upperInclusive = true,
+): string[] | null {
+  if (
+    variable !== "x"
+    || lower === undefined
+    || upper === undefined
+    || !Number.isFinite(lower)
+    || !Number.isFinite(upper)
+    || lower === upper
+  ) return null;
+
+  const a = Math.min(lower, upper);
+  const b = Math.max(lower, upper);
+  let f: (x: number) => number;
+  try {
+    f = compileNumeric(`(${left})-(${right})`, variable);
+  } catch {
+    return null;
+  }
+
+  const roots: number[] = [];
+  const addRoot = (x: number) => {
+    if (!Number.isFinite(x)) return;
+    const eps = 1e-7 * Math.max(1, Math.abs(b - a));
+    if (x < a - eps || x > b + eps) return;
+    if (!lowerInclusive && Math.abs(x - lower) < eps) return;
+    if (!upperInclusive && Math.abs(x - upper) < eps) return;
+    if (!roots.some((r) => Math.abs(r - x) < 1e-6)) roots.push(x);
+  };
+
+  const samples = 4096;
+  let prevX = a;
+  let prevY = f(prevX);
+  if (Number.isFinite(prevY) && Math.abs(prevY) < 1e-8) addRoot(prevX);
+
+  for (let i = 1; i <= samples; i++) {
+    const x = a + ((b - a) * i) / samples;
+    const y = f(x);
+
+    if (Number.isFinite(y) && Math.abs(y) < 1e-7) addRoot(x);
+
+    if (Number.isFinite(prevY) && Number.isFinite(y) && prevY * y < 0) {
+      let lo = prevX;
+      let hi = x;
+      let flo = prevY;
+      let fhi = y;
+      for (let step = 0; step < 60; step++) {
+        const mid = (lo + hi) / 2;
+        const fm = f(mid);
+        if (!Number.isFinite(fm)) break;
+        if (Math.abs(fm) < 1e-12) {
+          lo = hi = mid;
+          break;
+        }
+        if (flo * fm <= 0) {
+          hi = mid;
+          fhi = fm;
+        } else {
+          lo = mid;
+          flo = fm;
+        }
+      }
+      const candidate = (lo + hi) / 2;
+      const residual = f(candidate);
+      if (Number.isFinite(residual) && Math.abs(residual) < 1e-6) addRoot(candidate);
+    }
+
+    // Catch even-multiplicity/tangent roots that do not change sign.
+    if (i > 1 && Number.isFinite(prevY) && Number.isFinite(y)) {
+      const mid = (prevX + x) / 2;
+      const fm = f(mid);
+      if (Number.isFinite(fm) && Math.abs(fm) < 1e-6) addRoot(mid);
+    }
+
+    prevX = x;
+    prevY = y;
+  }
+
+  roots.sort((x, y) => x - y);
+  return roots.map(formatPiMultiple);
+}
+
 function trySimpleTranscendentalEquation(
   left: string, right: string, variable: string,
 ): { values?: string[]; noReal?: boolean } | null {
@@ -382,8 +514,36 @@ function handleSolveAlgebra(
   rightAlgebrite: string,
   variable: string,
   requestId: string,
+  domainLower?: number,
+  domainUpper?: number,
+  domainLowerInclusive = true,
+  domainUpperInclusive = true,
 ): MathResult {
   try {
+    const boundedValues = tryBoundedNumericEquation(
+      leftAlgebrite,
+      rightAlgebrite,
+      variable,
+      domainLower,
+      domainUpper,
+      domainLowerInclusive,
+      domainUpperInclusive,
+    );
+    if (boundedValues !== null) {
+      if (boundedValues.length === 0) {
+        return errorResult(ErrorCode.DOMAIN_ERROR, "La ecuación no tiene solución real en el intervalo indicado.", requestId);
+      }
+      return {
+        success: true,
+        resultLatex: boundedValues.map((value) => `${variable} = ${toLatex(value)}`).join(",\\ "),
+        fraction: undefined,
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "NUMERIC_FALLBACK",
+        requestId,
+      };
+    }
+
     const simple = trySimpleTranscendentalEquation(leftAlgebrite, rightAlgebrite, variable);
     if (simple?.noReal) {
       return errorResult(ErrorCode.DOMAIN_ERROR, "La ecuación no tiene solución real.", requestId);
