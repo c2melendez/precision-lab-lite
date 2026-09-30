@@ -92,7 +92,19 @@ test.describe("Trig matrix diagnostic " + ENGINE, () => {
             error = ((await alert.innerText().catch(() => "")) || "").replace(/\s+/g, " ").trim().slice(0, 700);
           }
           const region = page.getByRole("region", { name: "Resultado", exact: true });
-          output = ((await region.innerText().catch(() => "")) || "").replace(/\s+/g, " ").trim().slice(0, 1000);
+          const mathFields = region.locator('math-field[read-only], math-field[readonly]');
+          if (await mathFields.count()) {
+            const values = await mathFields.evaluateAll((nodes) => nodes.map((node) => node.value || ""));
+            output = values.filter(Boolean).join(" || ").slice(0, 1400);
+          } else {
+            const annotations = region.locator('annotation[encoding="application/x-tex"]');
+            if (await annotations.count()) {
+              const values = await annotations.allTextContents();
+              output = values.filter(Boolean).join(" || ").slice(0, 1400);
+            } else {
+              output = ((await region.innerText().catch(() => "")) || "").replace(/\s+/g, " ").trim().slice(0, 1400);
+            }
+          }
           if (!output && !error) status = "NO_OUTPUT";
         } catch (e) {
           status = "HARNESS_ERROR";
