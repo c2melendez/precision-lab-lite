@@ -74,7 +74,7 @@ function replaceBalanced(
 }
 
 function rewriteTrigFunctionPowers(input: string): string {
-  const pattern = /(?:\\)?(sin|cos|tan)\s*\^\s*(?:\{(\d+)\}|(\d+))\s*(\\left\(|\()/g;
+  const pattern = /(?:\\)?(sin|cos|tan|sec|csc|cot|sinh|cosh|tanh|sech|csch|coth)\s*\^\s*(?:\{(\d+)\}|(\d+))\s*(\\left\(|\()/g;
   let result = "";
   let offset = 0;
   for (const match of input.matchAll(pattern)) {
@@ -311,6 +311,18 @@ export function preprocessLatex(latex: string): string {
   // \frac{a}{b} -> ((a)/(b)) — debe ir antes que otros reemplazos porque
   // "a" y "b" pueden contener a su vez otros macros ya procesados de forma
   // recursiva al reprocesar el string completo tras cada pasada balanceada.
+  // Matriz trigonométrica: forma habitual d/dx seguida directamente por
+  // una expresión, además del template con \\left(...\\right).
+  {
+    const dBareMatch = expr.match(/^\\frac\{d(?:\^\{?(\d+)\}?)?\}\{d([a-zA-Z])(?:\^\{?\d+\}?)?\}\s*(.+)$/s);
+    if (dBareMatch) {
+      const order = dBareMatch[1] ? Number(dBareMatch[1]) : 1;
+      const variable = dBareMatch[2];
+      const body = dBareMatch[3].trim();
+      const orderArg = order === 1 ? "" : `,${order}`;
+      expr = `d((${body}),${variable}${orderArg})`;
+    }
+  }
   let prevLength = -1;
   while (expr.includes("\\frac") && expr.length !== prevLength) {
     prevLength = expr.length;
