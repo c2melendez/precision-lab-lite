@@ -141,12 +141,17 @@ function rewriteBareFunctionApplications(input: string): string {
     if (input[cursor] === "(") { out += input.slice(i, cursor); i = cursor; continue; }
     const whitespaceStart = cursor;
     while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
-    if (cursor === whitespaceStart) { out += input.slice(i, cursor); i = cursor; continue; }
+    if (cursor === whitespaceStart && !power) { out += input.slice(i, cursor); i = cursor; continue; }
     const argStart = cursor;
     let depth = 0;
     let seen = false;
     while (cursor < input.length) {
       const ch = input[cursor];
+      if (
+        depth === 0 &&
+        seen &&
+        BARE_FUNCTION_NAMES.some((name) => input.startsWith(name, cursor))
+      ) break;
       if (ch === "(") { depth++; seen = true; cursor++; continue; }
       if (ch === ")") { if (depth === 0) break; depth--; seen = true; cursor++; continue; }
       if (depth === 0 && seen && /[+,=*\/<>]/.test(ch)) break;
@@ -394,18 +399,48 @@ export function preprocessLatex(latex: string): string {
   // calcDefiniteIntegral (stepEngine/calculus.ts) siempre lo hizo en dos
   // pasos — no es solo estilo, es necesario.
   {
-    // MathLive may serialize a single-token bound without braces
-    // (\int_0^{10}), and pasted LaTeX may use a normal space before dx.
-    const definiteMatch = expr.match(/\\int\s*_\s*(?:\{([^{}]+)\}|([a-zA-Z0-9]))\s*\^\s*(?:\{([^{}]+)\}|([a-zA-Z0-9]))(.*?)(?:\\,|\s)*dx\s*$/s);
-    if (definiteMatch) {
-      const [, groupedLower, bareLower, groupedUpper, bareUpper, body] = definiteMatch;
+    // Las condiciones de dominio escritas después de una coma pertenecen
+    // al contexto matemático, no al integrando (ej. ", x>1" o
+    // ", |x|<1"). Para el cálculo se separan antes de reconocer la integral.
+    const integralSource = expr.startsWith("\\int")
+      ? expr.replace(/,\s*(?:\\quad\s*)?(?:\\\s*)?(?:(?:\\lvert)|[0-9A-Za-z]).*$/s, "")
+      : expr;
+
+    // También aceptar la forma estándar ∫ dx/f(x), usada repetidamente en
+    // la matriz. Se convierte a ∫ 1/f(x) dx sin cambiar la semántica.
+    const definiteDifferentialNumerator = integralSource.match(
+      /\\int\s*_\s*(?:\{([^{}]+)\}|([a-zA-Z0-9]))\s*\^\s*(?:\{([^{}]+)\}|([a-zA-Z0-9]))\s*\\frac\{d([a-zA-Z])\}\{(.+)\}\s*$/s,
+    );
+    const indefiniteDifferentialNumerator = integralSource.match(
+      /^\\int\s*\\frac\{d([a-zA-Z])\}\{(.+)\}\s*$/s,
+    );
+
+    if (definiteDifferentialNumerator) {
+      const [, groupedLower, bareLower, groupedUpper, bareUpper, variable, denominator] =
+        definiteDifferentialNumerator;
       const lower = groupedLower ?? bareLower;
       const upper = groupedUpper ?? bareUpper;
-      expr = `defintegral((${body}),${lower},${upper})`;
+      expr = `defintegral(((1)/(${denominator})),${lower},${upper})`;
+      if (variable !== "x") {
+        expr = `defintegral(((1)/(${denominator})),${lower},${upper})`;
+      }
+    } else if (indefiniteDifferentialNumerator) {
+      const [, variable, denominator] = indefiniteDifferentialNumerator;
+      expr = `integral(((1)/(${denominator})),${variable})`;
     } else {
-      const intMatch = expr.match(/\\int(.*?)(?:\\,|\s)*dx\s*$/s);
-      if (intMatch) {
-        expr = `integral((${intMatch[1]}),x)`;
+      // MathLive may serialize a single-token bound without braces
+      // (\int_0^{10}), and pasted LaTeX may use a normal space before dx.
+      const definiteMatch = integralSource.match(/\\int\s*_\s*(?:\{([^{}]+)\}|([a-zA-Z0-9]))\s*\^\s*(?:\{([^{}]+)\}|([a-zA-Z0-9]))(.*?)(?:\\,|\s)*d([a-zA-Z])\s*$/s);
+      if (definiteMatch) {
+        const [, groupedLower, bareLower, groupedUpper, bareUpper, body] = definiteMatch;
+        const lower = groupedLower ?? bareLower;
+        const upper = groupedUpper ?? bareUpper;
+        expr = `defintegral((${body}),${lower},${upper})`;
+      } else {
+        const intMatch = integralSource.match(/\\int(.*?)(?:\\,|\s)*d([a-zA-Z])\s*$/s);
+        if (intMatch) {
+          expr = `integral((${intMatch[1]}),${intMatch[2]})`;
+        }
       }
     }
   }
