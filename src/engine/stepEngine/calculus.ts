@@ -45,8 +45,37 @@ export interface CalculusResult {
 // TODO el pipeline (evaluate/derivada/integral/límite) las resuelva por
 // igual, no solo la derivada — se importa desde ahí en vez de duplicar
 // la lógica acá.
+function rewriteInverseHyperbolicsForDerivative(input: string): string {
+  let result = input;
+  const rules: Array<[RegExp, (arg: string) => string]> = [
+    [/\\basinh\\(([^()]*)\\)/g, (arg) => `ln((${arg})+sqrt((${arg})^2+1))`],
+    [/\\bacosh\\(([^()]*)\\)/g, (arg) => `ln((${arg})+sqrt((${arg})^2-1))`],
+    [/\\batanh\\(([^()]*)\\)/g, (arg) => `(1/2)*ln((1+(${arg}))/(1-(${arg})))`],
+  ];
+  for (let pass = 0; pass < 4; pass++) {
+    let changed = false;
+    for (const [pattern, replacement] of rules) {
+      const next = result.replace(pattern, (_match, arg: string) => replacement(arg));
+      if (next !== result) changed = true;
+      result = next;
+    }
+    if (!changed) break;
+  }
+  return result;
+}
+
 export function calcDerivative(exprAlgebrite: string, variable: string, order: number): CalculusResult {
-  const result = symbolicDerivative(rewriteReciprocalFunctions(exprAlgebrite), variable, order);
+  const normalized = rewriteInverseHyperbolicsForDerivative(
+    rewriteReciprocalFunctions(exprAlgebrite),
+  ).replace(/\\be\\^\\(([^()]*)\\)/g, "exp($1)");
+
+  const result = symbolicDerivative(normalized, variable, order);
+  if (/NaN|\\bd\\(/i.test(result)) {
+    throw {
+      code: ErrorCode.UNSUPPORTED_OPERATION,
+      message: "La derivada simbólica no pudo reducirse a una expresión cerrada.",
+    } as AppError;
+  }
   return {
     resultLatex: result,
     confidence: "SYMBOLIC",
