@@ -513,7 +513,7 @@ function handleSolveInequality(
  * evaluador numérico propio (engine/numericFallback.ts) como último
  * recurso antes de rendirse.
  */
-const ALGEBRITE_UNSUPPORTED_NUMERIC = /\b(asinh|acosh|atanh|sign)\(/;
+const ALGEBRITE_UNSUPPORTED_NUMERIC = /\b(sinh|cosh|tanh|asinh|acosh|atanh|sign)\(/;
 
 /**
  * Fase 10 (decisión: resolver Lim inline en Básica/Científica/Álgebra):
