@@ -573,6 +573,72 @@ function trySimpleTranscendentalEquation(
   if (fn === "tanh") return { values: [simplify("(1/2)*log((1+(" + right + "))/(1-(" + right + ")))")] };
   return null;
 }
+function tryInverseHyperbolicEquationNumericFallback(
+  left: string,
+  right: string,
+  variable: string,
+): string[] | null {
+  if (variable !== "x") return null;
+  const combined = `(${left})-(${right})`;
+  const isAsinh = /\\basinh\\(/.test(combined);
+  const isAcosh = /\\bacosh\\(/.test(combined);
+  const isAtanh = /\\batanh\\(/.test(combined);
+  if (!isAsinh && !isAcosh && !isAtanh) return null;
+
+  let fn: (x: number) => number;
+  try {
+    fn = compileNumeric(combined, variable);
+  } catch {
+    return null;
+  }
+
+  let lo = isAtanh ? -0.999999999 : isAcosh ? 1 : -1;
+  let hi = isAtanh ? 0.999999999 : isAcosh ? 2 : 1;
+  let flo = fn(lo);
+  let fhi = fn(hi);
+
+  if (!isAtanh) {
+    for (let i = 0; i < 40 && (!Number.isFinite(flo) || !Number.isFinite(fhi) || flo * fhi > 0); i++) {
+      if (isAcosh) {
+        hi *= 2;
+        fhi = fn(hi);
+      } else {
+        lo *= 2;
+        hi *= 2;
+        flo = fn(lo);
+        fhi = fn(hi);
+      }
+    }
+  }
+
+  if (!Number.isFinite(flo) || !Number.isFinite(fhi)) return null;
+  if (Math.abs(flo) < 1e-12) return [String(lo)];
+  if (Math.abs(fhi) < 1e-12) return [String(hi)];
+  if (flo * fhi > 0) return null;
+
+  for (let i = 0; i < 80; i++) {
+    const mid = (lo + hi) / 2;
+    const fm = fn(mid);
+    if (!Number.isFinite(fm)) return null;
+    if (Math.abs(fm) < 1e-13) {
+      lo = hi = mid;
+      break;
+    }
+    if (flo * fm <= 0) {
+      hi = mid;
+      fhi = fm;
+    } else {
+      lo = mid;
+      flo = fm;
+    }
+  }
+
+  const root = (lo + hi) / 2;
+  const residual = fn(root);
+  if (!Number.isFinite(residual) || Math.abs(residual) > 1e-8) return null;
+  return [String(Number(root.toPrecision(14)))];
+}
+
 function handleSolveAlgebra(
   leftAlgebrite: string,
   rightAlgebrite: string,
@@ -628,7 +694,24 @@ function handleSolveAlgebra(
       };
     }
 
-    const { steps, solutionsAlgebrite } = solveAlgebra(leftAlgebrite, rightAlgebrite, variable);
+    const { steps, solutionsAlgebrite: rawSolutions } = solveAlgebra(leftAlgebrite, rightAlgebrite, variable);
+    let solutionsAlgebrite = rawSolutions;
+    if (solutionsAlgebrite.some((value) => /NaN/i.test(value))) {
+      const fallback = tryInverseHyperbolicEquationNumericFallback(
+        leftAlgebrite,
+        rightAlgebrite,
+        variable,
+      );
+      if (fallback !== null) {
+        solutionsAlgebrite = fallback;
+      } else {
+        return errorResult(
+          ErrorCode.DOMAIN_ERROR,
+          "El solver simbólico devolvió una solución indefinida y no se encontró una raíz real válida.",
+          requestId,
+        );
+      }
+    }
     const allNumeric = solutionsAlgebrite.every(
       (s) => /^-?\d+(\.\d+)?$/.test(s) || /^-?\d+\/\d+$/.test(s),
     );
