@@ -121,22 +121,59 @@ function unwrapOperatorNames(input: string): string {
 }
 
 function rewriteDifferentialNumeratorIntegral(input: string): string | null {
-  const prefix = input.match(/^\\int\s*\\frac\{d([a-zA-Z])\}\{/);
-  if (!prefix) return null;
-  const variable = prefix[1];
-  const openIndex = prefix[0].length - 1;
-  let depth = 1;
-  let cursor = openIndex + 1;
-  while (cursor < input.length && depth > 0) {
-    if (input[cursor] === "{") depth++;
-    else if (input[cursor] === "}") depth--;
-    cursor++;
+  const integralPrefix = input.match(/^\\int\s*/);
+  if (!integralPrefix) return null;
+
+  let cursor = integralPrefix[0].length;
+  let lower: string | null = null;
+  let upper: string | null = null;
+
+  // Definite form: \\int_{a}^{b}\\frac{dx}{f(x)}. Parse bounds before
+  // the generic \\frac lowering pass so nested fractions/roots in the
+  // denominator remain intact. readBalancedOrSingleToken also accepts
+  // MathLive's single-token serialization for 0, 1, \\pi, \\infty, etc.
+  if (input[cursor] === "_") {
+    cursor += 1;
+    while (/\\s/.test(input[cursor] ?? "")) cursor++;
+    try {
+      [lower, cursor] = readBalancedOrSingleToken(input, cursor, "límite inferior de \\int");
+    } catch {
+      return null;
+    }
+    while (/\\s/.test(input[cursor] ?? "")) cursor++;
+    if (input[cursor] !== "^") return null;
+    cursor += 1;
+    while (/\\s/.test(input[cursor] ?? "")) cursor++;
+    try {
+      [upper, cursor] = readBalancedOrSingleToken(input, cursor, "límite superior de \\int");
+    } catch {
+      return null;
+    }
   }
-  if (depth !== 0) return null;
-  const denominator = input.slice(openIndex + 1, cursor - 1).trim();
+
+  while (/\\s/.test(input[cursor] ?? "")) cursor++;
+  const differential = input.slice(cursor).match(/^\\frac\{d([a-zA-Z])\}/);
+  if (!differential) return null;
+  const variable = differential[1];
+  cursor += differential[0].length;
+
+  let denominator: string;
+  try {
+    [denominator, cursor] = readBalancedOrSingleToken(input, cursor, "denominador de \\frac");
+  } catch {
+    return null;
+  }
+  denominator = denominator.trim();
   if (!denominator) return null;
+
   const suffix = input.slice(cursor).trim();
-  if (suffix && !/^,\s*(?:\\quad\s*)?(?:\\\s*)?(?:\\lvert\s*[A-Za-z]\s*\\rvert|[A-Za-z])\s*[<>]=?.*$/s.test(suffix)) return null;
+  if (suffix && !/^,\s*(?:\\quad\s*)?(?:\\\s*)?(?:\\lvert\s*[A-Za-z]\s*\\rvert|[A-Za-z])\s*[<>]=?.*$/s.test(suffix)) {
+    return null;
+  }
+
+  if (lower !== null && upper !== null) {
+    return "defintegral(((1)/(" + denominator + "))," + lower + "," + upper + ")";
+  }
   return "integral(((1)/(" + denominator + "))," + variable + ")";
 }
 
