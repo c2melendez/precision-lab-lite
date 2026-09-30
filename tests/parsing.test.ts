@@ -283,3 +283,35 @@ describe("suite de regresión v1.1: conversión a grados no confunde subcadenas"
     expect(parseExpression("tanh(1)", "GRAD").algebrite).toBe("tanh(1)");
   });
 });
+
+
+describe("Matriz trigonométrica — notación natural ampliada", () => {
+  it("acepta macros LaTeX directos para funciones inversas", () => {
+    const parsed = parseExpression("\\arcsin\\left(\\frac{1}{2}\\right)").algebrite;
+    expect(parsed).toContain("arcsin");
+    expect(parsed).not.toContain("\\");
+  });
+
+  it("desenvuelve operatorname para hiperbólicas inversas", () => {
+    expect(parseExpression("\\operatorname{arsinh} x").algebrite).toBe("asinh(x)");
+    expect(parseExpression("\\operatorname{arcosh}(x)").algebrite).toBe("acosh(x)");
+    expect(parseExpression("\\operatorname{arcoth} 2").algebrite).toContain("atanh");
+  });
+
+  it("acepta funciones estándar sin paréntesis explícitos", () => {
+    expect(parseExpression("\\sin x+\\cos x").algebrite).toBe("sin(x)+cos(x)");
+    expect(parseExpression("\\ln 2").algebrite).toBe("ln(2)");
+    expect(parseExpression("\\arctan 2x").algebrite).toBe("arctan(2*x)");
+  });
+
+  it("acepta potencias de funciones hiperbólicas", () => {
+    const parsed = parseExpression("\\cosh^{2}\\left(x\\right)-\\sinh^{2}\\left(x\\right)").algebrite;
+    expect(parsed).toContain("cosh(x)^(2)");
+    expect(parsed).toContain("sinh(x)^(2)");
+  });
+
+  it("acepta d/dx seguido directamente por una expresión", () => {
+    const parsed = parseExpression("\\frac{d}{dx}\\arcsin x").algebrite;
+    expect(parsed).toContain("d((arcsin(x)),x)");
+  });
+});
