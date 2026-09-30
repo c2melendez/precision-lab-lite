@@ -73,6 +73,21 @@ function replaceBalanced(
   return result;
 }
 
+function normalizeBareFunctionApplications(input: string): string {
+  const names = [
+    "arccsc", "arcsec", "arccot", "arcsin", "arccos", "arctan",
+    "arsinh", "arcosh", "artanh", "arcoth",
+    "sinh", "cosh", "tanh", "csch", "sech", "coth",
+    "sin", "cos", "tan", "csc", "sec", "cot", "ln",
+  ].sort((a, b) => b.length - a.length);
+  let out = input;
+  for (const name of names) {
+    const pattern = new RegExp(`\\b${name}\\s+([+-]?(?:\\d+(?:\\.\\d+)?[a-zA-Z]*|[a-zA-Z]+))`, "g");
+    out = out.replace(pattern, (_match, arg: string) => `${name}(${arg})`);
+  }
+  return out;
+}
+
 function rewriteTrigFunctionPowers(input: string): string {
   const pattern = /(?:\\)?(sin|cos|tan|sec|csc|cot|sinh|cosh|tanh|sech|csch|coth)\s*\^\s*(?:\{(\d+)\}|(\d+))\s*(\\left\(|\()/g;
   let result = "";
@@ -170,6 +185,10 @@ function rewriteBareFunctionApplications(input: string): string {
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
   let expr = latex;
+
+  // Juxtaposition such as x\\sin x means x·sin(x). Preserve the
+  // multiplication boundary before removing LaTeX function macros.
+  expr = expr.replace(/([A-Za-z0-9)])\\\\(sin|cos|tan|csc|sec|cot|sinh|cosh|tanh|csch|sech|coth)\\b/g, "$1*\\\\$2");
 
   // Both sin^3(x) and sin(x)^3 denote a power of the function. Rewrite
   // the former before the generic exponent and macro passes; keep -1 as
