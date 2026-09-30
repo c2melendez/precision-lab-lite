@@ -396,6 +396,12 @@ export function BasicScientificMode() {
         diffAlgebrite: parsed.algebrite,
         operator: parsed.inequalityOperator,
         variable: parsed.freeVariables[0],
+        ...(intervalRestriction ? {
+          domainLower,
+          domainUpper,
+          domainLowerInclusive: intervalRestriction.lowerInclusive,
+          domainUpperInclusive: intervalRestriction.upperInclusive,
+        } : {}),
       });
       return;
     }
