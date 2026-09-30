@@ -155,7 +155,7 @@ export function rewriteReciprocalFunctions(expr: string): string {
   // texto reemplazado ya no contiene "sec(" suelto y no hay colisión.
   result = rewriteUnaryFunction(result, "arcsec", (a) => `(arccos(1/(${a})))`);
   result = rewriteUnaryFunction(result, "arccsc", (a) => `(arcsin(1/(${a})))`);
-  result = rewriteUnaryFunction(result, "arccot", (a) => `(arctan(1/(${a})))`);
+  result = rewriteUnaryFunction(result, "arccot", (a) => `((pi/2)-arctan(${a}))`);
   // Módulo A (spec §2): mismo problema de substring que arcsec/arccsc/
   // arccot de arriba — "asech" contiene "sech", "acsch" contiene "csch",
   // "acoth" contiene "coth" — se reescriben ANTES que sus versiones
