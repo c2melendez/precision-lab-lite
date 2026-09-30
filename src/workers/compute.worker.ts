@@ -358,6 +358,26 @@ function handleSolveAlgebra(
   requestId: string,
 ): MathResult {
   try {
+    const simple = trySimpleTranscendentalEquation(leftAlgebrite, rightAlgebrite, variable);
+    if (simple?.noReal) {
+      return errorResult(ErrorCode.DOMAIN_ERROR, "La ecuación no tiene solución real.", requestId);
+    }
+    if (simple?.values) {
+      const values = simple.values;
+      const allNumeric = values.every(
+        (value) => /^-?\d+(\.\d+)?$/.test(value) || /^-?\d+\/\d+$/.test(value),
+      );
+      return {
+        success: true,
+        resultLatex: values.map((value) => `${variable} = ${toLatex(value)}`).join(",\\ "),
+        fraction: allNumeric && values.length === 1 ? toFractionResult(values[0]) : undefined,
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
+
     const { steps, solutionsAlgebrite } = solveAlgebra(leftAlgebrite, rightAlgebrite, variable);
     const allNumeric = solutionsAlgebrite.every(
       (s) => /^-?\d+(\.\d+)?$/.test(s) || /^-?\d+\/\d+$/.test(s),
