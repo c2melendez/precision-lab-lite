@@ -931,8 +931,8 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
     const definiteIntegralResult = tryDefiniteIntegral(expr);
     if (definiteIntegralResult !== null) {
       const isNumericDefinite =
-        /^-?\\d+(?:\\.\\d+)?$/.test(definiteIntegralResult)
-        || /^-?\\d+\\/\\d+$/.test(definiteIntegralResult);
+        /^-?\d+(?:\.\d+)?$/.test(definiteIntegralResult)
+        || /^-?\d+\/\d+$/.test(definiteIntegralResult);
       return {
         success: true,
         resultLatex: toLatex(definiteIntegralResult),
