@@ -323,7 +323,7 @@ export function preprocessLatex(latex: string): string {
   // lowering. Example: \\int\\frac{dx}{1+x^2} -> integral(1/(1+x^2),x).
   {
     const differentialNumerator = expr.match(
-      /^\\\\int\\s*\\\\frac\\{d([a-zA-Z])\\}\\{([^{}]+)\\}\\s*$/s,
+      /^\\int\s*\\frac\{d([a-zA-Z])\}\{([^{}]+)\}\s*$/s,
     );
     if (differentialNumerator) {
       const [, variable, denominator] = differentialNumerator;
@@ -688,6 +688,10 @@ export function preprocessLatex(latex: string): string {
     ;
 
   expr = rewriteBareFunctionApplications(expr);
+  expr = expr.replace(
+    /\)(?=(?:arccos|arcsin|arctan|arccot|arcsec|arccsc|asinh|acosh|atanh|acsch|asech|acoth|sinh|cosh|tanh|csch|sech|coth|sin|cos|tan|csc|sec|cot|ln)\()/g,
+    ")*",
+  );
   expr = expr.replace(/\s+/g, "");
 
   return expr;
