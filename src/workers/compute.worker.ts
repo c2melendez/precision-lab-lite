@@ -147,6 +147,10 @@ export type ComputeRequest =
       diffAlgebrite: string;
       operator: "<" | ">" | "<=" | ">=";
       variable: string;
+      domainLower?: number;
+      domainUpper?: number;
+      domainLowerInclusive?: boolean;
+      domainUpperInclusive?: boolean;
     }
   | {
       // Corrección post-auditoría (Módulo C, spec_motor_matematico_pendiente.md
@@ -267,7 +271,16 @@ function handle(msg: ComputeRequest): MathResult {
         msg.requestId,
       );
     case "solveInequality":
-      return handleSolveInequality(msg.diffAlgebrite, msg.operator, msg.variable, msg.requestId);
+      return handleSolveInequality(
+        msg.diffAlgebrite,
+        msg.operator,
+        msg.variable,
+        msg.requestId,
+        msg.domainLower,
+        msg.domainUpper,
+        msg.domainLowerInclusive,
+        msg.domainUpperInclusive,
+      );
     case "linearInequalitySystem":
       return handleLinearInequalitySystem(msg.inequalities, msg.variables, msg.requestId);
     case "ode":
@@ -641,10 +654,23 @@ function handleSolveInequality(
   operator: "<" | ">" | "<=" | ">=",
   variable: string,
   requestId: string,
+  domainLower?: number,
+  domainUpper?: number,
+  domainLowerInclusive = true,
+  domainUpperInclusive = true,
 ): MathResult {
   try {
-    const monotonic = trySimpleMonotonicInequality(diffAlgebrite, operator, variable);
-    const { resultText, steps } = monotonic ?? solveInequality(diffAlgebrite, operator, variable);
+    const hasBoundedDomain = domainLower !== undefined && domainUpper !== undefined;
+    const monotonic = hasBoundedDomain ? null : trySimpleMonotonicInequality(diffAlgebrite, operator, variable);
+    const { resultText, steps } = monotonic ?? solveInequality(
+      diffAlgebrite,
+      operator,
+      variable,
+      domainLower,
+      domainUpper,
+      domainLowerInclusive,
+      domainUpperInclusive,
+    );
     return {
       success: true,
       resultLatex: `\\text{${resultText}}`,
