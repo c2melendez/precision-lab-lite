@@ -171,10 +171,6 @@ function rewriteBareFunctionApplications(input: string): string {
 export function preprocessLatex(latex: string): string {
   let expr = latex;
 
-  // Juxtaposition such as x\\sin x means x·sin(x). Preserve the
-  // multiplication boundary before removing LaTeX function macros.
-  expr = expr.replace(/([A-Za-z0-9)])\\\\(sin|cos|tan|csc|sec|cot|sinh|cosh|tanh|csch|sech|coth)\\b/g, "$1*\\\\$2");
-
   // Both sin^3(x) and sin(x)^3 denote a power of the function. Rewrite
   // the former before the generic exponent and macro passes; keep -1 as
   // inverse trigonometric notation handled by the existing rules below.
