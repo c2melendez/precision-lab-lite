@@ -614,8 +614,8 @@ export function preprocessLatex(latex: string): string {
   // At this point \\int has already been rewritten, so x\\cosh x may
   // safely become x*\\cosh x without corrupting the command \\int.
   expr = expr.replace(
-    /([A-Za-z0-9)])\\\\(sin|cos|tan|csc|sec|cot|sinh|cosh|tanh|csch|sech|coth|arcsin|arccos|arctan)\\b/g,
-    "$1*\\\\$2",
+    /([A-Za-z0-9)])\\(sin|cos|tan|csc|sec|cot|sinh|cosh|tanh|csch|sech|coth|arcsin|arccos|arctan)\b/g,
+    "$1*\\$2",
   );
 
   expr = expr
