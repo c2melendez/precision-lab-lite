@@ -99,6 +99,69 @@ function rewriteTrigFunctionPowers(input: string): string {
   return result + input.slice(offset);
 }
 
+const OPERATOR_NAME_ALIASES: Record<string, string> = {
+  arccot: "arccot", arcsec: "arcsec", arccsc: "arccsc",
+  arsinh: "asinh", arcosh: "acosh", artanh: "atanh",
+  arcsch: "acsch", arsech: "asech", arcoth: "acoth",
+};
+
+const BARE_FUNCTION_NAMES = [
+  "arccos", "arcsin", "arctan", "arccot", "arcsec", "arccsc",
+  "asinh", "acosh", "atanh", "acsch", "asech", "acoth",
+  "sinh", "cosh", "tanh", "csch", "sech", "coth",
+  "sin", "cos", "tan", "csc", "sec", "cot", "ln",
+].sort((a, b) => b.length - a.length);
+
+function unwrapOperatorNames(input: string): string {
+  return input.replace(/\\operatorname\{([^{}]+)\}/g, (_match, name: string) => OPERATOR_NAME_ALIASES[name] ?? name);
+}
+
+function rewriteBareFunctionApplications(input: string): string {
+  let out = "";
+  let i = 0;
+  while (i < input.length) {
+    const fn = BARE_FUNCTION_NAMES.find((name) => {
+      if (!input.startsWith(name, i)) return false;
+      const prev = i > 0 ? input[i - 1] : "";
+      return !/[A-Za-z]/.test(prev);
+    });
+    if (!fn) { out += input[i++]; continue; }
+    let cursor = i + fn.length;
+    let power = "";
+    if (input.startsWith("^(", cursor)) {
+      let depth = 1;
+      let j = cursor + 2;
+      while (j < input.length && depth > 0) {
+        if (input[j] === "(") depth++;
+        else if (input[j] === ")") depth--;
+        j++;
+      }
+      if (depth === 0) { power = input.slice(cursor + 2, j - 1); cursor = j; }
+    }
+    if (input[cursor] === "(") { out += input.slice(i, cursor); i = cursor; continue; }
+    const whitespaceStart = cursor;
+    while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
+    if (cursor === whitespaceStart) { out += input.slice(i, cursor); i = cursor; continue; }
+    const argStart = cursor;
+    let depth = 0;
+    let seen = false;
+    while (cursor < input.length) {
+      const ch = input[cursor];
+      if (ch === "(") { depth++; seen = true; cursor++; continue; }
+      if (ch === ")") { if (depth === 0) break; depth--; seen = true; cursor++; continue; }
+      if (depth === 0 && seen && /[+,=*\/<>]/.test(ch)) break;
+      if (depth === 0 && seen && ch === "-" && cursor > argStart) break;
+      if (!/\s/.test(ch)) seen = true;
+      cursor++;
+    }
+    const arg = input.slice(argStart, cursor).trim();
+    if (!arg) { out += fn; i += fn.length; continue; }
+    const call = fn + "(" + arg + ")";
+    out += power ? "(" + call + ")^(" + power + ")" : call;
+    i = cursor;
+  }
+  return out;
+}
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
   let expr = latex;
@@ -106,7 +169,7 @@ export function preprocessLatex(latex: string): string {
   // Both sin^3(x) and sin(x)^3 denote a power of the function. Rewrite
   // the former before the generic exponent and macro passes; keep -1 as
   // inverse trigonometric notation handled by the existing rules below.
-  expr = rewriteTrigFunctionPowers(expr);
+  expr = rewriteTrigFunctionPowers(expr);\n  expr = unwrapOperatorNames(expr);
 
   // S16 REG-008: MathLive serializa la tecla visual ° como ^{\\circ}
   // (y puede usar ^\\circ). Unificarlo con el marcador ° que ya procesa
@@ -512,6 +575,15 @@ export function preprocessLatex(latex: string): string {
     .replace(/csch\^\{-1\}/g, "acsch")
     .replace(/sech\^\{-1\}/g, "asech")
     .replace(/coth\^\{-1\}/g, "acoth")
+    .replace(/\\arcsin/g, "arcsin")
+    .replace(/\\arccos/g, "arccos")
+    .replace(/\\arctan/g, "arctan")
+    .replace(/\\sinh/g, "sinh")
+    .replace(/\\cosh/g, "cosh")
+    .replace(/\\tanh/g, "tanh")
+    .replace(/\\csch/g, "csch")
+    .replace(/\\sech/g, "sech")
+    .replace(/\\coth/g, "coth")
     .replace(/\\sin/g, "sin")
     .replace(/\\cos/g, "cos")
     .replace(/\\tan/g, "tan")
@@ -533,7 +605,7 @@ export function preprocessLatex(latex: string): string {
     .replace(/\\right\)/g, ")")
     .replace(/\\,/g, "")
     .replace(/\\ /g, "")
-    .replace(/\s+/g, "");
+    ;\n\n  expr = rewriteBareFunctionApplications(expr);\n  expr = expr.replace(/\\s+/g, "");
 
   return expr;
 }
