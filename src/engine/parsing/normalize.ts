@@ -255,6 +255,20 @@ function rewriteBareFunctionApplications(input: string): string {
 export function preprocessLatex(latex: string): string {
   let expr = latex;
 
+  // Matrix B7: derivative evaluated at a point,
+  // \\left.\\frac{d}{dx}f(x)\\right\\rvert_{x=a}.
+  // Normalize the derivative itself through this same pipeline, then
+  // substitute the requested point in the resulting derivative.
+  const evaluatedDerivative = expr.trim().match(
+    /^\\\\left\\.\\s*(\\\\frac\\{d(?:\\^\\{?\\d+\\}?)?\\}\\{d([a-zA-Z])(?:\\^\\{?\\d+\\}?)?\\}\\s*.+?)\\s*\\\\right\\\\rvert_\\{\\s*\\2\\s*=\\s*(.+)\\}$/,
+  );
+  if (evaluatedDerivative) {
+    const derivativeSource = preprocessLatex(evaluatedDerivative[1]);
+    const variable = evaluatedDerivative[2];
+    const point = preprocessLatex(evaluatedDerivative[3]);
+    return `subst((${point}),${variable},(${derivativeSource}))`;
+  }
+
   // Both sin^3(x) and sin(x)^3 denote a power of the function. Rewrite
   // the former before the generic exponent and macro passes; keep -1 as
   // inverse trigonometric notation handled by the existing rules below.
