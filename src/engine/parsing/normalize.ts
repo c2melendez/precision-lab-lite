@@ -316,6 +316,18 @@ export function preprocessLatex(latex: string): string {
   // \frac{a}{b} -> ((a)/(b)) — debe ir antes que otros reemplazos porque
   // "a" y "b" pueden contener a su vez otros macros ya procesados de forma
   // recursiva al reprocesar el string completo tras cada pasada balanceada.
+  // Matriz trigonométrica: differential numerator before generic frac
+  // lowering. Example: \\int\\frac{dx}{1+x^2} -> integral(1/(1+x^2),x).
+  {
+    const differentialNumerator = expr.match(
+      /^\\\\int\\s*\\\\frac\\{d([a-zA-Z])\\}\\{([^{}]+)\\}\\s*$/s,
+    );
+    if (differentialNumerator) {
+      const [, variable, denominator] = differentialNumerator;
+      expr = `integral(((1)/(${denominator})),${variable})`;
+    }
+  }
+
   // Matriz trigonométrica: forma habitual d/dx seguida directamente por
   // una expresión, además del template con \\left(...\\right).
   {
@@ -555,6 +567,14 @@ export function preprocessLatex(latex: string): string {
   // \\pm\\left(5\\right) a \\pm 5. Normalizamos también esa forma
   // a la función unaria interna pm(5), preservando las dos ramas.
   expr = expr.replace(/\\pm\s+([A-Za-z0-9.]+)/g, "pm($1)");
+
+  // Matriz trigonométrica: late adjacency normalization.
+  // At this point \\int has already been rewritten, so x\\cosh x may
+  // safely become x*\\cosh x without corrupting the command \\int.
+  expr = expr.replace(
+    /([A-Za-z0-9)])\\\\(sin|cos|tan|csc|sec|cot|sinh|cosh|tanh|csch|sech|coth|arcsin|arccos|arctan)\\b/g,
+    "$1*\\\\$2",
+  );
 
   expr = expr
     .replace(/\\left\|/g, "abs(")
