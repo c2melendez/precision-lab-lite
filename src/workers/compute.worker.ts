@@ -580,9 +580,9 @@ function tryInverseHyperbolicEquationNumericFallback(
 ): string[] | null {
   if (variable !== "x") return null;
   const combined = `(${left})-(${right})`;
-  const isAsinh = /\\basinh\\(/.test(combined);
-  const isAcosh = /\\bacosh\\(/.test(combined);
-  const isAtanh = /\\batanh\\(/.test(combined);
+  const isAsinh = /\basinh\(/.test(combined);
+  const isAcosh = /\bacosh\(/.test(combined);
+  const isAtanh = /\batanh\(/.test(combined);
   if (!isAsinh && !isAcosh && !isAtanh) return null;
 
   let fn: (x: number) => number;
