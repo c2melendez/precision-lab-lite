@@ -662,6 +662,11 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       if (limitFallback !== null) {
         raw = limitFallback;
         confidence = "NUMERIC_FALLBACK";
+      } else {
+        throw {
+          code: ErrorCode.DOMAIN_ERROR,
+          message: "No se pudo establecer un límite real único; puede no existir o requerir análisis lateral adicional.",
+        } as AppError;
       }
     }
     if (ALGEBRITE_UNSUPPORTED_NUMERIC.test(raw)) {
