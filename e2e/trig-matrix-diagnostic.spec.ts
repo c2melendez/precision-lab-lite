@@ -22,6 +22,7 @@ async function setExpression(page, value) {
     node.value = v;
     node.dispatchEvent(new Event("input", { bubbles: true }));
   }, value);
+  return field.evaluate((node) => node.value || "");
 }
 
 async function ensureDegreeMode(page, wantDegree) {
@@ -86,8 +87,9 @@ test.describe("Trig matrix diagnostic " + ENGINE, () => {
         let status = "RESULT";
         let output = "";
         let error = "";
+        let normalizedInput = "";
         try {
-          await setExpression(page, normalizeMatrixExercise(item.exercise));
+          normalizedInput = await setExpression(page, normalizeMatrixExercise(item.exercise));
           const calculate = page.getByRole("region", { name: "Entrada", exact: true })
             .getByRole("button", { name: /calcular|evaluar/i }).first();
           await expect(calculate).toBeEnabled({ timeout: 5000 });
@@ -122,7 +124,7 @@ test.describe("Trig matrix diagnostic " + ENGINE, () => {
         console.log("TRIG_MATRIX_RESULT " + JSON.stringify({
           engine: ENGINE, id: item.id, status,
           exercise: item.exercise_cell, expected: item.expected,
-          output, error, degreeMode, shard: shard + 1
+          output, error, normalizedInput, degreeMode, shard: shard + 1
         }));
       }
     });
