@@ -561,9 +561,18 @@ function trySimpleTranscendentalEquation(
   if (fn === "arcsin") return { values: [simplify("sin(" + right + ")")] };
   if (fn === "arccos") return { values: [simplify("cos(" + right + ")")] };
   if (fn === "arctan") return { values: [simplify("tan(" + right + ")")] };
-  if (fn === "asinh") return { values: [simplify("sinh(" + right + ")")] };
-  if (fn === "acosh") return { values: [simplify("cosh(" + right + ")")] };
-  if (fn === "atanh") return { values: [simplify("tanh(" + right + ")")] };
+  if (fn === "asinh") {
+    const value = Math.sinh(target);
+    return Number.isFinite(value) ? { values: [String(value)] } : null;
+  }
+  if (fn === "acosh") {
+    const value = Math.cosh(target);
+    return Number.isFinite(value) ? { values: [String(value)] } : null;
+  }
+  if (fn === "atanh") {
+    const value = Math.tanh(target);
+    return Number.isFinite(value) ? { values: [String(value)] } : null;
+  }
   if (fn === "sinh") return { values: [simplify("log((" + right + ")+sqrt((" + right + ")^2+1))")] };
   if (fn === "cosh") {
     if (Math.abs(target - 1) <= eps) return { values: ["0"] };
