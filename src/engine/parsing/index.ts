@@ -14,7 +14,7 @@ import { validateFunctionArity } from "./functionArity";
 import { splitEquation } from "./equationSplit";
 import { splitInequality, type InequalityOperator } from "./inequalitySplit";
 import { expandPostfixOperators } from "./postfixOperators";
-import { KNOWN_FUNCTION_NAMES, CONSTANT_SUBSTITUTIONS } from "./constants";
+import { KNOWN_FUNCTION_NAMES, CONSTANT_SUBSTITUTIONS, RESERVED_CONSTANTS } from "./constants";
 
 export interface ParsedExpression {
   /** Cadena lista para pasar a Algebrite. Para ecuaciones, es "(left)-(right)". */
@@ -200,8 +200,9 @@ function rewriteUnaryFunction(expr: string, fnName: string, build: (a: string) =
 
 function extractFreeVariables(tokens: Token[]): string[] {
   const vars = new Set<string>();
+  const constants = new Set(RESERVED_CONSTANTS);
   for (const t of tokens) {
-    if (t.type === "identifier") vars.add(t.value);
+    if (t.type === "identifier" && !constants.has(t.value)) vars.add(t.value);
   }
   return [...vars];
 }
