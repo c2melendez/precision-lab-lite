@@ -51,57 +51,60 @@ function delayFor(id) {
 }
 
 test.describe("Trig matrix diagnostic " + ENGINE, () => {
-  test("324 ejercicios", async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name !== "desktop-chromium", "diagnostic runs once");
-    test.setTimeout(18 * 60 * 1000);
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await openScientific(page);
+  for (let shard = 0; shard < 4; shard += 1) {
+    test("324 ejercicios · bloque " + (shard + 1) + "/4", async ({ page }, testInfo) => {
+      test.skip(testInfo.project.name !== "desktop-chromium", "diagnostic runs once per shard");
+      test.setTimeout(8 * 60 * 1000);
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await openScientific(page);
 
-    let degreeMode = false;
-    for (const item of CASES) {
-      const wantDegree = item.id.startsWith("GR-");
-      if (wantDegree !== degreeMode) {
-        degreeMode = (await ensureDegreeMode(page, wantDegree)) ? wantDegree : degreeMode;
-      }
-
-      if (item.id === "CL-10") {
-        console.log("TRIG_MATRIX_RESULT " + JSON.stringify({
-          engine: ENGINE, id: item.id, status: "SKIP_CONTEXT",
-          exercise: item.exercise_cell, expected: item.expected,
-          output: "Requiere evaluar la derivada en x=1/2; el bloque LaTeX de la matriz no contiene esa sustitución."
-        }));
-        continue;
-      }
-
-      let status = "RESULT";
-      let output = "";
-      let error = "";
-      try {
-        await setExpression(page, item.exercise);
-        const calculate = page.getByRole("region", { name: "Entrada", exact: true })
-          .getByRole("button", { name: /calcular|evaluar/i }).first();
-        await expect(calculate).toBeEnabled({ timeout: 5000 });
-        await calculate.click();
-        await page.waitForTimeout(delayFor(item.id));
-
-        const alert = page.locator('[role="alert"][aria-live="assertive"]').first();
-        if (await alert.isVisible().catch(() => false)) {
-          status = "ERROR";
-          error = ((await alert.innerText().catch(() => "")) || "").replace(/\s+/g, " ").trim().slice(0, 700);
+      let degreeMode = false;
+      const selected = CASES.filter((_, index) => index % 4 === shard);
+      for (const item of selected) {
+        const wantDegree = item.id.startsWith("GR-");
+        if (wantDegree !== degreeMode) {
+          degreeMode = (await ensureDegreeMode(page, wantDegree)) ? wantDegree : degreeMode;
         }
-        const region = page.getByRole("region", { name: "Resultado", exact: true });
-        output = ((await region.innerText().catch(() => "")) || "").replace(/\s+/g, " ").trim().slice(0, 1000);
-        if (!output && !error) status = "NO_OUTPUT";
-      } catch (e) {
-        status = "HARNESS_ERROR";
-        error = String(e).replace(/\s+/g, " ").slice(0, 900);
-      }
 
-      console.log("TRIG_MATRIX_RESULT " + JSON.stringify({
-        engine: ENGINE, id: item.id, status,
-        exercise: item.exercise_cell, expected: item.expected,
-        output, error, degreeMode
-      }));
-    }
-  });
+        if (item.id === "CL-10") {
+          console.log("TRIG_MATRIX_RESULT " + JSON.stringify({
+            engine: ENGINE, id: item.id, status: "SKIP_CONTEXT",
+            exercise: item.exercise_cell, expected: item.expected, shard: shard + 1,
+            output: "Requiere evaluar la derivada en x=1/2; el bloque LaTeX de la matriz no contiene esa sustitución."
+          }));
+          continue;
+        }
+
+        let status = "RESULT";
+        let output = "";
+        let error = "";
+        try {
+          await setExpression(page, item.exercise);
+          const calculate = page.getByRole("region", { name: "Entrada", exact: true })
+            .getByRole("button", { name: /calcular|evaluar/i }).first();
+          await expect(calculate).toBeEnabled({ timeout: 5000 });
+          await calculate.click();
+          await page.waitForTimeout(delayFor(item.id));
+
+          const alert = page.locator('[role="alert"][aria-live="assertive"]').first();
+          if (await alert.isVisible().catch(() => false)) {
+            status = "ERROR";
+            error = ((await alert.innerText().catch(() => "")) || "").replace(/\s+/g, " ").trim().slice(0, 700);
+          }
+          const region = page.getByRole("region", { name: "Resultado", exact: true });
+          output = ((await region.innerText().catch(() => "")) || "").replace(/\s+/g, " ").trim().slice(0, 1000);
+          if (!output && !error) status = "NO_OUTPUT";
+        } catch (e) {
+          status = "HARNESS_ERROR";
+          error = String(e).replace(/\s+/g, " ").slice(0, 900);
+        }
+
+        console.log("TRIG_MATRIX_RESULT " + JSON.stringify({
+          engine: ENGINE, id: item.id, status,
+          exercise: item.exercise_cell, expected: item.expected,
+          output, error, degreeMode, shard: shard + 1
+        }));
+      }
+    });
+  }
 });
