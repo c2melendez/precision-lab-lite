@@ -73,21 +73,6 @@ function replaceBalanced(
   return result;
 }
 
-function normalizeBareFunctionApplications(input: string): string {
-  const names = [
-    "arccsc", "arcsec", "arccot", "arcsin", "arccos", "arctan",
-    "arsinh", "arcosh", "artanh", "arcoth",
-    "sinh", "cosh", "tanh", "csch", "sech", "coth",
-    "sin", "cos", "tan", "csc", "sec", "cot", "ln",
-  ].sort((a, b) => b.length - a.length);
-  let out = input;
-  for (const name of names) {
-    const pattern = new RegExp(`\\b${name}\\s+([+-]?(?:\\d+(?:\\.\\d+)?[a-zA-Z]*|[a-zA-Z]+))`, "g");
-    out = out.replace(pattern, (_match, arg: string) => `${name}(${arg})`);
-  }
-  return out;
-}
-
 function rewriteTrigFunctionPowers(input: string): string {
   const pattern = /(?:\\)?(sin|cos|tan|sec|csc|cot|sinh|cosh|tanh|sech|csch|coth)\s*\^\s*(?:\{(\d+)\}|(\d+))\s*(\\left\(|\()/g;
   let result = "";
