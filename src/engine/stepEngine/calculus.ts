@@ -67,7 +67,9 @@ function rewriteInverseHyperbolicsForDerivative(input: string): string {
 export function calcDerivative(exprAlgebrite: string, variable: string, order: number): CalculusResult {
   const normalized = rewriteInverseHyperbolicsForDerivative(
     rewriteReciprocalFunctions(exprAlgebrite),
-  ).replace(/\\be\\^\\(([^()]*)\\)/g, "exp($1)");
+  )
+    .replace(/\\be\\^\\(([^()]*)\\)/g, "exp($1)")
+    .replace(/\\be\\^([A-Za-z][A-Za-z0-9_]*)\\b/g, "exp($1)");
 
   const result = symbolicDerivative(normalized, variable, order);
   if (/NaN|\\bd\\(/i.test(result)) {
