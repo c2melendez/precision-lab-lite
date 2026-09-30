@@ -518,7 +518,12 @@ function trySimpleTranscendentalEquation(
     if (Math.abs(target - 1) <= eps) return { values: ["0"] };
     return { values: ["-(" + p + ")", p] };
   }
-  if (fn === "acoth") return { values: [simplify("1/tanh(" + right + ")")] };
+  if (fn === "acoth") {
+    // coth(y) = (e^(2y)+1)/(e^(2y)-1). Algebrite's tanh/log path can
+    // return NaN for exact logarithmic targets such as y=ln(2), while
+    // this equivalent form simplifies exactly to 5/3.
+    return { values: [simplify("(exp(2*(" + right + "))+1)/(exp(2*(" + right + "))-1)")] };
+  }
   if (fn === "arcsin") return { values: [simplify("sin(" + right + ")")] };
   if (fn === "arccos") return { values: [simplify("cos(" + right + ")")] };
   if (fn === "arctan") return { values: [simplify("tan(" + right + ")")] };
