@@ -260,7 +260,7 @@ export function preprocessLatex(latex: string): string {
   // Normalize the derivative itself through this same pipeline, then
   // substitute the requested point in the resulting derivative.
   const evaluatedDerivative = expr.trim().match(
-    /^\\\\left\\.\\s*(\\\\frac\\{d(?:\\^\\{?\\d+\\}?)?\\}\\{d([a-zA-Z])(?:\\^\\{?\\d+\\}?)?\\}\\s*.+?)\\s*\\\\right\\\\rvert_\\{\\s*\\2\\s*=\\s*(.+)\\}$/,
+    /^\\left\.\s*(\\frac\{d(?:\^\{?\d+\}?)?\}\{d([a-zA-Z])(?:\^\{?\d+\}?)?\}\s*.+?)\s*\\right\\rvert_\{\s*\2\s*=\s*(.+)\}$/,
   );
   if (evaluatedDerivative) {
     const derivativeSource = preprocessLatex(evaluatedDerivative[1]);
