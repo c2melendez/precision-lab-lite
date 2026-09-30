@@ -658,6 +658,8 @@ export function preprocessLatex(latex: string): string {
   expr = expr
     .replace(/\\left\|/g, "abs(")
     .replace(/\\right\|/g, ")")
+    .replace(/\\lvert/g, "abs(")
+    .replace(/\\rvert/g, ")")
     .replace(/\\cdot/g, "*")
     .replace(/\\times/g, "*")
     .replace(/\\div/g, "/")
