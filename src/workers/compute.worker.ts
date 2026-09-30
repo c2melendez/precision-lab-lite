@@ -461,11 +461,31 @@ function tryBoundedNumericEquation(
   return roots.map(formatPiMultiple);
 }
 
+function stripWrappingParens(input: string): string {
+  let value = input.trim();
+  for (let pass = 0; pass < 6 && value.startsWith("(") && value.endsWith(")"); pass++) {
+    let depth = 0;
+    let wrapsAll = true;
+    for (let i = 0; i < value.length; i++) {
+      if (value[i] === "(") depth++;
+      else if (value[i] === ")") depth--;
+      if (depth === 0 && i < value.length - 1) {
+        wrapsAll = false;
+        break;
+      }
+    }
+    if (!wrapsAll) break;
+    value = value.slice(1, -1).trim();
+  }
+  return value;
+}
+
 function trySimpleTranscendentalEquation(
   left: string, right: string, variable: string,
 ): { values?: string[]; noReal?: boolean } | null {
   if (variable !== "x" || /\bx\b/.test(right)) return null;
-  const match = left.match(/^(sin|cos|arcsin|arccos|arctan|asinh|acosh|atanh|sinh|cosh|tanh)\(x\)$/);
+  const leftCore = stripWrappingParens(left);
+  const match = leftCore.match(/^(sin|cos|arcsin|arccos|arctan|asinh|acosh|atanh|sinh|cosh|tanh)\(x\)$/);
   const reciprocalKind =
     left === "(arccos(1/(x)))" ? "arcsec"
       : left === "(arcsin(1/(x)))" ? "arccsc"
