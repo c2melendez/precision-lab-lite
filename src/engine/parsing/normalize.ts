@@ -403,7 +403,7 @@ export function preprocessLatex(latex: string): string {
     // al contexto matemático, no al integrando (ej. ", x>1" o
     // ", |x|<1"). Para el cálculo se separan antes de reconocer la integral.
     const integralSource = expr.startsWith("\\int")
-      ? expr.replace(/,\s*(?:\\quad\s*)?(?:\\\s*)?(?:(?:\\lvert)|[0-9A-Za-z]).*$/s, "")
+      ? expr.replace(/(?<!\\),\s*(?:\\quad\s*)?(?:\\\s*)?(?:(?:\\lvert)|[0-9A-Za-z]).*$/s, "")
       : expr;
 
     // También aceptar la forma estándar ∫ dx/f(x), usada repetidamente en
