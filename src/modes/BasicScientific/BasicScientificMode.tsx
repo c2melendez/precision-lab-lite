@@ -47,6 +47,26 @@ import { usePendingHistoryReuseStore } from "../../store/usePendingHistoryReuseS
 
 type MathFieldRef = { insert: (s: string) => void; focus: () => void; value: string } | null;
 
+function extractIntervalRestriction(source: string): {
+  expressionLatex: string;
+  lowerLatex: string;
+  upperLatex: string;
+  lowerInclusive: boolean;
+  upperInclusive: boolean;
+} | null {
+  const match = source.trim().match(
+    /^(.*?),\s*\\quad\s*x\\in\s*(?:\\left\s*)?([\\[(])\s*(.+?)\s*,\s*(.+?)\s*(?:\\right\s*)?([\\])])\s*$/s,
+  );
+  if (!match) return null;
+  return {
+    expressionLatex: match[1].trim(),
+    lowerLatex: match[3].trim(),
+    upperLatex: match[4].trim(),
+    lowerInclusive: match[2] === "[",
+    upperInclusive: match[5] === "]",
+  };
+}
+
 export function BasicScientificMode() {
   const [latex, setLatex] = useState("");
   const [result, setResult] = useState<MathResult | null>(null);
@@ -300,9 +320,22 @@ export function BasicScientificMode() {
     }
 
     const requestId = makeRequestId();
+    const intervalRestriction = extractIntervalRestriction(currentLatex);
+    const sourceForParser = intervalRestriction?.expressionLatex ?? currentLatex;
     let parsed;
+    let domainLower: number | undefined;
+    let domainUpper: number | undefined;
     try {
-      parsed = parseExpression(currentLatex, angleMode);
+      parsed = parseExpression(sourceForParser, angleMode);
+      if (intervalRestriction) {
+        const lowerParsed = parseExpression(intervalRestriction.lowerLatex, angleMode);
+        const upperParsed = parseExpression(intervalRestriction.upperLatex, angleMode);
+        domainLower = compileNumeric(lowerParsed.algebrite, "__bound__")(0);
+        domainUpper = compileNumeric(upperParsed.algebrite, "__bound__")(0);
+        if (!Number.isFinite(domainLower) || !Number.isFinite(domainUpper)) {
+          throw { code: ErrorCode.PARSE_ERROR, message: "Los límites del intervalo deben ser valores reales finitos." };
+        }
+      }
     } catch (err) {
       const appErr = err as { code?: ErrorCode; message?: string };
       fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Expresión inválida.", requestId);
@@ -332,6 +365,12 @@ export function BasicScientificMode() {
         leftAlgebrite: parsed.leftAlgebrite,
         rightAlgebrite: parsed.rightAlgebrite,
         variable: parsed.freeVariables[0],
+        ...(intervalRestriction ? {
+          domainLower,
+          domainUpper,
+          domainLowerInclusive: intervalRestriction.lowerInclusive,
+          domainUpperInclusive: intervalRestriction.upperInclusive,
+        } : {}),
       });
       return;
     }
