@@ -318,6 +318,39 @@ function handleComplexSingularities(expressionAlgebrite: string, requestId: stri
     return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), requestId);
   }
 }
+function trySimpleTranscendentalEquation(
+  left: string, right: string, variable: string,
+): { values?: string[]; noReal?: boolean } | null {
+  if (variable !== "x" || /\\bx\\b/.test(right)) return null;
+  const match = left.match(/^(arcsin|arccos|arctan|asinh|acosh|atanh|sinh|cosh|tanh)\\(x\\)$/);
+  if (!match) return null;
+  let target: number;
+  try { target = compileNumeric(right, "__equation_constant__")(0); } catch { return null; }
+  if (!Number.isFinite(target)) return null;
+  const fn = match[1];
+  const eps = 1e-12;
+  if (fn === "arcsin" && (target < -Math.PI / 2 - eps || target > Math.PI / 2 + eps)) return { noReal: true };
+  if (fn === "arccos" && (target < -eps || target > Math.PI + eps)) return { noReal: true };
+  if (fn === "arctan" && (target <= -Math.PI / 2 + eps || target >= Math.PI / 2 - eps)) return { noReal: true };
+  if (fn === "acosh" && target < -eps) return { noReal: true };
+  if (fn === "tanh" && Math.abs(target) >= 1 - eps) return { noReal: true };
+  if (fn === "cosh" && target < 1 - eps) return { noReal: true };
+  const simplify = (expr: string): string => { try { return evaluate(expr); } catch { return expr; } };
+  if (fn === "arcsin") return { values: [simplify("sin(" + right + ")")] };
+  if (fn === "arccos") return { values: [simplify("cos(" + right + ")")] };
+  if (fn === "arctan") return { values: [simplify("tan(" + right + ")")] };
+  if (fn === "asinh") return { values: [simplify("sinh(" + right + ")")] };
+  if (fn === "acosh") return { values: [simplify("cosh(" + right + ")")] };
+  if (fn === "atanh") return { values: [simplify("tanh(" + right + ")")] };
+  if (fn === "sinh") return { values: [simplify("log((" + right + ")+sqrt((" + right + ")^2+1))")] };
+  if (fn === "cosh") {
+    if (Math.abs(target - 1) <= eps) return { values: ["0"] };
+    const p = simplify("log((" + right + ")+sqrt((" + right + ")^2-1))");
+    return { values: ["-(" + p + ")", p] };
+  }
+  if (fn === "tanh") return { values: [simplify("(1/2)*log((1+(" + right + "))/(1-(" + right + ")))")] };
+  return null;
+}
 function handleSolveAlgebra(
   leftAlgebrite: string,
   rightAlgebrite: string,
