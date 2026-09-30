@@ -344,6 +344,10 @@ describe("Matriz trigonométrica — segunda ronda", () => {
     expect(finite).toContain("defintegral");
     expect(finite).not.toContain("\\");
 
+    const productDenominator = parseExpression("\\int_{1}^{2}\\frac{dx}{x\\sqrt{x^{2}-1}}").algebrite;
+    expect(productDenominator).toContain("x*sqrt");
+    expect(productDenominator).not.toContain("xsqrt");
+
     const improper = parseExpression("\\int_{0}^{\\infty}\\frac{dx}{1+x^{2}}").algebrite;
     expect(improper).toContain("defintegral");
     expect(improper).not.toContain("\\");
