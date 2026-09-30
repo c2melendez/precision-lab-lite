@@ -48,9 +48,9 @@ export interface CalculusResult {
 function rewriteInverseHyperbolicsForDerivative(input: string): string {
   let result = input;
   const rules: Array<[RegExp, (arg: string) => string]> = [
-    [/\\basinh\\(([^()]*)\\)/g, (arg) => `ln((${arg})+sqrt((${arg})^2+1))`],
-    [/\\bacosh\\(([^()]*)\\)/g, (arg) => `ln((${arg})+sqrt((${arg})^2-1))`],
-    [/\\batanh\\(([^()]*)\\)/g, (arg) => `(1/2)*ln((1+(${arg}))/(1-(${arg})))`],
+    [/\basinh\(([^()]*)\)/g, (arg) => `ln((${arg})+sqrt((${arg})^2+1))`],
+    [/\bacosh\(([^()]*)\)/g, (arg) => `ln((${arg})+sqrt((${arg})^2-1))`],
+    [/\batanh\(([^()]*)\)/g, (arg) => `(1/2)*ln((1+(${arg}))/(1-(${arg})))`],
   ];
   for (let pass = 0; pass < 4; pass++) {
     let changed = false;
@@ -68,11 +68,11 @@ export function calcDerivative(exprAlgebrite: string, variable: string, order: n
   const normalized = rewriteInverseHyperbolicsForDerivative(
     rewriteReciprocalFunctions(exprAlgebrite),
   )
-    .replace(/\\be\\^\\(([^()]*)\\)/g, "exp($1)")
-    .replace(/\\be\\^([A-Za-z][A-Za-z0-9_]*)\\b/g, "exp($1)");
+    .replace(/\be\^\(([^()]*)\)/g, "exp($1)")
+    .replace(/\be\^([A-Za-z][A-Za-z0-9_]*)\b/g, "exp($1)");
 
   const result = symbolicDerivative(normalized, variable, order);
-  if (/NaN|\\bd\\(/i.test(result)) {
+  if (/NaN|\bd\(/i.test(result)) {
     throw {
       code: ErrorCode.UNSUPPORTED_OPERATION,
       message: "La derivada simbólica no pudo reducirse a una expresión cerrada.",
