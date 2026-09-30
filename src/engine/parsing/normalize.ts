@@ -169,7 +169,8 @@ export function preprocessLatex(latex: string): string {
   // Both sin^3(x) and sin(x)^3 denote a power of the function. Rewrite
   // the former before the generic exponent and macro passes; keep -1 as
   // inverse trigonometric notation handled by the existing rules below.
-  expr = rewriteTrigFunctionPowers(expr);\n  expr = unwrapOperatorNames(expr);
+  expr = rewriteTrigFunctionPowers(expr);
+  expr = unwrapOperatorNames(expr);
 
   // S16 REG-008: MathLive serializa la tecla visual ° como ^{\\circ}
   // (y puede usar ^\\circ). Unificarlo con el marcador ° que ya procesa
@@ -605,7 +606,10 @@ export function preprocessLatex(latex: string): string {
     .replace(/\\right\)/g, ")")
     .replace(/\\,/g, "")
     .replace(/\\ /g, "")
-    ;\n\n  expr = rewriteBareFunctionApplications(expr);\n  expr = expr.replace(/\\s+/g, "");
+    ;
+
+  expr = rewriteBareFunctionApplications(expr);
+  expr = expr.replace(/\s+/g, "");
 
   return expr;
 }
