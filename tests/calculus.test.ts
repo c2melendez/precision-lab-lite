@@ -152,18 +152,18 @@ describe("calcDerivative (Fase 3 — orden N sin tope de 3, paridad con la panta
 
   it("resuelve derivadas hiperbólicas inversas sin dejar d(...) sin evaluar", () => {
     const asinh = calcDerivative("asinh(x)", "x", 1).resultLatex;
-    expect(asinh).not.toMatch(/\\bd\\(/);
+    expect(asinh).not.toMatch(/\bd\(/);
     expect(asinh).not.toMatch(/NaN/i);
 
     const atanh = calcDerivative("atanh(x^2)", "x", 1).resultLatex;
-    expect(atanh).not.toMatch(/\\bd\\(/);
+    expect(atanh).not.toMatch(/\bd\(/);
     expect(atanh).not.toMatch(/NaN/i);
   });
 
   it("deriva e^x*cosh(x) sin propagar NaN de Algebrite", () => {
     const value = calcDerivative("e^x*cosh(x)", "x", 1).resultLatex;
     expect(value).not.toMatch(/NaN/i);
-    expect(value).not.toMatch(/\\bd\\(/);
+    expect(value).not.toMatch(/\bd\(/);
   });
 
   it("rechaza orden fuera de rango (>20, guarda de sensatez)", () => {
