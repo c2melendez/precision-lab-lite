@@ -574,22 +574,26 @@ function tryDefiniteIntegral(expr: string): string | null {
   if (args.length !== 3) return null;
   const [body, lower, upper] = args;
 
-  // Before applying endpoint substitution, probe the interval numerically.
-  // This prevents a finite-looking result when the integrand blows up
-  // inside the interval (for example sec^2(x) on [0, pi]).
+  const lowerInfinite = lower === "oo" || lower === "-oo";
+  const upperInfinite = upper === "oo" || upper === "-oo";
+
+  // Probe only the OPEN interior of a finite interval. A non-finite
+  // endpoint can still define a convergent improper integral (for example
+  // 1/sqrt(x^2-1) on [1,2]); rejecting endpoints here incorrectly marked
+  // those as divergent. Interior poles remain a hard domain error.
   try {
-    const a = compileNumeric(lower, "__bound__")(0);
-    const b = compileNumeric(upper, "__bound__")(0);
+    const a = lowerInfinite ? NaN : compileNumeric(lower, "__bound__")(0);
+    const b = upperInfinite ? NaN : compileNumeric(upper, "__bound__")(0);
     const fn = compileNumeric(body, "x");
     if (Number.isFinite(a) && Number.isFinite(b) && a !== b) {
       const samples = 1024;
-      for (let i = 0; i <= samples; i++) {
+      for (let i = 1; i < samples; i++) {
         const x = a + ((b - a) * i) / samples;
         const y = fn(x);
         if (!Number.isFinite(y) || Math.abs(y) > 1e12) {
           throw {
             code: ErrorCode.DOMAIN_ERROR,
-            message: "La integral no converge en el intervalo indicado.",
+            message: "La integral no converge en el interior del intervalo indicado.",
           } as AppError;
         }
       }
@@ -603,7 +607,35 @@ function tryDefiniteIntegral(expr: string): string | null {
   if (/^integral\(/.test(antiderivative)) {
     throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "Algebrite no pudo resolver esta integral simbólicamente." } as AppError;
   }
+
+  if (lowerInfinite || upperInfinite) {
+    // Evaluate the antiderivative at increasing magnitudes and require
+    // numerical stabilization. This handles common improper tails such as
+    // ∫_0^∞ 1/(1+x^2) dx without treating "oo" as a normal identifier.
+    const F = compileNumeric(antiderivative, "x");
+    const finiteBound = (bound: string): number => compileNumeric(bound, "__bound__")(0);
+    const magnitudes = [1e2, 1e3, 1e4, 1e5, 1e6, 1e7];
+    const estimates = magnitudes.map((m) => {
+      const lo = lower === "oo" ? F(m) : lower === "-oo" ? F(-m) : F(finiteBound(lower));
+      const hi = upper === "oo" ? F(m) : upper === "-oo" ? F(-m) : F(finiteBound(upper));
+      return hi - lo;
+    }).filter((value) => Number.isFinite(value));
+    if (estimates.length < 2) {
+      throw { code: ErrorCode.DOMAIN_ERROR, message: "La integral impropia no converge." } as AppError;
+    }
+    const last = estimates[estimates.length - 1];
+    const previous = estimates[estimates.length - 2];
+    const tolerance = 1e-5 * Math.max(1, Math.abs(last));
+    if (Math.abs(last - previous) > tolerance) {
+      throw { code: ErrorCode.DOMAIN_ERROR, message: "La integral impropia no mostró convergencia numérica." } as AppError;
+    }
+    return String(last);
+  }
+
   const raw = evaluate(`float(subst(${upper},x,${antiderivative}))-float(subst(${lower},x,${antiderivative}))`);
+  if (/NaN|(?:^|[^a-z])oo(?:[^a-z]|$)|zoo|infinity/i.test(raw)) {
+    throw { code: ErrorCode.DOMAIN_ERROR, message: "La integral no converge en el intervalo indicado." } as AppError;
+  }
   // Igual que float() en general (ver hallazgo arriba), el resultado
   // puede traer "..." literal de Algebrite indicando precisión truncada
   // (ej. "2.666667...") — no es válido reinyectarlo en otra llamada a
