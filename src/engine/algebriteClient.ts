@@ -49,7 +49,15 @@ export function evaluate(expressionLatex: string): string {
     }
     if (MAY_NEED_FLOAT.test(result)) {
       const retried: string = Algebrite.run(`float(${expressionLatex})`);
-      if (typeof retried === "string" && retried.length > 0 && !/stop|Stop/.test(retried)) {
+      // Some hyperbolic expressions are returned by Algebrite as the
+      // literal string "NaN..." even though JavaScript can evaluate them
+      // perfectly well. Never let that sentinel replace the symbolic
+      // expression; the worker's numeric fallback will handle it.
+      if (
+        typeof retried === "string"
+        && retried.length > 0
+        && !/stop|Stop|NaN/i.test(retried)
+      ) {
         result = retried;
       }
     }
