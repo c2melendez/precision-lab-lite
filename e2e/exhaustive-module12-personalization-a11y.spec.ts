@@ -136,10 +136,9 @@ test("M12: resultado calculado en Fusionada queda dentro de una región anunciab
   const resultRegion = page.getByRole("region", { name: "Resultado", exact: true });
   await expect(resultRegion).toBeVisible({ timeout: 12000 });
 
-  const announcedResult = resultRegion.getByRole("status");
+  const announcedResult = resultRegion.locator(':scope > [role="status"][aria-live="polite"][aria-atomic="true"]');
+  await expect(announcedResult).toHaveCount(1);
   await expect(announcedResult).toBeVisible();
-  await expect(announcedResult).toHaveAttribute("aria-live", "polite");
-  await expect(announcedResult).toHaveAttribute("aria-atomic", "true");
   await expect(announcedResult).toContainText("Resultado");
 });
 
