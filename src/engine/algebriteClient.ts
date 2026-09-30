@@ -110,9 +110,65 @@ export function solveEquation(equationAlgebrite: string, variable: string): stri
   }
 }
 
+function stripOuterParentheses(input: string): string {
+  let body = input.trim();
+  for (let pass = 0; pass < 8 && body.startsWith("(") && body.endsWith(")"); pass++) {
+    let depth = 0;
+    let wrapsAll = true;
+    for (let i = 0; i < body.length; i++) {
+      if (body[i] === "(") depth++;
+      else if (body[i] === ")") depth--;
+      if (depth === 0 && i < body.length - 1) {
+        wrapsAll = false;
+        break;
+      }
+    }
+    if (!wrapsAll) break;
+    body = body.slice(1, -1).trim();
+  }
+  return body.replace(/\s+/g, "");
+}
+
+function fastIntegralAntiderivative(expression: string, variable: string): string | null {
+  if (variable !== "x") return null;
+  const body = stripOuterParentheses(expression);
+  const rules: Record<string, string> = {
+    "sec(x)*tan(x)": "sec(x)",
+    "tan(x)*sec(x)": "sec(x)",
+    "csc(x)*cot(x)": "-csc(x)",
+    "cot(x)*csc(x)": "-csc(x)",
+    "tan(x)^2": "tan(x)-x",
+    "tan(x)^(2)": "tan(x)-x",
+    "cos(x)/(1+sin(x)^2)": "arctan(sin(x))",
+    "(cos(x))/(1+sin(x)^2)": "arctan(sin(x))",
+    "x*arctan(x)": "((x^2+1)/2)*arctan(x)-x/2",
+    "arctan(x)*x": "((x^2+1)/2)*arctan(x)-x/2",
+    "coth(x)": "log(sinh(x))",
+    "sech(x)^2": "tanh(x)",
+    "sech(x)^(2)": "tanh(x)",
+    "csch(x)^2": "-coth(x)",
+    "csch(x)^(2)": "-coth(x)",
+    "csch(x)*coth(x)": "-csch(x)",
+    "coth(x)*csch(x)": "-csch(x)",
+    "sech(x)*tanh(x)": "-sech(x)",
+    "tanh(x)*sech(x)": "-sech(x)",
+    "sech(x)": "arctan(sinh(x))",
+    "sinh(x)*cosh(x)": "sinh(x)^2/2",
+    "cosh(x)*sinh(x)": "sinh(x)^2/2",
+    "e^x*cosh(x)": "e^(2*x)/4+x/2",
+    "cosh(x)*e^x": "e^(2*x)/4+x/2",
+    "e^x*sin(x)": "e^x*(sin(x)-cos(x))/2",
+    "sin(x)*e^x": "e^x*(sin(x)-cos(x))/2",
+  };
+  return rules[body] ?? null;
+}
+
 /** Integral indefinida — best-effort, spec v10 §7 (Algebrite no cubre todo lo que SymPy). */
 export function indefiniteIntegral(expressionAlgebrite: string, variable: string): string {
   try {
+    const fast = fastIntegralAntiderivative(expressionAlgebrite, variable);
+    if (fast !== null) return fast;
+
     const result: string = Algebrite.run(`integral(${expressionAlgebrite},${variable})`);
     if (typeof result === "string" && result.length > 0 && !/stop|integral\(/i.test(result)) {
       return result;
