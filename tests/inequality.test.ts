@@ -79,4 +79,11 @@ describe("solveInequality (decisión de Carlos: solver básico de <,>,≤,≥)",
       solveInequality(parsed.algebrite, parsed.inequalityOperator!, "x", 0, Math.PI, false, false).resultText,
     ).toBe("(0, π/4]");
   });
+
+  it("acotada estricta: no cierra un extremo del dominio donde la expresión vale cero", () => {
+    const parsed = parseExpression("\\sin x\\cos x>0", "RAD");
+    expect(
+      solveInequality(parsed.algebrite, parsed.inequalityOperator!, "x", 0, 2 * Math.PI, true, false).resultText,
+    ).toBe("(0, π/2) ∪ (π, 3π/2)");
+  });
 });
