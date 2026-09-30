@@ -927,6 +927,47 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
 
     validateFiniteSumRange(expr);
 
+    // B7: Algebrite devuelve NaN para varias hiperbólicas numéricas que
+    // el evaluador local sí resuelve de forma determinista. Si no hay
+    // variables libres reales, evaluar aquí antes de entrar a Algebrite.
+    if (/\b(?:sinh|cosh|tanh|csch|sech|coth|asinh|acosh|atanh|acsch|asech|acoth)\(/.test(expr)) {
+      const eagerHyperbolic = tryNumericFallback(expr);
+      if (eagerHyperbolic !== null) {
+        return {
+          success: true,
+          resultLatex: toLatex(eagerHyperbolic),
+          fraction: toFractionResult(eagerHyperbolic),
+          decimalApprox: eagerHyperbolic,
+          steps: [],
+          hasDetailedSteps: false,
+          confidence: "NUMERIC_FALLBACK",
+          requestId,
+        };
+      }
+    }
+
+    // La Científica inline normaliza d/dx(...) a d(expr,var[,orden]).
+    // Enrutarlo al mismo motor de derivadas del modo Cálculo evita que
+    // Algebrite deje d(asinh(...),x) sin evaluar o propague NaN.
+    const inlineDerivative = expr.match(/^d\((.*)\)$/s);
+    if (inlineDerivative) {
+      const args = splitTopLevelArgs(inlineDerivative[1]);
+      if (args.length === 2 || args.length === 3) {
+        const order = args.length === 3 ? Number(args[2]) : 1;
+        if (Number.isInteger(order) && order > 0) {
+          const derived = calcDerivative(args[0], args[1], order);
+          return {
+            success: true,
+            resultLatex: derived.resultLatex,
+            steps: derived.steps,
+            hasDetailedSteps: true,
+            confidence: derived.confidence,
+            requestId,
+          };
+        }
+      }
+    }
+
     const productResult = tryFiniteProduct(expr);
     if (productResult !== null) {
       return {
