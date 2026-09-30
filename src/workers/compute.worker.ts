@@ -413,7 +413,6 @@ function tryBoundedNumericEquation(
       let lo = prevX;
       let hi = x;
       let flo = prevY;
-      let fhi = y;
       for (let step = 0; step < 60; step++) {
         const mid = (lo + hi) / 2;
         const fm = f(mid);
@@ -424,7 +423,6 @@ function tryBoundedNumericEquation(
         }
         if (flo * fm <= 0) {
           hi = mid;
-          fhi = fm;
         } else {
           lo = mid;
           flo = fm;
