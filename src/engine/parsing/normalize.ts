@@ -113,7 +113,10 @@ const BARE_FUNCTION_NAMES = [
 ].sort((a, b) => b.length - a.length);
 
 function unwrapOperatorNames(input: string): string {
-  return input.replace(/\\operatorname\{([^{}]+)\}/g, (_match, name: string) => OPERATOR_NAME_ALIASES[name] ?? name);
+  return input.replace(
+    /\\operatorname\{([^{}]+)\}/g,
+    (_match, name: string) => `${OPERATOR_NAME_ALIASES[name] ?? name} `,
+  );
 }
 
 function rewriteBareFunctionApplications(input: string): string {
