@@ -454,6 +454,32 @@ function tryDefiniteIntegral(expr: string): string | null {
   const args = splitTopLevelArgs(match[1]);
   if (args.length !== 3) return null;
   const [body, lower, upper] = args;
+
+  // Before applying endpoint substitution, probe the interval numerically.
+  // This prevents a finite-looking result when the integrand blows up
+  // inside the interval (for example sec^2(x) on [0, pi]).
+  try {
+    const a = compileNumeric(lower, "__bound__")(0);
+    const b = compileNumeric(upper, "__bound__")(0);
+    const fn = compileNumeric(body, "x");
+    if (Number.isFinite(a) && Number.isFinite(b) && a !== b) {
+      const samples = 1024;
+      for (let i = 0; i <= samples; i++) {
+        const x = a + ((b - a) * i) / samples;
+        const y = fn(x);
+        if (!Number.isFinite(y) || Math.abs(y) > 1e12) {
+          throw {
+            code: ErrorCode.DOMAIN_ERROR,
+            message: "La integral no converge en el intervalo indicado.",
+          } as AppError;
+        }
+      }
+    }
+  } catch (err) {
+    const appErr = err as AppError;
+    if (appErr?.code === ErrorCode.DOMAIN_ERROR) throw appErr;
+  }
+
   const antiderivative = indefiniteIntegral(body, "x");
   if (/^integral\(/.test(antiderivative)) {
     throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "Algebrite no pudo resolver esta integral simbólicamente." } as AppError;
