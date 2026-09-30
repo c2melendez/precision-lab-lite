@@ -1075,10 +1075,17 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
 
     validateFiniteSumRange(expr);
 
+    const isStructuredCalculusExpression =
+      /^(?:limit|integral|defintegral|d)\(/.test(expr);
+
     // B7: Algebrite devuelve NaN para varias hiperbólicas numéricas que
-    // el evaluador local sí resuelve de forma determinista. Si no hay
-    // variables libres reales, evaluar aquí antes de entrar a Algebrite.
-    if (/\b(?:sinh|cosh|tanh|csch|sech|coth|asinh|acosh|atanh|acsch|asech|acoth)\(/.test(expr)) {
+    // el evaluador local sí resuelve de forma determinista. Esta ruta es
+    // SOLO para evaluación escalar; limit/integral/d deben llegar primero
+    // a sus motores específicos, nunca al compilador numérico genérico.
+    if (
+      !isStructuredCalculusExpression
+      && /\b(?:sinh|cosh|tanh|csch|sech|coth|asinh|acosh|atanh|acsch|asech|acoth)\(/.test(expr)
+    ) {
       const eagerHyperbolic = tryNumericFallback(expr);
       if (eagerHyperbolic !== null) {
         return {
@@ -1199,9 +1206,14 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       if (!Number.isFinite(argValue) || invalid) {
         throw { code: ErrorCode.DOMAIN_ERROR, message: "El resultado no está definido en el dominio real." } as AppError;
       }
-    } else if (/\b(arcsin|arccos|acosh|atanh)\(/.test(expr)) {
+    } else if (
+      !isStructuredCalculusExpression
+      && /\b(arcsin|arccos|acosh|atanh)\(/.test(expr)
+    ) {
       // Reciprocal inverse functions are rewritten into these primitives
-      // inside a larger expression (e.g. asech(2) -> acosh(1/2)).
+      // inside a larger scalar expression (e.g. asech(2) -> acosh(1/2)).
+      // Structured calculus calls are routed below and must not be sent
+      // to compileNumeric as opaque functions named limit/integral.
       const value = compileNumeric(expr, "__domain_guard__")(0);
       if (!Number.isFinite(value)) {
         throw { code: ErrorCode.DOMAIN_ERROR, message: "El resultado no está definido en el dominio real." } as AppError;
