@@ -439,6 +439,45 @@ function handleSolveAlgebra(
  * muestra directamente sin pasar por toLatex()/toFractionResult() (que
  * esperan sintaxis de Algebrite, no una descripción de intervalo).
  */
+function trySimpleMonotonicInequality(
+  diff: string,
+  operator: InequalityOperator,
+  variable: string,
+): { resultText: string; steps: { id: string; latex: string; explanation: string }[] } | null {
+  if (variable !== "x") return null;
+  const match = diff.match(/^\\((arctan|sinh|asinh|tanh|atanh)\\((.*)\\)\\)-\\((.*)\\)$/);
+  if (!match) return null;
+  const [, fn, arg, rhs] = match;
+  let target: number;
+  try { target = compileNumeric(rhs, "__ineq_constant__")(0); } catch { return null; }
+  if (!Number.isFinite(target)) return null;
+  let threshold: number;
+  if (fn === "arctan") {
+    if (target <= -Math.PI / 2 || target >= Math.PI / 2) return null;
+    threshold = Math.tan(target);
+  } else if (fn === "sinh") threshold = Math.asinh(target);
+  else if (fn === "asinh") threshold = Math.sinh(target);
+  else if (fn === "tanh") {
+    if (target <= -1 || target >= 1) return null;
+    threshold = Math.atanh(target);
+  } else {
+    threshold = Math.tanh(target);
+    if (arg === "x") {
+      const fmt = (x: number) => Number.isInteger(x) ? String(x) : x.toFixed(6).replace(/0+$/, "").replace(/\\.$/, "");
+      const t = fmt(threshold);
+      const text = operator === ">" ? t + " < x < 1"
+        : operator === ">=" ? t + " <= x < 1"
+          : operator === "<" ? "-1 < x < " + t
+            : "-1 < x <= " + t;
+      return {
+        resultText: text,
+        steps: [{ id: "inverse-monotonic", latex: text, explanation: "Se aplica la función inversa y se intersecta con el dominio real de atanh." }],
+      };
+    }
+  }
+  const transformed = "(" + arg + ")-(" + String(threshold) + ")";
+  return solveInequality(transformed, operator, variable);
+}
 function handleSolveInequality(
   diffAlgebrite: string,
   operator: "<" | ">" | "<=" | ">=",
@@ -446,7 +485,8 @@ function handleSolveInequality(
   requestId: string,
 ): MathResult {
   try {
-    const { resultText, steps } = solveInequality(diffAlgebrite, operator, variable);
+    const monotonic = trySimpleMonotonicInequality(diffAlgebrite, operator, variable);
+    const { resultText, steps } = monotonic ?? solveInequality(diffAlgebrite, operator, variable);
     return {
       success: true,
       resultLatex: `\\text{${resultText}}`,
