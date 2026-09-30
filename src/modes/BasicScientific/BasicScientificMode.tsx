@@ -55,7 +55,7 @@ function extractIntervalRestriction(source: string): {
   upperInclusive: boolean;
 } | null {
   const match = source.trim().match(
-    /^(.*?),\s*\\quad\s*x\\in\s*(?:\\left\s*)?([\\[(])\s*(.+?)\s*,\s*(.+?)\s*(?:\\right\s*)?([\\])])\s*$/s,
+    /^(.*?),\s*\\quad\s*x\\in\s*(?:\\left\s*)?(\[|\()\s*(.+?)\s*,\s*(.+?)\s*(?:\\right\s*)?(\]|\))\s*$/s,
   );
   if (!match) return null;
   return {
