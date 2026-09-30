@@ -119,6 +119,41 @@ function unwrapOperatorNames(input: string): string {
   );
 }
 
+function rewriteDifferentialNumeratorIntegral(input: string): string | null {
+  const prefix = input.match(/^\\int\s*\\frac\{d([a-zA-Z])\}\{/);
+  if (!prefix) return null;
+  const variable = prefix[1];
+  const openIndex = prefix[0].length - 1;
+  let depth = 1;
+  let cursor = openIndex + 1;
+  while (cursor < input.length && depth > 0) {
+    if (input[cursor] === "{") depth++;
+    else if (input[cursor] === "}") depth--;
+    cursor++;
+  }
+  if (depth !== 0) return null;
+  const denominator = input.slice(openIndex + 1, cursor - 1).trim();
+  if (!denominator) return null;
+  const suffix = input.slice(cursor).trim();
+  if (suffix && !/^,\s*(?:\\quad\s*)?(?:\\\s*)?(?:\\lvert\s*[A-Za-z]\s*\\rvert|[A-Za-z])\s*[<>]=?.*$/s.test(suffix)) return null;
+  return "integral(((1)/(" + denominator + "))," + variable + ")";
+}
+
+function insertImplicitMultiplicationBeforeFunctions(input: string): string {
+  const names = [...BARE_FUNCTION_NAMES].sort((a, b) => b.length - a.length);
+  let out = "";
+  let i = 0;
+  while (i < input.length) {
+    const fn = names.find((name) => input.startsWith(name + "(", i));
+    if (!fn) { out += input[i++]; continue; }
+    const prev = out[out.length - 1] ?? "";
+    if (/[A-Za-z0-9)]/.test(prev)) out += "*";
+    out += fn;
+    i += fn.length;
+  }
+  return out;
+}
+
 function rewriteBareFunctionApplications(input: string): string {
   let out = "";
   let i = 0;
@@ -322,13 +357,8 @@ export function preprocessLatex(latex: string): string {
   // Matriz trigonométrica: differential numerator before generic frac
   // lowering. Example: \\int\\frac{dx}{1+x^2} -> integral(1/(1+x^2),x).
   {
-    const differentialNumerator = expr.match(
-      /^\\int\s*\\frac\{d([a-zA-Z])\}\{([^{}]+)\}\s*$/s,
-    );
-    if (differentialNumerator) {
-      const [, variable, denominator] = differentialNumerator;
-      expr = `integral(((1)/(${denominator})),${variable})`;
-    }
+    const differentialNumerator = rewriteDifferentialNumeratorIntegral(expr);
+    if (differentialNumerator !== null) expr = differentialNumerator;
   }
 
   // Matriz trigonométrica: forma habitual d/dx seguida directamente por
@@ -688,10 +718,7 @@ export function preprocessLatex(latex: string): string {
     ;
 
   expr = rewriteBareFunctionApplications(expr);
-  expr = expr.replace(
-    /\)(?=(?:arccos|arcsin|arctan|arccot|arcsec|arccsc|asinh|acosh|atanh|acsch|asech|acoth|sinh|cosh|tanh|csch|sech|coth|sin|cos|tan|csc|sec|cot|ln)\()/g,
-    ")*",
-  );
+  expr = insertImplicitMultiplicationBeforeFunctions(expr);
   expr = expr.replace(/\s+/g, "");
 
   return expr;
