@@ -45,11 +45,216 @@ function satisfiesOperator(sign: number, operator: InequalityOperator): boolean 
   }
 }
 
+function gcdInt(a: number, b: number): number {
+  a = Math.abs(Math.trunc(a));
+  b = Math.abs(Math.trunc(b));
+  while (b !== 0) [a, b] = [b, a % b];
+  return a || 1;
+}
+
+function formatBoundedValue(value: number): string {
+  if (Math.abs(value) < 1e-9) return "0";
+  const ratio = value / Math.PI;
+  for (let denominator = 1; denominator <= 24; denominator++) {
+    const numerator = Math.round(ratio * denominator);
+    if (Math.abs(ratio - numerator / denominator) < 1e-7) {
+      const g = gcdInt(numerator, denominator);
+      const n = numerator / g;
+      const d = denominator / g;
+      if (d === 1) {
+        if (n === 1) return "π";
+        if (n === -1) return "-π";
+        return `${n}π`;
+      }
+      if (n === 1) return `π/${d}`;
+      if (n === -1) return `-π/${d}`;
+      return `${n}π/${d}`;
+    }
+  }
+  return Number(value.toFixed(8)).toString();
+}
+
+function findNumericRoots(
+  fn: (x: number) => number,
+  lower: number,
+  upper: number,
+): number[] {
+  const roots: number[] = [];
+  const add = (x: number) => {
+    if (!Number.isFinite(x) || x < lower - 1e-8 || x > upper + 1e-8) return;
+    if (!roots.some((r) => Math.abs(r - x) < 1e-6)) roots.push(x);
+  };
+  const samples = 4096;
+  let px = lower;
+  let py = fn(px);
+  if (Number.isFinite(py) && Math.abs(py) < 1e-10) add(px);
+
+  for (let i = 1; i <= samples; i++) {
+    const x = lower + ((upper - lower) * i) / samples;
+    const y = fn(x);
+    if (Number.isFinite(y) && Math.abs(y) < 1e-10) add(x);
+
+    if (Number.isFinite(py) && Number.isFinite(y) && py * y < 0) {
+      let lo = px;
+      let hi = x;
+      let flo = py;
+      for (let step = 0; step < 60; step++) {
+        const mid = (lo + hi) / 2;
+        const fm = fn(mid);
+        if (!Number.isFinite(fm)) break;
+        if (Math.abs(fm) < 1e-12) {
+          lo = hi = mid;
+          break;
+        }
+        if (flo * fm <= 0) {
+          hi = mid;
+        } else {
+          lo = mid;
+          flo = fm;
+        }
+      }
+      const root = (lo + hi) / 2;
+      const residual = fn(root);
+      if (Number.isFinite(residual) && Math.abs(residual) < 1e-6) add(root);
+    }
+    px = x;
+    py = y;
+  }
+  return roots.sort((a, b) => a - b);
+}
+
+function knownTrigPoles(diff: string, lower: number, upper: number): number[] {
+  const poles: number[] = [];
+  const addFamily = (offset: number, period: number) => {
+    const kMin = Math.floor((lower - offset) / period) - 1;
+    const kMax = Math.ceil((upper - offset) / period) + 1;
+    for (let k = kMin; k <= kMax; k++) {
+      const x = offset + k * period;
+      if (x > lower + 1e-9 && x < upper - 1e-9) poles.push(x);
+    }
+  };
+
+  // tan/sec => cos(x)=0. csc/cot => sin(x)=0.
+  if (/\btan\(x\)|1\/cos\(x\)/.test(diff)) addFamily(Math.PI / 2, Math.PI);
+  if (/1\/sin\(x\)|1\/tan\(x\)/.test(diff)) addFamily(0, Math.PI);
+
+  poles.sort((a, b) => a - b);
+  return poles.filter((x, i) => i === 0 || Math.abs(x - poles[i - 1]) > 1e-7);
+}
+
+function solveBoundedInequality(
+  diffAlgebrite: string,
+  operator: InequalityOperator,
+  variable: string,
+  lower: number,
+  upper: number,
+  lowerInclusive: boolean,
+  upperInclusive: boolean,
+): InequalityResult {
+  const a = Math.min(lower, upper);
+  const b = Math.max(lower, upper);
+  const fn = compileNumeric(diffAlgebrite, variable);
+  const roots = findNumericRoots(fn, a, b);
+  const poles = knownTrigPoles(diffAlgebrite, a, b);
+  const boundaries = [
+    { value: a, kind: "domain" as const },
+    ...roots.map((value) => ({ value, kind: "root" as const })),
+    ...poles.map((value) => ({ value, kind: "pole" as const })),
+    { value: b, kind: "domain" as const },
+  ]
+    .sort((x, y) => x.value - y.value)
+    .filter((entry, i, arr) => i === 0 || Math.abs(entry.value - arr[i - 1].value) > 1e-7);
+
+  type Segment = { lower: number; upper: number; lowerClosed: boolean; upperClosed: boolean };
+  const segments: Segment[] = [];
+
+  for (let i = 0; i < boundaries.length - 1; i++) {
+    const left = boundaries[i];
+    const right = boundaries[i + 1];
+    if (right.value - left.value < 1e-10) continue;
+    const mid = (left.value + right.value) / 2;
+    const v = fn(mid);
+    if (!Number.isFinite(v) || !satisfiesOperator(v > 1e-9 ? 1 : v < -1e-9 ? -1 : 0, operator)) {
+      continue;
+    }
+
+    const leftIsRoot = left.kind === "root";
+    const rightIsRoot = right.kind === "root";
+    segments.push({
+      lower: left.value,
+      upper: right.value,
+      lowerClosed:
+        left.kind === "domain"
+          ? (Math.abs(left.value - lower) < 1e-8 ? lowerInclusive : upperInclusive)
+          : leftIsRoot && (operator === "<=" || operator === ">="),
+      upperClosed:
+        right.kind === "domain"
+          ? (Math.abs(right.value - upper) < 1e-8 ? upperInclusive : lowerInclusive)
+          : rightIsRoot && (operator === "<=" || operator === ">="),
+    });
+  }
+
+  // Inclusive roots can be isolated when neither adjacent open interval holds.
+  if (operator === "<=" || operator === ">=") {
+    for (const root of roots) {
+      const alreadyCovered = segments.some((s) => root >= s.lower - 1e-8 && root <= s.upper + 1e-8);
+      if (!alreadyCovered) segments.push({ lower: root, upper: root, lowerClosed: true, upperClosed: true });
+    }
+  }
+
+  segments.sort((x, y) => x.lower - y.lower);
+  if (segments.length === 0) {
+    return { resultText: "No tiene solución real.", steps: [] };
+  }
+
+  const parts = segments.map((s) => {
+    if (Math.abs(s.lower - s.upper) < 1e-8) return `${variable} = ${formatBoundedValue(s.lower)}`;
+    return `${s.lowerClosed ? "[" : "("}${formatBoundedValue(s.lower)}, ${formatBoundedValue(s.upper)}${s.upperClosed ? "]" : ")"}`;
+  });
+
+  return {
+    resultText: parts.join(" ∪ "),
+    steps: [
+      {
+        id: "bounded-roots",
+        latex: `${diffAlgebrite} = 0`,
+        explanation: "Se identifican raíces y discontinuidades dentro del intervalo indicado.",
+      },
+      {
+        id: "bounded-signs",
+        latex: parts.join(" \\cup "),
+        explanation: "Se prueba el signo en cada tramo delimitado por raíces, polos y extremos del dominio.",
+      },
+    ],
+  };
+}
+
 export function solveInequality(
   diffAlgebrite: string,
   operator: InequalityOperator,
   variable: string,
+  domainLower?: number,
+  domainUpper?: number,
+  domainLowerInclusive = true,
+  domainUpperInclusive = true,
 ): InequalityResult {
+  if (
+    domainLower !== undefined &&
+    domainUpper !== undefined &&
+    Number.isFinite(domainLower) &&
+    Number.isFinite(domainUpper)
+  ) {
+    return solveBoundedInequality(
+      diffAlgebrite,
+      operator,
+      variable,
+      domainLower,
+      domainUpper,
+      domainLowerInclusive,
+      domainUpperInclusive,
+    );
+  }
+
   let rootsRaw: string[];
   try {
     rootsRaw = solveEquation(diffAlgebrite, variable);
