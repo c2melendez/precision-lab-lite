@@ -407,7 +407,7 @@ function tryBoundedNumericEquation(
     const x = a + ((b - a) * i) / samples;
     const y = f(x);
 
-    if (Number.isFinite(y) && Math.abs(y) < 1e-7) addRoot(x);
+    if (Number.isFinite(y) && Math.abs(y) < 1e-10) addRoot(x);
 
     if (Number.isFinite(prevY) && Number.isFinite(y) && prevY * y < 0) {
       let lo = prevX;
@@ -437,7 +437,7 @@ function tryBoundedNumericEquation(
     if (i > 1 && Number.isFinite(prevY) && Number.isFinite(y)) {
       const mid = (prevX + x) / 2;
       const fm = f(mid);
-      if (Number.isFinite(fm) && Math.abs(fm) < 1e-6) addRoot(mid);
+      if (Number.isFinite(fm) && Math.abs(fm) < 1e-10) addRoot(mid);
     }
 
     prevX = x;
