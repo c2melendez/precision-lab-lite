@@ -493,7 +493,21 @@ function trySimpleTranscendentalEquation(
   if (fn === "arccot" && (target <= eps || target >= Math.PI - eps)) return { noReal: true };
   if (fn === "sech" && (target <= eps || target > 1 + eps)) return { noReal: true };
   if (fn === "acoth" && Math.abs(target) <= eps) return { noReal: true };
-  const simplify = (expr: string): string => { try { return evaluate(expr); } catch { return expr; } };
+  const simplify = (expr: string): string => {
+    try {
+      const symbolic = evaluate(expr);
+      if (symbolic && !/NaN/i.test(symbolic)) return symbolic;
+    } catch {
+      // Fall through to the local numeric evaluator.
+    }
+    try {
+      const numeric = compileNumeric(expr, "__equation_constant__")(0);
+      if (Number.isFinite(numeric)) return String(numeric);
+    } catch {
+      // Keep the original expression as a last-resort symbolic value.
+    }
+    return expr;
+  };
   if (fn === "sin" || fn === "cos" || fn === "sec") return null;
   if (fn === "arcsec") return { values: [simplify("1/cos(" + right + ")")] };
   if (fn === "arccsc") return { values: [simplify("1/sin(" + right + ")")] };
