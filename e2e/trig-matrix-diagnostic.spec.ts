@@ -44,6 +44,14 @@ async function ensureDegreeMode(page, wantDegree) {
   return false;
 }
 
+function normalizeMatrixExercise(value) {
+  const raw = String(value ?? "").trim();
+  const code = raw.match(/`([^`]*)`/);
+  return (code ? code[1] : raw)
+    .replace(/^\s*`|`\s*$/g, "")
+    .trim();
+}
+
 function delayFor(id) {
   if (/^(IT|ID|LM|DV)-/.test(id)) return 1900;
   if (/^CL-0[1-5]$/.test(id)) return 1900;
@@ -79,7 +87,7 @@ test.describe("Trig matrix diagnostic " + ENGINE, () => {
         let output = "";
         let error = "";
         try {
-          await setExpression(page, item.exercise);
+          await setExpression(page, normalizeMatrixExercise(item.exercise));
           const calculate = page.getByRole("region", { name: "Entrada", exact: true })
             .getByRole("button", { name: /calcular|evaluar/i }).first();
           await expect(calculate).toBeEnabled({ timeout: 5000 });
