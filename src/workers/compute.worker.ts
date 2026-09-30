@@ -675,6 +675,13 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       if (!Number.isFinite(argValue) || invalid) {
         throw { code: ErrorCode.DOMAIN_ERROR, message: "El resultado no está definido en el dominio real." } as AppError;
       }
+    } else if (/\b(arcsin|arccos|acosh|atanh)\(/.test(expr)) {
+      // Reciprocal inverse functions are rewritten into these primitives
+      // inside a larger expression (e.g. asech(2) -> acosh(1/2)).
+      const value = compileNumeric(expr, "__domain_guard__")(0);
+      if (!Number.isFinite(value)) {
+        throw { code: ErrorCode.DOMAIN_ERROR, message: "El resultado no está definido en el dominio real." } as AppError;
+      }
     }
 
     const inlineIntegral = expr.match(/^integral\((.*)\)$/s);
