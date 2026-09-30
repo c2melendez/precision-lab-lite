@@ -25,4 +25,4 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Run trig matrix only
-        run: npx playwright test e2e/trig-matrix-diagnostic.spec.ts --project=desktop-chromium --workers=4
+        run: npx playwright test e2e/trig-matrix-diagnostic.spec.ts --project=desktop-chromium --workers=2
