@@ -339,6 +339,12 @@ describe("Matriz trigonométrica — segunda ronda", () => {
     expect(parseExpression("\\int\\frac{dx}{1+x^{2}}").algebrite).toContain("integral");
   });
 
+  it("normaliza hiperbólicas directas como funciones atómicas", () => {
+    expect(parseExpression("\\sinh(1)").algebrite.replace(/\\s+/g, "")).toBe("sinh(1)");
+    expect(parseExpression("\\cosh(1)").algebrite.replace(/\\s+/g, "")).toBe("cosh(1)");
+    expect(parseExpression("\\tanh(1)").algebrite.replace(/\\s+/g, "")).toBe("tanh(1)");
+  });
+
   it("acepta integrales definidas con dx en el numerador y límites compuestos", () => {
     const finite = parseExpression("\\int_{0}^{1/2}\\frac{dx}{\\sqrt{1-x^{2}}}").algebrite;
     expect(finite).toContain("defintegral");
