@@ -180,16 +180,28 @@ function solveBoundedInequality(
 
     const leftIsRoot = left.kind === "root";
     const rightIsRoot = right.kind === "root";
+    const boundaryHolds = (value: number): boolean => {
+      const evaluated = fn(value);
+      if (!Number.isFinite(evaluated)) return false;
+      const sign = evaluated > 1e-9 ? 1 : evaluated < -1e-9 ? -1 : 0;
+      return satisfiesOperator(sign, operator);
+    };
+
+    const leftDomainInclusive =
+      Math.abs(left.value - lower) < 1e-8 ? lowerInclusive : upperInclusive;
+    const rightDomainInclusive =
+      Math.abs(right.value - upper) < 1e-8 ? upperInclusive : lowerInclusive;
+
     segments.push({
       lower: left.value,
       upper: right.value,
       lowerClosed:
         left.kind === "domain"
-          ? (Math.abs(left.value - lower) < 1e-8 ? lowerInclusive : upperInclusive)
+          ? leftDomainInclusive && boundaryHolds(left.value)
           : leftIsRoot && (operator === "<=" || operator === ">="),
       upperClosed:
         right.kind === "domain"
-          ? (Math.abs(right.value - upper) < 1e-8 ? upperInclusive : lowerInclusive)
+          ? rightDomainInclusive && boundaryHolds(right.value)
           : rightIsRoot && (operator === "<=" || operator === ">="),
     });
   }
