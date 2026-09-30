@@ -18,7 +18,11 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      - name: Install app dependencies
+        run: npm ci
+      - name: Install Playwright test runner
+        run: npm install --no-save --package-lock=false @playwright/test@1.63.0 @axe-core/playwright@4.13.0
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
       - name: Run trig matrix only
         run: npx playwright test e2e/trig-matrix-diagnostic.spec.ts --project=desktop-chromium --workers=4
