@@ -519,9 +519,23 @@ function trySimpleTranscendentalEquation(
     return { values: ["-(" + p + ")", p] };
   }
   if (fn === "acoth") {
-    // coth(y) = (e^(2y)+1)/(e^(2y)-1). Algebrite's tanh/log path can
-    // return NaN for exact logarithmic targets such as y=ln(2), while
-    // this equivalent form simplifies exactly to 5/3.
+    // coth(log(n)) = (n^2+1)/(n^2-1), so preserve exact rational output
+    // for common symbolic targets such as arcoth(x)=ln(2) -> x=5/3.
+    const logInteger = right.match(/^log\\((\\d+)\\)$/);
+    if (logInteger) {
+      const n = Number(logInteger[1]);
+      const numerator = n * n + 1;
+      const denominator = n * n - 1;
+      if (denominator !== 0) {
+        const gcd = (a: number, b: number): number => {
+          a = Math.abs(a); b = Math.abs(b);
+          while (b) [a, b] = [b, a % b];
+          return a || 1;
+        };
+        const g = gcd(numerator, denominator);
+        return { values: [`${numerator / g}/${denominator / g}`] };
+      }
+    }
     return { values: [simplify("(exp(2*(" + right + "))+1)/(exp(2*(" + right + "))-1)")] };
   }
   if (fn === "arcsin") return { values: [simplify("sin(" + right + ")")] };
@@ -916,10 +930,13 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
     // funciones de estadística (Algebrite nunca la ve tal cual).
     const definiteIntegralResult = tryDefiniteIntegral(expr);
     if (definiteIntegralResult !== null) {
+      const isNumericDefinite =
+        /^-?\\d+(?:\\.\\d+)?$/.test(definiteIntegralResult)
+        || /^-?\\d+\\/\\d+$/.test(definiteIntegralResult);
       return {
         success: true,
         resultLatex: toLatex(definiteIntegralResult),
-        fraction: toFractionResult(definiteIntegralResult),
+        fraction: isNumericDefinite ? toFractionResult(definiteIntegralResult) : undefined,
         steps: [],
         hasDetailedSteps: false,
         confidence: "NUMERIC_FALLBACK",
