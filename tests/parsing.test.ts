@@ -339,6 +339,16 @@ describe("Matriz trigonométrica — segunda ronda", () => {
     expect(parseExpression("\\int\\frac{dx}{1+x^{2}}").algebrite).toContain("integral");
   });
 
+  it("acepta integrales definidas con dx en el numerador y límites compuestos", () => {
+    const finite = parseExpression("\\int_{0}^{1/2}\\frac{dx}{\\sqrt{1-x^{2}}}").algebrite;
+    expect(finite).toContain("defintegral");
+    expect(finite).not.toContain("\\");
+
+    const improper = parseExpression("\\int_{0}^{\\infty}\\frac{dx}{1+x^{2}}").algebrite;
+    expect(improper).toContain("defintegral");
+    expect(improper).not.toContain("\\");
+  });
+
   it("ignora condiciones de dominio posteriores a la integral", () => {
     const parsed = parseExpression("\\int\\operatorname{arcosh}x\\,dx,\\ x>1").algebrite;
     expect(parsed).toContain("integral");
