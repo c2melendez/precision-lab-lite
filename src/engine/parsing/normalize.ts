@@ -180,6 +180,14 @@ function rewriteBareFunctionApplications(input: string): string {
     if (input[cursor] === "(") { out += input.slice(i, cursor); i = cursor; continue; }
     const whitespaceStart = cursor;
     while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
+    // MathLive/operatorname can leave whitespace before an argument that
+    // is already parenthesized (for example "acosh (x)"). Preserve that
+    // existing call instead of wrapping it again as acosh((x)).
+    if (input[cursor] === "(" && !power) {
+      out += fn;
+      i = cursor;
+      continue;
+    }
     if (cursor === whitespaceStart && !power) { out += input.slice(i, cursor); i = cursor; continue; }
     const argStart = cursor;
     let depth = 0;
