@@ -622,15 +622,32 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       };
     }
 
-    // Algebrite can approximate exact poles such as tan(pi/2) or
-    // sec(pi/2)=1/cos(pi/2) to huge finite values. Treat exact cosine
-    // zeros as domain errors instead of presenting a misleading number.
+    // Domain guard for numeric real-valued functions. Use the local
+    // numeric evaluator instead of Algebrite's float() text because the
+    // latter may return values suffixed with "..." (e.g. 1.570796...),
+    // which Number() cannot parse and previously let tan(pi/2) escape.
     const poleMatch = expr.match(/^(?:tan\((.*)\)|\(1\/cos\((.*)\)\))$/s);
     if (poleMatch) {
       const arg = poleMatch[1] ?? poleMatch[2];
-      const angle = Number(evaluate(`float(${arg})`));
+      const angle = compileNumeric(arg, "__domain_guard__")(0);
       if (Number.isFinite(angle) && Math.abs(Math.cos(angle)) < 1e-12) {
         throw { code: ErrorCode.DOMAIN_ERROR, message: "La función no está definida en ese punto." } as AppError;
+      }
+    }
+
+    // For concrete numeric inputs, inverse functions must respect the real
+    // domain contract of the scientific calculator instead of returning an
+    // unevaluated symbolic call that looks like a valid result.
+    const realDomainFn = expr.match(/^(arcsin|arccos|acosh|atanh)\((.*)\)$/s);
+    if (realDomainFn) {
+      const [, fnName, argExpr] = realDomainFn;
+      const argValue = compileNumeric(argExpr, "__domain_guard__")(0);
+      const invalid =
+        ((fnName === "arcsin" || fnName === "arccos") && Math.abs(argValue) > 1) ||
+        (fnName === "acosh" && argValue < 1) ||
+        (fnName === "atanh" && Math.abs(argValue) >= 1);
+      if (!Number.isFinite(argValue) || invalid) {
+        throw { code: ErrorCode.DOMAIN_ERROR, message: "El resultado no está definido en el dominio real." } as AppError;
       }
     }
 
