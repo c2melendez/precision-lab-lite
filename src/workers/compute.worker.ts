@@ -322,20 +322,46 @@ function trySimpleTranscendentalEquation(
   left: string, right: string, variable: string,
 ): { values?: string[]; noReal?: boolean } | null {
   if (variable !== "x" || /\\bx\\b/.test(right)) return null;
-  const match = left.match(/^(arcsin|arccos|arctan|asinh|acosh|atanh|sinh|cosh|tanh)\\(x\\)$/);
-  if (!match) return null;
+  const match = left.match(/^(sin|cos|arcsin|arccos|arctan|asinh|acosh|atanh|sinh|cosh|tanh)\\(x\\)$/);
+  const reciprocalKind =
+    left === "(arccos(1/(x)))" ? "arcsec"
+      : left === "(arcsin(1/(x)))" ? "arccsc"
+        : left === "((pi/2)-arctan(x))" ? "arccot"
+          : left === "(1/cosh(x))" ? "sech"
+            : left === "(atanh(1/(x)))" ? "acoth"
+              : left === "(1/cos(x))" ? "sec"
+                : null;
+  if (!match && !reciprocalKind) return null;
   let target: number;
   try { target = compileNumeric(right, "__equation_constant__")(0); } catch { return null; }
   if (!Number.isFinite(target)) return null;
-  const fn = match[1];
+  const fn = match?.[1] ?? reciprocalKind!;
   const eps = 1e-12;
+  if ((fn === "sin" || fn === "cos") && Math.abs(target) > 1 + eps) return { noReal: true };
+  if (fn === "sec" && (Math.abs(target) < 1 - eps || Math.abs(target) <= eps)) return { noReal: true };
   if (fn === "arcsin" && (target < -Math.PI / 2 - eps || target > Math.PI / 2 + eps)) return { noReal: true };
   if (fn === "arccos" && (target < -eps || target > Math.PI + eps)) return { noReal: true };
   if (fn === "arctan" && (target <= -Math.PI / 2 + eps || target >= Math.PI / 2 - eps)) return { noReal: true };
   if (fn === "acosh" && target < -eps) return { noReal: true };
   if (fn === "tanh" && Math.abs(target) >= 1 - eps) return { noReal: true };
   if (fn === "cosh" && target < 1 - eps) return { noReal: true };
+  if (fn === "arcsec" && (target < -eps || target > Math.PI + eps || Math.abs(Math.cos(target)) <= eps)) return { noReal: true };
+  if (fn === "arccsc" && (target < -Math.PI / 2 - eps || target > Math.PI / 2 + eps || Math.abs(Math.sin(target)) <= eps)) return { noReal: true };
+  if (fn === "arccot" && (target <= eps || target >= Math.PI - eps)) return { noReal: true };
+  if (fn === "sech" && (target <= eps || target > 1 + eps)) return { noReal: true };
+  if (fn === "acoth" && Math.abs(target) <= eps) return { noReal: true };
   const simplify = (expr: string): string => { try { return evaluate(expr); } catch { return expr; } };
+  if (fn === "sin" || fn === "cos" || fn === "sec") return null;
+  if (fn === "arcsec") return { values: [simplify("1/cos(" + right + ")")] };
+  if (fn === "arccsc") return { values: [simplify("1/sin(" + right + ")")] };
+  if (fn === "arccot") return { values: [simplify("tan((pi/2)-(" + right + "))")] };
+  if (fn === "sech") {
+    const reciprocal = "1/(" + right + ")";
+    const p = simplify("log((" + reciprocal + ")+sqrt((" + reciprocal + ")^2-1))");
+    if (Math.abs(target - 1) <= eps) return { values: ["0"] };
+    return { values: ["-(" + p + ")", p] };
+  }
+  if (fn === "acoth") return { values: [simplify("1/tanh(" + right + ")")] };
   if (fn === "arcsin") return { values: [simplify("sin(" + right + ")")] };
   if (fn === "arccos") return { values: [simplify("cos(" + right + ")")] };
   if (fn === "arctan") return { values: [simplify("tan(" + right + ")")] };
