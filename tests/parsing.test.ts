@@ -315,3 +315,33 @@ describe("Matriz trigonométrica — notación natural ampliada", () => {
     expect(parsed).toContain("d((arcsin(x)),x)");
   });
 });
+
+
+describe("Matriz trigonométrica — segunda ronda", () => {
+  it("no cuenta pi como variable libre en ecuaciones", () => {
+    const parsed = parseExpression("\\arcsin x=\\frac{\\pi}{6}");
+    expect(parsed.freeVariables).toEqual(["x"]);
+  });
+
+  it("acepta potencias de función sin paréntesis explícitos", () => {
+    expect(parseExpression("\\sin^{2}x").algebrite).toContain("sin(x)^(2)");
+    expect(parseExpression("\\cosh^{2}x-\\sinh^{2}x").algebrite).toContain("cosh(x)^(2)");
+  });
+
+  it("separa productos de funciones adyacentes", () => {
+    const parsed = parseExpression("\\sinh x\\cosh x").algebrite;
+    expect(parsed).toContain("sinh(x)");
+    expect(parsed).toContain("cosh(x)");
+    expect(parsed).not.toContain("sinh(xcosh");
+  });
+
+  it("acepta integrales con el diferencial en el numerador", () => {
+    expect(parseExpression("\\int\\frac{dx}{1+x^{2}}").algebrite).toContain("integral");
+  });
+
+  it("ignora condiciones de dominio posteriores a la integral", () => {
+    const parsed = parseExpression("\\int\\operatorname{arcosh}x\\,dx,\\ x>1").algebrite;
+    expect(parsed).toContain("integral");
+    expect(parsed).not.toContain(">");
+  });
+});
