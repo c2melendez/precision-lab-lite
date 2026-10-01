@@ -355,6 +355,23 @@ export function fastAntiderivative(
 
 export function calcIndefiniteIntegral(exprAlgebrite: string, variable: string): CalculusResult {
   const originalExpr = exprAlgebrite;
+
+  const exactDefinite = fastDefiniteIntegralIdentity(originalExpr, variable, lower, upper);
+  if (exactDefinite !== null) {
+    return {
+      resultLatex: exactDefinite,
+      confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: `\\int_{${lower}}^{${upper}} ${originalExpr}\\,d${variable}`, explanation: "Integral definida planteada." },
+        {
+          id: "identity",
+          latex: exactDefinite,
+          explanation: "Se aplicó la identidad exacta de la integral log-seno por simetría y ángulo doble; no se fabrica una primitiva elemental.",
+        },
+      ],
+    };
+  }
+
   const fast = fastAntiderivative(originalExpr, variable);
   if (fast !== null) {
     return {
@@ -383,6 +400,48 @@ export function calcIndefiniteIntegral(exprAlgebrite: string, variable: string):
       { id: "result", latex: `${result} + C`, explanation: "Antiderivada calculada simbólicamente (+ constante de integración)." },
     ],
   };
+}
+
+export function fastDefiniteIntegralIdentity(
+  exprAlgebrite: string,
+  variable: string,
+  lower: number,
+  upper: number,
+): string | null {
+  if (variable !== "x") return null;
+
+  const canonical = exprAlgebrite.replace(/\s+/g, "");
+  const target = "ln(sin(x))";
+  let coefficientText = "1";
+
+  if (canonical === target) {
+    coefficientText = "1";
+  } else if (canonical === "-" + target) {
+    coefficientText = "-1";
+  } else if (canonical.endsWith("*" + target)) {
+    coefficientText = canonical.slice(0, -(target.length + 1));
+    try {
+      const coefficient = compileNumeric(coefficientText, "__log_sine_coeff__")(0);
+      if (!Number.isFinite(coefficient)) return null;
+    } catch {
+      return null;
+    }
+  } else {
+    return null;
+  }
+
+  const eps = 1e-10;
+  const forward = Math.abs(lower) <= eps && Math.abs(upper - Math.PI / 2) <= eps;
+  const reverse = Math.abs(upper) <= eps && Math.abs(lower - Math.PI / 2) <= eps;
+  if (!forward && !reverse) return null;
+
+  const orientation = forward ? -1 : 1;
+  const raw = String(orientation) + "*(" + coefficientText + ")*pi*ln(2)/2";
+  try {
+    return evaluate(raw);
+  } catch {
+    return raw;
+  }
 }
 
 export function calcDefiniteIntegral(
