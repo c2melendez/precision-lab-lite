@@ -3,7 +3,9 @@ name: Trig Matrix Diagnostic
 concurrency:
   group: trig-matrix-${{ github.ref }}
   cancel-in-progress: true
-# Post-parser trig matrix recertification 2026-09-29
+# Post-parser trig matrix recertification 2026-10-01.
+# pull_request is intentionally limited to the QA recertification branch so
+# connector-visible PR runs can be inspected without changing product code.
 
 on:
   push:
@@ -11,6 +13,10 @@ on:
     paths:
       - "src/**"
       - "e2e/trig-matrix-diagnostic.spec.ts"
+      - ".github/workflows/trig-matrix-diagnostic.yml"
+  pull_request:
+    branches: [qa/s26-execution]
+    paths:
       - ".github/workflows/trig-matrix-diagnostic.yml"
   workflow_dispatch:
 
