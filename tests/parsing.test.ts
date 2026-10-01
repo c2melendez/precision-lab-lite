@@ -9,7 +9,6 @@ import { ErrorCode } from "../src/types";
 describe("parseExpression", () => {
   it("B7: valor absoluto trigonométrico conserva abs(...) en desigualdad", () => {
     const parsed = parseExpression("\\lvert\\sin x\\rvert\\ge\\frac{\\sqrt{2}}{2}");
-    console.log("B7_ABS_INEQUALITY_PARSE", JSON.stringify(parsed));
     expect(parsed.isInequality).toBe(true);
     expect(parsed.inequalityOperator).toBe(">=");
     expect(parsed.algebrite).toContain("abs(sin(x))");
