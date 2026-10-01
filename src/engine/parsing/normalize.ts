@@ -209,13 +209,13 @@ function rewriteBareFunctionApplications(input: string): string {
       return !/[A-Za-z]/.test(prev);
     });
     if (!fn) { out += input[i++]; continue; }
-    let cursor = i + fn.length;
-    let power = "";
 
-    // \operatorname{sech}^{2}x is unwrapped as " sech ^(2)x": there may
-    // be harmless whitespace between the function name and its exponent.
-    // Look through it BEFORE deciding whether a function power exists.
+    const afterName = i + fn.length;
+    let cursor = afterName;
     while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
+    const hadWhitespaceAfterName = cursor > afterName;
+
+    let power = "";
     if (input.startsWith("^(", cursor)) {
       let depth = 1;
       let j = cursor + 2;
@@ -230,18 +230,22 @@ function rewriteBareFunctionApplications(input: string): string {
         while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
       }
     }
-    if (input[cursor] === "(" && !power) { out += fn; i = cursor; continue; }
-    const whitespaceStart = cursor;
-    while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
-    // MathLive/operatorname can leave whitespace before an argument that
-    // is already parenthesized (for example "acosh (x)"). Preserve that
-    // existing call instead of wrapping it again as acosh((x)).
+
+    // Already a normal function call such as sin(x) or acosh (x).
     if (input[cursor] === "(" && !power) {
       out += fn;
       i = cursor;
       continue;
     }
-    if (cursor === whitespaceStart && !power) { out += input.slice(i, cursor); i = cursor; continue; }
+
+    // No whitespace, no power, and no existing call => this occurrence is
+    // not a bare function application; preserve it verbatim.
+    if (!hadWhitespaceAfterName && !power) {
+      out += input.slice(i, afterName);
+      i = afterName;
+      continue;
+    }
+
     const argStart = cursor;
     let depth = 0;
     let seen = false;
@@ -259,8 +263,13 @@ function rewriteBareFunctionApplications(input: string): string {
       if (!/\s/.test(ch)) seen = true;
       cursor++;
     }
+
     const arg = input.slice(argStart, cursor).trim();
-    if (!arg) { out += fn; i += fn.length; continue; }
+    if (!arg) {
+      out += input.slice(i, afterName);
+      i = afterName;
+      continue;
+    }
     const call = fn + "(" + arg + ")";
     out += power ? "(" + call + ")^(" + power + ")" : call;
     i = cursor;
