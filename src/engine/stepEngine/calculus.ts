@@ -134,6 +134,24 @@ export function calcLimit(
     const { value, converged } = isInfinite
       ? numericLimitAtInfinity(f, pointAlgebrite === "oo" ? 1 : -1)
       : numericLimit(f, pointNumeric, direction);
+    if (Number.isNaN(value)) {
+      throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "No se pudo estimar el límite numéricamente." } as AppError;
+    }
+    if ((value === Infinity || value === -Infinity) && converged) {
+      const infinityText = value > 0 ? "oo" : "-oo";
+      return {
+        resultLatex: infinityText,
+        confidence: "NUMERIC_FALLBACK",
+        steps: [
+          { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+          {
+            id: "numeric",
+            latex: value > 0 ? "\\infty" : "-\\infty",
+            explanation: "La magnitud crece sin cota de forma consistente; el límite diverge a infinito.",
+          },
+        ],
+      };
+    }
     if (!Number.isFinite(value)) {
       throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "No se pudo estimar el límite numéricamente (valores no finitos)." } as AppError;
     }
