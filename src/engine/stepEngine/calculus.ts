@@ -240,12 +240,30 @@ export function fastAntiderivative(
     .replace(/\^\((\d+)\)/g, "^$1")
     .replace(/e\^\(x\)/g, "e^x");
 
-  // Reciprocal hyperbolic squares acquire nested grouping when
-  // parseExpression first lowers sech/csch and then preserves the function
-  // power. Recognize only these exact x-only square forms before the more
-  // general canonicalization below.
-  if (/^\(+1\/cosh\(x\)\)+\^2$/.test(expr)) return "tanh(x)";
-  if (/^\(+1\/sinh\(x\)\)+\^2$/.test(expr)) return "-cosh(x)/sinh(x)";
+  // Reciprocal hyperbolic squares acquire different harmless
+  // grouping depending on whether MathLive serialized "sech^2 x" or
+  // "sech(x)^2". Normalize the BASE only; do not relax arbitrary powers.
+  if (expr.endsWith("^2")) {
+    let base = expr.slice(0, -2);
+    const stripBase = (source: string): string => {
+      for (let pass = 0; pass < 8; pass++) {
+        if (!(source.startsWith("(") && source.endsWith(")"))) break;
+        let depth = 0;
+        let wraps = true;
+        for (let i = 0; i < source.length - 1; i++) {
+          depth += source[i] === "(" ? 1 : source[i] === ")" ? -1 : 0;
+          if (depth === 0) { wraps = false; break; }
+        }
+        if (!wraps || depth !== 1) break;
+        source = source.slice(1, -1);
+      }
+      return source;
+    };
+    base = stripBase(base)
+      .replace(/^1\/\((cosh|sinh)\(x\)\)$/, "1/$1(x)");
+    if (base === "1/cosh(x)") return "tanh(x)";
+    if (base === "1/sinh(x)") return "-cosh(x)/sinh(x)";
+  }
 
   // MathLive/parser can leave harmless grouping around one function or a
   // reciprocal atom, e.g. ((1/cosh(x)))^2 or (arcsin(x))/(sqrt(...)).
