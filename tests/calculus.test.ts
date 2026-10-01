@@ -138,6 +138,22 @@ describe("calcLimit (Fase 3 — infinito y lateral, paridad con la pantalla úni
       2,
     );
   });
+
+  it("clasifica arccos(x) cuando x→1- como 0, no como un pequeño residual finito", () => {
+    const result = calcLimit("arccos(x)", "x", "1", 1, "left");
+    expect(Number(result.resultLatex)).toBeCloseTo(0, 8);
+  });
+
+  it("clasifica atanh(x) cuando x→1- como +infinito", () => {
+    const result = calcLimit("atanh(x)", "x", "1", 1, "left");
+    expect(result.resultLatex).toBe("oo");
+  });
+
+  it("clasifica cosh(x) cuando x→+infinito como +infinito", () => {
+    const result = calcLimit("cosh(x)", "x", "oo", Infinity, "both");
+    expect(result.resultLatex).toBe("oo");
+  });
+
 });
 
 describe("calcDerivative (Fase 3 — orden N sin tope de 3, paridad con la pantalla única)", () => {
