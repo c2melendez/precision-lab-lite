@@ -68,9 +68,9 @@ export function isInverseTrigAngleExpression(input: string): boolean {
   // MathLive puede serializar las teclas inversas como macros LaTeX
   // directas (\\arcsin, \\arctan, ...) o mediante \\operatorname.
   // Estas formas deben activar DD/DMS igual que sus equivalentes ASCII.
-  if (/^\\\\(?:arcsin|arccos|arctan|arcsec|arccsc|arccot)\(.+\)$/.test(value)) return true;
-  if (/^\\\\operatorname\{(?:arcsin|arccos|arctan|arcsec|arccsc|arccot)\}\(.+\)$/.test(value)) return true;
+  if (/^\\(?:arcsin|arccos|arctan|arcsec|arccsc|arccot)\(.+\)$/.test(value)) return true;
+  if (/^\\operatorname\{(?:arcsin|arccos|arctan|arcsec|arccsc|arccot)\}\(.+\)$/.test(value)) return true;
 
   // Notación típica de MathLive para sin^{-1}, cos^{-1}, etc.
-  return /^\\\\(?:sin|cos|tan|sec|csc|cot)\^\{-?1\}\(.+\)$/.test(value);
+  return /^\\(?:sin|cos|tan|sec|csc|cot)\^\{-?1\}\(.+\)$/.test(value);
 }
