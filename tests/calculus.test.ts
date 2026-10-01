@@ -271,6 +271,17 @@ describe("B7 natural inverse hyperbolic integrals", () => {
     });
   }
 
+  it("routes x times arsinh(x) through the exact product identity", () => {
+    const parsed = parseExpression("\\int x\\operatorname{arsinh} x\\,dx").algebrite;
+    const integrand = parsed.slice("integral(".length, -",x)".length);
+    expect(integrand).toBe("(x*asinh(x))");
+    const primitive = fastAntiderivative(integrand, "x");
+    expect(primitive).toBe("((2*x^2+1)/4)*asinh(x)-(x*sqrt(x^2+1))/4");
+    const result = calcIndefiniteIntegral(integrand, "x");
+    expect(result.resultLatex).toContain("asinh(x)");
+    expect(result.resultLatex).not.toContain("xasinh");
+  });
+
   it("keeps grouping inside a sum intact", () => {
     expect(fastAntiderivative("(asinh(x))+(x)", "x")).toBeNull();
   });

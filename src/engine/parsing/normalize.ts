@@ -116,7 +116,10 @@ const BARE_FUNCTION_NAMES = [
 function unwrapOperatorNames(input: string): string {
   return input.replace(
     /\\operatorname\{([^{}]+)\}/g,
-    (_match, name: string) => `${OPERATOR_NAME_ALIASES[name] ?? name} `,
+    // Preserve a lexical boundary on both sides. Without the leading
+    // separator, x\\operatorname{arsinh} x collapsed to "xasinh x"
+    // before the bare-function pass could recognize arsinh as a function.
+    (_match, name: string) => ` ${OPERATOR_NAME_ALIASES[name] ?? name} `,
   );
 }
 
@@ -184,7 +187,11 @@ function insertImplicitMultiplicationBeforeFunctions(input: string): string {
   while (i < input.length) {
     const fn = names.find((name) => input.startsWith(name + "(", i));
     if (!fn) { out += input[i++]; continue; }
-    const prev = out[out.length - 1] ?? "";
+    // Function macros may retain harmless whitespace until the end of
+    // preprocessing. Look through that whitespace when deciding whether
+    // the function follows an operand, otherwise "x asinh(x)" loses the
+    // multiplication when spaces are stripped and becomes "xasinh(x)".
+    const prev = out.match(/\\S(?=\\s*$)/)?.[0] ?? "";
     if (/[A-Za-z0-9)]/.test(prev)) out += "*";
     out += fn;
     i += fn.length;

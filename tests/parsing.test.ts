@@ -298,6 +298,12 @@ describe("Matriz trigonométrica — notación natural ampliada", () => {
     expect(parseExpression("\\operatorname{arcoth} 2").algebrite).toContain("atanh");
   });
 
+  it("conserva multiplicación implícita antes de operatorname", () => {
+    expect(parseExpression("2\\operatorname{arsinh} x").algebrite).toBe("2*asinh(x)");
+    expect(parseExpression("\\int x\\operatorname{arsinh} x\\,dx").algebrite)
+      .toBe("integral((x*asinh(x)),x)");
+  });
+
   it("acepta funciones estándar sin paréntesis explícitos", () => {
     expect(parseExpression("\\sin x+\\cos x").algebrite).toBe("sin(x)+cos(x)");
     expect(parseExpression("\\ln 2").algebrite).toBe("ln(2)");
