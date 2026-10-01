@@ -110,7 +110,7 @@ const BARE_FUNCTION_NAMES = [
   "asin", "acos", "atan",
   "asinh", "acosh", "atanh", "acsch", "asech", "acoth",
   "sinh", "cosh", "tanh", "csch", "sech", "coth",
-  "sin", "cos", "tan", "csc", "sec", "cot", "sqrt", "ln",
+  "sin", "cos", "tan", "csc", "sec", "cot", "sqrt", "subst", "ln",
 ].sort((a, b) => b.length - a.length);
 
 function unwrapOperatorNames(input: string): string {
