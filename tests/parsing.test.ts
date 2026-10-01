@@ -7,6 +7,15 @@ import { ErrorCode } from "../src/types";
 // `npm run test` tras `npm install`.
 
 describe("parseExpression", () => {
+  it("B7: valor absoluto trigonométrico conserva abs(...) en desigualdad", () => {
+    const parsed = parseExpression("\\lvert\\sin x\\rvert\\ge\\frac{\\sqrt{2}}{2}");
+    console.log("B7_ABS_INEQUALITY_PARSE", JSON.stringify(parsed));
+    expect(parsed.isInequality).toBe(true);
+    expect(parsed.inequalityOperator).toBe(">=");
+    expect(parsed.algebrite).toContain("abs(sin(x))");
+  });
+
+
   it("normaliza √4+1 a sqrt(4)+1, nunca sqrt(5)", () => {
     expect(parseExpression("√4+1").algebrite).toBe("sqrt(4)+1");
   });
