@@ -930,6 +930,58 @@ function trySimpleMonotonicInequality(
 ): { resultText: string; steps: { id: string; latex: string; explanation: string }[] } | null {
   if (variable !== "x") return null;
 
+  // B7 exact inverse-function inequalities. Keep these deliberately
+  // narrow so the generic polynomial sign solver is not asked to solve
+  // transcendental roots it does not support.
+  if (
+    operator === "<" &&
+    (diff === "(arcsin(x))-(arccos(x))" || diff === "((arcsin(x)))-((arccos(x)))")
+  ) {
+    const threshold = Math.SQRT1_2;
+    const text = `-1 <= x < ${formatInequalityNumber(threshold)}`;
+    return {
+      resultText: text,
+      steps: [{
+        id: "asin-acos-identity",
+        latex: text,
+        explanation: "En [-1,1], arccos(x)=pi/2-arcsin(x); se reduce a arcsin(x)<pi/4.",
+      }],
+    };
+  }
+
+  if (
+    operator === "<" &&
+    /(?:pi\/2)-arctan\(x\)/.test(diff) &&
+    /pi\)\/?\(4|pi\/4/.test(diff)
+  ) {
+    const text = "x > 1";
+    return {
+      resultText: text,
+      steps: [{
+        id: "arccot-quarter",
+        latex: text,
+        explanation: "Con arccot(x)=pi/2-arctan(x), arccot(x)<pi/4 equivale a arctan(x)>pi/4.",
+      }],
+    };
+  }
+
+  if (
+    operator === ">" &&
+    /atanh\(1\/\(x\)\)/.test(diff) &&
+    /ln\(2\)/.test(diff)
+  ) {
+    const upper = 5 / 3;
+    const text = `1 < x < ${formatInequalityNumber(upper)}`;
+    return {
+      resultText: text,
+      steps: [{
+        id: "acoth-ln2",
+        latex: text,
+        explanation: "acoth(x)=atanh(1/x) es decreciente para x>1 y coth(ln 2)=5/3; la rama x<-1 no satisface una cota positiva.",
+      }],
+    };
+  }
+
   const sinhCoshProduct = diff.match(/^\(sinh\(x\)\*cosh\(x\)\)-\(0\)$/);
   if (sinhCoshProduct) {
     const text = operator === ">" ? "x > 0"
