@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { decimalDegreesToDms, parseDecimalDegreesInput } from "./dmsDisplay";
+import { decimalDegreesToDms, isInverseTrigAngleExpression, parseDecimalDegreesInput } from "./dmsDisplay";
 
 describe("parseDecimalDegreesInput", () => {
   it("acepta grados decimales con símbolo real de grados", () => {
@@ -33,5 +33,19 @@ describe("decimalDegreesToDms", () => {
 
   it("preserva el signo", () => {
     expect(decimalDegreesToDms(-30.5)?.text).toBe("-30° 30′ 0.0″");
+  });
+});
+
+
+describe("isInverseTrigAngleExpression", () => {
+  it("reconoce macros LaTeX directos de MathLive para inversas circulares", () => {
+    expect(isInverseTrigAngleExpression("\\arcsin\\left(\\frac{1}{2}\\right)")).toBe(true);
+    expect(isInverseTrigAngleExpression("\\arctan(1)")).toBe(true);
+    expect(isInverseTrigAngleExpression("\\operatorname{arccot}\\left(-1\\right)")).toBe(true);
+  });
+
+  it("no clasifica hiperbólicas como resultados angulares", () => {
+    expect(isInverseTrigAngleExpression("\\sinh(1)")).toBe(false);
+    expect(isInverseTrigAngleExpression("\\operatorname{arsinh}\\left(1\\right)")).toBe(false);
   });
 });
