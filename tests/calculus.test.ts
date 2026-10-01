@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { parseExpression } from "../src/engine/parsing";
 import { compileNumeric, simpsonIntegral, numericLimit, numericLimitAtInfinity } from "../src/engine/numericFallback";
-import { calcDefiniteIntegral, calcIndefiniteIntegral, calcLimit, calcDerivative, fastAntiderivative } from "../src/engine/stepEngine/calculus";
+import { calcDefiniteIntegral, calcIndefiniteIntegral, calcLimit, calcDerivative, fastAntiderivative, fastDefiniteIntegralIdentity } from "../src/engine/stepEngine/calculus";
 
 // NO EJECUTADO en el entorno de generación. Correr con `npm run test`.
 
@@ -287,6 +287,37 @@ describe("B7 natural inverse hyperbolic integrals", () => {
   });
 });
 
+
+describe("B7 log-sine definite identity", () => {
+  it("returns the exact ID-D-12 value on [0, pi/2]", () => {
+    const exact = fastDefiniteIntegralIdentity("ln(sin(x))", "x", 0, Math.PI / 2);
+    expect(exact).not.toBeNull();
+    const numeric = compileNumeric(exact!, "__none__")(0);
+    expect(numeric).toBeCloseTo(-Math.PI * Math.log(2) / 2, 12);
+  });
+
+  it("reverses sign when the bounds are reversed", () => {
+    const exact = fastDefiniteIntegralIdentity("ln(sin(x))", "x", Math.PI / 2, 0);
+    expect(exact).not.toBeNull();
+    const numeric = compileNumeric(exact!, "__none__")(0);
+    expect(numeric).toBeCloseTo(Math.PI * Math.log(2) / 2, 12);
+  });
+
+  it("preserves finite real constant multiples", () => {
+    const exact = fastDefiniteIntegralIdentity("2*ln(sin(x))", "x", 0, Math.PI / 2);
+    expect(exact).not.toBeNull();
+    const numeric = compileNumeric(exact!, "__none__")(0);
+    expect(numeric).toBeCloseTo(-Math.PI * Math.log(2), 12);
+  });
+
+  it("calcDefiniteIntegral uses the exact symbolic identity instead of Simpson", () => {
+    const result = calcDefiniteIntegral("ln(sin(x))", "x", 0, Math.PI / 2);
+    expect(result.confidence).toBe("SYMBOLIC");
+    expect(result.steps.some((step) => step.id === "identity")).toBe(true);
+    expect(compileNumeric(result.resultLatex, "__none__")(0))
+      .toBeCloseTo(-Math.PI * Math.log(2) / 2, 12);
+  });
+});
 
 describe("B7 matrix integration recertification", () => {
   it("keeps hyperbolic limits finite before overflow and converges to their identities", () => {
