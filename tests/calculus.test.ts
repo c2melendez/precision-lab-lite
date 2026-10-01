@@ -307,7 +307,7 @@ describe("B7 matrix integration recertification", () => {
     "derives nested/reciprocal inverse hyperbolic form %s without leaving d(...)",
     (expr) => {
       const value = calcDerivative(expr, "x", 1).resultLatex;
-      expect(value).not.toMatch(/\\bd\\(/);
+      expect(value).not.toMatch(/\bd\(/);
       expect(value).not.toMatch(/NaN/i);
     },
   );
@@ -323,10 +323,10 @@ describe("B7 matrix integration recertification", () => {
     ["\\int\\operatorname{sech} x\\,dx", "arctan"],
   ])("routes natural integral %s through a closed antiderivative", (latex, expectedFragment) => {
     const parsed = parseExpression(latex).algebrite;
-    const args = parsed.match(/^integral\\((.*),x\\)$/s);
+    const args = parsed.match(/^integral\((.*),x\)$/s);
     expect(args).not.toBeNull();
     const result = calcIndefiniteIntegral(args![1], "x").resultLatex;
     expect(result).toContain(expectedFragment);
-    expect(result).not.toMatch(/Unsupported\\s*function|^integral\\(/i);
+    expect(result).not.toMatch(/Unsupported\s*function|^integral\(/i);
   });
 });
