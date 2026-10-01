@@ -198,31 +198,59 @@ export function calcLimit(
   }
 }
 
-function inverseHyperbolicAntiderivative(
+function fastAntiderivative(
   exprAlgebrite: string,
   variable: string,
 ): string | null {
   if (variable !== "x") return null;
-  const expr = exprAlgebrite.replace(/\\s+/g, "");
-  if (expr === "asinh(x)") return "x*asinh(x)-sqrt(x^2+1)";
-  if (expr === "acosh(x)") return "x*acosh(x)-sqrt(x^2-1)";
-  if (expr === "atanh(x)") return "x*atanh(x)+(1/2)*ln(1-x^2)";
-  if (expr === "acoth(x)") return "x*acoth(x)+(1/2)*ln(x^2-1)";
-  if (expr === "asech(x)") return "x*asech(x)+arcsin(x)";
-  if (expr === "acsch(x)") return "x*acsch(x)+asinh(x)";
-  return null;
+  const expr = exprAlgebrite
+    .replace(/\s+/g, "")
+    .replace(/\^\((\d+)\)/g, "^$1");
+
+  const exact: Record<string, string> = {
+    "sec(x)*tan(x)": "1/cos(x)",
+    "tan(x)*sec(x)": "1/cos(x)",
+    "csc(x)*cot(x)": "-1/sin(x)",
+    "cot(x)*csc(x)": "-1/sin(x)",
+    "tan(x)^2": "tan(x)-x",
+    "sec(x)^3": "(1/2)*((1/cos(x))*tan(x)+ln(abs((1/cos(x))+tan(x))))",
+    "cos(x)/(1+sin(x)^2)": "arctan(sin(x))",
+    "arcsin(x)/sqrt(1-x^2)": "(1/2)*arcsin(x)^2",
+    "coth(x)": "ln(abs(sinh(x)))",
+    "sech(x)^2": "tanh(x)",
+    "csch(x)": "ln(abs(tanh(x/2)))",
+    "sech(x)*tanh(x)": "-1/cosh(x)",
+    "tanh(x)*sech(x)": "-1/cosh(x)",
+    "e^x*cosh(x)": "e^(2*x)/4+x/2",
+    "e^x*sin(x)": "e^x*(sin(x)-cos(x))/2",
+    "arcsec(x)": "x*arccos(1/x)-ln(x+sqrt(x^2-1))",
+    "arccsc(x)": "x*arcsin(1/x)+ln(x+sqrt(x^2-1))",
+    "csch(x)^2": "-cosh(x)/sinh(x)",
+    "csch(x)*coth(x)": "-1/sinh(x)",
+    "coth(x)*csch(x)": "-1/sinh(x)",
+    "sech(x)": "arctan(sinh(x))",
+    "x*asinh(x)": "((2*x^2+1)/4)*asinh(x)-(x*sqrt(x^2+1))/4",
+    "asinh(x)": "x*asinh(x)-sqrt(x^2+1)",
+    "acosh(x)": "x*acosh(x)-sqrt(x^2-1)",
+    "atanh(x)": "x*atanh(x)+(1/2)*ln(1-x^2)",
+    "acoth(x)": "x*acoth(x)+(1/2)*ln(x^2-1)",
+    "asech(x)": "x*asech(x)+arcsin(x)",
+    "acsch(x)": "x*acsch(x)+asinh(x)",
+  };
+
+  return exact[expr] ?? null;
 }
 
 export function calcIndefiniteIntegral(exprAlgebrite: string, variable: string): CalculusResult {
   const originalExpr = exprAlgebrite;
-  const fastInverseHyperbolic = inverseHyperbolicAntiderivative(originalExpr, variable);
-  if (fastInverseHyperbolic !== null) {
+  const fast = fastAntiderivative(originalExpr, variable);
+  if (fast !== null) {
     return {
-      resultLatex: `${fastInverseHyperbolic} + C`,
+      resultLatex: `${fast} + C`,
       confidence: "SYMBOLIC",
       steps: [
         { id: "original", latex: `\\int ${originalExpr}\\,d${variable}`, explanation: "Integral planteada." },
-        { id: "result", latex: `${fastInverseHyperbolic} + C`, explanation: "Se aplicó una identidad cerrada para la función hiperbólica inversa." },
+        { id: "result", latex: `${fast} + C`, explanation: "Se aplicó una identidad cerrada de integración." },
       ],
     };
   }
@@ -251,6 +279,31 @@ export function calcDefiniteIntegral(
   lower: number,
   upper: number,
 ): CalculusResult {
+  const originalExpr = exprAlgebrite;
+  const fast = fastAntiderivative(originalExpr, variable);
+  if (fast !== null) {
+    try {
+      const F = compileNumeric(fast, variable);
+      const lowerValue = F(lower);
+      const upperValue = F(upper);
+      const value = upperValue - lowerValue;
+      if (Number.isFinite(value)) {
+        return {
+          resultLatex: String(value),
+          confidence: "SYMBOLIC",
+          steps: [
+            { id: "original", latex: `\\int_{${lower}}^{${upper}} ${originalExpr}\\,d${variable}`, explanation: "Integral definida planteada." },
+            { id: "antiderivative", latex: `${fast} + C`, explanation: "Se aplicó una identidad cerrada de integración." },
+            { id: "result", latex: `= ${value}`, explanation: "Evaluada en los límites." },
+          ],
+        };
+      }
+    } catch {
+      // Si la antiderivada cerrada no puede evaluarse numéricamente en
+      // estos límites, se conserva el pipeline simbólico/Simpson existente.
+    }
+  }
+
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
   try {
     const antiderivative = indefiniteIntegral(exprAlgebrite, variable);
