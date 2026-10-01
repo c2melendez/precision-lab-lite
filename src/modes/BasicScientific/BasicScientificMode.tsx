@@ -1,11 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useComputeWorker } from "../../hooks/useComputeWorker";
-import { MathKeyboard, isVariableOrConstantKey, type KeyDef } from "../../components/MathKeyboard";
+import { angleAwareTrigInsertLatex, MathKeyboard, isVariableOrConstantKey, type KeyDef } from "../../components/MathKeyboard";
 import { KeyboardBasicPanel } from "../../components/KeyboardBasicPanel";
 import { Screen } from "../../components/Screen";
+import type { ScientificGraphState } from "../../components/GraphPlaceholder";
 import { type SessionHistoryEntry } from "../../components/HistoryLog";
 import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { parseExpression } from "../../engine/parsing";
+import { compileNumeric } from "../../engine/numericFallback";
+import { splitTopLevelArgs } from "../../engine/statFunctions";
 import { splitSystemLatex } from "../../engine/parsing/systemSplit";
 import { detectODE } from "../../engine/parsing/odeDetect";
 import { detectComplexAnalysisIntent } from "../../engine/parsing/complexAnalysisIntent";
@@ -15,6 +18,7 @@ import { useRecentKeysStore } from "../../store/useRecentKeysStore";
 import { useLayoutModeStore } from "../../store/useLayoutModeStore";
 import { useArgandBridgeStore } from "../../store/useArgandBridgeStore";
 import { usePendingGraphStore } from "../../store/usePendingGraphStore";
+import { usePendingHistoryReuseStore } from "../../store/usePendingHistoryReuseStore";
 
 // Modo 1 de la spec v10 §5. Orquesta NaturalInput + MathKeyboard +
 // ResultPanel, delegando todo el cómputo al Web Worker (nunca al hilo
@@ -43,6 +47,26 @@ import { usePendingGraphStore } from "../../store/usePendingGraphStore";
 
 type MathFieldRef = { insert: (s: string) => void; focus: () => void; value: string } | null;
 
+function extractIntervalRestriction(source: string): {
+  expressionLatex: string;
+  lowerLatex: string;
+  upperLatex: string;
+  lowerInclusive: boolean;
+  upperInclusive: boolean;
+} | null {
+  const match = source.trim().match(
+    /^(.*?),\s*\\quad\s*x\\in\s*(?:\\left\s*)?(\[|\()\s*(.+?)\s*,\s*(.+?)\s*(?:\\right\s*)?(\]|\))\s*$/s,
+  );
+  if (!match) return null;
+  return {
+    expressionLatex: match[1].trim(),
+    lowerLatex: match[3].trim(),
+    upperLatex: match[4].trim(),
+    lowerInclusive: match[2] === "[",
+    upperInclusive: match[5] === "]",
+  };
+}
+
 export function BasicScientificMode() {
   const [latex, setLatex] = useState("");
   const [result, setResult] = useState<MathResult | null>(null);
@@ -50,8 +74,72 @@ export function BasicScientificMode() {
   const [mathField, setMathField] = useState<MathFieldRef>(null);
   const [sessionHistory, setSessionHistory] = useState<SessionHistoryEntry[]>([]);
   const setPendingArgandPoint = useArgandBridgeStore((s) => s.setPendingArgandPoint);
+  const pendingHistoryReuse = usePendingHistoryReuseStore((s) => s.pending);
+  const takePendingHistoryReuse = usePendingHistoryReuseStore((s) => s.takePending);
+
+  useEffect(() => {
+    const entry = takePendingHistoryReuse();
+    if (!entry) return;
+    setLatex(entry.input);
+    setResult(null);
+    requestAnimationFrame(() => {
+      if (mathField) {
+        mathField.value = entry.input;
+        mathField.focus();
+      }
+    });
+  }, [pendingHistoryReuse, takePendingHistoryReuse]);
 
   const { getWorker } = useComputeWorker();
+
+  const graphExpression = useMemo<{ expression: string; variable: string; integral: boolean; definite: boolean; bounds: [number, number] | null } | null>(() => {
+    try {
+      const parsed = parseExpression(latex.trim(), angleMode);
+      if (parsed.isEquation || parsed.isInequality) return null;
+      if (/^(?:def)?integral\(|^(?:d|limit)\(/.test(parsed.algebrite)) {
+        const definite = parsed.algebrite.startsWith("defintegral(");
+        const integral = definite || parsed.algebrite.startsWith("integral(");
+        const args = splitTopLevelArgs(parsed.algebrite.slice(parsed.algebrite.indexOf("(") + 1, -1));
+        if (args.length >= 2) {
+          const numericBound = (source: string | undefined) => {
+            if (!source) return NaN;
+            try { return compileNumeric(source.replace(/\s+/g, ""), "x")(0); }
+            catch { return NaN; }
+          };
+          const lower = numericBound(args[1]);
+          const upper = numericBound(args[2]);
+          return {
+            expression: args[0], variable: "x", integral, definite,
+            bounds: definite && Number.isFinite(lower) && Number.isFinite(upper)
+              ? [lower, upper] as [number, number] : null,
+          };
+        }
+      }
+      return parsed.freeVariables.length === 1
+        ? { expression: parsed.algebrite, variable: parsed.freeVariables[0], integral: false, definite: false, bounds: null } : null;
+    } catch { return null; }
+  }, [latex, angleMode]);
+
+  const graphState = useMemo<ScientificGraphState>(() => {
+    const source = latex.trim();
+    if (!source) return "empty";
+
+    if (splitSystemLatex(source)) return "advanced";
+    if (detectODE(source) !== null) return "advanced";
+    if (/\\int|\\lim|\\frac\{d/.test(source)) return graphExpression ? "available" : "advanced";
+    if (/\\partial/.test(source)) return "advanced";
+    if (/(^|[^A-Za-z])i([^A-Za-z]|$)/.test(source)) return "advanced";
+
+    try {
+      const parsed = parseExpression(source, angleMode);
+      if (parsed.isEquation || parsed.isInequality) return "advanced";
+      if (parsed.freeVariables.length === 0) return "not-needed";
+      if (parsed.freeVariables.length === 1) return "available";
+      return "advanced";
+    } catch {
+      return "unavailable";
+    }
+  }, [latex, angleMode, graphExpression]);
 
   const fail = useCallback((code: ErrorCode, message: string, requestId: string) => {
     setResult({
@@ -69,7 +157,7 @@ export function BasicScientificMode() {
   const onSuccess = useCallback((mode: string, inputDisplay: string, data: MathResult) => {
     setResult(data);
     if (data.success) {
-      addHistoryEntry({ mode, input: inputDisplay, resultSummary: data.resultLatex ?? "" });
+      addHistoryEntry({ module: "Científica", mode, input: inputDisplay, resultSummary: data.resultLatex ?? "" });
       setSessionHistory((prev) => [...prev, { id: data.requestId, input: inputDisplay, result: data }]);
     }
   }, []);
@@ -232,9 +320,22 @@ export function BasicScientificMode() {
     }
 
     const requestId = makeRequestId();
+    const intervalRestriction = extractIntervalRestriction(currentLatex);
+    const sourceForParser = intervalRestriction?.expressionLatex ?? currentLatex;
     let parsed;
+    let domainLower: number | undefined;
+    let domainUpper: number | undefined;
     try {
-      parsed = parseExpression(currentLatex, angleMode);
+      parsed = parseExpression(sourceForParser, angleMode);
+      if (intervalRestriction) {
+        const lowerParsed = parseExpression(intervalRestriction.lowerLatex, angleMode);
+        const upperParsed = parseExpression(intervalRestriction.upperLatex, angleMode);
+        domainLower = compileNumeric(lowerParsed.algebrite, "__bound__")(0);
+        domainUpper = compileNumeric(upperParsed.algebrite, "__bound__")(0);
+        if (!Number.isFinite(domainLower) || !Number.isFinite(domainUpper)) {
+          throw { code: ErrorCode.PARSE_ERROR, message: "Los límites del intervalo deben ser valores reales finitos." };
+        }
+      }
     } catch (err) {
       const appErr = err as { code?: ErrorCode; message?: string };
       fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Expresión inválida.", requestId);
@@ -264,6 +365,12 @@ export function BasicScientificMode() {
         leftAlgebrite: parsed.leftAlgebrite,
         rightAlgebrite: parsed.rightAlgebrite,
         variable: parsed.freeVariables[0],
+        ...(intervalRestriction ? {
+          domainLower,
+          domainUpper,
+          domainLowerInclusive: intervalRestriction.lowerInclusive,
+          domainUpperInclusive: intervalRestriction.upperInclusive,
+        } : {}),
       });
       return;
     }
@@ -289,6 +396,12 @@ export function BasicScientificMode() {
         diffAlgebrite: parsed.algebrite,
         operator: parsed.inequalityOperator,
         variable: parsed.freeVariables[0],
+        ...(intervalRestriction ? {
+          domainLower,
+          domainUpper,
+          domainLowerInclusive: intervalRestriction.lowerInclusive,
+          domainUpperInclusive: intervalRestriction.upperInclusive,
+        } : {}),
       });
       return;
     }
@@ -318,6 +431,14 @@ export function BasicScientificMode() {
     handleCalculate();
   }, [latex, handleCalculate, mathField]);
 
+  const handleSolveInequality = useCallback(() => {
+    if (!/[<>]|\\\\(?:le|ge)/.test(latex)) {
+      mathField?.insert("\\ge0");
+      return;
+    }
+    handleCalculate();
+  }, [latex, handleCalculate, mathField]);
+
   // Fase 1: antes este ícono no hacía nada (onSolveSystem nunca se pasaba
   // a MathKeyboard). Ahora, si el campo todavía no tiene un sistema,
   // inserta la plantilla \begin{cases}; si ya la tiene con 2+ renglones,
@@ -342,7 +463,72 @@ export function BasicScientificMode() {
     [latex, handleCalculate, mathField],
   );
 
-  const handleSimplify = useCallback(() => handleCalculate(), [handleCalculate]);
+  const handleSolveInequalitySystem = useCallback(() => {
+    if (!splitSystemLatex(latex)) {
+      mathField?.insert("\\begin{cases}#0\\ge0\\\\#1\\le0\\end{cases}");
+      return;
+    }
+    handleCalculate();
+  }, [latex, handleCalculate, mathField]);
+
+  const runAlgebraTransform = useCallback(
+    (kind: "simplify" | "factor") => {
+      const requestId = makeRequestId();
+      let parsed;
+      try {
+        parsed = parseExpression(latex, angleMode);
+      } catch (err) {
+        const appErr = err as { code?: ErrorCode; message?: string };
+        fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Expresión inválida.", requestId);
+        return;
+      }
+      if (parsed.isEquation || parsed.isInequality) {
+        fail(ErrorCode.PARSE_ERROR, "Esta acción requiere una expresión, no una ecuación o inecuación.", requestId);
+        return;
+      }
+      const worker = getWorker();
+      worker.onmessage = (e: MessageEvent<MathResult>) =>
+        onSuccess(kind === "simplify" ? "Científica (simplificar)" : "Científica (factorizar)", latex, e.data);
+      worker.postMessage({
+        type: "evaluate",
+        requestId,
+        expressionAlgebrite: `${kind}(${parsed.algebrite})`,
+      });
+    },
+    [latex, angleMode, getWorker, fail, onSuccess],
+  );
+
+  const handleSimplify = useCallback(() => runAlgebraTransform("simplify"), [runAlgebraTransform]);
+  const handleFactor = useCallback(() => runAlgebraTransform("factor"), [runAlgebraTransform]);
+
+  const handleEvaluatePoint = useCallback(() => {
+    const point = window.prompt("Valor del punto para x =", "a");
+    if (point === null || point.trim() === "") return;
+
+    const requestId = makeRequestId();
+    let parsed;
+    let parsedPoint;
+    try {
+      parsed = parseExpression(latex, angleMode);
+      parsedPoint = parseExpression(point, angleMode);
+    } catch (err) {
+      const appErr = err as { code?: ErrorCode; message?: string };
+      fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Expresión inválida.", requestId);
+      return;
+    }
+    if (parsed.isEquation || parsed.isInequality || parsedPoint.isEquation || parsedPoint.isInequality) {
+      fail(ErrorCode.PARSE_ERROR, "Evaluar en un punto requiere una expresión y un valor de x.", requestId);
+      return;
+    }
+    const worker = getWorker();
+    worker.onmessage = (e: MessageEvent<MathResult>) =>
+      onSuccess("Científica (evaluar en punto)", `${latex} | x=${point}`, e.data);
+    worker.postMessage({
+      type: "evaluate",
+      requestId,
+      expressionAlgebrite: `subst(${parsedPoint.algebrite},x,(${parsed.algebrite}))`,
+    });
+  }, [latex, angleMode, getWorker, fail, onSuccess]);
 
   // Fase F (spec_edo_complejos_tooltips.md §3.4, Módulo F3): "Graficar"
   // -- evalúa el campo a un número complejo concreto (mensaje de worker
@@ -395,10 +581,10 @@ export function BasicScientificMode() {
     (k: KeyDef) => {
       if (!k.insertLatex) return;
       mathField?.focus();
-      mathField?.insert(k.insertLatex);
+      mathField?.insert(angleAwareTrigInsertLatex(k, angleMode === "GRAD"));
       recordRecentKey("basic", k, isVariableOrConstantKey(k) ? "variable" : "operation");
     },
-    [mathField, recordRecentKey],
+    [mathField, recordRecentKey, angleMode],
   );
 
   useEffect(() => {
@@ -436,15 +622,20 @@ export function BasicScientificMode() {
         field={mathField}
         onClearField={() => setLatex("")}
         onSolveEquation={handleSolveEquation}
+        onSolveInequality={handleSolveInequality}
         onSolveSystem={handleSolveSystem}
+        onSolveInequalitySystem={handleSolveInequalitySystem}
         onSimplify={handleSimplify}
+        onFactor={handleFactor}
+        onEvaluatePoint={handleEvaluatePoint}
         onGraphComplex={handleGraphComplex}
+        angleMode={angleMode}
         hideCoreGrid
         registerInsertHandler={false}
       />,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mathField, handleCalculate, handleSolveEquation, handleSolveSystem, handleSimplify, handleGraphComplex]);
+  }, [mathField, handleCalculate, handleSolveEquation, handleSolveInequality, handleSolveSystem, handleSolveInequalitySystem, handleSimplify, handleFactor, handleEvaluatePoint, handleGraphComplex, angleMode]);
 
   useEffect(() => {
     return () => clearKeyboardContent();
@@ -489,7 +680,7 @@ export function BasicScientificMode() {
   }, []);
 
   return (
-    <div className="mx-auto flex max-w-md flex-col gap-3 p-4 md:max-w-lg lg:max-w-3xl dt:max-w-[1440px] dt:px-8">
+    <div data-testid="scientific-mode-shell" className="mx-auto flex max-w-md flex-col gap-3 p-4 md:max-w-lg lg:max-w-3xl dt:max-w-[1440px] dt:px-8">
       <Screen
         latex={latex}
         onChangeLatex={setLatex}
@@ -502,7 +693,23 @@ export function BasicScientificMode() {
         onClearField={() => setLatex("")}
         layoutMode={layoutMode}
         onGraphExpression={handleGraphExpression}
+        graphState={graphState}
+        graphExpression={graphExpression?.expression}
+        graphVariable={graphExpression?.variable}
+        graphIntegral={graphExpression?.integral}
+        graphDefinite={graphExpression?.definite}
+        graphBounds={graphExpression?.bounds}
         onCalculate={handleCalculate}
+        onReuseSessionEntry={(entry) => {
+          setLatex(entry.input);
+          setResult(null);
+          requestAnimationFrame(() => {
+            if (mathField) {
+              mathField.value = entry.input;
+              mathField.focus();
+            }
+          });
+        }}
       />
     </div>
   );

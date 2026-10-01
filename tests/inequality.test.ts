@@ -49,6 +49,14 @@ describe("solveInequality (decisión de Carlos: solver básico de <,>,≤,≥)",
     expect(solve("x\\le-2")).toBe("x <= -2");
   });
 
+  it("resuelve frontera lineal con decimal sin delegar a roots() de Algebrite", () => {
+    expect(solveInequality("(x)-(1.5574077246549023)", "<", "x").resultText).toBe("x < 1.5574");
+  });
+
+  it("resuelve frontera afín con coeficiente distinto de 1 y decimal", () => {
+    expect(solveInequality("(2*x)-(0.9999999999999999)", ">=", "x").resultText).toBe("x >= 0.5");
+  });
+
   it("cadena doble (1<x<5) se rechaza en vez de adivinar semántica no pedida", () => {
     expect(() => parseExpression("1<x<5", "RAD")).toThrow();
   });
@@ -57,5 +65,33 @@ describe("solveInequality (decisión de Carlos: solver básico de <,>,≤,≥)",
     const parsed = parseExpression("x+y<5", "RAD");
     expect(parsed.isInequality).toBe(true);
     expect(parsed.freeVariables.length).toBe(2);
+  });
+
+  it("acotada trig: sin(x)>1/2 en [0,2π) respeta raíces exactas", () => {
+    const parsed = parseExpression("\\sin x>\\frac{1}{2}", "RAD");
+    expect(
+      solveInequality(parsed.algebrite, parsed.inequalityOperator!, "x", 0, 2 * Math.PI, true, false).resultText,
+    ).toBe("(π/6, 5π/6)");
+  });
+
+  it("acotada trig: tan(x)>1 excluye automáticamente las asíntotas", () => {
+    const parsed = parseExpression("\\tan x>1", "RAD");
+    expect(
+      solveInequality(parsed.algebrite, parsed.inequalityOperator!, "x", 0, 2 * Math.PI, true, false).resultText,
+    ).toBe("(π/4, π/2) ∪ (5π/4, 3π/2)");
+  });
+
+  it("acotada trig: cot(x)>=1 en (0,π) conserva extremo raíz cerrado", () => {
+    const parsed = parseExpression("\\cot x\\ge1", "RAD");
+    expect(
+      solveInequality(parsed.algebrite, parsed.inequalityOperator!, "x", 0, Math.PI, false, false).resultText,
+    ).toBe("(0, π/4]");
+  });
+
+  it("acotada estricta: no cierra un extremo del dominio donde la expresión vale cero", () => {
+    const parsed = parseExpression("\\sin x\\cos x>0", "RAD");
+    expect(
+      solveInequality(parsed.algebrite, parsed.inequalityOperator!, "x", 0, 2 * Math.PI, true, false).resultText,
+    ).toBe("(0, π/2) ∪ (π, 3π/2)");
   });
 });

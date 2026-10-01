@@ -73,9 +73,214 @@ function replaceBalanced(
   return result;
 }
 
+function rewriteTrigFunctionPowers(input: string): string {
+  const pattern = /(?:\\)?(sin|cos|tan|sec|csc|cot|sinh|cosh|tanh|sech|csch|coth)\s*\^\s*(?:\{(\d+)\}|(\d+))\s*(\\left\(|\()/g;
+  let result = "";
+  let offset = 0;
+  for (const match of input.matchAll(pattern)) {
+    const start = match.index;
+    if (start < offset) continue;
+    const open = start + match[0].length;
+    let depth = 1;
+    let end = open;
+    while (end < input.length && depth > 0) {
+      if (input.startsWith("\\left(", end)) { depth++; end += 6; }
+      else if (input.startsWith("\\right)", end)) { depth--; end += 7; }
+      else if (input[end] === "(") { depth++; end++; }
+      else if (input[end] === ")") { depth--; end++; }
+      else end++;
+    }
+    if (depth !== 0) continue;
+    const closeLength = input.slice(end - 7, end) === "\\right)" ? 7 : 1;
+    const argument = input.slice(open, end - closeLength);
+    result += input.slice(offset, start) + `${match[1]}(${argument})^(${match[2] ?? match[3]})`;
+    offset = end;
+  }
+  return result + input.slice(offset);
+}
+
+const OPERATOR_NAME_ALIASES: Record<string, string> = {
+  arccot: "arccot", arcsec: "arcsec", arccsc: "arccsc",
+  arsinh: "asinh", arcosh: "acosh", artanh: "atanh",
+  arcsch: "acsch", arsech: "asech", arcoth: "acoth",
+};
+
+const BARE_FUNCTION_NAMES = [
+  "arccos", "arcsin", "arctan", "arccot", "arcsec", "arccsc",
+  "asin", "acos", "atan",
+  "asinh", "acosh", "atanh", "acsch", "asech", "acoth",
+  "sinh", "cosh", "tanh", "csch", "sech", "coth",
+  "sin", "cos", "tan", "csc", "sec", "cot", "sqrt", "subst", "ln",
+].sort((a, b) => b.length - a.length);
+
+function unwrapOperatorNames(input: string): string {
+  return input.replace(
+    /\\operatorname\{([^{}]+)\}/g,
+    // Preserve a lexical boundary on both sides. Without the leading
+    // separator, x\\operatorname{arsinh} x collapsed to "xasinh x"
+    // before the bare-function pass could recognize arsinh as a function.
+    (_match, name: string) => ` ${OPERATOR_NAME_ALIASES[name] ?? name} `,
+  );
+}
+
+function rewriteDifferentialNumeratorIntegral(input: string): string | null {
+  const integralPrefix = input.match(/^\\int\s*/);
+  if (!integralPrefix) return null;
+
+  let cursor = integralPrefix[0].length;
+  let lower: string | null = null;
+  let upper: string | null = null;
+
+  // Definite form: \\int_{a}^{b}\\frac{dx}{f(x)}. Parse bounds before
+  // the generic \\frac lowering pass so nested fractions/roots in the
+  // denominator remain intact. readBalancedOrSingleToken also accepts
+  // MathLive's single-token serialization for 0, 1, \\pi, \\infty, etc.
+  if (input[cursor] === "_") {
+    cursor += 1;
+    while (/\\s/.test(input[cursor] ?? "")) cursor++;
+    try {
+      [lower, cursor] = readBalancedOrSingleToken(input, cursor, "límite inferior de \\int");
+    } catch {
+      return null;
+    }
+    while (/\\s/.test(input[cursor] ?? "")) cursor++;
+    if (input[cursor] !== "^") return null;
+    cursor += 1;
+    while (/\\s/.test(input[cursor] ?? "")) cursor++;
+    try {
+      [upper, cursor] = readBalancedOrSingleToken(input, cursor, "límite superior de \\int");
+    } catch {
+      return null;
+    }
+  }
+
+  while (/\\s/.test(input[cursor] ?? "")) cursor++;
+  const differential = input.slice(cursor).match(/^\\frac\{d([a-zA-Z])\}/);
+  if (!differential) return null;
+  const variable = differential[1];
+  cursor += differential[0].length;
+
+  let denominator: string;
+  try {
+    [denominator, cursor] = readBalancedOrSingleToken(input, cursor, "denominador de \\frac");
+  } catch {
+    return null;
+  }
+  denominator = denominator.trim();
+  if (!denominator) return null;
+
+  const suffix = input.slice(cursor).trim();
+  if (suffix && !/^,\s*(?:\\quad\s*)?(?:\\\s*)?(?:\\lvert\s*[A-Za-z]\s*\\rvert|[A-Za-z])\s*[<>]=?.*$/s.test(suffix)) {
+    return null;
+  }
+
+  if (lower !== null && upper !== null) {
+    return "defintegral(((1)/(" + denominator + "))," + lower + "," + upper + ")";
+  }
+  return "integral(((1)/(" + denominator + "))," + variable + ")";
+}
+
+function insertImplicitMultiplicationBeforeFunctions(input: string): string {
+  const names = [...BARE_FUNCTION_NAMES].sort((a, b) => b.length - a.length);
+  let out = "";
+  let i = 0;
+  while (i < input.length) {
+    const fn = names.find((name) => input.startsWith(name + "(", i));
+    if (!fn) { out += input[i++]; continue; }
+    // Function macros may retain harmless whitespace until the end of
+    // preprocessing. Look through that whitespace when deciding whether
+    // the function follows an operand, otherwise "x asinh(x)" loses the
+    // multiplication when spaces are stripped and becomes "xasinh(x)".
+    const prev = out.match(/\S(?=\s*$)/)?.[0] ?? "";
+    if (/[A-Za-z0-9)]/.test(prev)) out += "*";
+    out += fn;
+    i += fn.length;
+  }
+  return out;
+}
+
+function rewriteBareFunctionApplications(input: string): string {
+  let out = "";
+  let i = 0;
+  while (i < input.length) {
+    const fn = BARE_FUNCTION_NAMES.find((name) => {
+      if (!input.startsWith(name, i)) return false;
+      const prev = i > 0 ? input[i - 1] : "";
+      return !/[A-Za-z]/.test(prev);
+    });
+    if (!fn) { out += input[i++]; continue; }
+    let cursor = i + fn.length;
+    let power = "";
+    if (input.startsWith("^(", cursor)) {
+      let depth = 1;
+      let j = cursor + 2;
+      while (j < input.length && depth > 0) {
+        if (input[j] === "(") depth++;
+        else if (input[j] === ")") depth--;
+        j++;
+      }
+      if (depth === 0) { power = input.slice(cursor + 2, j - 1); cursor = j; }
+    }
+    if (input[cursor] === "(") { out += input.slice(i, cursor); i = cursor; continue; }
+    const whitespaceStart = cursor;
+    while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
+    // MathLive/operatorname can leave whitespace before an argument that
+    // is already parenthesized (for example "acosh (x)"). Preserve that
+    // existing call instead of wrapping it again as acosh((x)).
+    if (input[cursor] === "(" && !power) {
+      out += fn;
+      i = cursor;
+      continue;
+    }
+    if (cursor === whitespaceStart && !power) { out += input.slice(i, cursor); i = cursor; continue; }
+    const argStart = cursor;
+    let depth = 0;
+    let seen = false;
+    while (cursor < input.length) {
+      const ch = input[cursor];
+      if (
+        depth === 0 &&
+        seen &&
+        BARE_FUNCTION_NAMES.some((name) => input.startsWith(name, cursor))
+      ) break;
+      if (ch === "(") { depth++; seen = true; cursor++; continue; }
+      if (ch === ")") { if (depth === 0) break; depth--; seen = true; cursor++; continue; }
+      if (depth === 0 && seen && /[+,=*\/<>]/.test(ch)) break;
+      if (depth === 0 && seen && ch === "-" && cursor > argStart) break;
+      if (!/\s/.test(ch)) seen = true;
+      cursor++;
+    }
+    const arg = input.slice(argStart, cursor).trim();
+    if (!arg) { out += fn; i += fn.length; continue; }
+    const call = fn + "(" + arg + ")";
+    out += power ? "(" + call + ")^(" + power + ")" : call;
+    i = cursor;
+  }
+  return out;
+}
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
   let expr = latex;
+
+  // Matrix B7: derivative evaluated at a point,
+  // \\left.\\frac{d}{dx}f(x)\\right\\rvert_{x=a}.
+  // Normalize the derivative itself through this same pipeline, then
+  // substitute the requested point in the resulting derivative.
+  const evaluatedDerivative = expr.trim().match(
+    /^\\left\.\s*(\\frac\{d(?:\^\{?\d+\}?)?\}\{d([a-zA-Z])(?:\^\{?\d+\}?)?\}\s*.+?)\s*\\right\\rvert_\{\s*\2\s*=\s*(.+)\}$/,
+  );
+  if (evaluatedDerivative) {
+    const derivativeSource = preprocessLatex(evaluatedDerivative[1]);
+    const variable = evaluatedDerivative[2];
+    const point = preprocessLatex(evaluatedDerivative[3]);
+    return `subst((${point}),${variable},(${derivativeSource}))`;
+  }
+
+  // Both sin^3(x) and sin(x)^3 denote a power of the function. Rewrite
+  // the former before the generic exponent and macro passes; keep -1 as
+  // inverse trigonometric notation handled by the existing rules below.
+  expr = rewriteTrigFunctionPowers(expr);
+  expr = unwrapOperatorNames(expr);
 
   // S16 REG-008: MathLive serializa la tecla visual ° como ^{\\circ}
   // (y puede usar ^\\circ). Unificarlo con el marcador ° que ya procesa
@@ -216,6 +421,25 @@ export function preprocessLatex(latex: string): string {
   // \frac{a}{b} -> ((a)/(b)) — debe ir antes que otros reemplazos porque
   // "a" y "b" pueden contener a su vez otros macros ya procesados de forma
   // recursiva al reprocesar el string completo tras cada pasada balanceada.
+  // Matriz trigonométrica: differential numerator before generic frac
+  // lowering. Example: \\int\\frac{dx}{1+x^2} -> integral(1/(1+x^2),x).
+  {
+    const differentialNumerator = rewriteDifferentialNumeratorIntegral(expr);
+    if (differentialNumerator !== null) expr = differentialNumerator;
+  }
+
+  // Matriz trigonométrica: forma habitual d/dx seguida directamente por
+  // una expresión, además del template con \\left(...\\right).
+  {
+    const dBareMatch = expr.match(/^\\frac\{d(?:\^\{?(\d+)\}?)?\}\{d([a-zA-Z])(?:\^\{?\d+\}?)?\}\s*(.+)$/s);
+    if (dBareMatch) {
+      const order = dBareMatch[1] ? Number(dBareMatch[1]) : 1;
+      const variable = dBareMatch[2];
+      const body = dBareMatch[3].trim();
+      const orderArg = order === 1 ? "" : `,${order}`;
+      expr = `d((${body}),${variable}${orderArg})`;
+    }
+  }
   let prevLength = -1;
   while (expr.includes("\\frac") && expr.length !== prevLength) {
     prevLength = expr.length;
@@ -287,14 +511,48 @@ export function preprocessLatex(latex: string): string {
   // calcDefiniteIntegral (stepEngine/calculus.ts) siempre lo hizo en dos
   // pasos — no es solo estilo, es necesario.
   {
-    const definiteMatch = expr.match(/\\int_\{([^{}]*)\}\^\{([^{}]*)\}(.*)\\,dx$/s);
-    if (definiteMatch) {
-      const [, lower, upper, body] = definiteMatch;
-      expr = `defintegral((${body}),${lower},${upper})`;
+    // Las condiciones de dominio escritas después de una coma pertenecen
+    // al contexto matemático, no al integrando (ej. ", x>1" o
+    // ", |x|<1"). Para el cálculo se separan antes de reconocer la integral.
+    const integralSource = expr.startsWith("\\int")
+      ? expr.replace(/(?<!\\),\s*(?:\\quad\s*)?(?:\\\s*)?(?:(?:\\lvert)|[0-9A-Za-z]).*$/s, "")
+      : expr;
+
+    // También aceptar la forma estándar ∫ dx/f(x), usada repetidamente en
+    // la matriz. Se convierte a ∫ 1/f(x) dx sin cambiar la semántica.
+    const definiteDifferentialNumerator = integralSource.match(
+      /\\int\s*_\s*(?:\{([^{}]+)\}|([a-zA-Z0-9]))\s*\^\s*(?:\{([^{}]+)\}|([a-zA-Z0-9]))\s*\\frac\{d([a-zA-Z])\}\{(.+)\}\s*$/s,
+    );
+    const indefiniteDifferentialNumerator = integralSource.match(
+      /^\\int\s*\\frac\{d([a-zA-Z])\}\{(.+)\}\s*$/s,
+    );
+
+    if (definiteDifferentialNumerator) {
+      const [, groupedLower, bareLower, groupedUpper, bareUpper, variable, denominator] =
+        definiteDifferentialNumerator;
+      const lower = groupedLower ?? bareLower;
+      const upper = groupedUpper ?? bareUpper;
+      expr = `defintegral(((1)/(${denominator})),${lower},${upper})`;
+      if (variable !== "x") {
+        expr = `defintegral(((1)/(${denominator})),${lower},${upper})`;
+      }
+    } else if (indefiniteDifferentialNumerator) {
+      const [, variable, denominator] = indefiniteDifferentialNumerator;
+      expr = `integral(((1)/(${denominator})),${variable})`;
     } else {
-      const intMatch = expr.match(/\\int(.*)\\,dx$/s);
-      if (intMatch) {
-        expr = `integral((${intMatch[1]}),x)`;
+      // MathLive may serialize a single-token bound without braces
+      // (\int_0^{10}), and pasted LaTeX may use a normal space before dx.
+      const definiteMatch = integralSource.match(/\\int\s*_\s*(?:\{([^{}]+)\}|([a-zA-Z0-9]))\s*\^\s*(?:\{([^{}]+)\}|([a-zA-Z0-9]))(.*?)(?:\\,|\s)*d([a-zA-Z])\s*$/s);
+      if (definiteMatch) {
+        const [, groupedLower, bareLower, groupedUpper, bareUpper, body] = definiteMatch;
+        const lower = groupedLower ?? bareLower;
+        const upper = groupedUpper ?? bareUpper;
+        expr = `defintegral((${body}),${lower},${upper})`;
+      } else {
+        const intMatch = integralSource.match(/\\int(.*?)(?:\\,|\s)*d([a-zA-Z])\s*$/s);
+        if (intMatch) {
+          expr = `integral((${intMatch[1]}),${intMatch[2]})`;
+        }
       }
     }
   }
@@ -410,9 +668,19 @@ export function preprocessLatex(latex: string): string {
   // a la función unaria interna pm(5), preservando las dos ramas.
   expr = expr.replace(/\\pm\s+([A-Za-z0-9.]+)/g, "pm($1)");
 
+  // Matriz trigonométrica: late adjacency normalization.
+  // At this point \\int has already been rewritten, so x\\cosh x may
+  // safely become x*\\cosh x without corrupting the command \\int.
+  expr = expr.replace(
+    /([A-Za-z0-9)])\\(sin|cos|tan|csc|sec|cot|sinh|cosh|tanh|csch|sech|coth|arcsin|arccos|arctan)\b/g,
+    "$1*\\$2",
+  );
+
   expr = expr
     .replace(/\\left\|/g, "abs(")
     .replace(/\\right\|/g, ")")
+    .replace(/\\lvert/g, "abs(")
+    .replace(/\\rvert/g, ")")
     .replace(/\\cdot/g, "*")
     .replace(/\\times/g, "*")
     .replace(/\\div/g, "/")
@@ -441,6 +709,9 @@ export function preprocessLatex(latex: string): string {
     // ecuación con "<" colgando de un lado.
     .replace(/\\le(?![a-zA-Z])/g, "<=")
     .replace(/\\ge(?![a-zA-Z])/g, ">=")
+    .replace(/\\arcsin/g, "arcsin")
+    .replace(/\\arccos/g, "arccos")
+    .replace(/\\arctan/g, "arctan")
     .replace(/\\sin\^\{-1\}/g, "arcsin")
     .replace(/\\cos\^\{-1\}/g, "arccos")
     .replace(/\\tan\^\{-1\}/g, "arctan")
@@ -477,6 +748,21 @@ export function preprocessLatex(latex: string): string {
     .replace(/csch\^\{-1\}/g, "acsch")
     .replace(/sech\^\{-1\}/g, "asech")
     .replace(/coth\^\{-1\}/g, "acoth")
+    .replace(/\\arcsin/g, "arcsin")
+    .replace(/\\arccos/g, "arccos")
+    .replace(/\\arctan/g, "arctan")
+    .replace(/\\sinh/g, "sinh")
+    .replace(/\\cosh/g, "cosh")
+    .replace(/\\tanh/g, "tanh")
+    .replace(/\\csch/g, "csch")
+    .replace(/\\sech/g, "sech")
+    .replace(/\\coth/g, "coth")
+    .replace(/\\sinh/g, "sinh")
+    .replace(/\\cosh/g, "cosh")
+    .replace(/\\tanh/g, "tanh")
+    .replace(/\\csch/g, "csch")
+    .replace(/\\sech/g, "sech")
+    .replace(/\\coth/g, "coth")
     .replace(/\\sin/g, "sin")
     .replace(/\\cos/g, "cos")
     .replace(/\\tan/g, "tan")
@@ -498,7 +784,11 @@ export function preprocessLatex(latex: string): string {
     .replace(/\\right\)/g, ")")
     .replace(/\\,/g, "")
     .replace(/\\ /g, "")
-    .replace(/\s+/g, "");
+    ;
+
+  expr = rewriteBareFunctionApplications(expr);
+  expr = insertImplicitMultiplicationBeforeFunctions(expr);
+  expr = expr.replace(/\s+/g, "");
 
   return expr;
 }

@@ -134,6 +134,10 @@ export const FUNCTION_ARITY: Record<string, number[]> = {
   product: [4],
   limit: [3, 4],
   d: [2, 3],
+  // Internal substitution emitted for derivatives evaluated at a point.
+  // Recognize the call before implicit multiplication and validate all
+  // three arguments: replacement, variable, expression.
+  subst: [3],
   // Fase 2 externa: producida únicamente por la reescritura de \int_{a}^{b}
   // en normalize.ts — nunca se le pasa a Algebrite tal cual (se resuelve
   // aparte en compute.worker.ts, ver tryDefiniteIntegral), pero necesita

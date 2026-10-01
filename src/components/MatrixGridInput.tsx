@@ -18,25 +18,33 @@ export function MatrixGridInput({ rows, cols, values, onChange, label }: MatrixG
   };
 
   return (
-    <div>
-      <p className="mb-1 text-sm text-muted">{label}</p>
-      <div
-        className="inline-grid gap-1 rounded-lg bg-chrome p-2"
-        style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
-      >
-        {Array.from({ length: rows }).map((_, r) =>
-          Array.from({ length: cols }).map((_, c) => (
-            <input
-              key={`${r}-${c}`}
-              value={values[r]?.[c] ?? ""}
-              onChange={(e) => setCell(r, c, e.target.value)}
-              className="w-10 rounded bg-chrome-soft px-1 py-1 text-center text-bone sm:w-12 lg:w-14"
-              placeholder="0"
-            />
-          )),
-        )}
+    <section aria-label={label} className="space-y-2 rounded-xl border border-paper-line bg-paper p-3">
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h3 className="text-sm font-semibold text-ink">{label}</h3>
+          <p className="text-[11px] text-muted">{rows} × {cols}</p>
+        </div>
       </div>
-    </div>
+      <div className="max-w-full overflow-x-auto pb-1">
+        <div
+          className="inline-grid min-w-max gap-1 rounded-lg bg-chrome p-2"
+          style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
+        >
+          {Array.from({ length: rows }).map((_, r) =>
+            Array.from({ length: cols }).map((_, c) => (
+              <input
+                key={`${r}-${c}`}
+                value={values[r]?.[c] ?? ""}
+                onChange={(e) => setCell(r, c, e.target.value)}
+                aria-label={`${label} celda fila ${r + 1} columna ${c + 1}`}
+                className="w-10 rounded-md bg-chrome-soft px-1 py-1.5 text-center text-bone sm:w-12 lg:w-14"
+                placeholder="0"
+              />
+            )),
+          )}
+        </div>
+      </div>
+    </section>
   );
 }
 

@@ -1,25 +1,50 @@
-# S26 — Prompt de continuidad para otra sesión
+# Prompt de continuidad S26 — 2026-09-27
 
-Continúa el módulo S26 de Precision Lab para el proyecto **Precision Lab Lite**.
+Continúa Precision Lab S26 usando la rama `qa/s26-execution`.
 
-Antes de hacer cambios:
-1. lee `qa/s26/ROADMAP.md`;
-2. lee `qa/s26/VISUAL_MATRIX.md`;
-3. lee `qa/s26/MATHEMATICAL_INTEGRITY_POLICY.md`;
-4. lee `qa/s26/EXECUTION_LOG_TEMPLATE.md` o el log S26 más reciente;
-5. consulta GitHub y verifica branch, PR, SHA y gates actuales;
-6. identifica el último submódulo S26 cerrado y continúa desde allí.
+Antes de tocar código:
+- lee `qa/s26/START_HERE_2026-09-27.md`;
+- lee `qa/s26/SESSION_CLOSURE_2026-09-27.md`;
+- usa `qa/s26/KEYBOARD_CONTRACT.md` como autoridad funcional B6;
+- usa el contrato visual S26.2R y la captura aprobada como autoridad de composición, NO como inventario literal;
+- revisa `qa/s26/B6_KEYBOARD_PARITY_MATRIX.md`, `ROADMAP.md` y `EXECUTION_LOG.md`.
 
-Reglas obligatorias:
-- no reducir S26 a la pantalla científica;
-- cubrir gráfica, matrices, estadística, conversión, historial, configuración y teclado;
-- cubrir Desktop 1440, laptop, tablet y móvil;
-- no tocar rutas matemáticas protegidas salvo defecto reproducible;
-- toda modificación visual con impacto funcional debe tener test funcional asociado;
-- una captura visual no sustituye una prueba funcional;
-- antes de cerrar S26 ejecutar recertificación matemática completa;
-- mantener un log de decisiones, archivos modificados, defectos, tests y SHAs.
+Estado:
+- B1–B5 PASS DEFINITIVO.
+- B6 tiene gates automáticos verdes en el HEAD certificado y requiere únicamente confirmación visual humana final de las últimas correcciones.
+- Precision Lab Lite: HEAD certificado `cdd8e35ac6ddcb670f6dbdfe0bf79fa1fde7c9ec`.
 
-Baseline previo a S26: `e175f3d98e8b2eeea130faa5287e5927666befb6`.
+Primera tarea:
+1. verificar visualmente Desktop/Tablet/Mobile;
+2. confirmar familias arriba, subcategorías separadas, teclas contextuales por subcategoría y núcleo básico debajo;
+3. confirmar SmartDock retirado;
+4. confirmar que f(x)=0/Sistema/Simplificar solo aparecen en Álgebra → Ecuaciones;
+5. confirmar selector Sistema 2–5;
+6. confirmar que el teclado no tapa Entrada/Resultado/Gráfica.
 
-Si la conversación anterior no está disponible, estos archivos son la fuente de continuidad y deben prevalecer sobre suposiciones.
+Si todo es correcto:
+- declarar B6 PASS DEFINITIVO;
+- actualizar matriz/log/roadmap;
+- continuar B7 según ROADMAP.
+
+No volver a:
+- Básico como pestaña;
+- inventario histórico de 31 teclas;
+- layout familias a la izquierda;
+- SmartDock visible;
+- tira global de acciones de Ecuaciones;
+- mostrar todas las subcategorías de una familia a la vez.
+
+Conservar decisiones:
+- Enter físico = Enter virtual;
+- = solo inserta;
+- ^ físico/virtual;
+- EXP eliminado;
+- MCM/MCD aridad variable;
+- sgn/mod;
+- cuatro límites;
+- hiperbólicas inversas soportadas;
+- τ, Φ/φ;
+- paridad Lite/Plus y tooltips/accesibilidad.
+
+Toda corrección debe mantener los gates verdes y respetar la política de integridad matemática.

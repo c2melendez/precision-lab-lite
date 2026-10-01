@@ -99,11 +99,10 @@ test("S23: resultado y error dinámicos son anunciables", async ({ page }) => {
   await expect(calculate).toBeEnabled();
   await calculate.click();
 
-  await expect.poll(async () =>
-    page.locator('[role="status"], [aria-live="polite"]').evaluateAll((els) =>
-      els.some((el) => (el.textContent ?? "").replace(/\s+/g, " ").includes("4")),
-    ),
-  ).toBe(true);
+  const resultRegion = page.getByRole("region", { name: "Resultado", exact: true });
+  await expect(resultRegion).toContainText("4");
+  const liveResult = resultRegion.locator('[role="status"][aria-live="polite"]').first();
+  await expect(liveResult).toBeAttached();
 
   await setExpression(page, "(");
   await calculate.click();

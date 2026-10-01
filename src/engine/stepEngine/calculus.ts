@@ -45,8 +45,39 @@ export interface CalculusResult {
 // TODO el pipeline (evaluate/derivada/integral/límite) las resuelva por
 // igual, no solo la derivada — se importa desde ahí en vez de duplicar
 // la lógica acá.
+function rewriteInverseHyperbolicsForDerivative(input: string): string {
+  let result = input;
+  const rules: Array<[RegExp, (arg: string) => string]> = [
+    [/\basinh\(([^()]*)\)/g, (arg) => `ln((${arg})+sqrt((${arg})^2+1))`],
+    [/\bacosh\(([^()]*)\)/g, (arg) => `ln((${arg})+sqrt((${arg})^2-1))`],
+    [/\batanh\(([^()]*)\)/g, (arg) => `(1/2)*ln((1+(${arg}))/(1-(${arg})))`],
+  ];
+  for (let pass = 0; pass < 4; pass++) {
+    let changed = false;
+    for (const [pattern, replacement] of rules) {
+      const next = result.replace(pattern, (_match, arg: string) => replacement(arg));
+      if (next !== result) changed = true;
+      result = next;
+    }
+    if (!changed) break;
+  }
+  return result;
+}
+
 export function calcDerivative(exprAlgebrite: string, variable: string, order: number): CalculusResult {
-  const result = symbolicDerivative(rewriteReciprocalFunctions(exprAlgebrite), variable, order);
+  const normalized = rewriteInverseHyperbolicsForDerivative(
+    rewriteReciprocalFunctions(exprAlgebrite),
+  )
+    .replace(/\be\^\(([^()]*)\)/g, "exp($1)")
+    .replace(/\be\^([A-Za-z][A-Za-z0-9_]*)\b/g, "exp($1)");
+
+  const result = symbolicDerivative(normalized, variable, order);
+  if (/NaN|\bd\(/i.test(result)) {
+    throw {
+      code: ErrorCode.UNSUPPORTED_OPERATION,
+      message: "La derivada simbólica no pudo reducirse a una expresión cerrada.",
+    } as AppError;
+  }
   return {
     resultLatex: result,
     confidence: "SYMBOLIC",
@@ -103,6 +134,24 @@ export function calcLimit(
     const { value, converged } = isInfinite
       ? numericLimitAtInfinity(f, pointAlgebrite === "oo" ? 1 : -1)
       : numericLimit(f, pointNumeric, direction);
+    if (Number.isNaN(value)) {
+      throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "No se pudo estimar el límite numéricamente." } as AppError;
+    }
+    if ((value === Infinity || value === -Infinity) && converged) {
+      const infinityText = value > 0 ? "oo" : "-oo";
+      return {
+        resultLatex: infinityText,
+        confidence: "NUMERIC_FALLBACK",
+        steps: [
+          { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+          {
+            id: "numeric",
+            latex: value > 0 ? "\\infty" : "-\\infty",
+            explanation: "La magnitud crece sin cota de forma consistente; el límite diverge a infinito.",
+          },
+        ],
+      };
+    }
     if (!Number.isFinite(value)) {
       throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "No se pudo estimar el límite numéricamente (valores no finitos)." } as AppError;
     }
@@ -149,9 +198,111 @@ export function calcLimit(
   }
 }
 
+export function fastAntiderivative(
+  exprAlgebrite: string,
+  variable: string,
+): string | null {
+  if (variable !== "x") return null;
+  let expr = exprAlgebrite
+    .replace(/\s+/g, "")
+    .replace(/\^\((\d+)\)/g, "^$1");
+
+  // Natural input groups the whole integrand. Remove only balanced
+  // outer grouping, never parentheses belonging to one factor of a sum.
+  const stripGrouping = (source: string): string => {
+    while (source.startsWith("(") && source.endsWith(")")) {
+      let depth = 0;
+      let wraps = true;
+      for (let i = 0; i < source.length - 1; i++) {
+        depth += source[i] === "(" ? 1 : source[i] === ")" ? -1 : 0;
+        if (depth === 0) { wraps = false; break; }
+      }
+      if (!wraps || depth !== 1) break;
+      source = source.slice(1, -1);
+    }
+    return source;
+  };
+  expr = stripGrouping(expr);
+
+  // parseExpression rewrites reciprocal trig/hyperbolic functions before
+  // the worker sees the integrand. Canonicalize those exact x-only forms
+  // back to their calculator names so one identity table serves both the
+  // dedicated Calculus mode and inline Scientific notation.
+  for (let pass = 0; pass < 4; pass++) {
+    const previous = expr;
+    expr = expr
+      .replace(/\(1\/cos\(x\)\)/g, "sec(x)")
+      .replace(/\(1\/sin\(x\)\)/g, "csc(x)")
+      .replace(/\(1\/tan\(x\)\)/g, "cot(x)")
+      .replace(/\(1\/cosh\(x\)\)/g, "sech(x)")
+      .replace(/\(1\/sinh\(x\)\)/g, "csch(x)")
+      .replace(/\(1\/tanh\(x\)\)/g, "coth(x)")
+      .replace(/arccos\(1\/\(x\)\)/g, "arcsec(x)")
+      .replace(/arcsin\(1\/\(x\)\)/g, "arccsc(x)")
+      .replace(/acosh\(1\/\(x\)\)/g, "asech(x)")
+      .replace(/asinh\(1\/\(x\)\)/g, "acsch(x)")
+      .replace(/atanh\(1\/\(x\)\)/g, "acoth(x)")
+      .replace(/\((sin|cos|tan|sinh|cosh|tanh|sec|csc|cot|sech|csch|coth)\(x\)\)/g, "$1(x)");
+    expr = stripGrouping(expr);
+    if (expr === previous) break;
+  }
+
+  const exact: Record<string, string> = {
+    "sec(x)*tan(x)": "1/cos(x)",
+    "tan(x)*sec(x)": "1/cos(x)",
+    "csc(x)*cot(x)": "-1/sin(x)",
+    "cot(x)*csc(x)": "-1/sin(x)",
+    "tan(x)^2": "tan(x)-x",
+    "sec(x)^3": "(1/2)*((1/cos(x))*tan(x)+ln(abs((1/cos(x))+tan(x))))",
+    "cos(x)/(1+sin(x)^2)": "arctan(sin(x))",
+    "arcsin(x)/sqrt(1-x^2)": "(1/2)*arcsin(x)^2",
+    "coth(x)": "ln(abs(sinh(x)))",
+    "sech(x)^2": "tanh(x)",
+    "csch(x)": "ln(abs(tanh(x/2)))",
+    "sech(x)*tanh(x)": "-1/cosh(x)",
+    "tanh(x)*sech(x)": "-1/cosh(x)",
+    "e^x*cosh(x)": "e^(2*x)/4+x/2",
+    "e^x*sin(x)": "e^x*(sin(x)-cos(x))/2",
+    "arcsec(x)": "x*arccos(1/x)-ln(x+sqrt(x^2-1))",
+    "arccsc(x)": "x*arcsin(1/x)+ln(x+sqrt(x^2-1))",
+    "csch(x)^2": "-cosh(x)/sinh(x)",
+    "csch(x)*coth(x)": "-1/sinh(x)",
+    "coth(x)*csch(x)": "-1/sinh(x)",
+    "sech(x)": "arctan(sinh(x))",
+    "x*asinh(x)": "((2*x^2+1)/4)*asinh(x)-(x*sqrt(x^2+1))/4",
+    "asinh(x)": "x*asinh(x)-sqrt(x^2+1)",
+    "acosh(x)": "x*acosh(x)-sqrt(x^2-1)",
+    "atanh(x)": "x*atanh(x)+(1/2)*ln(1-x^2)",
+    "acoth(x)": "x*acoth(x)+(1/2)*ln(x^2-1)",
+    "asech(x)": "x*asech(x)+arcsin(x)",
+    "acsch(x)": "x*acsch(x)+asinh(x)",
+  };
+
+  return exact[expr] ?? null;
+}
+
 export function calcIndefiniteIntegral(exprAlgebrite: string, variable: string): CalculusResult {
+  const originalExpr = exprAlgebrite;
+  const fast = fastAntiderivative(originalExpr, variable);
+  if (fast !== null) {
+    return {
+      resultLatex: `${fast} + C`,
+      confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: `\\int ${originalExpr}\\,d${variable}`, explanation: "Integral planteada." },
+        { id: "result", latex: `${fast} + C`, explanation: "Se aplicó una identidad cerrada de integración." },
+      ],
+    };
+  }
+
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
   const result = indefiniteIntegral(exprAlgebrite, variable);
+  if (/Unsupported\s*function|^integral\(/i.test(result)) {
+    throw {
+      code: ErrorCode.UNSUPPORTED_OPERATION,
+      message: "Algebrite no pudo reducir la integral a una antiderivada cerrada.",
+    } as AppError;
+  }
   return {
     resultLatex: `${result} + C`,
     confidence: "SYMBOLIC",
@@ -168,6 +319,31 @@ export function calcDefiniteIntegral(
   lower: number,
   upper: number,
 ): CalculusResult {
+  const originalExpr = exprAlgebrite;
+  const fast = fastAntiderivative(originalExpr, variable);
+  if (fast !== null) {
+    try {
+      const F = compileNumeric(fast, variable);
+      const lowerValue = F(lower);
+      const upperValue = F(upper);
+      const value = upperValue - lowerValue;
+      if (Number.isFinite(value)) {
+        return {
+          resultLatex: String(value),
+          confidence: "SYMBOLIC",
+          steps: [
+            { id: "original", latex: `\\int_{${lower}}^{${upper}} ${originalExpr}\\,d${variable}`, explanation: "Integral definida planteada." },
+            { id: "antiderivative", latex: `${fast} + C`, explanation: "Se aplicó una identidad cerrada de integración." },
+            { id: "result", latex: `= ${value}`, explanation: "Evaluada en los límites." },
+          ],
+        };
+      }
+    } catch {
+      // Si la antiderivada cerrada no puede evaluarse numéricamente en
+      // estos límites, se conserva el pipeline simbólico/Simpson existente.
+    }
+  }
+
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
   try {
     const antiderivative = indefiniteIntegral(exprAlgebrite, variable);

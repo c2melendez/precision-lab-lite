@@ -1,61 +1,205 @@
 /**
- * src/components/GraphPlaceholder.tsx — Fase P (Rediseño visual), Módulo P1.
+ * B7 — vista previa ligera de Científica.
  *
- * Cuadrante visual reservado para la gráfica. Instrucción explícita del
- * usuario (Track C, sesión de rediseño visual): las 6 disposiciones
- * (Fusionada, Separada, Pantalla dividida, Enfoque, Flotante, Apilado)
- * deben considerar 4 cuadrantes — entrada de datos, resultado, teclado
- * colapsado y gráfica.
- *
- * Decisión de producto (post-integración de Track B): la graficación NO
- * es automática — Carlos confirmó explícitamente "algo que el usuario
- * pida explícitamente (un botón 'Graficar' en el resultado)", no
- * graficar cualquier resultado de un solo variable en silencio. Este
- * componente sigue siendo solo el cuadrante visual (no decide qué
- * graficar, no llama al worker él mismo) — recibe `canGraph`/`onGraph`
- * de quien sí sabe (BasicScientificMode.tsx) y solo se encarga de
- * mostrar el botón o el estado vacío. Paridad con precision-lab (main).
- *
- * Alcance V1, deliberado: solo Científica (BasicScientificMode.tsx)
- * tiene el botón conectado hoy.
+ * Preview uses the same graph worker as the full graphing mode.
  */
+import { useEffect, useState } from "react";
+import type { GraphAnalysis } from "../engine/stepEngine/graphing";
+import type { MathResult } from "../types";
+import { parseExpression } from "../engine/parsing";
+export type ScientificGraphState =
+  | "empty"
+  | "available"
+  | "not-needed"
+  | "advanced"
+  | "unavailable";
 
 interface GraphPlaceholderProps {
-  /** true cuando hay una expresión no vacía que tiene sentido intentar
-   * graficar. GraphingMode.tsx (vía parseExpression/freeVariables) es
-   * quien valida de verdad si es graficable — este flag solo evita
-   * mostrar el botón con el campo vacío. */
   canGraph?: boolean;
-  /** Manda la expresión al puente (usePendingGraphStore) y cambia a
-   * modo Graficación; si no es graficable, el error se muestra ahí por
-   * el canal normal, nunca en silencio. */
   onGraph?: () => void;
+  state?: ScientificGraphState;
+  message?: string;
+  expression?: string | null;
+  variable?: string;
+  integral?: boolean;
+  definite?: boolean;
+  bounds?: [number, number] | null;
 }
 
-export function GraphPlaceholder({ canGraph = false, onGraph }: GraphPlaceholderProps) {
-  if (canGraph && onGraph) {
-    return (
-      <div className="flex min-h-[110px] flex-1 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-paper-line bg-paper-soft/60 px-4 py-6 text-center">
-        <span className="text-xs font-medium text-muted">Gráfica</span>
-        <button
-          type="button"
-          onClick={onGraph}
-          className="rounded-md bg-marker px-4 py-1.5 text-sm font-semibold text-chrome hover:bg-marker/90"
-        >
-          Graficar
-        </button>
-      </div>
-    );
-  }
+const STATE_COPY: Record<Exclude<ScientificGraphState, "available">, string> = {
+  empty: "Escribe o resuelve una expresión para preparar una vista previa.",
+  "not-needed": "Representación gráfica no necesaria. El resultado no requiere una gráfica para su interpretación.",
+  advanced: "Esta operación requiere una representación más avanzada. Puedes continuar el análisis en Gráficas.",
+  unavailable: "No hay una representación gráfica útil disponible para esta operación.",
+};
+
+export function GraphPlaceholder({
+  canGraph = false,
+  onGraph,
+  state = canGraph ? "available" : "empty",
+  message,
+  expression,
+  variable = "x",
+  integral = false,
+  definite = false,
+  bounds = null,
+}: GraphPlaceholderProps) {
+  const canOpenGraphing = Boolean(onGraph) && canGraph && (state === "available" || state === "advanced");
+  const [analysis, setAnalysis] = useState<GraphAnalysis | null>(null);
+  const [antiderivative, setAntiderivative] = useState<GraphAnalysis | null>(null);
+  const [loading, setLoading] = useState(false);
+  const view: [number, number] = bounds
+    ? (() => {
+        const a = Math.min(...bounds), b = Math.max(...bounds);
+        const padding = Math.max((b - a) * 0.2, 0.5);
+        return [a - padding, b + padding];
+      })()
+    : [-10, 10];
+
+  useEffect(() => {
+    setAnalysis(null);
+    setAntiderivative(null);
+    if (!expression || state !== "available") { setLoading(false); return; }
+    const worker = new Worker(new URL("../workers/compute.worker.ts", import.meta.url), { type: "module" });
+    const timeout = window.setTimeout(() => {
+      setLoading(true);
+      worker.postMessage({ type: "graph", requestId: "scientific-preview-integrand", expressionAlgebrite: expression, variable, view });
+    }, 120);
+    worker.onmessage = (event: MessageEvent<MathResult>) => {
+      const data = event.data;
+      if (data.requestId === "scientific-preview-integrand") {
+        setAnalysis(data.success ? data.graphAnalysis as GraphAnalysis : null);
+        if (integral && !definite && data.success) {
+          worker.postMessage({ type: "evaluate", requestId: "scientific-preview-integral", expressionAlgebrite: `integral(${expression},${variable})` });
+        } else setLoading(false);
+      } else if (data.requestId === "scientific-preview-integral") {
+        try {
+          if (!data.success || !data.resultLatex) throw new Error("No antiderivative");
+          const latex = data.resultLatex.replace(/\s*\+\s*C\s*$/, "");
+          const parsed = parseExpression(latex, "RAD");
+          worker.postMessage({ type: "graph", requestId: "scientific-preview-antiderivative", expressionAlgebrite: parsed.algebrite, variable, view });
+        } catch { setLoading(false); }
+      } else if (data.requestId === "scientific-preview-antiderivative") {
+        setAntiderivative(data.success ? data.graphAnalysis as GraphAnalysis : null);
+        setLoading(false);
+      }
+    };
+    return () => { window.clearTimeout(timeout); worker.terminate(); };
+  }, [expression, variable, state, integral, bounds?.[0], bounds?.[1]]);
+
+  const samples = analysis?.samples ?? [];
+  const visibleYs = [...samples, ...(antiderivative?.samples ?? [])].map((point) => point.y).filter((value) => Number.isFinite(value) && Math.abs(value) < 100);
+  const minY = Math.min(-1, ...visibleYs);
+  const maxY = Math.max(1, ...visibleYs);
+  const ySpan = maxY - minY;
+  const projectX = (x: number) => 16 + (x - view[0]) * 268 / (view[1] - view[0]);
+  const projectY = (y: number) => 204 - (y - minY) * 188 / ySpan;
+  const makeCurve = (points: typeof samples) => {
+    let previousX = NaN;
+    let previousY = NaN;
+    return points.reduce((path, point) => {
+      const x = projectX(point.x);
+      const y = projectY(point.y);
+      const discontinuity = !Number.isFinite(previousX) || x - previousX > 1.2 || Math.abs(y - previousY) > 110;
+      previousX = x; previousY = y;
+      return Number.isFinite(y) && y > -500 && y < 700
+        ? `${path}${discontinuity ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)} ` : path;
+    }, "");
+  };
+  const curve = makeCurve(samples);
+  const integralCurve = makeCurve(antiderivative?.samples ?? []);
+  const regionSegments = (() => {
+    if (!definite || !bounds) return [] as Array<typeof samples>;
+    const lower = Math.min(...bounds);
+    const upper = Math.max(...bounds);
+    const segments: Array<typeof samples> = [];
+    let current: typeof samples = [];
+    let previousX = NaN;
+    let previousY = NaN;
+
+    const flush = () => {
+      if (current.length > 1) segments.push(current);
+      current = [];
+      previousX = NaN;
+      previousY = NaN;
+    };
+
+    for (const point of samples) {
+      if (point.x < lower || point.x > upper || !Number.isFinite(point.y) || Math.abs(point.y) >= 100) {
+        flush();
+        continue;
+      }
+      const x = projectX(point.x);
+      const y = projectY(point.y);
+      const discontinuity = current.length > 0
+        && (!Number.isFinite(previousX) || x - previousX > 1.2 || Math.abs(y - previousY) > 110);
+      if (discontinuity) flush();
+      current.push(point);
+      previousX = x;
+      previousY = y;
+    }
+    flush();
+    return segments;
+  })();
+
+  const regions = regionSegments.map((points) =>
+    `M${projectX(points[0].x).toFixed(1)},${projectY(0).toFixed(1)} `
+      + points.map((point) => `L${projectX(point.x).toFixed(1)},${projectY(point.y).toFixed(1)}`).join(" ")
+      + ` L${projectX(points[points.length - 1].x).toFixed(1)},${projectY(0).toFixed(1)} Z`,
+  );
 
   return (
-    <div
-      role="note"
-      aria-label="Gráfica: escribe una expresión y presiona Graficar"
-      className="flex min-h-[110px] flex-1 flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-paper-line bg-paper-soft/60 px-4 py-6 text-center"
+    <section
+      data-testid="scientific-graph"
+      aria-label="Vista previa de gráfica"
+      className="flex min-h-[360px] flex-1 flex-col rounded-xl border border-paper-line bg-paper-soft/60"
     >
-      <span className="text-xs font-medium text-muted">Gráfica</span>
-      <span className="text-[11px] text-muted">Escribe una expresión y presiona Graficar.</span>
-    </div>
+      <div className="flex items-center justify-between border-b border-paper-line px-4 py-2.5">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Vista previa de gráfica</p>
+        <span className="text-[10px] font-medium text-muted">Científica</span>
+      </div>
+
+      <div className="flex flex-1 flex-col items-center justify-center gap-3 px-4 py-6 text-center">
+        {state === "available" ? (
+          <>
+            <div
+              role="img"
+              aria-label={analysis ? `Gráfica de ${variable}` : "Vista previa de gráfica pendiente"}
+              className="grid h-[min(52vh,420px)] min-h-[270px] w-full place-items-center overflow-hidden rounded-lg border border-paper-line bg-paper/50"
+            >
+              {analysis && curve ? (
+                <svg data-testid="scientific-preview-plot" viewBox="0 0 300 220" preserveAspectRatio="none" className="h-full w-full text-graph" aria-hidden="true">
+                  <line x1={projectX(0)} x2={projectX(0)} y1="0" y2="220" stroke="currentColor" opacity="0.2" />
+                  {minY <= 0 && maxY >= 0 && <line x1="0" x2="300" y1={projectY(0)} y2={projectY(0)} stroke="currentColor" opacity="0.2" />}
+                  {regions.map((region, index) => (
+                    <path key={index} data-testid="integral-region" d={region} fill="#16865d" opacity="0.25" />
+                  ))}
+                  <path data-testid="integrand-curve" d={curve} fill="none" stroke="currentColor" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
+                  {!definite && integralCurve && <path data-testid="antiderivative-curve" d={integralCurve} fill="none" stroke="#f07820" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />}
+                </svg>
+              ) : <span className="text-xs text-muted">{loading ? "Preparando vista previa…" : "No hay curva real visible para esta expresión"}</span>}
+            </div>
+            <p className="text-xs text-muted">{definite
+              ? bounds ? `Curva original en azul y área entre ${Number(bounds[0].toFixed(4))} y ${Number(bounds[1].toFixed(4))} en verde`
+                : "Curva original; los límites no se pueden representar numéricamente"
+              : integral
+              ? <>Integrando <span className="text-graph">azul</span>{antiderivative ? <>, antiderivada <span style={{ color: "#f07820" }}>naranja</span> (C=0)</> : loading ? ", calculando antiderivada…" : ""}</>
+              : `Curva de la función en ${variable} ∈ [−10, 10]`}</p>
+          </>
+        ) : (
+          <p className="max-w-md text-xs leading-relaxed text-muted">{message ?? STATE_COPY[state]}</p>
+        )}
+
+        {canOpenGraphing && (
+          <button
+            type="button"
+            onClick={onGraph}
+            className="rounded-md bg-marker px-3 py-1.5 text-xs font-semibold text-chrome hover:bg-marker/90"
+          >
+            Abrir en Gráficas
+          </button>
+        )}
+      </div>
+    </section>
   );
 }

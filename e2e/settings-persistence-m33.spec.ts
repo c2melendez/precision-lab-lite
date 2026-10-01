@@ -7,11 +7,13 @@ test("M33: Ajustes persiste preferencias visuales y de accesibilidad tras reload
   const openSettings = page.getByRole("button", { name: "Ajustes", exact: true });
   await openSettings.click();
 
-  const menu = page.getByRole("menu");
+  const menu = page.getByRole("dialog", { name: "Configuración" });
   await expect(menu).toBeVisible();
 
-  await menu.getByRole("button", { name: "Sepia Cuaderno", exact: true }).click();
+  await menu.getByRole("button", { name: "Oscuro", exact: true }).click();
   await menu.getByRole("button", { name: "Compacta", exact: true }).click();
+
+  await menu.getByRole("button", { name: "Accesibilidad", exact: true }).click();
   await menu.getByRole("button", { name: "Muy grande", exact: true }).click();
 
   const dyslexiaToggle = menu
@@ -26,6 +28,7 @@ test("M33: Ajustes persiste preferencias visuales y de accesibilidad tras reload
     .getByRole("button");
   await motionToggle.click();
 
+  await menu.getByRole("button", { name: "Gráficas", exact: true }).click();
   await menu.getByRole("button", { name: /Apta para daltonismo/i }).click();
 
   const persisted = await page.evaluate(() => ({
@@ -45,14 +48,14 @@ test("M33: Ajustes persiste preferencias visuales y de accesibilidad tras reload
   }));
 
   expect(persisted).toEqual({
-    theme: "sepia",
+    theme: "dark",
     density: "compact",
     textSize: "xlarge",
     dyslexia: "true",
     reducedMotion: "true",
     graphPalette: "colorblind-safe",
     html: {
-      theme: "sepia",
+      theme: "dark",
       density: "compact",
       textSize: "xlarge",
       dyslexia: "true",
@@ -63,18 +66,20 @@ test("M33: Ajustes persiste preferencias visuales y de accesibilidad tras reload
   await page.reload();
   await expect(page.locator("math-field").first()).toBeVisible();
 
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "sepia");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await expect(page.locator("html")).toHaveAttribute("data-density", "compact");
   await expect(page.locator("html")).toHaveAttribute("data-text-size", "xlarge");
   await expect(page.locator("html")).toHaveAttribute("data-dyslexia-friendly", "true");
   await expect(page.locator("html")).toHaveAttribute("data-reduced-motion", "true");
 
   await openSettings.click();
-  const reloadedMenu = page.getByRole("menu");
+  const reloadedMenu = page.getByRole("dialog", { name: "Configuración" });
   await expect(reloadedMenu).toBeVisible();
 
-  await expect(reloadedMenu.getByRole("button", { name: /Sepia Cuaderno/i })).toHaveAttribute("aria-pressed", "true");
+  await expect(reloadedMenu.getByRole("button", { name: "Oscuro", exact: true })).toHaveAttribute("aria-pressed", "true");
   await expect(reloadedMenu.getByRole("button", { name: "Compacta", exact: true })).toHaveAttribute("aria-pressed", "true");
+
+  await reloadedMenu.getByRole("button", { name: "Accesibilidad", exact: true }).click();
   await expect(reloadedMenu.getByRole("button", { name: "Muy grande", exact: true })).toHaveAttribute("aria-pressed", "true");
   await expect(
     reloadedMenu.getByText("Espaciado amigable con dislexia", { exact: true }).locator("..").getByRole("button"),
@@ -82,5 +87,6 @@ test("M33: Ajustes persiste preferencias visuales y de accesibilidad tras reload
   await expect(
     reloadedMenu.getByText("Reducir movimiento", { exact: true }).locator("..").getByRole("button"),
   ).toHaveAttribute("aria-pressed", "true");
+  await reloadedMenu.getByRole("button", { name: "Gráficas", exact: true }).click();
   await expect(reloadedMenu.getByRole("button", { name: /Apta para daltonismo/i })).toHaveAttribute("aria-pressed", "true");
 });

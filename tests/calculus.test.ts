@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
+import { parseExpression } from "../src/engine/parsing";
 import { compileNumeric, simpsonIntegral, numericLimit, numericLimitAtInfinity } from "../src/engine/numericFallback";
-import { calcDefiniteIntegral, calcLimit, calcDerivative } from "../src/engine/stepEngine/calculus";
+import { calcDefiniteIntegral, calcIndefiniteIntegral, calcLimit, calcDerivative, fastAntiderivative } from "../src/engine/stepEngine/calculus";
 
 // NO EJECUTADO en el entorno de generación. Correr con `npm run test`.
 
@@ -13,6 +14,12 @@ describe("compileNumeric", () => {
   it("evalúa funciones trigonométricas", () => {
     const f = compileNumeric("sin(x)", "x");
     expect(f(0)).toBeCloseTo(0);
+  });
+
+  it("evalúa hiperbólicas directas sin depender de Algebrite", () => {
+    expect(compileNumeric("sinh(1)", "__none__")(0)).toBeCloseTo(Math.sinh(1), 12);
+    expect(compileNumeric("cosh(1)", "__none__")(0)).toBeCloseTo(Math.cosh(1), 12);
+    expect(compileNumeric("cosh(1)^2-sinh(1)^2", "__none__")(0)).toBeCloseTo(1, 10);
   });
 
   it("maneja el signo + unario, ej. +x^2-4 (bug detectado en revisión: antes solo se manejaba el - unario)", () => {
@@ -75,6 +82,39 @@ describe("numericLimitAtInfinity", () => {
 // para esta función, por eso pasó desapercibido. Antes del fix daba la
 // antiderivada sin evaluar en los límites (ej. 1/3*x^3 en vez de 8/3),
 // en silencio, sin error.
+describe("fast antiderivatives B7", () => {
+  it("resuelve sec(x)*tan(x) sin depender de Algebrite", () => {
+    const value = calcIndefiniteIntegral("sec(x)*tan(x)", "x").resultLatex;
+    expect(value).toContain("1/cos(x)");
+  });
+
+  it("resuelve sech(x)^2 -> tanh(x)", () => {
+    const value = calcIndefiniteIntegral("sech(x)^2", "x").resultLatex;
+    expect(value).toContain("tanh(x)");
+  });
+
+  it("resuelve cos(x)/(1+sin(x)^2) por sustitución cerrada", () => {
+    const value = calcIndefiniteIntegral("cos(x)/(1+sin(x)^2)", "x").resultLatex;
+    expect(value).toContain("arctan(sin(x))");
+  });
+
+  it("evalúa integral definida de sech(x)^2 en [0,1] con el fast path", () => {
+    const value = Number(calcDefiniteIntegral("sech(x)^2", "x", 0, 1).resultLatex);
+    expect(value).toBeCloseTo(Math.tanh(1), 10);
+  });
+
+  it("evalúa integral impropia de sech(x)^2 en [0,+infinito] como 1", () => {
+    const value = Number(calcDefiniteIntegral("sech(x)^2", "x", 0, Infinity).resultLatex);
+    expect(value).toBeCloseTo(1, 12);
+  });
+  it("reconoce formas recíprocas ya reescritas por el parser", () => {
+    expect(fastAntiderivative("(1/cos(x))*tan(x)", "x")).toBe("1/cos(x)");
+    expect(fastAntiderivative("(1/cosh(x))^2", "x")).toBe("tanh(x)");
+    expect(fastAntiderivative("(1/sinh(x))*(1/tanh(x))", "x")).toBe("-1/sinh(x)");
+  });
+
+});
+
 describe("calcDefiniteIntegral", () => {
   it("∫₀² x² dx = 8/3", () => {
     const value = Number(calcDefiniteIntegral("x^2", "x", 0, 2).resultLatex.replace("...", ""));
@@ -132,6 +172,22 @@ describe("calcLimit (Fase 3 — infinito y lateral, paridad con la pantalla úni
       2,
     );
   });
+
+  it("clasifica arccos(x) cuando x→1- como 0, no como un pequeño residual finito", () => {
+    const result = calcLimit("arccos(x)", "x", "1", 1, "left");
+    expect(Number(result.resultLatex)).toBeCloseTo(0, 8);
+  });
+
+  it("clasifica atanh(x) cuando x→1- como +infinito", () => {
+    const result = calcLimit("atanh(x)", "x", "1", 1, "left");
+    expect(result.resultLatex).toBe("oo");
+  });
+
+  it("clasifica cosh(x) cuando x→+infinito como +infinito", () => {
+    const result = calcLimit("cosh(x)", "x", "oo", Infinity, "both");
+    expect(result.resultLatex).toBe("oo");
+  });
+
 });
 
 describe("calcDerivative (Fase 3 — orden N sin tope de 3, paridad con la pantalla única)", () => {
@@ -148,6 +204,35 @@ describe("calcDerivative (Fase 3 — orden N sin tope de 3, paridad con la panta
 
   it("orden 8 de x^9 -> 362880x (9! = 362880)", () => {
     expect(calcDerivative("x^9", "x", 8).resultLatex.replace(/\s/g, "")).toMatch(/362880\*?x/);
+  });
+
+  it("resuelve derivadas hiperbólicas inversas sin dejar d(...) sin evaluar", () => {
+    const asinh = calcDerivative("asinh(x)", "x", 1).resultLatex;
+    expect(asinh).not.toMatch(/\bd\(/);
+    expect(asinh).not.toMatch(/NaN/i);
+
+    const atanh = calcDerivative("atanh(x^2)", "x", 1).resultLatex;
+    expect(atanh).not.toMatch(/\bd\(/);
+    expect(atanh).not.toMatch(/NaN/i);
+  });
+
+  it("deriva e^x*cosh(x) sin propagar NaN de Algebrite", () => {
+    const value = calcDerivative("e^x*cosh(x)", "x", 1).resultLatex;
+    expect(value).not.toMatch(/NaN/i);
+    expect(value).not.toMatch(/\bd\(/);
+  });
+
+  it.each([
+    ["asinh(x)", "x*asinh(x)-sqrt(x^2+1)"],
+    ["acosh(x)", "x*acosh(x)-sqrt(x^2-1)"],
+    ["atanh(x)", "x*atanh(x)+(1/2)*ln(1-x^2)"],
+    ["acoth(x)", "x*acoth(x)+(1/2)*ln(x^2-1)"],
+    ["asech(x)", "x*asech(x)+arcsin(x)"],
+    ["acsch(x)", "x*acsch(x)+asinh(x)"],
+  ])("resuelve integral hiperbólica inversa %s sin marcador Unsupportedfunction", (expr, expected) => {
+    const value = calcIndefiniteIntegral(expr, "x").resultLatex.replace(/\s+/g, "");
+    expect(value).toContain(expected.replace(/\s+/g, ""));
+    expect(value).not.toMatch(/Unsupportedfunction/i);
   });
 
   it("rechaza orden fuera de rango (>20, guarda de sensatez)", () => {
@@ -171,5 +256,33 @@ describe("calcLimit: no existe (DNE) vs diverge a infinito (suite de regresión 
   it("lim sin(x)/x en x=0 sigue dando 1 (límite que sí converge, no debe verse afectado)", () => {
     const r = calcLimit("sin(x)/x", "x", "0", 0, "both");
     expect(parseFloat(r.resultLatex ?? "")).toBeCloseTo(1, 3);
+  });
+});
+
+describe("B7 natural inverse hyperbolic integrals", () => {
+  for (const name of ["arsinh", "arcosh", "artanh", "arcoth", "arsech", "arcsch"]) {
+    it(`routes the grouped integrand for ${name} through an exact identity`, () => {
+      const parsed = parseExpression(`\\int\\operatorname{${name}} x\\,dx`).algebrite;
+      const integrand = parsed.slice("integral(".length, -",x)".length);
+      expect(fastAntiderivative(integrand, "x")).not.toBeNull();
+      const result = calcIndefiniteIntegral(integrand, "x");
+      expect(result.resultLatex).toContain("+ C");
+      expect(result.resultLatex).not.toMatch(/Unsupported\s*function|integral\(/i);
+    });
+  }
+
+  it("routes x times arsinh(x) through the exact product identity", () => {
+    const parsed = parseExpression("\\int x\\operatorname{arsinh} x\\,dx").algebrite;
+    const integrand = parsed.slice("integral(".length, -",x)".length);
+    expect(integrand).toBe("(x*asinh(x))");
+    const primitive = fastAntiderivative(integrand, "x");
+    expect(primitive).toBe("((2*x^2+1)/4)*asinh(x)-(x*sqrt(x^2+1))/4");
+    const result = calcIndefiniteIntegral(integrand, "x");
+    expect(result.resultLatex).toContain("asinh(x)");
+    expect(result.resultLatex).not.toContain("xasinh");
+  });
+
+  it("keeps grouping inside a sum intact", () => {
+    expect(fastAntiderivative("(asinh(x))+(x)", "x")).toBeNull();
   });
 });

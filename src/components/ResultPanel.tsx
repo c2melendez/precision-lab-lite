@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { StaticMath } from "./StaticMath";
 import type { MathResult } from "../types";
+import { decimalDegreesToDms, isInverseTrigAngleExpression, parseDecimalDegreesInput } from "./dmsDisplay";
+import { ResultFormatSelector, type ResultFormatId } from "./ResultFormatSelector";
+import { getAvailableResultFormats } from "./resultFormatPolicy";
 
 // spec v10 §11: el usuario alterna entre formatos sin recalcular.
 //
@@ -17,9 +20,65 @@ import type { MathResult } from "../types";
 // Screen.tsx, que es quien da el contenedor "pantalla" único (spec UX
 // estilo ClassCalc, decisión del mockup).
 
-type AnswerFormat = "dec" | "frac" | "scn" | "sqrt";
+type AnswerFormat = ResultFormatId;
 
-export function ResultPanel({ result }: { result: MathResult | null }) {
+function mathLatexToPlainText(value: string): string {
+  return value
+    .replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, "($1)/($2)")
+    .replace(/\\sqrt\{([^{}]+)\}/g, "√($1)")
+    .replace(/\\pi/g, "π")
+    .replace(/\\infty/g, "∞")
+    .replace(/\\cdot|\\times/g, "×")
+    .replace(/\^\{\\circ\}/g, "°")
+    .replace(/\\prime/g, "′")
+    .replace(/\\,/g, " ")
+    .replace(/[{}]/g, "")
+    .trim();
+}
+
+async function writeClipboard(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function FittedResult({ latex }: { latex: string }) {
+  const container = useRef<HTMLDivElement>(null);
+  const field = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useLayoutEffect(() => {
+    const box = container.current;
+    const math = field.current;
+    if (!box || !math) return;
+    let frame = 0;
+    const measure = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        // Measure at full Plus-sized type, then fit the actual rendered
+        // mathematical layout (including fractions and superscripts).
+        const width = math.scrollWidth / scale;
+        const available = box.clientWidth;
+        setScale(width > available && available > 0 ? Math.max(0.48, available / width) : 1);
+      });
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(box);
+    measure();
+    return () => { observer.disconnect(); cancelAnimationFrame(frame); };
+  }, [latex, scale]);
+
+  return <div ref={container} className="min-w-0 overflow-x-auto text-right">
+    <div ref={field} className="inline-block origin-right whitespace-nowrap" style={{ fontSize: `calc(${(2.26875 * scale).toFixed(4)}rem * var(--a11y-text-scale, 1))` }}>
+      <StaticMath latex={latex} className="text-ink" />
+    </div>
+  </div>;
+}
+
+export function ResultPanel({ result, inputLatex = "", angleMode = "RAD" }: { result: MathResult | null; inputLatex?: string; angleMode?: "RAD" | "GRAD" }) {
   const [format, setFormat] = useState<AnswerFormat>("dec");
   // Antes: "frac" siempre mostraba mixta cuando estaba disponible
   // (mixedLatex ?? improperLatex), sin forma de pedir la impropia. El
@@ -27,27 +86,59 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
   // chico que solo aparece cuando realmente hay una forma mixta posible
   // (fracción impropia: |numerador| >= denominador).
   const [showMixed, setShowMixed] = useState(true);
+  const [copied, setCopied] = useState<"result" | "latex" | null>(null);
+  const explicitDegreeInput = parseDecimalDegreesInput(inputLatex);
+  const inverseAngleResult = angleMode === "GRAD" && isInverseTrigAngleExpression(inputLatex);
+  const inverseDegreeSource = (
+    result?.fraction?.decimal ?? result?.decimalApprox ?? result?.resultLatex ?? ""
+  ).replace(/…/g, "").trim();
+  const inverseDegrees = inverseAngleResult && Number.isFinite(Number(inverseDegreeSource))
+    ? Number(inverseDegreeSource)
+    : null;
+  const dmsDegrees = explicitDegreeInput ?? inverseDegrees;
+  const dmsValue = dmsDegrees === null ? null : decimalDegreesToDms(dmsDegrees);
+
+  function withAngleUnit(
+    value: { latex: string; isPlainNumber: boolean },
+    selectedFormat: AnswerFormat,
+  ): { latex: string; isPlainNumber: boolean } {
+    if (!inverseAngleResult || selectedFormat === "dms" || selectedFormat === "dd") return value;
+    return value.isPlainNumber
+      ? { latex: `${value.latex}°`, isPlainNumber: true }
+      : { latex: `{${value.latex}}^{\\circ}`, isPlainNumber: false };
+  }
 
   if (!result) {
-    return <p className="py-1 text-right text-sm text-muted">Escribe una expresión y presiona Calcular.</p>;
+    return (
+      <section aria-label="Resultado">
+        <p className="py-1 text-right text-sm text-muted">Escribe una expresión y presiona Calcular.</p>
+      </section>
+    );
   }
 
   if (!result.success) {
     return (
-      <div role="alert" aria-live="assertive" aria-atomic="true" className="py-1 text-right text-red-600">
-        <p className="text-sm font-semibold">No se pudo calcular ({result.errorCode})</p>
-        <p className="text-xs text-red-500">{result.errorMessage}</p>
-      </div>
+      <section aria-label="Resultado">
+        <div role="alert" aria-live="assertive" aria-atomic="true" className="py-1 text-right text-red-600">
+          <p className="text-sm font-semibold">No se pudo calcular ({result.errorCode})</p>
+          <p className="text-xs text-red-500">{result.errorMessage}</p>
+        </div>
+      </section>
     );
   }
 
-  function renderValue(): { latex: string; isPlainNumber: boolean } {
-    if (format === "frac" && result?.fraction) {
+  function renderValue(selectedFormat: AnswerFormat): { latex: string; isPlainNumber: boolean } {
+    if (selectedFormat === "dd" && dmsDegrees !== null) {
+      const cleanDegrees = Math.round((dmsDegrees + Number.EPSILON) * 1e12) / 1e12;
+      return { latex: `${cleanDegrees}°`, isPlainNumber: true };
+    }
+    if (selectedFormat === "dms" && dmsValue) return { latex: dmsValue.latex, isPlainNumber: false };
+    if (selectedFormat === "frac" && result?.fraction) {
       const hasMixed = result.fraction.mixedLatex !== null;
       const latex = hasMixed && showMixed ? result.fraction.mixedLatex! : result.fraction.improperLatex;
-      return { latex, isPlainNumber: false };
+      return withAngleUnit({ latex, isPlainNumber: false }, selectedFormat);
     }
-    if (format === "scn") {
+    if (selectedFormat === "scn") {
       // fraction.decimal y decimalApprox pueden traer "…" al final cuando
       // el motor truncó un decimal periódico (fractions.ts / Fase E en
       // algebriteClient.ts) — Number() necesita el string limpio.
@@ -56,63 +147,105 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
         "",
       );
       const n = Number(source);
-      return Number.isFinite(n)
-        ? { latex: n.toExponential(6), isPlainNumber: true }
-        : { latex: result?.resultLatex ?? "", isPlainNumber: false };
+      return withAngleUnit(
+        Number.isFinite(n)
+          ? { latex: n.toExponential(6), isPlainNumber: true }
+          : { latex: result?.resultLatex ?? "", isPlainNumber: false },
+        selectedFormat,
+      );
     }
-    if (format === "dec") {
+    if (selectedFormat === "dec") {
       // Orden de fallback: fracción exacta -> decimal, luego float()
       // forzado sobre un resultado simbólico (Fase E), y solo si ninguno
       // de los dos existe, el resultado tal cual (mejor que nada).
-      if (result?.fraction) return { latex: result.fraction.decimal, isPlainNumber: true };
-      if (result?.decimalApprox) return { latex: result.decimalApprox, isPlainNumber: true };
-      return { latex: result?.resultLatex ?? "", isPlainNumber: false };
+      if (result?.fraction) return withAngleUnit({ latex: result.fraction.decimal, isPlainNumber: true }, selectedFormat);
+      if (result?.decimalApprox) return withAngleUnit({ latex: result.decimalApprox, isPlainNumber: true }, selectedFormat);
+      return withAngleUnit({ latex: result?.resultLatex ?? "", isPlainNumber: false }, selectedFormat);
     }
-    // "sqrt", o "frac" sin datos de fracción disponibles: se muestra el
-    // resultado tal cual lo devolvió el motor (ya es LaTeX real).
-    return { latex: result?.resultLatex ?? "", isPlainNumber: false };
+    // "exact": resultado simbólico/radical exacto tal cual lo devolvió el motor.
+    return withAngleUnit({ latex: result?.resultLatex ?? "", isPlainNumber: false }, selectedFormat);
   }
 
-  const { latex, isPlainNumber } = renderValue();
+  const numericSource = (
+    result?.fraction?.decimal ?? result?.decimalApprox ?? result?.resultLatex ?? ""
+  ).replace(/…/g, "").trim();
+  const hasNumericValue = Number.isFinite(Number(numericSource));
+  const availableFormats = getAvailableResultFormats({
+    hasExact: Boolean(result.resultLatex),
+    hasDecimal: hasNumericValue,
+    hasFraction: Boolean(result.fraction),
+    hasDms: Boolean(dmsValue),
+  }) as AnswerFormat[];
+
+  const activeFormat = availableFormats.includes(format) ? format : (availableFormats[0] ?? "exact");
+  const { latex } = renderValue(activeFormat);
+  const activeCopyText =
+    activeFormat === "dms" && dmsValue
+      ? dmsValue.text
+      : mathLatexToPlainText(latex);
+
+  async function copyActive(kind: "result" | "latex") {
+    const ok = await writeClipboard(kind === "result" ? activeCopyText : latex);
+    if (!ok) return;
+    setCopied(kind);
+    window.setTimeout(() => setCopied(null), 1200);
+  }
 
   return (
-    <div className="pt-1" role="status" aria-live="polite" aria-atomic="true">
-      {result.confidence === "NUMERIC_FALLBACK" && (
-        <p className="mb-1.5 inline-block rounded bg-marker-soft px-2 py-0.5 text-xs text-marker-text">
-          Aproximado numéricamente (no resuelto simbólicamente)
-        </p>
-      )}
-      {/* Fase R, Módulo R0: a11y-scale-result-3xl reemplaza a text-3xl —
-          mismo tamaño exacto por defecto, ahora escalable. */}
-      <div className="flex items-end justify-between gap-3">
-        {isPlainNumber ? (
-          <span className="a11y-scale-result-3xl ml-auto font-mono font-medium text-ink">{latex}</span>
-        ) : (
-          <StaticMath latex={latex} className="a11y-scale-result-3xl ml-auto font-mono text-ink" />
+    <section aria-label="Resultado" className="space-y-3 pt-1">
+      <div role="status" aria-live="polite" aria-atomic="true" className="contents">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Resultado</p>
+        {result.confidence === "NUMERIC_FALLBACK" && (
+          <span className="rounded-md bg-marker-soft px-2 py-1 text-[11px] font-medium text-marker-text">
+            Aproximado
+          </span>
         )}
       </div>
-      {format === "frac" && result.fraction?.mixedLatex !== null && result.fraction && (
-        <div className="mt-1 flex justify-end">
+
+      <div className="min-h-14 rounded-xl border border-paper-line bg-paper px-4 py-3">
+        <FittedResult latex={latex} />
+        {result.confidence === "NUMERIC_FALLBACK" && (
+          <p className="mt-1 text-right text-[11px] text-muted">
+            Aproximado numéricamente (no resuelto simbólicamente)
+          </p>
+        )}
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <ResultFormatSelector
+          formats={availableFormats}
+          value={activeFormat}
+          onChange={setFormat}
+        />
+
+        {activeFormat === "frac" && result.fraction?.mixedLatex !== null && result.fraction && (
           <button
             onClick={() => setShowMixed((v) => !v)}
-            className="text-xs text-muted underline decoration-dotted hover:text-marker"
+            className="min-h-8 rounded-full px-2 text-xs text-muted underline decoration-dotted hover:text-marker"
           >
             {showMixed ? "ver como impropia" : "ver como mixta"}
           </button>
-        </div>
-      )}
-      <div className="mt-1.5 flex justify-end gap-3 text-xs text-muted">
-        {(["dec", "frac", "scn", "sqrt"] as AnswerFormat[]).map((f) => (
-          <button
-            key={f}
-            onClick={() => setFormat(f)}
-            aria-pressed={format === f}
-            className={format === f ? "font-semibold text-marker" : "hover:text-ink"}
-          >
-            {f}
-          </button>
-        ))}
+        )}
       </div>
-    </div>
+
+      <div className="flex justify-end gap-1">
+        <button
+          type="button"
+          onClick={() => copyActive("result")}
+          className="rounded-md px-2 py-1 text-[11px] font-medium text-muted hover:bg-paper-line/40 hover:text-ink"
+        >
+          {copied === "result" ? "Copiado" : "Copiar"}
+        </button>
+        <button
+          type="button"
+          onClick={() => copyActive("latex")}
+          className="rounded-md px-2 py-1 text-[11px] font-medium text-muted hover:bg-paper-line/40 hover:text-ink"
+        >
+          {copied === "latex" ? "Copiado" : "LaTeX"}
+        </button>
+      </div>
+      </div>
+    </section>
   );
 }

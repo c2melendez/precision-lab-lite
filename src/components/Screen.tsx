@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import type { ReactNode } from "react";
 
 import { NaturalInput } from "./NaturalInput";
-import { RecentKeysBar } from "./RecentKeysBar";
 import { ResultPanel } from "./ResultPanel";
+import { StepList } from "./StepList";
 import { HistoryLog, type SessionHistoryEntry } from "./HistoryLog";
 import { AngleModePopover } from "./AngleModePopover";
-import { GraphPlaceholder } from "./GraphPlaceholder";
+import { GraphPlaceholder, type ScientificGraphState } from "./GraphPlaceholder";
 import { KeyboardIcon } from "./KeyboardIcon";
 import type { MathResult } from "../types";
 import type { LayoutMode } from "../store/useLayoutModeStore";
@@ -64,7 +64,14 @@ interface ScreenProps {
    * modos que usan Screen lo implementan todavía (alcance V1: solo
    * BasicScientificMode.tsx). Paridad con precision-lab (main). */
   onGraphExpression?: () => void;
+  graphState?: ScientificGraphState;
+  graphExpression?: string | null;
+  graphVariable?: string;
+  graphIntegral?: boolean;
+  graphDefinite?: boolean;
+  graphBounds?: [number, number] | null;
   onCalculate?: () => void;
+  onReuseSessionEntry?: (entry: SessionHistoryEntry) => void;
 }
 
 export function Screen({
@@ -79,28 +86,166 @@ export function Screen({
   onClearField,
   layoutMode = "fused",
   onGraphExpression,
+  graphState,
+  graphExpression,
+  graphVariable,
+  graphIntegral,
+  graphDefinite,
+  graphBounds,
   onCalculate,
+  onReuseSessionEntry,
 }: ScreenProps) {
   // Botón "Graficar" (cuadrante de gráfica, las 6 disposiciones): solo
   // tiene sentido ofrecerlo cuando hay algo escrito. GraphingMode.tsx
   // valida de verdad si es graficable al recibir el click.
-  const canGraph = Boolean(onGraphExpression) && latex.trim().length > 0;
+  const resolvedGraphState: ScientificGraphState = graphState ?? (latex.trim() ? "available" : "empty");
+  const canGraph = Boolean(onGraphExpression) && resolvedGraphState === "available";
   const inputField = (
     <div className="relative">
-      <NaturalInput value={latex} onChange={onChangeLatex} placeholder={placeholder} fieldRef={fieldRef} bare />
+      <NaturalInput value={latex} onChange={onChangeLatex} onEnter={onCalculate} placeholder={placeholder} fieldRef={fieldRef} bare />
       {latex.length > 0 && (
         <button
           type="button"
           onClick={onClearField}
           aria-label="Borrar campo"
-          title="clear field"
-          className="absolute right-0 top-0 rounded p-1 text-muted hover:text-ink"
+          title="Borrar campo"
+          className="absolute right-10 top-1/2 -translate-y-1/2 rounded p-1 text-muted hover:text-ink"
         >
           ✕
         </button>
       )}
+      {onCalculate && (
+        <button
+          type="button"
+          onClick={onCalculate}
+          disabled={!latex.trim()}
+          aria-label="Calcular"
+          title="Calcular"
+          className="absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-graph text-paper hover:bg-graph/90 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          →
+        </button>
+      )}
     </div>
   );
+
+  const inputSurface = (
+    <section aria-label="Entrada" className="rounded-xl border border-paper-line bg-paper-soft shadow-sm">
+      <div className="flex items-center justify-between border-b border-paper-line px-4 py-2.5">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Entrada</p>
+        <span className="text-[11px] text-muted">Expresión matemática</span>
+      </div>
+      <div className="px-4 py-3">{inputField}</div>
+    </section>
+  );
+
+  const recentSurface = (
+    <section aria-label="Entradas previas" className="min-h-[120px] rounded-xl border border-paper-line bg-paper-soft shadow-sm">
+      <div className="flex items-center justify-between border-b border-paper-line px-4 py-2.5">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Entradas previas</p>
+        <span className="text-[11px] text-muted">Sesión actual · hasta 5</span>
+      </div>
+      <div className="px-3 py-2">
+        {sessionHistory.length > 0 ? (
+          <HistoryLog entries={sessionHistory} maxVisible={5} onReuse={onReuseSessionEntry} />
+        ) : (
+          <p className="px-1 py-3 text-xs text-muted">Tus cálculos recientes de esta sesión aparecerán aquí.</p>
+        )}
+      </div>
+    </section>
+  );
+
+  const resultSurface = (
+    <div className="min-h-[120px] rounded-xl border border-paper-line bg-paper-soft px-4 py-3 shadow-sm">
+      <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
+    </div>
+  );
+
+  const graphSurface = (
+    <div className="flex h-full min-h-[240px]">
+      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} integral={graphIntegral} definite={graphDefinite} bounds={graphBounds} />
+    </div>
+  );
+
+  const isB7Layout =
+    layoutMode === "fused" ||
+    layoutMode === "split" ||
+    layoutMode === "focus" ||
+    layoutMode === "separated";
+
+  if (isB7Layout) {
+    const gridClass =
+      layoutMode === "fused"
+        ? "lg:grid-cols-[minmax(0,0.9fr)_minmax(360px,1.1fr)] lg:grid-rows-[auto_auto_minmax(140px,1fr)]"
+        : layoutMode === "split"
+          ? "lg:grid-cols-[minmax(0,1.35fr)_minmax(220px,0.75fr)_minmax(340px,1fr)] lg:grid-rows-[auto_minmax(180px,1fr)]"
+          : layoutMode === "focus"
+            ? "lg:grid-cols-[minmax(230px,0.8fr)_minmax(0,1.35fr)_minmax(340px,1fr)] lg:grid-rows-[auto_minmax(180px,1fr)]"
+            : "lg:grid-cols-2 lg:grid-rows-[auto_minmax(220px,1fr)]";
+
+    const inputPlacement =
+      layoutMode === "fused"
+        ? "lg:col-start-1 lg:row-start-1"
+        : layoutMode === "split"
+          ? "lg:col-start-1 lg:col-span-2 lg:row-start-1"
+          : layoutMode === "focus"
+            ? "lg:col-start-1 lg:row-start-1"
+            : "lg:col-start-1 lg:row-start-1";
+
+    const resultPlacement =
+      layoutMode === "fused"
+        ? "lg:col-start-1 lg:row-start-2"
+        : layoutMode === "split"
+          ? "lg:col-start-1 lg:row-start-2"
+          : layoutMode === "focus"
+            ? "lg:col-start-2 lg:row-start-1 lg:row-span-2"
+            : "lg:col-start-2 lg:row-start-1";
+
+    const recentPlacement =
+      layoutMode === "fused"
+        ? "lg:col-start-1 lg:row-start-3"
+        : layoutMode === "split"
+          ? "lg:col-start-2 lg:row-start-2"
+          : layoutMode === "focus"
+            ? "lg:col-start-1 lg:row-start-2"
+            : "lg:col-start-1 lg:row-start-2";
+
+    const graphPlacement =
+      layoutMode === "fused"
+        ? "lg:col-start-2 lg:row-start-1 lg:row-span-3"
+        : layoutMode === "split"
+          ? "lg:col-start-3 lg:row-start-1 lg:row-span-2"
+          : layoutMode === "focus"
+            ? "lg:col-start-3 lg:row-start-1 lg:row-span-2"
+            : "lg:col-start-2 lg:row-start-2";
+
+    return (
+      <div className="flex min-w-0 flex-col gap-3">
+        <div className="flex justify-end">
+          <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
+        </div>
+
+        <div className={`grid min-w-0 grid-cols-1 gap-3 ${gridClass}`}>
+          <div className={`min-w-0 ${inputPlacement}`}>{inputSurface}</div>
+          <div className={`min-w-0 ${resultPlacement}`}>{resultSurface}</div>
+          <div className={`min-w-0 ${recentPlacement}`}>{recentSurface}</div>
+          <div className={`min-w-0 ${graphPlacement}`}>{graphSurface}</div>
+        </div>
+
+        {result?.success && result.steps.length > 0 && (
+          <section aria-label="Pasos de solución" className="rounded-xl border border-paper-line bg-paper-soft p-4 shadow-sm">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-ink">Pasos de solución</h3>
+              <span className="text-xs text-muted">{result.steps.length} {result.steps.length === 1 ? "paso" : "pasos"}</span>
+            </div>
+            <StepList steps={result.steps} />
+          </section>
+        )}
+      </div>
+    );
+  }
+
+
 
   // "stacked" (Apilado, Módulo P3): una sola columna — input, resultado,
   // gráfica, y el teclado como sección COLAPSADA dentro del mismo flujo
@@ -115,15 +260,15 @@ export function Screen({
           <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
         </div>
         {sessionHistory.length > 0 && (
-          <div className="max-h-28 overflow-y-auto rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
+          <div className="max-h-20 overflow-y-auto rounded-xl border border-paper-line bg-paper-soft/70 px-4 py-2 shadow-sm">
             <HistoryLog entries={sessionHistory} />
           </div>
         )}
-        <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
+        {inputSurface}
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
-          <ResultPanel result={result} />
+          <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
-        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
+        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} integral={graphIntegral} definite={graphDefinite} bounds={graphBounds} />
         <StackedKeyboardSection />
       </div>
     );
@@ -137,8 +282,9 @@ export function Screen({
   if (layoutMode === "floating") {
     return (
       <FloatingScreenContent
-        inputField={inputField}
+        inputField={inputSurface}
         result={result}
+        inputLatex={latex}
         angleMode={angleMode}
         onToggleAngleMode={onToggleAngleMode}
         canGraph={canGraph}
@@ -157,8 +303,9 @@ export function Screen({
   if (layoutMode === "focus") {
     return (
       <FocusScreenContent
-        inputField={inputField}
+        inputField={inputSurface}
         result={result}
+        inputLatex={latex}
         angleMode={angleMode}
         onToggleAngleMode={onToggleAngleMode}
         canGraph={canGraph}
@@ -174,15 +321,15 @@ export function Screen({
           <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
         </div>
         {sessionHistory.length > 0 && (
-          <div className="max-h-28 overflow-y-auto rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
+          <div className="max-h-20 overflow-y-auto rounded-xl border border-paper-line bg-paper-soft/70 px-4 py-2 shadow-sm">
             <HistoryLog entries={sessionHistory} />
           </div>
         )}
-        <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
+        {inputSurface}
         <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
-          <ResultPanel result={result} />
+          <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
         </div>
-        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
+        <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} integral={graphIntegral} definite={graphDefinite} bounds={graphBounds} />
       </div>
     );
   }
@@ -199,10 +346,10 @@ export function Screen({
         <div className="flex justify-end">
           <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
         </div>
-        <div className="flex flex-col gap-3 dt:grid dt:grid-cols-[minmax(0,.92fr)_minmax(0,1.08fr)] dt:items-start dt:gap-4">
+        <div className="flex flex-col gap-3 dt:grid dt:grid-cols-[minmax(0,1.38fr)_minmax(340px,1fr)] dt:items-start dt:gap-4">
           <div className="flex min-w-0 flex-col gap-3">
             {sessionHistory.length > 0 && (
-              <div className="max-h-28 overflow-y-auto rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
+              <div className="max-h-20 overflow-y-auto rounded-xl border border-paper-line bg-paper-soft/70 px-4 py-2 shadow-sm">
                 <HistoryLog entries={sessionHistory} />
               </div>
             )}
@@ -227,15 +374,10 @@ export function Screen({
             </section>
           </div>
           <div className="flex min-w-0 flex-col gap-3">
-            <section aria-label="Resultado" className="min-w-0 rounded-xl border border-paper-line bg-paper-soft shadow-sm">
-              <h2 className="border-b border-paper-line px-4 py-3 text-sm font-semibold">
-                <span className="border-l-4 border-marker pl-2">Resultado</span>
-              </h2>
-              <div className="overflow-x-auto px-4 py-4" aria-live="polite">
-                <ResultPanel result={result} />
-              </div>
-            </section>
-            <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
+            <div className="min-w-0 rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
+              <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
+            </div>
+            <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} integral={graphIntegral} definite={graphDefinite} bounds={graphBounds} />
           </div>
         </div>
       </div>
@@ -252,15 +394,17 @@ export function Screen({
         </div>
 
         {sessionHistory.length > 0 && (
-          <div className="mb-2 max-h-28 overflow-y-auto border-b border-paper-line pb-2">
+          <div className="mb-2 max-h-20 overflow-y-auto rounded-lg border border-paper-line bg-paper/60 px-3 py-2 opacity-80">
             <HistoryLog entries={sessionHistory} />
           </div>
         )}
 
-        {inputField}
-        <ResultPanel result={result} />
+        {inputSurface}
+        <div className="mt-3">
+          <ResultPanel result={result} inputLatex={latex} angleMode={angleMode} />
+        </div>
       </div>
-      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
+      <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} state={resolvedGraphState} expression={graphExpression} variable={graphVariable} integral={graphIntegral} definite={graphDefinite} bounds={graphBounds} />
     </div>
   );
 }
@@ -291,8 +435,6 @@ function StackedKeyboardSection() {
 
   return (
     <div className="flex flex-col gap-1.5">
-      {/* Fase X, Módulo X0 — mismo criterio que precision-lab (main). */}
-      <RecentKeysBar />
       <div className="rounded-xl border border-paper-line bg-paper-soft">
         <button
           type="button"
@@ -321,6 +463,7 @@ function StackedKeyboardSection() {
 interface FocusLikeContentProps {
   inputField: ReactNode;
   result: MathResult | null;
+  inputLatex: string;
   angleMode: "RAD" | "GRAD";
   onToggleAngleMode: () => void;
   canGraph: boolean;
@@ -329,15 +472,15 @@ interface FocusLikeContentProps {
 
 /** Módulo P2 ("Enfoque"): sin historial, resultado destacado, gráfica
  * con más área. Reusado tal cual por Flotante cuando degrada (P0/P4). */
-function FocusScreenContent({ inputField, result, angleMode, onToggleAngleMode, canGraph, onGraphExpression }: FocusLikeContentProps) {
+function FocusScreenContent({ inputField, result, inputLatex, angleMode, onToggleAngleMode, canGraph, onGraphExpression }: FocusLikeContentProps) {
   return (
     <div className="flex flex-1 flex-col gap-3">
       <div className="flex justify-end">
         <AngleModePopover angleMode={angleMode} onToggle={onToggleAngleMode} variant="paper" />
       </div>
-      <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
+      {inputField}
       <div className="rounded-xl bg-paper-soft px-5 py-4 text-center shadow-sm">
-        <ResultPanel result={result} />
+        <ResultPanel result={result} inputLatex={inputLatex} angleMode={angleMode} />
       </div>
       <GraphPlaceholder canGraph={canGraph} onGraph={onGraphExpression} />
     </div>
@@ -353,7 +496,7 @@ function FocusScreenContent({ inputField, result, angleMode, onToggleAngleMode, 
  * localStorage, confirmado por el usuario, con clamp contra el viewport
  * actual al montar y al redimensionar la ventana del navegador).
  */
-function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMode, canGraph, onGraphExpression }: FocusLikeContentProps) {
+function FloatingScreenContent({ inputField, result, inputLatex, angleMode, onToggleAngleMode, canGraph, onGraphExpression }: FocusLikeContentProps) {
   const isWideEnough = useMinWidthMediaQuery(FLOATING_MIN_WIDTH_PX);
 
   const keyboardWindow = useFloatingLayoutStore((s) => s.keyboardWindow);
@@ -386,6 +529,7 @@ function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMod
       <FocusScreenContent
         inputField={inputField}
         result={result}
+        inputLatex={inputLatex}
         angleMode={angleMode}
         onToggleAngleMode={onToggleAngleMode}
         canGraph={canGraph}
@@ -402,13 +546,10 @@ function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMod
           Restablecer posición de ventanas
         </button>
       </div>
-      <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">{inputField}</div>
+      {inputField}
       <div className="rounded-xl bg-paper-soft px-4 py-3 shadow-sm">
-        <ResultPanel result={result} />
+        <ResultPanel result={result} inputLatex={inputLatex} angleMode={angleMode} />
       </div>
-      {/* Fase X, Módulo X0 — mismo criterio que precision-lab (main): el
-          dock de recientes va fuera de la FloatingWindow, justo encima. */}
-      <RecentKeysBar />
       {/* Fase Y (spec_rediseno_visual.md sección 11) — restricción dura:
           el teclado SIEMPRE inicia colapsado, en las 6 disposiciones sin
           excepción, Flotante incluida. Antes de este fix, la
@@ -430,8 +571,8 @@ function FloatingScreenContent({ inputField, result, angleMode, onToggleAngleMod
           aria-label="Abrir teclado"
           className={
             canExpand
-              ? "flex items-center justify-center gap-2 self-start rounded-lg bg-marker px-4 py-2 text-sm font-semibold text-chrome hover:bg-marker/90"
-              : "flex items-center justify-center gap-2 self-start rounded-lg bg-chrome-soft px-4 py-2 text-sm text-bone/30"
+              ? "relative z-40 flex items-center justify-center gap-2 self-start rounded-lg bg-marker px-4 py-2 text-sm font-semibold text-chrome hover:bg-marker/90"
+              : "relative z-40 flex items-center justify-center gap-2 self-start rounded-lg bg-chrome-soft px-4 py-2 text-sm text-bone/30"
           }
         >
           <KeyboardIcon className="h-4 w-4" />

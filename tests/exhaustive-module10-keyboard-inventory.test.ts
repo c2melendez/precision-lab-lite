@@ -28,13 +28,32 @@ const ACTION_LABELS = new Set([
 
 describe("Suite exhaustiva original — Módulo 10: inventario teclado Lite", () => {
   it("mantiene el inventario V5 esperado por superficie", () => {
-    expect(BASIC_V5_ROWS.flat()).toHaveLength(31);
-    expect(SYMBOL_VARIABLES).toHaveLength(6);
-    expect(SYMBOL_CONSTANTS).toHaveLength(5);
-    expect(CATEGORY_MENUS["Trigonométricas"].flatMap(g => g.keys)).toHaveLength(24);
-    expect(CATEGORY_MENUS["Álgebra"].flatMap(g => g.keys)).toHaveLength(15);
-    expect(CATEGORY_MENUS["Cálculo"].flatMap(g => g.keys)).toHaveLength(16);
-    expect(CATEGORY_MENUS["Complejos"].flatMap(g => g.keys)).toHaveLength(15);
+    expect(BASIC_V5_ROWS.flat()).toHaveLength(23);
+    expect(SYMBOL_VARIABLES).toHaveLength(11);
+    expect(SYMBOL_CONSTANTS).toHaveLength(6);
+    for (const family of ["Álgebra", "Trigonométricas", "Cálculo", "Complejos", "Unidades", "Más"] as const) {
+      expect(CATEGORY_MENUS[family]?.length, family).toBeGreaterThan(0);
+      expect(CATEGORY_MENUS[family].flatMap(g => g.keys).length, family).toBeGreaterThan(0);
+    }
+
+    const trig = CATEGORY_MENUS["Trigonométricas"].flatMap(g => g.keys).map(k => k.ariaLabel);
+    expect(trig).toEqual(expect.arrayContaining([
+      "sin", "cos", "tan",
+      "sinh", "cosh", "tanh",
+      "sinh inversa", "cosh inversa", "tanh inversa",
+    ]));
+
+    const calculus = CATEGORY_MENUS["Cálculo"].flatMap(g => g.keys).map(k => k.ariaLabel);
+    expect(calculus).toEqual(expect.arrayContaining([
+      "integral indefinida",
+      "integral definida",
+      "sumatoria",
+      "productoria",
+      "límite",
+      "límite al infinito",
+      "límite lateral por la izquierda",
+      "límite lateral por la derecha",
+    ]));
   });
 
   it("toda tecla visible tiene etiqueta y tooltip utilizable", () => {

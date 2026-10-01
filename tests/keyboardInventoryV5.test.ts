@@ -4,6 +4,7 @@ import { BASIC_V5_ROWS } from "../src/components/KeyboardBasicPanel";
 import {
   CATEGORY_MENUS,
   SYMBOL_CONSTANTS,
+  SYMBOL_FUNCTIONS,
   SYMBOL_VARIABLES,
   type KeyDef,
 } from "../src/components/MathKeyboard";
@@ -20,6 +21,7 @@ const allKeyboardKeys: KeyDef[] = [
   ...BASIC_V5_ROWS.flat(),
   ...SYMBOL_VARIABLES,
   ...SYMBOL_CONSTANTS,
+  ...SYMBOL_FUNCTIONS,
   ...Object.values(CATEGORY_MENUS).flatMap((groups) =>
     groups.flatMap((group) => group.keys),
   ),
@@ -39,6 +41,79 @@ describe("inventario estructural del teclado V5 de Lite", () => {
       expect(groups.length).toBeGreaterThan(0);
       expect(groups.flatMap((group) => group.keys).length).toBeGreaterThan(0);
     }
+  });
+
+  it("B6 mantiene el núcleo compacto y expulsa teclas contextuales", () => {
+    const labels = BASIC_V5_ROWS.flat().map((key) => key.ariaLabel);
+    expect(BASIC_V5_ROWS.map((row) => row.length)).toEqual([6, 6, 6, 5]);
+    expect(labels).toContain("igual");
+    expect(labels).toContain("calcular");
+    expect(labels).toContain("borrar");
+    expect(labels).not.toContain("grados");
+    expect(labels).not.toContain("grados minutos segundos");
+    expect(labels).not.toContain("prima");
+    expect(labels).not.toContain("menor que");
+    expect(labels).not.toContain("mayor que");
+    expect(labels).not.toContain("menor o igual que");
+    expect(labels).not.toContain("mayor o igual que");
+  });
+
+
+  it("B6 expone las siete familias contextuales y amplía Símbolos", () => {
+    expect(Object.keys(CATEGORY_MENUS)).toEqual(expect.arrayContaining([
+      "Álgebra",
+      "Trigonométricas",
+      "Cálculo",
+      "Complejos",
+      "Unidades",
+      "Más",
+    ]));
+
+    const variableLabels = SYMBOL_VARIABLES.map((key) => key.ariaLabel);
+    for (const label of ["variable t", "variable a", "variable b", "variable c", "variable n"]) {
+      expect(variableLabels).toContain(label);
+    }
+
+    expect(SYMBOL_CONSTANTS.map((key) => key.ariaLabel)).toContain("tau");
+    expect(SYMBOL_FUNCTIONS.map((key) => key.ariaLabel)).toEqual(["función f", "función g", "función h"]);
+
+    const algebra = (CATEGORY_MENUS.Álgebra ?? []).flatMap((group) => group.keys);
+    expect(algebra.map((key) => key.ariaLabel)).not.toContain("exponencial");
+    expect(algebra.map((key) => key.ariaLabel)).toContain("operador de potencia");
+
+    const units = (CATEGORY_MENUS.Unidades ?? []).flatMap((group) => group.keys);
+    expect(units.map((key) => key.ariaLabel)).toEqual(expect.arrayContaining([
+      "grados",
+      "prima",
+      "grados minutos segundos",
+      "fracción",
+      "fracción mixta",
+      "pi",
+    ]));
+  });
+
+  it("B6 mantiene constantes contextuales y cuatro límites explícitos", () => {
+    for (const family of ["Álgebra", "Trigonométricas", "Cálculo"] as const) {
+      const labels = (CATEGORY_MENUS[family] ?? []).flatMap((group) => group.keys).map((key) => key.ariaLabel);
+      expect(labels).toEqual(expect.arrayContaining(["pi", "e", "infinito"]));
+    }
+
+    const complexLabels = (CATEGORY_MENUS.Complejos ?? [])
+      .flatMap((group) => group.keys)
+      .map((key) => key.ariaLabel);
+    expect(complexLabels).toEqual(expect.arrayContaining(["número imaginario", "pi", "e", "infinito"]));
+
+    const limits = (CATEGORY_MENUS.Cálculo ?? [])
+      .find((group) => group.section === "Límites")
+      ?.keys ?? [];
+    expect(limits.map((key) => key.ariaLabel)).toEqual([
+      "límite",
+      "límite al infinito",
+      "límite lateral por la izquierda",
+      "límite lateral por la derecha",
+    ]);
+    expect(limits[2]?.insertLatex).toContain("^{-}");
+    expect(limits[3]?.insertLatex).toContain("^{+}");
   });
 
   it("no deja teclas sin etiqueta accesible", () => {

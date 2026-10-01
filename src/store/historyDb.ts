@@ -9,6 +9,7 @@ import { openDB, type DBSchema, type IDBPDatabase } from "idb";
 
 export interface HistoryEntry {
   id: string;
+  module: string;
   mode: string;
   input: string;
   resultSummary: string;
@@ -41,9 +42,25 @@ function getDb(): Promise<IDBPDatabase<CalcDB>> {
   return dbPromise;
 }
 
-export async function addHistoryEntry(entry: Omit<HistoryEntry, "id" | "timestamp">): Promise<void> {
+function inferSourceModule(mode: string): string {
+  if (mode.startsWith("Matrices")) return "Matrices";
+  if (mode.startsWith("Estadística")) return "Estadística";
+  if (mode.startsWith("Grafic")) return "Gráficas";
+  if (mode.startsWith("Geometr")) return "Geometría";
+  if (mode.startsWith("Unidades")) return "Unidades";
+  return "Científica";
+}
+
+export async function addHistoryEntry(
+  entry: Omit<HistoryEntry, "id" | "timestamp" | "module"> & { module?: string },
+): Promise<void> {
   const db = await getDb();
-  const full: HistoryEntry = { ...entry, id: crypto.randomUUID?.() ?? String(Math.random()), timestamp: Date.now() };
+  const full: HistoryEntry = {
+    ...entry,
+    module: entry.module ?? inferSourceModule(entry.mode),
+    id: crypto.randomUUID?.() ?? String(Math.random()),
+    timestamp: Date.now(),
+  };
   await db.put("history", full);
 
   // Poda entradas antiguas si se pasa del límite (spec v10 §3, persistencia acotada).

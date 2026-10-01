@@ -31,9 +31,12 @@ test("M39: teclado matemático abre, navega y cierra fuera de Chromium", async (
   const dialog = page.getByRole("dialog", { name: "Teclado matemático" });
   await expect(dialog).toBeVisible();
 
-  const basicTab = dialog.getByRole("tab", { name: "Básico", exact: true });
+  await expect(dialog.getByTestId("keyboard-b6-core")).toBeVisible();
   const algebraTab = dialog.getByRole("tab", { name: "Álgebra", exact: true });
-  await expect(basicTab).toHaveAttribute("aria-selected", "true");
+  await expect(algebraTab).toHaveAttribute("aria-selected", "true");
+  const trigTab = dialog.getByRole("tab", { name: "Trigonométricas", exact: true });
+  await trigTab.click();
+  await expect(trigTab).toHaveAttribute("aria-selected", "true");
   await algebraTab.click();
   await expect(algebraTab).toHaveAttribute("aria-selected", "true");
 

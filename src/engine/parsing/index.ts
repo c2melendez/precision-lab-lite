@@ -14,7 +14,7 @@ import { validateFunctionArity } from "./functionArity";
 import { splitEquation } from "./equationSplit";
 import { splitInequality, type InequalityOperator } from "./inequalitySplit";
 import { expandPostfixOperators } from "./postfixOperators";
-import { KNOWN_FUNCTION_NAMES, CONSTANT_SUBSTITUTIONS } from "./constants";
+import { KNOWN_FUNCTION_NAMES, CONSTANT_SUBSTITUTIONS, RESERVED_CONSTANTS } from "./constants";
 
 export interface ParsedExpression {
   /** Cadena lista para pasar a Algebrite. Para ecuaciones, es "(left)-(right)". */
@@ -155,7 +155,7 @@ export function rewriteReciprocalFunctions(expr: string): string {
   // texto reemplazado ya no contiene "sec(" suelto y no hay colisión.
   result = rewriteUnaryFunction(result, "arcsec", (a) => `(arccos(1/(${a})))`);
   result = rewriteUnaryFunction(result, "arccsc", (a) => `(arcsin(1/(${a})))`);
-  result = rewriteUnaryFunction(result, "arccot", (a) => `(arctan(1/(${a})))`);
+  result = rewriteUnaryFunction(result, "arccot", (a) => `((pi/2)-arctan(${a}))`);
   // Módulo A (spec §2): mismo problema de substring que arcsec/arccsc/
   // arccot de arriba — "asech" contiene "sech", "acsch" contiene "csch",
   // "acoth" contiene "coth" — se reescriben ANTES que sus versiones
@@ -200,8 +200,9 @@ function rewriteUnaryFunction(expr: string, fnName: string, build: (a: string) =
 
 function extractFreeVariables(tokens: Token[]): string[] {
   const vars = new Set<string>();
+  const constants = new Set(RESERVED_CONSTANTS);
   for (const t of tokens) {
-    if (t.type === "identifier") vars.add(t.value);
+    if (t.type === "identifier" && !constants.has(t.value)) vars.add(t.value);
   }
   return [...vars];
 }
@@ -209,10 +210,43 @@ function extractFreeVariables(tokens: Token[]): string[] {
 /** Convierte los argumentos de trig DIRECTAS (sin/cos/tan) de grados a radianes cuando angleMode === "GRAD" (spec v10 §5: alcance exacto de angle_unit). "GRAD" es una decisión deliberada del proyecto para significar grados sexagesimales, no gradianes — ver spec_calculadora_v10_sin_backend.md. */
 function applyAngleMode(algebrite: string, angleMode: "RAD" | "GRAD"): string {
   if (angleMode === "RAD") return algebrite;
-  const directTrig = ["sin", "cos", "tan"];
+
+  // En modo grados, las funciones directas reciben grados y las inversas
+  // convencionales devuelven grados. El orden importa: primero se convierte
+  // el argumento de sin/cos/tan a radianes y después se convierte la salida
+  // de arcsin/arccos/arctan a grados. Así sin(asin(0.5)) conserva 0.5.
+  const directTrig = ["sin", "cos", "tan", "sec", "csc", "cot"];
   let result = algebrite;
   for (const fn of directTrig) {
     result = wrapFunctionArgsWithDegToRad(result, fn);
+  }
+  for (const fn of ["arcsin", "arccos", "arctan", "arcsec", "arccsc", "arccot"]) {
+    result = wrapInverseTrigResultToDegrees(result, fn);
+  }
+  return result;
+}
+
+function wrapInverseTrigResultToDegrees(expr: string, fnName: string): string {
+  let result = "";
+  let i = 0;
+  while (i < expr.length) {
+    const precededByLetter = i > 0 && /[a-zA-Z]/.test(expr[i - 1]);
+    if (!precededByLetter && expr.startsWith(`${fnName}(`, i)) {
+      const start = i + fnName.length;
+      let depth = 1;
+      let j = start + 1;
+      while (j < expr.length && depth > 0) {
+        if (expr[j] === "(") depth++;
+        else if (expr[j] === ")") depth--;
+        j++;
+      }
+      const arg = expr.slice(start + 1, j - 1);
+      result += `((${fnName}(${arg}))*180/pi)`;
+      i = j;
+    } else {
+      result += expr[i];
+      i++;
+    }
   }
   return result;
 }

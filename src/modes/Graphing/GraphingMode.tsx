@@ -9,6 +9,7 @@ import { addHistoryEntry } from "../../store/historyDb";
 import { useGraphColorPaletteStore } from "../../store/useGraphColorPaletteStore";
 import { useArgandBridgeStore } from "../../store/useArgandBridgeStore";
 import { usePendingGraphStore } from "../../store/usePendingGraphStore";
+import { usePendingHistoryReuseStore } from "../../store/usePendingHistoryReuseStore";
 
 // Modo 6 de la spec v10 §10 (Módulo 7 — el de mayor riesgo del proyecto,
 // según la propia spec). Ver README del Módulo 7 sobre el cambio de
@@ -104,6 +105,18 @@ export function GraphingMode() {
   // aparece en la propia ficha de la expresión, por el canal normal.
   const pendingGraphExpression = usePendingGraphStore((s) => s.pendingExpression);
   const clearPendingGraphExpression = usePendingGraphStore((s) => s.clearPendingExpression);
+  const pendingHistoryReuse = usePendingHistoryReuseStore((s) => s.pending);
+  const takePendingHistoryReuse = usePendingHistoryReuseStore((s) => s.takePending);
+  useEffect(() => {
+    const historyEntry = takePendingHistoryReuse();
+    if (!historyEntry) return;
+    const [xLatex, yLatex = ""] = historyEntry.input.split(";").map((part) => part.trim());
+    const next = { ...entries[0], latex: xLatex, yLatex, analysis: null, surface3D: null, error: null };
+    setKind(yLatex ? "parametric" : "cartesian");
+    setEntries((current) => [next, ...current.slice(1)]);
+    setSelectedId(next.id);
+  }, [pendingHistoryReuse, takePendingHistoryReuse]);
+
   useEffect(() => {
     if (pendingGraphExpression === null) return;
     setKind("cartesian");
@@ -115,7 +128,7 @@ export function GraphingMode() {
   }, [pendingGraphExpression, clearPendingGraphExpression]);
 
   const workerRef = useRef<Worker | null>(null);
-  const requestToEntryRef = useRef<Map<string, string>>(new Map());
+  const requestToEntryRef = useRef<Map<string, { entryId: string; input: string }>>(new Map());
 
   const getWorker = useCallback(() => {
     if (!workerRef.current) {
@@ -124,8 +137,9 @@ export function GraphingMode() {
         { type: "module" },
       );
       workerRef.current.onmessage = (e: MessageEvent<MathResult>) => {
-        const entryId = requestToEntryRef.current.get(e.data.requestId);
-        if (!entryId) return;
+        const pendingRequest = requestToEntryRef.current.get(e.data.requestId);
+        if (!pendingRequest) return;
+        const { entryId, input } = pendingRequest;
         requestToEntryRef.current.delete(e.data.requestId);
         setEntries((prev) =>
           prev.map((entry) => {
@@ -145,7 +159,7 @@ export function GraphingMode() {
           }),
         );
         if (e.data.success) {
-          addHistoryEntry({ mode: "Graficación", input: "", resultSummary: e.data.resultLatex ?? "" });
+          addHistoryEntry({ module: "Gráficas", mode: "Graficación", input, resultSummary: e.data.resultLatex ?? "" });
         }
       };
     }
@@ -196,7 +210,7 @@ export function GraphingMode() {
         }
         const [varX, varY] = parsed.freeVariables;
         const requestId = makeRequestId();
-        requestToEntryRef.current.set(requestId, entry.id);
+        requestToEntryRef.current.set(requestId, { entryId: entry.id, input: entry.latex });
         getWorker().postMessage({
           type: "graphSurface3D",
           requestId,
@@ -246,7 +260,7 @@ export function GraphingMode() {
           return;
         }
         const requestId = makeRequestId();
-        requestToEntryRef.current.set(requestId, entry.id);
+        requestToEntryRef.current.set(requestId, { entryId: entry.id, input: kind === "parametric" ? `${entry.latex}; ${entry.yLatex}` : entry.latex });
         getWorker().postMessage({
           type: "graphParametric",
           requestId,
@@ -288,7 +302,7 @@ export function GraphingMode() {
         return;
       }
       const requestId = makeRequestId();
-      requestToEntryRef.current.set(requestId, entry.id);
+      requestToEntryRef.current.set(requestId, { entryId: entry.id, input: entry.latex });
       if (kind === "polar") {
         getWorker().postMessage({
           type: "graphPolar",
@@ -387,15 +401,19 @@ export function GraphingMode() {
   const selectedSurface3D = selectedEntry?.surface3D ?? null;
 
   return (
-    <div className="flex flex-col gap-3 p-4 md:flex-row md:items-start lg:gap-6 dt:mx-auto dt:max-w-[1440px] dt:gap-10">
+    <div className="mx-auto flex w-full max-w-[1376px] flex-col gap-4 p-4 md:flex-row md:items-start lg:gap-6">
       {/* Sidebar de expresiones (spec §6, + selector de tipo Módulo I0) */}
-      <div className="flex w-full flex-col gap-2 md:w-56">
-        <div className="flex gap-1">
+      <aside aria-label="Expresiones y tipo de gráfica" className="flex w-full shrink-0 flex-col gap-3 rounded-xl border border-paper-line bg-paper-soft p-3 shadow-sm md:w-[280px]">
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Expresiones</h2>
+          <span className="text-[11px] text-muted">{entries.length} {entries.length === 1 ? "expresión" : "expresiones"}</span>
+        </div>
+        <div className="flex gap-1 overflow-x-auto pb-1" role="group" aria-label="Tipo de gráfica">
           <button
             type="button"
             onClick={() => switchKind("cartesian")}
             aria-pressed={kind === "cartesian"}
-            className={`rounded px-2 py-1 text-xs ${
+            className={`min-h-8 shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
               kind === "cartesian" ? "bg-marker text-white" : "border border-paper-line text-muted hover:bg-paper-soft"
             }`}
           >
@@ -405,7 +423,7 @@ export function GraphingMode() {
             type="button"
             onClick={() => switchKind("polar")}
             aria-pressed={kind === "polar"}
-            className={`rounded px-2 py-1 text-xs ${
+            className={`min-h-8 shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
               kind === "polar" ? "bg-marker text-white" : "border border-paper-line text-muted hover:bg-paper-soft"
             }`}
           >
@@ -415,7 +433,7 @@ export function GraphingMode() {
             type="button"
             onClick={() => switchKind("parametric")}
             aria-pressed={kind === "parametric"}
-            className={`rounded px-2 py-1 text-xs ${
+            className={`min-h-8 shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
               kind === "parametric" ? "bg-marker text-white" : "border border-paper-line text-muted hover:bg-paper-soft"
             }`}
           >
@@ -425,7 +443,7 @@ export function GraphingMode() {
             type="button"
             onClick={() => switchKind("3d")}
             aria-pressed={kind === "3d"}
-            className={`rounded px-2 py-1 text-xs ${
+            className={`min-h-8 shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
               kind === "3d" ? "bg-marker text-white" : "border border-paper-line text-muted hover:bg-paper-soft"
             }`}
           >
@@ -602,10 +620,14 @@ export function GraphingMode() {
             </div>
           </div>
         )}
-      </div>
+      </aside>
 
       {/* Lienzo (spec §6) */}
-      <div className="flex flex-1 flex-col gap-2">
+      <section aria-label="Vista de gráfica" className="flex min-w-0 flex-1 flex-col gap-3 rounded-xl border border-paper-line bg-paper p-3 shadow-sm">
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Vista</h2>
+          <span className="text-[11px] text-muted">{kind === "3d" ? "Superficie 3D" : kind === "polar" ? "Polar" : kind === "parametric" ? "Paramétrica" : "Cartesiana"}</span>
+        </div>
         <div className="flex items-center justify-end gap-1.5">
           {kind !== "3d" && (
             <>
@@ -655,41 +677,52 @@ export function GraphingMode() {
         )}
 
         {selectedAnalysis && (
-          <>
-            <p className="inline-block rounded bg-marker-soft px-2 py-1 text-xs text-marker-text">
+          <section aria-label="Análisis de gráfica" className="space-y-3 rounded-xl border border-paper-line bg-paper-soft p-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Análisis</h3>
+                <p className="mt-0.5 text-[11px] text-muted">Dominio, rango y puntos notables</p>
+              </div>
+              <span className="rounded-full bg-marker-soft px-2.5 py-1 text-[11px] text-marker-text">
+                Aproximado
+              </span>
+            </div>
+            <p className="text-xs text-muted">
               Análisis aproximado por muestreo numérico, no simbólico exacto.
             </p>
-            <div className="flex flex-col gap-1 rounded-xl bg-paper-soft p-4 text-sm text-ink">
-              <p><span className="text-muted">Dominio:</span> {selectedAnalysis.domainDescription}</p>
-              <p><span className="text-muted">Rango:</span> {selectedAnalysis.rangeDescription}</p>
+            <div className="grid gap-x-5 gap-y-2 rounded-xl border border-paper-line bg-paper p-3 text-sm text-ink sm:grid-cols-[auto_minmax(0,1fr)]">
+              <span className="text-muted">Dominio:</span>
+              <span className="min-w-0 break-words">{selectedAnalysis.domainDescription}</span>
+              <span className="text-muted">Rango:</span>
+              <span className="min-w-0 break-words">{selectedAnalysis.rangeDescription}</span>
               {kind === "cartesian" && (
                 <>
-                  <p>
-                    <span className="text-muted">Intercepciones en x:</span>{" "}
+                  <span className="text-muted">Intercepciones en x:</span>
+                  <span className="min-w-0 break-words">
                     {selectedAnalysis.xIntercepts.length ? selectedAnalysis.xIntercepts.map((x) => x.toFixed(3)).join(", ") : "ninguna en la vista actual"}
-                  </p>
-                  <p>
-                    <span className="text-muted">Intercepción en y:</span>{" "}
+                  </span>
+                  <span className="text-muted">Intercepción en y:</span>
+                  <span className="min-w-0 break-words">
                     {selectedAnalysis.yIntercept !== null ? selectedAnalysis.yIntercept.toFixed(3) : "no definida en x=0"}
-                  </p>
-                  <p>
-                    <span className="text-muted">Máximo global:</span>{" "}
+                  </span>
+                  <span className="text-muted">Máximo global:</span>
+                  <span className="min-w-0 break-words">
                     {selectedAnalysis.globalMax ? `(${selectedAnalysis.globalMax.x.toFixed(3)}, ${selectedAnalysis.globalMax.y.toFixed(3)})` : "—"}
-                  </p>
-                  <p>
-                    <span className="text-muted">Mínimo global:</span>{" "}
+                  </span>
+                  <span className="text-muted">Mínimo global:</span>
+                  <span className="min-w-0 break-words">
                     {selectedAnalysis.globalMin ? `(${selectedAnalysis.globalMin.x.toFixed(3)}, ${selectedAnalysis.globalMin.y.toFixed(3)})` : "—"}
-                  </p>
-                  <p>
-                    <span className="text-muted">Vértice:</span>{" "}
+                  </span>
+                  <span className="text-muted">Vértice:</span>
+                  <span className="min-w-0 break-words">
                     {selectedAnalysis.vertex ? `(${selectedAnalysis.vertex.x.toFixed(3)}, ${selectedAnalysis.vertex.y.toFixed(3)})` : "no aplica"}
-                  </p>
+                  </span>
                 </>
               )}
             </div>
-          </>
+          </section>
         )}
-      </div>
+      </section>
     </div>
   );
 }

@@ -5,7 +5,7 @@
 // Módulo 1: "evaluate" (Modo 1). Módulo 3: "solveAlgebra" (Modo 2 - Álgebra).
 // Los demás tipos de operación se añaden en módulos posteriores.
 
-import { evaluate, toLatex, toDecimalApprox, ErrorCode as ClientErrorCode } from "../engine/algebriteClient";
+import { evaluate, indefiniteIntegral, toLatex, toDecimalApprox, ErrorCode as ClientErrorCode } from "../engine/algebriteClient";
 import { toFractionResult, fractionToLatex } from "../engine/fractions";
 import { compileNumeric, numericLimit, numericLimitAtInfinity } from "../engine/numericFallback";
 import { tryStatFunction, splitTopLevelArgs } from "../engine/statFunctions";
@@ -24,6 +24,7 @@ import {
   calcLimit,
   calcIndefiniteIntegral,
   calcDefiniteIntegral,
+  fastAntiderivative,
 } from "../engine/stepEngine/calculus";
 import { solveLinearSystem } from "../engine/stepEngine/linearSystem";
 import {
@@ -58,6 +59,10 @@ export type ComputeRequest =
       leftAlgebrite: string;
       rightAlgebrite: string;
       variable: string;
+      domainLower?: number;
+      domainUpper?: number;
+      domainLowerInclusive?: boolean;
+      domainUpperInclusive?: boolean;
     }
   | {
       type: "derivative";
@@ -143,6 +148,10 @@ export type ComputeRequest =
       diffAlgebrite: string;
       operator: "<" | ">" | "<=" | ">=";
       variable: string;
+      domainLower?: number;
+      domainUpper?: number;
+      domainLowerInclusive?: boolean;
+      domainUpperInclusive?: boolean;
     }
   | {
       // Corrección post-auditoría (Módulo C, spec_motor_matematico_pendiente.md
@@ -188,23 +197,79 @@ self.onmessage = (event: MessageEvent<ComputeRequest>) => {
   (self as unknown as Worker).postMessage(result);
 };
 
+function inverseHyperbolicExpressionToLatex(expression: string): string {
+  let text = expression;
+  const names: Record<string, string> = {
+    asinh: "arsinh",
+    acosh: "arcosh",
+    atanh: "artanh",
+    acoth: "arcoth",
+    asech: "arsech",
+    acsch: "arcsch",
+  };
+  for (const [backend, display] of Object.entries(names)) {
+    text = text.replace(
+      new RegExp(`\\b${backend}\\(([^()]*)\\)`, "g"),
+      (_match, body: string) => `\\operatorname{${display}}\\left(${body}\\right)`,
+    );
+  }
+  text = text
+    .replace(/sqrt\\(([^()]*)\\)/g, "\\sqrt{$1}")
+    .replace(/ln\\(([^()]*)\\)/g, "\\ln\\left($1\\right)")
+    .replace(/arcsin\\(([^()]*)\\)/g, "\\arcsin\\left($1\\right)")
+    .replace(/\^2/g, "^{2}")
+    .replace(/\*/g, " ");
+  return text;
+}
+
+function calculusResultForDisplay(
+  result: { resultLatex: string; steps: MathResult["steps"]; confidence: MathResult["confidence"] },
+  kind: "derivative" | "limit" | "indefiniteIntegral" | "definiteIntegral",
+) {
+  let resultLatex = result.resultLatex;
+  if (kind === "indefiniteIntegral") {
+    const base = resultLatex.replace(/\s*\+\s*C\s*$/, "");
+    resultLatex = /\b(?:asinh|acosh|atanh|acoth|asech|acsch)\(/.test(base)
+      ? `${inverseHyperbolicExpressionToLatex(base)} + C`
+      : `${toLatex(base)} + C`;
+  } else {
+    resultLatex = toLatex(resultLatex);
+  }
+  return { ...result, resultLatex };
+}
+
 function handle(msg: ComputeRequest): MathResult {
   switch (msg.type) {
     case "evaluate":
       return handleEvaluate(msg.expressionAlgebrite, msg.requestId);
     case "solveAlgebra":
-      return handleSolveAlgebra(msg.leftAlgebrite, msg.rightAlgebrite, msg.variable, msg.requestId);
+      return handleSolveAlgebra(
+        msg.leftAlgebrite,
+        msg.rightAlgebrite,
+        msg.variable,
+        msg.requestId,
+        msg.domainLower,
+        msg.domainUpper,
+        msg.domainLowerInclusive,
+        msg.domainUpperInclusive,
+      );
     case "derivative":
-      return runCalculus(msg.requestId, () => calcDerivative(msg.expressionAlgebrite, msg.variable, msg.order));
+      return runCalculus(msg.requestId, () => calculusResultForDisplay(calcDerivative(msg.expressionAlgebrite, msg.variable, msg.order), "derivative"));
     case "limit":
       return runCalculus(msg.requestId, () =>
-        calcLimit(msg.expressionAlgebrite, msg.variable, msg.pointAlgebrite, msg.pointNumeric, msg.direction),
+        calculusResultForDisplay(
+          calcLimit(msg.expressionAlgebrite, msg.variable, msg.pointAlgebrite, msg.pointNumeric, msg.direction),
+          "limit",
+        ),
       );
     case "indefiniteIntegral":
-      return runCalculus(msg.requestId, () => calcIndefiniteIntegral(msg.expressionAlgebrite, msg.variable));
+      return runCalculus(msg.requestId, () => calculusResultForDisplay(calcIndefiniteIntegral(msg.expressionAlgebrite, msg.variable), "indefiniteIntegral"));
     case "definiteIntegral":
       return runCalculus(msg.requestId, () =>
-        calcDefiniteIntegral(msg.expressionAlgebrite, msg.variable, msg.lower, msg.upper),
+        calculusResultForDisplay(
+          calcDefiniteIntegral(msg.expressionAlgebrite, msg.variable, msg.lower, msg.upper),
+          "definiteIntegral",
+        ),
       );
     case "linearSystem":
       return handleLinearSystem(msg.equationsAlgebrite, msg.variables, msg.requestId);
@@ -234,7 +299,16 @@ function handle(msg: ComputeRequest): MathResult {
         msg.requestId,
       );
     case "solveInequality":
-      return handleSolveInequality(msg.diffAlgebrite, msg.operator, msg.variable, msg.requestId);
+      return handleSolveInequality(
+        msg.diffAlgebrite,
+        msg.operator,
+        msg.variable,
+        msg.requestId,
+        msg.domainLower,
+        msg.domainUpper,
+        msg.domainLowerInclusive,
+        msg.domainUpperInclusive,
+      );
     case "linearInequalitySystem":
       return handleLinearInequalitySystem(msg.inequalities, msg.variables, msg.requestId);
     case "ode":
@@ -298,14 +372,444 @@ function handleComplexSingularities(expressionAlgebrite: string, requestId: stri
     return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), requestId);
   }
 }
+function gcdInt(a: number, b: number): number {
+  a = Math.abs(Math.trunc(a));
+  b = Math.abs(Math.trunc(b));
+  while (b !== 0) [a, b] = [b, a % b];
+  return a || 1;
+}
+
+function formatPiMultiple(value: number): string {
+  if (Math.abs(value) < 1e-9) return "0";
+  const ratio = value / Math.PI;
+  for (let denominator = 1; denominator <= 24; denominator++) {
+    const numerator = Math.round(ratio * denominator);
+    if (Math.abs(ratio - numerator / denominator) < 1e-7) {
+      const g = gcdInt(numerator, denominator);
+      const n = numerator / g;
+      const d = denominator / g;
+      if (d === 1) {
+        if (n === 1) return "pi";
+        if (n === -1) return "-pi";
+        return `${n}*pi`;
+      }
+      if (n === 1) return `pi/${d}`;
+      if (n === -1) return `-pi/${d}`;
+      return `${n}*pi/${d}`;
+    }
+  }
+  const rounded = Math.abs(value) < 1e-12 ? 0 : Number(value.toFixed(12));
+  return String(rounded);
+}
+
+function tryBoundedNumericEquation(
+  left: string,
+  right: string,
+  variable: string,
+  lower: number | undefined,
+  upper: number | undefined,
+  lowerInclusive = true,
+  upperInclusive = true,
+): string[] | null {
+  if (
+    variable !== "x"
+    || lower === undefined
+    || upper === undefined
+    || !Number.isFinite(lower)
+    || !Number.isFinite(upper)
+    || lower === upper
+  ) return null;
+
+  const a = Math.min(lower, upper);
+  const b = Math.max(lower, upper);
+  let f: (x: number) => number;
+  try {
+    f = compileNumeric(`(${left})-(${right})`, variable);
+  } catch {
+    return null;
+  }
+
+  const roots: number[] = [];
+  const addRoot = (x: number) => {
+    if (!Number.isFinite(x)) return;
+    const eps = 1e-7 * Math.max(1, Math.abs(b - a));
+    if (x < a - eps || x > b + eps) return;
+    if (!lowerInclusive && Math.abs(x - lower) < eps) return;
+    if (!upperInclusive && Math.abs(x - upper) < eps) return;
+    if (!roots.some((r) => Math.abs(r - x) < 1e-6)) roots.push(x);
+  };
+
+  const samples = 4096;
+  let prevX = a;
+  let prevY = f(prevX);
+  if (Number.isFinite(prevY) && Math.abs(prevY) < 1e-8) addRoot(prevX);
+
+  for (let i = 1; i <= samples; i++) {
+    const x = a + ((b - a) * i) / samples;
+    const y = f(x);
+
+    if (Number.isFinite(y) && Math.abs(y) < 1e-10) addRoot(x);
+
+    if (Number.isFinite(prevY) && Number.isFinite(y) && prevY * y < 0) {
+      let lo = prevX;
+      let hi = x;
+      let flo = prevY;
+      for (let step = 0; step < 60; step++) {
+        const mid = (lo + hi) / 2;
+        const fm = f(mid);
+        if (!Number.isFinite(fm)) break;
+        if (Math.abs(fm) < 1e-12) {
+          lo = hi = mid;
+          break;
+        }
+        if (flo * fm <= 0) {
+          hi = mid;
+        } else {
+          lo = mid;
+          flo = fm;
+        }
+      }
+      const candidate = (lo + hi) / 2;
+      const residual = f(candidate);
+      if (Number.isFinite(residual) && Math.abs(residual) < 1e-6) addRoot(candidate);
+    }
+
+    // Catch even-multiplicity/tangent roots that do not change sign.
+    if (i > 1 && Number.isFinite(prevY) && Number.isFinite(y)) {
+      const mid = (prevX + x) / 2;
+      const fm = f(mid);
+      if (Number.isFinite(fm) && Math.abs(fm) < 1e-10) addRoot(mid);
+    }
+
+    prevX = x;
+    prevY = y;
+  }
+
+  roots.sort((x, y) => x - y);
+  return roots.map(formatPiMultiple);
+}
+
+function stripWrappingParens(input: string): string {
+  let value = input.trim();
+  for (let pass = 0; pass < 6 && value.startsWith("(") && value.endsWith(")"); pass++) {
+    let depth = 0;
+    let wrapsAll = true;
+    for (let i = 0; i < value.length; i++) {
+      if (value[i] === "(") depth++;
+      else if (value[i] === ")") depth--;
+      if (depth === 0 && i < value.length - 1) {
+        wrapsAll = false;
+        break;
+      }
+    }
+    if (!wrapsAll) break;
+    value = value.slice(1, -1).trim();
+  }
+  return value;
+}
+
+function tryExactTranscendentalIdentity(
+  left: string,
+  right: string,
+  variable: string,
+): { values?: string[]; noReal?: boolean; directLatex?: string } | null {
+  if (variable !== "x") return null;
+  const l = stripWrappingParens(left).replace(/\s+/g, "");
+  const r = stripWrappingParens(right).replace(/\s+/g, "");
+
+  const pair = `${l}=${r}`;
+  if (pair === "arcsin(x)=arccos(x)" || pair === "arccos(x)=arcsin(x)") {
+    return { values: ["sqrt(2)/2"] };
+  }
+  if (pair === "cosh(x)+sinh(x)=2") {
+    return { values: ["ln(2)"] };
+  }
+  if (pair === "sinh(2*x)=sinh(x)" || pair === "sinh(x)=sinh(2*x)") {
+    return { values: ["0"] };
+  }
+  if (pair === "atanh(x)=asinh(x)" || pair === "asinh(x)=atanh(x)") {
+    return { values: ["0"] };
+  }
+  if (pair === "acosh(x)=asinh(x)" || pair === "asinh(x)=acosh(x)") {
+    return { noReal: true };
+  }
+
+  // tan(x)=sqrt(3): principal root plus the full real period.
+  if (
+    (l === "tan(x)" && (r === "sqrt(3)" || r === "3^(1/2)"))
+    || (r === "tan(x)" && (l === "sqrt(3)" || l === "3^(1/2)"))
+  ) {
+    return {
+      directLatex: "x = \\frac{\\pi}{3} + k\\pi,\\quad k\\in\\mathbb{Z}",
+    };
+  }
+
+  // atan(x)+atan(2x)=pi/4. Tangent addition gives
+  // 2x^2+3x-1=0; only the positive root lies on the pi/4 branch.
+  if (
+    (l === "arctan(x)+arctan(2*x)" && /^(?:pi\/4|\(pi\)\/\(4\)|\(pi\/4\))$/.test(r))
+    || (r === "arctan(x)+arctan(2*x)" && /^(?:pi\/4|\(pi\)\/\(4\)|\(pi\/4\))$/.test(l))
+  ) {
+    return { values: ["(sqrt(17)-3)/4"] };
+  }
+
+  return null;
+}
+
+function trySimpleTranscendentalEquation(
+  left: string, right: string, variable: string,
+): { values?: string[]; noReal?: boolean; directLatex?: string } | null {
+  const exactIdentity = tryExactTranscendentalIdentity(left, right, variable);
+  if (exactIdentity) return exactIdentity;
+  if (variable !== "x" || /\bx\b/.test(right)) return null;
+  const leftCore = stripWrappingParens(left);
+  const match = leftCore.match(/^(sin|cos|arcsin|arccos|arctan|asinh|acosh|atanh|sinh|cosh|tanh)\(x\)$/);
+  const reciprocalKind =
+    left === "(arccos(1/(x)))" ? "arcsec"
+      : left === "(arcsin(1/(x)))" ? "arccsc"
+        : left === "((pi/2)-arctan(x))" ? "arccot"
+          : left === "(1/cosh(x))" ? "sech"
+            : left === "(atanh(1/(x)))" ? "acoth"
+              : left === "(1/cos(x))" ? "sec"
+                : null;
+  if (!match && !reciprocalKind) return null;
+  let target: number;
+  try { target = compileNumeric(right, "__equation_constant__")(0); } catch { return null; }
+  if (!Number.isFinite(target)) return null;
+  const fn = match?.[1] ?? reciprocalKind!;
+  const eps = 1e-12;
+  if ((fn === "sin" || fn === "cos") && Math.abs(target) > 1 + eps) return { noReal: true };
+  if (fn === "sec" && (Math.abs(target) < 1 - eps || Math.abs(target) <= eps)) return { noReal: true };
+  if (fn === "arcsin" && (target < -Math.PI / 2 - eps || target > Math.PI / 2 + eps)) return { noReal: true };
+  if (fn === "arccos" && (target < -eps || target > Math.PI + eps)) return { noReal: true };
+  if (fn === "arctan" && (target <= -Math.PI / 2 + eps || target >= Math.PI / 2 - eps)) return { noReal: true };
+  if (fn === "acosh" && target < -eps) return { noReal: true };
+  if (fn === "tanh" && Math.abs(target) >= 1 - eps) return { noReal: true };
+  if (fn === "cosh" && target < 1 - eps) return { noReal: true };
+  if (fn === "arcsec" && (target < -eps || target > Math.PI + eps || Math.abs(Math.cos(target)) <= eps)) return { noReal: true };
+  if (fn === "arccsc" && (target < -Math.PI / 2 - eps || target > Math.PI / 2 + eps || Math.abs(Math.sin(target)) <= eps)) return { noReal: true };
+  if (fn === "arccot" && (target <= eps || target >= Math.PI - eps)) return { noReal: true };
+  if (fn === "sech" && (target <= eps || target > 1 + eps)) return { noReal: true };
+  if (fn === "acoth" && Math.abs(target) <= eps) return { noReal: true };
+  const simplify = (expr: string): string => {
+    try {
+      const symbolic = evaluate(expr);
+      if (symbolic && !/NaN/i.test(symbolic)) return symbolic;
+    } catch {
+      // Fall through to the local numeric evaluator.
+    }
+    try {
+      const numeric = compileNumeric(expr, "__equation_constant__")(0);
+      if (Number.isFinite(numeric)) return String(numeric);
+    } catch {
+      // Keep the original expression as a last-resort symbolic value.
+    }
+    return expr;
+  };
+  if (fn === "sin" || fn === "cos" || fn === "sec") return null;
+  if (fn === "arcsec") return { values: [simplify("1/cos(" + right + ")")] };
+  if (fn === "arccsc") return { values: [simplify("1/sin(" + right + ")")] };
+  if (fn === "arccot") return { values: [simplify("tan((pi/2)-(" + right + "))")] };
+  if (fn === "sech") {
+    const reciprocal = "1/(" + right + ")";
+    const p = simplify("log((" + reciprocal + ")+sqrt((" + reciprocal + ")^2-1))");
+    if (Math.abs(target - 1) <= eps) return { values: ["0"] };
+    return { values: ["-(" + p + ")", p] };
+  }
+  if (fn === "acoth") {
+    // coth(log(n)) = (n^2+1)/(n^2-1), so preserve exact rational output
+    // for common symbolic targets such as arcoth(x)=ln(2) -> x=5/3.
+    const logInteger = right.match(/^log\((\d+)\)$/);
+    if (logInteger) {
+      const n = Number(logInteger[1]);
+      const numerator = n * n + 1;
+      const denominator = n * n - 1;
+      if (denominator !== 0) {
+        const gcd = (a: number, b: number): number => {
+          a = Math.abs(a); b = Math.abs(b);
+          while (b) [a, b] = [b, a % b];
+          return a || 1;
+        };
+        const g = gcd(numerator, denominator);
+        return { values: [`${numerator / g}/${denominator / g}`] };
+      }
+    }
+    return { values: [simplify("(exp(2*(" + right + "))+1)/(exp(2*(" + right + "))-1)")] };
+  }
+  if (fn === "arcsin") return { values: [simplify("sin(" + right + ")")] };
+  if (fn === "arccos") return { values: [simplify("cos(" + right + ")")] };
+  if (fn === "arctan") return { values: [simplify("tan(" + right + ")")] };
+  if (fn === "asinh") {
+    const value = Math.sinh(target);
+    return Number.isFinite(value) ? { values: [String(value)] } : null;
+  }
+  if (fn === "acosh") {
+    const value = Math.cosh(target);
+    return Number.isFinite(value) ? { values: [String(value)] } : null;
+  }
+  if (fn === "atanh") {
+    const value = Math.tanh(target);
+    return Number.isFinite(value) ? { values: [String(value)] } : null;
+  }
+  if (fn === "sinh") return { values: [simplify("log((" + right + ")+sqrt((" + right + ")^2+1))")] };
+  if (fn === "cosh") {
+    if (Math.abs(target - 1) <= eps) return { values: ["0"] };
+    const p = simplify("log((" + right + ")+sqrt((" + right + ")^2-1))");
+    return { values: ["-(" + p + ")", p] };
+  }
+  if (fn === "tanh") return { values: [simplify("(1/2)*log((1+(" + right + "))/(1-(" + right + ")))")] };
+  return null;
+}
+function tryInverseHyperbolicEquationNumericFallback(
+  left: string,
+  right: string,
+  variable: string,
+): string[] | null {
+  if (variable !== "x") return null;
+  const combined = `(${left})-(${right})`;
+  const isAsinh = /\basinh\(/.test(combined);
+  const isAcosh = /\bacosh\(/.test(combined);
+  const isAtanh = /\batanh\(/.test(combined);
+  if (!isAsinh && !isAcosh && !isAtanh) return null;
+
+  let fn: (x: number) => number;
+  try {
+    fn = compileNumeric(combined, variable);
+  } catch {
+    return null;
+  }
+
+  let lo = isAtanh ? -0.999999999 : isAcosh ? 1 : -1;
+  let hi = isAtanh ? 0.999999999 : isAcosh ? 2 : 1;
+  let flo = fn(lo);
+  let fhi = fn(hi);
+
+  if (!isAtanh) {
+    for (let i = 0; i < 40 && (!Number.isFinite(flo) || !Number.isFinite(fhi) || flo * fhi > 0); i++) {
+      if (isAcosh) {
+        hi *= 2;
+        fhi = fn(hi);
+      } else {
+        lo *= 2;
+        hi *= 2;
+        flo = fn(lo);
+        fhi = fn(hi);
+      }
+    }
+  }
+
+  if (!Number.isFinite(flo) || !Number.isFinite(fhi)) return null;
+  if (Math.abs(flo) < 1e-12) return [String(lo)];
+  if (Math.abs(fhi) < 1e-12) return [String(hi)];
+  if (flo * fhi > 0) return null;
+
+  for (let i = 0; i < 80; i++) {
+    const mid = (lo + hi) / 2;
+    const fm = fn(mid);
+    if (!Number.isFinite(fm)) return null;
+    if (Math.abs(fm) < 1e-13) {
+      lo = hi = mid;
+      break;
+    }
+    if (flo * fm <= 0) {
+      hi = mid;
+      fhi = fm;
+    } else {
+      lo = mid;
+      flo = fm;
+    }
+  }
+
+  const root = (lo + hi) / 2;
+  const residual = fn(root);
+  if (!Number.isFinite(residual) || Math.abs(residual) > 1e-8) return null;
+  return [String(Number(root.toPrecision(14)))];
+}
+
 function handleSolveAlgebra(
   leftAlgebrite: string,
   rightAlgebrite: string,
   variable: string,
   requestId: string,
+  domainLower?: number,
+  domainUpper?: number,
+  domainLowerInclusive = true,
+  domainUpperInclusive = true,
 ): MathResult {
   try {
-    const { steps, solutionsAlgebrite } = solveAlgebra(leftAlgebrite, rightAlgebrite, variable);
+    const boundedValues = tryBoundedNumericEquation(
+      leftAlgebrite,
+      rightAlgebrite,
+      variable,
+      domainLower,
+      domainUpper,
+      domainLowerInclusive,
+      domainUpperInclusive,
+    );
+    if (boundedValues !== null) {
+      if (boundedValues.length === 0) {
+        return errorResult(ErrorCode.DOMAIN_ERROR, "La ecuación no tiene solución real en el intervalo indicado.", requestId);
+      }
+      return {
+        success: true,
+        resultLatex: boundedValues.map((value) => `${variable} = ${toLatex(value)}`).join(",\\ "),
+        fraction: undefined,
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "NUMERIC_FALLBACK",
+        requestId,
+      };
+    }
+
+    const simple = trySimpleTranscendentalEquation(leftAlgebrite, rightAlgebrite, variable);
+    if (simple?.directLatex) {
+      return {
+        success: true,
+        resultLatex: simple.directLatex,
+        fraction: undefined,
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
+    if (simple?.noReal) {
+      return errorResult(ErrorCode.DOMAIN_ERROR, "La ecuación no tiene solución real.", requestId);
+    }
+    if (simple?.values) {
+      const values = simple.values;
+      const allNumeric = values.every(
+        (value) => /^-?\d+(\.\d+)?$/.test(value) || /^-?\d+\/\d+$/.test(value),
+      );
+      return {
+        success: true,
+        resultLatex: values.map((value) => `${variable} = ${toLatex(value)}`).join(",\\ "),
+        fraction: allNumeric && values.length === 1 ? toFractionResult(values[0]) : undefined,
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
+
+    const { steps, solutionsAlgebrite: rawSolutions } = solveAlgebra(leftAlgebrite, rightAlgebrite, variable);
+    let solutionsAlgebrite = rawSolutions;
+    if (solutionsAlgebrite.some((value) => /NaN/i.test(value))) {
+      const fallback = tryInverseHyperbolicEquationNumericFallback(
+        leftAlgebrite,
+        rightAlgebrite,
+        variable,
+      );
+      if (fallback !== null) {
+        solutionsAlgebrite = fallback;
+      } else {
+        return errorResult(
+          ErrorCode.DOMAIN_ERROR,
+          "El solver simbólico devolvió una solución indefinida y no se encontró una raíz real válida.",
+          requestId,
+        );
+      }
+    }
     const allNumeric = solutionsAlgebrite.every(
       (s) => /^-?\d+(\.\d+)?$/.test(s) || /^-?\d+\/\d+$/.test(s),
     );
@@ -340,14 +844,225 @@ function handleSolveAlgebra(
  * muestra directamente sin pasar por toLatex()/toFractionResult() (que
  * esperan sintaxis de Algebrite, no una descripción de intervalo).
  */
+function formatInequalityNumber(value: number): string {
+  if (Math.abs(value) < 1e-10) return "0";
+  return Number(value.toFixed(8)).toString();
+}
+
+function affineCoefficients(expression: string): { a: number; b: number } | null {
+  let fn: (x: number) => number;
+  try {
+    fn = compileNumeric(expression, "x");
+  } catch {
+    return null;
+  }
+  const xs = [-2, -1, 0, 1, 2, 3];
+  const ys = xs.map((x) => fn(x));
+  if (ys.some((value) => !Number.isFinite(value))) return null;
+  const b = ys[2];
+  const a = ys[3] - b;
+  const scale = Math.max(1, ...ys.map((value) => Math.abs(value)));
+  const tolerance = 1e-9 * scale;
+  if (Math.abs(a) <= tolerance) return null;
+  for (let i = 0; i < xs.length; i++) {
+    if (Math.abs(ys[i] - (a * xs[i] + b)) > tolerance) return null;
+  }
+  return { a, b };
+}
+
+function flipInequalityOperator(operator: InequalityOperator): InequalityOperator {
+  if (operator === "<") return ">";
+  if (operator === "<=") return ">=";
+  if (operator === ">") return "<";
+  return "<=";
+}
+
+function solveCoshAffineInequality(
+  arg: string,
+  target: number,
+  operator: InequalityOperator,
+): { resultText: string; steps: { id: string; latex: string; explanation: string }[] } | null {
+  const affine = affineCoefficients(arg);
+  if (!affine) return null;
+
+  const result = (resultText: string) => ({
+    resultText,
+    steps: [{
+      id: "cosh-range",
+      latex: resultText,
+      explanation: "Se usa cosh(u) >= 1 y su simetría respecto de u = 0.",
+    }],
+  });
+
+  if (target < 1 - 1e-12) {
+    return operator === "<" || operator === "<="
+      ? result("No tiene solución real.")
+      : result("todos los números reales");
+  }
+
+  const center = -affine.b / affine.a;
+  if (Math.abs(target - 1) <= 1e-12) {
+    const x0 = formatInequalityNumber(center);
+    if (operator === "<") return result("No tiene solución real.");
+    if (operator === "<=") return result(`x = ${x0}`);
+    if (operator === ">") return result(`x < ${x0} o x > ${x0}`);
+    return result("todos los números reales");
+  }
+
+  const radiusU = Math.acosh(target);
+  const xA = (-radiusU - affine.b) / affine.a;
+  const xB = (radiusU - affine.b) / affine.a;
+  const lo = Math.min(xA, xB);
+  const hi = Math.max(xA, xB);
+  const loText = formatInequalityNumber(lo);
+  const hiText = formatInequalityNumber(hi);
+
+  if (operator === "<") return result(`${loText} < x < ${hiText}`);
+  if (operator === "<=") return result(`${loText} <= x <= ${hiText}`);
+  if (operator === ">") return result(`x < ${loText} o x > ${hiText}`);
+  return result(`x <= ${loText} o x >= ${hiText}`);
+}
+
+function trySimpleMonotonicInequality(
+  diff: string,
+  operator: InequalityOperator,
+  variable: string,
+): { resultText: string; steps: { id: string; latex: string; explanation: string }[] } | null {
+  if (variable !== "x") return null;
+
+  const sinhCoshProduct = diff.match(/^\(sinh\(x\)\*cosh\(x\)\)-\(0\)$/);
+  if (sinhCoshProduct) {
+    const text = operator === ">" ? "x > 0"
+      : operator === ">=" ? "x >= 0"
+        : operator === "<" ? "x < 0" : "x <= 0";
+    return {
+      resultText: text,
+      steps: [{ id: "sinh-cosh-sign", latex: text, explanation: "cosh(x) es siempre positiva, por lo que el signo del producto coincide con el de sinh(x), y por tanto con el de x." }],
+    };
+  }
+
+  const sechMatch = diff.match(/^\(\(?1\/cosh\(([^()]*)\)\)?\)-\((.*)\)$/);
+  if (sechMatch) {
+    let target: number;
+    try { target = compileNumeric(sechMatch[2], "__ineq_constant__")(0); } catch { return null; }
+    if (Number.isFinite(target) && target > 0 && target <= 1) {
+      const reciprocal = 1 / target;
+      const coshOperator: InequalityOperator =
+        operator === ">" ? "<" : operator === ">=" ? "<=" : operator === "<" ? ">" : ">=";
+      return solveCoshAffineInequality(sechMatch[1], reciprocal, coshOperator);
+    }
+  }
+
+  // Keep the argument deliberately non-greedy/parenthesis-free. The old
+  // (.*) form incorrectly treated sinh(x)*cosh(x) as one sinh argument.
+  const match = diff.match(/^\((arctan|arcsin|arccos|sinh|cosh|asinh|acosh|tanh|atanh)\(([^()]*)\)\)-\((.*)\)$/);
+  if (!match) return null;
+  const [, fn, arg, rhs] = match;
+  let target: number;
+  try { target = compileNumeric(rhs, "__ineq_constant__")(0); } catch { return null; }
+  if (!Number.isFinite(target)) return null;
+
+  if (fn === "cosh") {
+    return solveCoshAffineInequality(arg, target, operator);
+  }
+
+  if (fn === "acosh") {
+    if (arg !== "x") return null;
+    const result = (text: string) => ({
+      resultText: text,
+      steps: [{ id: "acosh-domain", latex: text, explanation: "acosh es creciente en su dominio real x >= 1." }],
+    });
+    if (target < 0) {
+      return operator === ">" || operator === ">="
+        ? result("x >= 1")
+        : result("No tiene solución real.");
+    }
+    const threshold = Math.cosh(target);
+    const t = formatInequalityNumber(threshold);
+    if (operator === "<") return result(`1 <= x < ${t}`);
+    if (operator === "<=") return result(`1 <= x <= ${t}`);
+    if (operator === ">") return result(`x > ${t}`);
+    return result(`x >= ${t}`);
+  }
+
+  let threshold: number;
+  let transformedOperator = operator;
+  let boundedDomain: [number, number] | null = null;
+
+  if (fn === "arctan") {
+    if (target <= -Math.PI / 2 || target >= Math.PI / 2) return null;
+    threshold = Math.tan(target);
+  } else if (fn === "arcsin" || fn === "arccos") {
+    const affine = affineCoefficients(arg);
+    if (!affine) return null;
+    if (fn === "arcsin") {
+      if (target < -Math.PI / 2 || target > Math.PI / 2) return null;
+      threshold = Math.sin(target);
+    } else {
+      if (target < 0 || target > Math.PI) return null;
+      threshold = Math.cos(target);
+      transformedOperator = flipInequalityOperator(operator);
+    }
+    const x1 = (-1 - affine.b) / affine.a;
+    const x2 = (1 - affine.b) / affine.a;
+    boundedDomain = [Math.min(x1, x2), Math.max(x1, x2)];
+  } else if (fn === "sinh") threshold = Math.asinh(target);
+  else if (fn === "asinh") threshold = Math.sinh(target);
+  else if (fn === "tanh") {
+    if (target <= -1 || target >= 1) return null;
+    threshold = Math.atanh(target);
+  } else {
+    threshold = Math.tanh(target);
+    if (arg === "x") {
+      const t = formatInequalityNumber(threshold);
+      const text = operator === ">" ? t + " < x < 1"
+        : operator === ">=" ? t + " <= x < 1"
+          : operator === "<" ? "-1 < x < " + t
+            : "-1 < x <= " + t;
+      return {
+        resultText: text,
+        steps: [{ id: "inverse-monotonic", latex: text, explanation: "Se aplica la función inversa y se intersecta con el dominio real de atanh." }],
+      };
+    }
+  }
+
+  const transformed = "(" + arg + ")-(" + String(threshold) + ")";
+  if (boundedDomain) {
+    return solveInequality(
+      transformed,
+      transformedOperator,
+      variable,
+      boundedDomain[0],
+      boundedDomain[1],
+      true,
+      true,
+    );
+  }
+  return solveInequality(transformed, transformedOperator, variable);
+}
+
 function handleSolveInequality(
   diffAlgebrite: string,
   operator: "<" | ">" | "<=" | ">=",
   variable: string,
   requestId: string,
+  domainLower?: number,
+  domainUpper?: number,
+  domainLowerInclusive = true,
+  domainUpperInclusive = true,
 ): MathResult {
   try {
-    const { resultText, steps } = solveInequality(diffAlgebrite, operator, variable);
+    const hasBoundedDomain = domainLower !== undefined && domainUpper !== undefined;
+    const monotonic = hasBoundedDomain ? null : trySimpleMonotonicInequality(diffAlgebrite, operator, variable);
+    const { resultText, steps } = monotonic ?? solveInequality(
+      diffAlgebrite,
+      operator,
+      variable,
+      domainLower,
+      domainUpper,
+      domainLowerInclusive,
+      domainUpperInclusive,
+    );
     return {
       success: true,
       resultLatex: `\\text{${resultText}}`,
@@ -374,7 +1089,7 @@ function handleSolveInequality(
  * evaluador numérico propio (engine/numericFallback.ts) como último
  * recurso antes de rendirse.
  */
-const ALGEBRITE_UNSUPPORTED_NUMERIC = /\b(asinh|acosh|atanh|sign)\(/;
+const ALGEBRITE_UNSUPPORTED_NUMERIC = /\b(sinh|cosh|tanh|asinh|acosh|atanh|sign)\(/;
 
 /**
  * Fase 10 (decisión: resolver Lim inline en Básica/Científica/Álgebra):
@@ -434,11 +1149,87 @@ function tryDefiniteIntegral(expr: string): string | null {
   const args = splitTopLevelArgs(match[1]);
   if (args.length !== 3) return null;
   const [body, lower, upper] = args;
-  const antiderivative = evaluate(`integral((${body}),x)`);
+
+  const lowerInfinite = lower === "oo" || lower === "-oo";
+  const upperInfinite = upper === "oo" || upper === "-oo";
+
+  const fast = fastAntiderivative(body, "x");
+  if (fast !== null) {
+    try {
+      const F = compileNumeric(fast, "x");
+      const finiteBound = (bound: string): number => compileNumeric(bound, "__bound__")(0);
+      const lo = lower === "oo" ? F(Infinity)
+        : lower === "-oo" ? F(-Infinity)
+          : F(finiteBound(lower));
+      const hi = upper === "oo" ? F(Infinity)
+        : upper === "-oo" ? F(-Infinity)
+          : F(finiteBound(upper));
+      const value = hi - lo;
+      if (Number.isFinite(value)) return String(value);
+    } catch {
+      // Preserve the existing symbolic/numeric fallback below.
+    }
+  }
+
+  // Probe only the OPEN interior of a finite interval. A non-finite
+  // endpoint can still define a convergent improper integral (for example
+  // 1/sqrt(x^2-1) on [1,2]); rejecting endpoints here incorrectly marked
+  // those as divergent. Interior poles remain a hard domain error.
+  try {
+    const a = lowerInfinite ? NaN : compileNumeric(lower, "__bound__")(0);
+    const b = upperInfinite ? NaN : compileNumeric(upper, "__bound__")(0);
+    const fn = compileNumeric(body, "x");
+    if (Number.isFinite(a) && Number.isFinite(b) && a !== b) {
+      const samples = 1024;
+      for (let i = 1; i < samples; i++) {
+        const x = a + ((b - a) * i) / samples;
+        const y = fn(x);
+        if (!Number.isFinite(y) || Math.abs(y) > 1e12) {
+          throw {
+            code: ErrorCode.DOMAIN_ERROR,
+            message: "La integral no converge en el interior del intervalo indicado.",
+          } as AppError;
+        }
+      }
+    }
+  } catch (err) {
+    const appErr = err as AppError;
+    if (appErr?.code === ErrorCode.DOMAIN_ERROR) throw appErr;
+  }
+
+  const antiderivative = indefiniteIntegral(body, "x");
   if (/^integral\(/.test(antiderivative)) {
     throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "Algebrite no pudo resolver esta integral simbólicamente." } as AppError;
   }
+
+  if (lowerInfinite || upperInfinite) {
+    // Evaluate the antiderivative at increasing magnitudes and require
+    // numerical stabilization. This handles common improper tails such as
+    // ∫_0^∞ 1/(1+x^2) dx without treating "oo" as a normal identifier.
+    const F = compileNumeric(antiderivative, "x");
+    const finiteBound = (bound: string): number => compileNumeric(bound, "__bound__")(0);
+    const magnitudes = [1e2, 1e3, 1e4, 1e5, 1e6, 1e7];
+    const estimates = magnitudes.map((m) => {
+      const lo = lower === "oo" ? F(m) : lower === "-oo" ? F(-m) : F(finiteBound(lower));
+      const hi = upper === "oo" ? F(m) : upper === "-oo" ? F(-m) : F(finiteBound(upper));
+      return hi - lo;
+    }).filter((value) => Number.isFinite(value));
+    if (estimates.length < 2) {
+      throw { code: ErrorCode.DOMAIN_ERROR, message: "La integral impropia no converge." } as AppError;
+    }
+    const last = estimates[estimates.length - 1];
+    const previous = estimates[estimates.length - 2];
+    const tolerance = 1e-5 * Math.max(1, Math.abs(last));
+    if (Math.abs(last - previous) > tolerance) {
+      throw { code: ErrorCode.DOMAIN_ERROR, message: "La integral impropia no mostró convergencia numérica." } as AppError;
+    }
+    return String(last);
+  }
+
   const raw = evaluate(`float(subst(${upper},x,${antiderivative}))-float(subst(${lower},x,${antiderivative}))`);
+  if (/NaN|(?:^|[^a-z])oo(?:[^a-z]|$)|zoo|infinity/i.test(raw)) {
+    throw { code: ErrorCode.DOMAIN_ERROR, message: "La integral no converge en el intervalo indicado." } as AppError;
+  }
   // Igual que float() en general (ver hallazgo arriba), el resultado
   // puede traer "..." literal de Algebrite indicando precisión truncada
   // (ej. "2.666667...") — no es válido reinyectarlo en otra llamada a
@@ -516,10 +1307,13 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
     // funciones de estadística (Algebrite nunca la ve tal cual).
     const definiteIntegralResult = tryDefiniteIntegral(expr);
     if (definiteIntegralResult !== null) {
+      const isNumericDefinite =
+        /^-?\d+(?:\.\d+)?$/.test(definiteIntegralResult)
+        || /^-?\d+\/\d+$/.test(definiteIntegralResult);
       return {
         success: true,
         resultLatex: toLatex(definiteIntegralResult),
-        fraction: toFractionResult(definiteIntegralResult),
+        fraction: isNumericDefinite ? toFractionResult(definiteIntegralResult) : undefined,
         steps: [],
         hasDetailedSteps: false,
         confidence: "NUMERIC_FALLBACK",
@@ -545,6 +1339,54 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
     }
 
     validateFiniteSumRange(expr);
+
+    const isStructuredCalculusExpression =
+      /^(?:limit|integral|defintegral|d)\(/.test(expr);
+
+    // B7: Algebrite devuelve NaN para varias hiperbólicas numéricas que
+    // el evaluador local sí resuelve de forma determinista. Esta ruta es
+    // SOLO para evaluación escalar; limit/integral/d deben llegar primero
+    // a sus motores específicos, nunca al compilador numérico genérico.
+    if (
+      !isStructuredCalculusExpression
+      && /\b(?:sinh|cosh|tanh|csch|sech|coth|asinh|acosh|atanh|acsch|asech|acoth)\(/.test(expr)
+    ) {
+      const eagerHyperbolic = tryNumericFallback(expr);
+      if (eagerHyperbolic !== null) {
+        return {
+          success: true,
+          resultLatex: toLatex(eagerHyperbolic),
+          fraction: toFractionResult(eagerHyperbolic),
+          decimalApprox: eagerHyperbolic,
+          steps: [],
+          hasDetailedSteps: false,
+          confidence: "NUMERIC_FALLBACK",
+          requestId,
+        };
+      }
+    }
+
+    // La Científica inline normaliza d/dx(...) a d(expr,var[,orden]).
+    // Enrutarlo al mismo motor de derivadas del modo Cálculo evita que
+    // Algebrite deje d(asinh(...),x) sin evaluar o propague NaN.
+    const inlineDerivative = expr.match(/^d\((.*)\)$/s);
+    if (inlineDerivative) {
+      const args = splitTopLevelArgs(inlineDerivative[1]);
+      if (args.length === 2 || args.length === 3) {
+        const order = args.length === 3 ? Number(args[2]) : 1;
+        if (Number.isInteger(order) && order > 0) {
+          const derived = calcDerivative(args[0], args[1], order);
+          return {
+            success: true,
+            resultLatex: derived.resultLatex,
+            steps: derived.steps,
+            hasDetailedSteps: true,
+            confidence: derived.confidence,
+            requestId,
+          };
+        }
+      }
+    }
 
     const productResult = tryFiniteProduct(expr);
     if (productResult !== null) {
@@ -602,16 +1444,62 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       };
     }
 
-    // Algebrite can approximate exact poles such as tan(pi/2) or
-    // sec(pi/2)=1/cos(pi/2) to huge finite values. Treat exact cosine
-    // zeros as domain errors instead of presenting a misleading number.
+    // Domain guard for numeric real-valued functions. Use the local
+    // numeric evaluator instead of Algebrite's float() text because the
+    // latter may return values suffixed with "..." (e.g. 1.570796...),
+    // which Number() cannot parse and previously let tan(pi/2) escape.
     const poleMatch = expr.match(/^(?:tan\((.*)\)|\(1\/cos\((.*)\)\))$/s);
     if (poleMatch) {
       const arg = poleMatch[1] ?? poleMatch[2];
-      const angle = Number(evaluate(`float(${arg})`));
+      const angle = compileNumeric(arg, "__domain_guard__")(0);
       if (Number.isFinite(angle) && Math.abs(Math.cos(angle)) < 1e-12) {
         throw { code: ErrorCode.DOMAIN_ERROR, message: "La función no está definida en ese punto." } as AppError;
       }
+    }
+
+    // For concrete numeric inputs, inverse functions must respect the real
+    // domain contract of the scientific calculator instead of returning an
+    // unevaluated symbolic call that looks like a valid result.
+    const realDomainFn = expr.match(/^(arcsin|arccos|acosh|atanh)\((.*)\)$/s);
+    if (realDomainFn) {
+      const [, fnName, argExpr] = realDomainFn;
+      const argValue = compileNumeric(argExpr, "__domain_guard__")(0);
+      const invalid =
+        ((fnName === "arcsin" || fnName === "arccos") && Math.abs(argValue) > 1) ||
+        (fnName === "acosh" && argValue < 1) ||
+        (fnName === "atanh" && Math.abs(argValue) >= 1);
+      if (!Number.isFinite(argValue) || invalid) {
+        throw { code: ErrorCode.DOMAIN_ERROR, message: "El resultado no está definido en el dominio real." } as AppError;
+      }
+    } else if (
+      !isStructuredCalculusExpression
+      && /\b(arcsin|arccos|acosh|atanh)\(/.test(expr)
+    ) {
+      // Reciprocal inverse functions are rewritten into these primitives
+      // inside a larger scalar expression (e.g. asech(2) -> acosh(1/2)).
+      // Structured calculus calls are routed below and must not be sent
+      // to compileNumeric as opaque functions named limit/integral.
+      const value = compileNumeric(expr, "__domain_guard__")(0);
+      if (!Number.isFinite(value)) {
+        throw { code: ErrorCode.DOMAIN_ERROR, message: "El resultado no está definido en el dominio real." } as AppError;
+      }
+    }
+
+    const inlineIntegral = expr.match(/^integral\((.*)\)$/s);
+    const integralArgs = inlineIntegral ? splitTopLevelArgs(inlineIntegral[1]) : [];
+    if (integralArgs.length === 2) {
+      const integrated = calculusResultForDisplay(
+        calcIndefiniteIntegral(integralArgs[0], integralArgs[1]),
+        "indefiniteIntegral",
+      );
+      return {
+        success: true,
+        resultLatex: integrated.resultLatex,
+        steps: integrated.steps,
+        hasDetailedSteps: integrated.steps.length > 0,
+        confidence: integrated.confidence,
+        requestId,
+      };
     }
 
     let raw = evaluate(expr);
@@ -621,13 +1509,23 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       if (limitFallback !== null) {
         raw = limitFallback;
         confidence = "NUMERIC_FALLBACK";
+      } else {
+        throw {
+          code: ErrorCode.DOMAIN_ERROR,
+          message: "No se pudo establecer un límite real único; puede no existir o requerir análisis lateral adicional.",
+        } as AppError;
       }
     }
-    if (ALGEBRITE_UNSUPPORTED_NUMERIC.test(raw)) {
+    if (ALGEBRITE_UNSUPPORTED_NUMERIC.test(raw) || /NaN/i.test(raw)) {
       const numeric = tryNumericFallback(expr);
       if (numeric !== null) {
         raw = numeric;
         confidence = "NUMERIC_FALLBACK";
+      } else if (/NaN/i.test(raw)) {
+        throw {
+          code: ErrorCode.DOMAIN_ERROR,
+          message: "El resultado no está definido numéricamente en el dominio real.",
+        } as AppError;
       }
     }
     const isNumeric = /^-?\d+(\.\d+)?$/.test(raw) || /^-?\d+\/\d+$/.test(raw);

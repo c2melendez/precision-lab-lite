@@ -242,7 +242,7 @@ describe("cierre de la suite de paridad de teclado v1.0", () => {
   it("\\csc^{-1}/\\sec^{-1}/\\cot^{-1} (inversas de las recíprocas) parsean y reescriben a la identidad equivalente", () => {
     expect(parseExpression("\\csc^{-1}\\left(2\\right)").algebrite).toBe("(arcsin(1/(2)))");
     expect(parseExpression("\\sec^{-1}\\left(2\\right)").algebrite).toBe("(arccos(1/(2)))");
-    expect(parseExpression("\\cot^{-1}\\left(1\\right)").algebrite).toBe("(arctan(1/(1)))");
+    expect(parseExpression("\\cot^{-1}\\left(1\\right)").algebrite).toBe("((pi/2)-arctan(1))");
   });
 
   it("csch/sech/coth (hiperbólicas recíprocas) parsean y reescriben a la identidad equivalente", () => {
@@ -269,14 +269,113 @@ describe("suite de regresión v1.1: conversión a grados no confunde subcadenas"
     expect(parseExpression("sin(90)", "GRAD").algebrite).toBe("sin((90)*pi/180)");
   });
 
-  it("arcsin(1)/asin(1) en modo grados NO se tocan (bug real: \"sin(\" matcheaba a mitad de \"arcsin(\"/\"asin(\", dando arcsin((1)*pi/180)≈0.017 en vez de dejarlo intacto)", () => {
-    expect(parseExpression("arcsin(1)", "GRAD").algebrite).toBe("arcsin(1)");
-    expect(parseExpression("asin(1)", "GRAD").algebrite).toBe("arcsin(1)");
+  it("arcsin(1)/asin(1) en modo grados convierten la SALIDA, nunca el argumento", () => {
+    for (const expression of ["arcsin(1)", "asin(1)"]) {
+      const parsed = parseExpression(expression, "GRAD").algebrite;
+      expect(parsed).toBe("((arcsin(1))*180/pi)");
+      expect(parsed).not.toContain("arcsin((1)*pi/180)");
+    }
   });
 
   it("sinh(1)/cosh(1)/tanh(1) en modo grados tampoco se tocan (mismo bug de subcadena)", () => {
     expect(parseExpression("sinh(1)", "GRAD").algebrite).toBe("sinh(1)");
     expect(parseExpression("cosh(1)", "GRAD").algebrite).toBe("cosh(1)");
     expect(parseExpression("tanh(1)", "GRAD").algebrite).toBe("tanh(1)");
+  });
+});
+
+
+describe("Matriz trigonométrica — notación natural ampliada", () => {
+  it("acepta macros LaTeX directos para funciones inversas", () => {
+    const parsed = parseExpression("\\arcsin\\left(\\frac{1}{2}\\right)").algebrite;
+    expect(parsed).toContain("arcsin");
+    expect(parsed).not.toContain("\\");
+  });
+
+  it("desenvuelve operatorname para hiperbólicas inversas", () => {
+    expect(parseExpression("\\operatorname{arsinh} x").algebrite).toBe("asinh(x)");
+    expect(parseExpression("\\operatorname{arcosh}(x)").algebrite).toBe("acosh(x)");
+    expect(parseExpression("\\operatorname{arcoth} 2").algebrite).toContain("atanh");
+  });
+
+  it("conserva multiplicación implícita antes de operatorname", () => {
+    expect(parseExpression("2\\operatorname{arsinh} x").algebrite).toBe("2*asinh(x)");
+    expect(parseExpression("\\int x\\operatorname{arsinh} x\\,dx").algebrite)
+      .toBe("integral((x*asinh(x)),x)");
+  });
+
+  it("acepta funciones estándar sin paréntesis explícitos", () => {
+    expect(parseExpression("\\sin x+\\cos x").algebrite).toBe("sin(x)+cos(x)");
+    expect(parseExpression("\\ln 2").algebrite).toBe("ln(2)");
+    expect(parseExpression("\\arctan 2x").algebrite).toBe("arctan(2*x)");
+  });
+
+  it("acepta potencias de funciones hiperbólicas", () => {
+    const parsed = parseExpression("\\cosh^{2}\\left(x\\right)-\\sinh^{2}\\left(x\\right)").algebrite;
+    expect(parsed).toContain("cosh(x)^(2)");
+    expect(parsed).toContain("sinh(x)^(2)");
+  });
+
+  it("acepta d/dx seguido directamente por una expresión", () => {
+    const parsed = parseExpression("\\frac{d}{dx}\\arcsin x").algebrite;
+    expect(parsed).toContain("d((arcsin(x)),x)");
+  });
+  it("preserva subst() en derivadas evaluadas sin insertar multiplicación", () => {
+    const parsed = parseExpression(
+      "\\left.\\frac{d}{dx}\\tan x\\right\\rvert_{x=\\pi/4}",
+    ).algebrite;
+    expect(parsed).toContain("subst((pi/4),x,");
+    expect(parsed).not.toContain("subst*(");
+  });
+
+});
+
+
+describe("Matriz trigonométrica — segunda ronda", () => {
+  it("no cuenta pi como variable libre en ecuaciones", () => {
+    const parsed = parseExpression("\\arcsin x=\\frac{\\pi}{6}");
+    expect(parsed.freeVariables).toEqual(["x"]);
+  });
+
+  it("acepta potencias de función sin paréntesis explícitos", () => {
+    expect(parseExpression("\\sin^{2}x").algebrite).toContain("(sin(x))^(2)");
+    expect(parseExpression("\\cosh^{2}x-\\sinh^{2}x").algebrite).toContain("(cosh(x))^(2)");
+  });
+
+  it("separa productos de funciones adyacentes", () => {
+    const parsed = parseExpression("\\sinh x\\cosh x").algebrite;
+    expect(parsed).toContain("sinh(x)");
+    expect(parsed).toContain("cosh(x)");
+    expect(parsed).not.toContain("sinh(xcosh");
+  });
+
+  it("acepta integrales con el diferencial en el numerador", () => {
+    expect(parseExpression("\\int\\frac{dx}{1+x^{2}}").algebrite).toContain("integral");
+  });
+
+  it("normaliza hiperbólicas directas como funciones atómicas", () => {
+    expect(parseExpression("\\sinh(1)").algebrite.replace(/\\s+/g, "")).toBe("sinh(1)");
+    expect(parseExpression("\\cosh(1)").algebrite.replace(/\\s+/g, "")).toBe("cosh(1)");
+    expect(parseExpression("\\tanh(1)").algebrite.replace(/\\s+/g, "")).toBe("tanh(1)");
+  });
+
+  it("acepta integrales definidas con dx en el numerador y límites compuestos", () => {
+    const finite = parseExpression("\\int_{0}^{1/2}\\frac{dx}{\\sqrt{1-x^{2}}}").algebrite;
+    expect(finite).toContain("defintegral");
+    expect(finite).not.toContain("\\");
+
+    const productDenominator = parseExpression("\\int_{1}^{2}\\frac{dx}{x\\sqrt{x^{2}-1}}").algebrite;
+    expect(productDenominator).toContain("x*sqrt");
+    expect(productDenominator).not.toContain("xsqrt");
+
+    const improper = parseExpression("\\int_{0}^{\\infty}\\frac{dx}{1+x^{2}}").algebrite;
+    expect(improper).toContain("defintegral");
+    expect(improper).not.toContain("\\");
+  });
+
+  it("ignora condiciones de dominio posteriores a la integral", () => {
+    const parsed = parseExpression("\\int\\operatorname{arcosh}x\\,dx,\\ x>1").algebrite;
+    expect(parsed).toContain("integral");
+    expect(parsed).not.toContain(">");
   });
 });

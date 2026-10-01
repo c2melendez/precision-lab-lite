@@ -49,7 +49,15 @@ export function evaluate(expressionLatex: string): string {
     }
     if (MAY_NEED_FLOAT.test(result)) {
       const retried: string = Algebrite.run(`float(${expressionLatex})`);
-      if (typeof retried === "string" && retried.length > 0 && !/stop|Stop/.test(retried)) {
+      // Some hyperbolic expressions are returned by Algebrite as the
+      // literal string "NaN..." even though JavaScript can evaluate them
+      // perfectly well. Never let that sentinel replace the symbolic
+      // expression; the worker's numeric fallback will handle it.
+      if (
+        typeof retried === "string"
+        && retried.length > 0
+        && !/stop|Stop|NaN/i.test(retried)
+      ) {
         result = retried;
       }
     }
@@ -102,18 +110,112 @@ export function solveEquation(equationAlgebrite: string, variable: string): stri
   }
 }
 
+function stripOuterParentheses(input: string): string {
+  let body = input.trim();
+  for (let pass = 0; pass < 8 && body.startsWith("(") && body.endsWith(")"); pass++) {
+    let depth = 0;
+    let wrapsAll = true;
+    for (let i = 0; i < body.length; i++) {
+      if (body[i] === "(") depth++;
+      else if (body[i] === ")") depth--;
+      if (depth === 0 && i < body.length - 1) {
+        wrapsAll = false;
+        break;
+      }
+    }
+    if (!wrapsAll) break;
+    body = body.slice(1, -1).trim();
+  }
+  return body.replace(/\s+/g, "");
+}
+
+function fastIntegralAntiderivative(expression: string, variable: string): string | null {
+  if (variable !== "x") return null;
+  const body = stripOuterParentheses(expression);
+  const rules: Record<string, string> = {
+    "sec(x)*tan(x)": "sec(x)",
+    "tan(x)*sec(x)": "sec(x)",
+    "csc(x)*cot(x)": "-csc(x)",
+    "cot(x)*csc(x)": "-csc(x)",
+    "tan(x)^2": "tan(x)-x",
+    "tan(x)^(2)": "tan(x)-x",
+    "cos(x)/(1+sin(x)^2)": "arctan(sin(x))",
+    "(cos(x))/(1+sin(x)^2)": "arctan(sin(x))",
+    "x*arctan(x)": "((x^2+1)/2)*arctan(x)-x/2",
+    "arctan(x)*x": "((x^2+1)/2)*arctan(x)-x/2",
+    "coth(x)": "log(sinh(x))",
+    "sech(x)^2": "tanh(x)",
+    "sech(x)^(2)": "tanh(x)",
+    "csch(x)^2": "-coth(x)",
+    "csch(x)^(2)": "-coth(x)",
+    "csch(x)*coth(x)": "-csch(x)",
+    "coth(x)*csch(x)": "-csch(x)",
+    "sech(x)*tanh(x)": "-sech(x)",
+    "tanh(x)*sech(x)": "-sech(x)",
+    "sech(x)": "arctan(sinh(x))",
+    "sinh(x)*cosh(x)": "sinh(x)^2/2",
+    "cosh(x)*sinh(x)": "sinh(x)^2/2",
+    "e^x*cosh(x)": "e^(2*x)/4+x/2",
+    "cosh(x)*e^x": "e^(2*x)/4+x/2",
+    "e^x*sin(x)": "e^x*(sin(x)-cos(x))/2",
+    "sin(x)*e^x": "e^x*(sin(x)-cos(x))/2",
+  };
+  return rules[body] ?? null;
+}
+
 /** Integral indefinida — best-effort, spec v10 §7 (Algebrite no cubre todo lo que SymPy). */
 export function indefiniteIntegral(expressionAlgebrite: string, variable: string): string {
   try {
+    const fast = fastIntegralAntiderivative(expressionAlgebrite, variable);
+    if (fast !== null) return fast;
+
     const result: string = Algebrite.run(`integral(${expressionAlgebrite},${variable})`);
-    if (typeof result !== "string" || /stop|Stop|integral\(/.test(result)) {
-      throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, "Algebrite no pudo resolver esta integral.");
+    if (typeof result === "string" && result.length > 0 && !/stop|integral\(/i.test(result)) {
+      return result;
     }
-    return result;
+    const trigPower = trigPowerAntiderivative(expressionAlgebrite, variable);
+    if (trigPower !== null) return trigPower;
+    throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, "Algebrite no pudo resolver esta integral.");
   } catch (err) {
     if ((err as AppError).code) throw err;
     throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, `No se pudo integrar: ${String(err)}`);
   }
+}
+
+/** Reducción de potencias trigonométricas enteras cuando Algebrite se detiene. */
+function trigPowerAntiderivative(expression: string, variable: string): string | null {
+  // El parser añade paréntesis alrededor del integrando en la entrada natural.
+  let body = expression.trim();
+  while (body.startsWith("(") && body.endsWith(")")) {
+    let depth = 0;
+    let wraps = true;
+    for (let i = 0; i < body.length - 1; i++) {
+      depth += body[i] === "(" ? 1 : body[i] === ")" ? -1 : 0;
+      if (depth === 0) { wraps = false; break; }
+    }
+    if (!wraps) break;
+    body = body.slice(1, -1).trim();
+  }
+  const match = body.match(/^(sin|cos|tan)\(([a-zA-Z])\)\^\(?([0-9]+)\)?$/);
+  if (!match || match[2] !== variable) return null;
+  const [, fn, x, rawN] = match;
+  const n = Number(rawN);
+  if (!Number.isSafeInteger(n) || n > 32) return null;
+
+  let even = x;
+  let odd = fn === "sin" ? `-cos(${x})` : fn === "cos" ? `sin(${x})` : `-log(cos(${x}))`;
+  for (let k = 2; k <= n; k++) {
+    const previous = k % 2 === 0 ? even : odd;
+    const next = fn === "sin"
+      ? `(-sin(${x})^${k - 1}*cos(${x})/${k}+(${k - 1})/${k}*(${previous}))`
+      : fn === "cos"
+        ? `(cos(${x})^${k - 1}*sin(${x})/${k}+(${k - 1})/${k}*(${previous}))`
+        : `(tan(${x})^${k - 1}/${k - 1}-(${previous}))`;
+    if (k % 2 === 0) even = next;
+    else odd = next;
+  }
+  const answer = Algebrite.run(n % 2 === 0 ? even : odd);
+  return typeof answer === "string" && !/stop|integral\(/i.test(answer) ? answer : null;
 }
 
 /** Límite simbólico — best-effort; no se asume que Algebrite siempre lo resuelva (ver README, riesgos). */
@@ -152,7 +254,8 @@ export function toLatex(algebriteResult: string): string {
     if (typeof latex !== "string" || latex.length === 0 || /stop|Stop/.test(latex)) {
       return algebriteResult;
     }
-    return latex;
+    return latex.replace(/\b(sin|cos|tan)\(([^()]*)\)\^(?:\{(\d+)\}|(\d+))/g, (_match, fn: string, argument: string, groupedPower: string | undefined, barePower: string | undefined) =>
+      `\\${fn}^{${groupedPower ?? barePower}}(${argument})`);
   } catch {
     return algebriteResult;
   }

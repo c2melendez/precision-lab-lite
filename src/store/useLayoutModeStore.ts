@@ -24,12 +24,30 @@ import { create } from "zustand";
 export type LayoutMode = "fused" | "separated" | "split" | "focus" | "floating" | "stacked";
 
 const STORAGE_KEY = "precision-lab-layout-mode";
-const VALID_LAYOUT_MODES: readonly LayoutMode[] = ["fused", "separated", "split", "focus", "floating", "stacked"];
+
+/**
+ * B7 — Científica expone cuatro diseños. Conservamos los ids históricos
+ * para no romper consumidores ni preferencias existentes, pero "stacked"
+ * y "floating" ya no forman parte de la selección visible de Científica.
+ *
+ * Mapeo B7:
+ * fused     -> Balanceada
+ * split     -> Cálculo amplio
+ * focus     -> Resultado amplio
+ * separated -> Cuadrícula 2×2
+ */
+const B7_LAYOUT_MODES: readonly LayoutMode[] = ["fused", "split", "focus", "separated"];
 
 function readInitialLayoutMode(): LayoutMode {
-  if (typeof localStorage === "undefined") return "split";
+  if (typeof localStorage === "undefined") return "fused";
   const stored = localStorage.getItem(STORAGE_KEY);
-  return (VALID_LAYOUT_MODES as readonly string[]).includes(stored ?? "") ? (stored as LayoutMode) : "split";
+  if ((B7_LAYOUT_MODES as readonly string[]).includes(stored ?? "")) return stored as LayoutMode;
+
+  // Preferencias heredadas de layouts retirados se migran a Balanceada.
+  if (stored === "stacked" || stored === "floating") {
+    localStorage.setItem(STORAGE_KEY, "fused");
+  }
+  return "fused";
 }
 
 interface LayoutModeState {

@@ -29,13 +29,17 @@ async function setExpression(page: import("@playwright/test").Page, value: strin
 
 test("suite original módulo 5: inventario complejo compartido está activo", async ({ page }) => {
   await openComplex(page);
+  const subcategories = page.getByLabel("Subcategorías de Complejos");
+
+  await subcategories.getByRole("button", { name: "Funciones", exact: true }).click();
+  for (const name of ["parte real", "parte imaginaria", "argumento", "conjugado", "módulo", "convertir a forma polar"]) {
+    const key = page.getByRole("button", { name, exact: true }).first();
+    await expect(key).toBeVisible();
+    expect(await key.isDisabled()).toBe(false);
+  }
+
+  await subcategories.getByRole("button", { name: "Avanzado", exact: true }).click();
   for (const name of [
-    "parte real",
-    "parte imaginaria",
-    "argumento",
-    "conjugado",
-    "módulo",
-    "convertir a forma polar",
     "logaritmo complejo (rama principal)",
     "potencia compleja",
     "raíz n-ésima compleja (rama principal)",
@@ -51,6 +55,7 @@ test("suite original módulo 5: inventario complejo compartido está activo", as
 
 test("suite original módulo 5: Argand 3+4i usa ejes Re e Im", async ({ page }) => {
   await openComplex(page);
+  await page.getByLabel("Subcategorías de Complejos").getByRole("button", { name: "Avanzado", exact: true }).click();
   await setExpression(page, "3+4i");
   const graph = page.getByRole("button", { name: "graficar en el plano de Argand", exact: true }).first();
   await graph.click();

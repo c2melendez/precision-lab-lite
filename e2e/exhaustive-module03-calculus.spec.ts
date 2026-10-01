@@ -72,30 +72,39 @@ async function calculateExpression(page: import("@playwright/test").Page, value:
 
 test("suite original módulo 3: inventario de Cálculo refleja capacidades actuales", async ({ page }) => {
   await openCalculus(page);
+  const subcategories = page.getByLabel("Subcategorías de Cálculo");
 
-  for (const name of [
-    "integral indefinida",
-    "integral definida",
-    "sumatoria",
-    "derivada",
-    "derivada segunda",
-    "derivada parcial",
-    "límite",
-    "límite al infinito",
-    "límite lateral (edita + o - en el exponente)",
-  ]) {
+  await subcategories.getByRole("button", { name: "Integrales", exact: true }).click();
+  for (const name of ["integral indefinida", "integral definida"]) {
+    await expect(page.getByRole("button", { name, exact: true }).first()).toBeVisible();
+  }
+
+  await subcategories.getByRole("button", { name: "Sumas y productos", exact: true }).click();
+  for (const name of ["sumatoria", "productoria"]) {
+    await expect(page.getByRole("button", { name, exact: true }).first()).toBeVisible();
+  }
+  const product = page.getByRole("button", { name: "productoria", exact: true }).first();
+  await product.click();
+  await expect(page.getByText(/productoria: todavía no disponible/i)).toHaveCount(0);
+
+  await subcategories.getByRole("button", { name: "Derivadas", exact: true }).click();
+  for (const name of ["derivada", "derivada segunda", "derivada parcial"]) {
     await expect(page.getByRole("button", { name, exact: true }).first()).toBeVisible();
   }
   await expect(page.getByRole("button", { name: /derivada de orden n/i }).first()).toBeVisible();
-
   const partial = page.getByRole("button", { name: "derivada parcial", exact: true }).first();
   await partial.click();
   await expect(page.getByText(/derivada parcial: todavía no disponible/i)).toHaveCount(0);
 
-  const product = page.getByRole("button", { name: "productoria", exact: true }).first();
-  await expect(product).toBeVisible();
-  await product.click();
-  await expect(page.getByText(/productoria: todavía no disponible/i)).toHaveCount(0);
+  await subcategories.getByRole("button", { name: "Límites", exact: true }).click();
+  for (const name of [
+    "límite",
+    "límite al infinito",
+    "límite lateral por la izquierda",
+    "límite lateral por la derecha",
+  ]) {
+    await expect(page.getByRole("button", { name, exact: true }).first()).toBeVisible();
+  }
 });
 
 async function renderedResultValue(page: import("@playwright/test").Page): Promise<string> {

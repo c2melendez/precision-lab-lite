@@ -21,8 +21,15 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: QA dependency audit (hard gate)
-        run: npm audit --package-lock-only --json > npm-audit.json
+      - name: QA dependency audit
+        id: audit
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          npm audit --package-lock-only --json | tee npm-audit.json
+          audit_status=${PIPESTATUS[0]}
+          exit "$audit_status"
       - name: Upload npm audit report
         if: always()
         uses: actions/upload-artifact@v7
@@ -45,3 +52,11 @@ jobs:
           path: dist
           if-no-files-found: ignore
           retention-days: 7
+      - name: Enforce dependency audit hard gate
+        if: always()
+        shell: bash
+        run: |
+          if [ "${{ steps.audit.outcome }}" != "success" ]; then
+            echo "npm audit failed; preserving CI hard gate after functional checks."
+            exit 1
+          fi

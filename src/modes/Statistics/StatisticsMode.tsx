@@ -5,7 +5,7 @@
 // simbólicas que necesiten Algebrite) — se arma un `MathResult` a mano
 // para reutilizar ResultPanel.tsx sin tocarlo.
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DataListInput, parseDataList } from "../../components/DataListInput";
 import { ResultPanel } from "../../components/ResultPanel";
 import {
@@ -47,6 +47,7 @@ import {
 } from "../../engine/distributions";
 import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { addHistoryEntry } from "../../store/historyDb";
+import { usePendingHistoryReuseStore } from "../../store/usePendingHistoryReuseStore";
 
 type SubMode = "descriptive" | "combinatorics" | "distribution" | "correlation";
 type VarianceKind = "population" | "sample";
@@ -179,7 +180,7 @@ export function StatisticsMode() {
       }
       const result = okResult(fmt(out));
       setDescriptiveResult(result);
-      addHistoryEntry({ mode: "Estadística (Descriptiva)", input: dataChips.join(", "), resultSummary: result.resultLatex ?? "" });
+      addHistoryEntry({ module: "Estadística", mode: "Estadística (Descriptiva)", input: dataChips.join(", "), resultSummary: result.resultLatex ?? "" });
     } catch (e) {
       setDescriptiveResult(errResult(e instanceof Error ? e.message : "Error desconocido."));
     }
@@ -223,7 +224,7 @@ export function StatisticsMode() {
       }
       const result = okResult(fmt(out));
       setCombinatoricsResult(result);
-      addHistoryEntry({ mode: "Estadística (Combinatoria)", input: label, resultSummary: result.resultLatex ?? "" });
+      addHistoryEntry({ module: "Estadística", mode: "Estadística (Combinatoria)", input: label, resultSummary: result.resultLatex ?? "" });
     } catch (e) {
       setCombinatoricsResult(errResult(e instanceof Error ? e.message : "Error desconocido."));
     }
@@ -371,6 +372,45 @@ export function StatisticsMode() {
   const [xChips, setXChips] = useState<string[]>([]);
   const [yChips, setYChips] = useState<string[]>([]);
   const [correlationResult, setCorrelationResult] = useState<MathResult | null>(null);
+  const pendingHistoryReuse = usePendingHistoryReuseStore((s) => s.pending);
+  const takePendingHistoryReuse = usePendingHistoryReuseStore((s) => s.takePending);
+
+  useEffect(() => {
+    const entry = takePendingHistoryReuse();
+    if (!entry) return;
+    const mode = entry.mode.toLowerCase();
+
+    if (mode.includes("descriptiva")) {
+      setSubMode("descriptive");
+      setDataChips(entry.input.split(",").map((value) => value.trim()).filter(Boolean));
+      setDescriptiveResult(null);
+      return;
+    }
+
+    if (mode.includes("correlación")) {
+      setSubMode("correlation");
+      const match = entry.input.match(/^X:(.*?)\s+Y:(.*)$/i);
+      if (match) {
+        setXChips(match[1].split(",").map((value) => value.trim()).filter(Boolean));
+        setYChips(match[2].split(",").map((value) => value.trim()).filter(Boolean));
+      }
+      setCorrelationResult(null);
+      return;
+    }
+
+    if (mode.includes("combinatoria")) {
+      setSubMode("combinatorics");
+      const factorial = entry.input.match(/^(\d+)!$/);
+      const pair = entry.input.match(/^nC[rR]\((\d+),(\d+)\)$|^nP[rR]\((\d+),(\d+)\)$/);
+      if (factorial) {
+        setNStr(factorial[1]);
+      } else if (pair) {
+        setNStr(pair[1] ?? pair[3]);
+        setRStr(pair[2] ?? pair[4]);
+      }
+      setCombinatoricsResult(null);
+    }
+  }, [pendingHistoryReuse, takePendingHistoryReuse]);
 
   function runCorrelation(query: "correlation" | "slope" | "intercept") {
     let x: number[];
@@ -397,27 +437,41 @@ export function StatisticsMode() {
       }
       const result = okResult(fmt(out));
       setCorrelationResult(result);
-      addHistoryEntry({ mode: "Estadística (Correlación)", input: `X:${xChips.join(",")} Y:${yChips.join(",")}`, resultSummary: result.resultLatex ?? "" });
+      addHistoryEntry({ module: "Estadística", mode: "Estadística (Correlación)", input: `X:${xChips.join(",")} Y:${yChips.join(",")}`, resultSummary: result.resultLatex ?? "" });
     } catch (e) {
       setCorrelationResult(errResult(e instanceof Error ? e.message : "Error desconocido."));
     }
   }
+
+  const activeResult =
+    subMode === "descriptive"
+      ? descriptiveResult
+      : subMode === "combinatorics"
+        ? combinatoricsResult
+        : subMode === "distribution"
+          ? distributionResult
+          : correlationResult;
 
   const inputClass = "rounded-lg bg-chrome-soft px-2 py-1.5 text-sm text-bone";
   const btnClass = "rounded-lg bg-chrome-soft py-2 text-center text-xs text-bone hover:bg-chrome-soft/70";
   const btnPrimaryClass = "rounded-lg bg-marker-soft/10 py-2 text-center text-xs font-medium text-marker hover:bg-marker-soft/20";
 
   return (
-    <div className="mx-auto flex max-w-md flex-col gap-3 p-4 md:max-w-lg lg:max-w-2xl dt:max-w-3xl">
-      <div className="flex gap-1 rounded-lg bg-chrome p-1 text-sm">
+    <div className="mx-auto grid w-full max-w-[1376px] gap-4 p-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:items-start">
+      <section aria-label="Controles de estadística" className="min-w-0 space-y-4 rounded-xl border border-paper-line bg-paper-soft p-4 shadow-sm">
+        <div>
+          <h2 className="text-lg font-semibold text-ink">Estadística</h2>
+          <p className="text-sm text-muted">Descriptiva, combinatoria, distribuciones y correlación</p>
+        </div>
+      <div className="flex gap-1 overflow-x-auto rounded-lg border border-paper-line bg-paper p-1 text-sm">
         {TABS.map((t) => (
           <button
             key={t.id}
             onClick={() => setSubMode(t.id)}
             className={
               subMode === t.id
-                ? "flex-1 rounded-md bg-marker-soft/15 py-1.5 text-marker"
-                : "flex-1 rounded-md py-1.5 text-bone/60 hover:text-bone"
+                ? "min-h-11 flex-1 shrink-0 rounded-md bg-marker-soft/15 px-3 py-1.5 font-medium text-marker"
+                : "min-h-11 flex-1 shrink-0 rounded-md px-3 py-1.5 text-muted hover:bg-paper-line/40 hover:text-ink"
             }
           >
             {t.label}
@@ -467,7 +521,7 @@ export function StatisticsMode() {
                 className={
                   varianceKind === "population"
                     ? "rounded px-2 py-0.5 text-xs bg-marker text-chrome"
-                    : "rounded px-2 py-0.5 text-xs text-bone/60"
+                    : "rounded px-2 py-0.5 text-xs text-muted"
                 }
               >
                 Poblac.
@@ -477,7 +531,7 @@ export function StatisticsMode() {
                 className={
                   varianceKind === "sample"
                     ? "rounded px-2 py-0.5 text-xs bg-marker text-chrome"
-                    : "rounded px-2 py-0.5 text-xs text-bone/60"
+                    : "rounded px-2 py-0.5 text-xs text-muted"
                 }
               >
                 Muestral
@@ -488,7 +542,6 @@ export function StatisticsMode() {
             <button className={btnPrimaryClass} onClick={() => runDescriptive("variance")}>σ²/s²</button>
             <button className={btnPrimaryClass} onClick={() => runDescriptive("stdev")}>σ/s</button>
           </div>
-          <ResultPanel result={descriptiveResult} />
         </div>
       )}
 
@@ -509,7 +562,6 @@ export function StatisticsMode() {
             <button className={btnPrimaryClass} onClick={() => runCombinatorics("nPr")}>nPr</button>
             <button className={btnPrimaryClass} onClick={() => runCombinatorics("factorial")}>n!</button>
           </div>
-          <ResultPanel result={combinatoricsResult} />
         </div>
       )}
 
@@ -518,32 +570,32 @@ export function StatisticsMode() {
           <div className="flex flex-wrap gap-1 rounded-lg bg-chrome-soft p-1 text-sm">
             <button
               onClick={() => setDistribution("binomial")}
-              className={distribution === "binomial" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-bone/60"}
+              className={distribution === "binomial" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-muted"}
             >
               Binomial
             </button>
             <button
               onClick={() => setDistribution("normal")}
-              className={distribution === "normal" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-bone/60"}
+              className={distribution === "normal" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-muted"}
             >
               Normal
             </button>
             {/* Módulo N0 (spec_graficacion_matrices_estadistica_unidades.md, sección 7). */}
             <button
               onClick={() => setDistribution("poisson")}
-              className={distribution === "poisson" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-bone/60"}
+              className={distribution === "poisson" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-muted"}
             >
               Poisson
             </button>
             <button
               onClick={() => setDistribution("uniform")}
-              className={distribution === "uniform" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-bone/60"}
+              className={distribution === "uniform" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-muted"}
             >
               Uniforme
             </button>
             <button
               onClick={() => setDistribution("exponential")}
-              className={distribution === "exponential" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-bone/60"}
+              className={distribution === "exponential" ? "flex-1 rounded-md bg-marker py-1.5 text-chrome" : "flex-1 rounded-md py-1.5 text-muted"}
             >
               Exponencial
             </button>
@@ -669,7 +721,6 @@ export function StatisticsMode() {
               </div>
             </>
           )}
-          <ResultPanel result={distributionResult} />
         </div>
       )}
 
@@ -677,14 +728,22 @@ export function StatisticsMode() {
         <div className="space-y-3">
           <DataListInput values={xChips} onChange={setXChips} label="X" />
           <DataListInput values={yChips} onChange={setYChips} label="Y" />
-          <div className="grid grid-cols-3 gap-1.5">
+          <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-3">
             <button className={btnClass} onClick={() => runCorrelation("correlation")}>r</button>
             <button className={btnClass} onClick={() => runCorrelation("slope")}>Pendiente</button>
             <button className={btnClass} onClick={() => runCorrelation("intercept")}>Intercepto</button>
           </div>
-          <ResultPanel result={correlationResult} />
         </div>
       )}
+      </section>
+
+      <section aria-label="Resultado de estadística" className="min-w-0 rounded-xl border border-paper-line bg-paper p-4 shadow-sm lg:sticky lg:top-4">
+        <div className="mb-3 border-b border-paper-line pb-2">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Resultado</h2>
+          <p className="mt-0.5 text-[11px] text-muted">Salida de la operación estadística seleccionada</p>
+        </div>
+        <ResultPanel result={activeResult} />
+      </section>
     </div>
   );
 }
