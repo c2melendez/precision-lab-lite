@@ -401,11 +401,10 @@ export function numericLimit(
  */
 export function numericLimitAtInfinity(f: Fn, sign: 1 | -1): { value: number; converged: boolean } {
   // Keep samples below the overflow/catastrophic-cancellation range of
-  // sinh/cosh/exp. 16..512 is asymptotic for the supported
-  // transcendental families while remaining below IEEE-754 overflow.
-  // The last sample is needed for slow O(1/x^2) approaches such as
-  // asinh(x)-ln(x) -> ln(2).
-  const magnitudes = [16, 32, 64, 128, 256, 512];
+  // Start in the asymptotic range and keep extending. Expressions
+  // that overflow at the largest samples are already filtered below, while
+  // rational limits benefit from the extra finite points for precision.
+  const magnitudes = [16, 32, 64, 128, 256, 512, 1024, 2048];
   const raw = magnitudes.map((m) => f(sign * m));
 
   const firstInfinite = raw.find((v) => v === Infinity || v === -Infinity);
