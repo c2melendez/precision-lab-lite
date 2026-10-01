@@ -81,6 +81,33 @@ describe("numericLimitAtInfinity", () => {
 // para esta función, por eso pasó desapercibido. Antes del fix daba la
 // antiderivada sin evaluar en los límites (ej. 1/3*x^3 en vez de 8/3),
 // en silencio, sin error.
+describe("fast antiderivatives B7", () => {
+  it("resuelve sec(x)*tan(x) sin depender de Algebrite", () => {
+    const value = calcIndefiniteIntegral("sec(x)*tan(x)", "x").resultLatex;
+    expect(value).toContain("1/cos(x)");
+  });
+
+  it("resuelve sech(x)^2 -> tanh(x)", () => {
+    const value = calcIndefiniteIntegral("sech(x)^2", "x").resultLatex;
+    expect(value).toContain("tanh(x)");
+  });
+
+  it("resuelve cos(x)/(1+sin(x)^2) por sustitución cerrada", () => {
+    const value = calcIndefiniteIntegral("cos(x)/(1+sin(x)^2)", "x").resultLatex;
+    expect(value).toContain("arctan(sin(x))");
+  });
+
+  it("evalúa integral definida de sech(x)^2 en [0,1] con el fast path", () => {
+    const value = Number(calcDefiniteIntegral("sech(x)^2", "x", 0, 1).resultLatex);
+    expect(value).toBeCloseTo(Math.tanh(1), 10);
+  });
+
+  it("evalúa integral impropia de sech(x)^2 en [0,+infinito] como 1", () => {
+    const value = Number(calcDefiniteIntegral("sech(x)^2", "x", 0, Infinity).resultLatex);
+    expect(value).toBeCloseTo(1, 12);
+  });
+});
+
 describe("calcDefiniteIntegral", () => {
   it("∫₀² x² dx = 8/3", () => {
     const value = Number(calcDefiniteIntegral("x^2", "x", 0, 2).resultLatex.replace("...", ""));
