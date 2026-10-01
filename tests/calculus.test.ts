@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { compileNumeric, simpsonIntegral, numericLimit, numericLimitAtInfinity } from "../src/engine/numericFallback";
-import { calcDefiniteIntegral, calcLimit, calcDerivative } from "../src/engine/stepEngine/calculus";
+import { calcDefiniteIntegral, calcIndefiniteIntegral, calcLimit, calcDerivative } from "../src/engine/stepEngine/calculus";
 
 // NO EJECUTADO en el entorno de generación. Correr con `npm run test`.
 
