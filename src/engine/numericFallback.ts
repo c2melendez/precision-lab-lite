@@ -317,6 +317,52 @@ export function simpsonIntegral(f: Fn, a: number, b: number, n = 1000): number {
 }
 
 /** Estima un límite por acercamiento numérico desde ambos lados. */
+function classifyLimitSequence(values: number[]): { value: number; converged: boolean } {
+  if (values.length === 0) return { value: NaN, converged: false };
+  if (values.length === 1) return { value: values[0], converged: false };
+
+  const last = values[values.length - 1];
+  const prev = values[values.length - 2];
+  const scale = Math.max(1, Math.abs(last));
+  if (Math.abs(last - prev) <= 1e-5 * scale) {
+    return { value: last, converged: true };
+  }
+
+  if (values.length >= 3) {
+    const prev2 = values[values.length - 3];
+    const absLast = Math.abs(last);
+    const absPrev = Math.abs(prev);
+    const absPrev2 = Math.abs(prev2);
+
+    // Approaching zero: magnitude decays consistently by a meaningful
+    // factor as the sample approaches the target.
+    if (
+      absLast < absPrev
+      && absPrev < absPrev2
+      && absLast <= 0.5 * absPrev
+    ) {
+      return { value: 0, converged: true };
+    }
+
+    // Diverging to +/-infinity: same sign, increasing magnitude, and the
+    // last increment is not damping out relative to the previous one.
+    const sameSign = Math.sign(last) === Math.sign(prev) && Math.sign(prev) === Math.sign(prev2);
+    const d1 = Math.abs(last - prev);
+    const d2 = Math.abs(prev - prev2);
+    if (
+      sameSign
+      && absLast > absPrev
+      && absPrev > absPrev2
+      && d2 > 0
+      && d1 >= 0.8 * d2
+    ) {
+      return { value: last > 0 ? Infinity : -Infinity, converged: true };
+    }
+  }
+
+  return { value: last, converged: false };
+}
+
 export function numericLimit(
   f: Fn,
   point: number,
@@ -329,18 +375,20 @@ export function numericLimit(
   const rightVals = direction !== "left" ? evalSide(1) : [];
   const leftVals = direction !== "right" ? evalSide(-1) : [];
 
-  const last = (arr: number[]) => arr[arr.length - 1];
-  const candidates = [...leftVals, ...rightVals];
-  if (candidates.length === 0) return { value: NaN, converged: false };
+  const right = rightVals.length ? classifyLimitSequence(rightVals) : undefined;
+  const left = leftVals.length ? classifyLimitSequence(leftVals) : undefined;
 
-  const rightEstimate = rightVals.length ? last(rightVals) : undefined;
-  const leftEstimate = leftVals.length ? last(leftVals) : undefined;
-
-  if (rightEstimate !== undefined && leftEstimate !== undefined) {
-    const converged = Math.abs(rightEstimate - leftEstimate) < 1e-3;
-    return { value: (rightEstimate + leftEstimate) / 2, converged };
+  if (right && left) {
+    if (right.converged && left.converged) {
+      if (right.value === left.value) return right;
+      if (Number.isFinite(right.value) && Number.isFinite(left.value)) {
+        const close = Math.abs(right.value - left.value) < 1e-3;
+        return { value: (right.value + left.value) / 2, converged: close };
+      }
+    }
+    return { value: NaN, converged: false };
   }
-  return { value: (rightEstimate ?? leftEstimate)!, converged: true };
+  return right ?? left ?? { value: NaN, converged: false };
 }
 
 /**
@@ -353,10 +401,19 @@ export function numericLimit(
  */
 export function numericLimitAtInfinity(f: Fn, sign: 1 | -1): { value: number; converged: boolean } {
   const magnitudes = [1e2, 1e3, 1e4, 1e5, 1e6, 1e7];
-  const vals = magnitudes.map((m) => f(sign * m)).filter((v) => Number.isFinite(v));
-  if (vals.length === 0) return { value: NaN, converged: false };
-  const last = vals[vals.length - 1];
-  const secondLast = vals.length > 1 ? vals[vals.length - 2] : last;
-  const converged = Math.abs(last - secondLast) < 1e-3;
-  return { value: last, converged };
+  const raw = magnitudes.map((m) => f(sign * m));
+
+  const firstInfinite = raw.find((v) => v === Infinity || v === -Infinity);
+  if (firstInfinite !== undefined) {
+    const finitePrefix = raw.filter((v) => Number.isFinite(v));
+    if (
+      finitePrefix.length > 0
+      && finitePrefix.every((v) => Math.sign(v) === Math.sign(firstInfinite))
+    ) {
+      return { value: firstInfinite, converged: true };
+    }
+  }
+
+  const vals = raw.filter((v) => Number.isFinite(v));
+  return classifyLimitSequence(vals);
 }
