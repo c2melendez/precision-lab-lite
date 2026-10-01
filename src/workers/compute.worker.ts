@@ -782,22 +782,168 @@ function handleSolveAlgebra(
  * muestra directamente sin pasar por toLatex()/toFractionResult() (que
  * esperan sintaxis de Algebrite, no una descripción de intervalo).
  */
+function formatInequalityNumber(value: number): string {
+  if (Math.abs(value) < 1e-10) return "0";
+  return Number(value.toFixed(8)).toString();
+}
+
+function affineCoefficients(expression: string): { a: number; b: number } | null {
+  let fn: (x: number) => number;
+  try {
+    fn = compileNumeric(expression, "x");
+  } catch {
+    return null;
+  }
+  const xs = [-2, -1, 0, 1, 2, 3];
+  const ys = xs.map((x) => fn(x));
+  if (ys.some((value) => !Number.isFinite(value))) return null;
+  const b = ys[2];
+  const a = ys[3] - b;
+  const scale = Math.max(1, ...ys.map((value) => Math.abs(value)));
+  const tolerance = 1e-9 * scale;
+  if (Math.abs(a) <= tolerance) return null;
+  for (let i = 0; i < xs.length; i++) {
+    if (Math.abs(ys[i] - (a * xs[i] + b)) > tolerance) return null;
+  }
+  return { a, b };
+}
+
+function flipInequalityOperator(operator: InequalityOperator): InequalityOperator {
+  if (operator === "<") return ">";
+  if (operator === "<=") return ">=";
+  if (operator === ">") return "<";
+  return "<=";
+}
+
+function solveCoshAffineInequality(
+  arg: string,
+  target: number,
+  operator: InequalityOperator,
+): { resultText: string; steps: { id: string; latex: string; explanation: string }[] } | null {
+  const affine = affineCoefficients(arg);
+  if (!affine) return null;
+
+  const result = (resultText: string) => ({
+    resultText,
+    steps: [{
+      id: "cosh-range",
+      latex: resultText,
+      explanation: "Se usa cosh(u) >= 1 y su simetría respecto de u = 0.",
+    }],
+  });
+
+  if (target < 1 - 1e-12) {
+    return operator === "<" || operator === "<="
+      ? result("No tiene solución real.")
+      : result("todos los números reales");
+  }
+
+  const center = -affine.b / affine.a;
+  if (Math.abs(target - 1) <= 1e-12) {
+    const x0 = formatInequalityNumber(center);
+    if (operator === "<") return result("No tiene solución real.");
+    if (operator === "<=") return result(`x = ${x0}`);
+    if (operator === ">") return result(`x < ${x0} o x > ${x0}`);
+    return result("todos los números reales");
+  }
+
+  const radiusU = Math.acosh(target);
+  const xA = (-radiusU - affine.b) / affine.a;
+  const xB = (radiusU - affine.b) / affine.a;
+  const lo = Math.min(xA, xB);
+  const hi = Math.max(xA, xB);
+  const loText = formatInequalityNumber(lo);
+  const hiText = formatInequalityNumber(hi);
+
+  if (operator === "<") return result(`${loText} < x < ${hiText}`);
+  if (operator === "<=") return result(`${loText} <= x <= ${hiText}`);
+  if (operator === ">") return result(`x < ${loText} o x > ${hiText}`);
+  return result(`x <= ${loText} o x >= ${hiText}`);
+}
+
 function trySimpleMonotonicInequality(
   diff: string,
   operator: InequalityOperator,
   variable: string,
 ): { resultText: string; steps: { id: string; latex: string; explanation: string }[] } | null {
   if (variable !== "x") return null;
-  const match = diff.match(/^\((arctan|sinh|asinh|tanh|atanh)\((.*)\)\)-\((.*)\)$/);
+
+  const sinhCoshProduct = diff.match(/^\(sinh\(x\)\*cosh\(x\)\)-\(0\)$/);
+  if (sinhCoshProduct) {
+    const text = operator === ">" ? "x > 0"
+      : operator === ">=" ? "x >= 0"
+        : operator === "<" ? "x < 0" : "x <= 0";
+    return {
+      resultText: text,
+      steps: [{ id: "sinh-cosh-sign", latex: text, explanation: "cosh(x) es siempre positiva, por lo que el signo del producto coincide con el de sinh(x), y por tanto con el de x." }],
+    };
+  }
+
+  const sechMatch = diff.match(/^\(\(?1\/cosh\(([^()]*)\)\)?\)-\((.*)\)$/);
+  if (sechMatch) {
+    let target: number;
+    try { target = compileNumeric(sechMatch[2], "__ineq_constant__")(0); } catch { return null; }
+    if (Number.isFinite(target) && target > 0 && target <= 1) {
+      const reciprocal = 1 / target;
+      const coshOperator: InequalityOperator =
+        operator === ">" ? "<" : operator === ">=" ? "<=" : operator === "<" ? ">" : ">=";
+      return solveCoshAffineInequality(sechMatch[1], reciprocal, coshOperator);
+    }
+  }
+
+  // Keep the argument deliberately non-greedy/parenthesis-free. The old
+  // (.*) form incorrectly treated sinh(x)*cosh(x) as one sinh argument.
+  const match = diff.match(/^\((arctan|arcsin|arccos|sinh|cosh|asinh|acosh|tanh|atanh)\(([^()]*)\)\)-\((.*)\)$/);
   if (!match) return null;
   const [, fn, arg, rhs] = match;
   let target: number;
   try { target = compileNumeric(rhs, "__ineq_constant__")(0); } catch { return null; }
   if (!Number.isFinite(target)) return null;
+
+  if (fn === "cosh") {
+    return solveCoshAffineInequality(arg, target, operator);
+  }
+
+  if (fn === "acosh") {
+    if (arg !== "x") return null;
+    const result = (text: string) => ({
+      resultText: text,
+      steps: [{ id: "acosh-domain", latex: text, explanation: "acosh es creciente en su dominio real x >= 1." }],
+    });
+    if (target < 0) {
+      return operator === ">" || operator === ">="
+        ? result("x >= 1")
+        : result("No tiene solución real.");
+    }
+    const threshold = Math.cosh(target);
+    const t = formatInequalityNumber(threshold);
+    if (operator === "<") return result(`1 <= x < ${t}`);
+    if (operator === "<=") return result(`1 <= x <= ${t}`);
+    if (operator === ">") return result(`x > ${t}`);
+    return result(`x >= ${t}`);
+  }
+
   let threshold: number;
+  let transformedOperator = operator;
+  let boundedDomain: [number, number] | null = null;
+
   if (fn === "arctan") {
     if (target <= -Math.PI / 2 || target >= Math.PI / 2) return null;
     threshold = Math.tan(target);
+  } else if (fn === "arcsin" || fn === "arccos") {
+    const affine = affineCoefficients(arg);
+    if (!affine) return null;
+    if (fn === "arcsin") {
+      if (target < -Math.PI / 2 || target > Math.PI / 2) return null;
+      threshold = Math.sin(target);
+    } else {
+      if (target < 0 || target > Math.PI) return null;
+      threshold = Math.cos(target);
+      transformedOperator = flipInequalityOperator(operator);
+    }
+    const x1 = (-1 - affine.b) / affine.a;
+    const x2 = (1 - affine.b) / affine.a;
+    boundedDomain = [Math.min(x1, x2), Math.max(x1, x2)];
   } else if (fn === "sinh") threshold = Math.asinh(target);
   else if (fn === "asinh") threshold = Math.sinh(target);
   else if (fn === "tanh") {
@@ -806,8 +952,7 @@ function trySimpleMonotonicInequality(
   } else {
     threshold = Math.tanh(target);
     if (arg === "x") {
-      const fmt = (x: number) => Number.isInteger(x) ? String(x) : x.toFixed(6).replace(/0+$/, "").replace(/\.$/, "");
-      const t = fmt(threshold);
+      const t = formatInequalityNumber(threshold);
       const text = operator === ">" ? t + " < x < 1"
         : operator === ">=" ? t + " <= x < 1"
           : operator === "<" ? "-1 < x < " + t
@@ -818,9 +963,22 @@ function trySimpleMonotonicInequality(
       };
     }
   }
+
   const transformed = "(" + arg + ")-(" + String(threshold) + ")";
-  return solveInequality(transformed, operator, variable);
+  if (boundedDomain) {
+    return solveInequality(
+      transformed,
+      transformedOperator,
+      variable,
+      boundedDomain[0],
+      boundedDomain[1],
+      true,
+      true,
+    );
+  }
+  return solveInequality(transformed, transformedOperator, variable);
 }
+
 function handleSolveInequality(
   diffAlgebrite: string,
   operator: "<" | ">" | "<=" | ">=",
