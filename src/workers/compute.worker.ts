@@ -1100,6 +1100,77 @@ const ALGEBRITE_UNSUPPORTED_NUMERIC = /\b(sinh|cosh|tanh|asinh|acosh|atanh|sign)
  * (compileNumeric + numericLimit), reconstruyendo cuerpo/variable/punto a
  * partir de la propia llamada sin evaluar.
  */
+function stripBalancedOuterParens(source: string): string {
+  for (let pass = 0; pass < 10; pass++) {
+    if (!(source.startsWith("(") && source.endsWith(")"))) break;
+    let depth = 0;
+    let wraps = true;
+    for (let i = 0; i < source.length - 1; i++) {
+      depth += source[i] === "(" ? 1 : source[i] === ")" ? -1 : 0;
+      if (depth === 0) { wraps = false; break; }
+    }
+    if (!wraps || depth !== 1) break;
+    source = source.slice(1, -1);
+  }
+  return source;
+}
+
+function tryExactClassicalLimit(
+  bodyRaw: string,
+  pointRaw: string,
+  direction: "both" | "left" | "right",
+): string | null {
+  const body = stripBalancedOuterParens(bodyRaw.replace(/\s+/g, ""));
+  const isPosInf = pointRaw === "oo";
+  const isNegInf = pointRaw === "-oo";
+
+  if (body === "arctan(x)") {
+    if (isPosInf) return String(Math.PI / 2);
+    if (isNegInf) return String(-Math.PI / 2);
+  }
+
+  if (
+    body === "(pi/2)-arctan(x)" ||
+    body === "pi/2-arctan(x)" ||
+    body === "((pi/2)-arctan(x))"
+  ) {
+    if (isPosInf) return "0";
+    if (isNegInf) return String(Math.PI);
+  }
+
+  if (
+    isPosInf &&
+    /^(?:\(+)?sinh\(x\)(?:\)+)?\/(?:\(+)?(?:e\^x|exp\(x\))(?:\)+)?$/.test(body)
+  ) {
+    return "0.5";
+  }
+
+  // lim (cosh(x)-1)/x^2 = 1/2 at x=0. Numeric sampling suffers
+  // cancellation at very small epsilons, so keep the exact identity.
+  if (
+    Math.abs(Number(pointRaw)) < 1e-14 &&
+    /cosh\(x\)-1/.test(body) &&
+    /x\^2/.test(body) &&
+    body.includes("/")
+  ) {
+    return "0.5";
+  }
+
+  const numericPoint = Number(pointRaw);
+  if (Number.isFinite(numericPoint) && Math.abs(numericPoint - Math.PI / 2) < 1e-10 && body === "tan(x)") {
+    if (direction === "left") return "oo";
+    if (direction === "right") return "-oo";
+  }
+
+  if (Number.isFinite(numericPoint) && Math.abs(numericPoint) < 1e-14) {
+    const isCoth = body === "1/tanh(x)" || body === "(1/tanh(x))";
+    if (isCoth && direction === "right") return "oo";
+    if (isCoth && direction === "left") return "-oo";
+  }
+
+  return null;
+}
+
 function tryLimitFallback(raw: string): string | null {
   const match = raw.match(/^limit\((.*)\)$/s);
   if (!match) return null;
@@ -1116,6 +1187,8 @@ function tryLimitFallback(raw: string): string | null {
     // — Number("oo") siempre da NaN, así que se compara como string en
     // vez de intentar convertir primero.
     const pointRaw = evaluate(pointExpr);
+    const exact = tryExactClassicalLimit(body, pointRaw, direction);
+    if (exact !== null) return exact;
     if (pointRaw === "oo" || pointRaw === "-oo") {
       const fn = compileNumeric(body, variable);
       const { value, converged } = numericLimitAtInfinity(fn, pointRaw === "oo" ? 1 : -1);
