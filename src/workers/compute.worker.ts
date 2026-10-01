@@ -1222,9 +1222,19 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
 
     const inlineIntegral = expr.match(/^integral\((.*)\)$/s);
     const integralArgs = inlineIntegral ? splitTopLevelArgs(inlineIntegral[1]) : [];
-    let raw = integralArgs.length === 2
-      ? indefiniteIntegral(integralArgs[0], integralArgs[1])
-      : evaluate(expr);
+    if (integralArgs.length === 2) {
+      const integrated = calcIndefiniteIntegral(integralArgs[0], integralArgs[1]);
+      return {
+        success: true,
+        resultLatex: integrated.resultLatex,
+        steps: integrated.steps,
+        hasDetailedSteps: integrated.steps.length > 0,
+        confidence: integrated.confidence,
+        requestId,
+      };
+    }
+
+    let raw = evaluate(expr);
     let confidence: MathResult["confidence"] = "SYMBOLIC";
     if (/^limit\(/.test(raw)) {
       const limitFallback = tryLimitFallback(raw);
@@ -1259,7 +1269,7 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
     // LaTeX válido y puedan renderizarlo con MathLive en vez de mostrarlo
     // como texto plano (bug detectado por comparación visual con
     // ClassCalc — ver algebriteClient.ts para el detalle).
-    const resultLatex = `${toLatex(raw)}${integralArgs.length === 2 ? " + C" : ""}`;
+    const resultLatex = toLatex(raw);
 
     // Si no hay `fraction` (resultado simbólico, ej. sin(pi/4) ->
     // "2^(1/2)/2"), se intenta igual una aproximación decimal vía
