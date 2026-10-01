@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { compileNumeric, simpsonIntegral, numericLimit, numericLimitAtInfinity } from "../src/engine/numericFallback";
-import { calcDefiniteIntegral, calcIndefiniteIntegral, calcLimit, calcDerivative } from "../src/engine/stepEngine/calculus";
+import { calcDefiniteIntegral, calcIndefiniteIntegral, calcLimit, calcDerivative, fastAntiderivative } from "../src/engine/stepEngine/calculus";
 
 // NO EJECUTADO en el entorno de generación. Correr con `npm run test`.
 
@@ -106,6 +106,12 @@ describe("fast antiderivatives B7", () => {
     const value = Number(calcDefiniteIntegral("sech(x)^2", "x", 0, Infinity).resultLatex);
     expect(value).toBeCloseTo(1, 12);
   });
+  it("reconoce formas recíprocas ya reescritas por el parser", () => {
+    expect(fastAntiderivative("(1/cos(x))*tan(x)", "x")).toBe("1/cos(x)");
+    expect(fastAntiderivative("(1/cosh(x))^2", "x")).toBe("tanh(x)");
+    expect(fastAntiderivative("(1/sinh(x))*(1/tanh(x))", "x")).toBe("-1/sinh(x)");
+  });
+
 });
 
 describe("calcDefiniteIntegral", () => {
