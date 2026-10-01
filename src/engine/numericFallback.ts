@@ -400,7 +400,10 @@ export function numericLimit(
  * de convergencia que numericLimit.
  */
 export function numericLimitAtInfinity(f: Fn, sign: 1 | -1): { value: number; converged: boolean } {
-  const magnitudes = [1e2, 1e3, 1e4, 1e5, 1e6, 1e7];
+  // Keep samples below the overflow/catastrophic-cancellation range of
+  // sinh/cosh/exp. 8..256 is already asymptotic for the supported
+  // transcendental families while remaining finite in IEEE-754.
+  const magnitudes = [8, 16, 32, 64, 128, 256];
   const raw = magnitudes.map((m) => f(sign * m));
 
   const firstInfinite = raw.find((v) => v === Infinity || v === -Infinity);
