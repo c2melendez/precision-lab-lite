@@ -229,7 +229,7 @@ export function calcIndefiniteIntegral(exprAlgebrite: string, variable: string):
 
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
   const result = indefiniteIntegral(exprAlgebrite, variable);
-  if (/Unsupportedfunction|^integral\\(/i.test(result)) {
+  if (/Unsupportedfunction|^integral\(/i.test(result)) {
     throw {
       code: ErrorCode.UNSUPPORTED_OPERATION,
       message: "Algebrite no pudo reducir la integral a una antiderivada cerrada.",
