@@ -686,6 +686,15 @@ export function preprocessLatex(latex: string): string {
   // a la función unaria interna pm(5), preservando las dos ramas.
   expr = expr.replace(/\\pm\s+([A-Za-z0-9.]+)/g, "pm($1)");
 
+  // Normalize absolute-value delimiters BEFORE late adjacency. Otherwise
+  // "\\lvert\\sin x\\rvert" exposes the trailing "t" of "\\lvert"
+  // to the adjacency regex and becomes "abs(*sin(x))".
+  expr = expr
+    .replace(/\\left\|/g, "abs(")
+    .replace(/\\right\|/g, ")")
+    .replace(/\\lvert/g, "abs(")
+    .replace(/\\rvert/g, ")");
+
   // Matriz trigonométrica: late adjacency normalization.
   // At this point \\int has already been rewritten, so x\\cosh x may
   // safely become x*\\cosh x without corrupting the command \\int.
