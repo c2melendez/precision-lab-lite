@@ -355,23 +355,6 @@ export function fastAntiderivative(
 
 export function calcIndefiniteIntegral(exprAlgebrite: string, variable: string): CalculusResult {
   const originalExpr = exprAlgebrite;
-
-  const exactDefinite = fastDefiniteIntegralIdentity(originalExpr, variable, lower, upper);
-  if (exactDefinite !== null) {
-    return {
-      resultLatex: exactDefinite,
-      confidence: "SYMBOLIC",
-      steps: [
-        { id: "original", latex: `\\int_{${lower}}^{${upper}} ${originalExpr}\\,d${variable}`, explanation: "Integral definida planteada." },
-        {
-          id: "identity",
-          latex: exactDefinite,
-          explanation: "Se aplicó la identidad exacta de la integral log-seno por simetría y ángulo doble; no se fabrica una primitiva elemental.",
-        },
-      ],
-    };
-  }
-
   const fast = fastAntiderivative(originalExpr, variable);
   if (fast !== null) {
     return {
@@ -451,6 +434,23 @@ export function calcDefiniteIntegral(
   upper: number,
 ): CalculusResult {
   const originalExpr = exprAlgebrite;
+
+  const exactDefinite = fastDefiniteIntegralIdentity(originalExpr, variable, lower, upper);
+  if (exactDefinite !== null) {
+    return {
+      resultLatex: exactDefinite,
+      confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: `\\int_{${lower}}^{${upper}} ${originalExpr}\\,d${variable}`, explanation: "Integral definida planteada." },
+        {
+          id: "identity",
+          latex: exactDefinite,
+          explanation: "Se aplicó la identidad exacta de la integral log-seno por simetría y ángulo doble; no se fabrica una primitiva elemental.",
+        },
+      ],
+    };
+  }
+
   const fast = fastAntiderivative(originalExpr, variable);
   if (fast !== null) {
     try {
