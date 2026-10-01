@@ -49,6 +49,14 @@ describe("solveInequality (decisión de Carlos: solver básico de <,>,≤,≥)",
     expect(solve("x\\le-2")).toBe("x <= -2");
   });
 
+  it("resuelve frontera lineal con decimal sin delegar a roots() de Algebrite", () => {
+    expect(solveInequality("(x)-(1.5574077246549023)", "<", "x").resultText).toBe("x < 1.5574");
+  });
+
+  it("resuelve frontera afín con coeficiente distinto de 1 y decimal", () => {
+    expect(solveInequality("(2*x)-(0.9999999999999999)", ">=", "x").resultText).toBe("x >= 0.5");
+  });
+
   it("cadena doble (1<x<5) se rechaza en vez de adivinar semántica no pedida", () => {
     expect(() => parseExpression("1<x<5", "RAD")).toThrow();
   });
