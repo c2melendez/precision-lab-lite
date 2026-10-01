@@ -211,6 +211,11 @@ function rewriteBareFunctionApplications(input: string): string {
     if (!fn) { out += input[i++]; continue; }
     let cursor = i + fn.length;
     let power = "";
+
+    // \operatorname{sech}^{2}x is unwrapped as " sech ^(2)x": there may
+    // be harmless whitespace between the function name and its exponent.
+    // Look through it BEFORE deciding whether a function power exists.
+    while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
     if (input.startsWith("^(", cursor)) {
       let depth = 1;
       let j = cursor + 2;
@@ -219,9 +224,13 @@ function rewriteBareFunctionApplications(input: string): string {
         else if (input[j] === ")") depth--;
         j++;
       }
-      if (depth === 0) { power = input.slice(cursor + 2, j - 1); cursor = j; }
+      if (depth === 0) {
+        power = input.slice(cursor + 2, j - 1);
+        cursor = j;
+        while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
+      }
     }
-    if (input[cursor] === "(") { out += input.slice(i, cursor); i = cursor; continue; }
+    if (input[cursor] === "(" && !power) { out += fn; i = cursor; continue; }
     const whitespaceStart = cursor;
     while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
     // MathLive/operatorname can leave whitespace before an argument that
