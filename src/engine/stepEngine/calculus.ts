@@ -240,6 +240,13 @@ export function fastAntiderivative(
     .replace(/\^\((\d+)\)/g, "^$1")
     .replace(/e\^\(x\)/g, "e^x");
 
+  // Reciprocal hyperbolic squares acquire nested grouping when
+  // parseExpression first lowers sech/csch and then preserves the function
+  // power. Recognize only these exact x-only square forms before the more
+  // general canonicalization below.
+  if (/^\(+1\/cosh\(x\)\)+\^2$/.test(expr)) return "tanh(x)";
+  if (/^\(+1\/sinh\(x\)\)+\^2$/.test(expr)) return "-cosh(x)/sinh(x)";
+
   // MathLive/parser can leave harmless grouping around one function or a
   // reciprocal atom, e.g. ((1/cosh(x)))^2 or (arcsin(x))/(sqrt(...)).
   // Canonicalize only these x-only atoms so the exact identity table
