@@ -172,6 +172,19 @@ describe("calcDerivative (Fase 3 — orden N sin tope de 3, paridad con la panta
     expect(value).not.toMatch(/\bd\(/);
   });
 
+  it.each([
+    ["asinh(x)", "x*asinh(x)-sqrt(x^2+1)"],
+    ["acosh(x)", "x*acosh(x)-sqrt(x^2-1)"],
+    ["atanh(x)", "x*atanh(x)+(1/2)*ln(1-x^2)"],
+    ["acoth(x)", "x*acoth(x)+(1/2)*ln(x^2-1)"],
+    ["asech(x)", "x*asech(x)+arcsin(x)"],
+    ["acsch(x)", "x*acsch(x)+asinh(x)"],
+  ])("resuelve integral hiperbólica inversa %s sin marcador Unsupportedfunction", (expr, expected) => {
+    const value = calcIndefiniteIntegral(expr, "x").resultLatex.replace(/\s+/g, "");
+    expect(value).toContain(expected.replace(/\s+/g, ""));
+    expect(value).not.toMatch(/Unsupportedfunction/i);
+  });
+
   it("rechaza orden fuera de rango (>20, guarda de sensatez)", () => {
     expect(() => calcDerivative("x^2", "x", 25)).toThrow();
   });
