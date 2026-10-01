@@ -286,3 +286,47 @@ describe("B7 natural inverse hyperbolic integrals", () => {
     expect(fastAntiderivative("(asinh(x))+(x)", "x")).toBeNull();
   });
 });
+
+
+describe("B7 matrix integration recertification", () => {
+  it("keeps hyperbolic limits finite before overflow and converges to their identities", () => {
+    const ratio = numericLimitAtInfinity(compileNumeric("cosh(x)/sinh(x)", "x"), 1);
+    expect(ratio.converged).toBe(true);
+    expect(ratio.value).toBeCloseTo(1, 8);
+
+    const asinhMinusLog = numericLimitAtInfinity(compileNumeric("asinh(x)-ln(x)", "x"), 1);
+    expect(asinhMinusLog.converged).toBe(true);
+    expect(asinhMinusLog.value).toBeCloseTo(Math.log(2), 4);
+
+    const acoshMinusLog = numericLimitAtInfinity(compileNumeric("acosh(x)-ln(x)", "x"), 1);
+    expect(acoshMinusLog.converged).toBe(true);
+    expect(acoshMinusLog.value).toBeCloseTo(Math.log(2), 4);
+  });
+
+  it.each(["acoth(x)", "asech(x)", "acsch(x)", "atanh(x^2)"])(
+    "derives nested/reciprocal inverse hyperbolic form %s without leaving d(...)",
+    (expr) => {
+      const value = calcDerivative(expr, "x", 1).resultLatex;
+      expect(value).not.toMatch(/\\bd\\(/);
+      expect(value).not.toMatch(/NaN/i);
+    },
+  );
+
+  it.each([
+    ["\\int\\frac{\\arcsin x}{\\sqrt{1-x^{2}}}\\,dx", "arcsin"],
+    ["\\int\\coth x\\,dx", "ln"],
+    ["\\int\\operatorname{sech}^{2}x\\,dx", "tanh"],
+    ["\\int\\operatorname{csch} x\\,dx", "ln"],
+    ["\\int e^{x}\\cosh x\\,dx", "e^"],
+    ["\\int e^{x}\\sin x\\,dx", "e^"],
+    ["\\int\\operatorname{csch}^{2}x\\,dx", "sinh"],
+    ["\\int\\operatorname{sech} x\\,dx", "arctan"],
+  ])("routes natural integral %s through a closed antiderivative", (latex, expectedFragment) => {
+    const parsed = parseExpression(latex).algebrite;
+    const args = parsed.match(/^integral\\((.*),x\\)$/s);
+    expect(args).not.toBeNull();
+    const result = calcIndefiniteIntegral(args![1], "x").resultLatex;
+    expect(result).toContain(expectedFragment);
+    expect(result).not.toMatch(/Unsupported\\s*function|^integral\\(/i);
+  });
+});
