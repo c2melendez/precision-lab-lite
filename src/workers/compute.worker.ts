@@ -1119,14 +1119,20 @@ function tryLimitFallback(raw: string): string | null {
     if (pointRaw === "oo" || pointRaw === "-oo") {
       const fn = compileNumeric(body, variable);
       const { value, converged } = numericLimitAtInfinity(fn, pointRaw === "oo" ? 1 : -1);
-      return Number.isFinite(value) && converged ? String(value) : null;
+      if (!converged) return null;
+      if (value === Infinity) return "oo";
+      if (value === -Infinity) return "-oo";
+      return Number.isFinite(value) ? String(value) : null;
     }
 
     const pointNumeric = Number(pointRaw);
     if (!Number.isFinite(pointNumeric)) return null;
     const fn = compileNumeric(body, variable);
     const { value, converged } = numericLimit(fn, pointNumeric, direction);
-    return Number.isFinite(value) && converged ? String(value) : null;
+    if (!converged) return null;
+    if (value === Infinity) return "oo";
+    if (value === -Infinity) return "-oo";
+    return Number.isFinite(value) ? String(value) : null;
   } catch {
     return null;
   }
