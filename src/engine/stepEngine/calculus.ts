@@ -45,21 +45,53 @@ export interface CalculusResult {
 // TODO el pipeline (evaluate/derivada/integral/límite) las resuelva por
 // igual, no solo la derivada — se importa desde ahí en vez de duplicar
 // la lógica acá.
+function rewriteBalancedUnary(
+  input: string,
+  fnName: string,
+  build: (arg: string) => string,
+): string {
+  let result = "";
+  let i = 0;
+  while (i < input.length) {
+    const precededByLetter = i > 0 && /[A-Za-z]/.test(input[i - 1]);
+    if (!precededByLetter && input.startsWith(`${fnName}(`, i)) {
+      const open = i + fnName.length;
+      let depth = 1;
+      let j = open + 1;
+      while (j < input.length && depth > 0) {
+        if (input[j] === "(") depth++;
+        else if (input[j] === ")") depth--;
+        j++;
+      }
+      if (depth !== 0) {
+        result += input.slice(i);
+        break;
+      }
+      const arg = input.slice(open + 1, j - 1);
+      result += build(arg);
+      i = j;
+    } else {
+      result += input[i];
+      i++;
+    }
+  }
+  return result;
+}
+
 function rewriteInverseHyperbolicsForDerivative(input: string): string {
   let result = input;
-  const rules: Array<[RegExp, (arg: string) => string]> = [
-    [/\basinh\(([^()]*)\)/g, (arg) => `ln((${arg})+sqrt((${arg})^2+1))`],
-    [/\bacosh\(([^()]*)\)/g, (arg) => `ln((${arg})+sqrt((${arg})^2-1))`],
-    [/\batanh\(([^()]*)\)/g, (arg) => `(1/2)*ln((1+(${arg}))/(1-(${arg})))`],
+  const rules: Array<[string, (arg: string) => string]> = [
+    ["asinh", (arg) => `ln((${arg})+sqrt((${arg})^2+1))`],
+    ["acosh", (arg) => `ln((${arg})+sqrt((${arg})^2-1))`],
+    ["atanh", (arg) => `(1/2)*ln((1+(${arg}))/(1-(${arg})))`],
   ];
-  for (let pass = 0; pass < 4; pass++) {
-    let changed = false;
-    for (const [pattern, replacement] of rules) {
-      const next = result.replace(pattern, (_match, arg: string) => replacement(arg));
-      if (next !== result) changed = true;
-      result = next;
-    }
-    if (!changed) break;
+  // Use a balanced scanner rather than /[^()]*/ so reciprocal inverse
+  // functions rewritten as atanh(1/(x)), acosh(1/(x)) or asinh(1/(x))
+  // are handled by the same derivative pipeline.
+  for (let pass = 0; pass < 6; pass++) {
+    const previous = result;
+    for (const [name, build] of rules) result = rewriteBalancedUnary(result, name, build);
+    if (result === previous) break;
   }
   return result;
 }
