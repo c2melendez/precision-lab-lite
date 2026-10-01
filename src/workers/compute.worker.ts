@@ -25,6 +25,7 @@ import {
   calcIndefiniteIntegral,
   calcDefiniteIntegral,
   fastAntiderivative,
+  fastDefiniteIntegralIdentity,
 } from "../engine/stepEngine/calculus";
 import { solveLinearSystem } from "../engine/stepEngine/linearSystem";
 import {
@@ -1283,6 +1284,18 @@ function tryDefiniteIntegral(expr: string): string | null {
 
   const lowerInfinite = lower === "oo" || lower === "-oo";
   const upperInfinite = upper === "oo" || upper === "-oo";
+
+  if (!lowerInfinite && !upperInfinite) {
+    try {
+      const lowerNumeric = compileNumeric(lower, "__bound__")(0);
+      const upperNumeric = compileNumeric(upper, "__bound__")(0);
+      const exactDefinite = fastDefiniteIntegralIdentity(body, "x", lowerNumeric, upperNumeric);
+      if (exactDefinite !== null) return exactDefinite;
+    } catch {
+      // Preserve the existing symbolic/numeric paths when bounds are not
+      // reducible to finite real values.
+    }
+  }
 
   const fast = fastAntiderivative(body, "x");
   if (fast !== null) {
