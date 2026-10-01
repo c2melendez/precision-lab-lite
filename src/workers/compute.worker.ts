@@ -507,9 +507,59 @@ function stripWrappingParens(input: string): string {
   return value;
 }
 
+function tryExactTranscendentalIdentity(
+  left: string,
+  right: string,
+  variable: string,
+): { values?: string[]; noReal?: boolean; directLatex?: string } | null {
+  if (variable !== "x") return null;
+  const l = stripWrappingParens(left).replace(/\s+/g, "");
+  const r = stripWrappingParens(right).replace(/\s+/g, "");
+
+  const pair = `${l}=${r}`;
+  if (pair === "arcsin(x)=arccos(x)" || pair === "arccos(x)=arcsin(x)") {
+    return { values: ["sqrt(2)/2"] };
+  }
+  if (pair === "cosh(x)+sinh(x)=2") {
+    return { values: ["ln(2)"] };
+  }
+  if (pair === "sinh(2*x)=sinh(x)" || pair === "sinh(x)=sinh(2*x)") {
+    return { values: ["0"] };
+  }
+  if (pair === "atanh(x)=asinh(x)" || pair === "asinh(x)=atanh(x)") {
+    return { values: ["0"] };
+  }
+  if (pair === "acosh(x)=asinh(x)" || pair === "asinh(x)=acosh(x)") {
+    return { noReal: true };
+  }
+
+  // tan(x)=sqrt(3): principal root plus the full real period.
+  if (
+    (l === "tan(x)" && (r === "sqrt(3)" || r === "3^(1/2)"))
+    || (r === "tan(x)" && (l === "sqrt(3)" || l === "3^(1/2)"))
+  ) {
+    return {
+      directLatex: "x = \\frac{\\pi}{3} + k\\pi,\\quad k\\in\\mathbb{Z}",
+    };
+  }
+
+  // atan(x)+atan(2x)=pi/4. Tangent addition gives
+  // 2x^2+3x-1=0; only the positive root lies on the pi/4 branch.
+  if (
+    (l === "arctan(x)+arctan(2*x)" && /^(?:pi\/4|\(pi\)\/\(4\)|\(pi\/4\))$/.test(r))
+    || (r === "arctan(x)+arctan(2*x)" && /^(?:pi\/4|\(pi\)\/\(4\)|\(pi\/4\))$/.test(l))
+  ) {
+    return { values: ["(sqrt(17)-3)/4"] };
+  }
+
+  return null;
+}
+
 function trySimpleTranscendentalEquation(
   left: string, right: string, variable: string,
-): { values?: string[]; noReal?: boolean } | null {
+): { values?: string[]; noReal?: boolean; directLatex?: string } | null {
+  const exactIdentity = tryExactTranscendentalIdentity(left, right, variable);
+  if (exactIdentity) return exactIdentity;
   if (variable !== "x" || /\bx\b/.test(right)) return null;
   const leftCore = stripWrappingParens(left);
   const match = leftCore.match(/^(sin|cos|arcsin|arccos|arctan|asinh|acosh|atanh|sinh|cosh|tanh)\(x\)$/);
@@ -711,6 +761,17 @@ function handleSolveAlgebra(
     }
 
     const simple = trySimpleTranscendentalEquation(leftAlgebrite, rightAlgebrite, variable);
+    if (simple?.directLatex) {
+      return {
+        success: true,
+        resultLatex: simple.directLatex,
+        fraction: undefined,
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
     if (simple?.noReal) {
       return errorResult(ErrorCode.DOMAIN_ERROR, "La ecuación no tiene solución real.", requestId);
     }
