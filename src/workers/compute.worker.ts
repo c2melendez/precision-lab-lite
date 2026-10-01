@@ -196,6 +196,31 @@ self.onmessage = (event: MessageEvent<ComputeRequest>) => {
   (self as unknown as Worker).postMessage(result);
 };
 
+function inverseHyperbolicExpressionToLatex(expression: string): string {
+  let text = expression;
+  const names: Record<string, string> = {
+    asinh: "arsinh",
+    acosh: "arcosh",
+    atanh: "artanh",
+    acoth: "arcoth",
+    asech: "arsech",
+    acsch: "arcsch",
+  };
+  for (const [backend, display] of Object.entries(names)) {
+    text = text.replace(
+      new RegExp(`\\b${backend}\\(([^()]*)\\)`, "g"),
+      (_match, body: string) => `\\operatorname{${display}}\\left(${body}\\right)`,
+    );
+  }
+  text = text
+    .replace(/sqrt\\(([^()]*)\\)/g, "\\sqrt{$1}")
+    .replace(/ln\\(([^()]*)\\)/g, "\\ln\\left($1\\right)")
+    .replace(/arcsin\\(([^()]*)\\)/g, "\\arcsin\\left($1\\right)")
+    .replace(/\^2/g, "^{2}")
+    .replace(/\*/g, " ");
+  return text;
+}
+
 function calculusResultForDisplay(
   result: { resultLatex: string; steps: MathResult["steps"]; confidence: MathResult["confidence"] },
   kind: "derivative" | "limit" | "indefiniteIntegral" | "definiteIntegral",
@@ -203,7 +228,9 @@ function calculusResultForDisplay(
   let resultLatex = result.resultLatex;
   if (kind === "indefiniteIntegral") {
     const base = resultLatex.replace(/\s*\+\s*C\s*$/, "");
-    resultLatex = `${toLatex(base)} + C`;
+    resultLatex = /\b(?:asinh|acosh|atanh|acoth|asech|acsch)\(/.test(base)
+      ? `${inverseHyperbolicExpressionToLatex(base)} + C`
+      : `${toLatex(base)} + C`;
   } else {
     resultLatex = toLatex(resultLatex);
   }
