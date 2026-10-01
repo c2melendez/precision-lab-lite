@@ -314,6 +314,14 @@ describe("Matriz trigonométrica — notación natural ampliada", () => {
     const parsed = parseExpression("\\frac{d}{dx}\\arcsin x").algebrite;
     expect(parsed).toContain("d((arcsin(x)),x)");
   });
+  it("preserva subst() en derivadas evaluadas sin insertar multiplicación", () => {
+    const parsed = parseExpression(
+      "\\left.\\frac{d}{dx}\\tan x\\right\\rvert_{x=\\pi/4}",
+    ).algebrite;
+    expect(parsed).toContain("subst((pi/4),x,");
+    expect(parsed).not.toContain("subst*(");
+  });
+
 });
 
 
