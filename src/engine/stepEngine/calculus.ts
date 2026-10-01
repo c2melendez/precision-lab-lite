@@ -180,9 +180,43 @@ export function calcLimit(
   }
 }
 
+function inverseHyperbolicAntiderivative(
+  exprAlgebrite: string,
+  variable: string,
+): string | null {
+  if (variable !== "x") return null;
+  const expr = exprAlgebrite.replace(/\\s+/g, "");
+  if (expr === "asinh(x)") return "x*asinh(x)-sqrt(x^2+1)";
+  if (expr === "acosh(x)") return "x*acosh(x)-sqrt(x^2-1)";
+  if (expr === "atanh(x)") return "x*atanh(x)+(1/2)*ln(1-x^2)";
+  if (expr === "acoth(x)") return "x*acoth(x)+(1/2)*ln(x^2-1)";
+  if (expr === "asech(x)") return "x*asech(x)+arcsin(x)";
+  if (expr === "acsch(x)") return "x*acsch(x)+asinh(x)";
+  return null;
+}
+
 export function calcIndefiniteIntegral(exprAlgebrite: string, variable: string): CalculusResult {
+  const originalExpr = exprAlgebrite;
+  const fastInverseHyperbolic = inverseHyperbolicAntiderivative(originalExpr, variable);
+  if (fastInverseHyperbolic !== null) {
+    return {
+      resultLatex: `${fastInverseHyperbolic} + C`,
+      confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: `\\int ${originalExpr}\\,d${variable}`, explanation: "Integral planteada." },
+        { id: "result", latex: `${fastInverseHyperbolic} + C`, explanation: "Se aplicó una identidad cerrada para la función hiperbólica inversa." },
+      ],
+    };
+  }
+
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
   const result = indefiniteIntegral(exprAlgebrite, variable);
+  if (/Unsupportedfunction|^integral\\(/i.test(result)) {
+    throw {
+      code: ErrorCode.UNSUPPORTED_OPERATION,
+      message: "Algebrite no pudo reducir la integral a una antiderivada cerrada.",
+    } as AppError;
+  }
   return {
     resultLatex: `${result} + C`,
     confidence: "SYMBOLIC",
