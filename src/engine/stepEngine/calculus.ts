@@ -198,14 +198,36 @@ export function calcLimit(
   }
 }
 
-function fastAntiderivative(
+export function fastAntiderivative(
   exprAlgebrite: string,
   variable: string,
 ): string | null {
   if (variable !== "x") return null;
-  const expr = exprAlgebrite
+  let expr = exprAlgebrite
     .replace(/\s+/g, "")
     .replace(/\^\((\d+)\)/g, "^$1");
+
+  // parseExpression rewrites reciprocal trig/hyperbolic functions before
+  // the worker sees the integrand. Canonicalize those exact x-only forms
+  // back to their calculator names so one identity table serves both the
+  // dedicated Calculus mode and inline Scientific notation.
+  for (let pass = 0; pass < 4; pass++) {
+    const previous = expr;
+    expr = expr
+      .replace(/\(1\/cos\(x\)\)/g, "sec(x)")
+      .replace(/\(1\/sin\(x\)\)/g, "csc(x)")
+      .replace(/\(1\/tan\(x\)\)/g, "cot(x)")
+      .replace(/\(1\/cosh\(x\)\)/g, "sech(x)")
+      .replace(/\(1\/sinh\(x\)\)/g, "csch(x)")
+      .replace(/\(1\/tanh\(x\)\)/g, "coth(x)")
+      .replace(/arccos\(1\/\(x\)\)/g, "arcsec(x)")
+      .replace(/arcsin\(1\/\(x\)\)/g, "arccsc(x)")
+      .replace(/acosh\(1\/\(x\)\)/g, "asech(x)")
+      .replace(/asinh\(1\/\(x\)\)/g, "acsch(x)")
+      .replace(/atanh\(1\/\(x\)\)/g, "acoth(x)")
+      .replace(/\((sin|cos|tan|sinh|cosh|tanh|sec|csc|cot|sech|csch|coth)\(x\)\)/g, "$1(x)");
+    if (expr === previous) break;
+  }
 
   const exact: Record<string, string> = {
     "sec(x)*tan(x)": "1/cos(x)",
