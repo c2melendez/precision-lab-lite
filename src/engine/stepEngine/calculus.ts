@@ -419,12 +419,11 @@ export function fastDefiniteIntegralIdentity(
   if (!forward && !reverse) return null;
 
   const orientation = forward ? -1 : 1;
-  const raw = String(orientation) + "*(" + coefficientText + ")*pi*ln(2)/2";
-  try {
-    return evaluate(raw);
-  } catch {
-    return raw;
-  }
+  // Do not run this through Algebrite.evaluate(): in the Lite Algebrite
+  // binding, ln(2) is interpreted as the common logarithm on that route.
+  // The calculator's own parser/numeric evaluator defines ln as natural
+  // log, which is also the notation exposed to the user.
+  return String(orientation) + "*(" + coefficientText + ")*pi*ln(2)/2";
 }
 
 export function calcDefiniteIntegral(
