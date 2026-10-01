@@ -1408,7 +1408,10 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
     const inlineIntegral = expr.match(/^integral\((.*)\)$/s);
     const integralArgs = inlineIntegral ? splitTopLevelArgs(inlineIntegral[1]) : [];
     if (integralArgs.length === 2) {
-      const integrated = calcIndefiniteIntegral(integralArgs[0], integralArgs[1]);
+      const integrated = calculusResultForDisplay(
+        calcIndefiniteIntegral(integralArgs[0], integralArgs[1]),
+        "indefiniteIntegral",
+      );
       return {
         success: true,
         resultLatex: integrated.resultLatex,
