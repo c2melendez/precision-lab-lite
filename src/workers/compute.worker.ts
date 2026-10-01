@@ -440,6 +440,24 @@ function tryBoundedNumericEquation(
     if (!roots.some((r) => Math.abs(r - x) < 1e-6)) roots.push(x);
   };
 
+  // B7 CL-12: cot(x)=0 is exact at pi/2+k*pi. The generic numeric
+  // representation is 1/tan(x), but safeTan intentionally returns NaN at
+  // tan's poles; those poles are precisely cot's zeros. Resolve this
+  // bounded identity analytically instead of weakening safeTan globally.
+  {
+    const leftCore = stripWrappingParens(left).replace(/\s+/g, "");
+    const rightCore = stripWrappingParens(right).replace(/\s+/g, "");
+    const cotOnLeft = (leftCore === "1/tan(x)" || leftCore === "(1/tan(x))") && rightCore === "0";
+    const cotOnRight = (rightCore === "1/tan(x)" || rightCore === "(1/tan(x))") && leftCore === "0";
+    if (cotOnLeft || cotOnRight) {
+      const firstK = Math.ceil((a - Math.PI / 2) / Math.PI - 1e-12);
+      const lastK = Math.floor((b - Math.PI / 2) / Math.PI + 1e-12);
+      for (let k = firstK; k <= lastK; k++) addRoot(Math.PI / 2 + k * Math.PI);
+      roots.sort((x, y) => x - y);
+      return roots.map(formatPiMultiple);
+    }
+  }
+
   const samples = 4096;
   let prevX = a;
   let prevY = f(prevX);
