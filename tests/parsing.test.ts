@@ -152,7 +152,14 @@ describe("parseExpression", () => {
       expect(parseExpression("phi").algebrite).toBe("((1+sqrt(5))/2)");
     });
 
-    it("sinh/cosh/tanh/asinh/acosh/atanh/exp/sign son funciones válidas (aridad 1)", () => {
+    it("B7: potencias de operatorname hiperbólicas conservan el exponente sobre la función", () => {
+    expect(parseExpression("\\operatorname{sech}^{2}x").algebrite)
+      .toBe("((1/cosh(x)))^(2)");
+    expect(parseExpression("\\operatorname{csch}^{2}x").algebrite)
+      .toBe("((1/sinh(x)))^(2)");
+  });
+
+  it("sinh/cosh/tanh/asinh/acosh/atanh/exp/sign son funciones válidas (aridad 1)", () => {
       for (const fn of ["sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "exp", "sign"]) {
         expect(() => parseExpression(`${fn}(1)`)).not.toThrow();
       }
