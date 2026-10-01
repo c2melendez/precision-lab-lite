@@ -237,7 +237,22 @@ export function fastAntiderivative(
   if (variable !== "x") return null;
   let expr = exprAlgebrite
     .replace(/\s+/g, "")
-    .replace(/\^\((\d+)\)/g, "^$1");
+    .replace(/\^\((\d+)\)/g, "^$1")
+    .replace(/e\^\(x\)/g, "e^x");
+
+  // MathLive/parser can leave harmless grouping around one function or a
+  // reciprocal atom, e.g. ((1/cosh(x)))^2 or (arcsin(x))/(sqrt(...)).
+  // Canonicalize only these x-only atoms so the exact identity table
+  // remains deliberately narrow instead of becoming a general simplifier.
+  for (let pass = 0; pass < 6; pass++) {
+    const previous = expr;
+    expr = expr
+      .replace(/\(\((1\/(?:cos|sin|tan|cosh|sinh|tanh)\(x\))\)\)/g, "($1)")
+      .replace(/\(1\/\((cos|sin|tan|cosh|sinh|tanh)\(x\)\)\)/g, "(1/$1(x))")
+      .replace(/\((arcsin|arccos|arctan|sin|cos|tan|sinh|cosh|tanh)\(x\)\)/g, "$1(x)")
+      .replace(/\(sqrt\(([^()]*)\)\)/g, "sqrt($1)");
+    if (expr === previous) break;
+  }
 
   // Natural input groups the whole integrand. Remove only balanced
   // outer grouping, never parentheses belonging to one factor of a sum.
