@@ -241,6 +241,33 @@ function solveBoundedInequality(
   };
 }
 
+function tryAffineNumericRoots(diffAlgebrite: string, variable: string): number[] | null {
+  let fn: (x: number) => number;
+  try {
+    fn = compileNumeric(diffAlgebrite, variable);
+  } catch {
+    return null;
+  }
+
+  const xs = [-2, -1, 0, 1, 2, 3];
+  const ys = xs.map((x) => fn(x));
+  if (ys.some((value) => !Number.isFinite(value))) return null;
+
+  const b = ys[2]; // x = 0
+  const a = ys[3] - b; // f(1)-f(0)
+  const scale = Math.max(1, ...ys.map((value) => Math.abs(value)));
+  const tolerance = 1e-9 * scale;
+
+  for (let i = 0; i < xs.length; i++) {
+    const expected = a * xs[i] + b;
+    if (Math.abs(ys[i] - expected) > tolerance) return null;
+  }
+
+  if (Math.abs(a) <= tolerance) return [];
+  const root = -b / a;
+  return Number.isFinite(root) ? [root] : null;
+}
+
 export function solveInequality(
   diffAlgebrite: string,
   operator: InequalityOperator,
@@ -267,35 +294,41 @@ export function solveInequality(
     );
   }
 
-  let rootsRaw: string[];
-  try {
-    rootsRaw = solveEquation(diffAlgebrite, variable);
-  } catch (err) {
-    throw appError(
-      `No se pudo resolver esta desigualdad: el solver básico necesita encontrar las raíces reales de "${diffAlgebrite} = 0" y no lo logró (${(err as AppError).message ?? err}).`,
-    );
-  }
-
-  // Filtra a raíces REALES únicamente (una desigualdad ordena la recta
-  // real; una raíz compleja no divide la recta en ningún punto).
-  const realRoots: number[] = [];
-  for (const r of rootsRaw) {
-    let approx: string;
-    try {
-      approx = evaluate(`float(${r})`);
-    } catch {
-      continue;
-    }
-    const { re, im } = parseComplex(approx);
-    if (Math.abs(im) < 1e-9 && Number.isFinite(re)) {
-      realRoots.push(re);
-    }
-  }
-  realRoots.sort((a, b) => a - b);
-  // Deduplicar raíces muy cercanas (multiplicidad, o ruido numérico).
+  const affineRoots = tryAffineNumericRoots(diffAlgebrite, variable);
   const roots: number[] = [];
-  for (const r of realRoots) {
-    if (roots.length === 0 || Math.abs(r - roots[roots.length - 1]) > 1e-9) roots.push(r);
+
+  if (affineRoots !== null) {
+    roots.push(...affineRoots);
+  } else {
+    let rootsRaw: string[];
+    try {
+      rootsRaw = solveEquation(diffAlgebrite, variable);
+    } catch (err) {
+      throw appError(
+        `No se pudo resolver esta desigualdad: el solver básico necesita encontrar las raíces reales de "${diffAlgebrite} = 0" y no lo logró (${(err as AppError).message ?? err}).`,
+      );
+    }
+
+    // Filtra a raíces REALES únicamente (una desigualdad ordena la recta
+    // real; una raíz compleja no divide la recta en ningún punto).
+    const realRoots: number[] = [];
+    for (const r of rootsRaw) {
+      let approx: string;
+      try {
+        approx = evaluate(`float(${r})`);
+      } catch {
+        continue;
+      }
+      const { re, im } = parseComplex(approx);
+      if (Math.abs(im) < 1e-9 && Number.isFinite(re)) {
+        realRoots.push(re);
+      }
+    }
+    realRoots.sort((a, b) => a - b);
+    // Deduplicar raíces muy cercanas (multiplicidad, o ruido numérico).
+    for (const r of realRoots) {
+      if (roots.length === 0 || Math.abs(r - roots[roots.length - 1]) > 1e-9) roots.push(r);
+    }
   }
 
   const fn = compileNumeric(diffAlgebrite, variable);
