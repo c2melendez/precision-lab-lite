@@ -207,6 +207,23 @@ export function fastAntiderivative(
     .replace(/\s+/g, "")
     .replace(/\^\((\d+)\)/g, "^$1");
 
+  // Natural input groups the whole integrand. Remove only balanced
+  // outer grouping, never parentheses belonging to one factor of a sum.
+  const stripGrouping = (source: string): string => {
+    while (source.startsWith("(") && source.endsWith(")")) {
+      let depth = 0;
+      let wraps = true;
+      for (let i = 0; i < source.length - 1; i++) {
+        depth += source[i] === "(" ? 1 : source[i] === ")" ? -1 : 0;
+        if (depth === 0) { wraps = false; break; }
+      }
+      if (!wraps || depth !== 1) break;
+      source = source.slice(1, -1);
+    }
+    return source;
+  };
+  expr = stripGrouping(expr);
+
   // parseExpression rewrites reciprocal trig/hyperbolic functions before
   // the worker sees the integrand. Canonicalize those exact x-only forms
   // back to their calculator names so one identity table serves both the
@@ -226,6 +243,7 @@ export function fastAntiderivative(
       .replace(/asinh\(1\/\(x\)\)/g, "acsch(x)")
       .replace(/atanh\(1\/\(x\)\)/g, "acoth(x)")
       .replace(/\((sin|cos|tan|sinh|cosh|tanh|sec|csc|cot|sech|csch|coth)\(x\)\)/g, "$1(x)");
+    expr = stripGrouping(expr);
     if (expr === previous) break;
   }
 
@@ -279,7 +297,7 @@ export function calcIndefiniteIntegral(exprAlgebrite: string, variable: string):
 
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
   const result = indefiniteIntegral(exprAlgebrite, variable);
-  if (/Unsupportedfunction|^integral\(/i.test(result)) {
+  if (/Unsupported\s*function|^integral\(/i.test(result)) {
     throw {
       code: ErrorCode.UNSUPPORTED_OPERATION,
       message: "Algebrite no pudo reducir la integral a una antiderivada cerrada.",

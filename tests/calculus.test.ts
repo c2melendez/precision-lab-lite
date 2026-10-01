@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { parseExpression } from "../src/engine/parsing";
 import { compileNumeric, simpsonIntegral, numericLimit, numericLimitAtInfinity } from "../src/engine/numericFallback";
 import { calcDefiniteIntegral, calcIndefiniteIntegral, calcLimit, calcDerivative, fastAntiderivative } from "../src/engine/stepEngine/calculus";
 
@@ -255,5 +256,22 @@ describe("calcLimit: no existe (DNE) vs diverge a infinito (suite de regresión 
   it("lim sin(x)/x en x=0 sigue dando 1 (límite que sí converge, no debe verse afectado)", () => {
     const r = calcLimit("sin(x)/x", "x", "0", 0, "both");
     expect(parseFloat(r.resultLatex ?? "")).toBeCloseTo(1, 3);
+  });
+});
+
+describe("B7 natural inverse hyperbolic integrals", () => {
+  for (const name of ["arsinh", "arcosh", "artanh", "arcoth", "arsech", "arcsch"]) {
+    it(`routes the grouped integrand for ${name} through an exact identity`, () => {
+      const parsed = parseExpression(`\\int\\operatorname{${name}} x\\,dx`).algebrite;
+      const integrand = parsed.slice("integral(".length, -",x)".length);
+      expect(fastAntiderivative(integrand, "x")).not.toBeNull();
+      const result = calcIndefiniteIntegral(integrand, "x");
+      expect(result.resultLatex).toContain("+ C");
+      expect(result.resultLatex).not.toMatch(/Unsupported\s*function|integral\(/i);
+    });
+  }
+
+  it("keeps grouping inside a sum intact", () => {
+    expect(fastAntiderivative("(asinh(x))+(x)", "x")).toBeNull();
   });
 });
