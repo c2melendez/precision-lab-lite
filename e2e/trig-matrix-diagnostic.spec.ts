@@ -26,22 +26,40 @@ async function setExpression(page, value) {
 }
 
 async function ensureDegreeMode(page, wantDegree) {
-  const trigger = page.getByRole("button", { name: /Modo de ángulo|modo angular|RAD|DEG|GRAD/i }).first();
+  const trigger = page.getByRole("button", { name: /Modo de ángulo|modo angular|Unidad angular|RAD|DEG|GRAD/i }).first();
   if (!(await trigger.count())) return false;
-  const label = ((await trigger.getAttribute("aria-label")) || (await trigger.innerText()) || "").toUpperCase();
-  const currentDegree = label.includes("GRAD") || label.includes("DEG");
-  if (currentDegree === wantDegree) return true;
+
+  const readDegreeState = async () => {
+    const label = ((await trigger.getAttribute("aria-label")) || (await trigger.innerText()) || "").toUpperCase();
+    return label.includes("GRAD") || label.includes("DEG");
+  };
+
+  if ((await readDegreeState()) === wantDegree) return true;
+
+  // In CalculatorScreen the RAD/DEG badge itself toggles the mode. Some
+  // older shells instead open a selector. Re-read the actual UI state
+  // before touching any fallback control so the diagnostic never toggles
+  // twice and reports a fictitious degreeMode.
   await trigger.click();
+  await page.waitForTimeout(50);
+  if ((await readDegreeState()) === wantDegree) return true;
+
+  const option = page.getByRole("button", {
+    name: wantDegree ? /DEG|GRAD|GRADOS/i : /RAD|RADIAN/i,
+  }).last();
+  if (await option.count()) {
+    await option.click();
+    await page.waitForTimeout(50);
+    if ((await readDegreeState()) === wantDegree) return true;
+  }
+
   const sw = page.getByRole("switch").first();
   if (await sw.count()) {
     await sw.click();
-    return true;
+    await page.waitForTimeout(50);
+    return (await readDegreeState()) === wantDegree;
   }
-  const option = page.getByRole("button", { name: wantDegree ? /DEG|GRAD/i : /RAD/i }).last();
-  if (await option.count()) {
-    await option.click();
-    return true;
-  }
+
   return false;
 }
 
