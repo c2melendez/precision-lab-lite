@@ -191,7 +191,7 @@ function insertImplicitMultiplicationBeforeFunctions(input: string): string {
     // preprocessing. Look through that whitespace when deciding whether
     // the function follows an operand, otherwise "x asinh(x)" loses the
     // multiplication when spaces are stripped and becomes "xasinh(x)".
-    const prev = out.match(/\\S(?=\\s*$)/)?.[0] ?? "";
+    const prev = out.match(/\S(?=\s*$)/)?.[0] ?? "";
     if (/[A-Za-z0-9)]/.test(prev)) out += "*";
     out += fn;
     i += fn.length;
