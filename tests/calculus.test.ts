@@ -323,9 +323,6 @@ describe("B7 matrix integration recertification", () => {
     ["\\int\\operatorname{sech} x\\,dx", "arctan"],
   ])("routes natural integral %s through a closed antiderivative", (latex, expectedFragment) => {
     const parsed = parseExpression(latex).algebrite;
-    if (/sech|csch/.test(latex) && /\^\{2\}/.test(latex)) {
-      console.log("B7_RECIPROCAL_SQUARE_PARSE", JSON.stringify({ latex, parsed }));
-    }
     const args = parsed.match(/^integral\((.*),x\)$/s);
     expect(args).not.toBeNull();
     const result = calcIndefiniteIntegral(args![1], "x").resultLatex;
