@@ -278,12 +278,12 @@ export function fastAntiderivative(
   for (let pass = 0; pass < 4; pass++) {
     const previous = expr;
     expr = expr
-      .replace(/\(1\/cos\(x\)\)/g, "sec(x)")
-      .replace(/\(1\/sin\(x\)\)/g, "csc(x)")
-      .replace(/\(1\/tan\(x\)\)/g, "cot(x)")
-      .replace(/\(1\/cosh\(x\)\)/g, "sech(x)")
-      .replace(/\(1\/sinh\(x\)\)/g, "csch(x)")
-      .replace(/\(1\/tanh\(x\)\)/g, "coth(x)")
+      .replace(/\(?1\/\(?cos\(x\)\)?\)?/g, "sec(x)")
+      .replace(/\(?1\/\(?sin\(x\)\)?\)?/g, "csc(x)")
+      .replace(/\(?1\/\(?tan\(x\)\)?\)?/g, "cot(x)")
+      .replace(/\(?1\/\(?cosh\(x\)\)?\)?/g, "sech(x)")
+      .replace(/\(?1\/\(?sinh\(x\)\)?\)?/g, "csch(x)")
+      .replace(/\(?1\/\(?tanh\(x\)\)?\)?/g, "coth(x)")
       .replace(/arccos\(1\/\(x\)\)/g, "arcsec(x)")
       .replace(/arcsin\(1\/\(x\)\)/g, "arccsc(x)")
       .replace(/acosh\(1\/\(x\)\)/g, "asech(x)")
