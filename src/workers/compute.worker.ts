@@ -24,6 +24,7 @@ import {
   calcLimit,
   calcIndefiniteIntegral,
   calcDefiniteIntegral,
+  fastAntiderivative,
 } from "../engine/stepEngine/calculus";
 import { solveLinearSystem } from "../engine/stepEngine/linearSystem";
 import {
@@ -1151,6 +1152,24 @@ function tryDefiniteIntegral(expr: string): string | null {
 
   const lowerInfinite = lower === "oo" || lower === "-oo";
   const upperInfinite = upper === "oo" || upper === "-oo";
+
+  const fast = fastAntiderivative(body, "x");
+  if (fast !== null) {
+    try {
+      const F = compileNumeric(fast, "x");
+      const finiteBound = (bound: string): number => compileNumeric(bound, "__bound__")(0);
+      const lo = lower === "oo" ? F(Infinity)
+        : lower === "-oo" ? F(-Infinity)
+          : F(finiteBound(lower));
+      const hi = upper === "oo" ? F(Infinity)
+        : upper === "-oo" ? F(-Infinity)
+          : F(finiteBound(upper));
+      const value = hi - lo;
+      if (Number.isFinite(value)) return String(value);
+    } catch {
+      // Preserve the existing symbolic/numeric fallback below.
+    }
+  }
 
   // Probe only the OPEN interior of a finite interval. A non-finite
   // endpoint can still define a convergent improper integral (for example
