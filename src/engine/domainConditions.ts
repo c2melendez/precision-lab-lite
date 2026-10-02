@@ -13,15 +13,24 @@ function matchingParen(text: string, open: number): number {
   return -1;
 }
 
-function inferVariable(expr: string): string | undefined {
+const DOMAIN_IGNORED_IDENTIFIERS = new Set([
+  "sin","cos","tan","sec","csc","cot","asin","acos","atan","arcsin","arccos","arctan",
+  "sinh","cosh","tanh","asinh","acosh","atanh","sqrt","log","ln","exp","abs","sign",
+  "pi","e","i","oo","root","cbrt",
+]);
+
+function variablesIn(expr: string): string[] {
   const names = [...expr.matchAll(/[A-Za-z][A-Za-z0-9_]*/g)].map((m) => m[0]);
-  const ignored = new Set([
-    "sin","cos","tan","sec","csc","cot","asin","acos","atan","arcsin","arccos","arctan",
-    "sinh","cosh","tanh","asinh","acosh","atanh","sqrt","log","ln","exp","abs","sign",
-    "pi","e","i","oo","root","cbrt",
-  ]);
-  const variables = [...new Set(names.filter((name) => !ignored.has(name)))];
+  return [...new Set(names.filter((name) => !DOMAIN_IGNORED_IDENTIFIERS.has(name)))];
+}
+
+function inferVariable(expr: string): string | undefined {
+  const variables = variablesIn(expr);
   return variables.length === 1 ? variables[0] : undefined;
+}
+
+function hasSymbolicVariable(expr: string): boolean {
+  return variablesIn(expr).length > 0;
 }
 
 function safeLatex(expr: string): string {
@@ -103,17 +112,29 @@ export function extractDomainConditions(expr: string): DomainCondition[] {
   const conditions: DomainCondition[] = [];
 
   for (const denominator of captureDenominators(expr)) {
-    if (denominator.trim() && denominator.trim() !== "1") {
-      conditions.push(makeCondition(denominator.trim(), "!=", "0", "denominator"));
+    const source = denominator.trim();
+    // Restricciones persistentes describen el dominio de una FUNCIÓN o
+    // expresión simbólica. Un divisor numérico como 8/2 no debe producir
+    // una tarjeta absurda "2 != 0" ni desplazar visualmente el resultado.
+    // Si un divisor constante fuese 0, el evaluador normal ya devuelve el
+    // error de dominio correspondiente.
+    if (source && source !== "1" && hasSymbolicVariable(source)) {
+      conditions.push(makeCondition(source, "!=", "0", "denominator"));
     }
   }
 
   for (const arg of [...captureFunctionArgs(expr, "log"), ...captureFunctionArgs(expr, "ln")]) {
-    conditions.push(makeCondition(arg.trim(), ">", "0", "log"));
+    const source = arg.trim();
+    if (hasSymbolicVariable(source)) {
+      conditions.push(makeCondition(source, ">", "0", "log"));
+    }
   }
 
   for (const arg of captureFunctionArgs(expr, "sqrt")) {
-    conditions.push(makeCondition(arg.trim(), ">=", "0", "even_root"));
+    const source = arg.trim();
+    if (hasSymbolicVariable(source)) {
+      conditions.push(makeCondition(source, ">=", "0", "even_root"));
+    }
   }
 
   const seen = new Set<string>();
