@@ -74,33 +74,31 @@ async function readOutcome(page,item){
 test.describe("Symbolic algebra matrix diagnostic",()=>{
   const raw=process.env.ALGEBRA_MATRIX_SHARD;
   const requested=raw===undefined?null:Number(raw);
-  const shards=requested===null?Array.from({length:SHARDS},(_,i)=>i):[requested];
-  for(const shard of shards){
-    test(`114 ejercicios · bloque ${shard+1}/${SHARDS}`,async({page},testInfo)=>{
+  const selected=CASES.filter((_,i)=>requested===null || i%SHARDS===requested);
+
+  for(const item of selected){
+    test(`${item.id} · ${item.level}`,async({page},testInfo)=>{
       test.skip(testInfo.project.name!=="desktop-chromium","diagnostic runs once per shard");
-      test.setTimeout(8*60*1000);
+      test.setTimeout(30000);
       await page.setViewportSize({width:1440,height:900});
       await openScientific(page);
-      const selected=CASES.filter((_,i)=>i%SHARDS===shard);
-      for(const item of selected){
-        let status="RESULT",output="",error="",normalizedInput="",executedAction="";
-        try{
-          normalizedInput=await setExpression(page,item.exercise);
-          executedAction=await pressAction(page,actionFor(item));
-          if(executedAction==="input_disabled"){
-            status="INPUT_DISABLED";
-            error="La UI dejó Calcular deshabilitado para una entrada válida de la matriz.";
-          }else{
-            const outcome=await readOutcome(page,item);
-            status=outcome.status; output=outcome.output; error=outcome.error;
-          }
-        }catch(e){
-          status="HARNESS_ERROR"; error=String(e).slice(0,1000);
-          if(page.isClosed()) break;
+
+      let status="RESULT",output="",error="",normalizedInput="",executedAction="";
+      try{
+        normalizedInput=await setExpression(page,item.exercise);
+        executedAction=await pressAction(page,actionFor(item));
+        if(executedAction==="input_disabled"){
+          status="INPUT_DISABLED";
+          error="La UI dejó Calcular deshabilitado para una entrada válida de la matriz.";
+        }else{
+          const outcome=await readOutcome(page,item);
+          status=outcome.status; output=outcome.output; error=outcome.error;
         }
-        console.log("ALGEBRA_MATRIX "+JSON.stringify({...item,action:actionFor(item),executedAction,status,normalizedInput,output,error}));
+      }catch(e){
+        status="HARNESS_ERROR";
+        error=String(e).slice(0,1000);
       }
-      console.log(`ALGEBRA_MATRIX_SUMMARY shard=${shard+1} total=${selected.length}`);
+      console.log("ALGEBRA_MATRIX "+JSON.stringify({...item,action:actionFor(item),executedAction,status,normalizedInput,output,error}));
     });
   }
 });
