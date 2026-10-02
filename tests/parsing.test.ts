@@ -483,3 +483,23 @@ describe("Matriz trigonométrica — segunda ronda", () => {
     expect(parsed).not.toContain(">");
   });
 });
+
+
+describe("B7 algebra: barras simples de valor absoluto", () => {
+  it("normaliza |x| a abs(x)", () => {
+    expect(parseExpression("|x|").algebrite).toBe("abs(x)");
+  });
+
+  it("normaliza múltiples valores absolutos consecutivos", () => {
+    const parsed = parseExpression("|x|+|x-1|");
+    expect(parsed.algebrite).toContain("abs(x)");
+    expect(parsed.algebrite).toContain("abs(x-1)");
+  });
+
+  it("conserva ecuaciones con valor absoluto para el solver", () => {
+    const parsed = parseExpression("|x-1|=x+1");
+    expect(parsed.isEquation).toBe(true);
+    expect(parsed.leftAlgebrite).toContain("abs(x-1)");
+    expect(parsed.freeVariables).toEqual(["x"]);
+  });
+});
