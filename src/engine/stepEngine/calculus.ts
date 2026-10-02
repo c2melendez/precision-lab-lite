@@ -393,23 +393,51 @@ export function fastDefiniteIntegralIdentity(
 ): string | null {
   if (variable !== "x") return null;
 
-  const canonical = exprAlgebrite.replace(/\s+/g, "");
-  const target = "ln(sin(x))";
-  let coefficientText = "1";
-
-  if (canonical === target) {
-    coefficientText = "1";
-  } else if (canonical === "-" + target) {
-    coefficientText = "-1";
-  } else if (canonical.endsWith("*" + target)) {
-    coefficientText = canonical.slice(0, -(target.length + 1));
-    try {
-      const coefficient = compileNumeric(coefficientText, "__log_sine_coeff__")(0);
-      if (!Number.isFinite(coefficient)) return null;
-    } catch {
-      return null;
+  const stripOuter = (source: string): string => {
+    source = source.replace(/\s+/g, "");
+    for (let pass = 0; pass < 8; pass++) {
+      if (!(source.startsWith("(") && source.endsWith(")"))) break;
+      let depth = 0;
+      let wraps = true;
+      for (let i = 0; i < source.length - 1; i++) {
+        depth += source[i] === "(" ? 1 : source[i] === ")" ? -1 : 0;
+        if (depth === 0) { wraps = false; break; }
+      }
+      if (!wraps || depth !== 1) break;
+      source = source.slice(1, -1);
     }
-  } else {
+    return source;
+  };
+
+  const canonical = stripOuter(exprAlgebrite);
+  const targets = ["ln(sin(x))", "log(sin(x))"];
+  let coefficientText = "1";
+  let matchedTarget: string | null = null;
+
+  for (const target of targets) {
+    if (canonical === target) {
+      matchedTarget = target;
+      coefficientText = "1";
+      break;
+    }
+    if (canonical === "-" + target) {
+      matchedTarget = target;
+      coefficientText = "-1";
+      break;
+    }
+    if (canonical.endsWith("*" + target)) {
+      matchedTarget = target;
+      coefficientText = stripOuter(canonical.slice(0, -(target.length + 1)));
+      break;
+    }
+  }
+
+  if (matchedTarget === null) return null;
+
+  try {
+    const coefficient = compileNumeric(coefficientText, "__log_sine_coeff__")(0);
+    if (!Number.isFinite(coefficient)) return null;
+  } catch {
     return null;
   }
 
