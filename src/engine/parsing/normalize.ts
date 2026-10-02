@@ -363,6 +363,22 @@ function rewriteBareFunctionApplications(input: string): string {
 export function preprocessLatex(latex: string): string {
   let expr = latex;
 
+  // B7 stress matrix: natural function definition + evaluation.
+  // Example: f(x)=ln(x)/x; f(e) -> subst((e),x,(ln(x)/x)).
+  // This is input routing only; both the function body and point go
+  // through the same preprocessing pipeline as ordinary expressions.
+  {
+    const naturalEvaluation = expr.trim().match(
+      /^([A-Za-z])\(([A-Za-z])\)\s*=\s*([\s\S]+?)\s*;\s*(?:\\\s*)?\1\(([\s\S]+)\)$/,
+    );
+    if (naturalEvaluation) {
+      const variable = naturalEvaluation[2];
+      const body = preprocessLatex(naturalEvaluation[3].trim());
+      const point = preprocessLatex(naturalEvaluation[4].trim());
+      return `subst((${point}),${variable},(${body}))`;
+    }
+  }
+
   // Matrix B7: derivative evaluated at a point,
   // \\left.\\frac{d}{dx}f(x)\\right\\rvert_{x=a}.
   // Normalize the derivative itself through this same pipeline, then
@@ -692,7 +708,13 @@ export function preprocessLatex(latex: string): string {
 
   // S16 REG-004 + B7 stress matrix: normalize base-log notation
   // anywhere in a larger expression, including products/equations.
-  expr = rewriteLogBases(expr);
+  {
+    let previousLogSource = "";
+    while (expr.includes("\\log_") && expr !== previousLogSource) {
+      previousLogSource = expr;
+      expr = rewriteLogBases(expr);
+    }
+  }
 
   // Lim: plantilla "\lim_{#0}#1", #0 tipo "x\to0" -> limit((cuerpo),x,0).
   // A diferencia de integral/sum, limit() de Algebrite frecuentemente NO
