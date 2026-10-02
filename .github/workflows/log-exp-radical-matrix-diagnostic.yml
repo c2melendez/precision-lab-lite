@@ -1,0 +1,38 @@
+name: Log Exp Radical Matrix Diagnostic
+
+concurrency:
+  group: log-exp-radical-matrix-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [qa/s26-execution]
+    paths:
+      - "src/**"
+      - "e2e/log-exp-radical-matrix-diagnostic.spec.ts"
+      - ".github/workflows/log-exp-radical-matrix-diagnostic.yml"
+  pull_request:
+    branches: [qa/s26-execution]
+    paths:
+      - "e2e/log-exp-radical-matrix-diagnostic.spec.ts"
+      - ".github/workflows/log-exp-radical-matrix-diagnostic.yml"
+  workflow_dispatch:
+
+jobs:
+  log-exp-radical-matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install app dependencies
+        run: npm ci
+      - name: Install Playwright test runner
+        run: npm install --no-save --package-lock=false @playwright/test@1.63.0 @axe-core/playwright@4.13.0
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run log exp radical matrix only
+        run: npx playwright test e2e/log-exp-radical-matrix-diagnostic.spec.ts --project=desktop-chromium --workers=3
