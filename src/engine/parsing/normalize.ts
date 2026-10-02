@@ -74,7 +74,7 @@ function replaceBalanced(
 }
 function readFunctionArgument(input: string, fromIndex: number, macroLabel: string): [string, number] {
   let cursor = fromIndex;
-  while (cursor < input.length && /\\s/.test(input[cursor])) cursor++;
+  while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
 
   if (input.startsWith("\\left(", cursor)) {
     const start = cursor + "\\left(".length;
@@ -115,10 +115,10 @@ function rewriteLogBases(input: string): string {
   while (i < input.length) {
     if (!input.startsWith("\\log", i)) { out += input[i++]; continue; }
     let cursor = i + "\\log".length;
-    while (cursor < input.length && /\\s/.test(input[cursor])) cursor++;
+    while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
     if (input[cursor] !== "_") { out += "\\log"; i = cursor; continue; }
     cursor++;
-    while (cursor < input.length && /\\s/.test(input[cursor])) cursor++;
+    while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
 
     let base: string;
     try { [base, cursor] = readBalancedOrSingleToken(input, cursor, "base de \\log"); }
@@ -144,7 +144,7 @@ function rewriteNthRoots(input: string): string {
     if (close === -1) { out += input[i++]; continue; }
     const index = input.slice(indexStart, close).trim();
     let cursor = close + 1;
-    while (cursor < input.length && /\\s/.test(input[cursor])) cursor++;
+    while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
 
     let radicand: string;
     try { [radicand, cursor] = readBalancedOrSingleToken(input, cursor, "radicando de \\sqrt[n]"); }
