@@ -70,7 +70,12 @@ export function BasicScientificMode() {
   const onSuccess = useCallback((mode: string, inputDisplay: string, data: MathResult) => {
     setResult(data);
     if (data.success) {
-      addHistoryEntry({ mode, input: inputDisplay, resultSummary: data.resultLatex ?? "" });
+      addHistoryEntry({
+        mode,
+        input: inputDisplay,
+        resultSummary: data.resultLatex ?? "",
+        domainConditions: data.domainConditions,
+      });
       setSessionHistory((prev) => [...prev, { id: data.requestId, input: inputDisplay, result: data }]);
     }
   }, []);
