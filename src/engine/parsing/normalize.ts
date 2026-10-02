@@ -798,8 +798,7 @@ export function preprocessLatex(latex: string): string {
   // Normalize absolute-value delimiters BEFORE late adjacency. Otherwise
   // "\\lvert\\sin x\\rvert" exposes the trailing "t" of "\\lvert"
   // to the adjacency regex and becomes "abs(*sin(x))".
-  expr = rewriteGroupedExponents(expr);
-\n  expr = expr
+  expr = expr
     .replace(/\\left\|/g, "abs(")
     .replace(/\\right\|/g, ")")
     .replace(/\\lvert/g, "abs(")
