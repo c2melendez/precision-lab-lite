@@ -970,8 +970,8 @@ function trySimpleMonotonicInequality(
 
   if (
     operator === "<" &&
-    /(?:pi\/2)-arctan\(x\)/.test(diff) &&
-    /pi\)\/?\(4|pi\/4/.test(diff)
+    /pi\/2\)?-arctan\(x\)/.test(diff.replace(/\s+/g, "")) &&
+    /pi(?:\)|)\/?(?:\(|)4/.test(diff.replace(/\s+/g, ""))
   ) {
     const text = "x > 1";
     return {
