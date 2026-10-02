@@ -41,6 +41,14 @@ export interface MathResult {
   errorCode?: ErrorCode;
   errorMessage?: string;
   resultLatex: string | null;
+  /** Contrato S26 de resultados contextuales: representación de la
+   * entrada ya interpretada/normalizada por el parser. Nunca debe
+   * confundirse con el texto crudo escrito por el usuario. */
+  interpretedLatex?: string;
+  /** Etiqueta de la vista calculada frente a "Original" (por ejemplo,
+   * "Solución"). Las transformaciones adicionales se añadirán sobre este
+   * mismo contrato sin cambiar la semántica de interpretedLatex. */
+  resultViewLabel?: string;
   fraction?: FractionResult;
   /** Fase E: aproximación decimal (float) cuando el resultado es simbólico
    * y por eso no tiene `fraction` — ej. sin(pi/4). Solo la llena
