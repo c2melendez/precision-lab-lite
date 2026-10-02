@@ -128,7 +128,7 @@ function rewriteLogBases(input: string): string {
     try { [argument, cursor] = readFunctionArgument(input, cursor, "argumento de \\log"); }
     catch { out += "\\log"; i += "\\log".length; continue; }
 
-    out += "log((" + argument + "),(" + base + "))";
+    out += "log(" + argument + "," + base + ")";
     i = cursor;
   }
   return out;
