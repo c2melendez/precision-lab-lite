@@ -115,6 +115,20 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
           </button>
         </div>
       )}
+      {result.domainConditions && result.domainConditions.length > 0 && (
+        <div className="mt-2 rounded border border-paper-line px-2 py-1.5 text-right">
+          <p className="mb-1 text-xs font-semibold text-ink">Restricciones del dominio</p>
+          <div className="space-y-1">
+            {result.domainConditions.map((condition, index) => (
+              <StaticMath
+                key={`${condition.kind}-${index}`}
+                latex={condition.latex}
+                className="text-sm text-muted"
+              />
+            ))}
+          </div>
+        </div>
+      )}
       <div className="mt-1.5 flex justify-end gap-3 text-xs text-muted">
         {hasSymbolicViews ? (
           <>
