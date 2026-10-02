@@ -259,7 +259,31 @@ describe("cierre de la suite de paridad de teclado v1.0", () => {
   it("\\log_{2}\\left(8\\right) (tecla real de log con base, notación de subíndice) parsea y da 3", () => {
     const parsed = parseExpression("\\log_{2}\\left(8\\right)");
     expect(parsed.algebrite).toBe("(log(8)/log(2))");
+  })
+
+  it("B7 estrés: log con base funciona dentro de productos y ecuaciones", () => {
+    const product = parseExpression("\\log_{2}(3)\\cdot\\log_{3}(4)").algebrite;
+    expect(product).not.toContain("_");
+    expect(product).not.toContain("\\");
+    expect(product).toContain("log");
+
+    const equation = parseExpression("\\log_{2}x=5");
+    expect(equation.isEquation).toBe(true);
+    expect(equation.freeVariables).toEqual(["x"]);
+    expect(equation.algebrite).not.toContain("_");
   });
+
+  it("B7 estrés: raíz n-ésima admite radicandos con potencias agrupadas", () => {
+    const expRoot = parseExpression("\\sqrt[3]{e^{6}}").algebrite;
+    expect(expRoot).not.toContain("\\");
+    expect(expRoot).toContain("e^(6)");
+    expect(expRoot).toContain("1/(3)");
+
+    const powerRoot = parseExpression("\\sqrt[3]{x^{2}}").algebrite;
+    expect(powerRoot).not.toContain("\\");
+    expect(powerRoot).toContain("x^(2)");
+    expect(powerRoot).toContain("1/(3)");
+  });;
 
   it("\\csc\\left(x\\right)/\\sec\\left(x\\right)/\\cot\\left(x\\right) básicos (sin inversa) parsean (antes tronaban: solo sin/cos/tan tenían regla de despojo de backslash)", () => {
     expect(parseExpression("\\csc\\left(1\\right)").algebrite).toBe("(1/sin(1))");
