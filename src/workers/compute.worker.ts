@@ -1695,8 +1695,15 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
 
     let raw = evaluate(expr);
     let confidence: MathResult["confidence"] = "SYMBOLIC";
-    if (/^limit\(/.test(raw)) {
-      const limitFallback = tryLimitFallback(raw);
+    if (/^limit\(/.test(raw) || /^limit\(/.test(expr)) {
+      // Prefer the parser-normalized source. Algebrite may preserve the
+      // outer limit() call while rewriting its body enough to hide exact
+      // identities such as arccot(x), coth(x), sinh(x)/e^x or
+      // (cosh(x)-1)/x^2. Falling back to raw keeps compatibility with
+      // older routes that construct a limit expression downstream.
+      const limitFallback =
+        tryLimitFallback(expr) ??
+        (raw !== expr ? tryLimitFallback(raw) : null);
       if (limitFallback !== null) {
         raw = limitFallback;
         confidence = "NUMERIC_FALLBACK";
