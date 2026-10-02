@@ -1,0 +1,35 @@
+name: Syntax Matrix Diagnostic
+
+concurrency:
+  group: syntax-matrix-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches: [qa/s26-execution]
+    paths:
+      - "e2e/syntax-matrix-diagnostic.spec.ts"
+      - ".github/workflows/syntax-matrix-diagnostic.yml"
+  workflow_dispatch:
+
+jobs:
+  syntax-matrix:
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0,1,2,3,4,5,6,7]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save --package-lock=false @playwright/test@1.63.0 @axe-core/playwright@4.13.0
+      - run: npx playwright install --with-deps chromium
+      - name: Run syntax matrix shard
+        env:
+          SYNTAX_MATRIX_SHARD: ${{ matrix.shard }}
+        run: npx playwright test e2e/syntax-matrix-diagnostic.spec.ts --project=desktop-chromium --workers=1
