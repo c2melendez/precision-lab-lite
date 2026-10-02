@@ -923,6 +923,8 @@ export function preprocessLatex(latex: string): string {
     .replace(/\\ /g, "")
     ;
 
+  expr = rewriteGroupedExponents(expr);
+
   expr = rewriteBareFunctionApplications(expr);
   expr = insertImplicitMultiplicationBeforeFunctions(expr);
   expr = expr.replace(/\s+/g, "");
