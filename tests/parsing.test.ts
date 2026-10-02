@@ -271,7 +271,22 @@ describe("cierre de la suite de paridad de teclado v1.0", () => {
     expect(equation.isEquation).toBe(true);
     expect(equation.freeVariables).toEqual(["x"]);
     expect(equation.algebrite).not.toContain("_");
+  })
+
+  it("B7 estrés: logaritmos con base anidados se normalizan recursivamente", () => {
+    const parsed = parseExpression("\\log_{2}\\left(\\log_{3}x\\right)=1");
+    expect(parsed.isEquation).toBe(true);
+    expect(parsed.algebrite).not.toContain("_");
+    expect(parsed.algebrite).not.toContain("\\");
+    expect(parsed.freeVariables).toEqual(["x"]);
   });
+
+  it("B7 estrés: f(x)=...; f(a) se convierte en sustitución", () => {
+    const parsed = parseExpression("f(x)=\\frac{\\ln x}{x};\\ f(e)");
+    expect(parsed.isEquation).toBe(false);
+    expect(parsed.algebrite).toContain("subst");
+    expect(parsed.algebrite).not.toContain(";");
+  });;
 
   it("B7 estrés: raíz n-ésima admite radicandos con potencias agrupadas", () => {
     const expRoot = parseExpression("\\sqrt[3]{e^{6}}").algebrite;
