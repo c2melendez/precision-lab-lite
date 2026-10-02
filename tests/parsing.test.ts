@@ -286,7 +286,20 @@ describe("cierre de la suite de paridad de teclado v1.0", () => {
     expect(parsed.isEquation).toBe(false);
     expect(parsed.algebrite).toContain("subst");
     expect(parsed.algebrite).not.toContain(";");
-  });;
+  })
+
+  it("B7 estrés: f\\left(a\\right) también se evalúa como sustitución", () => {
+    const parsed = parseExpression("f(x)=\\ln\\left(x^{2}+1\\right);\\ f\\left(\\sqrt{e-1}\\right)");
+    expect(parsed.isEquation).toBe(false);
+    expect(parsed.algebrite).toContain("subst");
+    expect(parsed.algebrite).not.toContain(";");
+  });
+
+  it("B7 estrés: función desnuda admite pi como argumento atómico", () => {
+    const parsed = parseExpression("\\sqrt{\\cos\\pi}").algebrite;
+    expect(parsed).toContain("cos(pi)");
+    expect(parsed).not.toContain("cospi");
+  });;;
 
   it("B7 estrés: raíz n-ésima admite radicandos con potencias agrupadas", () => {
     const expRoot = parseExpression("\\sqrt[3]{e^{6}}").algebrite;
