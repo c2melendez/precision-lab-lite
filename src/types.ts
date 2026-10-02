@@ -36,6 +36,18 @@ export interface FractionResult {
   decimal: string;
 }
 
+export interface DomainCondition {
+  /** Expresión normalizada que origina la restricción, antes de cualquier
+   * simplificación (ej. x-1 en (x^2-1)/(x-1)). */
+  expressionAlgebrite: string;
+  operator: "!=" | ">" | ">=" | "<" | "<=";
+  comparisonAlgebrite: string;
+  text: string;
+  latex: string;
+  variable?: string;
+  kind: "denominator" | "log" | "even_root" | "domain";
+}
+
 export interface MathResult {
   success: boolean;
   errorCode?: ErrorCode;
@@ -49,6 +61,9 @@ export interface MathResult {
    * "Solución"). Las transformaciones adicionales se añadirán sobre este
    * mismo contrato sin cambiar la semántica de interpretedLatex. */
   resultViewLabel?: string;
+  /** Restricciones heredadas de la estructura matemática ORIGINAL. Se
+   * conservan aunque la forma resultante ya no las muestre visualmente. */
+  domainConditions?: DomainCondition[];
   fraction?: FractionResult;
   /** Fase E: aproximación decimal (float) cuando el resultado es simbólico
    * y por eso no tiene `fraction` — ej. sin(pi/4). Solo la llena
