@@ -49,6 +49,7 @@ import { computeEigenvalues } from "../engine/eigenOps";
 import { evaluateMatrixExpression, matrixExpressionValueToLatex } from "../engine/matrixExpression";
 import { solveODE } from "../engine/stepEngine/ode";
 import { ErrorCode, makeRequestId, type MathResult, type AppError, type ResultConfidence } from "../types";
+import { extractDomainConditions, mergeDomainConditions } from "../engine/domainConditions";
 
 export type ComputeRequest =
   | { type: "evaluate"; requestId: string; expressionAlgebrite: string }
@@ -195,15 +196,15 @@ function handle(msg: ComputeRequest): MathResult {
     case "solveAlgebra":
       return handleSolveAlgebra(msg.leftAlgebrite, msg.rightAlgebrite, msg.variable, msg.requestId);
     case "derivative":
-      return runCalculus(msg.requestId, () => calcDerivative(msg.expressionAlgebrite, msg.variable, msg.order));
+      return runCalculus(msg.requestId, msg.expressionAlgebrite, () => calcDerivative(msg.expressionAlgebrite, msg.variable, msg.order));
     case "limit":
-      return runCalculus(msg.requestId, () =>
+      return runCalculus(msg.requestId, msg.expressionAlgebrite, () =>
         calcLimit(msg.expressionAlgebrite, msg.variable, msg.pointAlgebrite, msg.pointNumeric, msg.direction),
       );
     case "indefiniteIntegral":
-      return runCalculus(msg.requestId, () => calcIndefiniteIntegral(msg.expressionAlgebrite, msg.variable));
+      return runCalculus(msg.requestId, msg.expressionAlgebrite, () => calcIndefiniteIntegral(msg.expressionAlgebrite, msg.variable));
     case "definiteIntegral":
-      return runCalculus(msg.requestId, () =>
+      return runCalculus(msg.requestId, msg.expressionAlgebrite, () =>
         calcDefiniteIntegral(msg.expressionAlgebrite, msg.variable, msg.lower, msg.upper),
       );
     case "linearSystem":
@@ -238,7 +239,7 @@ function handle(msg: ComputeRequest): MathResult {
     case "linearInequalitySystem":
       return handleLinearInequalitySystem(msg.inequalities, msg.variables, msg.requestId);
     case "ode":
-      return runCalculus(msg.requestId, () => solveODE(msg.expression));
+      return runCalculus(msg.requestId, msg.expression, () => solveODE(msg.expression));
     case "argandPoint":
       return handleArgandPoint(msg.expressionAlgebrite, msg.requestId);
     case "complexResidue":
@@ -271,6 +272,10 @@ function handleComplexResidue(
       steps: [],
       hasDetailedSteps: false,
       confidence: "SYMBOLIC",
+      domainConditions: mergeDomainConditions(
+        extractDomainConditions(leftAlgebrite),
+        extractDomainConditions(rightAlgebrite),
+      ),
       requestId,
     };
   } catch (err) {
@@ -655,6 +660,7 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       steps: [],
       hasDetailedSteps: false,
       confidence,
+      domainConditions: extractDomainConditions(expr),
       requestId,
     };
   } catch (err) {
@@ -669,6 +675,7 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
 
 function runCalculus(
   requestId: string,
+  sourceExpression: string,
   fn: () => { resultLatex: string; steps: MathResult["steps"]; confidence: MathResult["confidence"] },
 ): MathResult {
   try {
@@ -679,6 +686,7 @@ function runCalculus(
       steps,
       hasDetailedSteps: true,
       confidence,
+      domainConditions: extractDomainConditions(sourceExpression),
       requestId,
     };
   } catch (err) {
