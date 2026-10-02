@@ -28,6 +28,12 @@ describe("domainConditions", () => {
     );
   });
 
+  it("no publica tautologías de dominio para expresiones puramente numéricas", () => {
+    expect(extractDomainConditions("8/2")).toEqual([]);
+    expect(extractDomainConditions("log(100)")).toEqual([]);
+    expect(extractDomainConditions("sqrt(9)")).toEqual([]);
+  });
+
   it("fusiona sin duplicar condiciones equivalentes", () => {
     const a = extractDomainConditions("1/(x-1)");
     const b = extractDomainConditions("2/(x-1)");
