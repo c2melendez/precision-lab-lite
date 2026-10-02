@@ -298,7 +298,31 @@ describe("cierre de la suite de paridad de teclado v1.0", () => {
     expect(powerRoot).not.toContain("\\");
     expect(powerRoot).toContain("x^(2)");
     expect(powerRoot).toContain("1/(3)");
-  });;
+  })
+
+  it("B7 estrés: exponentes anidados se convierten balanceadamente", () => {
+    for (const expression of [
+      "e^{-x^{2}}",
+      "e^{e^{x}}",
+      "(\\cos x)^{1/x^{2}}",
+      "x^{x^{x}}",
+    ]) {
+      const parsed = parseExpression(expression).algebrite;
+      expect(parsed).not.toContain("{");
+      expect(parsed).not.toContain("}");
+    }
+  });
+
+  it("B7 estrés: funciones desnudas admiten otra función como argumento", () => {
+    expect(parseExpression("\\ln\\lvert x\\rvert").algebrite).toContain("ln(abs(x))");
+    expect(parseExpression("\\cos\\sqrt{x}").algebrite).toContain("cos(sqrt(x))");
+    expect(parseExpression("\\arctan\\sqrt{x}").algebrite).toContain("arctan(sqrt(x))");
+  });
+
+  it("B7 estrés: el paso de exponentes no rompe inversas trigonométricas", () => {
+    expect(parseExpression("\\sin^{-1}\\left(\\frac{1}{2}\\right)").algebrite).toContain("arcsin");
+    expect(parseExpression("\\operatorname{sech}^{2}x").algebrite).toContain("cosh(x)");
+  });;;
 
   it("\\csc\\left(x\\right)/\\sec\\left(x\\right)/\\cot\\left(x\\right) básicos (sin inversa) parsean (antes tronaban: solo sin/cos/tan tenían regla de despojo de backslash)", () => {
     expect(parseExpression("\\csc\\left(1\\right)").algebrite).toBe("(1/sin(1))");
