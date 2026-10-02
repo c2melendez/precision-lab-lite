@@ -13,3 +13,13 @@ body {
 body {
   font-family: theme("fontFamily.sans");
 }
+
+
+/* B7 visual: Precision Lab uses its own global keyboard and actions.
+ * Hide MathLive's duplicate inline keyboard/menu toggles so narrow
+ * scientific inputs keep their usable width. The context menu remains
+ * keyboard/right-click accessible; only the duplicate buttons disappear. */
+math-field::part(virtual-keyboard-toggle),
+math-field::part(menu-toggle) {
+  display: none;
+}
