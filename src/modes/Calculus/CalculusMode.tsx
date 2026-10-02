@@ -81,7 +81,12 @@ export function CalculusMode() {
     worker.onmessage = (e: MessageEvent<MathResult>) => {
       setResult(e.data);
       if (e.data.success) {
-        addHistoryEntry({ mode: `Cálculo (${operation})`, input: latex, resultSummary: e.data.resultLatex ?? "" });
+        addHistoryEntry({
+          mode: `Cálculo (${operation})`,
+          input: latex,
+          resultSummary: e.data.resultLatex ?? "",
+          domainConditions: e.data.domainConditions,
+        });
         setSessionHistory((prev) => [...prev, { id: e.data.requestId, input: latex, result: e.data }]);
       }
     };
