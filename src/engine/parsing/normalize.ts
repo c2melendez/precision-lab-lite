@@ -342,7 +342,8 @@ function rewriteBareFunctionApplications(input: string): string {
     const startsNestedFunction = BARE_FUNCTION_NAMES.some(
       (name) => input.startsWith(name + "(", cursor),
     );
-    if (!hadWhitespaceAfterName && !power && !startsNestedFunction) {
+    const startsBareConstant = /^(?:pi|e|theta|Phi)(?![A-Za-z])/.test(input.slice(cursor));
+    if (!hadWhitespaceAfterName && !power && !startsNestedFunction && !startsBareConstant) {
       out += input.slice(i, afterName);
       i = afterName;
       continue;
@@ -387,7 +388,10 @@ export function preprocessLatex(latex: string): string {
   // This is input routing only; both the function body and point go
   // through the same preprocessing pipeline as ordinary expressions.
   {
-    const naturalEvaluation = expr.trim().match(
+    const naturalEvaluationSource = expr.trim()
+      .replace(/\\left\(/g, "(")
+      .replace(/\\right\)/g, ")");
+    const naturalEvaluation = naturalEvaluationSource.match(
       /^([A-Za-z])\(([A-Za-z])\)\s*=\s*([\s\S]+?)\s*;\s*(?:\\\s*)?\1\(([\s\S]+)\)$/,
     );
     if (naturalEvaluation) {
