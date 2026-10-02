@@ -272,10 +272,7 @@ function handleComplexResidue(
       steps: [],
       hasDetailedSteps: false,
       confidence: "SYMBOLIC",
-      domainConditions: mergeDomainConditions(
-        extractDomainConditions(leftAlgebrite),
-        extractDomainConditions(rightAlgebrite),
-      ),
+      domainConditions: extractDomainConditions(expressionAlgebrite),
       requestId,
     };
   } catch (err) {
@@ -325,6 +322,10 @@ function handleSolveAlgebra(
       steps,
       hasDetailedSteps: false, // ver stepEngine/algebra.ts: pasos de alto nivel, no aislamiento término a término
       confidence: "SYMBOLIC",
+      domainConditions: mergeDomainConditions(
+        extractDomainConditions(leftAlgebrite),
+        extractDomainConditions(rightAlgebrite),
+      ),
       requestId,
     };
   } catch (err) {
