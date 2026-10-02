@@ -63,6 +63,77 @@ test.describe("S26 B7 — Científica Lite", () => {
     });
   }
 
+  test("móvil mantiene el campo legible y sin recorte rígido bajo los controles", async ({ page }, testInfo) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await openScientific(page);
+
+    const field = page.locator("math-field").first();
+    await expect(field).toHaveAttribute("placeholder", "Escribe una expresión");
+    await expect(field).toHaveClass(/text-lg/);
+    await expect(field).toHaveClass(/pr-20/);
+
+    const metrics = await field.evaluate((node) => {
+      const style = getComputedStyle(node);
+      const box = node.getBoundingClientRect();
+      return {
+        overflowX: style.overflowX,
+        right: box.right,
+        width: box.width,
+        viewport: document.documentElement.clientWidth,
+      };
+    });
+    expect(metrics.overflowX).toBe("auto");
+    expect(metrics.right).toBeLessThanOrEqual(metrics.viewport + 1);
+    expect(metrics.width).toBeGreaterThan(0);
+    await expectNoHorizontalOverflow(page);
+    await page.screenshot({ path: testInfo.outputPath("b7-mobile-input-legible.png"), fullPage: true });
+  });
+
+  test("Reusar conserva una integral científica en formato natural", async ({ page }) => {
+    await page.goto("./");
+
+    const naturalIntegral = "\\int_{0}^{\\pi}\\sin x\\,dx";
+    await page.evaluate(async (input) => {
+      const request = indexedDB.open("calculadora-historial", 1);
+      const db = await new Promise<IDBDatabase>((resolve, reject) => {
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+        request.onupgradeneeded = () => {
+          const db = request.result;
+          const store = db.createObjectStore("history", { keyPath: "id" });
+          store.createIndex("by-timestamp", "timestamp");
+        };
+      });
+
+      await new Promise<void>((resolve, reject) => {
+        const tx = db.transaction("history", "readwrite");
+        tx.objectStore("history").put({
+          id: "b7-reuse-natural-integral",
+          module: "Científica",
+          mode: "Científica (integral)",
+          input,
+          resultSummary: "2",
+          timestamp: Date.now(),
+        });
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+        tx.onabort = () => reject(tx.error);
+      });
+      db.close();
+    }, naturalIntegral);
+
+    await page.reload();
+    await page.getByRole("button", { name: "Historial", exact: true }).first().click();
+    const panel = page.locator("#history-panel");
+    await expect(panel).toBeVisible();
+    await panel.getByRole("button", { name: /Reusar entrada:/ }).click();
+    await expect(panel).toHaveCount(0);
+
+    const field = page.locator("math-field").first();
+    await expect.poll(async () => field.evaluate((node) => (node as HTMLElement & { value: string }).value))
+      .toBe(naturalIntegral);
+  });
+
   test("Balanceada coloca Gráfica a la derecha del bloque de cálculo", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await openScientific(page, "fused");
