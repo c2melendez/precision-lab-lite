@@ -62,6 +62,18 @@ describe("analyzeGraph", () => {
     expect(analysis.xIntercepts).toEqual([]);
   });
 
+  it("detecta el hueco removible de (x^2-1)/(x-1) en (1,2) aunque el muestreo no dependa de caer exactamente en x=1", () => {
+    const analysis = analyzeGraph("(x^2-1)/(x-1)", "x", [-2, 4]);
+    expect(analysis.removableHoles).toHaveLength(1);
+    expect(analysis.removableHoles[0].x).toBeCloseTo(1, 6);
+    expect(analysis.removableHoles[0].y).toBeCloseTo(2, 3);
+  });
+
+  it("no confunde la asíntota de 1/(x-1) con un hueco removible", () => {
+    const analysis = analyzeGraph("1/(x-1)", "x", [-2, 4]);
+    expect(analysis.removableHoles).toEqual([]);
+  });
+
   it("sqrt(x) SÍ detecta la raíz real en el borde del dominio, x=0 (regresión introducida por el fix de arriba: el bucle nunca revisaba el primer punto muestreado, solo lo usaba como 'p', nunca como 'q')", () => {
     const analysis = analyzeGraph("sqrt(x)", "x", [-5, 5]);
     expect(analysis.xIntercepts).toEqual([0]);
