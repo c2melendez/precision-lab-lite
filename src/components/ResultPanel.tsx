@@ -27,6 +27,7 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
   // chico que solo aparece cuando realmente hay una forma mixta posible
   // (fracción impropia: |numerador| >= denominador).
   const [showMixed, setShowMixed] = useState(true);
+  const [symbolicView, setSymbolicView] = useState<"original" | "result">("result");
 
   if (!result) {
     return <p className="py-1 text-right text-sm text-muted">Escribe una expresión y presiona Calcular.</p>;
@@ -73,7 +74,20 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
     return { latex: result?.resultLatex ?? "", isPlainNumber: false };
   }
 
-  const { latex, isPlainNumber } = renderValue();
+  // Las vistas simbólicas son contextuales: cuando el resultado no es
+  // numérico y conocemos la interpretación del motor, se ofrece
+  // "Original" junto a la forma calculada. Los formatos dec/frac/scn
+  // siguen siendo la familia correcta para resultados numéricos.
+  const hasSymbolicViews =
+    Boolean(result.interpretedLatex) &&
+    result.fraction === undefined &&
+    result.decimalApprox === undefined;
+  const rendered = renderValue();
+  const latex =
+    hasSymbolicViews && symbolicView === "original"
+      ? result.interpretedLatex!
+      : rendered.latex;
+  const isPlainNumber = hasSymbolicViews ? false : rendered.isPlainNumber;
 
   return (
     <div className="pt-1" role="status" aria-live="polite" aria-atomic="true">
@@ -102,16 +116,38 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
         </div>
       )}
       <div className="mt-1.5 flex justify-end gap-3 text-xs text-muted">
-        {(["dec", "frac", "scn", "sqrt"] as AnswerFormat[]).map((f) => (
-          <button
-            key={f}
-            onClick={() => setFormat(f)}
-            aria-pressed={format === f}
-            className={format === f ? "font-semibold text-marker" : "hover:text-ink"}
-          >
-            {f}
-          </button>
-        ))}
+        {hasSymbolicViews ? (
+          <>
+            <button
+              type="button"
+              onClick={() => setSymbolicView("original")}
+              aria-pressed={symbolicView === "original"}
+              className={symbolicView === "original" ? "font-semibold text-marker" : "hover:text-ink"}
+            >
+              Original
+            </button>
+            <button
+              type="button"
+              onClick={() => setSymbolicView("result")}
+              aria-pressed={symbolicView === "result"}
+              className={symbolicView === "result" ? "font-semibold text-marker" : "hover:text-ink"}
+            >
+              {result.resultViewLabel ?? "Resultado"}
+            </button>
+          </>
+        ) : (
+          (["dec", "frac", "scn", "sqrt"] as AnswerFormat[]).map((f) => (
+            <button
+              key={f}
+              type="button"
+              onClick={() => setFormat(f)}
+              aria-pressed={format === f}
+              className={format === f ? "font-semibold text-marker" : "hover:text-ink"}
+            >
+              {f}
+            </button>
+          ))
+        )}
       </div>
     </div>
   );
