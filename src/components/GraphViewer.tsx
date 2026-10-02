@@ -59,7 +59,10 @@ interface GraphViewerProps {
 
 export function GraphViewer({ curves, selectedId, view, argandPoint = null, axisLabels }: GraphViewerProps) {
   const [xMin, xMax] = view;
-  const allYs = curves.flatMap((c) => c.analysis.samples.map((p) => p.y));
+  const allYs = curves.flatMap((c) => [
+    ...c.analysis.samples.map((p) => p.y),
+    ...c.analysis.removableHoles.map((p) => p.y),
+  ]);
   if (argandPoint) allYs.push(argandPoint.im);
   const yMin = Math.min(...allYs, -1);
   const yMax = Math.max(...allYs, 1);
@@ -87,14 +90,28 @@ export function GraphViewer({ curves, selectedId, view, argandPoint = null, axis
             `${cmd} ${toScreenX(Number(x)).toFixed(1)} ${toScreenY(Number(y)).toFixed(1)}`,
           );
           return (
-            <path
-              key={curve.id}
-              d={pathD}
-              fill="none"
-              stroke={curve.color}
-              strokeWidth={curve.id === selected?.id ? 2.5 : 1.5}
-              opacity={curve.id === selected?.id ? 1 : 0.55}
-            />
+            <g key={curve.id}>
+              <path
+                d={pathD}
+                fill="none"
+                stroke={curve.color}
+                strokeWidth={curve.id === selected?.id ? 2.5 : 1.5}
+                opacity={curve.id === selected?.id ? 1 : 0.55}
+              />
+              {curve.analysis.removableHoles.map((hole, index) => (
+                <circle
+                  key={`hole-${index}`}
+                  data-testid={`graph-hole-${curve.id}-${index}`}
+                  cx={toScreenX(hole.x)}
+                  cy={toScreenY(hole.y)}
+                  r={4.5}
+                  fill="none"
+                  stroke={curve.color}
+                  strokeWidth={2}
+                  opacity={curve.id === selected?.id ? 1 : 0.7}
+                />
+              ))}
+            </g>
           );
         })}
 
@@ -148,6 +165,7 @@ export function GraphViewer({ curves, selectedId, view, argandPoint = null, axis
         <span><span className="inline-block h-2 w-2 rounded-full bg-orange-500" /> mínimo local</span>
         <span><span className="inline-block h-2 w-2 bg-purple-500" /> inflexión</span>
         <span><span className="inline-block h-2 w-2 rounded-full bg-red-500" /> vértice</span>
+        <span><span className="inline-block h-2 w-2 rounded-full border border-bone/60" /> hueco removible</span>
         <span className="text-bone/40">(anotaciones solo de la curva seleccionada)</span>
       </div>
     </div>
