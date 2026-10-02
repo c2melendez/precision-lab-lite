@@ -701,7 +701,7 @@ export function BasicScientificMode() {
       <Screen
         latex={latex}
         onChangeLatex={setLatex}
-        placeholder="Escribe una expresión, ecuación o sistema…"
+        placeholder="Escribe una expresión"
         fieldRef={setMathField}
         result={result}
         sessionHistory={sessionHistory}
