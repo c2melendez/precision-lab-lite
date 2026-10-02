@@ -16,7 +16,6 @@ describe("parseExpression", () => {
       "\\lim_{x\\to 0^{+}}\\coth x",
     ];
     const parsed = cases.map((latex) => ({ latex, algebrite: parseExpression(latex).algebrite }));
-    console.log("B7_RESIDUAL_LIMIT_PARSE", JSON.stringify(parsed));
     expect(parsed.every((entry) => entry.algebrite.startsWith("limit("))).toBe(true);
   });
 
