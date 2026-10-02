@@ -72,6 +72,89 @@ function replaceBalanced(
   }
   return result;
 }
+function readFunctionArgument(input: string, fromIndex: number, macroLabel: string): [string, number] {
+  let cursor = fromIndex;
+  while (cursor < input.length && /\\s/.test(input[cursor])) cursor++;
+
+  if (input.startsWith("\\\\left(", cursor)) {
+    const start = cursor + "\\\\left(".length;
+    let depth = 1;
+    let j = start;
+    while (j < input.length) {
+      if (input.startsWith("\\\\left(", j)) { depth++; j += "\\\\left(".length; continue; }
+      if (input.startsWith("\\\\right)", j)) {
+        depth--;
+        if (depth === 0) return [input.slice(start, j), j + "\\\\right)".length];
+        j += "\\\\right)".length;
+        continue;
+      }
+      j++;
+    }
+    throw parseError("Paréntesis sin cerrar tras " + macroLabel + ".");
+  }
+
+  if (input[cursor] === "(") {
+    const start = cursor + 1;
+    let depth = 1;
+    let j = start;
+    while (j < input.length && depth > 0) {
+      if (input[j] === "(") depth++;
+      else if (input[j] === ")") depth--;
+      j++;
+    }
+    if (depth !== 0) throw parseError("Paréntesis sin cerrar tras " + macroLabel + ".");
+    return [input.slice(start, j - 1), j];
+  }
+
+  return readBalancedOrSingleToken(input, cursor, macroLabel);
+}
+
+function rewriteLogBases(input: string): string {
+  let out = "";
+  let i = 0;
+  while (i < input.length) {
+    if (!input.startsWith("\\\\log", i)) { out += input[i++]; continue; }
+    let cursor = i + "\\\\log".length;
+    while (cursor < input.length && /\\s/.test(input[cursor])) cursor++;
+    if (input[cursor] !== "_") { out += "\\\\log"; i = cursor; continue; }
+    cursor++;
+    while (cursor < input.length && /\\s/.test(input[cursor])) cursor++;
+
+    let base: string;
+    try { [base, cursor] = readBalancedOrSingleToken(input, cursor, "base de \\\\log"); }
+    catch { out += "\\\\log"; i += "\\\\log".length; continue; }
+
+    let argument: string;
+    try { [argument, cursor] = readFunctionArgument(input, cursor, "argumento de \\\\log"); }
+    catch { out += "\\\\log"; i += "\\\\log".length; continue; }
+
+    out += "log((" + argument + "),(" + base + "))";
+    i = cursor;
+  }
+  return out;
+}
+
+function rewriteNthRoots(input: string): string {
+  let out = "";
+  let i = 0;
+  while (i < input.length) {
+    if (!input.startsWith("\\\\sqrt[", i)) { out += input[i++]; continue; }
+    const indexStart = i + "\\\\sqrt[".length;
+    const close = input.indexOf("]", indexStart);
+    if (close === -1) { out += input[i++]; continue; }
+    const index = input.slice(indexStart, close).trim();
+    let cursor = close + 1;
+    while (cursor < input.length && /\\s/.test(input[cursor])) cursor++;
+
+    let radicand: string;
+    try { [radicand, cursor] = readBalancedOrSingleToken(input, cursor, "radicando de \\\\sqrt[n]"); }
+    catch { out += input[i++]; continue; }
+
+    out += "((" + radicand + ")^(1/(" + index + ")))";
+    i = cursor;
+  }
+  return out;
+}
 
 function rewriteTrigFunctionPowers(input: string): string {
   const pattern = /(?:\\)?(sin|cos|tan|sec|csc|cot|sinh|cosh|tanh|sech|csch|coth)\s*\^\s*(?:\{(\d+)\}|(\d+))\s*(\\left\(|\()/g;
@@ -481,7 +564,7 @@ export function preprocessLatex(latex: string): string {
   // "cuela" dentro del exponente de la raíz en vez de aplicarse al
   // resultado. Se envuelve toda la expresión en un paréntesis extra para
   // que cualquier "^" posterior solo pueda aplicarse por fuera.
-  expr = expr.replace(/\\sqrt\[([^\]]*)\]\{([^{}]*)\}/g, "(($2)^(1/($1)))");
+  expr = rewriteNthRoots(expr);
   // BUG real (preexistente, encontrado al verificar el fix de arriba):
   // una sola pasada de replaceBalanced NO es recursiva — \sqrt{\sqrt{x}}
   // procesaba solo el \sqrt externo, dejando un "\sqrt{x}" literal sin
@@ -607,24 +690,9 @@ export function preprocessLatex(latex: string): string {
     }
   }
 
-  // S16 REG-004: MathLive puede serializar el subíndice de log con o sin
-  // llaves y con \\left(...\\right) o paréntesis simples.
-  {
-    const logBasePatterns = [
-      /\\log\s*_\s*\{([^{}]+)\}\s*\\left\((.*)\\right\)$/s,
-      /\\log\s*_\s*\{([^{}]+)\}\s*\((.*)\)$/s,
-      /\\log\s*_\s*([0-9a-zA-Z]+)\s*\\left\((.*)\\right\)$/s,
-      /\\log\s*_\s*([0-9a-zA-Z]+)\s*\((.*)\)$/s,
-    ];
-    for (const pattern of logBasePatterns) {
-      const match = expr.match(pattern);
-      if (match) {
-        const [, base, arg] = match;
-        expr = `log(${arg},${base})`;
-        break;
-      }
-    }
-  }
+  // S16 REG-004 + B7 stress matrix: normalize base-log notation
+  // anywhere in a larger expression, including products/equations.
+  expr = rewriteLogBases(expr);
 
   // Lim: plantilla "\lim_{#0}#1", #0 tipo "x\to0" -> limit((cuerpo),x,0).
   // A diferencia de integral/sum, limit() de Algebrite frecuentemente NO
