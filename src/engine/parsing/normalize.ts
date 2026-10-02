@@ -155,6 +155,20 @@ function rewriteNthRoots(input: string): string {
   }
   return out;
 }
+function rewriteGroupedExponents(input: string): string {
+  let out = "";
+  let i = 0;
+  while (i < input.length) {
+    if (!input.startsWith("^{", i)) { out += input[i++]; continue; }
+    let inner: string;
+    let next: number;
+    try { [inner, next] = readBalancedOrSingleToken(input, i + 1, "exponente"); }
+    catch { out += input[i++]; continue; }
+    out += "^(" + rewriteGroupedExponents(inner) + ")";
+    i = next;
+  }
+  return out;
+}
 
 function rewriteTrigFunctionPowers(input: string): string {
   const pattern = /(?:\\)?(sin|cos|tan|sec|csc|cot|sinh|cosh|tanh|sech|csch|coth)\s*\^\s*(?:\{(\d+)\}|(\d+))\s*(\\left\(|\()/g;
@@ -193,7 +207,7 @@ const BARE_FUNCTION_NAMES = [
   "asin", "acos", "atan",
   "asinh", "acosh", "atanh", "acsch", "asech", "acoth",
   "sinh", "cosh", "tanh", "csch", "sech", "coth",
-  "sin", "cos", "tan", "csc", "sec", "cot", "sqrt", "subst", "ln",
+  "sin", "cos", "tan", "csc", "sec", "cot", "sqrt", "abs", "subst", "ln",
 ].sort((a, b) => b.length - a.length);
 
 function unwrapOperatorNames(input: string): string {
@@ -321,9 +335,14 @@ function rewriteBareFunctionApplications(input: string): string {
       continue;
     }
 
-    // No whitespace, no power, and no existing call => this occurrence is
-    // not a bare function application; preserve it verbatim.
-    if (!hadWhitespaceAfterName && !power) {
+    // No whitespace is normally a signal that this is not a bare
+    // application. Exception: a recognized function may immediately
+    // follow another one after LaTeX macro lowering, e.g. \\cos\\sqrt{x}
+    // -> cossqrt(x) or \\ln\\lvert x\\rvert -> lnabs(x).
+    const startsNestedFunction = BARE_FUNCTION_NAMES.some(
+      (name) => input.startsWith(name + "(", cursor),
+    );
+    if (!hadWhitespaceAfterName && !power && !startsNestedFunction) {
       out += input.slice(i, afterName);
       i = afterName;
       continue;
@@ -779,7 +798,8 @@ export function preprocessLatex(latex: string): string {
   // Normalize absolute-value delimiters BEFORE late adjacency. Otherwise
   // "\\lvert\\sin x\\rvert" exposes the trailing "t" of "\\lvert"
   // to the adjacency regex and becomes "abs(*sin(x))".
-  expr = expr
+  expr = rewriteGroupedExponents(expr);
+\n  expr = expr
     .replace(/\\left\|/g, "abs(")
     .replace(/\\right\|/g, ")")
     .replace(/\\lvert/g, "abs(")
@@ -896,7 +916,7 @@ export function preprocessLatex(latex: string): string {
     // S16 REG-002: el macro visual \\log del teclado significa base 10.
     // Se conserva separado de log(...) plano y de ln(...).
     .replace(/\\log/g, "log10")
-    .replace(/\^\{([^{}]*)\}/g, "^($1)")
+
     .replace(/\\left\(/g, "(")
     .replace(/\\right\)/g, ")")
     .replace(/\\,/g, "")
