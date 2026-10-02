@@ -72,6 +72,103 @@ function replaceBalanced(
   }
   return result;
 }
+function readFunctionArgument(input: string, fromIndex: number, macroLabel: string): [string, number] {
+  let cursor = fromIndex;
+  while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
+
+  if (input.startsWith("\\left(", cursor)) {
+    const start = cursor + "\\left(".length;
+    let depth = 1;
+    let j = start;
+    while (j < input.length) {
+      if (input.startsWith("\\left(", j)) { depth++; j += "\\left(".length; continue; }
+      if (input.startsWith("\\right)", j)) {
+        depth--;
+        if (depth === 0) return [input.slice(start, j), j + "\\right)".length];
+        j += "\\right)".length;
+        continue;
+      }
+      j++;
+    }
+    throw parseError("Paréntesis sin cerrar tras " + macroLabel + ".");
+  }
+
+  if (input[cursor] === "(") {
+    const start = cursor + 1;
+    let depth = 1;
+    let j = start;
+    while (j < input.length && depth > 0) {
+      if (input[j] === "(") depth++;
+      else if (input[j] === ")") depth--;
+      j++;
+    }
+    if (depth !== 0) throw parseError("Paréntesis sin cerrar tras " + macroLabel + ".");
+    return [input.slice(start, j - 1), j];
+  }
+
+  return readBalancedOrSingleToken(input, cursor, macroLabel);
+}
+
+function rewriteLogBases(input: string): string {
+  let out = "";
+  let i = 0;
+  while (i < input.length) {
+    if (!input.startsWith("\\log", i)) { out += input[i++]; continue; }
+    let cursor = i + "\\log".length;
+    while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
+    if (input[cursor] !== "_") { out += "\\log"; i = cursor; continue; }
+    cursor++;
+    while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
+
+    let base: string;
+    try { [base, cursor] = readBalancedOrSingleToken(input, cursor, "base de \\log"); }
+    catch { out += "\\log"; i += "\\log".length; continue; }
+
+    let argument: string;
+    try { [argument, cursor] = readFunctionArgument(input, cursor, "argumento de \\log"); }
+    catch { out += "\\log"; i += "\\log".length; continue; }
+
+    out += "log(" + argument + "," + base + ")";
+    i = cursor;
+  }
+  return out;
+}
+
+function rewriteNthRoots(input: string): string {
+  let out = "";
+  let i = 0;
+  while (i < input.length) {
+    if (!input.startsWith("\\sqrt[", i)) { out += input[i++]; continue; }
+    const indexStart = i + "\\sqrt[".length;
+    const close = input.indexOf("]", indexStart);
+    if (close === -1) { out += input[i++]; continue; }
+    const index = input.slice(indexStart, close).trim();
+    let cursor = close + 1;
+    while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
+
+    let radicand: string;
+    try { [radicand, cursor] = readBalancedOrSingleToken(input, cursor, "radicando de \\sqrt[n]"); }
+    catch { out += input[i++]; continue; }
+
+    out += "((" + radicand + ")^(1/(" + index + ")))";
+    i = cursor;
+  }
+  return out;
+}
+function rewriteGroupedExponents(input: string): string {
+  let out = "";
+  let i = 0;
+  while (i < input.length) {
+    if (!input.startsWith("^{", i)) { out += input[i++]; continue; }
+    let inner: string;
+    let next: number;
+    try { [inner, next] = readBalancedOrSingleToken(input, i + 1, "exponente"); }
+    catch { out += input[i++]; continue; }
+    out += "^(" + rewriteGroupedExponents(inner) + ")";
+    i = next;
+  }
+  return out;
+}
 
 function rewriteTrigFunctionPowers(input: string): string {
   const pattern = /(?:\\)?(sin|cos|tan|sec|csc|cot|sinh|cosh|tanh|sech|csch|coth)\s*\^\s*(?:\{(\d+)\}|(\d+))\s*(\\left\(|\()/g;
@@ -110,7 +207,7 @@ const BARE_FUNCTION_NAMES = [
   "asin", "acos", "atan",
   "asinh", "acosh", "atanh", "acsch", "asech", "acoth",
   "sinh", "cosh", "tanh", "csch", "sech", "coth",
-  "sin", "cos", "tan", "csc", "sec", "cot", "sqrt", "subst", "ln",
+  "sin", "cos", "tan", "csc", "sec", "cot", "sqrt", "abs", "subst", "ln",
 ].sort((a, b) => b.length - a.length);
 
 function unwrapOperatorNames(input: string): string {
@@ -209,7 +306,12 @@ function rewriteBareFunctionApplications(input: string): string {
       return !/[A-Za-z]/.test(prev);
     });
     if (!fn) { out += input[i++]; continue; }
-    let cursor = i + fn.length;
+
+    const afterName = i + fn.length;
+    let cursor = afterName;
+    while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
+    const hadWhitespaceAfterName = cursor > afterName;
+
     let power = "";
     if (input.startsWith("^(", cursor)) {
       let depth = 1;
@@ -219,20 +321,34 @@ function rewriteBareFunctionApplications(input: string): string {
         else if (input[j] === ")") depth--;
         j++;
       }
-      if (depth === 0) { power = input.slice(cursor + 2, j - 1); cursor = j; }
+      if (depth === 0) {
+        power = input.slice(cursor + 2, j - 1);
+        cursor = j;
+        while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
+      }
     }
-    if (input[cursor] === "(") { out += input.slice(i, cursor); i = cursor; continue; }
-    const whitespaceStart = cursor;
-    while (cursor < input.length && /\s/.test(input[cursor])) cursor++;
-    // MathLive/operatorname can leave whitespace before an argument that
-    // is already parenthesized (for example "acosh (x)"). Preserve that
-    // existing call instead of wrapping it again as acosh((x)).
+
+    // Already a normal function call such as sin(x) or acosh (x).
     if (input[cursor] === "(" && !power) {
       out += fn;
       i = cursor;
       continue;
     }
-    if (cursor === whitespaceStart && !power) { out += input.slice(i, cursor); i = cursor; continue; }
+
+    // No whitespace is normally a signal that this is not a bare
+    // application. Exception: a recognized function may immediately
+    // follow another one after LaTeX macro lowering, e.g. \\cos\\sqrt{x}
+    // -> cossqrt(x) or \\ln\\lvert x\\rvert -> lnabs(x).
+    const startsNestedFunction = BARE_FUNCTION_NAMES.some(
+      (name) => input.startsWith(name + "(", cursor),
+    );
+    const startsBareConstant = /^(?:pi|e|theta|Phi)(?![A-Za-z])/.test(input.slice(cursor));
+    if (!hadWhitespaceAfterName && !power && !startsNestedFunction && !startsBareConstant) {
+      out += input.slice(i, afterName);
+      i = afterName;
+      continue;
+    }
+
     const argStart = cursor;
     let depth = 0;
     let seen = false;
@@ -250,8 +366,13 @@ function rewriteBareFunctionApplications(input: string): string {
       if (!/\s/.test(ch)) seen = true;
       cursor++;
     }
+
     const arg = input.slice(argStart, cursor).trim();
-    if (!arg) { out += fn; i += fn.length; continue; }
+    if (!arg) {
+      out += input.slice(i, afterName);
+      i = afterName;
+      continue;
+    }
     const call = fn + "(" + arg + ")";
     out += power ? "(" + call + ")^(" + power + ")" : call;
     i = cursor;
@@ -259,8 +380,53 @@ function rewriteBareFunctionApplications(input: string): string {
   return out;
 }
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
+function rewritePlainAbsoluteBars(input: string): string {
+  if (!input.includes("|")) return input;
+
+  let out = "";
+  let cursor = 0;
+  while (cursor < input.length) {
+    const open = input.indexOf("|", cursor);
+    if (open < 0) {
+      out += input.slice(cursor);
+      break;
+    }
+
+    const close = input.indexOf("|", open + 1);
+    if (close < 0) {
+      out += input.slice(cursor);
+      break;
+    }
+
+    out += input.slice(cursor, open);
+    const inner = input.slice(open + 1, close);
+    out += `abs(${rewritePlainAbsoluteBars(inner)})`;
+    cursor = close + 1;
+  }
+  return out;
+}
+
 export function preprocessLatex(latex: string): string {
-  let expr = latex;
+  let expr = rewritePlainAbsoluteBars(latex);
+
+  // B7 stress matrix: natural function definition + evaluation.
+  // Example: f(x)=ln(x)/x; f(e) -> subst((e),x,(ln(x)/x)).
+  // This is input routing only; both the function body and point go
+  // through the same preprocessing pipeline as ordinary expressions.
+  {
+    const naturalEvaluationSource = expr.trim()
+      .replace(/\\left\(/g, "(")
+      .replace(/\\right\)/g, ")");
+    const naturalEvaluation = naturalEvaluationSource.match(
+      /^([A-Za-z])\(([A-Za-z])\)\s*=\s*([\s\S]+?)\s*;\s*(?:\\\s*)?\1\(([\s\S]+)\)$/,
+    );
+    if (naturalEvaluation) {
+      const variable = naturalEvaluation[2];
+      const body = preprocessLatex(naturalEvaluation[3].trim());
+      const point = preprocessLatex(naturalEvaluation[4].trim());
+      return `subst((${point}),${variable},(${body}))`;
+    }
+  }
 
   // Matrix B7: derivative evaluated at a point,
   // \\left.\\frac{d}{dx}f(x)\\right\\rvert_{x=a}.
@@ -463,7 +629,7 @@ export function preprocessLatex(latex: string): string {
   // "cuela" dentro del exponente de la raíz en vez de aplicarse al
   // resultado. Se envuelve toda la expresión en un paréntesis extra para
   // que cualquier "^" posterior solo pueda aplicarse por fuera.
-  expr = expr.replace(/\\sqrt\[([^\]]*)\]\{([^{}]*)\}/g, "(($2)^(1/($1)))");
+  expr = rewriteNthRoots(expr);
   // BUG real (preexistente, encontrado al verificar el fix de arriba):
   // una sola pasada de replaceBalanced NO es recursiva — \sqrt{\sqrt{x}}
   // procesaba solo el \sqrt externo, dejando un "\sqrt{x}" literal sin
@@ -589,22 +755,13 @@ export function preprocessLatex(latex: string): string {
     }
   }
 
-  // S16 REG-004: MathLive puede serializar el subíndice de log con o sin
-  // llaves y con \\left(...\\right) o paréntesis simples.
+  // S16 REG-004 + B7 stress matrix: normalize base-log notation
+  // anywhere in a larger expression, including products/equations.
   {
-    const logBasePatterns = [
-      /\\log\s*_\s*\{([^{}]+)\}\s*\\left\((.*)\\right\)$/s,
-      /\\log\s*_\s*\{([^{}]+)\}\s*\((.*)\)$/s,
-      /\\log\s*_\s*([0-9a-zA-Z]+)\s*\\left\((.*)\\right\)$/s,
-      /\\log\s*_\s*([0-9a-zA-Z]+)\s*\((.*)\)$/s,
-    ];
-    for (const pattern of logBasePatterns) {
-      const match = expr.match(pattern);
-      if (match) {
-        const [, base, arg] = match;
-        expr = `log(${arg},${base})`;
-        break;
-      }
+    let previousLogSource = "";
+    while (expr.includes("\\log_") && expr !== previousLogSource) {
+      previousLogSource = expr;
+      expr = rewriteLogBases(expr);
     }
   }
 
@@ -667,6 +824,15 @@ export function preprocessLatex(latex: string): string {
   // \\pm\\left(5\\right) a \\pm 5. Normalizamos también esa forma
   // a la función unaria interna pm(5), preservando las dos ramas.
   expr = expr.replace(/\\pm\s+([A-Za-z0-9.]+)/g, "pm($1)");
+
+  // Normalize absolute-value delimiters BEFORE late adjacency. Otherwise
+  // "\\lvert\\sin x\\rvert" exposes the trailing "t" of "\\lvert"
+  // to the adjacency regex and becomes "abs(*sin(x))".
+  expr = expr
+    .replace(/\\left\|/g, "abs(")
+    .replace(/\\right\|/g, ")")
+    .replace(/\\lvert/g, "abs(")
+    .replace(/\\rvert/g, ")");
 
   // Matriz trigonométrica: late adjacency normalization.
   // At this point \\int has already been rewritten, so x\\cosh x may
@@ -779,12 +945,14 @@ export function preprocessLatex(latex: string): string {
     // S16 REG-002: el macro visual \\log del teclado significa base 10.
     // Se conserva separado de log(...) plano y de ln(...).
     .replace(/\\log/g, "log10")
-    .replace(/\^\{([^{}]*)\}/g, "^($1)")
+
     .replace(/\\left\(/g, "(")
     .replace(/\\right\)/g, ")")
     .replace(/\\,/g, "")
     .replace(/\\ /g, "")
     ;
+
+  expr = rewriteGroupedExponents(expr);
 
   expr = rewriteBareFunctionApplications(expr);
   expr = insertImplicitMultiplicationBeforeFunctions(expr);

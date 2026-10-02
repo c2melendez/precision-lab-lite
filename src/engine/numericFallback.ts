@@ -400,7 +400,11 @@ export function numericLimit(
  * de convergencia que numericLimit.
  */
 export function numericLimitAtInfinity(f: Fn, sign: 1 | -1): { value: number; converged: boolean } {
-  const magnitudes = [1e2, 1e3, 1e4, 1e5, 1e6, 1e7];
+  // Keep samples below the overflow/catastrophic-cancellation range of
+  // Start in the asymptotic range and keep extending. Expressions
+  // that overflow at the largest samples are already filtered below, while
+  // rational limits benefit from the extra finite points for precision.
+  const magnitudes = [16, 32, 64, 128, 256, 512, 1024, 2048];
   const raw = magnitudes.map((m) => f(sign * m));
 
   const firstInfinite = raw.find((v) => v === Infinity || v === -Infinity);

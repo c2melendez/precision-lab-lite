@@ -1,29 +1,27 @@
-name: Trig Matrix Diagnostic
+name: Log Exp Radical Matrix Diagnostic
 
 concurrency:
-  group: trig-matrix-${{ github.ref }}
+  group: log-exp-radical-matrix-${{ github.ref }}
   cancel-in-progress: true
-# Post-parser trig matrix recertification 2026-10-01.
-# pull_request is intentionally limited to the QA recertification branch so
-# connector-visible PR runs can be inspected without changing product code.
 
 on:
   push:
     branches: [qa/s26-execution]
     paths:
       - "src/**"
-      - "e2e/trig-matrix-diagnostic.spec.ts"
-      - ".github/workflows/trig-matrix-diagnostic.yml"
+      - "e2e/log-exp-radical-matrix-diagnostic.spec.ts"
+      - ".github/workflows/log-exp-radical-matrix-diagnostic.yml"
   pull_request:
     branches: [qa/s26-execution]
     paths:
-      - ".github/workflows/trig-matrix-diagnostic.yml"
+      - "e2e/log-exp-radical-matrix-diagnostic.spec.ts"
+      - ".github/workflows/log-exp-radical-matrix-diagnostic.yml"
   workflow_dispatch:
 
 jobs:
-  trig-matrix:
+  log-exp-radical-matrix:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -36,5 +34,5 @@ jobs:
         run: npm install --no-save --package-lock=false @playwright/test@1.63.0 @axe-core/playwright@4.13.0
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
-      - name: Run trig matrix only
-        run: npx playwright test e2e/trig-matrix-diagnostic.spec.ts --project=desktop-chromium --workers=2
+      - name: Run log exp radical matrix only
+        run: npx playwright test e2e/log-exp-radical-matrix-diagnostic.spec.ts --project=desktop-chromium --workers=3

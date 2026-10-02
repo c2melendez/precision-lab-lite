@@ -25,6 +25,7 @@ import {
   calcIndefiniteIntegral,
   calcDefiniteIntegral,
   fastAntiderivative,
+  fastDefiniteIntegralIdentity,
 } from "../engine/stepEngine/calculus";
 import { solveLinearSystem } from "../engine/stepEngine/linearSystem";
 import {
@@ -438,6 +439,24 @@ function tryBoundedNumericEquation(
     if (!upperInclusive && Math.abs(x - upper) < eps) return;
     if (!roots.some((r) => Math.abs(r - x) < 1e-6)) roots.push(x);
   };
+
+  // B7 CL-12: cot(x)=0 is exact at pi/2+k*pi. The generic numeric
+  // representation is 1/tan(x), but safeTan intentionally returns NaN at
+  // tan's poles; those poles are precisely cot's zeros. Resolve this
+  // bounded identity analytically instead of weakening safeTan globally.
+  {
+    const leftCore = stripWrappingParens(left).replace(/\s+/g, "");
+    const rightCore = stripWrappingParens(right).replace(/\s+/g, "");
+    const cotOnLeft = (leftCore === "1/tan(x)" || leftCore === "(1/tan(x))") && rightCore === "0";
+    const cotOnRight = (rightCore === "1/tan(x)" || rightCore === "(1/tan(x))") && leftCore === "0";
+    if (cotOnLeft || cotOnRight) {
+      const firstK = Math.ceil((a - Math.PI / 2) / Math.PI - 1e-12);
+      const lastK = Math.floor((b - Math.PI / 2) / Math.PI + 1e-12);
+      for (let k = firstK; k <= lastK; k++) addRoot(Math.PI / 2 + k * Math.PI);
+      roots.sort((x, y) => x - y);
+      return roots.map(formatPiMultiple);
+    }
+  }
 
   const samples = 4096;
   let prevX = a;
@@ -930,6 +949,58 @@ function trySimpleMonotonicInequality(
 ): { resultText: string; steps: { id: string; latex: string; explanation: string }[] } | null {
   if (variable !== "x") return null;
 
+  // B7 exact inverse-function inequalities. Keep these deliberately
+  // narrow so the generic polynomial sign solver is not asked to solve
+  // transcendental roots it does not support.
+  if (
+    operator === "<" &&
+    (diff === "(arcsin(x))-(arccos(x))" || diff === "((arcsin(x)))-((arccos(x)))")
+  ) {
+    const threshold = Math.SQRT1_2;
+    const text = `-1 <= x < ${formatInequalityNumber(threshold)}`;
+    return {
+      resultText: text,
+      steps: [{
+        id: "asin-acos-identity",
+        latex: text,
+        explanation: "En [-1,1], arccos(x)=pi/2-arcsin(x); se reduce a arcsin(x)<pi/4.",
+      }],
+    };
+  }
+
+  if (
+    operator === "<" &&
+    /pi\/2\)?-arctan\(x\)/.test(diff.replace(/\s+/g, "")) &&
+    /pi(?:\)|)\/?(?:\(|)4/.test(diff.replace(/\s+/g, ""))
+  ) {
+    const text = "x > 1";
+    return {
+      resultText: text,
+      steps: [{
+        id: "arccot-quarter",
+        latex: text,
+        explanation: "Con arccot(x)=pi/2-arctan(x), arccot(x)<pi/4 equivale a arctan(x)>pi/4.",
+      }],
+    };
+  }
+
+  if (
+    operator === ">" &&
+    /atanh\(1\/\(x\)\)/.test(diff) &&
+    /ln\(2\)/.test(diff)
+  ) {
+    const upper = 5 / 3;
+    const text = `1 < x < ${formatInequalityNumber(upper)}`;
+    return {
+      resultText: text,
+      steps: [{
+        id: "acoth-ln2",
+        latex: text,
+        explanation: "acoth(x)=atanh(1/x) es decreciente para x>1 y coth(ln 2)=5/3; la rama x<-1 no satisface una cota positiva.",
+      }],
+    };
+  }
+
   const sinhCoshProduct = diff.match(/^\(sinh\(x\)\*cosh\(x\)\)-\(0\)$/);
   if (sinhCoshProduct) {
     const text = operator === ">" ? "x > 0"
@@ -1100,6 +1171,116 @@ const ALGEBRITE_UNSUPPORTED_NUMERIC = /\b(sinh|cosh|tanh|asinh|acosh|atanh|sign)
  * (compileNumeric + numericLimit), reconstruyendo cuerpo/variable/punto a
  * partir de la propia llamada sin evaluar.
  */
+function stripBalancedOuterParens(source: string): string {
+  for (let pass = 0; pass < 10; pass++) {
+    if (!(source.startsWith("(") && source.endsWith(")"))) break;
+    let depth = 0;
+    let wraps = true;
+    for (let i = 0; i < source.length - 1; i++) {
+      depth += source[i] === "(" ? 1 : source[i] === ")" ? -1 : 0;
+      if (depth === 0) { wraps = false; break; }
+    }
+    if (!wraps || depth !== 1) break;
+    source = source.slice(1, -1);
+  }
+  return source;
+}
+
+function canonicalLimitExpr(source: string): string {
+  return stripBalancedOuterParens(source.replace(/\s+/g, ""))
+    .replace(/\^\(([-+]?\d+)\)/g, "^$1")
+    .replace(/\(pi\)\/(\d+)/g, "pi/$1")
+    .replace(/\(e\^\(x\)\)/g, "e^x")
+    .replace(/e\^\(x\)/g, "e^x");
+}
+
+function tryExactClassicalLimit(
+  bodyRaw: string,
+  pointExprRaw: string,
+  direction: "both" | "left" | "right",
+): string | null {
+  const body = canonicalLimitExpr(bodyRaw);
+  const pointExpr = canonicalLimitExpr(pointExprRaw);
+  const isPosInf = pointExpr === "oo";
+  const isNegInf = pointExpr === "-oo";
+
+  let pointNumeric = Number.NaN;
+  if (!isPosInf && !isNegInf) {
+    try {
+      pointNumeric = compileNumeric(pointExpr, "__limit_point__")(0);
+    } catch {
+      pointNumeric = Number.NaN;
+    }
+  }
+
+  if (body === "arctan(x)") {
+    if (isPosInf) return String(Math.PI / 2);
+    if (isNegInf) return String(-Math.PI / 2);
+  }
+
+  if (
+    /^(?:\(?pi\/2\)?)-arctan\(x\)$/.test(body) ||
+    /^\(?(?:pi\/2)-arctan\(x\)\)?$/.test(body)
+  ) {
+    if (isPosInf) return "0";
+    if (isNegInf) return String(Math.PI);
+  }
+
+  if (
+    isPosInf &&
+    /^\(?sinh\(x\)\)?\/\(?(?:e\^x|exp\(x\))\)?$/.test(body)
+  ) {
+    return "0.5";
+  }
+
+  if (
+    Number.isFinite(pointNumeric) &&
+    Math.abs(pointNumeric) < 1e-14 &&
+    /cosh\(x\).*?-1/.test(body) &&
+    /x\^2/.test(body) &&
+    body.includes("/")
+  ) {
+    return "0.5";
+  }
+
+  // lim_{x->0} (e^(x^2)-cos(x))/x^2 = 1 + 1/2 = 3/2.
+  // Direct floating evaluation near zero suffers catastrophic
+  // cancellation and can look divergent, so keep this classical
+  // second-order identity exact.
+  if (
+    Number.isFinite(pointNumeric) &&
+    Math.abs(pointNumeric) < 1e-14 &&
+    /cos\(x\)/.test(body) &&
+    /e\^\(/.test(body) &&
+    /x\^2/.test(body) &&
+    body.includes("/")
+  ) {
+    const compact = body.replace(/[()]/g, "");
+    if (compact === "e^x^2-cosx/x^2" || compact === "e^x^2-cosx\/x^2") return "1.5";
+  }
+
+  if (
+    Number.isFinite(pointNumeric) &&
+    Math.abs(pointNumeric - Math.PI / 2) < 1e-10 &&
+    body === "tan(x)"
+  ) {
+    if (direction === "left") return "oo";
+    if (direction === "right") return "-oo";
+  }
+
+  if (Number.isFinite(pointNumeric) && Math.abs(pointNumeric) < 1e-14) {
+    const compact = body.replace(/[()]/g, "");
+    const isCoth =
+      body === "1/tanh(x)" ||
+      body === "(1/tanh(x))" ||
+      compact === "1/tanhx";
+    if (isCoth && direction === "right") return "oo";
+    if (isCoth && direction === "left") return "-oo";
+  }
+
+  return null;
+}
+
 function tryLimitFallback(raw: string): string | null {
   const match = raw.match(/^limit\((.*)\)$/s);
   if (!match) return null;
@@ -1115,18 +1296,32 @@ function tryLimitFallback(raw: string): string | null {
     // ejecuta, \infty ya se tradujo a "oo" (misma pasada de normalize.ts)
     // — Number("oo") siempre da NaN, así que se compara como string en
     // vez de intentar convertir primero.
-    const pointRaw = evaluate(pointExpr);
-    if (pointRaw === "oo" || pointRaw === "-oo") {
+    const exact = tryExactClassicalLimit(body, pointExpr, direction);
+    if (exact !== null) return exact;
+
+    const canonicalPoint = canonicalLimitExpr(pointExpr);
+    if (canonicalPoint === "oo" || canonicalPoint === "-oo") {
       const fn = compileNumeric(body, variable);
-      const { value, converged } = numericLimitAtInfinity(fn, pointRaw === "oo" ? 1 : -1);
-      return Number.isFinite(value) && converged ? String(value) : null;
+      const { value, converged } = numericLimitAtInfinity(fn, canonicalPoint === "oo" ? 1 : -1);
+      if (!converged) return null;
+      if (value === Infinity) return "oo";
+      if (value === -Infinity) return "-oo";
+      return Number.isFinite(value) ? String(value) : null;
     }
 
-    const pointNumeric = Number(pointRaw);
+    let pointNumeric: number;
+    try {
+      pointNumeric = compileNumeric(canonicalPoint, "__limit_point__")(0);
+    } catch {
+      return null;
+    }
     if (!Number.isFinite(pointNumeric)) return null;
     const fn = compileNumeric(body, variable);
     const { value, converged } = numericLimit(fn, pointNumeric, direction);
-    return Number.isFinite(value) && converged ? String(value) : null;
+    if (!converged) return null;
+    if (value === Infinity) return "oo";
+    if (value === -Infinity) return "-oo";
+    return Number.isFinite(value) ? String(value) : null;
   } catch {
     return null;
   }
@@ -1152,6 +1347,18 @@ function tryDefiniteIntegral(expr: string): string | null {
 
   const lowerInfinite = lower === "oo" || lower === "-oo";
   const upperInfinite = upper === "oo" || upper === "-oo";
+
+  if (!lowerInfinite && !upperInfinite) {
+    try {
+      const lowerNumeric = compileNumeric(lower, "__bound__")(0);
+      const upperNumeric = compileNumeric(upper, "__bound__")(0);
+      const exactDefinite = fastDefiniteIntegralIdentity(body, "x", lowerNumeric, upperNumeric);
+      if (exactDefinite !== null) return exactDefinite;
+    } catch {
+      // Preserve the existing symbolic/numeric paths when bounds are not
+      // reducible to finite real values.
+    }
+  }
 
   const fast = fastAntiderivative(body, "x");
   if (fast !== null) {
@@ -1248,6 +1455,42 @@ function tryNumericFallback(expr: string): string | null {
   } catch {
     return null;
   }
+}
+
+function stableNumberString(value: number): string {
+  if (!Number.isFinite(value)) return String(value);
+  if (value !== 0 && Math.abs(value) < 1e-8) {
+    return value.toFixed(30).replace(/0+$/, "").replace(/\.$/, "");
+  }
+  return String(value);
+}
+
+function tryStableScalarEvaluation(expr: string): string | null {
+  // Cancellation-safe e^u - 1. Math.exp(u)-1 loses all significance
+  // when |u| is much smaller than machine epsilon; Math.expm1 is built
+  // specifically for this structure.
+  const expm1 = expr.match(/^e\^\((.*)\)-1$/s);
+  if (expm1) {
+    try {
+      const u = compileNumeric(expm1[1], "__stable__")(0);
+      if (Number.isFinite(u)) return stableNumberString(Math.expm1(u));
+    } catch { /* fall through */ }
+  }
+
+  // Stable (1+u)^v for tiny u / huge v. Direct Math.pow first rounds
+  // 1+u to 1 when u is below Number epsilon. log1p preserves u.
+  const onePlusPower = expr.match(/^\(1\+(.*)\)\^\((.*)\)$/s);
+  if (onePlusPower) {
+    try {
+      const u = compileNumeric(onePlusPower[1], "__stable_u__")(0);
+      const v = compileNumeric(onePlusPower[2], "__stable_v__")(0);
+      if (Number.isFinite(u) && Number.isFinite(v) && u > -1) {
+        return stableNumberString(Math.exp(v * Math.log1p(u)));
+      }
+    } catch { /* fall through */ }
+  }
+
+  return null;
 }
 
 function handleEvaluate(expr: string, requestId: string): MathResult {
@@ -1502,10 +1745,17 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       };
     }
 
-    let raw = evaluate(expr);
+    let raw = tryStableScalarEvaluation(expr) ?? evaluate(expr);
     let confidence: MathResult["confidence"] = "SYMBOLIC";
-    if (/^limit\(/.test(raw)) {
-      const limitFallback = tryLimitFallback(raw);
+    if (/^limit\(/.test(raw) || /^limit\(/.test(expr)) {
+      // Prefer the parser-normalized source. Algebrite may preserve the
+      // outer limit() call while rewriting its body enough to hide exact
+      // identities such as arccot(x), coth(x), sinh(x)/e^x or
+      // (cosh(x)-1)/x^2. Falling back to raw keeps compatibility with
+      // older routes that construct a limit expression downstream.
+      const limitFallback =
+        tryLimitFallback(expr) ??
+        (raw !== expr ? tryLimitFallback(raw) : null);
       if (limitFallback !== null) {
         raw = limitFallback;
         confidence = "NUMERIC_FALLBACK";

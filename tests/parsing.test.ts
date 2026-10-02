@@ -7,6 +7,27 @@ import { ErrorCode } from "../src/types";
 // `npm run test` tras `npm install`.
 
 describe("parseExpression", () => {
+  it("B7: expone formas internas de los cinco límites residuales", () => {
+    const cases = [
+      "\\lim_{x\\to-\\infty}\\operatorname{arccot} x",
+      "\\lim_{x\\to\\infty}\\operatorname{arccot} x",
+      "\\lim_{x\\to 0}\\frac{\\cosh x-1}{x^{2}}",
+      "\\lim_{x\\to\\infty}\\frac{\\sinh x}{e^{x}}",
+      "\\lim_{x\\to 0^{+}}\\coth x",
+    ];
+    const parsed = cases.map((latex) => ({ latex, algebrite: parseExpression(latex).algebrite }));
+    expect(parsed.every((entry) => entry.algebrite.startsWith("limit("))).toBe(true);
+  });
+
+
+  it("B7: valor absoluto trigonométrico conserva abs(...) en desigualdad", () => {
+    const parsed = parseExpression("\\lvert\\sin x\\rvert\\ge\\frac{\\sqrt{2}}{2}");
+    expect(parsed.isInequality).toBe(true);
+    expect(parsed.inequalityOperator).toBe(">=");
+    expect(parsed.algebrite).toContain("abs(sin(x))");
+  });
+
+
   it("normaliza √4+1 a sqrt(4)+1, nunca sqrt(5)", () => {
     expect(parseExpression("√4+1").algebrite).toBe("sqrt(4)+1");
   });
@@ -152,7 +173,14 @@ describe("parseExpression", () => {
       expect(parseExpression("phi").algebrite).toBe("((1+sqrt(5))/2)");
     });
 
-    it("sinh/cosh/tanh/asinh/acosh/atanh/exp/sign son funciones válidas (aridad 1)", () => {
+    it("B7: potencias de operatorname hiperbólicas conservan el exponente sobre la función", () => {
+    expect(parseExpression("\\operatorname{sech}^{2}x").algebrite)
+      .toBe("((1/cosh(x)))^(2)");
+    expect(parseExpression("\\operatorname{csch}^{2}x").algebrite)
+      .toBe("((1/sinh(x)))^(2)");
+  });
+
+  it("sinh/cosh/tanh/asinh/acosh/atanh/exp/sign son funciones válidas (aridad 1)", () => {
       for (const fn of ["sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "exp", "sign"]) {
         expect(() => parseExpression(`${fn}(1)`)).not.toThrow();
       }
@@ -231,7 +259,83 @@ describe("cierre de la suite de paridad de teclado v1.0", () => {
   it("\\log_{2}\\left(8\\right) (tecla real de log con base, notación de subíndice) parsea y da 3", () => {
     const parsed = parseExpression("\\log_{2}\\left(8\\right)");
     expect(parsed.algebrite).toBe("(log(8)/log(2))");
+  })
+
+  it("B7 estrés: log con base funciona dentro de productos y ecuaciones", () => {
+    const product = parseExpression("\\log_{2}(3)\\cdot\\log_{3}(4)").algebrite;
+    expect(product).not.toContain("_");
+    expect(product).not.toContain("\\");
+    expect(product).toContain("log");
+
+    const equation = parseExpression("\\log_{2}x=5");
+    expect(equation.isEquation).toBe(true);
+    expect(equation.freeVariables).toEqual(["x"]);
+    expect(equation.algebrite).not.toContain("_");
+  })
+
+  it("B7 estrés: logaritmos con base anidados se normalizan recursivamente", () => {
+    const parsed = parseExpression("\\log_{2}\\left(\\log_{3}x\\right)=1");
+    expect(parsed.isEquation).toBe(true);
+    expect(parsed.algebrite).not.toContain("_");
+    expect(parsed.algebrite).not.toContain("\\");
+    expect(parsed.freeVariables).toEqual(["x"]);
   });
+
+  it("B7 estrés: f(x)=...; f(a) se convierte en sustitución", () => {
+    const parsed = parseExpression("f(x)=\\frac{\\ln x}{x};\\ f(e)");
+    expect(parsed.isEquation).toBe(false);
+    expect(parsed.algebrite).toContain("subst");
+    expect(parsed.algebrite).not.toContain(";");
+  })
+
+  it("B7 estrés: f\\left(a\\right) también se evalúa como sustitución", () => {
+    const parsed = parseExpression("f(x)=\\ln\\left(x^{2}+1\\right);\\ f\\left(\\sqrt{e-1}\\right)");
+    expect(parsed.isEquation).toBe(false);
+    expect(parsed.algebrite).toContain("subst");
+    expect(parsed.algebrite).not.toContain(";");
+  });
+
+  it("B7 estrés: función desnuda admite pi como argumento atómico", () => {
+    const parsed = parseExpression("\\sqrt{\\cos\\pi}").algebrite;
+    expect(parsed).toContain("cos(pi)");
+    expect(parsed).not.toContain("cospi");
+  });;;
+
+  it("B7 estrés: raíz n-ésima admite radicandos con potencias agrupadas", () => {
+    const expRoot = parseExpression("\\sqrt[3]{e^{6}}").algebrite;
+    expect(expRoot).not.toContain("\\");
+    expect(expRoot).toContain("e^(6)");
+    expect(expRoot).toContain("1/(3)");
+
+    const powerRoot = parseExpression("\\sqrt[3]{x^{2}}").algebrite;
+    expect(powerRoot).not.toContain("\\");
+    expect(powerRoot).toContain("x^(2)");
+    expect(powerRoot).toContain("1/(3)");
+  })
+
+  it("B7 estrés: exponentes anidados se convierten balanceadamente", () => {
+    for (const expression of [
+      "e^{-x^{2}}",
+      "e^{e^{x}}",
+      "(\\cos x)^{1/x^{2}}",
+      "x^{x^{x}}",
+    ]) {
+      const parsed = parseExpression(expression).algebrite;
+      expect(parsed).not.toContain("{");
+      expect(parsed).not.toContain("}");
+    }
+  });
+
+  it("B7 estrés: funciones desnudas admiten otra función como argumento", () => {
+    expect(parseExpression("\\ln\\lvert x\\rvert").algebrite).toContain("ln(abs(x))");
+    expect(parseExpression("\\cos\\sqrt{x}").algebrite).toContain("cos(sqrt(x))");
+    expect(parseExpression("\\arctan\\sqrt{x}").algebrite).toContain("arctan(sqrt(x))");
+  });
+
+  it("B7 estrés: el paso de exponentes no rompe inversas trigonométricas", () => {
+    expect(parseExpression("\\sin^{-1}\\left(\\frac{1}{2}\\right)").algebrite).toContain("arcsin");
+    expect(parseExpression("\\operatorname{sech}^{2}x").algebrite).toContain("cosh(x)");
+  });;;
 
   it("\\csc\\left(x\\right)/\\sec\\left(x\\right)/\\cot\\left(x\\right) básicos (sin inversa) parsean (antes tronaban: solo sin/cos/tan tenían regla de despojo de backslash)", () => {
     expect(parseExpression("\\csc\\left(1\\right)").algebrite).toBe("(1/sin(1))");
@@ -377,5 +481,25 @@ describe("Matriz trigonométrica — segunda ronda", () => {
     const parsed = parseExpression("\\int\\operatorname{arcosh}x\\,dx,\\ x>1").algebrite;
     expect(parsed).toContain("integral");
     expect(parsed).not.toContain(">");
+  });
+});
+
+
+describe("B7 algebra: barras simples de valor absoluto", () => {
+  it("normaliza |x| a abs(x)", () => {
+    expect(parseExpression("|x|").algebrite).toBe("abs(x)");
+  });
+
+  it("normaliza múltiples valores absolutos consecutivos", () => {
+    const parsed = parseExpression("|x|+|x-1|");
+    expect(parsed.algebrite).toContain("abs(x)");
+    expect(parsed.algebrite).toContain("abs(x-1)");
+  });
+
+  it("conserva ecuaciones con valor absoluto para el solver", () => {
+    const parsed = parseExpression("|x-1|=x+1");
+    expect(parsed.isEquation).toBe(true);
+    expect(parsed.leftAlgebrite).toContain("abs(x-1)");
+    expect(parsed.freeVariables).toEqual(["x"]);
   });
 });

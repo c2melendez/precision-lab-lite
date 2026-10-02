@@ -1,0 +1,32 @@
+name: Symbolic Algebra Matrix Diagnostic
+concurrency:
+  group: symbolic-algebra-matrix-${{ github.ref }}
+  cancel-in-progress: true
+on:
+  pull_request:
+    branches: [qa/s26-execution]
+    paths:
+      - "e2e/symbolic-algebra-matrix-diagnostic.spec.ts"
+      - ".github/workflows/symbolic-algebra-matrix-diagnostic.yml"
+  workflow_dispatch:
+jobs:
+  symbolic-algebra-matrix:
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0,1,2,3]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save --package-lock=false @playwright/test@1.63.0 @axe-core/playwright@4.13.0
+      - run: npx playwright install --with-deps chromium
+      - name: Run symbolic algebra matrix shard
+        env:
+          ALGEBRA_MATRIX_SHARD: ${{ matrix.shard }}
+        run: npx playwright test e2e/symbolic-algebra-matrix-diagnostic.spec.ts --project=desktop-chromium --workers=1

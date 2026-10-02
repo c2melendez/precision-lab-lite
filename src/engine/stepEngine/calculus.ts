@@ -45,21 +45,53 @@ export interface CalculusResult {
 // TODO el pipeline (evaluate/derivada/integral/límite) las resuelva por
 // igual, no solo la derivada — se importa desde ahí en vez de duplicar
 // la lógica acá.
+function rewriteBalancedUnary(
+  input: string,
+  fnName: string,
+  build: (arg: string) => string,
+): string {
+  let result = "";
+  let i = 0;
+  while (i < input.length) {
+    const precededByLetter = i > 0 && /[A-Za-z]/.test(input[i - 1]);
+    if (!precededByLetter && input.startsWith(`${fnName}(`, i)) {
+      const open = i + fnName.length;
+      let depth = 1;
+      let j = open + 1;
+      while (j < input.length && depth > 0) {
+        if (input[j] === "(") depth++;
+        else if (input[j] === ")") depth--;
+        j++;
+      }
+      if (depth !== 0) {
+        result += input.slice(i);
+        break;
+      }
+      const arg = input.slice(open + 1, j - 1);
+      result += build(arg);
+      i = j;
+    } else {
+      result += input[i];
+      i++;
+    }
+  }
+  return result;
+}
+
 function rewriteInverseHyperbolicsForDerivative(input: string): string {
   let result = input;
-  const rules: Array<[RegExp, (arg: string) => string]> = [
-    [/\basinh\(([^()]*)\)/g, (arg) => `ln((${arg})+sqrt((${arg})^2+1))`],
-    [/\bacosh\(([^()]*)\)/g, (arg) => `ln((${arg})+sqrt((${arg})^2-1))`],
-    [/\batanh\(([^()]*)\)/g, (arg) => `(1/2)*ln((1+(${arg}))/(1-(${arg})))`],
+  const rules: Array<[string, (arg: string) => string]> = [
+    ["asinh", (arg) => `ln((${arg})+sqrt((${arg})^2+1))`],
+    ["acosh", (arg) => `ln((${arg})+sqrt((${arg})^2-1))`],
+    ["atanh", (arg) => `(1/2)*ln((1+(${arg}))/(1-(${arg})))`],
   ];
-  for (let pass = 0; pass < 4; pass++) {
-    let changed = false;
-    for (const [pattern, replacement] of rules) {
-      const next = result.replace(pattern, (_match, arg: string) => replacement(arg));
-      if (next !== result) changed = true;
-      result = next;
-    }
-    if (!changed) break;
+  // Use a balanced scanner rather than /[^()]*/ so reciprocal inverse
+  // functions rewritten as atanh(1/(x)), acosh(1/(x)) or asinh(1/(x))
+  // are handled by the same derivative pipeline.
+  for (let pass = 0; pass < 6; pass++) {
+    const previous = result;
+    for (const [name, build] of rules) result = rewriteBalancedUnary(result, name, build);
+    if (result === previous) break;
   }
   return result;
 }
@@ -205,7 +237,47 @@ export function fastAntiderivative(
   if (variable !== "x") return null;
   let expr = exprAlgebrite
     .replace(/\s+/g, "")
-    .replace(/\^\((\d+)\)/g, "^$1");
+    .replace(/\^\((\d+)\)/g, "^$1")
+    .replace(/e\^\(x\)/g, "e^x");
+
+  // Reciprocal hyperbolic squares acquire different harmless
+  // grouping depending on whether MathLive serialized "sech^2 x" or
+  // "sech(x)^2". Normalize the BASE only; do not relax arbitrary powers.
+  if (expr.endsWith("^2")) {
+    let base = expr.slice(0, -2);
+    const stripBase = (source: string): string => {
+      for (let pass = 0; pass < 8; pass++) {
+        if (!(source.startsWith("(") && source.endsWith(")"))) break;
+        let depth = 0;
+        let wraps = true;
+        for (let i = 0; i < source.length - 1; i++) {
+          depth += source[i] === "(" ? 1 : source[i] === ")" ? -1 : 0;
+          if (depth === 0) { wraps = false; break; }
+        }
+        if (!wraps || depth !== 1) break;
+        source = source.slice(1, -1);
+      }
+      return source;
+    };
+    base = stripBase(base)
+      .replace(/^1\/\((cosh|sinh)\(x\)\)$/, "1/$1(x)");
+    if (base === "1/cosh(x)") return "tanh(x)";
+    if (base === "1/sinh(x)") return "-cosh(x)/sinh(x)";
+  }
+
+  // MathLive/parser can leave harmless grouping around one function or a
+  // reciprocal atom, e.g. ((1/cosh(x)))^2 or (arcsin(x))/(sqrt(...)).
+  // Canonicalize only these x-only atoms so the exact identity table
+  // remains deliberately narrow instead of becoming a general simplifier.
+  for (let pass = 0; pass < 6; pass++) {
+    const previous = expr;
+    expr = expr
+      .replace(/\(\((1\/(?:cos|sin|tan|cosh|sinh|tanh)\(x\))\)\)/g, "($1)")
+      .replace(/\(1\/\((cos|sin|tan|cosh|sinh|tanh)\(x\)\)\)/g, "(1/$1(x))")
+      .replace(/\((arcsin|arccos|arctan|sin|cos|tan|sinh|cosh|tanh)\(x\)\)/g, "$1(x)")
+      .replace(/\(sqrt\(([^()]*)\)\)/g, "sqrt($1)");
+    if (expr === previous) break;
+  }
 
   // Natural input groups the whole integrand. Remove only balanced
   // outer grouping, never parentheses belonging to one factor of a sum.
@@ -231,12 +303,12 @@ export function fastAntiderivative(
   for (let pass = 0; pass < 4; pass++) {
     const previous = expr;
     expr = expr
-      .replace(/\(1\/cos\(x\)\)/g, "sec(x)")
-      .replace(/\(1\/sin\(x\)\)/g, "csc(x)")
-      .replace(/\(1\/tan\(x\)\)/g, "cot(x)")
-      .replace(/\(1\/cosh\(x\)\)/g, "sech(x)")
-      .replace(/\(1\/sinh\(x\)\)/g, "csch(x)")
-      .replace(/\(1\/tanh\(x\)\)/g, "coth(x)")
+      .replace(/\(?1\/\(?cos\(x\)\)?\)?/g, "sec(x)")
+      .replace(/\(?1\/\(?sin\(x\)\)?\)?/g, "csc(x)")
+      .replace(/\(?1\/\(?tan\(x\)\)?\)?/g, "cot(x)")
+      .replace(/\(?1\/\(?cosh\(x\)\)?\)?/g, "sech(x)")
+      .replace(/\(?1\/\(?sinh\(x\)\)?\)?/g, "csch(x)")
+      .replace(/\(?1\/\(?tanh\(x\)\)?\)?/g, "coth(x)")
       .replace(/arccos\(1\/\(x\)\)/g, "arcsec(x)")
       .replace(/arcsin\(1\/\(x\)\)/g, "arccsc(x)")
       .replace(/acosh\(1\/\(x\)\)/g, "asech(x)")
@@ -313,6 +385,75 @@ export function calcIndefiniteIntegral(exprAlgebrite: string, variable: string):
   };
 }
 
+export function fastDefiniteIntegralIdentity(
+  exprAlgebrite: string,
+  variable: string,
+  lower: number,
+  upper: number,
+): string | null {
+  if (variable !== "x") return null;
+
+  const stripOuter = (source: string): string => {
+    source = source.replace(/\s+/g, "");
+    for (let pass = 0; pass < 8; pass++) {
+      if (!(source.startsWith("(") && source.endsWith(")"))) break;
+      let depth = 0;
+      let wraps = true;
+      for (let i = 0; i < source.length - 1; i++) {
+        depth += source[i] === "(" ? 1 : source[i] === ")" ? -1 : 0;
+        if (depth === 0) { wraps = false; break; }
+      }
+      if (!wraps || depth !== 1) break;
+      source = source.slice(1, -1);
+    }
+    return source;
+  };
+
+  const canonical = stripOuter(exprAlgebrite);
+  const targets = ["ln(sin(x))", "log(sin(x))"];
+  let coefficientText = "1";
+  let matchedTarget: string | null = null;
+
+  for (const target of targets) {
+    if (canonical === target) {
+      matchedTarget = target;
+      coefficientText = "1";
+      break;
+    }
+    if (canonical === "-" + target) {
+      matchedTarget = target;
+      coefficientText = "-1";
+      break;
+    }
+    if (canonical.endsWith("*" + target)) {
+      matchedTarget = target;
+      coefficientText = stripOuter(canonical.slice(0, -(target.length + 1)));
+      break;
+    }
+  }
+
+  if (matchedTarget === null) return null;
+
+  try {
+    const coefficient = compileNumeric(coefficientText, "__log_sine_coeff__")(0);
+    if (!Number.isFinite(coefficient)) return null;
+  } catch {
+    return null;
+  }
+
+  const eps = 1e-10;
+  const forward = Math.abs(lower) <= eps && Math.abs(upper - Math.PI / 2) <= eps;
+  const reverse = Math.abs(upper) <= eps && Math.abs(lower - Math.PI / 2) <= eps;
+  if (!forward && !reverse) return null;
+
+  const orientation = forward ? -1 : 1;
+  // Do not run this through Algebrite.evaluate(): in the Lite Algebrite
+  // binding, ln(2) is interpreted as the common logarithm on that route.
+  // The calculator's own parser/numeric evaluator defines ln as natural
+  // log, which is also the notation exposed to the user.
+  return String(orientation) + "*(" + coefficientText + ")*pi*ln(2)/2";
+}
+
 export function calcDefiniteIntegral(
   exprAlgebrite: string,
   variable: string,
@@ -320,6 +461,23 @@ export function calcDefiniteIntegral(
   upper: number,
 ): CalculusResult {
   const originalExpr = exprAlgebrite;
+
+  const exactDefinite = fastDefiniteIntegralIdentity(originalExpr, variable, lower, upper);
+  if (exactDefinite !== null) {
+    return {
+      resultLatex: exactDefinite,
+      confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: `\\int_{${lower}}^{${upper}} ${originalExpr}\\,d${variable}`, explanation: "Integral definida planteada." },
+        {
+          id: "identity",
+          latex: exactDefinite,
+          explanation: "Se aplicó la identidad exacta de la integral log-seno por simetría y ángulo doble; no se fabrica una primitiva elemental.",
+        },
+      ],
+    };
+  }
+
   const fast = fastAntiderivative(originalExpr, variable);
   if (fast !== null) {
     try {

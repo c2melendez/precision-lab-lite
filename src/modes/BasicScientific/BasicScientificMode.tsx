@@ -332,6 +332,23 @@ export function BasicScientificMode() {
         const upperParsed = parseExpression(intervalRestriction.upperLatex, angleMode);
         domainLower = compileNumeric(lowerParsed.algebrite, "__bound__")(0);
         domainUpper = compileNumeric(upperParsed.algebrite, "__bound__")(0);
+
+        // In DEG/GRAD mode the free variable x inside sin/cos/tan denotes
+        // degrees (the parser inserts *pi/180 into the function argument).
+        // An explicit interval like x∈[0°,360°) must therefore remain
+        // 0..360 in the solver's x-units. Parsing the ° literal correctly
+        // yields radians, so convert only the DOMAIN VALUE back to degrees.
+        const hasExplicitDegree = (value: string) =>
+          /°|\\circ|\\degree/.test(value);
+        if (angleMode === "GRAD") {
+          if (hasExplicitDegree(intervalRestriction.lowerLatex)) {
+            domainLower = domainLower * 180 / Math.PI;
+          }
+          if (hasExplicitDegree(intervalRestriction.upperLatex)) {
+            domainUpper = domainUpper * 180 / Math.PI;
+          }
+        }
+
         if (!Number.isFinite(domainLower) || !Number.isFinite(domainUpper)) {
           throw { code: ErrorCode.PARSE_ERROR, message: "Los límites del intervalo deben ser valores reales finitos." };
         }
@@ -684,7 +701,7 @@ export function BasicScientificMode() {
       <Screen
         latex={latex}
         onChangeLatex={setLatex}
-        placeholder="Escribe una expresión, ecuación o sistema…"
+        placeholder="Escribe una expresión"
         fieldRef={setMathField}
         result={result}
         sessionHistory={sessionHistory}
