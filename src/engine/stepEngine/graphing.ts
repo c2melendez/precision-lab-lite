@@ -21,6 +21,7 @@
 
 import { compileNumeric, compileNumeric2D } from "../numericFallback";
 import { ErrorCode, type AppError } from "../../types";
+import { extractDomainConditions } from "../domainConditions";
 
 export interface GraphAnalysis {
   domainDescription: string;
@@ -33,6 +34,9 @@ export interface GraphAnalysis {
   globalMin: { x: number; y: number } | null;
   inflectionPoints: { x: number; y: number }[];
   vertex: { x: number; y: number } | null;
+  /** Discontinuidades removibles verificadas desde restricciones de la
+   * expresión original. Se dibujan como círculos abiertos. */
+  removableHoles: { x: number; y: number }[];
   samples: { x: number; y: number }[]; // para dibujar la curva
 }
 
@@ -63,6 +67,138 @@ function bisectRoot(f: (x: number) => number, a: number, b: number): number {
     else hi = mid;
   }
   return (lo + hi) / 2;
+}
+
+function denominatorRootsInView(
+  denominatorExpr: string,
+  variable: string,
+  view: [number, number],
+): number[] {
+  let denominator: (x: number) => number;
+  try {
+    denominator = compileNumeric(denominatorExpr, variable);
+  } catch {
+    return [];
+  }
+
+  const [a, b] = view;
+  const roots: number[] = [];
+  const probeCount = 400;
+  const step = (b - a) / probeCount;
+
+  const pushRoot = (value: number) => {
+    if (!Number.isFinite(value) || value < Math.min(a, b) || value > Math.max(a, b)) return;
+    if (!roots.some((existing) => Math.abs(existing - value) < 1e-6)) roots.push(value);
+  };
+
+  // Detect affine denominators exactly enough even when the uniform probe
+  // grid does not land on the zero (the central S26 case x-1).
+  try {
+    const mid = (a + b) / 2;
+    const fa = denominator(a);
+    const fm = denominator(mid);
+    const fb = denominator(b);
+    if ([fa, fm, fb].every(Number.isFinite)) {
+      const secondDifference = fa - 2 * fm + fb;
+      const scale = Math.max(1, Math.abs(fa), Math.abs(fm), Math.abs(fb));
+      if (Math.abs(secondDifference) <= scale * 1e-9 && Math.abs(fb - fa) > 1e-12) {
+        const slope = (fb - fa) / (b - a);
+        pushRoot(a - fa / slope);
+      }
+    }
+  } catch {
+    // Fall through to sampled root detection.
+  }
+
+  let prevX = a;
+  let prevY: number;
+  try {
+    prevY = denominator(prevX);
+  } catch {
+    prevY = NaN;
+  }
+  if (Number.isFinite(prevY) && Math.abs(prevY) < 1e-10) pushRoot(prevX);
+
+  for (let i = 1; i <= probeCount; i += 1) {
+    const x = a + i * step;
+    let y: number;
+    try {
+      y = denominator(x);
+    } catch {
+      y = NaN;
+    }
+    if (Number.isFinite(y) && Math.abs(y) < 1e-10) pushRoot(x);
+    if (Number.isFinite(prevY) && Number.isFinite(y) && Math.sign(prevY) !== Math.sign(y)) {
+      try {
+        pushRoot(bisectRoot(denominator, prevX, x));
+      } catch {
+        // Ignore an unstable candidate.
+      }
+    }
+    prevX = x;
+    prevY = y;
+  }
+
+  return roots.sort((x, y) => x - y);
+}
+
+function verifyRemovableHole(
+  f: (x: number) => number,
+  point: number,
+  view: [number, number],
+): { x: number; y: number } | null {
+  const span = Math.max(Math.abs(view[1] - view[0]), 1);
+  const epsilons = [span * 1e-3, span * 5e-4, span * 2.5e-4, span * 1.25e-4];
+  const estimates: number[] = [];
+
+  for (const eps of epsilons) {
+    let left: number;
+    let right: number;
+    try {
+      left = f(point - eps);
+      right = f(point + eps);
+    } catch {
+      return null;
+    }
+    if (!Number.isFinite(left) || !Number.isFinite(right)) return null;
+    if (Math.abs(left) > 1e8 || Math.abs(right) > 1e8) return null;
+
+    const mean = (left + right) / 2;
+    const tolerance = Math.max(1e-4, Math.abs(mean) * 2e-3, eps * 5);
+    if (Math.abs(left - right) > tolerance) return null;
+    estimates.push(mean);
+  }
+
+  if (estimates.length < 3) return null;
+  const tail = estimates.slice(-3);
+  const y = tail.reduce((sum, value) => sum + value, 0) / tail.length;
+  const spread = Math.max(...tail) - Math.min(...tail);
+  if (spread > Math.max(1e-3, Math.abs(y) * 2e-3)) return null;
+  return { x: point, y };
+}
+
+function findRemovableHoles(
+  exprAlgebrite: string,
+  variable: string,
+  view: [number, number],
+  f: (x: number) => number,
+): { x: number; y: number }[] {
+  const denominatorConditions = extractDomainConditions(exprAlgebrite).filter(
+    (condition) =>
+      condition.kind === "denominator" &&
+      (condition.variable === undefined || condition.variable === variable),
+  );
+
+  const holes: { x: number; y: number }[] = [];
+  for (const condition of denominatorConditions) {
+    for (const root of denominatorRootsInView(condition.expressionAlgebrite, variable, view)) {
+      const hole = verifyRemovableHole(f, root, view);
+      if (hole && !holes.some((existing) => Math.abs(existing.x - hole.x) < 1e-6)) {
+        holes.push(hole);
+      }
+    }
+  }
+  return holes.sort((p, q) => p.x - q.x);
 }
 
 export function analyzeGraph(
@@ -232,6 +368,8 @@ export function analyzeGraph(
     vertex = { x: vx, y: f(vx) };
   }
 
+  const removableHoles = findRemovableHoles(exprAlgebrite, variable, view, f);
+
   return {
     domainDescription,
     rangeDescription,
@@ -243,6 +381,7 @@ export function analyzeGraph(
     globalMin,
     inflectionPoints: dedupePoints(inflectionPoints),
     vertex,
+    removableHoles,
     samples,
   };
 }
@@ -343,6 +482,7 @@ export function analyzeGraphPolar(
     globalMin: null,
     inflectionPoints: [],
     vertex: null,
+    removableHoles: [],
     samples,
   };
 }
@@ -428,6 +568,7 @@ export function analyzeGraphParametric(
     globalMin: null,
     inflectionPoints: [],
     vertex: null,
+    removableHoles: [],
     samples,
   };
 }
