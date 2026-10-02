@@ -135,7 +135,7 @@ export function NaturalInput({ value, onChange, onEnter, placeholder, ariaLabel 
       ref={attachMathField}
       class={
         bare
-          ? "block min-w-0 max-w-full w-full bg-transparent px-0 py-1 text-right text-2xl text-ink"
+          ? "block min-w-0 max-w-full w-full bg-transparent py-1 pl-0 pr-20 text-right text-lg text-ink sm:text-2xl"
           : "block min-w-0 max-w-full w-full rounded-lg border border-paper-line bg-paper-soft px-4 py-3 text-2xl text-ink shadow-sm"
       }
       style={
@@ -143,9 +143,11 @@ export function NaturalInput({ value, onChange, onEnter, placeholder, ariaLabel 
           "--caret-color": "rgb(var(--color-marker))",
           "--selection-background-color": "rgb(var(--color-marker-soft))",
           "--selection-color": "rgb(var(--color-marker-text))",
-          // Keep long formulas/placeholders inside the editor instead of
-          // expanding the mobile visual viewport and displacing the dock.
-          overflow: "hidden",
+          // Keep the field width bounded without visually clipping long
+          // expressions. MathLive may scroll its own inline content, while
+          // the page itself remains protected by min-w-0/max-w-full.
+          overflowX: "auto",
+          overflowY: "hidden",
         } as React.CSSProperties
       }
       // El teclado propio de la app reemplaza al teclado nativo de MathLive.
