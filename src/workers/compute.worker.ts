@@ -1186,14 +1186,32 @@ function stripBalancedOuterParens(source: string): string {
   return source;
 }
 
+function canonicalLimitExpr(source: string): string {
+  return stripBalancedOuterParens(source.replace(/\s+/g, ""))
+    .replace(/\^\(([-+]?\d+)\)/g, "^$1")
+    .replace(/\(pi\)\/(\d+)/g, "pi/$1")
+    .replace(/\(e\^\(x\)\)/g, "e^x")
+    .replace(/e\^\(x\)/g, "e^x");
+}
+
 function tryExactClassicalLimit(
   bodyRaw: string,
-  pointRaw: string,
+  pointExprRaw: string,
   direction: "both" | "left" | "right",
 ): string | null {
-  const body = stripBalancedOuterParens(bodyRaw.replace(/\s+/g, ""));
-  const isPosInf = pointRaw === "oo";
-  const isNegInf = pointRaw === "-oo";
+  const body = canonicalLimitExpr(bodyRaw);
+  const pointExpr = canonicalLimitExpr(pointExprRaw);
+  const isPosInf = pointExpr === "oo";
+  const isNegInf = pointExpr === "-oo";
+
+  let pointNumeric = Number.NaN;
+  if (!isPosInf && !isNegInf) {
+    try {
+      pointNumeric = compileNumeric(pointExpr, "__limit_point__")(0);
+    } catch {
+      pointNumeric = Number.NaN;
+    }
+  }
 
   if (body === "arctan(x)") {
     if (isPosInf) return String(Math.PI / 2);
@@ -1201,9 +1219,8 @@ function tryExactClassicalLimit(
   }
 
   if (
-    body === "(pi/2)-arctan(x)" ||
-    body === "pi/2-arctan(x)" ||
-    body === "((pi/2)-arctan(x))"
+    /^(?:\(?pi\/2\)?)-arctan\(x\)$/.test(body) ||
+    /^\(?(?:pi\/2)-arctan\(x\)\)?$/.test(body)
   ) {
     if (isPosInf) return "0";
     if (isNegInf) return String(Math.PI);
@@ -1211,30 +1228,36 @@ function tryExactClassicalLimit(
 
   if (
     isPosInf &&
-    /^(?:\(+)?sinh\(x\)(?:\)+)?\/(?:\(+)?(?:e\^x|exp\(x\))(?:\)+)?$/.test(body)
+    /^\(?sinh\(x\)\)?\/\(?(?:e\^x|exp\(x\))\)?$/.test(body)
   ) {
     return "0.5";
   }
 
-  // lim (cosh(x)-1)/x^2 = 1/2 at x=0. Numeric sampling suffers
-  // cancellation at very small epsilons, so keep the exact identity.
   if (
-    Math.abs(Number(pointRaw)) < 1e-14 &&
-    /cosh\(x\)-1/.test(body) &&
+    Number.isFinite(pointNumeric) &&
+    Math.abs(pointNumeric) < 1e-14 &&
+    /cosh\(x\).*?-1/.test(body) &&
     /x\^2/.test(body) &&
     body.includes("/")
   ) {
     return "0.5";
   }
 
-  const numericPoint = Number(pointRaw);
-  if (Number.isFinite(numericPoint) && Math.abs(numericPoint - Math.PI / 2) < 1e-10 && body === "tan(x)") {
+  if (
+    Number.isFinite(pointNumeric) &&
+    Math.abs(pointNumeric - Math.PI / 2) < 1e-10 &&
+    body === "tan(x)"
+  ) {
     if (direction === "left") return "oo";
     if (direction === "right") return "-oo";
   }
 
-  if (Number.isFinite(numericPoint) && Math.abs(numericPoint) < 1e-14) {
-    const isCoth = body === "1/tanh(x)" || body === "(1/tanh(x))";
+  if (Number.isFinite(pointNumeric) && Math.abs(pointNumeric) < 1e-14) {
+    const compact = body.replace(/[()]/g, "");
+    const isCoth =
+      body === "1/tanh(x)" ||
+      body === "(1/tanh(x))" ||
+      compact === "1/tanhx";
     if (isCoth && direction === "right") return "oo";
     if (isCoth && direction === "left") return "-oo";
   }
@@ -1257,19 +1280,25 @@ function tryLimitFallback(raw: string): string | null {
     // ejecuta, \infty ya se tradujo a "oo" (misma pasada de normalize.ts)
     // — Number("oo") siempre da NaN, así que se compara como string en
     // vez de intentar convertir primero.
-    const pointRaw = evaluate(pointExpr);
-    const exact = tryExactClassicalLimit(body, pointRaw, direction);
+    const exact = tryExactClassicalLimit(body, pointExpr, direction);
     if (exact !== null) return exact;
-    if (pointRaw === "oo" || pointRaw === "-oo") {
+
+    const canonicalPoint = canonicalLimitExpr(pointExpr);
+    if (canonicalPoint === "oo" || canonicalPoint === "-oo") {
       const fn = compileNumeric(body, variable);
-      const { value, converged } = numericLimitAtInfinity(fn, pointRaw === "oo" ? 1 : -1);
+      const { value, converged } = numericLimitAtInfinity(fn, canonicalPoint === "oo" ? 1 : -1);
       if (!converged) return null;
       if (value === Infinity) return "oo";
       if (value === -Infinity) return "-oo";
       return Number.isFinite(value) ? String(value) : null;
     }
 
-    const pointNumeric = Number(pointRaw);
+    let pointNumeric: number;
+    try {
+      pointNumeric = compileNumeric(canonicalPoint, "__limit_point__")(0);
+    } catch {
+      return null;
+    }
     if (!Number.isFinite(pointNumeric)) return null;
     const fn = compileNumeric(body, variable);
     const { value, converged } = numericLimit(fn, pointNumeric, direction);
