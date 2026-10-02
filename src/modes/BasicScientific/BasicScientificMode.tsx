@@ -6,6 +6,7 @@ import { Screen } from "../../components/Screen";
 import { type SessionHistoryEntry } from "../../components/HistoryLog";
 import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { parseExpression } from "../../engine/parsing";
+import { toLatex } from "../../engine/algebriteClient";
 import { splitSystemLatex } from "../../engine/parsing/systemSplit";
 import { detectODE } from "../../engine/parsing/odeDetect";
 import { detectComplexAnalysisIntent } from "../../engine/parsing/complexAnalysisIntent";
@@ -243,6 +244,16 @@ export function BasicScientificMode() {
 
     const worker = getWorker();
 
+    // Contrato S26: "Original" es la representación que el parser/motor
+    // entendió, no una copia literal del texto de entrada. Se construye
+    // desde los lados ya normalizados para no ocultar precedencia,
+    // multiplicación implícita o reescrituras de funciones.
+    const interpretedLatex = parsed.isEquation
+      ? `${toLatex(parsed.leftAlgebrite)} = ${toLatex(parsed.rightAlgebrite)}`
+      : parsed.isInequality
+        ? `${toLatex(parsed.leftAlgebrite)} ${parsed.inequalityOperator ?? ""} ${toLatex(parsed.rightAlgebrite)}`
+        : toLatex(parsed.algebrite);
+
     // Rama 2: ecuación de una variable (spec §6 — igual criterio que
     // AlgebraMode.tsx: 0 o >1 variables libres se rechaza en vez de
     // adivinar cuál despejar).
@@ -257,7 +268,12 @@ export function BasicScientificMode() {
         );
         return;
       }
-      worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica (ecuación)", currentLatex, e.data);
+      worker.onmessage = (e: MessageEvent<MathResult>) =>
+        onSuccess("Científica (ecuación)", currentLatex, {
+          ...e.data,
+          interpretedLatex,
+          resultViewLabel: "Solución",
+        });
       worker.postMessage({
         type: "solveAlgebra",
         requestId,
@@ -282,7 +298,12 @@ export function BasicScientificMode() {
         );
         return;
       }
-      worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica (desigualdad)", currentLatex, e.data);
+      worker.onmessage = (e: MessageEvent<MathResult>) =>
+        onSuccess("Científica (desigualdad)", currentLatex, {
+          ...e.data,
+          interpretedLatex,
+          resultViewLabel: "Solución",
+        });
       worker.postMessage({
         type: "solveInequality",
         requestId,
@@ -294,7 +315,12 @@ export function BasicScientificMode() {
     }
 
     // Rama 3: expresión simple (comportamiento original, sin cambios).
-    worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica", currentLatex, e.data);
+    worker.onmessage = (e: MessageEvent<MathResult>) =>
+      onSuccess("Científica", currentLatex, {
+        ...e.data,
+        interpretedLatex,
+        resultViewLabel: "Resultado",
+      });
     worker.postMessage({ type: "evaluate", requestId, expressionAlgebrite: parsed.algebrite });
   }, [latex, mathField, angleMode, getWorker, fail, onSuccess, runSystem]);
 
