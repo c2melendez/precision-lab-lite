@@ -205,3 +205,28 @@ Durante el cierre se corrigieron falsos negativos de E2E relacionados con sincro
 ### Estado de integración
 
 Los defectos funcionales que motivaron M1–M15 fueron corregidos/revalidados y la regresión completa termina con `success`. El PR canónico de Track D queda listo para revisión/integración, sujeto únicamente a las políticas normales del repositorio.
+
+
+## Checkpoint S26/B7 — 2 de octubre de 2026
+
+**HEAD:** `cb630c6bcc226a44a75f6179c2aa2ec4c82c2c6f`
+
+### Trabajo consolidado de esta sesión
+- Se extendió el contrato de la pantalla de resultado para distinguir la forma original/interpretada de las formas transformadas.
+- Se estableció que simplificar, factorizar, expandir o resolver no puede eliminar restricciones del dominio de la expresión original.
+- Se propagaron restricciones de dominio hacia resultado/historial y, donde aplica, hacia graficación.
+- Se implementó la detección de discontinuidades removibles y su representación como círculo abierto, separándolas de las asíntotas verticales.
+- Se filtraron condiciones de dominio numéricas tautológicas.
+- Se mantuvo la regla de pasos detallados opcionales en Plus.
+- Se corrigió `brace-expansion` manteniendo los gates de seguridad activos.
+- Estado actual de gates: CI #886, Playwright E2E #885, Cross-browser #580 y GitHub Pages #255: SUCCESS.
+
+### Campaña QA acumulada
+El siguiente LLM debe conservar las matrices históricas y nuevas como una campaña única por suites lógicas, no como un runner monolítico. La prioridad sigue siendo corregir causas generales de parser/routing/motor y después recertificar transversalmente.
+
+### Pendiente inmediato
+1. Consolidar el contrato completo de variantes de resultado: Original / Simplificación / Factorización / Resolución solo si aplican.
+2. Mantener restricciones de dominio/rango y exclusiones visibles en todas las variantes equivalentes.
+3. Completar conversiones de números complejos entre binomial, polar, trigonométrica y exponencial con procedimiento opcional en Plus.
+4. Reejecutar matrices por niveles N1/N2/N3 después de cada bloque.
+5. Integrar la matriz gráfica después de asegurar parser y análisis matemático transversal; usarla también como detector de huecos, asíntotas, extremos, áreas y representaciones derivadas.
