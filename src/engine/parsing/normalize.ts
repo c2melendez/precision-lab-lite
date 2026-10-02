@@ -380,8 +380,34 @@ function rewriteBareFunctionApplications(input: string): string {
   return out;
 }
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
+function rewritePlainAbsoluteBars(input: string): string {
+  if (!input.includes("|")) return input;
+
+  let out = "";
+  let cursor = 0;
+  while (cursor < input.length) {
+    const open = input.indexOf("|", cursor);
+    if (open < 0) {
+      out += input.slice(cursor);
+      break;
+    }
+
+    const close = input.indexOf("|", open + 1);
+    if (close < 0) {
+      out += input.slice(cursor);
+      break;
+    }
+
+    out += input.slice(cursor, open);
+    const inner = input.slice(open + 1, close);
+    out += `abs(${rewritePlainAbsoluteBars(inner)})`;
+    cursor = close + 1;
+  }
+  return out;
+}
+
 export function preprocessLatex(latex: string): string {
-  let expr = latex;
+  let expr = rewritePlainAbsoluteBars(latex);
 
   // B7 stress matrix: natural function definition + evaluation.
   // Example: f(x)=ln(x)/x; f(e) -> subst((e),x,(ln(x)/x)).
