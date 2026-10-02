@@ -7,6 +7,20 @@ import { ErrorCode } from "../src/types";
 // `npm run test` tras `npm install`.
 
 describe("parseExpression", () => {
+  it("B7: expone formas internas de los cinco límites residuales", () => {
+    const cases = [
+      "\\lim_{x\\to-\\infty}\\operatorname{arccot} x",
+      "\\lim_{x\\to\\infty}\\operatorname{arccot} x",
+      "\\lim_{x\\to 0}\\frac{\\cosh x-1}{x^{2}}",
+      "\\lim_{x\\to\\infty}\\frac{\\sinh x}{e^{x}}",
+      "\\lim_{x\\to 0^{+}}\\coth x",
+    ];
+    const parsed = cases.map((latex) => ({ latex, algebrite: parseExpression(latex).algebrite }));
+    console.log("B7_RESIDUAL_LIMIT_PARSE", JSON.stringify(parsed));
+    expect(parsed.every((entry) => entry.algebrite.startsWith("limit("))).toBe(true);
+  });
+
+
   it("B7: valor absoluto trigonométrico conserva abs(...) en desigualdad", () => {
     const parsed = parseExpression("\\lvert\\sin x\\rvert\\ge\\frac{\\sqrt{2}}{2}");
     expect(parsed.isInequality).toBe(true);
