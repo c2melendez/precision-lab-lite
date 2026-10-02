@@ -76,16 +76,16 @@ function readFunctionArgument(input: string, fromIndex: number, macroLabel: stri
   let cursor = fromIndex;
   while (cursor < input.length && /\\s/.test(input[cursor])) cursor++;
 
-  if (input.startsWith("\\\\left(", cursor)) {
-    const start = cursor + "\\\\left(".length;
+  if (input.startsWith("\\left(", cursor)) {
+    const start = cursor + "\\left(".length;
     let depth = 1;
     let j = start;
     while (j < input.length) {
-      if (input.startsWith("\\\\left(", j)) { depth++; j += "\\\\left(".length; continue; }
-      if (input.startsWith("\\\\right)", j)) {
+      if (input.startsWith("\\left(", j)) { depth++; j += "\\left(".length; continue; }
+      if (input.startsWith("\\right)", j)) {
         depth--;
-        if (depth === 0) return [input.slice(start, j), j + "\\\\right)".length];
-        j += "\\\\right)".length;
+        if (depth === 0) return [input.slice(start, j), j + "\\right)".length];
+        j += "\\right)".length;
         continue;
       }
       j++;
@@ -113,20 +113,20 @@ function rewriteLogBases(input: string): string {
   let out = "";
   let i = 0;
   while (i < input.length) {
-    if (!input.startsWith("\\\\log", i)) { out += input[i++]; continue; }
-    let cursor = i + "\\\\log".length;
+    if (!input.startsWith("\\log", i)) { out += input[i++]; continue; }
+    let cursor = i + "\\log".length;
     while (cursor < input.length && /\\s/.test(input[cursor])) cursor++;
-    if (input[cursor] !== "_") { out += "\\\\log"; i = cursor; continue; }
+    if (input[cursor] !== "_") { out += "\\log"; i = cursor; continue; }
     cursor++;
     while (cursor < input.length && /\\s/.test(input[cursor])) cursor++;
 
     let base: string;
-    try { [base, cursor] = readBalancedOrSingleToken(input, cursor, "base de \\\\log"); }
-    catch { out += "\\\\log"; i += "\\\\log".length; continue; }
+    try { [base, cursor] = readBalancedOrSingleToken(input, cursor, "base de \\log"); }
+    catch { out += "\\log"; i += "\\log".length; continue; }
 
     let argument: string;
-    try { [argument, cursor] = readFunctionArgument(input, cursor, "argumento de \\\\log"); }
-    catch { out += "\\\\log"; i += "\\\\log".length; continue; }
+    try { [argument, cursor] = readFunctionArgument(input, cursor, "argumento de \\log"); }
+    catch { out += "\\log"; i += "\\log".length; continue; }
 
     out += "log((" + argument + "),(" + base + "))";
     i = cursor;
@@ -138,8 +138,8 @@ function rewriteNthRoots(input: string): string {
   let out = "";
   let i = 0;
   while (i < input.length) {
-    if (!input.startsWith("\\\\sqrt[", i)) { out += input[i++]; continue; }
-    const indexStart = i + "\\\\sqrt[".length;
+    if (!input.startsWith("\\sqrt[", i)) { out += input[i++]; continue; }
+    const indexStart = i + "\\sqrt[".length;
     const close = input.indexOf("]", indexStart);
     if (close === -1) { out += input[i++]; continue; }
     const index = input.slice(indexStart, close).trim();
@@ -147,7 +147,7 @@ function rewriteNthRoots(input: string): string {
     while (cursor < input.length && /\\s/.test(input[cursor])) cursor++;
 
     let radicand: string;
-    try { [radicand, cursor] = readBalancedOrSingleToken(input, cursor, "radicando de \\\\sqrt[n]"); }
+    try { [radicand, cursor] = readBalancedOrSingleToken(input, cursor, "radicando de \\sqrt[n]"); }
     catch { out += input[i++]; continue; }
 
     out += "((" + radicand + ")^(1/(" + index + ")))";
