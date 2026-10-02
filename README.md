@@ -1,5 +1,22 @@
 # Calculadora Científica Web
 
+<!-- S26-CURRENT-STATUS-2026-10-02:START -->
+## Estado de continuidad S26/B7 — 2 de octubre de 2026
+
+Checkpoint canónico de **Precision Lab Lite**: `cb630c6bcc226a44a75f6179c2aa2ec4c82c2c6f` en `main`.
+
+- Contrato contextual de resultados en desarrollo: la salida preserva la interpretación/original cuando aplica y las transformaciones simbólicas no deben borrar restricciones matemáticas heredadas de la expresión de entrada.
+- Las restricciones de dominio se conservan como metadatos persistentes; las discontinuidades removibles de expresiones racionales se distinguen de asíntotas y se representan con **círculo abierto** en graficación.
+- Las restricciones numéricas tautológicas se filtran para no mostrar tarjetas de dominio irrelevantes.
+- En Plus, los pasos detallados permanecen opcionales y colapsados por defecto; al reutilizar un cálculo vuelven a iniciar cerrados.
+- Se corrigió la cadena transitiva vulnerable de `brace-expansion` sin desactivar los gates de seguridad.
+- CI #886, Playwright E2E #885, Cross-browser #580 y GitHub Pages #255: SUCCESS.
+- La campaña QA ya no debe tratar trigonometría, log/exp/radicales, cálculo, EDO, variable compleja, sintaxis, álgebra simbólica y graficación como áreas aisladas: deben conservarse pruebas transversales y recertificación después de cada bloque de corrección.
+
+Para continuidad detallada, leer `qa/s26/HANDOFF_2026-10-02.md` y `qa/s26/HANDOFF_PROMPT.md`.
+<!-- S26-CURRENT-STATUS-2026-10-02:END -->
+
+
 App instalable (PWA) con calculadora científica, álgebra, cálculo, sistemas de ecuaciones, matrices y graficación — 100% en el navegador (sin backend), alojada en GitHub Pages.
 
 Ver `spec_calculadora_v10_sin_backend.md` para la especificación técnica completa. El historial completo de fases de desarrollo (Módulo 1 en adelante) sigue más abajo en este mismo archivo, tal cual se fue registrando; esta sección de arriba se mantiene al día como resumen del estado real, verificado con ejecución.
