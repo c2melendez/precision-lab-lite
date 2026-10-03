@@ -40,13 +40,31 @@ async function setExpression(page: Page, value: string) {
 async function originalLatex(page: Page): Promise<string> {
   const calculate = page.getByRole("button", { name: /calcular|evaluar/i }).first();
   await calculate.click();
-  const original = page.getByRole("button", { name: "Original", exact: true }).first();
-  await expect(original).toBeVisible({ timeout: 12000 });
-  await original.click();
   const resultRegion = page.locator('section[aria-label="Resultado"]').first();
-  const field = resultRegion.locator('math-field[read-only]').first();
-  await expect(field).toBeVisible();
-  return String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""))
+  await expect(resultRegion).toBeVisible({ timeout: 12000 });
+
+  const original = page.getByRole("button", { name: "Original", exact: true }).first();
+  if (await original.count()) {
+    await expect(original).toBeVisible({ timeout: 12000 });
+    await original.click();
+    const field = resultRegion.locator('math-field[read-only]').first();
+    await expect(field).toBeVisible();
+    return String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""))
+      .replace(/\\left|\\right/g, "")
+      .replace(/\s+/g, "");
+  }
+
+  // Algunos resultados simbólicos no generan una vista contextual "Original".
+  // En ese caso validamos la expresión matemática principal renderizada.
+  const status = resultRegion.locator('[role="status"]').first();
+  await expect(status).toBeVisible({ timeout: 12000 });
+  const primary = status.locator(".a11y-scale-result-3xl").first();
+  await expect(primary).toBeVisible({ timeout: 12000 });
+  const raw = await primary.evaluate((el) => {
+    const node = el as HTMLElement & { value?: string };
+    return node.value ?? node.innerText ?? "";
+  });
+  return String(raw)
     .replace(/\\left|\\right/g, "")
     .replace(/\s+/g, "");
 }
