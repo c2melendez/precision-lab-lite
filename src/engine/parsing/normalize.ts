@@ -474,6 +474,9 @@ export function preprocessLatex(latex: string): string {
   // El tokenizador científico espera el operador postfix literal "%".
   expr = expr;
 
+  // S26 ± binario: a\\pm b conserva ambas ramas como pm(a,b).
+  expr = expr.replace(/([^=<>]+?)\\pm\s*([^=<>]+)/g, (_m, a, b) => `pm(${a.trim()},${b.trim()})`);
+
   // Según la posición del placeholder, MathLive puede simplificar
   // \\pm\\left(5\\right) a \\pm 5. Normalizamos también esa forma
   // a la función unaria interna pm(5), preservando las dos ramas.
