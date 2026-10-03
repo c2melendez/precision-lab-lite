@@ -59,13 +59,14 @@ async function resultValue(page: Page): Promise<string> {
   if (await failure.count()) return (await resultRegion.innerText()).replace(/\s+/g, " ").trim();
   const status = resultRegion.locator('[role="status"]').first();
   await expect(status).toBeVisible({ timeout: 12000 });
-  const staticField = status.locator("math-field[read-only]").first();
-  if (await staticField.count()) {
-    return String(await staticField.evaluate((el) =>
+  const primary = status.locator(".a11y-scale-result-3xl").first();
+  await expect(primary).toBeVisible({ timeout: 12000 });
+  if ((await primary.evaluate((el) => el.tagName.toLowerCase())) === "math-field") {
+    return String(await primary.evaluate((el) =>
       (el as HTMLElement & { value?: string }).value ?? "",
     )).replace(/\s+/g, "");
   }
-  const plain = status.locator(".a11y-scale-result-3xl").first();
+  const plain = primary;
   await expect(plain).toBeVisible();
   return (await plain.innerText()).replace(/\s+/g, "");
 }
