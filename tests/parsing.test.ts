@@ -302,3 +302,17 @@ describe("S26 Sintaxis 625 — delimitadores", () => {
     expect(parseExpression("\\lvert x-1\\rvert").algebrite).toBe("abs(x-1)");
   });
 });
+
+
+describe("S26 A1 — cfrac y over", () => {
+  it("normaliza cfrac como frac", () => {
+    expect(parseExpression("\\cfrac{1}{2}").algebrite).toContain("(1)/(2)");
+  });
+
+  it("normaliza over agrupado y de nivel superior", () => {
+    expect(parseExpression("{1\\over 2}").algebrite).toContain("(1)/(2)");
+    const parsed = parseExpression("x+1\\over x-1").algebrite;
+    expect(parsed).toContain("x+1");
+    expect(parsed).toContain("x-1");
+  });
+});
