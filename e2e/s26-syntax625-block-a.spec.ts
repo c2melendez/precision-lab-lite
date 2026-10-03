@@ -1,48 +1,44 @@
 import { expect, test, type Page } from "@playwright/test";
 
-type Case = { id: string; input: string; expected: RegExp };
-
+type Case = { id: string; input: string; expected: number };
 const CASES: Case[] = [
-  { id: "EN-FR-01", input: "\\frac{1}{2}", expected: /0\.5|\\frac\{1\}\{2\}/ },
-  { id: "EN-FR-02", input: "\\dfrac{1}{2}", expected: /0\.5|\\frac\{1\}\{2\}/ },
-  { id: "EN-FR-03", input: "\\tfrac{1}{2}", expected: /0\.5|\\frac\{1\}\{2\}/ },
-  { id: "EN-FR-06", input: "1/2", expected: /0\.5|\\frac\{1\}\{2\}/ },
-  { id: "EN-FR-10", input: "\\frac12", expected: /0\.5|\\frac\{1\}\{2\}/ },
-  { id: "EN-FR-12", input: "\\frac{12}3", expected: /^4(?:\.0+)?$/ },
-  { id: "EN-FR-14", input: "\\frac{\\frac{1}{2}}{3}", expected: /0\.166666|\\frac\{1\}\{6\}/ },
-  { id: "EN-FR-15", input: "\\frac{1}{\\frac{1}{2}}", expected: /^2(?:\.0+)?$/ },
-  { id: "EN-FR-21", input: "\\frac{2}{3}+\\frac{3}{4}", expected: /1\.41666|\\frac\{17\}\{12\}/ },
-  { id: "EN-FR-22", input: "\\frac{1.5}{2}", expected: /0\.75/ },
-  { id: "EN-FR-23", input: "\\frac{\\pi}{2}", expected: /1\.570796|\\frac\{\\pi\}\{2\}/ },
-  { id: "EN-FR-24", input: "\\frac{\\sqrt{2}}{2}", expected: /0\.707106|\\frac\{\\sqrt\{2\}\}\{2\}/ },
-
-  { id: "EN-DL-05", input: "\\Bigl(\\frac{1}{2}\\Bigr)^{3}", expected: /0\.125|\\frac\{1\}\{8\}/ },
-  { id: "EN-DL-08", input: "\\left(2+3\\right)\\left(4-1\\right)", expected: /^15(?:\.0+)?$/ },
-  { id: "EN-DL-09", input: "\\left(\\frac{1}{2}\\right)^{-2}", expected: /^4(?:\.0+)?$/ },
-  { id: "EN-DL-17", input: "\\lceil 2.1\\rceil", expected: /^3(?:\.0+)?$/ },
-
-  { id: "EN-OP-01", input: "2\\cdot3", expected: /^6(?:\.0+)?$/ },
-  { id: "EN-OP-02", input: "2\\times3", expected: /^6(?:\.0+)?$/ },
-  { id: "EN-OP-03", input: "2*3", expected: /^6(?:\.0+)?$/ },
-  { id: "EN-OP-05", input: "6\\div3", expected: /^2(?:\.0+)?$/ },
-  { id: "EN-OP-06", input: "6/3", expected: /^2(?:\.0+)?$/ },
-  { id: "EN-OP-17", input: "5!!", expected: /^15(?:\.0+)?$/ },
-  { id: "EN-OP-18", input: "3!^{2}", expected: /^36(?:\.0+)?$/ },
-  { id: "EN-OP-19", input: "-3!", expected: /^-6(?:\.0+)?$/ },
-  { id: "EN-OP-20", input: "2^{3!}", expected: /^64(?:\.0+)?$/ },
-  { id: "EN-OP-21", input: "\\binom{5}{2}", expected: /^10(?:\.0+)?$/ },
-  { id: "EN-OP-23", input: "17\\bmod5", expected: /^2(?:\.0+)?$/ },
-
-  { id: "EN-RD-01", input: "\\sqrt{4}", expected: /^2(?:\.0+)?$/ },
-  { id: "EN-RD-02", input: "\\sqrt4", expected: /^2(?:\.0+)?$/ },
-  { id: "EN-RD-03", input: "\\sqrt2", expected: /1\.414213|\\sqrt\{2\}/ },
-  { id: "EN-RD-06", input: "\\sqrt[3]{8}", expected: /^2(?:\.0+)?$/ },
-  { id: "EN-RD-07", input: "\\sqrt[3]{-8}", expected: /^-2(?:\.0+)?$/ },
-  { id: "EN-RD-08", input: "\\sqrt[3]4", expected: /1\.587401/ },
-  { id: "EN-RD-09", input: "\\sqrt[10]{1024}", expected: /^2(?:\.0+)?$/ },
-  { id: "EN-RD-11", input: "\\sqrt{\\sqrt{\\sqrt{256}}}", expected: /^2(?:\.0+)?$/ },
-  { id: "EN-RD-12", input: "2\\sqrt{3}", expected: /3\.464101|2\\sqrt\{3\}/ },
-  { id: "EN-RD-13", input: "\\sqrt{2}\\sqrt{3}", expected: /2\.449489|\\sqrt\{6\}/ },
+  { id: "EN-FR-01", input: "\\frac{1}{2}", expected: 0.5 },
+  { id: "EN-FR-02", input: "\\dfrac{1}{2}", expected: 0.5 },
+  { id: "EN-FR-03", input: "\\tfrac{1}{2}", expected: 0.5 },
+  { id: "EN-FR-06", input: "1/2", expected: 0.5 },
+  { id: "EN-FR-10", input: "\\frac12", expected: 0.5 },
+  { id: "EN-FR-12", input: "\\frac{12}3", expected: 4 },
+  { id: "EN-FR-14", input: "\\frac{\\frac{1}{2}}{3}", expected: 0.16666666666666666 },
+  { id: "EN-FR-15", input: "\\frac{1}{\\frac{1}{2}}", expected: 2 },
+  { id: "EN-FR-21", input: "\\frac{2}{3}+\\frac{3}{4}", expected: 1.4166666666666667 },
+  { id: "EN-FR-22", input: "\\frac{1.5}{2}", expected: 0.75 },
+  { id: "EN-FR-23", input: "\\frac{\\pi}{2}", expected: 1.5707963267948966 },
+  { id: "EN-FR-24", input: "\\frac{\\sqrt{2}}{2}", expected: 0.7071067811865476 },
+  { id: "EN-DL-05", input: "\\Bigl(\\frac{1}{2}\\Bigr)^{3}", expected: 0.125 },
+  { id: "EN-DL-08", input: "\\left(2+3\\right)\\left(4-1\\right)", expected: 15 },
+  { id: "EN-DL-09", input: "\\left(\\frac{1}{2}\\right)^{-2}", expected: 4 },
+  { id: "EN-DL-17", input: "\\lceil 2.1\\rceil", expected: 3 },
+  { id: "EN-OP-01", input: "2\\cdot3", expected: 6 },
+  { id: "EN-OP-02", input: "2\\times3", expected: 6 },
+  { id: "EN-OP-03", input: "2*3", expected: 6 },
+  { id: "EN-OP-05", input: "6\\div3", expected: 2 },
+  { id: "EN-OP-06", input: "6/3", expected: 2 },
+  { id: "EN-OP-17", input: "5!!", expected: 15 },
+  { id: "EN-OP-18", input: "3!^{2}", expected: 36 },
+  { id: "EN-OP-19", input: "-3!", expected: -6 },
+  { id: "EN-OP-20", input: "2^{3!}", expected: 64 },
+  { id: "EN-OP-21", input: "\\binom{5}{2}", expected: 10 },
+  { id: "EN-OP-23", input: "17\\bmod5", expected: 2 },
+  { id: "EN-RD-01", input: "\\sqrt{4}", expected: 2 },
+  { id: "EN-RD-02", input: "\\sqrt4", expected: 2 },
+  { id: "EN-RD-03", input: "\\sqrt2", expected: 1.4142135623730951 },
+  { id: "EN-RD-06", input: "\\sqrt[3]{8}", expected: 2 },
+  { id: "EN-RD-07", input: "\\sqrt[3]{-8}", expected: -2 },
+  { id: "EN-RD-08", input: "\\sqrt[3]4", expected: 1.5874010519681996 },
+  { id: "EN-RD-09", input: "\\sqrt[10]{1024}", expected: 2 },
+  { id: "EN-RD-11", input: "\\sqrt{\\sqrt{\\sqrt{256}}}", expected: 2 },
+  { id: "EN-RD-12", input: "2\\sqrt{3}", expected: 3.4641016151377544 },
+  { id: "EN-RD-13", input: "\\sqrt{2}\\sqrt{3}", expected: 2.449489742783178 },
 ];
 
 async function setExpression(page: Page, value: string) {
@@ -83,7 +79,10 @@ test.describe("S26 Sintaxis 625 — Bloque A determinista", () => {
       await expect(calculate).toBeEnabled();
       await calculate.click();
       const value = await resultValue(page);
-      expect(value, `${tc.id}: ${tc.input} -> ${value}`).toMatch(tc.expected);
+      const normalized = value.replace("…", "").replace(",", ".").replace(/[^0-9eE+\-.]/g, "");
+      const numeric = Number(normalized);
+      expect(Number.isFinite(numeric), `${tc.id}: ${tc.input} -> ${value}`).toBe(true);
+      expect(numeric, `${tc.id}: ${tc.input} -> ${value}`).toBeCloseTo(tc.expected, 5);
     });
   }
 });
