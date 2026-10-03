@@ -55,6 +55,13 @@ import { buildComplexResultViews, buildExpressionResultViews, classifyResultExpr
 export type ComputeRequest =
   | { type: "evaluate"; requestId: string; expressionAlgebrite: string }
   | {
+      type: "evaluateRelation";
+      requestId: string;
+      leftAlgebrite: string;
+      rightAlgebrite: string;
+      operator: InequalityOperator;
+    }
+  | {
       type: "solveAlgebra";
       requestId: string;
       leftAlgebrite: string;
@@ -194,6 +201,8 @@ function handle(msg: ComputeRequest): MathResult {
   switch (msg.type) {
     case "evaluate":
       return handleEvaluate(msg.expressionAlgebrite, msg.requestId);
+    case "evaluateRelation":
+      return handleEvaluateRelation(msg.leftAlgebrite, msg.rightAlgebrite, msg.operator, msg.requestId);
     case "solveAlgebra":
       return handleSolveAlgebra(msg.leftAlgebrite, msg.rightAlgebrite, msg.variable, msg.requestId);
     case "derivative":
@@ -355,6 +364,41 @@ function handleSolveAlgebra(
  * muestra directamente sin pasar por toLatex()/toFractionResult() (que
  * esperan sintaxis de Algebrite, no una descripción de intervalo).
  */
+function handleEvaluateRelation(
+  leftAlgebrite: string,
+  rightAlgebrite: string,
+  operator: InequalityOperator,
+  requestId: string,
+): MathResult {
+  try {
+    const left = Number(evaluate(`float(${leftAlgebrite})`));
+    const right = Number(evaluate(`float(${rightAlgebrite})`));
+    if (!Number.isFinite(left) || !Number.isFinite(right)) {
+      throw { code: ErrorCode.PARSE_ERROR, message: "La relación no pudo evaluarse numéricamente." } as AppError;
+    }
+    const truth = operator === "<" ? left < right
+      : operator === ">" ? left > right
+      : operator === "<=" ? left <= right
+      : operator === ">=" ? left >= right
+      : left !== right;
+    return {
+      success: true,
+      resultLatex: truth ? "\\mathrm{verdadero}" : "\\mathrm{falso}",
+      steps: [],
+      hasDetailedSteps: false,
+      confidence: "NUMERIC_FALLBACK",
+      requestId,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(
+      appErr.code ?? ClientErrorCode.PARSE_ERROR,
+      appErr.message ?? String(err),
+      requestId,
+    );
+  }
+}
+
 function handleSolveInequality(
   diffAlgebrite: string,
   operator: "<" | ">" | "<=" | ">=",
