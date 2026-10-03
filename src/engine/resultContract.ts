@@ -54,10 +54,20 @@ export function buildExpressionResultViews(
   }
 
   add("original", "Original", originalExpression);
+
+  if (kind === "trigonometric") {
+    // Si la simplificación trigonométrica realmente cambia la expresión,
+    // se presenta semánticamente como Identidad antes del resultado para
+    // evitar dos pestañas con el mismo contenido.
+    add("identity", "Identidad", safeTransform(`simplify((${originalExpression}))`));
+  }
+
   add("result", "Resultado", resultExpression);
 
   if (kind !== "numeric" && kind !== "complex" && kind !== "other") {
-    add("simplified", "Simplificada", safeTransform(`simplify((${originalExpression}))`));
+    if (kind !== "trigonometric") {
+      add("simplified", "Simplificada", safeTransform(`simplify((${originalExpression}))`));
+    }
     add("factored", "Factorizada", safeTransform(`factor((${originalExpression}))`));
     add("expanded", "Expandida", safeTransform(`expand((${originalExpression}))`));
   }
