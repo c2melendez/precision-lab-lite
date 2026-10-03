@@ -316,3 +316,17 @@ describe("S26 A1 — cfrac y over", () => {
     expect(parsed).toContain("x-1");
   });
 });
+
+
+describe("S26 A1 — variable d frente a derivada", () => {
+  it("trata d como variable cuando no es una llamada de derivada", () => {
+    const parsed = parseExpression("\\frac{a}{b}\\frac{c}{d}");
+    expect(parsed.algebrite).toContain("d");
+    expect(parsed.variables).toContain("d");
+  });
+
+  it("conserva d(...) como función interna de derivada", () => {
+    const parsed = parseExpression("d(x^2,x)");
+    expect(parsed.algebrite).toContain("d(");
+  });
+});
