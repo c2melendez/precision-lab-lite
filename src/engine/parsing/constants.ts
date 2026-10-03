@@ -95,6 +95,8 @@ export const FUNCTION_ARITY: Record<string, number[]> = {
   exp: [1],
   sign: [1],
   factorial: [1],
+  doublefactorial: [1],
+  ceil: [1],
   nPr: [2],
   nCr: [2],
   // Fase 10 / auditoría Fase 0 v2: registradas aquí para que el tokenizer
