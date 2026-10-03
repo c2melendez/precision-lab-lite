@@ -79,7 +79,22 @@ export function preprocessLatex(latex: string): string {
 
   // S26 Sintaxis 625: \dfrac y \tfrac son variantes tipográficas de
   // \frac; la semántica matemática es idéntica.
-  expr = expr.replace(/\\(?:dfrac|tfrac)/g, "\\frac");
+  expr = expr.replace(/\\(?:dfrac|tfrac|cfrac)/g, "\\frac");
+
+  // S26 A1: TeX primitive \\over. Primero resolvemos grupos simples
+  // {numerador\\over denominador}; después, si queda un \\over a nivel
+  // superior, actúa sobre toda la expresión visible.
+  let previousOver = "";
+  while (expr !== previousOver) {
+    previousOver = expr;
+    expr = expr.replace(/\{([^{}]*?)\\over\s*([^{}]*?)\}/g, "\\frac{$1}{$2}");
+  }
+  if (expr.includes("\\over")) {
+    const parts = expr.split("\\over");
+    if (parts.length === 2) {
+      expr = `\\frac{${parts[0]}}{${parts[1]}}`;
+    }
+  }
 
   // S26 Sintaxis 625: combinatoria TeX -> función interna ya soportada.
   // Se usa el lector balanceado existente para aceptar grupos o tokens.
