@@ -50,6 +50,7 @@ import { evaluateMatrixExpression, matrixExpressionValueToLatex } from "../engin
 import { solveODE } from "../engine/stepEngine/ode";
 import { ErrorCode, makeRequestId, type MathResult, type AppError, type ResultConfidence } from "../types";
 import { extractDomainConditions, mergeDomainConditions } from "../engine/domainConditions";
+import { buildExpressionResultViews, classifyResultExpression } from "../engine/resultContract";
 
 export type ComputeRequest =
   | { type: "evaluate"; requestId: string; expressionAlgebrite: string }
@@ -315,9 +316,17 @@ function handleSolveAlgebra(
     // LaTeX real antes de unirlas, en vez de concatenar sintaxis nativa
     // de Algebrite con un "=" de por medio.
     const resultLatex = solutionsAlgebrite.map((s) => `${variable} = ${toLatex(s)}`).join(",\\ ");
+    const interpretedLatex = `${toLatex(leftAlgebrite)} = ${toLatex(rightAlgebrite)}`;
     return {
       success: true,
       resultLatex,
+      interpretedLatex,
+      resultViewLabel: "Solución",
+      resultKind: "equation",
+      resultViews: [
+        { key: "original", label: "Original", latex: interpretedLatex, kind: "equation" },
+        { key: "solution", label: "Solución", latex: resultLatex, kind: "equation" },
+      ],
       fraction: allNumeric && solutionsAlgebrite.length === 1 ? toFractionResult(solutionsAlgebrite[0]) : undefined,
       steps,
       hasDetailedSteps: false, // ver stepEngine/algebra.ts: pasos de alto nivel, no aislamiento término a término
@@ -653,9 +662,14 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
     // mostrando el mismo string simbólico que "sqrt".
     const decimalApprox = !fraction ? (toDecimalApprox(raw) ?? undefined) : undefined;
 
+    const resultKind = classifyResultExpression(expr, isNumeric);
+    const resultViews = buildExpressionResultViews(expr, raw, resultKind);
+
     return {
       success: true,
       resultLatex,
+      resultKind,
+      resultViews,
       fraction,
       decimalApprox,
       steps: [],
