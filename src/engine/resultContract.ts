@@ -8,14 +8,15 @@ const RADICAL_RE = /\b(?:sqrt|cbrt|root)\s*\(/;
 const COMPLEX_I_RE = /(^|[^A-Za-z0-9_])i([^A-Za-z0-9_]|$)/;
 
 export function classifyResultExpression(expression: string, isNumeric = false): ResultKind {
-  // Complejo tiene prioridad sobre "numérico": 2+3i es un número, pero
-  // necesita el contrato de cuatro representaciones complejas.
+  // La familia semántica de la ENTRADA tiene prioridad sobre el hecho de
+  // que su evaluación final sea numérica. Ej.: sin(pi/6) sigue siendo
+  // trigonométrica aunque el resultado sea 1/2.
   if (COMPLEX_I_RE.test(expression)) return "complex";
-  if (isNumeric) return "numeric";
   if (TRIG_RE.test(expression)) return "trigonometric";
   if (LOG_RE.test(expression)) return "logarithmic";
   if (EXP_RE.test(expression)) return "exponential";
   if (RADICAL_RE.test(expression)) return "radical";
+  if (isNumeric) return "numeric";
   if (expression.includes("/")) return "rational";
   if (/[A-Za-z]/.test(expression)) return "algebraic";
   return "other";
