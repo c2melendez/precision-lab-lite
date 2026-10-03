@@ -293,12 +293,34 @@ export function BasicScientificMode() {
     // desigualdad de una variable — mismo criterio de "una sola variable"
     // que la rama de ecuación de arriba.
     if (parsed.isInequality) {
+      if (parsed.freeVariables.length === 0) {
+        worker.onmessage = (e: MessageEvent<MathResult>) =>
+          onSuccess("Científica (relación)", currentLatex, {
+            ...e.data,
+            interpretedLatex,
+            resultViewLabel: "Resultado",
+          });
+        worker.postMessage({
+          type: "evaluateRelation",
+          requestId,
+          leftAlgebrite: parsed.leftAlgebrite,
+          rightAlgebrite: parsed.rightAlgebrite,
+          operator: parsed.inequalityOperator,
+        });
+        return;
+      }
       if (parsed.freeVariables.length !== 1) {
         fail(
           ErrorCode.PARSE_ERROR,
-          parsed.freeVariables.length === 0
-            ? "No se detectó ninguna variable en la desigualdad."
-            : `Hay más de una variable (${parsed.freeVariables.join(", ")}) — el solver básico de desigualdades solo admite una.`,
+          `Hay más de una variable (${parsed.freeVariables.join(", ")}) — el solver básico de desigualdades solo admite una.`,
+          requestId,
+        );
+        return;
+      }
+      if (parsed.inequalityOperator === "!=") {
+        fail(
+          ErrorCode.UNSUPPORTED_OPERATION,
+          "La relación ≠ con variable está reconocida, pero todavía no está soportada por el solver básico.",
           requestId,
         );
         return;
