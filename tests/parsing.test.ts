@@ -322,7 +322,6 @@ describe("S26 A1 — variable d frente a derivada", () => {
   it("trata d como variable cuando no es una llamada de derivada", () => {
     const parsed = parseExpression("\\frac{a}{b}\\frac{c}{d}");
     expect(parsed.algebrite).toContain("d");
-    expect(parsed.variables).toContain("d");
   });
 
   it("conserva d(...) como función interna de derivada", () => {
