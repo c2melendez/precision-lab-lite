@@ -2,11 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { evaluate } from "../src/engine/algebriteClient";
 import { compileNumeric } from "../src/engine/numericFallback";
-import {
-  calcDefiniteIntegral,
-  calcDerivative,
-  calcIndefiniteIntegral,
-} from "../src/engine/stepEngine/calculus";
+import { calcDefiniteIntegral, calcDerivative } from "../src/engine/stepEngine/calculus";
 
 function numericExpr(expression: string, x: number): number {
   return compileNumeric(expression, "x")(x);
@@ -15,10 +11,6 @@ function numericExpr(expression: string, x: number): number {
 function derivativeValue(expression: string, x: number): number {
   const derivative = calcDerivative(expression, "x", 1).resultLatex;
   return numericExpr(derivative, x);
-}
-
-function antiderivativeBody(expression: string): string {
-  return calcIndefiniteIntegral(expression, "x").resultLatex.replace(/\s*\+\s*C\s*$/, "");
 }
 
 describe("S26 B7 — recertificación N1/N2 cruzada", () => {
@@ -51,29 +43,6 @@ describe("S26 B7 — recertificación N1/N2 cruzada", () => {
     }
   });
 
-  it.todo("IT-T-01: la antiderivada de e^x sin x deriva de vuelta al integrando — pendiente motor Lite (Algebrite no resuelve todavía)");
-
-  /* IT-T-01: la antiderivada de e^x sin x deriva de vuelta al integrando
-  it("IT-T-01: la antiderivada de e^x sin x deriva de vuelta al integrando", () => {
-    const primitive = antiderivativeBody("exp(x)*sin(x)");
-    const recovered = calcDerivative(primitive, "x", 1).resultLatex;
-    for (const point of [-0.5, 0.3, 1.2]) {
-      expect(numericExpr(recovered, point)).toBeCloseTo(Math.exp(point) * Math.sin(point), 5);
-    }
-  });
-
-  it.todo("IT-T-09: integral cos(x)/(1+sin²x) deriva de vuelta al integrando — pendiente motor Lite (Algebrite no resuelve todavía)");
-
-  /* IT-T-09: integral cos(x)/(1+sin²x) deriva de vuelta al integrando
-  it("IT-T-09: integral cos(x)/(1+sin²x) deriva de vuelta al integrando", () => {
-    const primitive = antiderivativeBody("cos(x)/(1+sin(x)^2)");
-    const recovered = calcDerivative(primitive, "x", 1).resultLatex;
-    for (const point of [-0.7, 0.2, 1.0]) {
-      const expected = Math.cos(point) / (1 + Math.sin(point) ** 2);
-      expect(numericExpr(recovered, point)).toBeCloseTo(expected, 5);
-    }
-  });
-
   it("ID-M-06: integral definida 0..pi de e^x sin x", () => {
     const actual = Number(
       calcDefiniteIntegral("exp(x)*sin(x)", "x", 0, Math.PI).resultLatex.replace("...", ""),
@@ -81,15 +50,10 @@ describe("S26 B7 — recertificación N1/N2 cruzada", () => {
     expect(actual).toBeCloseTo((1 + Math.exp(Math.PI)) / 2, 4);
   });
 
-  it.todo("IT-M-01: integral sqrt(x) ln(x) deriva de vuelta al integrando — pendiente motor Lite (Algebrite no resuelve todavía)");
-
-  /* IT-M-01: integral sqrt(x) ln(x) deriva de vuelta al integrando
-  it("IT-M-01: integral sqrt(x) ln(x) deriva de vuelta al integrando", () => {
-    const primitive = antiderivativeBody("sqrt(x)*log(x)");
-    const recovered = calcDerivative(primitive, "x", 1).resultLatex;
-    for (const point of [0.25, 1.5, 3]) {
-      expect(numericExpr(recovered, point)).toBeCloseTo(Math.sqrt(point) * Math.log(point), 5);
-    }
-  });
-  */
+  // Hallazgos reales de la matriz: Algebrite no resuelve todavía estas
+  // integrales indefinidas. Se mantienen visibles como deuda de motor,
+  // fuera del hard gate mientras se implementa primero el contrato de resultados.
+  it.todo("IT-T-01: integral de e^x sin x — pendiente motor Lite");
+  it.todo("IT-T-09: integral cos(x)/(1+sin²x) — pendiente motor Lite");
+  it.todo("IT-M-01: integral sqrt(x) ln(x) — pendiente motor Lite");
 });
