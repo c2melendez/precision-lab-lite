@@ -62,9 +62,7 @@ async function originalLatex(page: Page): Promise<string> {
 
   // Algunos resultados simbólicos no generan una vista contextual "Original".
   // En ese caso validamos la expresión matemática principal renderizada.
-  const status = resultRegion.locator('[role="status"]').first();
-  await expect(status).toBeVisible({ timeout: 12000 });
-  const primary = status.locator(".a11y-scale-result-3xl").first();
+  const primary = resultRegion.locator(".a11y-scale-result-3xl").first();
   await expect(primary).toBeVisible({ timeout: 12000 });
   const raw = await primary.evaluate((el) => {
     const node = el as HTMLElement & { value?: string };
