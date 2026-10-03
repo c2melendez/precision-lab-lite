@@ -479,6 +479,14 @@ export function preprocessLatex(latex: string): string {
   // a la función unaria interna pm(5), preservando las dos ramas.
   expr = expr.replace(/\\pm\s+([A-Za-z0-9.]+)/g, "pm($1)");
 
+  // S26 choose infix: {n\\choose r} -> nCr(n,r)
+  expr = expr.replace(/\{([^{}]+?)\\choose\s*([^{}]+?)\}/g, "nCr($1,$2)");
+
+  // S26 producto cruz vectorial: reconocer intención y devolver error claro.
+  if (/\\vec\{[^{}]+\}\\times\\vec\{[^{}]+\}/.test(expr)) {
+    throw parseError("Producto cruz vectorial reconocido, pero todavía no soportado por este evaluador.");
+  }
+
   // S26 delimitadores tipográficos: \big/\Big/\bigg/\Bigg no
   // cambian la semántica; solo el tamaño visual del delimitador.
   expr = expr.replace(/\\(?:big|Big|bigg|Bigg)[lr]?/g, "");
@@ -516,7 +524,13 @@ export function preprocessLatex(latex: string): string {
     .replace(/\\right\|/g, ")")
     .replace(/\\cdot/g, "*")
     .replace(/\\times/g, "*")
+    .replace(/\\ast/g, "*")
     .replace(/\\div/g, "/")
+    .replace(/\\(?:leq|le)/g, "<=")
+    .replace(/\\(?:geq|ge)/g, ">=")
+    .replace(/\\(?:neq|ne)/g, "!=")
+    .replace(/\\lt/g, "<")
+    .replace(/\\gt/g, ">")
     .replace(/\\%/g, "%")
     .replace(/\\pi/g, "pi")
     .replace(/\\infty/g, "oo")
