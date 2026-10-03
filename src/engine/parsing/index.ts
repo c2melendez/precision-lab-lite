@@ -316,6 +316,16 @@ function normalizeS26A2Delimiters(input: string): string {
     out = out.slice(0, start) + "floor(" + inner + ")" + out.slice(finish + 7);
   }
 
+  const leftEscapedBar = bs + "left" + bs + "|";
+  const rightEscapedBar = bs + "right" + bs + "|";
+  while (out.includes(leftEscapedBar) && out.includes(rightEscapedBar)) {
+    const start = out.lastIndexOf(leftEscapedBar);
+    const finish = out.indexOf(rightEscapedBar, start + leftEscapedBar.length);
+    if (finish === -1) break;
+    const inner = out.slice(start + leftEscapedBar.length, finish);
+    out = out.slice(0, start) + "abs(" + inner + ")" + out.slice(finish + rightEscapedBar.length);
+  }
+
   const bar = bs + "|";
   for (let guard = 0; guard < 8; guard++) {
     const positions: number[] = [];
