@@ -290,3 +290,15 @@ describe("suite de regresión v1.1: conversión a grados no confunde subcadenas"
     expect(parseExpression("tanh(1)", "GRAD").algebrite).toBe("tanh(1)");
   });
 });
+
+
+describe("S26 Sintaxis 625 — delimitadores", () => {
+  it("normaliza delimitadores tipográficos S26", () => {
+    expect(parseExpression("\\Bigl(\\frac{1}{2}\\Bigr)^{3}").algebrite).toBe("(((1)/(2)))^(3)");
+    expect(parseExpression("\\bigl(x+1\\bigr)^{2}").algebrite).toBe("(x+1)^(2)");
+  });
+
+  it("normaliza valor absoluto con lvert/rvert", () => {
+    expect(parseExpression("\\lvert x-1\\rvert").algebrite).toBe("abs(x-1)");
+  });
+});
