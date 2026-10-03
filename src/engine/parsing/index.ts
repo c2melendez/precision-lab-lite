@@ -295,6 +295,29 @@ export function parseAlgebraicFragment(text: string, angleMode: "RAD" | "GRAD" =
   );
 }
 
+
+function normalizeS26A2Delimiters(input: string): string {
+  let out = input.split("\\mleft").join("\\left").split("\\mright").join("\\right");
+
+  while (out.includes("\\left[") && out.includes("\\right]")) {
+    const start = out.indexOf("\\left[");
+    const end = out.indexOf("\\right]", start + 6);
+    if (end === -1) break;
+    const inner = out.slice(start + 6, end);
+    out = out.slice(0, start) + "(" + inner + ")" + out.slice(end + 7);
+  }
+
+  while (out.includes("\\lfloor") && out.includes("\\rfloor")) {
+    const start = out.indexOf("\\lfloor");
+    const end = out.indexOf("\\rfloor", start + 7);
+    if (end === -1) break;
+    const inner = out.slice(start + 7, end).trim();
+    out = out.slice(0, start) + "floor(" + inner + ")" + out.slice(end + 7);
+  }
+
+  return out;
+}
+
 /**
  * Parser completo de sintaxis de entrada (Módulo 2). Lanza AppError con
  * ErrorCode.PARSE_ERROR ante cualquier violación de las reglas de la spec.
@@ -303,7 +326,7 @@ export function parseExpression(
   latex: string,
   angleMode: "RAD" | "GRAD" = "RAD",
 ): ParsedExpression {
-  const preprocessed = preprocessLatex(latex);
+  const preprocessed = preprocessLatex(normalizeS26A2Delimiters(latex));
   const unicodeNormalized = normalizeUnicode(preprocessed);
   validateDecimalPoints(unicodeNormalized);
 
