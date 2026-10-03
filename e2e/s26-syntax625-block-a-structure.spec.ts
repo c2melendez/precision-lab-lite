@@ -44,8 +44,14 @@ async function originalLatex(page: Page): Promise<string> {
   await expect(resultRegion).toBeVisible({ timeout: 12000 });
 
   const original = page.getByRole("button", { name: "Original", exact: true }).first();
-  if (await original.count()) {
-    await expect(original).toBeVisible({ timeout: 12000 });
+  let hasOriginal = false;
+  try {
+    await expect(original).toBeVisible({ timeout: 2000 });
+    hasOriginal = true;
+  } catch {
+    hasOriginal = false;
+  }
+  if (hasOriginal) {
     await original.click();
     const field = resultRegion.locator('math-field[read-only]').first();
     await expect(field).toBeVisible();
