@@ -28,7 +28,7 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
   // (fracción impropia: |numerador| >= denominador).
   const [showMixed, setShowMixed] = useState(true);
   const [symbolicView, setSymbolicView] = useState<ResultViewKey>("result");
-  const [displayMode, setDisplayMode] = useState<"view" | "format">("view");
+  const [displayMode, setDisplayMode] = useState<"view" | "format">("format");
 
   if (!result) {
     return <p className="py-1 text-right text-sm text-muted">Escribe una expresión y presiona Calcular.</p>;
