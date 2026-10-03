@@ -75,6 +75,17 @@ function replaceBalanced(
 
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
+  const trimmed = latex.trim();
+  if (
+    (trimmed.includes("\\left(") && trimmed.includes("\\right]")) ||
+    (trimmed.startsWith("[") && trimmed.endsWith(")") && trimmed.includes(","))
+  ) {
+    throw parseError("Notación de intervalo semiabierto reconocida, pero todavía no soportada por este evaluador.");
+  }
+  if (trimmed.includes("\\lVert") && trimmed.includes("pmatrix")) {
+    throw parseError("Norma vectorial reconocida, pero todavía no soportada por este evaluador.");
+  }
+
   let expr = latex;
 
   // S26 Sintaxis 625: \dfrac y \tfrac son variantes tipográficas de
