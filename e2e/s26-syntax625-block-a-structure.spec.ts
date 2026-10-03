@@ -9,6 +9,12 @@ type StructuralCase = {
 
 const CASES: StructuralCase[] = [
   { id: "EN-FR-07", input: "\\frac{x+1}{x-1}", mustContain: ["x+1", "x-1"] },
+  { id: "EN-FR-08", input: "(x+1)/(x-1)", mustContain: ["x+1", "x-1"] },
+  { id: "EN-FR-09", input: "x+1\\over x-1", mustContain: ["x+1", "x-1"] },
+  { id: "EN-FR-11", input: "\\frac1x", mustContain: ["1/x"] },
+  { id: "EN-FR-16", input: "\\frac{1}{\\frac{1}{x}+\\frac{1}{y}}", mustContain: ["x", "y"] },
+  { id: "EN-FR-19", input: "\\frac{a}{b}\\frac{c}{d}", mustContain: ["a", "b", "c", "d"] },
+
   { id: "EN-FR-17", input: "\\frac{1}{2}x", mustContain: ["x"], mustNotContain: ["2x"] },
   { id: "EN-FR-18", input: "\\frac{1}{2x}", mustContain: ["2x"] },
   { id: "EN-FR-20", input: "x+1/x-1", mustContain: ["x", "1/x"] },
