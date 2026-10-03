@@ -5,6 +5,8 @@ const CASES: Case[] = [
   { id: "EN-FR-01", input: "\\frac{1}{2}", expected: 0.5 },
   { id: "EN-FR-02", input: "\\dfrac{1}{2}", expected: 0.5 },
   { id: "EN-FR-03", input: "\\tfrac{1}{2}", expected: 0.5 },
+  { id: "EN-FR-04", input: "\\cfrac{1}{2}", expected: 0.5 },
+  { id: "EN-FR-05", input: "{1\\over 2}", expected: 0.5 },
   { id: "EN-FR-06", input: "1/2", expected: 0.5 },
   { id: "EN-FR-10", input: "\\frac12", expected: 0.5 },
   { id: "EN-FR-12", input: "\\frac{12}3", expected: 4 },
