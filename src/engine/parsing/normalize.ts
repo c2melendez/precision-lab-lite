@@ -77,6 +77,29 @@ function replaceBalanced(
 export function preprocessLatex(latex: string): string {
   let expr = latex;
 
+  // S26 Sintaxis 625: \dfrac y \tfrac son variantes tipográficas de
+  // \frac; la semántica matemática es idéntica.
+  expr = expr.replace(/\\(?:dfrac|tfrac)/g, "\\frac");
+
+  // S26 Sintaxis 625: combinatoria TeX -> función interna ya soportada.
+  // Se usa el lector balanceado existente para aceptar grupos o tokens.
+  while (expr.includes("\\binom")) {
+    const start = expr.indexOf("\\binom");
+    const afterMacro = start + "\\binom".length;
+    const [n, afterN] = readBalancedOrSingleToken(expr, afterMacro, "\\binom");
+    const [r, afterR] = readBalancedOrSingleToken(expr, afterN, "\\binom");
+    expr = expr.slice(0, start) + `nCr(${n},${r})` + expr.slice(afterR);
+  }
+
+  // Módulo/techo en la notación exacta usada por la matriz.
+  expr = expr
+    .replace(/(-?\d+(?:\.\d+)?)\\bmod(-?\d+(?:\.\d+)?)/g, "mod($1,$2)")
+    .replace(/\\lceil\s*([^{}]+?)\s*\\rceil/g, "ceil($1)");
+
+  // Doble factorial numérico: se conserva como función interna para que
+  // el worker lo evalúe sin confundirlo con factorial(factorial(n)).
+  expr = expr.replace(/(\d+)!!/g, "doublefactorial($1)");
+
   // S16 REG-008: MathLive serializa la tecla visual ° como ^{\\circ}
   // (y puede usar ^\\circ). Unificarlo con el marcador ° que ya procesa
   // el pipeline de grados/DMS.
@@ -239,7 +262,27 @@ export function preprocessLatex(latex: string): string {
   // "cuela" dentro del exponente de la raíz en vez de aplicarse al
   // resultado. Se envuelve toda la expresión en un paréntesis extra para
   // que cualquier "^" posterior solo pueda aplicarse por fuera.
-  expr = expr.replace(/\\sqrt\[([^\]]*)\]\{([^{}]*)\}/g, "(($2)^(1/($1)))");
+  {
+    let searchFrom = 0;
+    while (true) {
+      const start = expr.indexOf("\\sqrt[", searchFrom);
+      if (start === -1) break;
+      const closeBracket = expr.indexOf("]", start + "\\sqrt[".length);
+      if (closeBracket === -1) break;
+      const indexText = expr.slice(start + "\\sqrt[".length, closeBracket);
+      const [radicand, afterRadicand] = readBalancedOrSingleToken(
+        expr,
+        closeBracket + 1,
+        "\\sqrt[n]",
+      );
+      const replacement =
+        indexText.trim() === "3"
+          ? `cbrt(${radicand})`
+          : `((${radicand})^(1/(${indexText})))`;
+      expr = expr.slice(0, start) + replacement + expr.slice(afterRadicand);
+      searchFrom = start + replacement.length;
+    }
+  }
   // BUG real (preexistente, encontrado al verificar el fix de arriba):
   // una sola pasada de replaceBalanced NO es recursiva — \sqrt{\sqrt{x}}
   // procesaba solo el \sqrt externo, dejando un "\sqrt{x}" literal sin
