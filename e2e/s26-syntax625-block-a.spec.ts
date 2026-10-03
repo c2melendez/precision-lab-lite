@@ -19,6 +19,8 @@ const CASES: Case[] = [
   { id: "EN-DL-05", input: "\\Bigl(\\frac{1}{2}\\Bigr)^{3}", expected: 0.125 },
   { id: "EN-DL-08", input: "\\left(2+3\\right)\\left(4-1\\right)", expected: 15 },
   { id: "EN-DL-09", input: "\\left(\\frac{1}{2}\\right)^{-2}", expected: 4 },
+  { id: "EN-DL-16a", input: "\\lfloor 2.7\\rfloor", expected: 2 },
+  { id: "EN-DL-16b", input: "\\lfloor -2.5\\rfloor", expected: -3 },
   { id: "EN-DL-17", input: "\\lceil 2.1\\rceil", expected: 3 },
   { id: "EN-OP-01", input: "2\\cdot3", expected: 6 },
   { id: "EN-OP-02", input: "2\\times3", expected: 6 },
