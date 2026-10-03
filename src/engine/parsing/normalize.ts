@@ -453,6 +453,18 @@ export function preprocessLatex(latex: string): string {
   // a la función unaria interna pm(5), preservando las dos ramas.
   expr = expr.replace(/\\pm\s+([A-Za-z0-9.]+)/g, "pm($1)");
 
+  // S26 delimitadores tipográficos: \big/\Big/\bigg/\Bigg no
+  // cambian la semántica; solo el tamaño visual del delimitador.
+  expr = expr.replace(/\\(?:big|Big|bigg|Bigg)[lr]?/g, "");
+
+  // S26 valor absoluto con \lvert...\rvert. Se resuelven pares
+  // innermost de forma iterativa para tolerar anidamiento simple.
+  let previousAbs = "";
+  while (expr !== previousAbs && /\\lvert/.test(expr)) {
+    previousAbs = expr;
+    expr = expr.replace(/\\lvert([^\\]*?)\\rvert/g, "abs($1)");
+  }
+
   expr = expr
     .replace(/\\left\|/g, "abs(")
     .replace(/\\right\|/g, ")")
