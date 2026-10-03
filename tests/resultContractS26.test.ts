@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildExpressionResultViews, classifyResultExpression } from "../src/engine/resultContract";
+import { buildComplexResultViews, buildExpressionResultViews, classifyResultExpression } from "../src/engine/resultContract";
 
 describe("S26 result contract — classification", () => {
   it.each([
@@ -19,5 +19,15 @@ describe("S26 result contract — classification", () => {
     const views = buildExpressionResultViews("(x+1)^2", "x^2+2*x+1", "algebraic");
     expect(views[0]?.key).toBe("original");
     expect(new Set(views.map((view) => view.latex)).size).toBe(views.length);
+  });
+  it("genera las cuatro representaciones complejas para un valor único", () => {
+    const views = buildComplexResultViews("2+3*i", 2, 3);
+    expect(views.map((view) => view.key)).toEqual([
+      "original",
+      "complex_binomial",
+      "complex_polar",
+      "complex_trigonometric",
+      "complex_exponential",
+    ]);
   });
 });
