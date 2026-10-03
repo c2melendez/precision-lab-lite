@@ -63,7 +63,13 @@ async function originalLatex(page: Page): Promise<string> {
   // Algunos resultados simbólicos no generan una vista contextual "Original".
   // En ese caso validamos la expresión matemática principal renderizada.
   const primary = resultRegion.locator(".a11y-scale-result-3xl").first();
-  await expect(primary).toBeVisible({ timeout: 12000 });
+  try {
+    await expect(primary).toBeVisible({ timeout: 12000 });
+  } catch (error) {
+    const debugText = (await resultRegion.innerText()).replace(/\s+/g, " ").trim();
+    const fields = await resultRegion.locator("math-field").count();
+    throw new Error(`Resultado sin selector primario. text=${debugText} mathFields=${fields}; ${String(error)}`);
+  }
   const raw = await primary.evaluate((el) => {
     const node = el as HTMLElement & { value?: string };
     return node.value ?? node.innerText ?? "";
