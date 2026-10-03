@@ -472,6 +472,26 @@ export function preprocessLatex(latex: string): string {
   // cambian la semántica; solo el tamaño visual del delimitador.
   expr = expr.replace(/\\(?:big|Big|bigg|Bigg)[lr]?/g, "");
 
+  // MathLive puede emitir mleft/mright. Son equivalentes semánticos de
+  // left/right y no deben llegar al tokenizador como macros desconocidos.
+  expr = expr.replace(/\\mleft/g, "\\left").replace(/\\mright/g, "\\right");
+
+  // Corchetes emparejados usados como agrupación son equivalentes a ().
+  // Se limita a la forma explícita left[ ... right] para no consumir
+  // intervalos semiabiertos, que se clasifican aparte.
+  expr = expr.replace(/\\left\[([^\[\]]*?)\\right\]/g, "($1)");
+
+  // Piso: misma política que ceil, pero con su función explícita.
+  expr = expr.replace(/\\lfloor\s*([^{}\\]+?)\s*\\rfloor/g, "floor($1)");
+
+  // La matriz define \\|...\\| como barra simple de valor absoluto.
+  // Se resuelven de dentro hacia fuera para tolerar anidamiento.
+  let previousSlashAbs = "";
+  while (expr !== previousSlashAbs && /\\\\\|/.test(expr)) {
+    previousSlashAbs = expr;
+    expr = expr.replace(/\\\\\|([^\\]*?)\\\\\|/g, "abs($1)");
+  }
+
   // S26 valor absoluto con \lvert...\rvert. Se resuelven pares
   // innermost de forma iterativa para tolerar anidamiento simple.
   let previousAbs = "";
