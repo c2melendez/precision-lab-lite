@@ -50,7 +50,7 @@ import { evaluateMatrixExpression, matrixExpressionValueToLatex } from "../engin
 import { solveODE } from "../engine/stepEngine/ode";
 import { ErrorCode, makeRequestId, type MathResult, type AppError, type ResultConfidence } from "../types";
 import { extractDomainConditions, mergeDomainConditions } from "../engine/domainConditions";
-import { buildExpressionResultViews, classifyResultExpression } from "../engine/resultContract";
+import { buildComplexResultViews, buildExpressionResultViews, classifyResultExpression } from "../engine/resultContract";
 
 export type ComputeRequest =
   | { type: "evaluate"; requestId: string; expressionAlgebrite: string }
@@ -663,7 +663,16 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
     const decimalApprox = !fraction ? (toDecimalApprox(raw) ?? undefined) : undefined;
 
     const resultKind = classifyResultExpression(expr, isNumeric);
-    const resultViews = buildExpressionResultViews(expr, raw, resultKind);
+    let resultViews = buildExpressionResultViews(expr, raw, resultKind);
+    if (resultKind === "complex") {
+      try {
+        const parts = parseComplex(raw);
+        resultViews = buildComplexResultViews(expr, parts.re, parts.im);
+      } catch {
+        // Si la forma compleja no se puede reducir a A+B*i, conservamos
+        // Original + Resultado sin inventar representaciones.
+      }
+    }
 
     return {
       success: true,
