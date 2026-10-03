@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StaticMath } from "./StaticMath";
-import type { MathResult } from "../types";
+import type { MathResult, ResultView, ResultViewKey } from "../types";
 
 // spec v10 §11: el usuario alterna entre formatos sin recalcular.
 //
@@ -27,7 +27,7 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
   // chico que solo aparece cuando realmente hay una forma mixta posible
   // (fracción impropia: |numerador| >= denominador).
   const [showMixed, setShowMixed] = useState(true);
-  const [symbolicView, setSymbolicView] = useState<"original" | "result">("result");
+  const [symbolicView, setSymbolicView] = useState<ResultViewKey>("result");
 
   if (!result) {
     return <p className="py-1 text-right text-sm text-muted">Escribe una expresión y presiona Calcular.</p>;
@@ -74,19 +74,28 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
     return { latex: result?.resultLatex ?? "", isPlainNumber: false };
   }
 
-  // Las vistas simbólicas son contextuales: cuando el resultado no es
-  // numérico y conocemos la interpretación del motor, se ofrece
-  // "Original" junto a la forma calculada. Los formatos dec/frac/scn
-  // siguen siendo la familia correcta para resultados numéricos.
+  // Contrato S26: las vistas vienen declaradas por el motor. Mientras
+  // migramos todos los flujos, se conserva un fallback retrocompatible
+  // para resultados antiguos que solo traen interpretedLatex.
+  const fallbackViews: ResultView[] =
+    result.interpretedLatex && result.resultLatex
+      ? [
+          { key: "original", label: "Original", latex: result.interpretedLatex, kind: result.resultKind ?? "other" },
+          { key: "result", label: result.resultViewLabel ?? "Resultado", latex: result.resultLatex, kind: result.resultKind ?? "other" },
+        ]
+      : [];
+  const contextualViews = result.resultViews?.length ? result.resultViews : fallbackViews;
   const hasSymbolicViews =
-    Boolean(result.interpretedLatex) &&
+    contextualViews.length > 0 &&
     result.fraction === undefined &&
     result.decimalApprox === undefined;
   const rendered = renderValue();
-  const latex =
-    hasSymbolicViews && symbolicView === "original"
-      ? result.interpretedLatex!
-      : rendered.latex;
+  const activeView =
+    contextualViews.find((view) => view.key === symbolicView) ??
+    contextualViews.find((view) => view.key === "result" || view.key === "solution") ??
+    contextualViews[1] ??
+    contextualViews[0];
+  const latex = hasSymbolicViews && activeView ? activeView.latex : rendered.latex;
   const isPlainNumber = hasSymbolicViews ? false : rendered.isPlainNumber;
 
   return (
@@ -131,24 +140,17 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
       )}
       <div className="mt-1.5 flex justify-end gap-3 text-xs text-muted">
         {hasSymbolicViews ? (
-          <>
+          contextualViews.map((view) => (
             <button
+              key={view.key}
               type="button"
-              onClick={() => setSymbolicView("original")}
-              aria-pressed={symbolicView === "original"}
-              className={symbolicView === "original" ? "font-semibold text-marker" : "hover:text-ink"}
+              onClick={() => setSymbolicView(view.key)}
+              aria-pressed={activeView?.key === view.key}
+              className={activeView?.key === view.key ? "font-semibold text-marker" : "hover:text-ink"}
             >
-              Original
+              {view.label}
             </button>
-            <button
-              type="button"
-              onClick={() => setSymbolicView("result")}
-              aria-pressed={symbolicView === "result"}
-              className={symbolicView === "result" ? "font-semibold text-marker" : "hover:text-ink"}
-            >
-              {result.resultViewLabel ?? "Resultado"}
-            </button>
-          </>
+          ))
         ) : (
           (["dec", "frac", "scn", "sqrt"] as AnswerFormat[]).map((f) => (
             <button
