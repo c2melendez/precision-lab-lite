@@ -28,6 +28,7 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
   // (fracción impropia: |numerador| >= denominador).
   const [showMixed, setShowMixed] = useState(true);
   const [symbolicView, setSymbolicView] = useState<ResultViewKey>("result");
+  const [displayMode, setDisplayMode] = useState<"view" | "format">("view");
 
   if (!result) {
     return <p className="py-1 text-right text-sm text-muted">Escribe una expresión y presiona Calcular.</p>;
@@ -85,18 +86,20 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
         ]
       : [];
   const contextualViews = result.resultViews?.length ? result.resultViews : fallbackViews;
-  const hasSymbolicViews =
-    contextualViews.length > 0 &&
-    result.fraction === undefined &&
-    result.decimalApprox === undefined;
+  const hasSymbolicViews = contextualViews.length > 0;
+  const hasNumericFormats =
+    result.fraction !== undefined ||
+    result.decimalApprox !== undefined ||
+    (result.resultLatex !== null && /^-?\d+(?:\.\d+)?$/.test(result.resultLatex));
   const rendered = renderValue();
   const activeView =
     contextualViews.find((view) => view.key === symbolicView) ??
     contextualViews.find((view) => view.key === "result" || view.key === "solution") ??
     contextualViews[1] ??
     contextualViews[0];
-  const latex = hasSymbolicViews && activeView ? activeView.latex : rendered.latex;
-  const isPlainNumber = hasSymbolicViews ? false : rendered.isPlainNumber;
+  const showingContextualView = displayMode === "view" && hasSymbolicViews && Boolean(activeView);
+  const latex = showingContextualView && activeView ? activeView.latex : rendered.latex;
+  const isPlainNumber = showingContextualView ? false : rendered.isPlainNumber;
 
   return (
     <div className="pt-1" role="status" aria-live="polite" aria-atomic="true">
@@ -114,7 +117,7 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
           <StaticMath latex={latex} className="a11y-scale-result-3xl ml-auto font-mono text-ink" />
         )}
       </div>
-      {format === "frac" && result.fraction?.mixedLatex !== null && result.fraction && (
+      {displayMode === "format" && format === "frac" && result.fraction?.mixedLatex !== null && result.fraction && (
         <div className="mt-1 flex justify-end">
           <button
             onClick={() => setShowMixed((v) => !v)}
@@ -139,31 +142,35 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
         </div>
       )}
       <div className="mt-1.5 flex justify-end gap-3 text-xs text-muted">
-        {hasSymbolicViews ? (
-          contextualViews.map((view) => (
-            <button
-              key={view.key}
-              type="button"
-              onClick={() => setSymbolicView(view.key)}
-              aria-pressed={activeView?.key === view.key}
-              className={activeView?.key === view.key ? "font-semibold text-marker" : "hover:text-ink"}
-            >
-              {view.label}
-            </button>
-          ))
-        ) : (
+        {contextualViews.map((view) => (
+          <button
+            key={`view-${view.key}`}
+            type="button"
+            onClick={() => {
+              setSymbolicView(view.key);
+              setDisplayMode("view");
+            }}
+            aria-pressed={displayMode === "view" && activeView?.key === view.key}
+            className={displayMode === "view" && activeView?.key === view.key ? "font-semibold text-marker" : "hover:text-ink"}
+          >
+            {view.label}
+          </button>
+        ))}
+        {hasNumericFormats &&
           (["dec", "frac", "scn", "sqrt"] as AnswerFormat[]).map((f) => (
             <button
-              key={f}
+              key={`format-${f}`}
               type="button"
-              onClick={() => setFormat(f)}
-              aria-pressed={format === f}
-              className={format === f ? "font-semibold text-marker" : "hover:text-ink"}
+              onClick={() => {
+                setFormat(f);
+                setDisplayMode("format");
+              }}
+              aria-pressed={displayMode === "format" && format === f}
+              className={displayMode === "format" && format === f ? "font-semibold text-marker" : "hover:text-ink"}
             >
               {f}
             </button>
-          ))
-        )}
+          ))}
       </div>
     </div>
   );
