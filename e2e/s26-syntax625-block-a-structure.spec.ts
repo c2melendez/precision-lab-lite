@@ -30,6 +30,7 @@ const CASES: StructuralCase[] = [
   { id: "EN-DL-07", input: "((x))", mustContain: ["x"] },
   { id: "EN-DL-10", input: "\\lvert x-1\\rvert", mustContain: ["|x-1|"] },
   { id: "EN-OP-08", input: "2\\cdot x\\cdot y", mustContain: ["2", "x", "y"] },
+  { id: "EN-OP-09", input: "x\\times y", mustContain: ["x", "y"] },
   { id: "EN-RD-05", input: "\\sqrt{x}y", mustContain: ["sqrt", "x", "y"] },
   { id: "EN-RD-10", input: "\\sqrt[n]{x}", mustContain: ["x", "n"] },
 ];
