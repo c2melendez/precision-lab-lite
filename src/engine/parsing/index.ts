@@ -300,6 +300,16 @@ function normalizeS26A2Delimiters(input: string): string {
   const bs = String.fromCharCode(92);
   let out = input.split(bs + "mleft").join(bs + "left").split(bs + "mright").join(bs + "right");
 
+  const leftBrace = bs + "left" + bs + "{";
+  const rightBrace = bs + "right" + bs + "}";
+  while (out.includes(leftBrace) && out.includes(rightBrace)) {
+    const start = out.indexOf(leftBrace);
+    const finish = out.indexOf(rightBrace, start + leftBrace.length);
+    if (finish === -1) break;
+    const inner = out.slice(start + leftBrace.length, finish);
+    out = out.slice(0, start) + "(" + inner + ")" + out.slice(finish + rightBrace.length);
+  }
+
   while (out.includes(bs + "left[") && out.includes(bs + "right]")) {
     const start = out.indexOf(bs + "left[");
     const finish = out.indexOf(bs + "right]", start + 6);
