@@ -30,4 +30,12 @@ describe("S26 result contract — classification", () => {
       "complex_exponential",
     ]);
   });
+  it("expone Identidad para una reducción trigonométrica", () => {
+    const views = buildExpressionResultViews(
+      "sin(x)^2+cos(x)^2",
+      "1",
+      "trigonometric",
+    );
+    expect(views.some((view) => view.key === "identity")).toBe(true);
+  });
 });
