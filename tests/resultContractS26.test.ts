@@ -38,4 +38,9 @@ describe("S26 result contract — classification", () => {
     );
     expect(views.some((view) => view.key === "identity")).toBe(true);
   });
+  it("preserva la familia de entrada aunque el resultado sea numérico", () => {
+    expect(classifyResultExpression("sin(pi/6)", true)).toBe("trigonometric");
+    expect(classifyResultExpression("ln(2)", true)).toBe("logarithmic");
+    expect(classifyResultExpression("sqrt(4)", true)).toBe("radical");
+  });
 });
