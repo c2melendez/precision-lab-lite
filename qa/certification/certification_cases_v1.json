@@ -634,7 +634,7 @@
           "expression": "tan(x)",
           "variable": "x",
           "order": 1,
-          "expected": "tan(x)^2+1"
+          "expected": "1/(cos(x)^2)"
         },
         "plus": {
           "expression": "tan(x)",
