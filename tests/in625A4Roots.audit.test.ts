@@ -2,12 +2,18 @@ import { describe, expect, it } from "vitest";
 import { parseExpression } from "../src/engine/parsing";
 import { evaluate } from "../src/engine/algebriteClient";
 
-function evalNum(input: string): number {
+function expectEquivalentToNumber(input: string, expected: number, tolerance = 1e-9): void {
   const parsed = parseExpression(input).algebrite;
-  return Number(evaluate(`float(${parsed})`));
-}
-function expectClose(input: string, expected: number, digits = 9): void {
-  expect(evalNum(input)).toBeCloseTo(expected, digits);
+  const diff = evaluate(`simplify((${parsed})-(${expected}))`);
+  const numeric = Number(diff);
+  if (Number.isFinite(numeric)) {
+    expect(Math.abs(numeric)).toBeLessThanOrEqual(tolerance);
+    return;
+  }
+  // Algebrite may preserve exact radicals symbolically. A second
+  // numerical probe through eval() must still collapse a numeric constant.
+  const probed = Number(evaluate(`eval((${parsed})-(${expected}))`));
+  expect(Number.isFinite(probed) && Math.abs(probed) <= tolerance).toBe(true);
 }
 function parseOut(input: string): string {
   return parseExpression(input).algebrite.replace(/\s+/g, "");
@@ -15,8 +21,8 @@ function parseOut(input: string): string {
 
 describe("IN625 Parte A / A4 Raíces", () => {
   it("EN-RD-01 sqrt con llaves", () => expectClose("\\sqrt{4}", 2));
-  it("EN-RD-02 sqrt sin llaves", () => expectClose("\\sqrt4", 2));
-  it("EN-RD-03 sqrt2", () => expectClose("\\sqrt2", Math.SQRT2));
+  it("EN-RD-02 sqrt sin llaves", () => expectEquivalentToNumber("\\sqrt4", 2));
+  it("EN-RD-03 sqrt2", () => expectEquivalentToNumber("\\sqrt2", Math.SQRT2));
   it("EN-RD-04 sqrt x conserva raíz", () => {
     const out = parseOut("\\sqrt x");
     expect(out).toContain("sqrt(x)");
