@@ -600,6 +600,14 @@ export function preprocessLatex(latex: string): string {
     .replace(/\\exp\s+([A-Za-z0-9.]+)/g, "exp($1)")
     .replace(/\\exp(?=\s*\()/g, "exp");
 
+  // IN625 B3 — funciones LaTeX sin paréntesis.
+  // TeX permite \sin x, \cos x, etc. El argumento inmediato es un átomo;
+  // convertirlo a llamada explícita evita que "sinx" se tokenice como letras.
+  expr = expr.replace(
+    /\\(sin|cos|tan|csc|sec|cot|ln|exp)\s+([A-Za-z0-9.]+)/g,
+    (_m, fn, arg) => `${fn}(${arg})`,
+  );
+
   expr = expr
     .replace(/\\left\|/g, "abs(")
     .replace(/\\right\|/g, ")")
