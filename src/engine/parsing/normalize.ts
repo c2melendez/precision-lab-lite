@@ -815,6 +815,13 @@ export function preprocessLatex(latex: string): string {
     .replace(/\\pi/g, "pi")
     .replace(/\\infty/g, "oo")
     .replace(/\\theta/g, "theta")
+    .replace(/\\alpha/g, "alpha")
+    .replace(/\\beta/g, "beta")
+    .replace(/\\gamma/g, "gamma")
+    .replace(/\\lambda/g, "lambda")
+    .replace(/\\zeta/g, "zeta")
+    .replace(/\\Delta/g, "Delta")
+    .replace(/\\Lambda/g, "Lambda")
     .replace(/\\Phi/g, "Phi")
     // FIX (auditoría Fase 0 v2, Fase 10): mismo bug que \mathrm arriba —
     // \gcd/\min/\max son macros LaTeX nativos (no \mathrm{...}) que
