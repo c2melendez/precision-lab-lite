@@ -25,6 +25,7 @@ function parseError(message: string): AppError {
  * cualquier fracción/raíz de un solo dígito escrita a mano.
  */
 function readBalancedOrSingleToken(input: string, fromIndex: number, macroLabel: string): [string, number] {
+  while (fromIndex < input.length && /\s/.test(input[fromIndex])) fromIndex++;
   if (input[fromIndex] === "{") {
     let depth = 1;
     let j = fromIndex + 1;
@@ -45,6 +46,28 @@ function readBalancedOrSingleToken(input: string, fromIndex: number, macroLabel:
     return [input[fromIndex], fromIndex + 1];
   }
   throw parseError(`Se esperaba "{" o un token tras ${macroLabel}.`);
+}
+
+function replaceNthRootOnce(input: string): string {
+  const start = input.indexOf("\\sqrt[");
+  if (start === -1) return input;
+  const indexStart = start + "\\sqrt[".length;
+  const close = input.indexOf("]", indexStart);
+  if (close === -1) throw parseError('Índice sin cerrar en "\\sqrt[n]".');
+  const index = input.slice(indexStart, close).trim();
+  if (!index) throw parseError('Índice vacío en "\\sqrt[n]".');
+
+  const [radicand, next] = readBalancedOrSingleToken(input, close + 1, "\\sqrt[n]");
+  const numericIndex = /^\d+$/.test(index) ? Number(index) : null;
+  const numericNegative = radicand.match(/^\s*-\s*(\d+(?:\.\d+)?)\s*$/);
+
+  let replacement: string;
+  if (numericIndex !== null && numericIndex % 2 === 1 && numericNegative) {
+    replacement = `-((${numericNegative[1]})^(1/(${index})))`;
+  } else {
+    replacement = `((${radicand})^(1/(${index})))`;
+  }
+  return input.slice(0, start) + replacement + input.slice(next);
 }
 
 function replaceBalanced(
@@ -338,7 +361,11 @@ export function preprocessLatex(latex: string): string {
   // "cuela" dentro del exponente de la raíz en vez de aplicarse al
   // resultado. Se envuelve toda la expresión en un paréntesis extra para
   // que cualquier "^" posterior solo pueda aplicarse por fuera.
-  expr = expr.replace(/\\sqrt\[([^\]]*)\]\{([^{}]*)\}/g, "(($2)^(1/($1)))");
+  let prevNthRoot = "";
+  while (expr.includes("\\sqrt[") && expr !== prevNthRoot) {
+    prevNthRoot = expr;
+    expr = replaceNthRootOnce(expr);
+  }
   // BUG real (preexistente, encontrado al verificar el fix de arriba):
   // una sola pasada de replaceBalanced NO es recursiva — \sqrt{\sqrt{x}}
   // procesaba solo el \sqrt externo, dejando un "\sqrt{x}" literal sin
