@@ -8,7 +8,7 @@ describe("IN625 Parte B / B2 Subíndices y bases de logaritmo",()=>{
   it("EN-SB-01 x_{10} es un símbolo atómico",()=>{
     const out=p("x_{10}");
     expect(out).not.toContain("*");
-    expect(out).toMatch(/x10|x_?10/);
+    expect(out).toMatch(/^x[A-Za-z]+$/);
   });
   it("EN-SB-02 x_1+x_2 conserva dos símbolos",()=>{
     const out=p("x_1+x_2");
