@@ -95,7 +95,10 @@ function normalizeDelimiterSyntax(input: string): string {
     .replace(/\\rfloor/g, ")")
     .replace(/\\lceil/g, "ceiling(")
     .replace(/\\rceil/g, ")")
-    // Barras LaTeX explícitas. El caso adyacente es producto.
+    // Barras LaTeX explícitas. Normalizar left/right antes del scanner.
+    .replace(/\\left\|/g, "|")
+    .replace(/\\right\|/g, "|")
+    // El caso adyacente es producto.
     .replace(/\\rvert\s*\\lvert/g, ")*abs(")
     .replace(/\\lvert/g, "abs(")
     .replace(/\\rvert/g, ")");
@@ -113,7 +116,7 @@ function normalizeDelimiterSyntax(input: string): string {
     }
 
     let j = out.length - 1;
-    while (j >= 0 && /\\s/.test(out[j])) j--;
+    while (j >= 0 && /\s/.test(out[j])) j--;
     const prev = j >= 0 ? out[j] : "";
     const beginsOperand = depth === 0 || prev === "" || "()+-*/^=<>,".includes(prev);
 
