@@ -10,6 +10,8 @@ function parseError(message: string): AppError {
 
 
 const LOCALIZED_ALIAS_MAP: Record<string, string> = {
+  sin: "\\sin", cos: "\\cos", tan: "\\tan", csc: "\\csc", sec: "\\sec", cot: "\\cot",
+  ln: "\\ln", log: "\\log", exp: "\\exp", sinh: "\\sinh", cosh: "\\cosh", tanh: "\\tanh",
   sen: "\\sin",
   tg: "\\tan",
   ctg: "\\cot",
@@ -41,10 +43,14 @@ const LOCALIZED_ALIAS_MAP: Record<string, string> = {
 
 function normalizeLocalizedAliases(input: string): string {
   let out = input;
+  out = out.replace(/\\,/g, " ");
 
   out = out.replace(
     /\\(?:operatorname|mathrm|text)\{([^{}]+)\}/g,
-    (_m, rawName) => LOCALIZED_ALIAS_MAP[String(rawName).toLowerCase()] ?? String(rawName),
+    (_m, rawName) => {
+      const mapped = LOCALIZED_ALIAS_MAP[String(rawName).toLowerCase()] ?? String(rawName);
+      return mapped.startsWith("\\") ? mapped + " " : mapped;
+    },
   );
 
   out = out.replace(
