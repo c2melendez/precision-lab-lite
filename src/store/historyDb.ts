@@ -6,12 +6,15 @@
 // explícitamente fuera de alcance).
 
 import { openDB, type DBSchema, type IDBPDatabase } from "idb";
+import type { DomainCondition } from "../types";
 
 export interface HistoryEntry {
   id: string;
   mode: string;
   input: string;
   resultSummary: string;
+  /** Contrato S26: restricciones del dominio derivadas de la expresión original. */
+  domainConditions?: DomainCondition[];
   timestamp: number;
 }
 

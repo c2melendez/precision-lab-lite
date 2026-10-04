@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllHistoryEntries, clearHistory, type HistoryEntry } from "../store/historyDb";
+import { StaticMath } from "./StaticMath";
 
 // FIX (auditoría Fase 0 v2): este componente usaba clases bg-panel/
 // text-slate-*/text-accent que ya no existen en tailwind.config.js desde
@@ -49,6 +50,18 @@ export function HistoryPanel() {
             <p className="text-xs uppercase tracking-wide text-muted">{entry.mode}</p>
             <p className="text-ink">{entry.input}</p>
             <p className="text-sm text-marker">{entry.resultSummary}</p>
+            {entry.domainConditions && entry.domainConditions.length > 0 && (
+              <div className="mt-1 rounded border border-paper-line px-2 py-1">
+                <p className="text-xs font-semibold text-ink">Restricciones del dominio</p>
+                {entry.domainConditions.map((condition, index) => (
+                  <StaticMath
+                    key={`${condition.kind}-${index}`}
+                    latex={condition.latex}
+                    className="text-xs text-muted"
+                  />
+                ))}
+              </div>
+            )}
             <p className="text-xs text-muted">{new Date(entry.timestamp).toLocaleString()}</p>
           </li>
         ))}

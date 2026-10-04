@@ -61,7 +61,13 @@ export function tokenize(expr: string): Token[] {
       // Greedy match del identificador conocido más largo en esta posición.
       const known = ALL_KNOWN_IDENTIFIERS.find((id) => expr.startsWith(id, i));
       if (known) {
-        const isFunction = (KNOWN_FUNCTION_NAMES as string[]).includes(known);
+        let isFunction = (KNOWN_FUNCTION_NAMES as string[]).includes(known);
+        // "d" es a la vez variable matemática válida y función interna de
+        // derivada. Solo debe tratarse como función cuando forma una llamada
+        // explícita d(...); en a/b*c/d debe seguir siendo una variable.
+        if (known === "d") {
+          isFunction = expr[i + known.length] === "(";
+        }
         tokens.push({ type: isFunction ? "function" : "identifier", value: known });
         i += known.length;
         continue;

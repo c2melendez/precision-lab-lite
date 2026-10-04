@@ -18,10 +18,19 @@
 // Se evalúa con Algebrite (no aritmética de JS) para conservar forma
 // exacta: ±(sqrt(2)) da [sqrt(2),-sqrt(2)], no una aproximación decimal.
 import { evaluate } from "./algebriteClient";
+import { splitTopLevelArgs } from "./statFunctions";
 
 export function tryPlusMinus(expr: string): string | null {
   const match = expr.match(/^pm\((.*)\)$/s);
   if (!match) return null;
+  const args = splitTopLevelArgs(match[1]);
+  if (args.length === 2) {
+    const left = evaluate(args[0].trim());
+    const right = evaluate(args[1].trim());
+    const plus = evaluate(`(${left})+(${right})`);
+    const minus = evaluate(`(${left})-(${right})`);
+    return `[${plus},${minus}]`;
+  }
   const inner = evaluate(match[1].trim());
   const negated = evaluate(`-(${inner})`);
   return `[${inner},${negated}]`;

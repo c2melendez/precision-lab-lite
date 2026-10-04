@@ -50,9 +50,17 @@ import { evaluateMatrixExpression, matrixExpressionValueToLatex } from "../engin
 import { solveODE } from "../engine/stepEngine/ode";
 import { ErrorCode, makeRequestId, type MathResult, type AppError, type ResultConfidence } from "../types";
 import { extractDomainConditions, mergeDomainConditions } from "../engine/domainConditions";
+import { buildComplexResultViews, buildExpressionResultViews, classifyResultExpression } from "../engine/resultContract";
 
 export type ComputeRequest =
   | { type: "evaluate"; requestId: string; expressionAlgebrite: string }
+  | {
+      type: "evaluateRelation";
+      requestId: string;
+      leftAlgebrite: string;
+      rightAlgebrite: string;
+      operator: InequalityOperator;
+    }
   | {
       type: "solveAlgebra";
       requestId: string;
@@ -193,6 +201,8 @@ function handle(msg: ComputeRequest): MathResult {
   switch (msg.type) {
     case "evaluate":
       return handleEvaluate(msg.expressionAlgebrite, msg.requestId);
+    case "evaluateRelation":
+      return handleEvaluateRelation(msg.leftAlgebrite, msg.rightAlgebrite, msg.operator, msg.requestId);
     case "solveAlgebra":
       return handleSolveAlgebra(msg.leftAlgebrite, msg.rightAlgebrite, msg.variable, msg.requestId);
     case "derivative":
@@ -315,9 +325,17 @@ function handleSolveAlgebra(
     // LaTeX real antes de unirlas, en vez de concatenar sintaxis nativa
     // de Algebrite con un "=" de por medio.
     const resultLatex = solutionsAlgebrite.map((s) => `${variable} = ${toLatex(s)}`).join(",\\ ");
+    const interpretedLatex = `${toLatex(leftAlgebrite)} = ${toLatex(rightAlgebrite)}`;
     return {
       success: true,
       resultLatex,
+      interpretedLatex,
+      resultViewLabel: "Solución",
+      resultKind: "equation",
+      resultViews: [
+        { key: "original", label: "Original", latex: interpretedLatex, kind: "equation" },
+        { key: "solution", label: "Solución", latex: resultLatex, kind: "equation" },
+      ],
       fraction: allNumeric && solutionsAlgebrite.length === 1 ? toFractionResult(solutionsAlgebrite[0]) : undefined,
       steps,
       hasDetailedSteps: false, // ver stepEngine/algebra.ts: pasos de alto nivel, no aislamiento término a término
@@ -346,6 +364,41 @@ function handleSolveAlgebra(
  * muestra directamente sin pasar por toLatex()/toFractionResult() (que
  * esperan sintaxis de Algebrite, no una descripción de intervalo).
  */
+function handleEvaluateRelation(
+  leftAlgebrite: string,
+  rightAlgebrite: string,
+  operator: InequalityOperator,
+  requestId: string,
+): MathResult {
+  try {
+    const left = Number(evaluate(`float(${leftAlgebrite})`));
+    const right = Number(evaluate(`float(${rightAlgebrite})`));
+    if (!Number.isFinite(left) || !Number.isFinite(right)) {
+      throw { code: ErrorCode.PARSE_ERROR, message: "La relación no pudo evaluarse numéricamente." } as AppError;
+    }
+    const truth = operator === "<" ? left < right
+      : operator === ">" ? left > right
+      : operator === "<=" ? left <= right
+      : operator === ">=" ? left >= right
+      : left !== right;
+    return {
+      success: true,
+      resultLatex: truth ? "\\mathrm{verdadero}" : "\\mathrm{falso}",
+      steps: [],
+      hasDetailedSteps: false,
+      confidence: "NUMERIC_FALLBACK",
+      requestId,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(
+      appErr.code ?? ClientErrorCode.PARSE_ERROR,
+      appErr.message ?? String(err),
+      requestId,
+    );
+  }
+}
+
 function handleSolveInequality(
   diffAlgebrite: string,
   operator: "<" | ">" | "<=" | ">=",
@@ -653,9 +706,23 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
     // mostrando el mismo string simbólico que "sqrt".
     const decimalApprox = !fraction ? (toDecimalApprox(raw) ?? undefined) : undefined;
 
+    const resultKind = classifyResultExpression(expr, isNumeric);
+    let resultViews = buildExpressionResultViews(expr, raw, resultKind);
+    if (resultKind === "complex") {
+      try {
+        const parts = parseComplex(raw);
+        resultViews = buildComplexResultViews(expr, parts.re, parts.im);
+      } catch {
+        // Si la forma compleja no se puede reducir a A+B*i, conservamos
+        // Original + Resultado sin inventar representaciones.
+      }
+    }
+
     return {
       success: true,
       resultLatex,
+      resultKind,
+      resultViews,
       fraction,
       decimalApprox,
       steps: [],

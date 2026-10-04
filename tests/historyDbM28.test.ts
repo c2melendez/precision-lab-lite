@@ -5,6 +5,15 @@ type Entry = {
   mode: string;
   input: string;
   resultSummary: string;
+  domainConditions?: Array<{
+    expressionAlgebrite: string;
+    operator: "!=" | ">" | ">=" | "<" | "<=";
+    comparisonAlgebrite: string;
+    text: string;
+    latex: string;
+    variable?: string;
+    kind: "denominator" | "log" | "even_root" | "domain";
+  }>;
   timestamp: number;
 };
 
@@ -75,6 +84,37 @@ describe("M28 historyDb persistence contract", () => {
     expect(entries.map((entry) => entry.input)).toEqual(["det(A)", "1+1"]);
     expect(entries.map((entry) => entry.timestamp)).toEqual([2_000, 1_000]);
     expect(state.openDB).toHaveBeenCalledTimes(1);
+  });
+
+  it("preserves S26 domain conditions across IndexedDB persistence", async () => {
+    const { addHistoryEntry, getAllHistoryEntries } = await import("../src/store/historyDb");
+
+    await addHistoryEntry({
+      mode: "Científica",
+      input: "(x^2-1)/(x-1)",
+      resultSummary: "x+1",
+      domainConditions: [
+        {
+          expressionAlgebrite: "x-1",
+          operator: "!=",
+          comparisonAlgebrite: "0",
+          text: "x != 1",
+          latex: "x \\neq 1",
+          variable: "x",
+          kind: "denominator",
+        },
+      ],
+    });
+
+    const [entry] = await getAllHistoryEntries();
+    expect(entry.domainConditions).toEqual([
+      expect.objectContaining({
+        kind: "denominator",
+        variable: "x",
+        operator: "!=",
+        comparisonAlgebrite: "0",
+      }),
+    ]);
   });
 
   it("clears all persisted history", async () => {
