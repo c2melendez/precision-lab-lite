@@ -138,9 +138,9 @@ export function preprocessLatex(latex: string): string {
   // IN625 A3 — operadores/combinatoria y relaciones equivalentes.
   // Normalización general de macros LaTeX al contrato lineal del motor.
   expr = expr
-    .replace(/\\\\binom\{([^{}]+)\}\{([^{}]+)\}/g, "nCr($1,$2)")
-    .replace(/\{([^{}]+)\\\\choose([^{}]+)\}/g, "nCr($1,$2)")
-    .replace(/([A-Za-z0-9.]+)\\s*\\\\bmod\\s*([A-Za-z0-9.]+)/g, "mod($1,$2)");
+    .replace(/\\binom\{([^{}]+)\}\{([^{}]+)\}/g, "nCr($1,$2)")
+    .replace(/\{([^{}]+)\\choose([^{}]+)\}/g, "nCr($1,$2)")
+    .replace(/([A-Za-z0-9.]+)\s*\\bmod\s*([A-Za-z0-9.]+)/g, "mod($1,$2)");
 
   // IN625 A1 — variantes TeX equivalentes de fracción. MathLive suele
   // canonizarlas al editar, pero el parser también debe ser correcto
