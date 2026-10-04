@@ -263,6 +263,8 @@ function operatorLatex(op: InequalityOperator): string {
       return "<";
     case ">":
       return ">";
+    case "!=":
+      throw appError("El operador ≠ no está soportado en sistemas de inecuaciones ordenadas.");
   }
 }
 
