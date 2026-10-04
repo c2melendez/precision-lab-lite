@@ -20,7 +20,7 @@ function parseOut(input: string): string {
 }
 
 describe("IN625 Parte A / A4 Raíces", () => {
-  it("EN-RD-01 sqrt con llaves", () => expectClose("\\sqrt{4}", 2));
+  it("EN-RD-01 sqrt con llaves", () => expectEquivalentToNumber("\\sqrt{4}", 2));
   it("EN-RD-02 sqrt sin llaves", () => expectEquivalentToNumber("\\sqrt4", 2));
   it("EN-RD-03 sqrt2", () => expectEquivalentToNumber("\\sqrt2", Math.SQRT2));
   it("EN-RD-04 sqrt x conserva raíz", () => {
@@ -32,17 +32,17 @@ describe("IN625 Parte A / A4 Raíces", () => {
     expect(out).toContain("sqrt(x)");
     expect(out).toMatch(/\*y|y\*/);
   });
-  it("EN-RD-06 raíz cúbica de 8", () => expectClose("\\sqrt[3]{8}", 2));
-  it("EN-RD-07 raíz cúbica real de -8", () => expectClose("\\sqrt[3]{-8}", -2));
-  it("EN-RD-08 raíz cúbica sin llaves", () => expectClose("\\sqrt[3]4", Math.cbrt(4)));
-  it("EN-RD-09 índice de dos dígitos", () => expectClose("\\sqrt[10]{1024}", 2));
+  it("EN-RD-06 raíz cúbica de 8", () => expectEquivalentToNumber("\\sqrt[3]{8}", 2));
+  it("EN-RD-07 raíz cúbica real de -8", () => expectEquivalentToNumber("\\sqrt[3]{-8}", -2));
+  it("EN-RD-08 raíz cúbica sin llaves", () => expectEquivalentToNumber("\\sqrt[3]4", Math.cbrt(4)));
+  it("EN-RD-09 índice de dos dígitos", () => expectEquivalentToNumber("\\sqrt[10]{1024}", 2));
   it("EN-RD-10 raíz n-ésima simbólica", () => {
     const out = parseOut("\\sqrt[n]{x}");
     expect(out).toMatch(/x.*1.*n|\^\(1\/\(n\)\)/);
   });
-  it("EN-RD-11 raíces anidadas", () => expectClose("\\sqrt{\\sqrt{\\sqrt{256}}}", 2));
-  it("EN-RD-12 coeficiente por radical", () => expectClose("2\\sqrt{3}", 2 * Math.sqrt(3)));
-  it("EN-RD-13 producto de radicales", () => expectClose("\\sqrt{2}\\sqrt{3}", Math.sqrt(6)));
+  it("EN-RD-11 raíces anidadas", () => expectEquivalentToNumber("\\sqrt{\\sqrt{\\sqrt{256}}}", 2));
+  it("EN-RD-12 coeficiente por radical", () => expectEquivalentToNumber("2\\sqrt{3}", 2 * Math.sqrt(3)));
+  it("EN-RD-13 producto de radicales", () => expectEquivalentToNumber("\\sqrt{2}\\sqrt{3}", Math.sqrt(6)));
   it("EN-RD-14 potencia un medio equivale a sqrt", () => {
     const a = parseExpression("x^{\\frac{1}{2}}").algebrite;
     const b = parseExpression("\\sqrt{x}").algebrite;
