@@ -8,6 +8,58 @@ function parseError(message: string): AppError {
   return { code: ErrorCode.PARSE_ERROR, message };
 }
 
+
+const LOCALIZED_ALIAS_MAP: Record<string, string> = {
+  sen: "\\sin",
+  tg: "\\tan",
+  ctg: "\\cot",
+  cotg: "\\cot",
+  cosec: "\\csc",
+  arcsen: "arcsin",
+  arctg: "arctan",
+  arcctg: "arccot",
+  arccotg: "arccot",
+  arccosec: "arccsc",
+  senh: "sinh",
+  tgh: "tanh",
+  ctgh: "coth",
+  cotgh: "coth",
+  cosech: "csch",
+  argsenh: "asinh",
+  arcsenh: "asinh",
+  argcosh: "acosh",
+  argtgh: "atanh",
+  arctgh: "atanh",
+  lg: "\\log",
+  raiz: "sqrt",
+  "raíz": "sqrt",
+  mcd: "gcd",
+  mcm: "lcm",
+  "máx": "max",
+  "mín": "min",
+};
+
+function normalizeLocalizedAliases(input: string): string {
+  let out = input;
+
+  out = out.replace(
+    /\\(?:operatorname|mathrm|text)\{([^{}]+)\}/g,
+    (_m, rawName) => LOCALIZED_ALIAS_MAP[String(rawName).toLowerCase()] ?? String(rawName),
+  );
+
+  out = out.replace(
+    /\\(sen|tg|ctg|cotg|cosec|arcsen|arctg|arcctg|arccotg|arccosec|senh|tgh|ctgh|cotgh|cosech|argsenh|arcsenh|argcosh|argtgh|arctgh|raiz)(?![A-Za-z])/gi,
+    (_m, rawName) => LOCALIZED_ALIAS_MAP[String(rawName).toLowerCase()] ?? String(rawName),
+  );
+
+  out = out.replace(
+    /(?<![A-Za-zÁÉÍÓÚáéíóúÑñ])(arccosec|arccotg|arcctg|arcsenh|argsenh|argcosh|argtgh|arctgh|arcsen|arctg|cosech|cotgh|ctgh|senh|tgh|cotg|cosec|ctg|sen|tg|lg|raíz|raiz|mcd|mcm|máx|mín)(?![A-Za-zÁÉÍÓÚáéíóúÑñ])/gi,
+    (rawName) => LOCALIZED_ALIAS_MAP[String(rawName).toLowerCase()] ?? String(rawName),
+  );
+
+  return out;
+}
+
 function encodeSubscriptPayload(raw: string): string {
   const digitWords: Record<string, string> = {
     "0": "ZERO", "1": "ONE", "2": "TWO", "3": "THREE", "4": "FOUR",
@@ -294,7 +346,7 @@ function normalizeDelimiterSyntax(input: string): string {
 
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
-  let expr = normalizeDelimiterSyntax(latex);
+  let expr = normalizeLocalizedAliases(normalizeDelimiterSyntax(latex));
 
   // IN625 A3 — operadores/combinatoria y relaciones equivalentes.
   // Normalización general de macros LaTeX al contrato lineal del motor.
