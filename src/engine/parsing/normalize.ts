@@ -637,7 +637,12 @@ function replaceFracOnce(expr: string): string {
  * atómico: número, identificador simple, o paréntesis balanceado.
  */
 export function normalizeUnicode(expr: string): string {
-  let out = expr.replace(/π/g, "pi").replace(/∞/g, "oo");
+  let out = expr
+    .replace(/π/g, "pi")
+    .replace(/∞/g, "oo")
+    .replace(/≤/g, "<=")
+    .replace(/≥/g, ">=")
+    .replace(/≠/g, "!=");
 
   out = out.replace(/√/g, "\u0000SQRT\u0000");
   let result = "";
