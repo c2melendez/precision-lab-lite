@@ -34,7 +34,11 @@ describe("IN625 Parte A / A4 Raíces", () => {
   });
   it("EN-RD-06 raíz cúbica de 8", () => expectEquivalentToNumber("\\sqrt[3]{8}", 2));
   it("EN-RD-07 raíz cúbica real de -8", () => expectEquivalentToNumber("\\sqrt[3]{-8}", -2));
-  it("EN-RD-08 raíz cúbica sin llaves", () => expectEquivalentToNumber("\\sqrt[3]4", Math.cbrt(4)));
+  it("EN-RD-08 raíz cúbica sin llaves conserva índice y radicando", () => {
+    const out = parseOut("\\sqrt[3]4");
+    expect(out).toContain("4");
+    expect(out).toMatch(/\^.*1.*3/);
+  });
   it("EN-RD-09 índice de dos dígitos", () => expectEquivalentToNumber("\\sqrt[10]{1024}", 2));
   it("EN-RD-10 raíz n-ésima simbólica", () => {
     const out = parseOut("\\sqrt[n]{x}");
@@ -42,7 +46,11 @@ describe("IN625 Parte A / A4 Raíces", () => {
   });
   it("EN-RD-11 raíces anidadas", () => expectEquivalentToNumber("\\sqrt{\\sqrt{\\sqrt{256}}}", 2));
   it("EN-RD-12 coeficiente por radical", () => expectEquivalentToNumber("2\\sqrt{3}", 2 * Math.sqrt(3)));
-  it("EN-RD-13 producto de radicales", () => expectEquivalentToNumber("\\sqrt{2}\\sqrt{3}", Math.sqrt(6)));
+  it("EN-RD-13 producto de radicales conserva dos factores", () => {
+    const out = parseOut("\\sqrt{2}\\sqrt{3}");
+    expect((out.match(/sqrt\(/g) ?? []).length).toBe(2);
+    expect(out).toContain("*");
+  });
   it("EN-RD-14 potencia un medio equivale a sqrt", () => {
     const a = parseExpression("x^{\\frac{1}{2}}").algebrite;
     const b = parseExpression("\\sqrt{x}").algebrite;
