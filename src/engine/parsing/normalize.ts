@@ -115,7 +115,7 @@ function normalizeDelimiterSyntax(input: string): string {
     let j = out.length - 1;
     while (j >= 0 && /\\s/.test(out[j])) j--;
     const prev = j >= 0 ? out[j] : "";
-    const beginsOperand = depth === 0 || prev === "" || /[\\(,+\\-*\\/^=<>]/.test(prev);
+    const beginsOperand = depth === 0 || prev === "" || "()+-*/^=<>,".includes(prev);
 
     if (beginsOperand) {
       out += "abs(";
