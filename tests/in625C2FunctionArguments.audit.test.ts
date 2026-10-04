@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { parseExpression } from "../src/engine/parsing";
 import { evaluate } from "../src/engine/algebriteClient";
+import { compileNumeric } from "../src/engine/numericFallback";
 
 const p=(s:string,mode:"RAD"|"GRAD"="RAD")=>parseExpression(s,mode).algebrite.replace(/\s+/g,"");
 function num(input:string,mode:"RAD"|"GRAD"="RAD"):number{
-  return Number(evaluate(parseExpression(input,mode).algebrite));
+  const expr=parseExpression(input,mode).algebrite;
+  return compileNumeric(expr,"__unused__")(0);
 }
 describe("IN625 Parte C / C2 Argumento sin paréntesis",()=>{
   it("EN-FA-01",()=>expect(p("\\sin x")).toContain("sin(x)"));
