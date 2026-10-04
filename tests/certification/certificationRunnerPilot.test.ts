@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
-import { derivative, evaluate } from "../../src/engine/algebriteClient";
+import { derivative, evaluate, substituteAndFloat } from "../../src/engine/algebriteClient";
 
 type AdapterCase = {
   id: string;
