@@ -71,12 +71,18 @@ export function tokenize(expr: string): Token[] {
         continue;
       }
 
-      // Sin match conocido: se extrae la racha completa de letras como UN
-      // identificador multi-letra (spec v9 §3, comportamiento "xyz" ->
-      // identificador de 3 letras si no fue registrado antes como producto).
-      const match = expr.slice(i).match(/^[a-zA-Z]+/)!;
-      tokens.push({ type: "identifier", value: match[0] });
-      i += match[0].length;
+      // IN625 C10: letras adyacentes desconocidas representan producto de
+      // variables de una letra. Los identificadores multi-letra reservados ya
+      // fueron capturados arriba. La codificación interna de subíndices
+      // (xSUBONE, aSUBiCOMMAj, etc.) sí debe permanecer atómica.
+      const subscriptEncoded = expr.slice(i).match(/^[A-Za-z]SUB[A-Za-z]+/);
+      if (subscriptEncoded) {
+        tokens.push({ type: "identifier", value: subscriptEncoded[0] });
+        i += subscriptEncoded[0].length;
+        continue;
+      }
+      tokens.push({ type: "identifier", value: ch });
+      i++;
       continue;
     }
 
