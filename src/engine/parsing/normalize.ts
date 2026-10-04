@@ -77,6 +77,40 @@ function replaceBalanced(
 export function preprocessLatex(latex: string): string {
   let expr = latex;
 
+  // IN625 A1 — variantes TeX equivalentes de fracción. MathLive suele
+  // canonizarlas al editar, pero el parser también debe ser correcto
+  // cuando recibe LaTeX pegado/escrito directamente.
+  expr = expr.replace(/\\(?:dfrac|tfrac|cfrac)/g, "\\frac");
+
+  // TeX primitivo \\over: el numerador/denominador son los contenidos a
+  // izquierda/derecha dentro del grupo actual. Primero resolvemos grupos
+  // simples {...\\over...}; después la forma top-level sin llaves
+  // (ej. x+1\\over x-1). Esto se hace antes de procesar \\frac.
+  let previousOver = "";
+  while (expr.includes("\\over") && expr !== previousOver) {
+    previousOver = expr;
+    expr = expr.replace(/\{([^{}]*)\\over([^{}]*)\}/g, "\\frac{$1}{$2}");
+    if (expr.includes("\\over")) {
+      let depth = 0;
+      let overIndex = -1;
+      for (let i = 0; i < expr.length; i++) {
+        if (expr[i] === "{") depth++;
+        else if (expr[i] === "}") depth--;
+        else if (depth === 0 && expr.startsWith("\\over", i)) {
+          if (overIndex !== -1) {
+            throw parseError('Solo se admite un "\\over" por grupo.');
+          }
+          overIndex = i;
+        }
+      }
+      if (overIndex !== -1) {
+        const left = expr.slice(0, overIndex);
+        const right = expr.slice(overIndex + "\\over".length);
+        expr = `\\frac{${left}}{${right}}`;
+      }
+    }
+  }
+
   // S16 REG-008: MathLive serializa la tecla visual ° como ^{\\circ}
   // (y puede usar ^\\circ). Unificarlo con el marcador ° que ya procesa
   // el pipeline de grados/DMS.
