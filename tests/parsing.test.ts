@@ -89,8 +89,8 @@ describe("parseExpression", () => {
     ).toBe("d((x^2*y),x)");
   });
 
-  it("\\sqrt[3]{8} es raíz cúbica, NO raíz cuadrada (bug detectado en revisión: el índice se perdía en silencio)", () => {
-    expect(parseExpression("\\sqrt[3]{8}").algebrite).toBe("((8)^(1/(3)))");
+  it("\\sqrt[3]{8} usa cbrt para conservar la raíz real", () => {
+    expect(parseExpression("\\sqrt[3]{8}").algebrite).toBe("cbrt(8)");
   });
 
   it("\\sqrt{9} (sin índice) sigue funcionando como raíz cuadrada normal", () => {
@@ -209,13 +209,23 @@ describe("parseExpression", () => {
       expect(parseExpression("\\sqrt{\\sqrt{x}}").algebrite).toBe("sqrt(sqrt(x))");
     });
 
-  it("\\sqrt[3]{27}^{2} = 9, no 3^(1/3) (bug real detectado por la suite de paridad de teclado: la potencia exterior se colaba dentro del exponente de la raíz por asociatividad-derecha de ^)", () => {
-    expect(parseExpression("\\sqrt[3]{27}^{2}").algebrite).toBe("((27)^(1/(3)))^(2)");
+  it("\\sqrt[3]{27}^{2} conserva la potencia exterior", () => {
+    expect(parseExpression("\\sqrt[3]{27}^{2}").algebrite).toBe("cbrt(27)^(2)");
   });
 
-  it("\\sqrt[3]{x} (raíz enésima) no se ve afectado por ninguno de los dos fixes", () => {
-      expect(parseExpression("\\sqrt[3]{x}").algebrite).toBe("((x)^(1/(3)))");
-    });
+  it("\\sqrt[3]{x} se enruta a cbrt(x)", () => {
+    expect(parseExpression("\\sqrt[3]{x}").algebrite).toBe("cbrt(x)");
+  });
+
+  it("acepta variantes tipográficas de fracción y macros S26", () => {
+    expect(parseExpression("\\dfrac{1}{2}").algebrite).toBe("((1)/(2))");
+    expect(parseExpression("\\tfrac{1}{2}").algebrite).toBe("((1)/(2))");
+    expect(parseExpression("\\binom{5}{2}").algebrite).toContain("factorial(5)");
+    expect(parseExpression("17\\bmod5").algebrite).toBe("mod(17,5)");
+    expect(parseExpression("\\lceil 2.1\\rceil").algebrite).toBe("ceil(2.1)");
+    expect(parseExpression("5!!").algebrite).toBe("doublefactorial(5)");
+    expect(parseExpression("\\sqrt[3]4").algebrite).toBe("cbrt(4)");
+  });
   });
 });
 
@@ -278,5 +288,44 @@ describe("suite de regresión v1.1: conversión a grados no confunde subcadenas"
     expect(parseExpression("sinh(1)", "GRAD").algebrite).toBe("sinh(1)");
     expect(parseExpression("cosh(1)", "GRAD").algebrite).toBe("cosh(1)");
     expect(parseExpression("tanh(1)", "GRAD").algebrite).toBe("tanh(1)");
+  });
+});
+
+
+describe("S26 Sintaxis 625 — delimitadores", () => {
+  it("normaliza delimitadores tipográficos S26", () => {
+    expect(parseExpression("\\Bigl(\\frac{1}{2}\\Bigr)^{3}").algebrite).toBe("(((1)/(2)))^(3)");
+    expect(parseExpression("\\bigl(x+1\\bigr)^{2}").algebrite).toBe("(x+1)^(2)");
+  });
+
+  it("normaliza valor absoluto con lvert/rvert", () => {
+    expect(parseExpression("\\lvert x-1\\rvert").algebrite).toBe("abs(x-1)");
+  });
+});
+
+
+describe("S26 A1 — cfrac y over", () => {
+  it("normaliza cfrac como frac", () => {
+    expect(parseExpression("\\cfrac{1}{2}").algebrite).toContain("(1)/(2)");
+  });
+
+  it("normaliza over agrupado y de nivel superior", () => {
+    expect(parseExpression("{1\\over 2}").algebrite).toContain("(1)/(2)");
+    const parsed = parseExpression("x+1\\over x-1").algebrite;
+    expect(parsed).toContain("x+1");
+    expect(parsed).toContain("x-1");
+  });
+});
+
+
+describe("S26 A1 — variable d frente a derivada", () => {
+  it("trata d como variable cuando no es una llamada de derivada", () => {
+    const parsed = parseExpression("\\frac{a}{b}\\frac{c}{d}");
+    expect(parsed.algebrite).toContain("d");
+  });
+
+  it("conserva d(...) como función interna de derivada", () => {
+    const parsed = parseExpression("d(x^2,x)");
+    expect(parsed.algebrite).toContain("d(");
   });
 });

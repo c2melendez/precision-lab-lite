@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StaticMath } from "./StaticMath";
-import type { MathResult } from "../types";
+import type { MathResult, ResultView, ResultViewKey } from "../types";
 
 // spec v10 §11: el usuario alterna entre formatos sin recalcular.
 //
@@ -27,7 +27,8 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
   // chico que solo aparece cuando realmente hay una forma mixta posible
   // (fracción impropia: |numerador| >= denominador).
   const [showMixed, setShowMixed] = useState(true);
-  const [symbolicView, setSymbolicView] = useState<"original" | "result">("result");
+  const [symbolicView, setSymbolicView] = useState<ResultViewKey>("result");
+  const [displayMode, setDisplayMode] = useState<"view" | "format">("format");
 
   if (!result) {
     return <p className="py-1 text-right text-sm text-muted">Escribe una expresión y presiona Calcular.</p>;
@@ -74,20 +75,31 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
     return { latex: result?.resultLatex ?? "", isPlainNumber: false };
   }
 
-  // Las vistas simbólicas son contextuales: cuando el resultado no es
-  // numérico y conocemos la interpretación del motor, se ofrece
-  // "Original" junto a la forma calculada. Los formatos dec/frac/scn
-  // siguen siendo la familia correcta para resultados numéricos.
-  const hasSymbolicViews =
-    Boolean(result.interpretedLatex) &&
-    result.fraction === undefined &&
-    result.decimalApprox === undefined;
+  // Contrato S26: las vistas vienen declaradas por el motor. Mientras
+  // migramos todos los flujos, se conserva un fallback retrocompatible
+  // para resultados antiguos que solo traen interpretedLatex.
+  const fallbackViews: ResultView[] =
+    result.interpretedLatex && result.resultLatex
+      ? [
+          { key: "original", label: "Original", latex: result.interpretedLatex, kind: result.resultKind ?? "other" },
+          { key: "result", label: result.resultViewLabel ?? "Resultado", latex: result.resultLatex, kind: result.resultKind ?? "other" },
+        ]
+      : [];
+  const contextualViews = result.resultViews?.length ? result.resultViews : fallbackViews;
+  const hasSymbolicViews = contextualViews.length > 0;
+  const hasNumericFormats =
+    result.fraction !== undefined ||
+    result.decimalApprox !== undefined ||
+    (result.resultLatex !== null && /^-?\d+(?:\.\d+)?$/.test(result.resultLatex));
   const rendered = renderValue();
-  const latex =
-    hasSymbolicViews && symbolicView === "original"
-      ? result.interpretedLatex!
-      : rendered.latex;
-  const isPlainNumber = hasSymbolicViews ? false : rendered.isPlainNumber;
+  const activeView =
+    contextualViews.find((view) => view.key === symbolicView) ??
+    contextualViews.find((view) => view.key === "result" || view.key === "solution") ??
+    contextualViews[1] ??
+    contextualViews[0];
+  const showingContextualView = displayMode === "view" && hasSymbolicViews && Boolean(activeView);
+  const latex = showingContextualView && activeView ? activeView.latex : rendered.latex;
+  const isPlainNumber = showingContextualView ? false : rendered.isPlainNumber;
 
   return (
     <div className="pt-1" role="status" aria-live="polite" aria-atomic="true">
@@ -105,7 +117,7 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
           <StaticMath latex={latex} className="a11y-scale-result-3xl ml-auto font-mono text-ink" />
         )}
       </div>
-      {format === "frac" && result.fraction?.mixedLatex !== null && result.fraction && (
+      {displayMode === "format" && format === "frac" && result.fraction?.mixedLatex !== null && result.fraction && (
         <div className="mt-1 flex justify-end">
           <button
             onClick={() => setShowMixed((v) => !v)}
@@ -130,38 +142,35 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
         </div>
       )}
       <div className="mt-1.5 flex justify-end gap-3 text-xs text-muted">
-        {hasSymbolicViews ? (
-          <>
-            <button
-              type="button"
-              onClick={() => setSymbolicView("original")}
-              aria-pressed={symbolicView === "original"}
-              className={symbolicView === "original" ? "font-semibold text-marker" : "hover:text-ink"}
-            >
-              Original
-            </button>
-            <button
-              type="button"
-              onClick={() => setSymbolicView("result")}
-              aria-pressed={symbolicView === "result"}
-              className={symbolicView === "result" ? "font-semibold text-marker" : "hover:text-ink"}
-            >
-              {result.resultViewLabel ?? "Resultado"}
-            </button>
-          </>
-        ) : (
+        {contextualViews.map((view) => (
+          <button
+            key={`view-${view.key}`}
+            type="button"
+            onClick={() => {
+              setSymbolicView(view.key);
+              setDisplayMode("view");
+            }}
+            aria-pressed={displayMode === "view" && activeView?.key === view.key}
+            className={displayMode === "view" && activeView?.key === view.key ? "font-semibold text-marker" : "hover:text-ink"}
+          >
+            {view.label}
+          </button>
+        ))}
+        {hasNumericFormats &&
           (["dec", "frac", "scn", "sqrt"] as AnswerFormat[]).map((f) => (
             <button
-              key={f}
+              key={`format-${f}`}
               type="button"
-              onClick={() => setFormat(f)}
-              aria-pressed={format === f}
-              className={format === f ? "font-semibold text-marker" : "hover:text-ink"}
+              onClick={() => {
+                setFormat(f);
+                setDisplayMode("format");
+              }}
+              aria-pressed={displayMode === "format" && format === f}
+              className={displayMode === "format" && format === f ? "font-semibold text-marker" : "hover:text-ink"}
             >
               {f}
             </button>
-          ))
-        )}
+          ))}
       </div>
     </div>
   );

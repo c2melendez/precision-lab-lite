@@ -25,24 +25,27 @@ function parseError(message: string): AppError {
  * cualquier fracción/raíz de un solo dígito escrita a mano.
  */
 function readBalancedOrSingleToken(input: string, fromIndex: number, macroLabel: string): [string, number] {
-  if (input[fromIndex] === "{") {
+  let argIndex = fromIndex;
+  while (argIndex < input.length && /\\s/.test(input[argIndex])) argIndex++;
+
+  if (input[argIndex] === "{") {
     let depth = 1;
-    let j = fromIndex + 1;
+    let j = argIndex + 1;
     while (j < input.length && depth > 0) {
       if (input[j] === "{") depth++;
       else if (input[j] === "}") depth--;
       j++;
     }
     if (depth !== 0) throw parseError(`Llaves sin balancear en ${macroLabel}.`);
-    return [input.slice(fromIndex + 1, j - 1), j];
+    return [input.slice(argIndex + 1, j - 1), j];
   }
-  if (input[fromIndex] === "\\") {
-    const m = input.slice(fromIndex).match(/^\\[a-zA-Z]+/);
+  if (input[argIndex] === "\\") {
+    const m = input.slice(argIndex).match(/^\\[a-zA-Z]+/);
     if (!m) throw parseError(`Token inválido tras ${macroLabel}.`);
-    return [m[0], fromIndex + m[0].length];
+    return [m[0], argIndex + m[0].length];
   }
-  if (fromIndex < input.length && /[0-9a-zA-Z]/.test(input[fromIndex])) {
-    return [input[fromIndex], fromIndex + 1];
+  if (argIndex < input.length && /[0-9a-zA-Z]/.test(input[argIndex])) {
+    return [input[argIndex], argIndex + 1];
   }
   throw parseError(`Se esperaba "{" o un token tras ${macroLabel}.`);
 }
@@ -75,7 +78,56 @@ function replaceBalanced(
 
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
+  const trimmed = latex.trim();
+  if (
+    (trimmed.includes("\\left(") && trimmed.includes("\\right]")) ||
+    (trimmed.startsWith("[") && trimmed.endsWith(")") && trimmed.includes(","))
+  ) {
+    throw parseError("Notación de intervalo semiabierto reconocida, pero todavía no soportada por este evaluador.");
+  }
+  if (trimmed.includes("\\lVert") && trimmed.includes("pmatrix")) {
+    throw parseError("Norma vectorial reconocida, pero todavía no soportada por este evaluador.");
+  }
+
   let expr = latex;
+
+  // S26 Sintaxis 625: \dfrac y \tfrac son variantes tipográficas de
+  // \frac; la semántica matemática es idéntica.
+  expr = expr.replace(/\\(?:dfrac|tfrac|cfrac)/g, "\\frac");
+
+  // S26 A1: TeX primitive \\over. Primero resolvemos grupos simples
+  // {numerador\\over denominador}; después, si queda un \\over a nivel
+  // superior, actúa sobre toda la expresión visible.
+  let previousOver = "";
+  while (expr !== previousOver) {
+    previousOver = expr;
+    expr = expr.replace(/\{([^{}]*?)\\over\s*([^{}]*?)\}/g, "\\frac{$1}{$2}");
+  }
+  if (expr.includes("\\over")) {
+    const parts = expr.split("\\over");
+    if (parts.length === 2) {
+      expr = `\\frac{${parts[0]}}{${parts[1]}}`;
+    }
+  }
+
+  // S26 Sintaxis 625: combinatoria TeX -> función interna ya soportada.
+  // Se usa el lector balanceado existente para aceptar grupos o tokens.
+  while (expr.includes("\\binom")) {
+    const start = expr.indexOf("\\binom");
+    const afterMacro = start + "\\binom".length;
+    const [n, afterN] = readBalancedOrSingleToken(expr, afterMacro, "\\binom");
+    const [r, afterR] = readBalancedOrSingleToken(expr, afterN, "\\binom");
+    expr = expr.slice(0, start) + `nCr(${n},${r})` + expr.slice(afterR);
+  }
+
+  // Módulo/techo en la notación exacta usada por la matriz.
+  expr = expr
+    .replace(/(-?\d+(?:\.\d+)?)\\bmod(-?\d+(?:\.\d+)?)/g, "mod($1,$2)")
+    .replace(/\\lceil\s*([^{}]+?)\s*\\rceil/g, "ceil($1)");
+
+  // Doble factorial numérico: se conserva como función interna para que
+  // el worker lo evalúe sin confundirlo con factorial(factorial(n)).
+  expr = expr.replace(/(\d+)!!/g, "doublefactorial($1)");
 
   // S16 REG-008: MathLive serializa la tecla visual ° como ^{\\circ}
   // (y puede usar ^\\circ). Unificarlo con el marcador ° que ya procesa
@@ -239,7 +291,27 @@ export function preprocessLatex(latex: string): string {
   // "cuela" dentro del exponente de la raíz en vez de aplicarse al
   // resultado. Se envuelve toda la expresión en un paréntesis extra para
   // que cualquier "^" posterior solo pueda aplicarse por fuera.
-  expr = expr.replace(/\\sqrt\[([^\]]*)\]\{([^{}]*)\}/g, "(($2)^(1/($1)))");
+  {
+    let searchFrom = 0;
+    while (true) {
+      const start = expr.indexOf("\\sqrt[", searchFrom);
+      if (start === -1) break;
+      const closeBracket = expr.indexOf("]", start + "\\sqrt[".length);
+      if (closeBracket === -1) break;
+      const indexText = expr.slice(start + "\\sqrt[".length, closeBracket);
+      const [radicand, afterRadicand] = readBalancedOrSingleToken(
+        expr,
+        closeBracket + 1,
+        "\\sqrt[n]",
+      );
+      const replacement =
+        indexText.trim() === "3"
+          ? `cbrt(${radicand})`
+          : `((${radicand})^(1/(${indexText})))`;
+      expr = expr.slice(0, start) + replacement + expr.slice(afterRadicand);
+      searchFrom = start + replacement.length;
+    }
+  }
   // BUG real (preexistente, encontrado al verificar el fix de arriba):
   // una sola pasada de replaceBalanced NO es recursiva — \sqrt{\sqrt{x}}
   // procesaba solo el \sqrt externo, dejando un "\sqrt{x}" literal sin
@@ -405,17 +477,66 @@ export function preprocessLatex(latex: string): string {
   // El tokenizador científico espera el operador postfix literal "%".
   expr = expr;
 
+  // S26 ± binario: a\\pm b conserva ambas ramas como pm(a,b).
+  expr = expr.replace(/([^=<>]+?)\\pm\s*([^=<>]+)/g, (_m, a, b) => `pm(${a.trim()},${b.trim()})`);
+
   // Según la posición del placeholder, MathLive puede simplificar
   // \\pm\\left(5\\right) a \\pm 5. Normalizamos también esa forma
   // a la función unaria interna pm(5), preservando las dos ramas.
   expr = expr.replace(/\\pm\s+([A-Za-z0-9.]+)/g, "pm($1)");
+
+  // S26 choose infix: {n\\choose r} -> nCr(n,r)
+  expr = expr.replace(/\{([^{}]+?)\\choose\s*([^{}]+?)\}/g, "nCr($1,$2)");
+
+  // S26 producto cruz vectorial: reconocer intención y devolver error claro.
+  if (/\\vec\{[^{}]+\}\\times\\vec\{[^{}]+\}/.test(expr)) {
+    throw parseError("Producto cruz vectorial reconocido, pero todavía no soportado por este evaluador.");
+  }
+
+  // S26 delimitadores tipográficos: \big/\Big/\bigg/\Bigg no
+  // cambian la semántica; solo el tamaño visual del delimitador.
+  expr = expr.replace(/\\(?:big|Big|bigg|Bigg)[lr]?/g, "");
+
+  // MathLive puede emitir mleft/mright. Son equivalentes semánticos de
+  // left/right y no deben llegar al tokenizador como macros desconocidos.
+  expr = expr.replace(/\\mleft/g, "\\left").replace(/\\mright/g, "\\right");
+
+  // Corchetes emparejados usados como agrupación son equivalentes a ().
+  // Se limita a la forma explícita left[ ... right] para no consumir
+  // intervalos semiabiertos, que se clasifican aparte.
+  expr = expr.replace(/\\left\[([^\[\]]*?)\\right\]/g, "($1)");
+
+  // Piso: misma política que ceil, pero con su función explícita.
+  expr = expr.replace(/\\lfloor\s*([^{}\\]+?)\s*\\rfloor/g, "floor($1)");
+
+  // La matriz define \\|...\\| como barra simple de valor absoluto.
+  // Se resuelven de dentro hacia fuera para tolerar anidamiento.
+  let previousSlashAbs = "";
+  while (expr !== previousSlashAbs && /\\\\\|/.test(expr)) {
+    previousSlashAbs = expr;
+    expr = expr.replace(/\\\\\|([^\\]*?)\\\\\|/g, "abs($1)");
+  }
+
+  // S26 valor absoluto con \lvert...\rvert. Se resuelven pares
+  // innermost de forma iterativa para tolerar anidamiento simple.
+  let previousAbs = "";
+  while (expr !== previousAbs && /\\lvert/.test(expr)) {
+    previousAbs = expr;
+    expr = expr.replace(/\\lvert([^\\]*?)\\rvert/g, "abs($1)");
+  }
 
   expr = expr
     .replace(/\\left\|/g, "abs(")
     .replace(/\\right\|/g, ")")
     .replace(/\\cdot/g, "*")
     .replace(/\\times/g, "*")
+    .replace(/\\ast/g, "*")
     .replace(/\\div/g, "/")
+    .replace(/\\(?:leq|le)(?![A-Za-z])/g, "<=")
+    .replace(/\\(?:geq|ge)(?![A-Za-z])/g, ">=")
+    .replace(/\\(?:neq|ne)(?![A-Za-z])/g, "!=")
+    .replace(/\\lt(?![A-Za-z])/g, "<")
+    .replace(/\\gt(?![A-Za-z])/g, ">")
     .replace(/\\%/g, "%")
     .replace(/\\pi/g, "pi")
     .replace(/\\infty/g, "oo")
@@ -519,7 +640,12 @@ function replaceFracOnce(expr: string): string {
  * atómico: número, identificador simple, o paréntesis balanceado.
  */
 export function normalizeUnicode(expr: string): string {
-  let out = expr.replace(/π/g, "pi").replace(/∞/g, "oo");
+  let out = expr
+    .replace(/π/g, "pi")
+    .replace(/∞/g, "oo")
+    .replace(/≤/g, "<=")
+    .replace(/≥/g, ">=")
+    .replace(/≠/g, "!=");
 
   out = out.replace(/√/g, "\u0000SQRT\u0000");
   let result = "";
