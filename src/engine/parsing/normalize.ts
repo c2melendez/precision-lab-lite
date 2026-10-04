@@ -67,6 +67,92 @@ function readBalancedOrSingleToken(input: string, fromIndex: number, macroLabel:
   throw parseError(`Se esperaba "{" o un token tras ${macroLabel}.`);
 }
 
+function readFunctionArgument(input: string, fromIndex: number): [string, number] {
+  let i = fromIndex;
+  while (i < input.length && /\s/.test(input[i])) i++;
+  if (i >= input.length) throw parseError("Falta argumento de función.");
+
+  if (input.startsWith("\\left(", i)) {
+    const start = i + "\\left(".length;
+    let depth = 1;
+    let j = start;
+    while (j < input.length) {
+      if (input.startsWith("\\left(", j)) { depth++; j += "\\left(".length; continue; }
+      if (input.startsWith("\\right)", j)) {
+        depth--;
+        if (depth === 0) return [input.slice(start, j), j + "\\right)".length];
+        j += "\\right)".length;
+        continue;
+      }
+      j++;
+    }
+    throw parseError("Paréntesis sin balancear en argumento de función.");
+  }
+
+  if (input[i] === "(") {
+    let depth = 1;
+    let j = i + 1;
+    while (j < input.length && depth > 0) {
+      if (input[j] === "(") depth++;
+      else if (input[j] === ")") depth--;
+      j++;
+    }
+    if (depth !== 0) throw parseError("Paréntesis sin balancear en argumento de función.");
+    return [input.slice(i + 1, j - 1), j];
+  }
+
+  // Argumento sin paréntesis: consume un producto/átomo completo (x^2, 3x,
+  // pi*x), pero se detiene ante un operador aditivo/división o ante otra
+  // función LaTeX al nivel superior.
+  let braceDepth = 0;
+  let parenDepth = 0;
+  let j = i;
+  while (j < input.length) {
+    if (input[j] === "{") braceDepth++;
+    else if (input[j] === "}") braceDepth = Math.max(0, braceDepth - 1);
+    else if (input[j] === "(") parenDepth++;
+    else if (input[j] === ")") {
+      if (parenDepth === 0) break;
+      parenDepth--;
+    }
+    if (braceDepth === 0 && parenDepth === 0) {
+      if (/[+\-\/]/.test(input[j])) break;
+      if (j > i && input[j] === "\\" && /^(?:sin|cos|tan|csc|sec|cot|ln|log|sinh|cosh|tanh)\b/.test(input.slice(j + 1))) break;
+    }
+    j++;
+  }
+  const arg = input.slice(i, j).trim();
+  if (!arg) throw parseError("Falta argumento de función.");
+  return [arg, j];
+}
+
+function normalizePoweredFunctions(input: string): string {
+  const fnPattern = /\\(sin|cos|tan|csc|sec|cot|ln|log)(?:\^\{([^{}]+)\}|\^(-?\d+))/g;
+  let out = "";
+  let cursor = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = fnPattern.exec(input)) !== null) {
+    out += input.slice(cursor, match.index);
+    const fn = match[1];
+    const exponent = (match[2] ?? match[3] ?? "").trim();
+    const [arg, next] = readFunctionArgument(input, fnPattern.lastIndex);
+
+    if (exponent === "-1" && (fn === "sin" || fn === "cos" || fn === "tan")) {
+      const inverse = fn === "sin" ? "arcsin" : fn === "cos" ? "arccos" : "arctan";
+      out += `${inverse}(${arg})`;
+    } else {
+      const mappedFn = fn === "log" ? "log10" : fn;
+      out += `(${mappedFn}(${arg}))^(${exponent})`;
+    }
+
+    cursor = next;
+    fnPattern.lastIndex = next;
+  }
+
+  return out + input.slice(cursor);
+}
+
 function replaceNthRootOnce(input: string): string {
   const start = input.indexOf("\\sqrt[");
   if (start === -1) return input;
@@ -559,6 +645,10 @@ export function preprocessLatex(latex: string): string {
   // a la función unaria interna pm(5), preservando las dos ramas.
   expr = expr.replace(/\\pm\s+([A-Za-z0-9.]+)/g, "pm($1)");
 
+  // IN625 C1 — potencia aplicada al nombre de función.
+  // Debe resolverse antes de la conversión genérica de exponentes.
+  expr = normalizePoweredFunctions(expr);
+
   // IN625 B4 — signos unarios tras operador.
   // Algebrite no acepta de forma consistente secuencias como 2+-3 / 2*-3.
   // Se explicita el signo unario sin alterar 2--3 ni --x.
@@ -611,7 +701,7 @@ export function preprocessLatex(latex: string): string {
   // TeX permite \sin x, \cos x, etc. El argumento inmediato es un átomo;
   // convertirlo a llamada explícita evita que "sinx" se tokenice como letras.
   expr = expr.replace(
-    /\\(sin|cos|tan|csc|sec|cot|ln|exp)\s+([A-Za-z0-9.]+)/g,
+    /\\(sin|cos|tan|csc|sec|cot|ln|exp)\s+([A-Za-z0-9.]+(?:\^\{[^{}]+\}|\^[A-Za-z0-9.\-]+)?)/g,
     (_m, fn, arg) => `${fn}(${arg})`,
   );
 
