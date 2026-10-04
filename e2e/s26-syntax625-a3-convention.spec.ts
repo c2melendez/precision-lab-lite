@@ -64,7 +64,7 @@ test("EN-OP-11 — ± produce ambas ramas", async ({ page }) => {
   const value = (await resultValue(page)).replace(/\\s/g, "");
   expect(value).toContain("7");
   expect(value).toContain("3");
-  expect(value).toMatch(/\\[|\\\\begin|,/);
+  expect(value).toMatch(/\[|\\begin|,/);
 });
 
 for (const [id, inputs] of [
