@@ -568,6 +568,23 @@ export function preprocessLatex(latex: string): string {
     }
   }
 
+  // IN625 E1a — forma canónica sin paréntesis explícitos:
+  // \\frac{d}{dx}x^{2}, \\frac{d}{dx}\\sin x.
+  // Solo se acepta cuando el operador de derivación inicia la expresión;
+  // todo el resto se interpreta como su operando, evitando degradarlo a
+  // una fracción algebraica d/(dx).
+  {
+    const bareDerivative = expr.match(/^\\frac\{d(?:\^\{?(\d+)\}?)?\}\{d([a-zA-Z])(?:\^\{?\d+\}?)?\}(.+)$/s);
+    if (bareDerivative && !bareDerivative[3].startsWith("\\left(")) {
+      const order = bareDerivative[1] ? Number(bareDerivative[1]) : 1;
+      const variable = bareDerivative[2];
+      const body = bareDerivative[3].trim();
+      if (!body) throw parseError('Falta la expresión a derivar tras "d/dx".');
+      const orderArg = order === 1 ? "" : `,${order}`;
+      expr = `d((${body}),${variable}${orderArg})`;
+    }
+  }
+
   // \frac{a}{b} -> ((a)/(b)) — debe ir antes que otros reemplazos porque
   // "a" y "b" pueden contener a su vez otros macros ya procesados de forma
   // recursiva al reprocesar el string completo tras cada pasada balanceada.
