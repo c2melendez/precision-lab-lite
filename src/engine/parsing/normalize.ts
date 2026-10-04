@@ -382,6 +382,15 @@ export function preprocessLatex(latex: string): string {
     throw parseError("Separación numérica ambigua: parece faltar un operador.");
   }
 
+  // IN625 D2 — notación científica ASCII. Solo se reconoce cuando
+  // existe una mantisa numérica completa seguida de e/E y un exponente
+  // entero opcionalmente signado. La constante de Euler aislada sigue
+  // siendo "e" y no entra en esta regla.
+  expr = expr.replace(
+    /(^|[^A-Za-z0-9_.])(\d+(?:\.\d+)?)[eE]([+-]?\d+)(?![A-Za-z0-9_])/g,
+    (_m, prefix, mantissa, exponent) => `${prefix}(${mantissa}*10^(${exponent}))`,
+  );
+
   // IN625 A3 — operadores/combinatoria y relaciones equivalentes.
   // Normalización general de macros LaTeX al contrato lineal del motor.
   expr = expr
