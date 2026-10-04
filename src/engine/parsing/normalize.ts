@@ -117,7 +117,7 @@ function readFunctionArgument(input: string, fromIndex: number): [string, number
     }
     if (braceDepth === 0 && parenDepth === 0) {
       if (/[+\-\/]/.test(input[j])) break;
-      if (input[j] === "\\" && /^(?:cdot|times|div)\b/.test(input.slice(j + 1))) break;
+      if (input[j] === "\\" && /^(?:cdot|times|div)(?![A-Za-z])/.test(input.slice(j + 1))) break;
       if (j > i && input[j] === "\\" && /^(?:sin|cos|tan|csc|sec|cot|ln|log|sinh|cosh|tanh)\b/.test(input.slice(j + 1))) break;
     }
     j++;
@@ -128,7 +128,7 @@ function readFunctionArgument(input: string, fromIndex: number): [string, number
 }
 
 function normalizeUnparenthesizedFunctions(input: string): string {
-  const fnPattern = /\\(sin|cos|tan|csc|sec|cot|ln|exp)(?!\^)/g;
+  const fnPattern = /\\(sin|cos|tan|csc|sec|cot|ln|exp)(?![A-Za-z^])/g;
   let expr = input;
   let guard = 0;
 
