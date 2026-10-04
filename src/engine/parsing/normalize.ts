@@ -361,6 +361,9 @@ function normalizeDelimiterSyntax(input: string): string {
 export function preprocessLatex(latex: string): string {
   let expr = normalizeLocalizedAliases(normalizeDelimiterSyntax(latex));
 
+  // IN625 E1b — variantes tipográficas equivalentes de límites.
+  expr = expr.replace(/\\displaystyle/g, "").replace(/\\rightarrow/g, "\\to");
+
   // IN625 D1 — normalización numérica previa a retirar espacios.
   // MathLive representa una coma decimal explícita como {,}; esa forma
   // es inequívocamente decimal y debe funcionar independientemente del modo regional.
