@@ -465,6 +465,10 @@ export function preprocessLatex(latex: string): string {
       /\\log\s*_\s*\{([^{}]+)\}\s*\((.*)\)$/s,
       /\\log\s*_\s*([0-9a-zA-Z]+)\s*\\left\((.*)\\right\)$/s,
       /\\log\s*_\s*([0-9a-zA-Z]+)\s*\((.*)\)$/s,
+      // IN625 B2: argumento sin paréntesis; conserva exponentes del argumento.
+      /\\log\s*_\s*\{([^{}]+)\}\s*([A-Za-z0-9.]+(?:\^\{[^{}]+\}|\^[A-Za-z0-9.]+)?)$/s,
+      // Sin llaves: una sola cifra/letra como base y el resto como argumento.
+      /\\log\s*_\s*([0-9A-Za-z])\s*([A-Za-z0-9.]+(?:\^\{[^{}]+\}|\^[A-Za-z0-9.]+)?)$/s,
     ];
     for (const pattern of logBasePatterns) {
       const match = expr.match(pattern);
@@ -541,6 +545,14 @@ export function preprocessLatex(latex: string): string {
   expr = expr
     .replace(/([A-Za-z])\^\{([^{}]+)\}_\{(\d+)\}/g, "$1$3^{$2}")
     .replace(/([A-Za-z])\^\{([^{}]+)\}_(\d+)/g, "$1$3^{$2}");
+
+  // Subíndices simbólicos se codifican como un identificador atómico interno.
+  // El eco visual conserva el LaTeX original; esta codificación solo evita
+  // que coma/texto se interpreten como argumentos u operadores.
+  expr = expr
+    .replace(/([A-Za-z])_\{\\text\{([^{}]+)\}\}/g, (_m, b, s) => b + "SUB" + String(s).replace(/[^A-Za-z0-9]/g, ""))
+    .replace(/([A-Za-z])_\{([A-Za-z]+),([A-Za-z]+)\}/g, "$1SUB$2COMMA$3")
+    .replace(/([A-Za-z])_\{([A-Za-z]+)\}/g, "$1SUB$2");
 
   // 1) Subíndices numéricos se vuelven parte del identificador (x_{10} -> x10),
   //    para evitar que el tokenizer los trate como multiplicación implícita.
