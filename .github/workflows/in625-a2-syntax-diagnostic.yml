@@ -1,0 +1,19 @@
+name: IN625 A2 Syntax Diagnostic
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  a2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Run A1+A2 syntax diagnostics
+        run: npx vitest run tests/in625A1Fractions.audit.test.ts tests/in625A2Delimiters.audit.test.ts
