@@ -25,24 +25,27 @@ function parseError(message: string): AppError {
  * cualquier fracción/raíz de un solo dígito escrita a mano.
  */
 function readBalancedOrSingleToken(input: string, fromIndex: number, macroLabel: string): [string, number] {
-  if (input[fromIndex] === "{") {
+  let argIndex = fromIndex;
+  while (argIndex < input.length && /\\s/.test(input[argIndex])) argIndex++;
+
+  if (input[argIndex] === "{") {
     let depth = 1;
-    let j = fromIndex + 1;
+    let j = argIndex + 1;
     while (j < input.length && depth > 0) {
       if (input[j] === "{") depth++;
       else if (input[j] === "}") depth--;
       j++;
     }
     if (depth !== 0) throw parseError(`Llaves sin balancear en ${macroLabel}.`);
-    return [input.slice(fromIndex + 1, j - 1), j];
+    return [input.slice(argIndex + 1, j - 1), j];
   }
-  if (input[fromIndex] === "\\") {
-    const m = input.slice(fromIndex).match(/^\\[a-zA-Z]+/);
+  if (input[argIndex] === "\\") {
+    const m = input.slice(argIndex).match(/^\\[a-zA-Z]+/);
     if (!m) throw parseError(`Token inválido tras ${macroLabel}.`);
-    return [m[0], fromIndex + m[0].length];
+    return [m[0], argIndex + m[0].length];
   }
-  if (fromIndex < input.length && /[0-9a-zA-Z]/.test(input[fromIndex])) {
-    return [input[fromIndex], fromIndex + 1];
+  if (argIndex < input.length && /[0-9a-zA-Z]/.test(input[argIndex])) {
+    return [input[argIndex], argIndex + 1];
   }
   throw parseError(`Se esperaba "{" o un token tras ${macroLabel}.`);
 }
