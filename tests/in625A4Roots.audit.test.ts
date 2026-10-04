@@ -4,7 +4,7 @@ import { evaluate } from "../src/engine/algebriteClient";
 
 function evalNum(input: string): number {
   const parsed = parseExpression(input).algebrite;
-  return Number(evaluate(parsed));
+  return Number(evaluate(`float(${parsed})`));
 }
 function expectClose(input: string, expected: number, digits = 9): void {
   expect(evalNum(input)).toBeCloseTo(expected, digits);
