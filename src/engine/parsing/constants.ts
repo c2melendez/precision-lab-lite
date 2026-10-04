@@ -19,6 +19,9 @@ export const RESERVED_MULTI_LETTER_IDENTIFIERS = [
   "sigma",
   "omega",
   "rho",
+  "zeta",
+  "Delta",
+  "Lambda",
 ];
 
 /** Constantes reconocidas (no son variables libres). */
