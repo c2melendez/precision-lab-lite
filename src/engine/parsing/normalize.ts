@@ -681,7 +681,7 @@ export function preprocessLatex(latex: string): string {
   // IN625 C2 — operatorname trigonométrico.
   expr = expr.replace(
     /\\operatorname\{(sin|cos|tan|csc|sec|cot|ln|exp)\}/g,
-    (_m, fn) => "\\" + fn,
+    (_m, fn) => "\\" + fn + " ",
   );
 
   // IN625 C1 — potencia aplicada al nombre de función.
