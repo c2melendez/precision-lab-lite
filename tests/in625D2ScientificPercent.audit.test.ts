@@ -6,7 +6,7 @@ const ev=(s:string)=>evaluate(parseExpression(s).algebrite).replace(/\s+/g,"");
 describe("IN625 Parte D / D2 Notación científica y porcentaje",()=>{
   it("EN-CI-01 1.5×10^3",()=>expect(ev("1.5\\times10^{3}")).toMatch(/^1500(?:\.0+)?$/));
   it("EN-CI-02 1.5·10^3",()=>expect(ev("1.5\\cdot10^{3}")).toMatch(/^1500(?:\.0+)?$/));
-  it("EN-CI-03 negative scientific exponent",()=>expect(ev("1.5\\times10^{-3}")).toMatch(/^0\.0015/));
+  it("EN-CI-03 negative scientific exponent",()=>expect(ev("1.5\\times10^{-3}")).toMatch(/^(?:0\.0015(?:0+)?|3\/2000)$/));
   it("EN-CI-05 e-notation lowercase",()=>expect(ev("1.5e3")).toMatch(/^1500(?:\.0+)?$/));
   it("EN-CI-06 2e3",()=>expect(ev("2e3")).toBe("2000"));
   it("EN-CI-07 signed e-notation",()=>{
