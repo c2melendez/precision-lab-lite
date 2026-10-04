@@ -21,7 +21,7 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: QA dependency audit (diagnostic branch: non-blocking)
+      - name: "QA dependency audit (diagnostic branch: non-blocking)"
         continue-on-error: true
         run: npm audit --package-lock-only --json > npm-audit.json
       - name: Upload npm audit report
