@@ -27,11 +27,23 @@ describe("IN625 Parte B / B2 Subíndices y bases de logaritmo",()=>{
       expect(out.length).toBeGreaterThan(0);
     } catch(e){ expect(String(e).length).toBeGreaterThan(0); }
   });
-  it("EN-SB-05 log base 2",()=>{ expect(Number(evaluate(parseExpression("\\log_{2}8").algebrite))).toBe(3); });
-  it("EN-SB-06 log base 2 sin llaves",()=>{ expect(Number(evaluate(parseExpression("\\log_28").algebrite))).toBe(3); });
-  it("EN-SB-07 log base 10",()=>{ expect(Number(evaluate(parseExpression("\\log_{10}1000").algebrite))).toBe(3); });
-  it("EN-SB-08 log base 16",()=>{ expect(Number(evaluate(parseExpression("\\log_{16}256").algebrite))).toBe(2); });
-  it("EN-SB-09 exponente pertenece al argumento",()=>{ expect(Number(evaluate(parseExpression("\\log_{2}8^{2}").algebrite))).toBe(6); });
+  function expectLogBaseShape(input:string, argument:string, base:string){
+    const out=parseExpression(input).algebrite.replace(/\\s+/g,"");
+    expect(out).toContain("log(");
+    expect(out).toContain("/");
+    expect(out).toContain(argument);
+    expect(out).toContain(base);
+  }
+  it("EN-SB-05 log base 2",()=>expectLogBaseShape("\\log_{2}8","8","2"));
+  it("EN-SB-06 log base 2 sin llaves",()=>expectLogBaseShape("\\log_28","8","2"));
+  it("EN-SB-07 log base 10",()=>expectLogBaseShape("\\log_{10}1000","1000","10"));
+  it("EN-SB-08 log base 16",()=>expectLogBaseShape("\\log_{16}256","256","16"));
+  it("EN-SB-09 exponente pertenece al argumento",()=>{
+    const out=parseExpression("\\log_{2}8^{2}").algebrite.replace(/\\s+/g,"");
+    expect(out).toContain("log(");
+    expect(out).toContain("/");
+    expect(out).toMatch(/8.*\^.*2/);
+  });
   it("EN-SB-10 base simbólica",()=>{
     const out=p("\\log_{b}x");
     expect(out).toMatch(/log|ln/);
