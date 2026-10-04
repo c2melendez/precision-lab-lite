@@ -1,4 +1,4 @@
-name: IN625 A2 Syntax Diagnostic
+name: IN625 A1+A2+A3 Syntax Diagnostic
 on:
   pull_request:
   workflow_dispatch:
