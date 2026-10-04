@@ -701,7 +701,7 @@ export function preprocessLatex(latex: string): string {
   // TeX permite \sin x, \cos x, etc. El argumento inmediato es un átomo;
   // convertirlo a llamada explícita evita que "sinx" se tokenice como letras.
   expr = expr.replace(
-    /\\(sin|cos|tan|csc|sec|cot|ln|exp)\s+([A-Za-z0-9.]+(?:\^\{[^{}]+\}|\^[A-Za-z0-9.\-]+)?)/g,
+    /\\(sin|cos|tan|csc|sec|cot|ln|exp)\s+([A-Za-z0-9.]+(?:\^\{[^{}]+\}|\^\([^()]+\)|\^[A-Za-z0-9.\-]+)?)/g,
     (_m, fn, arg) => `${fn}(${arg})`,
   );
 
