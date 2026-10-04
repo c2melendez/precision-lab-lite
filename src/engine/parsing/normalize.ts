@@ -559,6 +559,13 @@ export function preprocessLatex(latex: string): string {
   // a la función unaria interna pm(5), preservando las dos ramas.
   expr = expr.replace(/\\pm\s+([A-Za-z0-9.]+)/g, "pm($1)");
 
+  // IN625 B4 — signos unarios tras operador.
+  // Algebrite no acepta de forma consistente secuencias como 2+-3 / 2*-3.
+  // Se explicita el signo unario sin alterar 2--3 ni --x.
+  expr = expr
+    .replace(/([+*/])-([A-Za-z0-9.]+)/g, "$1(-$2)")
+    .replace(/\+\+([A-Za-z0-9.]+)/g, "+$1");
+
   // IN625 B1/B2 — exponentes y subíndices.
   // Los subíndices se codifican internamente con letras solamente para
   // distinguirlos de multiplicación implícita: x_{10} != x2.
