@@ -1,0 +1,733 @@
+{
+  "schema_version": "1.0",
+  "suite_id": "precision-lab-product-certification-wave3-v1",
+  "canonical_snapshot": {
+    "source": "Precision_Lab_Certification_System_v0_3",
+    "oracle_status": "oracle_verified",
+    "purpose": "Wave 3 L0/L1 product execution: verified algebra transforms plus basic derivatives",
+    "sha256": "b187b3057e5d48b310c6ce47038d803a70c842e7f6831c0b5bfdcd1048d4bada",
+    "case_count": 32
+  },
+  "cases": [
+    {
+      "id": "AS-SIM-01",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "simplify",
+      "canonical": {
+        "input": "3x+2y-x+5y",
+        "expected": "2x+7y"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "3*x+2*y-x+5*y",
+          "expected": "2*x+7*y"
+        },
+        "plus": {
+          "expression": "3*x+2*y-x+5*y",
+          "expected": "2*x+7*y"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0001_oracle_evidence.json"
+    },
+    {
+      "id": "AS-SIM-02",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "simplify",
+      "canonical": {
+        "input": "(x^{2})^{3}",
+        "expected": "x^{6}"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "(x^2)^3",
+          "expected": "x^6"
+        },
+        "plus": {
+          "expression": "(x**2)**3",
+          "expected": "x**6"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0001_oracle_evidence.json"
+    },
+    {
+      "id": "AS-SIM-03",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "simplify",
+      "canonical": {
+        "input": "x^{2}x^{3}",
+        "expected": "x^{5}"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x^2*x^3",
+          "expected": "x^5"
+        },
+        "plus": {
+          "expression": "x**2*x**3",
+          "expected": "x**5"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0001_oracle_evidence.json"
+    },
+    {
+      "id": "AS-SIM-04",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "simplify",
+      "canonical": {
+        "input": "(xy)^{3}",
+        "expected": "x^{3}y^{3}"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "(x*y)^3",
+          "expected": "x^3*y^3"
+        },
+        "plus": {
+          "expression": "(x*y)**3",
+          "expected": "x**3*y**3"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0001_oracle_evidence.json"
+    },
+    {
+      "id": "AS-EXP-01",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "expand",
+      "canonical": {
+        "input": "(x+1)(x-1)",
+        "expected": "x^{2}-1"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "(x+1)*(x-1)",
+          "expected": "x^2-1"
+        },
+        "plus": {
+          "expression": "(x+1)*(x-1)",
+          "expected": "x**2-1"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0002_oracle_evidence.json"
+    },
+    {
+      "id": "AS-EXP-02",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "expand",
+      "canonical": {
+        "input": "(x+2)^{2}",
+        "expected": "x^{2}+4x+4"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "(x+2)^2",
+          "expected": "x^2+4*x+4"
+        },
+        "plus": {
+          "expression": "(x+2)**2",
+          "expected": "x**2+4*x+4"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0002_oracle_evidence.json"
+    },
+    {
+      "id": "AS-EXP-03",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "expand",
+      "canonical": {
+        "input": "(2x-1)(3x+4)",
+        "expected": "6x^{2}+5x-4"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "(2*x-1)*(3*x+4)",
+          "expected": "6*x^2+5*x-4"
+        },
+        "plus": {
+          "expression": "(2*x-1)*(3*x+4)",
+          "expected": "6*x**2+5*x-4"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0002_oracle_evidence.json"
+    },
+    {
+      "id": "AS-EXP-04",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "expand",
+      "canonical": {
+        "input": "(x+1)(x^{2}-x+1)",
+        "expected": "x^{3}+1"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "(x+1)*(x^2-x+1)",
+          "expected": "x^3+1"
+        },
+        "plus": {
+          "expression": "(x+1)*(x**2-x+1)",
+          "expected": "x**3+1"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0002_oracle_evidence.json"
+    },
+    {
+      "id": "AS-EXP-06",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "expand",
+      "canonical": {
+        "input": "(x+y)^{3}",
+        "expected": "x^{3}+3x^{2}y+3xy^{2}+y^{3}"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "(x+y)^3",
+          "expected": "x^3+3*x^2*y+3*x*y^2+y^3"
+        },
+        "plus": {
+          "expression": "(x+y)**3",
+          "expected": "x**3+3*x**2*y+3*x*y**2+y**3"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0002_oracle_evidence.json"
+    },
+    {
+      "id": "AS-EXP-07",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "expand",
+      "canonical": {
+        "input": "(2x-3)^{3}",
+        "expected": "8x^{3}-36x^{2}+54x-27"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "(2*x-3)^3",
+          "expected": "8*x^3-36*x^2+54*x-27"
+        },
+        "plus": {
+          "expression": "(2*x-3)**3",
+          "expected": "8*x**3-36*x**2+54*x-27"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0002_oracle_evidence.json"
+    },
+    {
+      "id": "AS-EXP-08",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "expand",
+      "canonical": {
+        "input": "(x+2)(x-3)(x+1)",
+        "expected": "x^{3}-7x-6"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "(x+2)*(x-3)*(x+1)",
+          "expected": "x^3-7*x-6"
+        },
+        "plus": {
+          "expression": "(x+2)*(x-3)*(x+1)",
+          "expected": "x**3-7*x-6"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0002_oracle_evidence.json"
+    },
+    {
+      "id": "AS-EXP-09",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "expand",
+      "canonical": {
+        "input": "(a+b+c)^{2}",
+        "expected": "a^{2}+b^{2}+c^{2}+2ab+2ac+2bc"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "(a+b+c)^2",
+          "expected": "a^2+b^2+c^2+2*a*b+2*a*c+2*b*c"
+        },
+        "plus": {
+          "expression": "(a+b+c)**2",
+          "expected": "a**2+b**2+c**2+2*a*b+2*a*c+2*b*c"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0002_oracle_evidence.json"
+    },
+    {
+      "id": "AS-EXP-10",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "expand",
+      "canonical": {
+        "input": "-(x-1)(x+2)",
+        "expected": "-x^{2}-x+2"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "-(x-1)*(x+2)",
+          "expected": "-x^2-x+2"
+        },
+        "plus": {
+          "expression": "-(x-1)*(x+2)",
+          "expected": "-x**2-x+2"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0002_oracle_evidence.json"
+    },
+    {
+      "id": "AS-FAC-02",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "factor",
+      "canonical": {
+        "input": "x^2+5*x+6",
+        "expected": "(x+2)*(x+3)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x^2+5*x+6",
+          "expected": "(x+2)*(x+3)"
+        },
+        "plus": {
+          "expression": "x**2+5*x+6",
+          "expected": "(x+2)*(x+3)"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0003_oracle_evidence.json"
+    },
+    {
+      "id": "AS-FAC-03",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "factor",
+      "canonical": {
+        "input": "6*x^2-11*x+3",
+        "expected": "(3*x-1)*(2*x-3)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "6*x^2-11*x+3",
+          "expected": "(3*x-1)*(2*x-3)"
+        },
+        "plus": {
+          "expression": "6*x**2-11*x+3",
+          "expected": "(3*x-1)*(2*x-3)"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0003_oracle_evidence.json"
+    },
+    {
+      "id": "AS-FAC-04",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "factor",
+      "canonical": {
+        "input": "x^3-1",
+        "expected": "(x-1)*(x^2+x+1)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x^3-1",
+          "expected": "(x-1)*(x^2+x+1)"
+        },
+        "plus": {
+          "expression": "x**3-1",
+          "expected": "(x-1)*(x**2+x+1)"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0003_oracle_evidence.json"
+    },
+    {
+      "id": "AS-FAC-05",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "factor",
+      "canonical": {
+        "input": "x^3+1",
+        "expected": "(x+1)*(x^2-x+1)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x^3+1",
+          "expected": "(x+1)*(x^2-x+1)"
+        },
+        "plus": {
+          "expression": "x**3+1",
+          "expected": "(x+1)*(x**2-x+1)"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0003_oracle_evidence.json"
+    },
+    {
+      "id": "AS-FAC-06",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "factor",
+      "canonical": {
+        "input": "x^3-6*x^2+11*x-6",
+        "expected": "(x-1)*(x-2)*(x-3)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x^3-6*x^2+11*x-6",
+          "expected": "(x-1)*(x-2)*(x-3)"
+        },
+        "plus": {
+          "expression": "x**3-6*x**2+11*x-6",
+          "expected": "(x-1)*(x-2)*(x-3)"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0003_oracle_evidence.json"
+    },
+    {
+      "id": "AS-FAC-07",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "factor",
+      "canonical": {
+        "input": "x^4-5*x^2+4",
+        "expected": "(x-1)*(x+1)*(x-2)*(x+2)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x^4-5*x^2+4",
+          "expected": "(x-1)*(x+1)*(x-2)*(x+2)"
+        },
+        "plus": {
+          "expression": "x**4-5*x**2+4",
+          "expected": "(x-1)*(x+1)*(x-2)*(x+2)"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0003_oracle_evidence.json"
+    },
+    {
+      "id": "AS-FAC-10",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "factor",
+      "canonical": {
+        "input": "x^3+y^3",
+        "expected": "(x+y)*(x^2-x*y+y^2)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x^3+y^3",
+          "expected": "(x+y)*(x^2-x*y+y^2)"
+        },
+        "plus": {
+          "expression": "x**3+y**3",
+          "expected": "(x+y)*(x**2-x*y+y**2)"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0003_oracle_evidence.json"
+    },
+    {
+      "id": "AS-FAC-11",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "factor",
+      "canonical": {
+        "input": "x^3+x^2+x+1",
+        "expected": "(x+1)*(x^2+1)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x^3+x^2+x+1",
+          "expected": "(x+1)*(x^2+1)"
+        },
+        "plus": {
+          "expression": "x**3+x**2+x+1",
+          "expected": "(x+1)*(x**2+1)"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0003_oracle_evidence.json"
+    },
+    {
+      "id": "AS-FAC-12",
+      "capability_ref": "ALGEBRA_CORE",
+      "operation": "factor",
+      "canonical": {
+        "input": "x^2*(y-z)+y^2*(z-x)+z^2*(x-y)",
+        "expected": "(x-y)*(x-z)*(y-z)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x^2*(y-z)+y^2*(z-x)+z^2*(x-y)",
+          "expected": "(x-y)*(x-z)*(y-z)"
+        },
+        "plus": {
+          "expression": "x**2*(y-z)+y**2*(z-x)+z**2*(x-y)",
+          "expected": "(x-y)*(x-z)*(y-z)"
+        }
+      },
+      "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0003_oracle_evidence.json"
+    },
+    {
+      "id": "CA-DER-001",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "5",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "0"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "5",
+          "variable": "x",
+          "order": 1,
+          "expected": "0"
+        },
+        "plus": {
+          "expression": "5",
+          "variable": "x",
+          "order": 1,
+          "expected": "0"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-002",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "x",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "1"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x",
+          "variable": "x",
+          "order": 1,
+          "expected": "1"
+        },
+        "plus": {
+          "expression": "x",
+          "variable": "x",
+          "order": 1,
+          "expected": "1"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-003",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "x^2",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "2*x"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x^2",
+          "variable": "x",
+          "order": 1,
+          "expected": "2*x"
+        },
+        "plus": {
+          "expression": "x**2",
+          "variable": "x",
+          "order": 1,
+          "expected": "2*x"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-004",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "x^5",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "5*x^4"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x^5",
+          "variable": "x",
+          "order": 1,
+          "expected": "5*x^4"
+        },
+        "plus": {
+          "expression": "x**5",
+          "variable": "x",
+          "order": 1,
+          "expected": "5*x**4"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-005",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "sin(x)",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "cos(x)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "sin(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "cos(x)"
+        },
+        "plus": {
+          "expression": "sin(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "cos(x)"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-006",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "cos(x)",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "-sin(x)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "cos(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "-sin(x)"
+        },
+        "plus": {
+          "expression": "cos(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "-sin(x)"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-007",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "tan(x)",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "tan(x)^2+1"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "tan(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "1/(cos(x)^2)"
+        },
+        "plus": {
+          "expression": "tan(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "tan(x)**2+1"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-008",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "exp(x)",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "exp(x)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "exp(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "exp(x)"
+        },
+        "plus": {
+          "expression": "exp(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "exp(x)"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-010",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "sqrt(x)",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "1/(2*sqrt(x))"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "sqrt(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "1/(2*sqrt(x))"
+        },
+        "plus": {
+          "expression": "sqrt(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "1/(2*sqrt(x))"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-011",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "x*sin(x)",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "x*cos(x)+sin(x)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x*sin(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "x*cos(x)+sin(x)"
+        },
+        "plus": {
+          "expression": "x*sin(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "x*cos(x)+sin(x)"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    }
+  ]
+}
