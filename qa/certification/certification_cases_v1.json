@@ -1,12 +1,12 @@
 {
   "schema_version": "1.0",
-  "suite_id": "precision-lab-product-certification-wave2-v1",
+  "suite_id": "precision-lab-product-certification-wave3-v1",
   "canonical_snapshot": {
     "source": "Precision_Lab_Certification_System_v0_3",
     "oracle_status": "oracle_verified",
-    "purpose": "Wave 2 L0/L1 product execution: independently verified simplify/expand/factor cases",
-    "sha256": "38b9bc55a69c4ab0ff25630d22f390307c226eca93f05e64d260c7ee0d1f525a",
-    "case_count": 22
+    "purpose": "Wave 3 L0/L1 product execution: verified algebra transforms plus basic derivatives",
+    "sha256": "b187b3057e5d48b310c6ce47038d803a70c842e7f6831c0b5bfdcd1048d4bada",
+    "case_count": 32
   },
   "cases": [
     {
@@ -448,6 +448,286 @@
         }
       },
       "oracle_evidence_ref": "reports/oracle-audit-v0-3-final/shard-0003_oracle_evidence.json"
+    },
+    {
+      "id": "CA-DER-001",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "5",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "0"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "5",
+          "variable": "x",
+          "order": 1,
+          "expected": "0"
+        },
+        "plus": {
+          "expression": "5",
+          "variable": "x",
+          "order": 1,
+          "expected": "0"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-002",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "x",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "1"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x",
+          "variable": "x",
+          "order": 1,
+          "expected": "1"
+        },
+        "plus": {
+          "expression": "x",
+          "variable": "x",
+          "order": 1,
+          "expected": "1"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-003",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "x^2",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "2*x"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x^2",
+          "variable": "x",
+          "order": 1,
+          "expected": "2*x"
+        },
+        "plus": {
+          "expression": "x**2",
+          "variable": "x",
+          "order": 1,
+          "expected": "2*x"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-004",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "x^5",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "5*x^4"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x^5",
+          "variable": "x",
+          "order": 1,
+          "expected": "5*x^4"
+        },
+        "plus": {
+          "expression": "x**5",
+          "variable": "x",
+          "order": 1,
+          "expected": "5*x**4"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-005",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "sin(x)",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "cos(x)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "sin(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "cos(x)"
+        },
+        "plus": {
+          "expression": "sin(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "cos(x)"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-006",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "cos(x)",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "-sin(x)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "cos(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "-sin(x)"
+        },
+        "plus": {
+          "expression": "cos(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "-sin(x)"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-007",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "tan(x)",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "tan(x)^2+1"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "tan(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "tan(x)^2+1"
+        },
+        "plus": {
+          "expression": "tan(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "tan(x)**2+1"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-008",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "exp(x)",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "exp(x)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "exp(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "exp(x)"
+        },
+        "plus": {
+          "expression": "exp(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "exp(x)"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-010",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "sqrt(x)",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "1/(2*sqrt(x))"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "sqrt(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "1/(2*sqrt(x))"
+        },
+        "plus": {
+          "expression": "sqrt(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "1/(2*sqrt(x))"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
+    },
+    {
+      "id": "CA-DER-011",
+      "capability_ref": "CALCULUS_DERIVATIVE",
+      "operation": "derivative",
+      "canonical": {
+        "input": {
+          "expression": "x*sin(x)",
+          "variable": "x",
+          "order": 1
+        },
+        "expected": "x*cos(x)+sin(x)"
+      },
+      "adapters": {
+        "lite": {
+          "expression": "x*sin(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "x*cos(x)+sin(x)"
+        },
+        "plus": {
+          "expression": "x*sin(x)",
+          "variable": "x",
+          "order": 1,
+          "expected": "x*cos(x)+sin(x)"
+        }
+      },
+      "oracle_evidence_ref": "cases/calculus/calculus_v1.jsonl"
     }
   ]
 }
