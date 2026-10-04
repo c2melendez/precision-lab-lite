@@ -92,6 +92,8 @@ export const FUNCTION_ARITY: Record<string, number[]> = {
   acsch: [1],
   acoth: [1],
   abs: [1],
+  floor: [1],
+  ceiling: [1],
   exp: [1],
   sign: [1],
   factorial: [1],
