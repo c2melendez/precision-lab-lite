@@ -1,14 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
-import { evaluate } from "../../src/engine/algebriteClient";
+import { derivative, evaluate } from "../../src/engine/algebriteClient";
 
 type AdapterCase = {
   id: string;
   capability_ref: string;
-  operation: "simplify" | "expand" | "factor";
+  operation: "simplify" | "expand" | "factor" | "derivative";
   canonical: { input: string; expected: string };
-  adapters: { lite: { expression: string; expected: string } };
+  adapters: { lite: { expression: string; expected: string; variable?: string; order?: number } };
 };
 
 type ResultRow = {
@@ -57,7 +57,9 @@ describe("Certification runner pilot v1 — canonical oracle_verified algebra ca
     it(`[${c.id}] ${c.operation}`, () => {
       try {
         const a = c.adapters.lite;
-        const actual = evaluate(`${c.operation}(${a.expression})`);
+        const actual = c.operation === "derivative"
+          ? derivative(a.expression, a.variable ?? "x", a.order ?? 1)
+          : evaluate(`${c.operation}(${a.expression})`);
         const ok = equivalent(actual, a.expected);
         rows.push({ id: c.id, status: ok ? "PASS" : "FAIL", operation: c.operation, expected: a.expected, actual });
         expect(ok, `${c.id}: actual=${actual} expected=${a.expected}`).toBe(true);
