@@ -25,8 +25,26 @@ const fixture = JSON.parse(fs.readFileSync(fixturePath, "utf8")) as { suite_id: 
 const rows: ResultRow[] = [];
 
 function equivalent(actual: string, expected: string): boolean {
-  const diff = evaluate(`simplify((${actual})-(${expected}))`).replace(/\\s+/g, "");
-  return diff === "0";
+  const diffExpr = `(${actual})-(${expected})`;
+  const diff = evaluate(`simplify(${diffExpr})`).replace(/\\s+/g, "");
+  if (diff === "0") return true;
+
+  // Algebrite no canonicaliza siempre identidades trigonométricas
+  // equivalentes (por ejemplo sec²(x) frente a 1+tan²(x)).
+  // Verificamos multipunto solo cuando x es la única variable libre.
+  const identifiers = diffExpr
+    .replace(/(?:sin|cos|tan|sqrt|exp|abs|pi)/g, "")
+    .match(/[A-Za-z]+/g) ?? [];
+  const variables = [...new Set(identifiers.filter((name) => name.length === 1))];
+  if (variables.length === 1 && variables[0] === "x") {
+    for (const sample of ["0.37", "0.91", "-0.42"]) {
+      const raw = substituteAndFloat(diffExpr, "x", sample).replace(/\\.\\.\\.$/, "");
+      const value = Number(raw);
+      if (!Number.isFinite(value) || Math.abs(value) > 1e-8) return false;
+    }
+    return true;
+  }
+  return false;
 }
 
 afterAll(() => {
