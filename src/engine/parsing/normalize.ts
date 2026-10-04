@@ -537,6 +537,11 @@ export function preprocessLatex(latex: string): string {
   expr = expr.replace(/\\pm\s+([A-Za-z0-9.]+)/g, "pm($1)");
 
   // IN625 B1/B2 — exponentes y subíndices.
+  // Orden TeX inverso x^{2}_{1}: el subíndice pertenece a la base, no al exponente.
+  expr = expr
+    .replace(/([A-Za-z])\^\{([^{}]+)\}_\{(\d+)\}/g, "$1$3^{$2}")
+    .replace(/([A-Za-z])\^\{([^{}]+)\}_(\d+)/g, "$1$3^{$2}");
+
   // 1) Subíndices numéricos se vuelven parte del identificador (x_{10} -> x10),
   //    para evitar que el tokenizer los trate como multiplicación implícita.
   expr = expr
