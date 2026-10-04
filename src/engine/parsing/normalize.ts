@@ -135,6 +135,13 @@ function normalizeDelimiterSyntax(input: string): string {
 export function preprocessLatex(latex: string): string {
   let expr = normalizeDelimiterSyntax(latex);
 
+  // IN625 A3 — operadores/combinatoria y relaciones equivalentes.
+  // Normalización general de macros LaTeX al contrato lineal del motor.
+  expr = expr
+    .replace(/\\\\binom\{([^{}]+)\}\{([^{}]+)\}/g, "nCr($1,$2)")
+    .replace(/\{([^{}]+)\\\\choose([^{}]+)\}/g, "nCr($1,$2)")
+    .replace(/([^\\s{}()+\\-*/^=<>]+)\\s*\\\\bmod\\s*([^\\s{}()+\\-*/^=<>]+)/g, "mod($1,$2)");
+
   // IN625 A1 — variantes TeX equivalentes de fracción. MathLive suele
   // canonizarlas al editar, pero el parser también debe ser correcto
   // cuando recibe LaTeX pegado/escrito directamente.
@@ -506,6 +513,7 @@ export function preprocessLatex(latex: string): string {
     .replace(/\\left\|/g, "abs(")
     .replace(/\\right\|/g, ")")
     .replace(/\\cdot/g, "*")
+    .replace(/\\ast/g, "*")
     .replace(/\\times/g, "*")
     .replace(/\\div/g, "/")
     .replace(/\\%/g, "%")
@@ -531,8 +539,16 @@ export function preprocessLatex(latex: string): string {
     // (splitEquation en index.ts), porque "<=" contiene un "=" literal
     // que si no se distingue a tiempo, se partiría como si fuera una
     // ecuación con "<" colgando de un lado.
+    .replace(/\\leqslant(?![a-zA-Z])/g, "<=")
+    .replace(/\\geqslant(?![a-zA-Z])/g, ">=")
+    .replace(/\\leq(?![a-zA-Z])/g, "<=")
+    .replace(/\\geq(?![a-zA-Z])/g, ">=")
     .replace(/\\le(?![a-zA-Z])/g, "<=")
     .replace(/\\ge(?![a-zA-Z])/g, ">=")
+    .replace(/\\neq(?![a-zA-Z])/g, "!=")
+    .replace(/\\ne(?![a-zA-Z])/g, "!=")
+    .replace(/\\lt(?![a-zA-Z])/g, "<")
+    .replace(/\\gt(?![a-zA-Z])/g, ">")
     .replace(/\\sin\^\{-1\}/g, "arcsin")
     .replace(/\\cos\^\{-1\}/g, "arccos")
     .replace(/\\tan\^\{-1\}/g, "arctan")
