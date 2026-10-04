@@ -73,9 +73,64 @@ function replaceBalanced(
   return result;
 }
 
+/**
+ * IN625 A2 — normalización estructural de delimitadores.
+ *
+ * Estos macros cambian presentación/agrupación, no la semántica. Se
+ * resuelven antes del resto del preprocesado para que el tokenizador no
+ * reciba barras invertidas o delimitadores que no conoce.
+ */
+function normalizeDelimiterSyntax(input: string): string {
+  let expr = input
+    // MathLive/LaTeX sizing wrappers: solo tamaño visual.
+    .replace(/\\\\(?:bigl|bigr|Bigl|Bigr|biggl|biggr|Biggl|Biggr)/g, "")
+    // mathtools puede emitir mleft/mright; semánticamente son left/right.
+    .replace(/\\\\mleft/g, "\\\\left")
+    .replace(/\\\\mright/g, "\\\\right")
+    // Corchetes usados como agrupación dentro de left/right.
+    .replace(/\\\\left\\\[/g, "(")
+    .replace(/\\\\right\\\]/g, ")")
+    // Piso/techo: preservar como funciones del CAS.
+    .replace(/\\\\lfloor/g, "floor(")
+    .replace(/\\\\rfloor/g, ")")
+    .replace(/\\\\lceil/g, "ceiling(")
+    .replace(/\\\\rceil/g, ")")
+    // Barras LaTeX explícitas. El caso adyacente es producto.
+    .replace(/\\\\rvert\\s*\\\\lvert/g, ")*abs(")
+    .replace(/\\\\lvert/g, "abs(")
+    .replace(/\\\\rvert/g, ")");
+
+  // Barra simple |...|, incluyendo anidamiento como ||x|-1|.
+  // Si no hay un absoluto abierto, "|" abre. Si lo hay, abre únicamente
+  // cuando aparece en posición de inicio de operando; en otro caso cierra.
+  let out = "";
+  let depth = 0;
+  for (let i = 0; i < expr.length; i++) {
+    const ch = expr[i];
+    if (ch !== "|") {
+      out += ch;
+      continue;
+    }
+
+    let j = out.length - 1;
+    while (j >= 0 && /\\s/.test(out[j])) j--;
+    const prev = j >= 0 ? out[j] : "";
+    const beginsOperand = depth === 0 || prev === "" || /[\\(,+\\-*\\/^=<>]/.test(prev);
+
+    if (beginsOperand) {
+      out += "abs(";
+      depth++;
+    } else {
+      out += ")";
+      depth = Math.max(0, depth - 1);
+    }
+  }
+  return out;
+}
+
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
-  let expr = latex;
+  let expr = normalizeDelimiterSyntax(latex);
 
   // IN625 A1 — variantes TeX equivalentes de fracción. MathLive suele
   // canonizarlas al editar, pero el parser también debe ser correcto
