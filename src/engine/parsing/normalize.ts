@@ -117,6 +117,7 @@ function readFunctionArgument(input: string, fromIndex: number): [string, number
     }
     if (braceDepth === 0 && parenDepth === 0) {
       if (/[+\-\/]/.test(input[j])) break;
+      if (input[j] === "\\" && /^(?:cdot|times|div)\b/.test(input.slice(j + 1))) break;
       if (j > i && input[j] === "\\" && /^(?:sin|cos|tan|csc|sec|cot|ln|log|sinh|cosh|tanh)\b/.test(input.slice(j + 1))) break;
     }
     j++;
@@ -124,6 +125,38 @@ function readFunctionArgument(input: string, fromIndex: number): [string, number
   const arg = input.slice(i, j).trim();
   if (!arg) throw parseError("Falta argumento de función.");
   return [arg, j];
+}
+
+function normalizeUnparenthesizedFunctions(input: string): string {
+  const fnPattern = /\\(sin|cos|tan|csc|sec|cot|ln|exp)(?!\^)/g;
+  let expr = input;
+  let guard = 0;
+
+  while (guard++ < 50) {
+    fnPattern.lastIndex = 0;
+    let changed = false;
+    let match: RegExpExecArray | null;
+
+    while ((match = fnPattern.exec(expr)) !== null) {
+      const macroEnd = match.index + match[0].length;
+      let i = macroEnd;
+      while (i < expr.length && /\s/.test(expr[i])) i++;
+
+      // Las formas con paréntesis explícitos ya son correctas; solo se
+      // despoja el backslash más abajo.
+      if (expr[i] === "(" || expr.startsWith("\\left(", i)) continue;
+
+      const [arg, next] = readFunctionArgument(expr, macroEnd);
+      const replacement = `${match[1]}(${arg})`;
+      expr = expr.slice(0, match.index) + replacement + expr.slice(next);
+      changed = true;
+      break;
+    }
+
+    if (!changed) break;
+  }
+
+  return expr;
 }
 
 function normalizePoweredFunctions(input: string): string {
@@ -645,9 +678,18 @@ export function preprocessLatex(latex: string): string {
   // a la función unaria interna pm(5), preservando las dos ramas.
   expr = expr.replace(/\\pm\s+([A-Za-z0-9.]+)/g, "pm($1)");
 
+  // IN625 C2 — operatorname trigonométrico.
+  expr = expr.replace(
+    /\\operatorname\{(sin|cos|tan|csc|sec|cot|ln|exp)\}/g,
+    (_m, fn) => "\\" + fn,
+  );
+
   // IN625 C1 — potencia aplicada al nombre de función.
   // Debe resolverse antes de la conversión genérica de exponentes.
   expr = normalizePoweredFunctions(expr);
+
+  // IN625 C2 — funciones sin paréntesis, incluida composición.
+  expr = normalizeUnparenthesizedFunctions(expr);
 
   // IN625 B4 — signos unarios tras operador.
   // Algebrite no acepta de forma consistente secuencias como 2+-3 / 2*-3.
@@ -696,14 +738,6 @@ export function preprocessLatex(latex: string): string {
   expr = expr
     .replace(/\\exp\s+([A-Za-z0-9.]+)/g, "exp($1)")
     .replace(/\\exp(?=\s*\()/g, "exp");
-
-  // IN625 B3 — funciones LaTeX sin paréntesis.
-  // TeX permite \sin x, \cos x, etc. El argumento inmediato es un átomo;
-  // convertirlo a llamada explícita evita que "sinx" se tokenice como letras.
-  expr = expr.replace(
-    /\\(sin|cos|tan|csc|sec|cot|ln|exp)\s+([A-Za-z0-9.]+(?:\^\{[^{}]+\}|\^\([^()]+\)|\^[A-Za-z0-9.\-]+)?)/g,
-    (_m, fn, arg) => `${fn}(${arg})`,
-  );
 
   expr = expr
     .replace(/\\left\|/g, "abs(")
