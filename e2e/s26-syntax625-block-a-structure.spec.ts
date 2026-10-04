@@ -31,8 +31,10 @@ const CASES: StructuralCase[] = [
   { id: "EN-DL-10", input: "\\lvert x-1\\rvert", mustContain: ["|x-1|"] },
   { id: "EN-OP-08", input: "2\\cdot x\\cdot y", mustContain: ["2", "x", "y"] },
   { id: "EN-OP-09", input: "x\\times y", mustContain: ["x", "y"] },
+  { id: "EN-RD-04", input: "\\sqrt x", mustContain: ["sqrt", "x"] },
   { id: "EN-RD-05", input: "\\sqrt{x}y", mustContain: ["sqrt", "x", "y"] },
   { id: "EN-RD-10", input: "\\sqrt[n]{x}", mustContain: ["x", "n"] },
+  { id: "EN-RD-14", input: "x^{\\frac{1}{2}}", mustContain: ["x", "1/2"] },
 ];
 
 async function setExpression(page: Page, value: string) {
