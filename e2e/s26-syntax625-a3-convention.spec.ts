@@ -11,6 +11,22 @@ async function setExpression(page: Page, value: string) {
   }, value);
 }
 
+async function resultValue(page: Page): Promise<string> {
+  const resultRegion = page.locator('section[aria-label="Resultado"]').first();
+  await expect(resultRegion).toBeVisible({ timeout: 12000 });
+  const status = resultRegion.locator('[role="status"]').first();
+  await expect(status).toBeVisible({ timeout: 12000 });
+  const staticField = status.locator("math-field[read-only]").first();
+  if (await staticField.count()) {
+    return String(await staticField.evaluate((el) =>
+      (el as HTMLElement & { value?: string }).value ?? "",
+    ));
+  }
+  const plain = status.locator(".a11y-scale-result-3xl").first();
+  await expect(plain).toBeVisible();
+  return (await plain.innerText()).trim();
+}
+
 async function calculateText(page: Page, input: string): Promise<string> {
   await page.goto("./");
   await setExpression(page, input);
@@ -45,8 +61,10 @@ test("EN-OP-10 — producto cruz vectorial o error claro", async ({ page }) => {
 test("EN-OP-11 — ± produce ambas ramas", async ({ page }) => {
   const text = await calculateText(page, "5\\pm2");
   expect(text).not.toMatch(/No se pudo calcular|PARSE_ERROR/i);
-  expect(text).toMatch(/7/);
-  expect(text).toMatch(/3/);
+  const value = (await resultValue(page)).replace(/\\s/g, "");
+  expect(value).toContain("7");
+  expect(value).toContain("3");
+  expect(value).toMatch(/\\[|\\\\begin|,/);
 });
 
 for (const [id, inputs] of [
