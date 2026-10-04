@@ -8,6 +8,25 @@ function parseError(message: string): AppError {
   return { code: ErrorCode.PARSE_ERROR, message };
 }
 
+function encodeSubscriptPayload(raw: string): string {
+  const digitWords: Record<string, string> = {
+    "0": "ZERO", "1": "ONE", "2": "TWO", "3": "THREE", "4": "FOUR",
+    "5": "FIVE", "6": "SIX", "7": "SEVEN", "8": "EIGHT", "9": "NINE",
+  };
+  let out = "";
+  for (const ch of raw) {
+    if (digitWords[ch]) out += digitWords[ch];
+    else if (/[A-Za-z]/.test(ch)) out += ch;
+    else if (ch === ",") out += "COMMA";
+  }
+  return out || "EMPTY";
+}
+
+function encodeSubscriptIdentifier(base: string, payload: string): string {
+  return base + "SUB" + encodeSubscriptPayload(payload);
+}
+
+
 /**
  * Reemplaza \sqrt{...} y \sqrt[n]{...} de forma balanceada (no con regex
  * ingenuo, que rompe con anidamiento — ej. \sqrt{\sqrt{x}}).
@@ -541,24 +560,30 @@ export function preprocessLatex(latex: string): string {
   expr = expr.replace(/\\pm\s+([A-Za-z0-9.]+)/g, "pm($1)");
 
   // IN625 B1/B2 — exponentes y subíndices.
-  // Orden TeX inverso x^{2}_{1}: el subíndice pertenece a la base, no al exponente.
+  // Los subíndices se codifican internamente con letras solamente para
+  // distinguirlos de multiplicación implícita: x_{10} != x2.
+  // El eco de entrada conserva el LaTeX original; esta codificación es solo
+  // para el parser/motor.
   expr = expr
-    .replace(/([A-Za-z])\^\{([^{}]+)\}_\{(\d+)\}/g, "$1$3^{$2}")
-    .replace(/([A-Za-z])\^\{([^{}]+)\}_(\d+)/g, "$1$3^{$2}");
-
-  // Subíndices simbólicos se codifican como un identificador atómico interno.
-  // El eco visual conserva el LaTeX original; esta codificación solo evita
-  // que coma/texto se interpreten como argumentos u operadores.
-  expr = expr
-    .replace(/([A-Za-z])_\{\\text\{([^{}]+)\}\}/g, (_m, b, s) => b + "SUB" + String(s).replace(/[^A-Za-z0-9]/g, ""))
-    .replace(/([A-Za-z])_\{([A-Za-z]+),([A-Za-z]+)\}/g, "$1SUB$2COMMA$3")
-    .replace(/([A-Za-z])_\{([A-Za-z]+)\}/g, "$1SUB$2");
-
-  // 1) Subíndices numéricos se vuelven parte del identificador (x_{10} -> x10),
-  //    para evitar que el tokenizer los trate como multiplicación implícita.
-  expr = expr
-    .replace(/([A-Za-z])_\{(\d+)\}/g, "$1$2")
-    .replace(/([A-Za-z])_(\d+)/g, "$1$2");
+    // Orden TeX inverso: x^{2}_{1} -> xSUBONE^{2}
+    .replace(/([A-Za-z])\^\{([^{}]+)\}_\{(\d+)\}/g,
+      (_m, b, exp, sub) => encodeSubscriptIdentifier(String(b), String(sub)) + "^{" + exp + "}")
+    .replace(/([A-Za-z])\^\{([^{}]+)\}_(\d+)/g,
+      (_m, b, exp, sub) => encodeSubscriptIdentifier(String(b), String(sub)) + "^{" + exp + "}")
+    // Texto en subíndice: x_{\text{max}}
+    .replace(/([A-Za-z])_\{\\text\{([^{}]+)\}\}/g,
+      (_m, b, sub) => encodeSubscriptIdentifier(String(b), String(sub)))
+    // Subíndice compuesto: a_{i,j}
+    .replace(/([A-Za-z])_\{([A-Za-z]+),([A-Za-z]+)\}/g,
+      (_m, b, s1, s2) => encodeSubscriptIdentifier(String(b), String(s1) + "," + String(s2)))
+    // Subíndice alfabético simple.
+    .replace(/([A-Za-z])_\{([A-Za-z]+)\}/g,
+      (_m, b, sub) => encodeSubscriptIdentifier(String(b), String(sub)))
+    // Subíndice numérico con/sin llaves.
+    .replace(/([A-Za-z])_\{(\d+)\}/g,
+      (_m, b, sub) => encodeSubscriptIdentifier(String(b), String(sub)))
+    .replace(/([A-Za-z])_(\d+)/g,
+      (_m, b, sub) => encodeSubscriptIdentifier(String(b), String(sub)));
 
   // 2) Exponentes entre llaves, incluido anidamiento: repetir hasta estabilizar.
   let prevExponentGroups = "";
