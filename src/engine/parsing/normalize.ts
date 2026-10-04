@@ -666,14 +666,22 @@ export function preprocessLatex(latex: string): string {
   // calcDefiniteIntegral (stepEngine/calculus.ts) siempre lo hizo en dos
   // pasos — no es solo estilo, es necesario.
   {
-    const definiteMatch = expr.match(/\\int_\{([^{}]*)\}\^\{([^{}]*)\}(.*)\\,dx$/s);
+    // IN625 E1c: normaliza el diferencial tipográfico de MathLive y acepta
+    // variable de integración arbitraria, además de límites con o sin llaves.
+    expr = expr.replace(/\\differentialD\s*/g, "d");
+    const definiteMatch = expr.match(
+      /\\int_(?:\{([^{}]*)\}|([^\\s^]+))\^(?:\{([^{}]*)\}|([^\\s]+))\s*(.*?)(?:\\,)?d([A-Za-z])$/s,
+    );
     if (definiteMatch) {
-      const [, lower, upper, body] = definiteMatch;
-      expr = `defintegral((${body}),${lower},${upper})`;
+      const lower = definiteMatch[1] ?? definiteMatch[2];
+      const upper = definiteMatch[3] ?? definiteMatch[4];
+      const body = definiteMatch[5];
+      const variable = definiteMatch[6];
+      expr = `defintegral((${body.trim()}),${lower},${upper},${variable})`;
     } else {
-      const intMatch = expr.match(/\\int(.*)\\,dx$/s);
+      const intMatch = expr.match(/\\int\s*(.*?)(?:\\,)?d([A-Za-z])$/s);
       if (intMatch) {
-        expr = `integral((${intMatch[1]}),x)`;
+        expr = `integral((${intMatch[1].trim()}),${intMatch[2]})`;
       }
     }
   }
