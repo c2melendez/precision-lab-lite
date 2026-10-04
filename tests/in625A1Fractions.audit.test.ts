@@ -4,8 +4,15 @@ import { evaluate } from "../src/engine/algebriteClient";
 
 function expectEquivalent(input: string, expectedAlgebrite: string): void {
   const parsed = parseExpression(input).algebrite;
-  const diff = evaluate(`(${parsed})-(${expectedAlgebrite})`);
-  expect(diff).toBe("0");
+  const diffExpr = `(${parsed})-(${expectedAlgebrite})`;
+  const diff = evaluate(diffExpr);
+  if (Number(diff) === 0) return;
+
+  // Algebrite no reduce automáticamente algunas identidades racionales
+  // equivalentes (p.ej. 1/(1/x+1/y) - xy/(x+y)). Pedimos una pasada
+  // explícita de simplificación antes de declarar un fallo de sintaxis.
+  const simplified = evaluate(`simplify(${diffExpr})`);
+  expect(Number(simplified)).toBe(0);
 }
 
 describe("IN625 Parte A / A1 Fracciones — contrato de sintaxis", () => {
