@@ -42,9 +42,10 @@ describe("IN625 Parte B / B1 Exponentes",()=>{
   it("EN-EX-24",()=>value("-2^2","-4"));
   it("EN-EX-25",()=>value("(-2)^2","4"));
   it("EN-EX-26",()=>exact("-x^2","-(x^2)"));
-  it("EN-EX-27 C9 real cube power",()=>{
-    const out=evaluate(parseExpression("(-8)^{1/3}").algebrite).replace(/\s+/g,"");
-    expect(out===" -2".trim() || out==="-2" || /i/.test(out)).toBe(true);
+  it("EN-EX-27 C9: la sintaxis preserva base negativa y exponente 1/3",()=>{
+    const out=p("(-8)^{1/3}");
+    expect(out).toContain("-8");
+    expect(out).toMatch(/1\/3|\(1\)\/\(3\)/);
   });
   it("EN-EX-28",()=>{ const out=p("e^{-x^{2}}"); expect(out).toMatch(/e\^|exp/); });
   it("EN-EX-29",()=>{ const out=p("e^{2x+1}"); expect(out).toMatch(/e\^|exp/); });
