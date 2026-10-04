@@ -361,6 +361,27 @@ function normalizeDelimiterSyntax(input: string): string {
 export function preprocessLatex(latex: string): string {
   let expr = normalizeLocalizedAliases(normalizeDelimiterSyntax(latex));
 
+  // IN625 D1 — normalización numérica previa a retirar espacios.
+  // MathLive representa una coma decimal explícita como {,}; esa forma
+  // es inequívocamente decimal y debe funcionar independientemente del modo regional.
+  expr = expr.replace(/\{,\}/g, ".");
+
+  // Decimales abreviados aceptados por el contrato: .5, -.5 y 5.
+  expr = expr
+    .replace(/(^|[+\-*/=(])\.(\d)/g, "$10.$2")
+    .replace(/(\d)\.(?=$|[+\-*/)=])/g, "$1");
+
+  // Agrupación de miles por espacio fino/normal. Solo se retira cuando
+  // precede exactamente a un grupo de tres dígitos; 3 4 sigue siendo error.
+  let previousGrouping = "";
+  while (expr !== previousGrouping) {
+    previousGrouping = expr;
+    expr = expr.replace(/(?<=\d)\s+(?=\d{3}(?:\D|$))/g, "");
+  }
+  if (/\d\s+\d/.test(expr)) {
+    throw parseError("Separación numérica ambigua: parece faltar un operador.");
+  }
+
   // IN625 A3 — operadores/combinatoria y relaciones equivalentes.
   // Normalización general de macros LaTeX al contrato lineal del motor.
   expr = expr
