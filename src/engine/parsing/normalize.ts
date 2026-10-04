@@ -15,21 +15,21 @@ const LOCALIZED_ALIAS_MAP: Record<string, string> = {
   ctg: "\\cot",
   cotg: "\\cot",
   cosec: "\\csc",
-  arcsen: "arcsin",
-  arctg: "arctan",
-  arcctg: "arccot",
-  arccotg: "arccot",
-  arccosec: "arccsc",
-  senh: "sinh",
-  tgh: "tanh",
-  ctgh: "coth",
-  cotgh: "coth",
-  cosech: "csch",
-  argsenh: "asinh",
-  arcsenh: "asinh",
-  argcosh: "acosh",
-  argtgh: "atanh",
-  arctgh: "atanh",
+  arcsen: "\\arcsin",
+  arctg: "\\arctan",
+  arcctg: "\\arccot",
+  arccotg: "\\arccot",
+  arccosec: "\\arccsc",
+  senh: "\\sinh",
+  tgh: "\\tanh",
+  ctgh: "\\coth",
+  cotgh: "\\coth",
+  cosech: "\\csch",
+  argsenh: "\\asinh",
+  arcsenh: "\\asinh",
+  argcosh: "\\acosh",
+  argtgh: "\\atanh",
+  arctgh: "\\atanh",
   lg: "\\log",
   raiz: "sqrt",
   "raíz": "sqrt",
@@ -180,7 +180,7 @@ function readFunctionArgument(input: string, fromIndex: number): [string, number
 }
 
 function normalizeUnparenthesizedFunctions(input: string): string {
-  const fnPattern = /\\(sin|cos|tan|csc|sec|cot|ln|exp)(?![A-Za-z^])/g;
+  const fnPattern = /\\(arccsc|arccot|arcsec|arcsin|arccos|arctan|asinh|acosh|atanh|sinh|cosh|tanh|csch|sech|coth|sin|cos|tan|csc|sec|cot|log|ln|exp)(?![A-Za-z^])/g;
   let expr = input;
   let guard = 0;
 
@@ -194,12 +194,19 @@ function normalizeUnparenthesizedFunctions(input: string): string {
       let i = macroEnd;
       while (i < expr.length && /\s/.test(expr[i])) i++;
 
-      // Las formas con paréntesis explícitos ya son correctas; solo se
-      // despoja el backslash más abajo.
-      if (expr[i] === "(" || expr.startsWith("\\left(", i)) continue;
+      // Si ya hay paréntesis explícitos, basta canonizar el nombre y
+      // retirar el backslash aquí. Esto también cubre hiperbólicas e
+      // inversas que no tienen una regla de despojo al final del pipeline.
+      if (expr[i] === "(" || expr.startsWith("\\left(", i)) {
+        const canonical = match[1] === "log" ? "log10" : match[1];
+        expr = expr.slice(0, match.index) + canonical + expr.slice(macroEnd);
+        changed = true;
+        break;
+      }
 
       const [arg, next] = readFunctionArgument(expr, macroEnd);
-      const replacement = `${match[1]}(${arg})`;
+      const canonical = match[1] === "log" ? "log10" : match[1];
+      const replacement = `${canonical}(${arg})`;
       expr = expr.slice(0, match.index) + replacement + expr.slice(next);
       changed = true;
       break;
