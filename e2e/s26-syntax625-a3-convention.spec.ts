@@ -20,7 +20,7 @@ async function calculateText(page: Page, input: string): Promise<string> {
   const result = page.locator('section[aria-label="Resultado"]').first();
   await expect(result).toBeVisible({ timeout: 12000 });
   await expect.poll(async () => (await result.innerText()).replace(/\s+/g, " ").trim(), { timeout: 12000 })
-    .not.toMatch(/Escribe una expresión y presiona Calcular/i);
+    .not.toMatch(/Escribe una expresión y presiona Calcular|Calculando/i);
   return (await result.innerText()).replace(/\s+/g, " ").trim();
 }
 
