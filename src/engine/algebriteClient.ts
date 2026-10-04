@@ -43,9 +43,9 @@ export function evaluate(expressionLatex: string): string {
     // Para expresiones puramente numéricas que usen estas funciones,
     // reutilizamos el evaluador numérico propio. Si hay variables libres
     // o sintaxis no soportada, cae al camino simbólico normal.
-    if (/\\b(?:floor|ceiling)\\(/.test(expressionLatex)) {
+    if (expressionLatex.includes("floor(") || expressionLatex.includes("ceiling(")) {
       try {
-        const numeric = compileNumeric(expressionLatex.replace(/\\s+/g, ""), "__unused__")(0);
+        const numeric = compileNumeric(expressionLatex, "__unused__")(0);
         if (Number.isFinite(numeric)) return String(numeric);
       } catch {
         // Continuar con Algebrite para conservar el comportamiento normal.
