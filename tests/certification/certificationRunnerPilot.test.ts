@@ -6,7 +6,7 @@ import { evaluate } from "../../src/engine/algebriteClient";
 type AdapterCase = {
   id: string;
   capability_ref: string;
-  operation: "simplify" | "expand";
+  operation: "simplify" | "expand" | "factor";
   canonical: { input: string; expected: string };
   adapters: { lite: { expression: string; expected: string } };
 };
