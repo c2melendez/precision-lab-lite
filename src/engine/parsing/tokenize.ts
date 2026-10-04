@@ -74,7 +74,7 @@ export function tokenize(expr: string): Token[] {
       // Sin match conocido: se extrae la racha completa de letras como UN
       // identificador multi-letra (spec v9 §3, comportamiento "xyz" ->
       // identificador de 3 letras si no fue registrado antes como producto).
-      const match = expr.slice(i).match(/^[a-zA-Z][a-zA-Z0-9]*/)!;
+      const match = expr.slice(i).match(/^[a-zA-Z]+/)!;
       tokens.push({ type: "identifier", value: match[0] });
       i += match[0].length;
       continue;
