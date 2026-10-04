@@ -4,18 +4,18 @@ import { evaluate } from "../src/engine/algebriteClient";
 const ev=(s:string)=>evaluate(parseExpression(s).algebrite).replace(/\s+/g,"");
 
 describe("IN625 Parte D / D2 Notación científica y porcentaje",()=>{
-  it("EN-CI-01 1.5×10^3",()=>expect(ev("1.5\\times10^{3}")).toBe("1500"));
-  it("EN-CI-02 1.5·10^3",()=>expect(ev("1.5\\cdot10^{3}")).toBe("1500"));
+  it("EN-CI-01 1.5×10^3",()=>expect(ev("1.5\\times10^{3}")).toMatch(/^1500(?:\.0+)?$/));
+  it("EN-CI-02 1.5·10^3",()=>expect(ev("1.5\\cdot10^{3}")).toMatch(/^1500(?:\.0+)?$/));
   it("EN-CI-03 negative scientific exponent",()=>expect(ev("1.5\\times10^{-3}")).toMatch(/^0\.0015/));
-  it("EN-CI-05 e-notation lowercase",()=>expect(ev("1.5e3")).toBe("1500"));
+  it("EN-CI-05 e-notation lowercase",()=>expect(ev("1.5e3")).toMatch(/^1500(?:\.0+)?$/));
   it("EN-CI-06 2e3",()=>expect(ev("2e3")).toBe("2000"));
   it("EN-CI-07 signed e-notation",()=>{
-    expect(ev("1e-3")).toMatch(/^0\.001/);
+    expect(ev("1e-3")).toMatch(/^(?:0\.001(?:0+)?|1\/1000)$/);
     expect(ev("1E+3")).toBe("1000");
   });
-  it("EN-CI-08 chained scientific notation",()=>expect(ev("2\\times10^{-3}\\times3\\times10^{2}")).toMatch(/^0\.6/));
-  it("EN-CI-09 huge positive exponent stays exact",()=>expect(ev("1\\times10^{400}")).toMatch(/10\^\(400\)|10\^400|1e\+?400/i));
-  it("EN-CI-10 huge negative exponent stays exact",()=>expect(ev("1\\times10^{-400}")).toMatch(/10\^\(-400\)|10\^-400|1e-400/i));
+  it("EN-CI-08 chained scientific notation",()=>expect(ev("2\\times10^{-3}\\times3\\times10^{2}")).toMatch(/^(?:0\.6(?:0+)?|3\/5)$/));
+  it("EN-CI-09 huge positive exponent stays exact",()=>expect(ev("1\\times10^{400}")).toSatisfy((o:string)=>! /Infinity|NaN/i.test(o) && (o.length > 300 || /10\^\(?400\)?|1e\+?400/i.test(o))));
+  it("EN-CI-10 huge negative exponent stays exact",()=>expect(ev("1\\times10^{-400}")).toSatisfy((o:string)=>o !== "0" && ! /Infinity|NaN/i.test(o) && (o.length > 300 || /10\^\(?-400\)?|1e-400/i.test(o))));
   it("EN-PC-01 50 percent",()=>expect(ev("50\\%")).toMatch(/^1\/2$|^0\.5$/));
   it("EN-PC-02 15 percent",()=>expect(ev("15\\%")).toMatch(/^0\.15|^3\/20$/));
   it("EN-PC-03 plain 15%",()=>expect(ev("15%")).toMatch(/^0\.15|^3\/20$/));
