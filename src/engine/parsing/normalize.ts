@@ -536,6 +536,28 @@ export function preprocessLatex(latex: string): string {
   // a la función unaria interna pm(5), preservando las dos ramas.
   expr = expr.replace(/\\pm\s+([A-Za-z0-9.]+)/g, "pm($1)");
 
+  // IN625 B1/B2 — exponentes y subíndices.
+  // 1) Subíndices numéricos se vuelven parte del identificador (x_{10} -> x10),
+  //    para evitar que el tokenizer los trate como multiplicación implícita.
+  expr = expr
+    .replace(/([A-Za-z])_\{(\d+)\}/g, "$1$2")
+    .replace(/([A-Za-z])_(\d+)/g, "$1$2");
+
+  // 2) Exponentes entre llaves, incluido anidamiento: repetir hasta estabilizar.
+  let prevExponentGroups = "";
+  while (expr !== prevExponentGroups && /\^\{/.test(expr)) {
+    prevExponentGroups = expr;
+    expr = expr.replace(/\^\{([^{}]*)\}/g, "^($1)");
+  }
+
+  // 3) Exponente negativo sin llaves: x^-1, 2^-x -> x^(-1), 2^(-x).
+  expr = expr.replace(/\^-([A-Za-z0-9.]+)/g, "^(-$1)");
+
+  // 4) Alias exponencial LaTeX. La forma sin paréntesis consume un átomo.
+  expr = expr
+    .replace(/\\exp\s+([A-Za-z0-9.]+)/g, "exp($1)")
+    .replace(/\\exp(?=\s*\()/g, "exp");
+
   expr = expr
     .replace(/\\left\|/g, "abs(")
     .replace(/\\right\|/g, ")")
@@ -628,7 +650,6 @@ export function preprocessLatex(latex: string): string {
     // S16 REG-002: el macro visual \\log del teclado significa base 10.
     // Se conserva separado de log(...) plano y de ln(...).
     .replace(/\\log/g, "log10")
-    .replace(/\^\{([^{}]*)\}/g, "^($1)")
     .replace(/\\left\(/g, "(")
     .replace(/\\right\)/g, ")")
     .replace(/\\,/g, "")
