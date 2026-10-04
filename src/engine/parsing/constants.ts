@@ -57,7 +57,7 @@ export const FUNCTION_ARITY: Record<string, number[]> = {
   arcsec: [1],
   arccsc: [1],
   arccot: [1],
-  pm: [1],
+  pm: [1, 2],
   sinh: [1],
   cosh: [1],
   tanh: [1],
