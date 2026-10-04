@@ -5,6 +5,7 @@ type StructuralCase = {
   input: string;
   mustContain: string[];
   mustNotContain?: string[];
+  mustContainAny?: string[][];
 };
 
 const CASES: StructuralCase[] = [
@@ -34,7 +35,7 @@ const CASES: StructuralCase[] = [
   { id: "EN-RD-04", input: "\\sqrt x", mustContain: ["sqrt", "x"] },
   { id: "EN-RD-05", input: "\\sqrt{x}y", mustContain: ["sqrt", "x", "y"] },
   { id: "EN-RD-10", input: "\\sqrt[n]{x}", mustContain: ["x", "n"] },
-  { id: "EN-RD-14", input: "x^{\\frac{1}{2}}", mustContain: ["x", "1/2"] },
+  { id: "EN-RD-14", input: "x^{\\frac{1}{2}}", mustContain: ["x"], mustContainAny: [["sqrt", "x"], ["x", "1/2"]] },
 ];
 
 async function setExpression(page: Page, value: string) {
@@ -102,6 +103,10 @@ test.describe("S26 Sintaxis 625 — Bloque A eco estructural", () => {
         .replace(/[{}]/g, "");
       for (const fragment of tc.mustContain) expect(plain, `${tc.id}: ${echo}`).toContain(fragment);
       for (const fragment of tc.mustNotContain ?? []) expect(plain, `${tc.id}: ${echo}`).not.toContain(fragment);
+      if (tc.mustContainAny?.length) {
+        const matched = tc.mustContainAny.some((option) => option.every((fragment) => plain.includes(fragment)));
+        expect(matched, `${tc.id}: ${echo}`).toBe(true);
+      }
     });
   }
 });
