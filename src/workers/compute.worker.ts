@@ -424,7 +424,7 @@ function tryLimitFallback(raw: string): string | null {
 }
 
 /**
- * Fase 2 externa (integral con límites, inline): "defintegral(cuerpo,a,b)"
+ * Fase 2 externa (integral con límites, inline): "defintegral(cuerpo,a,b[,var])"
  * es un marcador propio (nunca nativo de Algebrite) producido solo por
  * normalize.ts. Se resuelve en DOS llamadas separadas — antiderivada
  * primero, sustituir después — porque envolver integral() sin evaluar
@@ -438,13 +438,17 @@ function tryDefiniteIntegral(expr: string): string | null {
   const match = expr.match(/^defintegral\((.*)\)$/s);
   if (!match) return null;
   const args = splitTopLevelArgs(match[1]);
-  if (args.length !== 3) return null;
-  const [body, lower, upper] = args;
-  const antiderivative = evaluate(`integral((${body}),x)`);
+  if (args.length !== 3 && args.length !== 4) return null;
+  const [body, lower, upper, variableRaw] = args;
+  const variable = variableRaw?.trim() || "x";
+  if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(variable)) {
+    throw { code: ErrorCode.PARSE_ERROR, message: "Variable de integración inválida." } as AppError;
+  }
+  const antiderivative = evaluate(`integral((${body}),${variable})`);
   if (/^integral\(/.test(antiderivative)) {
     throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "Algebrite no pudo resolver esta integral simbólicamente." } as AppError;
   }
-  const raw = evaluate(`float(subst(${upper},x,${antiderivative}))-float(subst(${lower},x,${antiderivative}))`);
+  const raw = evaluate(`float(subst(${upper},${variable},${antiderivative}))-float(subst(${lower},${variable},${antiderivative}))`);
   // Igual que float() en general (ver hallazgo arriba), el resultado
   // puede traer "..." literal de Algebrite indicando precisión truncada
   // (ej. "2.666667...") — no es válido reinyectarlo en otra llamada a
