@@ -83,22 +83,22 @@ function replaceBalanced(
 function normalizeDelimiterSyntax(input: string): string {
   let expr = input
     // MathLive/LaTeX sizing wrappers: solo tamaño visual.
-    .replace(/\\\\(?:bigl|bigr|Bigl|Bigr|biggl|biggr|Biggl|Biggr)/g, "")
+    .replace(/\\(?:bigl|bigr|Bigl|Bigr|biggl|biggr|Biggl|Biggr)/g, "")
     // mathtools puede emitir mleft/mright; semánticamente son left/right.
-    .replace(/\\\\mleft/g, "\\\\left")
-    .replace(/\\\\mright/g, "\\\\right")
+    .replace(/\\mleft/g, "\\left")
+    .replace(/\\mright/g, "\\right")
     // Corchetes usados como agrupación dentro de left/right.
-    .replace(/\\\\left\\\[/g, "(")
-    .replace(/\\\\right\\\]/g, ")")
+    .replace(/\\left\[/g, "(")
+    .replace(/\\right\]/g, ")")
     // Piso/techo: preservar como funciones del CAS.
-    .replace(/\\\\lfloor/g, "floor(")
-    .replace(/\\\\rfloor/g, ")")
-    .replace(/\\\\lceil/g, "ceiling(")
-    .replace(/\\\\rceil/g, ")")
+    .replace(/\\lfloor/g, "floor(")
+    .replace(/\\rfloor/g, ")")
+    .replace(/\\lceil/g, "ceiling(")
+    .replace(/\\rceil/g, ")")
     // Barras LaTeX explícitas. El caso adyacente es producto.
-    .replace(/\\\\rvert\\s*\\\\lvert/g, ")*abs(")
-    .replace(/\\\\lvert/g, "abs(")
-    .replace(/\\\\rvert/g, ")");
+    .replace(/\\rvert\s*\\lvert/g, ")*abs(")
+    .replace(/\\lvert/g, "abs(")
+    .replace(/\\rvert/g, ")");
 
   // Barra simple |...|, incluyendo anidamiento como ||x|-1|.
   // Si no hay un absoluto abierto, "|" abre. Si lo hay, abre únicamente
