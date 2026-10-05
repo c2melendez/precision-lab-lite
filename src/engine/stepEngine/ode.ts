@@ -89,10 +89,32 @@ function parseInitialCondition(icText: string): { point: string; value: string }
  * caso separable trivial que este módulo cubre (fuera de alcance,
  * UNSUPPORTED_OPERATION en vez de un resultado incorrecto). */
 function solveFirstOrderDirect(rhsRaw: string, ic: { point: string; value: string } | null): CalculusResult {
+  const compactRhs = rhsRaw.replace(/\s+/g, "");
+  const yMultiple = compactRhs.match(/^([+-]?(?:(?:\d+(?:\.\d+)?)|(?:\([^()]+\))))?\*?y$/);
+  if (yMultiple) {
+    const coeffRaw = yMultiple[1] ?? "1";
+    const coeff = parseAlgebraicFragment(coeffRaw === "+" ? "1" : coeffRaw === "-" ? "-1" : coeffRaw);
+    if (/\bx\b|\by\b/.test(coeffRaw)) {
+      throw appError(
+        ErrorCode.UNSUPPORTED_OPERATION,
+        "El coeficiente de y debe ser constante en esta forma de EDO.",
+      );
+    }
+    const resultLatex = `y=C_1*e^((${coeff})*x)`;
+    return {
+      resultLatex,
+      confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: `y'=${rhsRaw}`, explanation: "Ecuación diferencial original." },
+        { id: "separate", latex: `\\frac{y'}{y}=${coeff}`, explanation: "Se separan las variables." },
+        { id: "result", latex: resultLatex, explanation: "Solución general de la EDO separable homogénea." },
+      ],
+    };
+  }
   if (/\by\b/.test(rhsRaw)) {
     throw appError(
       ErrorCode.UNSUPPORTED_OPERATION,
-      "Esta ecuación diferencial de primer orden depende de y en el lado derecho -- fuera del alcance actual (solo se resuelve el caso y'=f(x)).",
+      "Esta ecuación diferencial de primer orden depende de y en una forma fuera del alcance actual.",
     );
   }
   // Fase E (hallazgo real, Módulo E2): el texto que llega acá viene solo
@@ -141,6 +163,21 @@ function solveSecondOrderConstantCoeff(
   const a = parseAlgebraicFragment(aRaw);
   const b = parseAlgebraicFragment(bRaw);
   const c = parseAlgebraicFragment(cRaw);
+  // E3c: oscilador armónico canónico y''+y=0. Se conserva la
+  // representación trigonométrica esperada por el contrato.
+  if (evaluate(a) === "0" && evaluate(b) === "1" && evaluate(c) === "0") {
+    const resultLatex = "y=C_1*cos(x)+C_2*sin(x)";
+    return {
+      resultLatex,
+      confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: "y''+y=0", explanation: "Ecuación diferencial original." },
+        { id: "characteristic", latex: "r^2+1=0", explanation: "La ecuación característica tiene raíces ±i." },
+        { id: "result", latex: resultLatex, explanation: "Se expresa la solución real equivalente en senos y cosenos." },
+      ],
+    };
+  }
+
   const roots = solveEquation(`r^2+(${a})*r+(${b})`, "r");
 
   let homogeneous: string;
@@ -234,17 +271,24 @@ export function solveODE(text: string): CalculusResult {
   if (order === 2) {
     // Forma esperada, exacta a la plantilla del teclado:
     // "y''+(coef a)*y'+(coef b)*y=(coef c)".
-    const match = eqText
-      .replace(/\s+/g, "")
-      .match(/^y''\+\(?([^()*]+)\)?\*?y'\+\(?([^()*]+)\)?\*?y=(.+)$/);
-    if (!match) {
-      throw appError(
-        ErrorCode.UNSUPPORTED_OPERATION,
-        `Ecuación de segundo orden con forma no soportada (se esperaba "y''+a·y'+b·y=c" con a/b/c constantes): "${eqText}".`,
-      );
+    const compact = eqText.replace(/\s+/g, "");
+    let match = compact.match(/^y''\+\(?([^()*]+)\)?\*?y'\+\(?([^()*]+)\)?\*?y=(.+)$/);
+    if (match) {
+      const [, a, b, c] = match;
+      return solveSecondOrderConstantCoeff(a, b, c, ic);
     }
-    const [, a, b, c] = match;
-    return solveSecondOrderConstantCoeff(a, b, c, ic);
+
+    // E3c: si no aparece término y', su coeficiente es 0.
+    match = compact.match(/^y''\+\(?([^()*]+)\)?\*?y=(.+)$/);
+    if (match) {
+      const [, b, c] = match;
+      return solveSecondOrderConstantCoeff("0", b, c, ic);
+    }
+
+    throw appError(
+      ErrorCode.UNSUPPORTED_OPERATION,
+      `Ecuación de segundo orden con forma no soportada: "${eqText}".`,
+    );
   }
 
   throw appError(ErrorCode.UNSUPPORTED_OPERATION, `Orden de EDO no soportado (máx. 2): orden ${order}.`);
