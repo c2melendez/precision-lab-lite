@@ -8,6 +8,7 @@ import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { parseExpression } from "../../engine/parsing";
 import { toLatex } from "../../engine/algebriteClient";
 import { splitSystemLatex } from "../../engine/parsing/systemSplit";
+import { detectPiecewiseIntent } from "../../engine/parsing/piecewiseIntent";
 import { detectODE } from "../../engine/parsing/odeDetect";
 import { detectComplexAnalysisIntent } from "../../engine/parsing/complexAnalysisIntent";
 import { addHistoryEntry } from "../../store/historyDb";
@@ -164,6 +165,21 @@ export function BasicScientificMode() {
     // element antes de que React haya propagado el último onChange; leer
     // el valor vivo elimina esa ventana de estado obsoleto.
     const currentLatex = mathField?.value ?? latex;
+    const piecewiseIntent = detectPiecewiseIntent(currentLatex);
+    if (piecewiseIntent) {
+      const requestId = makeRequestId();
+      onSuccess("Científica (función a trozos)", currentLatex, {
+        success: true,
+        resultLatex: currentLatex,
+        interpretedLatex: currentLatex,
+        resultViewLabel: "Función a trozos",
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      });
+      return;
+    }
     const systemRows = splitSystemLatex(currentLatex);
     if (systemRows) {
       runSystem(systemRows);
