@@ -80,7 +80,11 @@ export function splitFreeSystemLatex(latex: string): string[] | null {
   if (comma) candidates.push(comma);
 
   for (const raw of candidates) {
-    const rows = raw.map((r) => r.trim().replace(/^\\\\\s*/, "")).filter(Boolean);
+    const rows = raw.map((r) => {
+      let cleaned = r.trim();
+      if (cleaned.startsWith("\\ ")) cleaned = cleaned.slice(2).trimStart();
+      return cleaned;
+    }).filter(Boolean);
     if (rows.length === 2 && rows.every(looksLikeEquation)) return rows;
   }
   return null;
