@@ -328,12 +328,10 @@ export function BasicScientificMode() {
     // AlgebraMode.tsx: 0 o >1 variables libres se rechaza en vez de
     // adivinar cuál despejar).
     if (parsed.isEquation) {
-      if (parsed.freeVariables.length !== 1) {
+      if (parsed.freeVariables.length > 1) {
         fail(
           ErrorCode.PARSE_ERROR,
-          parsed.freeVariables.length === 0
-            ? "No se detectó ninguna variable para despejar."
-            : `Hay más de una variable (${parsed.freeVariables.join(", ")}); usa la pestaña Álgebra para elegir cuál despejar.`,
+          `Hay más de una variable (${parsed.freeVariables.join(", ")}); usa la pestaña Álgebra para elegir cuál despejar.`,
           requestId,
         );
         return;
@@ -349,7 +347,7 @@ export function BasicScientificMode() {
         requestId,
         leftAlgebrite: parsed.leftAlgebrite,
         rightAlgebrite: parsed.rightAlgebrite,
-        variable: parsed.freeVariables[0],
+        variable: parsed.freeVariables[0] ?? "x",
       });
       return;
     }
