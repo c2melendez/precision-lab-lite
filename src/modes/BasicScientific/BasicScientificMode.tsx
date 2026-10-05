@@ -13,6 +13,7 @@ import { detectODE } from "../../engine/parsing/odeDetect";
 import { detectComplexAnalysisIntent } from "../../engine/parsing/complexAnalysisIntent";
 import { detectChainedInequality } from "../../engine/parsing/chainedInequality";
 import { detectRelationIntent } from "../../engine/parsing/relationIntent";
+import { detectConstrainedEquationIntent } from "../../engine/parsing/constrainedEquationIntent";
 import { addHistoryEntry } from "../../store/historyDb";
 import { useKeyboardPanelStore } from "../../store/useKeyboardPanelStore";
 import { useRecentKeysStore } from "../../store/useRecentKeysStore";
@@ -248,6 +249,44 @@ export function BasicScientificMode() {
       worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica (EDO)", currentLatex, e.data);
       worker.postMessage({ type: "ode", requestId, expression: odeExpression });
       return;
+    }
+
+    const constrainedIntent = detectConstrainedEquationIntent(currentLatex);
+    if (constrainedIntent) {
+      const requestId = makeRequestId();
+      try {
+        const parsedEquation = parseExpression(constrainedIntent.equationLatex, angleMode);
+        if (!parsedEquation.isEquation || parsedEquation.freeVariables.length !== 1) {
+          fail(ErrorCode.PARSE_ERROR, "La parte principal debe ser una ecuación de una sola variable.", requestId);
+          return;
+        }
+        if (parsedEquation.freeVariables[0] !== constrainedIntent.variable) {
+          fail(ErrorCode.PARSE_ERROR, "La restricción debe usar la misma variable que la ecuación.", requestId);
+          return;
+        }
+
+        const worker = getWorker();
+        worker.onmessage = (e: MessageEvent<MathResult>) =>
+          onSuccess("Científica (ecuación con restricción)", currentLatex, {
+            ...e.data,
+            interpretedLatex: currentLatex,
+            resultViewLabel: "Solución restringida",
+          });
+        worker.postMessage({
+          type: "constrainedEquation",
+          requestId,
+          leftAlgebrite: parsedEquation.leftAlgebrite,
+          rightAlgebrite: parsedEquation.rightAlgebrite,
+          variable: constrainedIntent.variable,
+          operator: constrainedIntent.operator,
+          bound: constrainedIntent.bound,
+        });
+        return;
+      } catch (err) {
+        const appErr = err as { code?: ErrorCode; message?: string };
+        fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Ecuación restringida inválida.", requestId);
+        return;
+      }
     }
 
     const relationIntent = detectRelationIntent(currentLatex);
