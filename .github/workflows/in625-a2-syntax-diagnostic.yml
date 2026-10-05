@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+# E3b rerun after spacing-oracle fix
 jobs:
   a2:
     runs-on: ubuntu-latest
