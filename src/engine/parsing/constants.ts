@@ -144,7 +144,7 @@ export const FUNCTION_ARITY: Record<string, number[]> = {
   // aparte en compute.worker.ts, ver tryDefiniteIntegral), pero necesita
   // registrarse igual para que el tokenizer no le inserte una "*" antes
   // del paréntesis (mismo bug que mean/median/etc., ver arriba).
-  defintegral: [3],
+  defintegral: [3, 4],
 };
 
 export const KNOWN_FUNCTION_NAMES = Object.keys(FUNCTION_ARITY);
