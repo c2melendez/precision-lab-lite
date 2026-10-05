@@ -19,7 +19,7 @@
 // sueltas que casualmente comparten renglón? Se deja fuera hasta que haya
 // una decisión explícita al respecto.
 
-const CASES_PATTERN = /\\begin\{cases\}([\s\S]*?)\\end\{cases\}/;
+const SYSTEM_PATTERN = /\\begin\{(cases|aligned|array)\}(?:\{[^{}]*\})?([\s\S]*?)\\end\{\1\}/;
 
 /**
  * Devuelve las ecuaciones de un entorno `cases` como LaTeX individual por
@@ -27,12 +27,12 @@ const CASES_PATTERN = /\\begin\{cases\}([\s\S]*?)\\end\{cases\}/;
  * de 2 renglones no vacíos, que no alcanza para un sistema).
  */
 export function splitSystemLatex(latex: string): string[] | null {
-  const match = CASES_PATTERN.exec(latex);
+  const match = SYSTEM_PATTERN.exec(latex);
   if (!match) return null;
 
   const rows = match[1]
     .split("\\\\")
-    .map((row) => row.trim())
+    .map((row) => row.replace(/&/g, "").trim())
     .filter((row) => row.length > 0);
 
   return rows.length >= 2 ? rows : null;
