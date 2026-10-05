@@ -6,10 +6,10 @@ export type MatrixIntent =
   | { kind: "transpose"; matrix: string[][] }
   | { kind: "multiply"; left: string[][]; right: string[][] };
 
-const ENV = String.raw`\\\\begin\\{(p|b|v)matrix\\}([\\\\s\\\\S]*?)\\\\end\\{\\\\1matrix\\}`;
+const ENV = String.raw`\\begin\{(p|b|v)matrix\}([\s\S]*?)\\end\{\1matrix\}`;
 
 function splitMatrixBody(body: string): string[][] {
-  const rows = body.split(/\\\\\\\\/).map((r) => r.trim()).filter(Boolean);
+  const rows = body.split(/\\\\/).map((r) => r.trim()).filter(Boolean);
   if (rows.length === 0) throw new Error("La matriz no puede estar vacía.");
   const matrix = rows.map((row) => row.split("&").map((c) => c.trim()));
   const width = matrix[0].length;
