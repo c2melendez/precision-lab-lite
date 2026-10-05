@@ -22,7 +22,7 @@ describe("IN625 E3b — sistemas libres",()=>{
       const parsed=rows.map(r=>parseExpression(r));
       const result=solveLinearSystem(parsed.map(p=>p.algebrite),["x","y"]);
       expect(result.kind).toBe("unique");
-      if(result.kind==="unique") expect(result.values).toEqual(["2","1"]);
+      if(result.kind==="unique") expect(result.values.map(v=>`${v.s * v.n}/${v.d}`)).toEqual(["2/1","1/1"]);
     }
   });
 });
