@@ -11,6 +11,7 @@ import { splitSystemLatex } from "../../engine/parsing/systemSplit";
 import { detectPiecewiseIntent } from "../../engine/parsing/piecewiseIntent";
 import { detectODE } from "../../engine/parsing/odeDetect";
 import { detectComplexAnalysisIntent } from "../../engine/parsing/complexAnalysisIntent";
+import { detectChainedInequality } from "../../engine/parsing/chainedInequality";
 import { addHistoryEntry } from "../../store/historyDb";
 import { useKeyboardPanelStore } from "../../store/useKeyboardPanelStore";
 import { useRecentKeysStore } from "../../store/useRecentKeysStore";
@@ -249,6 +250,36 @@ export function BasicScientificMode() {
     }
 
     const requestId = makeRequestId();
+    const chained = detectChainedInequality(currentLatex);
+    if (chained) {
+      try {
+        const first = parseExpression(chained.leftClause, angleMode);
+        const second = parseExpression(chained.rightClause, angleMode);
+        if (!first.isInequality || !second.isInequality || first.freeVariables.length !== 1 || second.freeVariables.length !== 1) {
+          fail(ErrorCode.PARSE_ERROR, "La desigualdad encadenada debe usar una sola variable.", requestId);
+          return;
+        }
+        const worker = getWorker();
+        worker.onmessage = (e: MessageEvent<MathResult>) =>
+          onSuccess("Científica (desigualdad encadenada)", currentLatex, {
+            ...e.data,
+            interpretedLatex: currentLatex,
+            resultViewLabel: "Solución",
+          });
+        worker.postMessage({
+          type: "solveChainedInequality",
+          requestId,
+          first: { diffAlgebrite: first.algebrite, operator: first.inequalityOperator! },
+          second: { diffAlgebrite: second.algebrite, operator: second.inequalityOperator! },
+          variable: chained.variable,
+        });
+        return;
+      } catch (err) {
+        const appErr = err as { code?: ErrorCode; message?: string };
+        fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Desigualdad encadenada inválida.", requestId);
+        return;
+      }
+    }
     let parsed;
     try {
       parsed = parseExpression(currentLatex, angleMode);
