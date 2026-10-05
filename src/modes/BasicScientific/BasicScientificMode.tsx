@@ -7,7 +7,7 @@ import { type SessionHistoryEntry } from "../../components/HistoryLog";
 import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { parseExpression } from "../../engine/parsing";
 import { toLatex } from "../../engine/algebriteClient";
-import { splitSystemLatex } from "../../engine/parsing/systemSplit";
+import { splitSystemLatex, splitFreeSystemLatex } from "../../engine/parsing/systemSplit";
 import { detectPiecewiseIntent } from "../../engine/parsing/piecewiseIntent";
 import { detectODE } from "../../engine/parsing/odeDetect";
 import { detectComplexAnalysisIntent } from "../../engine/parsing/complexAnalysisIntent";
@@ -181,7 +181,7 @@ export function BasicScientificMode() {
       });
       return;
     }
-    const systemRows = splitSystemLatex(currentLatex);
+    const systemRows = splitSystemLatex(currentLatex) ?? splitFreeSystemLatex(currentLatex);
     if (systemRows) {
       runSystem(systemRows);
       return;
