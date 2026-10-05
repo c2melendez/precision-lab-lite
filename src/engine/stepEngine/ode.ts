@@ -279,6 +279,12 @@ export function solveODE(text: string): CalculusResult {
     }
 
     // E3c: si no aparece término y', su coeficiente es 0.
+    // También se acepta el coeficiente implícito 1 en "+y".
+    const implicitUnit = compact.match(/^y''\+y=(.+)$/);
+    if (implicitUnit) {
+      return solveSecondOrderConstantCoeff("0", "1", implicitUnit[1], ic);
+    }
+
     match = compact.match(/^y''\+\(?([^()*]+)\)?\*?y=(.+)$/);
     if (match) {
       const [, b, c] = match;
