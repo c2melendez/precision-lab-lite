@@ -1,4 +1,4 @@
-name: IN625 A1+A2+A3+A4+B1+B2+B3+B4+C1+C2+C3+C4+D1+D2+D3+E1a+E1b+E1c+E1d+E2a+E2b+E2c+E3a+E3b+E3c Syntax Diagnostic
+name: IN625 A1+A2+A3+A4+B1+B2+B3+B4+C1+C2+C3+C4+D1+D2+D3+E1a+E1b+E1c+E1d+E2a+E2b+E2c+E3a+E3b+E3c+E3d1 Syntax Diagnostic
 on:
   pull_request:
   workflow_dispatch:
@@ -16,5 +16,5 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Run A1+A2+A3+A4+B1+B2+B3+B4+C1+C2+C3+C4+D1+D2+D3+E1a+E1b+E1c+E1d+E2a+E2b+E2c+E3a+E3b+E3c syntax diagnostics
-        run: npx vitest run tests/in625A1Fractions.audit.test.ts tests/in625A2Delimiters.audit.test.ts tests/in625A3Operators.audit.test.ts tests/in625A4Roots.audit.test.ts tests/in625B1Exponents.audit.test.ts tests/in625B2SubscriptsLogs.audit.test.ts tests/in625B3ImplicitMultiplication.audit.test.ts tests/in625B4Precedence.audit.test.ts tests/in625C1FunctionPowers.audit.test.ts tests/in625C2FunctionArguments.audit.test.ts tests/in625C3SpanishAliases.audit.test.ts tests/in625C4ConstantsFunctions.audit.test.ts tests/in625D1Decimals.audit.test.ts tests/in625D2ScientificPercent.audit.test.ts tests/in625D3Precision.audit.test.ts tests/in625E1aDerivatives.audit.test.ts tests/in625E1bLimits.audit.test.ts tests/in625E1cIntegrals.audit.test.ts tests/in625E1dAggregates.audit.test.ts tests/in625E2aMatrices.audit.test.ts tests/in625E2bSystems.audit.test.ts tests/in625E2cPiecewise.audit.test.ts tests/in625E3aIntent.audit.test.ts tests/in625E3bFreeSystems.audit.test.ts tests/in625E3cODE.audit.test.ts
+      - name: Run A1+A2+A3+A4+B1+B2+B3+B4+C1+C2+C3+C4+D1+D2+D3+E1a+E1b+E1c+E1d+E2a+E2b+E2c+E3a+E3b+E3c+E3d1 syntax diagnostics
+        run: npx vitest run tests/in625A1Fractions.audit.test.ts tests/in625A2Delimiters.audit.test.ts tests/in625A3Operators.audit.test.ts tests/in625A4Roots.audit.test.ts tests/in625B1Exponents.audit.test.ts tests/in625B2SubscriptsLogs.audit.test.ts tests/in625B3ImplicitMultiplication.audit.test.ts tests/in625B4Precedence.audit.test.ts tests/in625C1FunctionPowers.audit.test.ts tests/in625C2FunctionArguments.audit.test.ts tests/in625C3SpanishAliases.audit.test.ts tests/in625C4ConstantsFunctions.audit.test.ts tests/in625D1Decimals.audit.test.ts tests/in625D2ScientificPercent.audit.test.ts tests/in625D3Precision.audit.test.ts tests/in625E1aDerivatives.audit.test.ts tests/in625E1bLimits.audit.test.ts tests/in625E1cIntegrals.audit.test.ts tests/in625E1dAggregates.audit.test.ts tests/in625E2aMatrices.audit.test.ts tests/in625E2bSystems.audit.test.ts tests/in625E2cPiecewise.audit.test.ts tests/in625E3aIntent.audit.test.ts tests/in625E3bFreeSystems.audit.test.ts tests/in625E3cODE.audit.test.ts tests/in625E3d1Relations.audit.test.ts
