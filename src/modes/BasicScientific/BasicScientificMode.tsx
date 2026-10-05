@@ -12,6 +12,7 @@ import { detectPiecewiseIntent } from "../../engine/parsing/piecewiseIntent";
 import { detectODE } from "../../engine/parsing/odeDetect";
 import { detectComplexAnalysisIntent } from "../../engine/parsing/complexAnalysisIntent";
 import { detectChainedInequality } from "../../engine/parsing/chainedInequality";
+import { detectRelationIntent } from "../../engine/parsing/relationIntent";
 import { addHistoryEntry } from "../../store/historyDb";
 import { useKeyboardPanelStore } from "../../store/useKeyboardPanelStore";
 import { useRecentKeysStore } from "../../store/useRecentKeysStore";
@@ -246,6 +247,28 @@ export function BasicScientificMode() {
       const worker = getWorker();
       worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica (EDO)", currentLatex, e.data);
       worker.postMessage({ type: "ode", requestId, expression: odeExpression });
+      return;
+    }
+
+    const relationIntent = detectRelationIntent(currentLatex);
+    if (relationIntent) {
+      const requestId = makeRequestId();
+      const label =
+        relationIntent.kind === "functionDefinition"
+          ? "Definición de función"
+          : relationIntent.kind === "explicitRelation"
+            ? "Relación explícita"
+            : "Relación implícita";
+      onSuccess(`Científica (${label.toLowerCase()})`, currentLatex, {
+        success: true,
+        resultLatex: currentLatex,
+        interpretedLatex: currentLatex,
+        resultViewLabel: label,
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      });
       return;
     }
 
