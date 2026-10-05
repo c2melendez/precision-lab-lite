@@ -316,7 +316,17 @@ function handleSolveAlgebra(
   requestId: string,
 ): MathResult {
   try {
-    const { steps, solutionsAlgebrite } = solveAlgebra(leftAlgebrite, rightAlgebrite, variable);
+    const { steps, solutionsAlgebrite, truth } = solveAlgebra(leftAlgebrite, rightAlgebrite, variable);
+    if (truth) {
+      return {
+        success: true,
+        resultLatex: truth === "identity" ? "\\text{Verdadero para todos los valores}" : "\\text{Falso: no hay solución}",
+        steps,
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
     const allNumeric = solutionsAlgebrite.every(
       (s) => /^-?\d+(\.\d+)?$/.test(s) || /^-?\d+\/\d+$/.test(s),
     );
