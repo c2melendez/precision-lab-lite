@@ -85,3 +85,5 @@ export function splitFreeSystemLatex(latex: string): string[] | null {
   }
   return null;
 }
+
+// IN625 E3b spacing normalization: remove MathLive "\\ " only at row starts after splitting.
