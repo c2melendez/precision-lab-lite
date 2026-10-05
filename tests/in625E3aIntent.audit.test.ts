@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { parseExpression } from "../src/engine/parsing";
+import { detectChainedInequality } from "../src/engine/parsing/chainedInequality";
 
 describe("IN625 E3a — intención expresión/ecuación/inecuación",()=>{
   it("EN-DI-01 expresión simple",()=>{
@@ -12,11 +13,13 @@ describe("IN625 E3a — intención expresión/ecuación/inecuación",()=>{
   it("EN-DI-04 inecuación",()=>expect(parseExpression("x^{2}>4").isInequality).toBe(true));
   it("EN-DI-05 valor absoluto <=2",()=>expect(parseExpression("\\lvert x-1\\rvert\\leq2").isInequality).toBe(true));
   it("EN-DI-06 inecuación doble estricta",()=>{
-    const p=parseExpression("3<x<7");
-    expect(p.isInequality).toBe(true);
+    expect(detectChainedInequality("3<x<7")).toEqual({
+      leftClause:"3<x", rightClause:"x<7", variable:"x"
+    });
   });
   it("EN-DI-06 inecuación doble cerrada",()=>{
-    const p=parseExpression("3\\le x\\le7");
-    expect(p.isInequality).toBe(true);
+    expect(detectChainedInequality("3\\le x\\le7")).toEqual({
+      leftClause:"3<=x", rightClause:"x<=7", variable:"x"
+    });
   });
 });
