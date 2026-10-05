@@ -8,6 +8,44 @@ function parseError(message: string): AppError {
   return { code: ErrorCode.PARSE_ERROR, message };
 }
 
+function normalizePastedLatex(input: string): string {
+  let out = input.trim();
+
+  // Delimitadores de modo matemático pegados desde Markdown/TeX.
+  if (out.startsWith("$") && out.endsWith("$") && out.length >= 4) {
+    out = out.slice(2, -2).trim();
+  } else if (out.startsWith("$") && out.endsWith("$") && out.length >= 2) {
+    out = out.slice(1, -1).trim();
+  }
+  if (out.startsWith("\\(") && out.endsWith("\\)")) out = out.slice(2, -2).trim();
+  if (out.startsWith("\\[") && out.endsWith("\\]")) out = out.slice(2, -2).trim();
+
+  // Entornos de ecuación/alineación copiados completos.
+  out = out.replace(/^\\begin\{(?:equation\*?|align\*?)\}/, "");
+  out = out.replace(/\\end\{(?:equation\*?|align\*?)\}$/, "");
+
+  // Estilos visuales no semánticos.
+  out = out
+    .replace(/\\(?:displaystyle|textstyle|scriptstyle)\b/g, "")
+    .replace(/\\(?:,|;|:|!)(?=\s|$|[^A-Za-z])/g, "")
+    .replace(/\\(?:quad|qquad)\b/g, "")
+    .replace(/~/g, " ");
+
+  // Wrapper típico de Wikipedia: {\displaystyle ...}
+  const displayGroup = out.match(/^\{\s*\\displaystyle\s+([\s\S]*)\}$/);
+  if (displayGroup) out = displayGroup[1];
+
+  // Numeración/labels editoriales no cambian la expresión.
+  out = out
+    .replace(/\\tag\{[^{}]*\}/g, "")
+    .replace(/\\label\{[^{}]*\}/g, "");
+
+  // Separador de línea sobrante al final.
+  out = out.replace(/\\\\\s*$/, "");
+
+  return out.trim();
+}
+
 
 const LOCALIZED_ALIAS_MAP: Record<string, string> = {
   sin: "\\sin", cos: "\\cos", tan: "\\tan", csc: "\\csc", sec: "\\sec", cot: "\\cot",
@@ -359,6 +397,7 @@ function normalizeDelimiterSyntax(input: string): string {
 
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
+  latex = normalizePastedLatex(latex);
   let expr = normalizeLocalizedAliases(normalizeDelimiterSyntax(latex));
 
   // IN625 E1b — variantes tipográficas equivalentes de límites.
