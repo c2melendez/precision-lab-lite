@@ -61,6 +61,15 @@ export type ComputeRequest =
       variable: string;
     }
   | {
+      type: "constrainedEquation";
+      requestId: string;
+      leftAlgebrite: string;
+      rightAlgebrite: string;
+      variable: string;
+      operator: "<" | "<=" | ">" | ">=";
+      bound: number;
+    }
+  | {
       type: "derivative";
       requestId: string;
       expressionAlgebrite: string;
@@ -202,6 +211,15 @@ function handle(msg: ComputeRequest): MathResult {
       return handleEvaluate(msg.expressionAlgebrite, msg.requestId);
     case "solveAlgebra":
       return handleSolveAlgebra(msg.leftAlgebrite, msg.rightAlgebrite, msg.variable, msg.requestId);
+    case "constrainedEquation":
+      return handleConstrainedEquation(
+        msg.leftAlgebrite,
+        msg.rightAlgebrite,
+        msg.variable,
+        msg.operator,
+        msg.bound,
+        msg.requestId,
+      );
     case "derivative":
       return runCalculus(msg.requestId, msg.expressionAlgebrite, () => calcDerivative(msg.expressionAlgebrite, msg.variable, msg.order));
     case "limit":
@@ -345,6 +363,58 @@ function handleSolveAlgebra(
         extractDomainConditions(leftAlgebrite),
         extractDomainConditions(rightAlgebrite),
       ),
+      requestId,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(
+      appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION,
+      appErr.message ?? String(err),
+      requestId,
+    );
+  }
+}
+
+function handleConstrainedEquation(
+  leftAlgebrite: string,
+  rightAlgebrite: string,
+  variable: string,
+  operator: "<" | "<=" | ">" | ">=",
+  bound: number,
+  requestId: string,
+): MathResult {
+  try {
+    const { steps, solutionsAlgebrite, truth } = solveAlgebra(leftAlgebrite, rightAlgebrite, variable);
+    if (truth) {
+      return {
+        success: true,
+        resultLatex: truth === "identity" ? "\\text{Verdadero para todos los valores}" : "\\text{Falso: no hay solución}",
+        steps,
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
+
+    const satisfies = (value: number) =>
+      operator === ">" ? value > bound :
+      operator === ">=" ? value >= bound :
+      operator === "<" ? value < bound :
+      value <= bound;
+
+    const filtered = solutionsAlgebrite.filter((solution) => {
+      const numeric = Number(solution);
+      return Number.isFinite(numeric) && satisfies(numeric);
+    });
+
+    return {
+      success: true,
+      resultLatex: filtered.length
+        ? filtered.map((s) => `${variable} = ${toLatex(s)}`).join(",\\ ")
+        : "\\text{Sin solución bajo la restricción}",
+      steps,
+      hasDetailedSteps: false,
+      confidence: "SYMBOLIC",
       requestId,
     };
   } catch (err) {
