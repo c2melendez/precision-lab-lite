@@ -30,7 +30,7 @@ export function splitSystemLatex(latex: string): string[] | null {
   const match = SYSTEM_PATTERN.exec(latex);
   if (!match) return null;
 
-  const rows = match[1]
+  const rows = match[2]
     .split("\\\\")
     .map((row) => row.replace(/&/g, "").trim())
     .filter((row) => row.length > 0);
