@@ -8,6 +8,52 @@ function parseError(message: string): AppError {
   return { code: ErrorCode.PARSE_ERROR, message };
 }
 
+function normalizeUnicodePaste(input: string): string {
+  const supers: Record<string, string> = {
+    "⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9",
+    "⁻":"-",
+  };
+  const subs: Record<string, string> = {
+    "₀":"0","₁":"1","₂":"2","₃":"3","₄":"4","₅":"5","₆":"6","₇":"7","₈":"8","₉":"9",
+  };
+
+  let out = input
+    .replace(/[−–—‐‑]/g, "-")
+    .replace(/[×·⋅∙∗]/g, "*")
+    .replace(/÷/g, "/")
+    .replace(/½/g, "(1/2)")
+    .replace(/¼/g, "(1/4)")
+    .replace(/¾/g, "(3/4)")
+    .replace(/π/g, "\\pi")
+    .replace(/θ/g, "\\theta")
+    .replace(/∞/g, "\\infty")
+    .replace(/≤/g, "\\le")
+    .replace(/≥/g, "\\ge")
+    .replace(/≠/g, "\\ne")
+    .replace(/±/g, "\\pm")
+    .replace(/[’′]/g, "'")
+    .replace(/[\u00A0\u2009\u202F]/g, " ");
+
+  out = out.replace(/([A-Za-z0-9)]+)([⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)/g, (_m, base, run) => {
+    const decoded = [...run].map((ch) => supers[ch] ?? "").join("");
+    return decoded ? `${base}^{${decoded}}` : _m;
+  });
+
+  out = out.replace(/([A-Za-z])([₀₁₂₃₄₅₆₇₈₉]+)/g, (_m, base, run) => {
+    const decoded = [...run].map((ch) => subs[ch] ?? "").join("");
+    return decoded ? `${base}_{${decoded}}` : _m;
+  });
+
+  out = out
+    .replace(/∛\s*(\([^)]*\)|[A-Za-z0-9.]+)/g, "\\sqrt[3]{$1}")
+    .replace(/∜\s*(\([^)]*\)|[A-Za-z0-9.]+)/g, "\\sqrt[4]{$1}")
+    .replace(/√\s*(\([^)]*\)|[A-Za-z0-9.]+)/g, (_m, atom) =>
+      atom.startsWith("(") ? `\\sqrt{${atom.slice(1, -1)}}` : `\\sqrt{${atom}}`
+    );
+
+  return out;
+}
+
 function normalizePastedLatex(input: string): string {
   let out = input.trim();
 
@@ -404,7 +450,7 @@ function normalizeDelimiterSyntax(input: string): string {
 
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
-  latex = normalizePastedLatex(latex);
+  latex = normalizeUnicodePaste(normalizePastedLatex(latex));
   let expr = normalizeLocalizedAliases(normalizeDelimiterSyntax(latex));
 
   // IN625 E1b — variantes tipográficas equivalentes de límites.
