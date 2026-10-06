@@ -133,6 +133,9 @@ export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrad
       // El teclado propio de la app reemplaza al teclado nativo de MathLive.
       // "manual" evita que el panel nativo aparezca automáticamente al foco.
       math-virtual-keyboard-policy="manual"
+      autoCapitalize="off"
+      autoCorrect="off"
+      spellCheck={false}
       aria-label={ariaLabel}
       placeholder={placeholder}
     />
