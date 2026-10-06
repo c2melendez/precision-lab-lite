@@ -21,7 +21,7 @@ describe("IN625 G1a — contrato estructural del teclado", () => {
 
   it("EN-TC-19 inversas/log/ln/10^x/e^x están cableadas", () => {
     expect(keyboardSrc).toContain('{ sup: "-1", base: f }');
-    expect(keyboardSrc).toContain(String.raw\`\\\${f}^{-1}\\left(#0\\right)\`);
+    expect(keyboardSrc).toContain("`\\\\${f}^{-1}\\\\left(#0\\\\right)`");
     expect(keyboardSrc).toContain('"\\log\\left(#0\\right)"');
     expect(keyboardSrc).toContain('"\\ln\\left(#0\\right)"');
     expect(keyboardSrc).toContain('"10^{#0}"');
