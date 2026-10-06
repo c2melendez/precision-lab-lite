@@ -169,3 +169,25 @@ test("IN625 G1b EN-TC-03: x ^ 1 0 + 1 conserva x^10 y luego suma", async ({ page
   const latex = await physicalSequence(page, "x^10+1");
   expect(latex.replace(/\s/g, "")).toMatch(/x\^\{?10\}?\+1/);
 });
+
+
+test("IN625 G1b EN-TC-04: 2 ^ - 3 + 1 conserva exponente negativo y sale al +", async ({ page }) => {
+  await page.goto("./");
+  const latex = await physicalSequence(page, "2^-3+1");
+  expect(latex.replace(/\s/g, "")).toMatch(/2\^\{?-3\}?\+1/);
+});
+
+test("IN625 G1b EN-TC-05: x ^ 2 y saca la variable del exponente", async ({ page }) => {
+  await page.goto("./");
+  const latex = await physicalSequence(page, "x^2y");
+  expect(latex.replace(/\s/g, "")).toMatch(/x\^\{?2\}?y/);
+});
+
+test("IN625 G1b EN-TC-06: e ^ x + 1 mantiene un eco matemático coherente", async ({ page }) => {
+  await page.goto("./");
+  const latex = (await physicalSequence(page, "e^x+1")).replace(/\s/g, "");
+  expect([
+    /^e\^\{?x\}?\+1$/,
+    /^e\^\{?x\+1\}?$/,
+  ].some((re) => re.test(latex))).toBe(true);
+});
