@@ -85,7 +85,7 @@ function normalizeUnicodePaste(input: string): string {
   out = out.replace(/^∫([₀₁₂₃₄₅₆₇₈₉]+)([⁰¹²³⁴⁵⁶⁷⁸⁹]+)(.+)d([A-Za-z])$/, (_m, lowerRun, upperRun, body, variable) => {
     const lower = [...lowerRun].map((ch) => subs[ch] ?? "").join("");
     const upper = [...upperRun].map((ch) => supers[ch] ?? "").join("");
-    let normalizedBody = body.replace(/([A-Za-z0-9)]+)([⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)/g, (_m2, base, run) => {
+    let normalizedBody = body.replace(/([A-Za-z0-9)]+)([⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)/g, (_m2: string, base: string, run: string) => {
       const decoded = [...run].map((ch) => supers[ch] ?? "").join("");
       return decoded ? `${base}^{${decoded}}` : _m2;
     });
