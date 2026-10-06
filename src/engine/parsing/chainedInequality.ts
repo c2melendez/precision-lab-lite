@@ -7,7 +7,7 @@ export interface ChainedInequalityIntent {
 }
 
 export function detectChainedInequality(latex: string): ChainedInequalityIntent | null {
-  const normalized = preprocessLatex(latex, "RAD").replace(/\s+/g, "");
+  const normalized = preprocessLatex(latex).replace(/\s+/g, "");
   const match = /^(.+?)(<=|>=|<|>)([A-Za-z])((?:<=|>=|<|>))(.+)$/.exec(normalized);
   if (!match) return null;
   const [, left, op1, variable, op2, right] = match;
