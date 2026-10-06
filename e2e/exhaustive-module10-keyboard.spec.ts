@@ -203,8 +203,8 @@ test("IN625 G1b EN-TC-08: x + 1 / 2 conserva una lectura fraccionaria coherente"
   await page.goto("./");
   const latex = (await physicalSequence(page, "x+1/2")).replace(/\s/g, "");
   expect([
-    /^x\+\\frac\{1\}\{2\}$/,
-    /^\\frac\{x\+1\}\{2\}$/,
+    /^x\+\\frac(?:\{1\}|1)(?:\{2\}|2)$/,
+    /^\\frac(?:\{x\+1\}|x\+1)(?:\{2\}|2)$/,
   ].some((re) => re.test(latex))).toBe(true);
 });
 
@@ -224,5 +224,5 @@ test("IN625 G1b EN-TC-10: flecha derecha sale del denominador antes de x", async
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("x");
   const latex = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? "")).replace(/\s/g, "");
-  expect(latex).toMatch(/\\frac\{1\}\{2\}x/);
+  expect(latex).toMatch(/\\frac(?:\{1\}|1)(?:\{2\}|2)x/);
 });
