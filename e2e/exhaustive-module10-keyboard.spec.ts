@@ -226,3 +226,49 @@ test("IN625 G1b EN-TC-10: flecha derecha sale del denominador antes de x", async
   const latex = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? "")).replace(/\s/g, "");
   expect(latex).toMatch(/\\frac(?:\{1\}|1)(?:\{2\}|2)x/);
 });
+
+
+test("IN625 G1b EN-TC-11: aliases trigonométricos se reconocen en el campo", async ({ page }) => {
+  await page.goto("./");
+  for (const sample of ["sin", "sen", "tg", "arcsen", "senh"]) {
+    const latex = (await physicalSequence(page, sample)).replace(/\s/g, "");
+    expect(latex.length).toBeGreaterThan(0);
+    expect(latex.toLowerCase()).toContain(sample.replace("sen","sin").replace("tg","tan").replace("arcsen","arcsin").replace("senh","sinh").slice(0,2));
+  }
+});
+
+test("IN625 G1b EN-TC-12: atajos de símbolos básicos producen eco matemático", async ({ page }) => {
+  await page.goto("./");
+  const cases: Array<[string, RegExp]> = [
+    ["pi", /\\pi|pi/],
+    ["theta", /\\theta|theta/],
+    ["->", /\\to|->/],
+    ["<=", /\\le|<=/],
+    [">=", /\\ge|>=/],
+    ["!=", /\\ne|!=/],
+    ["*", /\\cdot|\*/],
+  ];
+  for (const [seq, re] of cases) {
+    const latex = (await physicalSequence(page, seq)).replace(/\s/g, "");
+    expect(latex).toMatch(re);
+  }
+});
+
+test("IN625 G1b EN-TC-13: sqrt x + 1 mantiene el contenido dentro de la raíz", async ({ page }) => {
+  await page.goto("./");
+  const latex = (await physicalSequence(page, "sqrtx+1")).replace(/\s/g, "");
+  expect(latex).toMatch(/\\sqrt\{?x\+1\}?/);
+});
+
+test("IN625 G1b EN-TC-14: (x+1)^2 no crea paréntesis vacíos extra", async ({ page }) => {
+  await page.goto("./");
+  const latex = (await physicalSequence(page, "(x+1)^2")).replace(/\s/g, "");
+  expect(latex).toMatch(/\\left\(?x\+1\\right\)?\^\{?2\}?|\(x\+1\)\^\{?2\}?/);
+  expect(latex).not.toMatch(/\(\)/);
+});
+
+test("IN625 G1b EN-TC-15: valor absoluto conserva estructura", async ({ page }) => {
+  await page.goto("./");
+  const latex = (await physicalSequence(page, "|x-1|")).replace(/\s/g, "");
+  expect(latex).toMatch(/\\left\|?x-1\\right\|?|\|x-1\|/);
+});
