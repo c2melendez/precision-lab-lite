@@ -123,3 +123,36 @@ test("módulo 10: acciones no aritméticas de Álgebra exponen tooltip", async (
     expect(title, `Falta tooltip en ${name}`).toBeTruthy();
   }
 });
+
+
+async function clearPhysicalField(page: import("@playwright/test").Page) {
+  const field = page.locator("math-field").first();
+  await field.click();
+  await page.keyboard.press("Control+A");
+  await page.keyboard.press("Backspace");
+  return field;
+}
+
+test("IN625 G1b EN-TC-01: 2 ^ 1 0 conserva 10 completo en el exponente", async ({ page }) => {
+  await page.goto("./");
+  const field = await clearPhysicalField(page);
+  await page.keyboard.type("2^10");
+  const latex = await field.evaluate((el) => String((el as HTMLElement & { value?: string }).value ?? ""));
+  expect(latex.replace(/\s/g, "")).toMatch(/2\^\{?10\}?/);
+});
+
+test("IN625 G1b EN-TC-02: x ^ 2 + 1 saca + del exponente", async ({ page }) => {
+  await page.goto("./");
+  const field = await clearPhysicalField(page);
+  await page.keyboard.type("x^2+1");
+  const latex = await field.evaluate((el) => String((el as HTMLElement & { value?: string }).value ?? ""));
+  expect(latex.replace(/\s/g, "")).toMatch(/x\^\{?2\}?\+1/);
+});
+
+test("IN625 G1b EN-TC-03: x ^ 1 0 + 1 conserva x^10 y luego suma", async ({ page }) => {
+  await page.goto("./");
+  const field = await clearPhysicalField(page);
+  await page.keyboard.type("x^10+1");
+  const latex = await field.evaluate((el) => String((el as HTMLElement & { value?: string }).value ?? ""));
+  expect(latex.replace(/\s/g, "")).toMatch(/x\^\{?10\}?\+1/);
+});
