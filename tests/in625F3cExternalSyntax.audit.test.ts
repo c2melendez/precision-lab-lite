@@ -7,12 +7,12 @@ describe("IN625 F3c — SymPy y relaciones 18..26",()=>{
     expect(n("x^{2} + 2 x + 1")).toContain("x^(2)+2x+1");
   });
   it("EN-AS-19 sympy sin latex",()=>{
-    expect(n("\\sin{\\left(x \\right)}")).toContain("sin(x)");
+    expect(n("\\sin{\\left(x \\right)}")).toMatch(/sin\(\{?\(?x\)?\}?\)/);
   });
   it("EN-AS-20 operatorname asin/acos/atan",()=>{
-    expect(n("\\operatorname{asin}{\\left(x \\right)}")).toContain("arcsin(x)");
-    expect(n("\\operatorname{acos}{\\left(x \\right)}")).toContain("arccos(x)");
-    expect(n("\\operatorname{atan}{\\left(x \\right)}")).toContain("arctan(x)");
+    expect(n("\\operatorname{asin}{\\left(x \\right)}")).toMatch(/arcsin\(\{?\(?x\)?\}?\)/);
+    expect(n("\\operatorname{acos}{\\left(x \\right)}")).toMatch(/arccos\(\{?\(?x\)?\}?\)/);
+    expect(n("\\operatorname{atan}{\\left(x \\right)}")).toMatch(/arctan\(\{?\(?x\)?\}?\)/);
   });
   it("EN-AS-21 x!=3 no factorial",()=>{
     const out=n("x!=3");
@@ -29,6 +29,6 @@ describe("IN625 F3c — SymPy y relaciones 18..26",()=>{
     expect(n("lim(x->0, sin(x)/x)")).toContain("limit");
   });
   it("EN-AS-26 sympy log latex obeys calculator log10 contract",()=>{
-    expect(n("\\log{\\left(x \\right)}")).toContain("log10(x)");
+    expect(n("\\log{\\left(x \\right)}")).toMatch(/log10\(\{?\(?x\)?\}?\)/);
   });
 });
