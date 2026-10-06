@@ -19,8 +19,12 @@ describe("IN625 F1 — texto pegado", () => {
     ["EN-PG-14a", "x^{2}+1\\tag{1}", "x^{2}+1"],
     ["EN-PG-14b", "x^{2}+1\\label{eq:1}", "x^{2}+1"],
   ])("%s limpia ruido no semántico", (_id, input, expected) => {
-    const out = preprocessLatex(input);
-    expect(out.replace(/\s+/g, "")).toContain(expected.replace(/\\frac\{1\}\{2\}/, "((1)/(2))").replace(/\s+/g, ""));
+    const out = preprocessLatex(input).replace(/\s+/g, "");
+    const normalizedExpected = expected
+      .replace(/x\^\{2\}/g, "x^(2)")
+      .replace(/\\frac\{1\}\{2\}/, "((1)/(2))")
+      .replace(/\s+/g, "");
+    expect(out).toBe(normalizedExpected);
   });
 
   it.each([
