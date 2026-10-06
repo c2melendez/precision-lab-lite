@@ -24,16 +24,17 @@ function normalizePastedLatex(input: string): string {
   out = out.replace(/^\\begin\{(?:equation\*?|align\*?)\}/, "");
   out = out.replace(/\\end\{(?:equation\*?|align\*?)\}$/, "");
 
+  // Wrapper típico de Wikipedia: {\displaystyle ...}. Debe retirarse
+  // antes de borrar el macro de estilo para no dejar llaves externas.
+  const displayGroup = out.match(/^\{\s*\\displaystyle\s+([\s\S]*)\}$/);
+  if (displayGroup) out = displayGroup[1];
+
   // Estilos visuales no semánticos.
   out = out
     .replace(/\\(?:displaystyle|textstyle|scriptstyle)\b/g, "")
     .replace(/\\(?:,|;|:|!)(?=\s|$|[^A-Za-z])/g, "")
     .replace(/\\(?:quad|qquad)\b/g, "")
     .replace(/~/g, " ");
-
-  // Wrapper típico de Wikipedia: {\displaystyle ...}
-  const displayGroup = out.match(/^\{\s*\\displaystyle\s+([\s\S]*)\}$/);
-  if (displayGroup) out = displayGroup[1];
 
   // Numeración/labels editoriales no cambian la expresión.
   out = out
