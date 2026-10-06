@@ -131,15 +131,12 @@ async function preparePhysicalMathField(page: import("@playwright/test").Page) {
   const field = page.locator("math-field").first();
   await field.waitFor({ state: "visible" });
   await field.evaluate((el) => {
-    const mf = el as HTMLElement & {
-      value?: string;
-      focus: () => void;
-      setValue?: (v: string) => void;
-    };
+    const mf = el as HTMLElement & { value?: string; setValue?: (v: string) => void };
     if (typeof mf.setValue === "function") mf.setValue("");
     else mf.value = "";
-    mf.focus();
   });
+  await field.click();
+  await page.waitForTimeout(100);
   return field;
 }
 
@@ -148,7 +145,10 @@ async function physicalSequence(
   sequence: string,
 ) {
   const field = await preparePhysicalMathField(page);
-  await page.keyboard.type(sequence, { delay: 25 });
+  for (const key of sequence) {
+    await page.keyboard.press(key);
+    await page.waitForTimeout(35);
+  }
   return String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
 }
 
