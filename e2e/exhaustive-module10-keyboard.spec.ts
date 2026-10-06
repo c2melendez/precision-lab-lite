@@ -191,3 +191,38 @@ test("IN625 G1b EN-TC-06: e ^ x + 1 mantiene un eco matemático coherente", asyn
     /^e\^\{?x\+1\}?$/,
   ].some((re) => re.test(latex))).toBe(true);
 });
+
+
+test("IN625 G1b EN-TC-07: x / 2 produce una fracción", async ({ page }) => {
+  await page.goto("./");
+  const latex = (await physicalSequence(page, "x/2")).replace(/\s/g, "");
+  expect(latex).toMatch(/\\frac\{x\}\{2\}/);
+});
+
+test("IN625 G1b EN-TC-08: x + 1 / 2 conserva una lectura fraccionaria coherente", async ({ page }) => {
+  await page.goto("./");
+  const latex = (await physicalSequence(page, "x+1/2")).replace(/\s/g, "");
+  expect([
+    /^x\+\\frac\{1\}\{2\}$/,
+    /^\\frac\{x\+1\}\{2\}$/,
+  ].some((re) => re.test(latex))).toBe(true);
+});
+
+test("IN625 G1b EN-TC-09: 1 / 2 x mantiene x dentro del denominador", async ({ page }) => {
+  await page.goto("./");
+  const latex = (await physicalSequence(page, "1/2x")).replace(/\s/g, "");
+  expect(latex).toMatch(/\\frac\{1\}\{2x\}/);
+});
+
+test("IN625 G1b EN-TC-10: flecha derecha sale del denominador antes de x", async ({ page }) => {
+  await page.goto("./");
+  const field = await preparePhysicalMathField(page);
+  for (const key of ["1", "/", "2"]) {
+    await page.keyboard.press(key);
+    await page.waitForTimeout(35);
+  }
+  await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("x");
+  const latex = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? "")).replace(/\s/g, "");
+  expect(latex).toMatch(/\\frac\{1\}\{2\}x/);
+});
