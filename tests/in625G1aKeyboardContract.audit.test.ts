@@ -15,15 +15,15 @@ describe("IN625 G1a — contrato estructural del teclado", () => {
   it("EN-TC-18 plantillas virtuales x², xʸ, raíz y fracción", () => {
     expect(keyboardSrc).toContain('"#0^2"');
     expect(keyboardSrc).toContain('"#0^{#1}"');
-    expect(keyboardSrc).toContain('"\\sqrt{#0}"');
-    expect(keyboardSrc).toContain('"\\frac{#0}{#1}"');
+    expect(keyboardSrc).toMatch(/\\\\sqrt\{#0\}/);
+    expect(keyboardSrc).toMatch(/\\\\frac\{#0\}\{#1\}/);
   });
 
   it("EN-TC-19 inversas/log/ln/10^x/e^x están cableadas", () => {
     expect(keyboardSrc).toContain('{ sup: "-1", base: f }');
     expect(keyboardSrc).toContain("`\\\\${f}^{-1}\\\\left(#0\\\\right)`");
-    expect(keyboardSrc).toContain('"\\log\\left(#0\\right)"');
-    expect(keyboardSrc).toContain('"\\ln\\left(#0\\right)"');
+    expect(keyboardSrc).toMatch(/\\\\log\\\\left\(#0\\\\right\)/);
+    expect(keyboardSrc).toMatch(/\\\\ln\\\\left\(#0\\\\right\)/);
     expect(keyboardSrc).toContain('"10^{#0}"');
     expect(keyboardSrc).toContain('"e^{#0}"');
   });
