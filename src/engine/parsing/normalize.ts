@@ -18,6 +18,30 @@ function normalizeUnicodePaste(input: string): string {
   };
 
   let out = input
+    // EN-UC-20: invisibles frecuentes en PDF/Word.
+    .replace(/[\u200B\uFEFF\u00AD]/g, "")
+    // EN-UC-21: homógrafo cirílico x; normalización explícita y segura.
+    .replace(/х/g, "x")
+    // EN-UC-22/23/24: letras matemáticas y ancho completo frecuentes.
+    .replace(/𝑓/g, "f")
+    .replace(/𝑥/g, "x")
+    .replace(/[！-～]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xFEE0))
+    .replace(/　/g, " ")
+    .replace(/ⅇ/g, "e")
+    .replace(/ⅈ/g, "i");
+
+  // EN-UC-25: integral compacta Unicode con límites/sub/superscript.
+  out = out.replace(/^∫([₀₁₂₃₄₅₆₇₈₉]+)([⁰¹²³⁴⁵⁶⁷⁸⁹]+)(.+)d([A-Za-z])$/, (_m, lowerRun, upperRun, body, variable) => {
+    const lower = [...lowerRun].map((ch) => subs[ch] ?? "").join("");
+    const upper = [...upperRun].map((ch) => supers[ch] ?? "").join("");
+    let normalizedBody = body.replace(/([A-Za-z0-9)]+)([⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)/g, (_m2, base, run) => {
+      const decoded = [...run].map((ch) => supers[ch] ?? "").join("");
+      return decoded ? `${base}^{${decoded}}` : _m2;
+    });
+    return `\\int_{${lower}}^{${upper}}${normalizedBody}d${variable}`;
+  });
+
+  out = out
     .replace(/[−–—‐‑]/g, "-")
     .replace(/[×·⋅∙∗]/g, "*")
     .replace(/÷/g, "/")
@@ -50,6 +74,13 @@ function normalizeUnicodePaste(input: string): string {
     .replace(/√\s*(\([^)]*\)|[A-Za-z0-9.]+)/g, (_m, atom) =>
       atom.startsWith("(") ? `\\sqrt{${atom.slice(1, -1)}}` : `\\sqrt{${atom}}`
     );
+
+  // EN-UC-26: no permitir que texto pictográfico o CJK se degrade a variables.
+  const bad = out.match(/[\p{Extended_Pictographic}\p{Script=Han}]/u);
+  if (bad) {
+    const cp = bad[0].codePointAt(0)?.toString(16).toUpperCase().padStart(4, "0");
+    throw new Error(`Carácter inesperado "${bad[0]}" (U+${cp}).`);
+  }
 
   return out;
 }
