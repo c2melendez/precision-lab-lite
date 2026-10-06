@@ -8,6 +8,36 @@ function parseError(message: string): AppError {
   return { code: ErrorCode.PARSE_ERROR, message };
 }
 
+function normalizeExternalSyntax(input: string): string {
+  let out = input.trim();
+
+  // Excel: un "=" inicial indica fórmula, no ecuación.
+  if (/^=[^=]/.test(out)) out = out.slice(1);
+
+  // Python/NumPy conocidos; solo nombres explícitos, nunca eval().
+  out = out
+    .replace(/\bmath\.sqrt\s*\(/g, "sqrt(")
+    .replace(/\bmath\.pi\b/g, "pi")
+    .replace(/\bnp\.sin\s*\(/g, "sin(");
+
+  // Wolfram básico permitido por el contrato o error claro.
+  out = out
+    .replace(/\bSin\[([^\[\]]+)\]/g, "sin($1)")
+    .replace(/\bSqrt\[([^\[\]]+)\]/g, "sqrt($1)")
+    .replace(/\bLog\[E\]/g, "ln(e)");
+
+  // Excel en español, conjunto mínimo y explícito.
+  out = out
+    .replace(/\bRAIZ\s*\(/gi, "sqrt(")
+    .replace(/\bSENO\s*\(/gi, "sin(")
+    .replace(/\bPI\s*\(\s*\)/gi, "pi")
+    .replace(/\bPOTENCIA\s*\(([^,()]+),([^()]+)\)/gi, "($1)^($2)")
+    .replace(/\bLN\s*\(/g, "ln(")
+    .replace(/\bEXP\s*\(/g, "exp(");
+
+  return out;
+}
+
 function normalizeUnicodePaste(input: string): string {
   const supers: Record<string, string> = {
     "⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9",
@@ -481,7 +511,7 @@ function normalizeDelimiterSyntax(input: string): string {
 
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
-  latex = normalizeUnicodePaste(normalizePastedLatex(latex));
+  latex = normalizeExternalSyntax(normalizeUnicodePaste(normalizePastedLatex(latex)));
   let expr = normalizeLocalizedAliases(normalizeDelimiterSyntax(latex));
 
   // IN625 E1b — variantes tipográficas equivalentes de límites.
