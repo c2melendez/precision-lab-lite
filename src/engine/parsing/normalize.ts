@@ -8,6 +8,27 @@ function parseError(message: string): AppError {
   return { code: ErrorCode.PARSE_ERROR, message };
 }
 
+function normalizeExternalSyntaxF3c(input: string): string {
+  let out = input.trim();
+
+  // SymPy latex aliases.
+  out = out
+    .replace(/\\operatorname\{asin\}/g, "\\arcsin")
+    .replace(/\\operatorname\{acos\}/g, "\\arccos")
+    .replace(/\\operatorname\{atan\}/g, "\\arctan");
+
+  // Operadores de comparación externos.
+  out = out
+    .replace(/<>/g, "!=")
+    .replace(/==/g, "=");
+
+  // lim(x->a, expr) -> \lim_{x\to a} expr
+  const lim = out.match(/^lim\(\s*([A-Za-z])\s*->\s*([^,]+),\s*(.+)\)$/s);
+  if (lim) out = `\\lim_{${lim[1]}\\to${lim[2].trim()}}${lim[3].trim()}`;
+
+  return out;
+}
+
 function normalizeExternalSyntax(input: string): string {
   let out = input.trim();
 
@@ -511,7 +532,7 @@ function normalizeDelimiterSyntax(input: string): string {
 
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
-  latex = normalizeExternalSyntax(normalizeUnicodePaste(normalizePastedLatex(latex)));
+  latex = normalizeExternalSyntaxF3c(normalizeExternalSyntax(normalizeUnicodePaste(normalizePastedLatex(latex))));
   let expr = normalizeLocalizedAliases(normalizeDelimiterSyntax(latex));
 
   // IN625 E1b — variantes tipográficas equivalentes de límites.
