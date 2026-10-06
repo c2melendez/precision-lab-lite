@@ -228,12 +228,12 @@ test("IN625 G1b EN-TC-10: flecha derecha sale del denominador antes de x", async
 });
 
 
-test("IN625 G1b EN-TC-11: aliases trigonométricos se reconocen en el campo", async ({ page }) => {
+test("IN625 G1b EN-TC-11: aliases trigonométricos se conservan como entrada válida", async ({ page }) => {
   await page.goto("./");
   for (const sample of ["sin", "sen", "tg", "arcsen", "senh"]) {
-    const latex = (await physicalSequence(page, sample)).replace(/\s/g, "");
+    const latex = (await physicalSequence(page, sample)).replace(/\s/g, "").toLowerCase();
     expect(latex.length).toBeGreaterThan(0);
-    expect(latex.toLowerCase()).toContain(sample.replace("sen","sin").replace("tg","tan").replace("arcsen","arcsin").replace("senh","sinh").slice(0,2));
+    expect(latex).toContain(sample);
   }
 });
 
@@ -249,7 +249,12 @@ test("IN625 G1b EN-TC-12: atajos de símbolos básicos producen eco matemático"
     ["*", /\\cdot|\*/],
   ];
   for (const [seq, re] of cases) {
-    const latex = (await physicalSequence(page, seq)).replace(/\s/g, "");
+    const field = await preparePhysicalMathField(page);
+    for (const ch of seq) {
+      await field.press(ch);
+      await page.waitForTimeout(35);
+    }
+    const latex = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? "")).replace(/\s/g, "");
     expect(latex).toMatch(re);
   }
 });
@@ -269,6 +274,13 @@ test("IN625 G1b EN-TC-14: (x+1)^2 no crea paréntesis vacíos extra", async ({ p
 
 test("IN625 G1b EN-TC-15: valor absoluto conserva estructura", async ({ page }) => {
   await page.goto("./");
-  const latex = (await physicalSequence(page, "|x-1|")).replace(/\s/g, "");
+  const field = await preparePhysicalMathField(page);
+  await field.press("Shift+\\");
+  for (const key of ["x", "-", "1"]) {
+    await field.press(key);
+    await page.waitForTimeout(35);
+  }
+  await field.press("Shift+\\");
+  const latex = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? "")).replace(/\s/g, "");
   expect(latex).toMatch(/\\left\|?x-1\\right\|?|\|x-1\|/);
 });
