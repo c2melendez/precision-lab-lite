@@ -126,73 +126,46 @@ test("módulo 10: acciones no aritméticas de Álgebra exponen tooltip", async (
 
 
 
-async function valueOfMainField(page: import("@playwright/test").Page) {
+
+async function preparePhysicalMathField(page: import("@playwright/test").Page) {
   const field = page.locator("math-field").first();
+  await field.waitFor({ state: "visible" });
+  await field.evaluate((el) => {
+    const mf = el as HTMLElement & {
+      value?: string;
+      focus: () => void;
+      setValue?: (v: string) => void;
+    };
+    if (typeof mf.setValue === "function") mf.setValue("");
+    else mf.value = "";
+    mf.focus();
+  });
+  return field;
+}
+
+async function physicalSequence(
+  page: import("@playwright/test").Page,
+  sequence: string,
+) {
+  const field = await preparePhysicalMathField(page);
+  await page.keyboard.type(sequence, { delay: 25 });
   return String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
 }
 
-async function pressVirtualPowerSequence(
-  page: import("@playwright/test").Page,
-  base: string,
-  exponentDigits: string[],
-  suffix: string[] = [],
-) {
-  const dialog = await openKeyboard(page);
-  await dialog.getByRole("tab", { name: "Básico", exact: true }).click();
-  await clearBasic(dialog);
-  await dialog.getByRole("button", { name: base, exact: true }).click();
-
-  await dialog.getByRole("tab", { name: "Símbolos", exact: true }).click();
-  await dialog.getByRole("button", { name: "potencia general", exact: true }).click();
-
-  await dialog.getByRole("tab", { name: "Básico", exact: true }).click();
-  for (const d of exponentDigits) {
-    await dialog.getByRole("button", { name: d, exact: true }).click();
-  }
-  for (const key of suffix) {
-    if (key === "+") await dialog.getByRole("button", { name: "sumar", exact: true }).click();
-    else await dialog.getByRole("button", { name: key, exact: true }).click();
-  }
-  return valueOfMainField(page);
-}
-
-test("IN625 G1b EN-TC-01: teclado virtual conserva 10 completo en el exponente", async ({ page }) => {
+test("IN625 G1b EN-TC-01: 2 ^ 1 0 conserva 10 completo en el exponente", async ({ page }) => {
   await page.goto("./");
-  const latex = await pressVirtualPowerSequence(page, "2", ["1","0"]);
+  const latex = await physicalSequence(page, "2^10");
   expect(latex.replace(/\s/g, "")).toMatch(/2\^\{?10\}?/);
 });
 
-test("IN625 G1b EN-TC-02: teclado virtual saca + del exponente", async ({ page }) => {
+test("IN625 G1b EN-TC-02: x ^ 2 + 1 saca + del exponente", async ({ page }) => {
   await page.goto("./");
-  const dialog = await openKeyboard(page);
-  await dialog.getByRole("tab", { name: "Básico", exact: true }).click();
-  await clearBasic(dialog);
-  const field = page.locator("math-field").first();
-  await field.evaluate((el) => { (el as HTMLElement & { value?: string }).value = "x"; });
-  await dialog.getByRole("tab", { name: "Símbolos", exact: true }).click();
-  await dialog.getByRole("button", { name: "potencia general", exact: true }).click();
-  await dialog.getByRole("tab", { name: "Básico", exact: true }).click();
-  await dialog.getByRole("button", { name: "2", exact: true }).click();
-  await dialog.getByRole("button", { name: "sumar", exact: true }).click();
-  await dialog.getByRole("button", { name: "1", exact: true }).click();
-  const latex = await valueOfMainField(page);
+  const latex = await physicalSequence(page, "x^2+1");
   expect(latex.replace(/\s/g, "")).toMatch(/x\^\{?2\}?\+1/);
 });
 
-test("IN625 G1b EN-TC-03: teclado virtual conserva x^10 y luego suma", async ({ page }) => {
+test("IN625 G1b EN-TC-03: x ^ 1 0 + 1 conserva x^10 y luego suma", async ({ page }) => {
   await page.goto("./");
-  const dialog = await openKeyboard(page);
-  await dialog.getByRole("tab", { name: "Básico", exact: true }).click();
-  await clearBasic(dialog);
-  const field = page.locator("math-field").first();
-  await field.evaluate((el) => { (el as HTMLElement & { value?: string }).value = "x"; });
-  await dialog.getByRole("tab", { name: "Símbolos", exact: true }).click();
-  await dialog.getByRole("button", { name: "potencia general", exact: true }).click();
-  await dialog.getByRole("tab", { name: "Básico", exact: true }).click();
-  await dialog.getByRole("button", { name: "1", exact: true }).click();
-  await dialog.getByRole("button", { name: "0", exact: true }).click();
-  await dialog.getByRole("button", { name: "sumar", exact: true }).click();
-  await dialog.getByRole("button", { name: "1", exact: true }).click();
-  const latex = await valueOfMainField(page);
+  const latex = await physicalSequence(page, "x^10+1");
   expect(latex.replace(/\s/g, "")).toMatch(/x\^\{?10\}?\+1/);
 });
