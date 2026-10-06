@@ -12,7 +12,13 @@ function normalizePastedLatex(input: string): string {
   let out = input.trim();
 
   // Delimitadores de modo matemático pegados desde Markdown/TeX.
-  if (out.startsWith("$") && out.endsWith("$") && out.length >= 4) {
+  if (
+    out.length >= 4 &&
+    out[0] === "$" &&
+    out[1] === "$" &&
+    out[out.length - 2] === "$" &&
+    out[out.length - 1] === "$"
+  ) {
     out = out.slice(2, -2).trim();
   } else if (out.startsWith("$") && out.endsWith("$") && out.length >= 2) {
     out = out.slice(1, -1).trim();
