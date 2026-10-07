@@ -545,6 +545,20 @@ function validateInputStructureG3(input: string): void {
     throw parseError("Entrada incompleta: complete el marcador pendiente.");
   }
 
+  const unknownCommand = raw.match(/\\([A-Za-z]+)(?:\{|\()/);
+  if (unknownCommand) {
+    const known = new Set([
+      "frac","sqrt","sin","cos","tan","csc","sec","cot","ln","log","exp",
+      "left","right","pi","infty","theta","alpha","beta","gamma","lambda",
+      "zeta","Delta","Lambda","Phi","gcd","min","max","pm","le","ge","leq",
+      "geq","neq","ne","lt","gt","operatorname","mathrm","text","placeholder",
+      "lim","int","partial","displaystyle","dfrac","tfrac","cfrac"
+    ]);
+    if (!known.has(unknownCommand[1])) {
+      throw parseError(`Comando desconocido: \\${unknownCommand[1]}.`);
+    }
+  }
+
   if (/^\\text\{[\s\S]*\}$/.test(raw)) {
     throw parseError("Texto no matemático: escriba una expresión matemática.");
   }
