@@ -1,0 +1,22 @@
+name: IN625 G3 Parser Diagnostic
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  g3-parser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Run G3 parser regression
+        run: npx vitest run tests/parsing.test.ts
