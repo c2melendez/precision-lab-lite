@@ -457,31 +457,86 @@ test("IN625 G1b EN-TC-27: raíz con tilde se conserva como entrada válida", asy
 });
 
 
-test.describe("IN625 G2 channel invariance first block", () => {
-  const cases: Array<[string, string, RegExp]> = [
-    ["EN-CH-01", "2^10", /2\^\{?10\}?/],
-    ["EN-CH-02", "x^2+1", /x\^\{?2\}?\+1/],
-    ["EN-CH-03", "x^10+1", /x\^\{?10\}?\+1/],
-    ["EN-CH-04", "(x+1)/(x-1)", /\\frac\{?x\+1\}?\{?x-1\}?/],
-    ["EN-CH-05", "sqrtx+1", /\\sqrt\{?x\+1\}?/],
-    ["EN-CH-06", "sin(x)^2", /sin|\\sin/],
-    ["EN-CH-07", "sin^-1(x)", /sin|\\sin/],
-    ["EN-CH-08", "2x", /2x/],
-    ["EN-CH-09", "1/2x", /\\frac(?:\{1\}|1)(?:\{2x\}|2x)/],
-    ["EN-CH-10", "3.5+1", /3(?:\.|\\\{,\\\})5\+1/],
+async function g2ChannelAscii(
+  page: import("@playwright/test").Page,
+  mode: "latex" | "text" | "keys",
+  input: string | string[],
+) {
+  const field = await preparePhysicalMathField(page);
+
+  if (mode === "latex") {
+    await field.evaluate((el, value) => {
+      const mf = el as HTMLElement & { setValue?: (v: string) => void; value?: string };
+      if (typeof mf.setValue === "function") mf.setValue(String(value));
+      else mf.value = String(value);
+    }, input as string);
+  } else if (mode === "text") {
+    await page.keyboard.insertText(input as string);
+  } else {
+    for (const action of input as string[]) {
+      if (action.startsWith("TEXT:")) await page.keyboard.insertText(action.slice(5));
+      else await field.press(action);
+      await page.waitForTimeout(35);
+    }
+  }
+
+  return String(await field.evaluate((el) => {
+    const mf = el as HTMLElement & {
+      value?: string;
+      getValue?: (format?: string) => string;
+    };
+    return typeof mf.getValue === "function"
+      ? mf.getValue("ascii-math")
+      : (mf.value ?? "");
+  })).replace(/\s/g, "");
+}
+
+test.describe("IN625 G2 invariancia real L/T/teclado", () => {
+  const cases: Array<{
+    id: string;
+    latex: string;
+    text: string;
+    keys: string[];
+    expected: RegExp;
+  }> = [
+    { id: "EN-CH-01", latex: "2^{10}", text: "2^10", keys: ["2","^","1","0"], expected: /2\^10/ },
+    { id: "EN-CH-02", latex: "x^{2}+1", text: "x^2+1", keys: ["x","^","2","+","1"], expected: /x\^2\+1/ },
+    { id: "EN-CH-03", latex: "x^{10}+1", text: "x^10+1", keys: ["x","^","1","0","+","1"], expected: /x\^10\+1/ },
+    { id: "EN-CH-04", latex: "\\frac{x+1}{x-1}", text: "(x+1)/(x-1)", keys: ["(","x","+","1",")","/","(","x","-","1",")"], expected: /\(x\+1\)\/\(x-1\)|\(x\+1\)\/\(x−1\)/ },
+    { id: "EN-CH-05", latex: "\\sqrt{x+1}", text: "sqrt(x+1)", keys: ["s","q","r","t","(","x","+","1",")"], expected: /sqrt\(x\+1\)/i },
+    { id: "EN-CH-06", latex: "\\sin^{2}x", text: "sin^2(x)", keys: ["s","i","n","^","2","x"], expected: /sin.*\^2|\(sin.*\)\^2/i },
+    { id: "EN-CH-07", latex: "\\sin^{-1}x", text: "sin^-1(x)", keys: ["s","i","n","^","-","1","x"], expected: /sin.*-1|arcsin/i },
+    { id: "EN-CH-08", latex: "2x", text: "2x", keys: ["2","x"], expected: /2x|2\*x/ },
+    { id: "EN-CH-09", latex: "\\frac{1}{2}x", text: "(1/2)x", keys: ["1","/","2","ArrowRight","x"], expected: /x\/2|\(1\/2\)x|1\/2x/ },
+    { id: "EN-CH-10", latex: "3.5+1", text: "3.5+1", keys: ["3",".","5","+","1"], expected: /3\.5\+1/ },
+    { id: "EN-CH-12", latex: "\\lvert x-1\\rvert", text: "abs(x-1)", keys: ["TEXT:|","x","-","1","TEXT:|"], expected: /abs\(x-1\)|\|x-1\|/i },
+    { id: "EN-CH-13", latex: "\\pi r^{2}", text: "pi r^2", keys: ["p","i","r","^","2"], expected: /pir\^2|pi\*r\^2/i },
+    { id: "EN-CH-14", latex: "e^{-x^{2}}", text: "e^(-x^2)", keys: ["e","^","-","x","^","2"], expected: /e\^\(-?x\^2\)|e\^-x\^2/i },
+    { id: "EN-CH-15", latex: "\\operatorname{sen}\\left(\\frac{\\pi}{6}\\right)", text: "sen(pi/6)", keys: ["s","e","n","(","p","i","/","6",")"], expected: /sen\(pi\/6\)|sin\(pi\/6\)/i },
   ];
-  for (const [id, input, expected] of cases) {
-    test(id + ": canal físico y setValue preservan interpretación equivalente", async ({ page }) => {
+
+  for (const row of cases) {
+    test(row.id + ": L/T/teclado convergen a una interpretación común", async ({ page }) => {
       await page.goto("./");
-      const physical = (await physicalSequence(page, input)).replace(/\\s/g, "");
-      const field = await preparePhysicalMathField(page);
-      await field.evaluate((el, value) => {
-        const mf = el as HTMLElement & { setValue?: (v: string) => void; value?: string };
-        if (typeof mf.setValue === "function") mf.setValue(String(value)); else mf.value = String(value);
-      }, input);
-      const direct = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? "")).replace(/\\s/g, "");
-      expect(physical).toMatch(expected);
-      expect(direct.length).toBeGreaterThan(0);
+      const latex = await g2ChannelAscii(page, "latex", row.latex);
+      const text = await g2ChannelAscii(page, "text", row.text);
+      const keys = await g2ChannelAscii(page, "keys", row.keys);
+
+      expect(latex).toMatch(row.expected);
+      expect(text).toMatch(row.expected);
+      expect(keys).toMatch(row.expected);
+
+      const normalize = (v: string) => v
+        .toLowerCase()
+        .replace(/[{}]/g, "")
+        .replace(/\\cdot|\*/g, "")
+        .replace(/−/g, "-")
+        .replace(/^\((.*)\)$/, "$1");
+
+      expect(normalize(text)).toBe(normalize(keys));
     });
   }
 });
+
+// EN-CH-11 requiere modo decimal coma real. Se mantiene manual/config-dependent
+// para no simular soporte de locale que el navegador/runner no puede garantizar.
