@@ -37,7 +37,17 @@ Evidencia:
 - Lite HEAD documental posterior: Playwright `37581518369` — SUCCESS.
 
 ## G3 — ACTIVO
-Objetivo: validar 34 casos de entradas inválidas y mensajes de error.
+Objetivo: validar 34 casos EN-ER-01…EN-ER-34 de entradas inválidas y mensajes de error.
+
+Matriz diagnóstica G3 incorporada en ambos motores:
+- Lite commit: `705d8272fe666f42b990f89df9f18e3e2257b1e0`
+- Plus commit: `8432fa03a3262b24d10cc4df06b524cdfc6a56fc`
+
+Corridas Playwright G3 disparadas:
+- Lite: `37583041099`
+- Plus: `37583044889`
+
+Estado al registrar: pendientes de conclusión. Verificar GitHub Actions real antes de diagnosticar.
 
 ## Siguiente paso exacto
 1. Localizar/confirmar los 34 casos G3 en la matriz/spec vigente.
