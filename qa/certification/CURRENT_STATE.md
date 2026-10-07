@@ -50,12 +50,12 @@ Correcciones aplicadas:
 - Plus: `4f146ec8572554febddbe7f21f800733c70e4381` helper del harness G3 restaurado.
 - Prompt canónico de continuidad sincronizado byte-equivalente en Lite y Plus.
 
-Corridas vigentes:
-- Lite Playwright: `37589106994` — harness G3 sincronizado con React/input + espera final.
-- Plus Playwright: `37589114822` — mismo harness G3 sincronizado.
-- Commits de harness: Lite `9e425661290998dc5cab6e93115c7cec303f61bc`; Plus `6644e92033c7a437c5698011f51f1f20d45683fd`.
-
-Importante: las corridas anteriores `37586956770` y `37586831275` NO deben usarse para clasificar producto porque el helper G3 no sincronizaba correctamente `setValue()` con el estado React y leía feedback demasiado pronto.
+Corridas vigentes y diagnóstico fiable:
+- Lite corrida fiable `37589106994`: 1 caso restante, EN-ER-15 (comando LaTeX desconocido con mensaje demasiado genérico).
+- Plus corrida fiable `37589114822`: 19 casos restantes; la mayoría ya rechazan, pero con mensajes genéricos de parser/SymPy en lugar del contrato semántico G3.
+- Corrección Lite: `f4429539bdeb750be1895e3b087d7295eb939b3e` — mensaje claro para comandos LaTeX desconocidos.
+- Corrección Plus: `a6f4711794450991ce1d37d1829f401a212f3fa8` — validación estructural G3 ejecutada antes de SymPy.
+- Nueva evidencia: Lite Playwright `37672657499`; Plus Playwright `37672732893`.
 
 ## Siguiente paso exacto
 1. Localizar/confirmar los 34 casos G3 en la matriz/spec vigente.
