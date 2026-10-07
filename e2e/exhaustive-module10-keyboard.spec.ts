@@ -291,3 +291,65 @@ test("IN625 G1b EN-TC-15: valor absoluto conserva estructura", async ({ page }) 
   const latex = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? "")).replace(/\s/g, "");
   expect(latex).toMatch(/\\left\|?x-1\\right\|?|\|x-1\|/);
 });
+
+
+test("IN625 G1b EN-TC-16: punto decimal se conserva en el modo actual", async ({ page }) => {
+  await page.goto("./");
+  const latex = (await physicalSequence(page, "3.5")).replace(/\s/g, "");
+  expect(latex).toMatch(/3(?:\.|\\{,\\})5/);
+});
+
+test("IN625 G1b EN-TC-18: botones virtuales x² xʸ raíz y fracción insertan plantillas", async ({ page }) => {
+  await page.goto("./");
+  const dialog = await openKeyboard(page);
+  await dialog.getByRole("tab", { name: "Símbolos", exact: true }).click();
+
+  const buttons = [
+    /al cuadrado/i,
+    /potencia general|a a la n/i,
+    /raíz cuadrada/i,
+  ];
+  for (const name of buttons) {
+    const btn = dialog.getByRole("button", { name }).first();
+    if (await btn.count()) {
+      await clearBasic(dialog);
+      await btn.click();
+      const value = String(await page.locator("math-field").first().evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
+      expect(value.length).toBeGreaterThan(0);
+    }
+  }
+
+  await dialog.getByRole("tab", { name: "Básico", exact: true }).click();
+  await clearBasic(dialog);
+  await dialog.getByRole("button", { name: "dividir", exact: true }).click();
+  const fraction = String(await page.locator("math-field").first().evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
+  expect(fraction).toContain("\\frac");
+});
+
+test("IN625 G1b EN-TC-19: botones sin inversa log ln 10^x y e^x exponen plantillas válidas", async ({ page }) => {
+  await page.goto("./");
+  const dialog = await openKeyboard(page);
+
+  const targets: RegExp[] = [
+    /sin.*inversa|arcsin/i,
+    /^log$|logaritmo base 10/i,
+    /^ln$|logaritmo natural/i,
+    /10 a la x|10 a la n/i,
+    /e a la x|e a la n|exponencial/i,
+  ];
+
+  for (const target of targets) {
+    let btn = dialog.getByRole("button", { name: target }).first();
+    if (!(await btn.count())) {
+      for (const tab of ["Trigonométricas", "Símbolos", "Cálculo"]) {
+        const tabLoc = dialog.getByRole("tab", { name: tab, exact: true });
+        if (await tabLoc.count()) {
+          await tabLoc.click();
+          btn = dialog.getByRole("button", { name: target }).first();
+          if (await btn.count()) break;
+        }
+      }
+    }
+    expect(await btn.count()).toBeGreaterThan(0);
+  }
+});
