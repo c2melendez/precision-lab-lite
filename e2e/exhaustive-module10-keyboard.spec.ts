@@ -341,7 +341,7 @@ test("IN625 G1b EN-TC-19: botones sin inversa log ln 10^x y e^x exponen plantill
   for (const target of targets) {
     let btn = dialog.getByRole("button", { name: target }).first();
     if (!(await btn.count())) {
-      for (const tab of ["Trigonométricas", "Símbolos", "Cálculo"]) {
+      for (const tab of ["Trigonométricas", "Álgebra", "Símbolos", "Cálculo"]) {
         const tabLoc = dialog.getByRole("tab", { name: tab, exact: true });
         if (await tabLoc.count()) {
           await tabLoc.click();
