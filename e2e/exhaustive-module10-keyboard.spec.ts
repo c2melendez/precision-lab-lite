@@ -608,18 +608,37 @@ async function g3Submit(page: import("@playwright/test").Page, input: string) {
     const mf = el as HTMLElement & { setValue?: (v: string) => void; value?: string };
     if (typeof mf.setValue === "function") mf.setValue(String(value));
     else mf.value = String(value);
+    // MathLive setValue() is programmatic and does not guarantee the same
+    // input event React listens to. G3 needs the actual product state to
+    // receive the malformed value before Calculate is pressed.
+    el.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText", data: String(value) }));
   }, input);
+  await page.waitForTimeout(50);
   await hideMathLiveKeyboard(page).catch(() => undefined);
   await dialog.getByRole("button", { name: "calcular", exact: true }).click();
-  await page.waitForTimeout(150);
+
   const alert = page.locator('[role="alert"]').first();
-  if (await alert.count()) {
+  const status = page.locator('section[aria-label="Resultado"] [role="status"]').first();
+
+  await expect
+    .poll(async () => {
+      if (await alert.isVisible().catch(() => false)) {
+        const txt = (await alert.innerText().catch(() => "")).trim();
+        if (txt) return "error";
+      }
+      if (await status.isVisible().catch(() => false)) return "success";
+      return "pending";
+    }, { timeout: 5000 })
+    .not.toBe("pending");
+
+  if (await alert.isVisible().catch(() => false)) {
     return { kind: "error" as const, text: (await alert.innerText()).replace(/\s+/g, " ").trim() };
   }
-  const status = page.locator('section[aria-label="Resultado"] [role="status"], [role="status"]').first();
-  if (await status.count()) {
+
+  if (await status.isVisible().catch(() => false)) {
     return { kind: "success" as const, text: (await status.innerText()).replace(/\s+/g, " ").trim() };
   }
+
   return { kind: "none" as const, text: "" };
 }
 
