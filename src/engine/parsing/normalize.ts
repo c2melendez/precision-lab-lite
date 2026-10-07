@@ -530,8 +530,99 @@ function normalizeDelimiterSyntax(input: string): string {
   return out;
 }
 
+
+/**
+ * IN625 G3 — validación estructural previa al preprocesado.
+ * Evita delegar al CAS errores de edición que podemos explicar de forma
+ * determinista y amigable. No evalúa matemáticas; solo valida estructura.
+ */
+function validateInputStructureG3(input: string): void {
+  const raw = input.trim();
+
+  if (!raw) throw parseError("Escriba una expresión antes de calcular.");
+
+  if (/\\placeholder(?:\{\})?/i.test(raw)) {
+    throw parseError("Entrada incompleta: complete el marcador pendiente.");
+  }
+
+  if (/^\\text\{[\s\S]*\}$/.test(raw)) {
+    throw parseError("Texto no matemático: escriba una expresión matemática.");
+  }
+
+  if (/^=|=$/.test(raw)) {
+    throw parseError("Ecuación incompleta: debe haber una expresión a ambos lados de \"=\".");
+  }
+
+  if (/^\s*\^/.test(raw)) {
+    throw parseError("Exponente sin base.");
+  }
+  if (/\^\s*(?:\{\s*\})?\s*$/.test(raw)) {
+    throw parseError("Exponente vacío.");
+  }
+
+  if (/\\frac\s*\{\s*\}\s*\{/.test(raw)) {
+    throw parseError("Fracción incompleta: el numerador está vacío.");
+  }
+  if (/\\frac\s*\{[^{}]*\}\s*\{\s*\}\s*$/.test(raw) || /\\frac\s*\{[^{}]*\}\s*$/.test(raw)) {
+    throw parseError("Fracción incompleta: falta el denominador.");
+  }
+  if (/\\sqrt\s*\{\s*\}/.test(raw)) {
+    throw parseError("Raíz incompleta: el radicando está vacío.");
+  }
+
+  if (/\\(?:sin|cos|tan|csc|sec|cot|ln|log|exp)\s*$/.test(raw) ||
+      /\\(?:sin|cos|tan|csc|sec|cot|ln|log|exp)\s*\(\s*\)\s*$/.test(raw)) {
+    throw parseError("Falta el argumento de la función.");
+  }
+
+  if (/\(\s*\)/.test(raw)) {
+    throw parseError("Paréntesis vacíos: falta una expresión.");
+  }
+
+  if (/\\left\([^]*\\right\]/.test(raw)) {
+    throw parseError("Delimitadores incompatibles: se abrió con paréntesis y se cerró con corchete.");
+  }
+  if (/\\left(?![\s\S]*\\right)/.test(raw)) {
+    throw parseError("Delimitador incompleto: falta \\right.");
+  }
+  if (/\\right/.test(raw) && !/\\left/.test(raw)) {
+    throw parseError("Delimitador inválido: aparece \\right sin \\left.");
+  }
+
+  let parenDepth = 0;
+  for (const ch of raw.replace(/\\left|\\right/g, "")) {
+    if (ch === "(") parenDepth++;
+    if (ch === ")") {
+      parenDepth--;
+      if (parenDepth < 0) throw parseError("Paréntesis de cierre sobrante.");
+    }
+  }
+  if (parenDepth > 0) throw parseError("Paréntesis sin cerrar.");
+
+  let braceDepth = 0;
+  for (const ch of raw) {
+    if (ch === "{") braceDepth++;
+    if (ch === "}") {
+      braceDepth--;
+      if (braceDepth < 0) throw parseError("Llave de cierre sobrante.");
+    }
+  }
+  if (braceDepth > 0) throw parseError("Llave sin cerrar.");
+
+  if (/^[*\/]/.test(raw)) {
+    throw parseError("Operador sin primer operando.");
+  }
+  if (/[+*\/]\s*$/.test(raw)) {
+    throw parseError("Operador sin segundo operando.");
+  }
+  if (/(?:\*\/|\/\*|\+\+|\*\*\/)/.test(raw)) {
+    throw parseError("Secuencia de operadores inválida.");
+  }
+}
+
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
+  validateInputStructureG3(latex);
   latex = normalizeExternalSyntaxF3c(normalizeExternalSyntax(normalizeUnicodePaste(normalizePastedLatex(latex))));
   let expr = normalizeLocalizedAliases(normalizeDelimiterSyntax(latex));
 
