@@ -58,6 +58,13 @@ export function evaluate(expressionLatex: string): string {
       throw toAppError(ErrorCode.PARSE_ERROR, "Algebrite no devolvió resultado.");
     }
     if (/stop|Stop/.test(result)) {
+      if (/divide by zero/i.test(result)) {
+        const compact = expressionLatex.replace(/\s+/g, "");
+        const message = /(^|\()0\/0($|\))/.test(compact)
+          ? "Forma indeterminada: 0/0 no está definida."
+          : "División entre cero: el resultado no está definido.";
+        throw toAppError(ErrorCode.DOMAIN_ERROR, message);
+      }
       throw toAppError(ErrorCode.PARSE_ERROR, `Algebrite reportó un error: ${result}`);
     }
     if (MAY_NEED_FLOAT.test(result)) {
