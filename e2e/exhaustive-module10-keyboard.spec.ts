@@ -622,21 +622,24 @@ async function g3Submit(page: import("@playwright/test").Page, input: string) {
 
   await expect
     .poll(async () => {
-      if (await alert.isVisible().catch(() => false)) {
-        const txt = (await alert.innerText().catch(() => "")).trim();
+      if (await alert.count()) {
+        const txt = (await alert.textContent().catch(() => "") ?? "").trim();
         if (txt) return "error";
       }
-      if (await status.isVisible().catch(() => false)) return "success";
+      if (await status.count()) {
+        const txt = (await status.textContent().catch(() => "") ?? "").trim();
+        if (txt) return "success";
+      }
       return "pending";
     }, { timeout: 5000 })
     .not.toBe("pending");
 
-  if (await alert.isVisible().catch(() => false)) {
-    return { kind: "error" as const, text: (await alert.innerText()).replace(/\s+/g, " ").trim() };
+  if (await alert.count()) {
+    return { kind: "error" as const, text: ((await alert.textContent()) ?? "").replace(/\s+/g, " ").trim() };
   }
 
-  if (await status.isVisible().catch(() => false)) {
-    return { kind: "success" as const, text: (await status.innerText()).replace(/\s+/g, " ").trim() };
+  if (await status.count()) {
+    return { kind: "success" as const, text: ((await status.textContent()) ?? "").replace(/\s+/g, " ").trim() };
   }
 
   return { kind: "none" as const, text: "" };
