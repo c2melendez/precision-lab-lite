@@ -51,8 +51,11 @@ Correcciones aplicadas:
 - Prompt canónico de continuidad sincronizado byte-equivalente en Lite y Plus.
 
 Corridas vigentes:
-- Lite Playwright: `37586956770` — verificar conclusión real.
-- Plus Playwright: `37586831275` — verificar conclusión real.
+- Lite Playwright: `37589106994` — harness G3 sincronizado con React/input + espera final.
+- Plus Playwright: `37589114822` — mismo harness G3 sincronizado.
+- Commits de harness: Lite `9e425661290998dc5cab6e93115c7cec303f61bc`; Plus `6644e92033c7a437c5698011f51f1f20d45683fd`.
+
+Importante: las corridas anteriores `37586956770` y `37586831275` NO deben usarse para clasificar producto porque el helper G3 no sincronizaba correctamente `setValue()` con el estado React y leía feedback demasiado pronto.
 
 ## Siguiente paso exacto
 1. Localizar/confirmar los 34 casos G3 en la matriz/spec vigente.
