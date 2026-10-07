@@ -43,3 +43,12 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus: EN-ER-13 era producto real; función desnuda alcanzaba SymPy y podía provocar `TypeError: 'property' object is not iterable`.
 - Plus ahora rechaza funciones desnudas antes de SymPy.
 - Reruns a revisar: Lite `37678678320`; Plus `37678685459`.
+
+
+## 2026-10-07 — G3 split por capa
+- Se comprobó que MathLive canonicaliza siete entradas inválidas antes de que la UI/backend pueda observar la forma cruda.
+- IDs movidos a parser-level: EN-ER-05, EN-ER-15, EN-ER-19, EN-ER-20, EN-ER-26, EN-ER-27, EN-ER-31.
+- Cobertura total G3 se conserva: 27 E2E + 7 parser-level = 34.
+- Lite parser regression: `11d41e9aef438961e8975b6067ae96d88a17440c`.
+- Plus parser regression: `7079dd5854fd987249fb07a665900ce754015c96`.
+- Runs a revisar: Lite Playwright `37687766493`; Plus Playwright `37687769608`.
