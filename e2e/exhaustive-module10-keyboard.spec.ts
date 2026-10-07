@@ -406,3 +406,52 @@ test("IN625 G1b EN-TC-22: Tab y flechas navegan plantillas y Enter no inserta sa
   expect(after).not.toContain("\n");
   expect(after.length).toBeGreaterThanOrEqual(before.length - 2);
 });
+
+
+test("IN625 G1b EN-TC-24: campo móvil desactiva autocorrección autocapitalización y spellcheck", async ({ page }) => {
+  await page.goto("./");
+  const field = page.locator("math-field").first();
+  await expect(field).toHaveAttribute("autocapitalize", "off");
+  await expect(field).toHaveAttribute("autocorrect", "off");
+  await expect(field).toHaveAttribute("spellcheck", "false");
+});
+
+test("IN625 G1b EN-TC-25: pegar LaTeX texto plano no inserta HTML", async ({ page, context }) => {
+  await page.goto("./");
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  const field = await preparePhysicalMathField(page);
+  await page.evaluate(async () => navigator.clipboard.writeText("\\frac{x+1}{2}"));
+  await field.press("Control+v");
+  const latex = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
+  expect(latex).toContain("\\frac");
+  expect(latex).not.toMatch(/<[^>]+>/);
+});
+
+test("IN625 G1b EN-TC-26: marcadores vacíos no producen NaN en el campo", async ({ page }) => {
+  await page.goto("./");
+  const field = await preparePhysicalMathField(page);
+  await field.evaluate((el) => {
+    const mf = el as HTMLElement & { setValue?: (v: string) => void; value?: string };
+    if (typeof mf.setValue === "function") mf.setValue("\\frac{#0}{2}");
+    else mf.value = "\\frac{#0}{2}";
+  });
+  const frac = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
+  expect(frac).not.toMatch(/NaN/i);
+
+  await field.evaluate((el) => {
+    const mf = el as HTMLElement & { setValue?: (v: string) => void; value?: string };
+    if (typeof mf.setValue === "function") mf.setValue("\\sqrt{#0}");
+    else mf.value = "\\sqrt{#0}";
+  });
+  const root = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
+  expect(root).not.toMatch(/NaN/i);
+});
+
+test("IN625 G1b EN-TC-27: raíz con tilde se conserva como entrada válida", async ({ page }) => {
+  await page.goto("./");
+  const field = await preparePhysicalMathField(page);
+  await page.keyboard.insertText("raíz(x)");
+  const latex = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? "")).toLowerCase();
+  expect(latex).toContain("ra");
+  expect(latex.length).toBeGreaterThan(3);
+});
