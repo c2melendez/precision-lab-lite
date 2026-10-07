@@ -60,9 +60,24 @@ Corridas vigentes y diagnóstico fiable:
 - Lite harness DOM-content: `355bde675d22378ae7792339591ed9944c5d173d`.
 - Plus bare-function + canonicalización G3: `ef6728ef0814379dcd69236f21d41477ebfe5e23`.
 
+Arquitectura definitiva G3:
+- 27 casos permanecen como E2E de UI.
+- 7 casos canonicalizados por MathLive se certifican en parser-level: EN-ER-05, 15, 19, 20, 26, 27, 31.
+- Lite parser tests: `tests/parsing.test.ts`.
+- Plus parser tests: `backend/tests/test_parsing.py`.
+- No se elimina cobertura; se mueve a la capa donde la entrada cruda todavía existe.
+
+Últimos commits:
+- Lite E2E split: `b0b40fc66dafd7594e792960ac2ccc95bc2dbed4`.
+- Lite parser regression: `11d41e9aef438961e8975b6067ae96d88a17440c`.
+- Plus E2E split: `84d1066d499c6dbb8fb90e4ede9f15cb243d427d`.
+- Plus parser unknown-command fix: `3c067e7a907deb87142624a2926a73bcfdb27519`.
+- Plus parser regression: `7079dd5854fd987249fb07a665900ce754015c96`.
+
 Nueva evidencia:
-- Lite Playwright `37678678320`.
-- Plus Playwright `37678685459`.
+- Lite Playwright `37687766493`.
+- Plus Playwright `37687769608`.
+- Revisar además CI/unit tests de ambos HEADs para confirmar los 7 parser-level.
 
 ## Siguiente paso exacto
 1. Localizar/confirmar los 34 casos G3 en la matriz/spec vigente.
