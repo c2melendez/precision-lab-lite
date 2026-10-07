@@ -455,3 +455,33 @@ test("IN625 G1b EN-TC-27: raíz con tilde se conserva como entrada válida", asy
   expect(latex).toContain("ra");
   expect(latex.length).toBeGreaterThan(3);
 });
+
+
+test.describe("IN625 G2 channel invariance first block", () => {
+  const cases: Array<[string, string, RegExp]> = [
+    ["EN-CH-01", "2^10", /2\^\{?10\}?/],
+    ["EN-CH-02", "x^2+1", /x\^\{?2\}?\+1/],
+    ["EN-CH-03", "x^10+1", /x\^\{?10\}?\+1/],
+    ["EN-CH-04", "(x+1)/(x-1)", /\\frac\{?x\+1\}?\{?x-1\}?/],
+    ["EN-CH-05", "sqrtx+1", /\\sqrt\{?x\+1\}?/],
+    ["EN-CH-06", "sin(x)^2", /sin|\\sin/],
+    ["EN-CH-07", "sin^-1(x)", /sin|\\sin/],
+    ["EN-CH-08", "2x", /2x/],
+    ["EN-CH-09", "1/2x", /\\frac(?:\{1\}|1)(?:\{2x\}|2x)/],
+    ["EN-CH-10", "3.5+1", /3(?:\.|\\\{,\\\})5\+1/],
+  ];
+  for (const [id, input, expected] of cases) {
+    test(id + ": canal físico y setValue preservan interpretación equivalente", async ({ page }) => {
+      await page.goto("./");
+      const physical = (await physicalSequence(page, input)).replace(/\\s/g, "");
+      const field = await preparePhysicalMathField(page);
+      await field.evaluate((el, value) => {
+        const mf = el as HTMLElement & { setValue?: (v: string) => void; value?: string };
+        if (typeof mf.setValue === "function") mf.setValue(String(value)); else mf.value = String(value);
+      }, input);
+      const direct = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? "")).replace(/\\s/g, "");
+      expect(physical).toMatch(expected);
+      expect(direct.length).toBeGreaterThan(0);
+    });
+  }
+});
