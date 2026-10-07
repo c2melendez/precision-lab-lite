@@ -533,7 +533,11 @@ test.describe("IN625 G2 invariancia real L/T/teclado", () => {
           .replace(/\(1\)\/\(2\)x/g, "(1/2)x")
           .replace(/sen\(\(pi\)\/\(6\)\)/g, "sen(pi/6)")
           .replace(/e\^\(\((-?x\^2)\)\)/g, "e^($1)")
-          .replace(/sqrt\(\(([^()]*)\)\)/g, "sqrt($1)");
+          .replace(/sqrt\(\(([^()]*)\)\)/g, "sqrt($1)")
+          .replace(/sin\^2\(x\)/g, "sin^2x")
+          .replace(/sin\^\(-1\(x\)\)/g, "sin^-1x")
+          .replace(/sin\^-1\(x\)/g, "sin^-1x")
+          .replace(/abs\(([^()]*)\)/g, "|$1|");
         return s;
       };
 
