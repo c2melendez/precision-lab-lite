@@ -26,3 +26,11 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Lite: división por cero -> DOMAIN_ERROR claro en `0b7cd3a20fa4d147af321ffd7748ce3c899aeb48`.
 - Plus: helper G3 restaurado en `4f146ec8572554febddbe7f21f800733c70e4381`.
 - Reruns: Lite `37586956770`; Plus `37586831275`.
+
+
+## 2026-10-07 — G3 harness sincronizado
+- Se comprobó que `setValue()` no garantiza el evento `input` usado por React.
+- El helper G3 ahora dispara un `InputEvent("input")` después de `setValue()`.
+- El helper espera explícitamente feedback final (alert/status) antes de clasificar éxito/error.
+- Las corridas `37586956770` (Lite) y `37586831275` (Plus) se consideran diagnósticos de harness no aptos para clasificar producto.
+- Nueva evidencia a revisar: Lite `37589106994`; Plus `37589114822`.
