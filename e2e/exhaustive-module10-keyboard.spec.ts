@@ -654,8 +654,12 @@ async function g3Submit(page: import("@playwright/test").Page, input: string) {
   return { kind: "none" as const, text: "" };
 }
 
+const g3RawOnlyIds = new Set(["EN-ER-05","EN-ER-15","EN-ER-19","EN-ER-20","EN-ER-26","EN-ER-27","EN-ER-31"]);
+
+// MathLive canonicaliza estos siete inputs antes de que el producto pueda
+// observar la forma cruda. Se certifican en parser-level tests, no aquí.
 test.describe("IN625 G3 entradas inválidas y mensajes de error", () => {
-  for (const row of g3Cases) {
+  for (const row of g3Cases.filter((candidate) => !g3RawOnlyIds.has(candidate.id))) {
     test(row.id + ": no produce una respuesta numérica silenciosamente falsa", async ({ page }) => {
       await page.goto("./");
       const outcome = await g3Submit(page, row.input);
