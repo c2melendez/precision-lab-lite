@@ -555,3 +555,88 @@ test.describe("IN625 G2 invariancia real L/T/teclado", () => {
 
 // EN-CH-11 requiere modo decimal coma real. Se mantiene manual/config-dependent
 // para no simular soporte de locale que el navegador/runner no puede garantizar.
+
+
+type G3Case = {
+  id: string;
+  input: string;
+  expected: RegExp;
+  allowSuccess?: boolean;
+};
+
+const g3Cases: G3Case[] = [
+  { id: "EN-ER-01", input: "(2+3", expected: /par[eé]ntesis|cerrar|incomplet/i },
+  { id: "EN-ER-02", input: "2+3)", expected: /par[eé]ntesis|cierre|sobrante|incomplet/i },
+  { id: "EN-ER-03", input: "\\frac{1}{", expected: /fracci[oó]n|denominador|incomplet/i },
+  { id: "EN-ER-04", input: "\\frac{1}", expected: /fracci[oó]n|denominador|incomplet/i },
+  { id: "EN-ER-05", input: "2^", expected: /exponente|potencia|incomplet|vac[ií]o/i },
+  { id: "EN-ER-06", input: "^2", expected: /exponente|base|potencia|incomplet/i },
+  { id: "EN-ER-07", input: "2+", expected: /operador|operando|incomplet/i },
+  { id: "EN-ER-08", input: "*3", expected: /operador|operando|incomplet/i },
+  { id: "EN-ER-09", input: "2*/3", expected: /operador|sintaxis|inv[aá]lid/i },
+  { id: "EN-ER-10", input: "", expected: /escrib|expresi[oó]n|vac[ií]o|required/i },
+  { id: "EN-ER-11", input: "   ", expected: /escrib|expresi[oó]n|vac[ií]o|required/i },
+  { id: "EN-ER-12", input: "()", expected: /par[eé]ntesis|vac[ií]o|incomplet/i },
+  { id: "EN-ER-13", input: "\\sin", expected: /sin|argumento|incomplet/i },
+  { id: "EN-ER-14", input: "\\sin()", expected: /sin|argumento|vac[ií]o|incomplet/i },
+  { id: "EN-ER-15", input: "\\foo{x}", expected: /foo|comando|desconocid|funci[oó]n/i },
+  { id: "EN-ER-16", input: "\\left(x+1\\right]", expected: /delimit|par[eé]ntesis|corchete|inv[aá]lid/i },
+  { id: "EN-ER-17", input: "\\left(x+1", expected: /right|delimit|cerrar|incomplet/i },
+  { id: "EN-ER-18", input: "x+1\\right)", expected: /left|right|delimit|sobrante|inv[aá]lid/i },
+  { id: "EN-ER-19", input: "{x+1", expected: /llave|cerrar|incomplet/i },
+  { id: "EN-ER-20", input: "x+1}", expected: /llave|cierre|sobrante|inv[aá]lid/i },
+  { id: "EN-ER-21", input: "1/0", expected: /cero|divisi[oó]n|dominio|definid/i },
+  { id: "EN-ER-22", input: "0/0", expected: /indetermin|cero|dominio|definid/i },
+  { id: "EN-ER-23", input: "\\frac{1}{0}", expected: /cero|divisi[oó]n|dominio|definid/i },
+  { id: "EN-ER-24", input: "0^{0}", expected: /0|indefin|convenci[oó]n|1/i, allowSuccess: true },
+  { id: "EN-ER-25", input: "x=", expected: /ecuaci[oó]n|incomplet|lado|operando/i },
+  { id: "EN-ER-26", input: "=3", expected: /ecuaci[oó]n|incomplet|lado|operando/i },
+  { id: "EN-ER-27", input: "x^{}", expected: /exponente|vac[ií]o|incomplet/i },
+  { id: "EN-ER-28", input: "\\frac{}{2}", expected: /numerador|fracci[oó]n|vac[ií]o|incomplet/i },
+  { id: "EN-ER-29", input: "\\sqrt{}", expected: /ra[ií]z|radicando|vac[ií]o|incomplet/i },
+  { id: "EN-ER-30", input: "\\placeholder{}", expected: /marcador|placeholder|incomplet|vac[ií]o/i },
+  { id: "EN-ER-31", input: "\\text{hola}", expected: /texto|matem[aá]tic|inv[aá]lid/i },
+  { id: "EN-ER-32", input: "hola mundo", expected: /texto|aviso|simb[oó]lic|variable|inv[aá]lid/i, allowSuccess: true },
+  { id: "EN-ER-33", input: "x++", expected: /operador|operando|increment|incomplet/i },
+  { id: "EN-ER-34", input: "Resolver x^2=4 en los reales", expected: /texto|aviso|ecuaci[oó]n|inv[aá]lid|extra/i, allowSuccess: true },
+];
+
+async function g3Submit(page: import("@playwright/test").Page, input: string) {
+  const dialog = await openKeyboard(page);
+  const field = page.locator("math-field").first();
+  await field.evaluate((el, value) => {
+    const mf = el as HTMLElement & { setValue?: (v: string) => void; value?: string };
+    if (typeof mf.setValue === "function") mf.setValue(String(value));
+    else mf.value = String(value);
+  }, input);
+  await hideMathLiveKeyboard(page).catch(() => undefined);
+  await dialog.getByRole("button", { name: "calcular", exact: true }).click();
+  await page.waitForTimeout(150);
+  const alert = page.locator('[role="alert"]').first();
+  if (await alert.count()) {
+    return { kind: "error" as const, text: (await alert.innerText()).replace(/\s+/g, " ").trim() };
+  }
+  const status = page.locator('section[aria-label="Resultado"] [role="status"], [role="status"]').first();
+  if (await status.count()) {
+    return { kind: "success" as const, text: (await status.innerText()).replace(/\s+/g, " ").trim() };
+  }
+  return { kind: "none" as const, text: "" };
+}
+
+test.describe("IN625 G3 entradas inválidas y mensajes de error", () => {
+  for (const row of g3Cases) {
+    test(row.id + ": no produce una respuesta numérica silenciosamente falsa", async ({ page }) => {
+      await page.goto("./");
+      const outcome = await g3Submit(page, row.input);
+      expect(outcome.kind, row.id + " no produjo feedback visible").not.toBe("none");
+
+      if (outcome.kind === "error") {
+        expect(outcome.text, row.id + " mensaje: " + outcome.text).toMatch(row.expected);
+        return;
+      }
+
+      expect(row.allowSuccess, row.id + " aceptó silenciosamente: " + outcome.text).toBe(true);
+      expect(outcome.text).not.toMatch(/^\s*(?:500|nan)\s*$/i);
+    });
+  }
+});
