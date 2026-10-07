@@ -19,4 +19,4 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Run G3 parser regression
-        run: npx vitest run tests/parsing.test.ts
+        run: npx vitest run tests/in625G3RawParser.audit.test.ts
