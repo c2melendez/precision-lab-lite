@@ -39,15 +39,20 @@ Evidencia:
 ## G3 — ACTIVO
 Objetivo: validar 34 casos EN-ER-01…EN-ER-34 de entradas inválidas y mensajes de error.
 
-Matriz diagnóstica G3 incorporada en ambos motores:
-- Lite commit: `705d8272fe666f42b990f89df9f18e3e2257b1e0`
-- Plus commit: `8432fa03a3262b24d10cc4df06b524cdfc6a56fc`
+Diagnóstico inicial:
+- Lite run `37583041099`: FAILURE real de G3. 30/34 IDs presentaron rojo; una parte devolvía error visible pero genérico de Algebrite y otra aceptaba entradas incompletas/silenciosas.
+- Plus run `37583044889`: FAILURE de HARNESS. Los 34 casos fallaron en 3 viewports por `ReferenceError: hideMathLiveKeyboard is not defined`; no es evidencia de fallo de producto.
+- La matriz fuente exige feedback semánticamente claro; no basta con cualquier `PARSE_ERROR` genérico.
 
-Corridas Playwright G3 disparadas:
-- Lite: `37583041099`
-- Plus: `37583044889`
+Correcciones aplicadas:
+- Lite: `5eac718b9b8d33d9da9a06a688aca0204bd1fb13` validación estructural G3 antes del CAS.
+- Lite: `0b7cd3a20fa4d147af321ffd7748ce3c899aeb48` división por cero clasificada como DOMAIN_ERROR con mensaje claro.
+- Plus: `4f146ec8572554febddbe7f21f800733c70e4381` helper del harness G3 restaurado.
+- Prompt canónico de continuidad sincronizado byte-equivalente en Lite y Plus.
 
-Estado al registrar: pendientes de conclusión. Verificar GitHub Actions real antes de diagnosticar.
+Corridas vigentes:
+- Lite Playwright: `37586956770` — verificar conclusión real.
+- Plus Playwright: `37586831275` — verificar conclusión real.
 
 ## Siguiente paso exacto
 1. Localizar/confirmar los 34 casos G3 en la matriz/spec vigente.
