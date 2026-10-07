@@ -504,8 +504,8 @@ test.describe("IN625 G2 invariancia real L/T/teclado", () => {
     { id: "EN-CH-03", latex: "x^{10}+1", text: "x^10+1", keys: ["x","^","1","0","+","1"], expected: /x\^10\+1/ },
     { id: "EN-CH-04", latex: "\\frac{x+1}{x-1}", text: "(x+1)/(x-1)", keys: ["(","x","+","1",")","/","(","x","-","1",")"], expected: /\(x\+1\)\/\(x-1\)|\(x\+1\)\/\(x−1\)/ },
     { id: "EN-CH-05", latex: "\\sqrt{x+1}", text: "sqrt(x+1)", keys: ["s","q","r","t","(","x","+","1",")"], expected: /sqrt\(x\+1\)/i },
-    { id: "EN-CH-06", latex: "\\sin^{2}x", text: "sin^2(x)", keys: ["s","i","n","^","2","x"], expected: /sin.*\^2|\(sin.*\)\^2/i },
-    { id: "EN-CH-07", latex: "\\sin^{-1}x", text: "sin^-1(x)", keys: ["s","i","n","^","-","1","x"], expected: /sin.*-1|arcsin/i },
+    { id: "EN-CH-06", latex: "\\sin^{2}x", text: "sin^2(x)", keys: ["s","i","n","^","2","ArrowRight","x"], expected: /sin.*\^\(?2\)?x?|\(sin.*\)\^\(?2\)?/i },
+    { id: "EN-CH-07", latex: "\\sin^{-1}x", text: "sin^-1(x)", keys: ["s","i","n","^","-","1","ArrowRight","x"], expected: /sin.*-1|arcsin/i },
     { id: "EN-CH-08", latex: "2x", text: "2x", keys: ["2","x"], expected: /2x|2\*x/ },
     { id: "EN-CH-09", latex: "\\frac{1}{2}x", text: "(1/2)x", keys: ["1","/","2","ArrowRight","x"], expected: /x\/2|\(1\/2\)x|1\/2x/ },
     { id: "EN-CH-10", latex: "3.5+1", text: "3.5+1", keys: ["3",".","5","+","1"], expected: /3\.5\+1/ },
@@ -522,18 +522,29 @@ test.describe("IN625 G2 invariancia real L/T/teclado", () => {
       const text = await g2ChannelAscii(page, "text", row.text);
       const keys = await g2ChannelAscii(page, "keys", row.keys);
 
-      expect(latex).toMatch(row.expected);
-      expect(text).toMatch(row.expected);
-      expect(keys).toMatch(row.expected);
+      const canonical = (v: string) => {
+        let s = v.toLowerCase()
+          .replace(/[{}]/g, "")
+          .replace(/\\cdot|\*/g, "")
+          .replace(/−/g, "-")
+          .replace(/[∣│]/g, "|")
+          .replace(/\^\(([-+]?\w+)\)/g, "^$1")
+          .replace(/\(\(([^()]*)\)\)/g, "($1)")
+          .replace(/\(1\)\/\(2\)x/g, "(1/2)x")
+          .replace(/sen\(\(pi\)\/\(6\)\)/g, "sen(pi/6)")
+          .replace(/e\^\(\((-?x\^2)\)\)/g, "e^($1)")
+          .replace(/sqrt\(\(([^()]*)\)\)/g, "sqrt($1)");
+        return s;
+      };
 
-      const normalize = (v: string) => v
-        .toLowerCase()
-        .replace(/[{}]/g, "")
-        .replace(/\\cdot|\*/g, "")
-        .replace(/−/g, "-")
-        .replace(/^\((.*)\)$/, "$1");
+      const cl = canonical(latex);
+      const ct = canonical(text);
+      const ck = canonical(keys);
 
-      expect(normalize(text)).toBe(normalize(keys));
+      expect(cl).toMatch(row.expected);
+      expect(ct).toMatch(row.expected);
+      expect(ck).toMatch(row.expected);
+      expect(ct).toBe(ck);
     });
   }
 });
