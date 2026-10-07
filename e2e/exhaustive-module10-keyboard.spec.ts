@@ -602,23 +602,32 @@ const g3Cases: G3Case[] = [
 ];
 
 async function g3Submit(page: import("@playwright/test").Page, input: string) {
-  const dialog = await openKeyboard(page);
   const field = page.locator("math-field").first();
+  await field.waitFor({ state: "visible" });
   await field.evaluate((el, value) => {
     const mf = el as HTMLElement & { setValue?: (v: string) => void; value?: string };
     if (typeof mf.setValue === "function") mf.setValue(String(value));
     else mf.value = String(value);
-    // MathLive setValue() is programmatic and does not guarantee the same
-    // input event React listens to. G3 needs the actual product state to
-    // receive the malformed value before Calculate is pressed.
     el.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText", data: String(value) }));
   }, input);
-  await page.waitForTimeout(50);
+
+  // Esperar a que React consuma el evento antes de enviar el formulario.
+  await page.waitForTimeout(100);
+
+  // G3 certifica validación/error, no el canal del botón del teclado.
+  // Usar el submit principal evita mezclar estado del KeyboardPanel.
+  const dialog = page.getByRole("dialog", { name: "Teclado matemático" });
+  if (await dialog.isVisible().catch(() => false)) {
+    const close = dialog.getByRole("button", { name: /cerrar/i });
+    if (await close.count()) await close.first().click();
+    else await page.keyboard.press("Escape");
+    await dialog.waitFor({ state: "hidden" }).catch(() => undefined);
+  }
   await hideMathLiveKeyboard(page).catch(() => undefined);
-  await dialog.getByRole("button", { name: "calcular", exact: true }).click();
+  await page.getByRole("button", { name: "Evaluar", exact: true }).click();
 
   const alert = page.locator('[role="alert"]').first();
-  const status = page.locator('section[aria-label="Resultado"] [role="status"]').first();
+  const successLive = page.locator('section[aria-label="Resultado"] [aria-live="polite"]').first();
 
   await expect
     .poll(async () => {
@@ -626,9 +635,9 @@ async function g3Submit(page: import("@playwright/test").Page, input: string) {
         const txt = (await alert.textContent().catch(() => "") ?? "").trim();
         if (txt) return "error";
       }
-      if (await status.count()) {
-        const txt = (await status.textContent().catch(() => "") ?? "").trim();
-        if (txt) return "success";
+      if (await successLive.count()) {
+        const txt = (await successLive.textContent().catch(() => "") ?? "").trim();
+        if (txt && !/calculando/i.test(txt)) return "success";
       }
       return "pending";
     }, { timeout: 5000 })
@@ -638,8 +647,8 @@ async function g3Submit(page: import("@playwright/test").Page, input: string) {
     return { kind: "error" as const, text: ((await alert.textContent()) ?? "").replace(/\s+/g, " ").trim() };
   }
 
-  if (await status.count()) {
-    return { kind: "success" as const, text: ((await status.textContent()) ?? "").replace(/\s+/g, " ").trim() };
+  if (await successLive.count()) {
+    return { kind: "success" as const, text: ((await successLive.textContent()) ?? "").replace(/\s+/g, " ").trim() };
   }
 
   return { kind: "none" as const, text: "" };
