@@ -34,3 +34,12 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - El helper espera explícitamente feedback final (alert/status) antes de clasificar éxito/error.
 - Las corridas `37586956770` (Lite) y `37586831275` (Plus) se consideran diagnósticos de harness no aptos para clasificar producto.
 - Nueva evidencia a revisar: Lite `37589106994`; Plus `37589114822`.
+
+
+## 2026-10-07 — G3 residual reducido
+- Lite: los 28 timeouts estructurales se clasificaron como harness/visibilidad; `BasicScientificMode` sí ejecuta `setResult()` al capturar el parse error.
+- Lite helper G3 ahora detecta alert/status por presencia y contenido DOM, no por `isVisible()`.
+- Plus: EN-ER-03/04 se clasifican como canonicalización válida de MathLive (fracción incompleta -> grupo vacío).
+- Plus: EN-ER-13 era producto real; función desnuda alcanzaba SymPy y podía provocar `TypeError: 'property' object is not iterable`.
+- Plus ahora rechaza funciones desnudas antes de SymPy.
+- Reruns a revisar: Lite `37678678320`; Plus `37678685459`.
