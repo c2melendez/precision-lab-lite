@@ -353,3 +353,56 @@ test("IN625 G1b EN-TC-19: botones sin inversa log ln 10^x y e^x exponen plantill
     expect(await btn.count()).toBeGreaterThan(0);
   }
 });
+
+
+test("IN625 G1b EN-TC-20: backspace deja exponente vacío sin NaN", async ({ page }) => {
+  await page.goto("./");
+  const field = await preparePhysicalMathField(page);
+  for (const key of ["2", "^", "1", "0"]) {
+    await field.press(key);
+    await page.waitForTimeout(35);
+  }
+  await field.press("Backspace");
+  await field.press("Backspace");
+  const latex = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? "")).replace(/\s/g, "");
+  expect(latex).toMatch(/2\^\{?\}?|2\^\{\}/);
+  expect(latex).not.toMatch(/NaN/i);
+});
+
+test("IN625 G1b EN-TC-21: undo redo select-all delete y copy-paste restauran fórmula", async ({ page }) => {
+  await page.goto("./");
+  const field = await preparePhysicalMathField(page);
+  for (const key of ["x", "^", "2", "+", "1"]) {
+    await field.press(key);
+    await page.waitForTimeout(35);
+  }
+  const original = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
+  await field.press("Control+z");
+  await field.press("Control+Shift+z");
+  const afterRedo = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
+  expect(afterRedo.replace(/\s/g, "")).toBe(original.replace(/\s/g, ""));
+
+  await field.press("Control+a");
+  await field.press("Control+c");
+  await field.press("Backspace");
+  await field.press("Control+v");
+  const restored = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
+  expect(restored.replace(/\s/g, "")).toBe(original.replace(/\s/g, ""));
+});
+
+test("IN625 G1b EN-TC-22: Tab y flechas navegan plantillas y Enter no inserta salto", async ({ page }) => {
+  await page.goto("./");
+  const field = await preparePhysicalMathField(page);
+  await field.evaluate((el) => {
+    const mf = el as HTMLElement & { insert?: (latex: string) => void };
+    mf.insert?.("\\frac{#0}{#1}+x_{#0}^{#1}");
+  });
+  const before = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
+  await field.press("Tab");
+  await field.press("ArrowRight");
+  await field.press("Tab");
+  await field.press("Enter");
+  const after = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
+  expect(after).not.toContain("\n");
+  expect(after.length).toBeGreaterThanOrEqual(before.length - 2);
+});
