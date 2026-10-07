@@ -51,11 +51,18 @@ Correcciones aplicadas:
 - Prompt canónico de continuidad sincronizado byte-equivalente en Lite y Plus.
 
 Corridas vigentes y diagnóstico fiable:
-- Lite corrida fiable `37589106994`: 1 caso restante, EN-ER-15 (comando LaTeX desconocido con mensaje demasiado genérico).
-- Plus corrida fiable `37589114822`: 19 casos restantes; la mayoría ya rechazan, pero con mensajes genéricos de parser/SymPy en lugar del contrato semántico G3.
-- Corrección Lite: `f4429539bdeb750be1895e3b087d7295eb939b3e` — mensaje claro para comandos LaTeX desconocidos.
-- Corrección Plus: `a6f4711794450991ce1d37d1829f401a212f3fa8` — validación estructural G3 ejecutada antes de SymPy.
-- Nueva evidencia: Lite Playwright `37672657499`; Plus Playwright `37672732893`.
+- Lite corrida fiable anterior: G3 sin mensajes EN-ER incorrectos; 28 IDs estructurales seguían en timeout por criterio de visibilidad del harness, no por ausencia de `setResult()`.
+- Plus corrida fiable anterior: 3 residuales — EN-ER-03, EN-ER-04 y EN-ER-13.
+- EN-ER-03/04: MathLive canoniza la fracción incompleta a grupo/paréntesis vacío; se acepta el mensaje semántico "Paréntesis vacíos" como equivalencia de serialización, sin cambio de producto.
+- EN-ER-13: fallo real de producto en Plus; función desnuda llegaba a SymPy y provocaba excepción interna. Corregido para rechazarse antes del CAS.
+
+Últimos cambios:
+- Lite harness DOM-content: `355bde675d22378ae7792339591ed9944c5d173d`.
+- Plus bare-function + canonicalización G3: `ef6728ef0814379dcd69236f21d41477ebfe5e23`.
+
+Nueva evidencia:
+- Lite Playwright `37678678320`.
+- Plus Playwright `37678685459`.
 
 ## Siguiente paso exacto
 1. Localizar/confirmar los 34 casos G3 en la matriz/spec vigente.
