@@ -129,6 +129,13 @@ test("módulo 10: acciones no aritméticas de Álgebra exponen tooltip", async (
 
 async function preparePhysicalMathField(page: import("@playwright/test").Page) {
   const field = page.locator("math-field").first();
+  const openKeyboardDialog = page.getByRole("dialog", { name: "Teclado matemático" });
+  if (await openKeyboardDialog.isVisible().catch(() => false)) {
+    const close = openKeyboardDialog.getByRole("button", { name: /cerrar/i });
+    if (await close.count()) await close.first().click();
+    else await page.keyboard.press("Escape");
+    await openKeyboardDialog.waitFor({ state: "hidden" }).catch(() => {});
+  }
   await field.waitFor({ state: "visible" });
   await field.evaluate((el) => {
     const mf = el as HTMLElement & { value?: string; setValue?: (v: string) => void };
@@ -275,12 +282,12 @@ test("IN625 G1b EN-TC-14: (x+1)^2 no crea paréntesis vacíos extra", async ({ p
 test("IN625 G1b EN-TC-15: valor absoluto conserva estructura", async ({ page }) => {
   await page.goto("./");
   const field = await preparePhysicalMathField(page);
-  await field.press("Shift+\\");
+  await page.keyboard.insertText("|");
   for (const key of ["x", "-", "1"]) {
     await field.press(key);
     await page.waitForTimeout(35);
   }
-  await field.press("Shift+\\");
+  await page.keyboard.insertText("|");
   const latex = String(await field.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? "")).replace(/\s/g, "");
   expect(latex).toMatch(/\\left\|?x-1\\right\|?|\|x-1\|/);
 });
