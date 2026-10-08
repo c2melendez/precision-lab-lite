@@ -624,7 +624,7 @@ async function g3Submit(page: import("@playwright/test").Page, input: string) {
     await dialog.waitFor({ state: "hidden" }).catch(() => undefined);
   }
   await hideMathLiveKeyboard(page).catch(() => undefined);
-  await page.getByRole("button", { name: "Evaluar", exact: true }).click();
+  await page.getByRole("button", { name: "Calcular", exact: true }).click();
 
   const alert = page.locator('[role="alert"]').first();
   const successLive = page.locator('section[aria-label="Resultado"] [aria-live="polite"]').first();
