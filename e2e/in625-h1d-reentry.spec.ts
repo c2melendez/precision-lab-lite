@@ -111,6 +111,19 @@ test.describe("IN625 H1d reentrada avanzada",()=>{
       const s1=await evaluateOnce(page,input);
       const s2=await evaluateOnce(page,s1);
       expect(s2.trim(),"reentrada vacía para "+input).not.toBe("");
+      // Comprobar puntos de referencia independientes para resultados numéricos.
+      // No declarar equivalencia semántica universal basándose solo en salida no vacía.
+      const anchors:Record<string,RegExp>={
+        "2+3":/^5(?:\\.0+)?$/,
+        "2^{10}":/^1024(?:\\.0+)?$/,
+        "\\frac{3}{4}":/^(?:\\frac\\{3\\}\\{4\\}|0\\.75)$/,
+        "10^{-3}":/^(?:\\frac\\{1\\}\\{1000\\}|0\\.001)$/,
+      };
+      const expected=anchors[input];
+      if(expected){
+        expect(canonical(s1),"referencia inicial "+input).toMatch(expected);
+        expect(canonical(s2),"referencia tras reentrada "+input).toMatch(expected);
+      }
     }
   });
 
