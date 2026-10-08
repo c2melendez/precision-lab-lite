@@ -20,3 +20,9 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - F2b UC25: semántica backend/worker adicional recomendable.
 - F3a/F3b/F3c: parte de cobertura es estructural/permisiva; revisar semántica externa en reconciliación final.
 - AS26: conflicto de semántica `\\log` SymPy natural vs contrato PL base10 requiere advertencia/echo explícito en auditoría final.
+
+
+## EN-CH-11 — coma decimal regional
+- Estado: manual / config-dependent.
+- Requiere entorno regional donde la coma decimal sea interpretada según configuración del SO/navegador/MathLive.
+- No se debe marcar como automatizado únicamente con locale fijo del runner CI.
