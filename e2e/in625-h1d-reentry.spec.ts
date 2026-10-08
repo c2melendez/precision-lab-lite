@@ -150,6 +150,10 @@ test.describe("IN625 H1d reentrada avanzada",()=>{
     expect(a.toLowerCase()).toMatch(/pi|asin|arcsin|0\.523|frac/);
     const b=await evaluateOnce(page,"\\operatorname{atan}{\\left(1\\right)}");
     expect(b.toLowerCase()).toMatch(/pi|atan|arctan|0\.785|frac/);
+    const a2=await evaluateOnce(page,a);
+    const b2=await evaluateOnce(page,b);
+    expect(canonical(a2),"asin: salida inicial y reentrada").toBe(canonical(a));
+    expect(canonical(b2),"atan: salida inicial y reentrada").toBe(canonical(b));
   });
 
   test("EN-RE-28 piecewise reingresa y preserva casos",async({page})=>{
