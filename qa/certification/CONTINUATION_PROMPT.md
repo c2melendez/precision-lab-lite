@@ -1,28 +1,29 @@
-# Prompt único de continuidad — Precision Lab Certification
+# Prompt único permanente de continuidad — Precision Lab Certification
 
-Continúa el sistema de certificación de Precision Lab usando GitHub como fuente de verdad.
+Continúa autónomamente el sistema de certificación de Precision Lab. GitHub es la fuente de verdad.
 
 ## Repositorios
 - Lite: `c2melendez/precision-lab-lite`
 - Plus: `c2melendez/precision-lab-plus`
 
-## Instrucción
-1. Usa primero la rama de arranque `qa/syntax-audit-in625-a1` en **ambos** repositorios para leer `qa/certification/README.md`. Indica siempre `ref=qa/syntax-audit-in625-a1` (o su equivalente) al consultar el archivo: no presupongas que existe en la rama predeterminada, en `qa/certification-runner-v1` ni en otras ramas antiguas. Si README indica explícitamente otra rama canónica, verifica que los archivos existan allí antes de cambiar. Si falla la lectura, enumera ramas y verifica la ruta en cada una; no declares inexistencia tras comprobar solo algunas ramas.
-2. Lee, en este orden y en ambos repositorios:
+## Resolución de la rama activa (sin nombres de rama fijos)
+1. Consulta la rama predeterminada de cada repositorio mediante sus metadatos de GitHub.
+2. Lee `qa/certification/README.md` en esa rama predeterminada, **indicando explícitamente esa rama o usando la lectura por defecto**. Ese archivo es el punto de entrada permanente que señala la rama canónica activa.
+3. Confirma que los dos puntos de entrada indican la misma rama. Si difieren o falta alguno, examina las ramas/historial y reporta la discrepancia; no inventes una rama ni reconstruyas el estado desde el chat.
+4. Verifica que la rama señalada existe en ambos repositorios y que contiene `qa/certification/README.md`.
+
+## Continuación canónica
+5. En la rama señalada, lee en ambos repositorios y en este orden:
    - `qa/certification/README.md`
    - `qa/certification/CURRENT_STATE.md`
    - `qa/certification/EXECUTION_PROTOCOL.md`
    - `qa/certification/MANUAL_CAPABILITY_GAPS.md`
    - `qa/certification/EXECUTION_LOG.md`
-3. Verifica los HEAD reales de Lite y Plus y los GitHub Actions actuales antes de asumir que los SHA, runs o estados documentados siguen vigentes.
-4. Continúa autónomamente desde el “Siguiente paso exacto” de `CURRENT_STATE.md`.
-5. No reconstruyas el estado desde el chat, ZIPs ni handoffs históricos salvo que la documentación canónica indique explícitamente que falta una evidencia.
-6. Diagnostica y clasifica cada rojo como producto / harness / oráculo / capability antes de modificar código.
-7. Mantén Lite y Plus coordinados y evita divergencias de contrato no documentadas.
-8. Después de cada avance sustantivo, actualiza en ambos repositorios:
-   - `CURRENT_STATE.md` con fotografía actual, commits, runs, resultados y siguiente paso;
-   - `EXECUTION_LOG.md` con una entrada acumulativa de la decisión/evidencia;
-   - cualquier gap permanente en `MANUAL_CAPABILITY_GAPS.md` si aplica.
-9. No reemplaces la fuente canónica con un nuevo handoff externo. Si necesitas continuidad entre sesiones, este mismo prompt debe seguir siendo suficiente.
+6. Comprueba los HEAD reales, últimos commits y GitHub Actions antes de asumir que SHA, runs o estados documentados siguen vigentes.
+7. Ejecuta el “Siguiente paso exacto” de `CURRENT_STATE.md` y sigue el protocolo. Clasifica cada rojo como producto / harness / oráculo / capability antes de modificar código.
+8. Mantén Lite y Plus coordinados, registra toda decisión basada en evidencia y evita divergencias no documentadas.
+9. Después de cada avance sustantivo, actualiza `CURRENT_STATE.md` y `EXECUTION_LOG.md` en ambos repositorios; actualiza `MANUAL_CAPABILITY_GAPS.md` si corresponde. Verifica que la sincronización fue efectiva.
+10. Si la rama canónica cambia, publica/valida primero toda la documentación en la nueva rama; después actualiza el puntero del README de la rama predeterminada en **ambos** repositorios. No cambies este prompt por un cambio de rama.
+11. No utilices el chat, ZIPs ni handoffs históricos como fuente de verdad mientras la documentación canónica esté disponible.
 
-Objetivo operativo: que cada nueva sesión pueda continuar únicamente con este prompt y acceso a los repositorios.
+**Objetivo:** que este mismo prompt funcione en todas las sesiones, sin tener que conocer ni editar manualmente la rama activa.
