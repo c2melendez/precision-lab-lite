@@ -7,7 +7,7 @@ Continúa el sistema de certificación de Precision Lab usando GitHub como fuent
 - Plus: `c2melendez/precision-lab-plus`
 
 ## Instrucción
-1. Localiza la rama activa indicada por `qa/certification/README.md`.
+1. Usa primero la rama de arranque `qa/syntax-audit-in625-a1` en **ambos** repositorios para leer `qa/certification/README.md`. Indica siempre `ref=qa/syntax-audit-in625-a1` (o su equivalente) al consultar el archivo: no presupongas que existe en la rama predeterminada, en `qa/certification-runner-v1` ni en otras ramas antiguas. Si README indica explícitamente otra rama canónica, verifica que los archivos existan allí antes de cambiar. Si falla la lectura, enumera ramas y verifica la ruta en cada una; no declares inexistencia tras comprobar solo algunas ramas.
 2. Lee, en este orden y en ambos repositorios:
    - `qa/certification/README.md`
    - `qa/certification/CURRENT_STATE.md`
