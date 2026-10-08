@@ -74,6 +74,17 @@ async function calculate(page: Page): Promise<string> {
   const button = page.getByRole("region", { name: "Entrada" }).getByRole("button", { name: "Calcular", exact: true });
   await expect(button).toBeEnabled();
   await button.click();
+
+  const region = page.locator('section[aria-label="Resultado"]').first();
+  const frac = region.getByRole("button", { name: "frac", exact: true });
+  const sqrt = region.getByRole("button", { name: "sqrt", exact: true });
+
+  if (await frac.count()) {
+    await frac.first().click().catch(() => undefined);
+  } else if (await sqrt.count()) {
+    await sqrt.first().click().catch(() => undefined);
+  }
+
   return readResult(page);
 }
 
@@ -94,8 +105,13 @@ test.describe("IN625 H1a reentrada básica Lite", () => {
       expect(s1.trim(), id + " S1 vacío").not.toBe("");
 
       await setInput(page, s1);
-      const s2 = await calculate(page);
-      expect(canonical(s2), id + " S1=" + s1 + " S2=" + s2).toBe(canonical(s1));
+      const reinjected = await page.locator("math-field").first().evaluate((el) =>
+        String((el as HTMLElement & { value?: string }).value ?? "")
+      );
+      const s2 = await calculate(page).catch((err) => {
+        throw new Error(id + " S1=" + s1 + " REINJECTED=" + reinjected + " ERROR=" + String(err));
+      });
+      expect(canonical(s2), id + " S1=" + s1 + " REINJECTED=" + reinjected + " S2=" + s2).toBe(canonical(s1));
     });
   }
 });
