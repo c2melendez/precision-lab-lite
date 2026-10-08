@@ -62,3 +62,11 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus: G3 34/34 ya certificado previamente con E2E + backend parser.
 - Decisión estable: no exigir a MathLive preservar sintaxis cruda que canonicaliza; esos casos se certifican en parser-level sin perder cobertura.
 - Próximo bloque: H1 — 30 casos reentrada/output-as-input.
+
+
+## 2026-10-08 — H1a cerrado
+- EN-RE-01..08 cerrados 8/8 en ambos motores.
+- Lite H1a run `37771014887`: SUCCESS.
+- Plus H1a run `37771019348`: SUCCESS.
+- Regresiones permanentes añadidas para serialización/reentrada de resultados.
+- Siguiente bloque: H1b — EN-RE-09..16.
