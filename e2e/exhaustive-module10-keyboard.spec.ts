@@ -624,10 +624,10 @@ async function g3Submit(page: import("@playwright/test").Page, input: string) {
     await dialog.waitFor({ state: "hidden" }).catch(() => undefined);
   }
   await hideMathLiveKeyboard(page).catch(() => undefined);
-  await page.getByRole("button", { name: "Calcular", exact: true }).click();
+  await page.getByRole("region", { name: "Entrada" }).getByRole("button", { name: "Calcular", exact: true }).click();
 
   const alert = page.locator('[role="alert"]').first();
-  const successLive = page.locator('section[aria-label="Resultado"] [aria-live="polite"]').first();
+  const successLive = page.getByRole("status").first();
 
   await expect
     .poll(async () => {
