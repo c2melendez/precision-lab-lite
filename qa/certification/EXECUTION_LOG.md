@@ -86,3 +86,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus H1c run `37794867403`: SUCCESS.
 - EN-RE-22 permanece como CAPABILITY GAP explícito: historial no restaura todavía el LaTeX original al campo principal.
 - Siguiente bloque: H1d — EN-RE-24..30.
+
+## 2026-10-08 — Bootstrap permanente en rama predeterminada
+- Se creó `qa/certification/README.md` en `main` de Lite y Plus, con puntero a la rama canónica activa.
+- Se actualizó `qa/certification/CONTINUATION_PROMPT.md` en la rama canónica para resolver dinámicamente el puntero; ya no contiene un nombre de rama fija.
+- Validación: el puntero `main` y el prompt tienen blobs idénticos entre Lite y Plus; la rama activa queda declarada exclusivamente en el puntero de `main`.
+- Regla de migración: publicar y verificar primero la nueva rama canónica y después mover ambos punteros en `main`; el prompt único permanece invariable.
