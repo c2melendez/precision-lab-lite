@@ -60,4 +60,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Lite run `37778832819`: SUCCESS.
 - Plus run `37790101494`: SUCCESS.
 - Correcciones permanentes: reentrada de listas de soluciones, matrices naturales, extracción exacta de salida Plus, preservación de unión de intervalos y formatos numéricos.
-- Siguiente bloque: H1c — EN-RE-17..23.
+- Siguiente bloque: H1c — EN-RE-17..23: CERRADO con 6/6 automáticos PASS + 1 CAPABILITY GAP explícito.
+- Lite run `37794754460`: SUCCESS.
+- Plus run `37794867403`: SUCCESS.
+- Automáticos PASS: EN-RE-17, 18, 19, 20, 21 y 23.
+- EN-RE-22: capability gap documentado; el historial aún no restaura el LaTeX original al campo principal.
+- Siguiente bloque: H1d — EN-RE-24..30.
