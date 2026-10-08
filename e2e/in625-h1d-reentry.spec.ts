@@ -108,7 +108,31 @@ test.describe("IN625 H1d reentrada avanzada",()=>{
     test.setTimeout(120000);
     await page.goto("./");
     for(const input of TRIPLE_INPUTS){
-      const s1=await evaluateOnce(page,input);
+      // El panel puede conservar transitoriamente el resultado anterior.
+      // En casos con oráculo independiente, esperar a que aparezca el valor esperado
+      // antes de aceptar la lectura de la primera evaluación.
+      const expectedInput:Record<string,RegExp>={
+        "2+3":/^5(?:\\.0+)?$/,
+        "\\frac{1}{2}+\\frac{1}{3}":/^(?:\\frac\\{5\\}\\{6\\}|0\\.83{1,2}3*)$/i,
+        "2^{10}":/^1024(?:\\.0+)?$/,
+        "\\frac{3}{4}":/^(?:\\frac\\{3\\}\\{4\\}|0\\.75)$/,
+        "10^{-3}":/^(?:\\frac\\{1\\}\\{1000\\}|0\\.001)$/,
+      };
+      let s1=await evaluateOnce(page,input);
+      const anchor=expectedInput[input];
+      if(anchor && !anchor.test(canonical(s1))){
+        const region=page.locator('section[aria-label="Resultado"]').first();
+        await expect.poll(async()=>{
+          const field=region.locator('math-field[read-only]').first();
+          if(await field.count()){
+            const v=String(await field.evaluate(el=>(el as HTMLElement&{value?:string}).value??""));
+            if(v.trim())return canonical(v);
+          }
+          const plain=region.locator('.a11y-scale-result-3xl').first();
+          return canonical(((await plain.textContent().catch(()=>""))??"").trim());
+        },{timeout:15000,message:"Esperar resultado nuevo para "+input}).toMatch(anchor);
+        s1=(await readOutcome(page)).value;
+      }
       const s2=await evaluateOnce(page,s1);
       expect(s2.trim(),"reentrada vacía para "+input).not.toBe("");
       expect(canonical(s2),"reentrada estable para "+input).toBe(canonical(s1));
