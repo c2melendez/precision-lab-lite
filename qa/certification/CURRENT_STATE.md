@@ -45,12 +45,18 @@ Evidencia:
 
 Siguiente bloque activo: H1 — 30 casos de reentrada / output-as-input.
 
-## Siguiente paso exacto
-1. Localizar/confirmar los 34 casos G3 en la matriz/spec vigente.
-2. Implementar o completar la cobertura G3 en Lite y Plus manteniendo paridad.
-3. Ejecutar Playwright en ambos motores.
-4. Clasificar cualquier rojo como producto / harness / oráculo / capability antes de modificar producto.
-5. Registrar commits, runs, decisiones y siguiente paso en CURRENT_STATE y EXECUTION_LOG de ambos repositorios.
+## Siguiente paso exacto — H1d (EN-RE-24..30)
+1. Localizar los siete casos H1d en la matriz vigente y confirmar sus tests y harness en Lite y Plus.
+2. Verificar HEAD y Actions completos; las consultas por SHA no muestran todas las corridas.
+3. Reconciliar EN-RE-29 y EN-RE-30 con MANUAL_CAPABILITY_GAPS.md sin contarlos como PASS.
+4. Ejecutar pruebas automatizables H1d y gate acumulativo en ambos motores; clasificar cada rojo antes de corregir.
+5. Actualizar CURRENT_STATE y EXECUTION_LOG en ambos repositorios con commits, runs, evidencias y próximo paso. Solo avanzar a H2 tras cierre bilateral.
+
+### Reconciliación documental 2026-10-08
+- G3 y H1a–H1c ya constan cerrados; H1d no tiene cierre nuevo verificado.
+- HEAD previos a este ajuste: Lite a9627f4d67f141c0346a19c467656d626e3affcc; Plus 802eea7d7a9abf2ec28f2fa46d97a40c67e5296f.
+- H1c: jobs SUCCESS Lite 37794754460; Plus 37794867403.
+- No se ejecutaron pruebas ni se modificó código de producto en esta reconciliación.
 
 ## Continuidad repo-native
 El bootstrap oficial es `qa/certification/CONTINUATION_PROMPT.md`. No se necesita ZIP de handoff mientras GitHub y estos archivos estén accesibles.
