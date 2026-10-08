@@ -51,12 +51,16 @@ jobs:
         env:
           API_KEY_PRESENT: ${{ secrets.OPENAI_API_KEY }}
         shell: bash
+        id: key_check
         run: |
           if [[ -z "$API_KEY_PRESENT" ]]; then
             echo "OPENAI_API_KEY is not configured; Codex diagnosis skipped." >> "$GITHUB_STEP_SUMMARY"
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=true" >> "$GITHUB_OUTPUT"
           fi
       - name: Analyze failed run with Codex (no writes)
-        if: steps.guard.outputs.eligible == 'true' && env.OPENAI_API_KEY != ''
+        if: steps.guard.outputs.eligible == 'true' && steps.key_check.outputs.available == 'true'
         uses: openai/codex-action@v1
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
