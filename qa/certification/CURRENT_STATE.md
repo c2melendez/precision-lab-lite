@@ -56,4 +56,8 @@ Siguiente bloque activo: H1 — 30 casos de reentrada / output-as-input.
 El bootstrap oficial es `qa/certification/CONTINUATION_PROMPT.md`. No se necesita ZIP de handoff mientras GitHub y estos archivos estén accesibles.
 
 H1a — EN-RE-01..08: CERRADO 8/8 en Lite y Plus. Lite `37771014887`, Plus `37771019348`.
-Siguiente bloque: H1b — EN-RE-09..16.
+Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
+- Lite run `37778832819`: SUCCESS.
+- Plus run `37790101494`: SUCCESS.
+- Correcciones permanentes: reentrada de listas de soluciones, matrices naturales, extracción exacta de salida Plus, preservación de unión de intervalos y formatos numéricos.
+- Siguiente bloque: H1c — EN-RE-17..23.
