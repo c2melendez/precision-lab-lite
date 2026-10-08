@@ -9,8 +9,12 @@ permissions:
 
 jobs:
   g3-e2e:
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [desktop-chromium, tablet-chromium, mobile-chromium]
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -22,12 +26,12 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run build
       - name: Run IN625 G3 E2E only
-        run: npx playwright test e2e/exhaustive-module10-keyboard.spec.ts --grep "IN625 G3"
+        run: npx playwright test e2e/exhaustive-module10-keyboard.spec.ts --grep "IN625 G3" --project ${{ matrix.project }}
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: lite-in625-g3-playwright-report
+          name: lite-in625-g3-playwright-report-${{ matrix.project }}
           path: |
             playwright-report/
             test-results/
