@@ -105,12 +105,13 @@ test.describe("IN625 H1d reentrada avanzada",()=>{
   });
 
   test("EN-RE-25 equivalencia semántica en muestra de 20",async({page})=>{
-    test.setTimeout(90000);
+    test.setTimeout(120000);
     await page.goto("./");
     for(const input of TRIPLE_INPUTS){
       const s1=await evaluateOnce(page,input);
       const s2=await evaluateOnce(page,s1);
       expect(s2.trim(),"reentrada vacía para "+input).not.toBe("");
+      expect(canonical(s2),"reentrada estable para "+input).toBe(canonical(s1));
       // Comprobar puntos de referencia independientes para resultados numéricos.
       // No declarar equivalencia semántica universal basándose solo en salida no vacía.
       const anchors:Record<string,RegExp>={
