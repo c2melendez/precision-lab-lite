@@ -11,8 +11,24 @@ function parseError(message: string): AppError {
 function normalizeExternalSyntaxF3c(input: string): string {
   let out = input.trim();
 
-  // SymPy latex aliases.
+  // SymPy latex aliases. Normalizar nombre + argumento para evitar
+  // dejar formas como \\arcsin{...}, que no son aceptadas por todos los
+  // parsers/canales de entrada.
   out = out
+    .replace(
+      /\\operatorname\{(asin|acos|atan)\}\s*\{\\left\(([\s\S]*?)\\right\)\}/g,
+      (_m, fn, arg) => {
+        const mapped = fn === "asin" ? "arcsin" : fn === "acos" ? "arccos" : "arctan";
+        return "\\" + mapped + "\\left(" + arg + "\\right)";
+      },
+    )
+    .replace(
+      /\\operatorname\{(asin|acos|atan)\}\s*\{([^{}]+)\}/g,
+      (_m, fn, arg) => {
+        const mapped = fn === "asin" ? "arcsin" : fn === "acos" ? "arccos" : "arctan";
+        return "\\" + mapped + "\\left(" + arg + "\\right)";
+      },
+    )
     .replace(/\\operatorname\{asin\}/g, "\\arcsin")
     .replace(/\\operatorname\{acos\}/g, "\\arccos")
     .replace(/\\operatorname\{atan\}/g, "\\arctan");
