@@ -52,3 +52,13 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Lite parser regression: `11d41e9aef438961e8975b6067ae96d88a17440c`.
 - Plus parser regression: `7079dd5854fd987249fb07a665900ce754015c96`.
 - Runs a revisar: Lite Playwright `37687766493`; Plus Playwright `37687769608`.
+
+
+## 2026-10-08 — G3 cerrado
+- G3 queda CERRADO 34/34.
+- Lite: 26 casos raw-parser + 8 E2E preservables por MathLive.
+- Lite E2E run `37722856327`: SUCCESS en desktop/tablet/mobile.
+- Lite parser run `37722856334`: SUCCESS.
+- Plus: G3 34/34 ya certificado previamente con E2E + backend parser.
+- Decisión estable: no exigir a MathLive preservar sintaxis cruda que canonicaliza; esos casos se certifican en parser-level sin perder cobertura.
+- Próximo bloque: H1 — 30 casos reentrada/output-as-input.
