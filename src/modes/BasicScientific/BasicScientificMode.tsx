@@ -14,6 +14,7 @@ import { detectComplexAnalysisIntent } from "../../engine/parsing/complexAnalysi
 import { detectChainedInequality } from "../../engine/parsing/chainedInequality";
 import { detectRelationIntent } from "../../engine/parsing/relationIntent";
 import { detectConstrainedEquationIntent } from "../../engine/parsing/constrainedEquationIntent";
+import { detectMatrixIntent } from "../../engine/parsing/matrixIntent";
 import { addHistoryEntry } from "../../store/historyDb";
 import { useKeyboardPanelStore } from "../../store/useKeyboardPanelStore";
 import { useRecentKeysStore } from "../../store/useRecentKeysStore";
@@ -185,7 +186,52 @@ export function BasicScientificMode() {
     }
     const systemRows = splitSystemLatex(currentLatex) ?? splitFreeSystemLatex(currentLatex);
     if (systemRows) {
+      // H1 EN-RE-10: una lista de soluciones del mismo símbolo
+      // (ej. x=-2, x=2) no es un sistema cuadrado nuevo. Es una salida
+      // válida del solver que debe poder reingresarse sin error.
+      const solutionVars = systemRows.map((row) => row.match(/^\s*([A-Za-z])\s*=/)?.[1] ?? null);
+      if (solutionVars.every(Boolean) && new Set(solutionVars).size === 1) {
+        const requestId = makeRequestId();
+        onSuccess("Científica (lista de soluciones)", currentLatex, {
+          success: true,
+          resultLatex: currentLatex,
+          interpretedLatex: currentLatex,
+          resultViewLabel: "Soluciones",
+          steps: [],
+          hasDetailedSteps: false,
+          confidence: "SYMBOLIC",
+          requestId,
+        });
+        return;
+      }
       runSystem(systemRows);
+      return;
+    }
+
+    // H1 EN-RE-13: las matrices escritas/pegadas en la pantalla científica
+    // deben usar el mismo motor matricial que el módulo dedicado.
+    const matrixIntent = detectMatrixIntent(currentLatex);
+    if (matrixIntent) {
+      const requestId = makeRequestId();
+      const worker = getWorker();
+      worker.onmessage = (e: MessageEvent<MathResult>) =>
+        onSuccess("Científica (matriz)", currentLatex, e.data);
+
+      if (matrixIntent.kind === "inverse") {
+        worker.postMessage({ type: "matrixOp", requestId, op: "inverse", a: matrixIntent.matrix });
+      } else if (matrixIntent.kind === "power") {
+        worker.postMessage({ type: "matrixOp", requestId, op: "power", a: matrixIntent.matrix, exponent: matrixIntent.exponent });
+      } else if (matrixIntent.kind === "transpose") {
+        worker.postMessage({ type: "matrixOp", requestId, op: "transpose", a: matrixIntent.matrix });
+      } else if (matrixIntent.kind === "determinant") {
+        worker.postMessage({ type: "matrixOp", requestId, op: "determinant", a: matrixIntent.matrix });
+      } else if (matrixIntent.kind === "multiply") {
+        worker.postMessage({ type: "matrixOp", requestId, op: "multiply", a: matrixIntent.left, b: matrixIntent.right });
+      } else {
+        // Literal de matriz: devolverla por el motor como A^1 para obtener
+        // una representación matricial canónica sin inventar semántica.
+        worker.postMessage({ type: "matrixOp", requestId, op: "power", a: matrixIntent.matrix, exponent: 1 });
+      }
       return;
     }
 
