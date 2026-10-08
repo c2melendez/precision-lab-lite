@@ -36,48 +36,14 @@ Evidencia:
 - Plus Playwright `37580510564` — SUCCESS.
 - Lite HEAD documental posterior: Playwright `37581518369` — SUCCESS.
 
-## G3 — ACTIVO
-Objetivo: validar 34 casos EN-ER-01…EN-ER-34 de entradas inválidas y mensajes de error.
+## G3 — entradas inválidas y mensajes de error: CERRADO 34/34.
+- Lite: 26 parser-level raw + 8 E2E preservables por MathLive.
+- Lite E2E run `37722856327`: SUCCESS en desktop/tablet/mobile.
+- Lite parser run `37722856334`: SUCCESS.
+- Plus: G3 ya certificado 34/34 con Playwright + backend parser.
+- La separación por capa preserva cobertura completa: entradas canonicalizadas por MathLive se validan antes del editor; entradas que sí atraviesan UI se validan E2E.
 
-Diagnóstico inicial:
-- Lite run `37583041099`: FAILURE real de G3. 30/34 IDs presentaron rojo; una parte devolvía error visible pero genérico de Algebrite y otra aceptaba entradas incompletas/silenciosas.
-- Plus run `37583044889`: FAILURE de HARNESS. Los 34 casos fallaron en 3 viewports por `ReferenceError: hideMathLiveKeyboard is not defined`; no es evidencia de fallo de producto.
-- La matriz fuente exige feedback semánticamente claro; no basta con cualquier `PARSE_ERROR` genérico.
-
-Correcciones aplicadas:
-- Lite: `5eac718b9b8d33d9da9a06a688aca0204bd1fb13` validación estructural G3 antes del CAS.
-- Lite: `0b7cd3a20fa4d147af321ffd7748ce3c899aeb48` división por cero clasificada como DOMAIN_ERROR con mensaje claro.
-- Plus: `4f146ec8572554febddbe7f21f800733c70e4381` helper del harness G3 restaurado.
-- Prompt canónico de continuidad sincronizado byte-equivalente en Lite y Plus.
-
-Corridas vigentes y diagnóstico fiable:
-- Lite corrida fiable anterior: G3 sin mensajes EN-ER incorrectos; 28 IDs estructurales seguían en timeout por criterio de visibilidad del harness, no por ausencia de `setResult()`.
-- Plus corrida fiable anterior: 3 residuales — EN-ER-03, EN-ER-04 y EN-ER-13.
-- EN-ER-03/04: MathLive canoniza la fracción incompleta a grupo/paréntesis vacío; se acepta el mensaje semántico "Paréntesis vacíos" como equivalencia de serialización, sin cambio de producto.
-- EN-ER-13: fallo real de producto en Plus; función desnuda llegaba a SymPy y provocaba excepción interna. Corregido para rechazarse antes del CAS.
-
-Últimos cambios:
-- Lite harness DOM-content: `355bde675d22378ae7792339591ed9944c5d173d`.
-- Plus bare-function + canonicalización G3: `ef6728ef0814379dcd69236f21d41477ebfe5e23`.
-
-Arquitectura definitiva G3:
-- 27 casos permanecen como E2E de UI.
-- 7 casos canonicalizados por MathLive se certifican en parser-level: EN-ER-05, 15, 19, 20, 26, 27, 31.
-- Lite parser tests: `tests/parsing.test.ts`.
-- Plus parser tests: `backend/tests/test_parsing.py`.
-- No se elimina cobertura; se mueve a la capa donde la entrada cruda todavía existe.
-
-Últimos commits:
-- Lite E2E split: `b0b40fc66dafd7594e792960ac2ccc95bc2dbed4`.
-- Lite parser regression: `11d41e9aef438961e8975b6067ae96d88a17440c`.
-- Plus E2E split: `84d1066d499c6dbb8fb90e4ede9f15cb243d427d`.
-- Plus parser unknown-command fix: `3c067e7a907deb87142624a2926a73bcfdb27519`.
-- Plus parser regression: `7079dd5854fd987249fb07a665900ce754015c96`.
-
-Nueva evidencia:
-- Lite Playwright `37687766493`.
-- Plus Playwright `37687769608`.
-- Revisar además CI/unit tests de ambos HEADs para confirmar los 7 parser-level.
+Siguiente bloque activo: H1 — 30 casos de reentrada / output-as-input.
 
 ## Siguiente paso exacto
 1. Localizar/confirmar los 34 casos G3 en la matriz/spec vigente.
