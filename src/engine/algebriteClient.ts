@@ -172,7 +172,11 @@ export function toLatex(algebriteResult: string): string {
     if (typeof latex !== "string" || latex.length === 0 || /stop|Stop/.test(latex)) {
       return algebriteResult;
     }
-    return latex;
+    // Algebrite imprime su logaritmo natural como \\log. En Precision Lab,
+    // el contrato de entrada reserva \\log para base 10 y \\ln para el
+    // logaritmo natural. Emitir \\log aquí rompería round-trip y cambiaría
+    // el significado al reingresar la propia salida.
+    return latex.replace(/\\\\log(?=\\b|\\s|\\left|\\()/g, "\\\\ln");
   } catch {
     return algebriteResult;
   }
