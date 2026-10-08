@@ -33,3 +33,15 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - Contrato: al seleccionar/reusar una entrada del historial, el campo principal debe recuperar el LaTeX original exactamente, sin wrappers ni espacios añadidos.
 - Estado actual: el historial muestra entradas pero no ofrece una acción para restaurarlas al campo principal.
 - No se contabiliza como PASS automático hasta implementar el flujo de restauración o validarlo manualmente tras su implementación.
+
+
+## EN-RE-29 — enlace para compartir
+- Estado: CAPABILITY GAP no bloqueante durante IN625 H1d.
+- Contrato: validar round-trip de caracteres reservados en URL si existe función de compartir.
+- Estado actual: no se detectó una función de share/permalink del campo matemático en el producto actual.
+
+
+## EN-RE-30 — persistencia del campo tras recarga
+- Estado: CAPABILITY GAP no bloqueante durante IN625 H1d.
+- Contrato: conservar la entrada del campo tras reload si existe persistencia de entrada.
+- Estado actual: existen persistencias auxiliares en algunos módulos/configuraciones, pero no se detectó persistencia del campo matemático principal.
