@@ -59,6 +59,8 @@ const UNARY_FUNCTIONS: Record<string, Fn> = {
   log: Math.log10,
   sqrt: Math.sqrt,
   abs: Math.abs,
+  floor: Math.floor,
+  ceiling: Math.ceil,
 };
 
 function parseError(message: string): AppError {

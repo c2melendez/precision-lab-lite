@@ -296,6 +296,20 @@ export function parseAlgebraicFragment(text: string, angleMode: "RAD" | "GRAD" =
 }
 
 /**
+ * IN625 D3: convierte literales decimales ya validados a racionales exactos
+ * antes de tokenizar/evaluar. No toca enteros ni notación malformada; esa
+ * última ya fue rechazada por validateDecimalPoints().
+ */
+function rationalizeDecimalLiterals(expr: string): string {
+  return expr.replace(/(?<![A-Za-z0-9_.])(\d+)\.(\d+)(?![A-Za-z0-9_.])/g, (_m, intPart, fracPart) => {
+    const digits = String(fracPart);
+    const numerator = String(intPart) + digits;
+    const denominator = "1" + "0".repeat(digits.length);
+    return `(${numerator}/${denominator})`;
+  });
+}
+
+/**
  * Parser completo de sintaxis de entrada (Módulo 2). Lanza AppError con
  * ErrorCode.PARSE_ERROR ante cualquier violación de las reglas de la spec.
  */
@@ -306,6 +320,7 @@ export function parseExpression(
   const preprocessed = preprocessLatex(latex);
   const unicodeNormalized = normalizeUnicode(preprocessed);
   validateDecimalPoints(unicodeNormalized);
+  const exactNormalized = rationalizeDecimalLiterals(unicodeNormalized);
 
   function pipelineOneSide(side: string): { algebrite: string; tokens: Token[] } {
     const tokens = expandPostfixOperators(tokenize(side));
@@ -325,7 +340,7 @@ export function parseExpression(
   // Fix (decisión de Carlos, cierre de la suite de paridad de teclado):
   // se revisa desigualdad ANTES que "=" — "<="/">=" contienen un "="
   // literal que splitEquation partiría mal si no se distingue primero.
-  const inequalitySplit = splitInequality(unicodeNormalized);
+  const inequalitySplit = splitInequality(exactNormalized);
   if (inequalitySplit) {
     const leftResult = pipelineOneSide(inequalitySplit.left);
     const rightResult = pipelineOneSide(inequalitySplit.right);
@@ -343,7 +358,7 @@ export function parseExpression(
     };
   }
 
-  const { left, right, isEquation } = splitEquation(unicodeNormalized);
+  const { left, right, isEquation } = splitEquation(exactNormalized);
 
   const leftResult = pipelineOneSide(left);
   const freeVariables = extractFreeVariables(leftResult.tokens);

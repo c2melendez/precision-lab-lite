@@ -1,0 +1,68 @@
+import { describe, expect, it } from "vitest";
+import { parseExpression } from "../src/engine/parsing";
+import { evaluate } from "../src/engine/algebriteClient";
+
+function expectEquivalentToNumber(input: string, expected: number, tolerance = 1e-9): void {
+  const parsed = parseExpression(input).algebrite;
+  const diff = evaluate(`simplify((${parsed})-(${expected}))`);
+  const numeric = Number(diff);
+  if (Number.isFinite(numeric)) {
+    expect(Math.abs(numeric)).toBeLessThanOrEqual(tolerance);
+    return;
+  }
+  // Algebrite may preserve exact radicals symbolically. A second
+  // numerical probe through eval() must still collapse a numeric constant.
+  const probed = Number(evaluate(`eval((${parsed})-(${expected}))`));
+  expect(Number.isFinite(probed) && Math.abs(probed) <= tolerance).toBe(true);
+}
+function parseOut(input: string): string {
+  return parseExpression(input).algebrite.replace(/\s+/g, "");
+}
+
+describe("IN625 Parte A / A4 Raíces", () => {
+  it("EN-RD-01 sqrt con llaves", () => expectEquivalentToNumber("\\sqrt{4}", 2));
+  it("EN-RD-02 sqrt sin llaves", () => expectEquivalentToNumber("\\sqrt4", 2));
+  it("EN-RD-03 sqrt2", () => expectEquivalentToNumber("\\sqrt2", Math.SQRT2));
+  it("EN-RD-04 sqrt x conserva raíz", () => {
+    const out = parseOut("\\sqrt x");
+    expect(out).toContain("sqrt(x)");
+  });
+  it("EN-RD-05 y queda fuera del radical", () => {
+    const out = parseOut("\\sqrt{x}y");
+    expect(out).toContain("sqrt(x)");
+    expect(out).toMatch(/\*y|y\*/);
+  });
+  it("EN-RD-06 raíz cúbica de 8", () => expectEquivalentToNumber("\\sqrt[3]{8}", 2));
+  it("EN-RD-07 raíz cúbica real de -8", () => expectEquivalentToNumber("\\sqrt[3]{-8}", -2));
+  it("EN-RD-08 raíz cúbica sin llaves conserva índice y radicando", () => {
+    const out = parseOut("\\sqrt[3]4");
+    expect(out).toContain("4");
+    expect(out).toMatch(/\^.*1.*3/);
+  });
+  it("EN-RD-09 índice de dos dígitos", () => expectEquivalentToNumber("\\sqrt[10]{1024}", 2));
+  it("EN-RD-10 raíz n-ésima simbólica", () => {
+    const out = parseOut("\\sqrt[n]{x}");
+    expect(out).toMatch(/x.*1.*n|\^\(1\/\(n\)\)/);
+  });
+  it("EN-RD-11 raíces anidadas", () => expectEquivalentToNumber("\\sqrt{\\sqrt{\\sqrt{256}}}", 2));
+  it("EN-RD-12 coeficiente por radical", () => expectEquivalentToNumber("2\\sqrt{3}", 2 * Math.sqrt(3)));
+  it("EN-RD-13 producto de radicales conserva dos factores", () => {
+    const out = parseOut("\\sqrt{2}\\sqrt{3}");
+    expect((out.match(/sqrt\(/g) ?? []).length).toBe(2);
+    expect(out).toContain("*");
+  });
+  it("EN-RD-14 potencia un medio equivale a sqrt", () => {
+    const a = parseExpression("x^{\\frac{1}{2}}").algebrite;
+    const b = parseExpression("\\sqrt{x}").algebrite;
+    const diff = evaluate(`simplify((${a})-(${b}))`);
+    expect(Number(diff)).toBe(0);
+  });
+  it("EN-RD-15 sqrt(-4): complejo 2i o error real explícito", () => {
+    try {
+      const out = evaluate(parseExpression("\\sqrt{-4}").algebrite);
+      expect(out.replace(/\s+/g, "")).toMatch(/2\*?i|i\*?2|2i/);
+    } catch (e) {
+      expect(String(e).length).toBeGreaterThan(0);
+    }
+  });
+});

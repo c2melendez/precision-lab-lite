@@ -19,6 +19,9 @@ export const RESERVED_MULTI_LETTER_IDENTIFIERS = [
   "sigma",
   "omega",
   "rho",
+  "zeta",
+  "Delta",
+  "Lambda",
 ];
 
 /** Constantes reconocidas (no son variables libres). */
@@ -92,6 +95,8 @@ export const FUNCTION_ARITY: Record<string, number[]> = {
   acsch: [1],
   acoth: [1],
   abs: [1],
+  floor: [1],
+  ceiling: [1],
   exp: [1],
   sign: [1],
   factorial: [1],
@@ -139,7 +144,7 @@ export const FUNCTION_ARITY: Record<string, number[]> = {
   // aparte en compute.worker.ts, ver tryDefiniteIntegral), pero necesita
   // registrarse igual para que el tokenizer no le inserte una "*" antes
   // del paréntesis (mismo bug que mean/median/etc., ver arriba).
-  defintegral: [3],
+  defintegral: [3, 4],
 };
 
 export const KNOWN_FUNCTION_NAMES = Object.keys(FUNCTION_ARITY);

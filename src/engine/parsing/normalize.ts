@@ -8,6 +8,272 @@ function parseError(message: string): AppError {
   return { code: ErrorCode.PARSE_ERROR, message };
 }
 
+function normalizeExternalSyntaxF3c(input: string): string {
+  let out = input.trim();
+
+  // SymPy latex aliases. Normalizar nombre + argumento para evitar
+  // dejar formas como \\arcsin{...}, que no son aceptadas por todos los
+  // parsers/canales de entrada.
+  out = out
+    .replace(
+      /\\operatorname\{(asin|acos|atan)\}\s*\{\\left\(([\s\S]*?)\\right\)\}/g,
+      (_m, fn, arg) => {
+        const mapped = fn === "asin" ? "arcsin" : fn === "acos" ? "arccos" : "arctan";
+        return "\\" + mapped + "\\left(" + arg + "\\right)";
+      },
+    )
+    .replace(
+      /\\operatorname\{(asin|acos|atan)\}\s*\{([^{}]+)\}/g,
+      (_m, fn, arg) => {
+        const mapped = fn === "asin" ? "arcsin" : fn === "acos" ? "arccos" : "arctan";
+        return "\\" + mapped + "\\left(" + arg + "\\right)";
+      },
+    )
+    .replace(/\\operatorname\{asin\}/g, "\\arcsin")
+    .replace(/\\operatorname\{acos\}/g, "\\arccos")
+    .replace(/\\operatorname\{atan\}/g, "\\arctan");
+
+  // Operadores de comparación externos.
+  out = out
+    .replace(/<>/g, "!=")
+    .replace(/==/g, "=");
+
+  // lim(x->a, expr) -> \lim_{x\to a} expr
+  const lim = out.match(/^lim\(\s*([A-Za-z])\s*->\s*([^,]+),\s*(.+)\)$/s);
+  if (lim) out = `\\lim_{${lim[1]}\\to${lim[2].trim()}}${lim[3].trim()}`;
+
+  return out;
+}
+
+function normalizeExternalSyntax(input: string): string {
+  let out = input.trim();
+
+  // Excel: un "=" inicial indica fórmula, no ecuación.
+  if (/^=[^=]/.test(out)) out = out.slice(1);
+
+  // Python/NumPy conocidos; solo nombres explícitos, nunca eval().
+  out = out
+    .replace(/\bmath\.sqrt\s*\(/g, "sqrt(")
+    .replace(/\bmath\.pi\b/g, "pi")
+    .replace(/\bnp\.sin\s*\(/g, "sin(");
+
+  // Wolfram básico permitido por el contrato o error claro.
+  out = out
+    .replace(/\bSin\[([^\[\]]+)\]/g, "sin($1)")
+    .replace(/\bSqrt\[([^\[\]]+)\]/g, "sqrt($1)")
+    .replace(/\bLog\[E\]/g, "ln(e)");
+
+  // Excel en español, conjunto mínimo y explícito.
+  out = out
+    .replace(/\bRAIZ\s*\(/gi, "sqrt(")
+    .replace(/\bSENO\s*\(/gi, "sin(")
+    .replace(/\bPI\s*\(\s*\)/gi, "pi")
+    .replace(/\bPOTENCIA\s*\(([^,()]+),([^()]+)\)/gi, "($1)^($2)")
+    .replace(/\bLN\s*\(/g, "ln(")
+    .replace(/\bEXP\s*\(/g, "exp(");
+
+  return out;
+}
+
+function normalizeUnicodePaste(input: string): string {
+  const supers: Record<string, string> = {
+    "⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9",
+    "⁻":"-",
+  };
+  const subs: Record<string, string> = {
+    "₀":"0","₁":"1","₂":"2","₃":"3","₄":"4","₅":"5","₆":"6","₇":"7","₈":"8","₉":"9",
+  };
+
+  let out = input
+    // EN-UC-20: invisibles frecuentes en PDF/Word.
+    .replace(/[\u200B\uFEFF\u00AD]/g, "")
+    // EN-UC-21: homógrafo cirílico x; normalización explícita y segura.
+    .replace(/х/g, "x")
+    // EN-UC-22/23/24: letras matemáticas y ancho completo frecuentes.
+    .replace(/𝑓/g, "f")
+    .replace(/𝑥/g, "x")
+    .replace(/[！-～]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xFEE0))
+    .replace(/　/g, " ")
+    .replace(/ⅇ/g, "e")
+    .replace(/ⅈ/g, "i");
+
+  // EN-UC-25: integral compacta Unicode con límites/sub/superscript.
+  out = out.replace(/^∫([₀₁₂₃₄₅₆₇₈₉]+)([⁰¹²³⁴⁵⁶⁷⁸⁹]+)(.+)d([A-Za-z])$/, (_m, lowerRun, upperRun, body, variable) => {
+    const lower = [...lowerRun].map((ch) => subs[ch] ?? "").join("");
+    const upper = [...upperRun].map((ch) => supers[ch] ?? "").join("");
+    let normalizedBody = body.replace(/([A-Za-z0-9)]+)([⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)/g, (_m2: string, base: string, run: string) => {
+      const decoded = [...run].map((ch) => supers[ch] ?? "").join("");
+      return decoded ? `${base}^{${decoded}}` : _m2;
+    });
+    return `\\int_{${lower}}^{${upper}}${normalizedBody}d${variable}`;
+  });
+
+  out = out
+    .replace(/[−–—‐‑]/g, "-")
+    .replace(/[×·⋅∙∗]/g, "*")
+    .replace(/÷/g, "/")
+    .replace(/½/g, "(1/2)")
+    .replace(/¼/g, "(1/4)")
+    .replace(/¾/g, "(3/4)")
+    .replace(/π/g, "\\pi")
+    .replace(/θ/g, "\\theta")
+    .replace(/∞/g, "\\infty")
+    .replace(/≤/g, "\\le")
+    .replace(/≥/g, "\\ge")
+    .replace(/≠/g, "\\ne")
+    .replace(/±/g, "\\pm")
+    .replace(/[’′]/g, "'")
+    .replace(/[\u00A0\u2009\u202F]/g, " ");
+
+  out = out.replace(/([A-Za-z0-9)]+)([⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)/g, (_m, base, run) => {
+    const decoded = [...run].map((ch) => supers[ch] ?? "").join("");
+    return decoded ? `${base}^{${decoded}}` : _m;
+  });
+
+  out = out.replace(/([A-Za-z])([₀₁₂₃₄₅₆₇₈₉]+)/g, (_m, base, run) => {
+    const decoded = [...run].map((ch) => subs[ch] ?? "").join("");
+    return decoded ? `${base}_{${decoded}}` : _m;
+  });
+
+  out = out
+    .replace(/∛\s*(\([^)]*\)|[A-Za-z0-9.]+)/g, "\\sqrt[3]{$1}")
+    .replace(/∜\s*(\([^)]*\)|[A-Za-z0-9.]+)/g, "\\sqrt[4]{$1}")
+    .replace(/√\s*(\([^)]*\)|[A-Za-z0-9.]+)/g, (_m, atom) =>
+      atom.startsWith("(") ? `\\sqrt{${atom.slice(1, -1)}}` : `\\sqrt{${atom}}`
+    );
+
+  // EN-UC-26: no permitir que texto pictográfico o CJK se degrade a variables.
+  const bad = out.match(/[\p{Extended_Pictographic}\p{Script=Han}]/u);
+  if (bad) {
+    const cp = bad[0].codePointAt(0)?.toString(16).toUpperCase().padStart(4, "0");
+    throw new Error(`Carácter inesperado "${bad[0]}" (U+${cp}).`);
+  }
+
+  return out;
+}
+
+function normalizePastedLatex(input: string): string {
+  let out = input.trim();
+
+  // Delimitadores de modo matemático pegados desde Markdown/TeX.
+  if (
+    out.length >= 4 &&
+    out[0] === "$" &&
+    out[1] === "$" &&
+    out[out.length - 2] === "$" &&
+    out[out.length - 1] === "$"
+  ) {
+    out = out.slice(2, -2).trim();
+  } else if (out.startsWith("$") && out.endsWith("$") && out.length >= 2) {
+    out = out.slice(1, -1).trim();
+  }
+  if (out.startsWith("\\(") && out.endsWith("\\)")) out = out.slice(2, -2).trim();
+  if (out.startsWith("\\[") && out.endsWith("\\]")) out = out.slice(2, -2).trim();
+
+  // Entornos de ecuación/alineación copiados completos.
+  out = out.replace(/^\\begin\{(?:equation\*?|align\*?)\}/, "");
+  out = out.replace(/\\end\{(?:equation\*?|align\*?)\}$/, "");
+
+  // Wrapper típico de Wikipedia: {\displaystyle ...}. Debe retirarse
+  // antes de borrar el macro de estilo para no dejar llaves externas.
+  const displayGroup = out.match(/^\{\s*\\displaystyle\s+([\s\S]*)\}$/);
+  if (displayGroup) out = displayGroup[1];
+
+  // Estilos visuales no semánticos.
+  out = out
+    .replace(/\\(?:displaystyle|textstyle|scriptstyle)\b/g, "")
+    .replace(/\\(?:,|;|:|!)(?=\s|$|[^A-Za-z])/g, "")
+    .replace(/\\(?:quad|qquad)\b/g, "")
+    .replace(/~/g, " ");
+
+  // Numeración/labels editoriales no cambian la expresión.
+  out = out
+    .replace(/\\tag\{[^{}]*\}/g, "")
+    .replace(/\\label\{[^{}]*\}/g, "");
+
+  // Separador de línea sobrante al final.
+  out = out.replace(/\\\\\s*$/, "");
+
+  return out.trim();
+}
+
+
+const LOCALIZED_ALIAS_MAP: Record<string, string> = {
+  sin: "\\sin", cos: "\\cos", tan: "\\tan", csc: "\\csc", sec: "\\sec", cot: "\\cot",
+  ln: "\\ln", log: "\\log", exp: "\\exp", sinh: "\\sinh", cosh: "\\cosh", tanh: "\\tanh",
+  sen: "\\sin",
+  tg: "\\tan",
+  ctg: "\\cot",
+  cotg: "\\cot",
+  cosec: "\\csc",
+  arcsen: "\\arcsin",
+  arctg: "\\arctan",
+  arcctg: "\\arccot",
+  arccotg: "\\arccot",
+  arccosec: "\\arccsc",
+  senh: "\\sinh",
+  tgh: "\\tanh",
+  ctgh: "\\coth",
+  cotgh: "\\coth",
+  cosech: "\\csch",
+  argsenh: "\\asinh",
+  arcsenh: "\\asinh",
+  argcosh: "\\acosh",
+  argtgh: "\\atanh",
+  arctgh: "\\atanh",
+  lg: "\\log",
+  raiz: "sqrt",
+  "raíz": "sqrt",
+  mcd: "gcd",
+  mcm: "lcm",
+  "máx": "max",
+  "mín": "min",
+};
+
+function normalizeLocalizedAliases(input: string): string {
+  let out = input;
+  out = out.replace(/\\,/g, " ");
+
+  out = out.replace(
+    /\\(?:operatorname|mathrm|text)\{([^{}]+)\}/g,
+    (_m, rawName) => {
+      const mapped = LOCALIZED_ALIAS_MAP[String(rawName).toLowerCase()] ?? String(rawName);
+      return mapped.startsWith("\\") ? mapped + " " : mapped;
+    },
+  );
+
+  out = out.replace(
+    /\\(sen|tg|ctg|cotg|cosec|arcsen|arctg|arcctg|arccotg|arccosec|senh|tgh|ctgh|cotgh|cosech|argsenh|arcsenh|argcosh|argtgh|arctgh|raiz)(?![A-Za-z])/gi,
+    (_m, rawName) => LOCALIZED_ALIAS_MAP[String(rawName).toLowerCase()] ?? String(rawName),
+  );
+
+  out = out.replace(
+    /(?<![A-Za-zÁÉÍÓÚáéíóúÑñ])(arccosec|arccotg|arcctg|arcsenh|argsenh|argcosh|argtgh|arctgh|arcsen|arctg|cosech|cotgh|ctgh|senh|tgh|cotg|cosec|ctg|sen|tg|lg|raíz|raiz|mcd|mcm|máx|mín)(?![A-Za-zÁÉÍÓÚáéíóúÑñ])/gi,
+    (rawName) => LOCALIZED_ALIAS_MAP[String(rawName).toLowerCase()] ?? String(rawName),
+  );
+
+  return out;
+}
+
+function encodeSubscriptPayload(raw: string): string {
+  const digitWords: Record<string, string> = {
+    "0": "ZERO", "1": "ONE", "2": "TWO", "3": "THREE", "4": "FOUR",
+    "5": "FIVE", "6": "SIX", "7": "SEVEN", "8": "EIGHT", "9": "NINE",
+  };
+  let out = "";
+  for (const ch of raw) {
+    if (digitWords[ch]) out += digitWords[ch];
+    else if (/[A-Za-z]/.test(ch)) out += ch;
+    else if (ch === ",") out += "COMMA";
+  }
+  return out || "EMPTY";
+}
+
+function encodeSubscriptIdentifier(base: string, payload: string): string {
+  return base + "SUB" + encodeSubscriptPayload(payload);
+}
+
+
 /**
  * Reemplaza \sqrt{...} y \sqrt[n]{...} de forma balanceada (no con regex
  * ingenuo, que rompe con anidamiento — ej. \sqrt{\sqrt{x}}).
@@ -25,6 +291,7 @@ function parseError(message: string): AppError {
  * cualquier fracción/raíz de un solo dígito escrita a mano.
  */
 function readBalancedOrSingleToken(input: string, fromIndex: number, macroLabel: string): [string, number] {
+  while (fromIndex < input.length && /\s/.test(input[fromIndex])) fromIndex++;
   if (input[fromIndex] === "{") {
     let depth = 1;
     let j = fromIndex + 1;
@@ -45,6 +312,154 @@ function readBalancedOrSingleToken(input: string, fromIndex: number, macroLabel:
     return [input[fromIndex], fromIndex + 1];
   }
   throw parseError(`Se esperaba "{" o un token tras ${macroLabel}.`);
+}
+
+function readFunctionArgument(input: string, fromIndex: number): [string, number] {
+  let i = fromIndex;
+  while (i < input.length && /\s/.test(input[i])) i++;
+  if (i >= input.length) throw parseError("Falta argumento de función.");
+
+  if (input.startsWith("\\left(", i)) {
+    const start = i + "\\left(".length;
+    let depth = 1;
+    let j = start;
+    while (j < input.length) {
+      if (input.startsWith("\\left(", j)) { depth++; j += "\\left(".length; continue; }
+      if (input.startsWith("\\right)", j)) {
+        depth--;
+        if (depth === 0) return [input.slice(start, j), j + "\\right)".length];
+        j += "\\right)".length;
+        continue;
+      }
+      j++;
+    }
+    throw parseError("Paréntesis sin balancear en argumento de función.");
+  }
+
+  if (input[i] === "(") {
+    let depth = 1;
+    let j = i + 1;
+    while (j < input.length && depth > 0) {
+      if (input[j] === "(") depth++;
+      else if (input[j] === ")") depth--;
+      j++;
+    }
+    if (depth !== 0) throw parseError("Paréntesis sin balancear en argumento de función.");
+    return [input.slice(i + 1, j - 1), j];
+  }
+
+  // Argumento sin paréntesis: consume un producto/átomo completo (x^2, 3x,
+  // pi*x), pero se detiene ante un operador aditivo/división o ante otra
+  // función LaTeX al nivel superior.
+  let braceDepth = 0;
+  let parenDepth = 0;
+  let j = i;
+  while (j < input.length) {
+    if (input[j] === "{") braceDepth++;
+    else if (input[j] === "}") braceDepth = Math.max(0, braceDepth - 1);
+    else if (input[j] === "(") parenDepth++;
+    else if (input[j] === ")") {
+      if (parenDepth === 0) break;
+      parenDepth--;
+    }
+    if (braceDepth === 0 && parenDepth === 0) {
+      if (/[+\-\/]/.test(input[j])) break;
+      if (input[j] === "\\" && /^(?:cdot|times|div)(?![A-Za-z])/.test(input.slice(j + 1))) break;
+      if (j > i && input[j] === "\\" && /^(?:sin|cos|tan|csc|sec|cot|ln|log|sinh|cosh|tanh)\b/.test(input.slice(j + 1))) break;
+    }
+    j++;
+  }
+  const arg = input.slice(i, j).trim();
+  if (!arg) throw parseError("Falta argumento de función.");
+  return [arg, j];
+}
+
+function normalizeUnparenthesizedFunctions(input: string): string {
+  const fnPattern = /\\(arccsc|arccot|arcsec|arcsin|arccos|arctan|asinh|acosh|atanh|sinh|cosh|tanh|csch|sech|coth|sin|cos|tan|csc|sec|cot|log|ln|exp)(?![A-Za-z^])/g;
+  let expr = input;
+  let guard = 0;
+
+  while (guard++ < 50) {
+    fnPattern.lastIndex = 0;
+    let changed = false;
+    let match: RegExpExecArray | null;
+
+    while ((match = fnPattern.exec(expr)) !== null) {
+      const macroEnd = match.index + match[0].length;
+      let i = macroEnd;
+      while (i < expr.length && /\s/.test(expr[i])) i++;
+
+      // Si ya hay paréntesis explícitos, basta canonizar el nombre y
+      // retirar el backslash aquí. Esto también cubre hiperbólicas e
+      // inversas que no tienen una regla de despojo al final del pipeline.
+      if (expr[i] === "(" || expr.startsWith("\\left(", i)) {
+        const canonical = match[1] === "log" ? "log10" : match[1];
+        expr = expr.slice(0, match.index) + canonical + expr.slice(macroEnd);
+        changed = true;
+        break;
+      }
+
+      const [arg, next] = readFunctionArgument(expr, macroEnd);
+      const canonical = match[1] === "log" ? "log10" : match[1];
+      const replacement = `${canonical}(${arg})`;
+      expr = expr.slice(0, match.index) + replacement + expr.slice(next);
+      changed = true;
+      break;
+    }
+
+    if (!changed) break;
+  }
+
+  return expr;
+}
+
+function normalizePoweredFunctions(input: string): string {
+  const fnPattern = /\\(sin|cos|tan|csc|sec|cot|ln|log)(?:\^\{([^{}]+)\}|\^(-?\d+))/g;
+  let out = "";
+  let cursor = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = fnPattern.exec(input)) !== null) {
+    out += input.slice(cursor, match.index);
+    const fn = match[1];
+    const exponent = (match[2] ?? match[3] ?? "").trim();
+    const [arg, next] = readFunctionArgument(input, fnPattern.lastIndex);
+
+    if (exponent === "-1" && (fn === "sin" || fn === "cos" || fn === "tan")) {
+      const inverse = fn === "sin" ? "arcsin" : fn === "cos" ? "arccos" : "arctan";
+      out += `${inverse}(${arg})`;
+    } else {
+      const mappedFn = fn === "log" ? "log10" : fn;
+      out += `(${mappedFn}(${arg}))^(${exponent})`;
+    }
+
+    cursor = next;
+    fnPattern.lastIndex = next;
+  }
+
+  return out + input.slice(cursor);
+}
+
+function replaceNthRootOnce(input: string): string {
+  const start = input.indexOf("\\sqrt[");
+  if (start === -1) return input;
+  const indexStart = start + "\\sqrt[".length;
+  const close = input.indexOf("]", indexStart);
+  if (close === -1) throw parseError('Índice sin cerrar en "\\sqrt[n]".');
+  const index = input.slice(indexStart, close).trim();
+  if (!index) throw parseError('Índice vacío en "\\sqrt[n]".');
+
+  const [radicand, next] = readBalancedOrSingleToken(input, close + 1, "\\sqrt[n]");
+  const numericIndex = /^\d+$/.test(index) ? Number(index) : null;
+  const numericNegative = radicand.match(/^\s*-\s*(\d+(?:\.\d+)?)\s*$/);
+
+  let replacement: string;
+  if (numericIndex !== null && numericIndex % 2 === 1 && numericNegative) {
+    replacement = `-((${numericNegative[1]})^(1/(${index})))`;
+  } else {
+    replacement = `((${radicand})^(1/(${index})))`;
+  }
+  return input.slice(0, start) + replacement + input.slice(next);
 }
 
 function replaceBalanced(
@@ -73,9 +488,247 @@ function replaceBalanced(
   return result;
 }
 
+/**
+ * IN625 A2 — normalización estructural de delimitadores.
+ *
+ * Estos macros cambian presentación/agrupación, no la semántica. Se
+ * resuelven antes del resto del preprocesado para que el tokenizador no
+ * reciba barras invertidas o delimitadores que no conoce.
+ */
+function normalizeDelimiterSyntax(input: string): string {
+  let expr = input
+    // MathLive/LaTeX sizing wrappers: solo tamaño visual.
+    .replace(/\\(?:bigl|bigr|Bigl|Bigr|biggl|biggr|Biggl|Biggr)/g, "")
+    // mathtools puede emitir mleft/mright; semánticamente son left/right.
+    .replace(/\\mleft/g, "\\left")
+    .replace(/\\mright/g, "\\right")
+    // Corchetes usados como agrupación dentro de left/right.
+    .replace(/\\left\[/g, "(")
+    .replace(/\\right\]/g, ")")
+    // Piso/techo: preservar como funciones del CAS.
+    .replace(/\\lfloor/g, "floor(")
+    .replace(/\\rfloor/g, ")")
+    .replace(/\\lceil/g, "ceiling(")
+    .replace(/\\rceil/g, ")")
+    // Barras LaTeX explícitas. Normalizar left/right antes del scanner.
+    .replace(/\\left\|/g, "|")
+    .replace(/\\right\|/g, "|")
+    // El caso adyacente es producto.
+    .replace(/\\rvert\s*\\lvert/g, ")*abs(")
+    .replace(/\\lvert/g, "abs(")
+    .replace(/\\rvert/g, ")");
+
+  // Barra simple |...|, incluyendo anidamiento como ||x|-1|.
+  // Si no hay un absoluto abierto, "|" abre. Si lo hay, abre únicamente
+  // cuando aparece en posición de inicio de operando; en otro caso cierra.
+  let out = "";
+  let depth = 0;
+  for (let i = 0; i < expr.length; i++) {
+    const ch = expr[i];
+    if (ch !== "|") {
+      out += ch;
+      continue;
+    }
+
+    let j = out.length - 1;
+    while (j >= 0 && /\s/.test(out[j])) j--;
+    const prev = j >= 0 ? out[j] : "";
+    const beginsOperand = depth === 0 || prev === "" || "()+-*/^=<>,".includes(prev);
+
+    if (beginsOperand) {
+      out += "abs(";
+      depth++;
+    } else {
+      out += ")";
+      depth = Math.max(0, depth - 1);
+    }
+  }
+  return out;
+}
+
+
+/**
+ * IN625 G3 — validación estructural previa al preprocesado.
+ * Evita delegar al CAS errores de edición que podemos explicar de forma
+ * determinista y amigable. No evalúa matemáticas; solo valida estructura.
+ */
+function validateInputStructureG3(input: string): void {
+  const raw = input.trim();
+
+  if (!raw) throw parseError("Escriba una expresión antes de calcular.");
+
+  if (/\\placeholder(?:\{\})?/i.test(raw)) {
+    throw parseError("Entrada incompleta: complete el marcador pendiente.");
+  }
+
+  const unknownCommand = raw.match(/\\([A-Za-z]+)(?:\{|\()/);
+  if (unknownCommand) {
+    const known = new Set([
+      "frac","sqrt","sin","cos","tan","csc","sec","cot","ln","log","exp",
+      "left","right","pi","infty","theta","alpha","beta","gamma","lambda",
+      "zeta","Delta","Lambda","Phi","gcd","min","max","pm","le","ge","leq",
+      "geq","neq","ne","lt","gt","operatorname","mathrm","text","placeholder",
+      "lim","int","partial","displaystyle","dfrac","tfrac","cfrac"
+    ]);
+    if (!known.has(unknownCommand[1])) {
+      throw parseError(`Comando desconocido: \\${unknownCommand[1]}.`);
+    }
+  }
+
+  if (/^\\text\{[\s\S]*\}$/.test(raw)) {
+    throw parseError("Texto no matemático: escriba una expresión matemática.");
+  }
+
+  if (/^=|=$/.test(raw)) {
+    throw parseError("Ecuación incompleta: debe haber una expresión a ambos lados de \"=\".");
+  }
+
+  if (/^\s*\^/.test(raw)) {
+    throw parseError("Exponente sin base.");
+  }
+  if (/\^\s*(?:\{\s*\})?\s*$/.test(raw)) {
+    throw parseError("Exponente vacío.");
+  }
+
+  if (/\\frac\s*\{\s*\}\s*\{/.test(raw)) {
+    throw parseError("Fracción incompleta: el numerador está vacío.");
+  }
+  if (/\\frac\s*\{[^{}]*\}\s*\{\s*\}\s*$/.test(raw) || /\\frac\s*\{[^{}]*\}\s*$/.test(raw)) {
+    throw parseError("Fracción incompleta: falta el denominador.");
+  }
+  if (/\\sqrt\s*\{\s*\}/.test(raw)) {
+    throw parseError("Raíz incompleta: el radicando está vacío.");
+  }
+
+  if (/\\(?:sin|cos|tan|csc|sec|cot|ln|log|exp)\s*$/.test(raw) ||
+      /\\(?:sin|cos|tan|csc|sec|cot|ln|log|exp)\s*\(\s*\)\s*$/.test(raw)) {
+    throw parseError("Falta el argumento de la función.");
+  }
+
+  if (/\(\s*\)/.test(raw)) {
+    throw parseError("Paréntesis vacíos: falta una expresión.");
+  }
+
+  if (/\\left\([^]*\\right\]/.test(raw)) {
+    throw parseError("Delimitadores incompatibles: se abrió con paréntesis y se cerró con corchete.");
+  }
+  if (/\\left(?![\s\S]*\\right)/.test(raw)) {
+    throw parseError("Delimitador incompleto: falta \\right.");
+  }
+  if (/\\right/.test(raw) && !/\\left/.test(raw)) {
+    throw parseError("Delimitador inválido: aparece \\right sin \\left.");
+  }
+
+  let parenDepth = 0;
+  for (const ch of raw.replace(/\\left|\\right/g, "")) {
+    if (ch === "(") parenDepth++;
+    if (ch === ")") {
+      parenDepth--;
+      if (parenDepth < 0) throw parseError("Paréntesis de cierre sobrante.");
+    }
+  }
+  if (parenDepth > 0) throw parseError("Paréntesis sin cerrar.");
+
+  let braceDepth = 0;
+  for (const ch of raw) {
+    if (ch === "{") braceDepth++;
+    if (ch === "}") {
+      braceDepth--;
+      if (braceDepth < 0) throw parseError("Llave de cierre sobrante.");
+    }
+  }
+  if (braceDepth > 0) throw parseError("Llave sin cerrar.");
+
+  if (/^[*\/]/.test(raw)) {
+    throw parseError("Operador sin primer operando.");
+  }
+  if (/[+*\/]\s*$/.test(raw)) {
+    throw parseError("Operador sin segundo operando.");
+  }
+  if (/(?:\*\/|\/\*|\+\+|\*\*\/)/.test(raw)) {
+    throw parseError("Secuencia de operadores inválida.");
+  }
+}
+
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
-  let expr = latex;
+  validateInputStructureG3(latex);
+  latex = normalizeExternalSyntaxF3c(normalizeExternalSyntax(normalizeUnicodePaste(normalizePastedLatex(latex))));
+  let expr = normalizeLocalizedAliases(normalizeDelimiterSyntax(latex));
+
+  // IN625 E1b — variantes tipográficas equivalentes de límites.
+  expr = expr.replace(/\\displaystyle/g, "").replace(/\\rightarrow/g, "\\to");
+
+  // IN625 D1 — normalización numérica previa a retirar espacios.
+  // MathLive representa una coma decimal explícita como {,}; esa forma
+  // es inequívocamente decimal y debe funcionar independientemente del modo regional.
+  expr = expr.replace(/\{,\}/g, ".");
+
+  // Decimales abreviados aceptados por el contrato: .5, -.5 y 5.
+  expr = expr
+    .replace(/(^|[+\-*/=(])\.(\d)/g, "$10.$2")
+    .replace(/(\d)\.(?=$|[+\-*/)=])/g, "$1");
+
+  // Agrupación de miles por espacio fino/normal. Solo se retira cuando
+  // precede exactamente a un grupo de tres dígitos; 3 4 sigue siendo error.
+  let previousGrouping = "";
+  while (expr !== previousGrouping) {
+    previousGrouping = expr;
+    expr = expr.replace(/(?<=\d)\s+(?=\d{3}(?:\D|$))/g, "");
+  }
+  if (/\d\s+\d/.test(expr)) {
+    throw parseError("Separación numérica ambigua: parece faltar un operador.");
+  }
+
+  // IN625 D2 — notación científica ASCII. Solo se reconoce cuando
+  // existe una mantisa numérica completa seguida de e/E y un exponente
+  // entero opcionalmente signado. La constante de Euler aislada sigue
+  // siendo "e" y no entra en esta regla.
+  expr = expr.replace(
+    /(^|[^A-Za-z0-9_.])(\d+(?:\.\d+)?)[eE]([+-]?\d+)(?![A-Za-z0-9_])/g,
+    (_m, prefix, mantissa, exponent) => `${prefix}(${mantissa}*10^(${exponent}))`,
+  );
+
+  // IN625 A3 — operadores/combinatoria y relaciones equivalentes.
+  // Normalización general de macros LaTeX al contrato lineal del motor.
+  expr = expr
+    .replace(/\\binom\{([^{}]+)\}\{([^{}]+)\}/g, "nCr($1,$2)")
+    .replace(/\{([^{}]+)\\choose([^{}]+)\}/g, "nCr($1,$2)")
+    .replace(/([A-Za-z0-9.]+)\s*\\bmod\s*([A-Za-z0-9.]+)/g, "mod($1,$2)");
+
+  // IN625 A1 — variantes TeX equivalentes de fracción. MathLive suele
+  // canonizarlas al editar, pero el parser también debe ser correcto
+  // cuando recibe LaTeX pegado/escrito directamente.
+  expr = expr.replace(/\\(?:dfrac|tfrac|cfrac)/g, "\\frac");
+
+  // TeX primitivo \\over: el numerador/denominador son los contenidos a
+  // izquierda/derecha dentro del grupo actual. Primero resolvemos grupos
+  // simples {...\\over...}; después la forma top-level sin llaves
+  // (ej. x+1\\over x-1). Esto se hace antes de procesar \\frac.
+  let previousOver = "";
+  while (expr.includes("\\over") && expr !== previousOver) {
+    previousOver = expr;
+    expr = expr.replace(/\{([^{}]*)\\over([^{}]*)\}/g, "\\frac{$1}{$2}");
+    if (expr.includes("\\over")) {
+      let depth = 0;
+      let overIndex = -1;
+      for (let i = 0; i < expr.length; i++) {
+        if (expr[i] === "{") depth++;
+        else if (expr[i] === "}") depth--;
+        else if (depth === 0 && expr.startsWith("\\over", i)) {
+          if (overIndex !== -1) {
+            throw parseError('Solo se admite un "\\over" por grupo.');
+          }
+          overIndex = i;
+        }
+      }
+      if (overIndex !== -1) {
+        const left = expr.slice(0, overIndex);
+        const right = expr.slice(overIndex + "\\over".length);
+        expr = `\\frac{${left}}{${right}}`;
+      }
+    }
+  }
 
   // S16 REG-008: MathLive serializa la tecla visual ° como ^{\\circ}
   // (y puede usar ^\\circ). Unificarlo con el marcador ° que ya procesa
@@ -213,6 +866,23 @@ export function preprocessLatex(latex: string): string {
     }
   }
 
+  // IN625 E1a — forma canónica sin paréntesis explícitos:
+  // \\frac{d}{dx}x^{2}, \\frac{d}{dx}\\sin x.
+  // Solo se acepta cuando el operador de derivación inicia la expresión;
+  // todo el resto se interpreta como su operando, evitando degradarlo a
+  // una fracción algebraica d/(dx).
+  {
+    const bareDerivative = expr.match(/^\\frac\{d(?:\^\{?(\d+)\}?)?\}\{d([a-zA-Z])(?:\^\{?\d+\}?)?\}(.+)$/s);
+    if (bareDerivative && !bareDerivative[3].startsWith("\\left(")) {
+      const order = bareDerivative[1] ? Number(bareDerivative[1]) : 1;
+      const variable = bareDerivative[2];
+      const body = bareDerivative[3].trim();
+      if (!body) throw parseError('Falta la expresión a derivar tras "d/dx".');
+      const orderArg = order === 1 ? "" : `,${order}`;
+      expr = `d((${body}),${variable}${orderArg})`;
+    }
+  }
+
   // \frac{a}{b} -> ((a)/(b)) — debe ir antes que otros reemplazos porque
   // "a" y "b" pueden contener a su vez otros macros ya procesados de forma
   // recursiva al reprocesar el string completo tras cada pasada balanceada.
@@ -239,7 +909,11 @@ export function preprocessLatex(latex: string): string {
   // "cuela" dentro del exponente de la raíz en vez de aplicarse al
   // resultado. Se envuelve toda la expresión en un paréntesis extra para
   // que cualquier "^" posterior solo pueda aplicarse por fuera.
-  expr = expr.replace(/\\sqrt\[([^\]]*)\]\{([^{}]*)\}/g, "(($2)^(1/($1)))");
+  let prevNthRoot = "";
+  while (expr.includes("\\sqrt[") && expr !== prevNthRoot) {
+    prevNthRoot = expr;
+    expr = replaceNthRootOnce(expr);
+  }
   // BUG real (preexistente, encontrado al verificar el fix de arriba):
   // una sola pasada de replaceBalanced NO es recursiva — \sqrt{\sqrt{x}}
   // procesaba solo el \sqrt externo, dejando un "\sqrt{x}" literal sin
@@ -287,14 +961,22 @@ export function preprocessLatex(latex: string): string {
   // calcDefiniteIntegral (stepEngine/calculus.ts) siempre lo hizo en dos
   // pasos — no es solo estilo, es necesario.
   {
-    const definiteMatch = expr.match(/\\int_\{([^{}]*)\}\^\{([^{}]*)\}(.*)\\,dx$/s);
+    // IN625 E1c: normaliza el diferencial tipográfico de MathLive y acepta
+    // variable de integración arbitraria, además de límites con o sin llaves.
+    expr = expr.replace(/\\differentialD\s*/g, "d");
+    const definiteMatch = expr.match(
+      /\\int_(?:\{([^{}]*)\}|([^\\s^]+))\^(?:\{([^{}]*)\}|([^\\s]+))\s*(.*?)(?:\\,)?d([A-Za-z])$/s,
+    );
     if (definiteMatch) {
-      const [, lower, upper, body] = definiteMatch;
-      expr = `defintegral((${body}),${lower},${upper})`;
+      const lower = definiteMatch[1] ?? definiteMatch[2];
+      const upper = definiteMatch[3] ?? definiteMatch[4];
+      const body = definiteMatch[5];
+      const variable = definiteMatch[6];
+      expr = `defintegral((${body.trim()}),${lower},${upper},${variable})`;
     } else {
-      const intMatch = expr.match(/\\int(.*)\\,dx$/s);
+      const intMatch = expr.match(/\\int\s*(.*?)(?:\\,)?d([A-Za-z])$/s);
       if (intMatch) {
-        expr = `integral((${intMatch[1]}),x)`;
+        expr = `integral((${intMatch[1].trim()}),${intMatch[2]})`;
       }
     }
   }
@@ -339,6 +1021,10 @@ export function preprocessLatex(latex: string): string {
       /\\log\s*_\s*\{([^{}]+)\}\s*\((.*)\)$/s,
       /\\log\s*_\s*([0-9a-zA-Z]+)\s*\\left\((.*)\\right\)$/s,
       /\\log\s*_\s*([0-9a-zA-Z]+)\s*\((.*)\)$/s,
+      // IN625 B2: argumento sin paréntesis; conserva exponentes del argumento.
+      /\\log\s*_\s*\{([^{}]+)\}\s*([A-Za-z0-9.]+(?:\^\{[^{}]+\}|\^[A-Za-z0-9.]+)?)$/s,
+      // Sin llaves: una sola cifra/letra como base y el resto como argumento.
+      /\\log\s*_\s*([0-9A-Za-z])\s*([A-Za-z0-9.]+(?:\^\{[^{}]+\}|\^[A-Za-z0-9.]+)?)$/s,
     ];
     for (const pattern of logBasePatterns) {
       const match = expr.match(pattern);
@@ -410,16 +1096,85 @@ export function preprocessLatex(latex: string): string {
   // a la función unaria interna pm(5), preservando las dos ramas.
   expr = expr.replace(/\\pm\s+([A-Za-z0-9.]+)/g, "pm($1)");
 
+  // IN625 C2 — operatorname trigonométrico.
+  expr = expr.replace(
+    /\\operatorname\{(sin|cos|tan|csc|sec|cot|ln|exp)\}/g,
+    (_m, fn) => "\\" + fn + " ",
+  );
+
+  // IN625 C1 — potencia aplicada al nombre de función.
+  // Debe resolverse antes de la conversión genérica de exponentes.
+  expr = normalizePoweredFunctions(expr);
+
+  // IN625 C2 — funciones sin paréntesis, incluida composición.
+  expr = normalizeUnparenthesizedFunctions(expr);
+
+  // IN625 B4 — signos unarios tras operador.
+  // Algebrite no acepta de forma consistente secuencias como 2+-3 / 2*-3.
+  // Se explicita el signo unario sin alterar 2--3 ni --x.
+  expr = expr
+    .replace(/([+*/])-([A-Za-z0-9.]+)/g, "$1(-$2)")
+    .replace(/\+\+([A-Za-z0-9.]+)/g, "+$1");
+
+  // IN625 B1/B2 — exponentes y subíndices.
+  // Los subíndices se codifican internamente con letras solamente para
+  // distinguirlos de multiplicación implícita: x_{10} != x2.
+  // El eco de entrada conserva el LaTeX original; esta codificación es solo
+  // para el parser/motor.
+  expr = expr
+    // Orden TeX inverso: x^{2}_{1} -> xSUBONE^{2}
+    .replace(/([A-Za-z])\^\{([^{}]+)\}_\{(\d+)\}/g,
+      (_m, b, exp, sub) => encodeSubscriptIdentifier(String(b), String(sub)) + "^{" + exp + "}")
+    .replace(/([A-Za-z])\^\{([^{}]+)\}_(\d+)/g,
+      (_m, b, exp, sub) => encodeSubscriptIdentifier(String(b), String(sub)) + "^{" + exp + "}")
+    // Texto en subíndice: x_{\text{max}}
+    .replace(/([A-Za-z])_\{\\text\{([^{}]+)\}\}/g,
+      (_m, b, sub) => encodeSubscriptIdentifier(String(b), String(sub)))
+    // Subíndice compuesto: a_{i,j}
+    .replace(/([A-Za-z])_\{([A-Za-z]+),([A-Za-z]+)\}/g,
+      (_m, b, s1, s2) => encodeSubscriptIdentifier(String(b), String(s1) + "," + String(s2)))
+    // Subíndice alfabético simple.
+    .replace(/([A-Za-z])_\{([A-Za-z]+)\}/g,
+      (_m, b, sub) => encodeSubscriptIdentifier(String(b), String(sub)))
+    // Subíndice numérico con/sin llaves.
+    .replace(/([A-Za-z])_\{(\d+)\}/g,
+      (_m, b, sub) => encodeSubscriptIdentifier(String(b), String(sub)))
+    .replace(/([A-Za-z])_(\d+)/g,
+      (_m, b, sub) => encodeSubscriptIdentifier(String(b), String(sub)));
+
+  // 2) Exponentes entre llaves, incluido anidamiento: repetir hasta estabilizar.
+  let prevExponentGroups = "";
+  while (expr !== prevExponentGroups && /\^\{/.test(expr)) {
+    prevExponentGroups = expr;
+    expr = expr.replace(/\^\{([^{}]*)\}/g, "^($1)");
+  }
+
+  // 3) Exponente negativo sin llaves: x^-1, 2^-x -> x^(-1), 2^(-x).
+  expr = expr.replace(/\^-([A-Za-z0-9.]+)/g, "^(-$1)");
+
+  // 4) Alias exponencial LaTeX. La forma sin paréntesis consume un átomo.
+  expr = expr
+    .replace(/\\exp\s+([A-Za-z0-9.]+)/g, "exp($1)")
+    .replace(/\\exp(?=\s*\()/g, "exp");
+
   expr = expr
     .replace(/\\left\|/g, "abs(")
     .replace(/\\right\|/g, ")")
     .replace(/\\cdot/g, "*")
+    .replace(/\\ast/g, "*")
     .replace(/\\times/g, "*")
     .replace(/\\div/g, "/")
     .replace(/\\%/g, "%")
     .replace(/\\pi/g, "pi")
     .replace(/\\infty/g, "oo")
     .replace(/\\theta/g, "theta")
+    .replace(/\\alpha/g, "alpha")
+    .replace(/\\beta/g, "beta")
+    .replace(/\\gamma/g, "gamma")
+    .replace(/\\lambda/g, "lambda")
+    .replace(/\\zeta/g, "zeta")
+    .replace(/\\Delta/g, "Delta")
+    .replace(/\\Lambda/g, "Lambda")
     .replace(/\\Phi/g, "Phi")
     // FIX (auditoría Fase 0 v2, Fase 10): mismo bug que \mathrm arriba —
     // \gcd/\min/\max son macros LaTeX nativos (no \mathrm{...}) que
@@ -439,8 +1194,16 @@ export function preprocessLatex(latex: string): string {
     // (splitEquation en index.ts), porque "<=" contiene un "=" literal
     // que si no se distingue a tiempo, se partiría como si fuera una
     // ecuación con "<" colgando de un lado.
+    .replace(/\\leqslant(?![a-zA-Z])/g, "<=")
+    .replace(/\\geqslant(?![a-zA-Z])/g, ">=")
+    .replace(/\\leq(?![a-zA-Z])/g, "<=")
+    .replace(/\\geq(?![a-zA-Z])/g, ">=")
     .replace(/\\le(?![a-zA-Z])/g, "<=")
     .replace(/\\ge(?![a-zA-Z])/g, ">=")
+    .replace(/\\neq(?![a-zA-Z])/g, "!=")
+    .replace(/\\ne(?![a-zA-Z])/g, "!=")
+    .replace(/\\lt(?![a-zA-Z])/g, "<")
+    .replace(/\\gt(?![a-zA-Z])/g, ">")
     .replace(/\\sin\^\{-1\}/g, "arcsin")
     .replace(/\\cos\^\{-1\}/g, "arccos")
     .replace(/\\tan\^\{-1\}/g, "arctan")
@@ -493,7 +1256,6 @@ export function preprocessLatex(latex: string): string {
     // S16 REG-002: el macro visual \\log del teclado significa base 10.
     // Se conserva separado de log(...) plano y de ln(...).
     .replace(/\\log/g, "log10")
-    .replace(/\^\{([^{}]*)\}/g, "^($1)")
     .replace(/\\left\(/g, "(")
     .replace(/\\right\)/g, ")")
     .replace(/\\,/g, "")

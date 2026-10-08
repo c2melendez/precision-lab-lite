@@ -61,6 +61,15 @@ export type ComputeRequest =
       variable: string;
     }
   | {
+      type: "constrainedEquation";
+      requestId: string;
+      leftAlgebrite: string;
+      rightAlgebrite: string;
+      variable: string;
+      operator: "<" | "<=" | ">" | ">=";
+      bound: number;
+    }
+  | {
       type: "derivative";
       requestId: string;
       expressionAlgebrite: string;
@@ -146,6 +155,13 @@ export type ComputeRequest =
       variable: string;
     }
   | {
+      type: "solveChainedInequality";
+      requestId: string;
+      first: { diffAlgebrite: string; operator: "<" | ">" | "<=" | ">=" };
+      second: { diffAlgebrite: string; operator: "<" | ">" | "<=" | ">=" };
+      variable: string;
+    }
+  | {
       // Corrección post-auditoría (Módulo C, spec_motor_matematico_pendiente.md
       // §4): faltaba el mensaje de worker que conecta el motor ya construido
       // (solveLinearInequalitySystem) con la UI — el motor existía pero nada
@@ -195,6 +211,15 @@ function handle(msg: ComputeRequest): MathResult {
       return handleEvaluate(msg.expressionAlgebrite, msg.requestId);
     case "solveAlgebra":
       return handleSolveAlgebra(msg.leftAlgebrite, msg.rightAlgebrite, msg.variable, msg.requestId);
+    case "constrainedEquation":
+      return handleConstrainedEquation(
+        msg.leftAlgebrite,
+        msg.rightAlgebrite,
+        msg.variable,
+        msg.operator,
+        msg.bound,
+        msg.requestId,
+      );
     case "derivative":
       return runCalculus(msg.requestId, msg.expressionAlgebrite, () => calcDerivative(msg.expressionAlgebrite, msg.variable, msg.order));
     case "limit":
@@ -236,6 +261,8 @@ function handle(msg: ComputeRequest): MathResult {
       );
     case "solveInequality":
       return handleSolveInequality(msg.diffAlgebrite, msg.operator, msg.variable, msg.requestId);
+    case "solveChainedInequality":
+      return handleSolveChainedInequality(msg.first, msg.second, msg.variable, msg.requestId);
     case "linearInequalitySystem":
       return handleLinearInequalitySystem(msg.inequalities, msg.variables, msg.requestId);
     case "ode":
@@ -307,7 +334,17 @@ function handleSolveAlgebra(
   requestId: string,
 ): MathResult {
   try {
-    const { steps, solutionsAlgebrite } = solveAlgebra(leftAlgebrite, rightAlgebrite, variable);
+    const { steps, solutionsAlgebrite, truth } = solveAlgebra(leftAlgebrite, rightAlgebrite, variable);
+    if (truth) {
+      return {
+        success: true,
+        resultLatex: truth === "identity" ? "\\text{Verdadero para todos los valores}" : "\\text{Falso: no hay solución}",
+        steps,
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
     const allNumeric = solutionsAlgebrite.every(
       (s) => /^-?\d+(\.\d+)?$/.test(s) || /^-?\d+\/\d+$/.test(s),
     );
@@ -338,6 +375,58 @@ function handleSolveAlgebra(
   }
 }
 
+function handleConstrainedEquation(
+  leftAlgebrite: string,
+  rightAlgebrite: string,
+  variable: string,
+  operator: "<" | "<=" | ">" | ">=",
+  bound: number,
+  requestId: string,
+): MathResult {
+  try {
+    const { steps, solutionsAlgebrite, truth } = solveAlgebra(leftAlgebrite, rightAlgebrite, variable);
+    if (truth) {
+      return {
+        success: true,
+        resultLatex: truth === "identity" ? "\\text{Verdadero para todos los valores}" : "\\text{Falso: no hay solución}",
+        steps,
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
+
+    const satisfies = (value: number) =>
+      operator === ">" ? value > bound :
+      operator === ">=" ? value >= bound :
+      operator === "<" ? value < bound :
+      value <= bound;
+
+    const filtered = solutionsAlgebrite.filter((solution) => {
+      const numeric = Number(solution);
+      return Number.isFinite(numeric) && satisfies(numeric);
+    });
+
+    return {
+      success: true,
+      resultLatex: filtered.length
+        ? filtered.map((s) => `${variable} = ${toLatex(s)}`).join(",\\ ")
+        : "\\text{Sin solución bajo la restricción}",
+      steps,
+      hasDetailedSteps: false,
+      confidence: "SYMBOLIC",
+      requestId,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(
+      appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION,
+      appErr.message ?? String(err),
+      requestId,
+    );
+  }
+}
+
 /**
  * Fix (decisión de Carlos, cierre de la suite de paridad de teclado):
  * solver básico de desigualdades — ver engine/inequality.ts para el
@@ -346,6 +435,51 @@ function handleSolveAlgebra(
  * muestra directamente sin pasar por toLatex()/toFractionResult() (que
  * esperan sintaxis de Algebrite, no una descripción de intervalo).
  */
+
+function handleSolveChainedInequality(
+  first: { diffAlgebrite: string; operator: "<" | ">" | "<=" | ">=" },
+  second: { diffAlgebrite: string; operator: "<" | ">" | "<=" | ">=" },
+  variable: string,
+  requestId: string,
+): MathResult {
+  try {
+    const a = solveInequality(first.diffAlgebrite, first.operator, variable);
+    const b = solveInequality(second.diffAlgebrite, second.operator, variable);
+
+    const parseBound = (text: string) => {
+      const m = new RegExp(`^${variable}\\s*(<=|<|>=|>)\\s*(-?\\d+(?:\\.\\d+)?)$`).exec(text.trim());
+      return m ? { op: m[1], value: m[2] } : null;
+    };
+
+    const ba = parseBound(a.resultText);
+    const bb = parseBound(b.resultText);
+    let resultText = `${a.resultText} y ${b.resultText}`;
+
+    if (ba && bb) {
+      const bounds = [ba, bb];
+      const lower = bounds.find((x) => x.op === ">" || x.op === ">=");
+      const upper = bounds.find((x) => x.op === "<" || x.op === "<=");
+      if (lower && upper) {
+        const lop = lower.op === ">" ? "<" : "<=";
+        const uop = upper.op === "<" ? "<" : "<=";
+        resultText = `${lower.value} ${lop} ${variable} ${uop} ${upper.value}`;
+      }
+    }
+
+    return {
+      success: true,
+      resultLatex: `\\text{${resultText}}`,
+      steps: [...a.steps, ...b.steps],
+      hasDetailedSteps: false,
+      confidence: "SYMBOLIC",
+      requestId,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), requestId);
+  }
+}
+
 function handleSolveInequality(
   diffAlgebrite: string,
   operator: "<" | ">" | "<=" | ">=",
@@ -424,7 +558,7 @@ function tryLimitFallback(raw: string): string | null {
 }
 
 /**
- * Fase 2 externa (integral con límites, inline): "defintegral(cuerpo,a,b)"
+ * Fase 2 externa (integral con límites, inline): "defintegral(cuerpo,a,b[,var])"
  * es un marcador propio (nunca nativo de Algebrite) producido solo por
  * normalize.ts. Se resuelve en DOS llamadas separadas — antiderivada
  * primero, sustituir después — porque envolver integral() sin evaluar
@@ -438,13 +572,17 @@ function tryDefiniteIntegral(expr: string): string | null {
   const match = expr.match(/^defintegral\((.*)\)$/s);
   if (!match) return null;
   const args = splitTopLevelArgs(match[1]);
-  if (args.length !== 3) return null;
-  const [body, lower, upper] = args;
-  const antiderivative = evaluate(`integral((${body}),x)`);
+  if (args.length !== 3 && args.length !== 4) return null;
+  const [body, lower, upper, variableRaw] = args;
+  const variable = variableRaw?.trim() || "x";
+  if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(variable)) {
+    throw { code: ErrorCode.PARSE_ERROR, message: "Variable de integración inválida." } as AppError;
+  }
+  const antiderivative = evaluate(`integral((${body}),${variable})`);
   if (/^integral\(/.test(antiderivative)) {
     throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "Algebrite no pudo resolver esta integral simbólicamente." } as AppError;
   }
-  const raw = evaluate(`float(subst(${upper},x,${antiderivative}))-float(subst(${lower},x,${antiderivative}))`);
+  const raw = evaluate(`float(subst(${upper},${variable},${antiderivative}))-float(subst(${lower},${variable},${antiderivative}))`);
   // Igual que float() en general (ver hallazgo arriba), el resultado
   // puede traer "..." literal de Algebrite indicando precisión truncada
   // (ej. "2.666667...") — no es válido reinyectarlo en otra llamada a

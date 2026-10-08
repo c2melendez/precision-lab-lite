@@ -61,18 +61,28 @@ export function tokenize(expr: string): Token[] {
       // Greedy match del identificador conocido más largo en esta posición.
       const known = ALL_KNOWN_IDENTIFIERS.find((id) => expr.startsWith(id, i));
       if (known) {
-        const isFunction = (KNOWN_FUNCTION_NAMES as string[]).includes(known);
+        const isKnownFunction = (KNOWN_FUNCTION_NAMES as string[]).includes(known);
+        // Un nombre reservado de función solo es función cuando hay una
+        // llamada real. Esto permite variables legítimas como "d" en
+        // a/b*c/d sin colisionar con el operador interno d(expr,x).
+        const isFunction = isKnownFunction && expr[i + known.length] === "(";
         tokens.push({ type: isFunction ? "function" : "identifier", value: known });
         i += known.length;
         continue;
       }
 
-      // Sin match conocido: se extrae la racha completa de letras como UN
-      // identificador multi-letra (spec v9 §3, comportamiento "xyz" ->
-      // identificador de 3 letras si no fue registrado antes como producto).
-      const match = expr.slice(i).match(/^[a-zA-Z]+/)!;
-      tokens.push({ type: "identifier", value: match[0] });
-      i += match[0].length;
+      // IN625 C10: letras adyacentes desconocidas representan producto de
+      // variables de una letra. Los identificadores multi-letra reservados ya
+      // fueron capturados arriba. La codificación interna de subíndices
+      // (xSUBONE, aSUBiCOMMAj, etc.) sí debe permanecer atómica.
+      const subscriptEncoded = expr.slice(i).match(/^[A-Za-z]SUB[A-Za-z]+/);
+      if (subscriptEncoded) {
+        tokens.push({ type: "identifier", value: subscriptEncoded[0] });
+        i += subscriptEncoded[0].length;
+        continue;
+      }
+      tokens.push({ type: "identifier", value: ch });
+      i++;
       continue;
     }
 

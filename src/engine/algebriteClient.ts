@@ -20,6 +20,7 @@
 // @ts-ignore -- 'algebrite' no tiene declaración de tipos, ver nota arriba
 import Algebrite from "algebrite";
 import { ErrorCode, type AppError } from "../types";
+import { compileNumeric } from "./numericFallback";
 
 function toAppError(code: ErrorCode, message: string): AppError {
   return { code, message };
@@ -38,6 +39,18 @@ const MAY_NEED_FLOAT = /\b(sinh|cosh|tanh|asinh|acosh|atanh|sign)\(/;
 /** Evalúa/simplifica una expresión. Lanza AppError normalizado en caso de fallo. */
 export function evaluate(expressionLatex: string): string {
   try {
+    // IN625 A2: Algebrite no evalúa floor()/ceiling() de forma fiable.
+    // Para expresiones puramente numéricas que usen estas funciones,
+    // reutilizamos el evaluador numérico propio. Si hay variables libres
+    // o sintaxis no soportada, cae al camino simbólico normal.
+    if (expressionLatex.includes("floor(") || expressionLatex.includes("ceiling(")) {
+      try {
+        const numeric = compileNumeric(expressionLatex, "__unused__")(0);
+        if (Number.isFinite(numeric)) return String(numeric);
+      } catch {
+        // Continuar con Algebrite para conservar el comportamiento normal.
+      }
+    }
     // Algebrite trabaja con su propia sintaxis de entrada; la conversión
     // LaTeX -> sintaxis Algebrite vive en engine/parsing (Módulo 2).
     let result: string = Algebrite.run(expressionLatex);
@@ -45,6 +58,13 @@ export function evaluate(expressionLatex: string): string {
       throw toAppError(ErrorCode.PARSE_ERROR, "Algebrite no devolvió resultado.");
     }
     if (/stop|Stop/.test(result)) {
+      if (/divide by zero/i.test(result)) {
+        const compact = expressionLatex.replace(/\s+/g, "");
+        const message = /(^|\()0\/0($|\))/.test(compact)
+          ? "Forma indeterminada: 0/0 no está definida."
+          : "División entre cero: el resultado no está definido.";
+        throw toAppError(ErrorCode.DOMAIN_ERROR, message);
+      }
       throw toAppError(ErrorCode.PARSE_ERROR, `Algebrite reportó un error: ${result}`);
     }
     if (MAY_NEED_FLOAT.test(result)) {
@@ -152,7 +172,13 @@ export function toLatex(algebriteResult: string): string {
     if (typeof latex !== "string" || latex.length === 0 || /stop|Stop/.test(latex)) {
       return algebriteResult;
     }
-    return latex;
+    // Algebrite imprime su logaritmo natural como \\log. En Precision Lab,
+    // el contrato de entrada reserva \\log para base 10 y \\ln para el
+    // logaritmo natural. Emitir \\log aquí rompería round-trip y cambiaría
+    // el significado al reingresar la propia salida.
+    return latex
+      .replace(/\\log(?=\b|\s|\\left|\()/g, "\\ln")
+      .replace(/\blog\s*\(/g, "\\ln(");
   } catch {
     return algebriteResult;
   }

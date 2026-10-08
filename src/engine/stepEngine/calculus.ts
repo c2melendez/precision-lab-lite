@@ -16,6 +16,7 @@ import {
   indefiniteIntegral,
   symbolicLimit,
   evaluate,
+  toLatex,
   ErrorCode,
 } from "../algebriteClient";
 import { compileNumeric, numericLimit, numericLimitAtInfinity, simpsonIntegral } from "../numericFallback";
@@ -47,14 +48,15 @@ export interface CalculusResult {
 // la lógica acá.
 export function calcDerivative(exprAlgebrite: string, variable: string, order: number): CalculusResult {
   const result = symbolicDerivative(rewriteReciprocalFunctions(exprAlgebrite), variable, order);
+  const resultLatex = toLatex(result);
   return {
-    resultLatex: result,
+    resultLatex,
     confidence: "SYMBOLIC",
     steps: [
       { id: "original", latex: exprAlgebrite, explanation: "Expresión original." },
       {
         id: "result",
-        latex: `\\frac{d${order > 1 ? `^${order}` : ""}}{d${variable}${order > 1 ? `^${order}` : ""}} = ${result}`,
+        latex: `\\frac{d${order > 1 ? `^${order}` : ""}}{d${variable}${order > 1 ? `^${order}` : ""}} = ${resultLatex}`,
         explanation: `Derivada de orden ${order} calculada simbólicamente.`,
       },
     ],

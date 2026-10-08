@@ -7,9 +7,14 @@ import { type SessionHistoryEntry } from "../../components/HistoryLog";
 import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { parseExpression } from "../../engine/parsing";
 import { toLatex } from "../../engine/algebriteClient";
-import { splitSystemLatex } from "../../engine/parsing/systemSplit";
+import { splitSystemLatex, splitFreeSystemLatex } from "../../engine/parsing/systemSplit";
+import { detectPiecewiseIntent } from "../../engine/parsing/piecewiseIntent";
 import { detectODE } from "../../engine/parsing/odeDetect";
 import { detectComplexAnalysisIntent } from "../../engine/parsing/complexAnalysisIntent";
+import { detectChainedInequality } from "../../engine/parsing/chainedInequality";
+import { detectRelationIntent } from "../../engine/parsing/relationIntent";
+import { detectConstrainedEquationIntent } from "../../engine/parsing/constrainedEquationIntent";
+import { detectMatrixIntent } from "../../engine/parsing/matrixIntent";
 import { addHistoryEntry } from "../../store/historyDb";
 import { useKeyboardPanelStore } from "../../store/useKeyboardPanelStore";
 import { useRecentKeysStore } from "../../store/useRecentKeysStore";
@@ -164,9 +169,69 @@ export function BasicScientificMode() {
     // element antes de que React haya propagado el último onChange; leer
     // el valor vivo elimina esa ventana de estado obsoleto.
     const currentLatex = mathField?.value ?? latex;
-    const systemRows = splitSystemLatex(currentLatex);
+    const piecewiseIntent = detectPiecewiseIntent(currentLatex);
+    if (piecewiseIntent) {
+      const requestId = makeRequestId();
+      onSuccess("Científica (función a trozos)", currentLatex, {
+        success: true,
+        resultLatex: currentLatex,
+        interpretedLatex: currentLatex,
+        resultViewLabel: "Función a trozos",
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      });
+      return;
+    }
+    const systemRows = splitSystemLatex(currentLatex) ?? splitFreeSystemLatex(currentLatex);
     if (systemRows) {
+      // H1 EN-RE-10: una lista de soluciones del mismo símbolo
+      // (ej. x=-2, x=2) no es un sistema cuadrado nuevo. Es una salida
+      // válida del solver que debe poder reingresarse sin error.
+      const solutionVars = systemRows.map((row) => row.match(/^\s*([A-Za-z])\s*=/)?.[1] ?? null);
+      if (solutionVars.every(Boolean) && new Set(solutionVars).size === 1) {
+        const requestId = makeRequestId();
+        onSuccess("Científica (lista de soluciones)", currentLatex, {
+          success: true,
+          resultLatex: currentLatex,
+          interpretedLatex: currentLatex,
+          resultViewLabel: "Soluciones",
+          steps: [],
+          hasDetailedSteps: false,
+          confidence: "SYMBOLIC",
+          requestId,
+        });
+        return;
+      }
       runSystem(systemRows);
+      return;
+    }
+
+    // H1 EN-RE-13: las matrices escritas/pegadas en la pantalla científica
+    // deben usar el mismo motor matricial que el módulo dedicado.
+    const matrixIntent = detectMatrixIntent(currentLatex);
+    if (matrixIntent) {
+      const requestId = makeRequestId();
+      const worker = getWorker();
+      worker.onmessage = (e: MessageEvent<MathResult>) =>
+        onSuccess("Científica (matriz)", currentLatex, e.data);
+
+      if (matrixIntent.kind === "inverse") {
+        worker.postMessage({ type: "matrixOp", requestId, op: "inverse", a: matrixIntent.matrix });
+      } else if (matrixIntent.kind === "power") {
+        worker.postMessage({ type: "matrixOp", requestId, op: "power", a: matrixIntent.matrix, exponent: matrixIntent.exponent });
+      } else if (matrixIntent.kind === "transpose") {
+        worker.postMessage({ type: "matrixOp", requestId, op: "transpose", a: matrixIntent.matrix });
+      } else if (matrixIntent.kind === "determinant") {
+        worker.postMessage({ type: "matrixOp", requestId, op: "determinant", a: matrixIntent.matrix });
+      } else if (matrixIntent.kind === "multiply") {
+        worker.postMessage({ type: "matrixOp", requestId, op: "multiply", a: matrixIntent.left, b: matrixIntent.right });
+      } else {
+        // Literal de matriz: devolverla por el motor como A^1 para obtener
+        // una representación matricial canónica sin inventar semántica.
+        worker.postMessage({ type: "matrixOp", requestId, op: "power", a: matrixIntent.matrix, exponent: 1 });
+      }
       return;
     }
 
@@ -232,7 +297,97 @@ export function BasicScientificMode() {
       return;
     }
 
+    const constrainedIntent = detectConstrainedEquationIntent(currentLatex);
+    if (constrainedIntent) {
+      const requestId = makeRequestId();
+      try {
+        const parsedEquation = parseExpression(constrainedIntent.equationLatex, angleMode);
+        if (!parsedEquation.isEquation || parsedEquation.freeVariables.length !== 1) {
+          fail(ErrorCode.PARSE_ERROR, "La parte principal debe ser una ecuación de una sola variable.", requestId);
+          return;
+        }
+        if (parsedEquation.freeVariables[0] !== constrainedIntent.variable) {
+          fail(ErrorCode.PARSE_ERROR, "La restricción debe usar la misma variable que la ecuación.", requestId);
+          return;
+        }
+
+        const worker = getWorker();
+        worker.onmessage = (e: MessageEvent<MathResult>) =>
+          onSuccess("Científica (ecuación con restricción)", currentLatex, {
+            ...e.data,
+            interpretedLatex: currentLatex,
+            resultViewLabel: "Solución restringida",
+          });
+        worker.postMessage({
+          type: "constrainedEquation",
+          requestId,
+          leftAlgebrite: parsedEquation.leftAlgebrite,
+          rightAlgebrite: parsedEquation.rightAlgebrite,
+          variable: constrainedIntent.variable,
+          operator: constrainedIntent.operator,
+          bound: constrainedIntent.bound,
+        });
+        return;
+      } catch (err) {
+        const appErr = err as { code?: ErrorCode; message?: string };
+        fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Ecuación restringida inválida.", requestId);
+        return;
+      }
+    }
+
+    const relationIntent = detectRelationIntent(currentLatex);
+    if (relationIntent) {
+      const requestId = makeRequestId();
+      const label =
+        relationIntent.kind === "functionDefinition"
+          ? "Definición de función"
+          : relationIntent.kind === "explicitRelation"
+            ? "Relación explícita"
+            : "Relación implícita";
+      onSuccess(`Científica (${label.toLowerCase()})`, currentLatex, {
+        success: true,
+        resultLatex: currentLatex,
+        interpretedLatex: currentLatex,
+        resultViewLabel: label,
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      });
+      return;
+    }
+
     const requestId = makeRequestId();
+    const chained = detectChainedInequality(currentLatex);
+    if (chained) {
+      try {
+        const first = parseExpression(chained.leftClause, angleMode);
+        const second = parseExpression(chained.rightClause, angleMode);
+        if (!first.isInequality || !second.isInequality || first.freeVariables.length !== 1 || second.freeVariables.length !== 1) {
+          fail(ErrorCode.PARSE_ERROR, "La desigualdad encadenada debe usar una sola variable.", requestId);
+          return;
+        }
+        const worker = getWorker();
+        worker.onmessage = (e: MessageEvent<MathResult>) =>
+          onSuccess("Científica (desigualdad encadenada)", currentLatex, {
+            ...e.data,
+            interpretedLatex: currentLatex,
+            resultViewLabel: "Solución",
+          });
+        worker.postMessage({
+          type: "solveChainedInequality",
+          requestId,
+          first: { diffAlgebrite: first.algebrite, operator: first.inequalityOperator! },
+          second: { diffAlgebrite: second.algebrite, operator: second.inequalityOperator! },
+          variable: chained.variable,
+        });
+        return;
+      } catch (err) {
+        const appErr = err as { code?: ErrorCode; message?: string };
+        fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Desigualdad encadenada inválida.", requestId);
+        return;
+      }
+    }
     let parsed;
     try {
       parsed = parseExpression(currentLatex, angleMode);
@@ -258,12 +413,10 @@ export function BasicScientificMode() {
     // AlgebraMode.tsx: 0 o >1 variables libres se rechaza en vez de
     // adivinar cuál despejar).
     if (parsed.isEquation) {
-      if (parsed.freeVariables.length !== 1) {
+      if (parsed.freeVariables.length > 1) {
         fail(
           ErrorCode.PARSE_ERROR,
-          parsed.freeVariables.length === 0
-            ? "No se detectó ninguna variable para despejar."
-            : `Hay más de una variable (${parsed.freeVariables.join(", ")}); usa la pestaña Álgebra para elegir cuál despejar.`,
+          `Hay más de una variable (${parsed.freeVariables.join(", ")}); usa la pestaña Álgebra para elegir cuál despejar.`,
           requestId,
         );
         return;
@@ -279,7 +432,7 @@ export function BasicScientificMode() {
         requestId,
         leftAlgebrite: parsed.leftAlgebrite,
         rightAlgebrite: parsed.rightAlgebrite,
-        variable: parsed.freeVariables[0],
+        variable: parsed.freeVariables[0] ?? "x",
       });
       return;
     }
