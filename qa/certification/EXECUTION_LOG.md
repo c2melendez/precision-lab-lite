@@ -70,3 +70,11 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus H1a run `37771019348`: SUCCESS.
 - Regresiones permanentes añadidas para serialización/reentrada de resultados.
 - Siguiente bloque: H1b — EN-RE-09..16.
+
+
+## 2026-10-08 — H1b cerrado
+- EN-RE-09..16 cerrados 8/8 en ambos motores.
+- Lite H1b run `37778832819`: SUCCESS.
+- Plus H1b run `37790101494`: SUCCESS.
+- Regresiones permanentes añadidas para soluciones múltiples, matrices, intervalos y formatos de reentrada.
+- Siguiente bloque: H1c — EN-RE-17..23.
