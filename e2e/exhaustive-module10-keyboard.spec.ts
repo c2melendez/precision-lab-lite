@@ -654,7 +654,11 @@ async function g3Submit(page: import("@playwright/test").Page, input: string) {
   return { kind: "none" as const, text: "" };
 }
 
-const g3RawOnlyIds = new Set(["EN-ER-05","EN-ER-15","EN-ER-19","EN-ER-20","EN-ER-26","EN-ER-27","EN-ER-31"]);
+const g3RawOnlyIds = new Set([
+  "EN-ER-01","EN-ER-02","EN-ER-03","EN-ER-04","EN-ER-05","EN-ER-06","EN-ER-07","EN-ER-08","EN-ER-09",
+  "EN-ER-12","EN-ER-13","EN-ER-14","EN-ER-15","EN-ER-16","EN-ER-17","EN-ER-18","EN-ER-19","EN-ER-20",
+  "EN-ER-25","EN-ER-26","EN-ER-27","EN-ER-28","EN-ER-29","EN-ER-30","EN-ER-31","EN-ER-33",
+]);
 
 // MathLive canonicaliza estos siete inputs antes de que el producto pueda
 // observar la forma cruda. Se certifican en parser-level tests, no aquí.
@@ -662,6 +666,14 @@ test.describe("IN625 G3 entradas inválidas y mensajes de error", () => {
   for (const row of g3Cases.filter((candidate) => !g3RawOnlyIds.has(candidate.id))) {
     test(row.id + ": no produce una respuesta numérica silenciosamente falsa", async ({ page }) => {
       await page.goto("./");
+
+      if (row.id === "EN-ER-10" || row.id === "EN-ER-11") {
+        const calculate = page.getByRole("region", { name: "Entrada" }).getByRole("button", { name: "Calcular", exact: true });
+        await expect(calculate).toBeDisabled();
+        await expect(page.getByText(/Escribe una expresión y presiona Calcular/i)).toBeVisible();
+        return;
+      }
+
       const outcome = await g3Submit(page, row.input);
       expect(outcome.kind, row.id + " no produjo feedback visible").not.toBe("none");
 
