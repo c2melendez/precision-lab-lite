@@ -176,7 +176,9 @@ export function toLatex(algebriteResult: string): string {
     // el contrato de entrada reserva \\log para base 10 y \\ln para el
     // logaritmo natural. Emitir \\log aquí rompería round-trip y cambiaría
     // el significado al reingresar la propia salida.
-    return latex.replace(/\\log(?=\b|\s|\\left|\()/g, "\\ln");
+    return latex
+      .replace(/\\log(?=\b|\s|\\left|\()/g, "\\ln")
+      .replace(/\blog\s*\(/g, "\\ln(");
   } catch {
     return algebriteResult;
   }
