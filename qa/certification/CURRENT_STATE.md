@@ -103,3 +103,10 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Commits de test: Lite `c998956cadf87fa2b10a2da49147a78cf74750be`; Plus `148aa26db5c8d65b14776416a672b49590d6fa5d`.
 - Clasificación: mejora de HARNESS/ORÁCULO, sin modificar código del producto. La estabilidad textual no certifica por sí misma semántica completa.
 - No se obtuvo corrida H1d ni se verificó gate acumulativo para estos SHA. H1d permanece pendiente de ejecución bilateral; H2 no inicia.
+
+### 2026-10-08 — H1d: mejora bilateral de oráculo, sin cierre
+- Nueva comprobación EN-RE-25: suma racional `\\frac{1}{2}+\\frac{1}{3}` debe devolver `\\frac{5}{6}` o decimal periódico admitido, tanto inicialmente como tras reentrada.
+- Test commits: Lite `679e85ee717e44149283d2632765c01c9b7e0783`; Plus `0f40b78ec5a4fa2c8226f092dd170cf34313eb71`.
+- Build Lite run `37859589602` inicialmente en curso; no valida H1d.
+- Último H1d E2E SUCCESS observado Lite `37843775609`, Plus `37843780110` en commits previos, sin cobertura acreditada de estos cambios.
+- **H1d pendiente** hasta E2E y gate bilateral verificables. Siguiente paso: obtener nuevas corridas H1d en SHA actual (PR o dispatch autorizado), diagnosticar los resultados y continuar oráculos de EN-RE-26/28. EN-RE-29/30 no PASS (capability).
