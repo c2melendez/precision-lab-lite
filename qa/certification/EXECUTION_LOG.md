@@ -78,3 +78,11 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus H1b run `37790101494`: SUCCESS.
 - Regresiones permanentes añadidas para soluciones múltiples, matrices, intervalos y formatos de reentrada.
 - Siguiente bloque: H1c — EN-RE-17..23.
+
+
+## 2026-10-08 — H1c cerrado
+- EN-RE-17..23: 6/6 casos automáticos PASS en ambos motores.
+- Lite H1c run `37794754460`: SUCCESS.
+- Plus H1c run `37794867403`: SUCCESS.
+- EN-RE-22 permanece como CAPABILITY GAP explícito: historial no restaura todavía el LaTeX original al campo principal.
+- Siguiente bloque: H1d — EN-RE-24..30.
