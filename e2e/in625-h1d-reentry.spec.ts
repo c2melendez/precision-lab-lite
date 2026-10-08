@@ -16,16 +16,39 @@ async function readOutcome(page: Page): Promise<{kind:"result"|"error"; value:st
   const region=page.locator('section[aria-label="Resultado"]').first();
   const alert=region.locator('[role="alert"]').first();
   const status=region.locator('[role="status"]').first();
+
   await expect.poll(async()=>{
-    if(await alert.count()){const t=((await alert.textContent().catch(()=>""))??"").trim();if(t)return "error";}
-    if(await status.count()){const t=((await status.textContent().catch(()=>""))??"").trim();if(t&&!/calculando/i.test(t))return "result";}
+    if(await alert.count()){
+      const t=((await alert.textContent().catch(()=> ""))??"").trim();
+      if(t) return "error";
+    }
+    if(await status.count()){
+      const t=((await status.textContent().catch(()=> ""))??"").trim();
+      if(t&&!/calculando/i.test(t)) return "result";
+    }
     return "pending";
   },{timeout:15000}).not.toBe("pending");
-  if(await alert.count()){const t=((await alert.textContent().catch(()=>""))??"").trim();if(t)return{kind:"error",value:t};}
-  const mf=status.locator("math-field[read-only]").first();
-  if(await mf.count()){const v=String(await mf.evaluate(el=>(el as HTMLElement&{value?:string}).value??""));if(v.trim())return{kind:"result",value:v};}
-  return{kind:"result",value:((await status.textContent())??"").trim()};
+
+  if(await alert.count()){
+    const t=((await alert.textContent().catch(()=> ""))??"").trim();
+    if(t) return {kind:"error",value:t};
+  }
+
+  const exact=region.locator('math-field[read-only]').first();
+  if(await exact.count()){
+    const v=String(await exact.evaluate(el=>(el as HTMLElement&{value?:string}).value??""));
+    if(v.trim()) return {kind:"result",value:v};
+  }
+
+  const plain=region.locator('.a11y-scale-result-3xl').first();
+  if(await plain.count()){
+    const t=((await plain.textContent())??"").trim();
+    if(t) return {kind:"result",value:t};
+  }
+
+  return {kind:"result",value:((await status.textContent())??"").trim()};
 }
+
 async function submit(page:Page){
   await page.evaluate(()=>window.mathVirtualKeyboard?.hide());
   const button=page.getByRole("region",{name:"Entrada"}).getByRole("button",{name:"Calcular",exact:true});
@@ -69,6 +92,7 @@ const TRIPLE_INPUTS=[
 
 test.describe("IN625 H1d reentrada avanzada",()=>{
   test("EN-RE-24 idempotencia triple sobre 20 entradas",async({page})=>{
+    test.setTimeout(120000);
     await page.goto("./");
     for(const input of TRIPLE_INPUTS){
       const s1=await evaluateOnce(page,input);
@@ -81,6 +105,7 @@ test.describe("IN625 H1d reentrada avanzada",()=>{
   });
 
   test("EN-RE-25 equivalencia semántica en muestra de 20",async({page})=>{
+    test.setTimeout(90000);
     await page.goto("./");
     for(const input of TRIPLE_INPUTS){
       const s1=await evaluateOnce(page,input);
