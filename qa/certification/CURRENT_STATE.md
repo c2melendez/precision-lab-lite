@@ -72,3 +72,14 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Automáticos PASS: EN-RE-17, 18, 19, 20, 21 y 23.
 - EN-RE-22: capability gap documentado; el historial aún no restaura el LaTeX original al campo principal.
 - Siguiente bloque: H1d — EN-RE-24..30.
+
+### Auditoría del harness H1d — 2026-10-08 (sin corrida nueva)
+- Se localizaron los specs de cinco pruebas automatizadas: Lite `e2e/in625-h1d-reentry.spec.ts` y Plus `frontend/e2e/in625-h1d-reentry.spec.ts`.
+- Se localizaron ambos workflows `.github/workflows/in625-h1d-reentry.yml`, configurados para `pull_request` y `workflow_dispatch`; cada uno ejecuta Chromium desktop.
+- EN-RE-24 prueba idempotencia textual normalizada de 20 inputs y tercera reentrada. La igualdad textual no equivale por sí sola a equivalencia matemática: revisar oráculo contra las reglas canónicas.
+- EN-RE-25 lleva el título «equivalencia semántica» pero solo exige que la segunda salida no esté vacía. CLASIFICACIÓN: hueco de ORÁCULO/HARNESS, no defecto de producto acreditado.
+- EN-RE-26 comprueba únicamente aceptación/no vacío de formatos cruzados, no garantiza resultado matemático correcto. ORÁCULO parcial.
+- EN-RE-27 valida presencia de patrones textuales de asin/atan y EN-RE-28 comprueba `cases|x`; ambas necesitan una verificación de semántica más fuerte para certificación plena.
+- EN-RE-29/30 permanecen en MANUAL_CAPABILITY_GAPS como capacidades no expuestas; no contarlos como PASS.
+- **No hay ejecución H1d nueva verificada** ni clasificación de fallos de producto; no se han modificado motores. No declarar H1d cerrado.
+- Siguiente paso: reforzar primero los oráculos de H1d (usando referencias matemáticas independientes, no solo no-vacío), luego disparar y comprobar los workflows H1d en ambos repositorios y registrar runs, resultados y gate acumulativo antes de H2.
