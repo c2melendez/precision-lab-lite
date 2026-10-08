@@ -54,3 +54,6 @@ Siguiente bloque activo: H1 — 30 casos de reentrada / output-as-input.
 
 ## Continuidad repo-native
 El bootstrap oficial es `qa/certification/CONTINUATION_PROMPT.md`. No se necesita ZIP de handoff mientras GitHub y estos archivos estén accesibles.
+
+H1a — EN-RE-01..08: CERRADO 8/8 en Lite y Plus. Lite `37771014887`, Plus `37771019348`.
+Siguiente bloque: H1b — EN-RE-09..16.
