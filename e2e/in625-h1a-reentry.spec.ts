@@ -76,13 +76,11 @@ async function calculate(page: Page): Promise<string> {
   await button.click();
 
   const region = page.locator('section[aria-label="Resultado"]').first();
-  const frac = region.getByRole("button", { name: "frac", exact: true });
-  const sqrt = region.getByRole("button", { name: "sqrt", exact: true });
+  await expect(region.locator('[role="status"]').first()).toBeVisible({ timeout: 15000 });
 
-  if (await frac.count()) {
-    await frac.first().click().catch(() => undefined);
-  } else if (await sqrt.count()) {
-    await sqrt.first().click().catch(() => undefined);
+  const sqrt = region.getByRole("button", { name: "sqrt", exact: true });
+  if (await sqrt.count()) {
+    await sqrt.first().click();
   }
 
   return readResult(page);
