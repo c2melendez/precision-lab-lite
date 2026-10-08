@@ -1,6 +1,12 @@
 name: IN625 H1d Reentry Diagnostic
 
 on:
+  push:
+    branches:
+      - qa/syntax-audit-in625-a1
+    paths-ignore:
+      - 'qa/certification/**'
+      - '**/*.md'
   pull_request:
   workflow_dispatch:
 
