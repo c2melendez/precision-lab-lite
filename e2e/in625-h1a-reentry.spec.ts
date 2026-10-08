@@ -28,19 +28,45 @@ async function setInput(page: Page, value: string) {
 async function readResult(page: Page): Promise<string> {
   const region = page.locator('section[aria-label="Resultado"]').first();
   const alert = region.locator('[role="alert"]').first();
-  if (await alert.count()) {
-    const txt = ((await alert.textContent()) ?? "").trim();
-    if (txt) throw new Error(txt);
-  }
   const status = region.locator('[role="status"]').first();
-  await expect(status).toBeVisible({ timeout: 12000 });
-  const staticField = status.locator("math-field[read-only]").first();
-  if (await staticField.count()) {
-    return String(await staticField.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
-  }
-  const plain = status.locator(".a11y-scale-result-3xl").first();
-  await expect(plain).toBeVisible({ timeout: 12000 });
-  return (await plain.innerText()).trim();
+
+  const state = await expect.poll(async () => {
+    if (await alert.count()) {
+      const txt = ((await alert.textContent().catch(() => "")) ?? "").trim();
+      if (txt) return { kind: "error" as const, value: txt };
+    }
+
+    if (await status.count()) {
+      const staticField = status.locator("math-field[read-only]").first();
+      if (await staticField.count()) {
+        const value = String(await staticField.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
+        if (value.trim() && value.trim() !== "…") return { kind: "result" as const, value };
+      }
+      const plain = status.locator(".a11y-scale-result-3xl").first();
+      if (await plain.count()) {
+        const value = ((await plain.innerText().catch(() => "")) ?? "").trim();
+        if (value && value !== "…") return { kind: "result" as const, value };
+      }
+    }
+
+    return { kind: "pending" as const, value: "" };
+  }, { timeout: 15000 }).not.toEqual({ kind: "pending", value: "" }).then(async () => {
+    if (await alert.count()) {
+      const txt = ((await alert.textContent().catch(() => "")) ?? "").trim();
+      if (txt) return { kind: "error" as const, value: txt };
+    }
+    const staticField = status.locator("math-field[read-only]").first();
+    if (await staticField.count()) {
+      const value = String(await staticField.evaluate((el) => (el as HTMLElement & { value?: string }).value ?? ""));
+      if (value.trim() && value.trim() !== "…") return { kind: "result" as const, value };
+    }
+    const plain = status.locator(".a11y-scale-result-3xl").first();
+    const value = await plain.innerText();
+    return { kind: "result" as const, value: value.trim() };
+  });
+
+  if (state.kind === "error") throw new Error(state.value);
+  return state.value;
 }
 
 async function calculate(page: Page): Promise<string> {
