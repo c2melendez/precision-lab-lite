@@ -115,11 +115,11 @@ test.describe("IN625 H1d reentrada avanzada",()=>{
       // Comprobar puntos de referencia independientes para resultados numéricos.
       // No declarar equivalencia semántica universal basándose solo en salida no vacía.
       const anchors:Record<string,RegExp>={
-        "2+3":/^5(?:\\.0+)?$/,
-        "\\frac{1}{2}+\\frac{1}{3}":/^(?:\\frac\\{5\\}\\{6\\}|0\\.83{1,2}3*)$/i,
-        "2^{10}":/^1024(?:\\.0+)?$/,
-        "\\frac{3}{4}":/^(?:\\frac\\{3\\}\\{4\\}|0\\.75)$/,
-        "10^{-3}":/^(?:\\frac\\{1\\}\\{1000\\}|0\\.001)$/,
+        "2+3":/^5(?:\.0+)?$/,
+        "\\frac{1}{2}+\\frac{1}{3}":/^(?:\\frac\{5\}\{6\}|0\.83{1,2}3*)$/i,
+        "2^{10}":/^1024(?:\.0+)?$/,
+        "\\frac{3}{4}":/^(?:\\frac\{3\}\{4\}|0\.75)$/,
+        "10^{-3}":/^(?:\\frac\{1\}\{1000\}|0\.001)$/,
       };
       const expected=anchors[input];
       if(expected){
@@ -149,9 +149,9 @@ test.describe("IN625 H1d reentrada avanzada",()=>{
     await page.goto("./");
     const a=await evaluateOnce(page,"\\operatorname{asin}{\\left(\\frac{1}{2}\\right)}");
     expect(a.toLowerCase()).toMatch(/pi|asin|arcsin|0\.523|frac/);
+    const a2=await evaluateOnce(page,a);
     const b=await evaluateOnce(page,"\\operatorname{atan}{\\left(1\\right)}");
     expect(b.toLowerCase()).toMatch(/pi|atan|arctan|0\.785|frac/);
-    const a2=await evaluateOnce(page,a);
     const b2=await evaluateOnce(page,b);
     expect(canonical(a2),"asin: salida inicial y reentrada").toBe(canonical(a));
     expect(canonical(b2),"atan: salida inicial y reentrada").toBe(canonical(b));
