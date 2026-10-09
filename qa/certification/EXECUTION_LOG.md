@@ -779,3 +779,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 
 ## 2026-10-09 — SG28 stale-output assertion does not require a result node
 - Lite commit `8091c4f72739776575524e90c04890d6eeebb1bd`: evita un fallo de harness cuando el test intenta buscar `ResultPanel` después de cancelar el primer cálculo (todavía sin ningún resultado). Ahora rechaza el marcador obsoleto en la página completa. Sin cambio del motor; CI no verificado y SG28 permanece abierto.
+
+
+## 2026-10-09 — SG28 Lite: CI verificado PASS en run 37999350568
+- Se recuperó directamente run `37999350568` de GitHub Actions (push; SHA `8091c4f72739776575524e90c04890d6eeebb1bd`). Log del job `114053353730`: **2 passed (15.9s)**, pruebas SG28 de UI mock y smoke worker real; typecheck SUCCESS.
+- Revisión adicional de runs del mismo SHA: cumulative `37999350602` SUCCESS, build diagnostic `37999350623` SUCCESS, H1d reentry `37999350567` SUCCESS; jobs `114053352753`, `114053353745`, `114053352557` verificados. **No se publicaron cambios técnicos en esta verificación**.
+- Clasificación: prueba automatizada acotada **PASS**; gap de cancelación efectiva en ejecución real y backend Plus **OPEN**, SG28/H2 sin cierre integral.
