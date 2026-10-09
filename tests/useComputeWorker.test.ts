@@ -1,12 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const state = vi.hoisted(() => ({
-  workerRef: { current: null as Worker | null },
+  workerRefs: [] as Array<{ current: Worker | null }>,
   cleanup: null as null | (() => void),
 }));
 
 vi.mock("react", () => ({
-  useRef: () => state.workerRef,
+  useRef: () => {
+    const ref = { current: null as Worker | null };
+    state.workerRefs.push(ref);
+    return ref;
+  },
   useCallback: (fn: Function) => fn,
   useEffect: (effect: () => void | (() => void)) => {
     state.cleanup = effect() ?? null;
@@ -20,7 +24,7 @@ describe("SG28 — ciclo de vida del worker Lite", () => {
 
   beforeEach(() => {
     instances.length = 0;
-    state.workerRef.current = null;
+    state.workerRefs.length = 0;
     state.cleanup = null;
     class FakeWorker {
       terminate = vi.fn();
@@ -78,11 +82,11 @@ describe("SG28 — ciclo de vida del worker Lite", () => {
     expect(state.cleanup).toBeTypeOf("function");
     state.cleanup?.();
     expect(instances[0].terminate).toHaveBeenCalledTimes(1);
-    expect(state.workerRef.current).toBeNull();
+    expect(state.workerRefs[0].current).toBeNull();
 
     // Simular un segundo montaje en lugar de invocar un hook desmontado.
     const nextMount = useComputeWorker();
-    expect(nextMount.getWorker()).not.toBe(first);
+    expect(state.workerRefs).toHaveLength(2);\n    expect(nextMount.getWorker()).not.toBe(first);
     expect(instances).toHaveLength(2);
   });
 });
