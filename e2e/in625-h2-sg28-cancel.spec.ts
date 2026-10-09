@@ -83,7 +83,9 @@ test("EN-SG-28 Scientific can cancel and recover without stale results", async (
   await page.evaluate(() => (window as typeof window & {
     __sg28Instances?: Array<{ deliverLate: () => void }>
   }).__sg28Instances?.[0]?.deliverLate());
-  await expect(page.locator('[data-result-request-id]')).not.toContainText("999999");
+  // If no previous result exists, the status node is absent. This is a
+  // valid cancellation outcome; assert on the entire page instead.
+  await expect(page.locator("body")).not.toContainText("999999");
 
   await setInput("2+3");
   await compute.click();
