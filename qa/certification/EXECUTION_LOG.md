@@ -771,3 +771,7 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 
 ## 2026-10-09 — SG28 UI result selectors made layout-independent
 - Lite commit `5ecbb2e495a3e157849aead7dfabcb5e3b57b6f4`: corregida fragilidad de selectores E2E. La variante `fused` de `Screen` no crea `section[aria-label="Resultado"]`, pero `ResultPanel` sí expone `data-result-request-id` para respuestas y `role=alert` para errores. Clasificación HARNESS, sin cambio motor. PASS de CI pendiente de evidencia.
+
+
+## 2026-10-09 — SG28 fixed layout setup for Playwright
+- SG28 HARNESS Lite commit `ad4c399b76f07b031cf7ce7121c608ee39417378`. Forzado layout `split` antes del arranque en ambos casos E2E para garantizar que el control `Calcular` esté disponible en la UI esperada; sin alteración del motor. CI/Playwright sobre este SHA no verificado. H2 abierto.
