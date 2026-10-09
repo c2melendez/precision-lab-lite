@@ -762,3 +762,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 
 ## 2026-10-09 — SG28 corregido escape regex de oráculo real-worker
 - Lite `8e369c866c44a7ccca01feb82238c66b0be3fd01`: corrigió regex mal escapadas del oráculo E2E con worker nativo, antes de acreditar un resultado CI. Clasificación: ORÁCULO/HARNESS. Sin cambio de producto y sin PASS de CI acreditado; H2 continúa abierto.
+
+
+## 2026-10-09 — SG28 real-worker E2E waits for result value
+- Lite commit `e08beb30a774959296e100ce026aeae0fd42ea84`: the native-worker smoke now waits with `expect.poll` for the expected canonical result, rather than checking it immediately after the request ID appears. Classification HARNESS timing/oracle; no product change.
+- New workflow run status not confirmed: GitHub connector does not expose a repository-wide push-run listing and public Actions retrieval was unavailable. This is NOT PASS evidence. Next exact step: inspect SG28 E2E and cumulative gate jobs/logs for this revision, resolve reproducible failures, then isolated real cancellation and Plus backend termination validation. H2 OPEN.
