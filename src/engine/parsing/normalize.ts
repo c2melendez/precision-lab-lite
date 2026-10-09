@@ -559,7 +559,13 @@ function normalizeDelimiterSyntax(input: string): string {
  * determinista y amigable. No evalúa matemáticas; solo valida estructura.
  */
 function validateInputStructureG3(input: string): void {
-  const raw = input.trim();
+  // Validar la estructura equivalente después de retirar únicamente
+  // modificadores visuales de delimitación. La normalización completa
+  // sigue ocurriendo después de G3; aquí no se tocan expresiones matemáticas.
+  const raw = input.trim()
+    .replace(/\\(?:bigl|bigr|Bigl|Bigr|biggl|biggr|Biggl|Biggr)(?![A-Za-z])/g, "")
+    .replace(/\\mleft(?![A-Za-z])/g, "\\left")
+    .replace(/\\mright(?![A-Za-z])/g, "\\right");
 
   if (!raw) throw parseError("Escriba una expresión antes de calcular.");
 
