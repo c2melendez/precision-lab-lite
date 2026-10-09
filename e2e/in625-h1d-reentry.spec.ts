@@ -150,6 +150,8 @@ test.describe("IN625 H1d reentrada avanzada",()=>{
         "10^{-3}":/^(?:\\frac\\{1\\}\\{1000\\}|0\\.001)$/,
       };
       let s1=await evaluateOnce(page,input);
+      // El oraculo verifica la forma canonica (fraccion exacta) y no
+      // el decimal abreviado con '…' presentado visualmente.
       const anchor=expectedInput[input];
       if(anchor && !anchor.test(canonical(s1))){
         // Diagnóstico acotado: preservar evidencia de MathLive, salida y solicitud.
@@ -173,6 +175,9 @@ test.describe("IN625 H1d reentrada avanzada",()=>{
         }
         const region=page.locator('section[aria-label="Resultado"]').first();
         await expect.poll(async()=>{
+          const status=region.locator('[role="status"]').first();
+          const exact=await status.getAttribute("data-result-reentry-latex").catch(()=>null);
+          if(exact?.trim())return canonical(exact);
           const field=region.locator('math-field[read-only]').first();
           if(await field.count()){
             const v=String(await field.evaluate(el=>(el as HTMLElement&{value?:string}).value??""));
