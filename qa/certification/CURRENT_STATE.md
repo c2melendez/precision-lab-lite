@@ -603,3 +603,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 ## 2026-10-09 — SG28 real-worker E2E waits for result value
 - Lite commit `e08beb30a774959296e100ce026aeae0fd42ea84`: the native-worker smoke now waits with `expect.poll` for the expected canonical result, rather than checking it immediately after the request ID appears. Classification HARNESS timing/oracle; no product change.
 - New workflow run status not confirmed: GitHub connector does not expose a repository-wide push-run listing and public Actions retrieval was unavailable. This is NOT PASS evidence. Next exact step: inspect SG28 E2E and cumulative gate jobs/logs for this revision, resolve reproducible failures, then isolated real cancellation and Plus backend termination validation. H2 OPEN.
+
+
+## 2026-10-09 — SG28 UI result selectors made layout-independent
+- Confirmación del código de UI: `src/components/Screen.tsx` solo renderiza `section[aria-label="Resultado"]` en ciertas disposiciones; en `fused` el componente `ResultPanel` se monta sin ese wrapper. El test SG28 buscaba exclusivamente esa sección, creando un fallo de HARNESS dependiente del layout, independientemente del resultado matemático.
+- Lite commit `5ecbb2e495a3e157849aead7dfabcb5e3b57b6f4`: el test SG28 localiza resultados por `[data-result-request-id]` (atributo real de `ResultPanel`) y errores por `role=alert`, separando correctamente éxito/error. No se alteró producto.
+- Estado: resultados del workflow SG28 sobre este SHA aún no verificados; el histórico antiguo de cumulative exitoso no certifica este cambio. Siguiente paso: recuperar CI y depurar rojos restantes con evidencia. SG28/H2 ABIERTOS.
