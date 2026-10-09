@@ -112,3 +112,26 @@ test("EN-SG-28 Scientific can cancel and recover without stale results", async (
     __sg28Instances?: Array<{ terminated: boolean }>
   }).__sg28Instances?.length)).toBe(4);
 });
+
+
+test("EN-SG-28 Scientific real worker resumes ordinary calculation", async ({ page }) => {
+  // This test does NOT replace Worker and uses a bounded trivial input.
+  // It proves that the built worker path can still produce a real result.
+  await page.goto("./");
+  const field = page.locator('math-field[aria-label="Entrada matemática"]').first();
+  await field.waitFor({ state: "visible" });
+  await field.evaluate(el => {
+    const math = el as HTMLElement & {
+      setValue: (value: string, opts?: { silenceNotifications?: boolean }) => void
+    };
+    math.setValue("2+3", { silenceNotifications: true });
+  });
+  await field.dispatchEvent("input", { bubbles: true });
+  await page.getByRole("region", { name: "Entrada" })
+    .getByRole("button", { name: "Calcular", exact: true }).click();
+  const status = page.locator('section[aria-label="Resultado"] [role="status"]').first();
+  await expect(status).toHaveAttribute("data-result-request-id", /.+/, { timeout: 15_000 });
+  const value = await status.getAttribute("data-result-reentry-latex");
+  expect(value?.replace(/\\s+/g, "")).toMatch(/^5(?:\\.0+)?$/);
+  await expect(page.getByRole("button", { name: "Detener cálculo" })).toHaveCount(0);
+});
