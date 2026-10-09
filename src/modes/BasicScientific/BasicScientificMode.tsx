@@ -53,8 +53,64 @@ type MathFieldRef = { insert: (s: string) => void; focus: () => void; value: str
 function readRealIntervalUnion(latex: string): string | null {
   if (!latex.includes("\\cup")) return null;
   const normalized = latex.replace(/\s+/g, "").replace(/\\left/g, "").replace(/\\right/g, "");
-  const endpoint = "(?:-?\\\\infty|[+-]?(?:\\\\d+(?:\\\\.\\\\d*)?|\\\\.\\\\d+))";
-  const segment = new RegExp("^([\\\\(\\\\[])(" + endpoint + "),(" + endpoint + ")([\\\\)\\\\]])$");
+  const endpoint = String.raw`(?:-?\\infty|[+-]?(?:\d+(?:\.\d*)?|\.\d+))`;
+  const segment = new RegExp(String.raw`^([\(\[])(${endpoint}),(${endpoint})([\)\]])import { useCallback, useEffect, useRef, useState } from "react";
+import { useComputeWorker } from "../../hooks/useComputeWorker";
+import { MathKeyboard, isVariableOrConstantKey, type KeyDef } from "../../components/MathKeyboard";
+import { KeyboardBasicPanel } from "../../components/KeyboardBasicPanel";
+import { Screen } from "../../components/Screen";
+import { type SessionHistoryEntry } from "../../components/HistoryLog";
+import { makeRequestId, ErrorCode, type MathResult } from "../../types";
+import { parseExpression } from "../../engine/parsing";
+import { toLatex } from "../../engine/algebriteClient";
+import { splitSystemLatex, splitFreeSystemLatex } from "../../engine/parsing/systemSplit";
+import { detectPiecewiseIntent } from "../../engine/parsing/piecewiseIntent";
+import { detectODE } from "../../engine/parsing/odeDetect";
+import { detectComplexAnalysisIntent } from "../../engine/parsing/complexAnalysisIntent";
+import { detectChainedInequality } from "../../engine/parsing/chainedInequality";
+import { detectRelationIntent } from "../../engine/parsing/relationIntent";
+import { detectConstrainedEquationIntent } from "../../engine/parsing/constrainedEquationIntent";
+import { detectMatrixIntent } from "../../engine/parsing/matrixIntent";
+import { addHistoryEntry } from "../../store/historyDb";
+import { useKeyboardPanelStore } from "../../store/useKeyboardPanelStore";
+import { useRecentKeysStore } from "../../store/useRecentKeysStore";
+import { useLayoutModeStore } from "../../store/useLayoutModeStore";
+import { useArgandBridgeStore } from "../../store/useArgandBridgeStore";
+import { usePendingGraphStore } from "../../store/usePendingGraphStore";
+
+// Modo 1 de la spec v10 §5. Orquesta NaturalInput + MathKeyboard +
+// ResultPanel, delegando todo el cómputo al Web Worker (nunca al hilo
+// principal — regla dura de §3/§12).
+//
+// Fase A (spec UX estilo ClassCalc): el teclado ahora inserta con
+// field.insert() (cursor-aware, plantillas #0) en vez de concatenar texto
+// al final — se guarda una referencia real al <math-field>. El popover
+// DEG/RAD sale del teclado y vive en el header de este modo.
+//
+// Fase 1 (fusión de modos, plan de 3 fases): handleCalculate ahora es un
+// router — antes SIEMPRE mandaba {type:"evaluate"} al worker sin mirar si
+// la expresión era una ecuación (bug real: "2x+3=7" se "resolvía" como
+// simplificar la resta 2x-4, nunca despejaba x=2). Ahora:
+//   1. Si el campo tiene un entorno \begin{cases}, se trata como sistema
+//      (mismo pipeline que LinearSystemsMode.tsx, con N campos).
+//   2. Si no, se parsea una vez con parseExpression(); si es ecuación
+//      (parsed.isEquation) con exactamente 1 variable libre, se resuelve
+//      con solveAlgebra (mismo pipeline que AlgebraMode.tsx).
+//   3. Si no es ecuación, se evalúa como antes.
+// AlgebraMode.tsx y LinearSystemsMode.tsx no se eliminaron — siguen
+// existiendo como pestañas aparte para quien prefiera esa UI dedicada
+// (ej. sistemas con más de 4 ecuaciones, o elegir la variable a despejar
+// cuando hay más de una). Este router es el atajo dentro de la pantalla
+// unificada para el caso común.
+
+type MathFieldRef = { insert: (s: string) => void; focus: () => void; value: string } | null;
+
+/** Recognize valid real-interval unions before the scalar parser. */
+function readRealIntervalUnion(latex: string): string | null {
+  if (!latex.includes("\\cup")) return null;
+  const normalized = latex.replace(/\s+/g, "").replace(/\\left/g, "").replace(/\\right/g, "");
+  const endpoint = String.raw`(?:-?\\infty|[+-]?(?:\d+(?:\.\d*)?|\.\d+))`;
+);
   const segments = normalized.split("\\cup");
   if (segments.length < 2 || segments.some(part => !part)) return null;
   for (const part of segments) {
