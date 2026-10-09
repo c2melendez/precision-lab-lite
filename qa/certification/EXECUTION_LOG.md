@@ -758,3 +758,7 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 
 ## 2026-10-09 — SG28 smoke integrado con worker real añadido
 - Lite commit `0484a8e1e3a92d7df2c39d721cf013a77388cd2d`: añadido smoke de Playwright con worker real para operación ligera `2+3=5`, diferenciado explícitamente del test de cancelación bajo mock. No se tocó el producto. CI no verificada y no hay PASS nuevo acreditado.
+
+
+## 2026-10-09 — SG28 corregido escape regex de oráculo real-worker
+- Lite `8e369c866c44a7ccca01feb82238c66b0be3fd01`: corrigió regex mal escapadas del oráculo E2E con worker nativo, antes de acreditar un resultado CI. Clasificación: ORÁCULO/HARNESS. Sin cambio de producto y sin PASS de CI acreditado; H2 continúa abierto.
