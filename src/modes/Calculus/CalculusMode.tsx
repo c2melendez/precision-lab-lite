@@ -90,6 +90,11 @@ export function CalculusMode() {
     const worker = getWorker();
     activeRequestRef.current = requestId;
     setIsComputing(true);
+    worker.onerror = () => {
+      if (activeRequestRef.current !== requestId) return;
+      handleCancel();
+      fail(ErrorCode.UNSUPPORTED_OPERATION, "El motor de cálculo se interrumpió. Puedes intentar otra operación.", requestId);
+    };
     worker.onmessage = (e: MessageEvent<MathResult>) => {
       if (activeRequestRef.current !== requestId || e.data.requestId !== requestId) return;
       activeRequestRef.current = null;
