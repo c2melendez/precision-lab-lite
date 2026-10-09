@@ -11,7 +11,12 @@ const ENV = String.raw`\\begin\{(p|b|v)matrix\}([\s\S]*?)\\end\{\1matrix\}`;
 function splitMatrixBody(body: string): string[][] {
   const rows = body.split(/\\\\/).map((r) => r.trim()).filter(Boolean);
   if (rows.length === 0) throw new Error("La matriz no puede estar vacía.");
-  const matrix = rows.map((row) => row.split("&").map((c) => c.trim()));
+  // Los resultados de matrices de Plus pueden incluir fracciones LaTeX.
+  // Conservarlas como razones exactas para Fraction.js, no como decimales.
+  const normalizeCell = (cell: string): string =>
+    cell.trim().replace(/\\\\(?:dfrac|tfrac|frac)\\s*\\{\\s*([+-]?\\d+)\\s*\\}\\s*\\{\\s*([+-]?\\d+)\\s*\\}/g, "($1)/($2)")
+      .replace(/^\\(([+-]?\\d+)\\)\\/\\(([+-]?\\d+)\\)$/, "$1/$2");
+  const matrix = rows.map((row) => row.split("&").map(normalizeCell));
   const width = matrix[0].length;
   if (width === 0 || matrix.some((row) => row.length !== width)) {
     throw new Error("Todas las filas de la matriz deben tener la misma longitud.");
