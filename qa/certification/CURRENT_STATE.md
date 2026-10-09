@@ -671,3 +671,8 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 ## 2026-10-09 — Plus cumulative restored, 749 frontend + 565 backend PASS
 - GitHub Actions Plus cumulative run `38004192723` completed SUCCESS on exact SHA `8511653781fde1f53b13dba351d347f950c6864b`. Frontend job `114069085476`: **749 passed, 28 TODO, 0 failed** over 69 test files; backend job `114069085716`: **565 passed, 1 warning, 0 failed**. H1d Reentry run `38004192745` also SUCCESS on same SHA.
 - This verifies the correction of three mismatched timeout oracles in `frontend/src/__tests__/client.test.ts`. Plus cumulative is GREEN. Separate SG28 backend-isolation prototype run `38002882796` had 3/3 PASS, but it remains disconnected from production endpoints; client disconnect does not yet terminate server SymPy operation. **SG28/H2 globally OPEN**.
+
+
+## 2026-10-09 — SG28 Plus genuine SymPy child-process regression added
+- Plus test file `backend/tests/test_in625_sg28_interruptible.py` updated in commit `0c4db6237c5bfd6ee1843db7f8c9bfdb2df874d4`: two additional tests run a genuine, small SymPy derivative in a spawned child process and verify a subsequent real SymPy evaluation still succeeds after another worker times out and is killed.
+- Expected isolated SG28 suite: 5 tests, **not yet verified by CI**. Unlike prior generic arithmetic tests, this confirms a genuine SymPy call can execute in a subprocess. It does NOT show cancellation of an in-progress expensive SymPy operation or live HTTP request disconnection; endpoints remain unchanged. H2 OPEN.
