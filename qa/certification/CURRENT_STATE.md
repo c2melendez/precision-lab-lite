@@ -598,3 +598,8 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 ## 2026-10-09 — SG28 corregido escape regex de oráculo real-worker
 - Auditoría del spec `e2e/in625-h2-sg28-cancel.spec.ts` encontró un error de ORÁCULO concreto: los literales regex del smoke con worker real tenían doble barra `/\\\\s+/` y `/\\\\.0+/` (buscaban barras literales), por lo que el resultado válido `5.0` podría rechazarse y los blancos no normalizarse. Lite commit `8e369c866c44a7ccca01feb82238c66b0be3fd01` deja expresiones regulares correctas `/\\s+/` y `/\\.0+/`.
 - Corrección exclusivamente de test/harness; no cambia el motor matemático. No se confirmó corrida CI sobre este SHA; SG28/H2 siguen ABIERTOS. Siguiente paso: verificar workflow SG28 + gate acumulativo, diagnosticar los resultados y probar interrupción real controlada.
+
+
+## 2026-10-09 — SG28 real-worker E2E waits for result value
+- Lite commit `e08beb30a774959296e100ce026aeae0fd42ea84`: the native-worker smoke now waits with `expect.poll` for the expected canonical result, rather than checking it immediately after the request ID appears. Classification HARNESS timing/oracle; no product change.
+- New workflow run status not confirmed: GitHub connector does not expose a repository-wide push-run listing and public Actions retrieval was unavailable. This is NOT PASS evidence. Next exact step: inspect SG28 E2E and cumulative gate jobs/logs for this revision, resolve reproducible failures, then isolated real cancellation and Plus backend termination validation. H2 OPEN.
