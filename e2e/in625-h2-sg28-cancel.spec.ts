@@ -12,11 +12,12 @@ test("EN-SG-28 Scientific can cancel and recover without stale results", async (
       onmessage: ((event: MessageEvent) => void) | null = null;
       onerror: ((event: Event) => void) | null = null;
       private terminated = false;
+      private requestCount = 0;
       constructor(url: string | URL, options?: WorkerOptions) {
         // This suite runs in the isolated Playwright preview and only replaces
         // the calculator compute worker; all other workers remain native.
         if (!String(url).includes("compute.worker")) return new NativeWorker(url, options) as never;
-        const record = {
+        const record: { terminated: boolean; requestId: string; deliverLate: () => void; emitError: () => void } = {
           terminated: false,
           requestId: "",
           emitError: () => { this.onerror?.(new Event('error')); },
@@ -36,7 +37,8 @@ test("EN-SG-28 Scientific can cancel and recover without stale results", async (
       postMessage(data: { requestId: string }) {
         const record = instances[instances.length - 1];
         record.requestId = data.requestId;
-        if (instances.length === 1 || instances.length === 3) {
+        this.requestCount += 1;
+        if (instances.length === 1 || (instances.length === 2 && this.requestCount === 2)) {
           // Intentionally pending until cancel; no expensive calculation.
           return;
         }
@@ -97,17 +99,17 @@ test("EN-SG-28 Scientific can cancel and recover without stale results", async (
   await expect(cancel).toBeVisible();
   await page.evaluate(() => (window as typeof window & {
     __sg28Instances?: Array<{ emitError: () => void }>
-  }).__sg28Instances?.[2]?.emitError());
+  }).__sg28Instances?.[1]?.emitError());
   await expect(cancel).toHaveCount(0);
   await expect(page.locator('section[aria-label="Resultado"]')).toContainText("interrumpió");
   expect(await page.evaluate(() => (window as typeof window & {
     __sg28Instances?: Array<{ terminated: boolean }>
-  }).__sg28Instances?.[2]?.terminated)).toBe(true);
+  }).__sg28Instances?.[1]?.terminated)).toBe(true);
 
   await setInput("2+3");
   await compute.click();
   await expect(page.locator('section[aria-label="Resultado"]')).toContainText("5");
   expect(await page.evaluate(() => (window as typeof window & {
     __sg28Instances?: Array<{ terminated: boolean }>
-  }).__sg28Instances?.length)).toBe(4);
+  }).__sg28Instances?.length)).toBe(3);
 });
