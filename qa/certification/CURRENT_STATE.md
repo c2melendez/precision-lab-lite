@@ -587,3 +587,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Verificación por código: `BasicScientificMode.handleCalculate` llama `handleCancelComputation()` al inicio de cada click Calcular, independientemente de si el worker completó su mensaje. Por tanto incluso una segunda operación tras SUCCESS crea un worker nuevo. El test E2E anterior (commit `a4a153dd`) asumía reutilización tras SUCCESS, pero esa suposición solo corresponde al hook aislado y contradice el componente real.
 - Fix de HARNESS Lite `b731f66dad3c75fd7d5f7cf3dcafef3e01f71b14`: test de SG28 restaura secuencia determinista de instancias 1 (pendiente/cancelar), 2 (SUCCESS), 3 (pendiente/error), 4 (recuperación). Sin cambio de motor ni de implementación de producto.
 - SG28/H2 ABIERTOS: prueba no acreditada por CI todavía. Siguiente paso exacto: obtener jobs/logs del workflow SG28 y gate acumulativo de esta revisión, corregir fallos reproducibles, ejecutar test integrado con worker real bajo carga acotada y comparar Plus aislado.
+
+
+## 2026-10-09 — SG28 smoke integrado con worker real añadido
+- Lite `e2e/in625-h2-sg28-cancel.spec.ts` ahora incorpora **segundo test de integración sin reemplazar Worker**: evalúa `2+3` con el worker real compilado y exige resultado canónico `5` y salida de estado busy. Commit de test `0484a8e1e3a92d7df2c39d721cf013a77388cd2d`.
+- Evidencia separada: test 1 usa mock acotado para cancelación, error y recuperación; test 2 usa motor real para cálculo ordinario, pero no demuestra interrupción de un cálculo real prolongado. Sin resultado CI confirmado para nueva revisión; **no marcar PASS**.
+- Siguiente paso exacto: inspeccionar ejecución del workflow SG28 (dos tests) y gate Lite en el commit; clasificar fallo de harness/producto si lo hay, después diseñar interrupción real controlada y validar Plus backend aislado. H2 sigue ABIERTO.
