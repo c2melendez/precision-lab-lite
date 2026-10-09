@@ -660,6 +660,17 @@ function validateInputStructureG3(input: string): void {
 export function preprocessLatex(latex: string): string {
   validateInputStructureG3(latex);
   latex = normalizeExternalSyntaxF3c(normalizeExternalSyntax(normalizeUnicodePaste(normalizePastedLatex(latex))));
+  // Inversas hiperbólicas del teclado: normalizar antes de la tokenización
+  // y de las conversiones genéricas de potencias. La forma f^{-1} aquí
+  // denota función inversa (no el recíproco numérico f(x)^(-1)).
+  latex = latex.replace(
+    /\\?(sinh|cosh|tanh|csch|sech|coth)\^\{-1\}(?=\s*(?:\\left\(|\(|\{))/g,
+    (_match, fn: string) => ({
+      sinh: "asinh", cosh: "acosh", tanh: "atanh",
+      csch: "acsch", sech: "asech", coth: "acoth",
+    })[fn as "sinh" | "cosh" | "tanh" | "csch" | "sech" | "coth"],
+  );
+
   let expr = normalizeLocalizedAliases(normalizeDelimiterSyntax(latex));
 
   // IN625 E1b — variantes tipográficas equivalentes de límites.
