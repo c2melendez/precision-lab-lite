@@ -37,6 +37,15 @@ describe("SG28 — ciclo de vida del worker Lite", () => {
     vi.unstubAllGlobals();
   });
 
+  it("no crea el worker hasta el primer cálculo y reutiliza la instancia", () => {
+    const { getWorker } = useComputeWorker();
+    expect(instances).toHaveLength(0);
+    const first = getWorker();
+    expect(instances).toHaveLength(1);
+    expect(getWorker()).toBe(first);
+    expect(instances).toHaveLength(1);
+  });
+
   it("cancelar antes de crear un worker no crea ni termina instancias", () => {
     const { cancelWorker, getWorker } = useComputeWorker();
     cancelWorker();
