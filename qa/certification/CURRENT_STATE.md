@@ -570,3 +570,8 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Lite `.github/workflows/in625-sg28-scientific-cancel.yml` ahora incluye `npm run typecheck` y sube trazas/capturas/informe de Playwright como artifact `sg28-playwright-evidence` solo en fallo, con retención de 7 días. Commit técnico `85f05af837d09914a4fc6d4acd34bc630f5e874e`.
 - La consulta de runs asociados al commit anterior mediante conector GitHub devuelve 0 porque solo cubre eventos PR; búsqueda pública del workflow no proporcionó logs. **No se verificó estado CI del nuevo cambio**; no afirmar éxito ni fallo.
 - H2/SG28 permanece abierto. Siguiente paso exacto: recuperar los nuevos jobs del gate acumulativo y del workflow SG28, leer trazas de Playwright si falla, clasificar causa y corregir. Requiere además verificación con worker real y comparación Plus bajo aislamiento; no ejecutar cargas extremas en producción.
+
+
+## 2026-10-09 — SG28 error recovery regression extended
+- Lite E2E `e2e/in625-h2-sg28-cancel.spec.ts` now also simulates a worker `onerror` after a prior successful cancellation/retry; asserts visible failure feedback, worker termination, cleared loading control, and successful subsequent computation. Commit `512f9346fd941ee1fe2e6b2d4b0fc0ecf9fe1f06`.
+- Classification HARNESS/oracle expansion. No product engine alteration. **No new CI result confirmed**; cannot claim SG28 PASS. Next step: verify SG28 Playwright + cumulative gate logs for this exact code SHA, resolve failed cases, then perform isolated real-worker cancellation and Plus backend comparison. H2 OPEN.
