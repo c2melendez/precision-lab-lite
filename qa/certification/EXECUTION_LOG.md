@@ -754,3 +754,7 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 reconcile exact Scientific worker lifecycle
 - Se confirmó por lectura de `BasicScientificMode.tsx` que el botón Calcular termina siempre el worker existente antes de iniciar el siguiente; no basta extrapolar el comportamiento del hook `useComputeWorker` aislado. Clasificación: HARNESS/ORÁCULO del E2E desalineado con comportamiento real.
 - Commit Lite `b731f66dad3c75fd7d5f7cf3dcafef3e01f71b14` ajusta secuencia de cuatro instancias y oráculo de error a instancia tres. CI PASS aún NO verificado; no elevar el estado de H2.
+
+
+## 2026-10-09 — SG28 smoke integrado con worker real añadido
+- Lite commit `0484a8e1e3a92d7df2c39d721cf013a77388cd2d`: añadido smoke de Playwright con worker real para operación ligera `2+3=5`, diferenciado explícitamente del test de cancelación bajo mock. No se tocó el producto. CI no verificada y no hay PASS nuevo acreditado.
