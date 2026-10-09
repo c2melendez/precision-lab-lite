@@ -54,7 +54,8 @@ async function submit(page:Page){
   const button=page.getByRole("region",{name:"Entrada"}).getByRole("button",{name:"Calcular",exact:true});
   await expect(button).toBeEnabled();
   const region=page.locator('section[aria-label="Resultado"]').first();
-  const before=await region.locator('[role="status"]').first().getAttribute("data-result-request-id").catch(()=>null);
+  const previousStatus=region.locator('[role="status"]').first();
+  const before=await previousStatus.count() ? await previousStatus.getAttribute("data-result-request-id") : null;
   await button.click();
   await expect.poll(async()=>{
     const alert=region.locator('[role="alert"]').first();
