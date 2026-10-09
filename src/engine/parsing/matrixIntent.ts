@@ -13,9 +13,14 @@ function splitMatrixBody(body: string): string[][] {
   if (rows.length === 0) throw new Error("La matriz no puede estar vacía.");
   // Los resultados de matrices de Plus pueden incluir fracciones LaTeX.
   // Conservarlas como razones exactas para Fraction.js, no como decimales.
-  const normalizeCell = (cell: string): string =>
-    cell.trim().replace(/\\\\(?:dfrac|tfrac|frac)\\s*\\{\\s*([+-]?\\d+)\\s*\\}\\s*\\{\\s*([+-]?\\d+)\\s*\\}/g, "($1)/($2)")
-      .replace(/^\\(([+-]?\\d+)\\)\\/\\(([+-]?\\d+)\\)$/, "$1/$2");
+  const normalizeCell = (cell: string): string => {
+    const trimmed = cell.trim();
+    const match = /^([+-]?)\\(?:dfrac|tfrac|frac)\s*\{\s*([+-]?\d+)\s*\}\s*\{\s*([+-]?\d+)\s*\}$/.exec(trimmed);
+    if (!match) return trimmed;
+    const numerator = Number(match[2]) * (match[1] === "-" ? -1 : 1);
+    const denominator = Number(match[3]);
+    return `${numerator}/${denominator}`;
+  };
   const matrix = rows.map((row) => row.split("&").map(normalizeCell));
   const width = matrix[0].length;
   if (width === 0 || matrix.some((row) => row.length !== width)) {
