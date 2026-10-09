@@ -633,3 +633,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Lite commit `3191e9d296deec42a7946a73b5e1dfa686b94748`: tercer test E2E SG28 agregado; usa Web Worker NATIVO creado desde Blob con cómputo acotado (400 ms) y comprueba llamada efectiva a `terminate()` tras «Detener cálculo», así como ausencia del resultado tardío. No usa entradas matemáticas extremas ni backend de producción.
 - Esta prueba certifica, si pasa CI, **terminación de un worker auténtico bajo carga simulada**, pero NO ejecución/cancelación de SymPy/Algebrite real durante una operación compleja. Sigue pendiente recuperación tras terminación de carga nativa y cancelación del backend Plus.
 - Estado del commit nuevo: **CI no verificada**, no declarar PASS adicional. Siguiente paso: leer job/logs del workflow SG28 del SHA `3191e9d`, ajustar harness si hay rojo, luego definir arquitectura Plus de ejecución interruptible aislada. H2 abierto.
+
+
+## 2026-10-09 — SG28 native worker CI verified run 38000982016
+- Evidencia GitHub Actions directa: Lite SHA `3191e9d296deec42a7946a73b5e1dfa686b94748`; SG28 run `38000982016` SUCCESS, job `114058691659`, log **3 Playwright passed (17.6s)** y Typecheck PASS. Incluye test de terminación de Web Worker nativo ocupado de manera acotada, worker simulado cancelación/recuperación y operación matemática ligera con worker real.
+- Mismo SHA: cumulative run `38000982159` SUCCESS; Lite Build Diagnostic `38000982024` SUCCESS; H1d Reentry `38000982038` SUCCESS, verificados mediante lista de ejecuciones de GitHub.
+- Alcance estrictamente acreditado: terminación de worker genuino de navegador bajo tarea controlada y recuperación UI bajo mock; NO prueba parada de tarea Algebrite real compleja ni detención servidor Plus. SG28 en Lite queda ampliado y acreditado parcialmente; H2/SG28 general ABIERTO. Siguiente paso: integración con tarea matemática realmente en curso en runner aislado, más arquitectura/prueba backend Plus cancelable.
