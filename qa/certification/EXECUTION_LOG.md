@@ -311,3 +311,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Decisión: H1d CERRADO al nivel contractual de clasificación. Advertencia: EN-RE-25/26/27/28 tienen límites de oráculo semántico; EN-RE-22/29/30 siguen GAP y pendientes para desarrollo futuro. No implica certificación global.
 - CURRENT_STATE.md actualizado en Lite commit 9ad0438c150a46529588027621fe52a74252e3ca y Plus commit af54bda6cab4bdac7741be3e5941430d8cb91a57.
 - H2 se activa como próximo bloque, inicialmente en fase de localización de matriz, cobertura y harness. No se ha ejecutado H2.
+
+## 2026-10-09 — H2: discovery de matriz canónica
+- H1d cerrado por clasificación: cinco PASS automatizados EN-RE-24..28 en cada motor, dos GAP EN-RE-29/30; H1c EN-RE-22 también GAP. Gates Lite #37926844320 y Plus #37909986582 SUCCESS.
+- **H2 no ejecutado**: no se localizó su matriz canónica en `qa/certification/`; la búsqueda limitada de GitHub tampoco identificó su fuente original `matriz_entrada_sintaxis_calculadora` Parte H.2. No hay IDs/casos H2 acreditados.
+- Se creó `qa/certification/IN625_H2_DISCOVERY.md` bilateral, con inventario de fuentes consultadas y condiciones de procedencia antes de testear. Lite commit 724436bf; Plus commit 4d71ab65.
+- **Siguiente paso exacto**: recuperar de los artefactos originales/otra ubicación del repo la Parte H.2 con IDs, entradas, expected y clasificación; incorporarla fielmente, preparar harness Lite y Plus y correr las suites. No marcar H2 PASS sin evidencias.
