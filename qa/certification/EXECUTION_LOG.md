@@ -222,3 +222,10 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Gate Lite #37921274929 y H1d #37921274939 fueron observados IN_PROGRESS sobre el primer commit; Build Lite #37921290902 IN_PROGRESS sobre el segundo. No se ha confirmado aún ejecución de gate sobre el HEAD final ni resultado de los trabajos en curso.
 - Plus gate #37909986582 SUCCESS y H1d #37909986581 SUCCESS en SHA 2d4e97c3, sin cambios en esta operación.
 - H1d no está cerrado contractualmente y H2 no inicia. Siguiente: verificar Actions con SHA actual Lite, comparar fallos restantes, corregir por causa raíz sin relajar contratos, y sincronizar evidencia nueva.
+
+## 2026-10-09 — Lite: gate 27 fallos y corrección de inversas recíprocas
+- Gate Lite #37921274929 FAILURE (SHA b399ffad): 988 PASS / 27 FAIL / 30 TODO. H1d Lite #37921274939 SUCCESS. Build #37921290902 SUCCESS sobre el commit corregido 017459e0.
+- Se diagnosticó que `normalizePoweredFunctions` interpretaba `\\csc^{-1}(x)`, `\\sec^{-1}(x)` y `\\cot^{-1}(x)` como potencias recíprocas de csc/sec/cot, no como funciones trigonométricas inversas. Esta distinción explica fallos numéricos de paridad y dos aserciones directas de `tests/parsing.test.ts`.
+- Cambio en producto Lite `src/engine/parsing/normalize.ts`, commit `3eaf96e1ae80faf53c40443d1f1504d75477191e`: se enruta a arcsin(1/x), arccos(1/x), arctan(1/x) antes de la normalización genérica de potencias. Las pruebas de regresión existentes cubren estos casos; no se modificó Plus.
+- Lanzamiento automático observado en SHA 3eaf96e1: gate #37921487478, H1d #37921487510 y build #37921487454, inicialmente QUEUED. Aún no hay resultados verificables ni cierre de H1d.
+- Plus mantiene gate #37909986582 SUCCESS. Siguiente paso: verificar resultados de Lite, continuar con hiperbólicas inversas y errores de sintaxis restantes tras el gate, sin iniciar H2 prematuramente.
