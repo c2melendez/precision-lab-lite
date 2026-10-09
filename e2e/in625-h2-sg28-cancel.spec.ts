@@ -131,7 +131,11 @@ test("EN-SG-28 Scientific real worker resumes ordinary calculation", async ({ pa
     .getByRole("button", { name: "Calcular", exact: true }).click();
   const status = page.locator('section[aria-label="Resultado"] [role="status"]').first();
   await expect(status).toHaveAttribute("data-result-request-id", /.+/, { timeout: 15_000 });
-  const value = await status.getAttribute("data-result-reentry-latex");
-  expect(value?.replace(/\s+/g, "")).toMatch(/^5(?:\.0+)?$/);
+  // Wait for the computed canonical value, not merely for a request-id
+  // attribute that could belong to an earlier or transitional render.
+  await expect.poll(async () => {
+    const value = await status.getAttribute("data-result-reentry-latex");
+    return value?.replace(/\s+/g, "") ?? "";
+  }, { timeout: 15_000 }).toMatch(/^5(?:\.0+)?$/);
   await expect(page.getByRole("button", { name: "Detener cálculo" })).toHaveCount(0);
 });
