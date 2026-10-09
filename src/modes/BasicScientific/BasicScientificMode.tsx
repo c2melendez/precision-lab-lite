@@ -49,6 +49,28 @@ import { usePendingGraphStore } from "../../store/usePendingGraphStore";
 
 type MathFieldRef = { insert: (s: string) => void; focus: () => void; value: string } | null;
 
+/** Recognize valid real-interval unions before the scalar parser. */
+function readRealIntervalUnion(latex: string): string | null {
+  if (!latex.includes("\\cup")) return null;
+  const normalized = latex.replace(/\s+/g, "").replace(/\\left/g, "").replace(/\\right/g, "");
+  const endpoint = "(?:-?\\\\infty|[+-]?(?:\\\\d+(?:\\\\.\\\\d*)?|\\\\.\\\\d+))";
+  const segment = new RegExp("^([\\\\(\\\\[])(" + endpoint + "),(" + endpoint + ")([\\\\)\\\\]])$");
+  const segments = normalized.split("\\cup");
+  if (segments.length < 2 || segments.some(part => !part)) return null;
+  for (const part of segments) {
+    const match = segment.exec(part);
+    if (!match) return null;
+    const [, leftBracket, lower, upper, rightBracket] = match;
+    if (lower === "\\infty" || upper === "-\\infty") return null;
+    if (lower.includes("infty") && leftBracket !== "(") return null;
+    if (upper.includes("infty") && rightBracket !== ")") return null;
+    const a = lower === "-\\infty" ? -Infinity : Number(lower);
+    const b = upper === "\\infty" ? Infinity : Number(upper);
+    if (!(a < b || (a === b && leftBracket === "[" && rightBracket === "]"))) return null;
+  }
+  return latex;
+}
+
 export function BasicScientificMode() {
   const [latex, setLatex] = useState("");
   const [result, setResult] = useState<MathResult | null>(null);
@@ -170,6 +192,21 @@ export function BasicScientificMode() {
     // el valor vivo elimina esa ventana de estado obsoleto.
     const currentLatex = mathField?.value ?? latex;
     console.info("IN625_H1D_CALCULATE_ENTRY", JSON.stringify({ currentLatex, reactLatex: latex, fieldLatex: mathField?.value ?? null }));
+    const intervalUnion = readRealIntervalUnion(currentLatex);
+    if (intervalUnion) {
+      const requestId = makeRequestId();
+      onSuccess("Científica (unión de intervalos)", currentLatex, {
+        success: true,
+        resultLatex: intervalUnion,
+        interpretedLatex: intervalUnion,
+        resultViewLabel: "Conjunto de intervalos",
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      });
+      return;
+    }
     const piecewiseIntent = detectPiecewiseIntent(currentLatex);
     if (piecewiseIntent) {
       const requestId = makeRequestId();
