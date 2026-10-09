@@ -81,11 +81,11 @@ test("EN-SG-28 Scientific can cancel and recover without stale results", async (
   await page.evaluate(() => (window as typeof window & {
     __sg28Instances?: Array<{ deliverLate: () => void }>
   }).__sg28Instances?.[0]?.deliverLate());
-  await expect(page.locator('section[aria-label="Resultado"]')).not.toContainText("999999");
+  await expect(page.locator('[data-result-request-id]')).not.toContainText("999999");
 
   await setInput("2+3");
   await compute.click();
-  await expect(page.locator('section[aria-label="Resultado"]')).toContainText("5");
+  await expect(page.locator('[data-result-request-id]')).toContainText("5");
   await expect(cancel).toHaveCount(0);
   expect(await page.evaluate(() => (window as typeof window & {
     __sg28Instances?: Array<{ terminated: boolean }>
@@ -100,14 +100,14 @@ test("EN-SG-28 Scientific can cancel and recover without stale results", async (
     __sg28Instances?: Array<{ emitError: () => void }>
   }).__sg28Instances?.[2]?.emitError());
   await expect(cancel).toHaveCount(0);
-  await expect(page.locator('section[aria-label="Resultado"]')).toContainText("interrumpió");
+  await expect(page.getByRole("alert").filter({ hasText: "interrumpió" })).toBeVisible();
   expect(await page.evaluate(() => (window as typeof window & {
     __sg28Instances?: Array<{ terminated: boolean }>
   }).__sg28Instances?.[2]?.terminated)).toBe(true);
 
   await setInput("2+3");
   await compute.click();
-  await expect(page.locator('section[aria-label="Resultado"]')).toContainText("5");
+  await expect(page.locator('[data-result-request-id]')).toContainText("5");
   expect(await page.evaluate(() => (window as typeof window & {
     __sg28Instances?: Array<{ terminated: boolean }>
   }).__sg28Instances?.length)).toBe(4);
@@ -129,7 +129,7 @@ test("EN-SG-28 Scientific real worker resumes ordinary calculation", async ({ pa
   await field.dispatchEvent("input", { bubbles: true });
   await page.getByRole("region", { name: "Entrada" })
     .getByRole("button", { name: "Calcular", exact: true }).click();
-  const status = page.locator('section[aria-label="Resultado"] [role="status"]').first();
+  const status = page.locator('[data-result-request-id]').first();
   await expect(status).toHaveAttribute("data-result-request-id", /.+/, { timeout: 15_000 });
   // Wait for the computed canonical value, not merely for a request-id
   // attribute that could belong to an earlier or transitional render.
