@@ -1,0 +1,31 @@
+name: IN625 Cumulative Certification Gate
+
+on:
+  push:
+    branches: [qa/syntax-audit-in625-a1]
+    paths-ignore:
+      - 'qa/certification/**'
+      - '**/*.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cumulative:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Unit and parity regression
+        run: npm test
+      - name: Production build
+        run: npm run build
