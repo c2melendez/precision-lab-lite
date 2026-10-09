@@ -250,3 +250,10 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Nuevas corridas por push técnico: gate Lite #37922422250, H1d Lite #37922422230, build Lite #37922422315 (QUEUED en primera consulta). No acreditar conclusión hasta comprobarla.
 - **Deuda de reconciliación de contrato**: `tests/parsing.test.ts` todavía espera rechazo de formatos que los contratos IN625 D1/D2 aceptan/canonizan. Establecer precedencia documental y revisar el oráculo legado antes de volver a cambiar la semántica del parser.
 - Plus gate #37909986582 SUCCESS. H1d no cerrado contractualmente, H2 no iniciado.
+
+## 2026-10-09 — Lite: G3 admite delimitadores visualmente equivalentes (CI pendiente)
+- Gate posterior a reversión #37922422250: FAILURE, 999 PASS / 16 FAIL / 30 TODO; H1d #37922422230 SUCCESS y build #37922422315 SUCCESS. Se confirmó regreso a baseline previo a validación cruda conflictiva.
+- Fallos EN-DL-04/05/06: el validador estructural G3 rechazaba `\\bigl/\\bigr/\\Bigl/\\Bigr/\\mleft/\\mright` antes de la normalización existente en `normalizeDelimiterSyntax`; estos comandos sólo expresan tamaño o agrupación equivalente.
+- Corrección Lite `3e04ed0767660f6ffbf742bf8488a8933391c344` en `src/engine/parsing/normalize.ts`: pre-normalización **restringida a delimitadores visuales** dentro de G3, manteniendo íntegros los chequeos de errores estructurales y todas las equivalencias matemáticas.
+- CI nuevo sobre ese SHA: gate #37922692266, H1d #37922692229 y build #37922692214, inicialmente QUEUED. No se acreditan PASS hasta confirmar resultados.
+- Plus último gate completo SUCCESS #37909986582. H1d no cerrado contractualmente; H2 pendiente. Próximo: verificar tres casos A2 y analizar F1/otros errores sin ocultar defectos ni rebajar expectativas.
