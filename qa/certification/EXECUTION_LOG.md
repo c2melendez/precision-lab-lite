@@ -257,3 +257,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Corrección Lite `3e04ed0767660f6ffbf742bf8488a8933391c344` en `src/engine/parsing/normalize.ts`: pre-normalización **restringida a delimitadores visuales** dentro de G3, manteniendo íntegros los chequeos de errores estructurales y todas las equivalencias matemáticas.
 - CI nuevo sobre ese SHA: gate #37922692266, H1d #37922692229 y build #37922692214, inicialmente QUEUED. No se acreditan PASS hasta confirmar resultados.
 - Plus último gate completo SUCCESS #37909986582. H1d no cerrado contractualmente; H2 pendiente. Próximo: verificar tres casos A2 y analizar F1/otros errores sin ocultar defectos ni rebajar expectativas.
+
+## 2026-10-09 — Lite: saneamiento de LaTeX pegado antes de validación G3
+- Gate Lite #37922692266 FAILURE: 1002 PASS / 13 FAIL / 30 TODO. EN-DL-04/05/06 ahora sin fallos; H1d #37922692229 y build #37922692214 SUCCESS.
+- EN-PG-05a/05b/14a/14b estaban fallando porque `validateInputStructureG3` rechazaba `\\begin`, `\\tag` y `\\label` antes de pasar por `normalizePastedLatex`, aun siendo wrappers/editoriales no semánticos contemplados en F1.
+- Commit Lite `28612dccc6221f7196608a17cc5582fb4080935e`: G3 ahora valida la entrada saneada con `normalizePastedLatex(input)` y conserva las verificaciones estructurales. No se cambiaron oráculos ni Plus.
+- Verificación de gate/H1d para el commit aún pendiente de aparición o terminación; no acreditar la reducción de fallos antes de obtener CI. Plus mantiene gate #37909986582 SUCCESS. H1d global aún abierto, H2 no iniciado.
