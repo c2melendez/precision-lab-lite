@@ -648,3 +648,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 ## 2026-10-09 — SG28 four Playwright tests verified PASS
 - GitHub Actions Lite SG28 run https://github.com/c2melendez/precision-lab-lite/actions/runs/38001591613, SHA `d9f36bde5759d2394ce6e9014137127e7d91c0b4`, job `114060683879`: **4/4 Playwright PASS (18.5s)**. Nueva prueba acredita terminación/recreación del worker matemático compilado con operación ordinaria. Gates del mismo SHA cumulative `38001591557`, build `38001591646`, H1d `38001591596`: SUCCESS.
 - Acreditado: ciclo de vida de workers, cancelación bajo mock, worker nativo ocupado acotado y reinicio de worker matemático. Sin acreditar: cancelación de cómputo matemático prolongado ya iniciado y cancelación efectiva del servidor Plus. SG28/H2 abiertos a efectos integrales.
+
+
+## 2026-10-09 — SG28 Plus isolated killable-process prototype
+- Plus backend prototype added: `backend/app/services/interruptible.py` (`e3bf193e`), `backend/tests/test_in625_sg28_interruptible.py` (`44b92c78`), isolated workflow `.github/workflows/in625-sg28-backend-cancellation.yml` (`1a17e320`). Primitive uses a spawned child process, wall-clock timeout and terminate/kill cleanup, with smoke-result, bounded-timeout and recovery tests. No math endpoint/router or production behavior modified.
+- CI run for latest Plus SHA not available yet at time of inspection; **NOT PASS**. This is a prototype only: HTTP request disconnect cancellation is NOT implemented, actual SymPy operations have NOT been integrated, and production isolation/resource quotas are NOT certified.
+- Next: inspect new workflow run and logs, fix reproducible failures, then design safe request-to-process cancellation integration; SG28/H2 remain OPEN.
