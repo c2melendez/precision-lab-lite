@@ -41,6 +41,10 @@ async function readOutcome(page: Page): Promise<{kind:"result"|"error"; value:st
     if(t) return {kind:"error",value:t};
   }
 
+  // La vista decimal puede llevar el indicador de truncamiento '…'.
+  // Reingresar exclusivamente la representacion canonica del resultado.
+  const canonicalReentry=await status.getAttribute("data-result-reentry-latex").catch(()=>null);
+  if(canonicalReentry?.trim())return {kind:"result",value:canonicalReentry};
   const exact=region.locator('math-field[read-only]').first();
   if(await exact.count()){
     const v=String(await exact.evaluate(el=>(el as HTMLElement&{value?:string}).value??""));
