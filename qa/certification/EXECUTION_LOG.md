@@ -298,3 +298,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Commit Lite `82fb45c47c30a7889ebd75a47464ac65649217be` en `tests/parsing.test.ts`, sin rebajar equivalencia funcional.
 - Nuevos workflows emitidos en SHA 82fb45c47: gate #37926844320, H1d #37926844177, build #37926844234, inicialmente QUEUED. **No declarar gate SUCCESS** hasta verificar resultado y SHA.
 - Plus conserva gate #37909986582 SUCCESS. H1d todavía necesita cierre bilateral formal y H2 continúa pendiente.
+
+## 2026-10-09 — Gate Lite verde y consolidación de evidencia H1d bilateral
+- Lite cumulative gate #37926844320 SUCCESS: **83/83 archivos, 1014 PASS, 0 FAIL, 30 TODO (1044)**, SHA de prueba `82fb45c47c30a7889ebd75a47464ac65649217be`. H1d #37926844177 SUCCESS y build #37926844234 SUCCESS en la misma SHA.
+- Plus cumulative gate #37909986582 SUCCESS; H1d #37909986581 SUCCESS, ambos en SHA `2d4e97c38`.
+- Se actualizó CURRENT_STATE.md bilateralmente: Lite commit `6c4ff0639913d0d66498b951dee730df3edf5dde`, Plus commit `604c5575b6b0cccd99d95f369a5254ef34768a`.
+- **Aún no cerrar H1d formalmente ni comenzar H2**: confrontar criterios con pruebas H1d 24..28, reconocer límites de los oráculos 25..28 y mantener 29/30 como CAPABILITY GAPS, no PASS. EN-RE-22 permanece gap H1c. Cierre estructural automatizable demostrado, pero no equivalencia matemática universal.
