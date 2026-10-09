@@ -143,11 +143,11 @@ test.describe("IN625 H1d reentrada avanzada",()=>{
       // En casos con oráculo independiente, esperar a que aparezca el valor esperado
       // antes de aceptar la lectura de la primera evaluación.
       const expectedInput:Record<string,RegExp>={
-        "2+3":/^5(?:\\.0+)?$/,
-        "\\frac{1}{2}+\\frac{1}{3}":/^(?:\\frac\\{5\\}\\{6\\}|0\\.83{1,2}3*)$/i,
-        "2^{10}":/^1024(?:\\.0+)?$/,
-        "\\frac{3}{4}":/^(?:\\frac\\{3\\}\\{4\\}|0\\.75)$/,
-        "10^{-3}":/^(?:\\frac\\{1\\}\\{1000\\}|0\\.001)$/,
+        "2+3":/^5(?:\.0+)?$/,
+        "\\frac{1}{2}+\\frac{1}{3}":/^(?:\\frac\{5\}\{6\}|0\.83{1,2}3*)$/i,
+        "2^{10}":/^1024(?:\.0+)?$/,
+        "\\frac{3}{4}":/^(?:\\frac\{3\}\{4\}|0\.75)$/,
+        "10^{-3}":/^(?:\\frac\{1\}\{1000\}|0\.001)$/,
       };
       let s1=await evaluateOnce(page,input);
       // El oraculo verifica la forma canonica (fraccion exacta) y no
