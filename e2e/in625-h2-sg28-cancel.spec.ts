@@ -208,3 +208,50 @@ test("EN-SG-28 terminate a real busy worker and recover", async ({ page }) => {
   ).__sg28RealWorkerState().terminated)).toBe(true);
   await expect(page.locator("body")).not.toContainText("999999");
 });
+
+test("EN-SG-28 compiled math worker terminates and a fresh instance recovers", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("precision-lab-layout-mode", "split");
+    const NativeWorker = window.Worker;
+    (window as typeof window & { __sg28CompiledWorkerUrl?: string }).__sg28CompiledWorkerUrl = "";
+    window.Worker = class TrackedWorker extends NativeWorker {
+      constructor(url: string | URL, options?: WorkerOptions) {
+        super(url, options);
+        if (String(url).includes("compute.worker")) {
+          (window as typeof window & { __sg28CompiledWorkerUrl?: string }).__sg28CompiledWorkerUrl = String(url);
+        }
+      }
+    };
+  });
+  await page.goto("./");
+  const field = page.locator('math-field[aria-label="Entrada matemática"]').first();
+  await field.waitFor({ state: "visible" });
+  await field.evaluate(el => {
+    (el as HTMLElement & { setValue: (v: string) => void }).setValue("2+3");
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  await page.getByRole("region", { name: "Entrada" })
+    .getByRole("button", { name: "Calcular", exact: true }).click();
+  await expect(page.locator('[data-result-request-id]')).toHaveAttribute("data-result-request-id", /.+/);
+  const result = await page.evaluate(async () => {
+    const url = (window as typeof window & { __sg28CompiledWorkerUrl?: string }).__sg28CompiledWorkerUrl;
+    if (!url) throw new Error("Compute worker URL not captured");
+    const first = new Worker(url, { type: "module" });
+    first.postMessage({ type: "evaluate", requestId: "sg28-discard", expressionAlgebrite: "2+3" });
+    first.terminate();
+    const next = new Worker(url, { type: "module" });
+    try {
+      return await new Promise<{ requestId?: string; resultLatex?: string | null; success?: boolean }>((resolve, reject) => {
+        const timer = setTimeout(() => reject(new Error("Fresh math worker did not recover")), 10_000);
+        next.onerror = () => { clearTimeout(timer); reject(new Error("Fresh math worker error")); };
+        next.onmessage = (event) => { clearTimeout(timer); resolve(event.data); };
+        next.postMessage({ type: "evaluate", requestId: "sg28-recovery", expressionAlgebrite: "2+3" });
+      });
+    } finally {
+      next.terminate();
+    }
+  });
+  expect(result.requestId).toBe("sg28-recovery");
+  expect(result.success).toBe(true);
+  expect(result.resultLatex?.replace(/\s+/g, "")).toMatch(/^5(?:\.0+)?$/);
+});
