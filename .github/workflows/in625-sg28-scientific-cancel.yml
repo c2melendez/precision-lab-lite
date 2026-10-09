@@ -29,5 +29,18 @@ jobs:
         run: npm install --no-save --package-lock=false @playwright/test@1.63.0 @axe-core/playwright@4.13.0
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
+      - name: Typecheck
+        run: npm run typecheck
       - name: Verify Scientific SG28 cancel and recovery
         run: npx playwright test e2e/in625-h2-sg28-cancel.spec.ts --project desktop-chromium
+
+      - name: Upload Playwright failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sg28-playwright-evidence
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7
