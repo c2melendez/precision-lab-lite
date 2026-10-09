@@ -564,3 +564,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Lite: workflow dedicado `.github/workflows/in625-sg28-scientific-cancel.yml`, disparado por push técnico o dispatch, Playwright Chromium desktop. Commits de prueba/CI: `1b6d678da32ec4cf07733b5745d5384e7fcd2562`, `901fadc04515275c556d81aebcc4dab8bc185af1`, `0f3e1dffc8095967343ade007ab871a9b630365a`.
 - CI de este nuevo spec todavía **NO verificada** por lectura de job/log; no atribuir PASS y clasificar rojos tras corrida. Plus sin cambio de motor; SG28/H2 permanecen abiertos.
 - Siguiente paso exacto: comprobar gate acumulativo y workflow SG28 en SHA Lite actual, diagnosticar posibles fallos de integración/browser, corregirlos en la capa responsable; después aumentar cobertura real de worker y comparar interrupción efectiva del backend Plus en CI aislado.
+
+
+## 2026-10-09 — SG28: endurecimiento del workflow de diagnóstico
+- Lite `.github/workflows/in625-sg28-scientific-cancel.yml` ahora incluye `npm run typecheck` y sube trazas/capturas/informe de Playwright como artifact `sg28-playwright-evidence` solo en fallo, con retención de 7 días. Commit técnico `85f05af837d09914a4fc6d4acd34bc630f5e874e`.
+- La consulta de runs asociados al commit anterior mediante conector GitHub devuelve 0 porque solo cubre eventos PR; búsqueda pública del workflow no proporcionó logs. **No se verificó estado CI del nuevo cambio**; no afirmar éxito ni fallo.
+- H2/SG28 permanece abierto. Siguiente paso exacto: recuperar los nuevos jobs del gate acumulativo y del workflow SG28, leer trazas de Playwright si falla, clasificar causa y corregir. Requiere además verificación con worker real y comparación Plus bajo aislamiento; no ejecutar cargas extremas en producción.
