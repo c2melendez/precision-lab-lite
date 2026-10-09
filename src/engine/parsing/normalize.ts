@@ -636,7 +636,10 @@ function validateInputStructureG3(input: string): void {
 
   let parenDepth = 0;
   for (const ch of raw.replace(/\\left|\\right/g, "")) {
-    if (ch === "(") parenDepth++;
+    if (ch === "(") {
+      parenDepth++;
+      if (parenDepth > 128) throw parseError("Profundidad máxima de paréntesis excedida.");
+    }
     if (ch === ")") {
       parenDepth--;
       if (parenDepth < 0) throw parseError("Paréntesis de cierre sobrante.");
