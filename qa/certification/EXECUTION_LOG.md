@@ -740,3 +740,7 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28: endurecimiento del workflow de diagnóstico
 - Commit Lite `85f05af837d09914a4fc6d4acd34bc630f5e874e`: workflow dedicado SG28 ampliado con Typecheck antes de E2E y artifact de depuración de Playwright en caso de fallo. Cambio de CI/harness, sin modificación de producto.
 - Conector no permite consultar listado general de runs push; consulta por SHA solo cubre PR, por tanto resultado actual **NO VERIFICADO**. SG28/H2 no se declara PASS.
+
+
+## 2026-10-09 — SG28 error recovery regression extended
+- Added simulated `onerror` recovery route to Lite Playwright SG28, commit `512f9346fd941ee1fe2e6b2d4b0fc0ecf9fe1f06`. Case now covers cancellation/late message/new calculation and worker error/recovery. No production load tests. This is a test expansion, **not verified PASS**; workflow/job results still need direct confirmation.
