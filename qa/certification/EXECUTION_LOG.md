@@ -791,3 +791,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Auditoría directa de Plus `backend/app/main.py`, `backend/app/routers/evaluate.py` y `backend/app/routers/calculus.py`. FastAPI registra routers bajo `/api/v1`; los endpoints matemáticos son `async def` y usan SymPy, pero en lo inspeccionado NO aparece `request.is_disconnected`, un token/canal de cancelación, ejecución en subproceso cancelable ni cola de trabajos gestionada. Esto **no prueba categóricamente ausencia** en todos los servicios, pero impide afirmar que `AbortController` del frontend detenga un trabajo de SymPy ya iniciado.
 - Se documenta decisión técnica: no publicar una prueba de estrés de SymPy ni ejecutar operaciones costosas en producción. Para certificar backend Plus se requiere primero una estrategia de computación aislada con límites de tiempo/recursos e interrupción efectiva, y pruebas de recuperación en CI local; no limitarse a abortar la conexión.
 - Gaps Lite del run 37999350568: dos tests SG28 PASS, pero uno simula el worker y el otro ejecuta operación ligera real; no prueban cancelación de trabajo largo real. H2/SG28 globales ABIERTOS.
+
+
+## 2026-10-09 — SG28 native worker CI verified run 38000982016
+- GitHub Actions confirmado: `https://github.com/c2melendez/precision-lab-lite/actions/runs/38000982016`; job `114058691659`, SHA `3191e9d296deec42a7946a73b5e1dfa686b94748`, 3/3 E2E PASS, Typecheck PASS. Los runs cumulative `38000982159`, build `38000982024` y H1d `38000982038` también SUCCESS para dicho SHA.
+- No hay FAIL nuevo. Sigue pendiente certificar interrupción en motor matemático real y cancelación en backend Plus; no cerrar H2.
