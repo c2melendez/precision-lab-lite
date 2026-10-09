@@ -508,3 +508,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 ## 2026-10-09 — SG28 Lite: referencias independientes entre montajes simulados (CI pendiente)
 - Lite commit `c88d6cbbdc7b918099ce99bbc6c3871c945f4fe1` corrige `tests/useComputeWorker.test.ts`: mock de `useRef` crea una referencia por cada montaje simulado en vez de compartirla globalmente; se comprueba que el nuevo montaje tenga una referencia distinta. Cambio exclusivamente de harness.
 - No es prueba de ejecución de cálculo real ni de recuperación E2E. Conector GitHub no mostró corridas por SHA previo porque la búsqueda visible no incluye pushes; no atribuir PASS. IN625 H2 / EN-SG-28 abiertos.
+
+## 2026-10-09 — H2 SG28 Lite: fallo de sintaxis confirmado en harness y corregido
+- Auditoría directa de `tests/useComputeWorker.test.ts` encontró secuencia literal `\\n` incrustada entre dos instrucciones TypeScript dentro del test de desmontaje/remontaje, introducida por un parche anterior. Fallo real de fuente con riesgo de impedir el parseo de Vitest.
+- Lite commit técnico `3eafd245c2ca8f891cfb9436a4671570dbc591a2` reemplaza esa secuencia por un salto de línea auténtico. Corrección solo del test; motor sin cambios.
+- La comprobación fue mediante lectura del archivo en GitHub, NO mediante ejecución exitosa de CI. Última consulta de runs por commit previo devolvió lista vacía (no visibilidad de push). EN-SG-28 y H2 siguen abiertos; no declarar PASS.
+- Priorizar obtención de run/log y correcciones basadas en evidencia antes de añadir pruebas.
