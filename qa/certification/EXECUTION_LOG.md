@@ -277,3 +277,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Corrección Lite `e9a3493d2cfef5eb575d444a4d063bb15125e339` en `src/engine/parsing/normalize.ts`: restringir tolerancia Excel en G3 al patrón certificado de potencia `=2^10`; preservar rechazo de `=3`; corregir patrón de PI() en Excel español. No se modificaron tests ni Plus.
 - CI iniciada sobre commit: gate #37924824324, H1d #37924824344 y build #37924824326 (QUEUED en consulta). No acreditar PASS hasta revisar logs.
 - Plus último gate #37909986582 SUCCESS; H1d pendiente de cierre contractual conjunto. H2 no iniciado.
+
+## 2026-10-09 — Lite gate 5 fallos; precedencia numérica y contrato G3
+- Gate Lite #37924824324 FAILURE: 1010 PASS / 5 FAIL / 30 TODO. H1d #37924824344 SUCCESS; build #37924824326 SUCCESS. Los problemas EN-AS-16 (Excel PI()) y G3 EN-ER-26 (=3) ya no fallan.
+- EN-PR-11 exigía que `2++3` evalúe a 5, pero G3 rechazaba cualquier `++`; el contrato G3 EN-ER-33 exige seguir rechazando `x++` incompleto. Commit Lite `c017d7b800a67406fdd5d85c341fcafcd8fd3149`: permitir estrictamente `número++número` en validación G3 y conservar rechazo de las demás cadenas `++` no reconocidas. Pendiente evidencia de nuevo gate, H1d y build.
+- Cuatro fallos adicionales proceden de expectativas legadas en `tests/parsing.test.ts` sobre rechazo de `.5`, `5.`, `1e5` y token único `xyz`. Los contratos nuevos D1/D2 normalizan los tres formatos numéricos; NO revertir soporte de producto solo para satisfacer pruebas viejas. Reconciliar explícitamente contrato de identificadores antes de actualizar el oráculo `xyz`.
+- Plus gate #37909986582 SUCCESS; H1d bilateral sin cierre formal, H2 aún no iniciado.
