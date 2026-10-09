@@ -542,3 +542,11 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Log del job cumulative descargado: Vitest 85 archivos PASS, 1036 tests PASS, 30 TODO (no aprobados); build Vite 7.20 segundos y Typecheck completo por conclusión SUCCESS del job.
 - Estos gates validan automáticamente cambios recientes de módulo Cálculo: botón Detener, limpieza ante parámetros incorrectos y `worker.onerror`, pero NO prueban interrupción real mediante E2E. SG28/H2 siguen abiertos hasta prueba integrada y recuperación efectiva.
 - No extrapolar este gate Lite al backend o frontend de Plus.
+
+
+## 2026-10-09 — SG28 auditoría de accesibilidad funcional (sesión de continuidad)
+- Se confirmó el puntero de `main` en Lite y Plus a `qa/syntax-audit-in625-a1`; el índice H2 de ambos enumera EN-SG-01..32. Esta auditoría se realizó leyendo la rama canónica directamente.
+- **Hallazgo PRODUCT / CAPABILITY SG28 Lite**: `src/App.tsx` registra `CalculusMode` pero NO lo incluye en `VISIBLE_MODES` (solo basic, matrices, graphing, statistics, units). El botón «Detener cálculo» introducido en `src/modes/Calculus/CalculusMode.tsx` no acredita por sí mismo un control accesible para la navegación normal del usuario. La pantalla visible `BasicScientificMode.tsx` usa `getWorker()`, pero actualmente no obtiene `cancelWorker()` ni muestra ese botón. No extrapolar el gate verde a UX accesible.
+- Plus `frontend/src/api/client.ts`: AbortController/timeout de 15 s controla la solicitud cliente; no prueba terminación backend. Clasificación: CAPABILITY/PRODUCT pendiente, sin evidencia de bloqueo nuevo causado por harness.
+- Evidencia CI verificada por consulta de jobs, Lite: cumulative run 37991876628 SUCCESS, build run 37991876636 SUCCESS, H1d run 37991876565 SUCCESS. Estas ejecuciones no son E2E SG28 en la ruta visible.
+- **Siguiente paso exacto**: especificar y probar EN-SG-28 en el módulo visible Científica Lite (cancelar/ignorar respuesta antigua, cálculo posterior y pantalla recuperada), con E2E de navegador en CI controlado; comparar mecanismo Plus UI/backend sin atribuir aborto del servidor al cliente; ejecutar gates y registrar run IDs. H2 continúa ABIERTO. No ejecutar cargas extremas contra producción.
