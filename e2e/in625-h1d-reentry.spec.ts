@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 type Page=import("@playwright/test").Page;
 
 async function setInput(page:Page,value:string){
-  const field=page.locator("math-field").first();
+  const field=page.locator('math-field[aria-label="Entrada matemática"]').first();
   await field.waitFor({state:"visible"});
   // La suite ejercita la API publica de MathLive, pero no debe simular
   // el evento 'input' de manera que provoque un render reentrante antes
@@ -63,12 +63,12 @@ async function submit(page:Page){
   const region=page.locator('section[aria-label="Resultado"]').first();
   const previousStatus=region.locator('[role="status"]').first();
   const before=await previousStatus.count() ? await previousStatus.getAttribute("data-result-request-id") : null;
-  const currentInput=await page.locator("math-field").first().evaluate(el=>(el as HTMLElement&{value?:string}).value??"");
+  const currentInput=await page.locator('math-field[aria-label="Entrada matemática"]').first().evaluate(el=>(el as HTMLElement&{value?:string}).value??"");
   if(currentInput==="2+3" || currentInput.includes("\\frac{1}{2}+\\frac{1}{3}")){
     console.log("IN625_H1D_TRANSITION_BEFORE",JSON.stringify({currentInput,before}));
   }
   await button.click();
-  const afterClickInput=await page.locator("math-field").first().evaluate(el=>(el as HTMLElement&{value?:string}).value??"");
+  const afterClickInput=await page.locator('math-field[aria-label="Entrada matemática"]').first().evaluate(el=>(el as HTMLElement&{value?:string}).value??"");
   if(currentInput.includes("\\frac{1}{2}+\\frac{1}{3}")){
     console.log("IN625_H1D_TRANSITION_AFTER_CLICK",JSON.stringify({before:currentInput,afterClickInput}));
     expect(afterClickInput,"El click Calcular no debe reemplazar la expresión con el resultado anterior").toBe(currentInput);
