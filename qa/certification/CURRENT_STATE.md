@@ -132,3 +132,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - **Plus**: gate acumulativo SUCCESS `37909986582` y H1d SUCCESS `37909986581`, ambos en SHA `2d4e97c38`. No hubo nuevas modificaciones de producto Plus en esta fase.
 - **Decisión IN625 H1d**: evidencia automatizada 5/5 en cada motor y gates acumulativos verdes confirmados. EN-RE-29/30 permanecen CAPABILITY GAPS (no PASS); EN-RE-22 permanece gap H1c. Los oráculos EN-RE-25/26/27/28 aún tienen cobertura semántica parcial, según auditoría canónica: **no declarar certificación semántica universal**.
 - **Siguiente paso exacto**: auditar cierre contractual H1d (revisar evidencia de cada caso y las excepciones, marcar resolución formal cuando cumpla el protocolo), y comenzar H2 solo después de documentar cierre bilateral. Mantener sincronización del `CURRENT_STATE.md` y `EXECUTION_LOG.md` en ambos repositorios.
+
+## 2026-10-09 — Cierre contractual H1d y apertura de H2
+- H1d clasificado 7/7: EN-RE-24..28 PASS automatizados 5/5, EN-RE-29/30 CAPABILITY GAPS explícitos 2/2 (NO PASS), conforme a IN625_H1_MATRIX.md.
+- Lite H1d SUCCESS 37926844177; gate SUCCESS 37926844320: 1014 PASS, 0 FAIL, 30 TODO en SHA 82fb45c47. Plus H1d SUCCESS 37909986581 y gate SUCCESS 37909986582 en SHA 2d4e97c38.
+- EN-RE-22 permanece GAP H1c; EN-RE-25/26/27/28 aún requieren fortalecer oráculos semánticos, sin asumir equivalencia universal.
+- H1d CERRADO por clasificación contractual PASS/GAP, no certificación funcional global. Siguiente bloque H2: localizar matriz canónica, determinar pruebas, preparar ejecución y documentar evidencia antes de declarar PASS.
