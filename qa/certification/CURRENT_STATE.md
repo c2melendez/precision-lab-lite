@@ -557,3 +557,10 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Commits Lite: implementación `b836e016a354cfcff054edfd09e356774ee00f46`; corrección de orden de declaración del callback `31ce6b502730043e9d3266dee735c74c1cf9d363`. No hubo cambio de motor matemático ni de Plus.
 - **Sin PASS acreditado para este cambio:** la consulta de runs por SHA del conector cubre PR y devolvió cero; no prueba ausencia de runs push. Typecheck, tests, build y E2E de cancelación deben verificarse antes de cierre.
 - SG28/H2 continúan ABIERTOS. Siguiente paso exacto: revisar gate acumulativo del commit técnico Lite `31ce6b50`; corregir cualquier rojo clasificado; crear E2E controlada de Científica (worker en vuelo, detener, ausencia de salida tardía, nuevo cálculo exitoso); evaluar cancelación real backend Plus con aislamiento. No usar cargas extremas de producción.
+
+
+## 2026-10-09 — SG28 prueba E2E controlada añadida (validación CI pendiente)
+- Lite: prueba determinista `e2e/in625-h2-sg28-cancel.spec.ts` publicada. Simula un worker en vuelo sin cargas pesadas, comprueba botón de detener en Científica, terminación, descarte de respuesta tardía con el mismo request ID y nueva operación recuperable. No equivale a cancelación de un cálculo matemático real de larga duración.
+- Lite: workflow dedicado `.github/workflows/in625-sg28-scientific-cancel.yml`, disparado por push técnico o dispatch, Playwright Chromium desktop. Commits de prueba/CI: `1b6d678da32ec4cf07733b5745d5384e7fcd2562`, `901fadc04515275c556d81aebcc4dab8bc185af1`, `0f3e1dffc8095967343ade007ab871a9b630365a`.
+- CI de este nuevo spec todavía **NO verificada** por lectura de job/log; no atribuir PASS y clasificar rojos tras corrida. Plus sin cambio de motor; SG28/H2 permanecen abiertos.
+- Siguiente paso exacto: comprobar gate acumulativo y workflow SG28 en SHA Lite actual, diagnosticar posibles fallos de integración/browser, corregirlos en la capa responsable; después aumentar cobertura real de worker y comparar interrupción efectiva del backend Plus en CI aislado.
