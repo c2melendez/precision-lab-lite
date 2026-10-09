@@ -514,3 +514,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Lite commit técnico `3eafd245c2ca8f891cfb9436a4671570dbc591a2` reemplaza esa secuencia por un salto de línea auténtico. Corrección solo del test; motor sin cambios.
 - La comprobación fue mediante lectura del archivo en GitHub, NO mediante ejecución exitosa de CI. Última consulta de runs por commit previo devolvió lista vacía (no visibilidad de push). EN-SG-28 y H2 siguen abiertos; no declarar PASS.
 - Priorizar obtención de run/log y correcciones basadas en evidencia antes de añadir pruebas.
+
+## 2026-10-09 — Evidencia visual Actions Lite gate #29 verde
+- Captura del usuario de GitHub Actions, workflow `IN625 Cumulative Certification Gate` en `c2melendez/precision-lab-lite`, rama `qa/syntax-audit-in625-a1`, acredita: corrida #29 commit `3eafd245` con indicador VERDE (45 s); #28 commit `c88d6cbb` ROJO (23 s); #27 `a1b95134` VERDE (44 s); #26 `d546dc00` VERDE (32 s); #25 `f626e7c9` VERDE (47 s); #24 `0c3f4ce` VERDE (42 s).
+- Decisión: gate acumulativo Lite del commit `3eafd245` aprobado según evidencia visual. La falla de #28 fue seguida por corrección sintáctica y gate verde #29. Causa precisa del rojo #28 no demostrada sin logs; no atribuirla definitivamente.
+- Límite: captura no aporta run ID numérico de GitHub ni logs de jobs, y la API/web aquí no permitió recuperarlos. Gate aprobado por evidencia visible, no afirmar trazas internas analizadas.
+- EN-SG-28 sigue PARCIAL/ABIERTO: pruebas unitarias de lifecycle bajo gate verde, pero cancelación de trabajo real y recuperación UI/E2E faltantes. IN625 H2 permanece ABIERTO. Plus no tiene nueva evidencia CI en esta captura.
