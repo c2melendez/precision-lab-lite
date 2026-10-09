@@ -201,3 +201,10 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Commit Plus `36a2b06e83e70124d302fc51e658eea497c9721c` ajusta `.github/workflows/in625-cumulative-certification.yml`: pytest con log detallado, `pytest-timeout` por prueba (60 s, señal POSIX), reporte de pruebas lentas y timeout general backend de 35 min para identificar bloqueos, conservando `--cov-fail-under=75`.
 - Corridas lanzadas: gate Plus #37898183036 y H1d Plus #37898183037 (queued al momento de consulta). Estado de cierre PENDIENTE; debe inspeccionarse la causa concreta si el gate falla.
 - Lite H1d #37880835203 PASS, gate acumulativo Lite #37880835221 FAIL 31/984/30; no se introdujeron cambios matemáticos en Lite en este paso. H2 NO iniciado.
+
+## 2026-10-09 — Localizado bloqueo backend Plus en fixture SymPy
+- Gate Plus #37898183036: frontend SUCCESS; backend CANCELLED tras aproximadamente 35 min. El último test registrado como PASSED fue `test_substitution_with_free_variable_is_validation_error` (~10%), inmediatamente antes de `test_result_latex_truncated_when_too_long` en `backend/tests/test_evaluate.py`.
+- Diagnóstico: la prueba siguiente construía `sympy.Add` con 3000 símbolos, proceso potencialmente patológico de normalización/ordenamiento en SymPy. Clasificación provisional: fixture de prueba, no fallo matemático demostrado.
+- Commit Plus `2d4e97c38f7a6200b8146ebc56c1961a0b448678`: fixture sustituido por `sympy.Symbol("x" + "a" * 10100)` para conservar el contrato de truncado superior a 10000 caracteres sin coste de una suma gigante. No hay modificación de producto.
+- Nuevas corridas Plus: acumulativo #37909986582 y H1d #37909986581; pendientes de resultado en consulta inicial.
+- Próxima acción: inspeccionar ejecución y cobertura backend; si continúa bloqueo, identificar test siguiente por `pytest -vv`. Lite gate 31 fallos pendiente, H2 no iniciado.
