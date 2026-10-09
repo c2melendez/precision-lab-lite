@@ -283,3 +283,10 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - EN-PR-11 exigía que `2++3` evalúe a 5, pero G3 rechazaba cualquier `++`; el contrato G3 EN-ER-33 exige seguir rechazando `x++` incompleto. Commit Lite `c017d7b800a67406fdd5d85c341fcafcd8fd3149`: permitir estrictamente `número++número` en validación G3 y conservar rechazo de las demás cadenas `++` no reconocidas. Pendiente evidencia de nuevo gate, H1d y build.
 - Cuatro fallos adicionales proceden de expectativas legadas en `tests/parsing.test.ts` sobre rechazo de `.5`, `5.`, `1e5` y token único `xyz`. Los contratos nuevos D1/D2 normalizan los tres formatos numéricos; NO revertir soporte de producto solo para satisfacer pruebas viejas. Reconciliar explícitamente contrato de identificadores antes de actualizar el oráculo `xyz`.
 - Plus gate #37909986582 SUCCESS; H1d bilateral sin cierre formal, H2 aún no iniciado.
+
+## 2026-10-09 — Lite: reconciliación parcial de oráculos heredados v9
+- Gate Lite #37925091461 FAILURE: 1011 PASS / 4 FAIL / 30 TODO; H1d #37925091430 SUCCESS y build #37925091465 SUCCESS. EN-PR-11 dejó de fallar tras corrección G3.
+- Los cuatro FAIL son exclusivamente de `tests/parsing.test.ts`. Tres reclaman rechazo de `.5`, `5.`, `1e5` de contrato v9; IN625 D1 EN-NM-03/05 y D2 EN-CI-05/06/07 exigen aceptación y normalización, ya verificadas por gate. Se actualizaron las expectativas legadas conservando pruebas de aceptación, sin cambiar código producto: commits Lite `14324ffcb50ae6df7ee06601f151806b882707f7` y `a6dd28b60ef4043079b25ac3967d43a7afd8400e` en `tests/parsing.test.ts`.
+- **No se alteró** la cuarta expectativa antigua de identificador `xyz` porque aún requiere determinar autoridad del contrato para identificadores multiletra; sigue clasificada para reconciliación explícita.
+- GitHub Actions: gate #37926431480 sobre SHA 14324ffcb inicialmente IN_PROGRESS (primer test commit); H1d #37926462125 y build #37926462157 observados QUEUED sobre SHA final a6dd28b60. Falta gate de SHA final: no atribuirle resultado de la versión anterior.
+- Plus gate #37909986582 SUCCESS; H1d bilateral pendiente de cierre formal y H2 sin iniciar.
