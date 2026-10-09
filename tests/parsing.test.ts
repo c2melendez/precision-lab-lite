@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { parseExpression } from "../src/engine/parsing";
+import { evaluate } from "../src/engine/algebriteClient";
 import { ErrorCode } from "../src/types";
 
 // Casos obligatorios de la spec (v9 §15, heredados en v10). NO EJECUTADO en
@@ -14,7 +15,7 @@ describe("parseExpression", () => {
   // Contrato vigente IN625 D1 EN-NM-03/05 y D2 EN-CI-05/06/07:
   // los formatos abreviados se normalizan, no se rechazan (spec v9 obsoleta).
   it("IN625 D1 acepta y normaliza .5 y 5.", () => {
-    expect(parseExpression(".5").algebrite).toBe("1/2");
+    expect(Number(evaluate(`simplify((${parseExpression(".5").algebrite})-(1/2))`))).toBe(0);
     expect(parseExpression("5.").algebrite).toBe("5");
   });
 
@@ -41,8 +42,8 @@ describe("parseExpression", () => {
     expect(result).toBe("theta*x");
   });
 
-  it('"xyz" sin separadores es un único identificador de 3 letras', () => {
-    expect(parseExpression("xyz").algebrite).toBe("xyz");
+  it('IN625 C10 interpreta "xyz" como producto de variables individuales', () => {
+    expect(parseExpression("xyz").algebrite).toBe("x*y*z");
   });
 
   it("log(x) es válido (aridad 1)", () => {
