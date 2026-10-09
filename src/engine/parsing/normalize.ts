@@ -660,7 +660,10 @@ function validateInputStructureG3(input: string): void {
   if (/[+*\/]\s*$/.test(raw)) {
     throw parseError("Operador sin segundo operando.");
   }
-  if (/(?:\*\/|\/\*|\+\+|\*\*\/)/.test(raw)) {
+  // B4 EN-PR-11: 2++3 equivale a 2+(+3), sin admitir
+  // secuencias incompletas como x++ (G3 EN-ER-33).
+  if (/(?:\*\/|\/\*|\*\*\/)/.test(raw) ||
+      (/\+\+/.test(raw) && !/^\d+\+\+\d+$/.test(raw))) {
     throw parseError("Secuencia de operadores inválida.");
   }
 }
