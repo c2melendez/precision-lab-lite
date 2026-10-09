@@ -723,3 +723,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus solo demuestra aborto de solicitud desde el cliente con timeout; terminación del cómputo backend no demostrada.
 - Jobs Lite consultados directamente: 37991876628 cumulative SUCCESS; 37991876636 build SUCCESS; 37991876565 H1d SUCCESS. No se ejecutó una nueva prueba ni se creó un run SG28; no se declara PASS de H2.
 - Prioridad: prueba reproducible sobre Científica visible y corrección dirigida al mecanismo de cancelación de su worker, más prueba de recuperación; posteriormente revisar interrupción real Plus bajo aislamiento.
+
+
+## 2026-10-09 — SG28 Lite: cancelación desde Científica visible integrada (CI pendiente)
+- Producto Lite modificado en `src/modes/BasicScientific/BasicScientificMode.tsx`: cancela worker previo al iniciar Calcular; botón de detener en Científica, despacho con request ID y rechazo de respuestas tardías, captura errores. Se conservan 17 rutas de despacho hacia el motor, ahora unificadas mediante `dispatchWorker`.
+- Commits Lite: `b836e016a354cfcff054edfd09e356774ee00f46`, `31ce6b502730043e9d3266dee735c74c1cf9d363` (orden de declaraciones). Inspección posterior confirmó el control y la envoltura. NO hubo CI/E2E confirmado sobre esos commits; 0 runs PR asociados no significa 0 push runs.
+- Plus sin cambios funcionales; estado SG28 es abierto bilateral. Próximo paso: gate Lite y E2E reproducible de cancelación/recuperación, luego evidencia backend Plus.
