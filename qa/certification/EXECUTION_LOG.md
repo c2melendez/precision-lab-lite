@@ -833,3 +833,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 Plus gated active-child termination test pending CI
 - Plus `backend/tests/test_in625_sg28_interruptible.py` adds gated active child test: a spawned child signals readiness, waits at a gate before a genuine SymPy derivative, then a 1-second bounded timeout ends that live process; a new child completes the derivative. Commits `bffc195b`, `5fbccf0d`. Does **NOT** demonstrate terminating SymPy while actively computing, because termination happens at the gate. No public endpoint changed.
 - GitHub Actions for latest Plus SHA `5fbccf0d2f6ebc0393f08ab48eb1eff646465a25` needs verification; earlier runs for `bffc195b` were queued. Do not certify this sixth test until logs pass. SG28/H2 remain OPEN; next scope is actual running SymPy cancellation and endpoint-level integration after isolated safety checks.
+
+
+## 2026-10-09 — Plus SG28 6/6 PASS, cumulative and H1d green
+- Verified GitHub Actions Plus SG28 run `38005647857` at SHA `5fbccf0d2f6ebc0393f08ab48eb1eff646465a25`: job `114073702086` SUCCESS, **6/6 pytest PASS in 2.38s**. Sixth case terminates an active spawned process at a synchronization gate before executing SymPy, then confirms recovery with fresh SymPy evaluation.
+- Same SHA cumulative run `38005647868`: **SUCCESS**, frontend `749 PASS, 28 TODO` (job `114073702176`), backend `568 PASS, 1 warning` (job `114073702323`). H1d run `38005647935`: SUCCESS.
+- Scope: process isolation/cancel/recovery in CI only. Not a demonstration of interrupting SymPy mid-computation or HTTP disconnect cancellation. No public router integration. SG28/H2 integral **OPEN**; next is real mid-computation interruption and safe endpoint integration.
