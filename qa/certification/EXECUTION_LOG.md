@@ -693,3 +693,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Decisión: gate acumulativo Lite del commit `3eafd245` aprobado según evidencia visual. La falla de #28 fue seguida por corrección sintáctica y gate verde #29. Causa precisa del rojo #28 no demostrada sin logs; no atribuirla definitivamente.
 - Límite: captura no aporta run ID numérico de GitHub ni logs de jobs, y la API/web aquí no permitió recuperarlos. Gate aprobado por evidencia visible, no afirmar trazas internas analizadas.
 - EN-SG-28 sigue PARCIAL/ABIERTO: pruebas unitarias de lifecycle bajo gate verde, pero cancelación de trabajo real y recuperación UI/E2E faltantes. IN625 H2 permanece ABIERTO. Plus no tiene nueva evidencia CI en esta captura.
+
+## 2026-10-09 — Evidencia CI directa Lite, workflow run 37989574886
+- Fuente: https://github.com/c2melendez/precision-lab-lite/actions/runs/37989574886; GitHub API verificó run `#29`, workflow `IN625 Cumulative Certification Gate`, rama `qa/syntax-audit-in625-a1`, SHA técnico `3eafd245c2ca8f891cfb9436a4671570dbc591a2`, estado completed y conclusión success.
+- Job cumulative ID `114020006884`: pasos Install dependencies, Typecheck, Unit and parity regression y Production build finalizaron success; logs recuperados directamente.
+- Vitest: **85 archivos aprobados**, **1036 tests PASS**, **30 TODO** (1066 reportados). Compilación producción Vite completada en 6.63 s. Los 30 TODO no son PASS.
+- Decisión: GATE ACUMULATIVO LITE #29 PASS con evidencia CI auditable. La regresión SG28 del lifecycle del worker forma parte de esta corrida, pero EN-SG-28 completo NO CERTIFICADO: persisten integración con worker real, cancelación durante cálculo y recuperación E2E. H2 sigue ABIERTO. No extrapolar esta corrida a Plus ni a los commits documentales posteriores.
