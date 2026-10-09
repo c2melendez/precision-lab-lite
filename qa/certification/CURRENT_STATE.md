@@ -627,3 +627,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Mismo SHA, gates adicionales obtenidos vía API GitHub y jobs: cumulative `37999350602` SUCCESS (job `114053352753`), build diagnostic `37999350623` SUCCESS (job `114053353745`), H1d reentry `37999350567` SUCCESS (job `114053352557`). Los cuatro gates coinciden exactamente con la versión técnica.
 - **Acreditado**: cobertura SG28 Lite de cancelación/recuperación en UI con mock y cálculo ordinario con worker auténtico. **No acreditado**: terminación de un cómputo matemático real prolongado durante ejecución, concurrencia/estrés, ni cancelación backend Plus. EN-SG-28 y H2 completos permanecen ABIERTOS.
 - Siguiente paso exacto: implementar/verificar prueba limitada de terminación de un worker real ocupado en entorno de CI aislado; en Plus comprobar explícitamente la diferencia entre abortar la petición del navegador y detener la computación en backend, con cancelación y recuperación trazable.
+
+
+## 2026-10-09 — SG28 native Worker termination bounded test added
+- Lite commit `3191e9d296deec42a7946a73b5e1dfa686b94748`: tercer test E2E SG28 agregado; usa Web Worker NATIVO creado desde Blob con cómputo acotado (400 ms) y comprueba llamada efectiva a `terminate()` tras «Detener cálculo», así como ausencia del resultado tardío. No usa entradas matemáticas extremas ni backend de producción.
+- Esta prueba certifica, si pasa CI, **terminación de un worker auténtico bajo carga simulada**, pero NO ejecución/cancelación de SymPy/Algebrite real durante una operación compleja. Sigue pendiente recuperación tras terminación de carga nativa y cancelación del backend Plus.
+- Estado del commit nuevo: **CI no verificada**, no declarar PASS adicional. Siguiente paso: leer job/logs del workflow SG28 del SHA `3191e9d`, ajustar harness si hay rojo, luego definir arquitectura Plus de ejecución interruptible aislada. H2 abierto.
