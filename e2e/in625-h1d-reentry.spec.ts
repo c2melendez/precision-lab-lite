@@ -67,6 +67,11 @@ async function submit(page:Page){
     console.log("IN625_H1D_TRANSITION_BEFORE",JSON.stringify({currentInput,before}));
   }
   await button.click();
+  const afterClickInput=await page.locator("math-field").first().evaluate(el=>(el as HTMLElement&{value?:string}).value??"");
+  if(currentInput.includes("\\frac{1}{2}+\\frac{1}{3}")){
+    console.log("IN625_H1D_TRANSITION_AFTER_CLICK",JSON.stringify({before:currentInput,afterClickInput}));
+    expect(afterClickInput,"El click Calcular no debe reemplazar la expresión con el resultado anterior").toBe(currentInput);
+  }
   await expect.poll(async()=>{
     const alert=region.locator('[role="alert"]').first();
     if(await alert.count() && (await alert.textContent())?.trim())return "error";
