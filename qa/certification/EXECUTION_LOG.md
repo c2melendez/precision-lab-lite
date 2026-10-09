@@ -849,3 +849,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — Plus SG28 real active SymPy interrupted 7/7 PASS
 - Exact SHA `732d30a6b61abe7638459f07803ea5dac27201fc`: Plus backend isolated SG28 GitHub Actions run `38006130315` SUCCESS (job `114075228567`), direct log **7 passed in 3.68s**, including interrupting a spawned child during a real, deliberately bounded-by-wall-clock SymPy differentiation loop, and then successfully running a new calculation.
 - Same SHA Plus cumulative run `38006130285` SUCCESS: frontend `749 PASS, 28 TODO`, backend `569 PASS, 1 warning`, no failures. H1d run `38006130276` SUCCESS. Tests only; no public API routing/HTTP disconnect cancellation implemented. **SG28/H2 OPEN**, next stage is safe server request-to-isolated-job lifecycle integration, with explicit resource bounds and cancellation.
+
+
+## 2026-10-09 — SG28 explicit caller cancellation in isolated Plus worker
+- Plus service `backend/app/services/interruptible.py` commit `aaaafff5ecb123bec10fc5ab30d6f182ebeeecd0` extends the prototype isolated worker with an explicit caller-controlled `cancel_event`, a bounded 50 ms poll interval, and `ComputationCancelled`. Existing `finally` path terminates/joins/kills the child. Not connected to public FastAPI routes; production unchanged.
+- Plus `backend/tests/test_in625_sg28_interruptible.py` commit `c8644f4792f62243463df502ad2477b098a4b05a` adds eighth test: starts a live SymPy differentiation loop in child, sets cancellation event after worker readiness, expects `ComputationCancelled`, then checks normal SymPy recovery in new child. This explicitly distinguishes caller cancellation from timeout.
+- CI new SHA was QUEUED when inspected: SG28 `38006506957`, cumulative `38006506938`, H1d `38006506912`; **no new PASS claimed**. Next: verify logs, then evaluate safe mapping from FastAPI disconnect to cancel_event, keeping bounded resources. H2/SG28 remain OPEN.
