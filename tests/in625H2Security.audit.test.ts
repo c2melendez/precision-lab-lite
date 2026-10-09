@@ -41,12 +41,8 @@ describe("IN625 H2 — EN-SG-19 bounded nesting and EN-SG-20 guarded nesting", (
 
   it("EN-SG-20 rejects a thousand nested parentheses with a controlled error", () => {
     const input = "(".repeat(1000) + "1" + ")".repeat(1000);
-    try {
-      const result = parseExpression(input);
-      // A successful parse must still retain the original balanced value.
-      expect(result.algebrite.replace(/[()]/g, "")).toBe("1");
-    } catch (error) {
-      expect(error).toEqual(expect.objectContaining({ code: ErrorCode.PARSE_ERROR }));
-    }
+    expect(() => parseExpression(input)).toThrowError(
+      expect.objectContaining({ code: ErrorCode.PARSE_ERROR }),
+    );
   });
 });
