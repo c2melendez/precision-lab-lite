@@ -631,3 +631,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus commit técnico `dde284c26ffe60c0fea39b07bd3e168b00bf44b9` agrega test en `frontend/src/__tests__/client.test.ts`: respuesta `fetch` obtenida, lectura del cuerpo JSON terminada a 14 999 ms; se exige resultado válido y temporizador sin aborto tardío después de alcanzar 15 000 ms.
 - Complementa corrección `3886e9be3bf84c83fc6b1af25760593729487cb9` y test de cuerpo bloqueado `2df6867ed2be4db066b93de490a59958b16bb8e8`. No se modifica producto en este commit.
 - Consultas de estado y runs PR para `2df6867e` devolvieron listas vacías: no contienen verificación de ejecuciones `push`. No acreditar PASS; H2/SG28 continúan ABIERTOS. Prioridad: recuperar IDs/logs del gate acumulativo y corregir fallos confirmados.
+
+## 2026-10-09 — H2 SG28: rechazo de cuerpo JSON tardío tras timeout (CI pendiente)
+- Hallazgo: después de `response.json()`, un adaptador fetch no cooperativo puede resolver su promesa aunque el `AbortSignal` ya haya vencido; el cliente aceptaba entonces una respuesta tardía.
+- Plus commit `0890180ba2a9dcb7d7f8e1a10866380828e3f6cb` añade guardia explícita `controller.signal.aborted` antes de validar/aceptar el cuerpo como MathResponse.
+- Plus commit `76d8ed9953277e2abe4b51332a91a88d7401f746` incluye prueba con fake timers 15 s y `response.json` no cooperativo que termina después: resultado debe ser error de timeout, nunca éxito.
+- Publicado en rama canónica, NO se ha verificado gate CI ni H1d asociado; no registrar PASS. SG28/H2 abiertos; SG29 sigue pendiente CI. Próximo paso: recuperar logs reales de Actions, ejecutar/corregir validaciones; revisar cancelación manual y restantes requisitos H2.
