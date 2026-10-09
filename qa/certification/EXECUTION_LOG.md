@@ -729,3 +729,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Producto Lite modificado en `src/modes/BasicScientific/BasicScientificMode.tsx`: cancela worker previo al iniciar Calcular; botón de detener en Científica, despacho con request ID y rechazo de respuestas tardías, captura errores. Se conservan 17 rutas de despacho hacia el motor, ahora unificadas mediante `dispatchWorker`.
 - Commits Lite: `b836e016a354cfcff054edfd09e356774ee00f46`, `31ce6b502730043e9d3266dee735c74c1cf9d363` (orden de declaraciones). Inspección posterior confirmó el control y la envoltura. NO hubo CI/E2E confirmado sobre esos commits; 0 runs PR asociados no significa 0 push runs.
 - Plus sin cambios funcionales; estado SG28 es abierto bilateral. Próximo paso: gate Lite y E2E reproducible de cancelación/recuperación, luego evidencia backend Plus.
+
+
+## 2026-10-09 — SG28 prueba E2E controlada añadida (validación CI pendiente)
+- Creada prueba E2E Lite para validar cancelación/reinicio sin enviar cargas extremas: `e2e/in625-h2-sg28-cancel.spec.ts`; incorpora mock delimitado del worker, evento tardío con request ID original y comprobación de que el resultado posterior es normal.
+- Creado workflow dedicado `in625-sg28-scientific-cancel.yml` con Chromium desktop sobre cambios técnicos. Commits Lite `1b6d678d` (spec), `901fadc0` (workflow), `0f3e1dff` (oráculo de respuesta tardía).
+- Alcance del nuevo test: navegación real de Científica con worker simulado; NO certifica carga prolongada de worker real ni aborto del backend Plus. El último run de este nuevo workflow no está verificado, sin PASS/FAIL acreditado. Siguiente paso: leer logs Actions y cerrar rojos antes de ampliar SG28.
