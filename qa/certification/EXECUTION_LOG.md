@@ -844,3 +844,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 actual SymPy computation interruption test pending CI
 - Plus technical commit `732d30a6b61abe7638459f07803ea5dac27201fc` adds seventh isolated SG28 pytest: child signals readiness, enters an actual SymPy differentiation loop, is stopped by `run_bounded` with 1 s wall-clock deadline, then a fresh process validates SymPy derivative recovery. This is test-only and NOT connected to HTTP endpoints. Unlike previous gate-based test, child does genuine SymPy computation during test; mechanism still lacks request-disconnect cancellation and production constraints.
 - Auto-triggered Plus GitHub Actions: SG28 `38006130315`, cumulative `38006130285`, H1d `38006130276`, all QUEUED when checked. No PASS on this new SHA yet. SG28/H2 remain OPEN.
+
+
+## 2026-10-09 — Plus SG28 real active SymPy interrupted 7/7 PASS
+- Exact SHA `732d30a6b61abe7638459f07803ea5dac27201fc`: Plus backend isolated SG28 GitHub Actions run `38006130315` SUCCESS (job `114075228567`), direct log **7 passed in 3.68s**, including interrupting a spawned child during a real, deliberately bounded-by-wall-clock SymPy differentiation loop, and then successfully running a new calculation.
+- Same SHA Plus cumulative run `38006130285` SUCCESS: frontend `749 PASS, 28 TODO`, backend `569 PASS, 1 warning`, no failures. H1d run `38006130276` SUCCESS. Tests only; no public API routing/HTTP disconnect cancellation implemented. **SG28/H2 OPEN**, next stage is safe server request-to-isolated-job lifecycle integration, with explicit resource bounds and cancellation.
