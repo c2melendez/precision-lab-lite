@@ -735,3 +735,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Creada prueba E2E Lite para validar cancelación/reinicio sin enviar cargas extremas: `e2e/in625-h2-sg28-cancel.spec.ts`; incorpora mock delimitado del worker, evento tardío con request ID original y comprobación de que el resultado posterior es normal.
 - Creado workflow dedicado `in625-sg28-scientific-cancel.yml` con Chromium desktop sobre cambios técnicos. Commits Lite `1b6d678d` (spec), `901fadc0` (workflow), `0f3e1dff` (oráculo de respuesta tardía).
 - Alcance del nuevo test: navegación real de Científica con worker simulado; NO certifica carga prolongada de worker real ni aborto del backend Plus. El último run de este nuevo workflow no está verificado, sin PASS/FAIL acreditado. Siguiente paso: leer logs Actions y cerrar rojos antes de ampliar SG28.
+
+
+## 2026-10-09 — SG28: endurecimiento del workflow de diagnóstico
+- Commit Lite `85f05af837d09914a4fc6d4acd34bc630f5e874e`: workflow dedicado SG28 ampliado con Typecheck antes de E2E y artifact de depuración de Playwright en caso de fallo. Cambio de CI/harness, sin modificación de producto.
+- Conector no permite consultar listado general de runs push; consulta por SHA solo cubre PR, por tanto resultado actual **NO VERIFICADO**. SG28/H2 no se declara PASS.
