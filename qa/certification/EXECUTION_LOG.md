@@ -715,3 +715,11 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Log del job cumulative descargado: Vitest 85 archivos PASS, 1036 tests PASS, 30 TODO (no aprobados); build Vite 7.20 segundos y Typecheck completo por conclusión SUCCESS del job.
 - Estos gates validan automáticamente cambios recientes de módulo Cálculo: botón Detener, limpieza ante parámetros incorrectos y `worker.onerror`, pero NO prueban interrupción real mediante E2E. SG28/H2 siguen abiertos hasta prueba integrada y recuperación efectiva.
 - No extrapolar este gate Lite al backend o frontend de Plus.
+
+
+## 2026-10-09 — SG28 auditoría de accesibilidad funcional (sesión de continuidad)
+- Lectura directa: `main/qa/certification/README.md` coincide en Lite/Plus (`qa/syntax-audit-in625-a1`); rama existente y documentos de ejecución legibles en ambos.
+- Hallazgo trazable SG28: `CalculusMode.tsx` tiene cancelación worker, pero `src/App.tsx` excluye `calculus` de `VISIBLE_MODES`. `BasicScientificMode.tsx`, interfaz visible y router de cálculo, usa `getWorker` sin `cancelWorker`. Un gate unitario exitoso en un componente no navegable no satisface el criterio UX SG28. Clasificación PRODUCT/CAPABILITY, pendiente de reproducción E2E real; no cambiar motor por especulación.
+- Plus solo demuestra aborto de solicitud desde el cliente con timeout; terminación del cómputo backend no demostrada.
+- Jobs Lite consultados directamente: 37991876628 cumulative SUCCESS; 37991876636 build SUCCESS; 37991876565 H1d SUCCESS. No se ejecutó una nueva prueba ni se creó un run SG28; no se declara PASS de H2.
+- Prioridad: prueba reproducible sobre Científica visible y corrección dirigida al mecanismo de cancelación de su worker, más prueba de recuperación; posteriormente revisar interrupción real Plus bajo aislamiento.
