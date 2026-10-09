@@ -709,3 +709,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Lite commit técnico `42484852c982c948589b8108289cd994647aad0d` añade manejo `worker.onerror` en `src/modes/Calculus/CalculusMode.tsx`. Si el error corresponde a la solicitud activa, termina y reinicia la referencia al worker, quita loading y muestra un mensaje recuperable.
 - Complementa botón Detener cálculo `777ddb8bc3a1063855987d454377b0e6eadfde5a` y corrección de validación `019317e9b5da46616700114922ed9f44082a7d08`.
 - Gate Lite #29 (run 37989574886, 1036 PASS/30 TODO) es anterior a estas modificaciones. Sin evidencia CI/E2E de los nuevos commits. H2/SG28 siguen ABIERTOS; prioridad gate nuevo e integración real segura.
+
+## 2026-10-09 — SG28 Lite: tres gates CI PASS para commit 42484852
+- Evidencia directa vía GitHub Check Runs para commit técnico `42484852c982c948589b8108289cd994647aad0d` de Lite: cumulative SUCCESS (job 114027855199, run https://github.com/c2melendez/precision-lab-lite/actions/runs/37991876628), build-diagnostic SUCCESS (job 114027855105, run 37991876636), h1d SUCCESS (job 114027854405, run 37991876565).
+- Log del job cumulative descargado: Vitest 85 archivos PASS, 1036 tests PASS, 30 TODO (no aprobados); build Vite 7.20 segundos y Typecheck completo por conclusión SUCCESS del job.
+- Estos gates validan automáticamente cambios recientes de módulo Cálculo: botón Detener, limpieza ante parámetros incorrectos y `worker.onerror`, pero NO prueban interrupción real mediante E2E. SG28/H2 siguen abiertos hasta prueba integrada y recuperación efectiva.
+- No extrapolar este gate Lite al backend o frontend de Plus.
