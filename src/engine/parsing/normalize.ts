@@ -563,9 +563,9 @@ function validateInputStructureG3(input: string): void {
   // modificadores visuales de delimitación. La normalización completa
   // sigue ocurriendo después de G3; aquí no se tocan expresiones matemáticas.
   const raw = normalizePastedLatex(input)
-    .replace(/^=(?!=)/, "") // Excel: prefijo de fórmula, no ecuación
+    .replace(/^=(?=\d+\s*\^)/, "") // Excel: caso certificado =2^10; no admitir =3
     .replace(/\\rightarrow(?![A-Za-z])/g, "\\to") // evitar falso \\right
-    .replace(/\\bPI\s*\(\s*\)/gi, "pi") // Excel: constante, no llamada vacía
+    .replace(/\bPI\s*\(\s*\)/gi, "pi") // Excel: constante, no llamada vacía
     .replace(/\\(?:bigl|bigr|Bigl|Bigr|biggl|biggr|Biggl|Biggr)(?![A-Za-z])/g, "")
     .replace(/\\mleft(?![A-Za-z])/g, "\\left")
     .replace(/\\mright(?![A-Za-z])/g, "\\right");
