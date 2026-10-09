@@ -575,3 +575,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 ## 2026-10-09 — SG28 error recovery regression extended
 - Lite E2E `e2e/in625-h2-sg28-cancel.spec.ts` now also simulates a worker `onerror` after a prior successful cancellation/retry; asserts visible failure feedback, worker termination, cleared loading control, and successful subsequent computation. Commit `512f9346fd941ee1fe2e6b2d4b0fc0ecf9fe1f06`.
 - Classification HARNESS/oracle expansion. No product engine alteration. **No new CI result confirmed**; cannot claim SG28 PASS. Next step: verify SG28 Playwright + cumulative gate logs for this exact code SHA, resolve failed cases, then perform isolated real-worker cancellation and Plus backend comparison. H2 OPEN.
+
+
+## 2026-10-09 — SG28 test oracle: reused worker lifecycle corrected
+- Se auditó el test E2E Lite `e2e/in625-h2-sg28-cancel.spec.ts` sin asumir éxito de CI. Hallazgo de HARNESS: tras una respuesta correcta, el worker sigue vivo y se reutiliza; el test anterior esperaba erróneamente un tercer worker antes de lanzar un error. Su mock respondía inmediatamente y podía ocultar el botón de cancelación antes del assertion.
+- Commit Lite `a4a153dd81c84348de079b92ea986cc93c47cf50`: el mock ahora cuenta mensajes por worker; retiene la segunda solicitud del worker reutilizado para simular error y comprueba recuperación usando exactamente tres instancias, no cuatro. También tipa explícitamente el registro del mock.
+- No se tocó el producto. Falta ejecutar/inspeccionar el workflow SG28 y gate acumulativo en ese commit; no declarar PASS. Siguiente paso: recuperar job/log, diagnosticar rojos, probar worker real de forma aislada y comparar Plus. SG28/H2 ABIERTOS.
