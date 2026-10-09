@@ -229,3 +229,10 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Cambio en producto Lite `src/engine/parsing/normalize.ts`, commit `3eaf96e1ae80faf53c40443d1f1504d75477191e`: se enruta a arcsin(1/x), arccos(1/x), arctan(1/x) antes de la normalización genérica de potencias. Las pruebas de regresión existentes cubren estos casos; no se modificó Plus.
 - Lanzamiento automático observado en SHA 3eaf96e1: gate #37921487478, H1d #37921487510 y build #37921487454, inicialmente QUEUED. Aún no hay resultados verificables ni cierre de H1d.
 - Plus mantiene gate #37909986582 SUCCESS. Siguiente paso: verificar resultados de Lite, continuar con hiperbólicas inversas y errores de sintaxis restantes tras el gate, sin iniciar H2 prematuramente.
+
+## 2026-10-09 — Lite: inversión hiperbólica, validación CI pendiente
+- Gate Lite #37921487478 completó FAILURE: 993 PASS / 22 FAIL / 30 TODO. H1d #37921487510 SUCCESS y build #37921487454 SUCCESS. La corrección de trigonométricas recíprocas eliminó cinco fallos respecto del gate anterior.
+- Se observaron seis fallos de paridad en formas de teclado `sinh^{-1}`, `cosh^{-1}`, `tanh^{-1}`, `csch^{-1}`, `sech^{-1}`, `coth^{-1}` por enrutamiento de sintaxis. Se implementó normalización temprana, antes de la transformación genérica de potencias, hacia `asinh/acosh/atanh/acsch/asech/acoth`, sin relajar expectativas matemáticas.
+- Commit Lite `1a020fa6271ba152a35588d8d9ba9060cfd8d41d` en `src/engine/parsing/normalize.ts`. No se modificó Plus.
+- GitHub Actions generó automáticamente gate #37921790827, H1d #37921790903 y build #37921790828, QUEUED en la consulta. No afirmar PASS hasta revisar logs y ejecución sobre SHA correspondiente.
+- Plus mantiene el último gate completo SUCCESS #37909986582. IN625 H1d aún sin cierre bilateral contractual; H2 pendiente.
