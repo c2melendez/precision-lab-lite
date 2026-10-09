@@ -656,3 +656,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus `frontend/src/api/client.ts` aplica AbortController a petición HTTP, pero no demuestra interrupción del backend. `CalculatorScreen.tsx` no muestra control Detener en los fragmentos auditados.
 - Clasificación EN-SG-28: Lite PARCIAL (mecanismo worker comprobado, flujo completo pendiente); Plus PARCIAL (timeout HTTP comprobado en fuente, parada efectiva backend/UI pendiente). SG28 sigue NO CERTIFICADO; IN625 H2 ABIERTO.
 - Acceso actual al conector GitHub no ofrece listado exhaustivo de runs push; CI pendiente de evidencia real. Próximo paso: confirmar gate y crear prueba de lifecycle Lite en entorno de test aislado.
+
+## 2026-10-09 — SG28 Lite: test de cancelación y recreación de worker publicado, CI pendiente
+- Lite commit técnico `0c3f4ce692a37863601d5d8052d23bc84aef3322` crea `tests/useComputeWorker.test.ts` (ruta incluida por Vitest `tests/**/*.test.ts`), con Worker simulado y mocks de hooks React.
+- Valida la reutilización del worker mientras está activo, llamada a terminate() al cancelar, creación de instancia nueva, idempotencia de cancelar y cleanup al desmontar el hook.
+- Alcance limitado a prueba unitaria del ciclo de vida, NO comprueba parada en mitad de cálculo real, resultados obsoletos o UI completa. Sin PASS CI verificable, SG28/IN625 H2 siguen ABIERTOS.
+- Próximo paso: comprobar gate de Lite para SHA técnico, corregir errores de test/harness si los hay, después Playwright/worker integrado en entorno aislado; Plus SG28 pendiente de detención real backend.
