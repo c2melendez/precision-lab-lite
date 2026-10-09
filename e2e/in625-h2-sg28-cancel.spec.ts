@@ -146,3 +146,65 @@ test("EN-SG-28 Scientific real worker resumes ordinary calculation", async ({ pa
   }, { timeout: 15_000 }).toMatch(/^5(?:\.0+)?$/);
   await expect(page.getByRole("button", { name: "Detener cálculo" })).toHaveCount(0);
 });
+
+test("EN-SG-28 terminate a real busy worker and recover", async ({ page }) => {
+  // A genuine browser Worker performing bounded, deterministic work.
+  // No extreme input, backend request, or production load is involved.
+  await page.addInitScript(() => {
+    localStorage.setItem("precision-lab-layout-mode", "split");
+    const NativeWorker = window.Worker;
+    let started = false;
+    let terminated = false;
+    (window as typeof window & {
+      __sg28RealWorkerState?: () => { started: boolean; terminated: boolean }
+    }).__sg28RealWorkerState = () => ({ started, terminated });
+    window.Worker = class BoundedWorkerProxy {
+      onmessage: ((event: MessageEvent) => void) | null = null;
+      onerror: ((event: Event) => void) | null = null;
+      private actual: Worker;
+      constructor(url: string | URL, options?: WorkerOptions) {
+        if (!String(url).includes("compute.worker")) return new NativeWorker(url, options) as never;
+        const blob = new Blob([`
+          self.onmessage = function(event) {
+            const started = performance.now();
+            // Deliberately bounded at 400ms, enough to click Cancel in CI.
+            while (performance.now() - started < 400) {}
+            self.postMessage({
+              success: true, requestId: event.data.requestId, resultLatex: "999999",
+              steps: [], hasDetailedSteps: false, confidence: "SYMBOLIC"
+            });
+          };
+        `], { type: "text/javascript" });
+        const workerUrl = URL.createObjectURL(blob);
+        this.actual = new NativeWorker(workerUrl);
+        URL.revokeObjectURL(workerUrl);
+        this.actual.onmessage = (event) => this.onmessage?.(event);
+        this.actual.onerror = (event) => this.onerror?.(event);
+      }
+      postMessage(data: unknown) {
+        started = true;
+        this.actual.postMessage(data);
+      }
+      terminate() {
+        terminated = true;
+        this.actual.terminate();
+      }
+    } as unknown as typeof Worker;
+  });
+  await page.goto("./");
+  const field = page.locator('math-field[aria-label="Entrada matemática"]').first();
+  await field.waitFor({ state: "visible" });
+  await field.evaluate(el => {
+    (el as HTMLElement & { setValue: (value: string) => void }).setValue("2+3");
+    el.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText", data: "2+3" }));
+  });
+  await page.getByRole("region", { name: "Entrada" })
+    .getByRole("button", { name: "Calcular", exact: true }).click();
+  const cancel = page.getByRole("button", { name: "Detener cálculo" });
+  await expect(cancel).toBeVisible();
+  await cancel.click();
+  await expect.poll(() => page.evaluate(() => (
+    window as typeof window & { __sg28RealWorkerState: () => { terminated: boolean } }
+  ).__sg28RealWorkerState().terminated)).toBe(true);
+  await expect(page.locator("body")).not.toContainText("999999");
+});
