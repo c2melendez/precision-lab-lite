@@ -79,7 +79,41 @@ export function BasicScientificMode() {
   const [sessionHistory, setSessionHistory] = useState<SessionHistoryEntry[]>([]);
   const setPendingArgandPoint = useArgandBridgeStore((s) => s.setPendingArgandPoint);
 
-  const { getWorker } = useComputeWorker();
+  const { getWorker, cancelWorker } = useComputeWorker();
+  const activeWorkerRequest = useRef<string | null>(null);
+  const [isComputing, setIsComputing] = useState(false);
+
+  const handleCancelComputation = useCallback(() => {
+    activeWorkerRequest.current = null;
+    cancelWorker();
+    setIsComputing(false);
+  }, [cancelWorker]);
+
+  // One gate for all worker-backed paths (evaluate, algebra, systems, calculus, etc.).
+  // Late replies from cancelled/replaced workers must never update the result.
+  const dispatchWorker = useCallback((worker: Worker, payload: { requestId: string; [key: string]: unknown }) => {
+    const requestId = payload.requestId;
+    const handler = worker.onmessage;
+    activeWorkerRequest.current = requestId;
+    setIsComputing(true);
+    worker.onmessage = (event: MessageEvent<MathResult>) => {
+      if (activeWorkerRequest.current !== requestId || event.data.requestId !== requestId) return;
+      activeWorkerRequest.current = null;
+      setIsComputing(false);
+      handler?.call(worker, event);
+    };
+    worker.onerror = () => {
+      if (activeWorkerRequest.current !== requestId) return;
+      handleCancelComputation();
+      fail(ErrorCode.UNSUPPORTED_OPERATION, "El cálculo se interrumpió. Puedes intentar de nuevo.", requestId);
+    };
+    try {
+      worker.postMessage(payload);
+    } catch {
+      handleCancelComputation();
+      fail(ErrorCode.UNSUPPORTED_OPERATION, "No se pudo iniciar el cálculo. Inténtalo de nuevo.", requestId);
+    }
+  }, [handleCancelComputation, fail]);
 
   const fail = useCallback((code: ErrorCode, message: string, requestId: string) => {
     setResult({
@@ -147,7 +181,7 @@ export function BasicScientificMode() {
         const worker = getWorker();
         worker.onmessage = (e: MessageEvent<MathResult>) =>
           onSuccess("Científica (sistema de inecuaciones)", rows.join("; "), e.data);
-        worker.postMessage({ type: "linearInequalitySystem", requestId, inequalities, variables });
+        dispatchWorker(worker, { type: "linearInequalitySystem", requestId, inequalities, variables });
         return;
       }
 
@@ -180,9 +214,9 @@ export function BasicScientificMode() {
       const worker = getWorker();
       worker.onmessage = (e: MessageEvent<MathResult>) =>
         onSuccess("Científica (sistema)", rows.join("; "), e.data);
-      worker.postMessage({ type: "linearSystem", requestId, equationsAlgebrite, variables });
+      dispatchWorker(worker, { type: "linearSystem", requestId, equationsAlgebrite, variables });
     },
-    [angleMode, getWorker, fail, onSuccess],
+    [angleMode, getWorker, fail, onSuccess, dispatchWorker],
   );
 
   const handleCalculate = useCallback(() => {
@@ -190,6 +224,7 @@ export function BasicScientificMode() {
     // MathLive. field.insert()/setValue() pueden actualizar el custom
     // element antes de que React haya propagado el último onChange; leer
     // el valor vivo elimina esa ventana de estado obsoleto.
+    handleCancelComputation();
     const currentLatex = mathField?.value ?? latex;
     console.info("IN625_H1D_CALCULATE_ENTRY", JSON.stringify({ currentLatex, reactLatex: latex, fieldLatex: mathField?.value ?? null }));
     const intervalUnion = readRealIntervalUnion(currentLatex);
@@ -256,19 +291,19 @@ export function BasicScientificMode() {
         onSuccess("Científica (matriz)", currentLatex, e.data);
 
       if (matrixIntent.kind === "inverse") {
-        worker.postMessage({ type: "matrixOp", requestId, op: "inverse", a: matrixIntent.matrix });
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "inverse", a: matrixIntent.matrix });
       } else if (matrixIntent.kind === "power") {
-        worker.postMessage({ type: "matrixOp", requestId, op: "power", a: matrixIntent.matrix, exponent: matrixIntent.exponent });
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "power", a: matrixIntent.matrix, exponent: matrixIntent.exponent });
       } else if (matrixIntent.kind === "transpose") {
-        worker.postMessage({ type: "matrixOp", requestId, op: "transpose", a: matrixIntent.matrix });
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "transpose", a: matrixIntent.matrix });
       } else if (matrixIntent.kind === "determinant") {
-        worker.postMessage({ type: "matrixOp", requestId, op: "determinant", a: matrixIntent.matrix });
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "determinant", a: matrixIntent.matrix });
       } else if (matrixIntent.kind === "multiply") {
-        worker.postMessage({ type: "matrixOp", requestId, op: "multiply", a: matrixIntent.left, b: matrixIntent.right });
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "multiply", a: matrixIntent.left, b: matrixIntent.right });
       } else {
         // Literal de matriz: devolverla por el motor como A^1 para obtener
         // una representación matricial canónica sin inventar semántica.
-        worker.postMessage({ type: "matrixOp", requestId, op: "power", a: matrixIntent.matrix, exponent: 1 });
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "power", a: matrixIntent.matrix, exponent: 1 });
       }
       return;
     }
@@ -297,14 +332,14 @@ export function BasicScientificMode() {
             fail(ErrorCode.PARSE_ERROR, "El punto del residuo debe ser un valor concreto de z.", requestId);
             return;
           }
-          worker.postMessage({
+          dispatchWorker(worker, {
             type: "complexResidue",
             requestId,
             expressionAlgebrite: parsedExpression.algebrite,
             pointAlgebrite: parsedPoint.algebrite,
           });
         } else {
-          worker.postMessage({
+          dispatchWorker(worker, {
             type: "complexSingularities",
             requestId,
             expressionAlgebrite: parsedExpression.algebrite,
@@ -331,7 +366,7 @@ export function BasicScientificMode() {
       const requestId = makeRequestId();
       const worker = getWorker();
       worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica (EDO)", currentLatex, e.data);
-      worker.postMessage({ type: "ode", requestId, expression: odeExpression });
+      dispatchWorker(worker, { type: "ode", requestId, expression: odeExpression });
       return;
     }
 
@@ -356,7 +391,7 @@ export function BasicScientificMode() {
             interpretedLatex: currentLatex,
             resultViewLabel: "Solución restringida",
           });
-        worker.postMessage({
+        dispatchWorker(worker, {
           type: "constrainedEquation",
           requestId,
           leftAlgebrite: parsedEquation.leftAlgebrite,
@@ -412,7 +447,7 @@ export function BasicScientificMode() {
             interpretedLatex: currentLatex,
             resultViewLabel: "Solución",
           });
-        worker.postMessage({
+        dispatchWorker(worker, {
           type: "solveChainedInequality",
           requestId,
           first: { diffAlgebrite: first.algebrite, operator: first.inequalityOperator! },
@@ -465,7 +500,7 @@ export function BasicScientificMode() {
           interpretedLatex,
           resultViewLabel: "Solución",
         });
-      worker.postMessage({
+      dispatchWorker(worker, {
         type: "solveAlgebra",
         requestId,
         leftAlgebrite: parsed.leftAlgebrite,
@@ -495,7 +530,7 @@ export function BasicScientificMode() {
           interpretedLatex,
           resultViewLabel: "Solución",
         });
-      worker.postMessage({
+      dispatchWorker(worker, {
         type: "solveInequality",
         requestId,
         diffAlgebrite: parsed.algebrite,
@@ -519,8 +554,8 @@ export function BasicScientificMode() {
         resultViewLabel: "Resultado",
       });
     };
-    worker.postMessage({ type: "evaluate", requestId, expressionAlgebrite: parsed.algebrite });
-  }, [latex, mathField, angleMode, getWorker, fail, onSuccess, runSystem]);
+    dispatchWorker(worker, { type: "evaluate", requestId, expressionAlgebrite: parsed.algebrite });
+  }, [latex, mathField, angleMode, getWorker, fail, onSuccess, runSystem, dispatchWorker, handleCancelComputation]);
 
   // El dock del teclado vive en un store compartido y puede conservar un
   // ReactNode creado por el render inmediatamente anterior. Mantener una
@@ -593,7 +628,7 @@ export function BasicScientificMode() {
         onSuccess("Científica (Argand)", latex, e.data);
       }
     };
-    worker.postMessage({ type: "argandPoint", requestId, expressionAlgebrite: parsed.algebrite });
+    dispatchWorker(worker, { type: "argandPoint", requestId, expressionAlgebrite: parsed.algebrite });
   }, [latex, angleMode, getWorker, fail, onSuccess, setPendingArgandPoint]);
 
   // GraphPlaceholder.tsx, botón "Graficar" del cuadrante de gráfica
@@ -714,6 +749,15 @@ export function BasicScientificMode() {
 
   return (
     <div className="mx-auto flex max-w-md flex-col gap-3 p-4 md:max-w-lg lg:max-w-3xl dt:max-w-[1440px] dt:px-8">
+      {isComputing && (
+        <button
+          type="button"
+          onClick={handleCancelComputation}
+          className="rounded-lg border border-paper-line px-3 py-2 text-sm font-semibold text-ink"
+        >
+          Detener cálculo
+        </button>
+      )}
       <Screen
         latex={latex}
         onChangeLatex={setLatex}
