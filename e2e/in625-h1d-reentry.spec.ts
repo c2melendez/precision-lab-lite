@@ -13,8 +13,10 @@ async function setInput(page:Page,value:string){
       mf.setValue(String(v),{silenceNotifications:false});
     } else {
       mf.value=String(v);
-      el.dispatchEvent(new InputEvent("input",{bubbles:true,inputType:"insertText",data:String(v)}));
     }
+    // Asegurar que el wrapper controlado de React reciba el cambio incluso
+    // si setValue() no emite 'input' en esta versión de MathLive.
+    el.dispatchEvent(new InputEvent("input",{bubbles:true,inputType:"insertReplacementText",data:String(v)}));
   },value);
   await expect.poll(async()=>field.evaluate(el=>(el as HTMLElement&{value?:string}).value??""),{
     timeout:5000,message:"La expresión ingresada debe conservarse en MathLive"
