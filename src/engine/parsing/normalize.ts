@@ -122,7 +122,8 @@ function normalizeUnicodePaste(input: string): string {
     .replace(/≥/g, "\\ge")
     .replace(/≠/g, "\\ne")
     .replace(/±/g, "\\pm")
-    .replace(/[’′]/g, "'")
+    .replace(/[’′]/g, (mark, index: number, original: string) =>
+      mark === "′" && /°\d+(?:\.\d+)?$/.test(original.slice(0, index)) ? "′" : "'")
     .replace(/[\u00A0\u2009\u202F]/g, " ");
 
   out = out.replace(/([A-Za-z0-9)]+)([⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)/g, (_m, base, run) => {
