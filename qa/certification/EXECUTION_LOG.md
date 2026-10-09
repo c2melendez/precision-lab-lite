@@ -214,3 +214,11 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Lite: diagnosticado defecto de entrada DMS: `normalizeUnicodePaste` transformaba el signo de minutos `′` en apóstrofo antes de ejecutar reglas de grados/minutos/segundos. Fix de producto en `src/engine/parsing/normalize.ts`, commit Lite `4bbb10feabb0ca8c8e287fecd7547f22823d042b`, conserva prima después de ° y valor numérico de minutos sin alterar el tratamiento de primas fuera de DMS.
 - Nuevos runs Lite gate #37919867527, H1d #37919867472, Build #37919867564, inicialmente en ejecución. No declarar regresiones cerradas hasta verificar resultados.
 - EN-RE-29/30 siguen capability gaps; Lite gate acumulativo aún abierto; H2 no iniciado.
+
+## 2026-10-09 — Lite: reconciliación de oráculo de integral definida (gate pendiente)
+- Gate Lite #37919867527 FAILURE: 987 PASS, 28 FAIL y 30 TODO; H1d Lite #37919867472 SUCCESS; Build #37919867564 SUCCESS.
+- Se identificó un desfase en `tests/statFunctions.test.ts`: la prueba esperaba `defintegral((x^2),0,2)` (3 argumentos), mientras el contrato implementado conserva explícitamente la variable de integración `defintegral((x^2),0,2,x)` (4 argumentos). Se actualizó el oráculo y se agregó regresión para integrales respecto de x y t; no se modificó el producto.
+- Commits Lite: `b399ffad509416487e8153cf94ad840964b5a435` (prueba) y `017459e0a4fab7cdb65b640d85c969e278b5cdf3` (escape correcto de LaTeX en test).
+- Gate Lite #37921274929 y H1d #37921274939 fueron observados IN_PROGRESS sobre el primer commit; Build Lite #37921290902 IN_PROGRESS sobre el segundo. No se ha confirmado aún ejecución de gate sobre el HEAD final ni resultado de los trabajos en curso.
+- Plus gate #37909986582 SUCCESS y H1d #37909986581 SUCCESS en SHA 2d4e97c3, sin cambios en esta operación.
+- H1d no está cerrado contractualmente y H2 no inicia. Siguiente: verificar Actions con SHA actual Lite, comparar fallos restantes, corregir por causa raíz sin relajar contratos, y sincronizar evidencia nueva.
