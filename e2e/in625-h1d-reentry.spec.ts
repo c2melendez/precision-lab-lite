@@ -107,6 +107,7 @@ const TRIPLE_INPUTS=[
 test.describe("IN625 H1d reentrada avanzada",()=>{
   test("EN-RE-24 idempotencia triple sobre 20 entradas",async({page})=>{
     test.setTimeout(120000);
+    page.on("console",message=>{if(message.text().startsWith("IN625_H1D_ENGINE_"))console.log(message.text());});
     await page.goto("./");
     for(const input of TRIPLE_INPUTS){
       const s1=await evaluateOnce(page,input);
