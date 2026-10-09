@@ -56,6 +56,10 @@ async function submit(page:Page){
   const region=page.locator('section[aria-label="Resultado"]').first();
   const previousStatus=region.locator('[role="status"]').first();
   const before=await previousStatus.count() ? await previousStatus.getAttribute("data-result-request-id") : null;
+  const currentInput=await page.locator("math-field").first().evaluate(el=>(el as HTMLElement&{value?:string}).value??"");
+  if(currentInput==="2+3" || currentInput.includes("\\frac{1}{2}+\\frac{1}{3}")){
+    console.log("IN625_H1D_TRANSITION_BEFORE",JSON.stringify({currentInput,before}));
+  }
   await button.click();
   await expect.poll(async()=>{
     const alert=region.locator('[role="alert"]').first();
