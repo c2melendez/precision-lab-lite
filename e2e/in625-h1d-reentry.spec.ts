@@ -141,6 +141,15 @@ test.describe("IN625 H1d reentrada avanzada",()=>{
           return {inputValue:field?.value??null, statusId:status?.getAttribute("data-result-request-id")??null, statusText:status?.textContent?.trim().slice(0,220)??null, exactValue:exact?.value??null};
         });
         console.log("IN625_H1D_EN_RE_25_DIAGNOSTIC",JSON.stringify({input,firstOutcome:s1,snapshot}));
+        // Aislar el comportamiento sin el historial acumulado del test.
+        const isolated=await page.context().newPage();
+        try {
+          await isolated.goto("./");
+          const fresh=await evaluateOnce(isolated,input);
+          console.log("IN625_H1D_EN_RE_25_FRESH_PAGE",JSON.stringify({input,fresh}));
+        } finally {
+          await isolated.close();
+        }
         const region=page.locator('section[aria-label="Resultado"]').first();
         await expect.poll(async()=>{
           const field=region.locator('math-field[read-only]').first();
