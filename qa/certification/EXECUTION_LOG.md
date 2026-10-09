@@ -749,3 +749,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 test oracle: reused worker lifecycle corrected
 - Corrección únicamente en test Lite commit `a4a153dd81c84348de079b92ea986cc93c47cf50`. La versión previa suponía una nueva instancia de worker para la siguiente solicitud después de un resultado normal; eso contradice el hook `useComputeWorker`, que reutiliza instancia hasta cancelación/error. Se ajustaron oráculo, mock y número esperado de instancias.
 - Clasificación HARNESS. No hay evidencia de CI PASS/FAIL verificada para el test corregido. Cierre SG28 prohibido hasta ejecución y validación real.
+
+
+## 2026-10-09 — SG28 reconcile exact Scientific worker lifecycle
+- Se confirmó por lectura de `BasicScientificMode.tsx` que el botón Calcular termina siempre el worker existente antes de iniciar el siguiente; no basta extrapolar el comportamiento del hook `useComputeWorker` aislado. Clasificación: HARNESS/ORÁCULO del E2E desalineado con comportamiento real.
+- Commit Lite `b731f66dad3c75fd7d5f7cf3dcafef3e01f71b14` ajusta secuencia de cuatro instancias y oráculo de error a instancia tres. CI PASS aún NO verificado; no elevar el estado de H2.
