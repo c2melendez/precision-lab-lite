@@ -290,3 +290,11 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - **No se alteró** la cuarta expectativa antigua de identificador `xyz` porque aún requiere determinar autoridad del contrato para identificadores multiletra; sigue clasificada para reconciliación explícita.
 - GitHub Actions: gate #37926431480 sobre SHA 14324ffcb inicialmente IN_PROGRESS (primer test commit); H1d #37926462125 y build #37926462157 observados QUEUED sobre SHA final a6dd28b60. Falta gate de SHA final: no atribuirle resultado de la versión anterior.
 - Plus gate #37909986582 SUCCESS; H1d bilateral pendiente de cierre formal y H2 sin iniciar.
+
+## 2026-10-09 — Lite: reconciliación final de dos oráculos legados del parser
+- Gate Lite #37926462245 FAILURE, SHA a6dd28b60: 1012 PASS / 2 FAIL / 30 TODO (1044 casos). Build #37926462157 y H1d #37926462125 SUCCESS en la misma SHA.
+- `tests/parsing.test.ts` aún exigía salida textual literal `1/2` para `.5`, pero el parser devuelve `(05/10)` matemáticamente equivalente y los contratos D1 validan equivalencia numérica; se cambió a prueba matemática `simplify(parsed - 1/2) == 0`, no a string hardcode.
+- `xyz` era esperado como identificador multiletra por spec v9, mientras la regla vigente IN625 C10 en `src/engine/parsing/tokenize.ts` lo tokeniza como `x*y*z`, preservando los nombres reservados de varias letras. Se actualizó la prueba de regresión para la semántica C10; no se cambió el producto.
+- Commit Lite `82fb45c47c30a7889ebd75a47464ac65649217be` en `tests/parsing.test.ts`, sin rebajar equivalencia funcional.
+- Nuevos workflows emitidos en SHA 82fb45c47: gate #37926844320, H1d #37926844177, build #37926844234, inicialmente QUEUED. **No declarar gate SUCCESS** hasta verificar resultado y SHA.
+- Plus conserva gate #37909986582 SUCCESS. H1d todavía necesita cierre bilateral formal y H2 continúa pendiente.
