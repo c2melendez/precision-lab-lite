@@ -13,6 +13,9 @@ async function setInput(page:Page,value:string){
   // La evaluación previa podía restaurar el valor anterior durante el blur.
   await page.waitForTimeout(100);
   await field.evaluate(el=>(el as HTMLElement).blur());
+  // El valor debe mantenerse también tras el siguiente ciclo de React.
+  // No utilizar la observación inmediata para dar por estabilizada la edición.
+  await page.waitForTimeout(250);
   await expect.poll(async()=>field.evaluate(el=>(el as HTMLElement&{value?:string}).value??""),{
     timeout:3000,message:"La entrada debe permanecer estable tras perder foco"
   }).toBe(value);
