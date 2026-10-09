@@ -453,3 +453,8 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Hallazgo funcional Plus: `frontend/src/api/client.ts` limpiaba el temporizador después de `fetch()` pero **antes** de `response.json()`, dejando fuera del límite de 15 s la lectura del cuerpo. Se corrigió con commit `3886e9be3bf84c83fc6b1af25760593729487cb9`: procesamiento de respuesta dentro del try protegido por controlador y limpieza del temporizador en un `finally` exterior; errores por aborto durante JSON se traducen a timeout controlado.
 - Commit Plus `2df6867ed2be4db066b93de490a59958b16bb8e8` incorpora regresión con temporizadores simulados y cuerpo JSON pendiente que rechaza al abortar la señal.
 - Código y prueba publicados; resultado real de CI **no verificado**, sin PASS acreditado. SG28/H2 siguen abiertos. Revisar posible timeout de lectura y otras rutas, ejecutar gate acumulativo y H1d antes de concluir.
+
+## 2026-10-09 — H2 SG28: cuerpo JSON termina a 14 999 ms, CI pendiente
+- Plus commit técnico `dde284c26ffe60c0fea39b07bd3e168b00bf44b9` agrega test en `frontend/src/__tests__/client.test.ts`: respuesta `fetch` obtenida, lectura del cuerpo JSON terminada a 14 999 ms; se exige resultado válido y temporizador sin aborto tardío después de alcanzar 15 000 ms.
+- Complementa corrección `3886e9be3bf84c83fc6b1af25760593729487cb9` y test de cuerpo bloqueado `2df6867ed2be4db066b93de490a59958b16bb8e8`. No se modifica producto en este commit.
+- Consultas de estado y runs PR para `2df6867e` devolvieron listas vacías: no contienen verificación de ejecuciones `push`. No acreditar PASS; H2/SG28 continúan ABIERTOS. Prioridad: recuperar IDs/logs del gate acumulativo y corregir fallos confirmados.
