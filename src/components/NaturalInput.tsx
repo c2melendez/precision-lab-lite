@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import "mathlive";
+import { flushSync } from "react-dom";
 import { useKeyboardPanelStore } from "../store/useKeyboardPanelStore";
 
 // Wrapper único sobre el <math-field> de MathLive (spec v10 §5). Expone
@@ -60,7 +61,10 @@ export function NaturalInput({ value, onChange, placeholder, ariaLabel = "Entrad
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const handler = () => onChange(el.value);
+    // MathLive emite input desde un custom element. Confirmar el estado
+    // controlado sin diferirlo hasta después del click Calcular evita que
+    // un render pendiente restaure una expresión anterior sobre el editor.
+    const handler = () => flushSync(() => onChange(el.value));
     el.addEventListener("input", handler);
     return () => el.removeEventListener("input", handler);
   }, [onChange]);
