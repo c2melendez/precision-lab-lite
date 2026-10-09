@@ -169,6 +169,7 @@ export function BasicScientificMode() {
     // element antes de que React haya propagado el último onChange; leer
     // el valor vivo elimina esa ventana de estado obsoleto.
     const currentLatex = mathField?.value ?? latex;
+    console.info("IN625_H1D_CALCULATE_ENTRY", JSON.stringify({ currentLatex, reactLatex: latex, fieldLatex: mathField?.value ?? null }));
     const piecewiseIntent = detectPiecewiseIntent(currentLatex);
     if (piecewiseIntent) {
       const requestId = makeRequestId();
