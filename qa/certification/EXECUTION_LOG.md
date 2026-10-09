@@ -796,3 +796,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 native worker CI verified run 38000982016
 - GitHub Actions confirmado: `https://github.com/c2melendez/precision-lab-lite/actions/runs/38000982016`; job `114058691659`, SHA `3191e9d296deec42a7946a73b5e1dfa686b94748`, 3/3 E2E PASS, Typecheck PASS. Los runs cumulative `38000982159`, build `38000982024` y H1d `38000982038` también SUCCESS para dicho SHA.
 - No hay FAIL nuevo. Sigue pendiente certificar interrupción en motor matemático real y cancelación en backend Plus; no cerrar H2.
+
+
+## 2026-10-09 — SG28 four Playwright tests verified PASS
+- GitHub Actions Lite SG28 run https://github.com/c2melendez/precision-lab-lite/actions/runs/38001591613, SHA `d9f36bde5759d2394ce6e9014137127e7d91c0b4`, job `114060683879`: **4/4 Playwright PASS (18.5s)**. Nueva prueba acredita terminación/recreación del worker matemático compilado con operación ordinaria. Gates del mismo SHA cumulative `38001591557`, build `38001591646`, H1d `38001591596`: SUCCESS.
+- Acreditado: ciclo de vida de workers, cancelación bajo mock, worker nativo ocupado acotado y reinicio de worker matemático. Sin acreditar: cancelación de cómputo matemático prolongado ya iniciado y cancelación efectiva del servidor Plus. SG28/H2 abiertos a efectos integrales.
