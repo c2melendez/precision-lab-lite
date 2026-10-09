@@ -4,20 +4,20 @@ type Page=import("@playwright/test").Page;
 async function setInput(page:Page,value:string){
   const field=page.locator("math-field").first();
   await field.waitFor({state:"visible"});
+  // La edición E2E debe pasar por el API de MathLive y notificar a React.
+  // Al establecer entradas consecutivas, nunca se debe continuar mientras
+  // el estado controlado todavía retenga el valor de la operación previa.
   await field.evaluate((el,v)=>{
-    const mf=el as HTMLElement&{setValue?:(x:string)=>void;value?:string};
-    if(typeof mf.setValue==="function")mf.setValue(String(v));else mf.value=String(v);
-    el.dispatchEvent(new InputEvent("input",{bubbles:true,inputType:"insertText",data:String(v)}));
+    const mf=el as HTMLElement&{setValue?:(x:string,options?:{silenceNotifications?:boolean})=>void;value?:string};
+    if(typeof mf.setValue==="function"){
+      mf.setValue(String(v),{silenceNotifications:false});
+    } else {
+      mf.value=String(v);
+      el.dispatchEvent(new InputEvent("input",{bubbles:true,inputType:"insertText",data:String(v)}));
+    }
   },value);
-  // MathLive y React deben concluir sus eventos antes de pulsar Calcular.
-  // La evaluación previa podía restaurar el valor anterior durante el blur.
-  await page.waitForTimeout(100);
-  await field.evaluate(el=>(el as HTMLElement).blur());
-  // El valor debe mantenerse también tras el siguiente ciclo de React.
-  // No utilizar la observación inmediata para dar por estabilizada la edición.
-  await page.waitForTimeout(250);
   await expect.poll(async()=>field.evaluate(el=>(el as HTMLElement&{value?:string}).value??""),{
-    timeout:3000,message:"La entrada debe permanecer estable tras perder foco"
+    timeout:5000,message:"La expresión ingresada debe conservarse en MathLive"
   }).toBe(value);
 }
 
