@@ -677,3 +677,7 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 Lite: corregir semántica del test de desmontaje y remontaje
 - Lite commit `a1b95134125ac64c48e11b49c8640559aadf4f53` cambia `tests/useComputeWorker.test.ts`: el test previo invocaba `getWorker()` de un hook ya desmontado, una simulación artificial. La prueba actual verifica `terminate()`, referencia null, nuevo montaje del hook y worker distinto. Solo harness; sin cambios en motor.
 - Gate acumulativo Lite está configurado para dispararse con commits técnicos; intentos de recuperar corridas push mediante conector de GitHub, web y red del contenedor no permitieron acceder a los logs. NO acreditar PASS. EN-SG-28 y H2 siguen ABIERTOS. Prioridad: resultados del gate y prueba segura con worker real.
+
+## 2026-10-09 — SG28 Lite: referencias independientes entre montajes simulados (CI pendiente)
+- Lite commit `c88d6cbbdc7b918099ce99bbc6c3871c945f4fe1` corrige `tests/useComputeWorker.test.ts`: mock de `useRef` crea una referencia por cada montaje simulado en vez de compartirla globalmente; se comprueba que el nuevo montaje tenga una referencia distinta. Cambio exclusivamente de harness.
+- No es prueba de ejecución de cálculo real ni de recuperación E2E. Conector GitHub no mostró corridas por SHA previo porque la búsqueda visible no incluye pushes; no atribuir PASS. IN625 H2 / EN-SG-28 abiertos.
