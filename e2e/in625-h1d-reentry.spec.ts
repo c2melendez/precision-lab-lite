@@ -4,22 +4,18 @@ type Page=import("@playwright/test").Page;
 async function setInput(page:Page,value:string){
   const field=page.locator("math-field").first();
   await field.waitFor({state:"visible"});
-  // La edición E2E debe pasar por el API de MathLive y notificar a React.
-  // Al establecer entradas consecutivas, nunca se debe continuar mientras
-  // el estado controlado todavía retenga el valor de la operación previa.
+  // La suite ejercita la API publica de MathLive, pero no debe simular
+  // el evento 'input' de manera que provoque un render reentrante antes
+  // de que MathLive complete su propia transaccion de setValue().
   await field.evaluate((el,v)=>{
     const mf=el as HTMLElement&{setValue?:(x:string,options?:{silenceNotifications?:boolean})=>void;value?:string};
-    if(typeof mf.setValue==="function"){
-      mf.setValue(String(v),{silenceNotifications:false});
-    } else {
-      mf.value=String(v);
-    }
-    // Asegurar que el wrapper controlado de React reciba el cambio incluso
-    // si setValue() no emite 'input' en esta versión de MathLive.
-    el.dispatchEvent(new InputEvent("input",{bubbles:true,inputType:"insertReplacementText",data:String(v)}));
+    if(typeof mf.setValue==="function")mf.setValue(String(v),{silenceNotifications:true});
+    else mf.value=String(v);
   },value);
+  // Emitir 'input' en un turno posterior, nunca dentro de setValue().
+  await field.dispatchEvent("input",{bubbles:true,inputType:"insertReplacementText",data:value});
   await expect.poll(async()=>field.evaluate(el=>(el as HTMLElement&{value?:string}).value??""),{
-    timeout:5000,message:"La expresión ingresada debe conservarse en MathLive"
+    timeout:5000,message:"MathLive debe conservar la expresion confirmada a React"
   }).toBe(value);
 }
 
