@@ -9,7 +9,13 @@ async function setInput(page:Page,value:string){
     if(typeof mf.setValue==="function")mf.setValue(String(v));else mf.value=String(v);
     el.dispatchEvent(new InputEvent("input",{bubbles:true,inputType:"insertText",data:String(v)}));
   },value);
+  // MathLive y React deben concluir sus eventos antes de pulsar Calcular.
+  // La evaluación previa podía restaurar el valor anterior durante el blur.
   await page.waitForTimeout(100);
+  await field.evaluate(el=>(el as HTMLElement).blur());
+  await expect.poll(async()=>field.evaluate(el=>(el as HTMLElement&{value?:string}).value??""),{
+    timeout:3000,message:"La entrada debe permanecer estable tras perder foco"
+  }).toBe(value);
 }
 
 async function readOutcome(page: Page): Promise<{kind:"result"|"error"; value:string}> {
