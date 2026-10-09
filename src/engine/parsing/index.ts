@@ -317,10 +317,6 @@ export function parseExpression(
   latex: string,
   angleMode: "RAD" | "GRAD" = "RAD",
 ): ParsedExpression {
-  // Validar la sintaxis decimal original antes de que el preprocesador
-  // canonice números ambiguos o convierta "1e5" en multiplicación.
-  // Mantener además la validación posterior para los canales LaTeX/Unicode.
-  validateDecimalPoints(latex);
   const preprocessed = preprocessLatex(latex);
   const unicodeNormalized = normalizeUnicode(preprocessed);
   validateDecimalPoints(unicodeNormalized);
