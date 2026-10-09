@@ -263,3 +263,10 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - EN-PG-05a/05b/14a/14b estaban fallando porque `validateInputStructureG3` rechazaba `\\begin`, `\\tag` y `\\label` antes de pasar por `normalizePastedLatex`, aun siendo wrappers/editoriales no semánticos contemplados en F1.
 - Commit Lite `28612dccc6221f7196608a17cc5582fb4080935e`: G3 ahora valida la entrada saneada con `normalizePastedLatex(input)` y conserva las verificaciones estructurales. No se cambiaron oráculos ni Plus.
 - Verificación de gate/H1d para el commit aún pendiente de aparición o terminación; no acreditar la reducción de fallos antes de obtener CI. Plus mantiene gate #37909986582 SUCCESS. H1d global aún abierto, H2 no iniciado.
+
+## 2026-10-09 — Lite gate 9 fallos y compatibilidad G3 con macros/Excel
+- Gate Lite #37922948977 FAILURE: 1006 PASS / 9 FAIL / 30 TODO (mejora confirmada frente a 1002 PASS / 13 FAIL). H1d #37922949047 SUCCESS y build #37922948989 SUCCESS, todos en SHA 28612dccc. Los cuatro casos EN-PG-05a/05b/14a/14b dejaron de fallar.
+- Se identificaron fallos estructurales G3 por `\\binom{5}{2}`, `\\rightarrow` (contiene prefijo textual `\\right`), fórmula Excel `=2^10` y `PI()` de Excel español: G3 los rechazaba antes de la normalización semántica ya implementada.
+- Cambio Lite `a878fe7715c8056d12f44bf0bab18f34258c2547` en `src/engine/parsing/normalize.ts`: G3 admite macro `binom`; convierte `\\rightarrow` en `\\to` antes del chequeo de emparejamiento; elimina prefijo Excel `=` al validar (sin alterar su significado matemático); reemplaza PI() por pi solo en el canal de validación estructural. No se modificaron oráculos ni Plus.
+- GitHub Actions activados automáticamente: gate #37923383864, H1d #37923384007, build #37923383999; inicialmente QUEUED. Resultado de este nuevo cambio todavía no certificado.
+- Plus último gate aprobado #37909986582. Mantener H1d contractual abierto y H2 pendiente hasta reconciliar pendientes y evidencias.
