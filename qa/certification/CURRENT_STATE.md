@@ -654,3 +654,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Plus backend prototype added: `backend/app/services/interruptible.py` (`e3bf193e`), `backend/tests/test_in625_sg28_interruptible.py` (`44b92c78`), isolated workflow `.github/workflows/in625-sg28-backend-cancellation.yml` (`1a17e320`). Primitive uses a spawned child process, wall-clock timeout and terminate/kill cleanup, with smoke-result, bounded-timeout and recovery tests. No math endpoint/router or production behavior modified.
 - CI run for latest Plus SHA not available yet at time of inspection; **NOT PASS**. This is a prototype only: HTTP request disconnect cancellation is NOT implemented, actual SymPy operations have NOT been integrated, and production isolation/resource quotas are NOT certified.
 - Next: inspect new workflow run and logs, fix reproducible failures, then design safe request-to-process cancellation integration; SG28/H2 remain OPEN.
+
+
+## 2026-10-09 — SG28 Plus isolated CI PASS, cumulative frontend failure triaged
+- Plus run 38002882796: SG28 prototype isolated-process tests 3/3 PASS. Plus cumulative run 38002882722: backend 565 PASS; frontend 3 FAIL in `frontend/src/__tests__/client.test.ts` (746 PASS/28 TODO), all trace to aborted non-timeout requests being reported as elapsed-timeout. H1d run 38002882754 SUCCESS.
+- Plus `frontend/src/api/client.ts` commit `0afdc4f7b20fa1ee79e92f350be8790943fac337`: added explicit `timedOut` tracking, distinguishing timeout-triggered AbortController.abort() from unrelated fetch AbortError. CI on patch not yet verified: **DO NOT MARK cumulative PASS**.
+- Plus SG28 process-isolation primitive remains test-only, unconnected to routes; no server-request-disconnect cancellation certified. H2 OPEN.
