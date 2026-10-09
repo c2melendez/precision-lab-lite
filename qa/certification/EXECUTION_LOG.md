@@ -176,3 +176,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Gate Plus run 37880838018 FAILURE: frontend TypeScript TS2307 (node:fs en prueba), TS2339 y TS7006 (matrix union y callbacks), TS2322 (forma de result_data); backend job CANCELLED por resultado del workflow, por lo que no consta resultado pytest.
 - Referencia histórica: CI main Lite #37864077199 FAIL en auditoría npm previa a los tests, por lo que NO es línea base de equivalencia de fallos. CI main Plus #37862256869 SUCCESS, pero difiere en rama/commit: comparar diferencias antes de atribuir regresión.
 - Clasificación abierta: gate acumulativo impide cierre contractual de H1d y avance H2. Siguiente acción: baseline comparable y reparar primero errores TypeScript Plus, analizar 31 fallos Lite; ejecutar nuevamente gates.
+
+## 2026-10-09 — Plus: reparación de bloqueos de TypeScript en gate acumulativo
+- Se corrigió discriminación de matrices multiply y tipado de soluciones: commit Plus `d1c61602`; callback Unicode: `92d62ec6`; declaración node:fs de prueba Vitest: `1944655a`.
+- Validación CI solicitada automáticamente: gate Plus #37883210983 y H1d Plus #37883210960 (in_progress en última consulta). No declarar PASS hasta conclusión.
+- Lite gate #37880835221 sigue con 31 FAIL / 984 PASS / 30 TODO; requieren baseline comparable. Lite H1d #37880835203 PASS 5/5.
+- Cierre IN625/H1d global y comienzo H2 siguen pendientes hasta confirmar gates y clasificar regresiones.
