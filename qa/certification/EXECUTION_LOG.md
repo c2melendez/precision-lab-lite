@@ -242,3 +242,11 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - El diagnóstico de la suite `tests/parsing.test.ts` identificó que `.5`, `5.` y `1e5` no se rechazan según el contrato de sintaxis estricta. Se añadió `validateDecimalPoints(latex)` antes de `preprocessLatex(latex)` para impedir que la canonicalización o multiplicación implícita escondan entradas inválidas; permanece la validación posterior.
 - Commit Lite `535d7da95c35eda429a60003304b1c2310ba073e` en `src/engine/parsing/index.ts`. Gate Lite #37922045811, H1d #37922045861 y Build #37922045803 generados automáticamente, QUEUED al comprobar. Aún no hay evidencia de PASS o reducción de fallos de este cambio.
 - Plus sin modificaciones de producto: último gate SUCCESS #37909986582. H1d contractual pendiente; H2 no iniciado. Siguiente paso: clasificar nueva corrida, continuar con delimitadores, texto LaTeX pegado y discrepancias de semántica sin relajar contratos.
+
+## 2026-10-09 — Contradicción de oráculos D1/D2 y reversión segura
+- Gate Lite #37922045811 sobre 535d7da9: FAILURE, 996 PASS / 19 FAIL / 30 TODO. H1d #37922045861 SUCCESS y build #37922045803 SUCCESS.
+- La validación cruda introducida en 535d7da9 cerró tres casos legados de rechazo (`.5`, `5.`, `1e5`) pero provocó seis fallos en contratos IN625 vigentes: D1 EN-NM-03/05/06 (normalización permisiva) y D2 EN-CI-05/06/07 (notación científica). Regresión neta +3 FAIL.
+- Se revirtió **únicamente** la llamada inicial `validateDecimalPoints(latex)` en Lite, commit `0b61ecf26c7d9c330b8f0892880b71d2d744da39`. Se conserva la validación posterior y todas las mejoras trigonométricas. No se debilitaron las matrices D1/D2.
+- Nuevas corridas por push técnico: gate Lite #37922422250, H1d Lite #37922422230, build Lite #37922422315 (QUEUED en primera consulta). No acreditar conclusión hasta comprobarla.
+- **Deuda de reconciliación de contrato**: `tests/parsing.test.ts` todavía espera rechazo de formatos que los contratos IN625 D1/D2 aceptan/canonizan. Establecer precedencia documental y revisar el oráculo legado antes de volver a cambiar la semántica del parser.
+- Plus gate #37909986582 SUCCESS. H1d no cerrado contractualmente, H2 no iniciado.
