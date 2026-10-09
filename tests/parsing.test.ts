@@ -11,22 +11,16 @@ describe("parseExpression", () => {
     expect(parseExpression("√4+1").algebrite).toBe("sqrt(4)+1");
   });
 
-  it("rechaza .5 (punto decimal sin dígito inicial)", () => {
-    expect(() => parseExpression(".5")).toThrowError(
-      expect.objectContaining({ code: ErrorCode.PARSE_ERROR }),
-    );
+  // Contrato vigente IN625 D1 EN-NM-03/05 y D2 EN-CI-05/06/07:
+  // los formatos abreviados se normalizan, no se rechazan (spec v9 obsoleta).
+  it("IN625 D1 acepta y normaliza .5 y 5.", () => {
+    expect(parseExpression(".5").algebrite).toBe("1/2");
+    expect(parseExpression("5.").algebrite).toBe("5");
   });
 
-  it("rechaza 5. (punto decimal sin dígito final)", () => {
-    expect(() => parseExpression("5.")).toThrowError(
-      expect.objectContaining({ code: ErrorCode.PARSE_ERROR }),
-    );
-  });
-
-  it("rechaza notación científica 1e5", () => {
-    expect(() => parseExpression("1e5")).toThrowError(
-      expect.objectContaining({ code: ErrorCode.PARSE_ERROR }),
-    );
+  it("IN625 D2 acepta notación científica 1e5", () => {
+    const parsed = parseExpression("1e5").algebrite;
+    expect(parsed).toMatch(/10\\^\\(?5\\)?|100000/);
   });
 
   it('no divide "theta" en t*h*e*t*a', () => {
