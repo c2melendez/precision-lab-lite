@@ -89,6 +89,20 @@ export function BasicScientificMode() {
     setIsComputing(false);
   }, [cancelWorker]);
 
+
+  const fail = useCallback((code: ErrorCode, message: string, requestId: string) => {
+    setResult({
+      success: false,
+      errorCode: code,
+      errorMessage: message,
+      resultLatex: null,
+      steps: [],
+      hasDetailedSteps: false,
+      confidence: "SYMBOLIC",
+      requestId,
+    });
+  }, []);
+
   // One gate for all worker-backed paths (evaluate, algebra, systems, calculus, etc.).
   // Late replies from cancelled/replaced workers must never update the result.
   const dispatchWorker = useCallback((worker: Worker, payload: { requestId: string; [key: string]: unknown }) => {
@@ -114,19 +128,6 @@ export function BasicScientificMode() {
       fail(ErrorCode.UNSUPPORTED_OPERATION, "No se pudo iniciar el cálculo. Inténtalo de nuevo.", requestId);
     }
   }, [handleCancelComputation, fail]);
-
-  const fail = useCallback((code: ErrorCode, message: string, requestId: string) => {
-    setResult({
-      success: false,
-      errorCode: code,
-      errorMessage: message,
-      resultLatex: null,
-      steps: [],
-      hasDetailedSteps: false,
-      confidence: "SYMBOLIC",
-      requestId,
-    });
-  }, []);
 
   const onSuccess = useCallback((mode: string, inputDisplay: string, data: MathResult) => {
     setResult(data);
