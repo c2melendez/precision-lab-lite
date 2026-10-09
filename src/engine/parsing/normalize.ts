@@ -559,6 +559,8 @@ function normalizeDelimiterSyntax(input: string): string {
  * determinista y amigable. No evalúa matemáticas; solo valida estructura.
  */
 function validateInputStructureG3(input: string): void {
+  // H2 EN-SG-22: evitar procesar entradas desproporcionadas en el CAS.
+  if (input.length > 65536) throw parseError("Entrada demasiado larga (máximo 65536 caracteres).");
   // Validar la estructura equivalente después de retirar únicamente
   // modificadores visuales de delimitación. La normalización completa
   // sigue ocurriendo después de G3; aquí no se tocan expresiones matemáticas.
