@@ -131,6 +131,16 @@ test.describe("IN625 H1d reentrada avanzada",()=>{
       let s1=await evaluateOnce(page,input);
       const anchor=expectedInput[input];
       if(anchor && !anchor.test(canonical(s1))){
+        // Diagnóstico acotado: preservar evidencia de MathLive, salida y solicitud.
+        // No inferir un fallo del motor a partir de un valor viejo o mal extraído.
+        const snapshot=await page.evaluate(()=>{
+          const field=document.querySelector("math-field") as (HTMLElement&{value?:string})|null;
+          const region=document.querySelector('section[aria-label="Resultado"]');
+          const status=region?.querySelector('[role="status"]');
+          const exact=region?.querySelector('math-field[read-only]') as (HTMLElement&{value?:string})|null;
+          return {inputValue:field?.value??null, statusId:status?.getAttribute("data-result-request-id")??null, statusText:status?.textContent?.trim().slice(0,220)??null, exactValue:exact?.value??null};
+        });
+        console.log("IN625_H1D_EN_RE_25_DIAGNOSTIC",JSON.stringify({input,firstOutcome:s1,snapshot}));
         const region=page.locator('section[aria-label="Resultado"]').first();
         await expect.poll(async()=>{
           const field=region.locator('math-field[read-only]').first();
