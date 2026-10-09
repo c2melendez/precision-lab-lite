@@ -236,3 +236,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Commit Lite `1a020fa6271ba152a35588d8d9ba9060cfd8d41d` en `src/engine/parsing/normalize.ts`. No se modificó Plus.
 - GitHub Actions generó automáticamente gate #37921790827, H1d #37921790903 y build #37921790828, QUEUED en la consulta. No afirmar PASS hasta revisar logs y ejecución sobre SHA correspondiente.
 - Plus mantiene el último gate completo SUCCESS #37909986582. IN625 H1d aún sin cierre bilateral contractual; H2 pendiente.
+
+## 2026-10-09 — Lite: gate 16 fallos y validación temprana de decimales
+- Gate Lite #37921790827 FAILURE: 999 PASS / 16 FAIL / 30 TODO. H1d #37921790903 y build #37921790828 SUCCESS. Se corrigieron seis fallos de inversas hiperbólicas.
+- El diagnóstico de la suite `tests/parsing.test.ts` identificó que `.5`, `5.` y `1e5` no se rechazan según el contrato de sintaxis estricta. Se añadió `validateDecimalPoints(latex)` antes de `preprocessLatex(latex)` para impedir que la canonicalización o multiplicación implícita escondan entradas inválidas; permanece la validación posterior.
+- Commit Lite `535d7da95c35eda429a60003304b1c2310ba073e` en `src/engine/parsing/index.ts`. Gate Lite #37922045811, H1d #37922045861 y Build #37922045803 generados automáticamente, QUEUED al comprobar. Aún no hay evidencia de PASS o reducción de fallos de este cambio.
+- Plus sin modificaciones de producto: último gate SUCCESS #37909986582. H1d contractual pendiente; H2 no iniciado. Siguiente paso: clasificar nueva corrida, continuar con delimitadores, texto LaTeX pegado y discrepancias de semántica sin relajar contratos.
