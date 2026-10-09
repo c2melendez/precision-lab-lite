@@ -807,3 +807,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus run 38002882796: SG28 prototype isolated-process tests 3/3 PASS. Plus cumulative run 38002882722: backend 565 PASS; frontend 3 FAIL in `frontend/src/__tests__/client.test.ts` (746 PASS/28 TODO), all trace to aborted non-timeout requests being reported as elapsed-timeout. H1d run 38002882754 SUCCESS.
 - Plus `frontend/src/api/client.ts` commit `0afdc4f7b20fa1ee79e92f350be8790943fac337`: added explicit `timedOut` tracking, distinguishing timeout-triggered AbortController.abort() from unrelated fetch AbortError. CI on patch not yet verified: **DO NOT MARK cumulative PASS**.
 - Plus SG28 process-isolation primitive remains test-only, unconnected to routes; no server-request-disconnect cancellation certified. H2 OPEN.
+
+
+## 2026-10-09 — Plus cumulative run 38003323387 diagnosis and oracle correction
+- Plus cumulative `38003323387` on `0afdc4f7b20fa1ee79e92f350be8790943fac337`: **FAIL** frontend `client.test.ts`, 3 failed/746 passed/28 TODO; backend job SUCCESS. Direct log: failures at lines 265,313,337 expected `/fallo de red/` although all three cases actually advance fake timers to 15,000 ms; correct timeout message was `tiempo máximo`. Classification ORACLE/HARNESS (tests), not product failure.
+- Plus commit `8511653781fde1f53b13dba351d347f950c6864b`: fixed exactly those three assertions to require `/tiempo máximo/`. The separate pre-timeout AbortError tests continue to require network-error classification. No production code modified in this patch.
+- GitHub Actions new Plus cumulative run `38004192723` and H1d `38004192745` were QUEUED when checked, no PASS claimed. SG28 isolated backend prototype had already passed 3/3; integration of backend cancellation remains pending, H2 OPEN.
