@@ -744,3 +744,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 
 ## 2026-10-09 — SG28 error recovery regression extended
 - Added simulated `onerror` recovery route to Lite Playwright SG28, commit `512f9346fd941ee1fe2e6b2d4b0fc0ecf9fe1f06`. Case now covers cancellation/late message/new calculation and worker error/recovery. No production load tests. This is a test expansion, **not verified PASS**; workflow/job results still need direct confirmation.
+
+
+## 2026-10-09 — SG28 test oracle: reused worker lifecycle corrected
+- Corrección únicamente en test Lite commit `a4a153dd81c84348de079b92ea986cc93c47cf50`. La versión previa suponía una nueva instancia de worker para la siguiente solicitud después de un resultado normal; eso contradice el hook `useComputeWorker`, que reutiliza instancia hasta cancelación/error. Se ajustaron oráculo, mock y número esperado de instancias.
+- Clasificación HARNESS. No hay evidencia de CI PASS/FAIL verificada para el test corregido. Cierre SG28 prohibido hasta ejecución y validación real.
