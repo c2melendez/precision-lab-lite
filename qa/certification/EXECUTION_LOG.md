@@ -270,3 +270,10 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Cambio Lite `a878fe7715c8056d12f44bf0bab18f34258c2547` en `src/engine/parsing/normalize.ts`: G3 admite macro `binom`; convierte `\\rightarrow` en `\\to` antes del chequeo de emparejamiento; elimina prefijo Excel `=` al validar (sin alterar su significado matemático); reemplaza PI() por pi solo en el canal de validación estructural. No se modificaron oráculos ni Plus.
 - GitHub Actions activados automáticamente: gate #37923383864, H1d #37923384007, build #37923383999; inicialmente QUEUED. Resultado de este nuevo cambio todavía no certificado.
 - Plus último gate aprobado #37909986582. Mantener H1d contractual abierto y H2 pendiente hasta reconciliar pendientes y evidencias.
+
+## 2026-10-09 — Lite: G3 fórmula Excel vs ecuación incompleta
+- Gate Lite #37923383864 FAILURE: 1007 PASS / 8 FAIL / 30 TODO. H1d #37923384007 SUCCESS y build #37923383999 SUCCESS. EN-OP-21, EN-CA-21 y EN-AS-15 dejaron de fallar, pero apareció una regresión G3 EN-ER-26 (=3) y EN-AS-16 (PI()) aún fallaba.
+- Causa: G3 eliminaba indiscriminadamente el prefijo = antes de validar, impidiendo el rechazo obligatorio de =3; además la expresión regular para PI() usaba incorrectamente un backslash literal antes del límite de palabra.
+- Corrección Lite `e9a3493d2cfef5eb575d444a4d063bb15125e339` en `src/engine/parsing/normalize.ts`: restringir tolerancia Excel en G3 al patrón certificado de potencia `=2^10`; preservar rechazo de `=3`; corregir patrón de PI() en Excel español. No se modificaron tests ni Plus.
+- CI iniciada sobre commit: gate #37924824324, H1d #37924824344 y build #37924824326 (QUEUED en consulta). No acreditar PASS hasta revisar logs.
+- Plus último gate #37909986582 SUCCESS; H1d pendiente de cierre contractual conjunto. H2 no iniciado.
