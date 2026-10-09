@@ -16,7 +16,6 @@ vi.mock("react", () => ({
 import { useComputeWorker } from "../src/hooks/useComputeWorker";
 
 describe("SG28 — ciclo de vida del worker Lite", () => {
-  const originalWorker = globalThis.Worker;
   const instances: { terminate: ReturnType<typeof vi.fn> }[] = [];
 
   beforeEach(() => {
@@ -36,7 +35,15 @@ describe("SG28 — ciclo de vida del worker Lite", () => {
     state.cleanup?.();
     state.cleanup = null;
     vi.unstubAllGlobals();
-    if (originalWorker) vi.stubGlobal("Worker", originalWorker);
+  });
+
+  it("cancelar antes de crear un worker no crea ni termina instancias", () => {
+    const { cancelWorker, getWorker } = useComputeWorker();
+    cancelWorker();
+    expect(instances).toHaveLength(0);
+    const worker = getWorker();
+    expect(worker).toBeDefined();
+    expect(instances).toHaveLength(1);
   });
 
   it("cancela el worker anterior y crea uno nuevo para el siguiente cálculo", () => {
