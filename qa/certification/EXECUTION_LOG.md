@@ -823,3 +823,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 Plus isolated real SymPy CI 5/5 PASS
 - Plus commit `0c4db6237c5bfd6ee1843db7f8c9bfdb2df874d4` adds two tests exercising real SymPy differentiation in an isolated child process, including recovery after stopping a separate bounded child. SG28 backend-isolation workflow run `38004754538` SUCCESS, job `114070860832`, pytest log **5 passed in 1.49s**. Evidence: https://github.com/c2melendez/precision-lab-plus/actions/runs/38004754538.
 - As checked, cumulative run `38004754563` and H1d `38004754608` for same commit were still IN_PROGRESS; do not claim their results. No API router is connected to `run_bounded`; no actual live SymPy cancellation on client disconnect has been demonstrated. SG28/H2 OPEN.
+
+
+## 2026-10-09 — Plus SG28 SymPy isolated cumulative gates verified
+- Plus SHA `0c4db6237c5bfd6ee1843db7f8c9bfdb2df874d4`: SG28 isolated backend run `38004754538` **5/5 PASS**; cumulative run `38004754563` **SUCCESS** (backend job `114070861216`: **567 passed**, one warning; frontend job `114070861527`: **749 passed, 28 TODO**, zero failures); H1d run `38004754608` **SUCCESS**. Direct GitHub Actions job/log confirmation.
+- Scope: SymPy real calculation in child process and recovery after termination of a *different controlled test child*; NO live cancellation of already-running SymPy evaluation, request disconnect handling, or public endpoint integration. SG28/H2 still open.
