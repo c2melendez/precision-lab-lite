@@ -468,12 +468,19 @@ export function BasicScientificMode() {
     }
 
     // Rama 3: expresión simple (comportamiento original, sin cambios).
-    worker.onmessage = (e: MessageEvent<MathResult>) =>
+    if (currentLatex.includes("\\frac{1}{2}") || currentLatex === "2+3") {
+      console.info("IN625_H1D_ENGINE_INPUT", JSON.stringify({ requestId, input: currentLatex, parsed: parsed.algebrite }));
+    }
+    worker.onmessage = (e: MessageEvent<MathResult>) => {
+      if (currentLatex.includes("\\frac{1}{2}") || currentLatex === "2+3") {
+        console.info("IN625_H1D_ENGINE_OUTPUT", JSON.stringify({ requestId, input: currentLatex, result: e.data.resultLatex, decimal: e.data.decimalApprox, fraction: e.data.fraction }));
+      }
       onSuccess("Científica", currentLatex, {
         ...e.data,
         interpretedLatex,
         resultViewLabel: "Resultado",
       });
+    };
     worker.postMessage({ type: "evaluate", requestId, expressionAlgebrite: parsed.algebrite });
   }, [latex, mathField, angleMode, getWorker, fail, onSuccess, runSystem]);
 
