@@ -5,6 +5,8 @@ import { expect, test } from "@playwright/test";
 // computation after cancellation. Real-worker termination must be checked separately.
 test("EN-SG-28 Scientific can cancel and recover without stale results", async ({ page }) => {
   await page.addInitScript(() => {
+    // The Calculate button resides in Screen's split layout only.
+    localStorage.setItem("precision-lab-layout-mode", "split");
     const NativeWorker = window.Worker;
     const instances: Array<{ terminated: boolean; requestId: string; deliverLate: () => void; emitError: () => void }> = [];
     (window as typeof window & { __sg28Instances?: typeof instances }).__sg28Instances = instances;
@@ -115,6 +117,9 @@ test("EN-SG-28 Scientific can cancel and recover without stale results", async (
 
 
 test("EN-SG-28 Scientific real worker resumes ordinary calculation", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("precision-lab-layout-mode", "split");
+  });
   // This test does NOT replace Worker and uses a bounded trivial input.
   // It proves that the built worker path can still produce a real result.
   await page.goto("./");
