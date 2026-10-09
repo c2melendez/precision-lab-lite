@@ -1,0 +1,33 @@
+name: IN625 SG28 Scientific Cancellation E2E
+
+on:
+  push:
+    branches: [qa/syntax-audit-in625-a1]
+    paths:
+      - 'src/modes/BasicScientific/BasicScientificMode.tsx'
+      - 'src/hooks/useComputeWorker.ts'
+      - 'e2e/in625-h2-sg28-cancel.spec.ts'
+      - '.github/workflows/in625-sg28-scientific-cancel.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sg28:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install frontend dependencies
+        run: npm ci
+      - name: Install Playwright test runner
+        run: npm install --no-save --package-lock=false @playwright/test@1.63.0 @axe-core/playwright@4.13.0
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Verify Scientific SG28 cancel and recovery
+        run: npx playwright test e2e/in625-h2-sg28-cancel.spec.ts --project desktop-chromium
