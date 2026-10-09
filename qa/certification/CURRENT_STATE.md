@@ -609,3 +609,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Confirmación del código de UI: `src/components/Screen.tsx` solo renderiza `section[aria-label="Resultado"]` en ciertas disposiciones; en `fused` el componente `ResultPanel` se monta sin ese wrapper. El test SG28 buscaba exclusivamente esa sección, creando un fallo de HARNESS dependiente del layout, independientemente del resultado matemático.
 - Lite commit `5ecbb2e495a3e157849aead7dfabcb5e3b57b6f4`: el test SG28 localiza resultados por `[data-result-request-id]` (atributo real de `ResultPanel`) y errores por `role=alert`, separando correctamente éxito/error. No se alteró producto.
 - Estado: resultados del workflow SG28 sobre este SHA aún no verificados; el histórico antiguo de cumulative exitoso no certifica este cambio. Siguiente paso: recuperar CI y depurar rojos restantes con evidencia. SG28/H2 ABIERTOS.
+
+
+## 2026-10-09 — SG28 fixed layout setup for Playwright
+- Verificación del código: `useLayoutModeStore` por defecto es `split` si no hay persistencia, pero `Screen` solo ofrece botón `Calcular` dentro de `section[aria-label="Entrada"]` en esta disposición. El test SG28 dependía de ese botón sin fijar el layout; por tanto podía fallar según `localStorage`.
+- Lite commit `ad4c399b76f07b031cf7ce7121c608ee39417378`: los dos tests SG28 fijan `precision-lab-layout-mode=split` mediante `page.addInitScript` antes de cargar App. Clasificación HARNESS/E2E; no hay cambio de producto.
+- Sigue sin existir evidencia de PASS del nuevo workflow. El gate acumulativo SUCCESS disponible (run 37991876628) es anterior a SG28, no acredita estos cambios. Siguiente: obtener run/job y logs del SHA técnico actual, corregir rojos, ampliar a interrupción worker real y backend Plus. SG28/H2 ABIERTOS.
