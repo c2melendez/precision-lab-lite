@@ -6,7 +6,7 @@ import { expect, test } from "@playwright/test";
 test("EN-SG-28 Scientific can cancel and recover without stale results", async ({ page }) => {
   await page.addInitScript(() => {
     const NativeWorker = window.Worker;
-    const instances: Array<{ terminated: boolean; requestId: string; deliverLate: () => void }> = [];
+    const instances: Array<{ terminated: boolean; requestId: string; deliverLate: () => void; emitError: () => void }> = [];
     (window as typeof window & { __sg28Instances?: typeof instances }).__sg28Instances = instances;
     window.Worker = class FakeComputeWorker {
       onmessage: ((event: MessageEvent) => void) | null = null;
@@ -19,6 +19,7 @@ test("EN-SG-28 Scientific can cancel and recover without stale results", async (
         const record = {
           terminated: false,
           requestId: "",
+          emitError: () => { this.onerror?.(new Event('error')); },
           deliverLate: () => {
             this.onmessage?.({ data: {
               success: true, requestId: record.requestId, resultLatex: "999999",
@@ -35,7 +36,7 @@ test("EN-SG-28 Scientific can cancel and recover without stale results", async (
       postMessage(data: { requestId: string }) {
         const record = instances[instances.length - 1];
         record.requestId = data.requestId;
-        if (instances.length === 1) {
+        if (instances.length === 1 || instances.length === 3) {
           // Intentionally pending until cancel; no expensive calculation.
           return;
         }
@@ -89,4 +90,24 @@ test("EN-SG-28 Scientific can cancel and recover without stale results", async (
   expect(await page.evaluate(() => (window as typeof window & {
     __sg28Instances?: Array<{ terminated: boolean }>
   }).__sg28Instances?.length)).toBe(2);
+
+  // Simulate a worker error, then verify another request still completes.
+  await setInput("3+4");
+  await compute.click();
+  await expect(cancel).toBeVisible();
+  await page.evaluate(() => (window as typeof window & {
+    __sg28Instances?: Array<{ emitError: () => void }>
+  }).__sg28Instances?.[2]?.emitError());
+  await expect(cancel).toHaveCount(0);
+  await expect(page.locator('section[aria-label="Resultado"]')).toContainText("interrumpió");
+  expect(await page.evaluate(() => (window as typeof window & {
+    __sg28Instances?: Array<{ terminated: boolean }>
+  }).__sg28Instances?.[2]?.terminated)).toBe(true);
+
+  await setInput("2+3");
+  await compute.click();
+  await expect(page.locator('section[aria-label="Resultado"]')).toContainText("5");
+  expect(await page.evaluate(() => (window as typeof window & {
+    __sg28Instances?: Array<{ terminated: boolean }>
+  }).__sg28Instances?.length)).toBe(4);
 });
