@@ -464,3 +464,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Plus commit `0890180ba2a9dcb7d7f8e1a10866380828e3f6cb` añade guardia explícita `controller.signal.aborted` antes de validar/aceptar el cuerpo como MathResponse.
 - Plus commit `76d8ed9953277e2abe4b51332a91a88d7401f746` incluye prueba con fake timers 15 s y `response.json` no cooperativo que termina después: resultado debe ser error de timeout, nunca éxito.
 - Publicado en rama canónica, NO se ha verificado gate CI ni H1d asociado; no registrar PASS. SG28/H2 abiertos; SG29 sigue pendiente CI. Próximo paso: recuperar logs reales de Actions, ejecutar/corregir validaciones; revisar cancelación manual y restantes requisitos H2.
+
+## 2026-10-09 — H2 SG28: respuesta fetch tardía tras timeout, CI pendiente
+- Plus commit técnico `b1f9a75fb6af59ba4cff03c66200a73a441977ee` agrega test en `frontend/src/__tests__/client.test.ts`: adaptador fetch no cooperativo entrega cabeceras después de 15 s; resultado válido tardío debe descartarse como error timeout.
+- Complementa protección `0890180ba2a9dcb7d7f8e1a10866380828e3f6cb` y caso JSON tardío `76d8ed9953277e2abe4b51332a91a88d7401f746`. No hubo cambio de código producto en este commit.
+- El conector GitHub solo lista corridas PR por SHA (devolvió ninguna para la revisión anterior); status combinado vacío no acredita estado de workflows push. No se verificó CI del nuevo commit y no hay PASS nuevo. H2/SG28 siguen abiertos.
+- Siguiente prioridad: obtener gate acumulativo y logs por run ID antes de certificar, corregir fallos confirmados y completar requisitos restantes de SG28.
