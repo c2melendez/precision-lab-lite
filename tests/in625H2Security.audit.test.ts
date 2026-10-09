@@ -46,3 +46,12 @@ describe("IN625 H2 — EN-SG-19 bounded nesting and EN-SG-20 guarded nesting", (
     );
   });
 });
+
+describe("IN625 H2 — SG22 oversized input controlled rejection", () => {
+  it("EN-SG-22 rejects 100k-character input without invoking the CAS", () => {
+    const input = "1+".repeat(50000) + "1";
+    expect(() => parseExpression(input)).toThrowError(
+      expect.objectContaining({ code: ErrorCode.PARSE_ERROR }),
+    );
+  });
+});
