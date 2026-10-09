@@ -526,3 +526,8 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Job cumulative ID `114020006884`: pasos Install dependencies, Typecheck, Unit and parity regression y Production build finalizaron success; logs recuperados directamente.
 - Vitest: **85 archivos aprobados**, **1036 tests PASS**, **30 TODO** (1066 reportados). Compilación producción Vite completada en 6.63 s. Los 30 TODO no son PASS.
 - Decisión: GATE ACUMULATIVO LITE #29 PASS con evidencia CI auditable. La regresión SG28 del lifecycle del worker forma parte de esta corrida, pero EN-SG-28 completo NO CERTIFICADO: persisten integración con worker real, cancelación durante cálculo y recuperación E2E. H2 sigue ABIERTO. No extrapolar esta corrida a Plus ni a los commits documentales posteriores.
+
+## 2026-10-09 — SG28 Lite: control Detener cálculo en módulo Cálculo (CI pendiente)
+- Lite commit `777ddb8bc3a1063855987d454377b0e6eadfde5a` conecta `cancelWorker()` al módulo `src/modes/Calculus/CalculusMode.tsx`, muestra botón «Detener cálculo» durante cómputo, termina worker previo antes de nueva solicitud, y valida ID de respuesta para descartar mensajes atrasados.
+- Lite commit `019317e9b5da46616700114922ed9f44082a7d08` limpia worker y estado loading para los errores de orden de derivada, punto de límite o cotas de integral.
+- Gate Lite #29 de SHA `3eafd245` **PASS anterior**, no prueba estos cambios. Nuevos cambios de UI NO verificados por CI/E2E. Sigue faltando validar carga real controlada, cancelación visible, cálculo posterior y regresión. SG28/H2 ABIERTOS.
