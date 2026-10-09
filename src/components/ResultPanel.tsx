@@ -90,7 +90,7 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
   const isPlainNumber = hasSymbolicViews ? false : rendered.isPlainNumber;
 
   return (
-    <div className="pt-1" role="status" aria-live="polite" aria-atomic="true">
+    <div className="pt-1" role="status" aria-live="polite" aria-atomic="true" data-result-request-id={result.requestId}>
       {result.confidence === "NUMERIC_FALLBACK" && (
         <p className="mb-1.5 inline-block rounded bg-marker-soft px-2 py-0.5 text-xs text-marker-text">
           Aproximado numéricamente (no resuelto simbólicamente)
