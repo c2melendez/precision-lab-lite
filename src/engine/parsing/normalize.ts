@@ -426,7 +426,12 @@ function normalizePoweredFunctions(input: string): string {
     const exponent = (match[2] ?? match[3] ?? "").trim();
     const [arg, next] = readFunctionArgument(input, fnPattern.lastIndex);
 
-    if (exponent === "-1" && (fn === "sin" || fn === "cos" || fn === "tan")) {
+    if (exponent === "-1" && (fn === "csc" || fn === "sec" || fn === "cot")) {
+      // La inversa funcional de csc/sec/cot no es la potencia recíproca
+      // de csc/sec/cot: arccsc(x)=arcsin(1/x), etc.
+      const inverse = fn === "csc" ? "arcsin" : fn === "sec" ? "arccos" : "arctan";
+      out += `(${inverse}(1/(${arg})))`;
+    } else if (exponent === "-1" && (fn === "sin" || fn === "cos" || fn === "tan")) {
       const inverse = fn === "sin" ? "arcsin" : fn === "cos" ? "arccos" : "arctan";
       out += `${inverse}(${arg})`;
     } else {
