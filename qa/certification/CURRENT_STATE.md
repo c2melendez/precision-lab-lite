@@ -593,3 +593,8 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Lite `e2e/in625-h2-sg28-cancel.spec.ts` ahora incorpora **segundo test de integración sin reemplazar Worker**: evalúa `2+3` con el worker real compilado y exige resultado canónico `5` y salida de estado busy. Commit de test `0484a8e1e3a92d7df2c39d721cf013a77388cd2d`.
 - Evidencia separada: test 1 usa mock acotado para cancelación, error y recuperación; test 2 usa motor real para cálculo ordinario, pero no demuestra interrupción de un cálculo real prolongado. Sin resultado CI confirmado para nueva revisión; **no marcar PASS**.
 - Siguiente paso exacto: inspeccionar ejecución del workflow SG28 (dos tests) y gate Lite en el commit; clasificar fallo de harness/producto si lo hay, después diseñar interrupción real controlada y validar Plus backend aislado. H2 sigue ABIERTO.
+
+
+## 2026-10-09 — SG28 corregido escape regex de oráculo real-worker
+- Auditoría del spec `e2e/in625-h2-sg28-cancel.spec.ts` encontró un error de ORÁCULO concreto: los literales regex del smoke con worker real tenían doble barra `/\\\\s+/` y `/\\\\.0+/` (buscaban barras literales), por lo que el resultado válido `5.0` podría rechazarse y los blancos no normalizarse. Lite commit `8e369c866c44a7ccca01feb82238c66b0be3fd01` deja expresiones regulares correctas `/\\s+/` y `/\\.0+/`.
+- Corrección exclusivamente de test/harness; no cambia el motor matemático. No se confirmó corrida CI sobre este SHA; SG28/H2 siguen ABIERTOS. Siguiente paso: verificar workflow SG28 + gate acumulativo, diagnosticar los resultados y probar interrupción real controlada.
