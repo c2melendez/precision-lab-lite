@@ -704,3 +704,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Lite commit `777ddb8bc3a1063855987d454377b0e6eadfde5a` conecta `cancelWorker()` al módulo `src/modes/Calculus/CalculusMode.tsx`, muestra botón «Detener cálculo» durante cómputo, termina worker previo antes de nueva solicitud, y valida ID de respuesta para descartar mensajes atrasados.
 - Lite commit `019317e9b5da46616700114922ed9f44082a7d08` limpia worker y estado loading para los errores de orden de derivada, punto de límite o cotas de integral.
 - Gate Lite #29 de SHA `3eafd245` **PASS anterior**, no prueba estos cambios. Nuevos cambios de UI NO verificados por CI/E2E. Sigue faltando validar carga real controlada, cancelación visible, cálculo posterior y regresión. SG28/H2 ABIERTOS.
+
+## 2026-10-09 — SG28 Lite: recuperación explícita tras error del worker (CI pendiente)
+- Lite commit técnico `42484852c982c948589b8108289cd994647aad0d` añade manejo `worker.onerror` en `src/modes/Calculus/CalculusMode.tsx`. Si el error corresponde a la solicitud activa, termina y reinicia la referencia al worker, quita loading y muestra un mensaje recuperable.
+- Complementa botón Detener cálculo `777ddb8bc3a1063855987d454377b0e6eadfde5a` y corrección de validación `019317e9b5da46616700114922ed9f44082a7d08`.
+- Gate Lite #29 (run 37989574886, 1036 PASS/30 TODO) es anterior a estas modificaciones. Sin evidencia CI/E2E de los nuevos commits. H2/SG28 siguen ABIERTOS; prioridad gate nuevo e integración real segura.
