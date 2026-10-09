@@ -16,6 +16,11 @@ describe("IN625 H2 — safe rejection of active markup and TeX commands", () => 
     ["EN-SG-06", "\\def\\a{\\a}\\a"],
     ["EN-SG-07", "\\newcommand{\\a}{\\a}\\a"],
     ["EN-SG-08", "\\input{/etc/passwd}"],
+    ["EN-SG-07 let", "\let\a\b"],
+    ["EN-SG-07 catcode", "\catcode"],
+    ["EN-SG-08 include", "\include{x}"],
+    ["EN-SG-08 write18", "\write18{ls}"],
+    ["EN-SG-08 openin", "\openin1=x"],
   ] as const;
 
   for (const [id, input] of cases) {
