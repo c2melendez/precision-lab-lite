@@ -126,3 +126,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Alcance gate: Lite npm ci, typecheck, npm test, build. Plus backend pytest con cobertura >=75%, y frontend npm ci, typecheck, npm test, build.
 - Se mantienen los resultados H1d previos PASS 5/5 Lite `37880382838` y Plus `37861053887`, pero aún falta verificar las nuevas corridas y el gate acumulativo en ambos HEAD. EN-RE-29/30 permanecen CAPABILITY GAPS. H2 NO se inicia hasta cierre bilateral comprobado.
 - Siguiente paso exacto: consultar y clasificar conclusiones y logs de los cuatro runs gate/H1d nuevos, corregir regresiones si surgen y registrar cierre o impedimento reproducible.
+
+## 2026-10-09 — Estado verificado por GitHub Actions: gates verdes bilaterales
+- **Lite**: gate acumulativo SUCCESS run `37926844320` en commit técnico `82fb45c47c30a7889ebd75a47464ac65649217be`; H1d SUCCESS `37926844177` y Build SUCCESS `37926844234` sobre la misma SHA. La reconciliación de oráculos legados de D1/D2/C10 no modificó el producto. El gate anterior `37926462245` tenía 1012 PASS / 2 FAIL / 30 TODO; **no trasladar ese conteo al gate verde sin inspeccionar su log**.
+- **Plus**: gate acumulativo SUCCESS `37909986582` y H1d SUCCESS `37909986581`, ambos en SHA `2d4e97c38`. No hubo nuevas modificaciones de producto Plus en esta fase.
+- **Decisión IN625 H1d**: evidencia automatizada 5/5 en cada motor y gates acumulativos verdes confirmados. EN-RE-29/30 permanecen CAPABILITY GAPS (no PASS); EN-RE-22 permanece gap H1c. Los oráculos EN-RE-25/26/27/28 aún tienen cobertura semántica parcial, según auditoría canónica: **no declarar certificación semántica universal**.
+- **Siguiente paso exacto**: auditar cierre contractual H1d (revisar evidencia de cada caso y las excepciones, marcar resolución formal cuando cumpla el protocolo), y comenzar H2 solo después de documentar cierre bilateral. Mantener sincronización del `CURRENT_STATE.md` y `EXECUTION_LOG.md` en ambos repositorios.
