@@ -6,7 +6,7 @@ import { expect, test } from "@playwright/test";
 test("EN-SG-28 Scientific can cancel and recover without stale results", async ({ page }) => {
   await page.addInitScript(() => {
     const NativeWorker = window.Worker;
-    const instances: Array<{ terminated: boolean; deliverLate: () => void }> = [];
+    const instances: Array<{ terminated: boolean; requestId: string; deliverLate: () => void }> = [];
     (window as typeof window & { __sg28Instances?: typeof instances }).__sg28Instances = instances;
     window.Worker = class FakeComputeWorker {
       onmessage: ((event: MessageEvent) => void) | null = null;
@@ -18,9 +18,10 @@ test("EN-SG-28 Scientific can cancel and recover without stale results", async (
         if (!String(url).includes("compute.worker")) return new NativeWorker(url, options) as never;
         const record = {
           terminated: false,
+          requestId: "",
           deliverLate: () => {
             this.onmessage?.({ data: {
-              success: true, requestId: "stale", resultLatex: "999999",
+              success: true, requestId: record.requestId, resultLatex: "999999",
               steps: [], hasDetailedSteps: false, confidence: "SYMBOLIC",
             } } as MessageEvent);
           },
@@ -32,6 +33,8 @@ test("EN-SG-28 Scientific can cancel and recover without stale results", async (
         });
       }
       postMessage(data: { requestId: string }) {
+        const record = instances[instances.length - 1];
+        record.requestId = data.requestId;
         if (instances.length === 1) {
           // Intentionally pending until cancel; no expensive calculation.
           return;
