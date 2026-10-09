@@ -188,3 +188,10 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Grupos de fallos Plus: BasicMode sistemas 5; calculusIntent límites 2; parity teclado 3. Se corrigió prioridad de rutas en `frontend/src/components/BasicMode.tsx` para evaluar sistemas multilínea antes de relaciones de una sola expresión: commit `af1697bfa4ea111848aa65c40b7e177ed5f95906`.
 - Nuevas Actions Plus H1d #37886600310 y gate #37886600325, en cola en consulta inicial; clasificación sin PASS hasta ejecutar.
 - Lite gate #37880835221 continúa FAIL por 31 unit; H1d Lite #37880835203 PASS. No iniciar H2 ni cerrar gate acumulativo.
+
+## 2026-10-09 — Plus frontend acumulativo PASS; backend reintentado
+- Plus run #37891000954 (commit 904c06e8): frontend job SUCCESS (typecheck, unit tests y build). Workflow global CANCELLED por backend CANCELLED; no declarar gate completo verde.
+- Se inició rerun del job backend cancelado mediante GitHub; nueva instancia job #113699307020 in_progress al verificar. Verificar resultado antes del cierre.
+- Plus H1d #37891000846 SUCCESS 5/5. Lite H1d #37880835203 SUCCESS 5/5.
+- Lite gate #37880835221: 31 FAIL / 984 PASS / 30 TODO. Clasificación por área: DMS, funciones trigonométricas inversas, delimitadores, operadores/precedencia, límites, LaTeX pegado, sintaxis externa, parsing y estadísticas. No atribuir automáticamente los 31 a regresiones de H1d; comparar con baseline y requisitos vigentes.
+- Siguiente paso: revisar resultado de backend Plus y reproducir/corregir por grupos los fallos Lite sin suavizar aserciones semánticas. H2 pendiente.
