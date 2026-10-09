@@ -643,3 +643,8 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 
 ## 2026-10-09 — SG28 compiled worker lifecycle test pending CI
 - Lite commit `d9f36bde5759d2394ce6e9014137127e7d91c0b4`: cuarto E2E SG28 agregado. Captura URL del worker matemático compilado, termina una instancia después de enviar una operación pequeña y comprueba que una instancia nueva evalúa `2+3=5`. Test sin carga intensiva, acotado a 10 s, y sin modificar producto. **NO se ha verificado CI para esta adición**. Como la terminación ocurre inmediatamente, tampoco demuestra parada de un cálculo costoso ya en progreso. H2 permanece abierto.
+
+
+## 2026-10-09 — SG28 four Playwright tests verified PASS
+- GitHub Actions Lite SG28 run https://github.com/c2melendez/precision-lab-lite/actions/runs/38001591613, SHA `d9f36bde5759d2394ce6e9014137127e7d91c0b4`, job `114060683879`: **4/4 Playwright PASS (18.5s)**. Nueva prueba acredita terminación/recreación del worker matemático compilado con operación ordinaria. Gates del mismo SHA cumulative `38001591557`, build `38001591646`, H1d `38001591596`: SUCCESS.
+- Acreditado: ciclo de vida de workers, cancelación bajo mock, worker nativo ocupado acotado y reinicio de worker matemático. Sin acreditar: cancelación de cómputo matemático prolongado ya iniciado y cancelación efectiva del servidor Plus. SG28/H2 abiertos a efectos integrales.
