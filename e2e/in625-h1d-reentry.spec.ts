@@ -53,7 +53,16 @@ async function submit(page:Page){
   await page.evaluate(()=>window.mathVirtualKeyboard?.hide());
   const button=page.getByRole("region",{name:"Entrada"}).getByRole("button",{name:"Calcular",exact:true});
   await expect(button).toBeEnabled();
+  const region=page.locator('section[aria-label="Resultado"]').first();
+  const before=await region.locator('[role="status"]').first().getAttribute("data-result-request-id").catch(()=>null);
   await button.click();
+  await expect.poll(async()=>{
+    const alert=region.locator('[role="alert"]').first();
+    if(await alert.count() && (await alert.textContent())?.trim())return "error";
+    const status=region.locator('[role="status"]').first();
+    const requestId=await status.getAttribute("data-result-request-id").catch(()=>null);
+    return requestId && requestId!==before ? "new-result" : "pending";
+  },{timeout:15000,message:"Esperar respuesta de la nueva solicitud"}).not.toBe("pending");
   return readOutcome(page);
 }
 function canonical(v:string){
