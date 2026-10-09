@@ -304,3 +304,10 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus cumulative gate #37909986582 SUCCESS; H1d #37909986581 SUCCESS, ambos en SHA `2d4e97c38`.
 - Se actualizó CURRENT_STATE.md bilateralmente: Lite commit `6c4ff0639913d0d66498b951dee730df3edf5dde`, Plus commit `604c5575b6b0cccd99d95f369a5254ef34768a`.
 - **Aún no cerrar H1d formalmente ni comenzar H2**: confrontar criterios con pruebas H1d 24..28, reconocer límites de los oráculos 25..28 y mantener 29/30 como CAPABILITY GAPS, no PASS. EN-RE-22 permanece gap H1c. Cierre estructural automatizable demostrado, pero no equivalencia matemática universal.
+
+## 2026-10-09 — H1d cierre formal por PASS/GAP; iniciar descubrimiento de H2
+- H1d: EN-RE-24..28 = 5/5 PASS automatizados; EN-RE-29/30 = 2 CAPABILITY GAPS explícitos, NO PASS. H1a y H1b 8/8, H1c 6 PASS y EN-RE-22 GAP. Conforme a IN625_H1_MATRIX.md el cierre requiere clasificación exhaustiva, no capacidades ficticias.
+- Lite H1d run 37926844177 SUCCESS; acumulativo run 37926844320 SUCCESS con 1014 PASS, 0 FAIL, 30 TODO. Plus H1d 37909986581 SUCCESS; acumulativo 37909986582 SUCCESS.
+- Decisión: H1d CERRADO al nivel contractual de clasificación. Advertencia: EN-RE-25/26/27/28 tienen límites de oráculo semántico; EN-RE-22/29/30 siguen GAP y pendientes para desarrollo futuro. No implica certificación global.
+- CURRENT_STATE.md actualizado en Lite commit 9ad0438c150a46529588027621fe52a74252e3ca y Plus commit af54bda6cab4bdac7741be3e5941430d8cb91a57.
+- H2 se activa como próximo bloque, inicialmente en fase de localización de matriz, cobertura y harness. No se ha ejecutado H2.
