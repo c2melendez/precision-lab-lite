@@ -494,3 +494,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Lite commit técnico `f626e7c9c057803a5441d0520f6aa070cb5cd1e1` amplía `tests/useComputeWorker.test.ts`: llamar `cancelWorker()` antes de `getWorker()` no debe crear ni terminar instancias, y posteriormente `getWorker()` debe construir el worker. Simplifica la limpieza de stub Worker entre tests.
 - Prueba aislada de lifecycle; no equivale a interrupción real de cálculo ni recuperación E2E. El conector de corridas por commit solo devuelve PR y no encontró run para SHA anterior; esto no informa del gate push. Sin PASS CI acreditado.
 - H2/SG28 abiertos; siguiente paso verificar gate Lite del SHA técnico y ejecutar integración worker de cálculo controlado; Plus sigue pendiente de verificación de backend y CI.
+
+## 2026-10-09 — SG28 Lite: test de inicialización diferida de worker, pendiente CI
+- Lite commit técnico `d546dc0065f07949de01b73d6358c1f1c05b540c` amplía `tests/useComputeWorker.test.ts` con prueba de que el worker no se instancia hasta `getWorker()` y se reutiliza entre consultas mientras siga activo.
+- Se verificó `vite.config.ts` con `include: tests/**/*.test.ts`, y el workflow acumulativo Lite con npm ci, typecheck, npm test y build en push de la rama canónica para cambios técnicos.
+- Alcance: prueba unitaria con Worker simulado; todavía no demuestra interrupción de cálculo real ni recuperación E2E. No se verificó run/log para nuevo SHA: SG28/H2 siguen abiertos.
+- Próxima prioridad: obtener run ID y logs del gate Lite; corregir rojos antes de ampliar test del worker integrado, y continuar diferencia de cancelación backend Plus.
