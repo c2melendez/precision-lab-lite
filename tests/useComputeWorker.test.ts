@@ -72,13 +72,17 @@ describe("SG28 — ciclo de vida del worker Lite", () => {
     expect(instances[1].terminate).toHaveBeenCalledTimes(1);
   });
 
-  it("termina el worker al desmontar el modo y permite nueva instancia", () => {
-    const { getWorker } = useComputeWorker();
-    const first = getWorker();
+  it("termina el worker al desmontar y crea otro al montar de nuevo", () => {
+    const firstMount = useComputeWorker();
+    const first = firstMount.getWorker();
     expect(state.cleanup).toBeTypeOf("function");
     state.cleanup?.();
     expect(instances[0].terminate).toHaveBeenCalledTimes(1);
-    expect(getWorker()).not.toBe(first);
+    expect(state.workerRef.current).toBeNull();
+
+    // Simular un segundo montaje en lugar de invocar un hook desmontado.
+    const nextMount = useComputeWorker();
+    expect(nextMount.getWorker()).not.toBe(first);
     expect(instances).toHaveLength(2);
   });
 });
