@@ -103,6 +103,7 @@ export function CalculusMode() {
 
     if (operation === "derivative") {
       if (!Number.isInteger(order) || order < 1 || order > 20) {
+        handleCancel();
         fail(ErrorCode.PARSE_ERROR, "El orden debe ser un entero entre 1 y 20.", requestId);
         return;
       }
@@ -124,6 +125,7 @@ export function CalculusMode() {
       const isInfinitePoint = point === "oo" || point === "-oo";
       const pointNumeric = isInfinitePoint ? 0 : parseFloat(point);
       if (!isInfinitePoint && Number.isNaN(pointNumeric)) {
+        handleCancel();
         fail(ErrorCode.PARSE_ERROR, 'El punto del límite debe ser un número, o "oo"/"-oo" para infinito.', requestId);
         return;
       }
@@ -147,6 +149,7 @@ export function CalculusMode() {
       const lowerNumeric = parseFloat(lower);
       const upperNumeric = parseFloat(upper);
       if (Number.isNaN(lowerNumeric) || Number.isNaN(upperNumeric)) {
+        handleCancel();
         fail(ErrorCode.PARSE_ERROR, "Los límites de integración deben ser números.", requestId);
         return;
       }
