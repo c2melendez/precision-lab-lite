@@ -649,3 +649,10 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Se añadieron pendientes explícitos de capability/evidencia en `qa/certification/MANUAL_CAPABILITY_GAPS.md` de Lite y Plus, commits Lite `8fcbb187d53e5eed9911f2752bfce680b20e7ff8` y Plus `04df6220fdceb923165035e83405e053274fbc2a`.
 - Consultas de GitHub Actions web/API para rama Plus siguen inaccesibles. No se obtuvieron logs ni PASS para SG28/29. H2 permanece ABIERTO.
 - Próximo paso: verificar CI de últimos commits y auditar flujo de stop real en UI/worker de cada motor bajo entorno aislado antes de clasificar EN-SG-28.
+
+## 2026-10-09 — SG28: auditoría diferenciada Lite worker / Plus HTTP
+- Lite `src/hooks/useComputeWorker.ts` verificado directamente: `cancelWorker()` ejecuta `workerRef.current.terminate()` y asigna null; `getWorker()` crea un worker nuevo al requerirse y `useEffect` ejecuta cancelWorker al desmontar el componente. Es evidencia de **capacidad técnica de interrupción mediante fin del worker**, no evidencia de botón Detener en UI ni recuperación E2E aprobada.
+- Lite `src/workers/compute.worker.ts` aloja cálculo simbólico en web worker. Se requiere test seguro de integración que compruebe cancelación en mitad de cómputo, ausencia de mensaje obsoleto y cálculo posterior en nuevo worker.
+- Plus `frontend/src/api/client.ts` aplica AbortController a petición HTTP, pero no demuestra interrupción del backend. `CalculatorScreen.tsx` no muestra control Detener en los fragmentos auditados.
+- Clasificación EN-SG-28: Lite PARCIAL (mecanismo worker comprobado, flujo completo pendiente); Plus PARCIAL (timeout HTTP comprobado en fuente, parada efectiva backend/UI pendiente). SG28 sigue NO CERTIFICADO; IN625 H2 ABIERTO.
+- Acceso actual al conector GitHub no ofrece listado exhaustivo de runs push; CI pendiente de evidencia real. Próximo paso: confirmar gate y crear prueba de lifecycle Lite en entorno de test aislado.
