@@ -818,3 +818,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — Plus cumulative restored, 749 frontend + 565 backend PASS
 - GitHub Actions Plus cumulative run `38004192723` completed SUCCESS on exact SHA `8511653781fde1f53b13dba351d347f950c6864b`. Frontend job `114069085476`: **749 passed, 28 TODO, 0 failed** over 69 test files; backend job `114069085716`: **565 passed, 1 warning, 0 failed**. H1d Reentry run `38004192745` also SUCCESS on same SHA.
 - This verifies the correction of three mismatched timeout oracles in `frontend/src/__tests__/client.test.ts`. Plus cumulative is GREEN. Separate SG28 backend-isolation prototype run `38002882796` had 3/3 PASS, but it remains disconnected from production endpoints; client disconnect does not yet terminate server SymPy operation. **SG28/H2 globally OPEN**.
+
+
+## 2026-10-09 — SG28 Plus isolated real SymPy CI 5/5 PASS
+- Plus commit `0c4db6237c5bfd6ee1843db7f8c9bfdb2df874d4` adds two tests exercising real SymPy differentiation in an isolated child process, including recovery after stopping a separate bounded child. SG28 backend-isolation workflow run `38004754538` SUCCESS, job `114070860832`, pytest log **5 passed in 1.49s**. Evidence: https://github.com/c2melendez/precision-lab-plus/actions/runs/38004754538.
+- As checked, cumulative run `38004754563` and H1d `38004754608` for same commit were still IN_PROGRESS; do not claim their results. No API router is connected to `run_bounded`; no actual live SymPy cancellation on client disconnect has been demonstrated. SG28/H2 OPEN.
