@@ -1525,3 +1525,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Test covers local K=1 rejection/recovery and independent bounded semaphore pools. Distinct-pool test is a unit-level characterization, **not a real multiprocess test**; H2 global quota evidence still missing.
 - Plus topology evidence document `qa/certification/SG28_H2_TOPOLOGY_AUDIT.md` was published at `920f9add9eb4b56be954d3fede88d8cc13d881ba`.
 - Newly published tests are **NOT YET CI VERIFIED**. Last independently recorded SG28/cumulative/H1d successes remain runs 38074280892 / 38074280914 / 38074280878. Keep experimental isolation OFF; inspect the new CI gates next.
+
+
+## 2026-10-10 — SG28 local admission scope CI verified, H2 multiprocess open
+- Plus cumulative run `38076842089`: backend job `114285492589` SUCCESS **632 passed / 1 warning**, coverage **85.64%**; frontend job `114285492490` SUCCESS **751 passed / 28 TODO** and build SUCCESS. The two added local-admission-scope tests are included in the passing suite.
+- Lite run `38076878958`: Build Diagnostic job `114285601202` SUCCESS; 119 modules transformed, built in 7.07s (build-only).
+- Local scope checks characterize independent *in-memory* semaphore pools; do NOT prove real multi-process or global quota, socket disconnect or fleet safety. SG28/H2 remains OPEN; experimental isolation stays OFF in production.
+- Next: real process-boundary characterization, disposable external HTTP cancellation, and confirmed deployment topology. Render workspace still requires confirmation.
