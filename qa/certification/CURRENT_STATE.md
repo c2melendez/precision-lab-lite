@@ -1422,3 +1422,8 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 ## 2026-10-10 — SG28 multiple-generation fencing and renewal boundary GREEN
 - Plus technical SHA `5bbc8cdd23870a7ef66931940a1b119467e25ff9`, cumulative run `38087686939`: backend job `114317512686` SUCCESS **646 passed / 1 warning / coverage 85.64%**; `test_old_lease_cannot_release_current_even_after_multiple_turnovers` and `test_renewed_lease_blocks_successor_until_new_deadline` explicitly PASSED. Frontend job `114317512517` SUCCESS **751 passed / 28 TODO**, 102 modules, build 23.03s.
 - Model-only CI; no production distributed lease implementation. H2 global OPEN, isolation OFF in production.
+
+
+## 2026-10-10 — Lease generation stress CI GREEN (648 backend)
+- Plus technical SHA `15e9fa1c7c52d6f5d95f29064d6517e78db42e07`, cumulative run `38088648047`: backend job `114320351634` SUCCESS **648 passed, 1 warning, coverage 85.69%**; 50-generation stale lease fencing and exact-expiry renewal boundary explicitly PASSED. Frontend job `114320351445` SUCCESS 751 passed / 28 TODO. H1d run `38088648072` job `114320351577` SUCCESS 5 passed.
+- These remain deterministic in-memory lease model tests; crash-resilient distributed coordinator and Render topology NOT certified. H2 OPEN, isolation production OFF.
