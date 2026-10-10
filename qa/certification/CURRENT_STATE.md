@@ -1112,3 +1112,8 @@ Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 def
 - Previous SHA `1e90909ae5c246db0840d46f0a941d53c378b484`: SG28 backend 42 PASS run `38033336262`, cumulative frontend 751/backend 604 PASS run `38033336323`, H1d 5 PASS run `38033336300` already verified.
 - Plus technical commit `52b48f02ed5063a0a9a5c8c50e9dfd4da9d56f60`: `backend/app/services/interruptible.py` joins child on EOF, and if opt-in POSIX CPU limit is configured and exitcode is negative SIGXCPU, raises `ComputationTimedOut` instead of generic `ComputationFailed`. Public `/evaluate` already maps that exception to MathResponse error_code TIMEOUT. Plus commit `f0105637ee59c835bd8606233e557b1c6006126f` updates real CPU-exhaustion regression to assert typed timeout and recovery. Does not alter production flags.
 - New SHA `f0105637` CI runs initially IN_PROGRESS: SG28 backend `38033933770`, cumulative `38033933785`, H1d `38033933760`. Do not mark PASS until checking logs. SG28/H2 OPEN for resource and deployment controls.
+
+
+## 2026-10-10 — SG28 CPU typed-timeout regression VERIFIED
+- Plus technical SHA `f0105637ee59c835bd8606233e557b1c6006126f`: SG28 backend `38033933770` SUCCESS **42 passed / 1 warning**. Plus cumulative `38033933785` SUCCESS frontend **751 passed /28 TODO** backend **604 passed /1 warning**. H1d `38033933760` SUCCESS **5 passed**. POSIX SIGXCPU now raises typed `ComputationTimedOut`; public HTTP path not yet tested with actual CPU signal, so no public contract claim.
+- SG28/H2 OPEN for HTTP response to CPU exhaustion, memory ceiling, post-worker SymPy formatting and multi-replica policy. Experimental isolation OFF by default.
