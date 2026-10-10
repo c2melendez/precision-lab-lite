@@ -1492,3 +1492,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Latest independently confirmed Plus: SG28 `38072123470` 66 passed; cumulative `38072123455` 628 backend passed, 85.59% coverage, frontend green; H1d `38072123457` 5 passed. Lite `38072149298` build success.
 - Follow-up test required: middleware consumes `http.disconnect` and sets scope event, while K=1 reservation denies competitor throughout cleanup, then recovers. Distinguish in-process ASGI evidence from socket-transport and distributed quota evidence.
 - SG28/H2 OPEN; production isolation OFF.
+
+
+## 2026-10-10 — Outer ASGI disconnect event regression awaiting CI
+- Plus test-only commit `02398a4a5f53fa069442c5f5633bb1449f91b48d` adds `test_outer_disconnect_tracker_sets_scope_event_when_consumed`, exercising actual `DisconnectTrackingMiddleware` and asserting `sg28_http_disconnected` remains set when downstream consumes `http.disconnect`. In-process ASGI test only; no socket or end-to-end coordinator admission assertion. **CI PENDING**.
+- Last verified Plus SG28 66 passed (`38072123470`), cumulative backend 628 passed (`38072123455`), frontend gate successful; H1d 5 passed (`38072123457`). Lite build `38072149298` success. Next: check SG28 and cumulative CI for new commit, then expand test to competing K=1 admission during cleanup.
+- SG28/H2 global OPEN; production isolation OFF.
