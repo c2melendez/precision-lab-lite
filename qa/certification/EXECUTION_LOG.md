@@ -1518,3 +1518,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Last previously certified technical SHA Plus `4654cd937b68b15e30c0047f4b75a6674bafba0b`: SG28 `38074280892` 68 PASS; cumulative `38074280914` 630 backend PASS; H1d `38074280878` 5 PASS. This documentary audit is not a new technical gate or certification.
 - H2/SG28 OPEN; real socket-disconnect / multi-process admission / deployment capacity not yet certified; opt-in isolation stays OFF in production.
 - **Next exact step:** inspect Render deployment properties read-only in a user-confirmed workspace; obtain replica count, worker/start command and effective flag safely; then implement bounded external-transport + multiprocess CI validation in a dedicated isolated test environment, verify SG28/cumulative gates and update both logs.
+
+
+## 2026-10-10 — SG28 H2 local admission scope unit tests published; CI pending
+- Plus commits `c63d878af43a795b76a0764cf074f7ddaea338ae`, then corrected `adceca5af08dda8a48622b478387f9fb61bb704c` introduce `backend/tests/test_sg28_admission_scope.py`.
+- Test covers local K=1 rejection/recovery and independent bounded semaphore pools. Distinct-pool test is a unit-level characterization, **not a real multiprocess test**; H2 global quota evidence still missing.
+- Plus topology evidence document `qa/certification/SG28_H2_TOPOLOGY_AUDIT.md` was published at `920f9add9eb4b56be954d3fede88d8cc13d881ba`.
+- Newly published tests are **NOT YET CI VERIFIED**. Last independently recorded SG28/cumulative/H1d successes remain runs 38074280892 / 38074280914 / 38074280878. Keep experimental isolation OFF; inspect the new CI gates next.
