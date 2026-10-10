@@ -1138,3 +1138,9 @@ Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 def
 
 ## 2026-10-10 SG28 Plus memory exhaustion certified
 Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 45 PASS, cumulative 38062172528 frontend 751 PASS and backend 607 PASS, H1d 38062172538 5 PASS. Child-only RLIMIT_AS memory exhaustion returns MemoryError and another computation succeeds. Public HTTP error classification and remaining post-child resource scope still OPEN; no production changes.
+
+
+## 2026-10-10 — SG28 memory exhaustion public MathResponse gate (CI PENDING)
+- Plus technical commit `b772b393dbd4d92e9ce77794f6738dd4f3b23be6` maps isolated child `MemoryError` in public `/api/v1/evaluate` to typed `ErrorCode.COMPLEXITY_LIMIT` (previous generic INTERNAL_ERROR). Plus commit `f00590c4d014e51e94f2f4def45b017f4a266029` adds public HTTP TestClient regression with real 2GiB child allocation under opt-in POSIX 1GiB RLIMIT_AS, asserting HTTP 200 `MathResponse` success=false, operation=evaluate, error_code COMPLEXITY_LIMIT, no detailed steps and request_id. No production environment flags changed.
+- Latest Plus SHA f00590c4 CI initially QUEUED: SG28 backend `38063222854`, cumulative `38063222947`, H1d `38063222988`. No PASS claimed for this public memory contract until logs reviewed. Prior SHA f4d0829c backend 45 PASS, cumulative frontend 751/backend 607 PASS, H1d 5 PASS.
+- SG28/H2 remains OPEN for post-worker unbounded SymPy simplify/latex work, distributed admission budgets, and deployment rollout. Isolation stays OFF by default.
