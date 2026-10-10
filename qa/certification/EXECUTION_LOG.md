@@ -1128,3 +1128,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus `0353aa97b2f594fde8320b4a95e247e3cc13d910`: correct outdated request bridge docstring: route integrated when `SG28_EVALUATE_ISOLATION=1`.
 - Plus `7257c1e2acbfd0a67f5639a27ee77d6ee3e3f194`: add FastAPI TestClient gate asserting structured HTTP 503 MathResponse when isolated-worker admission is exhausted. CI of this commit not yet verified; previous accredited backend run 38024028278 (35 PASS), UI run 38024683700 (3 PASS).
 - Still OPEN: deterministic, unmocked browser stop-button -> server worker PID teardown, full cumulative gates. New test does not pretend to cover these. Flag OFF by default. Next inspect backend SG28 CI for 7257c1e, fix regressions, continue UI-to-server cancellation proof.
+
+
+## SG28 follow-up 2026-10-09 — default route isolation safety
+- Plus commit `57a4af0156a9bbca1953e5241d0fe666019938c0` adds regression on real FastAPI TestClient: with `SG28_EVALUATE_ISOLATION` unset, `/api/v1/evaluate` bypasses `_ADMISSION` and returns 2+3=5, ensuring default behavior unaffected by quota. Previous commit `7257c1e2acbfd0a67f5639a27ee77d6ee3e3f194` adds 503 response contract test with isolation enabled and capacity depleted.
+- CI pending for these two new tests. Last verified Plus backend 35 PASS run 38024028278, UI 3 PASS run 38024683700. `fetch_commit_workflow_runs` listed no runs for 7257c1e (this connector search may omit push runs; not evidence of missing CI). Next read SG28 backend workflow run at SHA 57a4af0 and resolve any failure. True browser stop -> server child PID termination remains unproven. H2 OPEN.
