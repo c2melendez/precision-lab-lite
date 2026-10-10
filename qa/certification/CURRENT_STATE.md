@@ -951,3 +951,8 @@ Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 def
 ## 2026-10-09 — SG28 admission gate verified
 - Plus run 38023325162, job 114128810903, SHA b5d6b6c9af0185abcb5b9270339ba862f6befca5: SUCCESS, 33 passed, 1 warning in 12.80 s; includes concurrency capacity rejection/cancellation/recovery gate. https://github.com/c2melendez/precision-lab-plus/actions/runs/38023325162
 - H2 OPEN: semaphore limits concurrent jobs within each application process, not across multiple replicas; must still verify actual child cleanup, load, cumulative gates and UI E2E. SG28 flag OFF by default. Next test measured child-process termination and cleanup under cancellation.
+
+
+## SG28 — observable child PID termination regression pending CI
+- Plus commit 88bfd0f52b21e94d4b46d84ab3fec5233d44cab8 adds POSIX-only parametrized subprocess worker PID liveness tests for timeout and explicit cancellation, with real SymPy active worker, os.kill(pid, 0) absence assertion after interruption and new calculation recovery.
+- This is test implementation only. Latest CI accredited 33 PASS on run 38023325162 (SHA b5d6b6c). New SHA 88bfd0f not CI verified. SG28/H2 OPEN. Next inspect SG28 Actions run for SHA 88bfd0f, diagnose failures and then progress frontend E2E/cumulative gates.
