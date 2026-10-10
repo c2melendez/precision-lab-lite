@@ -1539,3 +1539,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Subsequent corrected test commit `adceca5af08dda8a48622b478387f9fb61bb704c`; newer Plus run `38076842089` backend job `114285492589` SUCCESS **632 passed / 1 warning**, 85.64% coverage; frontend `114285492490` SUCCESS 751 passed/28 TODO. Earlier red is superseded, preserved for audit.
 - Lite diagnostic run `38077165972` job `114286448867` SUCCESS 119 modules transformed, built in **6.56s**.
 - H2 remains OPEN because tests prove local memory admission only, not real multiprocess isolation or global budget. Production opt-in remains OFF.
+
+
+## 2026-10-10 — Lite diagnostic 38077876180 verified; Plus previous cumulative gate unchanged
+- Lite run `38077876180`, Build Diagnostic job `114288551397`: SUCCESS, 119 modules transformed, built in **5.12s**.
+- Supplied Plus run `38076842089` is the previously verified cumulative gate: backend job `114285492589` SUCCESS 632 passed / 1 warning / 85.64% coverage; frontend job `114285492490` SUCCESS 751 passed / 28 TODO. Not a new Plus test execution.
+- Scope remains: local semaphore tests only; no multiprocess/distributed admission or socket disconnect certification. H2 OPEN and production opt-in OFF.
