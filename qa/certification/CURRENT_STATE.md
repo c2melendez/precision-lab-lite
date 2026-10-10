@@ -1204,3 +1204,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - CI evidence for this SHA NOT YET VERIFIED. Do not count as PASS before GitHub Actions SG28 and cumulative gates finish and logs are inspected.
 - SG28/H2 remains OPEN: per-process quotas are not global quotas; end-to-end request reservation and multi-replica topology/deployment tests remain unresolved. Keep `SG28_EVALUATE_ISOLATION` OFF in production.
 - Next: verify SG28 and cumulative Plus Actions for SHA 567ae15c, diagnose failures without modifying product prematurely; then add evidence to both repo logs.
+
+
+## 2026-10-10 — User-provided GitHub Actions reconciliation (H1d and Lite build only)
+- Plus H1d run `38066424850`, job `114254888779`: SUCCESS, Playwright **5 passed (25.9s)**. This run proves H1d reentry only, NOT the newly added SG28 cancellation-slot regression.
+- Lite build diagnostic run `38066465197`, job `114255006676`: SUCCESS; Vite build completed, 119 modules transformed. This is a build check, not SG28 mathematical/cancellation evidence.
+- The Plus test `test_cancelled_handler_retains_slot_until_coordinator_thread_finishes` remains present on the canonical branch, but **its SG28 backend gate and cumulative gate have not been verified in this reconciliation**. Do not mark SG28 certified based on these two runs.
+- Next exact step: obtain SG28 backend and cumulative Plus workflow runs for the test commit or a descendant containing it; inspect job logs for explicit test result and cumulative totals, then diagnose any failure. Keep production SG28 isolation OFF; distributed topology and global admission remain open.
