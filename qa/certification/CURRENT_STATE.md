@@ -734,3 +734,8 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - GitHub Actions Plus SG28 run `38006506957` SUCCESS, job `114076408843`, exactly SHA `c8644f4792f62243463df502ad2477b098a4b05a`: **8/8 pytest PASS in 4.75s** including explicit caller-triggered cancellation of live isolated SymPy computation.
 - Same SHA cumulative `38006506938` SUCCESS, backend job `114076408729`: **570 PASS, 1 warning**; frontend job `114076408960`: **749 PASS, 28 TODO**; no failures, 1319 passing total. H1d `38006506912` SUCCESS.
 - Verified behavior only in isolated executor; no HTTP disconnect-to-child cancellation or public FastAPI integration has been tested or deployed. SG28/H2 globally **OPEN**. Next: design and test bounded request-lifecycle bridge with explicit cancellation and stable MathResponse contracts.
+
+
+## 2026-10-09 — SG28 experimental request-disconnect bridge pending CI
+- Plus `backend/app/services/request_cancellation.py` commit `16c41238` adds test-only ASGI request bridge that runs `run_bounded` in a worker thread, polls `request.is_disconnected()`, and sets cancellation event for cleanup. Plus tests `backend/tests/test_in625_sg28_request_cancellation.py` commit `80883dfd` exercise disconnect plus recovery with FakeRequest; workflow `in625-sg28-backend-cancellation.yml` commit `dfa15f27` runs both test files.
+- Runs queued when queried: SG28 `38008815812`, cumulative `38008815822`, H1d `38008815823`. NO PASS yet for this SHA. Not integrated into publicly exposed FastAPI endpoints; the mock request is not a live HTTP disconnect; server cancellation remains unproven end-to-end. SG28/H2 OPEN.
