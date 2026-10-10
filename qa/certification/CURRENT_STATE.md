@@ -1232,3 +1232,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite Build Diagnostic run `38067293912` SUCCESS; Vite 119 modules transformed, built in 5.48 seconds. This is build evidence only.
 - H2 / SG28 GLOBAL remains OPEN: local per-process semaphore does not implement global admission, and evaluation/presentation still acquire slots separately rather than an end-to-end reservation. Fleet topology, distributed capacity limits and deployment-specific validation remain pending. Production `SG28_EVALUATE_ISOLATION` remains OFF.
 - Next step: design a deliberately bounded, single-process, end-to-end occupancy regression or admission lifetime contract, then evaluate whether a controlled implementation is warranted; do not enable production or claim distributed guarantee.
+
+
+## 2026-10-10 — SG28 verified green; interleaving gap regression PENDING
+- Verified Plus commit `962b2bb89aa74635b1f214393c9c802d9c836613`: SG28 `38067270241` SUCCESS 52 passed /1 warning; cumulative `38067270248` SUCCESS backend 614 passed /1 warning, 85.65% coverage, frontend 751 passed /28 TODO; H1d `38067270260` SUCCESS 5 passed. Lite build `38067293912` SUCCESS.
+- New Plus test-only commit `8291757372c0f86dd05fdb43b1bb0dd39e39e8ad` adds `test_interleaving_request_can_take_slot_between_evaluation_and_presentation` to make the lack of end-to-end local admission reservation explicit: another request takes K=1 between phases, presentation is rejected, then recovers when the slot is released. Mocked work, single-process only; no deployment changes.
+- New test CI PENDING; do not treat it as passing before SG28 and cumulative run evidence. SG28/H2 global remains OPEN for end-to-end guarantees and distributed fleet admission. Production isolation OFF.
+- Next: verify SG28/cumulative Actions for commit 82917573 or a descendant, then decide whether a request-scoped lease implementation is compatible with cancellation, timeouts and public error semantics.
