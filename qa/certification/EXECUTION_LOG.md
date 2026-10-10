@@ -1618,3 +1618,8 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 ## 2026-10-10 — Lease generation stress CI GREEN (648 backend)
 - Plus technical SHA `15e9fa1c7c52d6f5d95f29064d6517e78db42e07`, cumulative run `38088648047`: backend job `114320351634` SUCCESS **648 passed, 1 warning, coverage 85.69%**; 50-generation stale lease fencing and exact-expiry renewal boundary explicitly PASSED. Frontend job `114320351445` SUCCESS 751 passed / 28 TODO. H1d run `38088648072` job `114320351577` SUCCESS 5 passed.
 - These remain deterministic in-memory lease model tests; crash-resilient distributed coordinator and Render topology NOT certified. H2 OPEN, isolation production OFF.
+
+
+## 2026-10-10 — Shared lease expiry CI GREEN: Plus 649 backend
+- Plus technical SHA `e68d7d7f66156775be3427230cdacfc9217cb8e8`: cumulative run `38090329207` backend SUCCESS **649 passed / 1 warning / coverage 85.59%**, `test_expired_shared_lease_is_replaced_across_interpreters` explicitly PASSED. Frontend SUCCESS 751 passed / 28 TODO. H1d run `38090329193` SUCCESS 5 passed.
+- Manager-backed shared dict/lock and clock steps are a CI-only characterization. Independent interpreter participation per operation, coordinator crash recovery and production fleet quota are NOT proven. SG28/H2 OPEN; production isolation OFF.
