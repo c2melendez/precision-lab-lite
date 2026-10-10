@@ -1084,3 +1084,10 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 disconnected HTTP gate PASS
 - Plus workflow run `38023015566`, job `114127871831`, SHA `3af8bd7e65d0e336c130901eddf1c9c581aa69ab`, push branch `qa/syntax-audit-in625-a1`: SUCCESS, `32 passed, 1 warning in 15.22s`. Real TCP disconnect + recovery test now PASS after outer ASGI disconnect tracker fix. https://github.com/c2melendez/precision-lab-plus/actions/runs/38023015566
 - This validates current test assertions, not full proof of child-process resource reclamation or server concurrency budgets. SG28/H2 OPEN; flag stays OFF by default. Next implement measurable child cleanup/concurrency gates and frontend end-to-end cancellation, run cumulative regression.
+
+
+## SG28 — control de concurrencia experimental (CI pendiente)
+- Plus `6d14933b68b81dc35e8e850c6b01d5864889b897`: semáforo de admisión en `request_cancellation.py`, máximo configurable `SG28_MAX_ISOLATED_REQUESTS` (default 2, rango 1..16), rechazo inmediato por `IsolationCapacityExceeded`; liberación al terminar la limpieza del worker.
+- Plus `fcf966c77480c9e31c8aae9afd7d1fd7def3332d`: `/evaluate` opt-in responde HTTP 503 con esquema MathResponse `INTERNAL_ERROR` cuando no hay capacidad.
+- Plus `b5d6b6c9af0185abcb5b9270339ba862f6befca5`: test de admisión, cancelación y recuperación del cupo. CI **no verificada**; último SG28 acreditado `38023015566` = 32 PASS SHA 3af8bd7.
+- Flag SG28_EVALUATE_ISOLATION predeterminado OFF; H2 OPEN. Siguiente acción: validar nueva corrida en SHA b5d6b6c, corregir rojos, demostrar limpieza real del proceso y gates acumulativos/E2E. Advertencia: admisión es por proceso Python/worker servidor, no cupo distribuido entre instancias.
