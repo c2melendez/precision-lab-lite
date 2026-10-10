@@ -1559,3 +1559,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus correction `fd0d3b6ac01d4a4dc5553ca907a97f9eae99ffea` uses explicit multiprocessing `spawn`, parent `monkeypatch.setenv()` before worker start, and checks `_MAX_ISOLATED_REQUESTS == 1` in each worker. **CI PENDING: no pass claim yet.**
 - Lite run `38078402555`: diagnostic job `114290085569` SUCCESS, 119 modules transformed, built in 6.03s.
 - H2 OPEN; this characterizes independent worker quotas only, not global admission, real HTTP socket cancellation, or fleet topology. Keep production isolation OFF.
+
+
+## 2026-10-10 — SG28 H2 process-boundary characterization VERIFIED in CI
+- Plus run `38078685565`, backend job `114290918079` SUCCESS **633 passed / 1 warning**, **85.64%** backend coverage. `test_two_python_processes_hold_independent_local_k1_leases` explicitly PASSED. Frontend job `114290917777` SUCCESS **751 passed / 28 TODO**, 102 modules transformed and built in 20.19s.
+- Lite run `38078703085`, build job `114290969677` SUCCESS 119 modules transformed, built in 4.80s.
+- Technical Plus fix `fd0d3b6ac01d4a4dc5553ca907a97f9eae99ffea` uses spawn and checks effective K=1. Evidence demonstrates independent process-local permits, not distributed quota. H2 OPEN pending externally observed HTTP disconnect and fleet topology. Production isolation remains OFF.
