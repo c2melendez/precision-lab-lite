@@ -1360,3 +1360,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Lite GitHub Actions run `38066789305`, job `114255948559`: completed SUCCESS. TypeScript/Vite production build transformed 119 modules; build completed in 6.59s. This is build-only evidence, not a mathematical or SG28 backend cancellation gate.
 - Plus H1d run `38066424850` was already recorded: 5/5 Playwright PASS, and remains H1d-only evidence.
 - Still PENDING: Plus SG28 backend and cumulative gates for commit `567ae15c3f0cb157a132c855ea8c85c678cf6d04` or descendant containing the same test. Do not certify unobserved jobs. H2 OPEN; isolation disabled in production.
+
+
+## 2026-10-10 — SG28 cumulative gate failure diagnosed; test ordering fix published
+- Plus cumulative run `38066424800` backend job `114254888809` FAILURE: **613 passed, 1 failed, 1 warning**, coverage **85.67%** (threshold 75%). The only failure was `test_cancelled_handler_retains_slot_until_coordinator_thread_finishes` with `TimeoutError` from awaiting a cancelled ASGI handler before releasing its deliberately blocked coordinator. Plus frontend job `114254888979` SUCCESS.
+- Root cause: test orchestration deadlock. `run_for_request` deliberately awaits shielded coordinator cleanup on coroutine cancellation. The old test awaited the handler cancellation before releasing its worker; that contradicts this contract and times out.
+- Plus fix commit `962b2bb89aa74635b1f214393c9c802d9c836613`: after cancel request, first assert handler pending and capacity fail-closed, then release worker, await cancellation acknowledgment, confirm cleanup and recovery. Only the test changed, not production.
+- FIX **NOT YET CI VERIFIED**. Next: inspect SG28 backend and cumulative Plus runs for SHA 962b2bb8 or descendant; if green record exact tests/jobs, else diagnose. H2 OPEN, cluster-wide admission and deployment unresolved; SG28 isolation OFF by default.
