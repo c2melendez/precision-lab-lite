@@ -886,3 +886,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 request bridge 11/11 PASS, cumulative 1324
 - Verified Plus SHA `dfa15f27afd450ca26bd4631f6e19d2533c8bf3f`: SG28 isolated bridge run `38008815812`, job `114083777213`: **11 passed in 7.69s**. Cumulative `38008815822` SUCCESS: backend job `114083777394` **573 passed, 1 warning**; frontend job `114083777617` **751 passed, 28 TODO** (0 FAIL); H1d `38008815823` SUCCESS. Overall cumulative 1324 PASS.
 - Bridge is tested with FakeRequest and isolated spawned processes, not a production HTTP disconnect or public endpoint. SG28/H2 **OPEN** for full API-to-server work cancellation. Next: isolated ASGI transport/disconnection E2E and controlled production-route integration only after demonstrated safety/resource constraints.
+
+
+## 2026-10-09 — SG28 ASGI disconnect event test pending CI
+- Plus test commit `e0c8c12b9df727832ff47ea9bab82da8ac0d0ab6`: `backend/tests/test_in625_sg28_request_cancellation.py` adds a Starlette `Request` constructed with a genuine ASGI `http.disconnect` message, then verifies `run_for_request` interrupts the isolated child and a subsequent request recovers. This is in-process ASGI-message evidence, **not a real socket disconnection and not a production endpoint integration**.
+- New Plus runs queued: SG28 `38009241766`, cumulative `38009241757`, H1d `38009241884`. Test not yet accredited PASS. Next: inspect logs, then true isolated HTTP server/socket test and resource constraints before routing production SymPy. H2/SG28 OPEN.
