@@ -1134,3 +1134,7 @@ Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 def
 - Plus SHA `b1b315d1b12e5f7a8234238f8d3ef34b547434d6`: SG28 backend `38061758410` SUCCESS 44 PASS/1 warning; cumulative `38061758455` SUCCESS frontend 751 PASS/28 TODO and backend 606 PASS/1 warning; H1d `38061758440` SUCCESS 5 PASS. RLIMIT_AS opt-in isolated child installs correctly and leaves API parent unaffected.
 - New Plus commit `f4d0829cebc52944339fc3340aa7f887b2ea9f50` adds real virtual address space ceiling exhaustion test: under SG28_ISOLATED_MEMORY_MB=1024, child tries 2GiB allocation, expects child `MemoryError` wrapped by `ComputationFailed`, then unsets limit and confirms `4+5=9`. CI queued: SG28 backend `38062172534`, cumulative `38062172528`, H1d `38062172538`. No PASS claimed for memory exhaustion yet. RLIMIT_AS limits address space, not physical RSS, and no production activation.
 - H2 still OPEN: public MathResponse mapping for exhausted memory, display SymPy post-worker unbounded simplify/latex, multireplica quotas/deployment configuration.
+
+
+## 2026-10-10 SG28 Plus memory exhaustion certified
+Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 45 PASS, cumulative 38062172528 frontend 751 PASS and backend 607 PASS, H1d 38062172538 5 PASS. Child-only RLIMIT_AS memory exhaustion returns MemoryError and another computation succeeds. Public HTTP error classification and remaining post-child resource scope still OPEN; no production changes.
