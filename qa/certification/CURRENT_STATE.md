@@ -1062,3 +1062,8 @@ Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 def
 - Plus SG28 backend prototype run `38030343425` SHA `28299c2c` SUCCESS **38 passed / 1 warning**, including newly added four repeated cancellation/recovery cycles.
 - Plus SG28 backend prototype run `38030359435` SHA `ff60d28e` SUCCESS **39 passed / 1 warning**, including public `/api/v1/evaluate` default-vs-isolated MathResponse parity for `2+3`, `x+x`, `x+(`. Backend evidence for SG28-E2E-06/07/09 is expanded, not exhaustive; UI navigation and cross-replica deployment resource limitations remain open.
 - Plus cumulative `38030359443` was IN_PROGRESS at last job check; no PASS attributed until completed. H2 stays OPEN. Isolation flag remains OFF by default.
+
+
+## 2026-10-10 — SG28 Plus latest cumulative and H1d VERIFIED
+- Plus technical SHA `ff60d28e50ca3128afe3e50760e0669591b02f61`: SG28 backend prototype `38030359435` SUCCESS **39 passed / 1 warning**. Plus cumulative `38030359443` SUCCESS frontend job `114149804454` **751 passed / 28 TODO** and backend job `114149804590` **601 passed / 1 warning**. H1d `38030359453` SUCCESS job `114149804465` **5 Playwright passed**. The previously pending gates are now reconciled, no failures.
+- Classification: additional SG28-E2E-06/07/09 backend evidence accepted on SHA ff60d28e; remaining UI change/close-view and resource/runtime/multi-replica limits remain open. SG28 isolation remains OFF in default production path; no production rollout implied. Next required implementation is independent UI navigation/close-view cancellation coverage and bounded resource validation before H2 closure.
