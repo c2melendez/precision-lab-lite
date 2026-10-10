@@ -1091,3 +1091,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus `fcf966c77480c9e31c8aae9afd7d1fd7def3332d`: `/evaluate` opt-in responde HTTP 503 con esquema MathResponse `INTERNAL_ERROR` cuando no hay capacidad.
 - Plus `b5d6b6c9af0185abcb5b9270339ba862f6befca5`: test de admisión, cancelación y recuperación del cupo. CI **no verificada**; último SG28 acreditado `38023015566` = 32 PASS SHA 3af8bd7.
 - Flag SG28_EVALUATE_ISOLATION predeterminado OFF; H2 OPEN. Siguiente acción: validar nueva corrida en SHA b5d6b6c, corregir rojos, demostrar limpieza real del proceso y gates acumulativos/E2E. Advertencia: admisión es por proceso Python/worker servidor, no cupo distribuido entre instancias.
+
+
+## 2026-10-09 — SG28 admission gate verified
+- Plus run 38023325162, job 114128810903, SHA b5d6b6c9af0185abcb5b9270339ba862f6befca5: SUCCESS, 33 passed, 1 warning in 12.80 s; includes concurrency capacity rejection/cancellation/recovery gate. https://github.com/c2melendez/precision-lab-plus/actions/runs/38023325162
+- H2 OPEN: semaphore limits concurrent jobs within each application process, not across multiple replicas; must still verify actual child cleanup, load, cumulative gates and UI E2E. SG28 flag OFF by default. Next test measured child-process termination and cleanup under cancellation.
