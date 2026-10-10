@@ -993,3 +993,8 @@ Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 def
 ## 2026-10-09 — SG28 backend 37 PASS verified
 - Plus Actions run 38025649681, job 114135816966, commit 57a4af0156a9bbca1953e5241d0fe666019938c0, success: 37 passed, 1 warning, 20.22s. Confirms HTTP 503 exhausted-capacity contract and default-mode bypass of experimental SG28 quota. https://github.com/c2melendez/precision-lab-plus/actions/runs/38025649681
 - Previously SG28 UI Playwright 3 PASS run 38024683700. H2 OPEN: full unmocked browser stop-button to actual backend child termination still missing, cumulative gates pending. Experimental isolation OFF by default.
+
+
+## SG28 Plus unmocked browser stop/recovery test — CI pending
+- Plus commit dca1970f9f1018da6f8bbea1a57e344deed87a6b appends a Playwright test to frontend/e2e/in625-h2-sg28-cancel.spec.ts which sends actual /api/v1/evaluate from browser, clicks Detener cálculo and verifies 4+5=9 on subsequent request, with no page.route mocks.
+- CI for dca1970 remains unverified. This does not establish that child PID was active at click or actually reaped by browser cancellation; observable backend process probe still required. Previously certified backend 37 PASS run 38025649681 and UI 3 PASS run 38024683700. H2/SG28 OPEN, experimental flag OFF by default.
