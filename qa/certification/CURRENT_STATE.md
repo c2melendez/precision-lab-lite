@@ -972,3 +972,8 @@ Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 def
 ## SG28 Plus browser isolated API parse-error recovery — 2026-10-09
 - Plus technical commit adc1eb71682c985f7dd4a47d607ef8474d7b7658 appends Playwright browser E2E using real /api/v1/evaluate (no mocks) under CI opt-in flag: invalid x+( -> PARSE_ERROR then 4+5 -> 9 and UI display, verifies recovery. Not a full real browser stop-to-server cancellation proof.
 - CI for UI commits e13e8ab and adc1eb7 not verified yet through available listings; do NOT infer PASS. Last accredited SG28 backend isolation 35 PASS run 38024028278. Next inspect `IN625 SG28 Plus UI Cancellation E2E` workflow run for adc1eb7, fix failures, then implement deterministic browser cancellation-to-server observable proof and cumulative gates. H2 OPEN.
+
+
+## 2026-10-09 — SG28 UI Playwright 3/3 verified
+- Plus run `38024683700`, job `114132893364`, SHA `adc1eb71682c985f7dd4a47d607ef8474d7b7658`, branch `qa/syntax-audit-in625-a1`, event push, SUCCESS: `3 passed (8.2s)` on Chromium desktop. Test cases: browser actual isolated backend evaluate; mocked pending request stop and stale-response recovery; browser actual parse error followed by healthy evaluate. https://github.com/c2melendez/precision-lab-plus/actions/runs/38024683700
+- UI CI PASS does not demonstrate server worker cancellation by real browser button; must add deterministic unmocked end-to-end stop-to-child-termination evidence and cumulative gates. Latest backend SG28 run `38024028278`: 35 PASS. H2 OPEN, default experimental isolation OFF.
