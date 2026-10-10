@@ -1163,3 +1163,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## SG28 observability propagation fix — 2026-10-09
 - Plus commit `4b941c7730916758fb64f8b0af7b98122b81e489` fixes `frontend/playwright.config.ts`: `SG28_CI_OBSERVE` now propagates to the Uvicorn subprocess through webServer.env. Prior workflow enabled flag only in test runner, so server instrumentation was OFF; this explains why expected PID messages did not appear.
 - Attempts to enable webserver debug output in UI workflow blocked by GitHub connector; no workflow modification successfully committed. New fix has no verified CI yet. Last verified Plus UI run `38026545558` 4 PASS, backend `38025649681` 37 PASS. Browser stop-to-same-PID teardown unproven; H2 OPEN.
+
+
+## SG28 CI verification 2026-10-09 — run 38027501493
+- Plus UI workflow SUCCESS at commit 4b941c7730916758fb64f8b0af7b98122b81e489, job 114141360937: Chromium Playwright 4 PASS (8.3s), 0 FAIL. The webserver env propagation change did not regress tests.
+- In the fetched job log, zero `SG28_CHILD_START` and zero `SG28_CHILD_FINISH` lines appear. This is absence of log evidence, not proof processes did not run. Browser Stop -> specific live PID -> reaped causal proof remains OPEN, as do cumulative gates. https://github.com/c2melendez/precision-lab-plus/actions/runs/38027501493
+- Backend last verified SG28 37 PASS run 38025649681. Keep SG28 flag default OFF; H2 OPEN. Next capture explicit backend process evidence as test artifact or observable assertion, not just stdout.
