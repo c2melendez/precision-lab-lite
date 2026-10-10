@@ -830,3 +830,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Sustituye la versión con stub sleep/add del commit `24d90b3` como evidencia objetivo de concurrencia; no modifica motores, endpoint público ni contrato MathResponse.
 - El workflow `.github/workflows/in625-sg28-backend-cancellation.yml` incluye este archivo bajo `push` y ejecuta todo el paquete SG28; **no se ha verificado un run ni los logs para SHA `04d1d23`**. La consulta de runs por commit solo cubre pull requests y devolvió vacío para SHA anterior, sin demostrar ausencia de push.
 - Siguiente paso exacto: revisar Actions y logs de SG28 + cumulative + H1d en Plus SHA `04d1d23`, corregir si hay fallos; no declarar PASS. Tras gate verde, diseñar integración segura de cancelación en `/evaluate` con límites de concurrencia y preservación de MathResponse. H2/SG28 OPEN.
+
+
+## 2026-10-09 — SG28 concurrent workers start synchronization
+- Plus commit `4de7358c944555728e13c246daeeb97879a7659d` refuerza el test SG28 de cancelación concurrente: segundo proceso real SymPy señaliza arranque mediante `multiprocessing.Event` antes de desconectar la primera solicitud. Conserva validación de resultado matemático independiente. Es cambio de test, no producto.
+- La consulta de GitHub por SHA `04d1d23` devolvió 0 ejecuciones PR; ese endpoint excluye runs push. **No hay PASS/FAIL verificado para el nuevo SHA `4de7358`**, ni evidencia de gate acumulativo. No cerrar SG28/H2.
+- Próximo paso: consultar GitHub Actions por workflow/branch para el SHA técnico, inspeccionar jobs y logs SG28, cumulative y H1d, corregir fallos verificados. No integrar aún el puente experimental con `/evaluate` sin pruebas de compatibilidad y recursos.
