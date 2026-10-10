@@ -1187,3 +1187,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite build diagnostic `38065410599` SUCCESS (job `114251924445`), not an H2 mathematical or cancellation gate. Previous Lite SG28 evidence retained without implying new bilateral H2 certification.
 - **Next executable step:** inspect `backend/app/services/request_cancellation.py` and `backend/tests/test_in625_sg28_request_cancellation.py` for a safe production-independent admission contract. Add bounded, deterministic regression for exhaustion/recovery and two-stage request occupancy, with explicit single-process scope, before considering distributed coordination; run SG28 and cumulative Plus gates. Any actual deployment/topology decision remains blocked pending authorization and capacity evidence.
 - No product modification or production flag change in this documentation reconciliation.
+
+
+## 2026-10-10 — SG28 prueba de admisión por fases publicada (CI pendiente)
+- Plus commit técnico `33efe8df09c3a2e38d3d15bd408c78d40f72bea2` incorpora `test_two_stage_request_admission_is_phase_scoped_not_end_to_end` en `backend/tests/test_in625_sg28_request_cancellation.py`.
+- Gate determinista single-process con BoundedSemaphore(1) y eventos: durante evaluación se rechaza presentación concurrente; al liberar evaluación se admite presentación, que rechaza otra evaluación; tras ambas fases se recupera la capacidad.
+- La prueba usa `run_bounded` instrumentado y **NO** acredita cancelación real de SymPy, reserva de cupo end-to-end, coordinación entre procesos ni despliegue seguro.
+- CI en el SHA nuevo todavía SIN VERIFICAR en esta operación; no declarar PASS hasta leer runs/logs de SG28 backend, cumulative y H1d.
+- H2 sigue ABIERTO; `SG28_EVALUATE_ISOLATION` permanece OFF por defecto. Próximo paso: verificar las ejecuciones de ese commit, corregir cualquier fallo del harness, e investigar reserva end-to-end/aislamiento de admisión compartida sin activar producción.
