@@ -910,3 +910,8 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Plus commit `ed11f9b7bfae7e8c3d070bb10479448e479acc3e` adds HTTP `TestClient` comparison for actual public `/evaluate`, isolation off/on: arithmetic, degrees trig, parse/domain errors and selected response fields.
 - **CI not yet verified** for these commits. Integration is not production-enabled, unbounded parent-side formatting still exists, and resource/concurrency caps and cancellation E2E must be proved before enabling. H2 OPEN. Previous prototype run 38018275394: 23/23 PASS at older commit.
 - Next: verify SG28 backend workflow and cumulative CI on `ed11f9b`, fix mismatches, add real HTTP disconnect/recovery test for production route under opt-in and concurrency controls, then gate deployment.
+
+
+## 2026-10-09 — SG28 CI activation fix for endpoint integration
+- Plus commit `cd7bbce8dca4dcbbd4f26fe5ba710d1199b143f1` extends workflow `.github/workflows/in625-sg28-backend-cancellation.yml` push paths: `backend/app/routers/evaluate.py`, `backend/app/services/evaluate_service.py`, `backend/app/schemas/{requests,responses}.py`. Prior workflow did not trigger on endpoint-only source changes; now expected to cover integrated endpoint regressions.
+- Expected automatic workflow push for this workflow-file commit. **Pending inspection of run ID, logs, and PASS/FAIL**. Do not claim new CI success; SG28/H2 OPEN; experimental flag remains OFF by default. Next verify HTTP off/on test and run cumulative.
