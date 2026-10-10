@@ -1467,3 +1467,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Lite `38071240399` Build Diagnostic job `114268914677` SUCCESS, 119 modules transformed, built in 6.79s. Lite build is not backend SG28 certification.
 - Previous concurrent HTTP K=1 admission and 503/retry tests remain green in this cumulative gate. Local per-process admission is NOT a global multi-replica quota. SG28/H2 stays OPEN pending real concurrent disconnect and fleet topology/load validation; isolation remains OFF in production.
 - Next: construct deterministic HTTP disconnect/concurrent-admission tests with correct coordinator cleanup ordering; avoid claiming global isolation or enabling rollout.
+
+
+## 2026-10-10 — SG28 reserved disconnect/concurrent-admission regression PENDING
+- Last verified Plus technical SHA `f79b0c5286cbdb7b826366bf3e7cb5a3e477c601`: SG28 `38071216643` SUCCESS **64 passed/1 warning**, cumulative `38071216637` SUCCESS backend **626 passed/1 warning**, **85.64% coverage**, frontend **751 passed/28 TODO**; H1d `38071216642` SUCCESS 5 passed. Lite diagnostic `38071240399` SUCCESS build 119 modules/6.79s.
+- New Plus test-only commit `4d31fff702dfa4f39829dc2ed9b40d1fc3b28d40`: `test_reserved_disconnect_denies_competitor_until_coordinator_reaped` checks a simulated ASGI bridge disconnect under K=1, retaining caller-owned admission through mocked worker cleanup, competitor denied until cleanup completes, and slot recovery after exit. **New regression CI PENDING**; NOT an actual socket disconnect, real HTTP concurrent cancellation, or global quota test.
+- Next inspect SG28/cumulative gates for 4d31fff or descendant, fix red tests if any; then build real ASGI/request-route disconnect and contention tests. SG28/H2 OPEN for fleet topology/distributed quotas; production isolation OFF.
