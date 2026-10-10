@@ -1133,3 +1133,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## SG28 follow-up 2026-10-09 — default route isolation safety
 - Plus commit `57a4af0156a9bbca1953e5241d0fe666019938c0` adds regression on real FastAPI TestClient: with `SG28_EVALUATE_ISOLATION` unset, `/api/v1/evaluate` bypasses `_ADMISSION` and returns 2+3=5, ensuring default behavior unaffected by quota. Previous commit `7257c1e2acbfd0a67f5639a27ee77d6ee3e3f194` adds 503 response contract test with isolation enabled and capacity depleted.
 - CI pending for these two new tests. Last verified Plus backend 35 PASS run 38024028278, UI 3 PASS run 38024683700. `fetch_commit_workflow_runs` listed no runs for 7257c1e (this connector search may omit push runs; not evidence of missing CI). Next read SG28 backend workflow run at SHA 57a4af0 and resolve any failure. True browser stop -> server child PID termination remains unproven. H2 OPEN.
+
+
+## 2026-10-09 — SG28 backend 37 PASS verified
+- Plus Actions run 38025649681, job 114135816966, commit 57a4af0156a9bbca1953e5241d0fe666019938c0, success: 37 passed, 1 warning, 20.22s. Confirms HTTP 503 exhausted-capacity contract and default-mode bypass of experimental SG28 quota. https://github.com/c2melendez/precision-lab-plus/actions/runs/38025649681
+- Previously SG28 UI Playwright 3 PASS run 38024683700. H2 OPEN: full unmocked browser stop-button to actual backend child termination still missing, cumulative gates pending. Experimental isolation OFF by default.
