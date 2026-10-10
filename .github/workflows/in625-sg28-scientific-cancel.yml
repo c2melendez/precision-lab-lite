@@ -32,7 +32,7 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
       - name: Verify Scientific SG28 cancel and recovery
-        run: npx playwright test e2e/in625-h2-sg28-cancel.spec.ts --project desktop-chromium
+        run: npx playwright test e2e/in625-h2-sg28-cancel.spec.ts --project desktop-chromium --project tablet-chromium --project mobile-chromium
 
       - name: Upload Playwright failure evidence
         if: failure()
