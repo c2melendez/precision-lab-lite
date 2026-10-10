@@ -1260,3 +1260,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 
 ## 2026-10-10 — SG28 CPU timeout classification (CI pending)
 - Plus commits `52b48f02ed5063a0a9a5c8c50e9dfd4da9d56f60` and `f0105637ee59c835bd8606233e557b1c6006126f` classify POSIX SG28 CPU-limit SIGXCPU child exit as `ComputationTimedOut` and assert it in the actual CPU exhaustion/recovery regression. No production flags changed. Plus runs for SHA f0105637: backend `38033933770`, cumulative `38033933785`, H1d `38033933760` pending CI verification.
+
+
+## 2026-10-10 — SG28 CPU typed-timeout regression VERIFIED
+- Plus technical SHA `f0105637ee59c835bd8606233e557b1c6006126f`: SG28 backend `38033933770` SUCCESS **42 passed / 1 warning**. Plus cumulative `38033933785` SUCCESS frontend **751 passed /28 TODO** backend **604 passed /1 warning**. H1d `38033933760` SUCCESS **5 passed**. POSIX SIGXCPU now raises typed `ComputationTimedOut`; public HTTP path not yet tested with actual CPU signal, so no public contract claim.
+- SG28/H2 OPEN for HTTP response to CPU exhaustion, memory ceiling, post-worker SymPy formatting and multi-replica policy. Experimental isolation OFF by default.
