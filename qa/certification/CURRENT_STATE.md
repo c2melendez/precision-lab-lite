@@ -816,3 +816,10 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Consulta de runs asociada al SHA nuevo devolvió 0, pero el conector solo enumera runs disparados por pull request; no permite afirmar que no haya corrida push. Estado de esta prueba: PENDIENTE DE EVIDENCIA CI.
 - Siguiente paso exacto: identificar y revisar el SG28 workflow `in625-sg28-backend-cancellation.yml`, el acumulativo y H1d para SHA `1b4f6a1`; extraer logs y clasificar eventuales fallos. Antes de integrar `/evaluate` públicamente, demostrar compatibilidad MathResponse, limpieza de procesos y recuperación en test de integración aislado.
 - SG28/H2 OPEN. No hay PASS nuevo ni cambio a endpoint público.
+
+
+## 2026-10-09 — SG28 Plus concurrent cancellation isolation test
+- Plus test commit `24d90b370bf9d5e619b415b3388283fade91bd9f`: nueva prueba `test_concurrent_request_disconnect_does_not_cancel_independent_request` en `backend/tests/test_in625_sg28_request_cancellation.py`. Valida que un disconnect cancele solo la operación afectada, sin impedir que una segunda solicitud independiente complete `2+3=5`.
+- Complementa la prueba anterior de cancelación de tarea ASGI commit `1b4f6a1173bb192aaef7b02fbe3a74672a151d48`. No se cambió código de producto ni se conectó el puente experimental a `/evaluate`.
+- **CI pendiente de verificar para ambos commits**: `fetch_commit_workflow_runs` devolvió lista vacía para el SHA anterior pero solo consulta runs de pull_request, no cubre push; por tanto el resultado no demuestra ausencia de ejecución. Nunca contar estas pruebas como PASS sin evidencia de job/log para SHA `24d90b3`.
+- Siguiente paso: verificar workflow SG28 backend, cumulative y H1d del SHA técnico; inspeccionar jobs y logs, clasificar rojos y corregir. H2/SG28 OPEN.
