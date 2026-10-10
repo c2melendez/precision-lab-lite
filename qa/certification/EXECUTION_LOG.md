@@ -1551,3 +1551,11 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus test-only commit `7b65136907ef61849f78858a9d20ee4654730867` introduces `backend/tests/test_sg28_process_boundary.py`: two independent Python processes simultaneously hold local K=1 leases; each rejects a nested reservation and recovers afterward; distinct PIDs asserted. **CI not yet verified**. This demonstrates absence of a global K=1 quota if passing, not production deployment topology or distributed isolation safety.
 - Lite `38078177026` diagnostic job `114289428136` SUCCESS: 119 modules transformed, built in 6.28s.
 - No Actions dispatch connector available in this session; the commit was published, but a new Plus Actions run was not manually triggered. Verify CI for the new SHA or descendant before claiming pass. H2 remains OPEN; production isolation OFF.
+
+
+## 2026-10-10 — SG28 real process-boundary red diagnosed; spawn fix CI pending
+- Plus run `38078381782`: backend job `114290029605` FAILURE **632 passed / 1 failed / 1 warning**, 85.69% coverage. Failed `test_two_python_processes_hold_independent_local_k1_leases` (assertion on rejected/recovered); frontend job `114290029354` SUCCESS. Distinct worker PIDs assertion passed, but one or more per-process K=1 checks failed.
+- Root-cause hypothesis: inherited already-imported `_ADMISSION` semaphore initialized with K=2 under fork, despite changing `SG28_MAX_ISOLATED_REQUESTS` inside workers. This is a harness setup issue under investigation, not proof of a production defect.
+- Plus correction `fd0d3b6ac01d4a4dc5553ca907a97f9eae99ffea` uses explicit multiprocessing `spawn`, parent `monkeypatch.setenv()` before worker start, and checks `_MAX_ISOLATED_REQUESTS == 1` in each worker. **CI PENDING: no pass claim yet.**
+- Lite run `38078402555`: diagnostic job `114290085569` SUCCESS, 119 modules transformed, built in 6.03s.
+- H2 OPEN; this characterizes independent worker quotas only, not global admission, real HTTP socket cancellation, or fleet topology. Keep production isolation OFF.
