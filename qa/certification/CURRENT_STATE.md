@@ -728,3 +728,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 ## 2026-10-09 — SG28 Plus external AbortSignal wired at API client (pending CI)
 - Plus frontend `src/api/client.ts` commit `ff469ce71c0fbf8cba05d46b597dee0bd0da9715` adds optional caller `AbortSignal` on `callApi`; preserves 15s timeout, distinguishes explicit user cancellation, discards late responses and removes abort listener. Plus tests `src/__tests__/client.test.ts` commit `6784bfa61344bb396f4dc047eebd66db1d9cdfc3` cover caller-triggered abort/recovery and a pre-aborted signal.
 - Status: source and tests published, **CI not verified**. No UI cancel button wiring or backend HTTP-disconnect propagation yet. SG28/H2 remain OPEN; never infer server process termination from client abort.
+
+
+## 2026-10-09 — SG28 Plus explicit cancel 8/8 PASS and cumulative 1319 PASS
+- GitHub Actions Plus SG28 run `38006506957` SUCCESS, job `114076408843`, exactly SHA `c8644f4792f62243463df502ad2477b098a4b05a`: **8/8 pytest PASS in 4.75s** including explicit caller-triggered cancellation of live isolated SymPy computation.
+- Same SHA cumulative `38006506938` SUCCESS, backend job `114076408729`: **570 PASS, 1 warning**; frontend job `114076408960`: **749 PASS, 28 TODO**; no failures, 1319 passing total. H1d `38006506912` SUCCESS.
+- Verified behavior only in isolated executor; no HTTP disconnect-to-child cancellation or public FastAPI integration has been tested or deployed. SG28/H2 globally **OPEN**. Next: design and test bounded request-lifecycle bridge with explicit cancellation and stable MathResponse contracts.
