@@ -860,3 +860,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 Plus real SymPy active-process termination test
 - Plus test commit `3984b632a89e274e7494f2e4b4d8b02b5287f990`: new isolated pytest case repeatedly performs real SymPy differentiation in a spawned process for up to four seconds. `run_bounded` should terminate that process at 1.5 seconds, then a freshly spawned process should calculate a normal SymPy derivative. No public endpoint changed and no production load applied.
 - **CI for new commit not yet verified.** Previous Plus gate run `38004754563` success and SG28 5/5 run `38004754538` are historical, not a PASS for this new sixth test. Request disconnect handling and endpoint integration remain open; H2 not closed.
+
+
+## 2026-10-09 — Plus SG28 9/9 and cumulative green on 3984b632
+- Verified direct GitHub Actions evidence for Plus SHA `3984b632a89e274e7494f2e4b4d8b02b5287f990`: SG28 run `38006921769` SUCCESS, job `114077728826`, **9 passed in 6.85s**. Contains bounded real-SymPy active-process timeout/recovery test. Cumulative run `38006921751` SUCCESS: **571 backend PASS** (one warning), **749 frontend PASS** (28 TODO), no failures. H1d `38006921744` SUCCESS on same SHA.
+- Scope: actual SymPy computation active in isolated child and forcibly ended via timeout; recovery tested. Still NOT integrated into public FastAPI math endpoints and NOT proven to terminate backend work upon user-driven client request cancellation. SG28/H2 remain OPEN for end-to-end cancellation.
