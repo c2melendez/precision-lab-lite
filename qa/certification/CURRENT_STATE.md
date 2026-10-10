@@ -842,3 +842,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Plus commit `9b2ecd96badf6583a8aea1e22bdafd799d3419d4` mueve `ready.set()` del worker sano a después de evaluar la derivada SymPy dentro de la prueba de concurrencia. Con ello la señal ya acredita que el cálculo sano se efectuó, en lugar de solo indicar entrada a la función.
 - No hubo modificaciones de producto o endpoint público. La prueba aún no tiene evidencia CI acreditada para ese SHA. Consulta limitada por SHA de `4de7358` no devolvió runs de PR, sin cubrir push.
 - Siguiente paso: confirmar run SG28 y gates acumulativos mediante listado de workflows por rama o UI de Actions y examinar logs. Corregir cualquier FAIL antes de integración pública de `/evaluate`. SG28/H2 sigue OPEN.
+
+
+## 2026-10-09 — SG28 concurrency isolation with overlapping live workers, CI pending
+- Plus commit `a6f28bb8fea21d246a34c956e16f040f6f02acec` improves backend SG28 concurrent cancellation regression: second worker computes actual SymPy derivative, signals readiness and remains alive on a multiprocessing release gate while the first active SymPy worker is disconnected/cancelled. The test checks healthy worker remains running and then returns `3*x**2 + 2` on release. This replaces weaker sequencing that could allow healthy operation to finish before cancellation.
+- No product route change. **CI for exact SHA not yet verified**; GitHub commit-run connector only lists pull_request events and returns no push runs. Do not mark test PASS without actual job logs. SG28/H2 remains OPEN.
+- Next: verify SG28 isolation workflow and cumulative gate for `a6f28bb` via full Actions listing, diagnose any failure, then plan bounded `/evaluate` integration only after reliable evidence.
