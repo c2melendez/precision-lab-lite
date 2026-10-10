@@ -1395,3 +1395,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Lite `38067966929`, job `114259381319`: SUCCESS, Vite production build 119 modules transformed in 6.53s.
 - Plus H1d `38067586889`, job `114258275069`: reconfirmed SUCCESS 5 passed (22.4s), already recorded in prior checkpoint.
 - Neither run verifies Plus SG28 interleaving test from technical commit `8291757372c0f86dd05fdb43b1bb0dd39e39e8ad`. Continue to require SG28 and cumulative backend evidence; H2 global OPEN and production isolation OFF.
+
+
+## 2026-10-10 — SG28 interleaving regression VERIFIED; Lite diagnostic confirmed
+- Plus technical SHA `8291757372c0f86dd05fdb43b1bb0dd39e39e8ad` SG28 Backend `38067586874` job `114258274995` SUCCESS **53 passed/1 warning**; cumulative `38067586872` backend job `114258275087` SUCCESS **615 passed/1 warning**, **85.70% coverage**; frontend job `114258274972` SUCCESS **751 passed/28 TODO**. H1d `38067586889` job `114258275069` SUCCESS **5 passed**.
+- Lite Build Diagnostic `38068207343` job `114260079734` SUCCESS, 119 modules transformed, Vite built in **6.88s**. Build-only evidence.
+- The single-process mocked interleaving regression is accredited: local quota is released between evaluate and presentation, permitting another request to take the slot and rejection/retry of presentation. This is a documented gap, NOT a proof of end-to-end reservation or distributed enforcement.
+- **Next technical task**: design and test a bounded request-scoped admission lease spanning evaluate and presentation; keep cancellation/timeout cleanup and API error semantics. Global admission/topology remains a separate unresolved deployment requirement. `SG28_EVALUATE_ISOLATION` stays OFF in production. H2 remains OPEN.
