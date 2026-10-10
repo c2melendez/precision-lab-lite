@@ -1532,3 +1532,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Lite run `38076878958`: Build Diagnostic job `114285601202` SUCCESS; 119 modules transformed, built in 7.07s (build-only).
 - Local scope checks characterize independent *in-memory* semaphore pools; do NOT prove real multi-process or global quota, socket disconnect or fleet safety. SG28/H2 remains OPEN; experimental isolation stays OFF in production.
 - Next: real process-boundary characterization, disposable external HTTP cancellation, and confirmed deployment topology. Render workspace still requires confirmation.
+
+
+## 2026-10-10 — Reconciled earlier red Plus run and new Lite diagnostic
+- Plus cumulative run `38076830076` backend job `114285457475`: FAILED with **631 passed / 1 failed / 1 warning**; failing `test_sg28_distinct_admission_pools_do_not_share_a_quota`, `ValueError: Semaphore released too many times`. Classified **test/harness defect**: test switched module-global `_ADMISSION` during an active lease and released the wrong semaphore, not a demonstrated production bug. Frontend job `114285457641` SUCCESS.
+- Subsequent corrected test commit `adceca5af08dda8a48622b478387f9fb61bb704c`; newer Plus run `38076842089` backend job `114285492589` SUCCESS **632 passed / 1 warning**, 85.64% coverage; frontend `114285492490` SUCCESS 751 passed/28 TODO. Earlier red is superseded, preserved for audit.
+- Lite diagnostic run `38077165972` job `114286448867` SUCCESS 119 modules transformed, built in **6.56s**.
+- H2 remains OPEN because tests prove local memory admission only, not real multiprocess isolation or global budget. Production opt-in remains OFF.
