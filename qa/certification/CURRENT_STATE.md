@@ -1349,3 +1349,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Proposed next test: use actual `DisconnectTrackingMiddleware` with an ASGI receive channel, have an intermediate receiver consume the disconnect, assert the shared scope event is set, a K=1 competing reservation is rejected until child cleanup, and later admission recovers. This must be described as an in-process ASGI test, not a physical socket disconnect.
 - Attempt to publish that new test was blocked by tooling in this session; **no code commit and no new CI evidence** resulted. Latest verified Plus SHA `c263f87dd70d38fbfdc04b6d35530cd8e92c65e6`: SG28 66 passed (`38072123470`), cumulative backend 628 passed (`38072123455`), frontend success, H1d 5 passed (`38072123457`). Lite diagnostic `38072149298` success.
 - SG28/H2 still OPEN; keep production isolation OFF. Next: retry gated test publishing only when permitted, verify CI, then audit deployment topology before distributed admission claims.
+
+
+## 2026-10-10 — Outer ASGI disconnect event regression awaiting CI
+- Plus test-only commit `02398a4a5f53fa069442c5f5633bb1449f91b48d` adds `test_outer_disconnect_tracker_sets_scope_event_when_consumed`, exercising actual `DisconnectTrackingMiddleware` and asserting `sg28_http_disconnected` remains set when downstream consumes `http.disconnect`. In-process ASGI test only; no socket or end-to-end coordinator admission assertion. **CI PENDING**.
+- Last verified Plus SG28 66 passed (`38072123470`), cumulative backend 628 passed (`38072123455`), frontend gate successful; H1d 5 passed (`38072123457`). Lite build `38072149298` success. Next: check SG28 and cumulative CI for new commit, then expand test to competing K=1 admission during cleanup.
+- SG28/H2 global OPEN; production isolation OFF.
