@@ -1402,3 +1402,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Lite Build Diagnostic `38068207343` job `114260079734` SUCCESS, 119 modules transformed, Vite built in **6.88s**. Build-only evidence.
 - The single-process mocked interleaving regression is accredited: local quota is released between evaluate and presentation, permitting another request to take the slot and rejection/retry of presentation. This is a documented gap, NOT a proof of end-to-end reservation or distributed enforcement.
 - **Next technical task**: design and test a bounded request-scoped admission lease spanning evaluate and presentation; keep cancellation/timeout cleanup and API error semantics. Global admission/topology remains a separate unresolved deployment requirement. `SG28_EVALUATE_ISOLATION` stays OFF in production. H2 remains OPEN.
+
+
+## 2026-10-10 — SG28 request-scoped lease target contract added (CI pending)
+- Plus test-only SHA `027baf4d2b9867ff0318a8b7f12a7248aa732d77` adds `test_request_scoped_admission_lease_blocks_interleaving_and_releases` to encode local K=1 quota lifetime spanning both logical phases; verifies other admission denied until lease exit then recovery. This is a conceptual executable target contract using a semaphore acquired directly by the test. **It does NOT exercise a new router implementation** and does not resolve cancellation cleanup, distributed quotas, or production readiness.
+- Previous current-router interleaving demonstration at SHA `82917573` verified SG28 53 passed and cumulative backend 615 / frontend 751. New target test is NOT CI verified yet.
+- Next engineering step: design a real router-integrated request-scoped admission API that preserves ownership until both child coordinators clean up (including cancellation/timeouts) and maps capacity to HTTP 503. Test with actual public endpoint and concurrent requests; ensure backward-compatible default behavior. No production isolation enabled. H2 OPEN.
