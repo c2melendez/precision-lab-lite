@@ -1117,3 +1117,8 @@ Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 def
 ## 2026-10-10 — SG28 CPU typed-timeout regression VERIFIED
 - Plus technical SHA `f0105637ee59c835bd8606233e557b1c6006126f`: SG28 backend `38033933770` SUCCESS **42 passed / 1 warning**. Plus cumulative `38033933785` SUCCESS frontend **751 passed /28 TODO** backend **604 passed /1 warning**. H1d `38033933760` SUCCESS **5 passed**. POSIX SIGXCPU now raises typed `ComputationTimedOut`; public HTTP path not yet tested with actual CPU signal, so no public contract claim.
 - SG28/H2 OPEN for HTTP response to CPU exhaustion, memory ceiling, post-worker SymPy formatting and multi-replica policy. Experimental isolation OFF by default.
+
+
+## 2026-10-10 — SG28 public HTTP CPU-exhaustion MathResponse contract (PENDING CI)
+- Plus technical commit `c71ab6fa88cec8b9a6e21bf0ace43e95e5f4427a` adds `test_public_evaluate_cpu_exhaustion_returns_timeout_mathresponse` to `backend/tests/test_in625_sg28_loopback_http.py`, testing real CPU-bound isolated spawned worker under opt-in POSIX RLIMIT_CPU via actual `/api/v1/evaluate` TestClient endpoint; requires HTTP 200, MathResponse success=false, operation=evaluate, error_code=TIMEOUT, no detailed steps, request_id. Linux-only test, env flags via monkeypatch; no production change.
+- Plus SHA c71ab6fa CI observed IN_PROGRESS: SG28 backend `38061012872`, cumulative `38061012884`, H1d `38061012865`; do not mark PASS before logs. Prior SHA f0105637 remained green backend 42, frontend 751/backend 604, H1d 5. SG28/H2 OPEN for HTTP proof, memory quota, post-worker formatting, multi-replica deployment policy.
