@@ -1485,3 +1485,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus technical SHA `c263f87dd70d38fbfdc04b6d35530cd8e92c65e6`: SG28 `38072123470` job `114271509347` SUCCESS **66 passed/1 warning**; cumulative `38072123455` SUCCESS backend **628 passed/1 warning**, **85.59% coverage**, frontend SUCCESS; H1d `38072123457` SUCCESS **5 passed**. `test_reserved_starlette_asgi_disconnect_blocks_competitor_then_recovers` explicitly PASSED in backend logs.
 - Lite `38072149298` job `114271586079` SUCCESS Build Diagnostic, 119 modules transformed and built in 4.26s. This is build-only validation.
 - Scope: in-process ASGI `http.disconnect`, mocked coordinator and single-process K=1 competition; NOT a real network transport, distributed quota or production rollout proof. SG28/H2 global stays OPEN, isolation OFF by default. Next: review real HTTP disconnect middleware and deployment topology and add independently bounded integration evidence rather than declaring fleet-wide safety.
+
+
+## 2026-10-10 — SG28 external disconnect middleware audit checkpoint
+- Code review identified the outer `DisconnectTrackingMiddleware` signal at ASGI `http.disconnect` and the isolated bridge cleanup path; a new combined middleware test has **not** been published, and no CI run for it exists.
+- Latest independently confirmed Plus: SG28 `38072123470` 66 passed; cumulative `38072123455` 628 backend passed, 85.59% coverage, frontend green; H1d `38072123457` 5 passed. Lite `38072149298` build success.
+- Follow-up test required: middleware consumes `http.disconnect` and sets scope event, while K=1 reservation denies competitor throughout cleanup, then recovers. Distinguish in-process ASGI evidence from socket-transport and distributed quota evidence.
+- SG28/H2 OPEN; production isolation OFF.
