@@ -883,3 +883,8 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 ## 2026-10-09 — SG28 structured error recovery regression (CI pending)
 - Plus commit `0457e1ed2ade5fa2afab61433355eefcfbc4710b`: adds subprocess regression asserting `ComputationFailed.error_type == 'ValueError'`, preserves error details and verifies that a following calculation succeeds. Pure regression test; does not change public `/evaluate`.
 - Previous 22/22 PASS run `38015912720` is for SHA `223dcf7` and does NOT certify current SG28 commits `201184f`, `2010e21`, `0457e1e`. GitHub SHA query only covers PR runs; push workflow run remains unverified. H2/SG28 OPEN.
+
+
+## 2026-10-09 SG28 Plus proof
+- Plus SG28 run 38018275394: SUCCESS, 23 passed / 0 failed, SHA 0457e1ed2ade5fa2afab61433355eefcfbc4710b.
+- Prototipo aislado confirmado, endpoint publico /evaluate aun no integrado. H2 OPEN.
