@@ -1234,3 +1234,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-10 — SG28 bounded admission recovery after timeout (CI PENDING)
 - Plus technical commit `dc7d51ad70b92668c9963301155ac5af59495e44` adds `test_timeout_releases_single_slot_and_allows_recovery` in backend request-cancellation tests: constrained `BoundedSemaphore(1)`, first real spawned child active, second request rejected for capacity, first times out, fresh child runs `4+5=9`. This tests timeout-to-admission release without production changes and does NOT itself prove multi-replica quota enforcement.
 - Plus CI triggered SHA dc7d51ad: SG28 backend `38030889672`, cumulative `38030889710`, H1d `38030889678` observed QUEUED; no PASS counted yet. Prior Plus navigation E2E `38030638346` 18/18 PASS remains accredited. Still OPEN: resource quotas across multiple app replicas, CPU/memory limits and post-worker SymPy processing, browser tab close coverage, contractual closure. Isolation flag OFF by default.
+
+
+## 2026-10-10 — SG28 timeout/admission recovery verified on Plus CI
+- Technical Plus SHA `dc7d51ad70b92668c9963301155ac5af59495e44`: SG28 backend run `38030889672` SUCCESS **40 passed / 1 warning**; cumulative `38030889710` SUCCESS frontend **751 passed / 28 TODO**, backend **602 passed / 1 warning** (including `test_timeout_releases_single_slot_and_allows_recovery`); H1d run `38030889678` SUCCESS **5 Playwright passed**.
+- The new evidence verifies single-process bounded admission occupancy, timeout cleanup and recovery, NOT global enforcement across multiple deployed replicas. Remaining SG28/H2 concerns: CPU/memory budgets, work after isolated child returns, browser close coverage, deployment topology; production isolation flag unchanged OFF.
