@@ -1239,3 +1239,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-10 — SG28 timeout/admission recovery verified on Plus CI
 - Technical Plus SHA `dc7d51ad70b92668c9963301155ac5af59495e44`: SG28 backend run `38030889672` SUCCESS **40 passed / 1 warning**; cumulative `38030889710` SUCCESS frontend **751 passed / 28 TODO**, backend **602 passed / 1 warning** (including `test_timeout_releases_single_slot_and_allows_recovery`); H1d run `38030889678` SUCCESS **5 Playwright passed**.
 - The new evidence verifies single-process bounded admission occupancy, timeout cleanup and recovery, NOT global enforcement across multiple deployed replicas. Remaining SG28/H2 concerns: CPU/memory budgets, work after isolated child returns, browser close coverage, deployment topology; production isolation flag unchanged OFF.
+
+
+## 2026-10-10 — SG28 Plus tab-close real PID termination test published (CI PENDING)
+- Plus commit `bfcba2228bf0542998d9e9fbed6a5fe51ca7fef3` adds `frontend/e2e/in625-h2-sg28-cancel.spec.ts` real browser page.close during live isolated `7+11` calculation; observes PID start, asserts same PID finish + no process after closing browser tab, creates fresh tab in same context and checks actual `/api/v1/evaluate` `4+5=9`. Tests run desktop/tablet/mobile under existing SG28 CI-only flags; no production behavior modified.
+- Plus workflows SHA bfcba222 triggered (QUEUED at last observation): SG28 E2E `38031257190`, cumulative `38031257228`, H1d `38031257160`. DO NOT claim tab-close PASS before checking full logs and run conclusion.
+- Prior SG28 timeout recovery SHA dc7d51ad passed backend 40, cumulative frontend 751/backend 602, H1d 5. SG28/H2 OPEN pending tab-close proof and remaining resource/deployment limits. Isolation OFF by default.
