@@ -1332,3 +1332,11 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 
 ### 2026-10-10 — Plus SG28 fleet partition CI reconciliation
 Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run `38066012191`, job `114253687940`: 50 PASS / 1 warning. Cumulative `38066012196`: frontend job `114253687761` SUCCESS; backend job `114253687906` 612 PASS / 1 warning. H1d run `38066012213`, job `114253687886` SUCCESS. Lite build diagnostic `38065410599`, job `114251924445` SUCCESS (build only). Static fleet allocation arithmetic is not a distributed admission implementation. H2/SG28 OPEN; isolation OFF by default. Next: deterministic bounded local admission saturation/recovery and cross-phase concurrency regression; distributed production rollout requires explicit topology and authorization. Documentation reconciliation commits only, no product changes.
+
+
+## 2026-10-10 — SG28 prueba de admisión por fases publicada (CI pendiente)
+- Plus commit técnico `33efe8df09c3a2e38d3d15bd408c78d40f72bea2` incorpora `test_two_stage_request_admission_is_phase_scoped_not_end_to_end` en `backend/tests/test_in625_sg28_request_cancellation.py`.
+- Gate determinista single-process con BoundedSemaphore(1) y eventos: durante evaluación se rechaza presentación concurrente; al liberar evaluación se admite presentación, que rechaza otra evaluación; tras ambas fases se recupera la capacidad.
+- La prueba usa `run_bounded` instrumentado y **NO** acredita cancelación real de SymPy, reserva de cupo end-to-end, coordinación entre procesos ni despliegue seguro.
+- CI en el SHA nuevo todavía SIN VERIFICAR en esta operación; no declarar PASS hasta leer runs/logs de SG28 backend, cumulative y H1d.
+- H2 sigue ABIERTO; `SG28_EVALUATE_ISOLATION` permanece OFF por defecto. Próximo paso: verificar las ejecuciones de ese commit, corregir cualquier fallo del harness, e investigar reserva end-to-end/aislamiento de admisión compartida sin activar producción.
