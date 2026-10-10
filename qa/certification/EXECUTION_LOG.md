@@ -1340,3 +1340,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - La prueba usa `run_bounded` instrumentado y **NO** acredita cancelación real de SymPy, reserva de cupo end-to-end, coordinación entre procesos ni despliegue seguro.
 - CI en el SHA nuevo todavía SIN VERIFICAR en esta operación; no declarar PASS hasta leer runs/logs de SG28 backend, cumulative y H1d.
 - H2 sigue ABIERTO; `SG28_EVALUATE_ISOLATION` permanece OFF por defecto. Próximo paso: verificar las ejecuciones de ese commit, corregir cualquier fallo del harness, e investigar reserva end-to-end/aislamiento de admisión compartida sin activar producción.
+
+
+## 2026-10-10 — SG28 cancellation cleanup admission regression committed (awaiting CI)
+- Plus commit `567ae15c3f0cb157a132c855ea8c85c678cf6d04`: test-only deterministic regression `test_cancelled_handler_retains_slot_until_coordinator_thread_finishes`. While the mocked isolated coordinator remains active after ASGI handler cancellation, concurrent work must be rejected without executing; after release/cleanup, a new operation must succeed.
+- Bilateral CURRENT_STATE updated at Plus `58a57bd500f34cf1d916f8c89bae737742fc5c7b` and Lite `aa19ac698f9d3e20077fc76e7cc372ee437dcce1`.
+- CI status: NOT YET VERIFIED. Next run/inspect SG28 backend, cumulative, H1d; if Actions do not trigger from the test branch, check manual dispatch and workflow conditions.
+- Scope restricted to one process and mocked coordinator; no claim of production-grade distributed admission, end-to-end slot reservation, or newly passed CI. Isolation production flag remains OFF; H2 OPEN.
