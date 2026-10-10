@@ -1397,3 +1397,8 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite last confirmed diagnostic run `38079463421` GREEN, 119 modules built in 6.67s. Latest evidence for Lite remains build-only.
 - H2 OPEN: no single verified end-to-end physical TCP-disconnect + actual spawned child process lifecycle test; no shared fleet admission coordinator, verified global quota, or Render runtime topology. Preserve `SG28_EVALUATE_ISOLATION=0` in production.
 - Next: complete nonproduction end-to-end real TCP + spawned child safety gate only through supported tool controls; check global admission requirements after read-only confirmation of Render workspace and actual worker/replica layout. Record the exact run/commit results; do not promote H2 to PASS prematurely.
+
+
+## 2026-10-10 — H2 physical TCP + actual SymPy child integration CI GREEN
+- Plus technical SHA `08f70c1b7aa6f894f5595b95afcd2a13a9001725`: cumulative run `38084223803` backend job `114307212013` SUCCESS **637 passed, 1 warning, coverage 85.69%**. `test_real_tcp_disconnect_cancels_actual_sympy_child_and_recovers` explicitly PASSED. Frontend job `114307212222` SUCCESS **751 passed / 28 TODO**, 102 modules, build 21.40s. Sibling H1d run `38084223804` SUCCESS.
+- Verified CI-only integration of real loopback TCP disconnect, actual spawned SymPy child and local K=1 capacity recovery. Does NOT certify globally coordinated capacity, multi-replica topology, or production configuration. H2 global OPEN, experimental isolation OFF in production.
