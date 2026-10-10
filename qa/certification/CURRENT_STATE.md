@@ -1412,3 +1412,8 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 ## 2026-10-10 — SG28 lease model regression CI GREEN (641 backend)
 - Plus technical SHA `463888bce05ce968b7ecee688e473c43cb34eae3`; cumulative run `38085561575` backend job `114311204439` SUCCESS **641 passed / 1 warning / coverage 85.69%**. All three tests in `test_sg28_lease_contract.py` explicitly PASSED (expiry successor fencing, renew/double release, reject expired renewal). Frontend job `114311204636` SUCCESS **751 passed / 28 TODO**; 102 modules, build 19.80s. H1d run `38085561630` SUCCESS.
 - These are deterministic in-memory CI-only lease contract tests, NOT proof of atomic distributed grant or lease safety after crashes/network partitions. Global H2 remains OPEN. Production experimental isolation OFF.
+
+
+## 2026-10-10 — SG28 lease replay regression CI GREEN: 644 backend
+- Plus technical SHA `591900282da7ef96a154439f034eccffb9ce0de4`, cumulative run `38086974503`: backend job `114315404149` SUCCESS **644 passed / 1 warning / 85.59% coverage**; all three newest lease contract tests explicitly PASSED. Frontend job `114315404272` SUCCESS 751 passed / 28 TODO, 102 modules, built in 21.22s. H1d `38086974500` job `114315404288` SUCCESS 5 passed.
+- Tests remain deterministic in-memory lease model, not production distributed coordination. Global H2 OPEN; isolation OFF in production.
