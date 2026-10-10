@@ -946,3 +946,8 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 
 ## SG28 pending gate — 2026-10-09
 Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 default), 503 capacity response, and rejection/recovery test. CI pending. Latest certified run 38023015566 (32 PASS) predates these changes. Next verify SG28 CI for b5d6b6c, diagnose failures, then test actual process cleanup and frontend E2E. H2 OPEN; flag OFF.
+
+
+## 2026-10-09 — SG28 admission gate verified
+- Plus run 38023325162, job 114128810903, SHA b5d6b6c9af0185abcb5b9270339ba862f6befca5: SUCCESS, 33 passed, 1 warning in 12.80 s; includes concurrency capacity rejection/cancellation/recovery gate. https://github.com/c2melendez/precision-lab-plus/actions/runs/38023325162
+- H2 OPEN: semaphore limits concurrent jobs within each application process, not across multiple replicas; must still verify actual child cleanup, load, cumulative gates and UI E2E. SG28 flag OFF by default. Next test measured child-process termination and cleanup under cancellation.
