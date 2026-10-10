@@ -917,3 +917,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 Plus basic UI caller cancellation implemented, CI pending
 - Plus commit `aae4bec93123c357ff7696dc8fc07b53dff7ea00`: `submitAndRecord` forwards optional AbortSignal and omits history entries for aborted requests. Plus `95eb408d45b958f8bba3c6052e1b175e174cafa7`: visible 'Detener cálculo' in Basic mode for direct evaluate/solve/inequality request, aborts active fetch, invalidates stale request ID and retires busy state. **Scope is limited to these direct paths**; systems, matrices and graphing are not covered yet.
 - New Plus cumulative run `38010848002` and H1d run `38010847995` were QUEUED when checked. **No CI PASS claimed** for these changes. This is client UI/HTTP cancellation, not proof of process termination on backend. SG28/H2 OPEN.
+
+
+## 2026-10-09 — Plus SG28 Basic UI CI failure and compatibility repair
+- Plus cumulative run `38010848002` for `95eb408d`: FAILED frontend **39 failed / 712 passed / 28 TODO**; backend SUCCESS and H1d `38010847995` SUCCESS. Direct logs show tests expecting exactly two `callApi` arguments after SG28 added optional third argument carrying AbortSignal.
+- Plus patch `7102720e`: `submitAndRecord` retains two-argument `callApi` invocation for all legacy callers lacking cancellation options. Plus test patch `516a381c`: nine direct BasicMode call assertions now expect a third `{ signal: AbortSignal }` argument. Existing product feature for Basic direct cancel remains enabled.
+- CI for `516a381c`: cumulative run `38011234844`, H1d `38011234835`, QUEUED when observed. Do not claim PASS until jobs/logs checked. Backend actual request-disconnect integration still unimplemented. SG28/H2 OPEN.
