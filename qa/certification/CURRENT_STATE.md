@@ -1224,3 +1224,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Root cause: test orchestration deadlock. `run_for_request` deliberately awaits shielded coordinator cleanup on coroutine cancellation. The old test awaited the handler cancellation before releasing its worker; that contradicts this contract and times out.
 - Plus fix commit `962b2bb89aa74635b1f214393c9c802d9c836613`: after cancel request, first assert handler pending and capacity fail-closed, then release worker, await cancellation acknowledgment, confirm cleanup and recovery. Only the test changed, not production.
 - FIX **NOT YET CI VERIFIED**. Next: inspect SG28 backend and cumulative Plus runs for SHA 962b2bb8 or descendant; if green record exact tests/jobs, else diagnose. H2 OPEN, cluster-wide admission and deployment unresolved; SG28 isolation OFF by default.
+
+
+## 2026-10-10 — SG28 cancelled-handler cleanup test VERIFIED, cumulative gate GREEN
+- Plus technical SHA `962b2bb89aa74635b1f214393c9c802d9c836613`: SG28 backend run `38067270241` SUCCESS **52 passed /1 warning**, job `sg28-backend-isolation`; cumulative run `38067270248` SUCCESS backend **614 passed /1 warning**, backend coverage **85.65%** (threshold 75%) and frontend **751 passed/28 TODO**; H1d run `38067270260` SUCCESS **5 passed**.
+- The former cancelled-handler coordinator cleanup test deadlock was a test sequencing bug and is resolved. Single-process fail-closed admission while cleanup is pending and successful recovery are now confirmed in CI; no product admission algorithm was changed.
+- Lite Build Diagnostic run `38067293912` SUCCESS; Vite 119 modules transformed, built in 5.48 seconds. This is build evidence only.
+- H2 / SG28 GLOBAL remains OPEN: local per-process semaphore does not implement global admission, and evaluation/presentation still acquire slots separately rather than an end-to-end reservation. Fleet topology, distributed capacity limits and deployment-specific validation remain pending. Production `SG28_EVALUATE_ISOLATION` remains OFF.
+- Next step: design a deliberately bounded, single-process, end-to-end occupancy regression or admission lifetime contract, then evaluate whether a controlled implementation is warranted; do not enable production or claim distributed guarantee.
