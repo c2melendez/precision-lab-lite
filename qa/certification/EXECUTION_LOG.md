@@ -1057,3 +1057,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 CI activation fix for endpoint integration
 - Plus commit `cd7bbce8dca4dcbbd4f26fe5ba710d1199b143f1` extends workflow `.github/workflows/in625-sg28-backend-cancellation.yml` push paths: `backend/app/routers/evaluate.py`, `backend/app/services/evaluate_service.py`, `backend/app/schemas/{requests,responses}.py`. Prior workflow did not trigger on endpoint-only source changes; now expected to cover integrated endpoint regressions.
 - Expected automatic workflow push for this workflow-file commit. **Pending inspection of run ID, logs, and PASS/FAIL**. Do not claim new CI success; SG28/H2 OPEN; experimental flag remains OFF by default. Next verify HTTP off/on test and run cumulative.
+
+
+## SG28 — CI confirmado 31 PASS sobre endpoint opt-in
+- Plus run 38021514258, job 114123323554: SUCCESS, 31 passed, 1 warning in 16.77s, SHA cd7bbce8dca4dcbbd4f26fe5ba710d1199b143f1, branch qa/syntax-audit-in625-a1. Workflow SG28 Backend Isolation incluye test HTTP de /evaluate aislamiento 0/1 y error/resultado. URL https://github.com/c2melendez/precision-lab-plus/actions/runs/38021514258
+- Integra prueba HTTP real por TestClient, no certifica cancelación frontend→backend mediante desconexión TCP, cuotas/concurrencia, ni gate acumulativo. H2 OPEN. Siguiente paso preciso: prueba HTTP TCP real contra /api/v1/evaluate con bandera on, confirmar cancelación del proceso y recuperación; añadir cuotas antes de producción; ejecutar CI acumulativo.
