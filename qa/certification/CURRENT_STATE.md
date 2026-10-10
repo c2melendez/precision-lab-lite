@@ -1407,3 +1407,8 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 ## 2026-10-10 — Shared K=1 multiprocess gate VERIFIED
 - Plus technical SHA `167d0335197c624186e24ce486ccec1a8fa39366` cumulative run `38084981053`: backend job `114309506476` SUCCESS **638 passed / 1 warning / coverage 85.74%**; `test_shared_gate_denies_second_interpreter_and_recovers` explicitly PASSED. Frontend job `114309506744` SUCCESS **751 passed / 28 TODO**, 102 modules, build 22.88s. H1d `38084981061` job `114309506931` SUCCESS **5 passed**.
 - The shared semaphore uses multiprocessing Manager and is **test-only**, not a durable global lease or production distributed admission coordinator. SG28/H2 global OPEN pending failure/expiry/fencing handling and actual Render topology. Production SG28 opt-in remains OFF.
+
+
+## 2026-10-10 — SG28 lease model regression CI GREEN (641 backend)
+- Plus technical SHA `463888bce05ce968b7ecee688e473c43cb34eae3`; cumulative run `38085561575` backend job `114311204439` SUCCESS **641 passed / 1 warning / coverage 85.69%**. All three tests in `test_sg28_lease_contract.py` explicitly PASSED (expiry successor fencing, renew/double release, reject expired renewal). Frontend job `114311204636` SUCCESS **751 passed / 28 TODO**; 102 modules, build 19.80s. H1d run `38085561630` SUCCESS.
+- These are deterministic in-memory CI-only lease contract tests, NOT proof of atomic distributed grant or lease safety after crashes/network partitions. Global H2 remains OPEN. Production experimental isolation OFF.
