@@ -739,3 +739,8 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 ## 2026-10-09 — SG28 experimental request-disconnect bridge pending CI
 - Plus `backend/app/services/request_cancellation.py` commit `16c41238` adds test-only ASGI request bridge that runs `run_bounded` in a worker thread, polls `request.is_disconnected()`, and sets cancellation event for cleanup. Plus tests `backend/tests/test_in625_sg28_request_cancellation.py` commit `80883dfd` exercise disconnect plus recovery with FakeRequest; workflow `in625-sg28-backend-cancellation.yml` commit `dfa15f27` runs both test files.
 - Runs queued when queried: SG28 `38008815812`, cumulative `38008815822`, H1d `38008815823`. NO PASS yet for this SHA. Not integrated into publicly exposed FastAPI endpoints; the mock request is not a live HTTP disconnect; server cancellation remains unproven end-to-end. SG28/H2 OPEN.
+
+
+## 2026-10-09 — SG28 request bridge 11/11 PASS, cumulative 1324
+- Verified Plus SHA `dfa15f27afd450ca26bd4631f6e19d2533c8bf3f`: SG28 isolated bridge run `38008815812`, job `114083777213`: **11 passed in 7.69s**. Cumulative `38008815822` SUCCESS: backend job `114083777394` **573 passed, 1 warning**; frontend job `114083777617` **751 passed, 28 TODO** (0 FAIL); H1d `38008815823` SUCCESS. Overall cumulative 1324 PASS.
+- Bridge is tested with FakeRequest and isolated spawned processes, not a production HTTP disconnect or public endpoint. SG28/H2 **OPEN** for full API-to-server work cancellation. Next: isolated ASGI transport/disconnection E2E and controlled production-route integration only after demonstrated safety/resource constraints.
