@@ -1014,3 +1014,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Workflow `IN625 SG28 Plus Backend Isolation Prototype`: SUCCESS, job `sg28-backend-isolation` `114105984641`; SHA técnico `223dcf76911a15b3a6c9c0f5b93434e579ccd31f`; rama `qa/syntax-audit-in625-a1`; logs: `22 passed in 12.10s` (3 ficheros pytest SG28: interruptible, request_cancellation, loopback_http).
 - Evidencia: https://github.com/c2melendez/precision-lab-plus/actions/runs/38015912720
 - Alcance aprobado: pruebas del prototipo de aislamiento/cancelación del backend en ese SHA. No acredita integración de `/evaluate` público ni gate acumulativo completo; H2/SG28 permanece OPEN.
+
+
+## 2026-10-09 — SG28 typed child errors implemented (CI pending)
+- Plus commit `201184f617c9107a6bf50338d2d91d86d163ac2a` modifies experimental `backend/app/services/interruptible.py`: worker sends `(exception class name, error message)` as structured failure payload; `ComputationFailed.error_type` retains exception identity and traditional text remains compatible.
+- Plus commit `2010e21cf0ac4022c616938a4cfdc5009e10e4a6` extends `test_isolated_real_evaluate_service_rejects_invalid_input` to assert `error_type` across child boundary.
+- No FastAPI public `/evaluate` route modified, no public MathResponse error mapping implemented; H2/SG28 remains OPEN. Prior confirmed SG28 run `38015912720` 22/22 PASS applies to older SHA `223dcf7`, **not** the new two commits; pending fresh SG28 + cumulative gates.
