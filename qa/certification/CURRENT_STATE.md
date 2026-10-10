@@ -1003,3 +1003,8 @@ Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 def
 ## 2026-10-09 — SG28 UI E2E 4/4 verified
 - Plus run 38026273274, job 114137669432, SHA dca1970f9f1018da6f8bbea1a57e344deed87a6b, SUCCESS, Chromium desktop 4 passed in 10.2 s. Fourth unmocked browser HTTP cancellation and recovery test passed. https://github.com/c2melendez/precision-lab-plus/actions/runs/38026273274
 - Backend last accredited 37 PASS run 38025649681. Remaining H2 SG28 gap: deterministic evidence child process active when browser presses stop and same PID reaped by server cancellation; cumulative gates not yet certified. Experimental isolation OFF by default. H2 OPEN.
+
+
+## SG28 2026-10-09 — optional PID lifecycle logging (CI pending)
+- Plus commit a68a37dac225724e571012bef696d4c19f33906b adds SG28_CI_OBSERVE opt-in child PID START/FINISH log in interruptible.py. Plus 4bb96be5f222dea0574c448918ced022d795feb9 enables flag in UI workflow and adds monitored path.
+- CI result unverified. This instrumentation alone does NOT prove browser Stop cancels specific active child; timestamps/cancel reason/identity correlation still needed. Previous backend 37 PASS run 38025649681 and Plus UI 4 PASS run 38026273274. H2 remains OPEN, production flags OFF.
