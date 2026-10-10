@@ -1095,3 +1095,9 @@ Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 def
 - Plus commit `bfcba2228bf0542998d9e9fbed6a5fe51ca7fef3` adds `frontend/e2e/in625-h2-sg28-cancel.spec.ts` real browser page.close during live isolated `7+11` calculation; observes PID start, asserts same PID finish + no process after closing browser tab, creates fresh tab in same context and checks actual `/api/v1/evaluate` `4+5=9`. Tests run desktop/tablet/mobile under existing SG28 CI-only flags; no production behavior modified.
 - Plus workflows SHA bfcba222 triggered (QUEUED at last observation): SG28 E2E `38031257190`, cumulative `38031257228`, H1d `38031257160`. DO NOT claim tab-close PASS before checking full logs and run conclusion.
 - Prior SG28 timeout recovery SHA dc7d51ad passed backend 40, cumulative frontend 751/backend 602, H1d 5. SG28/H2 OPEN pending tab-close proof and remaining resource/deployment limits. Isolation OFF by default.
+
+
+## 2026-10-10 — SG28 Plus browser-tab-close end-to-end cancellation VERIFIED
+- Technical Plus SHA `bfcba2228bf0542998d9e9fbed6a5fe51ca7fef3`: SG28 UI run `38031257190` SUCCESS, job `114152498345`, **21/21 Playwright PASS** (7 tests across desktop/tablet/mobile). New `closing browser tab reaps active isolated worker and recovers` passed on all three profiles; test checks live PID start, page.close, same PID finish and process absent, new tab real `4+5=9` response. This certifies SG28-E2E-08 tab-close within isolated CI, plus previous module-change E2E.
+- Same SHA cumulative `38031257228` SUCCESS backend job `114152498379` **602 passed / 1 warning**, frontend job `114152498493` **751 passed / 28 TODO**. H1d `38031257160` SUCCESS job `114152498350` **5 Playwright passed**.
+- SG28/H2 remains OPEN strictly for bounded CPU/memory/resource behavior of remaining post-worker work and multi-replica production admission topology/deployment policy. No automatic production activation; SG28_EVALUATE_ISOLATION OFF by default.
