@@ -1623,3 +1623,8 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 ## 2026-10-10 — Shared lease expiry CI GREEN: Plus 649 backend
 - Plus technical SHA `e68d7d7f66156775be3427230cdacfc9217cb8e8`: cumulative run `38090329207` backend SUCCESS **649 passed / 1 warning / coverage 85.59%**, `test_expired_shared_lease_is_replaced_across_interpreters` explicitly PASSED. Frontend SUCCESS 751 passed / 28 TODO. H1d run `38090329193` SUCCESS 5 passed.
 - Manager-backed shared dict/lock and clock steps are a CI-only characterization. Independent interpreter participation per operation, coordinator crash recovery and production fleet quota are NOT proven. SG28/H2 OPEN; production isolation OFF.
+
+
+## 2026-10-10 — SG28 concurrent distinct-worker shared admission VERIFIED
+- Plus SHA `d5a9b678a9eb7168aad7ca572d16e83da239edde` cumulative run `38093468330` backend `114334463820` SUCCESS **650 passed / 1 warning / 85.64% coverage**. `test_two_distinct_workers_contend_atomically_for_shared_k1` explicitly PASSED with distinct PIDs and exactly one shared K=1 grant. Frontend `114334463552` SUCCESS 751 passed / 28 TODO. H1d run `38093468338` SUCCESS.
+- This proves CI Manager-backed atomic shared fixture across processes, NOT actual production distributed lease, crash-recovery or Render topology. H2 OPEN; production isolation OFF.
