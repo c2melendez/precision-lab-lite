@@ -942,3 +942,7 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 ## 2026-10-09 — SG28 disconnected HTTP gate PASS
 - Plus workflow run `38023015566`, job `114127871831`, SHA `3af8bd7e65d0e336c130901eddf1c9c581aa69ab`, push branch `qa/syntax-audit-in625-a1`: SUCCESS, `32 passed, 1 warning in 15.22s`. Real TCP disconnect + recovery test now PASS after outer ASGI disconnect tracker fix. https://github.com/c2melendez/precision-lab-plus/actions/runs/38023015566
 - This validates current test assertions, not full proof of child-process resource reclamation or server concurrency budgets. SG28/H2 OPEN; flag stays OFF by default. Next implement measurable child cleanup/concurrency gates and frontend end-to-end cancellation, run cumulative regression.
+
+
+## SG28 pending gate — 2026-10-09
+Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 default), 503 capacity response, and rejection/recovery test. CI pending. Latest certified run 38023015566 (32 PASS) predates these changes. Next verify SG28 CI for b5d6b6c, diagnose failures, then test actual process cleanup and frontend E2E. H2 OPEN; flag OFF.
