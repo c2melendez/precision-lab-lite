@@ -939,3 +939,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 Plus browser cancel E2E and cumulative confirmed PASS
 - GitHub Actions Plus SHA `086d9f678faf5f8f13aa4ec6a2707eebbedb73b5`: SG28 UI run `38011603975`, job `114092633887`, **1 Playwright PASS (4.3s)**; confirms visible Basic cancellation and recovery with simulated delayed HTTP result. Cumulative run `38011603949`: frontend job `114092633897` **751 PASS, 28 TODO**; backend job `114092634033` **575 PASS, 1 warning**. H1d run `38011603906` SUCCESS.
 - All three workflows SUCCESS on the same SHA. No production SymPy cancellation upon HTTP request disconnect demonstrated; SG28/H2 OPEN pending safe backend integration and E2E evidence.
+
+
+## 2026-10-09 — SG28 ASGI disconnect during active SymPy test awaiting CI
+- Existing Plus SG28 bridge `backend/app/services/request_cancellation.py` already monitors ASGI `http.disconnect` and signals killable `run_bounded` child through threading.Event; experimental and NOT connected to production math endpoints. Existing tests cover ASGI fake disconnect and real loopback TCP disconnect/recovery.
+- New Plus commit `618a24ebb77aa95e0b44af95bd1cbaa3718aa0c9`: `backend/tests/test_in625_sg28_request_cancellation.py` adds end-to-end in-process ASGI disconnect while spawned child actively runs SymPy differentiation (synchronized spawn event), then verifies fresh SymPy recovery. **CI results pending**: isolated SG28 `38012269370`, cumulative `38012269384`, H1d `38012269339` queued at check. SG28/H2 OPEN; public /evaluate route not yet connected.
