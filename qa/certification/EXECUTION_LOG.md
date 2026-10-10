@@ -1122,3 +1122,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 UI Playwright 3/3 verified
 - Plus run `38024683700`, job `114132893364`, SHA `adc1eb71682c985f7dd4a47d607ef8474d7b7658`, branch `qa/syntax-audit-in625-a1`, event push, SUCCESS: `3 passed (8.2s)` on Chromium desktop. Test cases: browser actual isolated backend evaluate; mocked pending request stop and stale-response recovery; browser actual parse error followed by healthy evaluate. https://github.com/c2melendez/precision-lab-plus/actions/runs/38024683700
 - UI CI PASS does not demonstrate server worker cancellation by real browser button; must add deterministic unmocked end-to-end stop-to-child-termination evidence and cumulative gates. Latest backend SG28 run `38024028278`: 35 PASS. H2 OPEN, default experimental isolation OFF.
+
+
+## SG28 follow-up — 2026-10-09
+- Plus `0353aa97b2f594fde8320b4a95e247e3cc13d910`: correct outdated request bridge docstring: route integrated when `SG28_EVALUATE_ISOLATION=1`.
+- Plus `7257c1e2acbfd0a67f5639a27ee77d6ee3e3f194`: add FastAPI TestClient gate asserting structured HTTP 503 MathResponse when isolated-worker admission is exhausted. CI of this commit not yet verified; previous accredited backend run 38024028278 (35 PASS), UI run 38024683700 (3 PASS).
+- Still OPEN: deterministic, unmocked browser stop-button -> server worker PID teardown, full cumulative gates. New test does not pretend to cover these. Flag OFF by default. Next inspect backend SG28 CI for 7257c1e, fix regressions, continue UI-to-server cancellation proof.
