@@ -950,3 +950,11 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus commit `618a24ebb77aa95e0b44af95bd1cbaa3718aa0c9` SG28 isolated workflow `38012269370`: **SUCCESS, 14/14 PASS in 9.85s** (job `114094683361`). Includes ASGI disconnect while active SymPy process differentiates, child interruption and subsequent fresh SymPy recovery.
 - Plus cumulative `38012269384` SUCCESS: backend **576 PASS**, one warning (job `114094683544`); frontend **751 PASS**, 28 TODO (job `114094683353`), zero failures. H1d `38012269339` SUCCESS.
 - This confirms experimental isolation/ASGI behavior, not public `/evaluate` cancellation or deployment readiness. SG28/H2 remain OPEN pending controlled production-route integration and compatibility/security assessment.
+
+
+## 2026-10-09 — SG28 Plus ASGI handler cancellation: regresión publicada, CI por verificar
+- Plus commit `1b4f6a1173bb192aaef7b02fbe3a74672a151d48` añadió `test_asgi_handler_task_cancellation_interrupts_child_and_recovers` en `backend/tests/test_in625_sg28_request_cancellation.py`: cancela una tarea ASGI mientras un proceso aislado ejecuta SymPy y exige recuperación posterior.
+- Evidencia precedente válida: SG28 Plus `38012269370` SUCCESS (14/14), cumulative `38012269384` SUCCESS (backend 576, frontend 751); esos runs son de SHA anterior `618a24eb`, **no acreditan la prueba nueva**.
+- Consulta de runs asociada al SHA nuevo devolvió 0, pero el conector solo enumera runs disparados por pull request; no permite afirmar que no haya corrida push. Estado de esta prueba: PENDIENTE DE EVIDENCIA CI.
+- Siguiente paso exacto: identificar y revisar el SG28 workflow `in625-sg28-backend-cancellation.yml`, el acumulativo y H1d para SHA `1b4f6a1`; extraer logs y clasificar eventuales fallos. Antes de integrar `/evaluate` públicamente, demostrar compatibilidad MathResponse, limpieza de procesos y recuperación en test de integración aislado.
+- SG28/H2 OPEN. No hay PASS nuevo ni cambio a endpoint público.
