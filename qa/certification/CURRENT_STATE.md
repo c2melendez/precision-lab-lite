@@ -1056,3 +1056,9 @@ Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 def
 - Plus technical commit `ff60d28e50ca3128afe3e50760e0669591b02f61`: backend `tests/test_in625_sg28_loopback_http.py` adds baseline vs isolation real `/api/v1/evaluate` MathResponse field parity for arithmetic, symbolic, and parse-invalid expressions. Target SG28-E2E-06/09 limited examples. Neither technical commit changes production defaults; SG28 flag OFF.
 - CI started for Plus SHA `ff60d28e`: SG28 Backend Isolation Prototype run `38030359435`, cumulative `38030359443`, H1d `38030359453` all observed IN_PROGRESS. Do not count newly added tests PASS until results/logs verified. Previous bilateral responsive CI results remain credited.
 - Remaining: inspect latest gates and fix regressions, explicit UI module-change/close-view case, bounded multi-cancel resource check, post-result SymPy work budget, multi-replica manual risk, contract matrix reconciled. H2 remains OPEN.
+
+
+## 2026-10-10 — SG28 added backend regression verified
+- Plus SG28 backend prototype run `38030343425` SHA `28299c2c` SUCCESS **38 passed / 1 warning**, including newly added four repeated cancellation/recovery cycles.
+- Plus SG28 backend prototype run `38030359435` SHA `ff60d28e` SUCCESS **39 passed / 1 warning**, including public `/api/v1/evaluate` default-vs-isolated MathResponse parity for `2+3`, `x+x`, `x+(`. Backend evidence for SG28-E2E-06/07/09 is expanded, not exhaustive; UI navigation and cross-replica deployment resource limitations remain open.
+- Plus cumulative `38030359443` was IN_PROGRESS at last job check; no PASS attributed until completed. H2 stays OPEN. Isolation flag remains OFF by default.
