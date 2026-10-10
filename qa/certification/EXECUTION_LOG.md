@@ -1582,3 +1582,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 ## 2026-10-10 — Real TCP disconnect signal VERIFIED, Plus 38079926674
 - Plus run `38079926674`: backend job `114294564210` SUCCESS **634 passed, 1 warning, coverage 85.72%**. `tests/test_sg28_tcp_disconnect.py::test_real_tcp_disconnect_sets_outer_scope_event` explicitly PASSED. Frontend job `114294564030` SUCCESS **751 passed / 28 TODO**, 102 modules transformed, built in 15.53s.
 - This establishes real loopback TCP closure reaches the ASGI disconnect tracker. It does NOT establish disconnect handling of a reserved in-flight compute lease through completion, nor distributed fleet admission. H2 remains OPEN; experimental isolation remains OFF in production.
+
+
+## 2026-10-10 — SG28 real TCP disconnect + reserved K=1 cleanup gate GREEN
+- Plus run `38080591813`: backend job `114296512716` SUCCESS **635 passed / 1 warning / coverage 85.69%**. `test_real_tcp_disconnect_keeps_local_k1_reserved_until_cleanup` explicitly PASSED. Frontend job `114296512758` SUCCESS **751 passed / 28 TODO**, 102 modules transformed, built in 21.49s.
+- Integration combines real loopback TCP client closure and mocked coordinator with deterministic cleanup delay, showing reserved local K=1 denies competitors until cleanup finishes, then recovers. Does NOT prove actual isolated child process termination, distributed/fleet global admission, or production deployment topology.
+- SG28/H2 remains OPEN; production experimental isolation OFF.
