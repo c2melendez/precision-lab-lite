@@ -1436,3 +1436,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus regression commit `0c74a9ee96e7be08447b99f05150b141a1ff556a` asserts actual public TestClient opt-in HTTP request traverses two reserved worker calls while local K=1 is held, followed by quota recovery. **PENDING targeted SG28/cumulative gate and UI E2E**; do not declare this feature certified until logs pass.
 - SG28/H2 global OPEN: this is per Python-process admission, not cross-worker/replica quota; fleet topology/load and operational capacity still unverified. No deployment configuration changed; isolation remains OFF in production.
 - Next: inspect GitHub Actions SG28, cumulative, H1d and UI on SHA 0c74a9ee or descendant; fix any regression at its source; test capacity HTTP 503 and cancellation across complete request before expansion.
+
+
+## 2026-10-10 — SG28 public two-phase admission verified; HTTP saturation regression pending
+- Plus SHA `0c74a9ee96e7be08447b99f05150b141a1ff556a`: SG28 run `38069899326` SUCCESS **60 passed/1 warning**; cumulative `38069899325` SUCCESS **622 backend passed/1 warning**, **85.59% coverage**, **751 frontend passed/28 TODO**; H1d `38069899342` SUCCESS **5 passed**. Experimental HTTP evaluation and presentation use same local capacity lease in tested scenario.
+- Plus test-only SHA `a97f18ddbaab53b6a18ef5fb61b5c85e16eb03cf` adds `test_opt_in_http_evaluate_returns_503_when_local_lease_is_exhausted`, testing real HTTP 503, typed MathResponse, no worker launch during saturation, and subsequent local quota recovery. **New test pending CI**, no pass asserted.
+- Next: verify SG28 and cumulative gates for a97f18dd or descendant; inspect logs and fix at correct layer if red. SG28/H2 globally OPEN for multi-process coordinated admission, topology, fleet load and cancellation while HTTP requests compete. SG28 isolation remains OFF by default; no production deployment changes.
