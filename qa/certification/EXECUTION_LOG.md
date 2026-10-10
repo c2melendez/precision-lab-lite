@@ -944,3 +944,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 ASGI disconnect during active SymPy test awaiting CI
 - Existing Plus SG28 bridge `backend/app/services/request_cancellation.py` already monitors ASGI `http.disconnect` and signals killable `run_bounded` child through threading.Event; experimental and NOT connected to production math endpoints. Existing tests cover ASGI fake disconnect and real loopback TCP disconnect/recovery.
 - New Plus commit `618a24ebb77aa95e0b44af95bd1cbaa3718aa0c9`: `backend/tests/test_in625_sg28_request_cancellation.py` adds end-to-end in-process ASGI disconnect while spawned child actively runs SymPy differentiation (synchronized spawn event), then verifies fresh SymPy recovery. **CI results pending**: isolated SG28 `38012269370`, cumulative `38012269384`, H1d `38012269339` queued at check. SG28/H2 OPEN; public /evaluate route not yet connected.
+
+
+## 2026-10-09 — Plus SG28 ASGI active-SymPy run certified
+- Plus commit `618a24ebb77aa95e0b44af95bd1cbaa3718aa0c9` SG28 isolated workflow `38012269370`: **SUCCESS, 14/14 PASS in 9.85s** (job `114094683361`). Includes ASGI disconnect while active SymPy process differentiates, child interruption and subsequent fresh SymPy recovery.
+- Plus cumulative `38012269384` SUCCESS: backend **576 PASS**, one warning (job `114094683544`); frontend **751 PASS**, 28 TODO (job `114094683353`), zero failures. H1d `38012269339` SUCCESS.
+- This confirms experimental isolation/ASGI behavior, not public `/evaluate` cancellation or deployment readiness. SG28/H2 remain OPEN pending controlled production-route integration and compatibility/security assessment.
