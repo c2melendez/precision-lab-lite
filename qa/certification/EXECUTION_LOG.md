@@ -912,3 +912,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — Plus caller AbortSignal gate verified 751+571 PASS
 - Plus SHA `6784bfa61344bb396f4dc047eebd66db1d9cdfc3`: GitHub Actions cumulative run `38007690669` **SUCCESS**; backend job `114080181068` **571 PASS**, 1 warning; frontend job `114080181197` **751 PASS**, 28 TODO, 0 FAIL. H1d run `38007690683` **SUCCESS**. This validates the two new SG28 external AbortSignal client tests plus existing regressions.
 - Coverage: request-level caller cancellation and subsequent recovery in frontend, NOT termination of SymPy work on the server or explicit UI button. Plus isolated SymPy SG28 earlier run `38006921769` 9 PASS. H2/SG28 globally OPEN pending integrated UI -> HTTP -> backend-process cancellation.
+
+
+## 2026-10-09 — SG28 Plus basic UI caller cancellation implemented, CI pending
+- Plus commit `aae4bec93123c357ff7696dc8fc07b53dff7ea00`: `submitAndRecord` forwards optional AbortSignal and omits history entries for aborted requests. Plus `95eb408d45b958f8bba3c6052e1b175e174cafa7`: visible 'Detener cálculo' in Basic mode for direct evaluate/solve/inequality request, aborts active fetch, invalidates stale request ID and retires busy state. **Scope is limited to these direct paths**; systems, matrices and graphing are not covered yet.
+- New Plus cumulative run `38010848002` and H1d run `38010847995` were QUEUED when checked. **No CI PASS claimed** for these changes. This is client UI/HTTP cancellation, not proof of process termination on backend. SG28/H2 OPEN.
