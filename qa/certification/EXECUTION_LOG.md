@@ -1025,3 +1025,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 structured error recovery regression (CI pending)
 - Plus commit `0457e1ed2ade5fa2afab61433355eefcfbc4710b`: adds subprocess regression asserting `ComputationFailed.error_type == 'ValueError'`, preserves error details and verifies that a following calculation succeeds. Pure regression test; does not change public `/evaluate`.
 - Previous 22/22 PASS run `38015912720` is for SHA `223dcf7` and does NOT certify current SG28 commits `201184f`, `2010e21`, `0457e1e`. GitHub SHA query only covers PR runs; push workflow run remains unverified. H2/SG28 OPEN.
+
+
+## 2026-10-09 — SG28 Plus run 38018275394 verified
+- Workflow `IN625 SG28 Plus Backend Isolation Prototype` run `38018275394`, job `114113358258`: SUCCESS; logs `23 passed in 12.21s` on technical SHA `0457e1ed2ade5fa2afab61433355eefcfbc4710b`, branch `qa/syntax-audit-in625-a1` (push).
+- Confirms structured child exception type + recovery regression through `0457e1e` and preceding commits. No public `/evaluate` cancellation wiring or full MathResponse contract verified; H2/SG28 remains OPEN until broader integration and cumulative gates. https://github.com/c2melendez/precision-lab-plus/actions/runs/38018275394
