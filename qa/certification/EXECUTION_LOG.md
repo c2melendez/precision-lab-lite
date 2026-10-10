@@ -902,3 +902,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 real loopback TCP disconnect test pending CI
 - Plus test `backend/tests/test_in625_sg28_loopback_http.py` commit `92753ea3949b05336e6308feac9bcc0f85080816`: starts a test-only FastAPI app on loopback 127.0.0.1, sends a real HTTP request over TCP, closes client socket while isolated computation is active, checks that the request bridge observes disconnect and finishes cleanup, then verifies a fresh HTTP request computes 2+3=5. It uses bounded timeouts; no production endpoint or external load.
 - Dedicated SG28 workflow amended in `9550b08b73481617b461f4e34c73dee7c9fabe90` to include loopback test. Runs for exact SHA initially QUEUED: SG28 `38009888528`, cumulative `38009888538`, H1d `38009888576`. **No PASS claimed until logs inspected.** This proves test-only HTTP-to-process wiring only if CI passes; actual production endpoints remain unchanged, H2 OPEN.
+
+
+## 2026-10-09 — SG28 loopback TCP 13 PASS cumulative 1326 PASS
+- Verified Plus exact SHA `9550b08b73481617b461f4e34c73dee7c9fabe90`: isolated SG28 run `38009888528` SUCCESS job `114087200053`, **13 pytest passed in 8.83s**, including real loopback TCP HTTP disconnect against test-only FastAPI app and recovery. Cumulative `38009888538` SUCCESS: backend `575 passed, 1 warning`, frontend `751 passed, 28 TODO`, 1326 PASS/0 FAIL; H1d `38009888576` SUCCESS.
+- This evidence is for a local **test-only** endpoint, not the public math API. No production request-to-process cancellation wired; SG28/H2 remain OPEN pending safe integration and end-to-end verification.
