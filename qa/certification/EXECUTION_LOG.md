@@ -1565,3 +1565,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus run `38078685565`, backend job `114290918079` SUCCESS **633 passed / 1 warning**, **85.64%** backend coverage. `test_two_python_processes_hold_independent_local_k1_leases` explicitly PASSED. Frontend job `114290917777` SUCCESS **751 passed / 28 TODO**, 102 modules transformed and built in 20.19s.
 - Lite run `38078703085`, build job `114290969677` SUCCESS 119 modules transformed, built in 4.80s.
 - Technical Plus fix `fd0d3b6ac01d4a4dc5553ca907a97f9eae99ffea` uses spawn and checks effective K=1. Evidence demonstrates independent process-local permits, not distributed quota. H2 OPEN pending externally observed HTTP disconnect and fleet topology. Production isolation remains OFF.
+
+
+## 2026-10-10 — Lite build verified; supplied Plus run ID unresolved
+- Lite run `38078958112`, job `114291728921`: SUCCESS Build Diagnostic, 119 modules transformed, built in 5.68s.
+- Supplied Plus run ID `3807868556` returned GitHub API 404. It is not verified; likely truncated relative to previously verified Plus run `38078685565` (633 passed, 1 warning, 85.64% coverage). Do not infer a new Plus result.
+- SG28/H2 remains OPEN for physical HTTP transport cancellation and fleet-level admission/topology. Production isolation OFF.
