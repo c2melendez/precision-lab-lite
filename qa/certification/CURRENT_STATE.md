@@ -836,3 +836,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 - Plus commit `4de7358c944555728e13c246daeeb97879a7659d` refuerza el test SG28 de cancelación concurrente: segundo proceso real SymPy señaliza arranque mediante `multiprocessing.Event` antes de desconectar la primera solicitud. Conserva validación de resultado matemático independiente. Es cambio de test, no producto.
 - La consulta de GitHub por SHA `04d1d23` devolvió 0 ejecuciones PR; ese endpoint excluye runs push. **No hay PASS/FAIL verificado para el nuevo SHA `4de7358`**, ni evidencia de gate acumulativo. No cerrar SG28/H2.
 - Próximo paso: consultar GitHub Actions por workflow/branch para el SHA técnico, inspeccionar jobs y logs SG28, cumulative y H1d, corregir fallos verificados. No integrar aún el puente experimental con `/evaluate` sin pruebas de compatibilidad y recursos.
+
+
+## 2026-10-09 — SG28 concurrent healthy SymPy calculation signal corrected
+- Plus commit `9b2ecd96badf6583a8aea1e22bdafd799d3419d4` mueve `ready.set()` del worker sano a después de evaluar la derivada SymPy dentro de la prueba de concurrencia. Con ello la señal ya acredita que el cálculo sano se efectuó, en lugar de solo indicar entrada a la función.
+- No hubo modificaciones de producto o endpoint público. La prueba aún no tiene evidencia CI acreditada para ese SHA. Consulta limitada por SHA de `4de7358` no devolvió runs de PR, sin cubrir push.
+- Siguiente paso: confirmar run SG28 y gates acumulativos mediante listado de workflows por rama o UI de Actions y examinar logs. Corregir cualquier FAIL antes de integración pública de `/evaluate`. SG28/H2 sigue OPEN.
