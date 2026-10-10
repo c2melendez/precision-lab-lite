@@ -1355,3 +1355,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus test-only commit `02398a4a5f53fa069442c5f5633bb1449f91b48d` adds `test_outer_disconnect_tracker_sets_scope_event_when_consumed`, exercising actual `DisconnectTrackingMiddleware` and asserting `sg28_http_disconnected` remains set when downstream consumes `http.disconnect`. In-process ASGI test only; no socket or end-to-end coordinator admission assertion. **CI PENDING**.
 - Last verified Plus SG28 66 passed (`38072123470`), cumulative backend 628 passed (`38072123455`), frontend gate successful; H1d 5 passed (`38072123457`). Lite build `38072149298` success. Next: check SG28 and cumulative CI for new commit, then expand test to competing K=1 admission during cleanup.
 - SG28/H2 global OPEN; production isolation OFF.
+
+
+## 2026-10-10 — Outer middleware SG28 green; combined tracker/lease regression CI pending
+- Verified Plus SHA `02398a4a5f53fa069442c5f5633bb1449f91b48d`: SG28 `38073928404` SUCCESS **67 passed/1 warning**, cumulative `38073928403` SUCCESS **629 backend passed/1 warning**, coverage **85.64%**, frontend gate SUCCESS; H1d `38073928400` SUCCESS **5 passed**. `test_outer_disconnect_tracker_sets_scope_event_when_consumed` explicitly PASSED.
+- New Plus test-only SHA `4654cd937b68b15e30c0047f4b75a6674bafba0b` adds `test_outer_tracker_disconnect_holds_reserved_slot_until_cleanup`. Uses actual outer `DisconnectTrackingMiddleware`, shared ASGI scope event, an inner consumer of `http.disconnect`, and mocked coordinator; checks K=1 competing local admission denied during cleanup and recovery after completion. **CI PENDING**; in-process ASGI rather than external socket or fleet-wide isolation.
+- SG28/H2 OPEN: global admission, fleet topology, and deployment validation remain outstanding. Production isolation OFF. Next: inspect SG28/cumulative gates for SHA 4654cd9 or descendant and address any failures before further engineering.
