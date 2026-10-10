@@ -998,3 +998,8 @@ Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 def
 ## SG28 Plus unmocked browser stop/recovery test — CI pending
 - Plus commit dca1970f9f1018da6f8bbea1a57e344deed87a6b appends a Playwright test to frontend/e2e/in625-h2-sg28-cancel.spec.ts which sends actual /api/v1/evaluate from browser, clicks Detener cálculo and verifies 4+5=9 on subsequent request, with no page.route mocks.
 - CI for dca1970 remains unverified. This does not establish that child PID was active at click or actually reaped by browser cancellation; observable backend process probe still required. Previously certified backend 37 PASS run 38025649681 and UI 3 PASS run 38024683700. H2/SG28 OPEN, experimental flag OFF by default.
+
+
+## 2026-10-09 — SG28 UI E2E 4/4 verified
+- Plus run 38026273274, job 114137669432, SHA dca1970f9f1018da6f8bbea1a57e344deed87a6b, SUCCESS, Chromium desktop 4 passed in 10.2 s. Fourth unmocked browser HTTP cancellation and recovery test passed. https://github.com/c2melendez/precision-lab-plus/actions/runs/38026273274
+- Backend last accredited 37 PASS run 38025649681. Remaining H2 SG28 gap: deterministic evidence child process active when browser presses stop and same PID reaped by server cancellation; cumulative gates not yet certified. Experimental isolation OFF by default. H2 OPEN.
