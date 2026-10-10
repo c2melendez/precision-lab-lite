@@ -898,3 +898,8 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 ## 2026-10-09 — SG28 MathResponse error transport probe (CI pendiente)
 - Plus commit `7547f2efbb941c0a72d92602d8b3b4d614f03a29` añade regresión que devuelve un `MathResponse` de error construido en proceso aislado, comprobando `success=False`, `ErrorCode.PARSE_ERROR`, operation EVALUATE, mensaje y serialización JSON.
 - Prueba de transporte estructural del esquema; **no implica que la ruta pública /evaluate cree la respuesta bajo aislamiento ni que su mapeo de excepciones haya sido comprobado**. Última evidencia SG28 23/23 PASS en run `38018275394` corresponde SHA `0457e1e`. SHA nuevo sin verificación CI. H2 OPEN.
+
+
+## 2026-10-09 — SG28 typed child errors versus public ErrorCode (pending CI)
+- Plus technical commit `e0be97ca33df4b026247d5edc740b799fa86c885` adds parametrized bridge test for real `evaluate_service.evaluate` errors: DomainErrorResult -> DOMAIN_ERROR and ParseSecurityError -> PARSE_ERROR. Checks typed transport and test-local ErrorCode mapping. It does NOT implement the real router adapter, nor demonstrate actual public MathResponse handling.
+- Last SG28 CI accredited: `38018275394`, 23/23 PASS at earlier SHA 0457e1e. New change must be checked in workflow and cumulative gate. H2/SG28 OPEN.
