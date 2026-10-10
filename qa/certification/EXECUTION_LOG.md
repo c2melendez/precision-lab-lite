@@ -1510,3 +1510,11 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus SHA `4654cd937b68b15e30c0047f4b75a6674bafba0b`: SG28 run `38074280892` SUCCESS **68 passed/1 warning**, cumulative `38074280914` SUCCESS backend **630 passed/1 warning**, coverage **85.69%**, frontend job SUCCESS; H1d `38074280878` SUCCESS **5 passed**. The combined middleware/lease regression `test_outer_tracker_disconnect_holds_reserved_slot_until_cleanup` is explicitly PASSED in cumulative CI.
 - Scope: in-process ASGI, mocked coordinator, local K=1; does not prove socket disconnect behavior, distributed quota or deployment fitness. H2 OPEN; experimental production isolation OFF.
 - Next: audit actual deployment configuration/topology, record replica/process assumptions, then choose safe observable production-disabled external transport validation without enabling isolation.
+
+
+## 2026-10-10 — SG28 deployment topology audit (documentary; no new test PASS)
+- Published `qa/certification/SG28_DEPLOYMENT_TOPOLOGY_AUDIT.md` in both repositories. Plus commit `5dafc9983c17dc38a6392315c65506dea5380ad0`; Lite commit `067b165ff353a854efc4c647a41a754fb8cbdd1c`.
+- Source-confirmed: Plus `_ADMISSION` is a process-local bounded semaphore (default K=2, bounded 1..16). No tracked Render blueprint/Dockerfile/Procfile or deploy manifest establishes live instance/process count. Runtime topology and global admission remain NOT VERIFIED.
+- Last previously certified technical SHA Plus `4654cd937b68b15e30c0047f4b75a6674bafba0b`: SG28 `38074280892` 68 PASS; cumulative `38074280914` 630 backend PASS; H1d `38074280878` 5 PASS. This documentary audit is not a new technical gate or certification.
+- H2/SG28 OPEN; real socket-disconnect / multi-process admission / deployment capacity not yet certified; opt-in isolation stays OFF in production.
+- **Next exact step:** inspect Render deployment properties read-only in a user-confirmed workspace; obtain replica count, worker/start command and effective flag safely; then implement bounded external-transport + multiprocess CI validation in a dedicated isolated test environment, verify SG28/cumulative gates and update both logs.
