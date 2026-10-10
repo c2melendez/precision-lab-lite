@@ -1545,3 +1545,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Lite run `38077876180`, Build Diagnostic job `114288551397`: SUCCESS, 119 modules transformed, built in **5.12s**.
 - Supplied Plus run `38076842089` is the previously verified cumulative gate: backend job `114285492589` SUCCESS 632 passed / 1 warning / 85.64% coverage; frontend job `114285492490` SUCCESS 751 passed / 28 TODO. Not a new Plus test execution.
 - Scope remains: local semaphore tests only; no multiprocess/distributed admission or socket disconnect certification. H2 OPEN and production opt-in OFF.
+
+
+## 2026-10-10 — Actual process-boundary K=1 characterization published; CI PENDING
+- Plus test-only commit `7b65136907ef61849f78858a9d20ee4654730867` introduces `backend/tests/test_sg28_process_boundary.py`: two independent Python processes simultaneously hold local K=1 leases; each rejects a nested reservation and recovers afterward; distinct PIDs asserted. **CI not yet verified**. This demonstrates absence of a global K=1 quota if passing, not production deployment topology or distributed isolation safety.
+- Lite `38078177026` diagnostic job `114289428136` SUCCESS: 119 modules transformed, built in 6.28s.
+- No Actions dispatch connector available in this session; the commit was published, but a new Plus Actions run was not manually triggered. Verify CI for the new SHA or descendant before claiming pass. H2 remains OPEN; production isolation OFF.
