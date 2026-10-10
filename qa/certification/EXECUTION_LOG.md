@@ -1030,3 +1030,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — SG28 Plus run 38018275394 verified
 - Workflow `IN625 SG28 Plus Backend Isolation Prototype` run `38018275394`, job `114113358258`: SUCCESS; logs `23 passed in 12.21s` on technical SHA `0457e1ed2ade5fa2afab61433355eefcfbc4710b`, branch `qa/syntax-audit-in625-a1` (push).
 - Confirms structured child exception type + recovery regression through `0457e1e` and preceding commits. No public `/evaluate` cancellation wiring or full MathResponse contract verified; H2/SG28 remains OPEN until broader integration and cumulative gates. https://github.com/c2melendez/precision-lab-plus/actions/runs/38018275394
+
+
+## 2026-10-09 — SG28 MathResponse serialization contract probe
+- Plus commit `85e1f6307ec0a7164e924f2a1659efacaacd9a7d`: adds test which returns real `MathResponse` Pydantic instance from the isolated process after actual evaluate-service computation, asserting EVALUATE, SCALAR, approx, request_id, JSON serialization and no detailed steps. This is a **synthetic contract projection**, not full actual endpoint mapping.
+- CI unverified for SHA 85e1f63; previous SG28 evidence 23 PASS on SHA 0457e1e (run 38018275394). Public `/evaluate` unchanged, H2/SG28 remains OPEN.
