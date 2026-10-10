@@ -1382,3 +1382,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Updated topology audit is available in Plus at `qa/certification/SG28_H2_TOPOLOGY_AUDIT.md` (`920f9add`). Execution-log checkpoints synchronized to Lite and Plus.
 - New test CI **UNVERIFIED**: do not count as certified until exact run/job logs confirm passing. Last recorded successful gates: Plus SG28 `38074280892` (68 passed), cumulative `38074280914` (630 backend passed), H1d `38074280878` (5 passed).
 - Next: inspect CI for `adceca5` or descendant; fix failures, then add true multi-process and disposable external HTTP transport evidence. Render deployment workspace remains unconfirmed; fleet-topology check blocked pending user workspace selection. H2 OPEN and isolation OFF.
+
+
+## 2026-10-10 — Local admission scope regression VERIFIED
+- Plus run `38076842089` jobs backend `114285492589` and frontend `114285492490`: SUCCESS; backend **632 passed / 1 warning**, coverage **85.64%**; frontend **751 passed / 28 TODO** and successful build.
+- Lite run `38076878958` build job `114285601202`: SUCCESS; 119 modules transformed, built in 7.07s. Build-only, not backend SG28 certification.
+- H2 is still **OPEN**. Two added unit regressions check K=1 and separate in-memory pools but do not validate real process boundaries, distributed admission, physical HTTP disconnects, or production topology. Production isolation remains OFF.
+- Next: create true process-isolation characterization in a disposable CI environment and compare with deployment topology once Render workspace is confirmed. Do not report fleet-wide certification until evidence is obtained.
