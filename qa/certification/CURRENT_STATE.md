@@ -749,3 +749,9 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 ## 2026-10-09 — SG28 ASGI disconnect event test pending CI
 - Plus test commit `e0c8c12b9df727832ff47ea9bab82da8ac0d0ab6`: `backend/tests/test_in625_sg28_request_cancellation.py` adds a Starlette `Request` constructed with a genuine ASGI `http.disconnect` message, then verifies `run_for_request` interrupts the isolated child and a subsequent request recovers. This is in-process ASGI-message evidence, **not a real socket disconnection and not a production endpoint integration**.
 - New Plus runs queued: SG28 `38009241766`, cumulative `38009241757`, H1d `38009241884`. Test not yet accredited PASS. Next: inspect logs, then true isolated HTTP server/socket test and resource constraints before routing production SymPy. H2/SG28 OPEN.
+
+
+## 2026-10-09 — SG28 Plus Starlette ASGI disconnect 12/12 PASS
+- Plus SHA `e0c8c12b9df727832ff47ea9bab82da8ac0d0ab6`: SG28 run `38009241766` SUCCESS, job `114085145293` **12/12 pytest PASS (7.84s)** including real Starlette Request receiving an in-process ASGI `http.disconnect` event.
+- Same SHA cumulative run `38009241757` SUCCESS: backend `574 PASS, 1 warning` and frontend `751 PASS, 28 TODO` (1325 passing total, zero failures). H1d run `38009241884` SUCCESS.
+- Coverage does not include an external TCP/HTTP client disconnect or public mathematical FastAPI route integration. SG28/H2 OPEN; next is an isolated loopback HTTP server/client disconnect lifecycle test and resource limits.
