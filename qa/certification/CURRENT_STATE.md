@@ -903,3 +903,10 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 ## 2026-10-09 — SG28 typed child errors versus public ErrorCode (pending CI)
 - Plus technical commit `e0be97ca33df4b026247d5edc740b799fa86c885` adds parametrized bridge test for real `evaluate_service.evaluate` errors: DomainErrorResult -> DOMAIN_ERROR and ParseSecurityError -> PARSE_ERROR. Checks typed transport and test-local ErrorCode mapping. It does NOT implement the real router adapter, nor demonstrate actual public MathResponse handling.
 - Last SG28 CI accredited: `38018275394`, 23/23 PASS at earlier SHA 0457e1e. New change must be checked in workflow and cumulative gate. H2/SG28 OPEN.
+
+
+## SG28 staged endpoint integration — 2026-10-09
+- Plus commit `0640354e36c46bc00bb344f38af1936db6761f4d` adds **opt-in** `SG28_EVALUATE_ISOLATION=1` to actual `/api/v1/evaluate` service execution. Flag defaults off; original route remains unchanged when off. Experimental path calls `run_for_request` on actual `evaluate_service.evaluate`, handles typed child failure to existing `ErrorCode`, timeout and cancellation; public MathResponse formatting remains on parent request handler.
+- Plus commit `ed11f9b7bfae7e8c3d070bb10479448e479acc3e` adds HTTP `TestClient` comparison for actual public `/evaluate`, isolation off/on: arithmetic, degrees trig, parse/domain errors and selected response fields.
+- **CI not yet verified** for these commits. Integration is not production-enabled, unbounded parent-side formatting still exists, and resource/concurrency caps and cancellation E2E must be proved before enabling. H2 OPEN. Previous prototype run 38018275394: 23/23 PASS at older commit.
+- Next: verify SG28 backend workflow and cumulative CI on `ed11f9b`, fix mismatches, add real HTTP disconnect/recovery test for production route under opt-in and concurrency controls, then gate deployment.
