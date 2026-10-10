@@ -956,3 +956,8 @@ Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 def
 ## SG28 — observable child PID termination regression pending CI
 - Plus commit 88bfd0f52b21e94d4b46d84ab3fec5233d44cab8 adds POSIX-only parametrized subprocess worker PID liveness tests for timeout and explicit cancellation, with real SymPy active worker, os.kill(pid, 0) absence assertion after interruption and new calculation recovery.
 - This is test implementation only. Latest CI accredited 33 PASS on run 38023325162 (SHA b5d6b6c). New SHA 88bfd0f not CI verified. SG28/H2 OPEN. Next inspect SG28 Actions run for SHA 88bfd0f, diagnose failures and then progress frontend E2E/cumulative gates.
+
+
+## 2026-10-09 — SG28 real child PID cleanup PASS
+- Plus workflow run `38024028278` job `114130927523`, commit `88bfd0f52b21e94d4b46d84ab3fec5233d44cab8`, branch `qa/syntax-audit-in625-a1`: SUCCESS, `35 passed, 1 warning in 15.92s`. Real POSIX PID disappearance on timeout/cancellation and subsequent healthy compute covered. https://github.com/c2melendez/precision-lab-plus/actions/runs/38024028278
+- This proves measured child PID cleanup in CI on Linux; does not yet certify frontend stop-button end-to-end, complete load/replica resource limits, or cumulative gates. SG28/H2 OPEN; opt-in flag OFF by default. Next inspect frontend cancellation, add real browser E2E and run cumulative gates.
