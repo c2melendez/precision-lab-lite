@@ -1608,3 +1608,8 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 ## 2026-10-10 — SG28 lease replay regression CI GREEN: 644 backend
 - Plus technical SHA `591900282da7ef96a154439f034eccffb9ce0de4`, cumulative run `38086974503`: backend job `114315404149` SUCCESS **644 passed / 1 warning / 85.59% coverage**; all three newest lease contract tests explicitly PASSED. Frontend job `114315404272` SUCCESS 751 passed / 28 TODO, 102 modules, built in 21.22s. H1d `38086974500` job `114315404288` SUCCESS 5 passed.
 - Tests remain deterministic in-memory lease model, not production distributed coordination. Global H2 OPEN; isolation OFF in production.
+
+
+## 2026-10-10 — SG28 multiple-generation fencing and renewal boundary GREEN
+- Plus technical SHA `5bbc8cdd23870a7ef66931940a1b119467e25ff9`, cumulative run `38087686939`: backend job `114317512686` SUCCESS **646 passed / 1 warning / coverage 85.64%**; `test_old_lease_cannot_release_current_even_after_multiple_turnovers` and `test_renewed_lease_blocks_successor_until_new_deadline` explicitly PASSED. Frontend job `114317512517` SUCCESS **751 passed / 28 TODO**, 102 modules, build 23.03s.
+- Model-only CI; no production distributed lease implementation. H2 global OPEN, isolation OFF in production.
