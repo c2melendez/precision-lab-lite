@@ -1008,3 +1008,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus commit `223dcf76911a15b3a6c9c0f5b93434e579ccd31f` adds parametrized test for invalid evaluation (`1/0`, `x+(`) via actual `evaluate_service.evaluate` through isolated request bridge. It expects child failures to surface as `ComputationFailed`, not a successful value, with original exception type represented in diagnostic text. Exact exception expectations remain **unverified until CI**, and may require adjustment based on actual parser/domain classification.
 - This does NOT establish preservation of public MathResponse error codes: the prototype wrapper currently converts subprocess exceptions into `ComputationFailed`. Production FastAPI `/evaluate` remains unchanged. H2/SG28 OPEN.
 - Follow-up: review SG28 run/logs for SHA `223dcf7` plus cumulative/H1d, classify any failures; establish typed error transmission in prototype and compatibility tests before public endpoint integration.
+
+
+## SG28 Plus — CI verificado: run 38015912720
+- Workflow `IN625 SG28 Plus Backend Isolation Prototype`: SUCCESS, job `sg28-backend-isolation` `114105984641`; SHA técnico `223dcf76911a15b3a6c9c0f5b93434e579ccd31f`; rama `qa/syntax-audit-in625-a1`; logs: `22 passed in 12.10s` (3 ficheros pytest SG28: interruptible, request_cancellation, loopback_http).
+- Evidencia: https://github.com/c2melendez/precision-lab-plus/actions/runs/38015912720
+- Alcance aprobado: pruebas del prototipo de aislamiento/cancelación del backend en ese SHA. No acredita integración de `/evaluate` público ni gate acumulativo completo; H2/SG28 permanece OPEN.
