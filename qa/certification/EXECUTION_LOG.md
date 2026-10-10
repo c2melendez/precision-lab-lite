@@ -1577,3 +1577,8 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Lite run `38079463421`, job `114293198743` SUCCESS: 119 modules transformed; built in 6.67s.
 - Plus technical commit `e73581e8247927792c45883094c4e7b41275f40b` adds `backend/tests/test_sg28_tcp_disconnect.py`: disposable local Uvicorn server and actual client TCP close, expecting outer `DisconnectTrackingMiddleware` to observe `http.disconnect`. **New test CI PENDING**, no pass claim yet.
 - This checks real TCP-to-ASGI disconnect signal, not process coordinator admission cleanup, global distributed quota, or production deployment topology. H2 remains OPEN, production isolation OFF.
+
+
+## 2026-10-10 — Real TCP disconnect signal VERIFIED, Plus 38079926674
+- Plus run `38079926674`: backend job `114294564210` SUCCESS **634 passed, 1 warning, coverage 85.72%**. `tests/test_sg28_tcp_disconnect.py::test_real_tcp_disconnect_sets_outer_scope_event` explicitly PASSED. Frontend job `114294564030` SUCCESS **751 passed / 28 TODO**, 102 modules transformed, built in 15.53s.
+- This establishes real loopback TCP closure reaches the ASGI disconnect tracker. It does NOT establish disconnect handling of a reserved in-flight compute lease through completion, nor distributed fleet admission. H2 remains OPEN; experimental isolation remains OFF in production.
