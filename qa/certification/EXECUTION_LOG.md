@@ -1062,3 +1062,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## SG28 — CI confirmado 31 PASS sobre endpoint opt-in
 - Plus run 38021514258, job 114123323554: SUCCESS, 31 passed, 1 warning in 16.77s, SHA cd7bbce8dca4dcbbd4f26fe5ba710d1199b143f1, branch qa/syntax-audit-in625-a1. Workflow SG28 Backend Isolation incluye test HTTP de /evaluate aislamiento 0/1 y error/resultado. URL https://github.com/c2melendez/precision-lab-plus/actions/runs/38021514258
 - Integra prueba HTTP real por TestClient, no certifica cancelación frontend→backend mediante desconexión TCP, cuotas/concurrencia, ni gate acumulativo. H2 OPEN. Siguiente paso preciso: prueba HTTP TCP real contra /api/v1/evaluate con bandera on, confirmar cancelación del proceso y recuperación; añadir cuotas antes de producción; ejecutar CI acumulativo.
+
+
+## SG28 — prueba de desconexion TCP del endpoint real publicada (CI pendiente)
+- Plus commit `d1e6c3e11c42e11ae0aa9cfd6893ee6cf9275ef5` añade en `backend/tests/test_in625_sg28_loopback_http.py` escenario opt-in real `POST /api/v1/evaluate`: request HTTP TCP, desconexión durante worker prolongado, comprobación de interrupción observada por bridge y nueva solicitud de recuperación. El protocolo aún necesita logs CI y posible ajuste por middleware ASGI. **No certificada hasta correr.**
+- Evidencia anterior acreditada: SG28 31 PASS y 1 warning en Plus run 38021514258 SHA cd7bbce. H2 OPEN; flag desactivado por defecto. Siguiente: consultar run para SHA d1e6c3e, diagnosticar rojo y mejorar prueba del cleanup de procesos/concurrencia antes de producción.
