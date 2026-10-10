@@ -1079,3 +1079,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus commits `ed77937562e51c6e8dfa8f292e8d74572e50a400`, `77ceef6c8bcb2c521b408432d13ec08bdd4d221a`, `0d95fe2dca2c73ee12332c8b0b0a1bb1e232da0e` crean `DisconnectTrackingMiddleware` ASGI externo en `backend/app/main.py`, registra evento `http.disconnect` en scope y permite a `run_for_request` detectarlo aun cuando middleware HTTP consume el mensaje. No se modifica el test para fabricar verde.
 - Workflow `in625-sg28-backend-cancellation.yml` commit `3af8bd7e65d0e336c130901eddf1c9c581aa69ab` añade paths `backend/app/main.py` y `backend/app/services/disconnect_tracking.py` para disparar SG28.
 - Evidencia anterior fallida: run 38022234145, 31 PASS/1 FAIL, el test real TCP esperaba cancelación no observada. **Nueva corrección CI no verificada**. Siguiente paso EXACTO: leer run SG28 de SHA `3af8bd7`, analizar resultado y ajustar si persiste el fallo; asegurar cancelación y cleanup real, luego gates acumulativos. Mantener `SG28_EVALUATE_ISOLATION` desactivado por defecto. H2 OPEN.
+
+
+## 2026-10-09 — SG28 disconnected HTTP gate PASS
+- Plus workflow run `38023015566`, job `114127871831`, SHA `3af8bd7e65d0e336c130901eddf1c9c581aa69ab`, push branch `qa/syntax-audit-in625-a1`: SUCCESS, `32 passed, 1 warning in 15.22s`. Real TCP disconnect + recovery test now PASS after outer ASGI disconnect tracker fix. https://github.com/c2melendez/precision-lab-plus/actions/runs/38023015566
+- This validates current test assertions, not full proof of child-process resource reclamation or server concurrency budgets. SG28/H2 OPEN; flag stays OFF by default. Next implement measurable child cleanup/concurrency gates and frontend end-to-end cancellation, run cumulative regression.
