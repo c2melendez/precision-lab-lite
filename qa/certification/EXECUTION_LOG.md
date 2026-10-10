@@ -1571,3 +1571,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Lite run `38078958112`, job `114291728921`: SUCCESS Build Diagnostic, 119 modules transformed, built in 5.68s.
 - Supplied Plus run ID `3807868556` returned GitHub API 404. It is not verified; likely truncated relative to previously verified Plus run `38078685565` (633 passed, 1 warning, 85.64% coverage). Do not infer a new Plus result.
 - SG28/H2 remains OPEN for physical HTTP transport cancellation and fleet-level admission/topology. Production isolation OFF.
+
+
+## 2026-10-10 — SG28 real loopback TCP disconnect test published, CI PENDING
+- Lite run `38079463421`, job `114293198743` SUCCESS: 119 modules transformed; built in 6.67s.
+- Plus technical commit `e73581e8247927792c45883094c4e7b41275f40b` adds `backend/tests/test_sg28_tcp_disconnect.py`: disposable local Uvicorn server and actual client TCP close, expecting outer `DisconnectTrackingMiddleware` to observe `http.disconnect`. **New test CI PENDING**, no pass claim yet.
+- This checks real TCP-to-ASGI disconnect signal, not process coordinator admission cleanup, global distributed quota, or production deployment topology. H2 remains OPEN, production isolation OFF.
