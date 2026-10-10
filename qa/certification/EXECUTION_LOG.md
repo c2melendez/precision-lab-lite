@@ -1382,3 +1382,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - New Plus test-only commit `8291757372c0f86dd05fdb43b1bb0dd39e39e8ad` adds `test_interleaving_request_can_take_slot_between_evaluation_and_presentation` to make the lack of end-to-end local admission reservation explicit: another request takes K=1 between phases, presentation is rejected, then recovers when the slot is released. Mocked work, single-process only; no deployment changes.
 - New test CI PENDING; do not treat it as passing before SG28 and cumulative run evidence. SG28/H2 global remains OPEN for end-to-end guarantees and distributed fleet admission. Production isolation OFF.
 - Next: verify SG28/cumulative Actions for commit 82917573 or a descendant, then decide whether a request-scoped lease implementation is compatible with cancellation, timeouts and public error semantics.
+
+
+## 2026-10-10 — Latest supplied Plus H1d and Lite build verified
+- Plus run `38067586889` job `114258275069`: SUCCESS H1d Playwright 5 passed in 22.4s. Not an SG28 backend test.
+- Lite run `38067609997` job `114258343250`: SUCCESS Build Diagnostic, 119 modules transformed, 6.62s. Not an SG28 test.
+- Plus interleaving admission test SHA `8291757372c0f86dd05fdb43b1bb0dd39e39e8ad` is still pending targeted SG28/cumulative CI evidence; no claim of PASS from these two runs. Global SG28/H2 remains OPEN, production isolation OFF.
+- Next: locate and inspect Plus SG28 backend and cumulative CI on this SHA or descendant; verify the test result, then proceed to bounded end-to-end capacity semantics.
