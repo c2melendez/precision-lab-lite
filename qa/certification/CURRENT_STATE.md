@@ -1389,3 +1389,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite run `38076878958` build job `114285601202`: SUCCESS; 119 modules transformed, built in 7.07s. Build-only, not backend SG28 certification.
 - H2 is still **OPEN**. Two added unit regressions check K=1 and separate in-memory pools but do not validate real process boundaries, distributed admission, physical HTTP disconnects, or production topology. Production isolation remains OFF.
 - Next: create true process-isolation characterization in a disposable CI environment and compare with deployment topology once Render workspace is confirmed. Do not report fleet-wide certification until evidence is obtained.
+
+
+## 2026-10-10 — SG28/H2 CURRENT VERIFIED BASELINE (supersedes older gates above)
+- Plus technical SHA `c36608ab11e5264ed759af510721d67d0532b2c1` cumulative run `38082715108` GREEN: backend **636 passed / 1 warning / coverage 85.67%**, including `test_real_child_cancelled_under_reserved_k1_then_reusable` PASS; frontend **751 passed / 28 TODO**, build GREEN. SG28 isolation run `38082715115` GREEN **69 passed / 1 warning**; H1d `38082715138` GREEN **5 passed**.
+- Prior Plus run `38080591813`: real loopback TCP disconnect with K=1 retained through **simulated coordinator** cleanup PASS (635 backend). Process-local K=1 independent worker test previously passed.
+- Lite last confirmed diagnostic run `38079463421` GREEN, 119 modules built in 6.67s. Latest evidence for Lite remains build-only.
+- H2 OPEN: no single verified end-to-end physical TCP-disconnect + actual spawned child process lifecycle test; no shared fleet admission coordinator, verified global quota, or Render runtime topology. Preserve `SG28_EVALUATE_ISOLATION=0` in production.
+- Next: complete nonproduction end-to-end real TCP + spawned child safety gate only through supported tool controls; check global admission requirements after read-only confirmation of Render workspace and actual worker/replica layout. Record the exact run/commit results; do not promote H2 to PASS prematurely.
