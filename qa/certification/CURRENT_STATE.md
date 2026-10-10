@@ -1013,3 +1013,9 @@ Plus commits 6d14933, fcf966c, b5d6b6c add isolated concurrency admission (2 def
 ## SG28 UI run 38026545558 — 2026-10-09
 - Plus run 38026545558 at commit 4bb96be5f222dea0574c448918ced022d795feb9: SUCCESS, Chromium Playwright 4 passed (10.7s), job 114138483037. Opt-in SG28_CI_OBSERVE instrumentation configured, but fetched job output did not expose SG28_CHILD_START / SG28_CHILD_FINISH. Therefore PID-to-browser-stop causality is still NOT evidenced. https://github.com/c2melendez/precision-lab-plus/actions/runs/38026545558
 - Next require correlated child PID lifecycle captured as test artifact or assertion, not console-only logging; deterministic active compute before clicking Stop, then same child PID confirmed absent/reaped after. Backend previous 37 PASS on 38025649681; H2 OPEN; production flag OFF.
+
+
+## SG28 CI verification 2026-10-09 — run 38027501493
+- Plus UI workflow SUCCESS at commit 4b941c7730916758fb64f8b0af7b98122b81e489, job 114141360937: Chromium Playwright 4 PASS (8.3s), 0 FAIL. The webserver env propagation change did not regress tests.
+- In the fetched job log, zero `SG28_CHILD_START` and zero `SG28_CHILD_FINISH` lines appear. This is absence of log evidence, not proof processes did not run. Browser Stop -> specific live PID -> reaped causal proof remains OPEN, as do cumulative gates. https://github.com/c2melendez/precision-lab-plus/actions/runs/38027501493
+- Backend last verified SG28 37 PASS run 38025649681. Keep SG28 flag default OFF; H2 OPEN. Next capture explicit backend process evidence as test artifact or observable assertion, not just stdout.
