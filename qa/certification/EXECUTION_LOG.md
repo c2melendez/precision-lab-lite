@@ -1256,3 +1256,7 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-10 — SG28 POSIX CPU exhaustion gate VERIFIED
 - Plus technical SHA `1e90909ae5c246db0840d46f0a941d53c378b484`: `IN625 SG28 Plus Backend Isolation Prototype` run `38033336262` SUCCESS, **42 passed / 1 warning**, including real CPU-bound worker terminated by opt-in POSIX `RLIMIT_CPU=1` and new isolated `4+5=9` success. Cumulative `38033336323` SUCCESS frontend **751 passed / 28 TODO**, backend **604 passed / 1 warning**; H1d `38033336300` SUCCESS **5 passed**. CPU test wall duration ~2.31s.
 - Classification: CPU ceiling + worker recovery proven in isolated Linux CI; still no proof of public HTTP `MathResponse` classification for CPU signal exit. Remaining SG28/H2: public CPU-limit error-code semantic, resident memory budget, post-worker simplify/latex outside child, multireplica concurrency/production rollout; SG28_EVALUATE_ISOLATION OFF by default.
+
+
+## 2026-10-10 — SG28 CPU timeout classification (CI pending)
+- Plus commits `52b48f02ed5063a0a9a5c8c50e9dfd4da9d56f60` and `f0105637ee59c835bd8606233e557b1c6006126f` classify POSIX SG28 CPU-limit SIGXCPU child exit as `ComputationTimedOut` and assert it in the actual CPU exhaustion/recovery regression. No production flags changed. Plus runs for SHA f0105637: backend `38033933770`, cumulative `38033933785`, H1d `38033933760` pending CI verification.
