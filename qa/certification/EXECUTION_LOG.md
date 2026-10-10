@@ -1020,3 +1020,8 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Plus commit `201184f617c9107a6bf50338d2d91d86d163ac2a` modifies experimental `backend/app/services/interruptible.py`: worker sends `(exception class name, error message)` as structured failure payload; `ComputationFailed.error_type` retains exception identity and traditional text remains compatible.
 - Plus commit `2010e21cf0ac4022c616938a4cfdc5009e10e4a6` extends `test_isolated_real_evaluate_service_rejects_invalid_input` to assert `error_type` across child boundary.
 - No FastAPI public `/evaluate` route modified, no public MathResponse error mapping implemented; H2/SG28 remains OPEN. Prior confirmed SG28 run `38015912720` 22/22 PASS applies to older SHA `223dcf7`, **not** the new two commits; pending fresh SG28 + cumulative gates.
+
+
+## 2026-10-09 — SG28 structured error recovery regression (CI pending)
+- Plus commit `0457e1ed2ade5fa2afab61433355eefcfbc4710b`: adds subprocess regression asserting `ComputationFailed.error_type == 'ValueError'`, preserves error details and verifies that a following calculation succeeds. Pure regression test; does not change public `/evaluate`.
+- Previous 22/22 PASS run `38015912720` is for SHA `223dcf7` and does NOT certify current SG28 commits `201184f`, `2010e21`, `0457e1e`. GitHub SHA query only covers PR runs; push workflow run remains unverified. H2/SG28 OPEN.
