@@ -1287,3 +1287,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-10 — SG28 isolated address-space exhaustion VERIFIED
 - Plus SHA `f4d0829cebc52944339fc3340aa7f887b2ea9f50`: SG28 backend `38062172534` SUCCESS **45 passed /1 warning**, cumulative `38062172528` SUCCESS frontend **751 passed /28 TODO**, backend **607 passed /1 warning**, H1d `38062172538` SUCCESS **5 passed**. Regression proves attempted 2GiB allocation under opt-in child-only 1GiB POSIX RLIMIT_AS is captured as typed `MemoryError`/`ComputationFailed`, then subsequent math recovery `4+5=9` works.
 - Remaining: public `/api/v1/evaluate` mapping of isolated MemoryError to appropriate MathResponse; post-worker SymPy formatting budget; distributed admission. No production activation. Attempt to update router mapping was blocked by tooling; do not count it implemented.
+
+
+## 2026-10-10 — SG28 memory exhaustion public MathResponse gate (CI PENDING)
+- Plus technical commit `b772b393dbd4d92e9ce77794f6738dd4f3b23be6` maps isolated child `MemoryError` in public `/api/v1/evaluate` to typed `ErrorCode.COMPLEXITY_LIMIT` (previous generic INTERNAL_ERROR). Plus commit `f00590c4d014e51e94f2f4def45b017f4a266029` adds public HTTP TestClient regression with real 2GiB child allocation under opt-in POSIX 1GiB RLIMIT_AS, asserting HTTP 200 `MathResponse` success=false, operation=evaluate, error_code COMPLEXITY_LIMIT, no detailed steps and request_id. No production environment flags changed.
+- Latest Plus SHA f00590c4 CI initially QUEUED: SG28 backend `38063222854`, cumulative `38063222947`, H1d `38063222988`. No PASS claimed for this public memory contract until logs reviewed. Prior SHA f4d0829c backend 45 PASS, cumulative frontend 751/backend 607 PASS, H1d 5 PASS.
+- SG28/H2 remains OPEN for post-worker unbounded SymPy simplify/latex work, distributed admission budgets, and deployment rollout. Isolation stays OFF by default.
