@@ -928,3 +928,9 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 ## 2026-10-09 — Plus Basic cancellation compatibility gate recovered
 - Plus SHA `516a381cbcedabcca602b9edb25e76a226c4a56f`: cumulative run `38011234844` SUCCESS. Backend job `114091482037`: **575 PASS**, 1 warning. Frontend job `114091482273`: **751 PASS**, 28 TODO, 0 FAIL. H1d run `38011234835` SUCCESS. Previously observed 39 frontend failures in run `38010848002` were removed by backwards-compatible optional AbortSignal forwarding and adjusted SG28 Basic call expectations.
 - Scope: existing unit and integration suite green; still lacks specific browser E2E of Basic UI cancel and back-end process interruption on client disconnect. SG28/H2 OPEN.
+
+
+## 2026-10-09 — SG28 Plus Basic browser E2E added, CI pending
+- Plus `frontend/e2e/in625-h2-sg28-cancel.spec.ts` commit `38c2f190f6eebac42f0895f92b39562992317ffa`: browser Playwright test exercises visible «Detener cálculo» in Basic mode, delays first HTTP /evaluate response via route mock, cancels, submits a second ordinary operation, and checks stale response marker absent. No expensive request sent to production; test uses Playwright isolated backend.
+- Dedicated workflow `.github/workflows/in625-sg28-plus-ui-cancel.yml` commit `086d9f678faf5f8f13aa4ec6a2707eebbedb73b5`. Initial runs as observed: E2E `38011603975`, cumulative `38011603949`, H1d `38011603906` all QUEUED. No CI PASS claimed for new browser test.
+- Scope: client UI cancel/recover only; backend cancellation upon client disconnect still NOT demonstrated. SG28/H2 OPEN.
