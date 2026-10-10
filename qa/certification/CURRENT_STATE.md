@@ -1246,3 +1246,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite run `38067609997` job `114258343250`: SUCCESS Build Diagnostic, 119 modules transformed, 6.62s. Not an SG28 test.
 - Plus interleaving admission test SHA `8291757372c0f86dd05fdb43b1bb0dd39e39e8ad` is still pending targeted SG28/cumulative CI evidence; no claim of PASS from these two runs. Global SG28/H2 remains OPEN, production isolation OFF.
 - Next: locate and inspect Plus SG28 backend and cumulative CI on this SHA or descendant; verify the test result, then proceed to bounded end-to-end capacity semantics.
+
+
+## 2026-10-10 — Lite build run 38067966929 verified
+- Lite `38067966929`, job `114259381319`: SUCCESS, Vite production build 119 modules transformed in 6.53s.
+- Plus H1d `38067586889`, job `114258275069`: reconfirmed SUCCESS 5 passed (22.4s), already recorded in prior checkpoint.
+- Neither run verifies Plus SG28 interleaving test from technical commit `8291757372c0f86dd05fdb43b1bb0dd39e39e8ad`. Continue to require SG28 and cumulative backend evidence; H2 global OPEN and production isolation OFF.
