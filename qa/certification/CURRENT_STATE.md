@@ -1317,3 +1317,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus SHA `25a0124f404a7d590c34b68d6ac75b4096d51e69`: SG28 `38070902993` SUCCESS 63 passed/1 warning; cumulative `38070902965` SUCCESS backend 625 passed/1 warning, coverage 85.69%, frontend 751 passed/28 TODO; H1d `38070903019` SUCCESS 5 passed. Real TestClient concurrent HTTP contention/recovery test included in passing backend gate.
 - New Plus test-only SHA `f79b0c5286cbdb7b826366bf3e7cb5a3e477c601` adds `test_opt_in_http_capacity_recovers_after_first_request_failure`: malformed isolated expression followed by successful HTTP evaluation, testing local reservation cleanup on calculation failure. **PENDING new SG28/cumulative CI**, no claim of pass yet.
 - SG28/H2 global OPEN: process-local budget is not fleet-wide; real disconnect/cancellation and deployment topology tests still pending. Isolation remains OFF in production. Next: verify run logs for f79b0c52, then broaden to concurrency with cancellation and eventual recovery.
+
+
+## 2026-10-10 — SG28 invalid-request recovery VERIFIED, Lite build verified
+- Plus technical commit `f79b0c5286cbdb7b826366bf3e7cb5a3e477c601`: SG28 run `38071216643` job `114268842287` SUCCESS **64 passed/1 warning**. Cumulative run `38071216637` SUCCESS backend **626 passed/1 warning**, **85.64% coverage**; frontend **751 passed/28 TODO**. H1d `38071216642` SUCCESS **5 passed**. `test_opt_in_http_capacity_recovers_after_first_request_failure` explicitly PASSED in cumulative backend job.
+- Lite `38071240399` Build Diagnostic job `114268914677` SUCCESS, 119 modules transformed, built in 6.79s. Lite build is not backend SG28 certification.
+- Previous concurrent HTTP K=1 admission and 503/retry tests remain green in this cumulative gate. Local per-process admission is NOT a global multi-replica quota. SG28/H2 stays OPEN pending real concurrent disconnect and fleet topology/load validation; isolation remains OFF in production.
+- Next: construct deterministic HTTP disconnect/concurrent-admission tests with correct coordinator cleanup ordering; avoid claiming global isolation or enabling rollout.
