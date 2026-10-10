@@ -1347,3 +1347,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Bilateral CURRENT_STATE updated at Plus `58a57bd500f34cf1d916f8c89bae737742fc5c7b` and Lite `aa19ac698f9d3e20077fc76e7cc372ee437dcce1`.
 - CI status: NOT YET VERIFIED. Next run/inspect SG28 backend, cumulative, H1d; if Actions do not trigger from the test branch, check manual dispatch and workflow conditions.
 - Scope restricted to one process and mocked coordinator; no claim of production-grade distributed admission, end-to-end slot reservation, or newly passed CI. Isolation production flag remains OFF; H2 OPEN.
+
+
+## 2026-10-10 — User-provided GitHub Actions reconciliation (H1d and Lite build only)
+- Plus H1d run `38066424850`, job `114254888779`: SUCCESS, Playwright **5 passed (25.9s)**. This run proves H1d reentry only, NOT the newly added SG28 cancellation-slot regression.
+- Lite build diagnostic run `38066465197`, job `114255006676`: SUCCESS; Vite build completed, 119 modules transformed. This is a build check, not SG28 mathematical/cancellation evidence.
+- The Plus test `test_cancelled_handler_retains_slot_until_coordinator_thread_finishes` remains present on the canonical branch, but **its SG28 backend gate and cumulative gate have not been verified in this reconciliation**. Do not mark SG28 certified based on these two runs.
+- Next exact step: obtain SG28 backend and cumulative Plus workflow runs for the test commit or a descendant containing it; inspect job logs for explicit test result and cumulative totals, then diagnose any failure. Keep production SG28 isolation OFF; distributed topology and global admission remain open.
