@@ -965,3 +965,10 @@ Registro acumulativo. No reemplaza `CURRENT_STATE.md`; conserva decisiones y evi
 - Complementa la prueba anterior de cancelación de tarea ASGI commit `1b4f6a1173bb192aaef7b02fbe3a74672a151d48`. No se cambió código de producto ni se conectó el puente experimental a `/evaluate`.
 - **CI pendiente de verificar para ambos commits**: `fetch_commit_workflow_runs` devolvió lista vacía para el SHA anterior pero solo consulta runs de pull_request, no cubre push; por tanto el resultado no demuestra ausencia de ejecución. Nunca contar estas pruebas como PASS sin evidencia de job/log para SHA `24d90b3`.
 - Siguiente paso: verificar workflow SG28 backend, cumulative y H1d del SHA técnico; inspeccionar jobs y logs, clasificar rojos y corregir. H2/SG28 OPEN.
+
+
+## 2026-10-09 — SG28 Plus concurrencia SymPy real (CI pendiente)
+- Plus commit `04d1d23ce237ec18879e95c12512771957b4c4e1` fortalece `test_concurrent_request_disconnect_does_not_cancel_independent_request`: ahora el primer proceso ejecuta SymPy activamente y señaliza su arranque mediante multiprocessing.Event; la solicitud sana ejecuta una segunda derivada real. El test exige cancelación del primer proceso y resultado independiente `3*x**2 + 2`.
+- Sustituye la versión con stub sleep/add del commit `24d90b3` como evidencia objetivo de concurrencia; no modifica motores, endpoint público ni contrato MathResponse.
+- El workflow `.github/workflows/in625-sg28-backend-cancellation.yml` incluye este archivo bajo `push` y ejecuta todo el paquete SG28; **no se ha verificado un run ni los logs para SHA `04d1d23`**. La consulta de runs por commit solo cubre pull requests y devolvió vacío para SHA anterior, sin demostrar ausencia de push.
+- Siguiente paso exacto: revisar Actions y logs de SG28 + cumulative + H1d en Plus SHA `04d1d23`, corregir si hay fallos; no declarar PASS. Tras gate verde, diseñar integración segura de cancelación en `/evaluate` con límites de concurrencia y preservación de MathResponse. H2/SG28 OPEN.
