@@ -1211,3 +1211,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite build diagnostic run `38066465197`, job `114255006676`: SUCCESS; Vite build completed, 119 modules transformed. This is a build check, not SG28 mathematical/cancellation evidence.
 - The Plus test `test_cancelled_handler_retains_slot_until_coordinator_thread_finishes` remains present on the canonical branch, but **its SG28 backend gate and cumulative gate have not been verified in this reconciliation**. Do not mark SG28 certified based on these two runs.
 - Next exact step: obtain SG28 backend and cumulative Plus workflow runs for the test commit or a descendant containing it; inspect job logs for explicit test result and cumulative totals, then diagnose any failure. Keep production SG28 isolation OFF; distributed topology and global admission remain open.
+
+
+## 2026-10-10 — Lite build diagnostic run 38066789305 verified
+- Lite GitHub Actions run `38066789305`, job `114255948559`: completed SUCCESS. TypeScript/Vite production build transformed 119 modules; build completed in 6.59s. This is build-only evidence, not a mathematical or SG28 backend cancellation gate.
+- Plus H1d run `38066424850` was already recorded: 5/5 Playwright PASS, and remains H1d-only evidence.
+- Still PENDING: Plus SG28 backend and cumulative gates for commit `567ae15c3f0cb157a132c855ea8c85c678cf6d04` or descendant containing the same test. Do not certify unobserved jobs. H2 OPEN; isolation disabled in production.
