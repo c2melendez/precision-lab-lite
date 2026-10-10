@@ -888,3 +888,8 @@ Siguiente bloque: H1b — EN-RE-09..16: CERRADO 8/8 en Lite y Plus.
 ## 2026-10-09 SG28 Plus proof
 - Plus SG28 run 38018275394: SUCCESS, 23 passed / 0 failed, SHA 0457e1ed2ade5fa2afab61433355eefcfbc4710b.
 - Prototipo aislado confirmado, endpoint publico /evaluate aun no integrado. H2 OPEN.
+
+
+## 2026-10-09 — SG28 MathResponse serialization contract probe
+- Plus commit `85e1f6307ec0a7164e924f2a1659efacaacd9a7d`: adds test which returns real `MathResponse` Pydantic instance from the isolated process after actual evaluate-service computation, asserting EVALUATE, SCALAR, approx, request_id, JSON serialization and no detailed steps. This is a **synthetic contract projection**, not full actual endpoint mapping.
+- CI unverified for SHA 85e1f63; previous SG28 evidence 23 PASS on SHA 0457e1e (run 38018275394). Public `/evaluate` unchanged, H2/SG28 remains OPEN.
