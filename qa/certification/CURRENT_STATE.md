@@ -1375,3 +1375,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Last previously certified technical SHA Plus `4654cd937b68b15e30c0047f4b75a6674bafba0b`: SG28 `38074280892` 68 PASS; cumulative `38074280914` 630 backend PASS; H1d `38074280878` 5 PASS. This documentary audit is not a new technical gate or certification.
 - H2/SG28 OPEN; real socket-disconnect / multi-process admission / deployment capacity not yet certified; opt-in isolation stays OFF in production.
 - **Next exact step:** inspect Render deployment properties read-only in a user-confirmed workspace; obtain replica count, worker/start command and effective flag safely; then implement bounded external-transport + multiprocess CI validation in a dedicated isolated test environment, verify SG28/cumulative gates and update both logs.
+
+
+## 2026-10-10 — H2 admission-scope regression published; CI pending
+- Plus test `backend/tests/test_sg28_admission_scope.py` at `adceca5af08dda8a48622b478387f9fb61bb704c` checks K=1 local denial/recovery and independent in-memory semaphore pools. **Not** a real multiprocess or global-quota integration test.
+- Updated topology audit is available in Plus at `qa/certification/SG28_H2_TOPOLOGY_AUDIT.md` (`920f9add`). Execution-log checkpoints synchronized to Lite and Plus.
+- New test CI **UNVERIFIED**: do not count as certified until exact run/job logs confirm passing. Last recorded successful gates: Plus SG28 `38074280892` (68 passed), cumulative `38074280914` (630 backend passed), H1d `38074280878` (5 passed).
+- Next: inspect CI for `adceca5` or descendant; fix failures, then add true multi-process and disposable external HTTP transport evidence. Render deployment workspace remains unconfirmed; fleet-topology check blocked pending user workspace selection. H2 OPEN and isolation OFF.
