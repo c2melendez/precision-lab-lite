@@ -48,3 +48,10 @@ Antes de conectar hosts independientes al coordinador, se añaden prerequisitos 
 - Último gate verificado Plus para corrección de fixture de ocho clientes: SHA `18ff893399bb0192d994a6e1ff141615d483a832`, acumulativo `38140121960`: backend 760 PASS / 1 warning / cobertura 86.06%, frontend 751 PASS / 28 TODO; H1d `38140121981` 5 PASS. Solo un runner CI; no certifica multinodo.
 
 Siguiente ejecución técnica independiente permitida: desarrollar pruebas de transporte autenticado en un fixture estrictamente aislado y fail-closed, sin desplegar ni activar `SG28_EVALUATE_ISOLATION`; después ejecutar gates de regresión en SHA correspondiente.
+
+## 2026-10-11 — Requisito de reloj autoritativo (seguridad distribuida)
+- Auditoría de `backend/tests/test_sg28_tcp_admission_characterization.py`: `AdmissionHandler` entrega `data["now"]` y `data["ttl"]` suministrados por cliente a `_grant`. Esto es deliberado en el fixture para simular fronteras de tiempo, pero **NO puede trasladarse sin restricciones a un coordinador real**.
+- El coordinador de producción debe obtener el tiempo de la autoridad elegida del lado servidor; validar/acotar TTL conforme a política central, no aceptar un instante arbitrario provisto por clientes. Expiración y fencing deben conservarse tras reinicio, con tratamiento documentado de saltos de reloj y persistencia.
+- Pruebas adicionales de aceptación: un cliente no puede adelantar `now` para invalidar otro lease ni solicitar TTL fuera de límites; un release con dueño/generación inválidos debe rechazarse; la caída/reanudación del coordinador no debe conceder solapamientos.
+- También debe requerirse identidad autenticada vinculada a cada lease; el campo `owner` del JSON del fixture no prueba autorización.
+- **Clasificación: diseño de seguridad pendiente, NO fallo certificado del producto** (el servidor TCP es test-only, loopback, no desplegado). DIST-01..08 siguen BLOCKED y SG28/H2 OPEN; no habilitar red/producción.
