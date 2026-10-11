@@ -46,4 +46,20 @@ describe("Syntax309 SY-P — Lite numeric precedence convention", () => {
     expect(raw).toContain("a");
     expect(raw).toContain("/");
   });
+
+  it("SY-P-23: explicitly grouped alternatives are distinguishable numerically", () => {
+    const row = byId["SY-P-23"];
+    expect(row.operacion).toBe("convencion");
+    const byProduct = parseExpression("(a/b)*c").algebrite;
+    const byDenominator = parseExpression("a/(b*c)").algebrite;
+    const replaceVars = (expr: string) => expr
+      .replace(/\ba\b/g, "(12)")
+      .replace(/\bb\b/g, "(3)")
+      .replace(/\bc\b/g, "(2)");
+    const left = Number(evaluate(replaceVars(byProduct)));
+    const right = Number(evaluate(replaceVars(byDenominator)));
+    expect(left).toBeCloseTo(8, 9);
+    expect(right).toBeCloseTo(2, 9);
+    expect(left).not.toBeCloseTo(right, 9);
+  });
 });
