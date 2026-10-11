@@ -20,9 +20,11 @@ describe("Syntax309 SY-P — numeric-oracle cases from official matrix", () => {
   for (const testCase of cases.filter((c) => Object.hasOwn(expected, c.id))) {
     it(`${testCase.id}: ${testCase.entrada}`, () => {
       const syntax = parseExpression(testCase.entrada).algebrite;
-      const result = Number(evaluate(syntax));
-      expect(Number.isFinite(result)).toBe(true);
-      expect(result).toBeCloseTo(expected[testCase.id], 8);
+      const symbolic = evaluate(syntax);
+      const result = Number(symbolic);
+      const numeric = Number.isFinite(result) ? result : Number(evaluate(`float(${syntax})`));
+      expect(Number.isFinite(numeric)).toBe(true);
+      expect(numeric).toBeCloseTo(expected[testCase.id], 8);
     });
   }
   it("does not misclassify convention/structural rows as numerical passes", () => {
