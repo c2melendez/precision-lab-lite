@@ -1690,3 +1690,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Automated Plus cumulative run `38103566886` observed QUEUED; H1d `38103566950` observed IN_PROGRESS. NO PASS claimed for new SHA. Previous Plus baseline: cumulative `38102364408` SUCCESS 663 backend / 751 frontend, H1d `38102364417` SUCCESS 5.
 - No production coordinator or distributed cross-host guarantee: CI-only local SQLite fixture. SG28/H2 OPEN and production isolation OFF.
 - Next: inspect outcomes and exact logs for `38103566886` and `38103566950`, fix any failure, then advance isolated coordination characterization.
+
+
+## 2026-10-10 — SG28 abrupt owner exit verified (664 backend)
+- Plus SHA `478bc431df9701a7c6dbe86bcf35fc8f449fd23d`: cumulative run `38103566886` backend job `114364280322` SUCCESS **664 passed / 1 warning / 85.69% coverage**, including `test_storage_lease_expires_after_abrupt_owner_process_exit` explicit PASS; frontend job `114364280495` SUCCESS **751 passed / 28 TODO**, build SUCCESS. H1d run `38103566950`, job `114364280562`, SUCCESS **5 passed**.
+- This is a SQLite test fixture on one CI host with a spawned child that exits abruptly; it does not simulate loss of a shared remote coordinator, cross-host atomicity or production service deployment. H2 OPEN, production isolation OFF.
+- Next: implement independently hosted coordinator/admission characterization in a disposable environment and verify fail-closed response and fencing when remote coordination fails; avoid production changes.
