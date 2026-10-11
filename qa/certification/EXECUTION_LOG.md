@@ -2102,3 +2102,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - El timeout del fixture TCP de ocho clientes quedó resuelto en CI; evidencia acotada a loopback/runner único, sin acreditar servidores independientes, TLS/autenticación ni `/evaluate` público.
 - SG28/H2 y DIST-01..08 continúan OPEN/BLOCKED. No se modificó producción ni se activó `SG28_EVALUATE_ISOLATION`.
 - Siguiente acción: especificar y validar un entorno de aceptación autorizado, desechable, con coordinador autenticado y clientes en hosts aislados; preservar la comprobación fail-closed y el fencing generacional sin extrapolar las pruebas locales.
+
+
+## 2026-10-11 — SG28 endurecimiento del cliente TCP de caracterización (CI pendiente)
+- Plus test-only `backend/tests/test_sg28_tcp_admission_characterization.py`, SHA técnico final `67c2ba037b91d240b17055183acd82ed283271cc`, rechaza respuestas de concesión TCP incompletas, tipos falsos y generaciones no enteras positivas antes de admitir trabajo. Incluye un test de loopback con respuestas malformadas y una concesión bien formada como control.
+- El cambio solo afecta fixture y cliente de tests; **NO** agrega autenticación/TLS al coordinador, no modifica `request_cancellation.py`, no conecta `/evaluate` ni acredita DIST-01..08. Sin despliegue.
+- **CI PENDING/UNVERIFIED**: falta obtener los runs de `push` del SHA final y sus logs; la consulta GitHub por SHA del conector no abarca corridas push. No marcar PASS hasta la ejecución real.
+- Siguiente paso exacto: inspeccionar gate acumulativo y H1d del SHA final, solucionar rojos y después abordar autenticación/transporte de un coordinador aislado de forma explícita.
