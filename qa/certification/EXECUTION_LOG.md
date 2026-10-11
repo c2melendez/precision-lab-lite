@@ -2080,3 +2080,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus SHA `51021b55cb23839916d78317400faa9002adbc26` adds disposable loopback fault-injection test: a coordinator persists a lease but closes the TCP socket before ACK; uncertain client must fail closed and second client must be denied until expiry; next generation granted at expiry. **Same-host test only**, not DIST-02 certification.
 - Final-SHA cumulative `38139175065` and H1d `38139175059` queued when checked; **CI PENDING**, no new PASS inferred.
 - Public /evaluate and production unchanged. SG28/H2 and DIST-01..08 remain OPEN/BLOCKED; independent-host authorized staging and secure coordinator are outstanding. Next: verify final CI runs, repair any red, then progress toward independent-host topology.
+
+
+## 2026-10-11 — SG28 concurrent TCP clients on disposable loopback
+- Verified Plus SHA `51021b55cb23839916d78317400faa9002adbc26`: cumulative `38139175065` SUCCESS (**759 backend PASS / 1 warning / 86.06% coverage**, frontend **751 PASS / 28 TODO**); H1d `38139175059` SUCCESS (**5 PASS**). Lost grant ACK fail-closed test individually passed.
+- Plus test SHA `4f467674e5ab3d686a6954303697ea2062d9e64b` adds a local TCP integration race of eight clients against a persisted SQLite coordinator to verify exactly one lease granted for global capacity K=1 within **one CI host**. Cumulative run `38139751806` and H1d `38139751787` queued; **CI PENDING**.
+- No deployed coordinator, no TLS/auth, no public /evaluate opt-in, no production changes. DIST-01..08 and SG28/H2 remain OPEN/BLOCKED until an authorized disposable independent-host topology exists.
+- Next: verify latest SHA runs, repair failure if any, and prioritize the missing independent-host security and staging architecture over repeated local microtests.
