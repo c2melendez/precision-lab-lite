@@ -1946,3 +1946,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus commit técnico `4f7b8c05bf99eb98040ff868d0a9ec56ddd8603d` mejora el **cliente de caracterización de pruebas**, validando que una respuesta `released` solo corresponda a `release`, y que `granted=false` no sea aceptada como respuesta normal a una liberación; una respuesta con mezcla de campos `released/granted` se rechaza. Incluye casos de regresión.
 - **No** representa autenticación TLS, un servicio de coordinación desplegado, ni integración a `/evaluate`; SG28/H2 y DIST-01..08 siguen OPEN/BLOCKED. Las pruebas del SHA nuevo todavía no tienen CI verificado. La consulta de runs por SHA solo cubre PR, no push.
 - Siguiente acción: localizar y verificar Actions acumulativo/H1d para `4f7b8c05` con logs y reparar rojos antes de continuar con el entorno distribuido autorizado.
+
+
+## 2026-10-11 — SG28 denied-grant schema hardening
+- Plus commit técnico `9d80909324ed3225dcd5a6520d25de05208cbf0b` refuerza el cliente TCP de **tests** para que una denegación de concesión requiera campos exactos `{granted:false,generation:null}`. Las respuestas denegadas con campos ausentes/extraños o generación positiva ya no se consideran estructura válida. Se añadieron variantes de regresión de loopback junto con el caso de control válido.
+- SHA `4f7b8c05` consultado por `fetch_commit_workflow_runs`: lista vacía, **no acredita ausencia de push CI**, ya que ese conector solo enumera PR. La consulta web de Actions no fue accesible. Nuevos runs para `9d809093` siguen SIN VERIFICAR; no declarar PASS.
+- Se mantiene SG28/H2 y DIST-01..08 OPEN/BLOCKED: fixture local sin TLS/autenticación ni integración `/evaluate`; producción intacta.
+- Siguiente: verificar corrida acumulativa y H1d del último SHA, obtener logs y detener nuevas microcorrecciones hasta contar con evidencia CI; continuar después con integración aislada/autenticada o matrices independientes según contrato.
