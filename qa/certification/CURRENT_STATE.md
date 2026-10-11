@@ -1643,3 +1643,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - This commit is **published but NOT CI verified**. Earlier technical commit `c435bcfd6f35cdd39334754a319d168377116fae` also has no run/job evidence retrievable via the connector, whose commit workflow listing omits push runs. User reported CI finished, but that report alone does not authorize PASS.
 - No production code, Render configuration, or isolation flag changed; genuine independent-host K=1/distributed coordinator verification remains outstanding. SG28/H2 OPEN.
 - Next exact action: locate push-run of `faf35e824ee60c77a8c6a2498996787dd8e9d3dd` through GitHub Actions or supplied run URL; inspect backend and frontend jobs and pytest detailed output; if red, diagnose/correct; only after confirmed green proceed to disposable independent-host validation.
+
+## 2026-10-10 local / 2026-10-11 UTC — SG28 K=1 after lost-ACK restart: CI GREEN
+- Plus technical SHA `faf35e824ee60c77a8c6a2498996787dd8e9d3dd` verified through **IN625 Cumulative Certification Gate** run `38114270937` (push, branch `qa/syntax-audit-in625-a1`, completed SUCCESS).
+- Backend job `114395923208` SUCCESS, log: **675 passed, 1 warning**, 85.69% coverage (threshold 75%); includes `test_tcp_restart_after_lost_grant_ack_keeps_k1_for_competing_clients`.
+- Frontend job `114395923314` SUCCESS: **69 test files PASS, 751 passed / 28 TODO**, typecheck and build SUCCESS.
+- The test confirms only loopback TCP/SQLite admission of exactly one contender after restart/lost grant acknowledgment, generation fencing and persisted winner; **not** an independent-host/global distributed admission test. No production changes; experimental isolation remains OFF. SG28/H2 OPEN.
+- Next precise gate: design and execute genuinely independent-host shared-coordinator checks in explicitly authorized disposable infrastructure with K=1 under concurrent calls, partition fail-closed, TTL and stale-release fencing, failure and recovery records. Do not claim global certification until evidence exists.
