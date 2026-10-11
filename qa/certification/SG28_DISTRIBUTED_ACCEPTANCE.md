@@ -37,3 +37,14 @@ Cada gate debe registrar: timestamp, SHA, run/job, host origen, host coordinador
 ## Regla de cierre
 
 No declarar DIST-01..08 PASS por tests locales ni cerrar SG28/H2 sin evidencia ejecutada en el entorno independiente autorizado. Si no hay workspace/infraestructura autorizada, mantener BLOCKED y continuar otros bloques independientes; no crear servicios ni cambiar Render de producción automáticamente.
+
+## Preparación del gate de transporte y autenticación — 2026-10-11
+
+Antes de conectar hosts independientes al coordinador, se añaden prerequisitos de seguridad (NO equivalen a DIST PASS):
+- Canales autenticados y cifrados, identidad del servidor comprobada y credenciales temporales fuera de logs; no exponer la fixture TCP/SQLite en loopback como servicio de red sin estos controles.
+- Evidencia negativa obligatoria: credencial inválida/ausente, servidor con identidad incorrecta, transporte inseguro y repetición de solicitud no pueden otorgar un lease ni alterar el estado.
+- El permiso de admisión cubre solicitud lógica completa (cálculo, presentación, cancelación y limpieza); confirmar liberación solamente después de finalizar todos los coordinadores hijos.
+- Topología separada comprobable (al menos dos clientes en hosts/espacios de aislamiento independientes y coordinador compartido) antes de marcar DIST-01..08 como ejecutados.
+- Último gate verificado Plus para corrección de fixture de ocho clientes: SHA `18ff893399bb0192d994a6e1ff141615d483a832`, acumulativo `38140121960`: backend 760 PASS / 1 warning / cobertura 86.06%, frontend 751 PASS / 28 TODO; H1d `38140121981` 5 PASS. Solo un runner CI; no certifica multinodo.
+
+Siguiente ejecución técnica independiente permitida: desarrollar pruebas de transporte autenticado en un fixture estrictamente aislado y fail-closed, sin desplegar ni activar `SG28_EVALUATE_ISOLATION`; después ejecutar gates de regresión en SHA correspondiente.
