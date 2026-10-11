@@ -2194,3 +2194,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus SHA `20639665aef6f05e7d02fb89a512cc4371270689` adds disposable loopback-only mTLS coordinator `backend/app/services/sg28_disposable_mtls_coordinator.py`, with authenticated certificate CN allowlist and shared SQLite fenced leases. Test-only; **not production-ready**, not independent host.
 - Plus SHA `8eb033febcbe7e1cd69d73a551b10c6ed76fb2e1` adds integration test `backend/tests/test_sg28_disposable_mtls_coordinator.py`: real TLS exchange, serial K=1 acquisition, owner fencing, lease release, and binding restriction. Auto CI cumulative run `38162834871` and H1d `38162834838` detected queued/in-progress when consulted; do not mark PASS until logs verified.
 - No public `/evaluate` routing, no cross-host deployment. DIST-01..08 and SG28/H2 remain OPEN/BLOCKED; server certificate identity tied to CN only in disposable fixture.
+
+
+## 2026-10-11 — SG28 mTLS restart, outage and fencing gate
+- Verified Plus SHA `8eb033febcbe7e1cd69d73a551b10c6ed76fb2e1`: cumulative `38162834871` SUCCESS, backend **792 PASS / 1 warning / 86.22% coverage**, frontend **751 PASS / 28 TODO**; H1d `38162834838` SUCCESS **5 PASS**.
+- Plus SHA `a81e54c9eac0bd5c82642c9e5d5f71f8164949e1` added `backend/tests/test_sg28_mtls_restart_recovery.py` for a disposable loopback TLS coordinator restart with persisted SQLite fencing, coordinator outage failure closed, expiry, stale release and recovery. GitHub cumulative `38163237650` / H1d `38163237612` queued when discovered, **not yet CI-verified**.
+- Entire integration remains a **single-host test-only prototype**, no production `/evaluate` integration or authenticated multi-host shared DB. DIST-01..08 and SG28/H2 OPEN/BLOCKED.
