@@ -1765,3 +1765,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus SHA `2737d46f130a0ef122bc48e1d3ae27db26e46553`: cumulative run `38108184872` backend SUCCESS **669 passed / 1 warning / 85.59% coverage** including `test_tcp_duplicate_retry_after_lost_ack_remains_unadmitted` PASSED; frontend SUCCESS **751 passed / 28 TODO**, build SUCCESS. H1d run `38108184868` SUCCESS **5 passed**.
 - This proves same-owner retries and other contenders cannot bypass single-host test-only K=1 admission after lost TCP ACK. Not proof of real multi-host global coordination; H2 OPEN, production isolation OFF.
 - Next: independent-host ephemeral coordinator validation, transport partitions and fenced recovery without production changes.
+
+
+## 2026-10-10 — SG28 TCP duplicate release retry fencing PENDING CI
+- Plus technical commit `b5282acae8981c969bd22a19829b66b649bd0017` adds `test_tcp_lost_release_ack_does_not_revoke_successor` to test-only `backend/tests/test_sg28_tcp_admission_characterization.py`: after a first release permits successor generation 2, a duplicate old-generation release must be denied and third contender remains excluded. This models a retry due to a lost release acknowledgement; the reply itself is not actively dropped in this scenario.
+- CI status for this SHA still unverified. Previous verified Plus cumulative `38108184872` SUCCESS 669 backend PASS, 751 frontend PASS / 28 TODO; H1d `38108184868` SUCCESS 5 PASS.
+- Scope is single-host loopback, not cross-host distributed certification. SG28/H2 OPEN, production isolation OFF. Next verify auto-triggered cumulative and H1d CI, repair any failure before recording PASS.
