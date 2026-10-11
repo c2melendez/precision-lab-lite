@@ -1670,3 +1670,8 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Extends helper `_independent_client` with optional `now=0`, preserving existing test behavior by default. No product, Render, or production configuration changes.
 - **Status PENDING CI** for new SHA; no PASS claimed. Single CI host with multiple processes is not proof of independent-host distributed admission.
 - Next: verify Plus cumulative and H1d workflows for this SHA, inspect pytest case/log and frontend jobs; repair failures if present. True multi-host fail-closed/partition checks remain BLOCKED pending separate authorized disposable infrastructure. SG28/H2 OPEN.
+
+## 2026-10-10 local / 2026-10-11 UTC — SG28 spawned-process lost ACK restart GREEN
+- Plus technical commit `afc69c38403d2abef8d1f9be3590a2d349bdc89b`: cumulative workflow run `38115393470` completed SUCCESS, backend job `114399170437` PASS **676 passed / 1 warning / 85.72% coverage**, including explicit PASSED `test_spawned_clients_compete_at_expiry_after_lost_ack_restart`. Frontend job `114399170567` SUCCESS **751 passed / 28 TODO**, 69 test files. H1d run `38115393420`, job `114399170411`, SUCCESS **5 passed**.
+- This is evidence of separate spawned client PIDs, local TCP, SQLite lease persistence, lost grant acknowledgment, restart, K=1 and generation fencing **on one GitHub runner host only**. It is NOT independent-host/multi-region certification.
+- SG28/H2 remains OPEN; experimental isolation OFF in production. Next action: use explicitly authorized disposable separate-host environment for network partition/fail-closed and global K=1 or record capability/deployment blocker; do not relabel local CI as distributed PASS.
