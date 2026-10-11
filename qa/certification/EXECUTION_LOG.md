@@ -1783,3 +1783,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus SHA `a4f81a9f58dac62c77b339174ac1462492093166` extends test-only `backend/tests/test_sg28_tcp_admission_characterization.py`: `release_disconnect` commits SQLite release then drops TCP reply; `test_tcp_lost_release_ack_retry_remains_fenced` checks ambiguous client outcome, successor generation 2, denied stale release retry and continued K=1 admission.
 - Plus cumulative workflow `38109176704` observed QUEUED; latest verified baseline 670 backend PASS / 751 frontend PASS / H1d 5 PASS (runs `38108867379`, `38108867385`). New SHA PASS not yet confirmed.
 - Single-host CI fault injection, not independent-host coordination. SG28/H2 OPEN, production feature OFF. Next check new cumulative/H1d jobs and logs, fix any failure.
+
+
+## 2026-10-10 — SG28 lost TCP release acknowledgment CI GREEN (671 backend)
+- Plus technical SHA `a4f81a9f58dac62c77b339174ac1462492093166`: cumulative run `38109176704` backend SUCCESS **671 passed / 1 warning / 85.69% coverage** with `test_tcp_lost_release_ack_retry_remains_fenced` explicitly PASSED; frontend SUCCESS **751 passed / 28 TODO** and build SUCCESS. H1d run `38109176705` SUCCESS **5 passed**.
+- Test-only single-host TCP injected dropped release acknowledgement; stale retry cannot revoke later-generation lease. Does NOT certify independent-host distributed admission. SG28/H2 OPEN; experimental production isolation OFF.
+- Next: independent-host disposable topology and coordination fault tests, without modifying production. Verify global K=1 under partitions before considering closure.
