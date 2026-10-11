@@ -1598,3 +1598,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus technical SHA `a4f81a9f58dac62c77b339174ac1462492093166`: cumulative run `38109176704` backend SUCCESS **671 passed / 1 warning / 85.69% coverage** with `test_tcp_lost_release_ack_retry_remains_fenced` explicitly PASSED; frontend SUCCESS **751 passed / 28 TODO** and build SUCCESS. H1d run `38109176705` SUCCESS **5 passed**.
 - Test-only single-host TCP injected dropped release acknowledgement; stale retry cannot revoke later-generation lease. Does NOT certify independent-host distributed admission. SG28/H2 OPEN; experimental production isolation OFF.
 - Next: independent-host disposable topology and coordination fault tests, without modifying production. Verify global K=1 under partitions before considering closure.
+
+
+## 2026-10-10 — SG28 unsupported coordinator operation denial: CI pending
+- Plus technical SHA `3ec5c052e9ec154de921204d29cd982bd470e1e7` adds `test_tcp_unknown_release_response_keeps_client_fail_closed` to single-host TCP characterization. The test covers the valid-JSON error `unsupported operation` (NOT malformed JSON), and verifies it is not interpreted as a grant and cannot displace an active lease.
+- Plus cumulative `38110549495` and H1d `38110549461` observed QUEUED. Last verified Plus cumulative `38109176704` SUCCESS 671 backend PASS / 751 frontend PASS (28 TODO); H1d `38109176705` 5 PASS.
+- Still no independent-host coordinator or production validation. SG28/H2 OPEN; isolation production OFF. Next confirm queued CI results and pursue genuine cross-host testing in approved disposable environment.
