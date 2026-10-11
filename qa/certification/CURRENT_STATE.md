@@ -1452,3 +1452,8 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 ## 2026-10-10 — Coordinator outage recovery model GREEN, 657 backend
 - Plus technical SHA `b56a48b3d0ff3c88f56289e70951d7e3bd39cffa`, cumulative run `38097699581`: backend **657 passed / 1 warning / 85.59% coverage**, tests `test_coordinator_recovers_without_granting_during_outage` and `test_coordinator_outage_does_not_erase_preexisting_owner` explicitly PASSED; frontend **751 passed / 28 TODO**. H1d run `38097699574` **5 passed**.
 - Tests operate on in-memory injected fake coordinator, not a production distributed service or actual coordinator crash. H2 OPEN; production isolation OFF.
+
+
+## 2026-10-10 — SQLite atomic admission fixture GREEN: 659 backend
+- Plus SHA `17bcb0a488a98f97b7e966ff062806e4ebc0666e`: cumulative `38098388465` backend SUCCESS **659 passed / 1 warning / 85.69% coverage**, `test_atomic_storage_gate_denies_racing_k1_claims` and `test_storage_gate_expiry_fences_stale_release` both PASSED. Frontend SUCCESS 751 passed / 28 TODO. H1d run `38098388480` SUCCESS 5 passed.
+- Test-only SQLite with threads and transactional K=1; NOT multi-host distributed admission, not real coordinator crash. H2 global OPEN, production SG28 OFF.
