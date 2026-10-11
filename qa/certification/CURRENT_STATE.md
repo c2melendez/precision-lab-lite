@@ -1492,3 +1492,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus technical SHA `1fbab66062f958f573f7c37f45aac7c90fa4d91f` verified against push runs: cumulative `38102364408` backend job `114360748215` SUCCESS **663 passed / 1 warning / 85.64% coverage**, frontend job `114360748404` SUCCESS **751 passed / 28 TODO** and build SUCCESS. H1d run `38102364417` job `114360748279` SUCCESS **5 passed**.
 - `test_same_owner_stale_generation_cannot_release_reacquired_lease` explicitly PASSED; this is a CI-only same-host SQLite characterization, not a distributed coordinator. SG28/H2 global remains OPEN; keep production experimental isolation OFF.
 - Next: design and validate independent-host shared admission in a disposable environment, with coordinator outage/recovery, fencing and global K enforcement; record deployed topology and obtain explicit authorization before changing production.
+
+
+## 2026-10-10 — SG28 abrupt owner process death fixture: CI pending
+- Plus commit `478bc431df9701a7c6dbe86bcf35fc8f449fd23d` adds `test_storage_lease_expires_after_abrupt_owner_process_exit` to `backend/tests/test_sg28_sqlite_admission_characterization.py`. A separate spawned process acquires the test-only SQLite lease and exits abruptly; the main process checks denial before TTL, admission at expiry, increased generation and stale-release fencing.
+- Automated Plus cumulative run `38103566886` observed QUEUED; H1d `38103566950` observed IN_PROGRESS. NO PASS claimed for new SHA. Previous Plus baseline: cumulative `38102364408` SUCCESS 663 backend / 751 frontend, H1d `38102364417` SUCCESS 5.
+- No production coordinator or distributed cross-host guarantee: CI-only local SQLite fixture. SG28/H2 OPEN and production isolation OFF.
+- Next: inspect outcomes and exact logs for `38103566886` and `38103566950`, fix any failure, then advance isolated coordination characterization.
