@@ -1447,3 +1447,8 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 ## 2026-10-10 — Coordinator outage fail-closed model VERIFIED (655 backend)
 - Plus technical SHA `af791596fcd5b2a46e3372d959df76f2786d25ed`; cumulative run `38096742454`: backend **655 passed / 1 warning / 85.69% coverage**, including 4 tests in `test_sg28_coordinator_failure_contract.py` explicitly PASSED; frontend **751 passed / 28 TODO**. H1d run `38096742451` **5 passed**.
 - Fail-closed behavior was verified against an injected fake-store/model adapter only, NOT a deployed shared admission coordinator or actual network partition/crash. H2 OPEN, SG28 production opt-in OFF.
+
+
+## 2026-10-10 — Coordinator outage recovery model GREEN, 657 backend
+- Plus technical SHA `b56a48b3d0ff3c88f56289e70951d7e3bd39cffa`, cumulative run `38097699581`: backend **657 passed / 1 warning / 85.59% coverage**, tests `test_coordinator_recovers_without_granting_during_outage` and `test_coordinator_outage_does_not_erase_preexisting_owner` explicitly PASSED; frontend **751 passed / 28 TODO**. H1d run `38097699574` **5 passed**.
+- Tests operate on in-memory injected fake coordinator, not a production distributed service or actual coordinator crash. H2 OPEN; production isolation OFF.
