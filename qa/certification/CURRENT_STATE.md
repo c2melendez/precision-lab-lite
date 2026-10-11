@@ -1663,3 +1663,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - On later documentation commits `aff8b36` and `9d5c025`, the latest 12 branch-scoped GitHub Actions runs included no runs for these docs-only SHAs; the branch HEAD was `9d5c025`. This is observed evidence of no additional listed runs from these commits, not a promise about every future push filter condition.
 - The corrected `in625-lite-build-diagnostic.yml` retains `workflow_dispatch` and ignores `qa/certification/**` plus `**/*.md` on push. No production change. Plus technical gate `38114270937` remains SUCCESS (675 backend PASS, 751 frontend PASS / 28 TODO).
 - SG28/H2 remains OPEN pending independent-host distributed K=1 and network partition/fail-closed evidence; do not equate loopback TCP/SQLite with distributed production coordination.
+
+## 2026-10-10 local — SG28 spawned-process lost-ACK restart concurrency: CI pending
+- Plus test-only SHA `afc69c38403d2abef8d1f9be3590a2d349bdc89b`, file `backend/tests/test_sg28_tcp_admission_characterization.py`.
+- Adds `test_spawned_clients_compete_at_expiry_after_lost_ack_restart`: real separate spawned client PIDs race for K=1 over TCP after an earlier grant acknowledgment is lost and coordinator is restarted with a retained SQLite lease. Oracles: exactly one generation-2 grant, stale generation-1 release denied, persisted row matches sole winner.
+- Extends helper `_independent_client` with optional `now=0`, preserving existing test behavior by default. No product, Render, or production configuration changes.
+- **Status PENDING CI** for new SHA; no PASS claimed. Single CI host with multiple processes is not proof of independent-host distributed admission.
+- Next: verify Plus cumulative and H1d workflows for this SHA, inspect pytest case/log and frontend jobs; repair failures if present. True multi-host fail-closed/partition checks remain BLOCKED pending separate authorized disposable infrastructure. SG28/H2 OPEN.
