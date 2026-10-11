@@ -1709,3 +1709,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus SHA `d59db5ad34acf350379b0bea89c6ef3f1b93d259`: cumulative `38104163070` backend job `114366009320` FAIL at pytest collection: `ModuleNotFoundError` importing `test_sg28_sqlite_admission_characterization`; 664 tests collected but no backend test execution. Frontend job `114366009491` SUCCESS 751 PASS / 28 TODO; H1d run `38104163083` job `114366009395` SUCCESS 5 PASS.
 - Root classification HARNESS/IMPORT, not confirmed product failure. Plus technical fix SHA `accab13a081e2ba659fd8f9f55ed72ba9a780ad7` makes `backend/tests/test_sg28_tcp_admission_characterization.py` self-contained with local disposable SQLite helpers. Exact CI result of fix still PENDING; no PASS claim. Previous confirmed backend baseline 664 PASS.
 - Next: inspect cumulative and H1d runs for fix SHA, debug/repair if red, certify only with green backend log. Single-host loopback test is not global cross-host H2 certification; production SG28 isolation OFF.
+
+
+## 2026-10-10 — SG28 TCP coordinator loopback CI GREEN (665 backend)
+- Plus SHA `accab13a081e2ba659fd8f9f55ed72ba9a780ad7`: cumulative `38105067955` backend job `114368722480` SUCCESS **665 passed / 1 warning / coverage 85.59%**; `test_network_admission_fails_closed_during_coordinator_outage_and_recovers` PASSED. Frontend job `114368722306` SUCCESS **751 passed / 28 TODO** and build SUCCESS. H1d `38105067915` job `114368722286` SUCCESS **5 passed**.
+- Previous RED `38104163070` was harness collection/import only; resolved in corrected SHA. Single-host TCP loopback and SQLite are not independent-host or deployed shared coordinator evidence. H2 remains OPEN, experimental production isolation OFF.
+- Next: advance to separately running coordinator/client in an isolated CI process and then genuine cross-host network fault testing with an authorized ephemeral environment; verify global K and fencing before production consideration.
