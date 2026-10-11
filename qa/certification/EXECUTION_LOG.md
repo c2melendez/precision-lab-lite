@@ -2206,3 +2206,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Verified Plus SHA `a81e54c9eac0bd5c82642c9e5d5f71f8164949e1`: cumulative `38163237650` SUCCESS backend **793 PASS / 1 warning / 86.22% coverage**, frontend **751 PASS / 28 TODO**; H1d `38163237612` **5 PASS**.
 - Plus SHA `74e17396f6f51748dfcf49fd08851b9c5a70ef57` adds disposable loopback test `backend/tests/test_sg28_mtls_lost_ack.py` for persisted grant with dropped TLS ACK, lost release ACK, fencing and fail-closed client. This is fixture fault injection, not production-grade coordinator handling. Cumulative run `38163731581` and H1d `38163731611` IN_PROGRESS when observed; **CI NOT YET VERIFIED for newest SHA**.
 - No `/evaluate` integration, no remote hosts, no deployment. DIST-01..08 and SG28/H2 remain OPEN/BLOCKED.
+
+
+## 2026-10-11 — SG28 mTLS spawned process certification gate
+- Verified Plus SHA `150fc0940cc23c0226668d6dc36aab1faa7b4b73`: cumulative `38164060470` SUCCESS **795 backend PASS / 1 warning / 86.15% coverage**, frontend **751 PASS / 28 TODO**; H1d `38164060549` SUCCESS **5 PASS**.
+- Plus SHA `bec444781c91174fec67e2735cceaf14b31fd03e` introduces `backend/tests/test_sg28_mtls_spawned_processes.py`: independent spawned coordinator PID and two competing client PIDs with TLS client certs, K=1 over real loopback sockets and shared SQLite on **one CI host**. Not cross-host proof or DIST-01 PASS.
+- Auto GitHub Actions cumulative `38164513251` / H1d `38164513248` detected in progress; **CI pending for newest test**. No public endpoint wiring, no production changes; SG28/H2 and DIST-01..08 remain OPEN/BLOCKED.
