@@ -2180,3 +2180,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus SHA `59c8898b3d34f6c5efa1fd18e48ae8f15a6c8f3d`: `backend/app/services/distributed_admission.py` now includes `release_distributed_admission()` and `distributed_admission_lease()` lifecycle context; strict release ack and generation checks; still disabled without `SG28_DISTRIBUTED_ADMISSION=1` and an injected authenticated exchange.
 - Plus SHA `609a3580adc07134d71c2d825620e69aa9100fdf`: tests for release after scoped work, release on worker exception, rejection of invalid/rejected acknowledgements and lost ACK. Automatic push runs cumulative `38161209820` and H1d `38161209791` detected QUEUED at observation; CI NOT YET VERIFIED for this SHA.
 - Not wired to real `/evaluate`, no authenticated network transport implemented or production changes. Release after worker cleanup remains caller responsibility. DIST-01..08, SG28/H2 remain OPEN.
+
+
+## 2026-10-11 — SG28 disposable persistent lease store phase
+- Verified Plus SHA `d1f24452fdd8f49e05c99f5e4a284bc0292d6d60`: cumulative `38161515679` SUCCESS backend **787 passed, 1 warning, 86.19% coverage**, frontend **751 passed, 28 TODO**; H1d `38161515623` SUCCESS **5 passed**.
+- Plus SHA `9e35cc95e2c1f38ec54e67e3434dc2b47d912ff8` adds unwired disposable `backend/app/services/sg28_sqlite_lease_store.py`, fenced SQLite lease generations and K=1 transaction. Caller-provided trusted `now` is NOT itself a validated server clock; should never take it from remote input.
+- Plus SHA `794cdbd2b045fac90d12fef65904d1fbc806c3f6` adds `backend/tests/test_sg28_sqlite_lease_store.py` concurrent contenders, restart persistence, and stale-release tests. Latest push CI cumulative `38162538161` / H1d `38162538173` were QUEUED when checked; do not claim PASS yet.
+- Test-only shared-host SQLite, not distributed hosts, no `/evaluate` wiring, no external service and no production deploy. SG28/H2 and DIST-01..08 remain OPEN/BLOCKED.
