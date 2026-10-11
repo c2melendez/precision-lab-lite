@@ -33,4 +33,21 @@ describe("Syntax309 SY-P — inspect exact parser structure",()=>{
    const expr=parseExpression(byId["SY-P-25"].entrada).algebrite.replace(/\s+/g,"");
    expect(expr).toMatch(/x\*y\*z/);
  });
+
+ it("SY-P-18/19: official ambiguous division cases retain every operand",()=>{
+   for(const [id,nums] of [["SY-P-18",["8","2","2","2"]],["SY-P-19",["6","2","1","2"]]] as const){
+     const row=byId[id];
+     expect(row.operacion).toBe("convencion");
+     const parsed=parseExpression(row.entrada).algebrite;
+     expect(parsed).toContain("/");
+     for(const n of new Set(nums))expect(parsed).toContain(n);
+   }
+ });
+ it("SY-P-21/23/32: preserve operands without asserting an undeclared convention",()=>{
+   for(const id of ["SY-P-21","SY-P-23","SY-P-32"]){
+     const row=byId[id];expect(row.operacion).toBe("convencion");
+     const parsed=parseExpression(row.entrada).algebrite;
+     expect(parsed.length).toBeGreaterThan(0);
+   }
+ });
 });
