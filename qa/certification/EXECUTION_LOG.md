@@ -1925,3 +1925,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 ## 2026-10-11 UTC — SG28 grouped phase exception cleanup CI GREEN
 - Plus SHA `feb8cfd4fa24676bd91be88286c972a9329d4a1a`: cumulative run `38116952183` SUCCESS; backend job `114403617094`: **679 passed / 1 warning / 85.69% coverage**, explicit PASS `test_sg28_local_admission_released_after_nested_exception_group`; frontend job `114403617004`: **751 passed / 28 TODO**, 69 files; H1d run `38116952184` job `114403616714`: **5 passed**.
 - Scope: local context manager exception-group cleanup, not actual multi-host admission. SG28 DIST-01..08 remain unverified until a shared production-relevant coordinator and authorized disposable multi-host topology exist. Production opt-in OFF.
+
+## 2026-10-11 UTC — SG28 shared admission fail-closed contract introduced; CI PENDING
+- Plus technical commits `b33da3f34b2215f01740c7936a4a3b50f7a34de3` and `c0c4fa1e58fecafec1deeebd6411d15541561399` add `backend/app/services/shared_admission_contract.py` and `backend/tests/test_sg28_shared_admission_contract.py`.
+- New strictly unused/experimental adapter defines shared lease protocol, validates owner/generation/deadline, rejects unavailable/invalid grants and uncertain releases, and differentiates contention from coordinator failures. Tests cover refusal under contention, outage fail-closed with retained lease, stale release, invalid acknowledgements and bounds. **Not wired to public evaluate route; no actual network coordinator implemented.**
+- CI is PENDING for final technical SHA `c0c4fa1e58fecafec1deeebd6411d15541561399`. Earlier 679-backend green run `38116952183` does not verify this change.
+- DIST-01..08 remain **BLOCKED**, requiring explicit disposable independent-host infrastructure, coordinator implementation and integration, plus observed fault/partition tests. Production opt-in OFF.
