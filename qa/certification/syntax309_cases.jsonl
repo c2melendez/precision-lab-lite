@@ -1,0 +1,309 @@
+{"matriz":"SY","seccion":"P","id":"SY-P-01","nivel":"N1","operacion":"valor","entrada":"2(3+4)","esperado":"14","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-02","nivel":"N1","operacion":"valor","entrada":"2\\pi","esperado":"6.283185307","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-03","nivel":"N1","operacion":"interpretacion","entrada":"3\\sin x","esperado":"3\\cdot\\sin(x)","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-04","nivel":"N2","operacion":"interpretacion","entrada":"2x^{2}","esperado":"2\\cdot\\left(x^{2}\\right)","nota":"Con x=3 vale 18, no 36."}
+{"matriz":"SY","seccion":"P","id":"SY-P-05","nivel":"N2","operacion":"interpretacion","entrada":"-x^{2}","esperado":"-\\left(x^{2}\\right)","nota":"Con x=3 vale -9."}
+{"matriz":"SY","seccion":"P","id":"SY-P-06","nivel":"N1","operacion":"valor","entrada":"(-3)^{2}","esperado":"9","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-07","nivel":"N2","operacion":"valor","entrada":"-3^{2}","esperado":"-9","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-08","nivel":"N2","operacion":"valor","entrada":"2^{3^{2}}","esperado":"512","nota":"La potencia se agrupa por la derecha: 2^(3^2)."}
+{"matriz":"SY","seccion":"P","id":"SY-P-09","nivel":"N1","operacion":"valor","entrada":"\\left(2^{3}\\right)^{2}","esperado":"64","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-10","nivel":"N1","operacion":"valor","entrada":"2^{-1}","esperado":"\\frac{1}{2}","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-11","nivel":"N1","operacion":"valor","entrada":"5-3-1","esperado":"1","nota":"Asociatividad por la izquierda."}
+{"matriz":"SY","seccion":"P","id":"SY-P-12","nivel":"N1","operacion":"valor","entrada":"100\\div10\\div5","esperado":"2","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-13","nivel":"N1","operacion":"valor","entrada":"2+3\\cdot4","esperado":"14","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-14","nivel":"N1","operacion":"valor","entrada":"(2+3)\\cdot4","esperado":"20","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-15","nivel":"N2","operacion":"valor","entrada":"-2^{2}+3","esperado":"-1","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-16","nivel":"N1","operacion":"valor","entrada":"+5","esperado":"5","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-17","nivel":"N1","operacion":"valor","entrada":"1-(-1)","esperado":"2","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-18","nivel":"N2","operacion":"convencion","entrada":"8\\div2(2+2)","esperado":"16 \\ \\text{(izq. a der.)}\\ \\text{o}\\ 1","nota":"Declarar si la multiplicación implícita tiene mayor precedencia que la división."}
+{"matriz":"SY","seccion":"P","id":"SY-P-19","nivel":"N2","operacion":"convencion","entrada":"6\\div2(1+2)","esperado":"9 \\ \\text{o}\\ 1","nota":"Misma ambigüedad que el caso anterior."}
+{"matriz":"SY","seccion":"P","id":"SY-P-20","nivel":"N2","operacion":"interpretacion","entrada":"\\frac{1}{2}x","esperado":"\\frac{x}{2}","nota":"La fracción es una unidad; sin ambigüedad."}
+{"matriz":"SY","seccion":"P","id":"SY-P-21","nivel":"N2","operacion":"convencion","entrada":"1/2x","esperado":"\\frac{x}{2}\\ \\text{o}\\ \\frac{1}{2x}","nota":"Con `/` en línea hay dos lecturas; declarar cuál."}
+{"matriz":"SY","seccion":"P","id":"SY-P-22","nivel":"N1","operacion":"interpretacion","entrada":"1/(2x)","esperado":"\\frac{1}{2x}","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-23","nivel":"N2","operacion":"convencion","entrada":"a/bc","esperado":"\\frac{ac}{b}\\ \\text{o}\\ \\frac{a}{bc}","nota":"Declarar la convención."}
+{"matriz":"SY","seccion":"P","id":"SY-P-24","nivel":"N1","operacion":"interpretacion","entrada":"xy","esperado":"x\\cdot y","nota":"Dos variables, no un símbolo llamado `xy`."}
+{"matriz":"SY","seccion":"P","id":"SY-P-25","nivel":"N1","operacion":"interpretacion","entrada":"xyz","esperado":"x\\cdot y\\cdot z","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-26","nivel":"N1","operacion":"interpretacion","entrada":"x^{2}y","esperado":"x^{2}\\cdot y","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-27","nivel":"N1","operacion":"interpretacion","entrada":"2e^{x}","esperado":"2\\cdot e^{x}","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-28","nivel":"N2","operacion":"interpretacion","entrada":"e^{2}x","esperado":"e^{2}\\cdot x","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-29","nivel":"N1","operacion":"equivalente","entrada":"(x+1)(x-1)","esperado":"x^{2}-1","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-30","nivel":"N2","operacion":"equivalente","entrada":"x(x+1)","esperado":"x^{2}+x","nota":"Sin `f` definida, `x(...)` es producto, no llamada a función."}
+{"matriz":"SY","seccion":"P","id":"SY-P-31","nivel":"N2","operacion":"equivalente","entrada":"2(x)(3)","esperado":"6x","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-32","nivel":"N2","operacion":"convencion","entrada":"f(x+1)","esperado":"Si `f` no está definida: producto `f\\cdot(x+1)` o aviso \"f no definida\"","nota":"No debe descartar `f` ni inventar una función."}
+{"matriz":"SY","seccion":"P","id":"SY-P-33","nivel":"N1","operacion":"valor","entrada":"2\\cdot3^{2}","esperado":"18","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-01","nivel":"N1","operacion":"interpretacion","entrada":"\\sin x+1","esperado":"\\sin(x)+1","nota":"No `\\sin(x+1)`."}
+{"matriz":"SY","seccion":"F","id":"SY-F-02","nivel":"N1","operacion":"interpretacion","entrada":"\\sin x\\cos x","esperado":"\\sin(x)\\cdot\\cos(x)","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-03","nivel":"N2","operacion":"interpretacion","entrada":"\\sin x^{2}","esperado":"\\sin\\left(x^{2}\\right)","nota":"No `(\\sin x)^2`."}
+{"matriz":"SY","seccion":"F","id":"SY-F-04","nivel":"N2","operacion":"valor","entrada":"\\sin^{2}\\frac{\\pi}{6}","esperado":"\\frac{1}{4}","nota":"Potencia de la función: `(\\sin x)^2`."}
+{"matriz":"SY","seccion":"F","id":"SY-F-05","nivel":"N2","operacion":"valor","entrada":"\\sin^{-1}\\frac{1}{2}","esperado":"\\frac{\\pi}{6}","nota":"`\\sin^{-1}` es la función inversa (arcsen), no 1/sen."}
+{"matriz":"SY","seccion":"F","id":"SY-F-06","nivel":"N2","operacion":"valor","entrada":"\\left(\\sin\\frac{\\pi}{6}\\right)^{-1}","esperado":"2","nota":"Con paréntesis es el recíproco."}
+{"matriz":"SY","seccion":"F","id":"SY-F-07","nivel":"N2","operacion":"valor","entrada":"\\tan^{-1}1","esperado":"\\frac{\\pi}{4}","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-08","nivel":"N2","operacion":"convencion","entrada":"\\sin2x","esperado":"\\sin(2x)","nota":"Argumento sin paréntesis: declarar (lo habitual es `\\sin(2x)`)."}
+{"matriz":"SY","seccion":"F","id":"SY-F-09","nivel":"N1","operacion":"valor","entrada":"\\sin\\frac{\\pi}{6}","esperado":"\\frac{1}{2}","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-10","nivel":"N1","operacion":"valor","entrada":"\\sin\\left(30^{\\circ}\\right)","esperado":"\\frac{1}{2}","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-11","nivel":"N2","operacion":"valor","entrada":"\\sin30^{\\circ}","esperado":"\\frac{1}{2}","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-12","nivel":"N2","operacion":"equivalente","entrada":"\\cos^{2}x+\\sin^{2}x","esperado":"1","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-13","nivel":"N2","operacion":"interpretacion","entrada":"\\ln x^{2}","esperado":"\\ln\\left(x^{2}\\right)","nota":"No `(\\ln x)^2`."}
+{"matriz":"SY","seccion":"F","id":"SY-F-14","nivel":"N2","operacion":"convencion","entrada":"\\ln^{2}x","esperado":"\\left(\\ln x\\right)^{2}","nota":"Potencia de función en `\\ln`: declarar."}
+{"matriz":"SY","seccion":"F","id":"SY-F-15","nivel":"N1","operacion":"valor","entrada":"\\log100","esperado":"2","nota":"Decisión del proyecto: `\\log` sin base es base 10."}
+{"matriz":"SY","seccion":"F","id":"SY-F-16","nivel":"N1","operacion":"valor","entrada":"\\log_{2}8","esperado":"3","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-17","nivel":"N1","operacion":"valor","entrada":"\\log_{10}1000","esperado":"3","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-18","nivel":"N2","operacion":"interpretacion","entrada":"\\log_{2}x+1","esperado":"\\left(\\log_{2}x\\right)+1","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-19","nivel":"N2","operacion":"equivalente","entrada":"\\log_{a}b","esperado":"\\frac{\\ln b}{\\ln a}","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-20","nivel":"N1","operacion":"valor","entrada":"\\ln e","esperado":"1","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-21","nivel":"N2","operacion":"valor","entrada":"\\operatorname{arsinh}1","esperado":"0.881373587","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-22","nivel":"N2","operacion":"valor","entrada":"\\sinh^{-1}1","esperado":"0.881373587","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-23","nivel":"N2","operacion":"equivalente","entrada":"\\cosh^{2}x-\\sinh^{2}x","esperado":"1","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-24","nivel":"N2","operacion":"valor","entrada":"\\operatorname{sech}0","esperado":"1","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-25","nivel":"N1","operacion":"valor","entrada":"\\exp(2)","esperado":"e^{2}\\approx7.389056099","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-26","nivel":"N1","operacion":"valor","entrada":"e^{\\ln3}","esperado":"3","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-27","nivel":"N2","operacion":"equivalente","entrada":"\\sin x\\sin x","esperado":"\\sin^{2}x","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-28","nivel":"N1","operacion":"valor","entrada":"\\sin(\\cos(\\tan0))","esperado":"\\sin 1\\approx0.841470985","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-29","nivel":"N2","operacion":"error","entrada":"\\arcsin2","esperado":"error claro: fuera del dominio real (o valor complejo declarado)","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-30","nivel":"N2","operacion":"interpretacion","entrada":"\\sqrt{x}y","esperado":"\\sqrt{x}\\cdot y","nota":"La raíz cubre solo `x`."}
+{"matriz":"SY","seccion":"F","id":"SY-F-31","nivel":"N1","operacion":"valor","entrada":"\\sqrt3","esperado":"\\sqrt{3}\\approx1.732050808","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-32","nivel":"N1","operacion":"valor","entrada":"\\sqrt[3]{8}","esperado":"2","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-33","nivel":"N2","operacion":"valor","entrada":"\\sqrt[3]{-8}","esperado":"-2","nota":"Raíz real de índice impar (convención del proyecto)."}
+{"matriz":"SY","seccion":"F","id":"SY-F-34","nivel":"N1","operacion":"valor","entrada":"\\sqrt[4]{16}","esperado":"2","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-35","nivel":"N2","operacion":"valor","entrada":"\\sqrt{\\sqrt{16}}","esperado":"2","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-36","nivel":"N2","operacion":"equivalente","entrada":"\\sqrt[n]{x^{n}}","esperado":"`\\lvert x\\rvert` si n par; `x` si n impar (o aviso de supuestos)","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-37","nivel":"N2","operacion":"valor","entrada":"\\lvert-3\\rvert","esperado":"3","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-38","nivel":"N2","operacion":"valor","entrada":"\\left\\vert -3\\right\\vert ","esperado":"3","nota":"Barras tecleadas con `/`."}
+{"matriz":"SY","seccion":"F","id":"SY-F-39","nivel":"N2","operacion":"valor","entrada":"\\operatorname{abs}(-3)","esperado":"3","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-40","nivel":"N3","operacion":"convencion","entrada":"\\vert \\vert x\\vert -2\\vert ","esperado":"\\left\\lvert\\lvert x\\rvert-2\\right\\rvert","nota":"Barras anidadas escritas con `/`: ambiguas; debe resolver o pedir `\\lvert\\rvert`."}
+{"matriz":"SY","seccion":"F","id":"SY-F-41","nivel":"N1","operacion":"valor","entrada":"\\lfloor3.7\\rfloor","esperado":"3","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-42","nivel":"N1","operacion":"valor","entrada":"\\lceil3.2\\rceil","esperado":"4","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-43","nivel":"N1","operacion":"valor","entrada":"\\operatorname{sgn}(-5)","esperado":"-1","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-44","nivel":"N2","operacion":"valor","entrada":"10\\bmod3","esperado":"1","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-45","nivel":"N2","operacion":"valor","entrada":"\\gcd(12,18)","esperado":"6","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-46","nivel":"N2","operacion":"valor","entrada":"\\operatorname{lcm}(4,6)","esperado":"12","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-47","nivel":"N1","operacion":"valor","entrada":"\\max(1,5,3)","esperado":"5","nota":""}
+{"matriz":"SY","seccion":"F","id":"SY-F-48","nivel":"N1","operacion":"valor","entrada":"\\min(1,5,3)","esperado":"1","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-01","nivel":"N1","operacion":"valor","entrada":"2^{10}","esperado":"1024","nota":"Exponente de dos dígitos."}
+{"matriz":"SY","seccion":"E","id":"SY-E-02","nivel":"N2","operacion":"valor","entrada":"2^10","esperado":"1024","nota":"Tecleado en ASCII: no debe leerse como `2^{1}\\cdot0`. Caso histórico del proyecto."}
+{"matriz":"SY","seccion":"E","id":"SY-E-03","nivel":"N1","operacion":"valor","entrada":"x^{12}\\ \\text{con}\\ x=2","esperado":"4096","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-04","nivel":"N1","operacion":"valor","entrada":"10^{-3}","esperado":"0.001","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-05","nivel":"N2","operacion":"valor","entrada":"2^{2^{2}}","esperado":"16","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-06","nivel":"N2","operacion":"equivalente","entrada":"x^{\\frac{1}{2}}","esperado":"\\sqrt{x}","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-07","nivel":"N2","operacion":"equivalente","entrada":"x^{0.5}","esperado":"\\sqrt{x}","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-08","nivel":"N1","operacion":"equivalente","entrada":"x^{-1}","esperado":"\\frac{1}{x}","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-09","nivel":"N1","operacion":"equivalente","entrada":"\\left(x^{2}\\right)^{3}","esperado":"x^{6}","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-10","nivel":"N2","operacion":"equivalente","entrada":"x^{2^{3}}","esperado":"x^{8}","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-11","nivel":"N2","operacion":"error","entrada":"x^{2}^{3}","esperado":"error claro: doble superíndice sin agrupar","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-12","nivel":"N2","operacion":"error","entrada":"x^{}","esperado":"error claro: exponente vacío","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-13","nivel":"N2","operacion":"error","entrada":"^{2}","esperado":"error claro: falta la base","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-14","nivel":"N2","operacion":"valor","entrada":"2^{3.5}","esperado":"11.31370850","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-15","nivel":"N2","operacion":"valor","entrada":"2^{-0.5}","esperado":"0.7071067812","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-16","nivel":"N1","operacion":"valor","entrada":"(-2)^{3}","esperado":"-8","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-17","nivel":"N2","operacion":"convencion","entrada":"(-2)^{0.5}","esperado":"En ℝ: error claro; en ℂ: `\\sqrt{2}\\,i`","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-18","nivel":"N2","operacion":"convencion","entrada":"(-8)^{\\frac{1}{3}}","esperado":"-2\\ \\text{o}\\ 1+\\sqrt{3}\\,i","nota":"Raíz real o rama principal: declarar."}
+{"matriz":"SY","seccion":"E","id":"SY-E-19","nivel":"N2","operacion":"convencion","entrada":"0^{0}","esperado":"indeterminada (o `1` por convención declarada)","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-20","nivel":"N2","operacion":"error","entrada":"0^{-1}","esperado":"error claro: división entre cero","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-21","nivel":"N1","operacion":"valor","entrada":"\\frac12","esperado":"\\frac{1}{2}","nota":"Abreviatura de un solo dígito."}
+{"matriz":"SY","seccion":"E","id":"SY-E-22","nivel":"N2","operacion":"equivalente","entrada":"\\frac{1}{1+\\frac{1}{x}}","esperado":"\\frac{x}{x+1}","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-23","nivel":"N2","operacion":"valor","entrada":"\\frac{\\frac{1}{2}}{\\frac{3}{4}}","esperado":"\\frac{2}{3}","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-24","nivel":"N1","operacion":"valor","entrada":"\\dfrac{3}{4}","esperado":"\\frac{3}{4}","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-25","nivel":"N1","operacion":"valor","entrada":"\\tfrac{3}{4}","esperado":"\\frac{3}{4}","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-26","nivel":"N1","operacion":"valor","entrada":"\\frac{1}{3}+\\frac{1}{6}","esperado":"\\frac{1}{2}","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-27","nivel":"N1","operacion":"valor","entrada":"\\frac{22}{7}","esperado":"\\frac{22}{7}\\approx3.142857143","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-28","nivel":"N1","operacion":"error","entrada":"\\frac{1}{0}","esperado":"error claro: división entre cero","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-29","nivel":"N2","operacion":"error","entrada":"\\frac{0}{0}","esperado":"error claro: indeterminado","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-30","nivel":"N2","operacion":"error","entrada":"\\frac{x}{}","esperado":"error claro: denominador vacío","nota":""}
+{"matriz":"SY","seccion":"E","id":"SY-E-31","nivel":"N3","operacion":"convencion","entrada":"2\\frac{1}{3}","esperado":"\\frac{7}{3}\\ \\text{(número mixto)}\\ \\text{o}\\ \\frac{2}{3}\\ \\text{(producto)}","nota":"Número mixto o producto: declarar."}
+{"matriz":"SY","seccion":"N","id":"SY-N-01","nivel":"N1","operacion":"valor","entrada":".5","esperado":"0.5","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-02","nivel":"N1","operacion":"valor","entrada":"5.","esperado":"5","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-03","nivel":"N1","operacion":"valor","entrada":"00012","esperado":"12","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-04","nivel":"N1","operacion":"valor","entrada":"1.2\\times10^{3}","esperado":"1200","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-05","nivel":"N2","operacion":"convencion","entrada":"1\\mathrm{e}3","esperado":"1000\\ \\text{o error claro}","nota":"Notación `e` de calculadora: aceptarla o rechazarla con aviso."}
+{"matriz":"SY","seccion":"N","id":"SY-N-06","nivel":"N2","operacion":"valor","entrada":"0.1+0.2","esperado":"0.3","nota":"No `0.30000000000000004`."}
+{"matriz":"SY","seccion":"N","id":"SY-N-07","nivel":"N2","operacion":"valor","entrada":"0.1\\times3","esperado":"0.3","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-08","nivel":"N2","operacion":"valor","entrada":"1-0.9","esperado":"0.1","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-09","nivel":"N2","operacion":"valor","entrada":"4.35\\times100","esperado":"435","nota":"En coma flotante sale 434.99999999999994."}
+{"matriz":"SY","seccion":"N","id":"SY-N-10","nivel":"N2","operacion":"valor","entrada":"1.005\\times1000","esperado":"1005","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-11","nivel":"N2","operacion":"valor","entrada":"\\frac{1}{3}\\times3","esperado":"1","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-12","nivel":"N1","operacion":"valor","entrada":"1.5+\\frac12","esperado":"2","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-13","nivel":"N2","operacion":"valor","entrada":"\\sqrt{2}^{2}","esperado":"2","nota":"Exacto, no `2.0000000000000004`."}
+{"matriz":"SY","seccion":"N","id":"SY-N-14","nivel":"N2","operacion":"valor","entrada":"\\left(\\sqrt{2}\\right)^{2}-2","esperado":"0","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-15","nivel":"N2","operacion":"valor","entrada":"10^{20}+1","esperado":"100000000000000000001","nota":"Entero exacto, sin pasar a `1e20`."}
+{"matriz":"SY","seccion":"N","id":"SY-N-16","nivel":"N2","operacion":"valor","entrada":"2^{100}","esperado":"1267650600228229401496703205376","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-17","nivel":"N3","operacion":"valor","entrada":"9007199254740993","esperado":"9007199254740993","nota":"Es 2^53+1: en coma flotante se redondea a ...992."}
+{"matriz":"SY","seccion":"N","id":"SY-N-18","nivel":"N1","operacion":"valor","entrada":"12\\%","esperado":"0.12","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-19","nivel":"N2","operacion":"valor","entrada":"50\\%\\times200","esperado":"100","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-20","nivel":"N1","operacion":"valor","entrada":"5!","esperado":"120","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-21","nivel":"N1","operacion":"valor","entrada":"0!","esperado":"1","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-22","nivel":"N2","operacion":"error","entrada":"(-1)!","esperado":"error claro: factorial no definido","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-23","nivel":"N3","operacion":"convencion","entrada":"2.5!","esperado":"\\Gamma(3.5)\\approx3.323350970\\ \\text{o error claro}","nota":"Factorial de no entero: función Gamma o aviso."}
+{"matriz":"SY","seccion":"N","id":"SY-N-24","nivel":"N3","operacion":"valor","entrada":"100!","esperado":"9.332621544\\times10^{157}","nota":"Entero exacto de 158 dígitos si se pide exacto."}
+{"matriz":"SY","seccion":"N","id":"SY-N-25","nivel":"N3","operacion":"valor","entrada":"170!","esperado":"7.257415615\\times10^{306}","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-26","nivel":"N3","operacion":"valor","entrada":"171!","esperado":"valor exacto de 311 dígitos o aviso de desbordamiento; nunca `Infinity` silencioso","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-27","nivel":"N1","operacion":"valor","entrada":"\\pi","esperado":"3.141592654","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-28","nivel":"N1","operacion":"valor","entrada":"e","esperado":"2.718281828","nota":""}
+{"matriz":"SY","seccion":"N","id":"SY-N-29","nivel":"N2","operacion":"convencion","entrada":"1,5+2","esperado":"3.5\\ \\text{(coma decimal)}\\ \\text{o aviso}","nota":"Separador decimal: declarar la configuración regional."}
+{"matriz":"SY","seccion":"N","id":"SY-N-30","nivel":"N2","operacion":"convencion","entrada":"1{,}000+1","esperado":"1001\\ \\text{o aviso}","nota":"Separador de miles."}
+{"matriz":"SY","seccion":"N","id":"SY-N-31","nivel":"N2","operacion":"valor","entrada":"\\frac{1}{3000000}","esperado":"3.333333333\\times10^{-7}","nota":"Notación científica en la salida."}
+{"matriz":"SY","seccion":"D","id":"SY-D-01","nivel":"N1","operacion":"error","entrada":"(2+3","esperado":"error claro: paréntesis sin cerrar","nota":""}
+{"matriz":"SY","seccion":"D","id":"SY-D-02","nivel":"N1","operacion":"error","entrada":"2+3)","esperado":"error claro: paréntesis de cierre sobrante","nota":""}
+{"matriz":"SY","seccion":"D","id":"SY-D-03","nivel":"N1","operacion":"error","entrada":"()","esperado":"error claro: paréntesis vacíos","nota":""}
+{"matriz":"SY","seccion":"D","id":"SY-D-04","nivel":"N2","operacion":"error","entrada":"(1+2]","esperado":"error claro: delimitadores que no coinciden","nota":""}
+{"matriz":"SY","seccion":"D","id":"SY-D-05","nivel":"N2","operacion":"error","entrada":"\\left(1+2\\right]","esperado":"error claro: delimitadores que no coinciden","nota":""}
+{"matriz":"SY","seccion":"D","id":"SY-D-06","nivel":"N1","operacion":"valor","entrada":"[1+2]\\cdot3","esperado":"9","nota":""}
+{"matriz":"SY","seccion":"D","id":"SY-D-07","nivel":"N2","operacion":"convencion","entrada":"\\{1+2\\}\\cdot3","esperado":"9\\ \\text{o aviso (llaves como conjunto)}","nota":""}
+{"matriz":"SY","seccion":"D","id":"SY-D-08","nivel":"N1","operacion":"valor","entrada":"\\left(1+2\\right)^{2}","esperado":"9","nota":""}
+{"matriz":"SY","seccion":"D","id":"SY-D-09","nivel":"N1","operacion":"valor","entrada":"\\left(\\frac{1}{2}\\right)^{2}","esperado":"\\frac{1}{4}","nota":""}
+{"matriz":"SY","seccion":"D","id":"SY-D-10","nivel":"N1","operacion":"valor","entrada":"(1+2)(3+4)","esperado":"21","nota":""}
+{"matriz":"SY","seccion":"D","id":"SY-D-11","nivel":"N1","operacion":"valor","entrada":"(1+2)3","esperado":"9","nota":""}
+{"matriz":"SY","seccion":"D","id":"SY-D-12","nivel":"N1","operacion":"valor","entrada":"3(1+2)","esperado":"9","nota":""}
+{"matriz":"SY","seccion":"D","id":"SY-D-13","nivel":"N2","operacion":"valor","entrada":"((((((((((1))))))))))","esperado":"1","nota":""}
+{"matriz":"SY","seccion":"D","id":"SY-D-14","nivel":"N1","operacion":"valor","entrada":"((2))","esperado":"2","nota":""}
+{"matriz":"SY","seccion":"U","id":"SY-U-01","nivel":"N1","operacion":"valor","entrada":"3\\times4","esperado":"12","nota":""}
+{"matriz":"SY","seccion":"U","id":"SY-U-02","nivel":"N1","operacion":"valor","entrada":"12\\div4","esperado":"3","nota":""}
+{"matriz":"SY","seccion":"U","id":"SY-U-03","nivel":"N1","operacion":"valor","entrada":"3\\cdot4","esperado":"12","nota":""}
+{"matriz":"SY","seccion":"U","id":"SY-U-04","nivel":"N1","operacion":"valor","entrada":"3*4","esperado":"12","nota":""}
+{"matriz":"SY","seccion":"U","id":"SY-U-05","nivel":"N1","operacion":"valor","entrada":"12/4","esperado":"3","nota":""}
+{"matriz":"SY","seccion":"U","id":"SY-U-06","nivel":"N2","operacion":"valor","entrada":"3×4","esperado":"12","nota":"Carácter Unicode × (U+00D7)."}
+{"matriz":"SY","seccion":"U","id":"SY-U-07","nivel":"N2","operacion":"valor","entrada":"12÷4","esperado":"3","nota":"Carácter Unicode ÷ (U+00F7)."}
+{"matriz":"SY","seccion":"U","id":"SY-U-08","nivel":"N2","operacion":"valor","entrada":"3·4","esperado":"12","nota":"Punto medio (U+00B7)."}
+{"matriz":"SY","seccion":"U","id":"SY-U-09","nivel":"N2","operacion":"valor","entrada":"2−1","esperado":"1","nota":"Signo menos Unicode (U+2212), típico al copiar de PDF."}
+{"matriz":"SY","seccion":"U","id":"SY-U-10","nivel":"N2","operacion":"convencion","entrada":"2–1","esperado":"1\\ \\text{o aviso}","nota":"Raya corta (U+2013)."}
+{"matriz":"SY","seccion":"U","id":"SY-U-11","nivel":"N2","operacion":"convencion","entrada":"x²","esperado":"x^{2}\\ \\text{o aviso}","nota":"Superíndice Unicode."}
+{"matriz":"SY","seccion":"U","id":"SY-U-12","nivel":"N2","operacion":"convencion","entrada":"√4","esperado":"2\\ \\text{o aviso}","nota":"Raíz Unicode."}
+{"matriz":"SY","seccion":"U","id":"SY-U-13","nivel":"N1","operacion":"valor","entrada":"π","esperado":"3.141592654","nota":""}
+{"matriz":"SY","seccion":"U","id":"SY-U-14","nivel":"N2","operacion":"valor","entrada":"3\\,+\\,4","esperado":"7","nota":"Espacios finos `\\,`."}
+{"matriz":"SY","seccion":"U","id":"SY-U-15","nivel":"N2","operacion":"valor","entrada":"3\\;+\\;4","esperado":"7","nota":""}
+{"matriz":"SY","seccion":"U","id":"SY-U-16","nivel":"N2","operacion":"valor","entrada":"3 + 4","esperado":"7","nota":"Espacio duro (U+00A0) entre los símbolos."}
+{"matriz":"SY","seccion":"U","id":"SY-U-17","nivel":"N2","operacion":"valor","entrada":"２＋３","esperado":"5","nota":"Dígitos de ancho completo."}
+{"matriz":"SY","seccion":"U","id":"SY-U-18","nivel":"N2","operacion":"valor","entrada":"2+-3","esperado":"-1","nota":""}
+{"matriz":"SY","seccion":"U","id":"SY-U-19","nivel":"N2","operacion":"valor","entrada":"2--3","esperado":"5","nota":""}
+{"matriz":"SY","seccion":"U","id":"SY-U-20","nivel":"N2","operacion":"valor","entrada":"2*-3","esperado":"-6","nota":""}
+{"matriz":"SY","seccion":"U","id":"SY-U-21","nivel":"N2","operacion":"valor","entrada":"--3","esperado":"3","nota":""}
+{"matriz":"SY","seccion":"U","id":"SY-U-22","nivel":"N1","operacion":"error","entrada":"2+","esperado":"error claro: expresión incompleta","nota":""}
+{"matriz":"SY","seccion":"U","id":"SY-U-23","nivel":"N1","operacion":"error","entrada":"*2","esperado":"error claro: operador sin operando","nota":""}
+{"matriz":"SY","seccion":"U","id":"SY-U-24","nivel":"N2","operacion":"convencion","entrada":"2\\ 3","esperado":"6\\ \\text{o}\\ 23\\ \\text{o aviso}","nota":"Dos números separados por espacio: declarar."}
+{"matriz":"SY","seccion":"U","id":"SY-U-25","nivel":"N2","operacion":"convencion","entrada":"2++3","esperado":"5\\ \\text{o aviso}","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-01","nivel":"N1","operacion":"interpretacion","entrada":"X+x","esperado":"X+x","nota":"Distingue mayúsculas de minúsculas: dos variables."}
+{"matriz":"SY","seccion":"V","id":"SY-V-02","nivel":"N2","operacion":"interpretacion","entrada":"x_{1}+x_{2}","esperado":"x_{1}+x_{2}","nota":"Dos variables distintas."}
+{"matriz":"SY","seccion":"V","id":"SY-V-03","nivel":"N2","operacion":"interpretacion","entrada":"\\pi r^{2}","esperado":"\\pi\\cdot r^{2}","nota":"`\\pi` es la constante; `r` es variable."}
+{"matriz":"SY","seccion":"V","id":"SY-V-04","nivel":"N2","operacion":"valor","entrada":"f(x)=x^{2};\\ f(3)","esperado":"9","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-05","nivel":"N2","operacion":"equivalente","entrada":"f(x)=x^{2};\\ f(x+1)","esperado":"(x+1)^{2}","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-06","nivel":"N2","operacion":"valor","entrada":"g(x,y)=x+y;\\ g(2,3)","esperado":"5","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-07","nivel":"N1","operacion":"equivalente","entrada":"\\frac{d}{dx}x^{2}","esperado":"2x","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-08","nivel":"N2","operacion":"equivalente","entrada":"\\frac{d^{2}}{dx^{2}}x^{3}","esperado":"6x","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-09","nivel":"N1","operacion":"equivalente","entrada":"\\int x\\,dx","esperado":"\\frac{x^{2}}{2}+C","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-10","nivel":"N2","operacion":"equivalente","entrada":"\\int xdx","esperado":"\\frac{x^{2}}{2}+C","nota":"Sin espacio antes de `dx`: debe reconocer el diferencial."}
+{"matriz":"SY","seccion":"V","id":"SY-V-11","nivel":"N1","operacion":"valor","entrada":"\\int_{0}^{1}x\\,dx","esperado":"\\frac{1}{2}","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-12","nivel":"N2","operacion":"equivalente","entrada":"\\int x\\,dy","esperado":"xy+C","nota":"`dy` es el diferencial; `x` es constante respecto a `y`."}
+{"matriz":"SY","seccion":"V","id":"SY-V-13","nivel":"N1","operacion":"valor","entrada":"\\lim_{x\\to0}\\frac{\\sin x}{x}","esperado":"1","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-14","nivel":"N2","operacion":"valor","entrada":"\\lim_{x\\to0^{+}}\\frac{1}{x}","esperado":"+\\infty","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-15","nivel":"N2","operacion":"valor","entrada":"\\lim_{x\\to\\infty}\\frac{1}{x}","esperado":"0","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-16","nivel":"N1","operacion":"valor","entrada":"\\sum_{k=1}^{10}k","esperado":"55","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-17","nivel":"N2","operacion":"equivalente","entrada":"\\sum_{k=1}^{n}k","esperado":"\\frac{n(n+1)}{2}","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-18","nivel":"N1","operacion":"valor","entrada":"\\prod_{k=1}^{5}k","esperado":"120","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-19","nivel":"N1","operacion":"valor","entrada":"\\binom{5}{2}","esperado":"10","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-20","nivel":"N2","operacion":"equivalente","entrada":"\\binom{n}{2}","esperado":"\\frac{n(n-1)}{2}","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-21","nivel":"N2","operacion":"valor","entrada":"P(5,2)","esperado":"20","nota":"Permutaciones (sin ambigüedad con una función `P` definida por el usuario)."}
+{"matriz":"SY","seccion":"V","id":"SY-V-22","nivel":"N2","operacion":"convencion","entrada":"i^{2}","esperado":"-1\\ \\text{(complejos)}\\ \\text{o}\\ i^{2}\\ \\text{(variable)}","nota":"`i` como unidad imaginaria o como variable según el modo: declarar."}
+{"matriz":"SY","seccion":"V","id":"SY-V-23","nivel":"N2","operacion":"valor","entrada":"\\overline{3+4i}","esperado":"3-4i","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-24","nivel":"N2","operacion":"valor","entrada":"\\lvert3+4i\\rvert","esperado":"5","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-25","nivel":"N2","operacion":"valor","entrada":"\\mathrm{e}^{x}\\ \\text{con}\\ x=0","esperado":"1","nota":""}
+{"matriz":"SY","seccion":"V","id":"SY-V-26","nivel":"N3","operacion":"convencion","entrada":"sinx","esperado":"\\sin x\\ \\text{o}\\ s\\cdot i\\cdot n\\cdot x","nota":"Letras seguidas sin barra: declarar si se reconocen nombres de función."}
+{"matriz":"SY","seccion":"V","id":"SY-V-27","nivel":"N3","operacion":"convencion","entrada":"pi","esperado":"\\pi\\ \\text{o}\\ p\\cdot i","nota":"Nombre `pi` tecleado con letras: declarar."}
+{"matriz":"SY","seccion":"V","id":"SY-V-28","nivel":"N2","operacion":"valor","entrada":"\\alpha+\\alpha","esperado":"2\\alpha","nota":"Letras griegas como variables."}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-01","nivel":"N1","operacion":"resolver","entrada":"x^{2}=4","esperado":"x=-2,\\ x=2","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-02","nivel":"N1","operacion":"resolver","entrada":"x^{2}-4=0","esperado":"x=-2,\\ x=2","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-03","nivel":"N1","operacion":"resolver","entrada":"4=x^{2}","esperado":"x=-2,\\ x=2","nota":"Incógnita en el miembro derecho."}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-04","nivel":"N2","operacion":"resolver","entrada":"x=x","esperado":"identidad: todo `x` es solución","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-05","nivel":"N2","operacion":"resolver","entrada":"x=x+1","esperado":"sin solución","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-06","nivel":"N1","operacion":"resolver","entrada":"x^{2}\\le4","esperado":"x\\in[-2,2]","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-07","nivel":"N1","operacion":"resolver","entrada":"x^{2}<4","esperado":"x\\in(-2,2)","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-08","nivel":"N2","operacion":"resolver","entrada":"1<x\\le3","esperado":"x\\in(1,3]","nota":"Desigualdad encadenada."}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-09","nivel":"N2","operacion":"resolver","entrada":"x\\neq2","esperado":"x\\in\\mathbb{R}\\setminus\\{2\\}","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-10","nivel":"N2","operacion":"resolver","entrada":"\\lvert x\\rvert<3","esperado":"x\\in(-3,3)","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-11","nivel":"N1","operacion":"resolver","entrada":"\\begin{cases}x+y=3\\\\ x-y=1\\end{cases}","esperado":"(x,y)=(2,1)","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-12","nivel":"N2","operacion":"resolver","entrada":"x+y=3,\\ x-y=1","esperado":"(x,y)=(2,1)","nota":"Sistema separado por comas."}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-13","nivel":"N2","operacion":"resolver","entrada":"x+y=3;\\ x-y=1","esperado":"(x,y)=(2,1)","nota":"Sistema separado por punto y coma."}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-14","nivel":"N2","operacion":"resolver","entrada":"\\left\\{\\begin{array}{l}x+y=3\\\\ x-y=1\\end{array}\\right.","esperado":"(x,y)=(2,1)","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-15","nivel":"N2","operacion":"resolver","entrada":"\\begin{aligned}x+y&=3\\\\ x-y&=1\\end{aligned}","esperado":"(x,y)=(2,1)","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-16","nivel":"N2","operacion":"resolver","entrada":"\\begin{cases}x^{2}+y^{2}=25\\\\ x+y=7\\end{cases}","esperado":"(x,y)=(3,4),\\ (4,3)","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-17","nivel":"N2","operacion":"resolver","entrada":"\\begin{cases}x>1\\\\ x<3\\end{cases}","esperado":"x\\in(1,3)","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-18","nivel":"N2","operacion":"resolver","entrada":"x+y=3","esperado":"una ecuación, dos incógnitas: `x=3-y` con `y` libre","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-19","nivel":"N2","operacion":"error","entrada":"x=y=3","esperado":"error claro o interpretación declarada (igualdad encadenada)","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-20","nivel":"N2","operacion":"convencion","entrada":"x^{2}-4","esperado":"Sin `=`, en modo ecuación: tratar como `x^{2}-4=0` o avisar","nota":"Declarar el comportamiento."}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-21","nivel":"N1","operacion":"resolver","entrada":"x\\leq2","esperado":"x\\in(-\\infty,2]","nota":""}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-22","nivel":"N2","operacion":"resolver","entrada":"x<=2","esperado":"x\\in(-\\infty,2]","nota":"Operador ASCII `<=`."}
+{"matriz":"SY","seccion":"Q","id":"SY-Q-23","nivel":"N2","operacion":"resolver","entrada":"x≥1","esperado":"x\\in[1,\\infty)","nota":"Símbolo Unicode ≥."}
+{"matriz":"SY","seccion":"M","id":"SY-M-01","nivel":"N1","operacion":"det","entrada":"\\det\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}","esperado":"-2","nota":""}
+{"matriz":"SY","seccion":"M","id":"SY-M-02","nivel":"N1","operacion":"det","entrada":"\\det\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}","esperado":"-2","nota":""}
+{"matriz":"SY","seccion":"M","id":"SY-M-03","nivel":"N2","operacion":"det","entrada":"\\begin{vmatrix}1&2\\\\3&4\\end{vmatrix}","esperado":"-2","nota":"`vmatrix` equivale a determinante."}
+{"matriz":"SY","seccion":"M","id":"SY-M-04","nivel":"N2","operacion":"det","entrada":"\\det\\begin{array}{cc}1&2\\\\3&4\\end{array}","esperado":"-2","nota":""}
+{"matriz":"SY","seccion":"M","id":"SY-M-05","nivel":"N2","operacion":"det","entrada":"\\det\\left[\\begin{matrix}1&2\\\\3&4\\end{matrix}\\right]","esperado":"-2","nota":""}
+{"matriz":"SY","seccion":"M","id":"SY-M-06","nivel":"N2","operacion":"det","entrada":"\\det[[1,2],[3,4]]","esperado":"-2","nota":"Sintaxis ASCII de listas anidadas."}
+{"matriz":"SY","seccion":"M","id":"SY-M-07","nivel":"N2","operacion":"error","entrada":"\\begin{pmatrix}1&2\\\\3\\end{pmatrix}","esperado":"error claro: filas de distinta longitud","nota":""}
+{"matriz":"SY","seccion":"M","id":"SY-M-08","nivel":"N2","operacion":"error","entrada":"\\begin{pmatrix}\\end{pmatrix}","esperado":"error claro: matriz vacía","nota":""}
+{"matriz":"SY","seccion":"M","id":"SY-M-09","nivel":"N2","operacion":"det","entrada":"\\det\\begin{pmatrix}\\frac12&\\sqrt2\\\\\\pi&e\\end{pmatrix}","esperado":"\\frac{e}{2}-\\sqrt{2}\\pi\\approx-3.0837","nota":"Entradas con fracciones, radicales y constantes."}
+{"matriz":"SY","seccion":"M","id":"SY-M-10","nivel":"N2","operacion":"vectores","entrada":"\\begin{pmatrix}1\\\\2\\\\3\\end{pmatrix}\\cdot\\begin{pmatrix}4\\\\5\\\\6\\end{pmatrix}","esperado":"32","nota":""}
+{"matriz":"SY","seccion":"M","id":"SY-M-11","nivel":"N2","operacion":"vectores","entrada":"\\langle1,2,3\\rangle\\cdot\\langle4,5,6\\rangle","esperado":"32","nota":"Notación de ángulo para vectores."}
+{"matriz":"SY","seccion":"M","id":"SY-M-12","nivel":"N2","operacion":"convencion","entrada":"(1,2,3)\\cdot(4,5,6)","esperado":"32\\ \\text{o aviso}","nota":"Tupla: vector, punto o intervalo según el contexto; declarar."}
+{"matriz":"SY","seccion":"M","id":"SY-M-13","nivel":"N2","operacion":"vectores","entrada":"\\mathbf{i}+2\\mathbf{j}-\\mathbf{k}","esperado":"(1,2,-1)","nota":"Notación de base canónica."}
+{"matriz":"SY","seccion":"M","id":"SY-M-14","nivel":"N2","operacion":"vectores","entrada":"\\vec{u}\\cdot\\vec{v}\\ \\text{con}\\ \\vec{u}=(1,2,3),\\ \\vec{v}=(4,5,6)","esperado":"32","nota":""}
+{"matriz":"SY","seccion":"M","id":"SY-M-15","nivel":"N2","operacion":"convencion","entrada":"\\vec{u}\\times\\vec{v}","esperado":"producto cruz (vectores 3D); no producto escalar","nota":"`\\times` entre vectores es producto cruz."}
+{"matriz":"SY","seccion":"M","id":"SY-M-16","nivel":"N2","operacion":"convencion","entrada":"\\left\\lvert A\\right\\rvert","esperado":"determinante de `A` si `A` es matriz; valor absoluto si es escalar","nota":"Debe decidir por el tipo."}
+{"matriz":"SY","seccion":"M","id":"SY-M-17","nivel":"N2","operacion":"inversa","entrada":"\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}^{-1}","esperado":"\\begin{pmatrix}-2&1\\\\\\frac{3}{2}&-\\frac{1}{2}\\end{pmatrix}","nota":""}
+{"matriz":"SY","seccion":"M","id":"SY-M-18","nivel":"N2","operacion":"matriz","entrada":"\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}^{T}","esperado":"\\begin{pmatrix}1&3\\\\2&4\\end{pmatrix}","nota":""}
+{"matriz":"SY","seccion":"M","id":"SY-M-19","nivel":"N2","operacion":"matriz","entrada":"\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}^{\\top}","esperado":"\\begin{pmatrix}1&3\\\\2&4\\end{pmatrix}","nota":""}
+{"matriz":"SY","seccion":"M","id":"SY-M-20","nivel":"N2","operacion":"matriz","entrada":"2\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}","esperado":"\\begin{pmatrix}2&4\\\\6&8\\end{pmatrix}","nota":""}
+{"matriz":"SY","seccion":"S","id":"SY-S-01","nivel":"N1","operacion":"valor","entrada":"\\operatorname{sen}\\frac{\\pi}{6}","esperado":"\\frac{1}{2}","nota":""}
+{"matriz":"SY","seccion":"S","id":"SY-S-02","nivel":"N1","operacion":"valor","entrada":"\\operatorname{tg}\\frac{\\pi}{4}","esperado":"1","nota":""}
+{"matriz":"SY","seccion":"S","id":"SY-S-03","nivel":"N1","operacion":"valor","entrada":"\\operatorname{ctg}\\frac{\\pi}{4}","esperado":"1","nota":""}
+{"matriz":"SY","seccion":"S","id":"SY-S-04","nivel":"N1","operacion":"valor","entrada":"\\operatorname{cosec}\\frac{\\pi}{6}","esperado":"2","nota":""}
+{"matriz":"SY","seccion":"S","id":"SY-S-05","nivel":"N2","operacion":"valor","entrada":"\\operatorname{arcsen}\\frac{1}{2}","esperado":"\\frac{\\pi}{6}","nota":""}
+{"matriz":"SY","seccion":"S","id":"SY-S-06","nivel":"N2","operacion":"valor","entrada":"\\operatorname{arctg}1","esperado":"\\frac{\\pi}{4}","nota":""}
+{"matriz":"SY","seccion":"S","id":"SY-S-07","nivel":"N2","operacion":"valor","entrada":"\\operatorname{arcctg}1","esperado":"\\frac{\\pi}{4}","nota":""}
+{"matriz":"SY","seccion":"S","id":"SY-S-08","nivel":"N2","operacion":"valor","entrada":"\\operatorname{senh}1","esperado":"1.175201194","nota":""}
+{"matriz":"SY","seccion":"S","id":"SY-S-09","nivel":"N2","operacion":"valor","entrada":"\\operatorname{tgh}1","esperado":"0.7615941560","nota":""}
+{"matriz":"SY","seccion":"S","id":"SY-S-10","nivel":"N2","operacion":"valor","entrada":"\\operatorname{argsenh}1","esperado":"0.881373587","nota":""}
+{"matriz":"SY","seccion":"S","id":"SY-S-11","nivel":"N2","operacion":"valor","entrada":"sen(x)\\ \\text{con}\\ x=\\frac{\\pi}{6}","esperado":"\\frac{1}{2}","nota":"Texto plano con paréntesis."}
+{"matriz":"SY","seccion":"S","id":"SY-S-12","nivel":"N2","operacion":"valor","entrada":"raiz(16)","esperado":"4","nota":"Nombre `raiz` sin tilde en texto plano."}
+{"matriz":"SY","seccion":"S","id":"SY-S-13","nivel":"N2","operacion":"valor","entrada":"sin(0)","esperado":"0","nota":"Nombre inglés en texto plano."}
+{"matriz":"SY","seccion":"S","id":"SY-S-14","nivel":"N2","operacion":"valor","entrada":"exp(0)","esperado":"1","nota":""}
+{"matriz":"SY","seccion":"S","id":"SY-S-15","nivel":"N2","operacion":"valor","entrada":"ln(e)","esperado":"1","nota":""}
+{"matriz":"SY","seccion":"S","id":"SY-S-16","nivel":"N2","operacion":"valor","entrada":"log(100)","esperado":"2","nota":"Base 10, decisión del proyecto."}
+{"matriz":"SY","seccion":"S","id":"SY-S-17","nivel":"N2","operacion":"valor","entrada":"abs(-3)","esperado":"3","nota":""}
+{"matriz":"SY","seccion":"S","id":"SY-S-18","nivel":"N2","operacion":"valor","entrada":"sqrt(16)","esperado":"4","nota":""}
+{"matriz":"SY","seccion":"S","id":"SY-S-19","nivel":"N2","operacion":"valor","entrada":"sin(30°)","esperado":"\\frac{1}{2}","nota":"Grados con el símbolo °."}
+{"matriz":"SY","seccion":"S","id":"SY-S-20","nivel":"N2","operacion":"valor","entrada":"sen(30°)","esperado":"\\frac{1}{2}","nota":""}
+{"matriz":"SY","seccion":"R","id":"SY-R-01","nivel":"N1","operacion":"valor","entrada":"\\frac{\\sqrt{2}}{2}","esperado":"0.7071067812","nota":""}
+{"matriz":"SY","seccion":"R","id":"SY-R-02","nivel":"N1","operacion":"valor","entrada":"2\\sqrt{3}","esperado":"3.464101615","nota":""}
+{"matriz":"SY","seccion":"R","id":"SY-R-03","nivel":"N1","operacion":"valor","entrada":"\\frac{\\pi}{6}","esperado":"0.5235987756","nota":""}
+{"matriz":"SY","seccion":"R","id":"SY-R-04","nivel":"N2","operacion":"valor","entrada":"e^{-x^{2}}\\ \\text{con}\\ x=1","esperado":"0.3678794412","nota":""}
+{"matriz":"SY","seccion":"R","id":"SY-R-05","nivel":"N2","operacion":"valor","entrada":"\\operatorname{arsinh}\\left(1\\right)","esperado":"0.881373587","nota":""}
+{"matriz":"SY","seccion":"R","id":"SY-R-06","nivel":"N2","operacion":"valor","entrada":"\\ln\\left(2\\right)","esperado":"0.6931471806","nota":""}
+{"matriz":"SY","seccion":"R","id":"SY-R-07","nivel":"N2","operacion":"valor","entrada":"1.5\\times10^{-7}","esperado":"0.00000015","nota":""}
+{"matriz":"SY","seccion":"R","id":"SY-R-08","nivel":"N2","operacion":"valor","entrada":"1+2i","esperado":"1+2i","nota":"Complejo en forma binómica."}
+{"matriz":"SY","seccion":"R","id":"SY-R-09","nivel":"N2","operacion":"equivalente","entrada":"\\frac{x^{3}}{3}+C","esperado":"al derivar da `x^{2}`","nota":"Salida de una integral reingresada y derivada."}
+{"matriz":"SY","seccion":"R","id":"SY-R-10","nivel":"N2","operacion":"equivalente","entrada":"\\left(\\frac{x+1}{x-1}\\right)^{2}","esperado":"\\frac{(x+1)^{2}}{(x-1)^{2}}","nota":""}
+{"matriz":"SY","seccion":"R","id":"SY-R-11","nivel":"N2","operacion":"matriz","entrada":"\\begin{pmatrix}-2&1\\\\\\frac{3}{2}&-\\frac{1}{2}\\end{pmatrix}","esperado":"al multiplicar por `\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}` da la identidad","nota":""}
+{"matriz":"SY","seccion":"R","id":"SY-R-12","nivel":"N2","operacion":"error","entrada":"\\text{no existe}","esperado":"texto no ingresable: error claro (no debe aceptarlo como expresión)","nota":""}
+{"matriz":"SY","seccion":"R","id":"SY-R-13","nivel":"N2","operacion":"valor","entrada":"\\sqrt[3]{x}\\ \\text{con}\\ x=27","esperado":"3","nota":""}
+{"matriz":"SY","seccion":"R","id":"SY-R-14","nivel":"N3","operacion":"valor","entrada":"\\left\\lvert x\\right\\rvert\\ \\text{con}\\ x=-4","esperado":"4","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-01","nivel":"N1","operacion":"error","entrada":"*(vacía)*","esperado":"sin cambios o aviso \"entrada vacía\"; sin error interno","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-02","nivel":"N1","operacion":"error","entrada":"\\ \\ \\ \\ ","esperado":"igual que la entrada vacía","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-03","nivel":"N2","operacion":"error","entrada":"\\\\","esperado":"error claro de sintaxis","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-04","nivel":"N2","operacion":"equivalente","entrada":"x+x+x+\\cdots+x\\ \\text{(500 términos)}","esperado":"500x","nota":"Entrada larga con la misma suma repetida."}
+{"matriz":"SY","seccion":"X","id":"SY-X-05","nivel":"N3","operacion":"valor","entrada":"\\underbrace{(\\cdots((1))\\cdots)}_{30\\text{ niveles}}","esperado":"1","nota":"Paréntesis anidados a 30 niveles."}
+{"matriz":"SY","seccion":"X","id":"SY-X-06","nivel":"N3","operacion":"error","entrada":"\\text{(entrada de 10 000 caracteres)}","esperado":"procesada sin bloquear, o rechazada con aviso de longitud","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-07","nivel":"N2","operacion":"error","entrada":"\\infty-\\infty","esperado":"indeterminado: error claro","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-08","nivel":"N2","operacion":"error","entrada":"\\sqrt{-1}","esperado":"en ℝ: error claro; en ℂ: `i`","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-09","nivel":"N3","operacion":"error","entrada":"99999999999^{99999999999}","esperado":"límite de tiempo o memoria anunciado; nunca bloqueo ni valor falso","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-10","nivel":"N3","operacion":"error","entrada":"10^{10^{10}}","esperado":"resultado simbólico o aviso de tamaño; sin intentar imprimir 10^10 dígitos","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-11","nivel":"N3","operacion":"error","entrada":"9^{9^{9}}","esperado":"ídem (el número tiene unos 369 millones de dígitos)","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-12","nivel":"N3","operacion":"error","entrada":"\\int\\sin\\left(x^{x}\\right)dx","esperado":"sin forma elemental: aviso claro; no una antiderivada inventada","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-13","nivel":"N3","operacion":"equivalente","entrada":"\\frac{d}{dx}x^{x^{x}}","esperado":"x^{x^{x}}\\left(x^{x}(\\ln x+1)\\ln x+x^{x-1}\\right)","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-14","nivel":"N3","operacion":"valor","entrada":"\\underbrace{\\frac{1}{\\frac{1}{\\cdots\\frac{1}{x}}}}_{50\\text{ niveles}}","esperado":"`x` o `\\frac{1}{x}` según la paridad de los niveles (50 → `x`)","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-15","nivel":"N2","operacion":"error","entrada":"\\text{<script>alert(1)</script>}","esperado":"tratado como texto o error; **nunca** se ejecuta ni se inserta como HTML","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-16","nivel":"N2","operacion":"error","entrada":"\\input{/etc/passwd}","esperado":"ignorado o rechazado; sin lectura de archivos","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-17","nivel":"N2","operacion":"error","entrada":"\\write18{ls}","esperado":"ignorado o rechazado; sin ejecución","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-18","nivel":"N3","operacion":"error","entrada":"__import__('os').system('ls')","esperado":"error de sintaxis sin ejecutar nada (relevante para el backend de Plus)","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-19","nivel":"N3","operacion":"error","entrada":"open('/etc/passwd').read()","esperado":"error de sintaxis sin ejecutar nada","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-20","nivel":"N2","operacion":"error","entrada":"😀+1","esperado":"error claro de carácter no válido","nota":""}
+{"matriz":"SY","seccion":"X","id":"SY-X-21","nivel":"N3","operacion":"error","entrada":"1​+​2","esperado":"3\\ \\text{o error claro}","nota":"Con espacios de ancho cero (U+200B) entre los símbolos."}
+{"matriz":"SY","seccion":"X","id":"SY-X-22","nivel":"N3","operacion":"valor","entrada":"\\text{(número de 10 000 dígitos)}+1","esperado":"suma exacta o aviso de tamaño; sin pasar a coma flotante","nota":""}
