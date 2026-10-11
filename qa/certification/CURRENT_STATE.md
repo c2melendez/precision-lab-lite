@@ -1919,3 +1919,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus test fixture fix SHA `18ff893399bb0192d994a6e1ff141615d483a832`: sets explicitly bounded `_Server.request_queue_size = 16` and raises only the concurrency-test TCP timeout to the client maximum 5s; no production code or API modifications. Cumulative `38140121960` and H1d `38140121981` queued when observed; **CI PENDING**, not a new PASS.
 - Last fully certified Plus baseline remains SHA `51021b55cb23839916d78317400faa9002adbc26`: backend **759 PASS / 1 warning / 86.06% coverage**, frontend **751 PASS / 28 TODO**, H1d **5 PASS**.
 - Loopback on a single runner is not independent-host DIST-01 evidence. SG28/H2 and DIST-01..08 OPEN/BLOCKED; production unchanged. Next: verify latest SHA and classify red.
+
+
+## 2026-10-11 — Verificación CI de reparación TCP (sesión de continuidad)
+- Plus SHA técnico `18ff893399bb0192d994a6e1ff141615d483a832`: gate acumulativo run `38140121960` finalizó con jobs backend y frontend SUCCESS. Logs backend: **760 passed, 1 warning, 86.06% coverage**; frontend **751 passed / 28 TODO**.
+- Plus H1d run `38140121981`: job SUCCESS, **5 passed**.
+- El timeout del fixture TCP de ocho clientes quedó resuelto en CI; evidencia acotada a loopback/runner único, sin acreditar servidores independientes, TLS/autenticación ni `/evaluate` público.
+- SG28/H2 y DIST-01..08 continúan OPEN/BLOCKED. No se modificó producción ni se activó `SG28_EVALUATE_ISOLATION`.
+- Siguiente acción: especificar y validar un entorno de aceptación autorizado, desechable, con coordinador autenticado y clientes en hosts aislados; preservar la comprobación fail-closed y el fencing generacional sin extrapolar las pruebas locales.
