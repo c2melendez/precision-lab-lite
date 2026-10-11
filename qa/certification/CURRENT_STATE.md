@@ -1715,3 +1715,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus SHA `232b253798baa36051bce07e6d98bd695d690679`: cumulative `38116482798` SUCCESS, backend job `114402265778`: **677 passed / 1 warning / 85.69% coverage**, explicit PASS `test_sg28_local_admission_released_after_exception`; frontend job `114402266148`: 69 files / **751 passed / 28 TODO**. H1d run `38116482788`, job `114402265679`: **5 passed**.
 - Scope: unit regression confirming release of local `threading.BoundedSemaphore` capacity after a request-body exception. Does not certify multi-host admission; DIST-01..08 remain blocked pending separate authorized staging topology, real shared-coordinator implementation and fault-injection evidence.
 - This revision of documentation does not change code, production flags or staging services.
+
+## 2026-10-10 local — SG28 async cancellation releases reserved local slot (CI pending)
+- Plus technical SHA `e6e7f61e8910caff95ad329475766ffe9c3ef014` extends `backend/tests/test_sg28_admission_scope.py` with `test_sg28_local_admission_released_after_async_task_cancellation`.
+- An asyncio task acquires a single local lease and awaits indefinitely. Concurrent local admission must be refused. Cancelling the task must propagate `CancelledError` and release the slot, allowing a subsequent lease. This guards the actual context manager without a service implementation change.
+- Prior Plus cumulative `38116482798` SUCCESS (677 backend PASS, 751 frontend PASS / 28 TODO), H1d `38116482788` SUCCESS (5 PASS); those runs do not certify this new SHA.
+- Local-process unit scope only; DIST-01..08 separate-host gates remain BLOCKED/NOT CERTIFIED. Production flag OFF. Next verify CI on SHA and repair any failures.
