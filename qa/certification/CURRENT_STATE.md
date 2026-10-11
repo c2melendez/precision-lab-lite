@@ -1822,3 +1822,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus experimental single-process coordinator now rejects finite but **unrepresentable** lease deadlines when `now + ttl <= now` because of floating point precision loss; this prevents granting leases with zero effective lifetime. Technical final SHA `792604eacf4557c64e47ffb70522014915d3c320`; new permanent regression `test_unrepresentable_deadline_fails_closed_without_consuming_generation` checks fail-closed and unchanged fencing generation. Intermediate commits `839194f`, `a7759c8`, `19773e1` superseded by final SHA.
 - Plus final-SHA cumulative `38134627726` and H1d `38134627722` were **IN PROGRESS** when checked; new test NOT counted as PASS yet.
 - No release, production, public endpoint or shared infra modifications. DIST-01..08 remain BLOCKED/NOT CERTIFIED, SG28/H2 OPEN. Next: verify both runs, diagnose regressions, proceed with independent shared coordinator only within authorized disposable infrastructure.
+
+
+## 2026-10-11 — SG28 local repeated fencing and release integrity
+- Plus technical SHA `792604eacf4557c64e47ffb70522014915d3c320`: cumulative `38134627726` SUCCESS (backend **744 passed / 1 warning / 85.92% coverage**, frontend **751 passed / 28 TODO**); H1d `38134627722` SUCCESS (**5 passed**). Deadline precision regression explicitly PASS.
+- Plus test commit `4dd626229515af70749b4d37eea14f7ae1a0cf4a` adds two local single-process cases for repeated expiry generations (stale release cannot revoke each successor) and wrong owner/generation release (must not mutate active lease). No production or endpoint changes.
+- New cumulative `38134902415` and H1d `38134902440` queued at observation; **PENDING CI** for final SHA, not PASS yet.
+- SG28/H2 and DIST-01..08 remain OPEN/BLOCKED pending authorized independent-host coordinator acceptance.
+- Next: verify final SHA jobs/logs, diagnose failures, and prioritize durable shared-coordinator design and authorized staging over further microtests.
