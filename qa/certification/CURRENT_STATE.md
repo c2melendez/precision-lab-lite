@@ -1998,3 +1998,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus SHA `5b4c0ee7dd94f8c2ff9faa5d137328e1570fa4bf`: añadido `backend/tests/test_sg28_distributed_admission_contract.py` con casos negativos de ausencia de transporte, timeout y replies malformados, más caso de grant sintácticamente válido.
 - GitHub push CI iniciado automáticamente para SHA `5b4c0ee7`: cumulative `38160778651` y H1d `38160778664`, pendientes de conclusión al registrar. No atribuir PASS prematuro.
 - DIST-01..08 y SG28/H2 siguen OPEN/BLOCKED; cero cambios al router público, producción, Render o infraestructura.
+
+
+## 2026-10-11 — SG28 disposable persistent lease store phase
+- Verified Plus SHA `d1f24452fdd8f49e05c99f5e4a284bc0292d6d60`: cumulative `38161515679` SUCCESS backend **787 passed, 1 warning, 86.19% coverage**, frontend **751 passed, 28 TODO**; H1d `38161515623` SUCCESS **5 passed**.
+- Plus SHA `9e35cc95e2c1f38ec54e67e3434dc2b47d912ff8` adds unwired disposable `backend/app/services/sg28_sqlite_lease_store.py`, fenced SQLite lease generations and K=1 transaction. Caller-provided trusted `now` is NOT itself a validated server clock; should never take it from remote input.
+- Plus SHA `794cdbd2b045fac90d12fef65904d1fbc806c3f6` adds `backend/tests/test_sg28_sqlite_lease_store.py` concurrent contenders, restart persistence, and stale-release tests. Latest push CI cumulative `38162538161` / H1d `38162538173` were QUEUED when checked; do not claim PASS yet.
+- Test-only shared-host SQLite, not distributed hosts, no `/evaluate` wiring, no external service and no production deploy. SG28/H2 and DIST-01..08 remain OPEN/BLOCKED.
