@@ -2058,3 +2058,11 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Latest-SHA cumulative `38137696801` and H1d `38137696802` were queued when checked; **CI PENDING**, no new PASS claimed.
 - This is explicitly **same host and same SQLite file**, not independent hosts, not a network coordinator, not public /evaluate. DIST-01..08, SG28/H2 remain OPEN/BLOCKED. No production changes.
 - Next: inspect final SHA CI outcomes, repair red, then build authorized disposable network topology for true independent-host acceptance.
+
+
+## 2026-10-11 — SG28 disposable TCP plus SQLite local integration
+- Verified Plus SHA `f532174b6790b712e181d4c384044dcc2d96a8f4`: cumulative `38137696801` SUCCESS (**756 backend PASS / 1 warning / 86.08% coverage**, frontend **751 PASS / 28 TODO**); H1d `38137696802` SUCCESS (**5 PASS**). Independent Python local subprocess SQLite persistence test individually PASS.
+- Plus commits `5db3348a877ab889703c291fbf6b415c60904046`, `48144ea24ce15958e96ec02c50340eea894c7640`: add a disposable **loopback TCP** integration test joining `TcpSharedLeaseStore` clients and `SqliteLeaseReference` coordinator; covers K=1 rejection, simulated coordinator object restart, lease expiry/generation fencing, stale release, and connection cleanup. Test server exists only in tests and is not deployed.
+- Final-SHA cumulative `38138252954` and H1d `38138252983` were queued at observation, **CI PENDING**.
+- Still same-host local integration with no TLS/auth, independent-host topology or public /evaluate route. SG28/H2 and DIST-01..08 stay OPEN/BLOCKED; production unchanged.
+- Next: check the final-SHA workflows and logs; diagnose any red and do not infer multi-host PASS from loopback.
