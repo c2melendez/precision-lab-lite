@@ -2128,3 +2128,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - SHA `4f7b8c05` consultado por `fetch_commit_workflow_runs`: lista vacía, **no acredita ausencia de push CI**, ya que ese conector solo enumera PR. La consulta web de Actions no fue accesible. Nuevos runs para `9d809093` siguen SIN VERIFICAR; no declarar PASS.
 - Se mantiene SG28/H2 y DIST-01..08 OPEN/BLOCKED: fixture local sin TLS/autenticación ni integración `/evaluate`; producción intacta.
 - Siguiente: verificar corrida acumulativa y H1d del último SHA, obtener logs y detener nuevas microcorrecciones hasta contar con evidencia CI; continuar después con integración aislada/autenticada o matrices independientes según contrato.
+
+
+## 2026-10-11 — SG28 test-only clock and authenticated ownership characterization
+- Plus test commit `0966187a0fac65cad0647fe327ccc120b1b6dff1` adds `test_server_clock_and_authenticated_owner_reject_client_time_spoofing` in `backend/tests/test_sg28_tcp_admission_characterization.py`. The isolated loopback handler uses server-managed clock/TTL and credential-to-owner mapping; regression asserts spoofed client `now`/`ttl`/`owner` cannot bypass K=1, invalid credentials cannot alter state, stale releases remain fenced, and expiry produces next generation.
+- **Test-only prototype:** no TLS, no production auth, no public `/evaluate` wiring, no staging deployment. This is not DIST-01..08 or SG28/H2 PASS.
+- CI for this technical SHA: PENDING/UNVERIFIED. Next exact step: check Plus cumulative and H1d `push` runs for SHA `0966187a`, review jobs/logs and correct failures; then continue security integration only after verified baseline.
