@@ -2115,3 +2115,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus commit técnico `93f344f9b6c858753eed7fe05ec227ce36329c4f`: reforzado cliente TCP exclusivamente de pruebas. Una respuesta `granted=true` solo es válida para operación `grant`, con claves exactas `granted`/`generation` y entero positivo; se rechaza una concesión asociada a `release` o con campos extraños. Nueva cobertura negativa y control positivo en `test_tcp_untrusted_grant_reply_requires_positive_integer_generation`.
 - El cambio **NO** autentica servidor, no protege transporte, no conecta el coordinador a producto y no constituye certificación distribuida; fixture local únicamente. CI para este SHA **no verificado**. Consulta de `fetch_commit_workflow_runs` en el SHA anterior `67c2ba0` retornó cero porque solo muestra eventos pull_request, lo que no descarta ejecución push.
 - Siguiente acción: obtener run/job/log real de gate acumulativo Plus para SHA `93f344f9` y H1d, clasificar cualquier fallo. Mantener DIST-01..08 SG28/H2 abiertos hasta prueba autorizada multinodo con TLS/autenticación.
+
+
+## 2026-10-11 — SG28 TCP response operation binding
+- Plus commit técnico `4f7b8c05bf99eb98040ff868d0a9ec56ddd8603d` mejora el **cliente de caracterización de pruebas**, validando que una respuesta `released` solo corresponda a `release`, y que `granted=false` no sea aceptada como respuesta normal a una liberación; una respuesta con mezcla de campos `released/granted` se rechaza. Incluye casos de regresión.
+- **No** representa autenticación TLS, un servicio de coordinación desplegado, ni integración a `/evaluate`; SG28/H2 y DIST-01..08 siguen OPEN/BLOCKED. Las pruebas del SHA nuevo todavía no tienen CI verificado. La consulta de runs por SHA solo cubre PR, no push.
+- Siguiente acción: localizar y verificar Actions acumulativo/H1d para `4f7b8c05` con logs y reparar rojos antes de continuar con el entorno distribuido autorizado.
