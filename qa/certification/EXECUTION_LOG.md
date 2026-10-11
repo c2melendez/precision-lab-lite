@@ -2005,3 +2005,11 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - New cumulative `38134902415` and H1d `38134902440` queued at observation; **PENDING CI** for final SHA, not PASS yet.
 - SG28/H2 and DIST-01..08 remain OPEN/BLOCKED pending authorized independent-host coordinator acceptance.
 - Next: verify final SHA jobs/logs, diagnose failures, and prioritize durable shared-coordinator design and authorized staging over further microtests.
+
+
+## 2026-10-11 — SG28 disposable SQLite persistence reference
+- Plus SHA `4dd626229515af70749b4d37eea14f7ae1a0cf4a`: cumulative `38134902415` SUCCESS (**746 backend PASS / 1 warning / 86.02% coverage, frontend 751 PASS / 28 TODO**), H1d `38134902440` SUCCESS (**5 PASS**). Both local fencing integrity regressions PASS.
+- Plus commits `3e4dd90bf9196530aabc869d07c9e98ec53fe685` and `59b02c258d888ed96c080675dfb55461fd6fab43`: isolated SQLite persistent lease reference with transactional BEGIN IMMEDIATE, generation fencing, expiry/restart behavior; three tests cover restart persistence, concurrent separate local connections and clock exception rollback. Only single-host disposable reference; not a networked/HA coordinator; time origin, durability and multiple-host acceptance not proven.
+- Latest final-SHA cumulative `38135167901` and H1d `38135168069` were **IN PROGRESS** when observed; no new PASS inferred.
+- Production isolated mode remains OFF; no public evaluate route or deployment modified. DIST-01..08 and SG28/H2 are OPEN/BLOCKED pending authorized independent-host staging.
+- Next: check final-SHA CI/logs, fix any failure and proceed to bounded network coordinator only within authorized disposable environment.
