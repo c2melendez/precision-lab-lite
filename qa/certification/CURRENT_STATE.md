@@ -1556,3 +1556,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - CI for this SHA NOT YET VERIFIED. Previous successful backend baseline: 667 PASS / 85.69% coverage, frontend 751 PASS / 28 TODO, H1d 5 PASS, Plus technical SHA `c8713a1cece7c1fef9982d3bb1bae4a0be41e52b`.
 - This is local TCP fault injection, not a genuine independent-host partition. H2 OPEN; no production changes, SG28 experimental feature OFF.
 - Next: inspect push-triggered cumulative/H1d runs for SHA `b7de156736fd035b83cff79e74de57be3085f48c`, fix red gates without weakening checks.
+
+
+## 2026-10-10 — SG28 lost TCP grant acknowledgement CI GREEN (668 backend)
+- Plus SHA `b7de156736fd035b83cff79e74de57be3085f48c`: cumulative run `38107214359`, backend SUCCESS **668 passed / 1 warning / 85.64% coverage**, with `test_lost_grant_acknowledgement_fails_closed_and_preserves_fencing` explicitly PASSED. Frontend SUCCESS **751 passed / 28 TODO** and build SUCCESS. H1d run `38107214301` SUCCESS **5 passed**.
+- In disposable single-host CI fixture, a committed grant with deliberately dropped TCP response causes fail-closed client admission; another client is excluded until TTL and stale release remains fenced. Not proof of independently hosted coordination or distributed partition tolerance. H2 OPEN and production experimental isolation OFF.
+- Next: advance independently hosted shared-coordinator checks only in an authorized isolated environment; record K=1, timeout, loss of response and fencing evidence before closure.
