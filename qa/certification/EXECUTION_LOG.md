@@ -1801,3 +1801,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus SHA `3ec5c052e9ec154de921204d29cd982bd470e1e7`: cumulative `38110549495` backend SUCCESS **672 passed / 1 warning / 85.64% coverage**, with `test_tcp_unknown_release_response_keeps_client_fail_closed` PASSED; frontend SUCCESS **751 passed / 28 TODO** and build SUCCESS. H1d run `38110549461` SUCCESS **5 passed**.
 - Validation concerns a valid JSON error for unsupported operation; not arbitrary malformed JSON or cross-host partition. H2 OPEN; no distributed coordinator deployment, production isolation OFF.
 - Next: advance independent-host disposable coordinator verification and real K=1 partition/fail-closed evidence before H2 closure.
+
+
+## 2026-10-10 — SG28 truncated TCP JSON request regression: CI pending
+- Plus technical commit `3486aa5f6ac62dcb8f106034a1011bfe2ddc8b01` adds `test_tcp_lease_does_not_authorize_other_owner_after_malformed_request` in `backend/tests/test_sg28_tcp_admission_characterization.py`. A truncated TCP JSON request is sent while a valid K=1 lease is active. Test asserts no successful admission response and unchanged owner/generation/deadline, with subsequent contender denied. Test-only loopback fixture.
+- No new SHA workflow was observable when checked; CI result PENDING. Last verified Plus `38110549495` SUCCESS 672 backend PASS / 751 frontend PASS (28 TODO), H1d `38110549461` SUCCESS 5 PASS.
+- This is not cross-host coordination and does not close H2; experimental production feature OFF. Next verify push-triggered cumulative/H1d CI and repair failures before claiming PASS.
