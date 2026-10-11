@@ -1754,3 +1754,7 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 ## 2026-10-11 UTC — SG28 experimental TCP transport CI GREEN
 - Plus SHA `3e4cb36fe2f0185c3246e1a6f56a063628775777`: cumulative run `38118714975` SUCCESS; backend job `114408821119`: **698 passed / 1 warning / 85.89% coverage**, seven TCP transport smoke test cases explicitly PASS; frontend job `114408821263`: **751 passed / 28 TODO**, 69 files. H1d run `38118714981`, job `114408821231`: **5 passed**.
 - Scope: isolated local TCP client over loopback, validates good grant/release, missing or bad ACK fail-closed. Transport has NO TLS/authentication and is NOT wired to /evaluate. No real remote coordinator or independent host certification. DIST-01..08 remain OPEN/BLOCKED; production isolation OFF.
+
+## 2026-10-11 UTC — SG28 shared grant generation strictness (CI PENDING)
+- Plus technical commits `8d480564390e5ec3e68630bd1c3a1a411991e47f` and `61545e3757fdf4943032c59d9ad126bff6b1f3fa`: shared admission contract now rejects non-integer generation fields, including Python `bool` and fractional values, with two added parametrized regression cases. Previous TCP transport CI `38118714975` 698 backend PASS and `38118714981` H1d 5 PASS; these do not certify new SHA.
+- This is a strict client response validation fix, not a coordinator server or multi-host proof. New cumulative + H1d results PENDING; no /evaluate or production changes. DIST-01..08 remain BLOCKED.
