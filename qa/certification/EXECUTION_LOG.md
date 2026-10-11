@@ -1916,3 +1916,8 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 ## 2026-10-11 UTC — SG28 asyncio cancellation capacity regression GREEN
 - Plus technical SHA `e6e7f61e8910caff95ad329475766ffe9c3ef014`: cumulative run `38116673229` SUCCESS (backend job `114402805729`: **678 passed / 1 warning / 85.74% coverage**, explicit PASS `test_sg28_local_admission_released_after_async_task_cancellation`; frontend job `114402805926`: **751 passed / 28 TODO**, 69 files). H1d run `38116673269`, job `114402805954`: **5 passed**.
 - Scope: local admission lease freed after cancelling an asyncio task; no evidence of global K=1 across hosts. SG28 distributed acceptance DIST-01..08 remains BLOCKED pending independent staging topology and shared coordinator implementation. Production flag OFF.
+
+## 2026-10-11 — SG28 grouped phase failure lease cleanup (CI pending)
+- Plus technical commit `feb8cfd4fa24676bd91be88286c972a9329d4a1a` adds a local admission regression in `backend/tests/test_sg28_admission_scope.py`: a reserved slot is released when an `ExceptionGroup` representing evaluation/render failures escapes its scope. The group must retain both original exception types and a subsequent request must acquire the slot.
+- This is a context-manager cleanup test only; no production code changes or new multi-host evidence. Previous Plus green SHA `e6e7f61e8910caff95ad329475766ffe9c3ef014`, cumulative `38116673229` 678 backend PASS / 751 frontend PASS / 28 TODO, H1d `38116673269` 5 PASS. New technical commit remains **CI PENDING**.
+- SG28/H2 OPEN. Distributed DIST-01..08 not yet certified; production SG28 opt-in remains OFF.
