@@ -31,4 +31,19 @@ describe("Syntax309 SY-P — Lite numeric precedence convention", () => {
     expect(Number.isFinite(result), `SY-P-21 parsed=${parsed}, substituted=${substituted}, exact=${exact}`).toBe(true);
     expect(result).toBeCloseTo(3, 9);
   });
+
+  it("SY-P-23: characterizes raw a/bc versus an explicitly grouped denominator", () => {
+    const row = byId["SY-P-23"];
+    expect(row.operacion).toBe("convencion");
+    const raw = parseExpression(row.entrada).algebrite;
+    const grouped = parseExpression("a/(b*c)").algebrite;
+    // A defined grouping must retain a multiplication inside its denominator.
+    expect(grouped).toContain("/");
+    expect(grouped).toContain("b");
+    expect(grouped).toContain("c");
+    // Keep the disputed raw expression visible as evidence, without
+    // declaring either reading universally correct.
+    expect(raw).toContain("a");
+    expect(raw).toContain("/");
+  });
 });
