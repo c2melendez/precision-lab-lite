@@ -1562,3 +1562,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus SHA `b7de156736fd035b83cff79e74de57be3085f48c`: cumulative run `38107214359`, backend SUCCESS **668 passed / 1 warning / 85.64% coverage**, with `test_lost_grant_acknowledgement_fails_closed_and_preserves_fencing` explicitly PASSED. Frontend SUCCESS **751 passed / 28 TODO** and build SUCCESS. H1d run `38107214301` SUCCESS **5 passed**.
 - In disposable single-host CI fixture, a committed grant with deliberately dropped TCP response causes fail-closed client admission; another client is excluded until TTL and stale release remains fenced. Not proof of independently hosted coordination or distributed partition tolerance. H2 OPEN and production experimental isolation OFF.
 - Next: advance independently hosted shared-coordinator checks only in an authorized isolated environment; record K=1, timeout, loss of response and fencing evidence before closure.
+
+
+## 2026-10-10 — SG28 same-owner retry after lost TCP ACK: CI pending
+- Plus technical commit `2737d46f130a0ef122bc48e1d3ae27db26e46553` adds `test_tcp_duplicate_retry_after_lost_ack_remains_unadmitted` to the disposable `backend/tests/test_sg28_tcp_admission_characterization.py` fixture. An unacknowledged grant must fail closed; same-owner retry and competing owner must remain denied before TTL, new generation granted only at expiry; stale release cannot remove successor.
+- New SHA CI not yet observable as completed. Previous verified cumulative Plus `38107214359` SUCCESS 668 backend PASS / 751 frontend PASS (28 TODO), H1d `38107214301` 5 PASS.
+- CI loopback, not proof of multi-host coordinator. SG28/H2 OPEN; production feature OFF. Next check CI for SHA `2737d46f130a0ef122bc48e1d3ae27db26e46553` and repair failed gate if needed.
