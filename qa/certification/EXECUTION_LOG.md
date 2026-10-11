@@ -1777,3 +1777,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus technical SHA `b5282acae8981c969bd22a19829b66b649bd0017`: cumulative `38108867379` backend SUCCESS **670 passed / 1 warning / coverage 85.69%**; `test_tcp_lost_release_ack_does_not_revoke_successor` explicitly PASSED. Frontend SUCCESS **751 passed / 28 TODO**, build SUCCESS. H1d `38108867385` SUCCESS **5 passed**.
 - Test covers retry of old-generation release after successor admission on loopback TCP with disposable SQLite, not actual lost reply injection or independent-host distributed coordination. SG28/H2 OPEN, production isolation OFF.
 - Next: test-only actual lost release acknowledgement, coordinator response uncertainty and idempotent fencing; then genuine cross-host test in authorized disposable deployment.
+
+
+## 2026-10-10 — SG28 lost TCP release acknowledgement injection: CI pending
+- Plus SHA `a4f81a9f58dac62c77b339174ac1462492093166` extends test-only `backend/tests/test_sg28_tcp_admission_characterization.py`: `release_disconnect` commits SQLite release then drops TCP reply; `test_tcp_lost_release_ack_retry_remains_fenced` checks ambiguous client outcome, successor generation 2, denied stale release retry and continued K=1 admission.
+- Plus cumulative workflow `38109176704` observed QUEUED; latest verified baseline 670 backend PASS / 751 frontend PASS / H1d 5 PASS (runs `38108867379`, `38108867385`). New SHA PASS not yet confirmed.
+- Single-host CI fault injection, not independent-host coordination. SG28/H2 OPEN, production feature OFF. Next check new cumulative/H1d jobs and logs, fix any failure.
