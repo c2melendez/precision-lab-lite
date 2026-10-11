@@ -1808,3 +1808,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus commits `7e604c307fe745c55a48315e2e1a93974ebfe71d` and `4103d6b185236c9e9f044c97a5291b093a105f8d`: add `backend/app/services/sg28_experimental_lease_coordinator.py` and local concurrency, expiry, stale-generation fencing and invalid-clock tests. This in-memory single-process reference is **not** durable, networked, authenticated or integrated with public /evaluate and cannot certify global multi-host K=1.
 - Final-SHA cumulative `38134065358` and H1d `38134065318` began on push; **PENDING** until result and logs confirmed.
 - SG28/H2 and DIST-01..08 remain OPEN/BLOCKED. Production remains unchanged. Next: verify final SHA, fix any red and develop a disposable authenticated shared durable coordinator design prior to independently hosted acceptance.
+
+
+## 2026-10-11 — SG28 local coordinator fencing edge cases
+- Plus SHA `4103d6b185236c9e9f044c97a5291b093a105f8d`: cumulative `38134065358` SUCCESS (backend **741 passed / 1 warning / 86.04% coverage**; frontend **751 passed / 28 TODO**); H1d `38134065318` SUCCESS (**5 passed**). Four single-process coordinator tests PASS.
+- Plus technical SHA `9781ca2e25b8c68d3b5a9865f82679f956dee017` adds two local fencing edge regressions: generation must not be reused even for same owner after release, and an expired lease cannot release its successor exactly at expiry boundary. No production or public evaluate changes.
+- Final SHA cumulative `38134409132` and H1d `38134409066` started and **CI PENDING**. Do not declare two new cases PASS yet.
+- DIST-01..08 remain OPEN/BLOCKED. Prototype holds only process-local state and cannot certify global multi-host K=1. Next: verify final-SHA jobs, repair any red, then progress to disposable persistent network-coordinator proof with authorization.
