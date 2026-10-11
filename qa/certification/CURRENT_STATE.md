@@ -2018,3 +2018,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Verified Plus SHA `8eb033febcbe7e1cd69d73a551b10c6ed76fb2e1`: cumulative `38162834871` SUCCESS, backend **792 PASS / 1 warning / 86.22% coverage**, frontend **751 PASS / 28 TODO**; H1d `38162834838` SUCCESS **5 PASS**.
 - Plus SHA `a81e54c9eac0bd5c82642c9e5d5f71f8164949e1` added `backend/tests/test_sg28_mtls_restart_recovery.py` for a disposable loopback TLS coordinator restart with persisted SQLite fencing, coordinator outage failure closed, expiry, stale release and recovery. GitHub cumulative `38163237650` / H1d `38163237612` queued when discovered, **not yet CI-verified**.
 - Entire integration remains a **single-host test-only prototype**, no production `/evaluate` integration or authenticated multi-host shared DB. DIST-01..08 and SG28/H2 OPEN/BLOCKED.
+
+
+## 2026-10-11 — SG28 dropped mTLS grant/release acknowledgements
+- Verified Plus SHA `a81e54c9eac0bd5c82642c9e5d5f71f8164949e1`: cumulative `38163237650` SUCCESS backend **793 PASS / 1 warning / 86.22% coverage**, frontend **751 PASS / 28 TODO**; H1d `38163237612` **5 PASS**.
+- Plus SHA `74e17396f6f51748dfcf49fd08851b9c5a70ef57` adds disposable loopback test `backend/tests/test_sg28_mtls_lost_ack.py` for persisted grant with dropped TLS ACK, lost release ACK, fencing and fail-closed client. This is fixture fault injection, not production-grade coordinator handling. Cumulative run `38163731581` and H1d `38163731611` IN_PROGRESS when observed; **CI NOT YET VERIFIED for newest SHA**.
+- No `/evaluate` integration, no remote hosts, no deployment. DIST-01..08 and SG28/H2 remain OPEN/BLOCKED.
