@@ -1912,3 +1912,7 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - An asyncio task acquires a single local lease and awaits indefinitely. Concurrent local admission must be refused. Cancelling the task must propagate `CancelledError` and release the slot, allowing a subsequent lease. This guards the actual context manager without a service implementation change.
 - Prior Plus cumulative `38116482798` SUCCESS (677 backend PASS, 751 frontend PASS / 28 TODO), H1d `38116482788` SUCCESS (5 PASS); those runs do not certify this new SHA.
 - Local-process unit scope only; DIST-01..08 separate-host gates remain BLOCKED/NOT CERTIFIED. Production flag OFF. Next verify CI on SHA and repair any failures.
+
+## 2026-10-11 UTC — SG28 asyncio cancellation capacity regression GREEN
+- Plus technical SHA `e6e7f61e8910caff95ad329475766ffe9c3ef014`: cumulative run `38116673229` SUCCESS (backend job `114402805729`: **678 passed / 1 warning / 85.74% coverage**, explicit PASS `test_sg28_local_admission_released_after_async_task_cancellation`; frontend job `114402805926`: **751 passed / 28 TODO**, 69 files). H1d run `38116673269`, job `114402805954`: **5 passed**.
+- Scope: local admission lease freed after cancelling an asyncio task; no evidence of global K=1 across hosts. SG28 distributed acceptance DIST-01..08 remains BLOCKED pending independent staging topology and shared coordinator implementation. Production flag OFF.
