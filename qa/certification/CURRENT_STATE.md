@@ -1815,3 +1815,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus technical SHA `9781ca2e25b8c68d3b5a9865f82679f956dee017` adds two local fencing edge regressions: generation must not be reused even for same owner after release, and an expired lease cannot release its successor exactly at expiry boundary. No production or public evaluate changes.
 - Final SHA cumulative `38134409132` and H1d `38134409066` started and **CI PENDING**. Do not declare two new cases PASS yet.
 - DIST-01..08 remain OPEN/BLOCKED. Prototype holds only process-local state and cannot certify global multi-host K=1. Next: verify final-SHA jobs, repair any red, then progress to disposable persistent network-coordinator proof with authorization.
+
+
+## 2026-10-11 — SG28 local lease deadline representability
+- Plus SHA `9781ca2e25b8c68d3b5a9865f82679f956dee017`: cumulative `38134409132` SUCCESS (backend **743 PASS / 1 warning / 86.04% coverage**, frontend **751 PASS / 28 TODO**) and H1d `38134409066` SUCCESS (**5 PASS**). Both fencing edge-case regressions individually passed.
+- Plus experimental single-process coordinator now rejects finite but **unrepresentable** lease deadlines when `now + ttl <= now` because of floating point precision loss; this prevents granting leases with zero effective lifetime. Technical final SHA `792604eacf4557c64e47ffb70522014915d3c320`; new permanent regression `test_unrepresentable_deadline_fails_closed_without_consuming_generation` checks fail-closed and unchanged fencing generation. Intermediate commits `839194f`, `a7759c8`, `19773e1` superseded by final SHA.
+- Plus final-SHA cumulative `38134627726` and H1d `38134627722` were **IN PROGRESS** when checked; new test NOT counted as PASS yet.
+- No release, production, public endpoint or shared infra modifications. DIST-01..08 remain BLOCKED/NOT CERTIFIED, SG28/H2 OPEN. Next: verify both runs, diagnose regressions, proceed with independent shared coordinator only within authorized disposable infrastructure.
