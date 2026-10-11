@@ -1543,3 +1543,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus technical commit `c8713a1cece7c1fef9982d3bb1bae4a0be41e52b` adds `test_abrupt_tcp_coordinator_process_death_fails_closed_and_fences_restart` in `backend/tests/test_sg28_tcp_admission_characterization.py`: spawned coordinator process terminated abruptly after granting lease; network admission must fail closed, a fresh coordinator reusing test-only SQLite must reject until TTL, advance fencing generation and deny stale release.
 - No CI run was yet visible for this head SHA at time of recording; result PENDING. Previous verified Plus CI remains 666 backend PASS, 751 frontend PASS / 28 TODO, H1d 5 PASS (runs `38105661428`, `38105661406`).
 - Loopback/one CI host, not proof of multi-host coordinator or production distributed admission. SG28/H2 OPEN and production experimental isolation OFF. Next verify triggered workflow, investigate and fix failures before recording PASS.
+
+
+## 2026-10-10 — SG28 coordinator death/restart CI GREEN (667 backend)
+- Plus technical SHA `c8713a1cece7c1fef9982d3bb1bae4a0be41e52b`: cumulative run `38106669590` backend SUCCESS **667 passed / 1 warning / 85.69% coverage**, including explicit PASS `test_abrupt_tcp_coordinator_process_death_fails_closed_and_fences_restart`; frontend SUCCESS **751 passed / 28 TODO**, build SUCCESS. H1d run `38106669540` SUCCESS **5 passed**.
+- CI characterization covers terminating spawned TCP coordinator, fail-closed during outage, restart with local SQLite lease and generation fencing. All actors reside on one CI host. H2 globally OPEN; not deployed/independent-host distributed coordination. Production feature OFF.
+- Next: independent-host fault testing with disposable coordinator and clients, without changing production; collect objective K/fencing/partition evidence before any closure claim.
