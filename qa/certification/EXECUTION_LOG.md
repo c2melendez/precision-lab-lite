@@ -2109,3 +2109,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - El cambio solo afecta fixture y cliente de tests; **NO** agrega autenticación/TLS al coordinador, no modifica `request_cancellation.py`, no conecta `/evaluate` ni acredita DIST-01..08. Sin despliegue.
 - **CI PENDING/UNVERIFIED**: falta obtener los runs de `push` del SHA final y sus logs; la consulta GitHub por SHA del conector no abarca corridas push. No marcar PASS hasta la ejecución real.
 - Siguiente paso exacto: inspeccionar gate acumulativo y H1d del SHA final, solucionar rojos y después abordar autenticación/transporte de un coordinador aislado de forma explícita.
+
+
+## 2026-10-11 — SG28 schema-binding del grant TCP (CI pendiente)
+- Plus commit técnico `93f344f9b6c858753eed7fe05ec227ce36329c4f`: reforzado cliente TCP exclusivamente de pruebas. Una respuesta `granted=true` solo es válida para operación `grant`, con claves exactas `granted`/`generation` y entero positivo; se rechaza una concesión asociada a `release` o con campos extraños. Nueva cobertura negativa y control positivo en `test_tcp_untrusted_grant_reply_requires_positive_integer_generation`.
+- El cambio **NO** autentica servidor, no protege transporte, no conecta el coordinador a producto y no constituye certificación distribuida; fixture local únicamente. CI para este SHA **no verificado**. Consulta de `fetch_commit_workflow_runs` en el SHA anterior `67c2ba0` retornó cero porque solo muestra eventos pull_request, lo que no descarta ejecución push.
+- Siguiente acción: obtener run/job/log real de gate acumulativo Plus para SHA `93f344f9` y H1d, clasificar cualquier fallo. Mantener DIST-01..08 SG28/H2 abiertos hasta prueba autorizada multinodo con TLS/autenticación.
