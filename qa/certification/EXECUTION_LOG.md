@@ -2160,3 +2160,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Workflow H1d paralelo: https://github.com/c2melendez/precision-lab-plus/actions/runs/38156404358, job `114520184264` SUCCESS, **5 E2E passed**.
 - Se resuelve la ausencia de evidencia CI para esta corrección, anteriormente marcada UNVERIFIED; no confundir con certificación SG28/H2 distribuida: DIST-01..08 continúa BLOCKED/OPEN; autenticación y TLS de producción siguen pendientes.
 - Las corridas automáticas de push pueden descubrirse por `GitHub.fetch` a `https://api.github.com/repos/c2melendez/precision-lab-plus/actions/runs?branch=qa%2Fsyntax-audit-in625-a1&per_page=100`, en lugar del método `fetch_commit_workflow_runs` que filtra pull_request.
+
+
+## 2026-10-11 — SG28 mTLS characterization CI verified
+- Plus SHA `c54f173363b1a4c59799a68d2238fbcb133b6a94`: cumulative run https://github.com/c2melendez/precision-lab-plus/actions/runs/38159711316, backend job `114529884663` **763 PASS / 1 warning / coverage 86.06%**, including `test_sg28_mtls_transport_characterization.py::test_mtls_requires_trusted_client_and_verified_server_identity PASSED`; frontend job `114529884839` **751 PASS / 28 TODO**; both SUCCESS.
+- H1d run https://github.com/c2melendez/precision-lab-plus/actions/runs/38159711340, job `114529884869`, **5 PASS**, SUCCESS.
+- The mTLS test uses ephemeral certificates and loopback only. It does NOT prove production credential lifecycle, real distributed authorization, real coordinator integration or DIST-01..08. SG28/H2 remains OPEN; no production changes or deployment.
