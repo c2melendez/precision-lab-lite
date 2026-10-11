@@ -2043,3 +2043,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - La prueba demuestra que una identidad mTLS confiada por CA pero fuera de allowlist NO obtiene ni libera un lease dentro del fixture loopback. No certifica hosts separados, servicio desplegado ni ruta pública.
 - **SG28/H2 OPEN y DIST-01..08 BLOCKED**. No habilitar producción ni declarar aceptación distribuida. Advertencias frontend no bloqueantes (React act, JSDOM navigation, Node 20 deprecation) merecen seguimiento independiente.
 - **Siguiente fase exacta:** completar gate de aceptación DIST-01 con dos hosts realmente independientes y un coordinador autenticado compartido en entorno desechable autorizado; registrar host IDs, SHA, K=1, grants, rechazos, logs y run. Si la infraestructura no está disponible, mantener DIST-01..08 BLOCKED y continuar la matriz independiente siguiente según EXECUTION_PROTOCOL; no fabricar PASS con múltiples procesos en un único runner.
+
+
+## 2026-10-11 — SG28 finite coordinator clock validation
+- Plus SHA técnico `71d9039baa1ed51a622c9aa0e6d92600d39fb699` (preceded by `5625192`, `03ccebc`) hardens only the disposable `backend/app/services/sg28_sqlite_lease_store.py`: validates finite trusted `now` and `now + ttl` before touching the SQLite lease. Added regression in `backend/tests/test_sg28_sqlite_lease_store.py` for `NaN`, +/-infinity, bool: active lease persists, release then next generation works.
+- On inspection, final-SHA Actions Plus cumulative `38165988599` QUEUED and H1d `38165988593` IN_PROGRESS. **CI NOT YET VERIFIED for this SHA**. Do not count new PASS; check jobs/logs and repair red before closing.
+- Last independently verified previous SHA `08243b349c52958a212122e8d44cb94dcc8a09f5`: cumulative `38165043777` backend 797 PASS/86.33% coverage, frontend 751 PASS/28 TODO; H1d `38165043768` 5 PASS.
+- Scope is disposable same-host test only, not public `/evaluate`, production network, DIST-01..08 or SG28/H2 closure; remain OPEN/BLOCKED pending authorized independent hosts and distributed acceptance.
+- Next exact execution: inspect Plus `38165988599` + `38165988593` by SHA and logs; address failures; then pursue authorized multi-host DIST-01 evidence rather than claim it from one runner.
