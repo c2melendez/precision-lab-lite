@@ -1696,3 +1696,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus SHA `478bc431df9701a7c6dbe86bcf35fc8f449fd23d`: cumulative run `38103566886` backend job `114364280322` SUCCESS **664 passed / 1 warning / 85.69% coverage**, including `test_storage_lease_expires_after_abrupt_owner_process_exit` explicit PASS; frontend job `114364280495` SUCCESS **751 passed / 28 TODO**, build SUCCESS. H1d run `38103566950`, job `114364280562`, SUCCESS **5 passed**.
 - This is a SQLite test fixture on one CI host with a spawned child that exits abruptly; it does not simulate loss of a shared remote coordinator, cross-host atomicity or production service deployment. H2 OPEN, production isolation OFF.
 - Next: implement independently hosted coordinator/admission characterization in a disposable environment and verify fail-closed response and fencing when remote coordination fails; avoid production changes.
+
+
+## 2026-10-10 — SG28 networked coordinator characterization: CI PENDING
+- Plus technical commit `d59db5ad34acf350379b0bea89c6ef3f1b93d259` creates `backend/tests/test_sg28_tcp_admission_characterization.py`. Test-only loopback TCP coordinator backed by local SQLite checks K=1 denial, fail-closed network outage, post-restart lease expiry, and stale-release fencing.
+- Auto-triggered Plus cumulative run `38104163070` and H1d run `38104163083` observed QUEUED; no PASS asserted for this SHA. Last verified: Plus 664 backend PASS, 751 frontend PASS / 28 TODO, H1d 5 PASS (runs `38103566886` and `38103566950`).
+- This is a single-host loopback transport model and does NOT certify multi-host distributed admission, real coordinator persistence or production topology. SG28/H2 OPEN; production isolation OFF.
+- Next: verify logs/jobs of both queued runs and correct any test failure; subsequently pursue actual independent-host disposable test topology before global certification.
