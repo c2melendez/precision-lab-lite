@@ -2287,3 +2287,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Lite harness adjustment commit `cacbe34759c4bb8fdbf16ba689c746edeea211f3` (numeric `float` fallback) yielded cumulative `38168605642` FAILED **one case SY-P-02 only**, 1052 PASS/1 FAIL/30 TODO, with SY-P-10 now PASS. No math engine code modified.
 - Diagnostic-only commit `5ccf74c0cd11fa0a2530bb67e4ce68bb309d23a1` enriches SY-P-02 failure with original parser syntax, symbolic result and float result to classify parser/engine versus harness. Latest cumulative run `38168669605`, build `38168669663`, H1d `38168669641` QUEUED at observation. **14/15 targeted numeric cases PASS in previous SHA, one OPEN; SY-P 33/33 NOT certified**, remaining 18 structural/convention/equivalence cases not yet run mathematically.
 - Next exact: inspect diagnostic run's SY-P-02 error intermediates, fix the correct layer, rerun final SHA and expand Plus/structural per-ID gates. SG28/H2 DIST remains BLOCKED pending authorized distinct hosts.
+
+
+## 2026-10-11 — SY-P-02 exact symbolic pi comparator correction
+- Diagnostic Lite run `38168669605` for SHA `5ccf74c0cd11fa0a2530bb67e4ce68bb309d23a1` FAIL exactly `SY-P-02`, with logged pipeline `parser=2*pi; symbolic=2*pi; float=6.283185...`; this identifies an **abbreviated decimal display/harness conversion**, not an incorrect interpretation of π.
+- Test-only follow-up commit `5999bdd6afbccf48fe84f0f675fe12750258b8be` in Lite asserts exact symbolic form `2*pi` for SY-P-02, and retains original strict numeric expectations for the other 14 cases. No product/engine changes, no fabricated PASS. Final-SHA CI **pending verification**.
+- Next exact: retrieve cumulative/H1d/build runs for `5999bdd6`, inspect job logs, repair if red; then implement math/structure and convention oracles for SY-P's 18 remaining official cases and comparable Plus gate. No SY-P closure before every case is evidenced.
