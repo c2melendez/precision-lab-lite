@@ -1703,3 +1703,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Auto-triggered Plus cumulative run `38104163070` and H1d run `38104163083` observed QUEUED; no PASS asserted for this SHA. Last verified: Plus 664 backend PASS, 751 frontend PASS / 28 TODO, H1d 5 PASS (runs `38103566886` and `38103566950`).
 - This is a single-host loopback transport model and does NOT certify multi-host distributed admission, real coordinator persistence or production topology. SG28/H2 OPEN; production isolation OFF.
 - Next: verify logs/jobs of both queued runs and correct any test failure; subsequently pursue actual independent-host disposable test topology before global certification.
+
+
+## 2026-10-10 — SG28 TCP harness import failure fixed; rerun pending
+- Plus SHA `d59db5ad34acf350379b0bea89c6ef3f1b93d259`: cumulative `38104163070` backend job `114366009320` FAIL at pytest collection: `ModuleNotFoundError` importing `test_sg28_sqlite_admission_characterization`; 664 tests collected but no backend test execution. Frontend job `114366009491` SUCCESS 751 PASS / 28 TODO; H1d run `38104163083` job `114366009395` SUCCESS 5 PASS.
+- Root classification HARNESS/IMPORT, not confirmed product failure. Plus technical fix SHA `accab13a081e2ba659fd8f9f55ed72ba9a780ad7` makes `backend/tests/test_sg28_tcp_admission_characterization.py` self-contained with local disposable SQLite helpers. Exact CI result of fix still PENDING; no PASS claim. Previous confirmed backend baseline 664 PASS.
+- Next: inspect cumulative and H1d runs for fix SHA, debug/repair if red, certify only with green backend log. Single-host loopback test is not global cross-host H2 certification; production SG28 isolation OFF.
