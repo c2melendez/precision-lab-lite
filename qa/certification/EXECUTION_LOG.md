@@ -2267,3 +2267,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus technical HEAD for fixture/workflow `bdbe59378936f188c3ae787588a032fb44609afe`: data integrity workflow `38168084690` job `114554733423` SUCCESS, same assertion.
 - **Only source/schema/data integrity is certified; 0/33 SY-P mathematical execution cases certified in this phase**. Cumulative/H1d gates also started by workflow commits but their latest outcomes must be verified separately. No production changes.
 - Exact next step: implement data-driven, per-ID SY-P mathematical evaluator and oracle (preserve original comparison types and structural interpretation), execute Lite and Plus gates and classify PASS/FAIL/BLOCKED by case; do not conflate data integrity PASS with 309 math PASS. SG28/H2 DIST-01..08 remain blocked on authorized multihost acceptance.
+
+
+## 2026-10-11 — Syntax309 SY-P primera suite matemática real (Lite CI pendiente)
+- Ambas corridas de integridad siguen verificadas: Lite `38168081306`, Plus `38168084690`, 309 IDs únicos y 33 SY-P exactos. Cumulative/H1d previos también se activaron con fixtures.
+- Nuevo test técnico Lite `tests/syntax309SyPNumeric.audit.test.ts` commit `362820efa81d29af227a04e56018701a6a70e205`: carga 33 filas oficiales de `syntax309_sy_p_cases.jsonl`, prueba 15 IDs de **valor** contra el parser/motor con oráculo numérico, incluyendo precedencia y potencias; separa 18 filas de interpretación/convención/equivalencia (NO se cuentan como PASS matemático). No modifica código de producto.
+- Gate acumulativo Lite `38168514700`, H1d `38168514778`, build `38168514707` creados para ese SHA, **CI PENDING** al registrar. Los logs solo se evaluarán cuando terminen; un gate rojo se clasifica y se corrige, no se suaviza el esperado.
+- Próximo paso exacto: verificar job/log del acumulativo Lite para `362820ef`, reparar cualquier fallo demostrado, instrumentar comparador de estructura/convención y suite matemática equivalente en Plus; registrar cada SY-P ID antes de cerrar 33/33. IN625 SG28/H2 y DIST-01..08 siguen OPEN/BLOCKED por certificación independiente-host.
