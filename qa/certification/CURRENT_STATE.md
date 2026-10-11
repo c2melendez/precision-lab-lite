@@ -1758,3 +1758,7 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 ## 2026-10-11 UTC — SG28 shared grant generation strictness (CI PENDING)
 - Plus technical commits `8d480564390e5ec3e68630bd1c3a1a411991e47f` and `61545e3757fdf4943032c59d9ad126bff6b1f3fa`: shared admission contract now rejects non-integer generation fields, including Python `bool` and fractional values, with two added parametrized regression cases. Previous TCP transport CI `38118714975` 698 backend PASS and `38118714981` H1d 5 PASS; these do not certify new SHA.
 - This is a strict client response validation fix, not a coordinator server or multi-host proof. New cumulative + H1d results PENDING; no /evaluate or production changes. DIST-01..08 remain BLOCKED.
+
+## 2026-10-11 UTC — SG28 strict lease generation CI GREEN
+- Plus technical SHA `61545e3757fdf4943032c59d9ad126bff6b1f3fa`: cumulative `38118952991` SUCCESS; backend job `114409525088` **700 PASS / 1 warning / 85.81% coverage**, including all eight parameterized invalid-lease reply cases; frontend job `114409525219` **751 PASS / 28 TODO**, 69 files. H1d `38118952975`, job `114409525027` **5 PASS**.
+- The shared-admission facade rejects boolean and fractional generation values; transport not connected to public endpoint; experimental service remains opt-in OFF. No independent-host DIST-01..08 pass inferred.
