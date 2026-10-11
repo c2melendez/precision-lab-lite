@@ -24,7 +24,7 @@ describe("Syntax309 SY-P — Lite numeric precedence convention", () => {
     const row = byId["SY-P-21"];
     expect(row.operacion).toBe("convencion");
     const parsed = parseExpression(row.entrada).algebrite;
-    const substituted = parsed.replace(/\\bx\\b/g, "(6)");
+    const substituted = parsed.replace(/\bx\b/g, "(6)");
     const exact = evaluate(substituted);
     const direct = Number(exact);
     const result = Number.isFinite(direct) ? direct : Number(evaluate(`float(${substituted})`));
