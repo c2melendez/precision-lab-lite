@@ -2173,3 +2173,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus SHA `5b4c0ee7dd94f8c2ff9faa5d137328e1570fa4bf`: añadido `backend/tests/test_sg28_distributed_admission_contract.py` con casos negativos de ausencia de transporte, timeout y replies malformados, más caso de grant sintácticamente válido.
 - GitHub push CI iniciado automáticamente para SHA `5b4c0ee7`: cumulative `38160778651` y H1d `38160778664`, pendientes de conclusión al registrar. No atribuir PASS prematuro.
 - DIST-01..08 y SG28/H2 siguen OPEN/BLOCKED; cero cambios al router público, producción, Render o infraestructura.
+
+
+## 2026-10-11 — SG28 scoped distributed lease lifecycle implementation
+- Baseline CI SHA `5b4c0ee7`: Plus cumulative run `38160778651` SUCCESS, backend **776 PASS / 1 warning / 86.16% coverage**, frontend **751 PASS / 28 TODO**, H1d run `38160778664` **5 PASS**.
+- Plus SHA `59c8898b3d34f6c5efa1fd18e48ae8f15a6c8f3d`: `backend/app/services/distributed_admission.py` now includes `release_distributed_admission()` and `distributed_admission_lease()` lifecycle context; strict release ack and generation checks; still disabled without `SG28_DISTRIBUTED_ADMISSION=1` and an injected authenticated exchange.
+- Plus SHA `609a3580adc07134d71c2d825620e69aa9100fdf`: tests for release after scoped work, release on worker exception, rejection of invalid/rejected acknowledgements and lost ACK. Automatic push runs cumulative `38161209820` and H1d `38161209791` detected QUEUED at observation; CI NOT YET VERIFIED for this SHA.
+- Not wired to real `/evaluate`, no authenticated network transport implemented or production changes. Release after worker cleanup remains caller responsibility. DIST-01..08, SG28/H2 remain OPEN.
