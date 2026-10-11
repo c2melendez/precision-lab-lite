@@ -1894,3 +1894,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Architectural blocker verified in Plus `backend/app/services/request_cancellation.py`: bounded semaphore is process-local. TCP/SQLite server presently exists only as test fixture, not integrated production coordinator.
 - Render service discovery requires the user to select/confirm a workspace; no workspace was selected and no services were modified. An authorized disposable two-host topology is not currently established. **DIST-01..08 BLOCKED/NOT CERTIFIED**; SG28/H2 remains OPEN and production opt-in OFF.
 - Next exact executable step: verify whether a disposable workspace/topology is available after explicit workspace confirmation and implement integrated coordinator contract in a separate technical branch, then run independent-host tests. Meanwhile independent non-distributed certification blocks may proceed under EXECUTION_PROTOCOL without counting DIST tests as PASS.
+
+## 2026-10-10 local — SG28 reserved admission releases slot on exception (CI pending)
+- Plus technical commit `232b253798baa36051bce07e6d98bd695d690679` adds `test_sg28_local_admission_released_after_exception` to `backend/tests/test_sg28_admission_scope.py`.
+- Test injects a one-slot local semaphore, asserts competing request denied while reserved, forces request-body exception, and asserts admission recovers on exit. No product implementation change; the test is local-process scope only.
+- Previous verified Plus cumulative CI `38116009014` SUCCESS and H1d `38116009037` SUCCESS; those are not evidence for the new SHA. CI PENDING until run/log verification.
+- SG28 distributed acceptance remains BLOCKED: process-local semaphore does not implement global admission; `qa/certification/SG28_DISTRIBUTED_ACCEPTANCE.md` DIST-01..08 are not PASS. No deployment, Render workspace change, or production flag change.
+- Next: verify cumulative/H1d for `232b253798baa36051bce07e6d98bd695d690679`, repair any red, then proceed with independent remaining certification work while distributed prerequisites remain blocked.
