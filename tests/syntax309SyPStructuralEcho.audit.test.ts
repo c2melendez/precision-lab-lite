@@ -24,4 +24,13 @@ describe("Syntax309 SY-P — inspect exact parser structure",()=>{
    expect(expr).toContain("e^");
    expect(expr).toMatch(/\*x/);
  });
+
+ it("SY-P-24 separates x and y in the parsed multiplication channel",()=>{
+   const expr=parseExpression(byId["SY-P-24"].entrada).algebrite.replace(/\s+/g,"");
+   expect(expr).toMatch(/x\*y/);
+ });
+ it("SY-P-25 separates x, y and z in the parsed multiplication channel",()=>{
+   const expr=parseExpression(byId["SY-P-25"].entrada).algebrite.replace(/\s+/g,"");
+   expect(expr).toMatch(/x\*y\*z/);
+ });
 });
