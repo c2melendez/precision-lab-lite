@@ -1770,3 +1770,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus test SHA `b82f883f5a8540d95f4efbcadd2b9073f888e000`: four raw TCP ACK regression cases. Cumulative run `38131653940` and H1d `38131653937` started; **CI PENDING** at time of recording, not PASS.
 - Experimental client only, not connected to `/evaluate`; no TLS, authentication, production rollout or independently hosted coordinator. DIST-01..08 and SG28/H2 remain OPEN/BLOCKED.
 - Next: inspect those two runs and per-case backend logs for the final SHA. Correct any confirmed failures. Continue toward disposable shared coordinator and independent-host fencing evidence, keeping production isolation OFF.
+
+
+## 2026-10-11 — SG28 TCP malformed ACK regression repaired after failed collection
+- Plus SHA `b82f883f5a8540d95f4efbcadd2b9073f888e000`: H1d `38131653937` SUCCESS (5 PASS); cumulative `38131653940` **FAIL** because Python SyntaxError at line 40 of `backend/app/services/sg28_tcp_shared_store.py` during pytest collection, caused by a literal escaped newline in the decoder call. Frontend job succeeded; backend regression tests did NOT run on this SHA.
+- Repair published Plus `de2dc57f35ef812fc0e6ff644a5903324e4dac25` fixes the decoder syntax. Plus `50768893776664d3d545c127076c62561ff7ef01` repairs raw fixture newline termination in the four new ACK tests.
+- Latest technical SHA `50768893776664d3d545c127076c62561ff7ef01`: cumulative `38132891941` and H1d `38132891912` queued when observed. **Results PENDING** and no new PASS asserted.
+- Strict duplicate JSON field and nonfinite ACK rejection remain experimental, not routed into /evaluate. Production OFF. DIST-01..08 and SG28/H2 OPEN.
+- Next exact step: retrieve cumulative and H1d results for SHA `50768893776664d3d545c127076c62561ff7ef01`, classify and repair any red, then continue coordinator integration safely in an isolated test topology.
