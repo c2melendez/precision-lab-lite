@@ -2028,3 +2028,11 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus implementation commit `1ad14172f1d37e0e3e2e9b1b582991802bb9e745` rejects null, empty, non-path or bool database paths in isolated SQLite lease reference. Plus test commit `388b483551ea44b04e7163b9418ee837891ac583` adds permanent parameterized invalid-path regression.
 - Latest final-SHA cumulative `38136323933` and H1d `38136324050` queued at observation. Results **PENDING**, no additional passing test claimed.
 - This local SQLite reference is not a networked or distributed coordinator, not wired into public evaluate, and not production. DIST-01..08 / SG28 H2 remain OPEN/BLOCKED. Next: validate these two runs and prioritize a formally bounded shared-coordinator implementation in an approved disposable environment.
+
+
+## 2026-10-11 — SG28 SQLite connection lifecycle correction
+- Plus SHA `388b483551ea44b04e7163b9418ee837891ac583`: cumulative `38136323933` SUCCESS (**752 backend PASS / 1 warning / 86.00% coverage**, frontend **751 PASS / 28 TODO**); H1d `38136324050` SUCCESS (**5 PASS**). Database path validation regression individually PASS.
+- Plus technical SHA `b3f6c42cd09da6a9bcaf1c4b5cc5115fea550858` closes SQLite reference connections explicitly with contextlib.closing (sqlite3 connection context-manager commits/rolls back but does not close handles). Test SHA `59d60a2a1b2719de05c3e27de989685a53c68e48` verifies handles close on grant, rejection, release, stale release, and exception/rollback.
+- Final-SHA cumulative `38136569169` and H1d `38136569172` queued at observation, **CI PENDING**. New test NOT certified yet.
+- Scope is disposable single-host SQLite reference only; no API wiring or production deploy. SG28/H2 and DIST-01..08 remain OPEN/BLOCKED.
+- Next: inspect two final-SHA jobs and logs, fix confirmed failures, prioritize authorized independent-host topology and coordinator architecture.
