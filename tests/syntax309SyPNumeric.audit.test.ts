@@ -23,6 +23,9 @@ describe("Syntax309 SY-P — numeric-oracle cases from official matrix", () => {
       const symbolic = evaluate(syntax);
       const result = Number(symbolic);
       const numeric = Number.isFinite(result) ? result : Number(evaluate(`float(${syntax})`));
+      if (testCase.id === "SY-P-02" && !Number.isFinite(numeric)) {
+        throw new Error(`SY-P-02 intermediate parser=${syntax}; symbolic=${symbolic}; float=${evaluate(`float(${syntax})`)}`);
+      }
       expect(Number.isFinite(numeric)).toBe(true);
       expect(numeric).toBeCloseTo(expected[testCase.id], 8);
     });
