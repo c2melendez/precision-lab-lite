@@ -1969,3 +1969,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Final-SHA cumulative `38133313328` and H1d `38133313384` queued initially; **NOT CERTIFIED until runs and logs finish**.
 - Experimental transport remains disconnected from `/evaluate`; no production configuration changes. SG28/H2 and DIST-01..08 still OPEN/BLOCKED.
 - Next: inspect final-SHA jobs and case results, repair any red, then prioritize real bounded coordinator semantics and independent-host disposable acceptance.
+
+
+## 2026-10-11 — SG28 release ACK contradiction guard
+- Plus SHA `7927ac62467b0153a29fa0290484b8a75ab23f5f`: cumulative `38133313328` SUCCESS (**735 backend passed / 1 warning / 85.88% coverage; frontend 751 passed / 28 TODO**), H1d `38133313384` SUCCESS (**5 passed**). Two TCP grant-error contradiction cases explicitly PASS.
+- Plus code commit `5cdcc474b61b4dde936faacba372387c5b2714a6` adds release-side fail-closed validation for acknowledgements containing both boolean `released` and `error` key. Test commit `34b21372f897f765c8746b4d135d9959489d9250` adds two permanent regression cases.
+- New final-SHA cumulative `38133623785` and H1d `38133623804` queued when observed. **CI PENDING; do not claim PASS**.
+- Changes affect isolated TCP experiment only; no public /evaluate integration or production deployment. DIST-01..08 OPEN/BLOCKED. Next: verify both final-SHA runs, classify failures and continue independent-host coordinator work only with authorized disposable topology.
