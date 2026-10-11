@@ -1891,3 +1891,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Final-SHA cumulative `38138252954` and H1d `38138252983` were queued at observation, **CI PENDING**.
 - Still same-host local integration with no TLS/auth, independent-host topology or public /evaluate route. SG28/H2 and DIST-01..08 stay OPEN/BLOCKED; production unchanged.
 - Next: check the final-SHA workflows and logs; diagnose any red and do not infer multi-host PASS from loopback.
+
+
+## 2026-10-11 — SG28 loopback outage and persistent restart recovery
+- Verified Plus SHA `48144ea24ce15958e96ec02c50340eea894c7640`: cumulative `38138252954` SUCCESS (**757 backend PASS / 1 warning / 86.06% coverage**, frontend **751 PASS / 28 TODO**); H1d `38138252983` SUCCESS (**5 PASS**). TCP + SQLite loopback integration regression individually passed.
+- Plus test SHA `401ae7cc2e40370d6e452a3ea9843b0d258c1d88` adds local server outage/restart simulation: no coordinator connection -> SharedAdmissionUnavailable (fail-closed), durable active lease is retained on same-port restart, request rejected before expiry, next generation granted at expiry, stale release rejected. This is same-host loopback only.
+- Cumulative `38138716340`, H1d `38138716335` queued at observation. **CI PENDING**, no new PASS credited.
+- No public /evaluate wiring or production deploy. SG28/H2 and DIST-01..08 remain OPEN/BLOCKED because independent-host topology and secure authenticated coordinator remain unproven. Next: inspect final-SHA jobs and repair any red.
