@@ -1604,3 +1604,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus technical SHA `3ec5c052e9ec154de921204d29cd982bd470e1e7` adds `test_tcp_unknown_release_response_keeps_client_fail_closed` to single-host TCP characterization. The test covers the valid-JSON error `unsupported operation` (NOT malformed JSON), and verifies it is not interpreted as a grant and cannot displace an active lease.
 - Plus cumulative `38110549495` and H1d `38110549461` observed QUEUED. Last verified Plus cumulative `38109176704` SUCCESS 671 backend PASS / 751 frontend PASS (28 TODO); H1d `38109176705` 5 PASS.
 - Still no independent-host coordinator or production validation. SG28/H2 OPEN; isolation production OFF. Next confirm queued CI results and pursue genuine cross-host testing in approved disposable environment.
+
+
+## 2026-10-10 — SG28 unsupported coordinator operation CI GREEN (672 backend)
+- Plus SHA `3ec5c052e9ec154de921204d29cd982bd470e1e7`: cumulative `38110549495` backend SUCCESS **672 passed / 1 warning / 85.64% coverage**, with `test_tcp_unknown_release_response_keeps_client_fail_closed` PASSED; frontend SUCCESS **751 passed / 28 TODO** and build SUCCESS. H1d run `38110549461` SUCCESS **5 passed**.
+- Validation concerns a valid JSON error for unsupported operation; not arbitrary malformed JSON or cross-host partition. H2 OPEN; no distributed coordinator deployment, production isolation OFF.
+- Next: advance independent-host disposable coordinator verification and real K=1 partition/fail-closed evidence before H2 closure.
