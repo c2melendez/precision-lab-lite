@@ -2179,3 +2179,8 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - SIGUIENTE PASO EXACTO: localizar en Actions los nuevos runs del SHA 6b7bd05e; revisar logs de frontend y gate acumulativo, corregir fallos de harness/producto según evidencia. Después ampliar oráculos de AST y representación UI por ID, empezando SY-P-24/25 y convenciones SY-P-18/19/21/23/32. Mantener SG28 DIST bloqueado sin entornos multi-host independientes autorizados.
 
 - CI recién detectado para commit técnico Plus 6b7bd05e: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38177936712 (backend/frontend in_progress al consultar), H1d https://github.com/c2melendez/precision-lab-plus/actions/runs/38177936704 (in_progress). Estos IDs verifican disparo automático push pero NO PASS. Evaluar conclusiones y logs al terminar.
+
+
+## 2026-10-11 — Syntax309 SY-P Plus CI regression classified and corrected
+- Plus SHA 6b7bd05e: cumulative run 38177936712 FAILED in frontend unit/parity suite; backend SUCCESS. H1d 38177936704 SUCCESS. Exact failing suite `frontend/src/__tests__/syntax309SyPStructuralEcho.audit.test.ts`: Vite denied loading `qa/certification/syntax309_sy_p_cases.jsonl?raw` outside frontend root. Classification HARNESS/fixture loading, not a demonstrated product mathematical failure.
+- Plus correction SHA `4d6218271e96110cd443dd8750e856c54d48fa6b` changes only fixture loading to Node `readFileSync(new URL(..., import.meta.url), 'utf8')` in same test. It does NOT relax mathematical assertions. CI evidence for corrected SHA PENDING. Next: obtain H1d and cumulative runs matching 4d621827, inspect unit test results, and only then advance further SY-P ID-specific AST/echo assertions.
