@@ -2005,3 +2005,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus SHA `9e35cc95e2c1f38ec54e67e3434dc2b47d912ff8` adds unwired disposable `backend/app/services/sg28_sqlite_lease_store.py`, fenced SQLite lease generations and K=1 transaction. Caller-provided trusted `now` is NOT itself a validated server clock; should never take it from remote input.
 - Plus SHA `794cdbd2b045fac90d12fef65904d1fbc806c3f6` adds `backend/tests/test_sg28_sqlite_lease_store.py` concurrent contenders, restart persistence, and stale-release tests. Latest push CI cumulative `38162538161` / H1d `38162538173` were QUEUED when checked; do not claim PASS yet.
 - Test-only shared-host SQLite, not distributed hosts, no `/evaluate` wiring, no external service and no production deploy. SG28/H2 and DIST-01..08 remain OPEN/BLOCKED.
+
+
+## 2026-10-11 — SG28 disposable mTLS coordinator integration
+- Verified Plus SHA `794cdbd2b045fac90d12fef65904d1fbc806c3f6`: cumulative `38162538161` SUCCESS **790 backend passed, 1 warning, 86.28% coverage**, **751 frontend PASS / 28 TODO**; H1d `38162538173` SUCCESS **5 PASS**.
+- Plus SHA `20639665aef6f05e7d02fb89a512cc4371270689` adds disposable loopback-only mTLS coordinator `backend/app/services/sg28_disposable_mtls_coordinator.py`, with authenticated certificate CN allowlist and shared SQLite fenced leases. Test-only; **not production-ready**, not independent host.
+- Plus SHA `8eb033febcbe7e1cd69d73a551b10c6ed76fb2e1` adds integration test `backend/tests/test_sg28_disposable_mtls_coordinator.py`: real TLS exchange, serial K=1 acquisition, owner fencing, lease release, and binding restriction. Auto CI cumulative run `38162834871` and H1d `38162834838` detected queued/in-progress when consulted; do not mark PASS until logs verified.
+- No public `/evaluate` routing, no cross-host deployment. DIST-01..08 and SG28/H2 remain OPEN/BLOCKED; server certificate identity tied to CN only in disposable fixture.
