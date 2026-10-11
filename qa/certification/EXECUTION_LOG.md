@@ -2087,3 +2087,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus test SHA `4f467674e5ab3d686a6954303697ea2062d9e64b` adds a local TCP integration race of eight clients against a persisted SQLite coordinator to verify exactly one lease granted for global capacity K=1 within **one CI host**. Cumulative run `38139751806` and H1d `38139751787` queued; **CI PENDING**.
 - No deployed coordinator, no TLS/auth, no public /evaluate opt-in, no production changes. DIST-01..08 and SG28/H2 remain OPEN/BLOCKED until an authorized disposable independent-host topology exists.
 - Next: verify latest SHA runs, repair failure if any, and prioritize the missing independent-host security and staging architecture over repeated local microtests.
+
+
+## 2026-10-11 — SG28 eight-client TCP backlog failure and repair
+- Plus SHA `4f467674e5ab3d686a6954303697ea2062d9e64b`: cumulative `38139751806` **FAIL** (backend **1 failed / 759 passed**, frontend SUCCESS), while H1d `38139751787` SUCCESS. CI traceback confirms `TimeoutError` on `socket.connect` for one of eight simultaneous test TCP clients (default socket server accept backlog and client timeout 1s). This does **not** indicate a double grant.
+- Plus test fixture fix SHA `18ff893399bb0192d994a6e1ff141615d483a832`: sets explicitly bounded `_Server.request_queue_size = 16` and raises only the concurrency-test TCP timeout to the client maximum 5s; no production code or API modifications. Cumulative `38140121960` and H1d `38140121981` queued when observed; **CI PENDING**, not a new PASS.
+- Last fully certified Plus baseline remains SHA `51021b55cb23839916d78317400faa9002adbc26`: backend **759 PASS / 1 warning / 86.06% coverage**, frontend **751 PASS / 28 TODO**, H1d **5 PASS**.
+- Loopback on a single runner is not independent-host DIST-01 evidence. SG28/H2 and DIST-01..08 OPEN/BLOCKED; production unchanged. Next: verify latest SHA and classify red.
