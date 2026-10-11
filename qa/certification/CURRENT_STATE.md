@@ -1549,3 +1549,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus technical SHA `c8713a1cece7c1fef9982d3bb1bae4a0be41e52b`: cumulative run `38106669590` backend SUCCESS **667 passed / 1 warning / 85.69% coverage**, including explicit PASS `test_abrupt_tcp_coordinator_process_death_fails_closed_and_fences_restart`; frontend SUCCESS **751 passed / 28 TODO**, build SUCCESS. H1d run `38106669540` SUCCESS **5 passed**.
 - CI characterization covers terminating spawned TCP coordinator, fail-closed during outage, restart with local SQLite lease and generation fencing. All actors reside on one CI host. H2 globally OPEN; not deployed/independent-host distributed coordination. Production feature OFF.
 - Next: independent-host fault testing with disposable coordinator and clients, without changing production; collect objective K/fencing/partition evidence before any closure claim.
+
+
+## 2026-10-10 — SG28 lost TCP grant acknowledgement characterization PENDING CI
+- Plus technical SHA `b7de156736fd035b83cff79e74de57be3085f48c` extends `backend/tests/test_sg28_tcp_admission_characterization.py` with `test_lost_grant_acknowledgement_fails_closed_and_preserves_fencing`. The test-only TCP handler `grant_disconnect` commits a lease to SQLite but deliberately drops the response. The client must fail closed, a second contender must be denied before TTL, a new generation must be granted at expiry and stale release denied.
+- CI for this SHA NOT YET VERIFIED. Previous successful backend baseline: 667 PASS / 85.69% coverage, frontend 751 PASS / 28 TODO, H1d 5 PASS, Plus technical SHA `c8713a1cece7c1fef9982d3bb1bae4a0be41e52b`.
+- This is local TCP fault injection, not a genuine independent-host partition. H2 OPEN; no production changes, SG28 experimental feature OFF.
+- Next: inspect push-triggered cumulative/H1d runs for SHA `b7de156736fd035b83cff79e74de57be3085f48c`, fix red gates without weakening checks.
