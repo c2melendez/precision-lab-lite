@@ -1759,3 +1759,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus technical commit `2737d46f130a0ef122bc48e1d3ae27db26e46553` adds `test_tcp_duplicate_retry_after_lost_ack_remains_unadmitted` to the disposable `backend/tests/test_sg28_tcp_admission_characterization.py` fixture. An unacknowledged grant must fail closed; same-owner retry and competing owner must remain denied before TTL, new generation granted only at expiry; stale release cannot remove successor.
 - New SHA CI not yet observable as completed. Previous verified cumulative Plus `38107214359` SUCCESS 668 backend PASS / 751 frontend PASS (28 TODO), H1d `38107214301` 5 PASS.
 - CI loopback, not proof of multi-host coordinator. SG28/H2 OPEN; production feature OFF. Next check CI for SHA `2737d46f130a0ef122bc48e1d3ae27db26e46553` and repair failed gate if needed.
+
+
+## 2026-10-10 — SG28 TCP duplicate retry after lost ACK CI GREEN (669 backend)
+- Plus SHA `2737d46f130a0ef122bc48e1d3ae27db26e46553`: cumulative run `38108184872` backend SUCCESS **669 passed / 1 warning / 85.59% coverage** including `test_tcp_duplicate_retry_after_lost_ack_remains_unadmitted` PASSED; frontend SUCCESS **751 passed / 28 TODO**, build SUCCESS. H1d run `38108184868` SUCCESS **5 passed**.
+- This proves same-owner retries and other contenders cannot bypass single-host test-only K=1 admission after lost TCP ACK. Not proof of real multi-host global coordination; H2 OPEN, production isolation OFF.
+- Next: independent-host ephemeral coordinator validation, transport partitions and fenced recovery without production changes.
