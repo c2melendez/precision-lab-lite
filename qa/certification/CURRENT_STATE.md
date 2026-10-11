@@ -1524,3 +1524,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus SHA `accab13a081e2ba659fd8f9f55ed72ba9a780ad7`: cumulative `38105067955` backend job `114368722480` SUCCESS **665 passed / 1 warning / coverage 85.59%**; `test_network_admission_fails_closed_during_coordinator_outage_and_recovers` PASSED. Frontend job `114368722306` SUCCESS **751 passed / 28 TODO** and build SUCCESS. H1d `38105067915` job `114368722286` SUCCESS **5 passed**.
 - Previous RED `38104163070` was harness collection/import only; resolved in corrected SHA. Single-host TCP loopback and SQLite are not independent-host or deployed shared coordinator evidence. H2 remains OPEN, experimental production isolation OFF.
 - Next: advance to separately running coordinator/client in an isolated CI process and then genuine cross-host network fault testing with an authorized ephemeral environment; verify global K and fencing before production consideration.
+
+
+## 2026-10-10 — SG28 distinct spawned TCP coordinator/client PIDs: CI pending
+- Plus technical SHA `a011a64bb4a4dc450275d031e5cc6996c26b7220` extends `backend/tests/test_sg28_tcp_admission_characterization.py` with `test_spawned_coordinator_and_distinct_clients_enforce_network_k1`: coordinator and two contending clients run as separate spawned Python processes over TCP; expected exactly one K=1 grant and denial of a subsequent contender.
+- Auto-triggered cumulative run `38105661428` and H1d run `38105661406` observed QUEUED; no PASS claimed for new SHA. Previous Plus backend 665 PASS / frontend 751 PASS, H1d 5 PASS, SHA `accab13a081e2ba659fd8f9f55ed72ba9a780ad7`.
+- Single-host disposable CI fixture, not cross-host distributed coordinator or production certification. SG28/H2 OPEN; isolation OFF in production.
+- Next: verify the two run job logs, repair harness or product issues without weakening gates; pursue independent-host coordinator faults only when safely provisioned.
