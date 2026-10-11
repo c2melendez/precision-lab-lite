@@ -1467,3 +1467,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 ## 2026-10-10 — Atomic SQLite exact-expiry successor race GREEN: 661 backend
 - Plus technical SHA `894087ed7a8dd6b603cb9f4e9c34c7e27243442b`, cumulative run `38099409315`: backend **661 passed / 1 warning / 85.77% coverage**, `test_storage_gate_concurrent_expiry_has_single_successor` explicitly PASSED; frontend **751 passed / 28 TODO**. H1d `38099409317`: **5 passed**.
 - SQLite test-only same-host transactional state, NOT distributed coordinator/multi-host certification. H2 OPEN; production isolation OFF.
+
+
+## 2026-10-10 — SG28 stale-owner release fence: CI VERIFIED (662 backend)
+- Plus technical SHA `dd968bca8981d4c9ef124c4342bf97dfdd1c7a19`; cumulative run `38100438228`, backend job `114355088048` SUCCESS **662 passed / 1 warning / coverage 85.59%**; frontend job `114355087936` SUCCESS **751 passed / 28 TODO**, build SUCCESS. H1d run `38100438231`, job `114355087880`, SUCCESS **5 passed**.
+- `test_stale_owner_release_cannot_revoke_live_successor` is included in the successful backend suite. This is a test-only same-host SQLite lease fixture; no distributed multi-host coordinator, global quota, coordinator crash recovery or Render production topology has been certified. SG28/H2 remains OPEN and SG28 isolation stays OFF in production.
+- Next: characterize real cross-host admission with a suitable isolated coordinator and verify actual deployment topology before any production change; retain fail-closed behavior and fencing tests. Do not treat local SQLite tests as fleet-wide certification.
