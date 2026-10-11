@@ -1977,3 +1977,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Ran pytest locally against a scoped reconstruction of Plus `test_server_clock_and_authenticated_owner_reject_client_time_spoofing` from technical SHA `7607290131eeca27bc83a2637fce11fcd01eb9e9`: **1 PASS in 0.54s**, isolated temporary SQLite and TCP loopback.
 - This is **not the entire original repository file**, does not certify GitHub Actions, TLS/multi-host DIST-01..08 or `/evaluate`; no product or production changes. Direct raw GitHub download unavailable in this environment.
 - Next mandatory action: verify actual CI push run at latest technical SHA, then full source pytest and cumulative gates; SG28/H2 remains OPEN/BLOCKED.
+
+
+## 2026-10-11 — Evidencia CI acumulativa reconciliada (Plus SHA 76072901)
+- Workflow `IN625 Cumulative Certification Gate`: https://github.com/c2melendez/precision-lab-plus/actions/runs/38156404356 (push, rama `qa/syntax-audit-in625-a1`, head SHA `7607290131eeca27bc83a2637fce11fcd01eb9e9`), SUCCESS; jobs backend `114520184153` SUCCESS y frontend `114520184037` SUCCESS.
+- Log backend: **762 passed, 1 warning, 85.99% coverage**. Incluye archivo `tests/test_sg28_tcp_admission_characterization.py`. Log frontend: **751 passed, 28 TODO, 69 test files passed**; typecheck y build SUCCESS.
+- Workflow H1d paralelo: https://github.com/c2melendez/precision-lab-plus/actions/runs/38156404358, job `114520184264` SUCCESS, **5 E2E passed**.
+- Se resuelve la ausencia de evidencia CI para esta corrección, anteriormente marcada UNVERIFIED; no confundir con certificación SG28/H2 distribuida: DIST-01..08 continúa BLOCKED/OPEN; autenticación y TLS de producción siguen pendientes.
+- Las corridas automáticas de push pueden descubrirse por `GitHub.fetch` a `https://api.github.com/repos/c2melendez/precision-lab-plus/actions/runs?branch=qa%2Fsyntax-audit-in625-a1&per_page=100`, en lugar del método `fetch_commit_workflow_runs` que filtra pull_request.
