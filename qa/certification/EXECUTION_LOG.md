@@ -1976,3 +1976,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus code commit `5cdcc474b61b4dde936faacba372387c5b2714a6` adds release-side fail-closed validation for acknowledgements containing both boolean `released` and `error` key. Test commit `34b21372f897f765c8746b4d135d9959489d9250` adds two permanent regression cases.
 - New final-SHA cumulative `38133623785` and H1d `38133623804` queued when observed. **CI PENDING; do not claim PASS**.
 - Changes affect isolated TCP experiment only; no public /evaluate integration or production deployment. DIST-01..08 OPEN/BLOCKED. Next: verify both final-SHA runs, classify failures and continue independent-host coordinator work only with authorized disposable topology.
+
+
+## 2026-10-11 — SG28 isolated lease coordinator prototype
+- Verified Plus SHA `34b21372f897f765c8746b4d135d9959489d9250`: cumulative `38133623785` SUCCESS (**737 backend PASS / 1 warning / 85.91% coverage; frontend 751 PASS / 28 TODO**); H1d `38133623804` SUCCESS (**5 PASS**), two release ACK ambiguity regressions PASS.
+- Plus commits `7e604c307fe745c55a48315e2e1a93974ebfe71d` and `4103d6b185236c9e9f044c97a5291b093a105f8d`: add `backend/app/services/sg28_experimental_lease_coordinator.py` and local concurrency, expiry, stale-generation fencing and invalid-clock tests. This in-memory single-process reference is **not** durable, networked, authenticated or integrated with public /evaluate and cannot certify global multi-host K=1.
+- Final-SHA cumulative `38134065358` and H1d `38134065318` began on push; **PENDING** until result and logs confirmed.
+- SG28/H2 and DIST-01..08 remain OPEN/BLOCKED. Production remains unchanged. Next: verify final SHA, fix any red and develop a disposable authenticated shared durable coordinator design prior to independently hosted acceptance.
