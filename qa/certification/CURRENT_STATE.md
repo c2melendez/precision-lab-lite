@@ -1710,3 +1710,8 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Previous verified Plus cumulative CI `38116009014` SUCCESS and H1d `38116009037` SUCCESS; those are not evidence for the new SHA. CI PENDING until run/log verification.
 - SG28 distributed acceptance remains BLOCKED: process-local semaphore does not implement global admission; `qa/certification/SG28_DISTRIBUTED_ACCEPTANCE.md` DIST-01..08 are not PASS. No deployment, Render workspace change, or production flag change.
 - Next: verify cumulative/H1d for `232b253798baa36051bce07e6d98bd695d690679`, repair any red, then proceed with independent remaining certification work while distributed prerequisites remain blocked.
+
+## 2026-10-10 local / 2026-10-11 UTC — SG28 exception admission recovery CI GREEN
+- Plus SHA `232b253798baa36051bce07e6d98bd695d690679`: cumulative `38116482798` SUCCESS, backend job `114402265778`: **677 passed / 1 warning / 85.69% coverage**, explicit PASS `test_sg28_local_admission_released_after_exception`; frontend job `114402266148`: 69 files / **751 passed / 28 TODO**. H1d run `38116482788`, job `114402265679`: **5 passed**.
+- Scope: unit regression confirming release of local `threading.BoundedSemaphore` capacity after a request-body exception. Does not certify multi-host admission; DIST-01..08 remain blocked pending separate authorized staging topology, real shared-coordinator implementation and fault-injection evidence.
+- This revision of documentation does not change code, production flags or staging services.
