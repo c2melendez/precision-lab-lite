@@ -1616,3 +1616,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus technical commit `3486aa5f6ac62dcb8f106034a1011bfe2ddc8b01` adds `test_tcp_lease_does_not_authorize_other_owner_after_malformed_request` in `backend/tests/test_sg28_tcp_admission_characterization.py`. A truncated TCP JSON request is sent while a valid K=1 lease is active. Test asserts no successful admission response and unchanged owner/generation/deadline, with subsequent contender denied. Test-only loopback fixture.
 - No new SHA workflow was observable when checked; CI result PENDING. Last verified Plus `38110549495` SUCCESS 672 backend PASS / 751 frontend PASS (28 TODO), H1d `38110549461` SUCCESS 5 PASS.
 - This is not cross-host coordination and does not close H2; experimental production feature OFF. Next verify push-triggered cumulative/H1d CI and repair failures before claiming PASS.
+
+
+## 2026-10-10 — SG28 truncated TCP frame regression GREEN (673 backend)
+- Plus technical commit `3486aa5f6ac62dcb8f106034a1011bfe2ddc8b01`: cumulative run `38111145338`, backend SUCCESS **673 passed / 1 warning / 85.64% coverage**, including explicit PASS `test_tcp_lease_does_not_authorize_other_owner_after_malformed_request`; frontend SUCCESS **751 passed / 28 TODO**, build successful. H1d run `38111145485` SUCCESS **5 passed**.
+- Local disposable TCP test confirms a truncated JSON frame cannot change a pre-existing lease or yield a successful admission. This is not cross-host certification. SG28/H2 OPEN; production isolation OFF.
+- Next: obtain cross-host shared-coordinator evidence in disposable authorized infrastructure before closure; do not conflate CI loopback tests with multi-host guarantees.
