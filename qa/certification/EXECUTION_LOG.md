@@ -1841,3 +1841,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Frontend job `114395923314` SUCCESS: **69 test files PASS, 751 passed / 28 TODO**, typecheck and build SUCCESS.
 - The test confirms only loopback TCP/SQLite admission of exactly one contender after restart/lost grant acknowledgment, generation fencing and persisted winner; **not** an independent-host/global distributed admission test. No production changes; experimental isolation remains OFF. SG28/H2 OPEN.
 - Next precise gate: design and execute genuinely independent-host shared-coordinator checks in explicitly authorized disposable infrastructure with K=1 under concurrent calls, partition fail-closed, TTL and stale-release fencing, failure and recovery records. Do not claim global certification until evidence exists.
+
+## 2026-10-10 local / 2026-10-11 UTC — Lite documentation-only CI noise corrected
+- Verified Plus cumulative run `38114270937` SUCCESS and H1d run `38114270939` SUCCESS on technical SHA `faf35e824ee60c77a8c6a2498996787dd8e9d3dd`; previous Plus cumulative runs `38112999237` and `38113187088` also SUCCESS on `cf2e04e` and `c435bcf` respectively.
+- Found Lite workflow `.github/workflows/in625-lite-build-diagnostic.yml` fired on documentation-only push (run `38114591038`, SHA `f02f5a6`, SUCCESS), contrary to automation policy.
+- Published Lite workflow fix commit `42b504a3f2517f3c01650a139e41339a0864c6f7`: add `push.paths-ignore` for `qa/certification/**` and `**/*.md` while preserving manual dispatch and technical-change push triggers.
+- This YAML is published; **trigger-filter verification still pending** (technical YAML push should run build, subsequent docs-only push should not). Do not mark filter behavior validated without observations.
+- SG28/H2 remains OPEN: loopback tests cannot establish independent-host global K=1 or partition fail-closed. Experimental production mode OFF. Next: verify Lite workflow trigger behavior and prepare independent-host test environment before distributed certification.
