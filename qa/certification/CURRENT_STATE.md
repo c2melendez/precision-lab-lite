@@ -1875,3 +1875,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus implementation SHA `64f1f47ceb683f720508e2c6758ae65cb5108d03` guards lease-generation counter exhaustion at SQLite signed 64-bit maximum; test SHA `83fe1bcaef78f451a63ba25a68e2404d4744ea3e` verifies fail-closed rejection and unchanged state.
 - Latest cumulative `38137245241` and H1d `38137245280` queued when checked; **CI PENDING** at this checkpoint.
 - Single-host SQLite reference only, not globally shared across hosts and not linked to public /evaluate. SG28/H2, DIST-01..08 remain OPEN/BLOCKED. No production changes. Next: verify final-SHA CI and move toward authorized independent-host acceptance.
+
+
+## 2026-10-11 — SG28 SQLite cross-process local characterization
+- Plus SHA `83fe1bcaef78f451a63ba25a68e2404d4744ea3e`: cumulative `38137245241` SUCCESS (**755 backend PASS / 1 warning / 86.08% coverage**, frontend **751 PASS / 28 TODO**); H1d `38137245280` SUCCESS (**5 PASS**); SQLite generation exhaustion test individually passed.
+- Plus commit `f532174b6790b712e181d4c384044dcc2d96a8f4` introduces subprocess-based characterization of persistent SQLite lease across **independent local Python processes**, checking single-slot rejection before expiration, generation increment at deadline and continued rejection while next lease is live.
+- Latest-SHA cumulative `38137696801` and H1d `38137696802` were queued when checked; **CI PENDING**, no new PASS claimed.
+- This is explicitly **same host and same SQLite file**, not independent hosts, not a network coordinator, not public /evaluate. DIST-01..08, SG28/H2 remain OPEN/BLOCKED. No production changes.
+- Next: inspect final SHA CI outcomes, repair red, then build authorized disposable network topology for true independent-host acceptance.
