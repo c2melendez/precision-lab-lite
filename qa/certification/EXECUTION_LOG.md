@@ -1677,3 +1677,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Scenario: the same owner reacquires after TTL with generation 2; delayed release of generation 1 must not revoke the current lease; an unrelated contender remains denied until current generation is released, and generation then advances to 3.
 - CI result for this commit is not yet confirmed. Last verified cumulative Plus result remains 662 backend PASS, 751 frontend PASS / 28 TODO, H1d 5 PASS (run `38100438228`, `38100438231`). This is still a test-only SQLite fixture, NOT real multi-host coordination. H2 OPEN, SG28 production opt-in OFF.
 - Next: verify cumulative and H1d runs for commit `1fbab66062f958f573f7c37f45aac7c90fa4d91f`, inspect logs and remediate if red; continue isolated distributed-admission characterization.
+
+
+## 2026-10-10 — SG28 same-owner lease fencing CI GREEN (663 backend)
+- Plus technical SHA `1fbab66062f958f573f7c37f45aac7c90fa4d91f` verified against push runs: cumulative `38102364408` backend job `114360748215` SUCCESS **663 passed / 1 warning / 85.64% coverage**, frontend job `114360748404` SUCCESS **751 passed / 28 TODO** and build SUCCESS. H1d run `38102364417` job `114360748279` SUCCESS **5 passed**.
+- `test_same_owner_stale_generation_cannot_release_reacquired_lease` explicitly PASSED; this is a CI-only same-host SQLite characterization, not a distributed coordinator. SG28/H2 global remains OPEN; keep production experimental isolation OFF.
+- Next: design and validate independent-host shared admission in a disposable environment, with coordinator outage/recovery, fencing and global K enforcement; record deployed topology and obtain explicit authorization before changing production.
