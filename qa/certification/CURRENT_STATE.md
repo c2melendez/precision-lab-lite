@@ -1462,3 +1462,8 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 ## 2026-10-10 — SQLite shared-file K=1 distinct processes GREEN: 660 backend
 - Plus technical SHA `df10011434b426c42993335f64f641685a07d89d`, cumulative `38098850426`: backend **660 passed / 1 warning / 85.69% coverage**, `test_atomic_storage_gate_across_distinct_spawned_processes` explicitly PASSED; frontend 751 passed / 28 TODO. H1d `38098850420`: 5 passed.
 - This verifies distinct spawned PIDs and atomic K=1 access to one local SQLite file; it does NOT prove cross-host distributed admission. H2 OPEN, production isolation OFF.
+
+
+## 2026-10-10 — Atomic SQLite exact-expiry successor race GREEN: 661 backend
+- Plus technical SHA `894087ed7a8dd6b603cb9f4e9c34c7e27243442b`, cumulative run `38099409315`: backend **661 passed / 1 warning / 85.77% coverage**, `test_storage_gate_concurrent_expiry_has_single_successor` explicitly PASSED; frontend **751 passed / 28 TODO**. H1d `38099409317`: **5 passed**.
+- SQLite test-only same-host transactional state, NOT distributed coordinator/multi-host certification. H2 OPEN; production isolation OFF.
