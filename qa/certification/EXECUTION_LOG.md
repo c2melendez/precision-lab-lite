@@ -2146,3 +2146,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Se ejecutó localmente `python -m pytest -q /tmp/test_sg28_local.py` sobre una reproducción acotada del handler test-only del commit Plus `7607290131eeca27bc83a2637fce11fcd01eb9e9`, usando SQLite temporal y TCP loopback: **1 PASS, 0 FAIL, 0.56 s**.
 - Alcance: credenciales inválidas, reloj/TTL administrados por servidor, identidad del lease, fencing de release y expiración. **No se ejecutó el archivo íntegro clonado desde GitHub**, ni gate acumulativo/H1d de GitHub Actions; CI para el SHA continúa UNVERIFIED y SG28/H2, DIST-01..08 OPEN/BLOCKED.
 - Siguiente paso: obtener run/log real de `push` de `76072901` y ejecutar suite original de repo; no extrapolar esta reproducción a certificación multi-host o seguridad TLS.
+
+
+## 2026-10-11 — SG28 local scoped verification of clock/identity
+- Ran pytest locally against a scoped reconstruction of Plus `test_server_clock_and_authenticated_owner_reject_client_time_spoofing` from technical SHA `7607290131eeca27bc83a2637fce11fcd01eb9e9`: **1 PASS in 0.54s**, isolated temporary SQLite and TCP loopback.
+- This is **not the entire original repository file**, does not certify GitHub Actions, TLS/multi-host DIST-01..08 or `/evaluate`; no product or production changes. Direct raw GitHub download unavailable in this environment.
+- Next mandatory action: verify actual CI push run at latest technical SHA, then full source pytest and cumulative gates; SG28/H2 remains OPEN/BLOCKED.
