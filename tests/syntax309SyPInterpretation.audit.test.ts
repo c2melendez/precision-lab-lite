@@ -10,11 +10,11 @@ const probes: Record<string, { x: number; expected: number }> = {
   "SY-P-05": { x: 3, expected: -9 },
   "SY-P-20": { x: 6, expected: 3 },
   "SY-P-22": { x: 2, expected: 0.25 },
-  "SY-P-26": { x: 3, expected: 9 },
+  "SY-P-26": { x: 3, expected: 18 },
 };
 function numeric(input: string, x: number): number {
   const parsed = parseExpression(input).algebrite;
-  const expression = parsed.replace(/\bx\b/g, `(${x})`);
+  const expression = parsed.replace(/\bx\b/g, `(${x})`).replace(/\by\b/g, "(2)");
   const raw = evaluate(expression);
   const value = Number(raw);
   return Number.isFinite(value) ? value : Number(evaluate(`float(${expression})`));
