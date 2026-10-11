@@ -1762,3 +1762,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 ## 2026-10-11 UTC — SG28 strict lease generation CI GREEN
 - Plus technical SHA `61545e3757fdf4943032c59d9ad126bff6b1f3fa`: cumulative `38118952991` SUCCESS; backend job `114409525088` **700 PASS / 1 warning / 85.81% coverage**, including all eight parameterized invalid-lease reply cases; frontend job `114409525219` **751 PASS / 28 TODO**, 69 files. H1d `38118952975`, job `114409525027` **5 PASS**.
 - The shared-admission facade rejects boolean and fractional generation values; transport not connected to public endpoint; experimental service remains opt-in OFF. No independent-host DIST-01..08 pass inferred.
+
+
+## 2026-10-11 — SG28 TCP JSON ambiguity fail-closed (CI pending)
+- Verified Plus SHA `ad7afc2aa24ee1e138523ae1bfd46b93a3164dc1`: cumulative `38123493739` SUCCESS, backend **727 passed / 1 warning / 85.87% coverage**, frontend **751 passed / 28 TODO**, H1d `38123493734` **5 passed**.
+- Plus technical SHA `cac5cc2fe90029d1800636418eeefd30e7a4ccb8`: isolated experimental TCP transport rejects duplicate JSON keys (including conflicting grant fields) and nonfinite JSON constants.
+- Plus test SHA `b82f883f5a8540d95f4efbcadd2b9073f888e000`: four raw TCP ACK regression cases. Cumulative run `38131653940` and H1d `38131653937` started; **CI PENDING** at time of recording, not PASS.
+- Experimental client only, not connected to `/evaluate`; no TLS, authentication, production rollout or independently hosted coordinator. DIST-01..08 and SG28/H2 remain OPEN/BLOCKED.
+- Next: inspect those two runs and per-case backend logs for the final SHA. Correct any confirmed failures. Continue toward disposable shared coordinator and independent-host fencing evidence, keeping production isolation OFF.
