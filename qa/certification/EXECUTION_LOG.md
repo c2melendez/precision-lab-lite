@@ -2021,3 +2021,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Latest-SHA cumulative `38135620898`, H1d `38135620884` **IN PROGRESS** at observation. Do not infer any new PASS until logs checked.
 - Single-host SQLite reference only: not shared network, not production, not public /evaluate. SG28/H2 + DIST-01..08 still OPEN/BLOCKED.
 - Next: verify current runs, then prioritize explicitly authorized disposable network/staging infrastructure for independent-host acceptance; avoid treating process-local reference as distributed proof.
+
+
+## 2026-10-11 — SG28 SQLite reference path-validation gate
+- Verified Plus SHA `509ef7fc4d0c5e4af5e8d83593c3d47a03ad53b3`: cumulative `38135620898` SUCCESS (backend **751 PASS / 1 warning / 86.04% coverage**; frontend **751 PASS / 28 TODO**); H1d `38135620884` SUCCESS (**5 PASS**). SQLite restart/fencing cases each PASS.
+- Plus implementation commit `1ad14172f1d37e0e3e2e9b1b582991802bb9e745` rejects null, empty, non-path or bool database paths in isolated SQLite lease reference. Plus test commit `388b483551ea44b04e7163b9418ee837891ac583` adds permanent parameterized invalid-path regression.
+- Latest final-SHA cumulative `38136323933` and H1d `38136324050` queued at observation. Results **PENDING**, no additional passing test claimed.
+- This local SQLite reference is not a networked or distributed coordinator, not wired into public evaluate, and not production. DIST-01..08 / SG28 H2 remain OPEN/BLOCKED. Next: validate these two runs and prioritize a formally bounded shared-coordinator implementation in an approved disposable environment.
