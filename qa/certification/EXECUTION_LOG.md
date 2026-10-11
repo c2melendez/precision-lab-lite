@@ -1961,3 +1961,11 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Cumulative `38133090382` and H1d `38133090408` started for that SHA; **CI PENDING**, no additional PASS inferred.
 - SG28/H2 distributed acceptance DIST-01..08 remains OPEN/BLOCKED: transport is unauthenticated experimental loopback and is not connected to public /evaluate.
 - Next action: obtain completion and per-case evidence for the current SHA, repair any red, continue with bounded shared-coordinator design and independent-host topology only when authorized.
+
+
+## 2026-10-11 — SG28 contradictory TCP ACK regression (pending CI)
+- Verified Plus SHA `1ded7c7b2cf775d3df1352b6d21117b99a92d5f0`: cumulative `38133090382` SUCCESS (**733 backend PASS / 1 warning / 85.92% coverage**, frontend **751 PASS / 28 TODO**); H1d `38133090408` SUCCESS (**5 PASS**). Two bounded-framing tests passed individually.
+- Plus implementation SHA `d1ccda8b4c80e67b341234ad5d58d60249efd13f` rejects contradictory TCP coordinator responses containing both successful grant and an `error` key. New test SHA `7927ac62467b0153a29fa0290484b8a75ab23f5f` adds two fail-closed cases, including null error payload.
+- Final-SHA cumulative `38133313328` and H1d `38133313384` queued initially; **NOT CERTIFIED until runs and logs finish**.
+- Experimental transport remains disconnected from `/evaluate`; no production configuration changes. SG28/H2 and DIST-01..08 still OPEN/BLOCKED.
+- Next: inspect final-SHA jobs and case results, repair any red, then prioritize real bounded coordinator semantics and independent-host disposable acceptance.
