@@ -2212,3 +2212,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Verified Plus SHA `150fc0940cc23c0226668d6dc36aab1faa7b4b73`: cumulative `38164060470` SUCCESS **795 backend PASS / 1 warning / 86.15% coverage**, frontend **751 PASS / 28 TODO**; H1d `38164060549` SUCCESS **5 PASS**.
 - Plus SHA `bec444781c91174fec67e2735cceaf14b31fd03e` introduces `backend/tests/test_sg28_mtls_spawned_processes.py`: independent spawned coordinator PID and two competing client PIDs with TLS client certs, K=1 over real loopback sockets and shared SQLite on **one CI host**. Not cross-host proof or DIST-01 PASS.
 - Auto GitHub Actions cumulative `38164513251` / H1d `38164513248` detected in progress; **CI pending for newest test**. No public endpoint wiring, no production changes; SG28/H2 and DIST-01..08 remain OPEN/BLOCKED.
+
+
+## 2026-10-11 — SG28 multiprocess PASS and TLS allowlist regression
+- Plus SHA `bec444781c91174fec67e2735cceaf14b31fd03e`: cumulative GitHub Actions run `38164513251` SUCCESS backend **796 PASS / 1 warning / 86.26% coverage**, frontend **751 PASS / 28 TODO**. H1d run `38164513248` SUCCESS **5 PASS**. Separate processes on same CI host: NOT independent hosts or DIST PASS.
+- Plus SHA `08243b349c52958a212122e8d44cb94dcc8a09f5`: added `backend/tests/test_sg28_mtls_authorization_boundary.py` testing client whose TLS certificate is trusted by server CA bundle but whose identity is NOT in coordinator allowlist; unauthorized grant/release cannot mutate held lease. Cumulative run `38165043777` and H1d `38165043768` queued when queried, not yet verified.
+- Cross-host distributed acceptance requires explicitly authorized disposable infrastructure and independent host IDs per `SG28_DISTRIBUTED_ACCEPTANCE.md`. No external services, public `/evaluate` wiring or production modifications. SG28/H2 and DIST-01..08 remain OPEN/BLOCKED.
