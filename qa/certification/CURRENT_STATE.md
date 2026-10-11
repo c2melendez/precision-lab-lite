@@ -1965,3 +1965,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus technical SHA `7607290131eeca27bc83a2637fce11fcd01eb9e9` modifies **test-only** `backend/tests/test_sg28_tcp_admission_characterization.py`: the experimental credential-to-identity mapping now accepts only string credentials, preventing an unhashable list/dict JSON credential from crashing the fixture handler. Regression covers null, numeric, boolean, array and object credentials and asserts unchanged persisted lease.
 - Review of SHA `0966187a` via the available pull-request-only workflow-runs endpoint yielded no matching runs; it cannot exclude push-triggered CI. Latest technical SHA CI remains UNVERIFIED; no PASS recorded. Prior verified baseline: cumulative `38140121960` 760 backend PASS/751 frontend PASS and H1d `38140121981` 5 PASS (earlier SHA).
 - This is not deployed authentication/TLS, nor public `/evaluate` wiring; DIST-01..08 and SG28/H2 remain OPEN/BLOCKED. Next: retrieve the actual push CI jobs/logs for technical SHA `76072901` before more security fixture changes.
+
+
+## 2026-10-11 — Reproducción local independiente de SG28 credential/clock
+- Se ejecutó localmente `python -m pytest -q /tmp/test_sg28_local.py` sobre una reproducción acotada del handler test-only del commit Plus `7607290131eeca27bc83a2637fce11fcd01eb9e9`, usando SQLite temporal y TCP loopback: **1 PASS, 0 FAIL, 0.56 s**.
+- Alcance: credenciales inválidas, reloj/TTL administrados por servidor, identidad del lease, fencing de release y expiración. **No se ejecutó el archivo íntegro clonado desde GitHub**, ni gate acumulativo/H1d de GitHub Actions; CI para el SHA continúa UNVERIFIED y SG28/H2, DIST-01..08 OPEN/BLOCKED.
+- Siguiente paso: obtener run/log real de `push` de `76072901` y ejecutar suite original de repo; no extrapolar esta reproducción a certificación multi-host o seguridad TLS.
