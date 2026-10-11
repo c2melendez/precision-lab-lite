@@ -1898,3 +1898,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus test SHA `401ae7cc2e40370d6e452a3ea9843b0d258c1d88` adds local server outage/restart simulation: no coordinator connection -> SharedAdmissionUnavailable (fail-closed), durable active lease is retained on same-port restart, request rejected before expiry, next generation granted at expiry, stale release rejected. This is same-host loopback only.
 - Cumulative `38138716340`, H1d `38138716335` queued at observation. **CI PENDING**, no new PASS credited.
 - No public /evaluate wiring or production deploy. SG28/H2 and DIST-01..08 remain OPEN/BLOCKED because independent-host topology and secure authenticated coordinator remain unproven. Next: inspect final-SHA jobs and repair any red.
+
+
+## 2026-10-11 — SG28 lost ACK after persisted grant (loopback)
+- Verified Plus SHA `401ae7cc2e40370d6e452a3ea9843b0d258c1d88`: cumulative `38138716340` SUCCESS (**758 backend PASS / 1 warning / 86.03% coverage**, frontend **751 PASS / 28 TODO**), H1d `38138716335` SUCCESS (**5 PASS**). Loopback outage/restart integration regression individually PASS.
+- Plus SHA `51021b55cb23839916d78317400faa9002adbc26` adds disposable loopback fault-injection test: a coordinator persists a lease but closes the TCP socket before ACK; uncertain client must fail closed and second client must be denied until expiry; next generation granted at expiry. **Same-host test only**, not DIST-02 certification.
+- Final-SHA cumulative `38139175065` and H1d `38139175059` queued when checked; **CI PENDING**, no new PASS inferred.
+- Public /evaluate and production unchanged. SG28/H2 and DIST-01..08 remain OPEN/BLOCKED; independent-host authorized staging and secure coordinator are outstanding. Next: verify final CI runs, repair any red, then progress toward independent-host topology.
