@@ -2233,3 +2233,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Last independently verified previous SHA `08243b349c52958a212122e8d44cb94dcc8a09f5`: cumulative `38165043777` backend 797 PASS/86.33% coverage, frontend 751 PASS/28 TODO; H1d `38165043768` 5 PASS.
 - Scope is disposable same-host test only, not public `/evaluate`, production network, DIST-01..08 or SG28/H2 closure; remain OPEN/BLOCKED pending authorized independent hosts and distributed acceptance.
 - Next exact execution: inspect Plus `38165988599` + `38165988593` by SHA and logs; address failures; then pursue authorized multi-host DIST-01 evidence rather than claim it from one runner.
+
+
+## 2026-10-11 — SG28 finite deadline precision guard, automatic CI pending
+- Verified previous Plus technical SHA `71d9039baa1ed51a622c9aa0e6d92600d39fb699`: cumulative `38165988599` SUCCESS, backend 798 PASS / 1 warning / 86.31% coverage, frontend 751 PASS / 28 TODO; H1d `38165988593` SUCCESS, 5 PASS; invalid-clock test PASS.
+- Follow-up Plus change `f5eab6b1280f2bbf27ba09a7dcd65318c39229db` rejects finite extreme trusted clocks when `now+ttl <= now` due to floating-point resolution; test commit `56271a925a4e9e131a5952ba9be2d8158aa0bb6b` extends SQLite lease regression with `1e308`. Technical change limited to disposable test-only lease store; no public endpoint, production change, or multihost deployment.
+- Latest-SHA cumulative `38166265878` and H1d `38166265797` were QUEUED at observation, **CI PENDING**. Ignore intermediate-red SHA `03ccebc` as superseded by the later verified `71d9039`, but never infer latest SHA PASS until logs confirm.
+- SG28/H2 OPEN, DIST-01..08 BLOCKED, pending authorized independent-host staging. Next exact step: fetch final-SHA `38166265878`/`38166265797`, review jobs/logs and correct red; then pursue authenticated cross-host acceptance without assuming a single CI runner is distributed proof.
