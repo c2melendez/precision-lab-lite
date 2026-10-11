@@ -1778,3 +1778,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Latest technical SHA `50768893776664d3d545c127076c62561ff7ef01`: cumulative `38132891941` and H1d `38132891912` queued when observed. **Results PENDING** and no new PASS asserted.
 - Strict duplicate JSON field and nonfinite ACK rejection remain experimental, not routed into /evaluate. Production OFF. DIST-01..08 and SG28/H2 OPEN.
 - Next exact step: retrieve cumulative and H1d results for SHA `50768893776664d3d545c127076c62561ff7ef01`, classify and repair any red, then continue coordinator integration safely in an isolated test topology.
+
+
+## 2026-10-11 — SG28 TCP ACK recovery and framing regressions
+- Plus SHA `50768893776664d3d545c127076c62561ff7ef01`: cumulative run `38132891941` SUCCESS (backend **731 passed / 1 warning / 85.85% coverage**, four raw ACK cases individually PASS; frontend **751 passed / 28 TODO**). H1d `38132891912` SUCCESS (**5 passed**). This resolves the earlier Python collection SyntaxError at `b82f883`.
+- Plus technical test SHA `1ded7c7b2cf775d3df1352b6d21117b99a92d5f0`: adds two permanently retained regression cases for absent newline and oversized TCP coordinator ACK. No product/production route changed.
+- Cumulative `38133090382` and H1d `38133090408` started for that SHA; **CI PENDING**, no additional PASS inferred.
+- SG28/H2 distributed acceptance DIST-01..08 remains OPEN/BLOCKED: transport is unauthenticated experimental loopback and is not connected to public /evaluate.
+- Next action: obtain completion and per-case evidence for the current SHA, repair any red, continue with bounded shared-coordinator design and independent-host topology only when authorized.
