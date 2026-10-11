@@ -1848,3 +1848,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Published Lite workflow fix commit `42b504a3f2517f3c01650a139e41339a0864c6f7`: add `push.paths-ignore` for `qa/certification/**` and `**/*.md` while preserving manual dispatch and technical-change push triggers.
 - This YAML is published; **trigger-filter verification still pending** (technical YAML push should run build, subsequent docs-only push should not). Do not mark filter behavior validated without observations.
 - SG28/H2 remains OPEN: loopback tests cannot establish independent-host global K=1 or partition fail-closed. Experimental production mode OFF. Next: verify Lite workflow trigger behavior and prepare independent-host test environment before distributed certification.
+
+## 2026-10-10 local / 2026-10-11 UTC — Lite build filter technical push verified GREEN
+- Lite technical YAML SHA `42b504a3f2517f3c01650a139e41339a0864c6f7` completed three `push` workflows: build diagnostic `38114956941` SUCCESS; cumulative certification `38114956929` SUCCESS (85 files, 1036 tests PASS / 30 TODO); H1d `38114956970` SUCCESS (5 Playwright PASS).
+- On later documentation commits `aff8b36` and `9d5c025`, the latest 12 branch-scoped GitHub Actions runs included no runs for these docs-only SHAs; the branch HEAD was `9d5c025`. This is observed evidence of no additional listed runs from these commits, not a promise about every future push filter condition.
+- The corrected `in625-lite-build-diagnostic.yml` retains `workflow_dispatch` and ignores `qa/certification/**` plus `**/*.md` on push. No production change. Plus technical gate `38114270937` remains SUCCESS (675 backend PASS, 751 frontend PASS / 28 TODO).
+- SG28/H2 remains OPEN pending independent-host distributed K=1 and network partition/fail-closed evidence; do not equate loopback TCP/SQLite with distributed production coordination.
