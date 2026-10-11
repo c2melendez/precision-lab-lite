@@ -1991,3 +1991,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus SHA `c54f173363b1a4c59799a68d2238fbcb133b6a94`: cumulative run https://github.com/c2melendez/precision-lab-plus/actions/runs/38159711316, backend job `114529884663` **763 PASS / 1 warning / coverage 86.06%**, including `test_sg28_mtls_transport_characterization.py::test_mtls_requires_trusted_client_and_verified_server_identity PASSED`; frontend job `114529884839` **751 PASS / 28 TODO**; both SUCCESS.
 - H1d run https://github.com/c2melendez/precision-lab-plus/actions/runs/38159711340, job `114529884869`, **5 PASS**, SUCCESS.
 - The mTLS test uses ephemeral certificates and loopback only. It does NOT prove production credential lifecycle, real distributed authorization, real coordinator integration or DIST-01..08. SG28/H2 remains OPEN; no production changes or deployment.
+
+
+## 2026-10-11 — Primer contrato de adaptación distribuida SG28
+- Plus SHA `8ef7bb61d4c325f5f7316d4d4e00a1337889fb8d`: añadido `backend/app/services/distributed_admission.py`, opt-in `SG28_DISTRIBUTED_ADMISSION=1` desactivado por defecto, límite de integración fail-closed con validación estricta de `granted=true` y generation entera positiva. La función requiere inyección externa de transporte autenticado; **NO implementa red/mTLS, release lifecycle ni integración `/evaluate`**.
+- Plus SHA `5b4c0ee7dd94f8c2ff9faa5d137328e1570fa4bf`: añadido `backend/tests/test_sg28_distributed_admission_contract.py` con casos negativos de ausencia de transporte, timeout y replies malformados, más caso de grant sintácticamente válido.
+- GitHub push CI iniciado automáticamente para SHA `5b4c0ee7`: cumulative `38160778651` y H1d `38160778664`, pendientes de conclusión al registrar. No atribuir PASS prematuro.
+- DIST-01..08 y SG28/H2 siguen OPEN/BLOCKED; cero cambios al router público, producción, Render o infraestructura.
