@@ -2351,3 +2351,11 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 ## 2026-10-11 — Lite SY-P structural parser assertions PASS
 - Lite SHA `5365bb51abb913c81c4e353ecf5a4cc0ee9b6e26` cumulative `38176349064` SUCCESS: **1079 PASS / 30 TODO**, new `tests/syntax309SyPStructuralEcho.audit.test.ts` **4/4 PASS**, including source membership control and parser-shape checks on SY-P-03, 27, 28. These are **parser-structure** assertions, not proof of rendered UI echo; SY-P-24 and 25 are only included in a metadata control, not their own semantic tests.
 - Next: add Plus equivalent frontend structure checks, account per-ID coverage without double-counting, and verify declared ambiguous conventions. Bilateral math witness scope stays 23/33; don't certify overall SY-P yet.
+
+
+## 2026-10-11 — siguiente fase Syntax309 SY-P: evidencia reconciliada
+- Plus cumulative run https://github.com/c2melendez/precision-lab-plus/actions/runs/38173788391 SUCCESS en SHA caa3d577f5b7ee81cdb21a18916cffd58e3be026 (jobs backend/frontend SUCCESS); H1d run 38173788331 SUCCESS.
+- Lite H1d run https://github.com/c2melendez/precision-lab-lite/actions/runs/38176349080 SUCCESS en SHA 5365bb51abb913c81c4e353ecf5a4cc0ee9b6e26. Su cumulative run 38176349064, documentado previamente como SUCCESS, es la evidencia del gate de ese SHA; no confundir H1d con cumulative.
+- Se añadió test de frontend Plus `frontend/src/__tests__/syntax309SyPStructuralEcho.audit.test.ts` mediante commit 6b7bd05e693a97bb79187a6cb96903215a2095c0 en rama canónica. Cubre metadatos oficiales SY-P-03/24/25/27/28 y comprobaciones de presencia estructural de los operandos, función trigonométrica y exponente de SY-P-03/27/28. Es una verificación parcial de conversión, NO AST completo ni echo UI. 24/25 continúan metadata-only.
+- CI del nuevo SHA Plus pendiente de evidencia al momento de este registro. NO certificar el nuevo test como PASS sin run/log propio.
+- SIGUIENTE PASO EXACTO: localizar en Actions los nuevos runs del SHA 6b7bd05e; revisar logs de frontend y gate acumulativo, corregir fallos de harness/producto según evidencia. Después ampliar oráculos de AST y representación UI por ID, empezando SY-P-24/25 y convenciones SY-P-18/19/21/23/32. Mantener SG28 DIST bloqueado sin entornos multi-host independientes autorizados.
