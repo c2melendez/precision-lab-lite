@@ -1838,3 +1838,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Latest final-SHA cumulative `38135167901` and H1d `38135168069` were **IN PROGRESS** when observed; no new PASS inferred.
 - Production isolated mode remains OFF; no public evaluate route or deployment modified. DIST-01..08 and SG28/H2 are OPEN/BLOCKED pending authorized independent-host staging.
 - Next: check final-SHA CI/logs, fix any failure and proceed to bounded network coordinator only within authorized disposable environment.
+
+
+## 2026-10-11 — SG28 persistent SQLite generation recovery
+- Verified Plus SHA `59b02c258d888ed96c080675dfb55461fd6fab43`: cumulative `38135167901` SUCCESS (**749 backend PASS / 1 warning / 86.01% coverage**, frontend **751 PASS / 28 TODO**); H1d `38135168069` SUCCESS (**5 PASS**); all three SQLite local reference tests PASS.
+- Plus SHA `509ef7fc4d0c5e4af5e8d83593c3d47a03ad53b3` adds two SQLite persistence fencing regression tests: stale release after expiry/reopen cannot revoke successor, and generation remains strictly increasing after early release plus reopen.
+- Latest-SHA cumulative `38135620898`, H1d `38135620884` **IN PROGRESS** at observation. Do not infer any new PASS until logs checked.
+- Single-host SQLite reference only: not shared network, not production, not public /evaluate. SG28/H2 + DIST-01..08 still OPEN/BLOCKED.
+- Next: verify current runs, then prioritize explicitly authorized disposable network/staging infrastructure for independent-host acceptance; avoid treating process-local reference as distributed proof.
