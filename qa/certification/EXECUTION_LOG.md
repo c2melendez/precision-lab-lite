@@ -2036,3 +2036,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Final-SHA cumulative `38136569169` and H1d `38136569172` queued at observation, **CI PENDING**. New test NOT certified yet.
 - Scope is disposable single-host SQLite reference only; no API wiring or production deploy. SG28/H2 and DIST-01..08 remain OPEN/BLOCKED.
 - Next: inspect two final-SHA jobs and logs, fix confirmed failures, prioritize authorized independent-host topology and coordinator architecture.
+
+
+## 2026-10-11 — SG28 SQLite release field strictness
+- Verified Plus SHA `59d60a2a1b2719de05c3e27de989685a53c68e48`: cumulative `38136569169` SUCCESS (**753 backend PASS / 1 warning / 86.05% coverage**, frontend **751 PASS / 28 TODO**); H1d `38136569172` SUCCESS (**5 PASS**); connection-close lifecycle regression individually PASS.
+- Plus SHA `bfcb289029ee6b6fd73b4931295903d6bd446e5d` validates SQLite reference release lease owner, generation and deadline before SQL; prevents Python boolean/number equality aliasing for malicious or malformed releases. Test SHA `9125e67f0db8c8c52a12563cbe2dddc91984d8d1` adds a permanent reproduction using a deadline of exactly 1.0 and generation 1.
+- Latest final-SHA cumulative `38136888265` and H1d `38136888290` queued at observation; **CI PENDING**, no additional PASS asserted.
+- This is isolated single-host SQLite reference only, NOT shared network certification or production. SG28/H2, DIST-01..08 OPEN/BLOCKED pending authorized disposable independent-host test infrastructure. Next check final-SHA runs, logs, repair any red.
