@@ -1479,3 +1479,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Render workspace service inventory checked read-only. Plus production backend `precision-lab-plus-api` (service `srv-dap5siu0tbcc738gs4ug`): web service, `numInstances=1`, `plan=free`, branch `main`; start command `cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT` (no explicit `--workers`). Plus S26 backend `precision-lab-plus-s26-api` (service `srv-daqsn5h42hec73c48nbg`): also `numInstances=1`, `plan=free`, branch `qa/s26-execution`, same command form. Both are distinct services, not proof of a coordinated fleet or dynamic in-process worker count.
 - No change to Render settings, deployments, or environment variables. The certification branch `qa/syntax-audit-in625-a1` is not the deployed Render service branch; CI-only SQLite coverage cannot be promoted to a production claim.
 - SG28/H2 stays OPEN. Next: add an isolated test of independent process/service participants and real coordinator failure conditions before approving global admission; do not activate `SG28_EVALUATE_ISOLATION` in production without explicit authorization.
+
+
+## 2026-10-10 — SG28 same-owner generation fencing regression PENDING CI
+- Plus technical commit `1fbab66062f958f573f7c37f45aac7c90fa4d91f` updates `backend/tests/test_sg28_sqlite_admission_characterization.py` with `test_same_owner_stale_generation_cannot_release_reacquired_lease`.
+- Scenario: the same owner reacquires after TTL with generation 2; delayed release of generation 1 must not revoke the current lease; an unrelated contender remains denied until current generation is released, and generation then advances to 3.
+- CI result for this commit is not yet confirmed. Last verified cumulative Plus result remains 662 backend PASS, 751 frontend PASS / 28 TODO, H1d 5 PASS (run `38100438228`, `38100438231`). This is still a test-only SQLite fixture, NOT real multi-host coordination. H2 OPEN, SG28 production opt-in OFF.
+- Next: verify cumulative and H1d runs for commit `1fbab66062f958f573f7c37f45aac7c90fa4d91f`, inspect logs and remediate if red; continue isolated distributed-admission characterization.
