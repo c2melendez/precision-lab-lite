@@ -1722,3 +1722,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Auto-triggered cumulative run `38105661428` and H1d run `38105661406` observed QUEUED; no PASS claimed for new SHA. Previous Plus backend 665 PASS / frontend 751 PASS, H1d 5 PASS, SHA `accab13a081e2ba659fd8f9f55ed72ba9a780ad7`.
 - Single-host disposable CI fixture, not cross-host distributed coordinator or production certification. SG28/H2 OPEN; isolation OFF in production.
 - Next: verify the two run job logs, repair harness or product issues without weakening gates; pursue independent-host coordinator faults only when safely provisioned.
+
+
+## 2026-10-10 — SG28 separate TCP process admission CI GREEN (666 backend)
+- Plus technical SHA `a011a64bb4a4dc450275d031e5cc6996c26b7220`: cumulative run `38105661428`, backend job `114370542038` SUCCESS **666 passed / 1 warning / 85.64% coverage**; new `test_spawned_coordinator_and_distinct_clients_enforce_network_k1` PASSED. Frontend job `114370541881` SUCCESS **751 passed / 28 TODO** and build SUCCESS. H1d run `38105661406`, job `114370541842`, SUCCESS **5 passed**.
+- Proven in isolated single-host CI: independent spawned coordinator and client PIDs connect by loopback TCP, with K=1 granted once. Not cross-host or production distributed coordination. SG28/H2 OPEN; experimental production isolation OFF.
+- Next: characterize independent-host transport failure and coordinator restart in a disposable environment; explicitly verify fail-closed and fencing. Do not promote production changes without authorization.
