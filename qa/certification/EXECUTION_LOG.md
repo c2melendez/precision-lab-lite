@@ -1648,3 +1648,8 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 ## 2026-10-10 — SQLite atomic admission fixture GREEN: 659 backend
 - Plus SHA `17bcb0a488a98f97b7e966ff062806e4ebc0666e`: cumulative `38098388465` backend SUCCESS **659 passed / 1 warning / 85.69% coverage**, `test_atomic_storage_gate_denies_racing_k1_claims` and `test_storage_gate_expiry_fences_stale_release` both PASSED. Frontend SUCCESS 751 passed / 28 TODO. H1d run `38098388480` SUCCESS 5 passed.
 - Test-only SQLite with threads and transactional K=1; NOT multi-host distributed admission, not real coordinator crash. H2 global OPEN, production SG28 OFF.
+
+
+## 2026-10-10 — SQLite shared-file K=1 distinct processes GREEN: 660 backend
+- Plus technical SHA `df10011434b426c42993335f64f641685a07d89d`, cumulative `38098850426`: backend **660 passed / 1 warning / 85.69% coverage**, `test_atomic_storage_gate_across_distinct_spawned_processes` explicitly PASSED; frontend 751 passed / 28 TODO. H1d `38098850420`: 5 passed.
+- This verifies distinct spawned PIDs and atomic K=1 access to one local SQLite file; it does NOT prove cross-host distributed admission. H2 OPEN, production isolation OFF.
