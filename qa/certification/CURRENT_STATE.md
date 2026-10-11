@@ -1868,3 +1868,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus SHA `bfcb289029ee6b6fd73b4931295903d6bd446e5d` validates SQLite reference release lease owner, generation and deadline before SQL; prevents Python boolean/number equality aliasing for malicious or malformed releases. Test SHA `9125e67f0db8c8c52a12563cbe2dddc91984d8d1` adds a permanent reproduction using a deadline of exactly 1.0 and generation 1.
 - Latest final-SHA cumulative `38136888265` and H1d `38136888290` queued at observation; **CI PENDING**, no additional PASS asserted.
 - This is isolated single-host SQLite reference only, NOT shared network certification or production. SG28/H2, DIST-01..08 OPEN/BLOCKED pending authorized disposable independent-host test infrastructure. Next check final-SHA runs, logs, repair any red.
+
+
+## 2026-10-11 — SG28 SQLite generation overflow fail-closed
+- Plus SHA `9125e67f0db8c8c52a12563cbe2dddc91984d8d1`: cumulative `38136888265` SUCCESS (**754 backend PASS / 1 warning / 86.10% coverage**, frontend **751 PASS / 28 TODO**); H1d `38136888290` SUCCESS (**5 PASS**). Boolean/numeric alias release regression individually PASS.
+- Plus implementation SHA `64f1f47ceb683f720508e2c6758ae65cb5108d03` guards lease-generation counter exhaustion at SQLite signed 64-bit maximum; test SHA `83fe1bcaef78f451a63ba25a68e2404d4744ea3e` verifies fail-closed rejection and unchanged state.
+- Latest cumulative `38137245241` and H1d `38137245280` queued when checked; **CI PENDING** at this checkpoint.
+- Single-host SQLite reference only, not globally shared across hosts and not linked to public /evaluate. SG28/H2, DIST-01..08 remain OPEN/BLOCKED. No production changes. Next: verify final-SHA CI and move toward authorized independent-host acceptance.
