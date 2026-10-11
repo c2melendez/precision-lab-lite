@@ -25,8 +25,10 @@ describe("Syntax309 SY-P — Lite numeric precedence convention", () => {
     expect(row.operacion).toBe("convencion");
     const parsed = parseExpression(row.entrada).algebrite;
     const substituted = parsed.replace(/\\bx\\b/g, "(6)");
-    const result = Number(evaluate(substituted));
-    expect(Number.isFinite(result)).toBe(true);
+    const exact = evaluate(substituted);
+    const direct = Number(exact);
+    const result = Number.isFinite(direct) ? direct : Number(evaluate(`float(${substituted})`));
+    expect(Number.isFinite(result), `SY-P-21 parsed=${parsed}, substituted=${substituted}, exact=${exact}`).toBe(true);
     expect(result).toBeCloseTo(3, 9);
   });
 });
