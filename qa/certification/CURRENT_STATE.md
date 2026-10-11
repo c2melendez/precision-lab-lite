@@ -1629,3 +1629,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - No auto-run yet visible by exact SHA at time of check; outcome PENDING CI. Last verified Plus cumulative `38111145338` SUCCESS 673 backend PASS / 751 frontend PASS / 28 TODO, H1d `38111145485` 5 PASS.
 - Local single-host TCP/SQLite restart only. No independent-host multi-region or real shared coordinator verification. SG28/H2 OPEN, production experimental isolation OFF.
 - Next: inspect newly triggered cumulative/H1d actions, fix any failure before claiming PASS; plan authorized disposable independent-host validation.
+
+## 2026-10-10 — SG28 lost-ACK restart: persisted lease assertions added; CI unverified
+- Plus technical commit `c435bcfd6f35cdd39334754a319d168377116fae`, test-only change in `backend/tests/test_sg28_tcp_admission_characterization.py` (`test_tcp_coordinator_restart_preserves_fence_after_lost_grant_ack`).
+- Adds explicit SQLite lease assertions after dropped grant acknowledgement and after restart/fenced stale release: original owner/generation/deadline = (`worker-a`,1,5); successor = (`worker-b`,2,10). Product and production configuration unchanged.
+- The preceding technical commit `cf2e04e90bf512753dfddb7eed57f4590a6f272a` was retrieved and inspected. The available commit-associated workflow query returned no PR-triggered runs; it does not list push-triggered runs. Neither that SHA nor the new SHA has a verified completed cumulative run in this session. **CI: PENDING/UNVERIFIED, not PASS.**
+- Last directly verified cumulative Plus run remains `38111145338` (backend and frontend jobs both SUCCESS) on the preceding known baseline; prior recorded 673 backend PASS / 751 frontend PASS / 28 TODO. Do not transfer its PASS to new SHA.
+- Next exact action: obtain Plus cumulative workflow run for SHA `c435bcfd6f35cdd39334754a319d168377116fae`, inspect backend/front-end jobs and pytest logs, fix actual failures, then progress isolated independent-host K=1/fencing validation. SG28/H2 stays OPEN and production isolation OFF.
