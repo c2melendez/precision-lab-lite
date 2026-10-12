@@ -2553,3 +2553,11 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus commit c460c84fe7e21e636539f2fe2bfe804e4381c3ff: H1d 38194374376 SUCCESS y cumulative 38194374472 SUCCESS. El caso `a/bc` con a=12,bc=6,b=3,c=2 ya requiere PASS real (sin `test.fail`), resultado 2; `(a/b)*c` resultado 8.
 - Nueva regresión Plus commit e52dc2d8f05eb3ee107d8323ce731a61ad39bffb: además de resultado UI=2, inspecciona el JSON HTTP y exige `expression` exactamente `a/bc` y sustituciones simultáneas `a`, `bc`, `b`, `c`. H1d 38194931341 y cumulative 38194931327 en progreso en observación: NO certificar esta prueba nueva hasta CI.
 - Próxima fase: verificar corridas del SHA e52dc2d8, extender regresión a LaTeX `\\frac{a}{bc}` y revisar alcance semántico Lite. SY-P-23 general sigue OPEN y SG28 multi-host BLOCKED.
+
+
+## 2026-10-11 — SY-P-23 fracción LaTeX con variable compuesta
+- Plus SHA e52dc2d8f05eb3ee107d8323ce731a61ad39bffb, H1d 38194931341 y acumulativo 38194931327 SUCCESS. Verificaron payload a/bc sin espacios, sustituciones a=12,bc=6,b=3,c=2 y resultado UI 2 para entrada textual.
+- Nueva regresión E2E para `\\frac{a}{bc}` en frontend/e2e/in625-h1d-reentry.spec.ts: commit c1f8cf7fe3e4e1d361c77f288a9441f6553d638e. Validará petición HTTP exacta `a/bc`, sustituciones y resultado 2; test no marcado XFAIL.
+- Corrección acotada de frontend Plus en `frontend/src/components/BasicMode.tsx` commit 34734b232058b730be3c986c68773cea62755e6e: conserva a/bc en payload si MathLive contiene exactamente a/bc o la fracción LaTeX `\\frac{a}{bc}` y bc tiene sustitución no vacía. Sin modificación general del parser ni semántica de variables independientes.
+- CI de último SHA 34734b23205: H1d 38195286920, acumulativo 38195286916 y SG28 Plus UI 38195286929 activos al consultar. No contabilizar PASS de ampliación LaTeX antes de verificar logs/gates; los anteriores del SHA c1f8 son sobre prueba sin fix.
+- Siguiente paso: verificar los tres gates sobre SHA 34734b, investigar fallos por serialización/canonización real, y comprobar paridad Lite. SY-P-23 amplio continúa OPEN; SG28 distribuido permanece pendiente de validación externa.
