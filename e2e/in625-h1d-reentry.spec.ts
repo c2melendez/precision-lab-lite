@@ -430,3 +430,18 @@ test("SY-P-23 Lite: identificadores vecinos no reciben bloqueo de bc", async ({ 
     expect(await field.evaluate(el => (el as HTMLElement & {value?:string}).value), expression).toBe(expression);
   }
 });
+
+test("SY-P-23 Lite: tras bloquear ambigüedad se recupera evaluación explícita", async ({ page }) => {
+  await page.goto("./");
+  await setInput(page, "a/bc");
+  const blocked = await submit(page);
+  expect(blocked.kind).toBe("error");
+  expect(blocked.value).toContain("SY-P-23");
+  for (const [expression, expected] of [["(12/3)*2", "8"], ["12/(3*2)", "2"]] as const) {
+    await setInput(page, expression);
+    await expect(page.getByRole("status", { name: "Convención de división ambigua" })).toHaveCount(0);
+    const result = await submit(page);
+    expect(result.kind, expression).toBe("result");
+    expect(canonical(result.value), expression).toMatch(new RegExp("^" + expected + "(?:\\.0+)?$"));
+  }
+});
