@@ -2367,3 +2367,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus corrección técnica en `frontend/src/components/BasicMode.tsx` SHA 6eac46d8a6bad18ec2ff3b785c9a9e6669e2e334: solo si el input es exactamente a/bc y existe sustitución bc no vacía, conservar `a/bc` en el payload; el resto del conversor permanece sin cambios. E2E Plus SHA c460c84fe7e21e636539f2fe2bfe804e4381c3ff elimina `test.fail` y exige PASS real del caso a/bc→2 más agrupación (a/b)*c→8.
 - Corridas CI disparadas sobre SHA c460c84fe7: H1d 38194374376, cumulative 38194374472, PENDIENTES de conclusión en observación. NO declarar SY-P-23 PASS hasta ambas verdes y comprobar logs/resultados. SG28 distribuido sigue BLOCKED.
 - Próximo paso: revisar H1d y acumulativo del SHA c460c84fe7; si fallan inspeccionar payload y mensajes, corregir regresión de conversión; luego considerar formas `\\frac{a}{bc}` sin extrapolar convención global.
+
+
+## 2026-10-11 — SY-P-23 resultado real aprobado y aserción de payload exacto
+- Plus commit c460c84fe7e21e636539f2fe2bfe804e4381c3ff: H1d 38194374376 SUCCESS y cumulative 38194374472 SUCCESS. El caso `a/bc` con a=12,bc=6,b=3,c=2 ya requiere PASS real (sin `test.fail`), resultado 2; `(a/b)*c` resultado 8.
+- Nueva regresión Plus commit e52dc2d8f05eb3ee107d8323ce731a61ad39bffb: además de resultado UI=2, inspecciona el JSON HTTP y exige `expression` exactamente `a/bc` y sustituciones simultáneas `a`, `bc`, `b`, `c`. H1d 38194931341 y cumulative 38194931327 en progreso en observación: NO certificar esta prueba nueva hasta CI.
+- Próxima fase: verificar corridas del SHA e52dc2d8, extender regresión a LaTeX `\\frac{a}{bc}` y revisar alcance semántico Lite. SY-P-23 general sigue OPEN y SG28 multi-host BLOCKED.
