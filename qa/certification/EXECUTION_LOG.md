@@ -2479,3 +2479,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Anterior test de aviso accesible verde: Plus H1d `38186581202`, cumulative `38186581218`; Lite H1d `38186583828`, cumulative `38186583862`, build `38186583818`. Esta evidencia prueba la advertencia visual para MathLive \frac{a}{bc} y su limpieza al ingresar 2+3, no interpretación matemática universal.
 - Nueva regresión E2E publicada: `(a/b)*c`, `a/(b*c)`, `2+3` no deben producir aviso falso; entrada `a/bc` sí debe advertir. Último SHA técnico del repositorio `3da6c3a7723119db4606850a8d597b37f6873eed`; H1d `38186914543`, acumulativo `38186914358` disparados, sin resultado final en observación.
 - Siguiente paso: confirmar jobs de esos runs; si hay fallo identificar normalización MathLive vs defecto de UI, corregir y revalidar. SY-P-23 permanece OPEN en cuanto a semántica cruda `a/bc`; Plus strict XFAIL separado de b/c no se convierte en PASS. SG28 distribuido requiere prueba externa.
+
+
+## 2026-10-11 — SY-P-23 nueva regresión de preservación de entrada
+- Se verificaron los últimos gates H1d y cumulative sobre los commits previos: Plus 38186910679 / 38186910672 SUCCESS; Lite 38186914543 / 38186914358 SUCCESS. Validan advertencia y ausencia de falso positivo en agrupaciones explícitas.
+- Nueva prueba H1d publicada en SHA técnico `93d8e5618fe7660c2d3a985c5e93fcdb9c8632c0`: introducir MathLive `\\frac{a}{bc}`, ver aviso accesible y confirmar que el valor del campo se conserva sin reescritura. El harness se corrigió para usar backslash LaTeX y regexp de espacios auténticos; no cambió el producto.
+- Nuevas corridas: H1d `38188869704`, acumulativo `38188869689`; PENDIENTES de conclusión al consultar. No declarar PASS de la nueva prueba aún.
+- Siguiente paso: verificar H1d/cumulative sobre ese SHA exacto; diagnosticar cualquier diferencia de canonicalización MathLive antes de atribuir fallo al motor. Mantener SY-P-23/interpretación variable compuesta abierta y SG28 despliegue multi-host bloqueado.
