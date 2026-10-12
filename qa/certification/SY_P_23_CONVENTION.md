@@ -30,3 +30,10 @@ Para comunicar una interpretación matemática inequívoca, solicitar paréntesi
 2. Mostrar al usuario la interpretación efectiva o una advertencia para entradas ambiguas en ambos frontends.
 3. Probar el canal entrada → parser → eco/resultado con casos numéricos discriminantes en Lite y Plus.
 4. Validar gates acumulativos verdes y registrar evidencia por ID. Hasta entonces **SY-P-23 permanece OPEN**.
+
+## 2026-10-11 — Primera advertencia visible (implementación, CI pendiente)
+- Frontend Científica muestra mensaje accesible `role="status"` si la entrada es `a/bc` o su representación MathLive `\\frac{a}{bc}`.
+- Advierte sobre las dos agrupaciones explícitas `(a/b)*c` y `a/(b*c)`, y protege el caso de variable compuesta `bc`. No reescribe la expresión ni cambia el motor.
+- Plus commit técnico `e03fd1871fab60db3a31ff4126e730df4b0e6071`, ruta `frontend/src/components/BasicMode.tsx`, gate acumulativo iniciado `38186538399`.
+- Lite commit técnico `0b07e42c17730a7ca8e44d3e92c6f76abd0e28b7`, ruta `src/modes/BasicScientific/BasicScientificMode.tsx`, gate acumulativo iniciado `38186542231`.
+- Los gates posteriores no estaban terminados en la observación. PENDIENTE: confirmar final y añadir prueba E2E del aviso con edición MathLive, además de verificar expresiones agrupadas sin advertencia falsa. No cerrar SY-P-23 ni convertir XFAIL en PASS.
