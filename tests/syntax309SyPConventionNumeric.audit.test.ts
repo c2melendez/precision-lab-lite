@@ -91,4 +91,17 @@ describe("Syntax309 SY-P — Lite numeric precedence convention", () => {
     expect(parseExpression("a/(b*c)").algebrite).not.toBe(parseExpression("a/bc").algebrite);
   });
 
+
+  it("SY-P-23: la fracción LaTeX conserva la multiplicación b*c en Lite", () => {
+    const latex = parseExpression(String.raw`\frac{a}{bc}`).algebrite;
+    const grouped = parseExpression("a/(b*c)").algebrite;
+    // La fracción introduce agrupación del denominador; no crea variable bc.
+    expect(latex).toBe(grouped);
+    const numeric = latex
+      .replace(/\ba\b/g, "(12)")
+      .replace(/\bb\b/g, "(3)")
+      .replace(/\bc\b/g, "(2)");
+    expect(Number(evaluate(numeric))).toBeCloseTo(2, 9);
+  });
+
 });
