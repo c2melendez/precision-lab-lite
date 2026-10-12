@@ -2972,3 +2972,7 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Se amplió src/engine/parsing/syntax309SyPProducts.test.ts con cuatro testigos independientes: xy=-20, xy=0, xyz=-24, xyz=0, para cubrir signo y cero a través de parser y Algebrite. Commit técnico Lite 386d7e73baee81a493ae77bacae082e6ee3ee38f; sin cambios del motor.
 - GitHub Actions disparó automáticamente para SHA 386d7e73: H1d 38304165494, cumulative 38304165554, build 38304165601 inicialmente QUEUED. Requieren conclusión y evidencia en logs antes de certificar los cuatro nuevos testigos.
 - SY-P-23 OPEN y SG28 multihost BLOCKED. Siguiente objetivo: verificar gates nuevos en SHA exacto, examinar el test unitario en log acumulativo, corregir eventuales fallos y continuar la paridad del contrato de símbolos concatenados sin alterar el XFAIL.
+
+## 2026-10-12 — Corrección descubrimiento SY-P-24/25 Lite
+- El test ubicado en src/engine/parsing no era descubierto por Vitest (vite.config.ts incluye solamente tests/**/*.test.ts). Se trasladó a tests/syntax309SyPProducts.test.ts mediante commits d6c2601b y 2500f11f.
+- Se requieren 91 archivos ejecutados y al menos 1100 PASS para acreditar los seis testigos. CI final H1d 38304304314, acumulativo 38304304285, build 38304304274 pendientes de logs. SY-P-23 OPEN; SG28 BLOCKED.
