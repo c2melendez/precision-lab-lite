@@ -273,7 +273,7 @@ test("SY-P-23 no advierte en agrupaciones explícitas ni expresiones no relacion
 // SY-P-23: the advisory is informational; it must never rewrite the user's MathLive value.
 test("SY-P-23 preserva la entrada original al mostrar la advertencia", async ({ page }) => {
   await page.goto("./");
-  const value = String.raw`\\frac{a}{bc}`;
+  const value = String.raw`\frac{a}{bc}`;
   await setInput(page, value);
   await expect(page.getByRole("status", { name: "Convención de división ambigua" })).toBeVisible();
   const actual = await page.locator("math-field").first().evaluate(el => (el as HTMLElement & { value?: string }).value ?? "");
