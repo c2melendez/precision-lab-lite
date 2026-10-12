@@ -2486,3 +2486,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Nueva prueba H1d publicada en SHA técnico `93d8e5618fe7660c2d3a985c5e93fcdb9c8632c0`: introducir MathLive `\\frac{a}{bc}`, ver aviso accesible y confirmar que el valor del campo se conserva sin reescritura. El harness se corrigió para usar backslash LaTeX y regexp de espacios auténticos; no cambió el producto.
 - Nuevas corridas: H1d `38188869704`, acumulativo `38188869689`; PENDIENTES de conclusión al consultar. No declarar PASS de la nueva prueba aún.
 - Siguiente paso: verificar H1d/cumulative sobre ese SHA exacto; diagnosticar cualquier diferencia de canonicalización MathLive antes de atribuir fallo al motor. Mantener SY-P-23/interpretación variable compuesta abierta y SG28 despliegue multi-host bloqueado.
+
+
+## 2026-10-11 — SY-P-23: transición de entrada ambigua a explícita
+- Regresión previa de preservación: H1d Plus 38188865922 y Lite 38188869704 con jobs SUCCESS; acumulativo Lite 38188869689 SUCCESS. Plus cumulative 38188865920 seguía in_progress en observación; no inferir PASS aún.
+- Nueva prueba E2E técnica publicada en SHA `83b511315401a16345b058e00629aed65d5e4380`: alternar MathLive `a/bc` (aviso), `a/(b*c)` (sin aviso), `\\frac{a}{bc}` (aviso), `(a/b)*c` (sin aviso). No hay cambios en motor ni parser; no fuerza lectura de identificador compuesto.
+- CI iniciado: H1d `38189006216`, cumulative `38189006220`, pendientes en observación. Próximo paso: confirmar los runs en el SHA exacto, inspeccionar logs si fallan, y fortalecer la prueba de convención semántica/eco `bc` antes de cerrar SY-P-23. SG28 multi-host continúa BLOCKED por falta de entorno representativo.
