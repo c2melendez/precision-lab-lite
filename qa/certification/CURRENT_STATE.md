@@ -2569,3 +2569,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Nuevo commit técnico Plus 60190f013ad6de79c0051d670f3b8d152e171650, archivo frontend/e2e/in625-h1d-reentry.spec.ts: prueba que con a=12, bc=6, b=3, c=2 las entradas ((a/b)*c) y ((a/(b*c))) no son reescritas a a/bc en el payload, mantienen sustituciones y producen respectivamente 8 y 2. No se modifica motor.
 - Se requiere comprobar corridas H1d y cumulative sobre SHA 60190f, analizar errores con logs antes de PASS. SY-P-23 OPEN; SG28 multihost BLOCKED.
 - Siguiente paso exacto: verificar ambos gates de 60190f y la semántica explícita de división; si un fallo demuestra error del producto o del harness, corregir la capa real, preservar contrato y actualizar evidencia bilateral.
+
+
+## 2026-10-12 — SY-P-23: protección frente a falsos positivos de división numérica
+- Plus SHA 60190f013ad6de79c0051d670f3b8d152e171650: H1d 38246460975 SUCCESS, cumulative 38246460880 SUCCESS. Valida distinción de agrupaciones explícitas con bc definida.
+- Publicada regresión Plus `frontend/e2e/in625-h1d-reentry.spec.ts` commit daff340d92480153690ca2950b3c220593138872 para entradas numéricas `(12/3)*2`, `((12/3))*2`, `12/((3*2))` y `((12/(3*2)))`, sin aviso SY-P-23 y con resultados 8/8/2/2. Ajuste posterior del oráculo numérico (sin cambiar motor) commit 50ba0110bec5016614168979c428e04608e8f94e.
+- Runs correspondientes al SHA final 50ba0110: H1d 38247059261, cumulative 38247059467, inicialmente QUEUED. Runs del SHA intermedio daff340d: H1d 38247034032, cumulative 38247034066, inicialmente IN_PROGRESS. La certificación debe basarse en el SHA final y sus logs.
+- SY-P-23 OPEN y SG28 multihost BLOCKED. Siguiente paso: comprobar conclusión H1d/cumulative 50ba0110, clasificar cualquier rojo y continuar auditoría de casos discriminantes, sin concluir certificación global a partir de SUCCESS aislado.
