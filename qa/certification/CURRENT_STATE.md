@@ -2286,3 +2286,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus SHA cc946386adedc80048e647bc6be16f1c66df7afc cumulative 38185857142 SUCCESS backend/frontend; H1d 38185857134 SUCCESS. Explicit grouped `(a/b)*c` => 8 and `a/(b*c)` => 2 validated in Plus, matching Lite SHA 23bc858a (cumulative 38185608993, H1d 38185608896, build 38185608895 SUCCESS).
 - Published the same `qa/certification/SY_P_23_CONVENTION.md` in both repos (Plus docs commit 9297b258, Lite b116ae4e) with ambiguity, named variable bc, numeric contrast, CI evidence, user-facing safe explicit input notation, and exit conditions. This is documentation only, NOT UI implementation; raw `a/bc` remains open and Plus strict XFAIL remains not PASS.
 - Next: implement user-visible interpretation warning or reading disclosure in actual frontend for both engines, follow with UI/channel tests and cumulative CI, consistent with named multi-letter identifiers. SG28 external multi-host remains blocked.
+
+
+## 2026-10-11 — Syntax309 SY-P-23 advertencia UI y prueba E2E (CI aún pendiente)
+- Se implementó advertencia accesible en modo Científica para la entrada ambigua `a/bc` y MathLive `\\frac{a}{bc}`, indicando formas explícitas `(a/b)*c` y `a/(b*c)` y preservando identificador `bc`. Sin cambio de parser/motor, y sin imponer interpretación universal de `a/bc`.
+- Se añadió prueba Playwright en el spec H1d para advertencia visible y desaparición al sustituir la entrada por `2+3`.
+- Último commit técnico c2melendez/precision-lab-lite: `557b931defd2f6c9c59af9fc6639832b2492df7e`. CI disparado automáticamente: H1d 38186583828 y cumulative 38186583862, ambos pendientes de resultado a la última consulta.
+- Siguiente paso exacto: verificar jobs/logs de estos dos runs (mismo SHA), corregir si hay rojo de harness/UI sin reducir oráculos; comprobar `\\frac{a}{bc}` renderizado por MathLive en E2E, y después probar variantes `(a/b)*c`, `a/(b*c)`, y variable compuesta `bc` por canales de entrada y resultado. Mantener SY-P-23 abierto y XFAIL estricto mientras no exista evidencia integral. SG28 multi-host sigue bloqueado por falta de prueba externa.
