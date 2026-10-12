@@ -257,3 +257,15 @@ test("SY-P-23 muestra advertencia accesible sin modificar expresiones seguras", 
   await setInput(page, "2+3");
   await expect(warning).toHaveCount(0);
 });
+
+// SY-P-23: show guidance only for ambiguous bare division, never for explicit grouping.
+test("SY-P-23 no advierte en agrupaciones explícitas ni expresiones no relacionadas", async ({ page }) => {
+  await page.goto("./");
+  const warning = page.getByRole("status", { name: "Convención de división ambigua" });
+  for (const input of ["(a/b)*c", "a/(b*c)", "2+3"]) {
+    await setInput(page, input);
+    await expect(warning, input).toHaveCount(0);
+  }
+  await setInput(page, "a/bc");
+  await expect(warning).toBeVisible();
+});
