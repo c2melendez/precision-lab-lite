@@ -2976,3 +2976,8 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 ## 2026-10-12 — Corrección descubrimiento SY-P-24/25 Lite
 - El test ubicado en src/engine/parsing no era descubierto por Vitest (vite.config.ts incluye solamente tests/**/*.test.ts). Se trasladó a tests/syntax309SyPProducts.test.ts mediante commits d6c2601b y 2500f11f.
 - Se requieren 91 archivos ejecutados y al menos 1100 PASS para acreditar los seis testigos. CI final H1d 38304304314, acumulativo 38304304285, build 38304304274 pendientes de logs. SY-P-23 OPEN; SG28 BLOCKED.
+
+## 2026-10-12 — SY-P-24/25: seis testigos numéricos CERTIFICADOS en Lite
+- Lite SHA final 2500f11f8deae17fa5a6fd5a63d93ca37fe7edcd: acumulativo run 38304304285 SUCCESS, job 114994497580. Evidencia textual CI: `tests/syntax309SyPProducts.test.ts (6 tests)` PASS; 91 archivos aprobados, 1100 tests passed y 30 todo. Build 38304304274 SUCCESS. H1d 38304304314 IN_PROGRESS en última consulta, no marcar PASS todavía.
+- Se corrigió el gap del harness: Vitest configuraba `include: tests/**/*.test.ts`; la ubicación anterior en src/engine/parsing no se ejecutaba. Los seis testigos acreditan productos xy,xyz con positivos, negativos y ceros a través de parseExpression y Algebrite.
+- SY-P-23 OPEN por convención y XFAIL Plus; SG28 multihost BLOCKED. Siguiente objetivo: verificar H1d del mismo SHA; ampliar certificación bilateral de semántica de nombres declarados/no declarados sin alterar motor indebidamente.
