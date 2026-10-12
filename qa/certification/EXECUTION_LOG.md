@@ -2569,3 +2569,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Se inspeccionó Lite src/modes/BasicScientific/BasicScientificMode.tsx: evaluación actual pasa parseExpression(currentLatex,angleMode) a dispatchWorker, sin panel de sustituciones equivalente a Plus. No marcar paridad con sustitución bc inventada; Lite mantiene cobertura de aviso, agrupaciones explícitas y oráculos numéricos propios.
 - SY-P-23 permanece OPEN para otras notaciones, reglas generales de identificadores compuestos y cobertura/paridad. XFAIL estricto del backend Plus para la lectura alternativa separada b*c permanece; SG28 multihost necesita entorno externo representativo.
 - Próxima fase: caracterizar contrato de variables compuestas en Lite y diseñar suite no regresiva sin introducir UI de sustituciones no aprobada; verificar nuevas representaciones Plus con entradas agrupadas.
+
+
+## 2026-10-11 — SY-P-23 Lite: caracterización de bc por tokenización
+- Se inspeccionó `src/engine/parsing/tokenize.ts`: variables multi-letra desconocidas se separan deliberadamente como identificadores de una letra (regla IN625 C10); `bc` no es variable nombrada genérica como en Plus. Lite no tiene panel equivalente de sustituciones en Científica.
+- Nueva regresión Lite `tests/syntax309SyPConventionNumeric.audit.test.ts` commit `ee7f94e01c75e6c227132f11546add3d90f6b618`: `tokenize('a/bc')` debe generar a, /, b, c, y `parseExpression('a/bc')` coincide con `a/b*c` pero no con `a/(b*c)`. Esto caracteriza un contrato actual; no afirma que exista interpretación universal de texto ambiguo.
+- Lite workflows disparados: build 38196914401, H1d 38196914448, acumulativo 38196914403, inicialmente en cola; verificar resultados antes de declarar PASS.
+- Plus SHA 34734b232058b730be3c986c68773cea62755e6e tiene H1d 38195286920, cumulative 38195286916 y SG28 UI 38195286929 SUCCESS. La diferencia de semántica Lite/Plus es un pendiente de paridad/contrato, no un error matemático resuelto. SY-P-23 sigue OPEN y SG28 multi-host BLOCKED.
