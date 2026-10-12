@@ -2492,3 +2492,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Regresión previa de preservación: H1d Plus 38188865922 y Lite 38188869704 con jobs SUCCESS; acumulativo Lite 38188869689 SUCCESS. Plus cumulative 38188865920 seguía in_progress en observación; no inferir PASS aún.
 - Nueva prueba E2E técnica publicada en SHA `83b511315401a16345b058e00629aed65d5e4380`: alternar MathLive `a/bc` (aviso), `a/(b*c)` (sin aviso), `\\frac{a}{bc}` (aviso), `(a/b)*c` (sin aviso). No hay cambios en motor ni parser; no fuerza lectura de identificador compuesto.
 - CI iniciado: H1d `38189006216`, cumulative `38189006220`, pendientes en observación. Próximo paso: confirmar los runs en el SHA exacto, inspeccionar logs si fallan, y fortalecer la prueba de convención semántica/eco `bc` antes de cerrar SY-P-23. SG28 multi-host continúa BLOCKED por falta de entorno representativo.
+
+
+## 2026-10-11 — SY-P-23 continuidad semántica tras transiciones E2E
+- Plus H1d run 38189003310 y cumulative 38189003375 SUCCESS en SHA da49c5e13f5855cc09eb8a9d2531012106290816. Lite H1d 38189006216, cumulative 38189006220 y build 38189006219 SUCCESS en SHA 83b511315401a16345b058e00629aed65d5e4380. Se acreditan transiciones visuales, NO resolución universal de a/bc.
+- Nueva regresión estructural/numérica Lite publicada en SHA 2e8d04707f690e9818618ef4678237de2e059c8d: tests/syntax309SyPConventionNumeric.audit.test.ts compara entrada cruda a/bc frente a alternativas explícitas y conserva los oráculos numéricos 8 y 2 de agrupaciones. Es prueba complementaria; no certifica la interpretación cruda ni semántica de variable bc en Plus.
+- Lite CI automático cumulative 38190157103, H1d 38190157064 y build 38190157070 en ejecución en observación; no contabilizarlos PASS todavía.
+- Próximo paso exacto: verificar Lite SHA 2e8d04707f y sus logs; localizar harness Plus de convención para probar a=12,bc=6 sin confundirlo con a=12,b=3,c=2; exigir evidencia de endpoint más pantalla y mantener strict XFAIL de lectura divergente. Mantener SG28 multi-host BLOCKED.
