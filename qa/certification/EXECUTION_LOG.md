@@ -2521,3 +2521,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Auto CI iniciada: Plus H1d 38191586392, cumulative 38191586394; Lite H1d 38191594838, cumulative 38191594844, build 38191594840. NO marcar PASS hasta resultados de mismo SHA y revisión de logs.
 - El test actual valida agrupaciones numéricas explícitas mediante la UI; no es aún prueba de `a/bc` con variables sustituidas dentro del campo MathLive. SY-P-23 permanece OPEN; XFAIL estricto de interpretación alternativa de bc permanece intacto, SG28 multi-host BLOCKED.
 - Siguiente paso: comprobar runs nuevos; si hay fallo clasificar UI/harness/oráculo antes de modificar motor. Después ampliar canal con sustitución real de bc cuando se confirme interfaz disponible.
+
+
+## 2026-10-11 — SY-P-23: sustituciones reales desde la UI Plus
+- Runs previos Plus H1d 38191586392 y cumulative 38191586394 SUCCESS SHA f1d30916be1ef129a26258173874c80426a871a0. Lite H1d 38191594838, cumulative 38191594844, build 38191594840 SUCCESS SHA 40f48aef59dc9aa2eda152923e8625bfb83ebe43.
+- Nuevo E2E Plus en frontend/e2e/in625-h1d-reentry.spec.ts SHA e454bba3a2f7961cb8633a5872410bdba6af09a0: añade a=12, bc=6, b=3, c=2 desde la UI de sustituciones, verifica aviso a/bc y resultado 2; luego evalúa (a/b)*c y espera 8. Es prueba de canal completo por primera vez, NO PASS hasta CI.
+- Auto CI Plus H1d 38192183099 in_progress, acumulativo 38192183096 queued al observar. Si falla, examinar resultado y normalización MathLive/selector de UI antes de concluir fallo matemático; preservar XFAIL estricto original y no cambiar el backend solo por expectativas de harness.
+- SY-P-23 OPEN. Próximo paso: inspeccionar estos runs y corregir defectos clasificados; después estudiar paridad Lite de sustituciones reales si la UI ofrece la misma capacidad, sin fingir una funcionalidad ausente. SG28 multi-host BLOCKED.
