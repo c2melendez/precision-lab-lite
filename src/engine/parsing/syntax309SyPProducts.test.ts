@@ -17,7 +17,7 @@ describe("Syntax309 SY-P-24/25 concatenated variable products", () => {
       expect(parsed.freeVariables).toEqual(Object.keys(substitutions));
       expect(parsed.algebrite).toBe(Object.keys(substitutions).join("*"));
       const substituted = Object.entries(substitutions).reduce(
-        (expr, [name, value]) => expr.replace(new RegExp(`\\b${name}\\b`, "g"), String(value)),
+        (expr, [name, value]) => expr.replace(new RegExp(name, "g"), String(value)),
         parsed.algebrite,
       );
       expect(Number(Algebrite.run(substituted))).toBe(expected);
