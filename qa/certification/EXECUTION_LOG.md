@@ -2605,3 +2605,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Lite cumulative 38199690970 del SHA eef5d027381620b2be84274cc35537d5c5159f30 FAILURE: 1091 PASS, 1 FAIL, 30 TODO. El test nuevo enviaba `\\\\frac` (doble backslash efectivo en String.raw) y regex escapadas de más, provocando `Carácter no reconocido: "\\"`; clasificado como error de harness/test, no motor matemático. Build 38199691057 SUCCESS; H1d 38199691011 aún en progreso a la consulta.
 - Publicado fix Lite SHA a63eb1456c4149f0a00cc0a523ea6327dae82d8f: `String.raw` con un solo backslash para `\\frac`, y expresiones regulares correctas para reemplazar variables. Aún SIN resultado CI de este nuevo SHA al registrar.
 - Siguiente paso exacto: obtener las corridas correspondientes a a63eb145, verificar el acumulativo, H1d y build, y si hay fallo revisar test de agrupación `\\frac{a}{b}*c` vs `\\frac{a}{b*c}`; SY-P-23 OPEN, SG28 multihost BLOCKED.
+
+
+## 2026-10-11 — SY-P-23: agrupación redundante y sombra de variable compuesta
+- Lite SHA a63eb1456c4149f0a00cc0a523ea6327dae82d8f certificado mediante cumulative 38199756567, H1d 38199756566 y build 38199756600, todos SUCCESS. Pruebas LaTeX para `\\frac{a}{b}*c`=8 y `\\frac{a}{b*c}`=2 con valores a=12,b=3,c=2 aprobadas.
+- Inspección Plus `backend/tests/test_syntax309_syp_interpretation.py`: ya existen pruebas de `(a/b)*c` y `a/(b*c)` y protección contra variable `bc` que opaque producto `b*c`; no duplicar indiscriminadamente oráculos existentes.
+- Nueva regresión Plus SHA d8487f1ab8f09b885e337fdb32dadc318d1b16a5: misma semántica numérica para `a/(b*c)` y `((a)/(b*c))` aun con una variable compuesta `bc=99` coexistiendo con b=3,c=2; espera 2 en ambos. Cubre redundancia de paréntesis y sombra de variable compuesta mediante endpoint real. CI de este SHA pendiente de localizar y verificar: NO PASS todavía.
+- Siguiente paso exacto: encontrar el gate acumulativo Plus del SHA d8487f1, comprobar resultados y corregir solo la capa demostrada; continuar cobertura SY-P-23 y documentar diferencias intencionales Lite/Plus. SY-P-23 OPEN; SG28 multihost BLOCKED.
