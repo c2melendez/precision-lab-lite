@@ -2756,3 +2756,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 ## 2026-10-12 — SY-P: contrato de identificadores publicado
 - La matriz bilateral fue actualizada en Lite (a82d8fa25d1be7c4759e6a2624011193f9250275) y Plus (ded6d83b71a0c6e2c155ecbca4b37da2f6fdea98). Conserva los casos SY-P-24 xy=x*y, SY-P-25 xyz=x*y*z y la ambigüedad SY-P-23 sin reinterpretar el XFAIL.
 - SY-P-23 OPEN y SG28 multihost BLOCKED. Siguiente objetivo: añadir evidencia por canal para SY-P-23/24/25, comprobar gates H1d y acumulativo por SHA técnico.
+
+## 2026-10-12 — SY-P-24/25: frontera UI instrumentada en Lite y Plus
+- Se sincronizó CURRENT_STATE Lite (2716f492c459907fd2977367f80df669be662b2f) tras el bloqueo previo de validación GitHub.
+- Pruebas E2E nuevas en H1d: Plus frontend/e2e/in625-h1d-reentry.spec.ts commit 449baeb3cbb6132ed2219eec9f1d7692df3c72f2 y Lite e2e/in625-h1d-reentry.spec.ts commit fc8d1a5aeac7f2419745ed4508dff4d320f672da. Verifican que xy/xyz preservan valor MathLive, no activan alerta específica a/bc, y que a/bc sigue advirtiendo. No pretenden acreditar semántica numérica de multiplicación.
+- CI automática detectada para SHA Plus 449baeb3c: H1d 38302175916 IN_PROGRESS y acumulativo 38302175917 QUEUED; Lite SHA fc8d1a5ae: H1d 38302181089, build 38302181140, acumulativo 38302181314 IN_PROGRESS al consultar.
+- No declarar PASS sin revisar los jobs finales. Próximo objetivo: verificar conclusión y logs de estos cinco gates; corregir regresiones, y ampliar test de xy/xyz a semántica numérica por canal según contrato original.
+- SY-P-23 OPEN; SG28 multihost BLOCKED.
