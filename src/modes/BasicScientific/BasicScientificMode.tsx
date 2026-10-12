@@ -759,7 +759,7 @@ export function BasicScientificMode() {
           Detener cálculo
         </button>
       )}
-      {/(?:^|[^a-zA-Z])a\s*\/\s*bc(?:$|[^a-zA-Z])|\\\\frac\s*\{a\}\s*\{bc\}/.test(latex) && (
+      {/(?:^|[^a-zA-Z])a\s*\/\s*bc(?:$|[^a-zA-Z])|\\frac\s*\{a\}\s*\{bc\}/.test(latex) && (
         <p role="status" aria-label="Convención de división ambigua" className="rounded-lg border border-paper-line bg-paper-soft px-3 py-2 text-sm text-ink">
           Interpretación ambigua de a/bc: escribe (a/b)*c o a/(b*c) para indicar la agrupación. Si bc es una única variable, consérvala como identificador definido.
         </p>
