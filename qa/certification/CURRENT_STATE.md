@@ -2451,3 +2451,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite commit c73e61a81308d2bd536efd9b4a79edf1998cd337 verificado: cumulative 38202494901, H1d 38202494921 y build 38202494902, todos SUCCESS.
 - Nueva prueba en Lite `tests/syntax309SyPConventionNumeric.audit.test.ts` commit 0b2505a205b816c57167c0d1f59f7d4047ddb8cd: a=9, b=3, c=2.5; `(a/b)*c`=7.5 y `a/(b*c)` / fracción LaTeX explícita =1.2. Evita depender solo de valores enteros; no declara semántica universal de `a/bc`.
 - CI del SHA 0b2505 pendiente de comprobar (commit publicado). Próximo paso exacto: localizar cumulative/H1d/build de Lite para SHA 0b2505, revisar resultados y corregir test/parser según evidencia; luego añadir caso comparable de factor decimal en Plus. SY-P-23 OPEN; SG28 multihost BLOCKED.
+
+
+## 2026-10-11 — SY-P-23 decimales: Lite aprobado y nueva paridad Plus
+- Lite SHA 0b2505a205b816c57167c0d1f59f7d4047ddb8cd: cumulative 38203176477, H1d 38203176469, build 38203176452 todos completed/SUCCESS. Se acredita agrupación explícita `(a/b)*c`=7.5 y `a/(b*c)` / fracción LaTeX=1.2 con a=9,b=3,c=2.5.
+- Nueva prueba de backend HTTP Plus en `backend/tests/test_syntax309_syp_interpretation.py` SHA 7f9b4fec9b012616afdd71fbae87520296b8c78b: `(a/b)*c`=7.5, `a/(b*c)` y `((a)/(b*c))`=1.2 con a=9,b=3,c=2.5 y bc=99. Protege producto explícito ante variable compuesta coexistente. No modifica motor ni XFAIL del ambiguo `a/bc`.
+- CI Plus del SHA 7f9b4fe: pendiente de comprobación y evidencia; no marcar PASS de la prueba nueva hasta concluir el gate correspondiente.
+- Siguiente paso exacto: consultar workflow acumulativo y H1d del SHA Plus 7f9b4fe, revisar jobs/logs, corregir según evidencia y extender cobertura UI SY-P-23. SY-P-23 OPEN; SG28 multihost BLOCKED.
