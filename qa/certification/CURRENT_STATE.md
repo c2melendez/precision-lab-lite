@@ -2613,3 +2613,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Nuevo cambio técnico Lite e2e/in625-h1d-reentry.spec.ts commit 79a1bf93cd6ec8253d8e57c1e48592d6f886005e: prueba aviso accesible ante `(a/bc)`, `((a/bc))`, `(\\frac{a}{bc})`, conservación exacta del valor MathLive y ausencia de aviso para `(a/b)*c`, `a/(b*c)` y `((a/(b*c)))`. Protege la política informativa existente de Lite; no transforma la expresión ni modifica parser.
 - GitHub Actions SHA 79a1bf93: H1d 38274443504, acumulativo 38274443523, build 38274443477, todos IN_PROGRESS en última consulta. No declarar PASS hasta conclusión y logs verificados.
 - Próximo paso: verificar esas tres corridas y corregir cualquier fallo demostrado. Después comparar el aviso entre Lite y Plus y decidir brecha contractual, sin debilitar el XFAIL de Plus. SY-P-23 OPEN; SG28 multihost BLOCKED.
+
+
+## 2026-10-12 — SY-P-23: paridad bilateral de advertencias MathLive parentetizadas
+- Lite SHA técnico `79a1bf93cd6ec8253d8e57c1e48592d6f886005e`: H1d `38274443504`, cumulative `38274443523` y build `38274443477` = SUCCESS, verificados directamente por SHA.
+- Plus incorporó test homólogo en `frontend/e2e/in625-h1d-reentry.spec.ts`, commit `b4df99c70a9238216aadc4e5b0324d40cbe19813`: comprueba advertencia visible sin reescritura MathLive para `(a/bc)`, `((a/bc))` y `(\\frac{a}{bc})`; desaparece con `(a/b)*c`, `a/(b*c)` y `((a/(b*c)))`. Sin cambios en parser ni UI.
+- GitHub Actions Plus en SHA b4df99c70: H1d `38277095820` y cumulative `38277095768` fueron creados (QUEUED en la consulta). No declarar PASS antes de verificar conclusiones y logs.
+- Diferencia persistente: Lite advertencia informativa; Plus puede bloquear POST para entrada completa ambigua si falta bc. SY-P-23 OPEN y SG28 multihost BLOCKED; no contar paridad total por alertas coincidentes.
+- Próxima acción: comprobar ambos gates Plus de b4df99c70, diagnosticar cualquier fallo real y avanzar cobertura de aviso/validación en entrada extendida, según matriz oficial.
