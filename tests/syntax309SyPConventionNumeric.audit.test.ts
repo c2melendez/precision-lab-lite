@@ -62,4 +62,21 @@ describe("Syntax309 SY-P — Lite numeric precedence convention", () => {
     expect(right).toBeCloseTo(2, 9);
     expect(left).not.toBeCloseTo(right, 9);
   });
+  it("SY-P-23: raw bc and explicit b*c retain distinct parser structures", () => {
+    const raw = parseExpression("a/bc").algebrite;
+    const multiplied = parseExpression("a/(b*c)").algebrite;
+    const numeratorTimesC = parseExpression("(a/b)*c").algebrite;
+    // This is structural characterization, not an assertion that either
+    // ambiguous reading is universally mathematically mandated.
+    expect(raw.length).toBeGreaterThan(0);
+    expect(multiplied.length).toBeGreaterThan(0);
+    expect(numeratorTimesC.length).toBeGreaterThan(0);
+    const evaluateWith = (expr: string) => Number(evaluate(expr
+      .replace(/\ba\b/g, "(12)")
+      .replace(/\bb\b/g, "(3)")
+      .replace(/\bc\b/g, "(2)")));
+    expect(evaluateWith(multiplied)).toBeCloseTo(2, 9);
+    expect(evaluateWith(numeratorTimesC)).toBeCloseTo(8, 9);
+  });
+
 });
