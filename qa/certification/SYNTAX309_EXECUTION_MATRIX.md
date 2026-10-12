@@ -44,3 +44,16 @@ IN625 H2/SG28 permanece OPEN por DIST-01..08 BLOCKED en topología multinodo aut
 
 ## Próximo paso ejecutable
 Materializar el JSONL original completo y publicar su hash/conteo; construir gate de integridad y lote SY-P sobre los 33 casos originales en ambos repositorios; ejecutar CI y registrar por ID y SHA. Si no está disponible el JSONL, extraer fielmente de la matriz Markdown sin completar expectativas con suposiciones.
+
+
+## SY-P-23 — Decisión de convención propuesta para revisión bilateral (2026-10-12)
+
+**Fuente canónica:** fixture `syntax309_sy_p_cases.jsonl`, entrada `a/bc`, clase `convencion`; contempla `ac/b` o `a/(bc)` y exige declarar la interpretación. Esta entrada NO autoriza inferir una multiplicación implícita única sin un contrato visible.
+
+**Comportamiento comprobado en Plus (no confundir con convenio bilateral aprobado):**
+- Si `bc` está declarado como identificador compuesto, `a/bc` significa `a/(bc)`; las sustituciones `b` y `c` no cambian el valor de `bc`.
+- `(a/b)*c` y `a/(b*c)` son expresiones explícitas, semánticamente distinguibles, incluso dentro de expresiones compuestas.
+- La UI de Plus advierte sobre `a/bc` y bloquea el POST si `bc` no está declarada; Lite presenta una advertencia informativa. La divergencia NO constituye paridad de evaluación.
+- La alternativa `(a/b)*c` sin `bc` definida conserva su XFAIL estricto en `backend/tests/test_syntax309_syp_interpretation.py`: no convertirlo en PASS por el éxito de la lectura de identificador nombrado.
+
+**Regla de cierre pendiente:** documentar una convención general y visible para identificadores concatenados y división en línea, decidir expresamente si se admite la lectura `ac/b` y armonizar advertencia/bloqueo entre los canales autorizados de Lite y Plus. Exigir pruebas de canal UI/API, símbolos declarados/no declarados, lectura agrupada y oráculo numérico. No cambiar silenciosamente el parser ni borrar XFAIL. Estado: **OPEN — decisión de contrato bilateral pendiente**, no certificación integral.
