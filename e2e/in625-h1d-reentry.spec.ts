@@ -459,3 +459,19 @@ test("SY-P-23 Lite: tras bloquear ambigüedad se recupera evaluación explícita
     expect(canonical(result.value), expression).toMatch(new RegExp("^" + expected + "(?:\\.0+)?$"));
   }
 });
+
+// SY-P-24/25: these original fixture inputs are products, not SY-P-23 division.
+// This UI check verifies guard scope and MathLive preservation, not numeric parser semantics.
+test("SY-P-24/25: xy y xyz no activan bloqueo de división", async ({ page }) => {
+  await page.goto("./");
+  const warning = page.getByRole("status", { name: "Convención de división ambigua" });
+  const field = page.locator('math-field[aria-label="Entrada matemática"]').first();
+  for (const expression of ["xy", "xyz"]) {
+    await setInput(page, expression);
+    await expect(warning, expression).toHaveCount(0);
+    const stored = await field.evaluate(el => (el as HTMLElement & { value?: string }).value ?? "");
+    expect(stored, expression + " must retain original MathLive text").toBe(expression);
+  }
+  await setInput(page, "a/bc");
+  await expect(warning).toBeVisible();
+});
