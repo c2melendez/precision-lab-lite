@@ -2698,3 +2698,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Commit Plus f3f97d896fabd2edaac04ba616de1ace25c11735 validado con H1d 38237911465 y cumulative 38237911588 SUCCESS: se puede recuperar y evaluar `(12/3)*2` tras bloqueo `a/bc`.
 - Ampliación funcional Plus `frontend/src/components/BasicMode.tsx` commit 0322fff7980321860f96b9680b6270142452addd: también exige desambiguación para `(a/bc)` si `bc` no tiene sustitución; no reescribe parser ni altera casos agrupados. Cobertura E2E nueva `frontend/e2e/in625-h1d-reentry.spec.ts` commit 03408a40fdd7c2c00645f7831b39ec3f9e88227a verifica que no se envía POST `/evaluate` para `(a/bc)` sin `bc`.
 - Nuevos runs automáticos Plus del SHA 03408a40: H1d 38238269445 y cumulative 38238269495 inicialmente QUEUED; revisar resultado antes de certificar. Alcance detector todavía acotado a formas específicas, no dar por completo SY-P-23. SG28 multihost sigue BLOCKED.
+
+
+## 2026-10-12 — SY-P-23: bc definida y paréntesis exteriores en Plus
+- Commit Plus 03408a40fdd7c2c00645f7831b39ec3f9e88227a: H1d 38238269445 y cumulative 38238269495 SUCCESS, confirmado el bloqueo de `(a/bc)` cuando bc no está definida.
+- Nueva regresión de UI Plus `frontend/e2e/in625-h1d-reentry.spec.ts` commit 0131472e7b3a89ac8a741640ee8371ec23cff2a7: `(a/bc)` con sustituciones a=12, bc=6, b=3, c=2 debe devolver 2, demostrando que bc compuesta se mantiene aun con paréntesis externos. No cambia motor ni relaja XFAIL.
+- Nuevos gates Plus H1d 38239078917 y cumulative 38239078947 IN_PROGRESS al consultar; resultados pendientes, no declarar PASS todavía. El objetivo siguiente es verificar logs, diagnosticar si el canal MathLive introduce separación de identificadores, corregir en capa pertinente. SY-P-23 OPEN y SG28 multihost BLOCKED.
