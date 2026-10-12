@@ -2752,3 +2752,7 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - La corrida Plus aportada [38247671320](https://github.com/c2melendez/precision-lab-plus/actions/runs/38247671320) fue SUCCESS en H1d, **no equivale a un gate acumulativo del HEAD Plus**.
 - SY-P-23 continúa **OPEN**: decisión contractual bilateral de identificadores concatenados/división, posible lectura ac/b, paridad de identificadores definidos/no definidos y XFAIL estricto Plus sin levantar. SG28 multihost permanece **BLOCKED**.
 - **Siguiente paso exacto:** revisar `qa/certification/SYNTAX309_EXECUTION_MATRIX.md`, fixture `syntax309_sy_p_cases.jsonl`, `backend/tests/test_syntax309_syp_interpretation.py` y pruebas E2E de ambas UIs; establecer política general de nombres concatenados y lectura ac/b frente a a/(bc), con evidencia de oráculo y canal por separado. No reinterpretar el XFAIL ni activar aislamiento SG28 en producción.
+
+## 2026-10-12 — SY-P: contrato de identificadores publicado
+- La matriz bilateral fue actualizada en Lite (a82d8fa25d1be7c4759e6a2624011193f9250275) y Plus (ded6d83b71a0c6e2c155ecbca4b37da2f6fdea98). Conserva los casos SY-P-24 xy=x*y, SY-P-25 xyz=x*y*z y la ambigüedad SY-P-23 sin reinterpretar el XFAIL.
+- SY-P-23 OPEN y SG28 multihost BLOCKED. Siguiente objetivo: añadir evidencia por canal para SY-P-23/24/25, comprobar gates H1d y acumulativo por SHA técnico.
