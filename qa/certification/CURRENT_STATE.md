@@ -2499,3 +2499,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite: agrupaciones decimales redundantes E2E aprobadas en SHA 0690d47592b063e0542a38b2f80d2ce6b1de0cdc, H1d 38207655199, cumulative 38207655164 y build 38207655170.
 - Plus: agrupaciones decimales redundantes E2E aprobadas en SHA 19daac09e6f98d4429ceeca904bcfdd5b7efd46b, H1d 38207857573 y cumulative 38207857516.
 - Criterio de aviso y pruebas discriminantes de interpretaciones explícitas tienen evidencia favorable; pendiente definir formalmente semántica universal de entrada ambigua y gestión de identificador compuesto bc frente a b*c sin sustituciones. El XFAIL estricto de lectura alternativa Plus permanece y no se convierte en PASS. No cerrar SY-P-23 ni SG28 multihost.
+
+
+## 2026-10-11 — SY-P-23: bloqueo de ambigüedad no resuelta en UI Plus
+- Implementación Plus: `frontend/src/components/BasicMode.tsx` SHA 941ae5a62011b0467f157d270f0bd61c5e3fa539. Si se introduce exactamente `a/bc` o `\\frac{a}{bc}` SIN sustitución no vacía `bc`, la UI exige definir bc o agrupar `(a/b)*c` / `a/(b*c)` antes de enviar al endpoint. Con bc definida, conserva el flujo existente de variable compuesta. No cambia backend, ni corrige XFAIL de variables separadas.
+- Nueva prueba UI E2E Plus `frontend/e2e/in625-h1d-reentry.spec.ts` SHA 121914ba4320fa7bf4924f576e392fb4a10ddd9d comprueba ambas formas ambiguas, error accesible y que no salga solicitud POST `/evaluate`. Pendiente CI de los últimos cambios, NO PASS todavía.
+- Alcance acotado: bloqueo solo para entrada completa exacta; no declarar un detector general de ambigüedad en toda expresión. Lite conserva advertencia y su convención parser; no imponer identificadores compuestos en Lite. SY-P-23 OPEN hasta validación CI + aceptación de la convención y extensión general; SG28 multihost BLOCKED.
