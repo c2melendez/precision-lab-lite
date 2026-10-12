@@ -2851,3 +2851,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Se corrigieron cuatro valores de entrada LaTeX en Plus frontend/e2e/in625-h1d-reentry.spec.ts, commit 018c1489b5e27050e274ef530a7bf5bb6b440dfd. Oráculo numérico sigue exigiendo 3, 8, 5, 9; no se tocó motor ni parser.
 - CI nueva Plus para SHA 018c1489: H1d 38290844352 y cumulative 38290844430 en progreso en primera consulta. No declarar PASS sin evidencia final.
 - SY-P-23 OPEN; SG28 multihost BLOCKED. Próximo objetivo: inspeccionar resultados y logs de ambos gates en este SHA antes de ampliar la matriz.
+
+## 2026-10-12 — SY-P-23: estabilidad de evaluación repetida
+- Plus SHA 018c1489b5e27050e274ef530a7bf5bb6b440dfd: H1d 38290844352 SUCCESS; cumulative 38290844430 SUCCESS (backend/frontend). Se confirmó corrección del escape LaTeX en CI.
+- Nuevo test Playwright Plus: repetir dos veces la evaluación del mismo LaTeX numérico explícito y comparar resultados, sin advertencia falsa; commit técnico 4d58281e462d92dcfa33f5abe84b13a9091d6452 en frontend/e2e/in625-h1d-reentry.spec.ts. No se cambian parser ni motores.
+- Nuevos CI Plus SHA 4d58281e: H1d 38291245207 y cumulative 38291245267, QUEUED en consulta. Falta verificar conclusión y logs.
+- SY-P-23 continúa OPEN por convención entre identificadores y XFAIL estricto; SG28 multihost BLOCKED. Siguiente paso concreto: verificar ambas corridas del SHA 4d58281e, diagnosticar regresiones y abordar XFAIL de contrato con evidencia independiente.
