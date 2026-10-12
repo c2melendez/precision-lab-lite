@@ -2919,3 +2919,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Auditoría del nuevo oráculo E2E detectó una debilidad: esperaba request-id no vacío, pero podía aceptar un request-id antiguo. Commit Lite 52a25c9be8f627dcf90dab28391f40783614648a exige request-id distinto al previo para el cálculo posterior al error, manteniendo verificación matemática 8/2.
 - Gates nuevos Lite SHA 52a25c9: H1d 38299092558, cumulative 38299092743, build 38299092512, inicialmente QUEUED. Verificar que pasan sin retries.
 - SY-P-23 OPEN y SG28 multihost BLOCKED. No atribuir estabilidad permanente a una sola corrida.
+
+## 2026-10-12 — SY-P-23: corregir timeout en la prueba de request-id posterior a error
+- Lite SHA 52a25c9be8f627dcf90dab28391f40783614648a: H1d 38299092558 FAILURE (18 passed, 1 failed, también falló retry), cumulative 38299092743 SUCCESS, build 38299092512 SUCCESS. El log H1d job 114977326569 muestra timeout 30 s previo a click, provocado por getAttribute en locator inexistente tras error bloqueado.
+- Corrección de prueba Lite commit 190ed5ac528d939fc1d2e8c14bfafbc77b86f971: usar locator.count() antes de consultar ID anterior; null cuando no existe, y exigir ID no vacío nuevo tras evaluación. No se modificó producto ni oráculos (8 y 2).
+- CI SHA 190ed5ac: H1d 38299836244, cumulative 38299836203, build 38299836197 inicialmente QUEUED. Próximo objetivo: validar que H1d pasa sin retry y que resultado nuevo es realmente diferente del anterior.
+- SY-P-23 OPEN y SG28 multihost BLOCKED.
