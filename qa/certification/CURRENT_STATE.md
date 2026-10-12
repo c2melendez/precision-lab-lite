@@ -2540,3 +2540,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - CI técnico Plus para 7fe8b75: H1d `38244778067` (IN_PROGRESS), cumulative `38244778168` (QUEUED) al consultar. SG28 UI `38244599369` corresponde al SHA anterior `7935bda`, no al test-only posterior.
 - Las corridas anteriores H1d `38244599384` y cumulative `38244599396` del SHA `7935bda` seguían IN_PROGRESS al consultar. No se declara PASS nuevo sin conclusión.
 - Próxima acción: verificar jobs y logs H1d/cumulative de 7fe8b75 y SG28 UI 7935bda; ante fallo corregir origen demostrado. SY-P-23 OPEN; SG28 multihost BLOCKED. No se alteró Lite funcionalmente.
+
+
+## 2026-10-12 — SY-P-23: paréntesis redundantes balanceados
+- Evidencia previa Plus: SHA 7fe8b75, H1d 38244778067 SUCCESS y cumulative 38244778168 SUCCESS; SG28 UI en SHA 7935bda run 38244599369 SUCCESS. Estos runs no cierran SG28 multihost.
+- Corrección Plus `frontend/src/components/BasicMode.tsx` commit 88ddbfca83e09c3120a6333ac241a58d6beb4b02: desempaqueta únicamente paréntesis balanceados que envuelven toda la expresión; reconoce a/bc con bc definida o exige desambiguación cuando no está definida. No modifica el parser backend ni interpretaciones explícitas.
+- Regresiones Plus `frontend/e2e/in625-h1d-reentry.spec.ts` commit 6657316709bbca2a5ef0f397ecc10b1f5b72d955: entradas ((a/bc)) y (((a/bc))) deben bloquear POST cuando bc no existe; con bc=6 y a=12, b=3, c=2 deben mandar expression a/bc y dar resultado 2.
+- GitHub Actions nuevos SHA 665731670: H1d 38245250585 y cumulative 38245250562 inicialmente QUEUED. SHA intermedio 88ddbfca: H1d 38245192109, cumulative 38245192123, SG28 UI 38245192246 inicialmente IN_PROGRESS. No confundir SHAs ni contar PASS sin resultado final.
+- Siguiente paso: verificar H1d y cumulative del SHA 665731670 y SG28 UI del SHA 88ddbfca, analizar fallos de MathLive o harness y corregir según evidencia. SY-P-23 OPEN; SG28 multihost BLOCKED. Lite no requiere cambio funcional para esta excepción particular de identificador compuesto Plus.
