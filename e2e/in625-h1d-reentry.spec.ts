@@ -316,3 +316,21 @@ test("SY-P-23 canal UI a resultado: agrupaciones numéricas explícitas", async 
     expect(canonical(actual.value), expression + " => " + actual.value).toContain(expected);
   }
 });
+
+test("SY-P-23 UI: agrupaciones decimales explícitas conservan valor", async ({ page }) => {
+  await page.goto("./");
+  const warning = page.getByRole("status", { name: "Convención de división ambigua" });
+  for (const [expression, decimal, exact] of [
+    ["(9/3)*2.5", "7.5", String.raw`\frac{15}{2}`],
+    ["9/(3*2.5)", "1.2", String.raw`\frac{6}{5}`],
+  ] as const) {
+    await setInput(page, expression);
+    await expect(warning).toHaveCount(0);
+    const outcome = await submit(page);
+    expect(outcome.kind, expression).toBe("result");
+    const value = canonical(outcome.value);
+    const decimalPattern = new RegExp("^" + decimal.replace(".", "\\.") + "(?:\\.0+)?$");
+    expect(decimalPattern.test(value) || value === exact,
+      expression + " => " + outcome.value + " must equal " + decimal).toBe(true);
+  }
+});
