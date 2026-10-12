@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import source from "../qa/certification/syntax309_sy_p_cases.jsonl?raw";
 import { parseExpression } from "../src/engine/parsing";
 import { evaluate } from "../src/engine/algebriteClient";
+import { tokenize } from "../src/engine/parsing/tokenize";
 
 type Case = { id: string; entrada: string; operacion: string };
 const byId = Object.fromEntries(source.trim().split("\n").map(line => {
@@ -77,6 +78,17 @@ describe("Syntax309 SY-P — Lite numeric precedence convention", () => {
       .replace(/\bc\b/g, "(2)")));
     expect(evaluateWith(multiplied)).toBeCloseTo(2, 9);
     expect(evaluateWith(numeratorTimesC)).toBeCloseTo(8, 9);
+  });
+
+  
+  it("SY-P-23: Lite separa bc desconocido en dos identificadores de una letra", () => {
+    const tokens = tokenize("a/bc").map(token => [token.type, token.value]);
+    expect(tokens).toEqual([
+      ["identifier", "a"], ["operator", "/"],
+      ["identifier", "b"], ["identifier", "c"],
+    ]);
+    expect(parseExpression("a/bc").algebrite).toBe(parseExpression("a/b*c").algebrite);
+    expect(parseExpression("a/(b*c)").algebrite).not.toBe(parseExpression("a/bc").algebrite);
   });
 
 });
