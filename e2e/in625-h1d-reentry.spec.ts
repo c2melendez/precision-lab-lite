@@ -443,11 +443,14 @@ test("SY-P-23 Lite: tras bloquear ambigüedad se recupera evaluación explícita
     // A stale alert from the preceding blocked request must not be mistaken
     // for the response to this new valid calculation.
     await page.evaluate(() => window.mathVirtualKeyboard?.hide());
-    await page.getByRole("region", { name: "Entrada" }).getByRole("button", { name: "Calcular", exact: true }).click();
     const region = page.locator('section[aria-label="Resultado"]').first();
+    const priorRequestId = await region.locator('[role="status"][data-result-request-id]').first()
+      .getAttribute("data-result-request-id").catch(() => null);
+    await page.getByRole("region", { name: "Entrada" }).getByRole("button", { name: "Calcular", exact: true }).click();
     await expect.poll(async () => {
       const status = region.locator('[role="status"][data-result-request-id]').first();
-      return (await status.count()) > 0 && Boolean((await status.getAttribute("data-result-request-id"))?.trim());
+      const newId = await status.getAttribute("data-result-request-id").catch(() => null);
+      return Boolean(newId?.trim()) && newId !== priorRequestId;
     }, { timeout: 15000, message: expression + " must produce a fresh result after SY-P-23 rejection" }).toBe(true);
     const result = await readOutcome(page);
     expect(result.kind, expression + " => " + result.value).toBe("result");
