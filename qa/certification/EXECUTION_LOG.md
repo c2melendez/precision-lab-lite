@@ -2946,3 +2946,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - CI automática detectada para SHA Plus 449baeb3c: H1d 38302175916 IN_PROGRESS y acumulativo 38302175917 QUEUED; Lite SHA fc8d1a5ae: H1d 38302181089, build 38302181140, acumulativo 38302181314 IN_PROGRESS al consultar.
 - No declarar PASS sin revisar los jobs finales. Próximo objetivo: verificar conclusión y logs de estos cinco gates; corregir regresiones, y ampliar test de xy/xyz a semántica numérica por canal según contrato original.
 - SY-P-23 OPEN; SG28 multihost BLOCKED.
+
+## 2026-10-12 — SY-P-24/25: CI anterior verificada y procedencia del fixture
+- Para SHA Plus 449baeb3: H1d 38302175916 SUCCESS (37 passed; test SY-P-24/25 individual PASS) y acumulativo 38302175917 SUCCESS, backend 871 passed, 1 xfailed. Para SHA Lite fc8d1a5a: H1d 38302181089 SUCCESS (20 passed; test SY-P-24/25 individual PASS), acumulativo 38302181314 SUCCESS y build 38302181140 SUCCESS.
+- Se publicaron pruebas de procedencia que comparan entradas, IDs, operación y LaTeX esperado de SY-P-24/25 con el JSONL original: Plus commit 1f078c608c7ee42208436f022f90e727127861ba (frontend/e2e/in625-h1d-reentry.spec.ts); Lite commit 7c5249c4082293dafc32d86184a06bf5746b1b90 (e2e/in625-h1d-reentry.spec.ts). Las versiones definitivas corrigen escape de regex y LaTeX antes de certificación.
+- Gates nuevos Plus H1d 38302648984, cumulative 38302648982; Lite H1d 38302654642, cumulative 38302654495, build 38302654462: en progreso en consulta; no declarar PASS sin evidencia final.
+- Esto verifica procedencia y alcance UI, NO demuestra aún sustitución matemática xy/xyz en Lite. Plus ya conserva pruebas HTTP con sustituciones 2,3 y 2,3,5. SY-P-23 OPEN; SG28 multihost BLOCKED.
+- Siguiente paso: verificar los cinco gates del SHA final, corregir cualquier error de test/fixture, después acreditar aritmética Lite mediante un canal válido, sin inventar soporte de sustituciones inexistente.
