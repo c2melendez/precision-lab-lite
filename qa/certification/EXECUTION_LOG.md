@@ -2665,3 +2665,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Lite SHA 3d1560551da68ab5e4de3adf9ce7fab232f82ba2: H1d 38205933326, cumulative 38205933348, build 38205933343 completed/SUCCESS. Quedó aprobada prueba UI de agrupación decimal explícita sin aviso falso.
 - Publicado nuevo E2E Lite commit 0690d47592b063e0542a38b2f80d2ce6b1de0cdc en `e2e/in625-h1d-reentry.spec.ts`: comprueba `((9)/(3*2.5))` = 1.2 y `(((9)/(3)))*2.5` = 7.5 mediante UI; acepta fracciones exactas correspondientes y exige ausencia de aviso ambiguo. No cambia el motor.
 - Siguiente paso exacto: comprobar gates automáticos cumulative/H1d/build del SHA 0690d475 y analizar cualquier fallo; continuar reconciliación SY-P-23 con Plus. SY-P-23 OPEN; SG28 multihost BLOCKED.
+
+
+## 2026-10-11 — SY-P-23 paridad E2E con agrupaciones redundantes
+- Lite SHA 0690d47592b063e0542a38b2f80d2ce6b1de0cdc: H1d 38207655199, cumulative 38207655164 y build 38207655170 completados SUCCESS; se aprueba E2E para `((9)/(3*2.5))`=1.2 y `(((9)/(3)))*2.5`=7.5 en UI Lite.
+- Nueva regresión Plus en `frontend/e2e/in625-h1d-reentry.spec.ts` commit 19daac09e6f98d4429ceeca904bcfdd5b7efd46b: mismos casos desde MathLive, respuesta exacta o decimal, sin advertencia falsa de `a/bc`. No modifica motor.
+- CI Plus para SHA 19daac09: H1d 38207857573 y cumulative 38207857516 inicialmente QUEUED. No contabilizar como PASS sin evidencia de conclusión.
+- Siguiente paso exacto: revisar ambos runs de Plus sobre 19daac09, solucionar si hay FAIL de harness/UI/oráculo, y avanzar criterios pendientes de SY-P-23. SG28 multihost BLOCKED, SY-P-23 global OPEN.
