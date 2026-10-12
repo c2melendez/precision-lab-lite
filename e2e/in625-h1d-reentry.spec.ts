@@ -482,10 +482,10 @@ test("SY-P-24/25: los casos originales exigen productos de variables", async () 
   const fs = await import("node:fs/promises");
   const path = await import("node:path");
   const source = await fs.readFile(path.resolve(process.cwd(), "qa/certification/syntax309_sy_p_cases.jsonl"), "utf8");
-  const rows = source.trim().split(/\\r?\\n/).map(line => JSON.parse(line) as {id:string; entrada:string; operacion:string; esperado:string});
+  const rows = source.trim().split(/\r?\n/).map(line => JSON.parse(line) as {id:string; entrada:string; operacion:string; esperado:string});
   for (const [id, input, expected] of [
-    ["SY-P-24", "xy", String.raw`x\\cdot y`],
-    ["SY-P-25", "xyz", String.raw`x\\cdot y\\cdot z`],
+    ["SY-P-24", "xy", String.raw`x\cdot y`],
+    ["SY-P-25", "xyz", String.raw`x\cdot y\cdot z`],
   ]) {
     const matches = rows.filter(row => row.id === id);
     expect(matches, id + " must have exactly one original fixture row").toHaveLength(1);
