@@ -367,3 +367,21 @@ test("SY-P-23 Lite: fracciones numéricas LaTeX parentetizadas mantienen agrupac
     expect(canonical(outcome.value), expression).toMatch(new RegExp("^" + expected + "(?:\\.0+)?$"));
   }
 });
+
+
+test("SY-P-23 Lite: aviso en entradas ambiguas parentetizadas sin alterar MathLive", async ({ page }) => {
+  await page.goto("./");
+  const warning = page.getByRole("status", { name: "Convención de división ambigua" });
+  const field = page.locator('math-field[aria-label="Entrada matemática"]').first();
+  for (const expression of ["(a/bc)", "((a/bc))", String.raw`(\frac{a}{bc})`]) {
+    await setInput(page, expression);
+    await expect(warning, expression).toBeVisible();
+    await expect(warning).toContainText("(a/b)*c");
+    await expect(warning).toContainText("a/(b*c)");
+    expect(await field.evaluate(el => (el as HTMLElement & { value?: string }).value), expression).toBe(expression);
+  }
+  for (const expression of ["(a/b)*c", "a/(b*c)", "((a/(b*c)))"]) {
+    await setInput(page, expression);
+    await expect(warning, expression).toHaveCount(0);
+  }
+});
