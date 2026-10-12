@@ -2499,3 +2499,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Nueva regresión estructural/numérica Lite publicada en SHA 2e8d04707f690e9818618ef4678237de2e059c8d: tests/syntax309SyPConventionNumeric.audit.test.ts compara entrada cruda a/bc frente a alternativas explícitas y conserva los oráculos numéricos 8 y 2 de agrupaciones. Es prueba complementaria; no certifica la interpretación cruda ni semántica de variable bc en Plus.
 - Lite CI automático cumulative 38190157103, H1d 38190157064 y build 38190157070 en ejecución en observación; no contabilizarlos PASS todavía.
 - Próximo paso exacto: verificar Lite SHA 2e8d04707f y sus logs; localizar harness Plus de convención para probar a=12,bc=6 sin confundirlo con a=12,b=3,c=2; exigir evidencia de endpoint más pantalla y mantener strict XFAIL de lectura divergente. Mantener SG28 multi-host BLOCKED.
+
+
+## 2026-10-11 — SY-P-23 semántica de identificador compuesto y producto explícito
+- Lite test SHA `2e8d04707f690e9818618ef4678237de2e059c8d`: acumulativo 38190157103, H1d 38190157064 y build 38190157070 SUCCESS verificados.
+- Plus test SHA `f7760aef398163bd44daba110fa465ba7db48ce4`: nuevas pruebas endpoint contrastan `a/bc` con `a=12,bc=6,b=3,c=2` (esperado 2), `a/(b*c)` con `bc=99` (2), y `(a/b)*c` con `bc=99` (8). La variable nombrada `bc` no debe reescribirse automáticamente a `b*c` ni viceversa. Solo regresión de backend, no comprobación UI+endpoint completa.
+- Plus cumulative 38190455944 y H1d 38190455935 iniciados; en progreso al observar. **No declarar PASS antes del resultado**. La interpretación alternativa `a/bc` con b,c independientes sigue XFAIL estricto y SY-P-23 OPEN. SG28 multi-host sigue BLOCKED.
+- Siguiente paso exacto: verificar cumulative 38190455944 y H1d 38190455935 sobre SHA f7760aef; si hay fallo corregir el contrato/harness según evidencia. Completar prueba de canal UI→MathLive→backend con identificador `bc`, y reconciliar SY-P-23 en ambos motores antes de cerrar.
