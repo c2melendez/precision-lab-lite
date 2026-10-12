@@ -2612,3 +2612,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Inspección Plus `backend/tests/test_syntax309_syp_interpretation.py`: ya existen pruebas de `(a/b)*c` y `a/(b*c)` y protección contra variable `bc` que opaque producto `b*c`; no duplicar indiscriminadamente oráculos existentes.
 - Nueva regresión Plus SHA d8487f1ab8f09b885e337fdb32dadc318d1b16a5: misma semántica numérica para `a/(b*c)` y `((a)/(b*c))` aun con una variable compuesta `bc=99` coexistiendo con b=3,c=2; espera 2 en ambos. Cubre redundancia de paréntesis y sombra de variable compuesta mediante endpoint real. CI de este SHA pendiente de localizar y verificar: NO PASS todavía.
 - Siguiente paso exacto: encontrar el gate acumulativo Plus del SHA d8487f1, comprobar resultados y corregir solo la capa demostrada; continuar cobertura SY-P-23 y documentar diferencias intencionales Lite/Plus. SY-P-23 OPEN; SG28 multihost BLOCKED.
+
+
+## 2026-10-11 — SY-P-23 Plus: agrupación adicional de numerador y protección de bc
+- Plus SHA d8487f1ab8f09b885e337fdb32dadc318d1b16a5: cumulative 38201537383 y H1d 38201537376 completed/SUCCESS. Se certifica acotadamente agrupación redundante de denominador `a/(b*c)` y `((a)/(b*c))` con bc nombrada sin afectar producto explícito.
+- Nueva regresión Plus `backend/tests/test_syntax309_syp_interpretation.py` commit 9497663f533ca95aee52b16db6695ef83901f233: `(a/b)*c` y `(((a)/(b)))*c` deben producir 8 con sustituciones a=12, b=3, c=2 y bc=99; nunca absorber c en denominador ni sustituir `b*c` por bc. No altera motor ni cambia el XFAIL estricto del caso ambiguo.
+- CI automática Plus de SHA 9497663: H1d 38202166537 y acumulativo 38202166540 inicialmente QUEUED. No registrar PASS hasta revisar logs y resultados.
+- Siguiente paso exacto: verificar ambos workflows del SHA 9497663, clasificar cualquier fallo por capa, corregir y reejecutar; luego avanzar cobertura canal UI y reconciliación SY-P-23 con Lite. SY-P-23 global OPEN; SG28 multihost BLOCKED.
