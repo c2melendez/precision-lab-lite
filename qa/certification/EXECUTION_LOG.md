@@ -2625,3 +2625,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus SHA 9497663f533ca95aee52b16db6695ef83901f233: cumulative 38202166540 y H1d 38202166537 SUCCESS. La prueba protege (a/b)*c frente a paréntesis redundantes y variable bc explícita.
 - Nuevo test de Lite `tests/syntax309SyPConventionNumeric.audit.test.ts` commit c73e61a81308d2bd536efd9b4a79edf1998cd337 verifica sobre el parser/evaluador real que `((a)/(b*c))`=2 y `(((a)/(b)))*c`=8, al sustituir a=12,b=3,c=2. Paridad matemática de agrupación explícita sin inventar bc como variable nombrada en Lite.
 - Siguiente paso exacto: localizar corridas CI de Lite del SHA c73e61a, comprobar cumulative, H1d y build, corregir fallos y continuar pruebas UI canal MathLive si proceden. SY-P-23 OPEN; SG28 multihost BLOCKED.
+
+
+## 2026-10-11 — SY-P-23 valores decimales y agrupación explícita
+- Lite commit c73e61a81308d2bd536efd9b4a79edf1998cd337 verificado: cumulative 38202494901, H1d 38202494921 y build 38202494902, todos SUCCESS.
+- Nueva prueba en Lite `tests/syntax309SyPConventionNumeric.audit.test.ts` commit 0b2505a205b816c57167c0d1f59f7d4047ddb8cd: a=9, b=3, c=2.5; `(a/b)*c`=7.5 y `a/(b*c)` / fracción LaTeX explícita =1.2. Evita depender solo de valores enteros; no declara semántica universal de `a/bc`.
+- CI del SHA 0b2505 pendiente de comprobar (commit publicado). Próximo paso exacto: localizar cumulative/H1d/build de Lite para SHA 0b2505, revisar resultados y corregir test/parser según evidencia; luego añadir caso comparable de factor decimal en Plus. SY-P-23 OPEN; SG28 multihost BLOCKED.
