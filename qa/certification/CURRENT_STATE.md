@@ -2606,3 +2606,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - CI automática Lite en SHA faf7bf1f: H1d `38271843361`, cumulative `38271843321`, build `38271843282`, inicialmente IN_PROGRESS; resultados pendientes, NO PASS aún.
 - SY-P-23 OPEN: no se ha certificado aún la convención general compartida para letras contiguas ni resuelto el XFAIL estricto de Plus. SG28 multihost BLOCKED.
 - Siguiente paso exacto: revisar conclusiones y logs de las tres corridas Lite SHA faf7bf1f; corregir fallo de oráculo/harness/producto demostrado y registrar resultado. Después avanzar casos discriminantes de mensajes y salida para entradas ambiguas de ambos motores.
+
+
+## 2026-10-12 — SY-P-23 Lite: aviso MathLive parentetizado y agrupaciones explícitas
+- Lite SHA técnico faf7bf1f30a8c2d05ef38a955db9f5fe751a694d: H1d 38271843361, cumulative 38271843321 y build 38271843282 completados SUCCESS.
+- Nuevo cambio técnico Lite e2e/in625-h1d-reentry.spec.ts commit 79a1bf93cd6ec8253d8e57c1e48592d6f886005e: prueba aviso accesible ante `(a/bc)`, `((a/bc))`, `(\\frac{a}{bc})`, conservación exacta del valor MathLive y ausencia de aviso para `(a/b)*c`, `a/(b*c)` y `((a/(b*c)))`. Protege la política informativa existente de Lite; no transforma la expresión ni modifica parser.
+- GitHub Actions SHA 79a1bf93: H1d 38274443504, acumulativo 38274443523, build 38274443477, todos IN_PROGRESS en última consulta. No declarar PASS hasta conclusión y logs verificados.
+- Próximo paso: verificar esas tres corridas y corregir cualquier fallo demostrado. Después comparar el aviso entre Lite y Plus y decidir brecha contractual, sin debilitar el XFAIL de Plus. SY-P-23 OPEN; SG28 multihost BLOCKED.
