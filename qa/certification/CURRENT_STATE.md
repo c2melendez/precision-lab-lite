@@ -2733,3 +2733,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Se identificó riesgo de que el helper submit() interprete un alert anterior como respuesta a la petición nueva; el log no prueba por sí solo un fallo del motor. Se cambió solo la prueba de recuperación para esperar un status con request-id tras hacer click, antes de leer el resultado; commit Lite 802879171d8ba1596c31f28d4fb7fc0b7467da17. Sigue exigiendo 8 y 2, sin relajar el oráculo.
 - CI Lite SHA 80287917: H1d 38298622842, cumulative 38298622859, build 38298622743 inicialmente QUEUED. Pendiente comprobar los resultados y el log H1d para verificar ausencia de flaky.
 - SY-P-23 OPEN por contrato general y XFAIL Plus, SG28 multihost BLOCKED. Siguiente objetivo: diagnosticar y corregir si el nuevo gate aún reproduce race/error real.
+
+## 2026-10-12 — SY-P-23: estabilidad H1d y requisito de request-id nuevo
+- Lite SHA 802879171d8ba1596c31f28d4fb7fc0b7467da17: H1d 38298622842 SUCCESS (19 passed, sin retries), acumulativo 38298622859 SUCCESS y build 38298622743 SUCCESS. Recuperación tras bloqueo SY-P-23 confirmó PASS individual.
+- Auditoría del nuevo oráculo E2E detectó una debilidad: esperaba request-id no vacío, pero podía aceptar un request-id antiguo. Commit Lite 52a25c9be8f627dcf90dab28391f40783614648a exige request-id distinto al previo para el cálculo posterior al error, manteniendo verificación matemática 8/2.
+- Gates nuevos Lite SHA 52a25c9: H1d 38299092558, cumulative 38299092743, build 38299092512, inicialmente QUEUED. Verificar que pasan sin retries.
+- SY-P-23 OPEN y SG28 multihost BLOCKED. No atribuir estabilidad permanente a una sola corrida.
