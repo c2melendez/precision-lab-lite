@@ -351,3 +351,19 @@ test("SY-P-23 UI: valores decimales con paréntesis redundantes", async ({ page 
     expect(pattern.test(value) || value === exact, expression + " => " + result.value).toBe(true);
   }
 });
+
+
+test("SY-P-23 Lite: fracciones numéricas LaTeX parentetizadas mantienen agrupación explícita", async ({ page }) => {
+  await page.goto("./");
+  const warning = page.getByRole("status", { name: "Convención de división ambigua" });
+  for (const [expression, expected] of [
+    [String.raw`(\frac{12}{3})*2`, "8"],
+    [String.raw`(\frac{12}{3*2})`, "2"],
+  ] as const) {
+    await setInput(page, expression);
+    await expect(warning, expression).toHaveCount(0);
+    const outcome = await submit(page);
+    expect(outcome.kind, expression).toBe("result");
+    expect(canonical(outcome.value), expression).toMatch(new RegExp("^" + expected + "(?:\\.0+)?$"));
+  }
+});
