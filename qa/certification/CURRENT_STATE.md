@@ -2396,3 +2396,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Nueva regresión Lite `tests/syntax309SyPConventionNumeric.audit.test.ts` commit `ee7f94e01c75e6c227132f11546add3d90f6b618`: `tokenize('a/bc')` debe generar a, /, b, c, y `parseExpression('a/bc')` coincide con `a/b*c` pero no con `a/(b*c)`. Esto caracteriza un contrato actual; no afirma que exista interpretación universal de texto ambiguo.
 - Lite workflows disparados: build 38196914401, H1d 38196914448, acumulativo 38196914403, inicialmente en cola; verificar resultados antes de declarar PASS.
 - Plus SHA 34734b232058b730be3c986c68773cea62755e6e tiene H1d 38195286920, cumulative 38195286916 y SG28 UI 38195286929 SUCCESS. La diferencia de semántica Lite/Plus es un pendiente de paridad/contrato, no un error matemático resuelto. SY-P-23 sigue OPEN y SG28 multi-host BLOCKED.
+
+
+## 2026-10-11 — SY-P-23 Lite: fracción LaTeX y agrupación de denominador
+- Lite commit ee7f94e01c75e6c227132f11546add3d90f6b618: cumulative 38196914403, H1d 38196914448, build 38196914401 completados SUCCESS; valida tokenización de a/bc en letras a, b, c separadas.
+- Nueva prueba Lite `tests/syntax309SyPConventionNumeric.audit.test.ts`, commit 8646b965b9193f1bf44a0545af906a376dc321fa: `parseExpression(String.raw\`\\frac{a}{bc}\`)` debe coincidir con `parseExpression('a/(b*c)')` y producir 2 al reemplazar a=12, b=3, c=2. Este es contrato específico de fracción con denominador agrupado, no interpretación universal de a/bc ni variable bc nombrada.
+- CI en curso sobre 8646b965: build 38197444104, cumulative 38197444071, H1d 38197444084. No contabilizar PASS de esta nueva prueba antes de verificación.
+- Plus conserva interpretación bc nombrada en entrada específica textual o fracción, aprobada CI anterior; diferencia Lite/Plus sigue documentada. SY-P-23 global OPEN; SG28 multihost BLOCKED.
+- Próximo paso: verificar logs del nuevo Lite cumulative; si falla, comparar normalización de fracción y ajustar oráculo según convención documentada, sin esconder discrepancia.
