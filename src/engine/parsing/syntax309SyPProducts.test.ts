@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+// The upstream algebrite package has no bundled TypeScript declarations.
+// @ts-expect-error TS7016: runtime import is covered by the numeric assertion below.
 import Algebrite from "algebrite";
 import { parseExpression } from "./index";
 import { tokenize } from "./tokenize";
