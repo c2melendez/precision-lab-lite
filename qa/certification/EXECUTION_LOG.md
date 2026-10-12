@@ -2584,3 +2584,11 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - CI en curso sobre 8646b965: build 38197444104, cumulative 38197444071, H1d 38197444084. No contabilizar PASS de esta nueva prueba antes de verificación.
 - Plus conserva interpretación bc nombrada en entrada específica textual o fracción, aprobada CI anterior; diferencia Lite/Plus sigue documentada. SY-P-23 global OPEN; SG28 multihost BLOCKED.
 - Próximo paso: verificar logs del nuevo Lite cumulative; si falla, comparar normalización de fracción y ajustar oráculo según convención documentada, sin esconder discrepancia.
+
+
+## 2026-10-11 — SY-P-23 Lite: corrección de oráculo LaTeX y recertificación
+- Lite SHA 8646b965: build 38197444104 SUCCESS y H1d 38197444084 SUCCESS; cumulative 38197444071 FAILURE (1090 PASS, 1 FAIL, 30 TODO). Falló aserción textual `((a)/(b*c))` vs `a/(b*c)` en `tests/syntax309SyPConventionNumeric.audit.test.ts:99`; se trata de agrupación redundante del parser, no evidencia de discrepancia matemática.
+- Publicado en Lite commit 9f2fc0d678f099fa9d0d95499f30d32cbeae54af: elimina igualdad textual frágil; verifica estructura b*c y equivalencia por evaluación numérica a 2 de fracción LaTeX y agrupación explícita. No altera el producto.
+- Auto CI de Lite mismo SHA: cumulative 38198136978, H1d 38198136883, build 38198136988, IN_PROGRESS al consultar. No marcar PASS hasta verificación de logs y conclusión.
+- Plus SHA 34734b232058b730be3c986c68773cea62755e6e: cumulative 38195286916, H1d 38195286920, SG28 UI 38195286929 SUCCESS.
+- Siguiente paso exacto: verificar tres runs Lite del SHA 9f2fc0d y sus logs; si cumulative pasa, ampliar SY-P-23 para otras representaciones agrupadas sin suponer semántica compartida de variables compuestas. SY-P-23 global OPEN, SG28 multi-host BLOCKED.
