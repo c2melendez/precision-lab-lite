@@ -228,6 +228,13 @@ export function BasicScientificMode() {
     handleCancelComputation();
     const currentLatex = mathField?.value ?? latex;
     console.info("IN625_H1D_CALCULATE_ENTRY", JSON.stringify({ currentLatex, reactLatex: latex, fieldLatex: mathField?.value ?? null }));
+    // SY-P-23: Lite cannot define a compound bc in this mode; do not silently
+    // choose either interpretation of a/bc. Require explicit grouping.
+    const unresolvedBc = /(?:^|[^a-zA-Z])a\s*\/\s*bc(?=$|[^a-zA-Z])|\\frac\s*\{a\}\s*\{bc\}/.test(currentLatex);
+    if (unresolvedBc) {
+      fail(ErrorCode.PARSE_ERROR, "SY-P-23: escribe (a/b)*c o a/(b*c) antes de calcular.", makeRequestId());
+      return;
+    }
     const intervalUnion = readRealIntervalUnion(currentLatex);
     if (intervalUnion) {
       const requestId = makeRequestId();
