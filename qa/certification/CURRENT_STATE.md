@@ -2721,3 +2721,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Nueva prueba E2E Lite sobre identificadores vecinos (aa/bc, a/bcd, xa/bc, a/bcx y extensiones) que exige ausencia de advertencia/bloqueo específico SY-P-23; commit b0c65a467452fe433515a5e0468019adf3985499, archivo e2e/in625-h1d-reentry.spec.ts. No se tocó motor/parser.
 - CI automática Lite SHA b0c65a: H1d 38297627578, cumulative 38297627586 y build 38297627588, inicialmente QUEUED. Pendiente verificar resultado y logs en SHA exacto.
 - SY-P-23 OPEN por convención general de concatenación y XFAIL Plus; SG28 multihost BLOCKED. Próximo objetivo: comprobar tres gates Lite y clasificar fallos por producto/harness/oráculo.
+
+## 2026-10-12 — SY-P-23 Lite: recuperación después del bloqueo
+- Lite SHA b0c65a467452fe433515a5e0468019adf3985499: H1d 38297627578 SUCCESS (18/18 Playwright, incluida prueba de identificadores vecinos) y acumulativo 38297627586 SUCCESS.
+- Nueva regresión funcional Lite `e2e/in625-h1d-reentry.spec.ts`: después de rechazar a/bc, comprobar cálculo exitoso de (12/3)*2=8 y 12/(3*2)=2; commit d6792d00c44c64a65dd960442fde610e939250cd. No se altera parser/motor.
+- CI Lite SHA d6792d00: H1d 38298082148, acumulativo 38298082176, build 38298082395, IN_PROGRESS al consultar. No declarar PASS sin resultados completos.
+- SY-P-23 OPEN por convención general y XFAIL Plus. SG28 multihost BLOCKED. Próximo paso: verificar tres gates y confirmar recuperación en log H1d.
