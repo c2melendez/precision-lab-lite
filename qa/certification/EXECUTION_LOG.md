@@ -2506,3 +2506,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus test SHA `f7760aef398163bd44daba110fa465ba7db48ce4`: nuevas pruebas endpoint contrastan `a/bc` con `a=12,bc=6,b=3,c=2` (esperado 2), `a/(b*c)` con `bc=99` (2), y `(a/b)*c` con `bc=99` (8). La variable nombrada `bc` no debe reescribirse automáticamente a `b*c` ni viceversa. Solo regresión de backend, no comprobación UI+endpoint completa.
 - Plus cumulative 38190455944 y H1d 38190455935 iniciados; en progreso al observar. **No declarar PASS antes del resultado**. La interpretación alternativa `a/bc` con b,c independientes sigue XFAIL estricto y SY-P-23 OPEN. SG28 multi-host sigue BLOCKED.
 - Siguiente paso exacto: verificar cumulative 38190455944 y H1d 38190455935 sobre SHA f7760aef; si hay fallo corregir el contrato/harness según evidencia. Completar prueba de canal UI→MathLive→backend con identificador `bc`, y reconciliar SY-P-23 en ambos motores antes de cerrar.
+
+
+## 2026-10-11 — SY-P-23 advertencia de identificador compuesto, nueva regresión E2E
+- Se verificó Plus SHA f7760aef398163bd44daba110fa465ba7db48ce4: cumulative 38190455944 SUCCESS, H1d 38190455935 SUCCESS; test backend del identificador bc y agrupación explícita aprobado en gate.
+- Nueva regresión UI bilateral valida el texto accesible «bc es una única variable», conserva literalmente a/bc en el campo MathLive, y oculta aviso con a/(b*c). Plus commit 08982bd37e5d9e24e4426f16009a4d2fb659322c; Lite commit a1b119bf2b02b5ece12bf2986aa7ae970a46280b. No hay modificación del motor ni declaración de semántica universal.
+- Runs nuevos Plus cumulative 38191263882 y H1d 38191263887 en progreso; Lite cumulative 38191269083, build 38191269108 y H1d 38191269173 en cola al verificar. No marcar aún PASS de estos SHA.
+- Siguiente paso exacto: consultar todos los jobs y errores de estos runs, corregir si corresponde y ampliar prueba de canal MathLive→parser→resultado con sustitución real de bc. SY-P-23 sigue OPEN y XFAIL estricto de interpretación con b,c independientes; SG28 distribuido sigue BLOCKED.
