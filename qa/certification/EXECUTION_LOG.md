@@ -2638,3 +2638,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Nueva prueba de backend HTTP Plus en `backend/tests/test_syntax309_syp_interpretation.py` SHA 7f9b4fec9b012616afdd71fbae87520296b8c78b: `(a/b)*c`=7.5, `a/(b*c)` y `((a)/(b*c))`=1.2 con a=9,b=3,c=2.5 y bc=99. Protege producto explícito ante variable compuesta coexistente. No modifica motor ni XFAIL del ambiguo `a/bc`.
 - CI Plus del SHA 7f9b4fe: pendiente de comprobación y evidencia; no marcar PASS de la prueba nueva hasta concluir el gate correspondiente.
 - Siguiente paso exacto: consultar workflow acumulativo y H1d del SHA Plus 7f9b4fe, revisar jobs/logs, corregir según evidencia y extender cobertura UI SY-P-23. SY-P-23 OPEN; SG28 multihost BLOCKED.
+
+
+## 2026-10-11 — SY-P-23 Plus: test E2E de agrupaciones decimales explícitas
+- Plus SHA 7f9b4fec9b012616afdd71fbae87520296b8c78b validado: cumulative 38204597912 y H1d 38204598026 SUCCESS. Pruebas backend con a=9,b=3,c=2.5 y bc=99 acreditadas.
+- Nueva regresión frontend real `frontend/e2e/in625-h1d-reentry.spec.ts` Plus commit 5ed05f4c8be2d355ef00f5ccd264345e4f07d5fb: expresiones `(9/3)*2.5`=7.5 y `9/(3*2.5)`=1.2 desde MathLive/UI, sin mostrar aviso de a/bc. No modifica el motor ni interpreta entrada ambigua automáticamente.
+- Auto CI Plus: H1d 38205311838 y cumulative 38205311913 inicialmente QUEUED; ninguna aprobación de este nuevo test hasta revisar resultado. Lite mantiene gates verdes previos.
+- Próximo paso exacto: consultar conclusiones y logs del H1d/cumulative Plus del SHA 5ed05f4, corregir discrepancias UI/MathLive/oráculo demostradas y continuar SY-P-23 sin declarar cierre; SG28 multihost BLOCKED.
