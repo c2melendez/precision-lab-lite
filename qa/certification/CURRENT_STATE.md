@@ -2783,3 +2783,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Corrección técnica publicada Lite SHA eacb90aebc95e1c971cd47f623c80232b2a46f24: anotación TS de importación sin rebajar valores esperados. Gates automáticos H1d 38303828515, build 38303828547, cumulative 38303828580 IN_PROGRESS en última consulta.
 - Plus y Lite cerraron correctamente pruebas de procedencia del fixture con SHAs 1f078c60 y 7c5249c4 (Plus H1d 38 PASS; Lite H1d 21 PASS), acumulativos y build aplicable SUCCESS. Este éxito previo no certifica la nueva prueba unitaria.
 - Próximo paso: consultar los tres gates del SHA eacb90ae; revisar unit test SY-P-24/25 en log acumulativo y corregir cualquier fallo real (tipado, parser, resultado). No certificar el resultado por runs anteriores. SY-P-23 OPEN; SG28 multihost BLOCKED.
+
+## 2026-10-12 — SY-P-24/25: Lite numeric gate PASS and additional witnesses
+- Lite SHA eacb90aebc95e1c971cd47f623c80232b2a46f24: H1d 38303828515 SUCCESS (21 passed), build 38303828547 SUCCESS y acumulativo 38303828580 SUCCESS (90 archivos, 1094 passed, 30 todo). La regresión original de Lite xy=6 y xyz=30 quedó acreditada en el gate acumulativo; 30 TODO no son PASS.
+- Se amplió src/engine/parsing/syntax309SyPProducts.test.ts con cuatro testigos independientes: xy=-20, xy=0, xyz=-24, xyz=0, para cubrir signo y cero a través de parser y Algebrite. Commit técnico Lite 386d7e73baee81a493ae77bacae082e6ee3ee38f; sin cambios del motor.
+- GitHub Actions disparó automáticamente para SHA 386d7e73: H1d 38304165494, cumulative 38304165554, build 38304165601 inicialmente QUEUED. Requieren conclusión y evidencia en logs antes de certificar los cuatro nuevos testigos.
+- SY-P-23 OPEN y SG28 multihost BLOCKED. Siguiente objetivo: verificar gates nuevos en SHA exacto, examinar el test unitario en log acumulativo, corregir eventuales fallos y continuar la paridad del contrato de símbolos concatenados sin alterar el XFAIL.
