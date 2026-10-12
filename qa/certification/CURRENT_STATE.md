@@ -2637,3 +2637,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus prueba permanente en `frontend/e2e/in625-h1d-reentry.spec.ts`, SHA b8815fe399eaae3721cbf9daa4457e74c0b29acd: `1+a/bc`, `2*(a/bc)` y `a/bc+3` sin bc deben impedir POST `/evaluate` y mostrar desambiguación. No se impone política de Plus a Lite.
 - CI Plus último SHA b8815fe: H1d 38287488895 y cumulative 38287488771 IN_PROGRESS al consultar; SG28 UI SHA funcional anterior 4bb5d22: 38287467750 IN_PROGRESS. Ningún PASS nuevo hasta conclusión.
 - Estado SY-P-23 OPEN, SG28 multihost BLOCKED. Siguiente acción: verificar jobs/logs de los gates SHA b8815fe; reparar fallos demostrados y añadir casos negativos de identificadores ajenos si corresponde.
+
+
+## 2026-10-12 — SY-P-23: regresión de fronteras de identificadores
+- Se verificaron Plus H1d `38287488895` y cumulative `38287488771` SUCCESS para SHA `b8815fe399eaae3721cbf9daa4457e74c0b29acd`; SG28 UI `38287467750` SUCCESS para SHA `4bb5d22273300197bf8590296771c7a15e1af042` (no es prueba multihost).
+- Nueva prueba E2E Plus `frontend/e2e/in625-h1d-reentry.spec.ts`, commit `912b1db3f0cb188dd64d267a26976b1d1bd7f969`: entradas `aa/bc`, `a/bcd`, `xa/bc`, `a/bcx` NO deben mostrar aviso ni error específico `SY-P-23: define la variable bc...`; preserva delimitación de identificadores. No se altera el motor.
+- GitHub Actions en SHA 912b1db3: H1d `38288711373` y cumulative `38288711377`, inicialmente QUEUED. No declarar PASS antes de observar conclusión. Lite sin cambios funcionales en esta prueba acotada Plus.
+- SY-P-23 OPEN; SG28 multihost BLOCKED. Siguiente paso: verificar estos dos gates, revisar logs ante FAIL y corregir según su causa. Si pasan, evaluar ambigüedad en subexpresiones LaTeX con identificadores vecinos y discrepancia declarada Lite/Plus.
