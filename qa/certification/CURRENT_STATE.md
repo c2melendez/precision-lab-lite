@@ -2644,3 +2644,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Nueva prueba E2E Plus `frontend/e2e/in625-h1d-reentry.spec.ts`, commit `912b1db3f0cb188dd64d267a26976b1d1bd7f969`: entradas `aa/bc`, `a/bcd`, `xa/bc`, `a/bcx` NO deben mostrar aviso ni error específico `SY-P-23: define la variable bc...`; preserva delimitación de identificadores. No se altera el motor.
 - GitHub Actions en SHA 912b1db3: H1d `38288711373` y cumulative `38288711377`, inicialmente QUEUED. No declarar PASS antes de observar conclusión. Lite sin cambios funcionales en esta prueba acotada Plus.
 - SY-P-23 OPEN; SG28 multihost BLOCKED. Siguiente paso: verificar estos dos gates, revisar logs ante FAIL y corregir según su causa. Si pasan, evaluar ambigüedad en subexpresiones LaTeX con identificadores vecinos y discrepancia declarada Lite/Plus.
+
+ 
+## 2026-10-12 — SY-P-23: frontera de tokens LaTeX, continuación verificada
+- Plus SHA 912b1db3f0cb188dd64d267a26976b1d1bd7f969: H1d 38288711373 SUCCESS y acumulativo 38288711377 SUCCESS (jobs backend/frontend PASS). Lite SHA 17d6161439ba02017329ec6013da20274502e39a: H1d 38280406666 SUCCESS.
+- Plus: nueva prueba permanente de identificadores vecinos en fracciones LaTeX y subexpresiones extendidas, archivo frontend/e2e/in625-h1d-reentry.spec.ts, commit 4d772d156d274ac764566b873f9e261fff59b6c3. Prueba que aa/bc, a/bcd, xa/bc y a/bcx, también con \\frac y contexto aritmético, no generen advertencia ni validación SY-P-23 y mantengan MathLive. Sin cambios en motor, parser o políticas de Lite.
+- Nuevas corridas automáticas Plus SHA 4d772d15: H1d 38289477109 y acumulativo 38289477051, ambas QUEUED en consulta inicial, resultado aún NO VERIFICADO.
+- SY-P-23 continúa OPEN por convención compartida y XFAIL estricto; SG28 multihost continúa BLOCKED. Próximo objetivo: verificar los dos nuevos gates en el SHA exacto, diagnosticar fallos si existen y ampliar pruebas semánticas de variantes agrupadas sin equiparar warning Lite con bloqueo Plus.
