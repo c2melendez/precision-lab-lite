@@ -2907,3 +2907,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Nueva regresión funcional Lite `e2e/in625-h1d-reentry.spec.ts`: después de rechazar a/bc, comprobar cálculo exitoso de (12/3)*2=8 y 12/(3*2)=2; commit d6792d00c44c64a65dd960442fde610e939250cd. No se altera parser/motor.
 - CI Lite SHA d6792d00: H1d 38298082148, acumulativo 38298082176, build 38298082395, IN_PROGRESS al consultar. No declarar PASS sin resultados completos.
 - SY-P-23 OPEN por convención general y XFAIL Plus. SG28 multihost BLOCKED. Próximo paso: verificar tres gates y confirmar recuperación en log H1d.
+
+## 2026-10-12 — SY-P-23: diagnóstico de flaky al recuperar tras bloqueo
+- Lite SHA d6792d00c44c64a65dd960442fde610e939250cd: H1d 38298082148 SUCCESS y cumulative 38298082176 SUCCESS. Sin embargo, log H1d 114973956644 registró primer intento FALLIDO en recuperación (esperaba result para (12/3)*2, recibió error), retry PASSED; 18 passed y 1 flaky. No clasificar esto como prueba estable.
+- Se identificó riesgo de que el helper submit() interprete un alert anterior como respuesta a la petición nueva; el log no prueba por sí solo un fallo del motor. Se cambió solo la prueba de recuperación para esperar un status con request-id tras hacer click, antes de leer el resultado; commit Lite 802879171d8ba1596c31f28d4fb7fc0b7467da17. Sigue exigiendo 8 y 2, sin relajar el oráculo.
+- CI Lite SHA 80287917: H1d 38298622842, cumulative 38298622859, build 38298622743 inicialmente QUEUED. Pendiente comprobar los resultados y el log H1d para verificar ausencia de flaky.
+- SY-P-23 OPEN por contrato general y XFAIL Plus, SG28 multihost BLOCKED. Siguiente objetivo: diagnosticar y corregir si el nuevo gate aún reproduce race/error real.
