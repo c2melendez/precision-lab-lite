@@ -93,12 +93,12 @@ describe("Syntax309 SY-P — Lite numeric precedence convention", () => {
 
 
   it("SY-P-23: las dos agrupaciones LaTeX tienen resultados discriminantes", () => {
-    const product = parseExpression(String.raw`\\frac{a}{b}*c`).algebrite;
-    const denominator = parseExpression(String.raw`\\frac{a}{b*c}`).algebrite;
+    const product = parseExpression(String.raw`\frac{a}{b}*c`).algebrite;
+    const denominator = parseExpression(String.raw`\frac{a}{b*c}`).algebrite;
     const numeric = (expr: string) => Number(evaluate(expr
-      .replace(/\\ba\\b/g, "(12)")
-      .replace(/\\bb\\b/g, "(3)")
-      .replace(/\\bc\\b/g, "(2)")));
+      .replace(/\ba\b/g, "(12)")
+      .replace(/\bb\b/g, "(3)")
+      .replace(/\bc\b/g, "(2)")));
     expect(numeric(product)).toBeCloseTo(8, 9);
     expect(numeric(denominator)).toBeCloseTo(2, 9);
     expect(numeric(product)).not.toBeCloseTo(numeric(denominator), 9);
