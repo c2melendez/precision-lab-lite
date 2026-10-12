@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import Algebrite from "algebrite";
 import { parseExpression } from "./index";
 import { tokenize } from "./tokenize";
 import { insertImplicitMultiplication } from "./implicitMultiplication";
@@ -15,8 +16,11 @@ describe("Syntax309 SY-P-24/25 concatenated variable products", () => {
       expect(parsed.isEquation).toBe(false);
       expect(parsed.freeVariables).toEqual(Object.keys(substitutions));
       expect(parsed.algebrite).toBe(Object.keys(substitutions).join("*"));
-      const product = Object.values(substitutions).reduce((a, b) => a * b, 1);
-      expect(product).toBe(expected);
+      const substituted = Object.entries(substitutions).reduce(
+        (expr, [name, value]) => expr.replace(new RegExp(`\\b${name}\\b`, "g"), String(value)),
+        parsed.algebrite,
+      );
+      expect(Number(Algebrite.run(substituted))).toBe(expected);
       const tokens = insertImplicitMultiplication(tokenize(expression));
       expect(tokens.map(t => t.value).join("")).toBe(Object.keys(substitutions).join("*"));
     });
