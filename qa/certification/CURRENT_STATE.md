@@ -2770,3 +2770,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Gates nuevos Plus H1d 38302648984, cumulative 38302648982; Lite H1d 38302654642, cumulative 38302654495, build 38302654462: en progreso en consulta; no declarar PASS sin evidencia final.
 - Esto verifica procedencia y alcance UI, NO demuestra aún sustitución matemática xy/xyz en Lite. Plus ya conserva pruebas HTTP con sustituciones 2,3 y 2,3,5. SY-P-23 OPEN; SG28 multihost BLOCKED.
 - Siguiente paso: verificar los cinco gates del SHA final, corregir cualquier error de test/fixture, después acreditar aritmética Lite mediante un canal válido, sin inventar soporte de sustituciones inexistente.
+
+## 2026-10-12 — SY-P-24/25: certificados fixture/UI y test numérico real Lite
+- CI del SHA Plus 1f078c608c7ee42208436f022f90e727127861ba: H1d 38302648984 SUCCESS, 38 passed sin fallos; acumulativo 38302648982 SUCCESS. CI del SHA Lite 7c5249c4082293dafc32d86184a06bf5746b1b90: H1d 38302654642 SUCCESS, 21 passed sin fallos; acumulativo 38302654495 SUCCESS y build 38302654462 SUCCESS.
+- Añadido test de regresión UNITARIO matemático para Lite en src/engine/parsing/syntax309SyPProducts.test.ts: evalúa entradas originales xy/xyz mediante parseExpression, tokenización y Algebrite con sustituciones (x=2,y=3 -> 6; x=2,y=3,z=5 -> 30). Commit técnico final Lite 5db7781334421eff56f681fe0f07f406a348ceea. No se cambió producto.
+- Los workflows del último SHA deben comprobarse; los runs consultados para SHA previo 656c6e932 fueron 38303701989 build, 38303701940 acumulativo y 38303701820 H1d IN_PROGRESS antes de la corrección final. Ningún PASS atribuido al nuevo test hasta confirmar SHA exacto en CI.
+- SY-P-23 OPEN; SG28 multihost BLOCKED. Siguiente paso: verificar ejecución npm test y resultados unitarios de Lite para SHA 5db77813, H1d/build; corregir fallo del oráculo o implementación si aparece; contrastar Plus HTTP SY-P-24/25 sin levantar XFAIL de SY-P-23.
