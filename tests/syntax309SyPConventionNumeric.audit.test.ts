@@ -104,6 +104,20 @@ describe("Syntax309 SY-P — Lite numeric precedence convention", () => {
     expect(numeric(product)).not.toBeCloseTo(numeric(denominator), 9);
   });
 
+  it("SY-P-23: paréntesis redundantes preservan división y producto explícitos", () => {
+    const cases = [
+      ["((a)/(b*c))", 2],
+      ["(((a)/(b)))*c", 8],
+    ] as const;
+    for (const [input, expected] of cases) {
+      const expression = parseExpression(input).algebrite
+        .replace(/\ba\b/g, "(12)")
+        .replace(/\bb\b/g, "(3)")
+        .replace(/\bc\b/g, "(2)");
+      expect(Number(evaluate(expression)), input).toBeCloseTo(expected, 9);
+    }
+  });
+
   it("SY-P-23: la fracción LaTeX conserva la multiplicación b*c en Lite", () => {
     const latex = parseExpression(String.raw`\frac{a}{bc}`).algebrite;
     const grouped = parseExpression("a/(b*c)").algebrite;
