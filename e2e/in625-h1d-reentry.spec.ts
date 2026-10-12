@@ -304,3 +304,15 @@ test("SY-P-23 advierte explícitamente sobre identificador compuesto bc sin rees
   await setInput(page, "a/(b*c)");
   await expect(warning).toHaveCount(0);
 });
+
+test("SY-P-23 canal UI a resultado: agrupaciones numéricas explícitas", async ({ page }) => {
+  await page.goto("./");
+  const warning = page.getByRole("status", { name: "Convención de división ambigua" });
+  for (const [expression, expected] of [["(12/3)*2", "8"], ["12/(3*2)", "2"]] as const) {
+    await setInput(page, expression);
+    await expect(warning).toHaveCount(0);
+    const actual = await submit(page);
+    expect(actual.kind, expression).toBe("result");
+    expect(canonical(actual.value), expression + " => " + actual.value).toContain(expected);
+  }
+});
