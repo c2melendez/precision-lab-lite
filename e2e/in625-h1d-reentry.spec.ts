@@ -475,3 +475,22 @@ test("SY-P-24/25: xy y xyz no activan bloqueo de división", async ({ page }) =>
   await setInput(page, "a/bc");
   await expect(warning).toBeVisible();
 });
+
+// Fixture provenance: SY-P-24/25 must retain the official product interpretation.
+// The UI guard test above is deliberately not counted as numeric substitution proof.
+test("SY-P-24/25: los casos originales exigen productos de variables", async () => {
+  const fs = await import("node:fs/promises");
+  const path = await import("node:path");
+  const source = await fs.readFile(path.resolve(process.cwd(), "qa/certification/syntax309_sy_p_cases.jsonl"), "utf8");
+  const rows = source.trim().split(/\\r?\\n/).map(line => JSON.parse(line) as {id:string; entrada:string; operacion:string; esperado:string});
+  for (const [id, input, expected] of [
+    ["SY-P-24", "xy", String.raw`x\\cdot y`],
+    ["SY-P-25", "xyz", String.raw`x\\cdot y\\cdot z`],
+  ]) {
+    const matches = rows.filter(row => row.id === id);
+    expect(matches, id + " must have exactly one original fixture row").toHaveLength(1);
+    expect(matches[0].entrada).toBe(input);
+    expect(matches[0].operacion).toBe("interpretacion");
+    expect(matches[0].esperado).toBe(expected);
+  }
+});
