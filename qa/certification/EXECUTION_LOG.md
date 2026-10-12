@@ -2895,3 +2895,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Lite e2e/in625-h1d-reentry.spec.ts agrega regresión con a/bc, 1+a/bc y fracción LaTeX: advertencia accesible, error SY-P-23 y valor MathLive preservado. Commit 5c8e16976a411c4e54b9cd0b90efc8da459b8984.
 - CI Lite SHA 5c8e1697: H1d 38297110216, cumulative 38297110215, build 38297110206 QUEUED al consultar. Comprobar además SG28 activado por cambio funcional SHA anterior 4091e107 (run 38297071506). No certificar la nueva política hasta analizar resultados E2E y acumulativos.
 - Contrato SY-P-23 permanece OPEN: paridad parcial en bc indefinida; todavía no se ha resuelto regla general de identificadores contiguos, XFAIL de alternativa ac/b ni paridad con variables definidas. SG28 multihost BLOCKED.
+
+## 2026-10-12 — SY-P-23: bloqueo Lite verificado y fronteras de identificador
+- Lite SHA 5c8e16976a411c4e54b9cd0b90efc8da459b8984: H1d 38297110216 SUCCESS, cumulative 38297110215 SUCCESS. Log H1d job 114970732945: 17 passed, incluido test SY-P-23 Lite `la ambigüedad detiene cálculo sin alterar MathLive` PASSED.
+- Nueva prueba E2E Lite sobre identificadores vecinos (aa/bc, a/bcd, xa/bc, a/bcx y extensiones) que exige ausencia de advertencia/bloqueo específico SY-P-23; commit b0c65a467452fe433515a5e0468019adf3985499, archivo e2e/in625-h1d-reentry.spec.ts. No se tocó motor/parser.
+- CI automática Lite SHA b0c65a: H1d 38297627578, cumulative 38297627586 y build 38297627588, inicialmente QUEUED. Pendiente verificar resultado y logs en SHA exacto.
+- SY-P-23 OPEN por convención general de concatenación y XFAIL Plus; SG28 multihost BLOCKED. Próximo objetivo: comprobar tres gates Lite y clasificar fallos por producto/harness/oráculo.
