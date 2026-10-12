@@ -2524,3 +2524,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Commit Plus 03408a40fdd7c2c00645f7831b39ec3f9e88227a: H1d 38238269445 y cumulative 38238269495 SUCCESS, confirmado el bloqueo de `(a/bc)` cuando bc no está definida.
 - Nueva regresión de UI Plus `frontend/e2e/in625-h1d-reentry.spec.ts` commit 0131472e7b3a89ac8a741640ee8371ec23cff2a7: `(a/bc)` con sustituciones a=12, bc=6, b=3, c=2 debe devolver 2, demostrando que bc compuesta se mantiene aun con paréntesis externos. No cambia motor ni relaja XFAIL.
 - Nuevos gates Plus H1d 38239078917 y cumulative 38239078947 IN_PROGRESS al consultar; resultados pendientes, no declarar PASS todavía. El objetivo siguiente es verificar logs, diagnosticar si el canal MathLive introduce separación de identificadores, corregir en capa pertinente. SY-P-23 OPEN y SG28 multihost BLOCKED.
+
+
+## 2026-10-12 — SY-P-23: regresión con bc definido y paréntesis exteriores
+- Plus cumulative run 38239078947 SUCCESS en SHA 0131472e; H1d run 38239078917 FAILURE: 20 PASS, 1 FAIL, en E2E `(a/bc)` con a=12, bc=6, b=3, c=2. Se observó 8, esperado 2. Clasificación: defecto de normalización UI (interpretación b*c), no fallo del motor ni de la referencia matemática.
+- Corrección Plus publicada: commit `7935bda7e852889511d4c0589322c75f4a7f5ee7`, archivo `frontend/src/components/BasicMode.tsx`. Amplía exclusivamente el guard del identificador compuesto definido para admitir `(a/bc)`; conserva rechazo del caso sin bc definida y las agrupaciones explícitas.
+- Acciones automáticas generadas por el push: Plus H1d `38244599384`, acumulativo `38244599396` y SG28 UI `38244599369`; inicialmente IN_PROGRESS. No declarar PASS del nuevo commit hasta comprobar su conclusión y logs.
+- Lite: sin cambios de producto necesarios por esta corrección específica de Plus; mantener criterios funcionales de paridad y registrar excepción de convención de identificadores compuestos.
+- Siguiente paso exacto: verificar H1d/acumulativo/SG28 UI en Plus SHA 7935bda; si H1d falla, inspeccionar payload enviado al endpoint para `(a/bc)` y corregir la capa confirmada; si pasa, continuar ampliación conservadora SY-P-23 y registrar evidencia bilateral. SY-P-23 OPEN; SG28 multihost BLOCKED.
