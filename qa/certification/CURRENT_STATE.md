@@ -2696,3 +2696,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Nuevo commit técnico Plus f412cd427b0226fcf54cfe11324cc04bf4d8713a en backend/tests/test_syntax309_syp_interpretation.py: tres variantes con paréntesis exteriores y bc definida simultáneamente con b y c, esperados 3, 4 y 5. XFAIL estricto no alterado.
 - CI automática Plus SHA f412cd42: H1d 38295821311 y acumulativo 38295821318 QUEUED en consulta inicial. Comprobar resultados y log backend para acreditar ejecución de los tres nuevos casos.
 - SY-P-23 OPEN y SG28 multihost BLOCKED. Próximo paso: verificar estos gates y seguir con convención de identificadores sin eliminar el XFAIL artificialmente.
+
+## 2026-10-12 — SY-P-23: bc independiente de b*c en contextos extendidos
+- Plus SHA f412cd427b0226fcf54cfe11324cc04bf4d8713a: H1d 38295821311 SUCCESS y cumulative 38295821318 SUCCESS. Log backend job 114966518741: 868 passed, 1 xfailed; tres casos de paréntesis exteriores individualmente PASSED.
+- Nuevo commit técnico Plus 02dc6bfcc5418a86b01523c12cafa3767a9656ca: tres pruebas backend de `1+a/bc`, `2*(a/bc)` y `a/bc+3`, con bc=4 independiente de b*c=6; oráculos independientes 4/6/6. Archivo backend/tests/test_syntax309_syp_interpretation.py. No altera parser, motor ni XFAIL.
+- CI Plus SHA 02dc6bfc disparado: H1d 38296248718 y cumulative 38296248713 QUEUED en primera consulta. Comprobar que los tres nuevos casos se ejecutan en job backend antes de acreditarlos.
+- SY-P-23 OPEN: XFAIL de a/bc sin bc definida permanece legítimo. SG28 multihost BLOCKED; no activar aislamiento en producción. Próximo objetivo: analizar ambos gates y continuar la decisión contractual evitando microtests repetidos sin justificación.
