@@ -2619,3 +2619,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Nueva regresión Plus `backend/tests/test_syntax309_syp_interpretation.py` commit 9497663f533ca95aee52b16db6695ef83901f233: `(a/b)*c` y `(((a)/(b)))*c` deben producir 8 con sustituciones a=12, b=3, c=2 y bc=99; nunca absorber c en denominador ni sustituir `b*c` por bc. No altera motor ni cambia el XFAIL estricto del caso ambiguo.
 - CI automática Plus de SHA 9497663: H1d 38202166537 y acumulativo 38202166540 inicialmente QUEUED. No registrar PASS hasta revisar logs y resultados.
 - Siguiente paso exacto: verificar ambos workflows del SHA 9497663, clasificar cualquier fallo por capa, corregir y reejecutar; luego avanzar cobertura canal UI y reconciliación SY-P-23 con Lite. SY-P-23 global OPEN; SG28 multihost BLOCKED.
+
+
+## 2026-10-11 — SY-P-23: paridad numérica de paréntesis redundantes Lite/Plus
+- Plus SHA 9497663f533ca95aee52b16db6695ef83901f233: cumulative 38202166540 y H1d 38202166537 SUCCESS. La prueba protege (a/b)*c frente a paréntesis redundantes y variable bc explícita.
+- Nuevo test de Lite `tests/syntax309SyPConventionNumeric.audit.test.ts` commit c73e61a81308d2bd536efd9b4a79edf1998cd337 verifica sobre el parser/evaluador real que `((a)/(b*c))`=2 y `(((a)/(b)))*c`=8, al sustituir a=12,b=3,c=2. Paridad matemática de agrupación explícita sin inventar bc como variable nombrada en Lite.
+- Siguiente paso exacto: localizar corridas CI de Lite del SHA c73e61a, comprobar cumulative, H1d y build, corregir fallos y continuar pruebas UI canal MathLive si proceden. SY-P-23 OPEN; SG28 multihost BLOCKED.
