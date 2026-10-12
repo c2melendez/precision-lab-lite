@@ -2513,3 +2513,11 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Nueva regresión UI bilateral valida el texto accesible «bc es una única variable», conserva literalmente a/bc en el campo MathLive, y oculta aviso con a/(b*c). Plus commit 08982bd37e5d9e24e4426f16009a4d2fb659322c; Lite commit a1b119bf2b02b5ece12bf2986aa7ae970a46280b. No hay modificación del motor ni declaración de semántica universal.
 - Runs nuevos Plus cumulative 38191263882 y H1d 38191263887 en progreso; Lite cumulative 38191269083, build 38191269108 y H1d 38191269173 en cola al verificar. No marcar aún PASS de estos SHA.
 - Siguiente paso exacto: consultar todos los jobs y errores de estos runs, corregir si corresponde y ampliar prueba de canal MathLive→parser→resultado con sustitución real de bc. SY-P-23 sigue OPEN y XFAIL estricto de interpretación con b,c independientes; SG28 distribuido sigue BLOCKED.
+
+
+## 2026-10-11 — SY-P-23: prueba de resultado real desde interfaz
+- Gates del bloque anterior confirmados: Plus cumulative 38191263882, H1d 38191263887 SUCCESS en SHA 08982bd37e5d9e24e4426f16009a4d2fb659322c; Lite cumulative 38191269083, H1d 38191269173, build 38191269108 SUCCESS en SHA a1b119bf2b02b5ece12bf2986aa7ae970a46280b.
+- Nueva prueba de canal UI→MathLive→resultado, sin modificar producto: `(12/3)*2` debe rendir 8 y `12/(3*2)` debe rendir 2; no debe dispararse aviso ambiguo. Plus test commit f1d30916be1ef129a26258173874c80426a871a0, Lite test commit 40f48aef59dc9aa2eda152923e8625bfb83ebe43.
+- Auto CI iniciada: Plus H1d 38191586392, cumulative 38191586394; Lite H1d 38191594838, cumulative 38191594844, build 38191594840. NO marcar PASS hasta resultados de mismo SHA y revisión de logs.
+- El test actual valida agrupaciones numéricas explícitas mediante la UI; no es aún prueba de `a/bc` con variables sustituidas dentro del campo MathLive. SY-P-23 permanece OPEN; XFAIL estricto de interpretación alternativa de bc permanece intacto, SG28 multi-host BLOCKED.
+- Siguiente paso: comprobar runs nuevos; si hay fallo clasificar UI/harness/oráculo antes de modificar motor. Después ampliar canal con sustitución real de bc cuando se confirme interfaz disponible.
