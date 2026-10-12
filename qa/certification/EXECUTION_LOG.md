@@ -2857,3 +2857,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Nuevo test Playwright Plus: repetir dos veces la evaluación del mismo LaTeX numérico explícito y comparar resultados, sin advertencia falsa; commit técnico 4d58281e462d92dcfa33f5abe84b13a9091d6452 en frontend/e2e/in625-h1d-reentry.spec.ts. No se cambian parser ni motores.
 - Nuevos CI Plus SHA 4d58281e: H1d 38291245207 y cumulative 38291245267, QUEUED en consulta. Falta verificar conclusión y logs.
 - SY-P-23 continúa OPEN por convención entre identificadores y XFAIL estricto; SG28 multihost BLOCKED. Siguiente paso concreto: verificar ambas corridas del SHA 4d58281e, diagnosticar regresiones y abordar XFAIL de contrato con evidencia independiente.
+
+## 2026-10-12 — SY-P-23: evidencia semántica backend para contextos aritméticos
+- Plus SHA 4d58281e462d92dcfa33f5abe84b13a9091d6452: H1d 38291245207 SUCCESS; cumulative 38291245267 SUCCESS, jobs frontend/backend.
+- Inspección XFAIL: backend/tests/test_syntax309_syp_interpretation.py contiene @pytest.mark.xfail(strict=True) para evaluar a/bc con sustituciones a,b,c sin variable bc. Continúa siendo un conflicto de convención del contrato; no se retiró ni reinterpretó como PASS.
+- Plus añadió seis test cases parametrizados del endpoint real con subexpresiones agrupadas explícitas en contextos aritméticos (sumas y productos) y variable bc sombra definida. Esperados matemáticos independientes 9,3,16,4,11,5. Archivo backend/tests/test_syntax309_syp_interpretation.py, commit 6d0755147f8928192112c73dbebd7198ef701a18.
+- CI Plus SHA 6d075514: H1d 38291827066 y cumulative 38291827067 inicialmente QUEUED. No declarar PASS hasta concluir y revisar jobs/logs; comprobar que el acumulativo ejecutó realmente la prueba backend.
+- SY-P-23 OPEN, SG28 multihost BLOCKED. Próximo paso: verificar ambos gates exactos, inspeccionar si el acumulativo incluye test_syntax309_syp_interpretation.py; de no incluirlo, ejecutar un gate específico adecuado sin confundir éxito de workflow con cobertura de estos seis casos.
