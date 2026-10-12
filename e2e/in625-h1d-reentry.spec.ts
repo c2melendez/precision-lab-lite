@@ -279,3 +279,17 @@ test("SY-P-23 preserva la entrada original al mostrar la advertencia", async ({ 
   const actual = await page.locator("math-field").first().evaluate(el => (el as HTMLElement & { value?: string }).value ?? "");
   expect(actual.replace(/\s+/g, ""), "La advertencia no debe reescribir a/bc como a/(b*c)").toBe(value);
 });
+
+// SY-P-23: MathLive editing must dismiss and restore the advisory without changing bc into b*c.
+test("SY-P-23 transición de entrada ambigua a agrupación explícita y vuelta", async ({ page }) => {
+  await page.goto("./");
+  const warning = page.getByRole("status", { name: "Convención de división ambigua" });
+  await setInput(page, "a/bc");
+  await expect(warning).toBeVisible();
+  await setInput(page, "a/(b*c)");
+  await expect(warning).toHaveCount(0);
+  await setInput(page, String.raw`\frac{a}{bc}`);
+  await expect(warning).toBeVisible();
+  await setInput(page, "(a/b)*c");
+  await expect(warning).toHaveCount(0);
+});
