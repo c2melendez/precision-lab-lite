@@ -334,3 +334,20 @@ test("SY-P-23 UI: agrupaciones decimales explícitas conservan valor", async ({ 
       expression + " => " + outcome.value + " must equal " + decimal).toBe(true);
   }
 });
+
+test("SY-P-23 UI: valores decimales con paréntesis redundantes", async ({ page }) => {
+  await page.goto("./");
+  const warning = page.getByRole("status", { name: "Convención de división ambigua" });
+  for (const [expression, decimal, exact] of [
+    ["((9)/(3*2.5))", "1.2", String.raw`\frac{6}{5}`],
+    ["(((9)/(3)))*2.5", "7.5", String.raw`\frac{15}{2}`],
+  ] as const) {
+    await setInput(page, expression);
+    await expect(warning).toHaveCount(0);
+    const result = await submit(page);
+    expect(result.kind, expression).toBe("result");
+    const value = canonical(result.value);
+    const pattern = new RegExp("^" + decimal.replace(".", "\\.") + "(?:\\.0+)?$");
+    expect(pattern.test(value) || value === exact, expression + " => " + result.value).toBe(true);
+  }
+});
