@@ -277,5 +277,5 @@ test("SY-P-23 preserva la entrada original al mostrar la advertencia", async ({ 
   await setInput(page, value);
   await expect(page.getByRole("status", { name: "Convención de división ambigua" })).toBeVisible();
   const actual = await page.locator("math-field").first().evaluate(el => (el as HTMLElement & { value?: string }).value ?? "");
-  expect(actual.replace(/\\s+/g, ""), "La advertencia no debe reescribir a/bc como a/(b*c)").toBe(value);
+  expect(actual.replace(/\s+/g, ""), "La advertencia no debe reescribir a/bc como a/(b*c)").toBe(value);
 });
