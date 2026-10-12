@@ -2412,3 +2412,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Auto CI de Lite mismo SHA: cumulative 38198136978, H1d 38198136883, build 38198136988, IN_PROGRESS al consultar. No marcar PASS hasta verificación de logs y conclusión.
 - Plus SHA 34734b232058b730be3c986c68773cea62755e6e: cumulative 38195286916, H1d 38195286920, SG28 UI 38195286929 SUCCESS.
 - Siguiente paso exacto: verificar tres runs Lite del SHA 9f2fc0d y sus logs; si cumulative pasa, ampliar SY-P-23 para otras representaciones agrupadas sin suponer semántica compartida de variables compuestas. SY-P-23 global OPEN, SG28 multi-host BLOCKED.
+
+
+## 2026-10-11 — SY-P-23: ampliación de regresión de agrupaciones LaTeX
+- Lite commit 9f2fc0d678f099fa9d0d95499f30d32cbeae54af validado con cumulative 38198136978, H1d 38198136883 y build 38198136988: los tres SUCCESS; la corrección fue exclusivamente del oráculo textual.
+- Nueva prueba numérica diferenciadora de agrupación explícita LaTeX `\\frac{a}{b}*c`→8 frente a `\\frac{a}{b*c}`→2 (a=12,b=3,c=2), añadida a `tests/syntax309SyPConventionNumeric.audit.test.ts` en Lite commit eef5d027381620b2be84274cc35537d5c5159f30. Esta fase amplía cobertura del contrato Lite sin definir universalmente a/bc ni copiar semántica de Plus.
+- Auto CI Lite: cumulative 38199690970, H1d 38199691011, build 38199691057, inicialmente QUEUED. PENDIENTE verificar logs y outcomes de este SHA; no se reclama PASS prematuro.
+- Próximo paso exacto: revisar tres corridas Lite de eef5d027 y corregir según capa si falla; luego comprobar paridad de agrupaciones explícitas en Plus, manteniendo diferencia documentada de identificadores compuestos. SY-P-23 OPEN; SG28 multihost BLOCKED.
