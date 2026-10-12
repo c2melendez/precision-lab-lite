@@ -440,8 +440,17 @@ test("SY-P-23 Lite: tras bloquear ambigüedad se recupera evaluación explícita
   for (const [expression, expected] of [["(12/3)*2", "8"], ["12/(3*2)", "2"]] as const) {
     await setInput(page, expression);
     await expect(page.getByRole("status", { name: "Convención de división ambigua" })).toHaveCount(0);
-    const result = await submit(page);
-    expect(result.kind, expression).toBe("result");
+    // A stale alert from the preceding blocked request must not be mistaken
+    // for the response to this new valid calculation.
+    await page.evaluate(() => window.mathVirtualKeyboard?.hide());
+    await page.getByRole("region", { name: "Entrada" }).getByRole("button", { name: "Calcular", exact: true }).click();
+    const region = page.locator('section[aria-label="Resultado"]').first();
+    await expect.poll(async () => {
+      const status = region.locator('[role="status"][data-result-request-id]').first();
+      return (await status.count()) > 0 && Boolean((await status.getAttribute("data-result-request-id"))?.trim());
+    }, { timeout: 15000, message: expression + " must produce a fresh result after SY-P-23 rejection" }).toBe(true);
+    const result = await readOutcome(page);
+    expect(result.kind, expression + " => " + result.value).toBe("result");
     expect(canonical(result.value), expression).toMatch(new RegExp("^" + expected + "(?:\\.0+)?$"));
   }
 });
