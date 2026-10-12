@@ -2939,3 +2939,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - La sección evita una regla universal equivocada de identificadores concatenados, distingue `bc` declarada de `b*c`, exige bloquear interpretación silenciosa de `a/bc` sin declaración en UI y preserva sin alterar el XFAIL estricto de Plus. SY-P-21, SY-P-18 y SY-P-19 permanecen decisiones independientes.
 - Cambios únicamente documentales: no hay nuevas pruebas funcionales ni corridas de CI atribuibles a esta publicación. **SY-P-23 OPEN; SG28 multihost BLOCKED**.
 - **Siguiente paso exacto:** implementar regresiones de contrato por canal para las entradas originales SY-P-23/24/25, incluyendo `xy`/`xyz` numéricos, `bc` definida frente a `b*c`, `bc` no definida y advertencia/bloqueo UI; correlacionar cada resultado con el fixture y logs de los workflows H1d/acumulativo del mismo SHA técnico. No activar `SG28_EVALUATE_ISOLATION`.
+
+## 2026-10-12 — SY-P-24/25: frontera UI instrumentada en Lite y Plus
+- Se sincronizó CURRENT_STATE Lite (2716f492c459907fd2977367f80df669be662b2f) tras el bloqueo previo de validación GitHub.
+- Pruebas E2E nuevas en H1d: Plus frontend/e2e/in625-h1d-reentry.spec.ts commit 449baeb3cbb6132ed2219eec9f1d7692df3c72f2 y Lite e2e/in625-h1d-reentry.spec.ts commit fc8d1a5aeac7f2419745ed4508dff4d320f672da. Verifican que xy/xyz preservan valor MathLive, no activan alerta específica a/bc, y que a/bc sigue advirtiendo. No pretenden acreditar semántica numérica de multiplicación.
+- CI automática detectada para SHA Plus 449baeb3c: H1d 38302175916 IN_PROGRESS y acumulativo 38302175917 QUEUED; Lite SHA fc8d1a5ae: H1d 38302181089, build 38302181140, acumulativo 38302181314 IN_PROGRESS al consultar.
+- No declarar PASS sin revisar los jobs finales. Próximo objetivo: verificar conclusión y logs de estos cinco gates; corregir regresiones, y ampliar test de xy/xyz a semántica numérica por canal según contrato original.
+- SY-P-23 OPEN; SG28 multihost BLOCKED.
