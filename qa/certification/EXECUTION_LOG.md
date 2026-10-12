@@ -2599,3 +2599,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Nueva prueba numérica diferenciadora de agrupación explícita LaTeX `\\frac{a}{b}*c`→8 frente a `\\frac{a}{b*c}`→2 (a=12,b=3,c=2), añadida a `tests/syntax309SyPConventionNumeric.audit.test.ts` en Lite commit eef5d027381620b2be84274cc35537d5c5159f30. Esta fase amplía cobertura del contrato Lite sin definir universalmente a/bc ni copiar semántica de Plus.
 - Auto CI Lite: cumulative 38199690970, H1d 38199691011, build 38199691057, inicialmente QUEUED. PENDIENTE verificar logs y outcomes de este SHA; no se reclama PASS prematuro.
 - Próximo paso exacto: revisar tres corridas Lite de eef5d027 y corregir según capa si falla; luego comprobar paridad de agrupaciones explícitas en Plus, manteniendo diferencia documentada de identificadores compuestos. SY-P-23 OPEN; SG28 multihost BLOCKED.
+
+
+## 2026-10-11 — SY-P-23: corrección de escape de nueva prueba
+- Lite cumulative 38199690970 del SHA eef5d027381620b2be84274cc35537d5c5159f30 FAILURE: 1091 PASS, 1 FAIL, 30 TODO. El test nuevo enviaba `\\\\frac` (doble backslash efectivo en String.raw) y regex escapadas de más, provocando `Carácter no reconocido: "\\"`; clasificado como error de harness/test, no motor matemático. Build 38199691057 SUCCESS; H1d 38199691011 aún en progreso a la consulta.
+- Publicado fix Lite SHA a63eb1456c4149f0a00cc0a523ea6327dae82d8f: `String.raw` con un solo backslash para `\\frac`, y expresiones regulares correctas para reemplazar variables. Aún SIN resultado CI de este nuevo SHA al registrar.
+- Siguiente paso exacto: obtener las corridas correspondientes a a63eb145, verificar el acumulativo, H1d y build, y si hay fallo revisar test de agrupación `\\frac{a}{b}*c` vs `\\frac{a}{b*c}`; SY-P-23 OPEN, SG28 multihost BLOCKED.
