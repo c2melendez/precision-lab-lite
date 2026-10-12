@@ -2809,3 +2809,11 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - CI de Plus SHA ebec72aa: H1d 38280397277 y cumulative 38280397315 IN_PROGRESS. Lite SHA 17d61614: build 38280406600 IN_PROGRESS, H1d 38280406666 y cumulative 38280406591 QUEUED en consulta. No declarar PASS de tests nuevos hasta finalizar y revisar fallos.
 - SY-P-23 OPEN: aviso no es equivalente a bloqueo del POST para expresiones más largas; ese flujo de evaluación sigue pendiente de contrato. SG28 multihost BLOCKED.
 - Próximo objetivo: verificar las cinco corridas, analizar fallos de los tests de aviso y resolver detección de falsas alarmas según evidencia; ampliar después bloqueo/evaluación de entradas compuestas extendidas si el contrato lo requiere.
+
+
+## 2026-10-12 — SY-P-23: bloquear POST ambiguo en expresiones extendidas (Plus)
+- Cinco gates previos verificados SUCCESS: Plus H1d 38280397277, cumulative 38280397315 SHA ebec72aa; Lite H1d 38280406666, cumulative 38280406591, build 38280406600 SHA 17d61614.
+- Plus `frontend/src/components/BasicMode.tsx`: guardia acotada detecta `a/bc` o `\\frac{a}{bc}` sin sustitución bc incluso dentro de expresiones mayores, en vez de mostrar solo una advertencia y enviar interpretación no declarada. Corrección técnica final SHA 4bb5d22273300197bf8590296771c7a15e1af042 (SHA previo de edición 2b20706a sustituido por ajuste de escapes); no se cambia parser backend.
+- Plus prueba permanente en `frontend/e2e/in625-h1d-reentry.spec.ts`, SHA b8815fe399eaae3721cbf9daa4457e74c0b29acd: `1+a/bc`, `2*(a/bc)` y `a/bc+3` sin bc deben impedir POST `/evaluate` y mostrar desambiguación. No se impone política de Plus a Lite.
+- CI Plus último SHA b8815fe: H1d 38287488895 y cumulative 38287488771 IN_PROGRESS al consultar; SG28 UI SHA funcional anterior 4bb5d22: 38287467750 IN_PROGRESS. Ningún PASS nuevo hasta conclusión.
+- Estado SY-P-23 OPEN, SG28 multihost BLOCKED. Siguiente acción: verificar jobs/logs de los gates SHA b8815fe; reparar fallos demostrados y añadir casos negativos de identificadores ajenos si corresponde.
