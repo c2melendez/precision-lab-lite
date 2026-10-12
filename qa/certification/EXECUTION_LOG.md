@@ -2742,3 +2742,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Nueva regresión Plus `frontend/e2e/in625-h1d-reentry.spec.ts` commit `3f233f9dbc9cdfe4737a022a80ad570f03f288d0` cubre `((\\frac{a}{bc}))` y `(((\\frac{a}{bc})))`: sin bc exige error y ningún POST; con a=12, bc=6, b=3, c=2 exige payload `expression=a/bc` y resultado 2. No cambia el motor.
 - H1d run 38246087850 se disparó por push, inicialmente QUEUED; revisar conclusión, logs y gate acumulativo del mismo SHA. No marcar PASS antes de verificarlo. SG28 multihost permanece BLOCKED y SY-P-23 OPEN.
 - Siguiente paso exacto: verificar H1d y cumulative del SHA 3f233f9, corregir fallos de serialización/oráculo si aparecen, y reconciliar progresión y convenciones con Lite según contrato.
+
+
+## 2026-10-12 — SY-P-23: prueba discriminante de agrupaciones explícitas con bc definida
+- Plus SHA 3f233f9dbc9cdfe4737a022a80ad570f03f288d0: H1d 38246087850 SUCCESS y cumulative 38246087835 SUCCESS; fracciones LaTeX anidadas verificadas.
+- Nuevo commit técnico Plus 60190f013ad6de79c0051d670f3b8d152e171650, archivo frontend/e2e/in625-h1d-reentry.spec.ts: prueba que con a=12, bc=6, b=3, c=2 las entradas ((a/b)*c) y ((a/(b*c))) no son reescritas a a/bc en el payload, mantienen sustituciones y producen respectivamente 8 y 2. No se modifica motor.
+- Se requiere comprobar corridas H1d y cumulative sobre SHA 60190f, analizar errores con logs antes de PASS. SY-P-23 OPEN; SG28 multihost BLOCKED.
+- Siguiente paso exacto: verificar ambos gates de 60190f y la semántica explícita de división; si un fallo demuestra error del producto o del harness, corregir la capa real, preservar contrato y actualizar evidencia bilateral.
