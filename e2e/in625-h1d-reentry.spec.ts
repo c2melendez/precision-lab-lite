@@ -245,3 +245,15 @@ test.describe("IN625 H1d reentrada avanzada",()=>{
     expect(s2).toMatch(/cases|x/);
   });
 });
+
+// Syntax309 SY-P-23: UI must disclose the ambiguous ungrouped input, not silently assign b*c.
+test("SY-P-23 muestra advertencia accesible sin modificar expresiones seguras", async ({ page }) => {
+  await page.goto("./");
+  const warning = page.getByRole("status", { name: "Convención de división ambigua" });
+  await setInput(page, String.raw`\\frac{a}{bc}`);
+  await expect(warning).toBeVisible();
+  await expect(warning).toContainText("(a/b)*c");
+  await expect(warning).toContainText("a/(b*c)");
+  await setInput(page, "2+3");
+  await expect(warning).toHaveCount(0);
+});
