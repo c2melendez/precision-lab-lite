@@ -2492,3 +2492,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Nueva regresión Plus en `frontend/e2e/in625-h1d-reentry.spec.ts` commit 19daac09e6f98d4429ceeca904bcfdd5b7efd46b: mismos casos desde MathLive, respuesta exacta o decimal, sin advertencia falsa de `a/bc`. No modifica motor.
 - CI Plus para SHA 19daac09: H1d 38207857573 y cumulative 38207857516 inicialmente QUEUED. No contabilizar como PASS sin evidencia de conclusión.
 - Siguiente paso exacto: revisar ambos runs de Plus sobre 19daac09, solucionar si hay FAIL de harness/UI/oráculo, y avanzar criterios pendientes de SY-P-23. SG28 multihost BLOCKED, SY-P-23 global OPEN.
+
+
+## 2026-10-11 — Reconciliación de evidencia UI y criterios de salida
+- Las advertencias SY-P-23 ya están implementadas en Científica Lite y Plus y cuentan con pruebas E2E que comprueban aparición con `a/bc`, desaparición con agrupaciones explícitas y preservación de entrada; no es correcto seguir afirmando en presente que la UI aún no tiene advertencia.
+- Lite: agrupaciones decimales redundantes E2E aprobadas en SHA 0690d47592b063e0542a38b2f80d2ce6b1de0cdc, H1d 38207655199, cumulative 38207655164 y build 38207655170.
+- Plus: agrupaciones decimales redundantes E2E aprobadas en SHA 19daac09e6f98d4429ceeca904bcfdd5b7efd46b, H1d 38207857573 y cumulative 38207857516.
+- Criterio de aviso y pruebas discriminantes de interpretaciones explícitas tienen evidencia favorable; pendiente definir formalmente semántica universal de entrada ambigua y gestión de identificador compuesto bc frente a b*c sin sustituciones. El XFAIL estricto de lectura alternativa Plus permanece y no se convierte en PASS. No cerrar SY-P-23 ni SG28 multihost.
