@@ -28,3 +28,22 @@ describe("Syntax309 SY-P-24/25 concatenated variable products", () => {
     });
   }
 });
+
+describe("Syntax309 SY-P-24/25 independent numeric witnesses", () => {
+  const witnesses = [
+    { id: "SY-P-24", expression: "xy", values: { x: -4, y: 5 }, expected: -20 },
+    { id: "SY-P-24", expression: "xy", values: { x: 0, y: 7 }, expected: 0 },
+    { id: "SY-P-25", expression: "xyz", values: { x: -2, y: 3, z: 4 }, expected: -24 },
+    { id: "SY-P-25", expression: "xyz", values: { x: 5, y: 0, z: 7 }, expected: 0 },
+  ];
+  for (const { id, expression, values, expected } of witnesses) {
+    it(`${id}: ${expression} retains product semantics with ${JSON.stringify(values)}`, () => {
+      const parsed = parseExpression(expression);
+      const substituted = Object.entries(values).reduce(
+        (expr, [symbol, value]) => expr.replace(new RegExp(symbol, "g"), String(value)),
+        parsed.algebrite,
+      );
+      expect(Number(Algebrite.run(substituted))).toBe(expected);
+    });
+  }
+});
