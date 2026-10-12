@@ -2665,3 +2665,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Corrección acotada del oráculo E2E Plus frontend/e2e/in625-h1d-reentry.spec.ts: reconoce fracciones exactas enteras mediante conversión numérica y en cualquier fallo adjunta valor crudo y normalizado para distinguir problema de producto vs formato. No se cambia motor ni parser; se sigue exigiendo resultado esperado 3/8/5/9.
 - Commit técnico Plus fb20e144967dc9f32d619d83bc971c489ef30799; Actions H1d 38290470544 y cumulative 38290470553, inicialmente QUEUED. Verificar conclusions/jobs/logs de ambos en ese SHA; si H1d continúa FAIL, inspeccionar el valor real registrado y corregir SOLO capa demostrada.
 - SY-P-23 OPEN y SG28 multihost BLOCKED. No certificar esta nueva regresión antes de comprobar CI.
+
+## 2026-10-12 — SY-P-23: corrección LaTeX mal escapado en test E2E
+- Plus SHA fb20e144: H1d 38290470544 FAILURE, cumulative 38290470553 SUCCESS. El log mostró 34 PASS, 1 FAIL y salida `6 a c_{12} f r + 1` causada por cuatro comandos String.raw con doble barra invertida (harness).
+- Se corrigieron cuatro valores de entrada LaTeX en Plus frontend/e2e/in625-h1d-reentry.spec.ts, commit 018c1489b5e27050e274ef530a7bf5bb6b440dfd. Oráculo numérico sigue exigiendo 3, 8, 5, 9; no se tocó motor ni parser.
+- CI nueva Plus para SHA 018c1489: H1d 38290844352 y cumulative 38290844430 en progreso en primera consulta. No declarar PASS sin evidencia final.
+- SY-P-23 OPEN; SG28 multihost BLOCKED. Próximo objetivo: inspeccionar resultados y logs de ambos gates en este SHA antes de ampliar la matriz.
