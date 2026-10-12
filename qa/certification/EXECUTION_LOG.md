@@ -2831,3 +2831,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus: nueva prueba permanente de identificadores vecinos en fracciones LaTeX y subexpresiones extendidas, archivo frontend/e2e/in625-h1d-reentry.spec.ts, commit 4d772d156d274ac764566b873f9e261fff59b6c3. Prueba que aa/bc, a/bcd, xa/bc y a/bcx, también con \\frac y contexto aritmético, no generen advertencia ni validación SY-P-23 y mantengan MathLive. Sin cambios en motor, parser o políticas de Lite.
 - Nuevas corridas automáticas Plus SHA 4d772d15: H1d 38289477109 y acumulativo 38289477051, ambas QUEUED en consulta inicial, resultado aún NO VERIFICADO.
 - SY-P-23 continúa OPEN por convención compartida y XFAIL estricto; SG28 multihost continúa BLOCKED. Próximo objetivo: verificar los dos nuevos gates en el SHA exacto, diagnosticar fallos si existen y ampliar pruebas semánticas de variantes agrupadas sin equiparar warning Lite con bloqueo Plus.
+
+
+## 2026-10-12 — SY-P-23: evaluación numérica de fracciones compuestas
+- Plus SHA 4d772d156d274ac764566b873f9e261fff59b6c3: H1d 38289477109 SUCCESS; cumulative 38289477051 SUCCESS (backend y frontend), verificados en GitHub.
+- Plus añadió test E2E permanente de resultado matemático real para cuatro variantes de fracciones LaTeX numéricas con agrupación explícita y contexto aritmético; archivo frontend/e2e/in625-h1d-reentry.spec.ts, commit fe1d2c1ecaf9c5a2e176936743670b05bf783fc4. No debe aparecer aviso SY-P-23 y se exige el valor numérico correcto (3, 8, 5, 9). Sin cambios en UI, parser o motor.
+- CI automática Plus SHA fe1d2c1: H1d 38290056699 y cumulative 38290056657, inicialmente QUEUED. No declarar PASS hasta obtener conclusión y jobs.
+- SY-P-23 OPEN: pendiente convención compartida de identificadores contiguos y XFAIL estricto; SG28 multihost BLOCKED. Siguiente paso: revisar jobs/logs en SHA fe1d2c1 y corregir cualquier regresión demostrada antes de ampliar cobertura.
