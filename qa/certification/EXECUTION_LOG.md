@@ -2692,3 +2692,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Nueva regresión UI Plus en `frontend/e2e/in625-h1d-reentry.spec.ts` commit f3f97d896fabd2edaac04ba616de1ace25c11735: tras bloquear `a/bc`, usuario introduce `(12/3)*2` y puede obtener 8, sin aviso de ambigüedad. Verifica que el bloqueo no inutiliza el flujo de cálculo explícito.
 - Plus H1d 38237911465 y cumulative 38237911588 iniciados en CI, inicialmente IN_PROGRESS; pendiente confirmar resultado, no marcar verde preventivamente. Lite sin cambios funcionales en esta fase.
 - Siguiente paso: revisar ambos gates y tratar cualquier fallo demostrado, luego expandir detección de ambigüedad de forma conservadora y con pruebas discriminantes. SY-P-23 OPEN; SG28 multihost BLOCKED.
+
+
+## 2026-10-12 — SY-P-23 protección de paréntesis exteriores en Plus
+- Commit Plus f3f97d896fabd2edaac04ba616de1ace25c11735 validado con H1d 38237911465 y cumulative 38237911588 SUCCESS: se puede recuperar y evaluar `(12/3)*2` tras bloqueo `a/bc`.
+- Ampliación funcional Plus `frontend/src/components/BasicMode.tsx` commit 0322fff7980321860f96b9680b6270142452addd: también exige desambiguación para `(a/bc)` si `bc` no tiene sustitución; no reescribe parser ni altera casos agrupados. Cobertura E2E nueva `frontend/e2e/in625-h1d-reentry.spec.ts` commit 03408a40fdd7c2c00645f7831b39ec3f9e88227a verifica que no se envía POST `/evaluate` para `(a/bc)` sin `bc`.
+- Nuevos runs automáticos Plus del SHA 03408a40: H1d 38238269445 y cumulative 38238269495 inicialmente QUEUED; revisar resultado antes de certificar. Alcance detector todavía acotado a formas específicas, no dar por completo SY-P-23. SG28 multihost sigue BLOCKED.
