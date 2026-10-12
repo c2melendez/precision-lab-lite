@@ -385,3 +385,21 @@ test("SY-P-23 Lite: aviso en entradas ambiguas parentetizadas sin alterar MathLi
     await expect(warning, expression).toHaveCount(0);
   }
 });
+
+
+test("SY-P-23: el aviso detecta a/bc dentro de expresiones mayores sin alterar MathLive", async ({ page }) => {
+  await page.goto("./");
+  const warning = page.getByRole("status", { name: "Convención de división ambigua" });
+  const field = page.locator("math-field").first();
+  for (const expression of ["1+a/bc", "2*(a/bc)", "a/bc+3"]) {
+    await setInput(page, expression);
+    await expect(warning, expression).toBeVisible();
+    await expect(warning).toContainText("(a/b)*c");
+    await expect(warning).toContainText("a/(b*c)");
+    expect(await field.evaluate(el => (el as HTMLElement & { value?: string }).value), expression).toBe(expression);
+  }
+  for (const expression of ["1+(a/b)*c", "2*(a/(b*c))", "a/(b*c)+3"]) {
+    await setInput(page, expression);
+    await expect(warning, expression).toHaveCount(0);
+  }
+});
