@@ -2652,3 +2652,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Se publicó fix del oráculo en `frontend/e2e/in625-h1d-reentry.spec.ts` SHA Plus 52a36dc53fc2ff904042255211881c9922bc380b: para los casos explícitos decimales requiere 7.5 o 15/2 en LaTeX, y 1.2 o 6/5 respectivamente; preserva alerta ausente y resultado real. No modifica producto.
 - GitHub Actions disparados automáticamente sobre 52a36dc: H1d 38205648204, cumulative 38205648220, inicialmente QUEUED; NO certificar este SHA sin resultados.
 - Siguiente paso exacto: verificar H1d y cumulative de Plus sobre SHA 52a36dc, diagnosticar cualquier fallo residual; luego continuar SY-P-23 en canal UI Lite y reconciliación de convenciones. SY-P-23 OPEN; SG28 multi-host BLOCKED.
+
+
+## 2026-10-11 — SY-P-23: Lite E2E decimal de agrupaciones explícitas
+- Plus SHA 52a36dc53fc2ff904042255211881c9922bc380b: H1d 38205648204 y cumulative 38205648220 completed/SUCCESS. La UI Plus admite resultado racional exacto `\\frac{15}{2}` para 7.5 y `\\frac{6}{5}` para 1.2 sin sacrificar el oráculo matemático.
+- Publicada nueva regresión Lite `e2e/in625-h1d-reentry.spec.ts` commit 3d1560551da68ab5e4de3adf9ce7fab232f82ba2: `(9/3)*2.5` espera 7.5 o `\\frac{15}{2}`, y `9/(3*2.5)` espera 1.2 o `\\frac{6}{5}`. Verifica además ausencia del aviso de `a/bc`. Este es test de UI real y no modifica el motor.
+- CI del último SHA Lite pendiente de verificar; no certificar PASS hasta jobs/logs.
+- Siguiente paso exacto: localizar y analizar cumulative, H1d y build de Lite para SHA 3d156055; diagnosticar cualquier fallo y corregir sin debilitar criterios. SY-P-23 global OPEN; SG28 multihost BLOCKED.
