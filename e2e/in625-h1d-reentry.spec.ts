@@ -417,3 +417,16 @@ test("SY-P-23 Lite: la ambigüedad detiene cálculo sin alterar MathLive", async
     expect(await field.evaluate(el => (el as HTMLElement & { value?: string }).value), expression).toBe(expression);
   }
 });
+
+test("SY-P-23 Lite: identificadores vecinos no reciben bloqueo de bc", async ({ page }) => {
+  await page.goto("./");
+  const warning = page.getByRole("status", { name: "Convención de división ambigua" });
+  const field = page.locator('math-field[aria-label="Entrada matemática"]').first();
+  for (const expression of ["aa/bc", "a/bcd", "xa/bc", "a/bcx", "1+aa/bc", "2*(a/bcd)"]) {
+    await setInput(page, expression);
+    await expect(warning, expression).toHaveCount(0);
+    const output = await submit(page);
+    expect(output.value, expression).not.toContain("SY-P-23:");
+    expect(await field.evaluate(el => (el as HTMLElement & {value?:string}).value), expression).toBe(expression);
+  }
+});
