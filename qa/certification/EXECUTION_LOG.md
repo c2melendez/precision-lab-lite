@@ -2712,3 +2712,11 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Acciones automáticas generadas por el push: Plus H1d `38244599384`, acumulativo `38244599396` y SG28 UI `38244599369`; inicialmente IN_PROGRESS. No declarar PASS del nuevo commit hasta comprobar su conclusión y logs.
 - Lite: sin cambios de producto necesarios por esta corrección específica de Plus; mantener criterios funcionales de paridad y registrar excepción de convención de identificadores compuestos.
 - Siguiente paso exacto: verificar H1d/acumulativo/SG28 UI en Plus SHA 7935bda; si H1d falla, inspeccionar payload enviado al endpoint para `(a/bc)` y corregir la capa confirmada; si pasa, continuar ampliación conservadora SY-P-23 y registrar evidencia bilateral. SY-P-23 OPEN; SG28 multihost BLOCKED.
+
+
+## 2026-10-12 — SY-P-23: comprobar payload de bc parentetizada
+- Se publicó Plus `7fe8b75ca5b9cb3c789475a8cb70e86a7ddb2c34` sobre la corrección funcional previa `7935bda7e852889511d4c0589322c75f4a7f5ee7`.
+- Archivo: `frontend/e2e/in625-h1d-reentry.spec.ts`. Ahora exige también request POST `/evaluate` con `expression: a/bc` y sustituciones `{a:12, bc:6, b:3, c:2}` para entrada `(a/bc)`, antes de comprobar resultado 2. Evita falso PASS por igualdad accidental de resultados de otras interpretaciones.
+- CI técnico Plus para 7fe8b75: H1d `38244778067` (IN_PROGRESS), cumulative `38244778168` (QUEUED) al consultar. SG28 UI `38244599369` corresponde al SHA anterior `7935bda`, no al test-only posterior.
+- Las corridas anteriores H1d `38244599384` y cumulative `38244599396` del SHA `7935bda` seguían IN_PROGRESS al consultar. No se declara PASS nuevo sin conclusión.
+- Próxima acción: verificar jobs y logs H1d/cumulative de 7fe8b75 y SG28 UI 7935bda; ante fallo corregir origen demostrado. SY-P-23 OPEN; SG28 multihost BLOCKED. No se alteró Lite funcionalmente.
