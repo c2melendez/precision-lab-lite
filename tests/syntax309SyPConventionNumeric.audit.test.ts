@@ -118,6 +118,22 @@ describe("Syntax309 SY-P — Lite numeric precedence convention", () => {
     }
   });
 
+  it("SY-P-23: agrupaciones explícitas preservan valores con factores decimales", () => {
+    const cases = [
+      ["(a/b)*c", 7.5],
+      ["a/(b*c)", 1.2],
+      [String.raw`\frac{a}{b*c}`, 1.2],
+    ] as const;
+    for (const [input, expected] of cases) {
+      const parsed = parseExpression(input).algebrite;
+      const substituted = parsed
+        .replace(/\ba\b/g, "(9)")
+        .replace(/\bb\b/g, "(3)")
+        .replace(/\bc\b/g, "(2.5)");
+      expect(Number(evaluate(substituted)), input).toBeCloseTo(expected, 9);
+    }
+  });
+
   it("SY-P-23: la fracción LaTeX conserva la multiplicación b*c en Lite", () => {
     const latex = parseExpression(String.raw`\frac{a}{bc}`).algebrite;
     const grouped = parseExpression("a/(b*c)").algebrite;
