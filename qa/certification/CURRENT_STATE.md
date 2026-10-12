@@ -2548,3 +2548,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Regresiones Plus `frontend/e2e/in625-h1d-reentry.spec.ts` commit 6657316709bbca2a5ef0f397ecc10b1f5b72d955: entradas ((a/bc)) y (((a/bc))) deben bloquear POST cuando bc no existe; con bc=6 y a=12, b=3, c=2 deben mandar expression a/bc y dar resultado 2.
 - GitHub Actions nuevos SHA 665731670: H1d 38245250585 y cumulative 38245250562 inicialmente QUEUED. SHA intermedio 88ddbfca: H1d 38245192109, cumulative 38245192123, SG28 UI 38245192246 inicialmente IN_PROGRESS. No confundir SHAs ni contar PASS sin resultado final.
 - Siguiente paso: verificar H1d y cumulative del SHA 665731670 y SG28 UI del SHA 88ddbfca, analizar fallos de MathLive o harness y corregir según evidencia. SY-P-23 OPEN; SG28 multihost BLOCKED. Lite no requiere cambio funcional para esta excepción particular de identificador compuesto Plus.
+
+
+## 2026-10-12 — SY-P-23: fracción LaTeX con paréntesis externos
+- Plus SHA 6657316709bbca2a5ef0f397ecc10b1f5b72d955: H1d 38245250585 SUCCESS y cumulative 38245250562 SUCCESS. SG28 UI run 38245192246 SUCCESS en SHA funcional previo 88ddbfca83e09c3120a6333ac241a58d6beb4b02; no confundir esto con SG28 multihost.
+- Se añadió test E2E Plus para `(\\frac{a}{bc})` con y sin variable bc definida: el caso sin bc debe bloquear el POST; con a=12, bc=6, b=3 y c=2 debe enviar expression a/bc y devolver 2. Commit 17d86363a37718682df434b33335308897015a65, archivo frontend/e2e/in625-h1d-reentry.spec.ts. No hubo cambio del motor en este paso.
+- H1d run 38245669432 de SHA 17d86363 fue creado en estado QUEUED. Confirmar conclusión y jobs/logs; buscar también el cumulative correspondiente al SHA. El test no se declara PASS antes de esa evidencia.
+- Estado: SY-P-23 OPEN, SG28 multihost BLOCKED. Siguiente paso: verificar ambos gates y diagnosticar cualquier error del canal MathLive y del payload de fracciones parentetizadas; reforzar cobertura solo cuando exista evidencia.
