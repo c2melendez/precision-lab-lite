@@ -2621,3 +2621,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - GitHub Actions Plus en SHA b4df99c70: H1d `38277095820` y cumulative `38277095768` fueron creados (QUEUED en la consulta). No declarar PASS antes de verificar conclusiones y logs.
 - Diferencia persistente: Lite advertencia informativa; Plus puede bloquear POST para entrada completa ambigua si falta bc. SY-P-23 OPEN y SG28 multihost BLOCKED; no contar paridad total por alertas coincidentes.
 - Próxima acción: comprobar ambos gates Plus de b4df99c70, diagnosticar cualquier fallo real y avanzar cobertura de aviso/validación en entrada extendida, según matriz oficial.
+
+
+## 2026-10-12 — SY-P-23: ambigüedad dentro de expresiones extendidas (E2E bilateral)
+- Plus SHA anterior b4df99c70a9238216aadc4e5b0324d40cbe19813: H1d 38277095820 y cumulative 38277095768 SUCCESS, comprobados por GitHub.
+- Nuevos tests E2E bilaterales: Plus frontend/e2e/in625-h1d-reentry.spec.ts commit ebec72aa9e8f9fc2cffb3ab3b0d0976890d96f09; Lite e2e/in625-h1d-reentry.spec.ts commit 17d6161439ba02017329ec6013da20274502e39a. Comprueban aviso y conservación exacta de MathLive para `1+a/bc`, `2*(a/bc)` y `a/bc+3`; ausencia de aviso para `1+(a/b)*c`, `2*(a/(b*c))`, `a/(b*c)+3`. No cambian motores ni contratos.
+- CI de Plus SHA ebec72aa: H1d 38280397277 y cumulative 38280397315 IN_PROGRESS. Lite SHA 17d61614: build 38280406600 IN_PROGRESS, H1d 38280406666 y cumulative 38280406591 QUEUED en consulta. No declarar PASS de tests nuevos hasta finalizar y revisar fallos.
+- SY-P-23 OPEN: aviso no es equivalente a bloqueo del POST para expresiones más largas; ese flujo de evaluación sigue pendiente de contrato. SG28 multihost BLOCKED.
+- Próximo objetivo: verificar las cinco corridas, analizar fallos de los tests de aviso y resolver detección de falsas alarmas según evidencia; ampliar después bloqueo/evaluación de entradas compuestas extendidas si el contrato lo requiere.
