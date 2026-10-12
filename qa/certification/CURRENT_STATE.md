@@ -2658,3 +2658,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus añadió test E2E permanente de resultado matemático real para cuatro variantes de fracciones LaTeX numéricas con agrupación explícita y contexto aritmético; archivo frontend/e2e/in625-h1d-reentry.spec.ts, commit fe1d2c1ecaf9c5a2e176936743670b05bf783fc4. No debe aparecer aviso SY-P-23 y se exige el valor numérico correcto (3, 8, 5, 9). Sin cambios en UI, parser o motor.
 - CI automática Plus SHA fe1d2c1: H1d 38290056699 y cumulative 38290056657, inicialmente QUEUED. No declarar PASS hasta obtener conclusión y jobs.
 - SY-P-23 OPEN: pendiente convención compartida de identificadores contiguos y XFAIL estricto; SG28 multihost BLOCKED. Siguiente paso: revisar jobs/logs en SHA fe1d2c1 y corregir cualquier regresión demostrada antes de ampliar cobertura.
+
+
+## 2026-10-12 — SY-P-23 resultado de fracción numérica: fallo H1d y diagnóstico
+- Plus SHA fe1d2c1ecaf9c5a2e176936743670b05bf783fc4: H1d 38290056699 FAILURE (34 PASS, 1 FAIL con retry); cumulative 38290056657 SUCCESS, jobs backend y frontend. Primera expresión 1+\\frac{12}{3*2}: Number(canonical(output.value)) dio NaN aunque readOutcome devolvió kind=result. Esto no prueba valor matemático incorrecto: la salida original no se incluía en assertion.
+- Corrección acotada del oráculo E2E Plus frontend/e2e/in625-h1d-reentry.spec.ts: reconoce fracciones exactas enteras mediante conversión numérica y en cualquier fallo adjunta valor crudo y normalizado para distinguir problema de producto vs formato. No se cambia motor ni parser; se sigue exigiendo resultado esperado 3/8/5/9.
+- Commit técnico Plus fb20e144967dc9f32d619d83bc971c489ef30799; Actions H1d 38290470544 y cumulative 38290470553, inicialmente QUEUED. Verificar conclusions/jobs/logs de ambos en ese SHA; si H1d continúa FAIL, inspeccionar el valor real registrado y corregir SOLO capa demostrada.
+- SY-P-23 OPEN y SG28 multihost BLOCKED. No certificar esta nueva regresión antes de comprobar CI.
