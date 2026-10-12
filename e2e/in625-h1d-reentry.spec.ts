@@ -293,3 +293,14 @@ test("SY-P-23 transición de entrada ambigua a agrupación explícita y vuelta",
   await setInput(page, "(a/b)*c");
   await expect(warning).toHaveCount(0);
 });
+
+test("SY-P-23 advierte explícitamente sobre identificador compuesto bc sin reescribirlo", async ({ page }) => {
+  await page.goto("./");
+  await setInput(page, "a/bc");
+  const warning = page.getByRole("status", { name: "Convención de división ambigua" });
+  await expect(warning).toContainText("bc es una única variable");
+  const input = page.locator("math-field").first();
+  await expect.poll(async () => input.evaluate(el => (el as HTMLElement & {value?: string}).value ?? "")).toBe("a/bc");
+  await setInput(page, "a/(b*c)");
+  await expect(warning).toHaveCount(0);
+});
