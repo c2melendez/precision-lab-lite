@@ -403,3 +403,17 @@ test("SY-P-23: el aviso detecta a/bc dentro de expresiones mayores sin alterar M
     await expect(warning, expression).toHaveCount(0);
   }
 });
+
+test("SY-P-23 Lite: la ambigüedad detiene cálculo sin alterar MathLive", async ({ page }) => {
+  await page.goto("./");
+  const warning = page.getByRole("status", { name: "Convención de división ambigua" });
+  const field = page.locator('math-field[aria-label="Entrada matemática"]').first();
+  for (const expression of ["a/bc", "1+a/bc", String.raw`\frac{a}{bc}`]) {
+    await setInput(page, expression);
+    await expect(warning, expression).toBeVisible();
+    const result = await submit(page);
+    expect(result.kind, expression).toBe("error");
+    expect(result.value, expression).toContain("SY-P-23");
+    expect(await field.evaluate(el => (el as HTMLElement & { value?: string }).value), expression).toBe(expression);
+  }
+});
