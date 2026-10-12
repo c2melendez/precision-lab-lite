@@ -2576,3 +2576,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Publicada regresión Plus `frontend/e2e/in625-h1d-reentry.spec.ts` commit daff340d92480153690ca2950b3c220593138872 para entradas numéricas `(12/3)*2`, `((12/3))*2`, `12/((3*2))` y `((12/(3*2)))`, sin aviso SY-P-23 y con resultados 8/8/2/2. Ajuste posterior del oráculo numérico (sin cambiar motor) commit 50ba0110bec5016614168979c428e04608e8f94e.
 - Runs correspondientes al SHA final 50ba0110: H1d 38247059261, cumulative 38247059467, inicialmente QUEUED. Runs del SHA intermedio daff340d: H1d 38247034032, cumulative 38247034066, inicialmente IN_PROGRESS. La certificación debe basarse en el SHA final y sus logs.
 - SY-P-23 OPEN y SG28 multihost BLOCKED. Siguiente paso: comprobar conclusión H1d/cumulative 50ba0110, clasificar cualquier rojo y continuar auditoría de casos discriminantes, sin concluir certificación global a partir de SUCCESS aislado.
+
+
+## 2026-10-12 — SY-P-23: fracciones numéricas LaTeX y falsos positivos
+- Plus SHA `50ba0110bec5016614168979c428e04608e8f94e`: H1d `38247059261` y acumulativo `38247059467` completados SUCCESS. Protege división numérica con paréntesis sin falso aviso.
+- Nuevo test Plus en `frontend/e2e/in625-h1d-reentry.spec.ts`, commit `fd55b41a7a15e60f60ded48a6d3311bea7497306`: `(\\frac{12}{3})*2` debe devolver 8 y `(\\frac{12}{3*2})` debe devolver 2; ninguno debe mostrar advertencia de variable compuesta `bc`. Sin cambios al motor.
+- CI automático nuevo SHA: H1d `38247671320`, acumulativo `38247671293`, inicialmente QUEUED. No declarar PASS sin conclusión de esos runs. SY-P-23 OPEN; SG28 multihost BLOCKED.
+- Siguiente paso: comprobar conclusión y logs de estos dos gates, corregir cualquier fallo confirmado y avanzar al contrato SY-P-23 sin convertir casos puntuales en cierre global.
