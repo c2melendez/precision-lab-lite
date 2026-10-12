@@ -2561,3 +2561,11 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Corrección acotada de frontend Plus en `frontend/src/components/BasicMode.tsx` commit 34734b232058b730be3c986c68773cea62755e6e: conserva a/bc en payload si MathLive contiene exactamente a/bc o la fracción LaTeX `\\frac{a}{bc}` y bc tiene sustitución no vacía. Sin modificación general del parser ni semántica de variables independientes.
 - CI de último SHA 34734b23205: H1d 38195286920, acumulativo 38195286916 y SG28 Plus UI 38195286929 activos al consultar. No contabilizar PASS de ampliación LaTeX antes de verificar logs/gates; los anteriores del SHA c1f8 son sobre prueba sin fix.
 - Siguiente paso: verificar los tres gates sobre SHA 34734b, investigar fallos por serialización/canonización real, y comprobar paridad Lite. SY-P-23 amplio continúa OPEN; SG28 distribuido permanece pendiente de validación externa.
+
+
+## 2026-10-11 — SY-P-23 LaTeX con bc: certificación acotada en Plus
+- Plus SHA 34734b232058b730be3c986c68773cea62755e6e: H1d 38195286920, cumulative 38195286916, SG28 UI 38195286929, todas completed/SUCCESS. Incluyen regresión de `\\frac{a}{bc}` con sustitución nombrada bc y canal de resultado 2, sin convertir b*c en bc.
+- Se actualizó qa/certification/SY_P_23_CONVENTION.md de Plus para retirar el carácter obsoleto del aviso UI documental: existe aviso accesible y pruebas. El caso resuelto es **específico**: entrada exacta a/bc o fracción LaTeX exacta, con bc definida mediante sustitución en Plus.
+- Se inspeccionó Lite src/modes/BasicScientific/BasicScientificMode.tsx: evaluación actual pasa parseExpression(currentLatex,angleMode) a dispatchWorker, sin panel de sustituciones equivalente a Plus. No marcar paridad con sustitución bc inventada; Lite mantiene cobertura de aviso, agrupaciones explícitas y oráculos numéricos propios.
+- SY-P-23 permanece OPEN para otras notaciones, reglas generales de identificadores compuestos y cobertura/paridad. XFAIL estricto del backend Plus para la lectura alternativa separada b*c permanece; SG28 multihost necesita entorno externo representativo.
+- Próxima fase: caracterizar contrato de variables compuestas en Lite y diseñar suite no regresiva sin introducir UI de sustituciones no aprobada; verificar nuevas representaciones Plus con entradas agrupadas.
