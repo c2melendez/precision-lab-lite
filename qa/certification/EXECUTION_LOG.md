@@ -2685,3 +2685,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Implementación Plus: `frontend/src/components/BasicMode.tsx` SHA 941ae5a62011b0467f157d270f0bd61c5e3fa539. Si se introduce exactamente `a/bc` o `\\frac{a}{bc}` SIN sustitución no vacía `bc`, la UI exige definir bc o agrupar `(a/b)*c` / `a/(b*c)` antes de enviar al endpoint. Con bc definida, conserva el flujo existente de variable compuesta. No cambia backend, ni corrige XFAIL de variables separadas.
 - Nueva prueba UI E2E Plus `frontend/e2e/in625-h1d-reentry.spec.ts` SHA 121914ba4320fa7bf4924f576e392fb4a10ddd9d comprueba ambas formas ambiguas, error accesible y que no salga solicitud POST `/evaluate`. Pendiente CI de los últimos cambios, NO PASS todavía.
 - Alcance acotado: bloqueo solo para entrada completa exacta; no declarar un detector general de ambigüedad en toda expresión. Lite conserva advertencia y su convención parser; no imponer identificadores compuestos en Lite. SY-P-23 OPEN hasta validación CI + aceptación de la convención y extensión general; SG28 multihost BLOCKED.
+
+
+## 2026-10-12 — SY-P-23: reanudación tras bloqueo de entrada ambigua
+- Plus SHA 121914ba4320fa7bf4924f576e392fb4a10ddd9d: H1d 38209139811 y cumulative 38209139936 = SUCCESS. Protege `a/bc` y fracción LaTeX exacta sin bc definida: exige aclarar, sin POST `/evaluate`. La detección sigue acotada a esas formas completas.
+- Nueva regresión UI Plus en `frontend/e2e/in625-h1d-reentry.spec.ts` commit f3f97d896fabd2edaac04ba616de1ace25c11735: tras bloquear `a/bc`, usuario introduce `(12/3)*2` y puede obtener 8, sin aviso de ambigüedad. Verifica que el bloqueo no inutiliza el flujo de cálculo explícito.
+- Plus H1d 38237911465 y cumulative 38237911588 iniciados en CI, inicialmente IN_PROGRESS; pendiente confirmar resultado, no marcar verde preventivamente. Lite sin cambios funcionales en esta fase.
+- Siguiente paso: revisar ambos gates y tratar cualquier fallo demostrado, luego expandir detección de ambigüedad de forma conservadora y con pruebas discriminantes. SY-P-23 OPEN; SG28 multihost BLOCKED.
