@@ -444,8 +444,10 @@ test("SY-P-23 Lite: tras bloquear ambigüedad se recupera evaluación explícita
     // for the response to this new valid calculation.
     await page.evaluate(() => window.mathVirtualKeyboard?.hide());
     const region = page.locator('section[aria-label="Resultado"]').first();
-    const priorRequestId = await region.locator('[role="status"][data-result-request-id]').first()
-      .getAttribute("data-result-request-id").catch(() => null);
+    const previousStatus = region.locator('[role="status"][data-result-request-id]').first();
+    const priorRequestId = (await previousStatus.count()) > 0
+      ? await previousStatus.getAttribute("data-result-request-id")
+      : null;
     await page.getByRole("region", { name: "Entrada" }).getByRole("button", { name: "Calcular", exact: true }).click();
     await expect.poll(async () => {
       const status = region.locator('[role="status"][data-result-request-id]').first();
