@@ -2645,3 +2645,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Nueva regresión frontend real `frontend/e2e/in625-h1d-reentry.spec.ts` Plus commit 5ed05f4c8be2d355ef00f5ccd264345e4f07d5fb: expresiones `(9/3)*2.5`=7.5 y `9/(3*2.5)`=1.2 desde MathLive/UI, sin mostrar aviso de a/bc. No modifica el motor ni interpreta entrada ambigua automáticamente.
 - Auto CI Plus: H1d 38205311838 y cumulative 38205311913 inicialmente QUEUED; ninguna aprobación de este nuevo test hasta revisar resultado. Lite mantiene gates verdes previos.
 - Próximo paso exacto: consultar conclusiones y logs del H1d/cumulative Plus del SHA 5ed05f4, corregir discrepancias UI/MathLive/oráculo demostradas y continuar SY-P-23 sin declarar cierre; SG28 multihost BLOCKED.
+
+
+## 2026-10-11 — SY-P-23 E2E decimal: formato racional exacto
+- Plus SHA 5ed05f4c8be2d355ef00f5ccd264345e4f07d5fb: cumulative 38205311913 SUCCESS, H1d 38205311838 FAILURE. Log job 114667384154 indica `(9/3)*2.5` resultó `\\frac{15}{2}` frente a oráculo decimal `7.5`. Se clasificó como formato/oráculo, no error matemático: resultado correcto exacto.
+- Se publicó fix del oráculo en `frontend/e2e/in625-h1d-reentry.spec.ts` SHA Plus 52a36dc53fc2ff904042255211881c9922bc380b: para los casos explícitos decimales requiere 7.5 o 15/2 en LaTeX, y 1.2 o 6/5 respectivamente; preserva alerta ausente y resultado real. No modifica producto.
+- GitHub Actions disparados automáticamente sobre 52a36dc: H1d 38205648204, cumulative 38205648220, inicialmente QUEUED; NO certificar este SHA sin resultados.
+- Siguiente paso exacto: verificar H1d y cumulative de Plus sobre SHA 52a36dc, diagnosticar cualquier fallo residual; luego continuar SY-P-23 en canal UI Lite y reconciliación de convenciones. SY-P-23 OPEN; SG28 multi-host BLOCKED.
