@@ -57,3 +57,15 @@ Materializar el JSONL original completo y publicar su hash/conteo; construir gat
 - La alternativa `(a/b)*c` sin `bc` definida conserva su XFAIL estricto en `backend/tests/test_syntax309_syp_interpretation.py`: no convertirlo en PASS por el éxito de la lectura de identificador nombrado.
 
 **Regla de cierre pendiente:** documentar una convención general y visible para identificadores concatenados y división en línea, decidir expresamente si se admite la lectura `ac/b` y armonizar advertencia/bloqueo entre los canales autorizados de Lite y Plus. Exigir pruebas de canal UI/API, símbolos declarados/no declarados, lectura agrupada y oráculo numérico. No cambiar silenciosamente el parser ni borrar XFAIL. Estado: **OPEN — decisión de contrato bilateral pendiente**, no certificación integral.
+
+## SY-P — Política de frontera de identificadores y división (2026-10-12)
+
+Esta política **no reemplaza el fixture original** ni declara completado SY-P-23. Distingue expectativas que tienen evidencia de las que siguen sin contrato general:
+
+1. **SY-P-24 y SY-P-25 son obligatorios e independientes:** `xy` se interpreta como `x*y` y `xyz` como `x*y*z` en sus casos originales. No generalizar desde `bc` para transformar estos productos prescritos en símbolos atómicos. La cobertura HTTP Plus de estos ID usa sustituciones numéricas; falta contrastar todos los canales.
+2. **SY-P-23 con `bc` declarada:** el endpoint Plus interpreta `a/bc` como `a/(bc)`, donde `bc` es símbolo nombrado e independiente de `b*c`. Evidencias actuales en `backend/tests/test_syntax309_syp_interpretation.py`. Esto no demuestra una regla global para toda cadena de letras ni paridad con Lite.
+3. **SY-P-23 sin `bc` declarada:** la ruta UI actual evita evaluación silenciosa, exige agrupación explícita e informa de `(a/b)*c` y `a/(b*c)`; preservar el valor de MathLive. **No atribuir el valor 8 o 2 a la entrada ambigua.** El XFAIL estricto del backend Plus para lectura separada de `b,c` continúa pendiente.
+4. **Alternativa fuente `ac/b`:** permanece literalmente en el fixture como alternativa de convención. No se asume equivalente a `(a/b)*c` en general (sería `(a*c)/b`, y solo coincide en álgebra conmutativa cuando hay condiciones adecuadas). Hasta declarar la semántica de tokens y dominios por canal, no se certifica esa alternativa.
+5. **SY-P-21 `1/2x` y SY-P-18/19:** deben evaluarse como casos separados de convención de precedencia; SY-P-23 no decide sus lecturas. Para un resultado no ambiguo el usuario dispone de paréntesis explícitos.
+
+**Criterio para levantar el bloqueo:** probar la misma convención ante variables declaradas y no declaradas en Lite/Plus, distinguir el parser de la política UI, acreditar oráculo numérico y eco/advertencia por canal, y conservar el fixture original inalterado. No borrar un XFAIL hasta que una implementación probada satisfaga expresamente su esperado. SG28 multihost sigue BLOCKED.
