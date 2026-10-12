@@ -2659,3 +2659,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Publicada nueva regresión Lite `e2e/in625-h1d-reentry.spec.ts` commit 3d1560551da68ab5e4de3adf9ce7fab232f82ba2: `(9/3)*2.5` espera 7.5 o `\\frac{15}{2}`, y `9/(3*2.5)` espera 1.2 o `\\frac{6}{5}`. Verifica además ausencia del aviso de `a/bc`. Este es test de UI real y no modifica el motor.
 - CI del último SHA Lite pendiente de verificar; no certificar PASS hasta jobs/logs.
 - Siguiente paso exacto: localizar y analizar cumulative, H1d y build de Lite para SHA 3d156055; diagnosticar cualquier fallo y corregir sin debilitar criterios. SY-P-23 global OPEN; SG28 multihost BLOCKED.
+
+
+## 2026-10-11 — SY-P-23 Lite: E2E decimal y paréntesis redundantes
+- Lite SHA 3d1560551da68ab5e4de3adf9ce7fab232f82ba2: H1d 38205933326, cumulative 38205933348, build 38205933343 completed/SUCCESS. Quedó aprobada prueba UI de agrupación decimal explícita sin aviso falso.
+- Publicado nuevo E2E Lite commit 0690d47592b063e0542a38b2f80d2ce6b1de0cdc en `e2e/in625-h1d-reentry.spec.ts`: comprueba `((9)/(3*2.5))` = 1.2 y `(((9)/(3)))*2.5` = 7.5 mediante UI; acepta fracciones exactas correspondientes y exige ausencia de aviso ambiguo. No cambia el motor.
+- Siguiente paso exacto: comprobar gates automáticos cumulative/H1d/build del SHA 0690d475 y analizar cualquier fallo; continuar reconciliación SY-P-23 con Plus. SY-P-23 OPEN; SG28 multihost BLOCKED.
