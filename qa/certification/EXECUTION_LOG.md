@@ -3293,3 +3293,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Narrow correction Lite `src/engine/parsing/normalize.ts` SHA 5b62c0dfdf58a60d53396a5c98e4cc003d2bee02: rewrite base-log immediately followed by a bare letter and additive tail, preserving the tail; original fixture test SY-F-18 stays unchanged. New cumulative 38448248216, build 38448248275, H1d 38448247962 QUEUED on first check. Verify gate and check side effects before closing.
 - Plus test SHA bf8de04029dde8c04dbce5cf4ced36195ceae6a8: H1d 38447931380 SUCCESS; cumulative 38447931604 IN_PROGRESS at last check. Plus cases represent backend-translated syntax, not MathLive glyphs.
 - Next exact task: inspect latest Lite and Plus cumulative results/logs and correct any further failures, add a regression for additive and subtractive base-log scope if needed, then continue SY-F-21+. Syntax309 is OPEN; SG28/DIST real multinode BLOCKED.
+
+
+## 2026-10-13 — SY-F-21/22/23 hyperbolic witnesses
+- Baseline SY-F-18/19/20: Lite SHA 5b62c0dfdf58a60d53396a5c98e4cc003d2bee02 cumulative 38448248216, build 38448248275, H1d 38448247962 all SUCCESS. Plus SHA bf8de04029dde8c04dbce5cf4ced36195ceae6a8 cumulative 38447931604 and H1d 38447931380 SUCCESS.
+- Published official fixture-backed Lite numerical tests SY-F-21 arsinh(1), SY-F-22 sinh^-1(1), SY-F-23 cosh^2(x)-sinh^2(x)=1 at SHA 80521538ea7b4af36e94916bf6ab673872f7429f. Lite CI for this SHA was not yet discoverable through Actions list at inspection: no run/PASS asserted.
+- Published Plus explicitly translated HTTP backend witnesses for same cases at SHA 8dd6a03d8bf7b37f52c209fd029e2b12ca4ea80c. Plus cumulative run 38449665940 QUEUED, H1d 38449665893 IN_PROGRESS at initial inspection. These do not certify original MathLive LaTeX.
+- Next: verify or diagnose Lite push-triggering CI, inspect both SHA-specific logs/results, fix mathematical/parser issues without weakening oracles, then advance SY-F-24 onward. Syntax309 remains OPEN; SG28/DIST multinode remains BLOCKED.
