@@ -3007,3 +3007,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite commit `d0501408c4450147b0cac0e8bc5bc0a79a388a03` añadió casos SY-F-06 y SY-F-09 desde el LaTeX oficial, con parser + motor. Gates build `38384832377` y H1d `38384832433` SUCCESS; cumulative `38384832390` FAILURE: SY-F-09 `\\sin\\frac{\\pi}{6}` devuelve NaN, SY-F-06 pasa. 1103 PASS, 1 FAIL, 30 TODO. No clasificar aún el NaN como parser o motor sin diagnóstico.
 - Lite commit `ecd6ae6683ea002a8f3437af4ed046b21aa1d903` añadió assertion diagnóstica con input/parsed/raw/numeric conservando test FAIL si el error persiste. Nuevos gates `38385126363` build, `38385126389` H1d, `38385126660` cumulative, inicialmente QUEUED. Esta intervención no pretende arreglar ni silenciar la discrepancia.
 - Próximo objetivo: leer el log de la nueva corrida y corregir la causa identificada en Lite, protegiendo SY-F-06 y otros canales, después revalidar CI; SY-F global sigue abierto. SG28/DIST sigue su frente independiente.
+
+
+## 2026-10-13 — SY-F-09 diagnostic exact rational and correction
+- Plus baseline initial SY-F `97178705a78d570b06aa0e9c8bbb238eec16a0c0`: cumulative `38381825940` SUCCESS (backend 961 PASS, 1 XFAIL, 1 warning; frontend 757 PASS, 28 TODO), H1d `38381826053` SUCCESS.
+- Lite first test SHA `d0501408c4450147b0cac0e8bc5bc0a79a388a03`: cumulative `38384832390` FAIL on SY-F-09 NaN (1103 PASS, 1 FAIL, 30 TODO), build `38384832377` and H1d `38384832433` SUCCESS.
+- Diagnostic Lite SHA `ecd6ae6683ea002a8f3437af4ed046b21aa1d903`, cumulative `38385126660` FAIL confirmed parsed=`sin((pi)/(6))`, raw=`1/2`, numeric=`NaN`. Thus parser and engine delivered correct exact rational; failure is numeric formatting/normalization inside test harness.
+- Corrective Lite commit `6f3f13573664cd50ccc1df159eba7f2357e3175f` uses `evaluate(float(raw))` for rational fallback rather than `float(parsed)`; preserves original LaTeX input and numeric expectations for SY-F-06/09, no product change. Gates cumulative `38385242490`, build `38385242481`, H1d `38385242583` IN_PROGRESS when checked. PASS not assumed.
+- Next: check these new gates, investigate any red, then progress SY-F remaining 46 IDs with separate channel/oracle evidence. SG28/DIST unchanged.
