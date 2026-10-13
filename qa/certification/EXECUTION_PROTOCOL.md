@@ -42,3 +42,18 @@ Syntax 309 → Algebra 114 → Algebra 229 → Trigonometría → Log/Exp/Radica
 
 ## Interpretación de G2
 G2 comprueba invariancia de canal: LaTeX, texto y teclado deben converger a la misma interpretación matemática. No exigir igualdad textual cuando existen representaciones equivalentes válidas.
+
+
+## Política de continuidad en dos frentes — decisión aprobada 2026-10-12
+
+**Autoridad:** decisión del responsable del proyecto; aplica a Lite y Plus y a todas las sesiones futuras de LLM. Esta política define el orden de trabajo ante el bloqueo externo de la certificación SG28/DIST, sin modificar criterios de aceptación matemáticos ni de seguridad.
+
+**Frente A — SG28/H2 y DIST-01..08:** desarrollar el coordinador compartido de staging, mTLS, admisión global K=1, fencing duradero y cancelación real del worker a través de HTTP en nodos independientes. Mantener el modo distribuido desactivado por defecto y la ruta de evaluación existente como control. Preparar pruebas locales y CI aisladas sin tocar producción. Solo declarar PASS DIST cuando haya evidencia verificable de hosts independientes, grants globales, cancelación, recuperación, logs y SHA. Hasta entonces: SG28/H2 OPEN y DIST-01..08 BLOCKED; no confundir simulaciones, múltiples procesos o jobs de runners independientes con una ejecución multinodo completa.
+
+**Frente B — matrices matemáticas independientes:** avanzar simultáneamente en trabajo preparatorio, detección de fallos, implementación y regresiones que no dependan de SG28/DIST. Seguir el orden canónico posterior a IN625: Syntax 309 → Algebra 114 → Algebra 229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final. En Gráficas contemplar raíces en Argand, coloreado del dominio complejo, superficies 3D Re/Im y módulo con fase, con oráculos independientes. Respetar todas las dependencias de cada bloque y la paridad Lite/Plus.
+
+**Regla de gates:** no declarar IN625 cerrado contractualmente, ni cambiar el estado PASS de un bloque, cuando falten H2/SG28 o gates obligatorios. El trabajo del Frente B se registra como preparación/validación independiente o certificación parcial donde el contrato lo permita, sin fingir que el bloqueo fue resuelto. Una regresión cruzada reabre el bloque afectado. Los gates relevantes de CI deben pasar en el SHA correcto. No relajar oráculos ni atribuir PASS a TODO, XFAIL o pruebas manuales.
+
+**Autonomía y traspaso:** toda sesión debe leer el README de main para resolver la rama canónica, luego CURRENT_STATE, EXECUTION_PROTOCOL, MANUAL_CAPABILITY_GAPS y EXECUTION_LOG; verificar HEAD y Actions antes de actuar. Seleccionar una tarea accionable en cualquiera de los dos frentes sin esperar desbloqueo externo del otro; publicar cambios y pruebas pertinentes, sincronizar trazabilidad bilateral y consignar commit, run, estado y siguiente paso exacto. Evitar relanzar CI con commits solo documentales. No pedir confirmación rutinaria; no desplegar ni alterar permisos/producción o certificados reales sin autorización correspondiente.
+
+**Condición de salida de esta política:** cuando DIST/SG28 obtenga evidencia real suficiente se continúa el cierre IN625 y se reconcilian las matrices del Frente B con los gates acumulativos, sin perder el trabajo independiente registrado.
