@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import fixture from "../qa/certification/syntax309_cases.jsonl?raw";
-import { parseExpression } from "../src/engine/parsing";
+import { parseExpression, rewriteReciprocalFunctions } from "../src/engine/parsing";
 import { evaluate } from "../src/engine/algebriteClient";
 import { compileNumeric } from "../src/engine/numericFallback";
 
@@ -220,8 +220,10 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(byId[id].operacion).toBe("valor");
     const input = byId[id].entrada;
     const parsed = parseExpression(input).algebrite;
-    const numeric = compileNumeric(parsed, "__unused__")(0);
-    expect(Number.isFinite(numeric), id + " input=" + input + " parsed=" + parsed).toBe(true);
+    // Match the production reciprocal-function rewrite before numeric fallback.
+    const numericExpression = rewriteReciprocalFunctions(parsed);
+    const numeric = compileNumeric(numericExpression, "__unused__")(0);
+    expect(Number.isFinite(numeric), id + " input=" + input + " parsed=" + parsed + " numericExpression=" + numericExpression).toBe(true);
     expect(numeric).toBeCloseTo(expected, 6);
   });
 });
