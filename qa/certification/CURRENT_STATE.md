@@ -3141,3 +3141,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 ### 2026-10-13 — SY-F-23 numeric display diagnostic
 - Lite SHA 4cd09cb6f89f2df5891ad438a09ed376a1d4172e cumulative 38450262114 FAILURE: only SY-F-23 red (1124 PASS, 1 FAIL, 30 TODO); parsed grouping correct `(cosh(x))^(2)-(sinh(x))^(2)` and Algebrite exact display `1.000000...` at x=1; Number on display ellipsis incorrectly yielded NaN. SY-F-21/22 now PASS, using compileNumeric for inverse hyperbolic sine.
 - Follow-up harness correction SHA aee5eb3509ae35ec086244668f40df9c5a6c8506 evaluates the original parsed hyperbolic identity using compileNumeric(parsed,'x')(x) at 0,1,2 and still demands result 1. Cumulative 38450427712, H1d 38450427659, build 38450427540 IN_PROGRESS at observation. No PASS presumed until conclusion.
+
+
+## 2026-10-13 — SY-F-21/23 validated; SY-F-24/25/26 submitted
+- Lite hyperbolic parser/fallback and harness final technical SHA aee5eb3509ae35ec086244668f40df9c5a6c8506: cumulative 38450427712, H1d 38450427659 and build 38450427540 SUCCESS. Plus explicit HTTP backend test SHA 8dd6a03d8b: cumulative 38449665940 and H1d 38449665893 SUCCESS. Earlier Lite red cases SY-F-21/22/23 resolved without relaxing independent oracles. No claim of Plus MathLive original input certification.
+- Official next SY-F-24 sech(0)=1, SY-F-25 exp(2)=e^2, SY-F-26 exp(ln3)=3 now have permanent regression witnesses: Lite original LaTeX parser + compileNumeric test SHA a3c1be6ccdf858618aac017892a23b0f173bbf16; Plus explicit backend HTTP test SHA 8d970f9a76e8a066a4c373bfe4b101266eec5fdb. New Lite cumulative 38474832855, H1d 38474832864, build 38474832913; Plus cumulative 38474867350, H1d 38474867405. Build Lite SUCCESS, other gates in progress at check. PASS not assumed.
+- Next: inspect latest technical SHA gate outcomes/logs, repair any red at the proper layer, then move to subsequent official SY-F cases. Syntax309 and IN625 OPEN; SG28/DIST real multinode BLOCKED.
