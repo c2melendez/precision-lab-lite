@@ -3318,3 +3318,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 ### 2026-10-13 — Late CI reconciliation SY-F-21/22/23
 - Plus SHA 8dd6a03d8bf7b37f52c209fd029e2b12ca4ea80c: cumulative 38449665940 and H1d 38449665893 both SUCCESS. This certifies backend-translation witnesses only, not original MathLive LaTeX.
 - Lite SHA 80521538ea7b4af36e94916bf6ab673872f7429f: H1d 38449725564 SUCCESS and build 38449725830 SUCCESS, but cumulative 38449725664 FAILURE with SY-F-21/22/23 3 red. Thus bilateral case closure BLOCKED on Lite original LaTeX parser/engine. Next: repair parser routing for hyperbolic inverses and powered hyperbolic identity, preserve tests and rerun gates.
+
+
+## 2026-10-13 — SY-F-21/22/23 follow-up fixes and CI
+- Plus SHA 8dd6a03d8b cumulative 38449665940 and H1d 38449665893 SUCCESS (backend explicit syntax only).
+- Lite initial hyperbolic SHA 80521538ea cumulative 38449725664 FAILURE: SY-F-21 operatorname arsinh parsed as a*r*sinh*1, SY-F-22 unparenthesized inverse sinh misrouted, SY-F-23 powered hyperbolic identity evaluated incorrectly. Earlier parser patch 01ff12eebcd122f08979eeaf41e63691aea0cef3 restored `asinh(1)` parsing for SY-F-21/22, but cumulative 38450004786 FAILURE remained because Algebrite does not evaluate asinh numerically and SY-F-23 still failed. The true calculator uses numericFallback for asinh, documented in numericFallback.ts.
+- Product parser patch Lite 7e62c12111d47c69f8068009c59f27173e619cf7 extends normalizePoweredFunctions to sinh/cosh/tanh/csch/sech/coth. Test correction Lite 4cd09cb6f89f2df5891ad438a09ed376a1d4172e validates asinh via compileNumeric(parsed) used by actual fallback, preserving independent Math.asinh(1) and full SY-F-23 identity witnesses. No oracles weakened, no Plus code change. Latest Lite SHA cumulative 38450262114, build 38450262198, H1d 38450261923 initially QUEUED; must inspect results before PASS.
+- Next: inspect latest Lite gates/logs and fix any true parser/numeric regressions, verify cumulative and H1d at exact SHA, then advance SY-F-24/25/26. Syntax309 OPEN; SG28/DIST multinode BLOCKED.
