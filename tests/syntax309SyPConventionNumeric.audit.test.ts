@@ -92,6 +92,21 @@ describe("Syntax309 SY-P — Lite numeric precedence convention", () => {
   });
 
 
+  it("SY-P-23: signed witnesses preserve both explicit groupings", () => {
+    const substitutions = (expression: string) => expression
+      .replace(/\\ba\\b/g, "(12)")
+      .replace(/\\bb\\b/g, "(-3)")
+      .replace(/\\bc\\b/g, "(-2)");
+    const numeratorProduct = parseExpression("(a/b)*c").algebrite;
+    const denominatorProduct = parseExpression("a/(b*c)").algebrite;
+    expect(Number(evaluate(substitutions(numeratorProduct)))).toBeCloseTo(8, 9);
+    expect(Number(evaluate(substitutions(denominatorProduct)))).toBeCloseTo(2, 9);
+    // Lite tokenizes raw bc as two single-letter identifiers; Plus permits named bc.
+    // Do not assert raw a/bc is equivalent across engines.
+    expect(tokenize("a/bc").filter(t => t.type === "identifier").map(t => t.value))
+      .toEqual(["a", "b", "c"]);
+  });
+
   it("SY-P-23: las dos agrupaciones LaTeX tienen resultados discriminantes", () => {
     const product = parseExpression(String.raw`\frac{a}{b}*c`).algebrite;
     const denominator = parseExpression(String.raw`\frac{a}{b*c}`).algebrite;
