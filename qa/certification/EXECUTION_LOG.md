@@ -3313,3 +3313,8 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Lite SY-F-21 original `\\operatorname{arsinh}1` parsed `a*r*sinh*1` instead of inverse hyperbolic sine. SY-F-22 `\\sinh^{-1}1` parsed `sinh^(-1)*1` rather than inverse function. SY-F-23 `\\cosh^{2}x-\\sinh^{2}x` produced numeric 0 instead of 1 at some witness. These are real parser/engine routing regressions, not proof of oracle error. Do not mark PASS or replace official LaTeX with easier backend notation.
 - Plus SHA 8dd6a03d8bf7b37f52c209fd029e2b12ca4ea80c cumulative 38449665940 and H1d 38449665893 initially in progress; Plus backend-only tests cannot certify input MathLive syntax.
 - Next executable: inspect Plus results, implement isolated normalization for operatorname arsinh and unparenthesized sinh^-1 on Lite, then diagnose powered hyperbolic expression SY-F-23; keep discriminating independent numerical oracles; rerun cumulative and H1d on technical SHA. SG28/DIST multinode remains BLOCKED, Syntax309 remains OPEN.
+
+
+### 2026-10-13 — Late CI reconciliation SY-F-21/22/23
+- Plus SHA 8dd6a03d8bf7b37f52c209fd029e2b12ca4ea80c: cumulative 38449665940 and H1d 38449665893 both SUCCESS. This certifies backend-translation witnesses only, not original MathLive LaTeX.
+- Lite SHA 80521538ea7b4af36e94916bf6ab673872f7429f: H1d 38449725564 SUCCESS and build 38449725830 SUCCESS, but cumulative 38449725664 FAILURE with SY-F-21/22/23 3 red. Thus bilateral case closure BLOCKED on Lite original LaTeX parser/engine. Next: repair parser routing for hyperbolic inverses and powered hyperbolic identity, preserve tests and rerun gates.
