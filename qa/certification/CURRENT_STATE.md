@@ -2978,3 +2978,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite commit `9976ce9e51991ddf557a671450880bb9bc9e15b5`: prueba signed de `(a/b)*c=8` y `a/(b*c)=2`, con `a=12,b=-3,c=-2`; confirma tokenización raw `a/bc` como letras separadas. No se falsea paridad semántica: Plus admite identificador nombrado `bc` y Lite actualmente lo separa. SY-P-23 no se declara cerrado.
 - CI Lite nuevo SHA: build `38348692189`, cumulative `38348692114`, H1d `38348692139`, IN_PROGRESS al observar; pendiente verificar logs/conclusión.
 - Siguiente objetivo Frente B: revisar gates Lite; diagnosticar rojos si aparecen y establecer contrato explícito para ambigüedad `a/bc` antes de cerrar SY-P-23. Frente A DIST/SG28 continúa bloqueado solo respecto a certificación real multinodo.
+
+
+## 2026-10-12 — SY-P-23 signed witness: corrección de harness Lite
+- Plus SHA `5afdead008ac1bf7c46fab57f0652b51450ab052`: cumulative `38348411161` y H1d `38348411111` SUCCESS.
+- Lite SHA `9976ce9e51991ddf557a671450880bb9bc9e15b5`: cumulative `38348692114` FAILURE: 1 test nuevo falla porque regex de sustitución conserva barras duplicadas, produce NaN (1100 PASS, 1 FAIL, 30 TODO). Build `38348692189` SUCCESS. Clasificación: HARNESS, no producto.
+- Corregidos límites regex en Lite commit `c2931d06faa0b6743491f969c888cf3fd835b6de`, sin modificar motor ni oráculos matemáticos. Nuevos gates automáticos cumulative `38348772586`, H1d `38348772610`, build `38348772605` IN_PROGRESS al observar. Aún no declarar PASS de la corrección.
+- Semántica raw `a/bc` sigue discrepante Lite (separa letras) vs Plus (identificador `bc`); la prueba nueva cubre agrupaciones explícitas, no certifica paridad raw ni cierra SY-P-23. Siguiente paso: verificar los 3 gates y documentar una convención de desambiguación antes de certificar el caso.
