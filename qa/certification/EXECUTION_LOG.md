@@ -3259,3 +3259,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - SY-F-01/02/08 parser+engine witnesses added in Lite SHA d990ae722477f6a08484050a11291f8e018e980a. Cumulative 38388911993, H1d 38388911908, build 38388911881 were running at check time.
 - Plus explicit-backend-syntax HTTP controls added in SHA 28ebeed5080e36dcda9b3d9c593074f76cee3a84. Cumulative 38388936829, H1d 38388936816 were queued. This does not certify Plus frontend LaTeX interpretation.
 - Next: inspect gates for both latest SHAs and fix regressions, keeping Syntax309 SY-F open and SG28/DIST blocked pending real multinode evidence.
+
+
+## 2026-10-13 — SY-F-01/02/08 green; SY-F-10/11/12 tests published
+- Previous scope tests SY-F-01/02/08 gates confirmed SUCCESS on Lite SHA d990ae722477f6a08484050a11291f8e018e980a: cumulative 38388911993, H1d 38388911908, build 38388911881. Plus SHA 28ebeed5080e36dcda9b3d9c593074f76cee3a84: cumulative 38388936829, H1d 38388936816 SUCCESS. HTTP explicit syntax witnesses in Plus do not certify MathLive LaTeX parsing.
+- Next fixture cases: SY-F-10 explicit sine of 30 degrees = 1/2; SY-F-11 unparenthesized 30-degree sine = 1/2; SY-F-12 cos^2(x)+sin^2(x)=1. Lite parser + engine tests at technical SHA ae4efd09f4beb9ef7fc3691756b4a42554f1fbd5; Plus backend HTTP controls at SHA 19c65d7efafc5f15fc3e60b2d9544cb1807ec839. Independent numeric witnesses used without product modifications. Plus HTTP cases test explicitly translated backend syntax, not degree-glyph UI input.
+- New Lite cumulative run 38390792684, H1d 38390792766, build 38390792697 in progress at observation. Plus cumulative 38390827207, H1d 38390827147 queued at observation. Do not mark this batch PASS without logs and gate conclusions.
+- Next: verify runs by exact technical SHA, classify red as engine/parser/harness/oracle/capability, preserve permanent regression; then progress SY-F-13/14. Syntax309 and IN625 remain OPEN; SG28/DIST real independent-node certification remains BLOCKED.
