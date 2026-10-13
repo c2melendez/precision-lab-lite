@@ -3089,3 +3089,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus SHA feb31df0e44c14e9844bf519196f9f462221f4fe: cumulative 38341452978, H1d 38341452969, preflight 38341453050 SUCCESS. Backend 942 PASS, 1 XFAIL; frontend 757 PASS, 28 TODO. Cuatro tests de handshake aislados PASS.
 - Plus SHA técnico e85eeae7f5cb7866a6a5e7ca6a6b455034668e91 incorpora dos tests adicionales: peer TLS sin certificado (None o {}) debe fallar cerrado sin mensajes de admisión. Corridas cumulative 38342062667, H1d 38342062723 y preflight 38342062675 inicialmente QUEUED; no atribuir PASS sin logs.
 - DIST-01..08 BLOCKED por falta de coordinación K=1 multinodo, y DIST-08 sin evidencia de cancelación HTTP distribuida. Siguiente paso: verificar tres gates nuevos y remediar cualquier fallo.
+
+
+## 2026-10-12 — SG28 handshake: errores de transporte fail-closed
+- Plus SHA `e85eeae7f5cb7866a6a5e7ca6a6b455034668e91`: cumulative `38342062667` SUCCESS (backend 944 PASS, 1 XFAIL, 1 warning; frontend 757 PASS, 28 TODO), H1d `38342062723` SUCCESS, independent runner preflight `38342062675` SUCCESS. Ambos casos nuevos de peer certificate ausente PASS en logs.
+- Plus `backend/tests/test_sg28_remote_handshake.py` commit técnico final `e8e5efda13502dfd3d86e5b900e39662d5ed7296`: 4 negativos adicionales para TimeoutError, ConnectionResetError, ssl.SSLError, OSError; exige DistributedAdmissionUnavailable en handshake sin grants. Son mocks aislados, NO conexión real a staging ni DIST PASS.
+- CI SHA final: H1d `38342862183`, cumulative `38342862079`, SG28 preflight `38342862017` IN_PROGRESS/QUEUED en primera consulta. Siguiente paso: revisar esos tres gates y logs, corregir cualquier fallo confirmado y mantener DIST-01..08 BLOCKED hasta coordinación global K=1 multinodo y cancelación HTTP real.
