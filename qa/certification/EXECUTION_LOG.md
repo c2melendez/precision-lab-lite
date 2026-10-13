@@ -3007,3 +3007,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Nueva ampliación de regresión Plus `backend/tests/test_sg28_remote_readiness.py`, commit 6216b8f0dbec01f4bb51168791ff65a40423b1d1: rechazo de localhost/127.0.0.1/::1, puertos 0/-1/65536 y garantía de ausencia de conexión de red durante validación estática. No se cambiaron transportes ni endpoints.
 - CI para SHA 6216b8f0: cumulative 38335907494, H1d 38335907512, preflight 38335907533 inicialmente QUEUED. Verificar tres gates antes de declararlos PASS.
 - DIST-01..08 BLOCKED y SG28/H2 OPEN: sigue pendiente coordinador realmente compartido entre hosts con autenticación y evidencia de K=1; SG28_EVALUATE_ISOLATION de producción sigue OFF. Siguiente fase: verificar los nuevos gates y pasar a un diseño de conectividad remota segura en entorno desechable autorizado, sin etiquetar readiness como test distribuido.
+
+## 2026-10-12 — SG28 readiness: restricción de identidad TLS remota
+- Plus SHA 6216b8f0: cumulative 38335907494 SUCCESS (backend 882 PASS, 1 XFAIL, 1 warning; 11 tests `test_sg28_remote_readiness.py` PASS); H1d 38335907512 SUCCESS y preflight 38335907533 SUCCESS.
+- Se identificó brecha de configuración: readiness admitía coordinador DNS remoto con `server_name` loopback en TLS. Plus commit técnico 7b3fca7e61fc8febea516f2af48f693025a6c7b5 modifica backend/qa/sg28_remote_readiness.py para rechazar server_name `localhost`, `127.0.0.1`, `::1` y añade cuatro casos negativos en backend/tests/test_sg28_remote_readiness.py. No se abrió red ni se cambió producción.
+- Gates automáticos del SHA final: preflight 38338232847, H1d 38338232932, cumulative 38338233557 QUEUED al consultar. No registrar PASS hasta resultado y logs del SHA.
+- DIST-01..08 BLOCKED y SG28/H2 OPEN; todavía no hay coordinador compartido autenticado conectado a hosts separados ni endpoint público opt-in.
