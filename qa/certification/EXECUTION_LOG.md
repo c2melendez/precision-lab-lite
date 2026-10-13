@@ -3048,3 +3048,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus SHA `16090fdc37821c3645efa9da2681d04488d94fb8` verificado: H1d `38339086098` SUCCESS; independent runner preflight `38339086099` SUCCESS; cumulative `38339086145` SUCCESS. Logs backend: 911 PASS, 1 XFAIL, 1 warning; frontend 757 PASS y 28 TODO. Los 10 parámetros de timeout inválido pasaron explícitamente.
 - Siguiente prueba de seguridad en Plus: `backend/tests/test_sg28_distributed_tls_transport.py`, commit `a74ade1b6f1d0844f2cea90fcf60a502baf72346`, añade caso de servidor con CA de confianza pero hostname TLS incorrecto. Aún no hay CI confirmado para ese SHA; no atribuirle PASS.
 - Siguiente paso: localizar la corrida cumulative del SHA `a74ade1b`, verificar el caso TLS nuevo y gates asociados, diagnosticar cualquier fallo. SG28 DIST-01..08 sigue BLOCKED: no se ha ejecutado coordinación K=1 entre hosts independientes; SY-P-23 mantiene XFAIL contractual.
+
+
+## 2026-10-12 — SG28 mTLS identity y multicast readiness
+- Plus SHA `a74ade1b6f1d0844f2cea90fcf60a502baf72346`: preflight `38339620404`, H1d `38339620357` y cumulative `38339620407` SUCCESS. Backend 911 passed, 1 xfailed, 1 warning; frontend 757 passed, 28 todo. Se añadió comprobación de fallo de autenticación TLS con CA confiable y hostname erróneo en la suite de integración.
+- Nuevo control estático remoto Plus `backend/qa/sg28_remote_readiness.py`: rechaza multicast IPv4/IPv6 para host e identidad TLS (sin red ni grants). Regresión en `backend/tests/test_sg28_remote_readiness.py`: cinco casos negativos. SHA técnico final `37940d57cd38e9c1146d0d29d55589804b677ed4`.
+- Auto CI SHA final: H1d `38339993689`, cumulative `38339993688`, independent-runner preflight `38339993742`; inicialmente QUEUED, no se acredita PASS de este SHA todavía.
+- Siguiente paso exacto: comprobar conclusiones y logs de los tres workflows SHA `37940d57`, aislar y reparar cualquier fallo. SG28 DIST-01..08 sigue BLOCKED por falta de coordinador durable compartido entre hosts y aceptación K=1; no desplegar ni habilitar opt-in productivo. SY-P-23 XFAIL de convención pendiente.
