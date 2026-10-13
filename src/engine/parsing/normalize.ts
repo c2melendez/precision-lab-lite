@@ -1050,6 +1050,11 @@ export function preprocessLatex(latex: string): string {
   // S16 REG-004: MathLive puede serializar el subíndice de log con o sin
   // llaves y con \\left(...\\right) o paréntesis simples.
   {
+    // SY-F-18: the following top-level additive tail is outside the log.
+    expr = expr.replace(
+      /\\log\s*_\s*\{([^{}]+)\}\s*([A-Za-z])(?=\s*[+-])/g,
+      (_whole, base: string, arg: string) => "log(" + arg + "," + base + ")",
+    );
     const logBasePatterns = [
       /\\log\s*_\s*\{([^{}]+)\}\s*\\left\((.*)\\right\)$/s,
       /\\log\s*_\s*\{([^{}]+)\}\s*\((.*)\)$/s,
