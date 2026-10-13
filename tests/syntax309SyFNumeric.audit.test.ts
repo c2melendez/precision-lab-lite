@@ -84,4 +84,39 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(numeric).not.toBeCloseTo(1 / Math.tan(1), 4);
   });
 
+  it("SY-F-01: sin x + 1 must not capture +1 inside sine", () => {
+    expect(byId["SY-F-01"].operacion).toBe("interpretacion");
+    const parsed = parseExpression(byId["SY-F-01"].entrada).algebrite;
+    const substituted = parsed.replace(/\\bx\\b/g, "(2)");
+    const exact = evaluate(substituted);
+    const floated = evaluate(`float(${exact})`);
+    const numeric = Number(floated.trim().replace(/(?:\\.\\.\\.|…)$/, ""));
+    expect(Number.isFinite(numeric), `SY-F-01 parsed=${parsed} exact=${exact} floated=${floated}`).toBe(true);
+    expect(numeric).toBeCloseTo(Math.sin(2) + 1, 5);
+    expect(numeric).not.toBeCloseTo(Math.sin(3), 4);
+  });
+
+  it("SY-F-02: adjacent sine and cosine multiply, without nesting", () => {
+    expect(byId["SY-F-02"].operacion).toBe("interpretacion");
+    const parsed = parseExpression(byId["SY-F-02"].entrada).algebrite;
+    const substituted = parsed.replace(/\\bx\\b/g, "(1)");
+    const exact = evaluate(substituted);
+    const floated = evaluate(`float(${exact})`);
+    const numeric = Number(floated.trim().replace(/(?:\\.\\.\\.|…)$/, ""));
+    expect(Number.isFinite(numeric), `SY-F-02 parsed=${parsed} exact=${exact} floated=${floated}`).toBe(true);
+    expect(numeric).toBeCloseTo(Math.sin(1) * Math.cos(1), 5);
+  });
+
+  it("SY-F-08: sin2x binds both factors inside sine by the declared convention", () => {
+    expect(byId["SY-F-08"].operacion).toBe("convencion");
+    const parsed = parseExpression(byId["SY-F-08"].entrada).algebrite;
+    const substituted = parsed.replace(/\\bx\\b/g, "(1)");
+    const exact = evaluate(substituted);
+    const floated = evaluate(`float(${exact})`);
+    const numeric = Number(floated.trim().replace(/(?:\\.\\.\\.|…)$/, ""));
+    expect(Number.isFinite(numeric), `SY-F-08 parsed=${parsed} exact=${exact} floated=${floated}`).toBe(true);
+    expect(numeric).toBeCloseTo(Math.sin(2), 5);
+    expect(numeric).not.toBeCloseTo(2 * Math.sin(1), 4);
+  });
+
 });
