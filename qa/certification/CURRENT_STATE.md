@@ -2985,3 +2985,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite SHA `9976ce9e51991ddf557a671450880bb9bc9e15b5`: cumulative `38348692114` FAILURE: 1 test nuevo falla porque regex de sustitución conserva barras duplicadas, produce NaN (1100 PASS, 1 FAIL, 30 TODO). Build `38348692189` SUCCESS. Clasificación: HARNESS, no producto.
 - Corregidos límites regex en Lite commit `c2931d06faa0b6743491f969c888cf3fd835b6de`, sin modificar motor ni oráculos matemáticos. Nuevos gates automáticos cumulative `38348772586`, H1d `38348772610`, build `38348772605` IN_PROGRESS al observar. Aún no declarar PASS de la corrección.
 - Semántica raw `a/bc` sigue discrepante Lite (separa letras) vs Plus (identificador `bc`); la prueba nueva cubre agrupaciones explícitas, no certifica paridad raw ni cierra SY-P-23. Siguiente paso: verificar los 3 gates y documentar una convención de desambiguación antes de certificar el caso.
+
+
+## 2026-10-13 — Syntax309 integrity full fixture required
+- Lite SHA `c2931d06faa0b6743491f969c888cf3fd835b6de`: cumulative `38348772586`, H1d `38348772610`, build `38348772605` SUCCESS. Cumulative 1101 PASS, 30 TODO; regresión SY-P-23 signed grouping validada.
+- Verificado en ambos repositorios el fixture `qa/certification/syntax309_cases.jsonl`: mismo blob `fd5d8d05ea8b799039cc45e6a4cd88587aab4f8f`, 309 filas, niveles N1=104/N2=183/N3=22 y secciones P33 F48 E31 N31 D14 U25 V28 Q23 M20 S20 R14 X22.
+- Se reforzó `check_syntax309_fixture.py` bilateralmente: exigir archivo completo, distribución de niveles y secciones, IDs sin repetición y concordancia con subconjunto SY-P. Antes podía imprimir un PASS parcial cuando faltaba la matriz completa; ahora falla cerrado.
+- Commits: Lite `10603595cbcc42b6e4ea26a8fc1f5153b7cb4e5c`; Plus `b36dd3ffc7cda676ce91421243118bd4b02cda3f`. CI Syntax309 Integrity: Lite `38381288099`, Plus `38381293409`, pendientes de conclusión al observar. Sin declarar certificada matemática toda Syntax309; SY-P-23 mantiene decisión de ambigüedad pendiente.
+- Siguiente paso exacto: verificar ambos gates de integridad y abordar SY-F (48 casos) con oráculos por capa y CI, conservando el flujo paralelo SG28/DIST aislado. No cerrar IN625 ni Syntax309 completa prematuramente.
