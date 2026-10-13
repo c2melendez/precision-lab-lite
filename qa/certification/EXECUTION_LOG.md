@@ -3102,3 +3102,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Corrección de harness: agregar import ssl en backend/tests/test_sg28_remote_handshake.py, commit b1c9d9e3921eb7f3819265523e84d2989b41a019. Mantiene los cuatro casos de fallo de transporte, no debilita oráculos.
 - CI automática nuevo SHA: cumulative 38344516486, H1d 38344516489, preflight 38344516478 IN_PROGRESS. Pendiente verificar logs/resultados sobre este SHA antes de PASS.
 - DIST-01..08 siguen BLOCKED sin coordinador compartido K=1 verificado ni cancelación HTTP real en multinodo. Siguiente objetivo exacto: verificar el gate corregido, diagnosticar cualquier fallo restante y continuar pruebas seguras aisladas.
+
+
+## 2026-10-12 — SG28 handshake mTLS: carga de certificados fail-closed
+- Plus SHA b1c9d9e3921eb7f3819265523e84d2989b41a019: cumulative 38344516486 SUCCESS (backend 948 PASS, 1 XFAIL, 1 warning; frontend 757 PASS, 28 TODO); H1d 38344516489 SUCCESS; independent runner 38344516478 SUCCESS. Cuatro tests de errores de red/TLS PASS individualmente.
+- Nueva regresión Plus backend/tests/test_sg28_remote_handshake.py: rechaza falla de carga del certificado de cliente y error de creación de contexto SSL/CA antes de abrir red (2 casos). Commit técnico a69a31dfd2e9f095598da7530b011f35a10f9105; no se ha desplegado ni activado staging/producción.
+- Auto CI SHA final: preflight 38345110390, cumulative 38345110483, H1d 38345110470 inicialmente QUEUED; resultados no acreditados. Siguiente paso: revisar conclusión y logs del SHA y corregir cualquier rojo. DIST-01..08 BLOCKED hasta prueba de K=1 entre hosts independientes y cancelación HTTP distribuida.
