@@ -119,4 +119,28 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(numeric).not.toBeCloseTo(2 * Math.sin(1), 4);
   });
 
+  it.each(["SY-F-10", "SY-F-11"])("%s: explicit 30 degrees evaluates to one half", (id) => {
+    expect(byId[id].operacion).toBe("valor");
+    const input = byId[id].entrada;
+    const parsed = parseExpression(input).algebrite;
+    const exact = evaluate(parsed);
+    const floated = evaluate(`float(${exact})`);
+    const numeric = Number(floated.trim().replace(/(?:\.\.\.|…)$/, ""));
+    expect(Number.isFinite(numeric), `${id} input=${input} parsed=${parsed} exact=${exact} floated=${floated}`).toBe(true);
+    expect(numeric).toBeCloseTo(0.5, 5);
+  });
+
+  it("SY-F-12: cosine squared plus sine squared is one", () => {
+    expect(byId["SY-F-12"].operacion).toBe("equivalente");
+    const input = byId["SY-F-12"].entrada;
+    const parsed = parseExpression(input).algebrite;
+    for (const x of [0, 0.7, 2]) {
+      const exact = evaluate(parsed.replace(/\bx\b/g, `(${x})`));
+      const floated = evaluate(`float(${exact})`);
+      const numeric = Number(floated.trim().replace(/(?:\.\.\.|…)$/, ""));
+      expect(Number.isFinite(numeric), `SY-F-12 input=${input} parsed=${parsed} x=${x} exact=${exact} floated=${floated}`).toBe(true);
+      expect(numeric).toBeCloseTo(1, 5);
+    }
+  });
+
 });
