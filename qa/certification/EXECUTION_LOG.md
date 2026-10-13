@@ -3114,3 +3114,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus SHA a69a31dfd2e9f095598da7530b011f35a10f9105: cumulative 38345110483 SUCCESS (backend 950 PASS, 1 XFAIL, 1 warning; frontend 757 PASS, 28 TODO), H1d 38345110470 SUCCESS, SG28 independent runner 38345110390 SUCCESS; los dos tests de fallo de certificado/CA PASS individuales.
 - Plus test nuevo backend/tests/test_sg28_remote_handshake.py SHA aa9901bfeec105b477defe51b9e65557904e789c simula SSLCertVerificationError por hostname incorrecto y exige fallo cerrado sin mensajes de admisión; pendiente CI.
 - Nuevas corridas: cumulative 38345453316, H1d 38345453304, preflight 38345453370 inicialmente QUEUED. Siguiente objetivo exacto: consultar y clasificar estas corridas SHA aa9901bf y reparar fallos. DIST-01..08 permanece BLOCKED hasta prueba K=1 entre hosts reales y cancelación HTTP distribuida.
+
+
+## 2026-10-12 — SG28 comprobación estricta de validación TLS
+- Plus SHA aa9901bfeec105b477defe51b9e65557904e789c: cumulative 38345453316 SUCCESS (backend 951 PASS, 1 XFAIL y 1 warning; frontend 757 PASS/28 TODO), H1d 38345453304 SUCCESS, independent-runner preflight 38345453370 SUCCESS. Caso negativo de hostname TLS PASS.
+- Plus backend/tests/test_sg28_remote_handshake.py commit técnico 46661d782fb25ec7ade2369f044ed947cd48a79f: nuevo test verifica explícitamente SSLContext verify_mode=CERT_REQUIRED, check_hostname=True y server_hostname esperado antes de autorizar éxito de handshake simulado. No prueba certificado real ni multinodo.
+- Nuevas corridas SHA final: H1d 38345870222 IN_PROGRESS, preflight 38345870195 IN_PROGRESS, cumulative 38345870240 QUEUED al consultar. Próximo paso: verificar los tres gates y prueba añadida; corregir cualquier rojo y continuar hacia aceptación distribuida real solo en staging autorizado. DIST-01..08 BLOCKED, SG28/H2 OPEN.
