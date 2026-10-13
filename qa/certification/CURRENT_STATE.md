@@ -3000,3 +3000,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus nuevo test `backend/tests/test_syntax309_syf_numeric.py`, commit técnico `97178705a78d570b06aa0e9c8bbb238eec16a0c0`. No cubre conversión MathLive, UI ni demás 46 casos, y no modifica producto.
 - CI automático Plus SHA técnico: cumulative `38381825940` QUEUED y H1d `38381826053` IN_PROGRESS al observar. No atribuir PASS anticipado.
 - Siguiente paso exacto Frente B: verificar resultados/logs del SHA, diagnosticar fallos; añadir testigos equivalentes en Lite para SY-F-06/09 y continuar SY-F según matriz, con pruebas de parser/MathLive y UI separadas. Frente A DIST/SG28 conserva su bloqueo multinodo sin impedir este trabajo.
+
+
+## 2026-10-13 — SY-F primeras pruebas: discrepancia Lite detectada, no ocultar
+- Plus commit `97178705a78d570b06aa0e9c8bbb238eec16a0c0` gates cumulative `38381825940` y H1d `38381826053` SUCCESS. Plus acumulativo backend 961 PASS/1 XFAIL/1 warning; frontend 757 PASS/28 TODO.
+- Lite commit `d0501408c4450147b0cac0e8bc5bc0a79a388a03` añadió casos SY-F-06 y SY-F-09 desde el LaTeX oficial, con parser + motor. Gates build `38384832377` y H1d `38384832433` SUCCESS; cumulative `38384832390` FAILURE: SY-F-09 `\\sin\\frac{\\pi}{6}` devuelve NaN, SY-F-06 pasa. 1103 PASS, 1 FAIL, 30 TODO. No clasificar aún el NaN como parser o motor sin diagnóstico.
+- Lite commit `ecd6ae6683ea002a8f3437af4ed046b21aa1d903` añadió assertion diagnóstica con input/parsed/raw/numeric conservando test FAIL si el error persiste. Nuevos gates `38385126363` build, `38385126389` H1d, `38385126660` cumulative, inicialmente QUEUED. Esta intervención no pretende arreglar ni silenciar la discrepancia.
+- Próximo objetivo: leer el log de la nueva corrida y corregir la causa identificada en Lite, protegiendo SY-F-06 y otros canales, después revalidar CI; SY-F global sigue abierto. SG28/DIST sigue su frente independiente.
