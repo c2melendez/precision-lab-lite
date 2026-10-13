@@ -14,6 +14,16 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(byId["SY-F-06"].operacion).toBe("valor");
   });
 
+  it("SY-F-03: sin(x squared) is not sine(x) squared", () => {
+    expect(byId["SY-F-03"].operacion).toBe("interpretacion");
+    const parsed = parseExpression(byId["SY-F-03"].entrada).algebrite;
+    const substituted = parsed.replace(/\bx\b/g, "(2)");
+    const actual = Number(evaluate(`float(${substituted})`));
+    expect(Number.isFinite(actual), `SY-F-03 parsed=${parsed}`).toBe(true);
+    expect(actual).toBeCloseTo(Math.sin(4), 8);
+    expect(actual).not.toBeCloseTo(Math.sin(2) ** 2, 4);
+  });
+
   it("SY-F-09: sine of pi/6 evaluates to one half", () => {
     const input = byId["SY-F-09"].entrada;
     const parsed = parseExpression(input).algebrite;
