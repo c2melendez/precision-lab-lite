@@ -18,7 +18,9 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(byId["SY-F-03"].operacion).toBe("interpretacion");
     const parsed = parseExpression(byId["SY-F-03"].entrada).algebrite;
     const substituted = parsed.replace(/\bx\b/g, "(2)");
-    const actual = Number(evaluate(`float(${substituted})`));
+    const exact = evaluate(substituted);
+    const direct = Number(exact);
+    const actual = Number.isFinite(direct) ? direct : Number(evaluate(`float(${exact})`));
     expect(Number.isFinite(actual), `SY-F-03 parsed=${parsed}`).toBe(true);
     expect(actual).toBeCloseTo(Math.sin(4), 8);
     expect(actual).not.toBeCloseTo(Math.sin(2) ** 2, 4);
