@@ -2961,3 +2961,13 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Nuevo test Plus `backend/tests/test_sg28_remote_handshake.py::test_peer_certificate_read_failure_closes_without_admission`, commit `758575fcdc7642f92100bc232b9a6bb09d34a7b8`: si `getpeercert()` falla con `ssl.SSLError`, exigir `DistributedAdmissionUnavailable` y ausencia de comunicaciones de admisión; simulación local sin tráfico externo.
 - Corridas automáticas del nuevo SHA: cumulative `38347193008`, H1d `38347192927`, independent preflight `38347193104` (QUEUED al comprobar). No atribuir PASS antes de cierre.
 - Siguiente paso: verificar las tres corridas y los logs del SHA `758575f`; clasificar cualquier rojo antes de corregir. DIST-01..08 BLOCKED y SG28/H2 OPEN para multinodo real y cancelación HTTP distribuida. No hubo despliegue ni uso de certificados reales.
+
+
+## 2026-10-12 — Decisión persistente: doble frente SG28/DIST + matrices matemáticas
+
+- Decisión expresa del responsable: **no detener certificación matemática independiente por el bloqueo multinodo**, y continuar en paralelo el trabajo de ingeniería de SG28/DIST.
+- Norma bilateral permanente publicada en `qa/certification/EXECUTION_PROTOCOL.md`: Frente A SG28/DIST (sin PASS hasta staging real y cancelación HTTP entre hosts independientes), Frente B matrices matemáticas en orden contractual (empezando por Syntax 309), sin saltar gates, ni declarar IN625 cerrado antes de H2.
+- Evidencia CI consolidada previa a la decisión: Plus SHA `758575fcdc7642f92100bc232b9a6bb09d34a7b8`: acumulativo `38347193008` SUCCESS (backend 955 PASS, 1 XFAIL, 1 warning; frontend 757 PASS, 28 TODO); H1d `38347192927` SUCCESS; SG28 preflight `38347193104` SUCCESS. Lite SHA técnico `2500f11f8deae17fa5a6fd5a63d93ca37fe7edcd`: cumulative `38304304285`, H1d `38304304314`, build `38304304274` SUCCESS. No son evidencia DIST real.
+- Próxima acción Frente A: diseñar/probar un coordinador K=1 con fencing durable para staging aislado y la integración de cancelación HTTP; mantener flags opt-in OFF por defecto, sin deployment de producción.
+- Próxima acción Frente B: recuperar matriz Syntax 309 y los tests existentes, identificar primer caso no certificado independiente de H2; implementar corrección/regresión y ejecutar gates adecuados, conservando SY-P-23 como XFAIL contractual hasta definir convención para símbolo `bc`.
+- Registro exclusivamente documental: no requiere disparar cálculos costosos de CI. Futuros LLM deben leer el protocolo canónico, no depender de este chat.
