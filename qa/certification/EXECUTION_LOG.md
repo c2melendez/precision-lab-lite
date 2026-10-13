@@ -3217,3 +3217,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Lite first cumulative `38385733495` FAIL (1104 PASS, 1 FAIL, 30 TODO), parser produced `sin(x^(2))` but numeric `float(...)` witness yielded NaN; build `38385733419` SUCCESS. Classification not product until the numeric conversion path is isolated.
 - Corrective Lite harness SHA `c646093fd0423fad86e6582d5e49d2dc134de368` separates `evaluate(substituted)` symbolic result and `evaluate(float(exact))` fallback, following SY-F-09. Gates new SHA: cumulative `38385919300`, H1d `38385919268`, build `38385919258` QUEUED at observation; no PASS assumed. Plus cumulative `38385778326`, H1d `38385778379` IN_PROGRESS at observation.
 - Next task: inspect both cumulative logs on these exact technical SHAs, fix regressions if any; then SY-F-04/05 function exponent vs arcsine, with distinct oracles and declared channels. SY-F 48 total still OPEN, SG28/DIST separately BLOCKED.
+
+
+## 2026-10-13 — SY-F-03 corrective retry still red
+- Lite commit `c646093fd0423fad86e6582d5e49d2dc134de368`, cumulative `38385919300` FAILURE (SY-F-03 `parsed=sin(x^(2))` y testigo numérico no finito), build `38385919258` SUCCESS, H1d `38385919268` IN_PROGRESS. La normalización de `evaluate(substituted)` y `float(exact)` no resolvió el problema; no afirmar PASS ni categorizar como fallo de parser: estructura sí se conservó.
+- Plus commit `0965e4acfd6bb31cc298857f4588c4a3d64707f1`, cumulative `38385778326`, H1d `38385778379` IN_PROGRESS a la comprobación.
+- Próximo objetivo obligatorio: capturar en Lite `substituted`, `exact`, resultado `float(exact)`, y aislar si Algebrite entrega notación no parseable por `Number` u otra falla; usar una conversión existente validada por el proyecto, nunca oráculo calculado del propio esperado. En Plus verificar gates SHA exacto. Mantener SY-F-03 FAIL hasta resolución y no cerrar SY-F.
