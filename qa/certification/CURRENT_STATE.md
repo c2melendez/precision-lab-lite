@@ -2881,3 +2881,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Predecesor SHA `37940d57cd38e9c1146d0d29d55589804b677ed4`: cumulative `38339993688` SUCCESS, backend 916 PASS, 1 XFAIL, 1 warning, frontend 757 PASS/28 TODO; H1d `38339993689` SUCCESS y runner preflight `38339993742` SUCCESS. Los 5 casos multicast pasaron según logs.
 - Nuevos workflows para SHA final: H1d `38340323640`, cumulative `38340323691`, independent runner `38340323717`, QUEUED al consultar. **No declarar PASS en ese SHA sin logs**.
 - Siguiente paso: verificar nuevas corridas e inspeccionar específicamente los 14 testigos, corregir fallos sin alterar contrato de DIST. DIST-01..08 sigue BLOCKED por ausencia de prueba coordinador realmente multinodo K=1. SY-P-23 XFAIL de convención pendiente.
+
+
+## 2026-10-12 — SG28 identidad mTLS: rojo clasificado y fixture corregido
+- Plus SHA `d52faf432c887659d0f35cece8510754b8d73d9e`: cumulative `38340323691` FAILURE en backend: 928 PASS, 2 FAIL, 1 XFAIL, 1 warning. Los fallos fueron exclusivamente `test_remote_probe_invalid_identity_types_fail_closed[host-\\t]` y `[server_name-\\t]`: el fixture pasó la secuencia literal backslash+t en lugar de carácter TAB; no acreditan defecto de producto. Otros 12 testigos PASS. H1d `38340323640` SUCCESS; preflight `38340323717` SUCCESS.
+- Plus corrección de HARNESS `backend/tests/test_sg28_remote_readiness.py`: commit técnico `98c93c34c0125ad02d5e1c676778f3ca873dd406`, sustituye el parámetro por escape Python `"\\t"` (TAB en runtime), no modifica motor ni relaja el oráculo.
+- CI disparado automáticamente SHA final: SG28 preflight `38340643630`, cumulative `38340643631`, H1d `38340643638` IN_PROGRESS al consultar. No declarar verde hasta comprobar jobs/logs del mismo SHA. Siguiente acción exacta: verificar los 14 casos y gates; corregir solo fallos genuinos. DIST-01..08 permanecen BLOCKED sin coordinación global K=1 verificada.
