@@ -3202,3 +3202,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Diagnostic Lite SHA `ecd6ae6683ea002a8f3437af4ed046b21aa1d903`, cumulative `38385126660` FAIL confirmed parsed=`sin((pi)/(6))`, raw=`1/2`, numeric=`NaN`. Thus parser and engine delivered correct exact rational; failure is numeric formatting/normalization inside test harness.
 - Corrective Lite commit `6f3f13573664cd50ccc1df159eba7f2357e3175f` uses `evaluate(float(raw))` for rational fallback rather than `float(parsed)`; preserves original LaTeX input and numeric expectations for SY-F-06/09, no product change. Gates cumulative `38385242490`, build `38385242481`, H1d `38385242583` IN_PROGRESS when checked. PASS not assumed.
 - Next: check these new gates, investigate any red, then progress SY-F remaining 46 IDs with separate channel/oracle evidence. SG28/DIST unchanged.
+
+
+## 2026-10-13 — SY-F-03 argumento potenciado vs función potenciada
+- Baseline Lite SHA `6f3f13573664cd50ccc1df159eba7f2357e3175f`: build `38385242481`, cumulative `38385242490`, H1d `38385242583` SUCCESS. El caso SY-F-09 devuelve exacto `1/2`; corrección del harness validada.
+- Nuevos testigos SY-F-03: `sin(x^2)` con x=2 = sin(4), y NO `sin(2)^2`. Lite original LaTeX desde el fixture SY-F-03 + parser + motor, commit `086688e1f75f017bbe47293dabaa2a63b531bc13`; Plus backend sintaxis adaptada + `/api/v1/evaluate` con substitución, commit `0965e4acfd6bb31cc298857f4588c4a3d64707f1`.
+- CI Lite: build `38385733419` SUCCESS, cumulative `38385733495` y H1d `38385733477` IN_PROGRESS; CI Plus cumulative `38385778326` y H1d `38385778379` QUEUED al registrar. No atribuir PASS del nuevo test todavía.
+- Siguiente: verificar ambos acumulativos, diagnosticar fallo si existe, extender SY-F a potencia de función `sin^2`, inversa `sin^-1` y recíproco entre paréntesis en sus canales respectivos. 48 SY-F siguen sin certificación integral; SG28/DIST separado.
