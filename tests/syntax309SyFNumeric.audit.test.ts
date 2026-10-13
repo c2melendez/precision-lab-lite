@@ -19,10 +19,15 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     const parsed = parseExpression(byId["SY-F-03"].entrada).algebrite;
     const substituted = parsed.replace(/\bx\b/g, "(2)");
     const exact = evaluate(substituted);
-    const direct = Number(exact);
-    const actual = Number.isFinite(direct) ? direct : Number(evaluate(`float(${exact})`));
-    expect(Number.isFinite(actual), `SY-F-03 parsed=${parsed}`).toBe(true);
-    expect(actual).toBeCloseTo(Math.sin(4), 8);
+    const floated = evaluate(`float(${exact})`);
+    // Algebrite can print truncated decimals as "-0.756802..." (or Unicode ellipsis).
+    // Number("...") is NaN even when the mathematical evaluation succeeded.
+    const numericText = floated.trim().replace(/(?:\\.\\.\\.|…)$/, "");
+    const actual = Number(numericText);
+    expect(Number.isFinite(actual), `SY-F-03 parsed=${parsed} substituted=${substituted} exact=${exact} floated=${floated}`).toBe(true);
+    // Algebrite's displayed float is truncated, so use an accuracy bound
+    // compatible with its emitted digits; keep the independent Math.sin oracle.
+    expect(actual).toBeCloseTo(Math.sin(4), 5);
     expect(actual).not.toBeCloseTo(Math.sin(2) ** 2, 4);
   });
 
