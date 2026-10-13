@@ -216,4 +216,12 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
       expect(numeric).toBeCloseTo(1, 5);
     }
   });
+  it.each([["SY-F-24", 1], ["SY-F-25", Math.exp(2)], ["SY-F-26", 3]] as const)("%s: hyperbolic reciprocal and exponential witnesses", (id, expected) => {
+    expect(byId[id].operacion).toBe("valor");
+    const input = byId[id].entrada;
+    const parsed = parseExpression(input).algebrite;
+    const numeric = compileNumeric(parsed, "__unused__")(0);
+    expect(Number.isFinite(numeric), id + " input=" + input + " parsed=" + parsed).toBe(true);
+    expect(numeric).toBeCloseTo(expected, 6);
+  });
 });
