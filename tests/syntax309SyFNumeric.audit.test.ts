@@ -72,4 +72,16 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(numeric).not.toBeCloseTo(2, 4);
   });
 
+  it("SY-F-07: inverse tangent of one equals pi/4", () => {
+    expect(byId["SY-F-07"].operacion).toBe("valor");
+    const input = byId["SY-F-07"].entrada;
+    const parsed = parseExpression(input).algebrite;
+    const exact = evaluate(parsed);
+    const floated = evaluate(`float(${exact})`);
+    const numeric = Number(floated.trim().replace(/(?:\.\.\.|…)$/, ""));
+    expect(Number.isFinite(numeric), `SY-F-07 input=${input} parsed=${parsed} exact=${exact} floated=${floated}`).toBe(true);
+    expect(numeric).toBeCloseTo(Math.PI / 4, 5);
+    expect(numeric).not.toBeCloseTo(1 / Math.tan(1), 4);
+  });
+
 });
