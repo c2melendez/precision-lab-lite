@@ -3156,3 +3156,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 ## 2026-10-12 — Frente B Syntax 309: testigo SY-P-23
 - Plus incorporó la regresión de signos para distinguir `bc` de `b*c`, commit `5afdead008ac1bf7c46fab57f0652b51450ab052`; acumulativo `38348411161` y H1d `38348411111` iniciados, pendiente resultado. No se atribuye PASS a Lite por evidencia Plus.
 - Siguiente acción: validar gates del nuevo SHA, implementar testigo equivalente en Lite y mantener SY-P-23 XFAIL hasta fijar la convención. SG28/DIST continúa en el frente independiente.
+
+
+## 2026-10-12 — Syntax309 SY-P-23 bilateral signed witnesses
+- Plus commit `5afdead008ac1bf7c46fab57f0652b51450ab052`: cumulative `38348411161` SUCCESS y H1d `38348411111` SUCCESS. Test con signos para identificador `bc` y productos explícitos.
+- Lite commit `9976ce9e51991ddf557a671450880bb9bc9e15b5`: prueba signed de `(a/b)*c=8` y `a/(b*c)=2`, con `a=12,b=-3,c=-2`; confirma tokenización raw `a/bc` como letras separadas. No se falsea paridad semántica: Plus admite identificador nombrado `bc` y Lite actualmente lo separa. SY-P-23 no se declara cerrado.
+- CI Lite nuevo SHA: build `38348692189`, cumulative `38348692114`, H1d `38348692139`, IN_PROGRESS al observar; pendiente verificar logs/conclusión.
+- Siguiente objetivo Frente B: revisar gates Lite; diagnosticar rojos si aparecen y establecer contrato explícito para ambigüedad `a/bc` antes de cerrar SY-P-23. Frente A DIST/SG28 continúa bloqueado solo respecto a certificación real multinodo.
