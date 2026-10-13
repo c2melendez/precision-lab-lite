@@ -226,4 +226,20 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(Number.isFinite(numeric), id + " input=" + input + " parsed=" + parsed + " numericExpression=" + numericExpression).toBe(true);
     expect(numeric).toBeCloseTo(expected, 6);
   });
+  it("SY-F-27: adjacent sine factors are squared sine, not sine of squared x", () => {
+    expect(byId["SY-F-27"].operacion).toBe("equivalente");
+    const parsed = parseExpression(byId["SY-F-27"].entrada).algebrite;
+    for (const x of [0.4, 1.2]) {
+      const actual = compileNumeric(parsed, "x")(x);
+      expect(actual).toBeCloseTo(Math.sin(x) ** 2, 9);
+      expect(actual).not.toBeCloseTo(Math.sin(x * x), 4);
+    }
+  });
+  it("SY-F-28: nested sine cosine tangent evaluates from inside out", () => {
+    expect(byId["SY-F-28"].operacion).toBe("valor");
+    const parsed = parseExpression(byId["SY-F-28"].entrada).algebrite;
+    const actual = compileNumeric(parsed, "__unused__")(0);
+    expect(Number.isFinite(actual), "SY-F-28 parsed=" + parsed).toBe(true);
+    expect(actual).toBeCloseTo(Math.sin(Math.cos(Math.tan(0))), 9);
+  });
 });
