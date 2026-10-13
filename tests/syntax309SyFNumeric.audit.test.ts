@@ -22,7 +22,7 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     const floated = evaluate(`float(${exact})`);
     // Algebrite can print truncated decimals as "-0.756802..." (or Unicode ellipsis).
     // Number("...") is NaN even when the mathematical evaluation succeeded.
-    const numericText = floated.trim().replace(/(?:\\.\\.\\.|…)$/, "");
+    const numericText = floated.trim().replace(/(?:\.\.\.|…)$/, "");
     const actual = Number(numericText);
     expect(Number.isFinite(actual), `SY-F-03 parsed=${parsed} substituted=${substituted} exact=${exact} floated=${floated}`).toBe(true);
     // Algebrite's displayed float is truncated, so use an accuracy bound
