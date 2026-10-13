@@ -3026,3 +3026,11 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 1. Consultar Plus runs `38338612248`, `38338612256`, `38338612293` y sus jobs/logs para SHA `55645549f`. Corregir el gate afectado si falla (especialmente tests de variantes de host), no declarar PASS anticipado.
 2. Comparar los contratos y pruebas Lite/Plus de SY-P-23, y mantener explícita la semántica de identificadores declarados frente a multiplicación hasta decidir convención contractual, sin eliminar XFAIL injustificadamente.
 3. Mantener DIST-01..08 BLOCKED hasta prueba real de coordinador autenticado entre hosts separados en staging autorizado; nunca usar preflight estático como prueba K=1.
+
+
+## 2026-10-12 — SG28 readiness hardening: CI del SHA final confirmado
+- Plus SHA técnico `55645549f9edbf4fcb420421feb20dca6481f19e`: preflight `38338612248` SUCCESS (host_identity a/b + verify_distinct_runners); H1d `38338612256` SUCCESS; cumulative `38338612293` SUCCESS (backend 901 PASS, 1 XFAIL, 1 warning; frontend 757 PASS y 28 TODO).
+- Refuerzo confirmado en `backend/qa/sg28_remote_readiness.py` y `backend/tests/test_sg28_remote_readiness.py`: controles contra loopback IPv4/IPv6, IPv4-mapped IPv6, local DNS y direcciones sin alcance apropiado. Readiness permanece estático y fail-closed; no se probó red remota ni servidor compartido.
+- El contrato `SG28_DISTRIBUTED_ACCEPTANCE.md` exige coordinador durable autenticado, dos hosts verdaderamente separados, K=1 global, pruebas de fallos y ruta opt-in. El preflight valida identidad de runners, no la coordinación y no constituye DIST-01 PASS.
+- SY-P-23 sigue OPEN con un XFAIL de convención de identificadores; no confundir 901 PASS con cierre de SY-P-23.
+- **Siguiente paso exacto**: fortalecer transporte/pruebas negativas de identidad mTLS sin exposición en producción; ejecutar gate de ese SHA. DIST-01..08 BLOCKED hasta que exista staging desechable autorizado con coordinador realmente compartido y evidencia por nodo. Mantener `SG28_EVALUATE_ISOLATION` desactivado.
