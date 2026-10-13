@@ -2820,3 +2820,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - CI automática SHA 569814e2: preflight 38335185919, H1d 38335185922, cumulative 38335185926 QUEUED en primera consulta. Revisar logs para demostrar 4 tests nuevos; sin evidencia no declarar PASS.
 - DIST-01..08 siguen BLOCKED, SG28/H2 OPEN: el coordinador existente solo acepta loopback, falta servicio seguro compartido en hosts diferentes, conexión opt-in al endpoint y evidencia de K=1. No se crearon servicios ni se cambió Render/producción.
 - Próximo objetivo exacto: revisar gate acumulativo del SHA 569814e2, remediar fallos; después preparar protocolo de comunicación segura y autorización para staging verdaderamente multinodo. No interpretar readiness estático como conexión mTLS establecida.
+
+## 2026-10-12 — SG28 DIST-01: comprobación de readiness y límites negativos
+- Plus SHA 569814e2482f8713928c42b8638f7d7d96b9413d: preflight de dos runners 38335185919 SUCCESS, H1d 38335185922 SUCCESS (38 passed), acumulativo 38335185926 SUCCESS (backend 875 passed, 1 xfailed; cuatro pruebas `test_sg28_remote_readiness.py` PASS). No es aceptación de DIST-01.
+- Nueva ampliación de regresión Plus `backend/tests/test_sg28_remote_readiness.py`, commit 6216b8f0dbec01f4bb51168791ff65a40423b1d1: rechazo de localhost/127.0.0.1/::1, puertos 0/-1/65536 y garantía de ausencia de conexión de red durante validación estática. No se cambiaron transportes ni endpoints.
+- CI para SHA 6216b8f0: cumulative 38335907494, H1d 38335907512, preflight 38335907533 inicialmente QUEUED. Verificar tres gates antes de declararlos PASS.
+- DIST-01..08 BLOCKED y SG28/H2 OPEN: sigue pendiente coordinador realmente compartido entre hosts con autenticación y evidencia de K=1; SG28_EVALUATE_ISOLATION de producción sigue OFF. Siguiente fase: verificar los nuevos gates y pasar a un diseño de conectividad remota segura en entorno desechable autorizado, sin etiquetar readiness como test distribuido.
