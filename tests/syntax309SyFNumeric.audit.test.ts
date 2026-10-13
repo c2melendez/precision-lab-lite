@@ -247,7 +247,7 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     const input = byId["SY-F-29"].entrada;
     const parsed = parseExpression(input).algebrite;
     // Do not silently reinterpret the operator name as arc * sin * 2.
-    expect(parsed.toLowerCase(), "SY-F-29 input=" + input + " parsed=" + parsed).toMatch(/asin\\s*\\(\\s*2\\s*\\)|arcsin\\s*\\(\\s*2\\s*\\)/);
+    expect(["asin(2)", "arcsin(2)"]).toContain(parsed.toLowerCase().replace(/\s+/g, ""));
     let finiteReal = false;
     try {
       finiteReal = Number.isFinite(compileNumeric(parsed, "__unused__")(0));
