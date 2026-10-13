@@ -3180,3 +3180,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Siguiente paso exacto: verificar ambos gates de integridad y abordar SY-F (48 casos) con oráculos por capa y CI, conservando el flujo paralelo SG28/DIST aislado. No cerrar IN625 ni Syntax309 completa prematuramente.
 
 - Verificación posterior: ambos gates Syntax 309 Data Integrity sobre los SHAs anteriores concluyeron SUCCESS: Lite `38381288099`, Plus `38381293409`. Esto valida estructura, conteos y concordancia de fixture, no la semántica de las 309 evaluaciones.
+
+
+## 2026-10-13 — Syntax309 SY-F iniciado: primeros testigos HTTP Plus
+- Se verificó que `syntax309_cases.jsonl` contiene los 48 registros oficiales SY-F en ambos repositorios. Primeros dos casos con oráculo numérico independiente: SY-F-09 `sin(pi/6)=1/2` y SY-F-06 `(sin(pi/6))^-1=2`, traducidos expresamente del LaTeX del fixture a sintaxis del backend.
+- Plus nuevo test `backend/tests/test_syntax309_syf_numeric.py`, commit técnico `97178705a78d570b06aa0e9c8bbb238eec16a0c0`. No cubre conversión MathLive, UI ni demás 46 casos, y no modifica producto.
+- CI automático Plus SHA técnico: cumulative `38381825940` QUEUED y H1d `38381826053` IN_PROGRESS al observar. No atribuir PASS anticipado.
+- Siguiente paso exacto Frente B: verificar resultados/logs del SHA, diagnosticar fallos; añadir testigos equivalentes en Lite para SY-F-06/09 y continuar SY-F según matriz, con pruebas de parser/MathLive y UI separadas. Frente A DIST/SG28 conserva su bloqueo multinodo sin impedir este trabajo.
