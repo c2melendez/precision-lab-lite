@@ -49,4 +49,27 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     const numeric = Number.isFinite(result) ? result : Number(evaluate(`float(${raw})`));
     expect(numeric).toBeCloseTo(2, 8);
   });
+  it("SY-F-04: function power sin²(pi/6) is one quarter", () => {
+    expect(byId["SY-F-04"].operacion).toBe("valor");
+    const input = byId["SY-F-04"].entrada;
+    const parsed = parseExpression(input).algebrite;
+    const exact = evaluate(parsed);
+    const floated = evaluate(`float(${exact})`);
+    const numeric = Number(floated.trim().replace(/(?:\.\.\.|…)$/, ""));
+    expect(Number.isFinite(numeric), `SY-F-04 input=${input} parsed=${parsed} exact=${exact} floated=${floated}`).toBe(true);
+    expect(numeric).toBeCloseTo(0.25, 5);
+  });
+
+  it("SY-F-05: inverse sine of one half is pi/6, not reciprocal sine", () => {
+    expect(byId["SY-F-05"].operacion).toBe("valor");
+    const input = byId["SY-F-05"].entrada;
+    const parsed = parseExpression(input).algebrite;
+    const exact = evaluate(parsed);
+    const floated = evaluate(`float(${exact})`);
+    const numeric = Number(floated.trim().replace(/(?:\.\.\.|…)$/, ""));
+    expect(Number.isFinite(numeric), `SY-F-05 input=${input} parsed=${parsed} exact=${exact} floated=${floated}`).toBe(true);
+    expect(numeric).toBeCloseTo(Math.PI / 6, 5);
+    expect(numeric).not.toBeCloseTo(2, 4);
+  });
+
 });
