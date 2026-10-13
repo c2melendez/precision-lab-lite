@@ -3127,3 +3127,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus commit técnico `24b51da9bbe3adcfb2a54a5a8ba9604148879c59` agrega `test_tls_uses_configured_ca_and_bounded_tcp_timeout` en `backend/tests/test_sg28_remote_handshake.py`: oráculo aislado que exige CA explícita, SERVER_AUTH, certificado/key del cliente, hostname verificado, timeout de socket y cero mensajes de admisión.
 - Runs push automáticos de Plus para ese SHA: cumulative `38346307824`, H1d `38346307758`, independent runner `38346307820` (en curso/cola al observar). **Sin PASS acreditado aún para el SHA nuevo**.
 - Siguiente paso: comprobar los tres resultados y logs para SHA `24b51da`, corregir errores genuinos, luego preparar pruebas reales exclusivamente en staging desechable autorizado. DIST-01..08 BLOCKED y SG28/H2 OPEN hasta coordinación multinodo global K=1 y cancelación HTTP verificada. No se ejecutó conexión externa ni despliegue.
+
+
+## 2026-10-12 — SG28 timeout de socket TLS (continuación)
+- Plus SHA `24b51da9bbe3adcfb2a54a5a8ba9604148879c59`: cumulative run `38346307824` SUCCESS (backend 953 PASS, 1 XFAIL, 1 warning), H1d `38346307758` SUCCESS y preflight `38346307820` SUCCESS. La prueba de CA y timeout fue acreditada en ese SHA.
+- Nuevo commit de prueba Plus `b94e34c4d507eb38a830a863e27fc5e1c31bd57c` agrega regresión para excepción de timeout al configurar el socket TLS seguro; exige fallo cerrado y ninguna admisión. No se modificó producto ni se conectó a staging real.
+- Corridas automáticas del nuevo SHA: cumulative `38346643512`, H1d `38346643517`, preflight `38346643587`, inicialmente QUEUED. Ningún PASS atribuido anticipadamente al nuevo SHA.
+- Siguiente acción exacta: verificar esos tres gates y logs; si falla, clasificar y corregir. Después, continuar pruebas de protocolo y coordinación real únicamente en staging desechable autorizado. DIST-01..08 y SG28/H2 siguen BLOCKED/OPEN en su alcance multinodo auténtico.
