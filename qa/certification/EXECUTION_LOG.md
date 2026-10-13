@@ -3083,3 +3083,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Plus `backend/tests/test_sg28_remote_handshake.py` commit técnico final `feb31df0e44c14e9844bf519196f9f462221f4fe`: tests mockeados contra conexiones no autorizadas y tráfico de admisión, éxito sintético y fallo de TCP. Solo se acreditan cuando CI del SHA final concluya.
 - Auto CI: cumulative `38341452978`, H1d `38341452969`, independent runner `38341453050`, inicialmente QUEUED.
 - Siguiente paso exacto: inspeccionar esos tres gates, corregir errores confirmados y preparar prueba de handshake real únicamente en staging desechable autorizado, registrando fingerprint remoto y evidencias no sensibles. **DIST-01..08 BLOCKED** hasta K=1 auténtico multinodo y ejecución HTTP/cancelación; SY-P-23 conserva XFAIL contractual.
+
+
+## 2026-10-12 — SG28 handshake remote negative tests
+- Plus SHA feb31df0e44c14e9844bf519196f9f462221f4fe: cumulative 38341452978, H1d 38341452969, preflight 38341453050 SUCCESS. Backend 942 PASS, 1 XFAIL; frontend 757 PASS, 28 TODO. Cuatro tests de handshake aislados PASS.
+- Plus SHA técnico e85eeae7f5cb7866a6a5e7ca6a6b455034668e91 incorpora dos tests adicionales: peer TLS sin certificado (None o {}) debe fallar cerrado sin mensajes de admisión. Corridas cumulative 38342062667, H1d 38342062723 y preflight 38342062675 inicialmente QUEUED; no atribuir PASS sin logs.
+- DIST-01..08 BLOCKED por falta de coordinación K=1 multinodo, y DIST-08 sin evidencia de cancelación HTTP distribuida. Siguiente paso: verificar tres gates nuevos y remediar cualquier fallo.
