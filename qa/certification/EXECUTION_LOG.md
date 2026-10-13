@@ -3055,3 +3055,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Nuevo control estático remoto Plus `backend/qa/sg28_remote_readiness.py`: rechaza multicast IPv4/IPv6 para host e identidad TLS (sin red ni grants). Regresión en `backend/tests/test_sg28_remote_readiness.py`: cinco casos negativos. SHA técnico final `37940d57cd38e9c1146d0d29d55589804b677ed4`.
 - Auto CI SHA final: H1d `38339993689`, cumulative `38339993688`, independent-runner preflight `38339993742`; inicialmente QUEUED, no se acredita PASS de este SHA todavía.
 - Siguiente paso exacto: comprobar conclusiones y logs de los tres workflows SHA `37940d57`, aislar y reparar cualquier fallo. SG28 DIST-01..08 sigue BLOCKED por falta de coordinador durable compartido entre hosts y aceptación K=1; no desplegar ni habilitar opt-in productivo. SY-P-23 XFAIL de convención pendiente.
+
+
+## 2026-10-12 — SG28 rechazo estricto de identidad mTLS malformada
+- Plus commit técnico final `d52faf432c887659d0f35cece8510754b8d73d9e`: `backend/app/services/distributed_tls_transport.py` rechaza host y server_name no-string o whitespace-only mediante `DistributedAdmissionUnavailable` antes de acceder a red. Regresión en `backend/tests/test_sg28_remote_readiness.py`: 14 casos parametrizados (2 campos x 7 valores).
+- Predecesor SHA `37940d57cd38e9c1146d0d29d55589804b677ed4`: cumulative `38339993688` SUCCESS, backend 916 PASS, 1 XFAIL, 1 warning, frontend 757 PASS/28 TODO; H1d `38339993689` SUCCESS y runner preflight `38339993742` SUCCESS. Los 5 casos multicast pasaron según logs.
+- Nuevos workflows para SHA final: H1d `38340323640`, cumulative `38340323691`, independent runner `38340323717`, QUEUED al consultar. **No declarar PASS en ese SHA sin logs**.
+- Siguiente paso: verificar nuevas corridas e inspeccionar específicamente los 14 testigos, corregir fallos sin alterar contrato de DIST. DIST-01..08 sigue BLOCKED por ausencia de prueba coordinador realmente multinodo K=1. SY-P-23 XFAIL de convención pendiente.
