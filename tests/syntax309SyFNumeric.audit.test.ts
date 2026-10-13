@@ -143,4 +143,19 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     }
   });
 
+  it.each([
+    ["SY-F-13", Math.log(4), Math.log(2) ** 2],
+    ["SY-F-14", Math.log(2) ** 2, Math.log(4)],
+  ] as const)("%s: log argument power vs function power", (id, expected, incorrect) => {
+    const input = byId[id].entrada;
+    expect(byId[id].operacion).toBe(id === "SY-F-13" ? "interpretacion" : "convencion");
+    const parsed = parseExpression(input).algebrite;
+    const substituted = parsed.replace(/\bx\b/g, "(2)");
+    const exact = evaluate(substituted);
+    const floated = evaluate("float(" + exact + ")");
+    const numeric = Number(floated.trim().replace(/(?:\.\.\.|…)$/, ""));
+    expect(Number.isFinite(numeric), id + " input=" + input + " parsed=" + parsed + " exact=" + exact + " floated=" + floated).toBe(true);
+    expect(numeric).toBeCloseTo(expected, 5);
+    expect(numeric).not.toBeCloseTo(incorrect, 4);
+  });
 });
