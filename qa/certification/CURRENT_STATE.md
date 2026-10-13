@@ -2853,3 +2853,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - El contrato `SG28_DISTRIBUTED_ACCEPTANCE.md` exige coordinador durable autenticado, dos hosts verdaderamente separados, K=1 global, pruebas de fallos y ruta opt-in. El preflight valida identidad de runners, no la coordinación y no constituye DIST-01 PASS.
 - SY-P-23 sigue OPEN con un XFAIL de convención de identificadores; no confundir 901 PASS con cierre de SY-P-23.
 - **Siguiente paso exacto**: fortalecer transporte/pruebas negativas de identidad mTLS sin exposición en producción; ejecutar gate de ese SHA. DIST-01..08 BLOCKED hasta que exista staging desechable autorizado con coordinador realmente compartido y evidencia por nodo. Mantener `SG28_EVALUATE_ISOLATION` desactivado.
+
+
+## 2026-10-12 — SG28 mTLS timeout validation (bloque técnico posterior)
+- Plus transport `backend/app/services/distributed_tls_transport.py`: commit `d05afb817a77bd9d342440bec93050abc3461229` valida timeout numérico finito dentro de (0,10] y rechaza bool, NaN, infinitos y tipos ajenos; sin tocar `/evaluate` ni producción.
+- Plus tests `backend/tests/test_sg28_distributed_tls_transport.py`: commit técnico final `16090fdc37821c3645efa9da2681d04488d94fb8`, diez variantes negativas nuevas, prohíben establecer conexión bajo configuración inválida.
+- GitHub Actions automáticos en SHA final: H1d `38339086098`, independent runner preflight `38339086099`, cumulative `38339086145` IN_PROGRESS al consultar; resultados pendientes, NO PASS anticipado.
+- Línea base anterior `55645549f`: Plus cumulative `38338612293` SUCCESS (901 backend PASS, 1 XFAIL, 757 frontend PASS, 28 TODO); H1d `38338612256` SUCCESS; preflight `38338612248` SUCCESS.
+- SG28 DIST-01..08 sigue BLOCKED por ausencia de coordinación K=1 verdaderamente multinodo; SY-P-23 conserva XFAIL de convención. Siguiente paso: verificar las tres corridas sobre `16090fdc`, inspeccionar los diez testigos y corregir cualquier fallo confirmado; no activar staging remoto ni producción sin autorización.
