@@ -2902,3 +2902,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus `backend/tests/test_sg28_remote_handshake.py` commit técnico final `feb31df0e44c14e9844bf519196f9f462221f4fe`: tests mockeados contra conexiones no autorizadas y tráfico de admisión, éxito sintético y fallo de TCP. Solo se acreditan cuando CI del SHA final concluya.
 - Auto CI: cumulative `38341452978`, H1d `38341452969`, independent runner `38341453050`, inicialmente QUEUED.
 - Siguiente paso exacto: inspeccionar esos tres gates, corregir errores confirmados y preparar prueba de handshake real únicamente en staging desechable autorizado, registrando fingerprint remoto y evidencias no sensibles. **DIST-01..08 BLOCKED** hasta K=1 auténtico multinodo y ejecución HTTP/cancelación; SY-P-23 conserva XFAIL contractual.
+
+
+## 2026-10-12 — SG28 handshake mTLS: cierre de CI y negativos de certificado ausente
+- Plus SHA `feb31df0e44c14e9844bf519196f9f462221f4fe`: cumulative `38341452978` SUCCESS (942 backend PASS, 1 XFAIL, 1 warning; 757 frontend PASS y 28 TODO), H1d `38341452969` SUCCESS, preflight `38341453050` SUCCESS. Los cuatro tests mock de `test_sg28_remote_handshake.py` pasaron; no hubo conexión remota real.
+- Plus `backend/tests/test_sg28_remote_handshake.py` agrega dos pruebas parametrizadas del rechazo fail-closed cuando `getpeercert()` devuelve None o diccionario vacío, sin enviar mensajes de admisión. Commit técnico `e85eeae7f5cb7866a6a5e7ca6a6b455034668e91`; sin cambio de producto ni producción.
+- Auto CI SHA final: cumulative `38342062667`, H1d `38342062723`, SG28 preflight `38342062675` QUEUED en primera consulta. No se declara PASS de este SHA hasta revisar logs.
+- Siguiente objetivo exacto: verificar estos runs y los dos testigos negativos. SG28 DIST-01..08 permanece BLOCKED por falta de coordinador duradero multinodo y K=1 con pruebas reales, y DIST-08 sin HTTP/cancelación distribuidos. SY-P-23 XFAIL contractual permanece abierto.
