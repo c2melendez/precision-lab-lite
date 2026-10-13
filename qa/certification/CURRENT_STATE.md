@@ -2807,3 +2807,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - GitHub detectó automáticamente Plus preflight 38333976164, H1d 38333976122 y cumulative 38333976115 inicialmente QUEUED/IN_PROGRESS. No declarar PASS hasta logs del SHA exacto.
 - DIST-01..08 y SG28/H2 siguen BLOCKED/OPEN: falta servicio coordinador durable autenticado accesible entre hosts y su integración opt-in al endpoint, más inyección de fallos y prueba de cancelación HTTP. No se modificó Render, producción ni SG28_EVALUATE_ISOLATION.
 - Siguiente acción exacta: verificar el preflight y sus artefactos; en caso de éxito, preparar en entorno desechable autorizado un coordinador compartido seguro entre dos hosts separados, primero DIST-01 K=1, manteniendo estados restantes BLOCKED.
+
+## 2026-10-12 — SG28 preflight CI confirmado
+- Plus SHA 2efe7e8c7cb28fe0a882e84f77467eb5bba309b8: SG28 Independent Runner Preflight run 38333976164 SUCCESS. Jobs host_identity (a) 115089811933 y (b) 115089811762 SUCCESS; verify_distinct_runners 115089845401 SUCCESS. Log: `SG28 host-isolation preflight PASS: two distinct runner boot identities; DIST-01..08 remain BLOCKED`.
+- Evidencia: runners distintos verificados, NO hay prueba de grant global K=1, coordinador de red compartido, ni /evaluate. DIST-01..08 permanecen BLOCKED.
+- H1d Plus 38333976122 y cumulative Plus 38333976115 aún IN_PROGRESS en última consulta; comprobar sus resultados antes de acreditarlos.
+- Próxima acción: validar jobs H1d/cumulative sobre SHA; diseñar mecanismo de coordinación compartido y autenticado para dos runners independientes en sandbox sin producción y ejecutar DIST-01 con logs por nodo.
