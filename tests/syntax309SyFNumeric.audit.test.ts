@@ -195,4 +195,23 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(Number.isFinite(numeric), "SY-F-20 parsed=" + parsed + " exact=" + exact).toBe(true);
     expect(numeric).toBeCloseTo(1, 5);
   });
+  it.each([["SY-F-21", Math.asinh(1)], ["SY-F-22", Math.asinh(1)]] as const)("%s: inverse hyperbolic sine of one", (id, expected) => {
+    expect(byId[id].operacion).toBe("valor");
+    const input = byId[id].entrada;
+    const parsed = parseExpression(input).algebrite;
+    const exact = evaluate(parsed);
+    const numeric = Number(evaluate("float(" + exact + ")").replace(/(?:\.\.\.|…)$/, ""));
+    expect(Number.isFinite(numeric), id + " input=" + input + " parsed=" + parsed + " exact=" + exact).toBe(true);
+    expect(numeric).toBeCloseTo(expected, 5);
+  });
+  it("SY-F-23: cosh squared minus sinh squared equals one", () => {
+    expect(byId["SY-F-23"].operacion).toBe("equivalente");
+    const parsed = parseExpression(byId["SY-F-23"].entrada).algebrite;
+    for (const x of [0, 1, 2]) {
+      const exact = evaluate(parsed.replace(/\bx\b/g, "(" + x + ")"));
+      const numeric = Number(evaluate("float(" + exact + ")").replace(/(?:\.\.\.|…)$/, ""));
+      expect(Number.isFinite(numeric), "SY-F-23 parsed=" + parsed + " x=" + x + " exact=" + exact).toBe(true);
+      expect(numeric).toBeCloseTo(1, 5);
+    }
+  });
 });
