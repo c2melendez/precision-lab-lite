@@ -415,7 +415,7 @@ function normalizeUnparenthesizedFunctions(input: string): string {
 }
 
 function normalizePoweredFunctions(input: string): string {
-  const fnPattern = /\\(sin|cos|tan|csc|sec|cot|ln|log)(?:\^\{([^{}]+)\}|\^(-?\d+))/g;
+  const fnPattern = /\\(sin|cos|tan|sinh|cosh|tanh|csc|sec|cot|csch|sech|coth|ln|log)(?:\^\{([^{}]+)\}|\^(-?\d+))/g;
   let out = "";
   let cursor = 0;
   let match: RegExpExecArray | null;
