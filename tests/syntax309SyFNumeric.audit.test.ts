@@ -158,4 +158,14 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(numeric).toBeCloseTo(expected, 5);
     expect(numeric).not.toBeCloseTo(incorrect, 4);
   });
+  it.each([["SY-F-15", 2], ["SY-F-16", 3], ["SY-F-17", 3]] as const)("%s: declared logarithm base", (id, expected) => {
+    expect(byId[id].operacion).toBe("valor");
+    const input = byId[id].entrada;
+    const parsed = parseExpression(input).algebrite;
+    const exact = evaluate(parsed);
+    const floated = evaluate("float(" + exact + ")");
+    const numeric = Number(floated.trim().replace(/(?:\.\.\.|…)$/, ""));
+    expect(Number.isFinite(numeric), id + " input=" + input + " parsed=" + parsed + " exact=" + exact + " floated=" + floated).toBe(true);
+    expect(numeric).toBeCloseTo(expected, 5);
+  });
 });
