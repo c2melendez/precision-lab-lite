@@ -2928,3 +2928,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus SHA b1c9d9e3921eb7f3819265523e84d2989b41a019: cumulative 38344516486 SUCCESS (backend 948 PASS, 1 XFAIL, 1 warning; frontend 757 PASS, 28 TODO); H1d 38344516489 SUCCESS; independent runner 38344516478 SUCCESS. Cuatro tests de errores de red/TLS PASS individualmente.
 - Nueva regresión Plus backend/tests/test_sg28_remote_handshake.py: rechaza falla de carga del certificado de cliente y error de creación de contexto SSL/CA antes de abrir red (2 casos). Commit técnico a69a31dfd2e9f095598da7530b011f35a10f9105; no se ha desplegado ni activado staging/producción.
 - Auto CI SHA final: preflight 38345110390, cumulative 38345110483, H1d 38345110470 inicialmente QUEUED; resultados no acreditados. Siguiente paso: revisar conclusión y logs del SHA y corregir cualquier rojo. DIST-01..08 BLOCKED hasta prueba de K=1 entre hosts independientes y cancelación HTTP distribuida.
+
+
+## 2026-10-12 — SG28 handshake hostname verification
+- Plus SHA a69a31dfd2e9f095598da7530b011f35a10f9105: cumulative 38345110483 SUCCESS (backend 950 PASS, 1 XFAIL, 1 warning; frontend 757 PASS, 28 TODO), H1d 38345110470 SUCCESS, SG28 independent runner 38345110390 SUCCESS; los dos tests de fallo de certificado/CA PASS individuales.
+- Plus test nuevo backend/tests/test_sg28_remote_handshake.py SHA aa9901bfeec105b477defe51b9e65557904e789c simula SSLCertVerificationError por hostname incorrecto y exige fallo cerrado sin mensajes de admisión; pendiente CI.
+- Nuevas corridas: cumulative 38345453316, H1d 38345453304, preflight 38345453370 inicialmente QUEUED. Siguiente objetivo exacto: consultar y clasificar estas corridas SHA aa9901bf y reparar fallos. DIST-01..08 permanece BLOCKED hasta prueba K=1 entre hosts reales y cancelación HTTP distribuida.
