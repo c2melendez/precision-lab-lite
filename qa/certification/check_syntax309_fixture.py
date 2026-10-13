@@ -24,14 +24,15 @@ def main():
     part = load(PART)
     assert len(part) == 33
     assert [x["id"] for x in part] == [f"SY-P-{i:02d}" for i in range(1, 34)]
-    if FULL.is_file():
-        full = load(FULL)
-        assert len(full) == 309
-        assert collections.Counter(c["nivel"] for c in full) == {"N1": 104, "N2": 183, "N3": 22}
-        assert [c for c in full if c["seccion"] == "P"] == part
-        print("Syntax309 FULL integrity PASS: 309 IDs; SY-P 33")
-    else:
-        print("Syntax309 SY-P integrity PASS: 33 IDs. Full 309 fixture MISSING/BLOCKED; not certified.")
+    assert FULL.is_file(), "Full 309-case fixture is required for certification integrity"
+    full = load(FULL)
+    assert len(full) == 309
+    assert collections.Counter(c["nivel"] for c in full) == {"N1": 104, "N2": 183, "N3": 22}
+    expected_sections = {"P": 33, "F": 48, "E": 31, "N": 31, "D": 14, "U": 25,
+                         "V": 28, "Q": 23, "M": 20, "S": 20, "R": 14, "X": 22}
+    assert collections.Counter(c["seccion"] for c in full) == expected_sections
+    assert [c for c in full if c["seccion"] == "P"] == part
+    print("Syntax309 FULL integrity PASS: 309 unique IDs, official levels and sections, SY-P 33")
 
 
 if __name__ == "__main__":
