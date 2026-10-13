@@ -2993,3 +2993,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Se reforzó `check_syntax309_fixture.py` bilateralmente: exigir archivo completo, distribución de niveles y secciones, IDs sin repetición y concordancia con subconjunto SY-P. Antes podía imprimir un PASS parcial cuando faltaba la matriz completa; ahora falla cerrado.
 - Commits: Lite `10603595cbcc42b6e4ea26a8fc1f5153b7cb4e5c`; Plus `b36dd3ffc7cda676ce91421243118bd4b02cda3f`. CI Syntax309 Integrity: Lite `38381288099`, Plus `38381293409`, pendientes de conclusión al observar. Sin declarar certificada matemática toda Syntax309; SY-P-23 mantiene decisión de ambigüedad pendiente.
 - Siguiente paso exacto: verificar ambos gates de integridad y abordar SY-F (48 casos) con oráculos por capa y CI, conservando el flujo paralelo SG28/DIST aislado. No cerrar IN625 ni Syntax309 completa prematuramente.
+
+
+## 2026-10-13 — Syntax309 SY-F iniciado: primeros testigos HTTP Plus
+- Se verificó que `syntax309_cases.jsonl` contiene los 48 registros oficiales SY-F en ambos repositorios. Primeros dos casos con oráculo numérico independiente: SY-F-09 `sin(pi/6)=1/2` y SY-F-06 `(sin(pi/6))^-1=2`, traducidos expresamente del LaTeX del fixture a sintaxis del backend.
+- Plus nuevo test `backend/tests/test_syntax309_syf_numeric.py`, commit técnico `97178705a78d570b06aa0e9c8bbb238eec16a0c0`. No cubre conversión MathLive, UI ni demás 46 casos, y no modifica producto.
+- CI automático Plus SHA técnico: cumulative `38381825940` QUEUED y H1d `38381826053` IN_PROGRESS al observar. No atribuir PASS anticipado.
+- Siguiente paso exacto Frente B: verificar resultados/logs del SHA, diagnosticar fallos; añadir testigos equivalentes en Lite para SY-F-06/09 y continuar SY-F según matriz, con pruebas de parser/MathLive y UI separadas. Frente A DIST/SG28 conserva su bloqueo multinodo sin impedir este trabajo.
