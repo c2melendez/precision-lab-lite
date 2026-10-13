@@ -2954,3 +2954,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Nuevo commit de prueba Plus `b94e34c4d507eb38a830a863e27fc5e1c31bd57c` agrega regresión para excepción de timeout al configurar el socket TLS seguro; exige fallo cerrado y ninguna admisión. No se modificó producto ni se conectó a staging real.
 - Corridas automáticas del nuevo SHA: cumulative `38346643512`, H1d `38346643517`, preflight `38346643587`, inicialmente QUEUED. Ningún PASS atribuido anticipadamente al nuevo SHA.
 - Siguiente acción exacta: verificar esos tres gates y logs; si falla, clasificar y corregir. Después, continuar pruebas de protocolo y coordinación real únicamente en staging desechable autorizado. DIST-01..08 y SG28/H2 siguen BLOCKED/OPEN en su alcance multinodo auténtico.
+
+
+## 2026-10-12 — SG28 lectura del certificado del peer
+- Verificado Plus SHA `b94e34c4d507eb38a830a863e27fc5e1c31bd57c`: cumulative `38346643512` SUCCESS (backend 954 PASS, 1 XFAIL, 1 warning; frontend 757 PASS y 28 TODO); H1d `38346643517` SUCCESS; independent preflight `38346643587` SUCCESS. El caso de timeout de socket fue validado.
+- Nuevo test Plus `backend/tests/test_sg28_remote_handshake.py::test_peer_certificate_read_failure_closes_without_admission`, commit `758575fcdc7642f92100bc232b9a6bb09d34a7b8`: si `getpeercert()` falla con `ssl.SSLError`, exigir `DistributedAdmissionUnavailable` y ausencia de comunicaciones de admisión; simulación local sin tráfico externo.
+- Corridas automáticas del nuevo SHA: cumulative `38347193008`, H1d `38347192927`, independent preflight `38347193104` (QUEUED al comprobar). No atribuir PASS antes de cierre.
+- Siguiente paso: verificar las tres corridas y los logs del SHA `758575f`; clasificar cualquier rojo antes de corregir. DIST-01..08 BLOCKED y SG28/H2 OPEN para multinodo real y cancelación HTTP distribuida. No hubo despliegue ni uso de certificados reales.
