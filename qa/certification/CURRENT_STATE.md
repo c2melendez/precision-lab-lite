@@ -2894,3 +2894,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus cambios técnicos `backend/qa/sg28_remote_readiness.py` y `backend/tests/test_sg28_remote_readiness.py`: normalización sin DNS de variantes numéricas/abreviadas IPv4 con `socket.inet_aton` antes de la política de loopback, sin interacción con servidores; 8 casos negativos nuevos. SHA técnico final `b448e93dfb870c0d941a297c94b06de30abfa781`.
 - Gate nuevo en SHA final: H1d `38341093068`, cumulative `38341093045`, independent runner `38341093062` QUEUED en primera observación. Comprobar logs y clasificar rojos; no declarar PASS anticipadamente.
 - DIST-01..08 siguen BLOCKED: el preflight estático no sustituye coordinador durable autenticado y prueba multinodo K=1; SY-P-23 mantiene convención pendiente.
+
+
+## 2026-10-12 — SG28 handshake-only preflight preparado
+- Plus SHA `b448e93dfb870c0d941a297c94b06de30abfa781`: cumulative `38341093045` SUCCESS (backend 938 PASS, 1 XFAIL, 1 warning; frontend 757 PASS/28 TODO), H1d `38341093068` SUCCESS, preflight runners `38341093062` SUCCESS. Ocho casos IPv4 legacy PASS en logs.
+- Plus implementó `backend/qa/sg28_remote_handshake.py` (commit `96016f546a0ddd3ccc6e0b2bd8f45db2fc7ed3e4`) como CLI opt-in: exige `SG28_DISPOSABLE_STAGING_AUTHORIZED=1`, evalúa readiness estático, realiza solo handshake mTLS con verificación de hostname, cierra la conexión sin enviar grants/release ni mensajes de aplicación; reporta siempre `dist01_certified=false` y `dist08_certified=false`. No se ha conectado a staging ni desplegado producción.
+- Plus `backend/tests/test_sg28_remote_handshake.py` commit técnico final `feb31df0e44c14e9844bf519196f9f462221f4fe`: tests mockeados contra conexiones no autorizadas y tráfico de admisión, éxito sintético y fallo de TCP. Solo se acreditan cuando CI del SHA final concluya.
+- Auto CI: cumulative `38341452978`, H1d `38341452969`, independent runner `38341453050`, inicialmente QUEUED.
+- Siguiente paso exacto: inspeccionar esos tres gates, corregir errores confirmados y preparar prueba de handshake real únicamente en staging desechable autorizado, registrando fingerprint remoto y evidencias no sensibles. **DIST-01..08 BLOCKED** hasta K=1 auténtico multinodo y ejecución HTTP/cancelación; SY-P-23 conserva XFAIL contractual.
