@@ -2861,3 +2861,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - GitHub Actions automáticos en SHA final: H1d `38339086098`, independent runner preflight `38339086099`, cumulative `38339086145` IN_PROGRESS al consultar; resultados pendientes, NO PASS anticipado.
 - Línea base anterior `55645549f`: Plus cumulative `38338612293` SUCCESS (901 backend PASS, 1 XFAIL, 757 frontend PASS, 28 TODO); H1d `38338612256` SUCCESS; preflight `38338612248` SUCCESS.
 - SG28 DIST-01..08 sigue BLOCKED por ausencia de coordinación K=1 verdaderamente multinodo; SY-P-23 conserva XFAIL de convención. Siguiente paso: verificar las tres corridas sobre `16090fdc`, inspeccionar los diez testigos y corregir cualquier fallo confirmado; no activar staging remoto ni producción sin autorización.
+
+
+## 2026-10-12 — SG28 mTLS cierre del gate timeout y nueva prueba de hostname
+- Plus SHA `16090fdc37821c3645efa9da2681d04488d94fb8` verificado: H1d `38339086098` SUCCESS; independent runner preflight `38339086099` SUCCESS; cumulative `38339086145` SUCCESS. Logs backend: 911 PASS, 1 XFAIL, 1 warning; frontend 757 PASS y 28 TODO. Los 10 parámetros de timeout inválido pasaron explícitamente.
+- Siguiente prueba de seguridad en Plus: `backend/tests/test_sg28_distributed_tls_transport.py`, commit `a74ade1b6f1d0844f2cea90fcf60a502baf72346`, añade caso de servidor con CA de confianza pero hostname TLS incorrecto. Aún no hay CI confirmado para ese SHA; no atribuirle PASS.
+- Siguiente paso: localizar la corrida cumulative del SHA `a74ade1b`, verificar el caso TLS nuevo y gates asociados, diagnosticar cualquier fallo. SG28 DIST-01..08 sigue BLOCKED: no se ha ejecutado coordinación K=1 entre hosts independientes; SY-P-23 mantiene XFAIL contractual.
