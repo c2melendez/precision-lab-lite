@@ -94,9 +94,9 @@ describe("Syntax309 SY-P — Lite numeric precedence convention", () => {
 
   it("SY-P-23: signed witnesses preserve both explicit groupings", () => {
     const substitutions = (expression: string) => expression
-      .replace(/\\ba\\b/g, "(12)")
-      .replace(/\\bb\\b/g, "(-3)")
-      .replace(/\\bc\\b/g, "(-2)");
+      .replace(/\ba\b/g, "(12)")
+      .replace(/\bb\b/g, "(-3)")
+      .replace(/\bc\b/g, "(-2)");
     const numeratorProduct = parseExpression("(a/b)*c").algebrite;
     const denominatorProduct = parseExpression("a/(b*c)").algebrite;
     expect(Number(evaluate(substitutions(numeratorProduct)))).toBeCloseTo(8, 9);
