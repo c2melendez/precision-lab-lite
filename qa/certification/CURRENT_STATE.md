@@ -3059,3 +3059,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Next case SY-F-07 from official fixture: `\\tan^{-1}1` expected `\\pi/4`, not reciprocal tangent. New tests: Lite `tests/syntax309SyFNumeric.audit.test.ts` SHA `9e04a54431ffc960fb0c72dea0d5fa6af1d5faa4`; Plus `backend/tests/test_syntax309_syf_numeric.py` SHA `4d1997272d407c7c49f1c21bbaaa3244c5483f3b`. Numerical oracle anchored to Math.PI/4 or math.pi/4 and explicitly rejects reciprocal tangent.
 - Automatically triggered Lite cumulative `38388159600`, H1d `38388159478`, build `38388159524`; Plus cumulative `38388166545`, H1d `38388166509`. At initial query these runs were in progress/queued, NOT yet certified PASS.
 - Next action: inspect these exact SHA gates, diagnose/fix any regression, then continue SY-F-01/02/08 interpretation with explicit parser channel, independently of multinode SG28/DIST BLOCKED.
+
+
+## 2026-10-13 — SY-F scope CI follow-up
+- SY-F-07 PASS gates: Lite cumulative 38388159600, H1d 38388159478, build 38388159524; Plus cumulative 38388166545 and H1d 38388166509.
+- SY-F-01/02/08 parser+engine witnesses added in Lite SHA d990ae722477f6a08484050a11291f8e018e980a. Cumulative 38388911993, H1d 38388911908, build 38388911881 were running at check time.
+- Plus explicit-backend-syntax HTTP controls added in SHA 28ebeed5080e36dcda9b3d9c593074f76cee3a84. Cumulative 38388936829, H1d 38388936816 were queued. This does not certify Plus frontend LaTeX interpretation.
+- Next: inspect gates for both latest SHAs and fix regressions, keeping Syntax309 SY-F open and SG28/DIST blocked pending real multinode evidence.
