@@ -3125,3 +3125,7 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 ### 2026-10-13 — Late CI reconciliation SY-F-21/22/23
 - Plus SHA 8dd6a03d8bf7b37f52c209fd029e2b12ca4ea80c: cumulative 38449665940 and H1d 38449665893 both SUCCESS. This certifies backend-translation witnesses only, not original MathLive LaTeX.
 - Lite SHA 80521538ea7b4af36e94916bf6ab673872f7429f: H1d 38449725564 SUCCESS and build 38449725830 SUCCESS, but cumulative 38449725664 FAILURE with SY-F-21/22/23 3 red. Thus bilateral case closure BLOCKED on Lite original LaTeX parser/engine. Next: repair parser routing for hyperbolic inverses and powered hyperbolic identity, preserve tests and rerun gates.
+
+
+### 2026-10-13 — Parser patch for inverse hyperbolics submitted
+- Technical Lite parser SHA 01ff12eebcd122f08979eeaf41e63691aea0cef3 added explicit operatorname arsinh and bare-number sinh^{-1} handling without modifying mathematical oracles; cumulative 38450004786, H1d 38450004783, build 38450005092 were in progress at observation. This is not an accepted PASS yet. SY-F-23 powered cosh/sinh remains independently unresolved.
