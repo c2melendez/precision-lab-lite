@@ -256,4 +256,19 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     }
     expect(finiteReal, "SY-F-29 must not yield a finite real result: " + parsed).toBe(false);
   });
+  it("SY-F-30: square root applies to x only, then multiplies by y", () => {
+    expect(byId["SY-F-30"].operacion).toBe("interpretacion");
+    const parsed = parseExpression(byId["SY-F-30"].entrada).algebrite;
+    const substituted = parsed.replace(/\bx\b/g, "(9)").replace(/\by\b/g, "(2)");
+    const actual = compileNumeric(substituted, "__unused__")(0);
+    expect(Number.isFinite(actual), "SY-F-30 parsed=" + parsed).toBe(true);
+    expect(actual).toBeCloseTo(6, 9);
+    expect(actual).not.toBeCloseTo(Math.sqrt(18), 5);
+  });
+  it("SY-F-31: unbraced sqrt3 means square root of three", () => {
+    expect(byId["SY-F-31"].operacion).toBe("valor");
+    const parsed = parseExpression(byId["SY-F-31"].entrada).algebrite;
+    const actual = compileNumeric(parsed, "__unused__")(0);
+    expect(actual, "SY-F-31 parsed=" + parsed).toBeCloseTo(Math.sqrt(3), 9);
+  });
 });
