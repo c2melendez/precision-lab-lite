@@ -3178,3 +3178,5 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Se reforzó `check_syntax309_fixture.py` bilateralmente: exigir archivo completo, distribución de niveles y secciones, IDs sin repetición y concordancia con subconjunto SY-P. Antes podía imprimir un PASS parcial cuando faltaba la matriz completa; ahora falla cerrado.
 - Commits: Lite `10603595cbcc42b6e4ea26a8fc1f5153b7cb4e5c`; Plus `b36dd3ffc7cda676ce91421243118bd4b02cda3f`. CI Syntax309 Integrity: Lite `38381288099`, Plus `38381293409`, pendientes de conclusión al observar. Sin declarar certificada matemática toda Syntax309; SY-P-23 mantiene decisión de ambigüedad pendiente.
 - Siguiente paso exacto: verificar ambos gates de integridad y abordar SY-F (48 casos) con oráculos por capa y CI, conservando el flujo paralelo SG28/DIST aislado. No cerrar IN625 ni Syntax309 completa prematuramente.
+
+- Verificación posterior: ambos gates Syntax 309 Data Integrity sobre los SHAs anteriores concluyeron SUCCESS: Lite `38381288099`, Plus `38381293409`. Esto valida estructura, conteos y concordancia de fixture, no la semántica de las 309 evaluaciones.
