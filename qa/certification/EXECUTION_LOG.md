@@ -2994,3 +2994,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Evidencia: runners distintos verificados, NO hay prueba de grant global K=1, coordinador de red compartido, ni /evaluate. DIST-01..08 permanecen BLOCKED.
 - H1d Plus 38333976122 y cumulative Plus 38333976115 aún IN_PROGRESS en última consulta; comprobar sus resultados antes de acreditarlos.
 - Próxima acción: validar jobs H1d/cumulative sobre SHA; diseñar mecanismo de coordinación compartido y autenticado para dos runners independientes en sandbox sin producción y ejecutar DIST-01 con logs por nodo.
+
+## 2026-10-12 — SG28 DIST-01: readiness de staging remoto fail-closed
+- Se verificaron los gates Plus de SHA 2efe7e8c: H1d 38333976122 SUCCESS y acumulativo 38333976115 SUCCESS, además de preflight runners separados 38333976164 SUCCESS. No son DIST-01 PASS.
+- En Plus se publicaron `backend/qa/sg28_remote_readiness.py` y `backend/tests/test_sg28_remote_readiness.py`; commit técnico final 569814e2482f8713928c42b8638f7d7d96b9413d. Validan que el futuro staging tenga autorización explícita, coordinador no-loopback, archivos de credenciales mTLS presentes, y reporte `network_test_executed=false`, `dist01_certified=false`. La comprobación actual es exclusivamente estática y no contacta ningún servidor.
+- CI automática SHA 569814e2: preflight 38335185919, H1d 38335185922, cumulative 38335185926 QUEUED en primera consulta. Revisar logs para demostrar 4 tests nuevos; sin evidencia no declarar PASS.
+- DIST-01..08 siguen BLOCKED, SG28/H2 OPEN: el coordinador existente solo acepta loopback, falta servicio seguro compartido en hosts diferentes, conexión opt-in al endpoint y evidencia de K=1. No se crearon servicios ni se cambió Render/producción.
+- Próximo objetivo exacto: revisar gate acumulativo del SHA 569814e2, remediar fallos; después preparar protocolo de comunicación segura y autorización para staging verdaderamente multinodo. No interpretar readiness estático como conexión mTLS establecida.
