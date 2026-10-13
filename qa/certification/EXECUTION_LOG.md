@@ -3300,3 +3300,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Published official fixture-backed Lite numerical tests SY-F-21 arsinh(1), SY-F-22 sinh^-1(1), SY-F-23 cosh^2(x)-sinh^2(x)=1 at SHA 80521538ea7b4af36e94916bf6ab673872f7429f. Lite CI for this SHA was not yet discoverable through Actions list at inspection: no run/PASS asserted.
 - Published Plus explicitly translated HTTP backend witnesses for same cases at SHA 8dd6a03d8bf7b37f52c209fd029e2b12ca4ea80c. Plus cumulative run 38449665940 QUEUED, H1d 38449665893 IN_PROGRESS at initial inspection. These do not certify original MathLive LaTeX.
 - Next: verify or diagnose Lite push-triggering CI, inspect both SHA-specific logs/results, fix mathematical/parser issues without weakening oracles, then advance SY-F-24 onward. Syntax309 remains OPEN; SG28/DIST multinode remains BLOCKED.
+
+
+## 2026-10-13 — SY-F-21/22/23 CI reconciliation
+- Confirmed SY-F-18/19/20 after Lite parser fix 5b62c0dfdf58a60d53396a5c98e4cc003d2bee02: cumulative 38448248216, H1d 38448247962, build 38448248275 SUCCESS. Plus SHA bf8de04029dde8c04dbce5cf4ced36195ceae6a8: cumulative 38447931604, H1d 38447931380 SUCCESS.
+- SY-F-21 arsinh(1), SY-F-22 sinh^(-1)(1) as inverse hyperbolic sine, SY-F-23 cosh^2(x)-sinh^2(x)=1: existing new Lite test commit 80521538ea and Plus 8dd6a03d8b confirmed on canonical branch. Lite cumulative 38449725664, build 38449725830, H1d 38449725564 IN_PROGRESS at last check; Plus cumulative 38449665940 and H1d 38449665893 IN_PROGRESS at last check. No PASS claimed for this batch yet.
+- Next: inspect those gates by SHA, diagnose regressions, then proceed to official SY-F-24/25/26 (sech(0)=1, exp(2)=e^2, exp(ln3)=3) preserving original LaTeX path in Lite and backend-only classification in Plus. Overall Syntax309 OPEN, SG28/DIST real multinode BLOCKED.
