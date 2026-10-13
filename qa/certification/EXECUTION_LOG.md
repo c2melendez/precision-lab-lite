@@ -3151,3 +3151,8 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Próxima acción Frente A: diseñar/probar un coordinador K=1 con fencing durable para staging aislado y la integración de cancelación HTTP; mantener flags opt-in OFF por defecto, sin deployment de producción.
 - Próxima acción Frente B: recuperar matriz Syntax 309 y los tests existentes, identificar primer caso no certificado independiente de H2; implementar corrección/regresión y ejecutar gates adecuados, conservando SY-P-23 como XFAIL contractual hasta definir convención para símbolo `bc`.
 - Registro exclusivamente documental: no requiere disparar cálculos costosos de CI. Futuros LLM deben leer el protocolo canónico, no depender de este chat.
+
+
+## 2026-10-12 — Frente B Syntax 309: testigo SY-P-23
+- Plus incorporó la regresión de signos para distinguir `bc` de `b*c`, commit `5afdead008ac1bf7c46fab57f0652b51450ab052`; acumulativo `38348411161` y H1d `38348411111` iniciados, pendiente resultado. No se atribuye PASS a Lite por evidencia Plus.
+- Siguiente acción: validar gates del nuevo SHA, implementar testigo equivalente en Lite y mantener SY-P-23 XFAIL hasta fijar la convención. SG28/DIST continúa en el frente independiente.
