@@ -20,6 +20,7 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     const raw = evaluate(parsed);
     const result = Number(raw);
     const numeric = Number.isFinite(result) ? result : Number(evaluate(`float(${parsed})`));
+    expect(Number.isFinite(numeric), `SY-F-09 input=${input} parsed=${parsed} raw=${raw} numeric=${numeric}`).toBe(true);
     expect(numeric).toBeCloseTo(0.5, 8);
   });
 
