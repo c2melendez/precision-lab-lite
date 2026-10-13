@@ -3358,3 +3358,9 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Added SY-F-29 original LaTeX real-domain diagnostic in Lite tests/syntax309SyFNumeric.audit.test.ts at SHA 6a82a4749727df5f24a2353a260f61cf85bb93b4. New push-triggered cumulative run 38487203521, H1d 38487203614, build 38487203883 (initially QUEUED).
 - Added Plus translated HTTP SY-F-29 contract regression in backend/tests/test_syntax309_syf_numeric.py at SHA 0df8bc5cca5e06b356a301c92de02173a7a179aa. New cumulative 38487186347 and H1d 38487186068 (initially IN_PROGRESS).
 - No PASS claimed on SY-F-29 before completion/log verification; classify red as product/parser/harness and correct accordingly. Next: verify these SHA-specific runs, reconcile official SY-F-29 semantics, then proceed to SY-F-30 and SY-F-31. Syntax309 OPEN; SG28/DIST real independent hosts BLOCKED.
+
+
+### 2026-10-13 — SY-F-29 first red classified and regression revised
+- Lite first cumulative on SHA 6a82a4749727df5f24a2353a260f61cf85bb93b4 run 38487203521 FAILURE: 1130 PASS / 1 FAIL / 30 TODO. The failing assertion incorrectly double-escaped its JS regex; parsed source `\\arcsin2` was correctly recognized as `arcsin(2)`. Classify this first red as HARNESS, not product.
+- Corrected parser assertion at Lite technical test SHA f6cb2cde5f64099dee9f07b031590fd1bc3c567a; new cumulative 38487294016, H1d 38487293967, build 38487294111 queued initially. Independent real-domain check unchanged.
+- Plus SY-F-29 translated-backend test SHA 0df8bc5cca5e06b356a301c92de02173a7a179aa, cumulative 38487186347 and H1d 38487186068 in progress at last observation. No SY-F-29 PASS until logs verified on both SHA. Next: verify gates, diagnose any remaining real-domain handling red, then SY-F-30/31.
