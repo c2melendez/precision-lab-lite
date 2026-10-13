@@ -209,9 +209,10 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(byId["SY-F-23"].operacion).toBe("equivalente");
     const parsed = parseExpression(byId["SY-F-23"].entrada).algebrite;
     for (const x of [0, 1, 2]) {
-      const exact = evaluate(parsed.replace(/\bx\b/g, "(" + x + ")"));
-      const numeric = Number(evaluate("float(" + exact + ")").replace(/(?:\.\.\.|…)$/, ""));
-      expect(Number.isFinite(numeric), "SY-F-23 parsed=" + parsed + " x=" + x + " exact=" + exact).toBe(true);
+      // Evaluate the parsed identity via the calculator numeric path, avoiding
+      // display-only truncated Algebrite strings such as "1.000000...".
+      const numeric = compileNumeric(parsed, "x")(x);
+      expect(Number.isFinite(numeric), "SY-F-23 parsed=" + parsed + " x=" + x).toBe(true);
       expect(numeric).toBeCloseTo(1, 5);
     }
   });
