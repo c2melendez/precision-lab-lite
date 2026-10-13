@@ -168,4 +168,31 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(Number.isFinite(numeric), id + " input=" + input + " parsed=" + parsed + " exact=" + exact + " floated=" + floated).toBe(true);
     expect(numeric).toBeCloseTo(expected, 5);
   });
+  it("SY-F-18: log base 2 of x plus 1 is not log base 2 of (x+1)", () => {
+    expect(byId["SY-F-18"].operacion).toBe("interpretacion");
+    const input = byId["SY-F-18"].entrada;
+    const parsed = parseExpression(input).algebrite;
+    const exact = evaluate(parsed.replace(/\bx\b/g, "(8)"));
+    const numeric = Number(evaluate("float(" + exact + ")").replace(/(?:\.\.\.|…)$/, ""));
+    expect(Number.isFinite(numeric), "SY-F-18 parsed=" + parsed + " exact=" + exact).toBe(true);
+    expect(numeric).toBeCloseTo(4, 5);
+    expect(numeric).not.toBeCloseTo(Math.log2(9), 4);
+  });
+  it("SY-F-19: change of base ln(b)/ln(a) computes log base a of b", () => {
+    expect(byId["SY-F-19"].operacion).toBe("equivalente");
+    const parsed = parseExpression(byId["SY-F-19"].entrada).algebrite;
+    const substituted = parsed.replace(/\ba\b/g, "(2)").replace(/\bb\b/g, "(8)");
+    const exact = evaluate(substituted);
+    const numeric = Number(evaluate("float(" + exact + ")").replace(/(?:\.\.\.|…)$/, ""));
+    expect(Number.isFinite(numeric), "SY-F-19 parsed=" + parsed + " exact=" + exact).toBe(true);
+    expect(numeric).toBeCloseTo(3, 5);
+  });
+  it("SY-F-20: natural logarithm of e is one", () => {
+    expect(byId["SY-F-20"].operacion).toBe("valor");
+    const parsed = parseExpression(byId["SY-F-20"].entrada).algebrite;
+    const exact = evaluate(parsed);
+    const numeric = Number(evaluate("float(" + exact + ")").replace(/(?:\.\.\.|…)$/, ""));
+    expect(Number.isFinite(numeric), "SY-F-20 parsed=" + parsed + " exact=" + exact).toBe(true);
+    expect(numeric).toBeCloseTo(1, 5);
+  });
 });
