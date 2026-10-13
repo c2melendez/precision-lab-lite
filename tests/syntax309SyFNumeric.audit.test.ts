@@ -242,4 +242,18 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(Number.isFinite(actual), "SY-F-28 parsed=" + parsed).toBe(true);
     expect(actual).toBeCloseTo(Math.sin(Math.cos(Math.tan(0))), 9);
   });
+  it("SY-F-29: original arcsin(2) LaTeX is outside the real domain", () => {
+    expect(byId["SY-F-29"].operacion).toBe("error");
+    const input = byId["SY-F-29"].entrada;
+    const parsed = parseExpression(input).algebrite;
+    // Do not silently reinterpret the operator name as arc * sin * 2.
+    expect(parsed.toLowerCase(), "SY-F-29 input=" + input + " parsed=" + parsed).toMatch(/asin\\s*\\(\\s*2\\s*\\)|arcsin\\s*\\(\\s*2\\s*\\)/);
+    let finiteReal = false;
+    try {
+      finiteReal = Number.isFinite(compileNumeric(parsed, "__unused__")(0));
+    } catch {
+      // A real-domain rejection is acceptable by the case contract.
+    }
+    expect(finiteReal, "SY-F-29 must not yield a finite real result: " + parsed).toBe(false);
+  });
 });
