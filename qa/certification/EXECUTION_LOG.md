@@ -3013,3 +3013,16 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Se identificó brecha de configuración: readiness admitía coordinador DNS remoto con `server_name` loopback en TLS. Plus commit técnico 7b3fca7e61fc8febea516f2af48f693025a6c7b5 modifica backend/qa/sg28_remote_readiness.py para rechazar server_name `localhost`, `127.0.0.1`, `::1` y añade cuatro casos negativos en backend/tests/test_sg28_remote_readiness.py. No se abrió red ni se cambió producción.
 - Gates automáticos del SHA final: preflight 38338232847, H1d 38338232932, cumulative 38338233557 QUEUED al consultar. No registrar PASS hasta resultado y logs del SHA.
 - DIST-01..08 BLOCKED y SG28/H2 OPEN; todavía no hay coordinador compartido autenticado conectado a hosts separados ni endpoint público opt-in.
+
+
+## 2026-10-12 — SY-P y SG28: verificación de CI y refuerzo readiness remoto
+- Lite SHA `2500f11f8deae17fa5a6fd5a63d93ca37fe7edcd`: H1d run `38304304314` SUCCESS (21 Playwright passed); cumulative `38304304285` SUCCESS (91 test files, 1100 passed, 30 todo), según evidencia anterior del gate. No implica cierre SY-P-23.
+- Plus SHA `7b3fca7e61fc8febea516f2af48f693025a6c7b5`: cumulative run `38338233557` SUCCESS; backend 886 passed / 1 xfailed / 1 warning y frontend 757 passed / 28 todo. H1d `38338232932` y independent-runner preflight `38338232847` SUCCESS. La preflight no certifica DIST-01.
+- Plus refuerzo técnico `backend/qa/sg28_remote_readiness.py` y tests `backend/tests/test_sg28_remote_readiness.py`, HEAD técnico `55645549f9edbf4fcb420421feb20dca6481f19e`: rechaza loopback extendido, direcciones unspecified/link-local, IPv4-mapped IPv6 y DNS .localhost tanto en host como identidad TLS. Readiness sigue sin conexión de red ni emisión de grants. No hay cambios de producción.
+- CI del HEAD técnico Plus: preflight `38338612248`, H1d `38338612256`, cumulative `38338612293` QUEUED en primera consulta; resultados no acreditados todavía. Los runs anteriores de SHAs intermedios no sustituyen el gate del HEAD.
+- SY-P-23 conserva XFAIL de convención sin declarar: `test_syp_23_separate_b_c_substitutions_pending`. SG28 DIST-01..08 permanecen BLOCKED; readiness de configuración no acredita hosts coordinados ni K=1.
+
+### Siguiente paso exacto
+1. Consultar Plus runs `38338612248`, `38338612256`, `38338612293` y sus jobs/logs para SHA `55645549f`. Corregir el gate afectado si falla (especialmente tests de variantes de host), no declarar PASS anticipado.
+2. Comparar los contratos y pruebas Lite/Plus de SY-P-23, y mantener explícita la semántica de identificadores declarados frente a multiplicación hasta decidir convención contractual, sin eliminar XFAIL injustificadamente.
+3. Mantener DIST-01..08 BLOCKED hasta prueba real de coordinador autenticado entre hosts separados en staging autorizado; nunca usar preflight estático como prueba K=1.
