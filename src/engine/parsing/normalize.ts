@@ -677,6 +677,8 @@ function validateInputStructureG3(input: string): void {
 export function preprocessLatex(latex: string): string {
   validateInputStructureG3(latex);
   latex = normalizeExternalSyntaxF3c(normalizeExternalSyntax(normalizeUnicodePaste(normalizePastedLatex(latex))));
+  // SY-F-24: operatorname sech with an unparenthesized numeral is a function call.
+  latex = latex.replace(/\\operatorname\{sech\}\s*([0-9]+(?:\.[0-9]+)?)(?![0-9.])/g, "\\sech($1)");
   // SY-F-21/22: named inverse hyperbolic sine and bare numeric argument.
   latex = latex.replace(/\\operatorname\{arsinh\}/g, "\\asinh");
   latex = latex.replace(/\\sinh\^\{-1\}\s*([0-9]+(?:\.[0-9]+)?)(?![0-9.])/g, "\\asinh($1)");
