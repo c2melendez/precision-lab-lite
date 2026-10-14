@@ -1011,7 +1011,7 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
 
   it("SY-D-06: square-bracketed sum multiplied by three evaluates to nine with worker reentry", () => {
     const row = rows["SY-D-06"];
-    expect(row.entrada).toBe(String.raw`[1+2]\\cdot3`);
+    expect(row.entrada).toBe(String.raw`[1+2]\cdot3`);
     expect(row.esperado).toBe("9");
     const parsed = parseExpression(row.entrada).algebrite;
     expect(evaluate(parsed)).toBe("9");
