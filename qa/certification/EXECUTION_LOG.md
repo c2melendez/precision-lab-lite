@@ -3495,3 +3495,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 
 
 2026-10-13 SY-F-47: Lite test commit ad2cd15d06ce67c539034a24c530da113b5960b0, cumulative run 38509065880. Plus test commit fdbbf02ad9dd5cdd1698e0bcafe324ef95a7c18c, cumulative run 38509070451. SY-F-46 Lite cumulative 38508973764 SUCCESS; Plus 38508978167 initially running. Verify SHA-specific results before closing SY-F-46/47. Next SY-F-48. Syntax309 OPEN; DIST blocked.
+
+
+### 2026-10-13 — SY-F-46 bilateral PASS and SY-F-47 Lite oracle route repair
+- SY-F-46 Lite cumulative 38508973764 SUCCESS SHA 270dd14259be04b516068fd7acc6c4fcd58e7242 and Plus cumulative 38508978167 SUCCESS SHA 855ae9b05a19c0e82375be26a7d93f6771233bc1.
+- SY-F-47 first Lite cumulative 38509065880 FAILED only source-LaTeX max(1,5,3): parser correctly produced max(1,5,3), but test incorrectly called Algebrite directly. Canonical product min/max implementation is tryStatFunction() in src/engine/statFunctions.ts; issue is HARNESS/ORACLE routing, not proof of product defect. Corrected test SHA c0e65d6924626b16afc170a2f00c5f931b13af88, preserving expected 5, cumulative 38509219981, H1d 38509219582, build 38509219658 IN_PROGRESS at initial check.
+- Plus backend-only max(1,5,3) SHA fdbbf02ad9dd5cdd1698e0bcafe324ef95a7c18c cumulative 38509070451 still IN_PROGRESS at last check. Do not claim Plus original LaTeX UI route.
+- Next check latest SHA-specific CI, classify any residual red and then official SY-F-48 min(1,5,3)=1. Syntax309 OPEN; SG28/DIST multinode BLOCKED.
