@@ -340,4 +340,12 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(actual).toBe(3);
   });
 
+  it("SY-F-42: source LaTeX ceiling of 3.2 is four", () => {
+    expect(byId["SY-F-42"].operacion).toBe("valor");
+    const parsed = parseExpression(byId["SY-F-42"].entrada).algebrite;
+    const actual = compileNumeric(parsed, "__unused__")(0);
+    expect(Number.isFinite(actual), "SY-F-42 parsed=" + parsed).toBe(true);
+    expect(actual).toBe(4);
+  });
+
 });
