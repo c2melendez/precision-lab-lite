@@ -1,5 +1,11 @@
 # Current Certification State
 
+## SY-N-31 — E2E nativo Lite, cobertura bilateral (2026-10-14)
+- Plus SHA `89a8385824e08ce7a100e5b321add6a376d3acfa`: cumulative [38612502423](https://github.com/c2melendez/precision-lab-plus/actions/runs/38612502423) y H1d [38612502472](https://github.com/c2melendez/precision-lab-plus/actions/runs/38612502472) COMPLETED/SUCCESS; backend/frontend cumulative PASS. Incluye test de selección `scn`, KaTeX y retorno exacto en componente.
+- Lite nueva prueba Playwright `e2e/syntax309-scientific.spec.ts` SHA 85a0c502e8c58a4a57dcbb99162cd5fd673a4d40; nuevo workflow `.github/workflows/syntax309-scientific-e2e.yml` SHA 922de6007353026ee6d1e5d52961137e66c9ff61. Verifica entrada MathLive real, selección `scn`, precisión a nueve decimales y retorno a fracción, en desktop/tablet/mobile. Se ejecuta en CI de rama canónica en cambios técnicos, excluye documentación solamente.
+- Lite SHA técnico `922de6007353026ee6d1e5d52961137e66c9ff61`: E2E [38613535753](https://github.com/c2melendez/precision-lab-lite/actions/runs/38613535753), cumulative 38613535483, H1d 38613535494, build 38613535554 IN_PROGRESS al consultar. No declarar PASS del E2E hasta observar los 3 proyectos y logs; corregir fallo real de selectores, ejecución o producto. SY-N-31 OPEN hasta cerrar esta evidencia; SG28/H2 OPEN y DIST BLOCKED.
+
+
 ## SY-N-31 — gates Lite verificados y paridad Plus iniciada (2026-10-14)
 - Lite SHA `b88c7e5a272123943b60178725baa15bbc3e3a72`: cumulative 38604145396, H1d 38604145815 y build 38604145540 COMPLETED/SUCCESS. Formateador de presentación SY-N-31 PASS en alcance probado; render/click E2E no acreditado.
 - Plus: formato `scn` utilizaba `toExponential(6)`. Corrección `frontend/src/components/formatNumber.ts` SHA 20e938275c8e7eda503844b2b2020de7053d94df, `ResultPanel.tsx` SHA 78390b398090d35878fa4f5e80b313f8c78913d2 y prueba `formatNumber.syntax309.test.ts` SHA 70c0221a9c72772d350aa948f0297d7b9c2e4279, corregida por commit 0c68c36c8294189263ef5eca785c2c279b441c3a. Plus SHA definitivo pendiente de comprobar CI. SY-N-31 OPEN hasta resultado SHA final Plus y comprobación UI real.
