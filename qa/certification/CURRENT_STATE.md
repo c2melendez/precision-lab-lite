@@ -1,5 +1,25 @@
 # Current Certification State
 
+## Estado vigente — SY-N-09 y SY-N-10 precisión decimal — 2026-10-14
+Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
+- Rama canónica bilateral qa/syntax-audit-in625-a1; continuidad recuperada de GitHub tras avances de otras sesiones.
+- SY-N-09 PASS bilateral confirmado: Lite SHA 925bd7fc5ce7a998c0b3c193ea2b20b9dc9d16b6, cumulative 38550660799 SUCCESS (1206 PASS + 30 TODO), H1d 38550660812 y build 38550660845 SUCCESS. Plus SHA dc3289371a0d05f2877f889f4e067bc57bff9f22, cumulative 38550681432 SUCCESS (backend 1095 PASS + 1 XFAIL, frontend 795 PASS + 28 TODO), H1d 38550681235 SUCCESS.
+- SY-N-10 fixture original intacto 1.005\times1000 -> 1005. Lite tests/syntax309SyE23.audit.test.ts verifica parser original, Algebrite exacto "1005", handler worker auténtico con transporte simulado, requestId, resultLatex exacto, reanálisis y segunda ejecución con la salida real.
+- Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts verifica conversión de LaTeX original a producto completo conservando todos los dígitos y factor 1000. Backend backend/tests/test_syntax309_sye23.py prueba HTTP real con traducción explícita 1.005*1000, MathResponse, éxito/scalar/input/requestId, texto/LaTeX/aproximado 1005, errores nulos y reentrada del texto devuelto con nuevo requestId.
+- Oráculos enteros exactos y sin tolerancia: no se redondea el resultado para obtener PASS. Sin cambios de producto.
+- SY-N-10 PASS bilateral en los alcances descritos. Lite SHA 345673c4942085144208f7092b93dc1760e84982: cumulative [38551264595](https://github.com/c2melendez/precision-lab-lite/actions/runs/38551264595) SUCCESS (1207 PASS + 30 TODO), H1d [38551264555](https://github.com/c2melendez/precision-lab-lite/actions/runs/38551264555) y build [38551264664](https://github.com/c2melendez/precision-lab-lite/actions/runs/38551264664) SUCCESS.
+- Plus SHA 3bf6a912d8f5e95c6749c9b8e3ab26437dda2092: cumulative [38551270871](https://github.com/c2melendez/precision-lab-plus/actions/runs/38551270871) SUCCESS (backend 1096 PASS + 1 XFAIL; frontend 796 PASS + 28 TODO), H1d [38551270740](https://github.com/c2melendez/precision-lab-plus/actions/runs/38551270740) SUCCESS.
+- Alcance: parser/handler Lite, conversor frontend Plus y HTTP por separado; no acredita interacción MathLive nativa ni E2E completo de navegador. TODO/XFAIL no cuentan como PASS.
+- Syntax309 OPEN; SG28/H2 OPEN y DIST multinodo BLOCKED hasta evidencia entre nodos independientes. Sin cambios de producción.
+
+### Siguiente paso exacto — SY-N-11
+1. Fixture original \frac{1}{3}\times3, operacion=valor, esperado 1.
+2. Lite: fuente original al parser y handler; exacto 1, salida y reentrada; no reemplazar 1/3 por decimal truncado.
+3. Plus: conversión frontend original separada y HTTP traducido (1/3)*3; MathResponse, exacto/LaTeX/aproximado 1 y reentrada real.
+4. Publicar pruebas, corregir cualquier fallo en su capa, revisar todos los gates en SHA técnico y sincronizar estado/log bilateral.
+5. SY-N-11 pendiente, sin PASS acreditado en este cierre.
+
+
 ## 2026-10-14 — SY-N-08 PASS bilateral; SY-N-09 en validación
 - SY-N-08 PASS bilateral: Lite SHA e84b3238 cumulative 38549423591, H1d 38549423562, build 38549423495 SUCCESS; Plus SHA f16f1147 cumulative 38549439711, H1d 38549439475 SUCCESS. Alcance: parser, frontend/worker o HTTP y reentrada; no browser E2E completo.
 - SY-N-09 fixture oficial `4.35\\times100` -> `435` (evitar `434.99999999999994`). Lite tests/syntax309SyE23.audit.test.ts commit 925bd7fc5ce7a998c0b3c193ea2b20b9dc9d16b6 (parser, evaluación, worker, reentrada), Plus backend/tests/test_syntax309_sye23.py commit 30b46a60358797aeca85eb5ba43a46992a97493f (traducción explícita 4.35*100, MathResponse HTTP, entero exacto y reentrada), Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts commit dc3289371a0d05f2877f889f4e067bc57bff9f22 (conversión LaTeX). Pruebas nuevas sin cambios de producto; evaluar resultados antes de declarar PASS.
