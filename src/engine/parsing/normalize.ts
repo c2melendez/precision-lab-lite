@@ -8,6 +8,27 @@ function parseError(message: string): AppError {
   return { code: ErrorCode.PARSE_ERROR, message };
 }
 
+// Reject a repeated braced superscript before conversion loses its grouping.
+function hasRepeatedBracedSuperscript(source: string): boolean {
+  for (let i = 0; i < source.length; i++) {
+    if (source[i] !== "^") continue;
+    let start = i + 1;
+    while (/\s/.test(source[start] ?? "") && start < source.length) start++;
+    if (source[start] !== "{") continue;
+    let depth = 1;
+    let end = start + 1;
+    while (end < source.length && depth > 0) {
+      if (source[end] === "{") depth++;
+      else if (source[end] === "}") depth--;
+      end++;
+    }
+    if (depth !== 0) continue; // Existing malformed-group validation owns this case.
+    while (end < source.length && /\s/.test(source[end])) end++;
+    if (source[end] === "^") return true;
+  }
+  return false;
+}
+
 function normalizeExternalSyntaxF3c(input: string): string {
   let out = input.trim();
 
@@ -688,6 +709,9 @@ function validateInputStructureG3(input: string): void {
 
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
+  if (hasRepeatedBracedSuperscript(latex)) {
+    throw parseError("Doble superíndice sin agrupar: usa (x^{2})^{3} o x^{2^{3}}.");
+  }
   validateInputStructureG3(latex);
   latex = normalizeExternalSyntaxF3c(normalizeExternalSyntax(normalizeUnicodePaste(normalizePastedLatex(latex))));
   // SY-F-24: operatorname sech with an unparenthesized numeral is a function call.

@@ -20,4 +20,8 @@ describe("Syntax309 SY-E-11 source-level exponent validation", () => {
   it.each(["SY-E-09", "SY-E-10"])("%s preserves explicit grouping", id => {
     expect(() => parseExpression(rows[id].entrada)).not.toThrow();
   });
+  it.each(["x^{2} ^{3}", "x^{2^{3}}^{4}", "x^{y^{2}^{3}}"])("rejects repeated superscripts in %s", input => {
+    expect(() => parseExpression(input)).toThrowError(expect.objectContaining({ code: ErrorCode.PARSE_ERROR, message: expect.stringMatching(/superíndice|exponente/i) }));
+  });
+
 });
