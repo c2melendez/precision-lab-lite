@@ -528,4 +528,29 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(again)).toBe(expected);
   });
 
+  it("SY-N-16: exact power of two survives worker and reentry", () => {
+    const row = rows["SY-N-16"];
+    const expected = "1267650600228229401496703205376";
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("2^{100}");
+    expect(row.esperado).toBe(expected);
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe(expected);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-16",expressionAlgebrite:parsed}});
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const response = scope.postMessage.mock.calls[0][0];
+    expect(response.success, JSON.stringify(response)).toBe(true);
+    expect(response.requestId).toBe("SY-N-16");
+    expect(response.resultLatex).toBe(expected);
+    const returned = parseExpression(response.resultLatex).algebrite;
+    expect(evaluate(returned)).toBe(expected);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-16-reentry",expressionAlgebrite:returned}});
+    const repeat = scope.postMessage.mock.calls[0][0];
+    expect(repeat.success).toBe(true);
+    expect(repeat.requestId).toBe("SY-N-16-reentry");
+    expect(repeat.resultLatex).toBe(expected);
+  });
+
 });
