@@ -3846,3 +3846,11 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - SY-N-01 implementado en Lite tests/syntax309SyE23.audit.test.ts SHA c3ff0db17aba9111b909c7526f3d5f41d599a6c0: parser, evaluación, worker y reentrada. Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts SHA bb2ddcfc9e176aa4ccc3d25cb2352cd7056ad523; backend/tests/test_syntax309_sye23.py SHA técnico final c1daf54341bfa742407236808f8b70990d364e29: fuente original, traducción numérica, HTTP, MathResponse y reentrada.
 - CI SHA técnico: Lite cumulative 38538734939/H1d 38538734985/build 38538735003; Plus cumulative 38538741316/H1d 38538741226. En curso en la última inspección; SY-N-01 PENDIENTE de confirmación y reparación si hay rojos.
 - Mantener Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED; no atribuir browser E2E a pruebas aisladas; sin despliegue a producción.
+
+
+## Estado vigente — SY-N-01 decimal abreviado y correcciones — 2026-10-14
+- SY-E-31 PASS bilateral: Lite cumulative 38537049689/H1d 38537049789/build 38537049793 SUCCESS; Plus cumulative 38537114732/H1d 38537114677 SUCCESS. Sección E finalizada en alcance probado, convención 2\\frac{1}{3} como producto 2/3.
+- SY-N-01 fixture original .5, esperado 0.5. Lite primer cumulative 38538734939 FAILURE del ORÁCULO: Number("1/2") es NaN aunque el CAS emite racional exacto; corregido test en tests/syntax309SyE23.audit.test.ts SHA 710295a00e6670f4834943fbbe7b8be90f6ffe2d evaluando racional numéricamente, sin relajar exactitud.
+- Plus primer cumulative 38538741316 backend FAILURE de PRODUCTO: parser no admite .5 porque exige dígito a ambos lados del punto. Corrección backend/app/services/parsing.py SHA ef9fd4475f2cbc7ead92921a898e90d9c7964479 normaliza decimales con punto inicial solo en frontera numérica sin permitir acceso a atributos. Tests originales permanecen.
+- Nuevas corridas SHA técnico: Lite cumulative 38539929359, H1d 38539929360, build 38539929300; Plus cumulative 38539952231, H1d 38539952135. Al último chequeo in_progress; SY-N-01 NO PASS hasta revisar conclusiones, jobs/logs, corregir rojos.
+- Próximo objetivo al cerrar SY-N-01: SY-N-02 fixture 5. -> 5; no saltar gate ni declarar E2E browser por pruebas aisladas. Syntax309 OPEN, SG28 H2 OPEN, DIST multinodo BLOCKED. Sin despliegue.
