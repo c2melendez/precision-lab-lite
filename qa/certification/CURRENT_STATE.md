@@ -1,5 +1,11 @@
 # Current Certification State
 
+## Seguimiento SY-N-29 — diagnóstico estructurado final (2026-10-14)
+- Lite acumulativo 38599405743 sobre SHA e7841a5 FAIL: la excepción AppError contiene {code,message}, pero el oráculo usó String(object) y obtuvo [object Object]. Defecto de HARNESS, no prueba de fallo matemático nuevo.
+- Solución test Lite SHA 4fa797dfa51ae3c7a3e5fd641bd9f1426aa0e357: exigir code PARSE_ERROR y message sintáctico, sin capturar sus propias expectativas. CI disparada automáticamente: cumulative 38599571387, H1d 38599571441, build 38599571389; inicialmente QUEUED.
+- Plus SY-N-29 cumulative 38597448132 y H1d 38597447960 SUCCESS sobre SHA c96b9c9; pendiente ampliar cobertura backend y reentrada, no declarar cierre integral todavía. SY-N-30 pendiente.
+
+
 ## Seguimiento SY-N-29 — 2026-10-14
 - Lite SHA cddc6b34 cumulative 38597439625 FAILURE: 1226 PASS, 1 FAIL, 30 TODO; H1d 38597439807 y build 38597439651 SUCCESS. El test asumía que el rechazo de 1,5+2 ocurría en parseExpression; en realidad la excepción de sintaxis provino de evaluate (Algebrite reportó "Stop: syntax error"). Clasificación HARNESS en el oráculo de fase; el contrato oficial permite resultado 3.5 o aviso claro.
 - Lite regresión revisada SHA e7841a5c3529196664ca9b9484bff53b281325f7 (precedida por 2b411fd): separa resultado de excepción y jamás captura sus propias aserciones; requiere diagnóstico sintáctico en rechazo. CI SHA final cumulative 38599405743, H1d 38599405223, build 38599405308 inicialmente QUEUED. No declarar PASS hasta verificación del SHA final.
