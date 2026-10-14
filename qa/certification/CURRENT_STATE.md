@@ -1,5 +1,22 @@
 # Current Certification State
 
+## Estado vigente — SY-U-03 multiplicación cdot — 2026-10-14
+Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
+- Caso oficial SY-U-03 de syntax309_cases.jsonl: entrada 3\cdot4, operacion=valor, esperado 12.
+- Lite tests/syntax309SyE23.audit.test.ts: fuente original -> parser/evaluación exacta 12 -> handler worker auténtico con transporte simulado, requestId/resultLatex -> reanálisis y segunda ejecución con salida real y nuevo requestId.
+- Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts: conversión íntegra de 3\cdot4 a 3*4 y conversión de resultado 12. Backend backend/tests/test_syntax309_sye23.py: traducción explícita 3*4 por HTTP, MathResponse, éxito/scalar/input/requestId, texto/LaTeX/aproximado 12, errores nulos, reentrada del result_text real y nuevo requestId.
+- Sin cambios de producto. Alcance automatizado: parser/handler Lite y conversor/HTTP Plus separados; no acredita interacción visual específica SY-U-03. Gates E2E existentes son regresión. TODO/XFAIL no cuentan como PASS.
+- SY-U-03 PASS bilateral en alcance descrito. Lite SHA ce64622f27128baf90ba6b788519cff6924b2cc9: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38649833001 (1246 PASS + 30 TODO), H1d 38649833003, build 38649833090 y científico UI E2E 38649832959: todos SUCCESS. Plus SHA e06c9902a18e3f01a2f70fd5083638e3b07e9832: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38649838154 (backend 1134 PASS + 1 XFAIL; frontend 823 PASS + 28 TODO) y H1d 38649838317: todos SUCCESS. Conclusiones verificadas por SHA y conteos leídos de logs.
+- Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo BLOCKED. Continúa avance matemático paralelo según política autorizada; sin despliegue de producción.
+
+### Siguiente paso exacto — SY-U-04
+1. Fixture original 3*4, operacion=valor, esperado 12.
+2. Lite: fuente original -> parser/evaluación exacta -> handler worker -> reentrada real.
+3. Plus: conversión completa de fuente original y endpoint HTTP con 3*4; MathResponse y reentrada exacta 12.
+4. Verificar todos los gates por SHA antes de PASS, corregir fallos y sincronizar evidencia bilateral.
+5. Después SY-U-05: 12/4 -> 3. Ambos pendientes.
+
+
 ## Estado vigente — SY-U-02 división — 2026-10-14
 Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
 - Caso oficial SY-U-02 de syntax309_cases.jsonl: entrada 12\div4, operacion=valor, esperado 3.
