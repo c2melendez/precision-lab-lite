@@ -3416,3 +3416,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Published official SY-F-40 nested absolute bar tests Lite SHA 93603c2ad1bd5a9588f515ddd826a0e071d892d2: test accepts mathematically correct | |x|-2 | across x=-3,0,5, or meaningful ambiguity/delimiter feedback. CI cumulative 38503507177, H1d 38503507167, build 38503507118 in progress initially.
 - Plus backend-only explicit abs(abs(x)-2) witnesses SHA 97880a23a694ea92f4bb8dea64d1a3d56690faf4, cumulative 38503514125 and H1d 38503514179 queued initially. Cannot use this to claim keyboard typed-bar handling.
 - Next: diagnose latest CI, refine SY-F-40 semantic error discrimination if needed, then advance SY-F-41 per official matrix. Syntax309 OPEN; SG28/DIST multinode BLOCKED.
+
+
+### 2026-10-13 — SY-F-40 diagnostic and parser fix
+- Lite SY-F-40 initial SHA 93603c2ad1bd5a9588f515ddd826a0e071d892d2 cumulative 38503507177 FAILURE: one nested-bar case failed; test observed non-informative parsing/expectation error rather than accepted numeric meaning or clear ambiguity signal. Other 1145 tests passed, 30 TODO. H1d and build separately.
+- Lite parser fix e480f2e6082058a76d3f339eb24859b9020d9665 normalizes generic LaTeX \\vert bars for nested absolute values, preserving official numeric oracle at x=-3,0,5. New cumulative 38503643938, H1d 38503643929 and build 38503643931 queued/in progress initially; do not declare PASS before logs.
+- Plus backend-only SY-F-40 SHA 97880a23a694ea92f4bb8dea64d1a3d56690faf4 cumulative 38503514125 and H1d 38503514179 in progress. It validates explicit abs(abs(x)-2) and NOT raw typed bars.
+- Next: verify exact SHA CI results, resolve any red, then SY-F-41. Syntax309 OPEN; SG28/DIST blocked pending independent-node evidence.
