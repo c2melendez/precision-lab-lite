@@ -665,4 +665,28 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(repeated.resultLatex).toBe("1");
   });
 
+
+  it("SY-N-22: negative integer factorial is rejected and worker recovers", () => {
+    const row = rows["SY-N-22"];
+    expect(row.operacion).toBe("error");
+    expect(row.entrada).toBe("(-1)!");
+    expect(row.esperado).toMatch(/factorial no definido/i);
+    const parsed = parseExpression(row.entrada).algebrite;
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-22",expressionAlgebrite:parsed}});
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const invalid = scope.postMessage.mock.calls[0][0];
+    expect(invalid.success, JSON.stringify(invalid)).toBe(false);
+    expect(invalid.requestId).toBe("SY-N-22");
+    expect(invalid.errorCode).toBe(ErrorCode.DOMAIN_ERROR);
+    expect(invalid.errorMessage).toMatch(/factorial|negativ|definid|domain/i);
+    expect(invalid.resultLatex).toBeNull();
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-22-recovery",expressionAlgebrite:parseExpression("2+3").algebrite}});
+    const recovered = scope.postMessage.mock.calls[0][0];
+    expect(recovered.success, JSON.stringify(recovered)).toBe(true);
+    expect(recovered.requestId).toBe("SY-N-22-recovery");
+    expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
+  });
+
 });
