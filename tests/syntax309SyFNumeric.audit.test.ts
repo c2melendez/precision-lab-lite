@@ -328,7 +328,7 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     } catch (error) {
       // The contract permits a clear request for explicit delimiters instead
       // of guessing how nested typed bars should pair.
-      const message = String(error);
+      const message = (error instanceof Error ? error.message : (error && typeof error === "object" && "message" in error ? String(error.message) : String(error)));
       expect(message).toMatch(/ambigu|delimit|barra|\\\\lvert|\\\\rvert/i);
     }
   });
