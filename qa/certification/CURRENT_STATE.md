@@ -1,5 +1,11 @@
 # Current Certification State
 
+## SY-N-31 follow-up CI fixes — 2026-10-14
+- Lite product change SHA 1f0bd26d8eabe51a883ea8141dcf301865396599 failed build and cumulative (38602093704, 38602093976) from malformed escaped regex TS1127 at compute.worker.ts:796, not a mathematical regression. Corrected SHA 9009a2b0691937a06175762cbac6ee51b09edded. Fresh CI cumulative 38602384573, H1d 38602384617, build 38602384805 in progress at last check.
+- Plus initial SY-N-31 backend cumulative 38601817684 FAILED because test source oracle used doubled backslashes in Python raw literal; H1d 38601817686 SUCCESS. Corrected the test literals without modifying fixture or expectations, SHA 643c07289a8fdbbbdccb22be5318d1de9c29ee30. New cumulative 38602404105, H1d 38602404128 queued at last check.
+- SY-N-31 OPEN until current SHA-specific results are verified, including real display-format coverage. SG28/H2 OPEN and DIST multinodo BLOCKED.
+
+
 ## SY-N-31 diagnostic and Lite scientific-approx fix — 2026-10-14
 - Lite initial SHA 4edb54a07cde037b48efb54f9e628c3b464926d3 cumulative 38601802013 FAILURE (1228 PASS, 1 FAIL, 30 TODO); build 38601801978 and H1d 38601801976 SUCCESS. SY-N-31 exact rational/reentry works but decimalApprox is absent for exact fraction, by worker design. Classification PRODUCT/format capability, not oracle weakness.
 - Lite src/workers/compute.worker.ts SHA 1f0bd26d8eabe51a883ea8141dcf301865396599: preserve exact fraction and add scientific decimalApprox only for tiny simple rationals with safe integer numerator/denominator, finite nonzero magnitude < 1e-6; 1/3000000 -> 3.333333333e-7. No changes to other formats/large unsafe integers. New cumulative 38602093976, H1d 38602093448, build 38602093704 QUEUED on initial inspection; verify by SHA before PASS.
