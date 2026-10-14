@@ -289,11 +289,11 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(actual, "SY-F-35 parsed=" + parsed).toBeCloseTo(2, 9);
   });
   it.each([
-    ["\\\\sqrt[2]{(-3)^{2}}", 3],
-    ["\\\\sqrt[2]{3^{2}}", 3],
-    ["\\\\sqrt[3]{(-3)^{3}}", -3],
-    ["\\\\sqrt[3]{3^{3}}", 3],
-    ["\\\\sqrt[4]{(-2)^{4}}", 2],
+    ["\\sqrt[2]{(-3)^{2}}", 3],
+    ["\\sqrt[2]{3^{2}}", 3],
+    ["\\sqrt[3]{(-3)^{3}}", -3],
+    ["\\sqrt[3]{3^{3}}", 3],
+    ["\\sqrt[4]{(-2)^{4}}", 2],
   ] as const)("SY-F-36: concrete indexed-radical parity %s", (input, expected) => {
     expect(byId["SY-F-36"].operacion).toBe("equivalente");
     const parsed = parseExpression(input).algebrite;
