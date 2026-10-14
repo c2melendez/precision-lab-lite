@@ -1,5 +1,14 @@
 # Current Certification State
 
+## Estado vigente — SY-N-19 porcentaje multiplicado — 2026-10-14
+- SY-N-18 PASS bilateral en alcance probado: Lite SHA 5857b199c5c707d5f5ad5bbd521ab6e50beb1a58, cumulative 38565174806, H1d 38565174629 y build 38565174626 SUCCESS; Plus SHA 58e82c85d15dade5b070d2e3362b90a5d0437194, cumulative 38565197946 y H1d 38565197938 SUCCESS.
+- SY-N-19 fixture canónico `50\\%\\times200` valor 100. Regresiones: Lite `tests/syntax309SyE23.audit.test.ts` SHA 030bbd67f691c1160d02a45377648fd84a00328f; Plus conversor `frontend/src/__tests__/syntax309SyEFractions.audit.test.ts` SHA b70faa7edb94ef93d6870757b7b9167e71f05edc; backend HTTP/MathResponse/reentrada `backend/tests/test_syntax309_sye23.py` SHA final 08a34ecab054ba631f31b4fe07842d5d391490e9.
+- GitHub Actions SHA técnico Lite cumulative [38566176013](https://github.com/c2melendez/precision-lab-lite/actions/runs/38566176013), H1d [38566176121](https://github.com/c2melendez/precision-lab-lite/actions/runs/38566176121), build [38566175851](https://github.com/c2melendez/precision-lab-lite/actions/runs/38566175851); Plus cumulative [38566201385](https://github.com/c2melendez/precision-lab-plus/actions/runs/38566201385), H1d [38566201384](https://github.com/c2melendez/precision-lab-plus/actions/runs/38566201384). En ejecución al último chequeo. SY-N-19 OPEN hasta concluir.
+- No cambios de producción. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. Tests no acreditan navegador E2E completo.
+### Siguiente paso exacto
+Comprobar conclusiones y logs de cinco gates SY-N-19 sobre los SHA citados; reparar fallos y sincronizar resultados; solo después acreditar SY-N-19 y comenzar SY-N-20 `5!` -> `120`.
+
+
 ## Estado vigente — SY-N-18 porcentaje simple — 2026-10-14
 - SY-N-17 PASS bilateral en el alcance probado: Lite SHA 2839ca1a4aade09869fa42329c4cf988b78643ac, cumulative 38564140863, H1d 38564140855 y build 38564141310 SUCCESS. Plus SHA e79e12f787cd061a48d8650c1b56e7e6314270f5, cumulative 38564159278 y H1d 38564159286 SUCCESS.
 - SY-N-18 fixture canónico `12\\%`, valor esperado `0.12`. Nuevas regresiones Lite `tests/syntax309SyE23.audit.test.ts` SHA 5857b199c5c707d5f5ad5bbd521ab6e50beb1a58; Plus conversor `frontend/src/__tests__/syntax309SyEFractions.audit.test.ts` SHA 787e3c2038c6967ac19c00b6a5c905fae851ed48; Plus HTTP `backend/tests/test_syntax309_sye23.py` SHA final 58e82c85d15dade5b070d2e3362b90a5d0437194. No cambios de producción.
