@@ -356,4 +356,12 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(actual).toBe(-1);
   });
 
+  it("SY-F-44: original LaTeX modulo ten by three is one", () => {
+    expect(byId["SY-F-44"].operacion).toBe("valor");
+    const parsed = parseExpression(byId["SY-F-44"].entrada).algebrite;
+    const actual = compileNumeric(parsed, "__unused__")(0);
+    expect(Number.isFinite(actual), "SY-F-44 parsed=" + parsed).toBe(true);
+    expect(actual).toBe(1);
+  });
+
 });
