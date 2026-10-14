@@ -3283,3 +3283,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - SY-F-43 official fixture: \\operatorname{sgn}(-5) expects -1. Published source LaTeX numeric oracle in Lite tests/syntax309SyFNumeric.audit.test.ts SHA af2c98f95c744bf79f4ed55e29da87312c0606d5; backend-only HTTP sign(-5) oracle in Plus backend/tests/test_syntax309_syf_numeric.py SHA e3f0af35442c065071d040eec4dff125a776e1cb. Plus does not yet test original MathLive LaTeX route.
 - Push-triggered new gates: Lite cumulative 38508046721, H1d 38508046723, build 38508046693 (in progress at first check); Plus cumulative 38508051426 and H1d 38508051415 (queued at first check). Do not count SY-F-43 PASS before actual results.
 - Next: inspect SHA-specific CI, classify/fix any SY-F-43 parser or oracle failure, then proceed official SY-F-44 modulo. Syntax309 OPEN; SG28/DIST real multinode still BLOCKED.
+
+
+### 2026-10-13 — SY-F-43 red diagnosed and Lite parser repair
+- Original SY-F-43 test Lite SHA af2c98f95c744bf79f4ed55e29da87312c0606d5 cumulative run 38508046721 FAILURE: 1148 PASS, 1 FAIL, 30 TODO. Failure exact: "No se puede evaluar numéricamente la variable/función desconocida \"s\""; \\operatorname{sgn}(-5) was not mapped to existing sign function. Classified PRODUCT / source LaTeX normalization, not mathematical-oracle failure.
+- Lite patch src/engine/parsing/normalize.ts SHA 29dc6f5370d247e8cf08d558d2b243b60894cddc adds explicit localized operator alias sgn -> sign. Same input and expected -1 remain untouched. Auto-triggered cumulative 38508156912, H1d 38508156917, build 38508156999 queued at initial observation; verify outcome before PASS.
+- Plus independent backend-only sign(-5) SHA e3f0af35442c065071d040eec4dff125a776e1cb cumulative 38508051426 / H1d 38508051415 in progress at observation; original MathLive operatorname route not covered.
+- Next: inspect latest bilateral CI and logs, repair any genuine regression, then proceed official SY-F-44 modulo 10 mod 3 = 1. SG28/DIST multinode still BLOCKED; Syntax309 OPEN.
