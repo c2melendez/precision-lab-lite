@@ -3772,3 +3772,14 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - CI de SY-E-25 disparada por push: Lite cumulative 38527628426, H1d 38527628292, build 38527628369; Plus cumulative 38527624687 y H1d 38527624681. Verificar conclusión/jobs/logs; a la hora de registro estaban pendientes.
 - SY-E-25 IMPLEMENTADO, NO declarar PASS bilateral hasta evidencia de CI alineada con los SHA técnicos. No se acredita teclado/MathLive nativo o navegador por parser/HTTP aislados.
 - Siguiente paso: confirmar gates y corregir rojos de SY-E-25 si existen. Al cierre, iniciar SY-E-26 fixture \\frac{1}{3}+\\frac{1}{6} -> \\frac{1}{2}. Syntax309 OPEN, H2/SG28 OPEN, DIST multinodo BLOCKED. Sin despliegue.
+
+
+## Estado vigente — SY-E-26 suma exacta de fracciones — 2026-10-14
+- Rama canónica bilateral: qa/syntax-audit-in625-a1. SY-E-25 PASS acotado bilateral, Lite SHA 38b6986d298b68dc55e2b6317c22351f26573b15, cumulative 38527628426/H1d 38527628292/build 38527628369 SUCCESS; Plus SHA a7a7ec8fcb63836811b30df740c00deb0b36a2bb, cumulative 38527624687/H1d 38527624681 SUCCESS.
+- SY-E-26 fixture original \\frac{1}{3}+\\frac{1}{6}, operacion=valor, esperado \\frac{1}{2}. No sustituir por decimal ni por una mitad antes del parser.
+- Lite: tests/syntax309SyE23.audit.test.ts, SHA 78e425d11ae44024dd8cc3f7b16810e91b444023: parser, resultado exacto 1/2, aproximación 0.5, handler worker simulado y reentrada real del LaTeX emitido.
+- Plus backend: backend/tests/test_syntax309_sye23.py, SHA 7c75a77cd94a7c996c4ce2e27222346a1197793d: HTTP real /api/v1/evaluate para conversión explícita (1/3)+(1/6), MathResponse, racional 1/2, LaTeX, aproximación y reentrada.
+- Plus frontend: frontend/src/__tests__/syntax309SyEFractions.audit.test.ts, SHA final 001dc68a966bd1319b73c7fff95bcfc496cc4e3d: conversión de entrada LaTeX original y salida. No se acredita navegador/MathLive nativo por este test.
+- Corridas disparadas: Lite cumulative 38528086111, H1d 38528086106, build 38528086116; Plus SHA final cumulative 38528091466, H1d 38528091438. En la última comprobación estaban queued/in_progress: NO PASS todavía.
+- SY-E-26 IMPLEMENTED, pendiente corroboración de gates, jobs/logs y correcciones si hay rojo. Siguiente caso solo tras cierre: localizar SY-E-27 en qa/certification/syntax309_cases.jsonl y aplicar contrato correspondiente.
+- Syntax309 global OPEN; SG28/H2 OPEN; DIST multinodo BLOCKED por falta de evidencia independiente. Sin cambios de producción.
