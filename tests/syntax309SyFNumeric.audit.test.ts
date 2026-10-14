@@ -332,4 +332,12 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
       expect(message).toMatch(/ambigu|delimit|barra|\\\\lvert|\\\\rvert/i);
     }
   });
+  it("SY-F-41: source LaTeX floor of 3.7 is three", () => {
+    expect(byId["SY-F-41"].operacion).toBe("valor");
+    const parsed = parseExpression(byId["SY-F-41"].entrada).algebrite;
+    const actual = compileNumeric(parsed, "__unused__")(0);
+    expect(Number.isFinite(actual), "SY-F-41 parsed=" + parsed).toBe(true);
+    expect(actual).toBe(3);
+  });
+
 });
