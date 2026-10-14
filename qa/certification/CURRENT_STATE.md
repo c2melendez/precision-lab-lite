@@ -1,5 +1,12 @@
 # Current Certification State
 
+## SY-N-29 CI y apertura de SY-N-30 — 2026-10-14
+- Lite SY-N-29 corregido SHA 4fa797dfa51ae3c7a3e5fd641bd9f1426aa0e357: cumulative 38599571387 SUCCESS (1227 PASS/30 TODO), H1d 38599571441 SUCCESS, build 38599571389 SUCCESS. Error original de test al serializar AppError ya corregido; evita aceptar un resultado erróneo como rechazo.
+- Plus SY-N-29 prueba frontend SHA c96b9c9 cumulative 38597448132 y H1d 38597447960 SUCCESS. Añadido caso backend HTTP y recuperación SHA 84a19b63e344a6c4dfa766fbb7a83e46931ca396, cumulative 38599979079 y H1d 38599979072 aún en curso al consultar; cierre HTTP depende del resultado real.
+- SY-N-30 entrada oficial `1{,}000+1` (separador de miles), contrato `1001 o aviso`. Tests en Lite SHA e6f21f0ef7d4cb3de8368129e267d514aacbf3b5, Plus frontend SHA 56784bae47c49417790106e66c8467363dc09f12, sin cambios de producto. Lite cumulative 38600073645, H1d 38600073618, build 38600073694; Plus cumulative 38600087126 y H1d 38600087299. No atribuir éxito mientras pendientes.
+- Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED; no despliegue de producción. Próximo: examinar pruebas backend SY-N-29, diagnosticar nuevos gates SY-N-30 por SHA y extender HTTP/reentrada antes del cierre bilateral.
+
+
 ## Seguimiento SY-N-29 — diagnóstico estructurado final (2026-10-14)
 - Lite acumulativo 38599405743 sobre SHA e7841a5 FAIL: la excepción AppError contiene {code,message}, pero el oráculo usó String(object) y obtuvo [object Object]. Defecto de HARNESS, no prueba de fallo matemático nuevo.
 - Solución test Lite SHA 4fa797dfa51ae3c7a3e5fd641bd9f1426aa0e357: exigir code PARSE_ERROR y message sintáctico, sin capturar sus propias expectativas. CI disparada automáticamente: cumulative 38599571387, H1d 38599571441, build 38599571389; inicialmente QUEUED.
