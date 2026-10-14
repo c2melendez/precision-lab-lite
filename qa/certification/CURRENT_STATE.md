@@ -1,6 +1,14 @@
 # Current Certification State
 
 ## Estado vigente — SY-N-15 precisión entera — 2026-10-14
+- Fixture 10^{20}+1, resultado exacto 100000000000000000001. Lite SHA 2e2ea598776202d46a049be80263ca3d814f7391 gates cumulative 38560673324, H1d 38560673329 y build 38560673418 SUCCESS.
+- Plus cumulative 38560714428 FAIL de ORÁCULO frontend: la conversión real devolvió 10^(20)+1 equivalente, no incluida en la lista válida; backend del mismo run SUCCESS. Corrección frontend commit 9b80bdf3323ef7504d8b15899b07b47511d5e6c9 preserva el original y permite exponente con paréntesis. Plus backend/test_syntax309_sye23.py contiene test_syn15_large_integer_http_exact_and_reentry, verificado en HEAD; no afirmar que fue escrito en esta intervención.
+- Nueva CI Plus cumulative 38562903741 y H1d 38562903630 IN_PROGRESS al consultar. SY-N-15 OPEN hasta resultado final del SHA corregido. SG28/H2 OPEN; DIST multinodo BLOCKED, sin producción.
+### Próximo paso exacto
+Verificar el resultado de cumulative y H1d Plus SHA 9b80bdf; si PASS marcar SY-N-15 bilateral y pasar a SY-N-16 (2^{100} => 1267650600228229401496703205376) sin pérdida de precisión, con pruebas y seguimiento de gates.
+
+
+## Estado vigente — SY-N-15 precisión entera — 2026-10-14
 - SY-N-14 PASS bilateral en su alcance probado: Lite SHA 7caaffdf3e47a133e50341ef13209ff9d0ccc53c gates cumulative 38554735293, H1d 38554735367, build 38554735426 SUCCESS; Plus SHA 88e288237d9273b514fb46c42c251569c5c6b9e7 cumulative 38555203162, H1d 38555203246, SG28 backend 38555203234 SUCCESS. No acredita navegador E2E ni multinodo independiente.
 - SY-N-15 fixture canónico `10^{20}+1` -> `100000000000000000001`, entero exacto sin conversión a 1e20. Lite test en `tests/syntax309SyE23.audit.test.ts` SHA 2e2ea598776202d46a049be80263ca3d814f7391, cumulative [38560673324](https://github.com/c2melendez/precision-lab-lite/actions/runs/38560673324) SUCCESS, build [38560673418](https://github.com/c2melendez/precision-lab-lite/actions/runs/38560673418) SUCCESS, H1d [38560673329](https://github.com/c2melendez/precision-lab-lite/actions/runs/38560673329) en ejecución al último chequeo.
 - Plus prueba frontend de conversión en `frontend/src/__tests__/syntax309SyEFractions.audit.test.ts` SHA d07934fa5511164ffc35b56167d562397ed19d45. Cumulative [38560714428](https://github.com/c2melendez/precision-lab-plus/actions/runs/38560714428) y H1d [38560714591](https://github.com/c2melendez/precision-lab-plus/actions/runs/38560714591) en ejecución. Publicación del test HTTP backend de SY-N-15 bloqueada dos veces por control de herramientas; no afirmar que exista ni atribuirle PASS. Sin cambios de motor ni producción.
