@@ -3707,3 +3707,23 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 4. Publicar regresiones, obtener SHA/runs y revisar acumulativo/H1d/build Lite; clasificar rojos y corregir la capa adecuada sin alterar oráculo. Sincronizar trazabilidad sin CI documental.
 5. Luego SY-E-22 fracción anidada; contemplar sus restricciones de dominio x!=0 y x!=-1 al comparar con x/(x+1), sin extender silenciosamente el dominio original.
 6. SY-E-21 iniciado en preparación de fuente/oráculos, sin test publicado/ejecución: NO PASS.
+
+
+## Estado vigente — SY-E-21 fracción abreviada exacta y reentrada — 2026-10-14
+Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
+- Rama canónica bilateral: qa/syntax-audit-in625-a1.
+- Fixture oficial SY-E-21 intacto: \frac12; operacion=valor; esperado \frac{1}{2}.
+- Lite: fuente original -> parseExpression -> Algebrite conserva exacto 1/2 y numérico 0.5. Handler worker auténtico con transporte self/postMessage simulado devuelve éxito/requestId correcto/LaTeX equivalente. La salida real se vuelve a analizar y enviar al handler, conservando 1/2.
+- Plus: prueba frontend ejecuta latexToBackendSyntax con fuente original \frac12 y LaTeX de salida \frac{1}{2}; exige una expresión completa equivalente al cociente 1/2. Prueba separada HTTP real POST /api/v1/evaluate usa traducción explícita 1/2 y valida MathResponse, exacto 1/2, LaTeX \frac{1}{2}, aproximado 0.5, errores nulos y reentrada del result_text real con nuevo request_id.
+- SY-E-21 PASS en los alcances descritos. Lite SHA 805805508a5856ad795b2f63d7a61d3cfd28d215: cumulative [38523220618](https://github.com/c2melendez/precision-lab-lite/actions/runs/38523220618) SUCCESS, 1187 PASS + 30 TODO; H1d [38523220685](https://github.com/c2melendez/precision-lab-lite/actions/runs/38523220685) SUCCESS, 21 PASS; build [38523220701](https://github.com/c2melendez/precision-lab-lite/actions/runs/38523220701) SUCCESS.
+- Plus SHA 921dea030964ed813169b1b6f68e73849ead2101: cumulative [38523224489](https://github.com/c2melendez/precision-lab-plus/actions/runs/38523224489) SUCCESS, backend 1074 PASS + 1 XFAIL y frontend 777 PASS + 28 TODO; H1d [38523224692](https://github.com/c2melendez/precision-lab-plus/actions/runs/38523224692) SUCCESS, 38 PASS.
+- Sin cambios de producto necesarios. Las pruebas no acreditan interacción nativa MathLive/teclado/browser ni un WebWorker del navegador; conversor frontend y HTTP se verifican separadamente.
+- Syntax309 OPEN; IN625 H2/SG28 OPEN; DIST multinodo BLOCKED hasta evidencia entre nodos independientes. TODO/XFAIL no se cuentan como PASS. Producción sin cambios.
+
+### Siguiente paso exacto — SY-E-22
+1. Fixture original \frac{1}{1+\frac{1}{x}}, equivalente esperado \frac{x}{x+1}. Conservar las restricciones originales x != 0 y x != -1.
+2. Lite: probar fuente original, equivalencia exacta en el dominio permitido, muestras independientes (x=1 -> 1/2, x=2 -> 2/3, x=-2 -> 2), salida y reentrada; caracterizar explícitamente los puntos excluidos.
+3. Plus: separar conversión de fuente original de HTTP traducido 1/(1+1/x); comprobar respuesta simbólica, restricciones de dominio y muestras independientes. No presentar x/(x+1) en x=0 como extensión válida del original.
+4. Clasificar cualquier pérdida de restricciones antes de corregir; preservar contratos y regresiones. Publicar cambios, verificar CI por SHA y sincronizar estado/log.
+5. SY-E-22 pendiente, sin ejecución ni PASS acreditados por este cierre.
+
