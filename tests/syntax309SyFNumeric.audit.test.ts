@@ -314,4 +314,22 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     const numeric = compileNumeric(parsed, "__unused__")(0);
     expect(numeric, id + " input=" + input + " parsed=" + parsed).toBeCloseTo(3, 9);
   });
+  it("SY-F-40: nested absolute bars do not silently change meaning", () => {
+    expect(byId["SY-F-40"].operacion).toBe("convencion");
+    const input = byId["SY-F-40"].entrada;
+    try {
+      const parsed = parseExpression(input).algebrite;
+      for (const [x, expected] of [[-3, 1], [0, 2], [5, 3]] as const) {
+        const substituted = parsed.replace(/\\bx\\b/g, "(" + x + ")");
+        const actual = compileNumeric(substituted, "__unused__")(0);
+        expect(Number.isFinite(actual), "SY-F-40 input=" + input + " parsed=" + parsed).toBe(true);
+        expect(actual).toBeCloseTo(expected, 9);
+      }
+    } catch (error) {
+      // The contract permits a clear request for explicit delimiters instead
+      // of guessing how nested typed bars should pair.
+      const message = String(error);
+      expect(message).toMatch(/ambigu|delimit|barra|\\\\lvert|\\\\rvert/i);
+    }
+  });
 });
