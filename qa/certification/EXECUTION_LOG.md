@@ -4081,3 +4081,12 @@ Comprobar conclusiones y logs de cinco gates SY-N-19 sobre los SHA citados; repa
 - Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. No navegación E2E acreditada.
 ### Próximo paso exacto
 Verificar conclusiones y logs de cinco gates, diagnosticar FAIL, corregir y sincronizar; tras PASS bilateral iniciar SY-N-21 `0!` => `1`.
+
+## Estado vigente — SY-N-21 factorial cero — 2026-10-14
+- SY-N-20 PASS bilateral en alcance probado: Lite SHA 851051583146548b2427d92a0cdc2ecdf636ba0b (cumulative 38567524099, H1d 38567524101, build 38567524142: SUCCESS); Plus SHA 4a290155efbbf0edfed28be2a3866e0fcf50554f (cumulative 38567552976, H1d 38567553140: SUCCESS).
+- Fixture canónico SY-N-21 `0!` => `1`. Regresiones publicadas Lite tests/syntax309SyE23.audit.test.ts commit b3e8a84ab7dabaae02d86dac9bdce2e176ef7a56; Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts commit 21a4c6a683253328003bf54687834d0804769270, backend/tests/test_syntax309_sye23.py commit final 3f4849747515497f914a3ccce9ae923060df8291.
+- CI técnica disparada automáticamente: Lite cumulative 38568932445, H1d 38568932439, build 38568932432; Plus cumulative 38568949523, H1d 38568949591. IN_PROGRESS al último chequeo; no declarar PASS hasta conclusión en SHA respectivos. Las corridas intermedias Plus de frontend no sustituyen las del HEAD backend.
+- SY-N-21 OPEN, Syntax309 global OPEN, H2/SG28 OPEN, DIST multinodo BLOCKED. Sin despliegue de producción ni prueba navegador E2E propia para SY-N-21.
+### Próximo paso exacto
+Consultar conclusión, jobs y logs de las cinco corridas citadas. Si FAIL, clasificar/corregir producto, harness u oráculo y repetir gates. Si PASS bilateral, cerrar SY-N-21 en alcance probado e iniciar SY-N-22 `(-1)!` => error claro de dominio sin excepción no controlada.
+
