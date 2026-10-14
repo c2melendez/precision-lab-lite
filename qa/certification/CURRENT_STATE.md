@@ -1,5 +1,16 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-06 diagnosis, Unicode fix, SY-U-07 tests
+- SY-U-06 Lite SHA 70fd6014d722a708e183b4fc4ce063bc5b585b3f gates cumulative 38653388074, H1d 38653388081, build 38653388099, UI regression E2E 38653388058 SUCCESS.
+- Plus SHA 4bb0b8d5d6911f98d60128eb133f4a3d7885e58b H1d 38653411415 SUCCESS, cumulative 38653411448 FAILED en `test_syu06_unicode_multiplication_http_and_reentry`: el backend rechazó la entrada Unicode original 3×4 (1136 PASS y 1 XFAIL restante). Fallo de producto en normalización del parser, no relajar oráculo.
+- Fix Plus `backend/app/services/parsing.py`, SHA 6615b9483e4dbc9d66e426184558b421caa87342: normaliza Unicode × y ÷ hacia * y / antes de interpretar. Las nuevas corridas de ese SHA quedaron en progreso al consultar.
+- SY-U-07 fixture oficial de la matriz: `12÷4` → `3`. Lite prueba parser/worker/reentrada SHA 06e0e9a54e82a3125619267f6d37f3114d2e409b, gates: cumulative [38655026061](https://github.com/c2melendez/precision-lab-lite/actions/runs/38655026061), H1d 38655026168, build 38655026115, científico E2E 38655026226 (in progress).
+- Plus frontend conversor SHA 71dc7b7a61e4b328187619a74da789ba64ab8374, backend HTTP Unicode original, MathResponse/reentrada SHA final 3cf19d4623d2761eb199c30aaf80f0b07cf8207f; cumulative [38655055982](https://github.com/c2melendez/precision-lab-plus/actions/runs/38655055982) y H1d 38655055909 inicialmente QUEUED. Los gates intermedios no sustituyen SHA final.
+- SY-U-06 y SY-U-07 OPEN hasta CI final; Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. No acreditada prueba UI específica por estos casos.
+### Próximo paso
+Verificar SHA finales y logs, corregir regresiones verdaderas. Con PASS bilateral avanzar al caso oficial SY-U-08 `3·4` → `12` (punto medio Unicode U+00B7).
+
+
 ## 2026-10-14 — cierre SY-U-04/05 y apertura SY-U-06
 - SY-U-04 PASS bilateral para alcance automatizado. Lite SHA f0688fa98e2139268a3cc112c546cccb3c391c2f: cumulative 38652400493, H1d 38652400544, build 38652400598, E2E 38652400491 SUCCESS. Plus SHA d455e67a577a6b8fb3d5c4ae8f46c5b16338ae75: H1d 38652409204 SUCCESS, cumulative 38652409209 SUCCESS en intento 2 después de fallo por umbral temporal SG28 en intento 1; el rerun pasó sin relajar el umbral.
 - SY-U-05 PASS bilateral para alcance automatizado. Lite SHA 6a82fcdde2e3c412be7f2457b9c2b37918bba498: cumulative 38652953440, H1d 38652953470, build 38652953460, E2E 38652953454 SUCCESS. Plus SHA bc94f37f356cfa42e90ffd5a0747732d1ef2f39d: cumulative 38652963777 y H1d 38652963734 SUCCESS.
