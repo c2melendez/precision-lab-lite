@@ -1,5 +1,14 @@
 # Current Certification State
 
+## Estado vigente — SY-E-29 corrección de diagnóstico matemático — 2026-10-14
+- SY-E-28 cerrado bilateralmente en los alcances previos (Lite 38529541491/38529541214/38529541187 SUCCESS; Plus 38529553628/38529553662 SUCCESS).
+- Caso SY-E-29 oficial: fracción 0/0 requiere DOMAIN_ERROR **específico de forma indeterminada**, no texto genérico de división entre cero. Se preserva recuperación 2+3=5 y ausencia de resultado.
+- Lite primer rojo cumulative 38529981106 HARNESS (regex mal formado); reparado en 7e9547f9d7d1f46794df4f3283c449066fa0f339; segundo rojo cumulative 38530120709 PRODUCT, mensaje "División entre cero: el resultado no está definido." Corrección producto src/engine/algebriteClient.ts SHA 42a5bf18146cb3b0eec77a54e18b75b2794c63cb inspecciona 0/0 antes de CAS; cumulative 38530510982, H1d 38530510821, build 38530510870 disparados, todavía sin conclusión confirmada.
+- Plus primer rojo cumulative 38530033515 backend PRODUCT (1084 PASS+1 FAIL+1 XFAIL), respuesta DOMAIN_ERROR sin "indeterminado" ni 0/0; corregido en backend/app/services/evaluate_service.py SHA 111344029fe8ff81f0268d83f667364e35832d60 con diagnóstico antes de parse. Gate acumulativo 38530516550, H1d 38530516582, SG28 backend 38530516517 disparados; pendientes finalización y logs.
+- Pruebas permanentes: Lite tests/syntax309SyE23.audit.test.ts y Plus backend/tests/test_syntax309_sye23.py + frontend/src/__tests__/syntax309SyEFractions.audit.test.ts. No reducir los oráculos. No declarar PASS hasta todos los gates aplicables por SHA.
+- Próximo objetivo tras cierre SY-E-29: SY-E-30 denominador vacío, fuente original \\frac{x}{}; Syntax309 OPEN, H2/SG28 OPEN, DIST multinodo BLOCKED. Producción sin cambios.
+
+
 ## Estado vigente — SY-E-29 (2026-10-14)
 - SY-E-28 PASS bilateral, evidencia en EXECUTION_LOG.md.
 - SY-E-29 implementado en tests/syntax309SyE23.audit.test.ts, commit 7e9547f9d7d1f46794df4f3283c449066fa0f339.
