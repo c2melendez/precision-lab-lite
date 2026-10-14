@@ -1,5 +1,13 @@
 # Current Certification State
 
+## Estado vigente — SY-E-31 convención de fracción adyacente — 2026-10-14
+- SY-E-30 PASS bilateral dentro del alcance parser/conversor: Lite SHA d4bfbf65020aad8b29143794d8bdc4a2eec7781a cumulative 38536342887/H1d 38536342814/build 38536342817 SUCCESS; Plus SHA 32f50a7144a09331d900f6f8019d65540a9be732 cumulative 38536350587/H1d 38536350799 SUCCESS.
+- SY-E-31 fixture original 2\\frac{1}{3}, operacion=convencion, nivel=N3, esperado admite número mixto 7/3 O producto 2/3, NOTA «Número mixto o producto: declarar». Convención auditada elegida: MULTIPLICACIÓN IMPLÍCITA = 2*(1/3) = 2/3 (no suma de entero + fracción). No modificar fixture para forzar PASS.
+- Lite tests/syntax309SyE23.audit.test.ts SHA c0e576b497b7cbfc8de1089e8469bb537fa83169: fuente original, parse, exactitud, numérico, worker y reentrada. Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts SHA 1e0b44956fa0c50013efbe850be4850362b3d62f: conversión original; backend/tests/test_syntax309_sye23.py SHA técnico final 2d37ce5f2aa8341b3bf128673ccad3b76168f267: traducción explícita, HTTP MathResponse, racional y reentrada. No se acredita navegador real con pruebas aisladas.
+- CI en proceso al último chequeo: Lite cumulative 38537049689/H1d 38537049789/build 38537049793 (build SUCCESS); Plus cumulative 38537114732/H1d 38537114677 para SHA backend final. Mantener SY-E-31 abierto hasta comprobar gates y corregir rojos.
+- Siguiente paso: revisar los logs/conclusiones de SY-E-31; si PASS, recuperar siguiente fixture de la matriz. Syntax309 global OPEN, H2/SG28 OPEN y DIST multinodo BLOCKED. Sin producción.
+
+
 ## Estado vigente — SY-E-30 denominador vacío — 2026-10-14
 - Rama canónica bilateral qa/syntax-audit-in625-a1. SY-E-29 PASS acotado: Lite SHA 42a5bf18146cb3b0eec77a54e18b75b2794c63cb cumulative 38530510982, H1d 38530510821, build 38530510870 SUCCESS; Plus SHA 111344029fe8ff81f0268d83f667364e35832d60 cumulative 38530516550, H1d 38530516582, SG28 backend 38530516517 SUCCESS.
 - Fixture SY-E-30 original \frac{x}{}, operacion=error, esperado «error claro: denominador vacío». Distinguir ausencia de denominador de valor cero. No reemplazar por x/0 ni evaluar silenciosamente.
