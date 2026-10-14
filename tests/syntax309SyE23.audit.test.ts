@@ -867,7 +867,9 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     }
     if (rejection !== undefined) {
       // The engine may reject the locale at parsing or evaluation.
-      expect(String(rejection)).toMatch(/syntax|sintax|decimal|separador|comma|coma|invalid|inválid/i);
+      const error = rejection as { code?: unknown; message?: unknown };
+      expect(error.code).toBe(ErrorCode.PARSE_ERROR);
+      expect(String(error.message)).toMatch(/syntax|sintax|decimal|separador|comma|coma|invalid|inválid/i);
     } else {
       expect(result, "Accepted decimal-comma input must equal 3.5").toBe("7/2");
     }
