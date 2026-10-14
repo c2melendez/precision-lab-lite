@@ -1,5 +1,12 @@
 # Current Certification State
 
+## SY-N-30 closed / SY-N-31 opened — 2026-10-14
+- SY-N-30 bilateral PASS in tested scope. Lite SHA 05963ceb2c0588496694971d31b26542fc84bbf8 cumulative 38600336771, build 38600336822, H1d 38600336758 SUCCESS. Plus SHA fafd2663003b050bd15fdeeb427d998fee8a43af cumulative 38601102412 and H1d 38601102386 SUCCESS. Ambiguous grouped comma rejection accepted by official contract; native MathLive E2E and configurable locale remain outside tested scope.
+- SY-N-31 official `\\frac{1}{3000000}` expected scientific `3.333333333\\times10^{-7}`. Lite test SHA 4edb54a07cde037b48efb54f9e628c3b464926d3 checks exact rational, worker numerical approximation and reentry; Plus backend test SHA 559d2fb07cf7b2c6291b4f75c9658c14a2063e32 checks HTTP exact rational, approximation and reentry. These tests do not yet establish visible scientific formatting at nine significant digits; add presentation-level oracle if output permits.
+- CI automatically triggered: Lite cumulative 38601802013, H1d 38601801976, build 38601801978 in progress at initial lookup; Plus cumulative 38601817684 and H1d 38601817686 queued. SY-N-31 OPEN until SHA-matched evidence and all required display criteria.
+- Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo real BLOCKED; no production changes.
+
+
 ## SY-N-30 backend HTTP supplementary gate — 2026-10-14
 - Plus backend/tests/test_syntax309_sye23.py SHA fafd2663003b050bd15fdeeb427d998fee8a43af adds explicit ungrouped translation 1000+1 -> 1001 with MathResponse, result_approx and HTTP reentry; this is separate from the frontend ambiguity rejection, not proof that the original markup is natively accepted.
 - Final Plus SHA fafd2663 cumulative 38601102412 and H1d 38601102386 newly queued. Prior runs for af2f5041 still in progress at last check. Use ONLY successful gates on final SHA for closure. SY-N-30 OPEN; SY-N-31 next.
