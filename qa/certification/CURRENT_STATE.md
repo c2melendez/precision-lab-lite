@@ -1,5 +1,14 @@
 # Current Certification State
 
+## SY-N-31 cierre acotado y apertura SY-D-01 — 2026-10-14
+- Lite SHA 13373fcb4ff20bb0d6ff744cac74f854a349ce02: native MathLive/Playwright E2E 38614049467 SUCCESS con desktop, tablet y mobile (3/3). Gates acumulativo 38614049882, H1d 38614049659 y build 38614049376 SUCCESS.
+- Plus SHA 89a8385824e08ce7a100e5b321add6a376d3acfa: cumulative 38612502423 (frontend + backend) SUCCESS y H1d 38612502472 SUCCESS; prueba de componente de selector scn/retorno a exacto aprobada.
+- Decisión: SY-N-31 PASS bilateral en alcance acreditado (valor exacto, formato y reentrada; E2E nativo Lite y UI de componente Plus). No atribuir E2E Chromium completo a Plus ni certificación global de Syntax309.
+- Próximo caso oficial de matriz: SY-D-01, entrada (2+3, error por paréntesis sin cerrar. Lite agregó regresión en tests/syntax309SyE23.audit.test.ts SHA 330f767d69fb750e703252e974602a7a840c5271; Plus test HTTP en backend/tests/test_syntax309_sye23.py SHA 278a8146ba50f341d7f0784e749b1862280058fa.
+- Nuevas corridas: Lite cumulative 38624843113, H1d 38624843112, build 38624843128, scientific UI E2E 38624843192; Plus cumulative 38624871948 y H1d 38624871537, IN_PROGRESS/QUEUED a la última consulta. SY-D-01 OPEN hasta evidencia por SHA y errores claros, no relajar oráculos.
+- SG28/H2 OPEN y DIST multinodo BLOCKED; no despliegue en producción.
+
+
 ## SY-N-31 — E2E móvil y corrección del selector (2026-10-14)
 - Lite SHA 922de600: cumulative 38613535483, H1d 38613535494 y build 38613535554 SUCCESS. E2E 38613535753 FAIL: desktop y tablet PASS, móvil FAIL por selector ambiguo de dos botones Calcular (HARNESS).
 - Corregido e2e/syntax309-scientific.spec.ts en SHA 13373fcb4ff20bb0d6ff744cac74f854a349ce02: selector de botón visible y texto exacto.
