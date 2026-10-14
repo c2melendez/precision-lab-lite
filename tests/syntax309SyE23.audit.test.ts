@@ -284,4 +284,18 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(compileNumeric(evaluate(parseExpression(result.resultLatex).algebrite), "__unused__")(0)).toBe(1200);
   });
 
+  it("SY-N-05: explicit calculator-e convention equals 1000 and supports reentry", () => {
+    const row = rows["SY-N-05"];
+    expect(row.operacion).toBe("convencion");
+    expect(row.entrada).toBe("1\\mathrm{e}3");
+    expect(row.nota).toMatch(/aceptarla o rechazarla/);
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(compileNumeric(evaluate(parsed), "__unused__")(0)).toBe(1000);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-05",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(compileNumeric(evaluate(parseExpression(result.resultLatex).algebrite), "__unused__")(0)).toBe(1000);
+  });
+
 });
