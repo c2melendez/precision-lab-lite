@@ -1,5 +1,14 @@
 # Current Certification State
 
+## Estado vigente — SY-N-18 porcentaje simple — 2026-10-14
+- SY-N-17 PASS bilateral en el alcance probado: Lite SHA 2839ca1a4aade09869fa42329c4cf988b78643ac, cumulative 38564140863, H1d 38564140855 y build 38564141310 SUCCESS. Plus SHA e79e12f787cd061a48d8650c1b56e7e6314270f5, cumulative 38564159278 y H1d 38564159286 SUCCESS.
+- SY-N-18 fixture canónico `12\\%`, valor esperado `0.12`. Nuevas regresiones Lite `tests/syntax309SyE23.audit.test.ts` SHA 5857b199c5c707d5f5ad5bbd521ab6e50beb1a58; Plus conversor `frontend/src/__tests__/syntax309SyEFractions.audit.test.ts` SHA 787e3c2038c6967ac19c00b6a5c905fae851ed48; Plus HTTP `backend/tests/test_syntax309_sye23.py` SHA final 58e82c85d15dade5b070d2e3362b90a5d0437194. No cambios de producción.
+- GitHub Actions SHA final Lite cumulative [38565174806](https://github.com/c2melendez/precision-lab-lite/actions/runs/38565174806), H1d [38565174629](https://github.com/c2melendez/precision-lab-lite/actions/runs/38565174629), build [38565174626](https://github.com/c2melendez/precision-lab-lite/actions/runs/38565174626). Plus cumulative [38565197946](https://github.com/c2melendez/precision-lab-plus/actions/runs/38565197946), H1d [38565197938](https://github.com/c2melendez/precision-lab-plus/actions/runs/38565197938). Corridas iniciadas y aún sin conclusión al consultar; SY-N-18 OPEN.
+- Syntax309 global OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. No E2E navegador acreditado por estas pruebas.
+### Siguiente paso exacto
+Verificar conclusiones y logs de cinco gates del SHA SY-N-18, corregir fallos en la capa correspondiente y sincronizar ambos repositorios. Solo tras PASS bilateral avanzar a SY-N-19 `50\\%\\times200` => `100`.
+
+
 ## Estado vigente — SY-N-17 entero mayor que 2^53 — 2026-10-14
 - SY-N-16 PASS bilateral en alcance probado: Lite SHA c444d4619877e883cb67383deecb0eece6cb51d3, cumulative 38563504911, H1d 38563504953 y build 38563505215 SUCCESS; Plus SHA 6a86be5edf91687adc3995749fb21d7bf3669b92, cumulative 38563522526 y H1d 38563522957 SUCCESS.
 - SY-N-17 fixture oficial `9007199254740993`, valor exacto 2^53+1. No convertir a Number de JavaScript: conservar texto completo en entrada, resultado y reentrada.
