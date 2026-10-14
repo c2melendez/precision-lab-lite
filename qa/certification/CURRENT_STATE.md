@@ -1,5 +1,26 @@
 # Current Certification State
 
+## Estado vigente — SY-E-14..16 — 2026-10-14 UTC / 2026-10-13 Honduras
+Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
+- Rama canónica bilateral resuelta desde README: qa/syntax-audit-in625-a1.
+- SY-E-14: fuente oficial 2^{3.5}; ancla independiente 11.313708498984761 (=8*sqrt(2)); fixture conserva esperado redondeado 11.31370850.
+- SY-E-15: fuente oficial 2^{-0.5}; ancla independiente 0.7071067811865476 (=1/sqrt(2)); fixture conserva 0.7071067812.
+- SY-E-16: fuente oficial (-2)^{3} -> -8. Controles permanentes de agrupación: (-2)^2=4 frente a -2^2=-4, porque la potencia impar sola no distingue pérdida de paréntesis.
+- Lite SHA dceaa6e68b37be9d75477b3f19e3e4c2f1985d02, tests/syntax309SyEExponent.audit.test.ts: fuente original -> parseExpression -> compileNumeric, resultado finito y anclas independientes (12 decimales). Cumulative 38517291048/job 115698833577, H1d 38517290919 y build 38517291022 SUCCESS; 1180 PASS + 30 TODO.
+- Plus SHA 433042ab5513ad358f27a3e92c49dd5b9a29dce4, backend/tests/test_syntax309_sye_exponent.py: expresiones explícitas traducidas 2^3.5, 2^(-0.5), (-2)^3 y ambos controles -> POST /api/v1/evaluate real. Status 200, success=true y result_approx contra valores independientes (rel/abs 1e-12).
+- Plus cumulative 38517295524: backend job 115698848059 SUCCESS (1064 PASS + 1 XFAIL), frontend job 115698848270 SUCCESS (776 PASS + 28 TODO); H1d 38517295526 SUCCESS. TODO/XFAIL no cuentan como PASS.
+- SY-E-14..16 PASS en estos alcances numéricos, con fixture inalterada y regresiones permanentes. No fallos nuevos ni correcciones del producto en este paso. No prueba de formato/rounding de pantalla ni de ruta original MathLive/teclado/UI Plus.
+- Syntax309 OPEN; IN625 H2/SG28 OPEN y DIST multinodo BLOCKED hasta evidencia de nodos independientes. Se mantienen los límites nativos MathLive y demás gaps vigentes.
+
+### Siguiente paso exacto — SY-E-17
+1. Fixture oficial en qa/certification/syntax309_cases.jsonl: (-2)^{0.5}, operacion=convencion. Contrato: en reales error claro; en complejos sqrt(2)*i. Recuperar la convención efectiva y el camino público real de cada producto antes de asignar PASS.
+2. Lite: usar fuente original parseExpression y ruta compleja real de evaluación (src/engine/algebriteClient.ts / flujo científico), no compileNumeric como supuesto evaluador complejo. Un NaN de helper interno NO acredita error claro al usuario. Examinar renderizado/clasificación y oráculos existentes de complejos.
+3. Plus: EvaluateRequest no tiene campo selector de dominio; no inventar payload ni redefinir contrato. evaluate_service.py conserva expr exacta y deja approx_value=None cuando el valor no es real: esto es evidencia de código, NO ejecución de SY-E-17. Probar POST /api/v1/evaluate con expresión explícita (-2)^0.5 y contrato MathResponse completo pertinente.
+4. Exigir anclas independientes: parte real 0, parte imaginaria positiva 1.4142135623730951 y cuadrado -2 para la rama principal compleja. Si el producto ofrece modo real, verificar DOMAIN_ERROR/mensaje claro en ese modo. Declarar toda convención efectivamente soportada y límites de modo/UI; no reducir (-2)^0.5 a sqrt(abs(-2)) real.
+5. Mantener la distinción fuente/UI original vs traducción backend de Plus. Publicar tests de regresión, obtener SHA/runs y validar acumulativo/H1d/build Lite; diagnosticar producto/harness/oráculo según evidencia. Después SY-E-18.
+6. SY-E-17 iniciado en preparación: código/contrato inspeccionados, sin test publicado ni ejecución acreditada; NO PASS. Sin cambios de producción o API en este paso.
+
+
 ## Estado vigente — SY-E-12/13 y recuperación UI — 2026-10-14 UTC / 2026-10-13 Honduras
 Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
 - Rama canónica bilateral resuelta por README: qa/syntax-audit-in625-a1.
