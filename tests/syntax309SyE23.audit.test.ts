@@ -298,4 +298,21 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(compileNumeric(evaluate(parseExpression(result.resultLatex).algebrite), "__unused__")(0)).toBe(1000);
   });
 
+  it("SY-N-06: decimal addition is exactly 0.3, never a floating-point artifact", () => {
+    const row = rows["SY-N-06"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("0.1+0.2");
+    expect(row.esperado).toBe("0.3");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const exact = evaluate(parsed);
+    expect(compileNumeric(exact, "__unused__")(0)).toBe(0.3);
+    expect(exact).not.toContain("0.30000000000000004");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-06",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.resultLatex).not.toContain("0.30000000000000004");
+    expect(compileNumeric(evaluate(parseExpression(result.resultLatex).algebrite), "__unused__")(0)).toBe(0.3);
+  });
+
 });
