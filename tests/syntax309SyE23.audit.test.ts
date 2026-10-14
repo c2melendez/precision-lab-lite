@@ -1223,4 +1223,29 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(repeated.resultLatex).toBe("3");
   });
 
+  it("SY-U-03: original cdot multiplication yields exact twelve and reenters", () => {
+    const row = rows["SY-U-03"];
+    expect(row.entrada).toBe("3\\cdot4");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("12");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("12");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-03",expressionAlgebrite:parsed}});
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-U-03");
+    expect(result.resultLatex).toBe("12");
+    const returned = parseExpression(result.resultLatex).algebrite;
+    expect(evaluate(returned)).toBe("12");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-03-reentry",expressionAlgebrite:returned}});
+    const repeated = scope.postMessage.mock.calls[0][0];
+    expect(repeated.success).toBe(true);
+    expect(repeated.requestId).toBe("SY-U-03-reentry");
+    expect(repeated.resultLatex).toBe("12");
+  });
+
+
 });
