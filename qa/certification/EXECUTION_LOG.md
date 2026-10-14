@@ -3931,3 +3931,23 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 4. Publicar pruebas, corregir cualquier fallo en su capa, revisar todos los gates en SHA técnico y sincronizar estado/log bilateral.
 5. SY-N-11 pendiente, sin PASS acreditado en este cierre.
 
+
+
+## Estado vigente — SY-N-11 multiplicación racional exacta — 2026-10-14
+Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
+- Rama canónica bilateral qa/syntax-audit-in625-a1.
+- Fixture oficial intacto \frac{1}{3}\times3, operacion=valor, esperado 1. No sustituir la fracción por decimal truncado ni usar tolerancia para aceptar un resultado distinto de 1.
+- Lite tests/syntax309SyE23.audit.test.ts: entrada original -> parseExpression -> Algebrite exacto "1"; handler worker auténtico con transporte self/postMessage simulado, éxito/requestId/LaTeX "1"; salida real reanalizada y enviada de nuevo al handler con nuevo requestId, conservando "1".
+- Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts: conversión original a expresión completa que conserva fracción 1/3 y factor 3; conversión del resultado "1". Backend backend/tests/test_syntax309_sye23.py: HTTP real con traducción explícita (1/3)*3, MathResponse, éxito/scalar/input/requestId, texto/LaTeX/aproximado 1, errores nulos; reentrada del texto devuelto con nuevo requestId.
+- Sin cambios de producto. Alcance parser/handler Lite, conversor frontend Plus y HTTP separados; no acredita interacción MathLive nativa ni E2E completo de navegador. TODO/XFAIL no cuentan como PASS.
+- SY-N-11 PASS bilateral en los alcances descritos. Lite SHA c552d4d4ec187d4a52d3358ff747904dfd85788b: cumulative [38551962617](https://github.com/c2melendez/precision-lab-lite/actions/runs/38551962617) SUCCESS (1208 PASS + 30 TODO), H1d [38551962618](https://github.com/c2melendez/precision-lab-lite/actions/runs/38551962618) y build [38551962660](https://github.com/c2melendez/precision-lab-lite/actions/runs/38551962660) SUCCESS.
+- Plus SHA 428bddfa6cfcaba4eca7c868fe72b3228a0981f8: cumulative [38551970069](https://github.com/c2melendez/precision-lab-plus/actions/runs/38551970069) SUCCESS (backend 1097 PASS + 1 XFAIL; frontend 797 PASS + 28 TODO), H1d [38551970402](https://github.com/c2melendez/precision-lab-plus/actions/runs/38551970402) SUCCESS.
+- Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo BLOCKED hasta evidencia entre nodos independientes. Sin cambios de producción.
+
+### Siguiente paso exacto — SY-N-12
+1. Fixture original 1.5+\frac12, operacion=valor, esperado 2.
+2. Lite: fuente original al parser/handler, exacto 2, salida y reentrada. Preservar combinación de decimal y fracción abreviada.
+3. Plus: prueba separada del conversor original y HTTP traducido 1.5+1/2; MathResponse exacto/LaTeX/aproximado 2 y reentrada real.
+4. Publicar pruebas, clasificar/corregir cualquier rojo, revisar gates en SHA técnico y sincronizar estado/log bilateral.
+5. SY-N-12 pendiente; sin ejecución ni PASS acreditados por este cierre.
+
