@@ -709,6 +709,13 @@ function validateInputStructureG3(input: string): void {
 
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
+  // SY-N-30: {,} is used both as decimal punctuation and as thousands
+  // grouping in imported LaTeX. A three-digit group cannot be
+  // disambiguated without a declared locale. Reject rather than silently
+  // reinterpret 1{,}000+1 as 1.000+1 = 2.
+  if (/\d{1,3}\{,\}\d{3}(?!\d)/.test(latex)) {
+    throw parseError("Separador ambiguo: declara si la coma es decimal o de miles.");
+  }
   // SY-N-05: explicit calculator-e convention for the canonical original source.
   if (/^1\\mathrm\{e\}3$/.test(latex.trim())) return "1000";
   // SY-E-30: reject an empty original denominator before generic TeX normalization.
