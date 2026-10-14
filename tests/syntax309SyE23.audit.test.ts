@@ -488,4 +488,28 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(repeated.resultLatex).toBe("0");
   });
 
+  it("SY-N-15: integer beyond IEEE-754 range is preserved exactly on reentry", () => {
+    const row = rows["SY-N-15"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("10^{20}+1");
+    expect(row.esperado).toBe("100000000000000000001");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe(row.esperado);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-15",expressionAlgebrite:parsed}});
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-N-15");
+    expect(result.resultLatex).toBe(row.esperado);
+    const returned = parseExpression(result.resultLatex).algebrite;
+    expect(evaluate(returned)).toBe(row.esperado);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-15-reentry",expressionAlgebrite:returned}});
+    const repeated = scope.postMessage.mock.calls[0][0];
+    expect(repeated.success).toBe(true);
+    expect(repeated.requestId).toBe("SY-N-15-reentry");
+    expect(repeated.resultLatex).toBe(row.esperado);
+  });
+
 });
