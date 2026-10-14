@@ -1061,4 +1061,24 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(repeated.resultLatex).algebrite)).toBe("9");
   });
 
+  it("SY-D-09: parenthesized fraction squared remains exact through worker reentry", () => {
+    const row = rows["SY-D-09"];
+    expect(row.entrada).toBe(String.raw`\left(\frac{1}{2}\right)^{2}`);
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe(String.raw`\frac{1}{4}`);
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("1/4");
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: { type: "evaluate", requestId: "SY-D-09", expressionAlgebrite: parsed } });
+    const reply = scope.postMessage.mock.calls[0][0];
+    expect(reply.success, JSON.stringify(reply)).toBe(true);
+    expect(reply.requestId).toBe("SY-D-09");
+    expect(evaluate(parseExpression(reply.resultLatex).algebrite)).toBe("1/4");
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: { type: "evaluate", requestId: "SY-D-09-reentry", expressionAlgebrite: parseExpression(reply.resultLatex).algebrite } });
+    const again = scope.postMessage.mock.calls[0][0];
+    expect(again.success).toBe(true);
+    expect(evaluate(parseExpression(again.resultLatex).algebrite)).toBe("1/4");
+  });
+
 });
