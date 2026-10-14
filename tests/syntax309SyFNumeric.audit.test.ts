@@ -348,4 +348,12 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(actual).toBe(4);
   });
 
+  it("SY-F-43: original LaTeX sign of negative five equals minus one", () => {
+    expect(byId["SY-F-43"].operacion).toBe("valor");
+    const parsed = parseExpression(byId["SY-F-43"].entrada).algebrite;
+    const actual = compileNumeric(parsed, "__unused__")(0);
+    expect(Number.isFinite(actual), "SY-F-43 parsed=" + parsed).toBe(true);
+    expect(actual).toBe(-1);
+  });
+
 });
