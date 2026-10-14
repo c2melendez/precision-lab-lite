@@ -3633,3 +3633,26 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 4. Exigir anclas independientes: parte real 0, parte imaginaria positiva 1.4142135623730951 y cuadrado -2 para la rama principal compleja. Si el producto ofrece modo real, verificar DOMAIN_ERROR/mensaje claro en ese modo. Declarar toda convención efectivamente soportada y límites de modo/UI; no reducir (-2)^0.5 a sqrt(abs(-2)) real.
 5. Mantener la distinción fuente/UI original vs traducción backend de Plus. Publicar tests de regresión, obtener SHA/runs y validar acumulativo/H1d/build Lite; diagnosticar producto/harness/oráculo según evidencia. Después SY-E-18.
 6. SY-E-17 iniciado en preparación: código/contrato inspeccionados, sin test publicado ni ejecución acreditada; NO PASS. Sin cambios de producción o API en este paso.
+
+
+## Estado vigente — SY-E-17 rama compleja principal — 2026-10-14 UTC / 2026-10-13 Honduras
+Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
+- Rama canónica bilateral confirmada desde README: qa/syntax-audit-in625-a1.
+- Fixture SY-E-17 original: (-2)^{0.5}, operacion=convencion; en reales error claro, en complejos sqrt(2)*i. No se modificó fixture ni convención de producto.
+- Convención verificada del camino probado: rama compleja principal, valor sqrt(2)*i con coeficiente imaginario positivo. Se declaró esta convención en los tests y aquí; no se atribuyó PASS a NaN, a abs(-2) ni a una raíz real inventada.
+- Lite SHA eccc6f02fb591d2061c91af970b4b85e28f2dd72, tests/syntax309SyEComplex.audit.test.ts: fuente original -> parseExpression -> evaluate Algebrite. Diferencia simbólica con sqrt(2)*i =0; raw/i debe ser real finito, positivo y 1.4142135623730951 a 12 decimales (establece Re=0); cuadrado=-2.
+- Lite test además carga src/workers/compute.worker.ts y ejecuta su handler evaluate auténtico con self/postMessage simulados: MathResult success=true, requestId conservado, resultLatex con i, sin NaN/Infinity, y salida LaTeX reingresada equivalente exactamente a sqrt(2)*i. No es un Worker de navegador ni E2E nativo MathLive.
+- Lite cumulative 38519145159/job 115704594903, H1d 38519145128 y build 38519145115 SUCCESS; 1181 PASS + 30 TODO.
+- Plus SHA e94e0c366ba3efe1c2b780b61901b1f9b60f6289, backend/tests/test_syntax309_sye_complex.py: POST /api/v1/evaluate real con traducción explícita (-2)^0.5. HTTP 200, MathResponse.model_validate, success=true, operation=evaluate, result_type=scalar, request_id/input_text, pasos/warnings/has_detailed_steps, duración finita, error_code/error_message nulos.
+- Plus result_approx=None preserva que el resultado es complejo, result_text contiene I y result_latex contiene i. Se interpreta la notación devuelta solo para contrastarla con anclas independientes fijas: Re=0, Im>0=1.4142135623730951, cuadrado=-2+0i. No se genera el esperado desde el motor bajo prueba.
+- Plus cumulative 38519148710/backend job 115704606669 SUCCESS (1065 PASS + 1 XFAIL), frontend job 115704606809 SUCCESS (776 PASS + 28 TODO); H1d 38519148730 SUCCESS. TODO/XFAIL no cuentan como PASS.
+- SY-E-17 PASS de la rama compleja principal en estos alcances; ruta pública de modo real/rechazo humano y MathLive original/UI Plus NO certificadas. EvaluateRequest no tiene selector de dominio; no se añadió un payload ficticio ni se redefinió la API.
+- Sin cambio de producto requerido en este paso. Syntax309 OPEN; IN625 H2/SG28 OPEN y DIST multinodo BLOCKED por evidencia pendiente entre nodos independientes.
+
+### Siguiente paso exacto — SY-E-18
+1. Fixture oficial (-8)^{\\frac{1}{3}}, operacion=convencion. Oráculos admitidos por contrato: raíz real -2 o rama compleja principal 1+sqrt(3)*i; declarar el que realmente produce cada camino.
+2. Caracterizar fuente original con parser + evaluate y handler científico Lite; usar el harness worker de syntax309SyEComplex.audit.test.ts, preservando resultLatex y reentrada. No sustituir la potencia original por cbrt(-8) o root(-8,3) para fabricar un PASS de otro input.
+3. Plus: POST /api/v1/evaluate con (-8)^(1/3), MathResponse y salida devuelta. Mantener original MathLive/UI como alcance separado.
+4. Fijar regresión a la convención efectiva comprobada: rama real coordenadas (-2,0); rama principal compleja (1,1.7320508075688772), Im positiva. Ambas deben elevar al cubo a -8+0i. No aceptar la tercera raíz 1-sqrt(3)*i como rama principal ni depender solo del cubo.
+5. Investigar resultado simbólico/serialización antes de modificar producto u oráculo; contrastar anclas independientes. Un helper real devolviendo NaN no constituye ni raíz compleja ni error visible claro.
+6. Publicar tests, revisar gates acumulativo/H1d/build Lite y logs del SHA correcto; sincronizar CURRENT_STATE/EXECUTION_LOG y gaps. Después SY-E-19. SY-E-18 iniciado en preparación de convención/oráculos, sin test publicado/ejecución: NO PASS.

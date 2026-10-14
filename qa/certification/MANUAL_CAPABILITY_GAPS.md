@@ -84,3 +84,10 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - Plus Científica/Simple: seis pruebas de componente verifican alerta, ausencia de llamadas al helper HTTP, carga desactivada y recuperación con 2+3; el editor es un input simulado, guard y conversión reales.
 - Límite pendiente: la serialización/canonicalización de estas entradas crudas por MathLive nativo y su error visible en navegador real. No contabilizarlo como PASS por el test del editor simulado. Preservar validación antes del editor/conversión cuando MathLive reformatea la fuente.
 - SG28 E2E de cancelación 38514811429 acredita su propia regresión 21/21 desktop/tablet/mobile; no sustituye la evidencia de exponentes ni la coordinación multinodo independiente.
+
+
+## 2026-10-14 — SY-E-17: convención compleja y alcances pendientes
+- PASS acotado: rama compleja principal sqrt(2)*i. Lite fuente original + Algebrite + handler worker verdadero con transporte self/postMessage simulado; Plus HTTP backend + MathResponse/representación y anclas complejas.
+- Pendiente: modo real y error claro al usuario, si existe tal modo; EvaluateRequest no expone selector de dominio. No inventar campo de API ni convertir NaN interno en PASS de error humano.
+- Pendiente: Worker nativo / MathLive / teclado/UI de esta fuente en Lite y ruta original LaTeX de Plus; el harness de worker y traducción backend no los sustituyen.
+- Esta limitación no elimina la evidencia matemática ya acreditada y no cierra Syntax309 global ni H2/DIST.
