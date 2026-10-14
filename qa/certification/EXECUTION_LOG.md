@@ -4358,3 +4358,9 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - Runs SY-D-07 Lite cumulative `38631951157`, H1d `38631951309`, build `38631951320`, E2E `38631951443`; Plus cumulative `38631959412` y H1d `38631959207`; QUEUED/IN_PROGRESS al consultar. Revisar resultados/logs por SHA y corregir antes de PASS; siguiente fixture SY-D-08.
 - SG28/H2 OPEN, DIST multinodo BLOCKED; sin producción.
 
+
+## SY-D-07 PASS bilateral / SY-D-08 OPEN — 2026-10-14
+- SY-D-07: Lite SHA `95039ce8779dbee05287da20ca650ad305e8c8e2` cumulative `38631951157`, H1d `38631951309`, build `38631951320`, E2E `38631951443` all SUCCESS; Plus SHA `f5ddee0542adff1d8767a8d5f246f38f2b3bf9a1` cumulative `38631959412`, H1d `38631959207` SUCCESS. PASS restringido a contrato comprobado, no E2E visual Plus.
+- SY-D-08 oficial `\\left(1+2\\right)^{2}` => 9; Lite parser/worker/reentrada commit `bde6d25346b9d1bcc6b96fef23ad715146f1dd1d`; Plus HTTP sobre `(1+2)**2` + reentrada commit `cfd7df001772cfa8af4058bb313471165f627e69`. Plus HTTP normalizado no acredita traducción MathLive.
+- CI SY-D-08: Lite cumulative `38632548736`, H1d `38632548593`, E2E `38632548468`, build `38632548755` IN_PROGRESS; Plus cumulative `38632556794`, H1d `38632556466` QUEUED al consultar. Inspeccionar conclusiones/logs del SHA, corregir errores y continuar con SY-D-09 (`\\left(\\frac{1}{2}\\right)^{2}` => `\\frac{1}{4}`). SG28/H2 OPEN, DIST multinodo BLOCKED.
+
