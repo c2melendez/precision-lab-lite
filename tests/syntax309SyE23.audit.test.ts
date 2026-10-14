@@ -717,4 +717,33 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
   });
 
+
+  it("SY-N-24: 100 factorial has 158 digits or valid scientific magnitude and recovers", () => {
+    const row = rows["SY-N-24"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("100!");
+    const parsed = parseExpression(row.entrada).algebrite;
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-24",expressionAlgebrite:parsed}});
+    const response = scope.postMessage.mock.calls[0][0];
+    expect(response.success, JSON.stringify(response)).toBe(true);
+    expect(response.requestId).toBe("SY-N-24");
+    const exact = BigInt(Array.from({length: 100}, (_, i) => i + 1).reduce((p, n) => p * BigInt(n), 1n)).toString();
+    expect(exact.length).toBe(158);
+    const rendered = String(response.resultLatex);
+    expect(rendered).not.toMatch(/Infinity|NaN|undefined/);
+    const decimal = Number(response.decimalApprox ?? rendered.replace(/\\times10\^\{(\d+)\}/, "e$1"));
+    if (rendered === exact) {
+      expect(rendered.length).toBe(158);
+    } else {
+      expect(Number.isFinite(decimal), JSON.stringify(response)).toBe(true);
+      expect(decimal / 1e157).toBeCloseTo(9.332621544, 7);
+    }
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-24-recovery",expressionAlgebrite:parseExpression("2+3").algebrite}});
+    const recovered = scope.postMessage.mock.calls[0][0];
+    expect(recovered.success).toBe(true);
+    expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
+  });
+
 });
