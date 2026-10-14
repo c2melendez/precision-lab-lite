@@ -4287,3 +4287,10 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - Lite nueva prueba Playwright `e2e/syntax309-scientific.spec.ts` SHA 85a0c502e8c58a4a57dcbb99162cd5fd673a4d40; nuevo workflow `.github/workflows/syntax309-scientific-e2e.yml` SHA 922de6007353026ee6d1e5d52961137e66c9ff61. Verifica entrada MathLive real, selección `scn`, precisión a nueve decimales y retorno a fracción, en desktop/tablet/mobile. Se ejecuta en CI de rama canónica en cambios técnicos, excluye documentación solamente.
 - Lite SHA técnico `922de6007353026ee6d1e5d52961137e66c9ff61`: E2E [38613535753](https://github.com/c2melendez/precision-lab-lite/actions/runs/38613535753), cumulative 38613535483, H1d 38613535494, build 38613535554 IN_PROGRESS al consultar. No declarar PASS del E2E hasta observar los 3 proyectos y logs; corregir fallo real de selectores, ejecución o producto. SY-N-31 OPEN hasta cerrar esta evidencia; SG28/H2 OPEN y DIST BLOCKED.
 
+
+## SY-N-31 — E2E móvil y corrección del selector (2026-10-14)
+- Lite SHA 922de600: cumulative 38613535483, H1d 38613535494 y build 38613535554 SUCCESS. E2E 38613535753 FAIL: desktop y tablet PASS, móvil FAIL por selector ambiguo de dos botones Calcular (HARNESS).
+- Corregido e2e/syntax309-scientific.spec.ts en SHA 13373fcb4ff20bb0d6ff744cac74f854a349ce02: selector de botón visible y texto exacto.
+- Nuevos runs del SHA final: E2E https://github.com/c2melendez/precision-lab-lite/actions/runs/38614049467; cumulative 38614049882; H1d 38614049659; build 38614049376. IN_PROGRESS al verificar; no declarar PASS todavía.
+- SY-N-31 OPEN hasta comprobar tres proyectos Playwright. SG28/H2 OPEN, DIST multinodo BLOCKED.
+
