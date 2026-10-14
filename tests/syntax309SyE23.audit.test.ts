@@ -2,6 +2,7 @@ import { beforeAll, afterAll, describe, expect, it, vi } from "vitest";
 import cases from "../qa/certification/syntax309_cases.jsonl?raw";
 import { parseExpression } from "../src/engine/parsing";
 import { evaluate } from "../src/engine/algebriteClient";
+import { ErrorCode } from "../src/types";
 import { compileNumeric } from "../src/engine/numericFallback";
 
 const rows = Object.fromEntries(cases.trim().split("\n").map(line => {
@@ -153,4 +154,27 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(again.resultLatex).algebrite)).toBe("22/7");
   });
 
+  it("SY-E-28: original zero-denominator fraction gives a clear domain error and recovers", () => {
+    const row = rows["SY-E-28"];
+    expect(row.operacion).toBe("error");
+    expect(row.entrada).toBe("\\frac{1}{0}");
+    expect(row.esperado).toMatch(/división entre cero/);
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(() => evaluate(parsed)).toThrowError(expect.objectContaining({
+      code: ErrorCode.DOMAIN_ERROR, message: expect.stringMatching(/cero|zero|divisi/i),
+    }));
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: {type:"evaluate", requestId:"SY-E-28", expressionAlgebrite:parsed} });
+    const rejected = scope.postMessage.mock.calls[0][0];
+    expect(rejected.success).toBe(false);
+    expect(rejected.errorCode).toBe(ErrorCode.DOMAIN_ERROR);
+    expect(rejected.errorMessage).toMatch(/cero|zero|divisi/i);
+    expect(rejected.resultLatex).toBeNull();
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: {type:"evaluate", requestId:"SY-E-28-recovery",
+      expressionAlgebrite:parseExpression("2+3").algebrite} });
+    const recovered = scope.postMessage.mock.calls[0][0];
+    expect(recovered.success).toBe(true);
+    expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
+  });
 });
