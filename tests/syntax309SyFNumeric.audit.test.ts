@@ -271,4 +271,15 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     const actual = compileNumeric(parsed, "__unused__")(0);
     expect(actual, "SY-F-31 parsed=" + parsed).toBeCloseTo(Math.sqrt(3), 9);
   });
+  it.each([
+    ["SY-F-32", 2],
+    ["SY-F-33", -2],
+    ["SY-F-34", 2],
+  ] as const)("%s: source LaTeX indexed root follows real-root convention", (id, expected) => {
+    expect(byId[id].operacion).toBe("valor");
+    const parsed = parseExpression(byId[id].entrada).algebrite;
+    const actual = compileNumeric(parsed, "__unused__")(0);
+    expect(Number.isFinite(actual), id + " parsed=" + parsed).toBe(true);
+    expect(actual, id + " parsed=" + parsed).toBeCloseTo(expected, 9);
+  });
 });
