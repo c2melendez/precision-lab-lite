@@ -3986,3 +3986,16 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 3. Solo tras PASS acumulativo, H1d y build aplicables, acreditar SY-N-13 bilateral y avanzar SY-N-14 `(\\sqrt{2})^2-2` -> `0`.
 4. Sincronizar CURRENT_STATE/EXECUTION_LOG bilateral, excluir cambios solo documentales de nuevos disparos CI.
 
+
+
+## Estado vigente — SY-N-14 radical cuadrado menos dos — 2026-10-14
+- SY-N-13 PASS bilateral en alcance parser/worker Lite, conversor frontend Plus y HTTP backend Plus (no E2E navegador): Lite SHA fab802ed7c6c4560e454f8db1bd49f0570fee2b4, cumulative 38553998455, H1d 38553998459, build 38553998558 SUCCESS. Plus SHA fe8149bfb6f9e7bbcf0fb235b0dd6089f9d9017a, cumulative 38554004282, H1d 38554004355 SUCCESS.
+- SY-N-14 fixture original `(\\sqrt{2})^2-2`, operación valor, esperado `0` exacto; incorporadas pruebas de parser/evaluate/handler/reentrada Lite, conversor original Plus y HTTP MathResponse/reentrada Plus. Lite SHA técnico `52e213f2689cb2ecae328a3c89efefd15526c4b4`; Plus SHA técnico `76d2aceb5fba454acb42a83f27ddf8d318bfd6ea`.
+- CI automático para SY-N-14: Lite cumulative [38554589308](https://github.com/c2melendez/precision-lab-lite/actions/runs/38554589308), H1d [38554589250](https://github.com/c2melendez/precision-lab-lite/actions/runs/38554589250), build [38554589272](https://github.com/c2melendez/precision-lab-lite/actions/runs/38554589272); Plus cumulative [38554593595](https://github.com/c2melendez/precision-lab-plus/actions/runs/38554593595), H1d [38554593643](https://github.com/c2melendez/precision-lab-plus/actions/runs/38554593643). Estaban IN_PROGRESS/QUEUED; **SY-N-14 OPEN**, ningún PASS declarado aún.
+- Sin modificaciones de producción o motor. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED; no equiparar pruebas aisladas con E2E navegador.
+
+### Siguiente paso exacto
+1. Revisar conclusión y logs de los cinco gates SY-N-14 en los SHA indicados; corregir en producto/harness/oráculo según diagnóstico.
+2. Solo tras evidencia verde bilateral, marcar SY-N-14 PASS en alcance y recuperar siguiente fixture directamente de `qa/certification/syntax309_cases.jsonl`; no inferir el ID/resultado.
+3. Registrar evidencia definitiva y sincronizar estado/log en Lite y Plus sin relanzar CI con commits documentales.
+
