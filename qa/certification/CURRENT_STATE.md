@@ -3303,3 +3303,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite src/engine/numericFallback.ts fix SHA eee74756705b42b2512eb7d9c85ea78d0be9bda9 adds two-argument modulo evaluation with zero-divisor and finite-domain checks; retains 10 mod 3 = 1 independent assertion. CI cumulative 38508533913, H1d 38508533996, build 38508533870 IN_PROGRESS at initial observation.
 - Plus backend-only explicit mod(10,3) test SHA 9438850508e5b3c618f285532b98e517c619fb7b cumulative 38508436382 IN_PROGRESS at last observation. No claim of original typed \\bmod MathLive route in Plus.
 - Next: verify SHA-specific CI, repair any remaining red without relaxing oracle, then SY-F-45 gcd(12,18)=6. Syntax309 OPEN; SG28/DIST independent-node BLOCKED.
+
+
+### 2026-10-13 — SY-F-44 Lite fix green; SY-F-45 gcd regression published
+- Lite numeric modulo correction SHA eee74756705b42b2512eb7d9c85ea78d0be9bda9 cumulative 38508533913 SUCCESS, validating source 10\\bmod3 -> 1 in its unit-test path. Plus SY-F-44 cumulative 38508436382 still IN_PROGRESS at last query, not yet PASS.
+- Official SY-F-45 gcd(12,18)=6: Lite original source-LaTeX test SHA f8bde6dbd0fb47c605ee88e358df5a01c24c5a70 in tests/syntax309SyFNumeric.audit.test.ts; Plus backend-only HTTP explicit gcd test SHA 8920e3147bc33049f9b1a60c1314d826dc0f3427 in backend/tests/test_syntax309_syf_numeric.py.
+- New CI: Lite cumulative 38508635431, H1d 38508635531, build 38508635427; Plus cumulative 38508639355, H1d 38508639366; all IN_PROGRESS/QUEUED on first check. Next action inspect job logs and correct exact layer on failure. No SY-F-45 PASS until confirmed; Plus original LaTeX frontend never inferred from backend HTTP. Syntax309 OPEN; SG28/DIST real multinode BLOCKED.
