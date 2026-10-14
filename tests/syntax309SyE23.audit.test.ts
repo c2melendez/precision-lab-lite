@@ -617,4 +617,27 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(repeated.resultLatex).toBe("100");
   });
 
+  it("SY-N-20: five factorial equals 120 through worker and reentry", () => {
+    const row = rows["SY-N-20"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("5!");
+    expect(row.esperado).toBe("120");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("120");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-20",expressionAlgebrite:parsed}});
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const response = scope.postMessage.mock.calls[0][0];
+    expect(response.success, JSON.stringify(response)).toBe(true);
+    expect(response.requestId).toBe("SY-N-20");
+    expect(response.resultLatex).toBe("120");
+    const returned = parseExpression(response.resultLatex).algebrite;
+    expect(evaluate(returned)).toBe("120");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-20-reentry",expressionAlgebrite:returned}});
+    const repeated = scope.postMessage.mock.calls[0][0];
+    expect(repeated.success).toBe(true);
+    expect(repeated.resultLatex).toBe("120");
+  });
+
 });
