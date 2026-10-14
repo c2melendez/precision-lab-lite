@@ -4303,3 +4303,11 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - Nuevas corridas: Lite cumulative 38624843113, H1d 38624843112, build 38624843128, scientific UI E2E 38624843192; Plus cumulative 38624871948 y H1d 38624871537, IN_PROGRESS/QUEUED a la última consulta. SY-D-01 OPEN hasta evidencia por SHA y errores claros, no relajar oráculos.
 - SG28/H2 OPEN y DIST multinodo BLOCKED; no despliegue en producción.
 
+
+## SY-D-01 closed / SY-D-02 started — 2026-10-14
+- SY-D-01 bilateral PASS in tested parser/worker and HTTP scope. Lite SHA 330f767d69fb750e703252e974602a7a840c5271: cumulative 38624843113, H1d 38624843112, build 38624843128, scientific E2E regression 38624843192 all SUCCESS. Plus SHA 278a8146ba50f341d7f0784e749b1862280058fa: cumulative 38624871948 and H1d 38624871537 SUCCESS.
+- New official fixture SY-D-02: literal 2+3), unpaired closing parenthesis must yield explicit error; no silent 5.
+- Lite test tests/syntax309SyE23.audit.test.ts SHA 5e920cea270979ea8cc66d9a70f925001d073580; Plus HTTP test backend/tests/test_syntax309_sye23.py SHA 6d880c8ebb5a182a26e832eb908aaa6a629396bc.
+- Lite new runs on technical SHA: cumulative 38625444359, H1d 38625444330, build 38625444465, scientific E2E 38625444456 in progress. Plus cumulative 38625477765, H1d 38625477804 queued. SY-D-02 OPEN pending logs and SHA-matched CI.
+- Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo BLOCKED.
+
