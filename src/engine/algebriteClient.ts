@@ -47,7 +47,7 @@ export function evaluate(expressionLatex: string): string {
     // SY-N-22: Algebrite can leave factorial(-1) symbolic and report a false success.
     // Reject only a factorial applied to an explicit negative integer; do not
     // reject -(1!) or change symbolic factorial conventions.
-    if (/\bfactorial\s*\(\s*-\s*\d+\s*\)/.test(expressionLatex) || /\(\s*-\s*\d+\s*\)\s*!/.test(expressionLatex)) {
+    if (/\bfactorial\s*\(\s*\(*\s*-\s*\d+\s*\)*\s*\)/.test(expressionLatex) || /\(\s*-\s*\d+\s*\)\s*!/.test(expressionLatex)) {
       throw toAppError(ErrorCode.DOMAIN_ERROR, "Factorial no definido para enteros negativos.");
     }
     // IN625 A2: Algebrite no evalúa floor()/ceiling() de forma fiable.
