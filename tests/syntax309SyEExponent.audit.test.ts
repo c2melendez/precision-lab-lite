@@ -40,4 +40,14 @@ describe("Syntax309 SY-E initial exponent witnesses", () => {
     expect(actual).toBe(4096);
   });
 
+  it("SY-E-04: source LaTeX ten to negative three is one thousandth", () => {
+    const row = byId["SY-E-04"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("10^{-3}");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const actual = compileNumeric(parsed, "__unused__")(0);
+    expect(Number.isFinite(actual), "SY-E-04 parsed=" + parsed).toBe(true);
+    expect(actual).toBeCloseTo(0.001, 12);
+  });
+
 });
