@@ -923,6 +923,23 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(repeated.resultLatex).algebrite)).toBe("1/3000000");
   });
 
+  it("SY-D-05: LaTeX left parenthesis and right bracket must reject delimiter mismatch", () => {
+    const row = rows["SY-D-05"];
+    expect(row.entrada).toBe(String.raw`\left(1+2\right]`);
+    expect(row.operacion).toBe("error");
+    let rejection: unknown;
+    try {
+      const parsed = parseExpression(row.entrada).algebrite;
+      evaluate(parsed);
+    } catch (error) {
+      rejection = error;
+    }
+    expect(rejection, "Mismatched LaTeX delimiters must not silently evaluate to 3").toBeDefined();
+    const diagnostic = rejection as { code?: unknown; message?: unknown };
+    expect(diagnostic.code).toBe(ErrorCode.PARSE_ERROR);
+    expect(String(diagnostic.message)).toMatch(/delimiter|delimitador|corchete|bracket|par[eé]ntesis|parenthes|mismatch|coincid|syntax|sintax|unexpected/i);
+  });
+
   it("SY-D-04: mixed parenthesis and bracket must reject delimiter mismatch", () => {
     const row = rows["SY-D-04"];
     expect(row.entrada).toBe("(1+2]");
