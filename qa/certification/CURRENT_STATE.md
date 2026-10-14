@@ -1,5 +1,14 @@
 # Current Certification State
 
+## Estado vigente — SY-N-16 potencia entera exacta — 2026-10-14
+- SY-N-15 PASS bilateral en alcance probado: Lite SHA 2e2ea598776202d46a049be80263ca3d814f7391, cumulative 38560673324 / H1d 38560673329 / build 38560673418 SUCCESS; Plus SHA 9b80bdf3323ef7504d8b15899b07b47511d5e6c9, cumulative 38562903741 y H1d 38562903630 SUCCESS.
+- SY-N-16 fixture oficial `2^{100}` -> `1267650600228229401496703205376`, exactitud decimal de entero de 31 dígitos, sin redondeo IEEE. Pruebas publicadas Lite `tests/syntax309SyE23.audit.test.ts` SHA c444d4619877e883cb67383deecb0eece6cb51d3; Plus frontend `frontend/src/__tests__/syntax309SyEFractions.audit.test.ts` SHA 34bbb6f18c3b236732d368f126d6c806d667ee46; Plus backend HTTP `backend/tests/test_syntax309_sye23.py` SHA final 6a86be5edf91687adc3995749fb21d7bf3669b92. Sin cambios de motor ni producción.
+- Gates del SHA técnico Lite cumulative [38563504911](https://github.com/c2melendez/precision-lab-lite/actions/runs/38563504911), H1d [38563504953](https://github.com/c2melendez/precision-lab-lite/actions/runs/38563504953), build [38563505215](https://github.com/c2melendez/precision-lab-lite/actions/runs/38563505215). Plus SHA final cumulative [38563522526](https://github.com/c2melendez/precision-lab-plus/actions/runs/38563522526), H1d [38563522957](https://github.com/c2melendez/precision-lab-plus/actions/runs/38563522957). IN_PROGRESS al último chequeo. SY-N-16 OPEN hasta verificar conclusiones.
+- Syntax309 OPEN; SG28/H2 OPEN y DIST multinodo BLOCKED. Alcance pruebas parser/worker Lite, conversor Plus y HTTP backend, no certificación E2E de navegador.
+### Siguiente paso exacto
+Verificar los cinco gates de SY-N-16 en SHA finales, diagnosticar cualquier FAIL, corregir la capa correspondiente, actualizar estado/log bilateral y solo entonces comenzar SY-N-17 (`9007199254740993`) con el fixture original.
+
+
 ## Estado vigente — SY-N-15 precisión entera — 2026-10-14
 - Fixture 10^{20}+1, resultado exacto 100000000000000000001. Lite SHA 2e2ea598776202d46a049be80263ca3d814f7391 gates cumulative 38560673324, H1d 38560673329 y build 38560673418 SUCCESS.
 - Plus cumulative 38560714428 FAIL de ORÁCULO frontend: la conversión real devolvió 10^(20)+1 equivalente, no incluida en la lista válida; backend del mismo run SUCCESS. Corrección frontend commit 9b80bdf3323ef7504d8b15899b07b47511d5e6c9 preserva el original y permite exponente con paréntesis. Plus backend/test_syntax309_sye23.py contiene test_syn15_large_integer_http_exact_and_reentry, verificado en HEAD; no afirmar que fue escrito en esta intervención.
