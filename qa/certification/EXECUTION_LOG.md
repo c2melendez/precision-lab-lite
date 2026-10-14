@@ -4173,3 +4173,22 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 4. Verificar gates del SHA técnico, clasificar fallos y sincronizar evidencia bilateral. Después SY-N-28 e -> 2.718281828.
 5. SY-N-27 y SY-N-28 pendientes; no ejecutados por este cierre.
 
+
+
+## Estado vigente — SY-N-27 constante pi y precisión decimal — 2026-10-14
+Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
+- Rama canónica bilateral qa/syntax-audit-in625-a1. Fixture original \pi, resultado decimal esperado 3.141592654.
+- Lite primer SHA 372f7bd06dca64e5ec8a0f33feca04ef88949bb6, cumulative 38593108980/job 115952881814 FAILURE (1224 PASS + 1 FAIL + 30 TODO): identidad simbólica pi correcta, pero decimalApprox usa float() de Algebrite y redondea a 3.141593; no alcanza nueve decimales. Clasificación PRODUCT / precisión de aproximación.
+- Corrección src/engine/algebriteClient.ts: toDecimalApprox devuelve String(Math.PI) para el resultado simbólico exacto pi. Evita pérdida por formato float() del CAS sin mutar su configuración global, sin cambiar resultLatex ni el valor exacto y sin modificar conversiones de otras expresiones.
+- Lite tests/syntax309SyE23.audit.test.ts: fuente original -> parser/evaluate exacto pi; handler auténtico con transporte simulado, requestId y LaTeX reanalizado exacto; decimal finito, redondeo a nueve decimales 3.141592654 y diferencia <5e-10 respecto a referencia independiente 3.141592653589793; reentrada real conserva pi.
+- Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts convierte original \pi a pi. Backend backend/tests/test_syntax309_sye23.py verifica HTTP traducido pi, MathResponse, result_text pi/result_latex \pi, aproximación finita con mismos oráculos, errores nulos y reentrada con nuevo requestId.
+- Alcance parser/handler Lite, conversor frontend Plus y HTTP separados; no acredita interacción MathLive nativa ni E2E completo del caso. TODO/XFAIL no cuentan como PASS.
+- Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo real BLOCKED. Sin despliegue ni cambios de producción.
+
+### Siguiente paso exacto — SY-N-28
+1. Fixture original e, operacion=valor, esperado 2.718281828.
+2. Lite: preservar identidad de Euler y verificar decimal del resultado real a nueve decimales, salida y reentrada. Revisar si float() tiene la misma limitación observada para pi, sin atribuir PASS por cálculo auxiliar.
+3. Plus: conversor fuente original y HTTP traducido e; MathResponse simbólico/LaTeX, aproximación finita y reentrada según sintaxis admitida.
+4. Publicar regresiones, corregir capa adecuada y revisar gates por SHA antes de sincronizar cierre.
+5. SY-N-28 pendiente; sin ejecución ni PASS acreditados por este cierre.
+
