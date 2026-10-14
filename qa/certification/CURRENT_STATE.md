@@ -1,5 +1,11 @@
 # Current Certification State
 
+## 2026-10-14 — SY-N-06 PASS bilateral; SY-N-07 en CI
+- SY-N-06 PASS bilateral para `0.1+0.2` -> `0.3`, sin artefacto binario; Lite SHA a4843781 cumulative 38546909027/H1d 38546908888/build 38546909337 SUCCESS; Plus SHA b0c92039 cumulative 38546925216/H1d 38546925113 SUCCESS. Evidencia acotada al alcance de las pruebas; Syntax309 global OPEN.
+- SY-N-07 fixture oficial `0.1\\times3` -> `0.3`. Pruebas permanentes Lite tests/syntax309SyE23.audit.test.ts commit 3a9e6d5da349c158d70f42c9f5aa49023739a605 (fuente, parser, worker, reentrada sin floating artifact); Plus backend/tests/test_syntax309_sye23.py commit 54641cba2e48336361aec55911d46b8423a1a653 (traducción explícita a 0.1*3, HTTP MathResponse, racional exacto y reentrada); Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts commit 01d51cf77064b9972c76a8c1eb054a79d4cbb467 (traducción LaTeX). No atribuir browser E2E a estas pruebas.
+- Corridas para SHA final: Lite cumulative 38547895810, H1d 38547895813, build 38547895838 IN_PROGRESS; Plus cumulative 38547914335 IN_PROGRESS y H1d 38547914473 QUEUED al consultar. SY-N-07 pendiente de conclusiones/logs. Próximo: verificar CI del SHA y corregir rojos; después SY-N-08 `1-0.9` -> `0.1`. SG28/H2 OPEN, DIST multinodo BLOCKED; sin despliegue.
+
+
 ## 2026-10-14 — SY-N-05 PASS bilateral; SY-N-06 iniciado
 - SY-N-05 PASS bilateral en alcance probado: Lite SHA f7d70e08 cumulative 38545607246, H1d 38545607144 y build 38545607156 SUCCESS; Plus SHA ab3b8480 cumulative 38545615094 y H1d 38545615080 SUCCESS. Convención elegida para fuente LaTeX literal `1\\mathrm{e}3`: valor 1000; no implica aceptación genérica de notación e de backend.
 - SY-N-06 fixture oficial `0.1+0.2` -> `0.3`; rechazo explícito de artefacto `0.30000000000000004`. Pruebas añadidas: Lite `tests/syntax309SyE23.audit.test.ts` SHA a484378106a6e001a449b845f1beeebe5405da98 (parser, evaluación, worker, reentrada); Plus backend `backend/tests/test_syntax309_sye23.py` SHA 7833121280e1ec4e34e8e36f11e93f9d3b99e673 (exactitud SymPy, MathResponse HTTP, reentrada), frontend `frontend/src/__tests__/syntax309SyEFractions.audit.test.ts` SHA b0c920394ba950467b84b1a4cb1397d5c07de52e (entrada fuente y conversión).
