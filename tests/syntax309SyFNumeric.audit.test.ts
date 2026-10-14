@@ -282,4 +282,10 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(Number.isFinite(actual), id + " parsed=" + parsed).toBe(true);
     expect(actual, id + " parsed=" + parsed).toBeCloseTo(expected, 9);
   });
+  it("SY-F-35: nested square roots of sixteen evaluate to two", () => {
+    expect(byId["SY-F-35"].operacion).toBe("valor");
+    const parsed = parseExpression(byId["SY-F-35"].entrada).algebrite;
+    const actual = compileNumeric(parsed, "__unused__")(0);
+    expect(actual, "SY-F-35 parsed=" + parsed).toBeCloseTo(2, 9);
+  });
 });
