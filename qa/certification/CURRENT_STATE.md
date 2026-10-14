@@ -1,5 +1,13 @@
 # Current Certification State
 
+## Actualización — cierre SY-E-31 e inicio SY-N-01 (2026-10-14)
+- SY-E-31 PASS bilateral en alcance probado: Lite SHA c0e576b497b7cbfc8de1089e8469bb537fa83169, cumulative 38537049689/H1d 38537049789/build 38537049793 SUCCESS; Plus SHA 2d37ce5f2aa8341b3bf128673ccad3b76168f267, cumulative 38537114732/H1d 38537114677 SUCCESS. Convención de 2\\frac{1}{3}: producto implícito 2/3, NO número mixto 7/3.
+- SY-E-31 es último registro sección E de qa/certification/syntax309_cases.jsonl (309 casos totales). Continuidad oficial: SY-N-01 valor decimal .5 -> 0.5; luego SY-N-02 5. -> 5.
+- SY-N-01 implementado en Lite tests/syntax309SyE23.audit.test.ts SHA c3ff0db17aba9111b909c7526f3d5f41d599a6c0: parser, evaluación, worker y reentrada. Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts SHA bb2ddcfc9e176aa4ccc3d25cb2352cd7056ad523; backend/tests/test_syntax309_sye23.py SHA técnico final c1daf54341bfa742407236808f8b70990d364e29: fuente original, traducción numérica, HTTP, MathResponse y reentrada.
+- CI SHA técnico: Lite cumulative 38538734939/H1d 38538734985/build 38538735003; Plus cumulative 38538741316/H1d 38538741226. En curso en la última inspección; SY-N-01 PENDIENTE de confirmación y reparación si hay rojos.
+- Mantener Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED; no atribuir browser E2E a pruebas aisladas; sin despliegue a producción.
+
+
 ## Estado vigente — SY-E-31 convención de fracción adyacente — 2026-10-14
 - SY-E-30 PASS bilateral dentro del alcance parser/conversor: Lite SHA d4bfbf65020aad8b29143794d8bdc4a2eec7781a cumulative 38536342887/H1d 38536342814/build 38536342817 SUCCESS; Plus SHA 32f50a7144a09331d900f6f8019d65540a9be732 cumulative 38536350587/H1d 38536350799 SUCCESS.
 - SY-E-31 fixture original 2\\frac{1}{3}, operacion=convencion, nivel=N3, esperado admite número mixto 7/3 O producto 2/3, NOTA «Número mixto o producto: declarar». Convención auditada elegida: MULTIPLICACIÓN IMPLÍCITA = 2*(1/3) = 2/3 (no suma de entero + fracción). No modificar fixture para forzar PASS.
