@@ -349,4 +349,21 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(compileNumeric(evaluate(parseExpression(result.resultLatex).algebrite), "__unused__")(0)).toBe(0.1);
   });
 
+  it("SY-N-09: decimal product 4.35 times 100 yields exactly 435 through worker and reentry", () => {
+    const row = rows["SY-N-09"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("4.35\\times100");
+    expect(row.esperado).toBe("435");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const exact = evaluate(parsed);
+    expect(compileNumeric(exact, "__unused__")(0)).toBe(435);
+    expect(exact).not.toContain("434.99999999999994");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-09",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.resultLatex).not.toContain("434.99999999999994");
+    expect(compileNumeric(evaluate(parseExpression(result.resultLatex).algebrite), "__unused__")(0)).toBe(435);
+  });
+
 });
