@@ -1351,4 +1351,23 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(again.resultLatex).toBe("12");
   });
 
+  it("SY-U-09: Unicode minus preserves exact result and worker reentry", () => {
+    const row = rows["SY-U-09"];
+    expect(row.entrada).toBe("2−1");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("1");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("1");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-09",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.resultLatex).toBe("1");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-09-reentry",expressionAlgebrite:parseExpression(result.resultLatex).algebrite}});
+    const again = scope.postMessage.mock.calls[0][0];
+    expect(again.success).toBe(true);
+    expect(again.resultLatex).toBe("1");
+  });
+
 });
