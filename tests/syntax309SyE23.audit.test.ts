@@ -857,15 +857,19 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     const row = rows["SY-N-29"];
     expect(row.entrada).toBe("1,5+2");
     expect(row.operacion).toBe("convencion");
+    let result: string | undefined;
+    let rejection: unknown;
     try {
       const parsed = parseExpression(row.entrada).algebrite;
-      const result = evaluate(parsed);
-      expect(result, "If the comma is accepted as decimal, the result must be exactly 3.5").toBe("7/2");
+      result = evaluate(parsed);
     } catch (error) {
-      // The engine may reject an unsupported locale convention at either
-      // parsing or evaluation. Require an explicit syntax/decimal diagnostic.
-      const diagnostic = String(error);
-      expect(diagnostic).toMatch(/syntax|sintax|decimal|separador|comma|coma|invalid|inválid/i);
+      rejection = error;
+    }
+    if (rejection !== undefined) {
+      // The engine may reject the locale at parsing or evaluation.
+      expect(String(rejection)).toMatch(/syntax|sintax|decimal|separador|comma|coma|invalid|inválid/i);
+    } else {
+      expect(result, "Accepted decimal-comma input must equal 3.5").toBe("7/2");
     }
   });
 
