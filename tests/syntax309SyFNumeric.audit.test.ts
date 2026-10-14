@@ -390,4 +390,12 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(actual).toBe(5);
   });
 
+  it("SY-F-48: original LaTeX minimum of one five three is one", () => {
+    expect(byId["SY-F-48"].operacion).toBe("valor");
+    const parsed = parseExpression(byId["SY-F-48"].entrada).algebrite;
+    const actual = Number(tryStatFunction(parsed));
+    expect(Number.isFinite(actual), "SY-F-48 parsed=" + parsed).toBe(true);
+    expect(actual).toBe(1);
+  });
+
 });
