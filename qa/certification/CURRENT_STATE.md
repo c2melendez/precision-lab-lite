@@ -1,5 +1,12 @@
 # Current Certification State
 
+## SY-D-05 PASS acotado / SY-D-06 OPEN — 2026-10-14
+- SY-D-05 completó todas las corridas SHA-matched: Lite 7f607f463ae02f571c408f645092d97f9575e042 cumulative 38629857801, H1d 38629857566, build 38629857861, E2E científico 38629857766 SUCCESS; Plus f48762ac3cb214f8dba997b0f2872fc7b06864a5 cumulative 38629847054, H1d 38629846290 SUCCESS. Validación Plus acotada a HTTP, no a MathLive visual.
+- SY-D-06 oficial `[1+2]\\cdot3` = `9`: Lite test parser/worker/reentrada commit `7d96f224ac6d859cd12ab084da94be70e74def3e`; Plus test HTTP sobre expresión normalizada `(1+2)*3` y reentrada commit `6c2cc5eff1db2ae586aff911a18bafcae8c9b183`. No atribuir prueba de conversión MathLive de Plus al test HTTP.
+- Nuevos runs Lite: cumulative 38630788898, H1d 38630788939, build 38630789162, E2E científico 38630789002; Plus cumulative 38630792783, H1d 38630793419. Al primer chequeo QUEUED/IN_PROGRESS, no se certifica SY-D-06 hasta conclusión/logs sobre SHA correspondiente.
+- Siguiente paso: inspeccionar runs y logs; corregir regresiones producto/harness; si PASS, avanzar con fixture oficial SY-D-07 (`\\{1+2\\}\\cdot3`, convencional: 9 o aviso por llaves como conjunto). SG28/H2 OPEN, DIST BLOCKED; sin producción.
+
+
 ## SY-D-04 PASS bilateral / SY-D-05 OPEN (2026-10-14)
 - SY-D-04 PASS: Lite SHA 1ce2331cfe593fa8209d043183e34a5721aeb35f cumulative 38629071681, H1d 38629071960, build 38629071977, E2E 38629072116 SUCCESS. Plus SHA 1fbbea3aa8287d1fa970e36571586157992586b7 cumulative 38629079636 y H1d 38629079940 SUCCESS.
 - SY-D-05 prueba oficial LaTeX de delimitadores incompatibles entrada \\left(1+2\\right], resultado error claro. Test Lite tests/syntax309SyE23.audit.test.ts commit 7f607f463ae02f571c408f645092d97f9575e042 y Plus backend/tests/test_syntax309_sye23.py commit f48762ac3cb214f8dba997b0f2872fc7b06864a5. Plus usa literal LaTeX directo por HTTP como verificación de rechazo, no equivalencia visual del editor.
