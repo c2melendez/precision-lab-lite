@@ -1,5 +1,11 @@
 # Certification Execution Log
 
+## 2026-10-14 — SY-N-02 cerrado y SY-N-03 implementado (CI pendiente)
+- SY-N-01 y SY-N-02: PASS bilateral en alcance probado. Plus SHA 8fb412a5: cumulative 38543064130 SUCCESS, H1d 38543064336 SUCCESS; Lite SHA abda9af5: cumulative 38543092002 SUCCESS, H1d 38543091898 SUCCESS, build 38543091905 SUCCESS. No equivale a certificación browser real ni a cierre global Syntax309.
+- Siguiente fixture SY-N-03 original `00012`, resultado `12`. Lite prueba de parser/worker/reentrada commit `2b70ab72a302a184c74541399714b6bbde411c84`; Plus prueba HTTP MathResponse exacto y reentrada `67fe5ad921db5dd71b421d373ef449eaad8cefa6`, corrección producto de entero con ceros iniciales `backend/app/services/parsing.py` commit `7dcd5a9a1634948f8dacba795fedbaa867b4d876`. Normalización Plus limitada a literal entero completo, evita tocar identificadores u otras sintaxis.
+- CI SY-N-03 primera ronda: Plus cumulative 38543754001/H1d 38543753736 (SHA test intermedio); Lite cumulative 38543760772, H1d 38543760831, build 38543760788 (SHA 2b70ab72); corridas sin conclusión al registrar. Requiere confirmar nueva corrida Plus SHA 7dcd5a9a y resultados Lite. Si FAIL, diagnosticar; si PASS, cerrar SY-N-03 y continuar SY-N-04. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED; sin despliegue.
+
+
 ## 2026-10-14 — SY-N-01 reparación del oráculo heredado / inicio SY-N-02
 - Plus cumulative 38542476081 SHA 7f6c8bfc: FAILURE por oráculo antiguo backend/tests/test_evaluate.py::test_invalid_decimal_or_scientific_notation[.5] que aún exigía rechazar un decimal válido; 1086 PASS, 1 FAIL, 1 XFAIL. Plus H1d 38542475979 SUCCESS. Se conserva rechazo explícito a 1e5, foo.bar y 5.__class__; prueba heredada corregida en commit 6201e6b2e6bd2c6b62054a6c5352b1168cfb1aa4.
 - SY-N-02 fixture oficial 5. -> 5: Plus backend/app/services/parsing.py permite un punto final numérico acotado, commit 5fdea04fc4b8085fe2a7183dae673a64288782b6; backend/tests/test_syntax309_sye23.py verifica MathResponse HTTP, resultado exacto y reentrada, commit 8fb412a5cc5fdc0862577c02e6c610bb4b47c4c4. Lite tests/syntax309SyE23.audit.test.ts agrega parser, evaluación, worker y reentrada en abda9af5f759eb9b50e09243549a48864d57ca50.
