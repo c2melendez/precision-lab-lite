@@ -467,7 +467,7 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
   it("SY-N-14: squared radical minus two is exactly zero through worker and reentry", () => {
     const row = rows["SY-N-14"];
     expect(row.operacion).toBe("valor");
-    expect(row.entrada).toBe("(\\sqrt{2})^2-2");
+    expect(row.entrada).toBe("\\left(\\sqrt{2}\\right)^{2}-2");
     expect(row.esperado).toBe("0");
     const parsed = parseExpression(row.entrada).algebrite;
     expect(evaluate(parsed)).toBe("0");
