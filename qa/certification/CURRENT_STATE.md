@@ -1,5 +1,12 @@
 # Current Certification State
 
+## 2026-10-14 — SY-N-01 diagnóstico CI y reparación regex Plus
+- Rama canónica bilateral `qa/syntax-audit-in625-a1`. Plus cumulative `38539952231` (SHA `ef9fd4475f2cbc7ead92921a898e90d9c7964479`): FAILURE del backend, 1086 PASS, 1 FAIL (`tests/test_syntax309_sye23.py::test_syn01_leading_decimal_http_and_reentry`), 1 XFAIL, cobertura 86.63%; frontend PASS. Causa de producto: en `backend/app/services/parsing.py`, la regex raw de normalización usa `\\.` y `\\d` en lugar de `\.` y `\d`; no transforma `.5` a `0.5`. No atribuible a la aproximación numérica.
+- Corrección técnica Plus publicada: `7f6c8bfc1fc0b74ce6d1e3e48a098eb69fd51de5`, regex acotada `(?<![A-Za-z0-9_.])\.(?=\d)`, sin admitir `foo.bar`; conserva test HTTP y validación MathResponse.
+- Lite cumulative `38539929359` SUCCESS y H1d `38539929360` SUCCESS para `710295a00e6670f4834943fbbe7b8be90f6ffe2d`. Plus H1d `38539952135` SUCCESS para SHA anterior, no acredita el nuevo parser. Plus cumulative en SHA nuevo requiere evidencia adicional. SY-N-01 queda OPEN hasta PASS Plus SHA-alineado.
+- Próximo objetivo oficial: cerrar SY-N-01 tras CI y continuar SY-N-02: `5.` → `5`, respetando seguridad AST y regresión Lite/Plus. Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo BLOCKED, sin producción.
+
+
 ## Estado vigente — SY-N-01 decimal abreviado y correcciones — 2026-10-14
 - SY-E-31 PASS bilateral: Lite cumulative 38537049689/H1d 38537049789/build 38537049793 SUCCESS; Plus cumulative 38537114732/H1d 38537114677 SUCCESS. Sección E finalizada en alcance probado, convención 2\\frac{1}{3} como producto 2/3.
 - SY-N-01 fixture original .5, esperado 0.5. Lite primer cumulative 38538734939 FAILURE del ORÁCULO: Number("1/2") es NaN aunque el CAS emite racional exacto; corregido test en tests/syntax309SyE23.audit.test.ts SHA 710295a00e6670f4834943fbbe7b8be90f6ffe2d evaluando racional numéricamente, sin relajar exactitud.
