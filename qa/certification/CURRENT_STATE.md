@@ -1,5 +1,11 @@
 # Current Certification State
 
+## SY-D-04 PASS bilateral / SY-D-05 OPEN (2026-10-14)
+- SY-D-04 PASS: Lite SHA 1ce2331cfe593fa8209d043183e34a5721aeb35f cumulative 38629071681, H1d 38629071960, build 38629071977, E2E 38629072116 SUCCESS. Plus SHA 1fbbea3aa8287d1fa970e36571586157992586b7 cumulative 38629079636 y H1d 38629079940 SUCCESS.
+- SY-D-05 prueba oficial LaTeX de delimitadores incompatibles entrada \\left(1+2\\right], resultado error claro. Test Lite tests/syntax309SyE23.audit.test.ts commit 7f607f463ae02f571c408f645092d97f9575e042 y Plus backend/tests/test_syntax309_sye23.py commit f48762ac3cb214f8dba997b0f2872fc7b06864a5. Plus usa literal LaTeX directo por HTTP como verificación de rechazo, no equivalencia visual del editor.
+- Gates nuevos Lite cumulative 38629857801, H1d 38629857566, build 38629857861, E2E 38629857766 QUEUED; Plus cumulative 38629847054 y H1d 38629846290 IN_PROGRESS. SY-D-05 OPEN hasta verificar el SHA en CI y corregir fallos. SG28/H2 OPEN; DIST BLOCKED.
+
+
 ## SY-D-03 PASS bilateral / SY-D-04 OPEN (2026-10-14)
 - SY-D-03 PASS en alcance probado: Lite SHA 7b3a62f0692471814c3947d0ca533c66f215c0a8 acumulativo 38627185469 y E2E regresión 38627185399 SUCCESS; Plus SHA e1314fa42eb827fa86bf84b6682084667092968e acumulativo 38627177726 y H1d 38627177431 SUCCESS.
 - Nuevo caso SY-D-04: (1+2] debe fallar con error explícito por delimitadores incompatibles, no producir 3. Lite test tests/syntax309SyE23.audit.test.ts commit 1ce2331cfe593fa8209d043183e34a5721aeb35f; Plus backend/tests/test_syntax309_sye23.py commit 1fbbea3aa8287d1fa970e36571586157992586b7.
