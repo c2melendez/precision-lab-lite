@@ -689,4 +689,32 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
   });
 
+
+  it("SY-N-23: non-integer factorial follows explicit Gamma-or-error convention and recovers", () => {
+    const row = rows["SY-N-23"];
+    expect(row.operacion).toBe("convencion");
+    expect(row.entrada).toBe("2.5!");
+    expect(row.nota).toMatch(/Gamma o aviso/);
+    const parsed = parseExpression(row.entrada).algebrite;
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-23",expressionAlgebrite:parsed}});
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const response = scope.postMessage.mock.calls[0][0];
+    expect(response.requestId).toBe("SY-N-23");
+    if (response.success) {
+      const approx = Number(response.decimalApprox);
+      expect(Number.isFinite(approx), JSON.stringify(response)).toBe(true);
+      expect(approx).toBeCloseTo(3.3233509704478426, 8);
+    } else {
+      expect([ErrorCode.DOMAIN_ERROR, ErrorCode.UNSUPPORTED_OPERATION]).toContain(response.errorCode);
+      expect(response.errorMessage).toMatch(/factorial|entero|integer|gamma|dominio/i);
+      expect(response.resultLatex).toBeNull();
+    }
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-23-recovery",expressionAlgebrite:parseExpression("2+3").algebrite}});
+    const recovered = scope.postMessage.mock.calls[0][0];
+    expect(recovered.success).toBe(true);
+    expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
+  });
+
 });
