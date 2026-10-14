@@ -4230,3 +4230,8 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - Plus src/components/NaturalMathField.tsx correction SHA 54725db9880b4060d397878ecafc85f0a38efbfe rejects locale-ambiguous grouping; test strengthened SHA af2f5041f16e37a41647f5d730dc1d2c28d3418a to require explicit separator diagnostic. Final SHA new cumulative 38600895675 and H1d 38600896039 initially QUEUED; do not declare PASS until verified.
 - Risk: both motors reject {,} with a three-digit fractional tail absent a declared locale; future locale policy must distinguish 1{,}000 explicitly. SY-N-30 remains OPEN until Plus gates and backend HTTP/reentry coverage are verified. Next official fixture SY-N-31 is 1/3000000 in scientific notation.
 
+
+## SY-N-30 backend HTTP supplementary gate — 2026-10-14
+- Plus backend/tests/test_syntax309_sye23.py SHA fafd2663003b050bd15fdeeb427d998fee8a43af adds explicit ungrouped translation 1000+1 -> 1001 with MathResponse, result_approx and HTTP reentry; this is separate from the frontend ambiguity rejection, not proof that the original markup is natively accepted.
+- Final Plus SHA fafd2663 cumulative 38601102412 and H1d 38601102386 newly queued. Prior runs for af2f5041 still in progress at last check. Use ONLY successful gates on final SHA for closure. SY-N-30 OPEN; SY-N-31 next.
+
