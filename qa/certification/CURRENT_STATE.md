@@ -1,5 +1,26 @@
 # Current Certification State
 
+## Estado vigente — SY-N-26 factorial 171: corrección Plus — 2026-10-14
+Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
+- Rama canónica bilateral qa/syntax-audit-in625-a1.
+- Fixture original 171! permite valor exacto o aviso claro de desbordamiento, nunca Infinity silencioso. La discrepancia de la fila ("311 dígitos") permanece documentada: el producto independiente de 1..171 tiene 310 dígitos. Fixture sin modificaciones.
+- Lite SHA 89679d7bc2dc953b6ac79fef9756fb91fe57b81a: cumulative 38590118939 SUCCESS (1224 PASS + 30 TODO), H1d 38590118667 y build 38590118675 SUCCESS. Regresión compara con producto BigInt independiente si éxito, o exige error claro y recuperación 2+3=5.
+- Plus SHA anterior 57f8f9ceacb80ca1e54b03222e5078548a5f1718: cumulative 38590162439/backend job 115942596377 FAILURE únicamente al exigir diagnóstico explícito para 171!. Frontend 813 PASS + 28 TODO y H1d 38590162411 SUCCESS. Clasificación PRODUCT: ruta directa de factoriales terminaba en 170; 171 caía en rechazo genérico, sin diagnóstico contractual suficiente.
+- Corrección backend/app/services/evaluate_service.py: extender de 170 a 171 el límite acotado de factorial literal directo (máximo tres dígitos, sin substitutions); conservar entero exacto y input_expr factorial. Para 171, approx_value=None; no convertir a float ni emitir Infinity. El rango 0..170 conserva aproximación finita; límites de entrada generales no cambiados.
+- Regresión backend/tests/test_syntax309_sye23.py reforzada: Plus 171! debe tener éxito, result_text y result_latex iguales a math.factorial(171), result_approx=None, errores nulos y posterior recuperación 2+3=5. Ya no admite la rama alternativa de error en Plus.
+- La prueba acumulativa Lite actual también ejecuta el test SY-N-24 con el ajuste histórico del oráculo; esa evidencia pertenece al SHA actual probado, no demuestra una corrida independiente del antiguo bc1c743f.
+- SY-N-26 PASS bilateral dentro del alcance probado. Plus SHA corregido c97460459fabea0cd02ceaa8cdfedeccb8bcde5c: cumulative [38592383117](https://github.com/c2melendez/precision-lab-plus/actions/runs/38592383117) SUCCESS (backend 1112 PASS + 1 XFAIL; frontend 813 PASS + 28 TODO); H1d [38592383036](https://github.com/c2melendez/precision-lab-plus/actions/runs/38592383036) SUCCESS; SG28 backend [38592383032](https://github.com/c2melendez/precision-lab-plus/actions/runs/38592383032) SUCCESS (69 PASS), regresión pertinente sin cierre multinodo.
+- Alcance: Lite parser/handler con transporte simulado, Plus conversor frontend y HTTP; no acredita E2E nativo completo de MathLive ni reentrada del literal gigante (sigue sujeta al límite de entrada).
+- Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo real BLOCKED. TODO/XFAIL no cuentan como PASS. Sin despliegue ni cambios de producción.
+
+### Siguiente paso exacto — SY-N-27
+1. Fixture original \pi, operacion=valor, esperado decimal 3.141592654.
+2. Lite: conservar constante simbólica pi, comprobar aproximación finita con referencia independiente y precisión indicada, handler, salida/reentrada.
+3. Plus: conversor original \pi a pi y HTTP explícito pi; MathResponse exacto/simbólico, LaTeX, aproximación finita y reentrada. No exigir que se reemplace pi por decimal truncado.
+4. Verificar gates del SHA técnico, clasificar fallos y sincronizar evidencia bilateral. Después SY-N-28 e -> 2.718281828.
+5. SY-N-27 y SY-N-28 pendientes; no ejecutados por este cierre.
+
+
 ## Estado vigente — SY-N-26 factorial 171 y borde overflow — 2026-10-14
 - SY-N-25 PASS bilateral alcance probado: Lite SHA 09f9484f8955c4418eacc58339e938eb08505e44 cumulative 38588364172, H1d 38588364260, build 38588364074 SUCCESS; Plus SHA d1fd7da466f971d4442555ad20163616e00f3093 cumulative 38588388914 y H1d 38588389004 SUCCESS.
 - SY-N-26 fixture oficial `171!` operación valor: exacto o error de desbordamiento claro, NUNCA Infinity silencioso. Nota de precisión: 171! tiene exactamente 310 dígitos matemáticamente (aunque fila oficial dice 311); no modificar fixture sin decisión de autoridad, conservar evidencia de discrepancia y oracle matemático independiente.
