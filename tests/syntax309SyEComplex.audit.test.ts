@@ -83,7 +83,8 @@ describe("Syntax309 SY-E-17/18 principal complex powers — original Lite source
     expect(result.resultLatex.length).toBeGreaterThan(0);
     expect(JSON.stringify(result)).not.toMatch(/NaN|Infinity/);
     const returned = parseExpression(result.resultLatex).algebrite;
-    expect(evaluate("(" + returned + ")-(" + raw + ")")).toBe("0");
+    console.info("SY-E-18_WORKER_ROUNDTRIP", JSON.stringify({ raw, result, returned, roundtrip: evaluate(returned) }));
+    expect(evaluate("(" + returned + ")-(" + raw + ")"), JSON.stringify({ result, returned })).toBe("0");
     // The original power is never substituted by cbrt() or root().
   });
 
