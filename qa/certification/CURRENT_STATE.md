@@ -1,5 +1,23 @@
 # Current Certification State
 
+## Estado vigente — SY-D-14 cerrado / SY-U-01 multiplicación — 2026-10-14
+Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
+- SY-D-14 PASS bilateral confirmado: Lite SHA ddf3fe93a3277a7c14f26d3b32269fa7ac9ec907, cumulative 38641143547 (1243 PASS + 30 TODO), H1d 38641143555, build 38641143693 y científico E2E 38641143580 SUCCESS. Plus SHA 7e74c9e76465f11d43672126bc50a1bbeef6bb72, cumulative 38641154202 (backend 1131 PASS + 1 XFAIL; frontend 820 PASS + 28 TODO) y H1d 38641154194 SUCCESS.
+- SY-D-14 es último caso oficial de sección D. Siguiente fila real de syntax309_cases.jsonl: SY-U-01, fuente 3\times4, valor esperado 12. No existe SY-D-15.
+- Lite tests/syntax309SyE23.audit.test.ts: fuente original -> parser -> evaluación exacta 12; handler worker auténtico con transporte simulado, requestId/resultLatex 12; reanálisis y segunda ejecución con salida real, conservando 12.
+- Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts: conversión original completa 3\times4 -> 3*4, salida 12 reingresable. Backend backend/tests/test_syntax309_sye23.py: HTTP real con traducción explícita 3*4, MathResponse, éxito/scalar/input/requestId, texto/LaTeX/aproximado 12, errores nulos y reentrada del result_text con nuevo requestId.
+- Sin cambios de producto. Alcance: parser/handler Lite y conversor/HTTP Plus separados. Los gates E2E existentes son regresión; no acreditan por sí solos interacción visual específica SY-U-01. TODO/XFAIL no cuentan como PASS.
+- SY-U-01 PASS en el alcance automatizado descrito. Lite SHA 1d98d0d58064c679f09f8b8b63775ea8efc51909: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38645115841 (1244 PASS + 30 TODO), H1d 38645116144, build 38645115857 y científico UI E2E 38645115823: todos SUCCESS. Plus SHA 415cdc242649acd0684b6d34a8091bcb1ad4d7b7: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38645120838 (backend 1132 PASS + 1 XFAIL; frontend 821 PASS + 28 TODO) y H1d 38645120933: todos SUCCESS.
+- Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo BLOCKED. Sin cambios de despliegue/producción.
+
+### Siguiente paso exacto — SY-U-02
+1. Fixture original 12\div4, operacion=valor, esperado 3.
+2. Lite: fuente original, parser/evaluación exacta 3, handler y reentrada.
+3. Plus: conversor original a división equivalente completa, HTTP explícito 12/4, MathResponse exacto/LaTeX/aproximado 3 y reentrada real.
+4. Publicar pruebas, verificar gates por SHA, corregir fallos y sincronizar evidencia bilateral.
+5. Después SY-U-03: 3\cdot4 -> 12. Ambos pendientes; no ejecutados en este cierre.
+
+
 ## SY-D-13 PASS bilateral / SY-D-14 OPEN — 2026-10-14
 - SY-D-13 Lite SHA `cd388d38ac07eb6ab4eb64756fe75698cea8c117`: cumulative 38639245245, H1d 38639245053, build 38639245026, científico E2E 38639245183 SUCCESS. Plus SHA `c501ded032f31daadc1e61c6a4cefd8142d6e4d4`: cumulative 38639264207 y H1d 38639264059 SUCCESS. PASS bilateral en alcance; Plus evalúa endpoint HTTP y no editor visual.
 - SY-D-14 fixture oficial `((2))` => `2`, prueba Lite parser/worker/reentrada SHA `ddf3fe93a3277a7c14f26d3b32269fa7ac9ec907`; Plus endpoint HTTP/reentrada SHA `7e74c9e76465f11d43672126bc50a1bbeef6bb72`.
