@@ -190,7 +190,7 @@ describe("Syntax309 SY-E-17..20 power conventions and domain — original Lite s
     expect(row.entrada).toBe("\\frac{1}{1+\\frac{1}{x}}");
     const parsed = parseExpression(row.entrada).algebrite;
     const raw = evaluate(parsed);
-    expect(evaluate("(" + raw + ")-x/(x+1)")).toBe("0");
+    expect(evaluate("simplify((" + raw + ")-x/(x+1))")).toBe("0");
     workerScope.postMessage.mockClear();
     workerScope.onmessage!({ data: {
       type: "evaluate", requestId: "SY-E-22", expressionAlgebrite: parsed,
@@ -199,7 +199,7 @@ describe("Syntax309 SY-E-17..20 power conventions and domain — original Lite s
     expect(result.success, JSON.stringify(result)).toBe(true);
     expect(result.requestId).toBe("SY-E-22");
     const returned = parseExpression(result.resultLatex).algebrite;
-    expect(evaluate("(" + returned + ")-x/(x+1)")).toBe("0");
+    expect(evaluate("simplify((" + returned + ")-x/(x+1))")).toBe("0");
     const conditions = result.domainConditions as Array<{
       kind: string; operator: string; expressionAlgebrite: string; comparisonAlgebrite: string;
     }>;
