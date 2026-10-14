@@ -50,6 +50,12 @@ export function evaluate(expressionLatex: string): string {
     if (/\bfactorial\s*\(\s*\(*\s*-\s*\d+\s*\)*\s*\)/.test(expressionLatex) || /\(\s*-\s*\d+\s*\)\s*!/.test(expressionLatex)) {
       throw toAppError(ErrorCode.DOMAIN_ERROR, "Factorial no definido para enteros negativos.");
     }
+    // SY-N-23: reject fractional factorial after decimal rationalization.
+    const fractionalFactorial = expressionLatex.match(/factorial\s*\(\s*\(*\s*(\d+)\s*\/\s*(\d+)\s*\)*\s*\)/);
+    if (fractionalFactorial && Number(fractionalFactorial[2]) > 0 &&
+        Number(fractionalFactorial[1]) % Number(fractionalFactorial[2]) !== 0) {
+      throw toAppError(ErrorCode.DOMAIN_ERROR, "Factorial no definido para números no enteros; utilice Gamma.");
+    }
     // IN625 A2: Algebrite no evalúa floor()/ceiling() de forma fiable.
     // Para expresiones puramente numéricas que usen estas funciones,
     // reutilizamos el evaluador numérico propio. Si hay variables libres
