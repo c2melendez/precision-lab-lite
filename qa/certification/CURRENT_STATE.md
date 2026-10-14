@@ -1,5 +1,10 @@
 # Current Certification State
 
+## SY-N-31 — gates Lite verificados y paridad Plus iniciada (2026-10-14)
+- Lite SHA `b88c7e5a272123943b60178725baa15bbc3e3a72`: cumulative 38604145396, H1d 38604145815 y build 38604145540 COMPLETED/SUCCESS. Formateador de presentación SY-N-31 PASS en alcance probado; render/click E2E no acreditado.
+- Plus: formato `scn` utilizaba `toExponential(6)`. Corrección `frontend/src/components/formatNumber.ts` SHA 20e938275c8e7eda503844b2b2020de7053d94df, `ResultPanel.tsx` SHA 78390b398090d35878fa4f5e80b313f8c78913d2 y prueba `formatNumber.syntax309.test.ts` SHA 70c0221a9c72772d350aa948f0297d7b9c2e4279, corregida por commit 0c68c36c8294189263ef5eca785c2c279b441c3a. Plus SHA definitivo pendiente de comprobar CI. SY-N-31 OPEN hasta resultado SHA final Plus y comprobación UI real.
+
+
 ## SY-N-31 — prueba de presentación científica Lite (2026-10-14)
 - Corrección producto `src/components/ResultPanel.tsx` SHA `254de3cd1498ef90b0eae54d4e89e9f6440a252b`: vista `scn` usa `toExponential(9)` y compone LaTeX `\\times10^{...}`; respeta resultado exacto/reentrada. Antes truncaba presentación con `toExponential(6)`.
 - Regresión permanente `tests/syntax309SyE23.audit.test.ts` SHA `b88c7e5a272123943b60178725baa15bbc3e3a72`: la transformación de salida worker SY-N-31 se compara con el esperado oficial `3.333333333\\times10^{-7}`.
