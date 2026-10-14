@@ -464,4 +464,28 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(repeated.resultLatex).toBe("2");
   });
 
+  it("SY-N-14: squared radical minus two is exactly zero through worker and reentry", () => {
+    const row = rows["SY-N-14"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("(\\sqrt{2})^2-2");
+    expect(row.esperado).toBe("0");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("0");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-14",expressionAlgebrite:parsed}});
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-N-14");
+    expect(result.resultLatex).toBe("0");
+    const returned = parseExpression(result.resultLatex).algebrite;
+    expect(evaluate(returned)).toBe("0");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-14-reentry",expressionAlgebrite:returned}});
+    const repeated = scope.postMessage.mock.calls[0][0];
+    expect(repeated.success, JSON.stringify(repeated)).toBe(true);
+    expect(repeated.requestId).toBe("SY-N-14-reentry");
+    expect(repeated.resultLatex).toBe("0");
+  });
+
 });
