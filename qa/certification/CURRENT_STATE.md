@@ -3261,3 +3261,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Corrected numeric witness substitution to a proper word-boundary regex in test commit 169d1135c03ce75431d0fc9ca32bbef3f729e889. New cumulative 38503933639, H1d 38503933638, build 38503933720 in progress at first check. Must verify results before Lite SY-F-40 PASS.
 - Plus explicit HTTP SY-F-40 at SHA 97880a23a694ea92f4bb8dea64d1a3d56690faf4 cumulative 38503514125 and H1d 38503514179 SUCCESS; typed-bar frontend remains unverified.
 - Next: verify Lite latest SHA CI, fix any genuine residual failure, move SY-F-41. Syntax309 OPEN; SG28/DIST multinode BLOCKED.
+
+
+### 2026-10-13 — SY-F-40 verified, SY-F-41 floor witness published
+- SY-F-40 Lite SHA 169d1135c03ce75431d0fc9ca32bbef3f729e889: cumulative 38503933639 SUCCESS, H1d 38503933638 SUCCESS, build 38503933720 SUCCESS. Source-LaTeX parser and x-substitution harness regression validated. Plus backend-only SHA 97880a23a694ea92f4bb8dea64d1a3d56690faf4: cumulative 38503514125 SUCCESS, H1d 38503514179 SUCCESS; no claim about raw frontend typed bars.
+- Next official fixture SY-F-41: \\lfloor3.7\\rfloor -> 3. Lite source-LaTeX test commit c8f7d1965d3922d6c8cb39255a30292dae0e95c6 in tests/syntax309SyFNumeric.audit.test.ts; Plus backend-only floor(3.7) HTTP test commit fefd125f7e3beb782a9bd1f6c95ba6484423d4fe in backend/tests/test_syntax309_syf_numeric.py.
+- Auto-triggered CI Lite cumulative 38506901133, H1d 38506901131, build 38506901124; Plus cumulative 38506904043, H1d 38506904076. These runs were QUEUED/IN_PROGRESS at initial observation, not yet certified. Await verified job results; classify failures PRODUCT vs HARNESS/ORACLE, repair without weakening floor=3, then advance official SY-F-42 ceiling(3.2)=4.
+- Syntax309 OPEN; IN625 H2/SG28 and DIST multinode remain OPEN/BLOCKED without independent-node evidence. Documentation-only commits must not trigger CI.
