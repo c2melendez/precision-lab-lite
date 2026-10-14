@@ -366,4 +366,29 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(compileNumeric(evaluate(parseExpression(result.resultLatex).algebrite), "__unused__")(0)).toBe(435);
   });
 
+  it("SY-N-10: 1.005 times 1000 remains exactly 1005 through worker and reentry", () => {
+    const row = rows["SY-N-10"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("1.005\\times1000");
+    expect(row.esperado).toBe("1005");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("1005");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-10",expressionAlgebrite:parsed}});
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-N-10");
+    expect(result.resultLatex).toBe("1005");
+    const returned = parseExpression(result.resultLatex).algebrite;
+    expect(evaluate(returned)).toBe("1005");
+    expect(compileNumeric(evaluate(returned), "__unused__")(0)).toBe(1005);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-10-reentry",expressionAlgebrite:returned}});
+    const repeated = scope.postMessage.mock.calls[0][0];
+    expect(repeated.success).toBe(true);
+    expect(repeated.requestId).toBe("SY-N-10-reentry");
+    expect(repeated.resultLatex).toBe("1005");
+  });
+
 });
