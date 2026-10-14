@@ -307,4 +307,11 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     const actual = compileNumeric(parsed, "__unused__")(0);
     expect(actual, "SY-F-37 parsed=" + parsed).toBeCloseTo(3, 9);
   });
+  it.each(["SY-F-38", "SY-F-39"])("%s: absolute value syntax from official LaTeX returns three", (id) => {
+    expect(byId[id].operacion).toBe("valor");
+    const input = byId[id].entrada;
+    const parsed = parseExpression(input).algebrite;
+    const numeric = compileNumeric(parsed, "__unused__")(0);
+    expect(numeric, id + " input=" + input + " parsed=" + parsed).toBeCloseTo(3, 9);
+  });
 });
