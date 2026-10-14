@@ -201,4 +201,16 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(recovered.success).toBe(true);
     expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
   });
+
+  it("SY-E-30: original empty denominator is a clear parse error and recovers", () => {
+    const row = rows["SY-E-30"];
+    expect(row.operacion).toBe("error");
+    expect(row.entrada).toBe("\\frac{x}{}");
+    expect(row.esperado).toContain("denominador vacío");
+    expect(() => parseExpression(row.entrada)).toThrowError(expect.objectContaining({
+      code: ErrorCode.PARSE_ERROR, message: expect.stringMatching(/denominador|denominator|vacío|empty/i),
+    }));
+    const recovered = parseExpression("2+3").algebrite;
+    expect(evaluate(recovered)).toBe("5");
+  });
 });
