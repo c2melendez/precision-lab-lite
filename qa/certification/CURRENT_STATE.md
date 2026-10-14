@@ -1,5 +1,13 @@
 # Current Certification State
 
+## SY-N-23 — CI diagnosis and product corrections — 2026-10-14
+- Lite test SHA dd37ac3b2294185b5d3949bbb5a62fc11da91773: cumulative 38581593353 FAIL (1 SY-N-23, 1220 PASS, 30 TODO). Original `2.5!` parsed as rational factorial and worker returned success=true with `(\\frac{5}{2})!` but no finite numeric approximation. Build 38581593356 SUCCESS; H1d 38581593354 initially in progress. Product bug, not oracular.
+- Lite product fix `src/engine/algebriteClient.ts` SHA 62e6f770321199cde6d88ebe56ae08086e964097: reject non-integral rational literal factorial before Algebrite leaves unevaluated symbolic expression. Need confirm fresh CI on this SHA; do NOT certify until evidence.
+- Plus backend test SHA 930aac924cda12531d83a84b1e783475ad8fd460: cumulative 38581197491 FAIL because generic PARSE_ERROR returned for 2.5!; H1d 38581197471 SUCCESS. Plus frontend test SHA 9c0502417136b4ba485ab9f7480362736f67aaae: cumulative 38581204425 and H1d 38581204564 SUCCESS; these may not cover backend test of prior alternate SHA, so not enough. Plus product fix `backend/app/services/evaluate_service.py` SHA d40827e93828e4735738803a9e4bde23e55018e3: explicit noninteger factorial gives DOMAIN_ERROR with clear Gamma guidance; verify CI after publication.
+- SY-N-23 OPEN. Syntax309 global OPEN, SG28/H2 OPEN, DIST BLOCKED; no production modifications.
+### Próximo paso exacto
+Query Lite workflows for SHA 62e6f770 and Plus workflows for SHA d40827e9; inspect cumulative test logs and H1d plus build Lite. If any FAIL, correct layer and rerun. Certify only after bilateral gates for final SHAs and proceed with next official syntax309 case.
+
 ## Estado vigente — SY-N-23 factorial no entero — 2026-10-14
 - SY-N-22 PASS bilateral en alcance probado. Lite SHA 1eb0a1ae419682c90cf7654c031e0d71adb8a5d1: cumulative 38571369154, H1d 38571369220, build 38571369212 SUCCESS. Plus SHA 06bcc8e4749cc271d95d65bce07586595b989221: cumulative 38570563810, H1d 38570563960 SUCCESS. No acredita navegador E2E ni SG28 multinodo.
 - SY-N-23 fixture oficial `2.5!`, operación `convencion`, permite Gamma(3.5) ~3.323350970 o error claro. Prueba de Lite parser/worker/recuperación publicada commit dd37ac3b2294185b5d3949bbb5a62fc11da91773. Plus frontend conversión fuente commit 9c0502417136b4ba485ab9f7480362736f67aaae; Plus backend HTTP MathResponse y recuperación commit 930aac924cda12531d83a84b1e783475ad8fd460. No cambios producción.
