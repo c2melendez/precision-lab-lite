@@ -3520,3 +3520,6 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 
 
 2026-10-13 SY-E-03 checkpoint: SY-E-02 Lite cumulative 38510821961 and Plus 38510798815 SUCCESS. SY-E-03 official annotated source x^{12} with x=2 expects 4096. Tests Lite SHA 2f617b1906b3eb60bcd4a687379f1a94d8748c92 cumulative 38511233712 SUCCESS; Plus SHA 4651ed12b5735d58a9e67072e4af75eebba7a460 cumulative 38511248173 was in progress at last observation. Both test expression and substitution separately; literal natural-language annotation input not certified. Next check Plus and progress SY-E-04. Syntax309 OPEN; SG28/DIST BLOCKED.
+
+
+2026-10-13 SY-E-03 bilateral gates confirmed: Lite SHA 2f617b1906b3eb60bcd4a687379f1a94d8748c92 cumulative 38511233712 SUCCESS; Plus SHA 4651ed12b5735d58a9e67072e4af75eebba7a460 cumulative 38511248173 SUCCESS. This validates x^12 at x=2 =4096 as expression + independent substitution, NOT direct natural-language LaTeX annotation parsing. Official SY-E-04 10^{-3}=0.001 tests published Lite SHA b24d252e8e4c9ea2e2600179a086adfd67342045 cumulative 38511416734, H1d 38511416741, build 38511416781; Plus SHA f5624448180965193488de1b1f6596d807bf9abb cumulative 38511428018, H1d 38511427856. CI initially running/queued. Verify SHA-specific outcomes and correct failures; next SY-E-05. Syntax309 OPEN, SG28/DIST independent-host BLOCKED.
