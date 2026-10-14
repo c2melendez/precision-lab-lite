@@ -913,7 +913,7 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     const approx = Number(String(reply.decimalApprox).replace(/…|\\.\\.\\./g, ""));
     expect(Number.isFinite(approx)).toBe(true);
     expect(approx).toBeCloseTo(1 / 3000000, 13);
-    expect(approx.toExponential(9)).toMatch(/^3\\.33333333[0-9]e-7$/);
+    expect(approx.toExponential(9)).toBe("3.333333333e-7");
     scope.postMessage.mockClear();
     scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-31-reentry",expressionAlgebrite:parseExpression(reply.resultLatex).algebrite}});
     const repeated = scope.postMessage.mock.calls[0][0];
