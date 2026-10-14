@@ -1,5 +1,14 @@
 # Current Certification State
 
+## SY-U-05 — implementación y CI — 2026-10-14
+- SY-U-04: Lite acumulativo 38652400493, H1d 38652400544, build 38652400598, E2E 38652400491 SUCCESS SHA f0688fa98e2139268a3cc112c546cccb3c391c2f. Plus H1d 38652409204 SUCCESS; acumulativo 38652409209 intento 1 FAILURE en SG28 test_cpu_budget_exhaustion_reaps_child_and_recovers (5.67s >= umbral 5.5s), con 1134 PASS y 1 XFAIL; rerun de jobs fallidos aceptado, intento 2 en curso. No cerrar SY-U-04 bilateral hasta PASS completo.
+- SY-U-05 fixture oficial original `12/4`, operacion `valor`, esperado `3`. Lite test parser, worker, requestId y reentrada SHA 6a82fcdde2e3c412be7f2457b9c2b37918bba498: cumulative [38652953440](https://github.com/c2melendez/precision-lab-lite/actions/runs/38652953440), H1d 38652953470, build 38652953460, E2E 38652953454.
+- Plus test frontend conversión original SHA 35536dccf7c974ccef320178a91cad9e2e8a9abf y backend HTTP/MathResponse/reentrada SHA final bc94f37f356cfa42e90ffd5a0747732d1ef2f39d: cumulative [38652963777](https://github.com/c2melendez/precision-lab-plus/actions/runs/38652963777), H1d 38652963734. No contar gates intermedios del SHA previo.
+- Todas las nuevas corridas SY-U-05 IN_PROGRESS al verificar; no declarar PASS ni cierre. La suite prueba capas lógicas/HTTP, no interacción visual específica SY-U-05; TODO/XFAIL excluidos. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED.
+### Acción siguiente
+Consultar resultados finales por SHA y logs para SY-U-04 rerun y SY-U-05, corregir fallos genuinos. Cerrar bilateralmente solo con evidencia; después identificar siguiente fixture real de syntax309_cases.jsonl, sin inventar identificadores.
+
+
 ## SY-U-04 — pruebas publicadas, CI pendiente — 2026-10-14
 - Fixture oficial: entrada `3*4`, operacion `valor`, esperado `12`.
 - Lite test parser/worker/reentrada commit `f0688fa98e2139268a3cc112c546cccb3c391c2f`: cumulative [38652400493](https://github.com/c2melendez/precision-lab-lite/actions/runs/38652400493), H1d [38652400544](https://github.com/c2melendez/precision-lab-lite/actions/runs/38652400544), build [38652400598](https://github.com/c2melendez/precision-lab-lite/actions/runs/38652400598), científico UI E2E [38652400491](https://github.com/c2melendez/precision-lab-lite/actions/runs/38652400491) en progreso en primera consulta.
