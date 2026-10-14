@@ -3387,3 +3387,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Added SY-F-35 nested sqrt(sqrt(16))=2 original LaTeX Lite SHA b0da60b69e7aea39dd295b8523a2c05c61ed0444; cumulative 38495623321, H1d 38495623299, build 38495623224 initially IN_PROGRESS. Added Plus explicit HTTP nested sqrt witness SHA 90750c0bfb4d88a906f46d13066aa3c96925b830.
 - Plus follow-up SHA 583c6522dbfbcecdd901a4a22960554cda0ae037 tests `cbrt(-8)=-2` for real odd index and separately protects generic `root(-8,3)` complex principal behavior; cumulative 38495656506 and H1d 38495656445 initially IN_PROGRESS. Must verify logs; original Plus MathLive indexed-radical UI routing remains uncovered: do not certify full source LaTeX SY-F-33 by backend translated notation alone.
 - Next: inspect gates on latest technical SHA, diagnose remaining reds, then study official SY-F-36 sqrt[n](x^n) parity/assumption contract without relaxing oracles. Syntax309 OPEN; IN625 H2/SG28/DIST independent-node certification BLOCKED.
+
+
+### 2026-10-13 — SY-F-36 handoff
+- Plus previous cumulative 38495656506 FAILED on text-only `I` oracle for root(-8,3); actual expression `2*(-1)**(1/3)` is complex principal with null real approximation. Corrected to independent SymPy numerical imaginary-part check in commit 20c6272d79f5d8377fcf39a8cf83c4c8d17b0119.
+- Plus SY-F-36 concrete root parity test commit ff261e5ad5ecea2c9dd6e1c51b75cfaa5a00600d; cumulative 38499417987 / H1d 38499417816 pending.
+- Lite SY-F-36 original indexed-root LaTeX test commit b67a7b86b62f1c01f8f369e5f418e948a62b2d0f; cumulative 38499448647 / H1d 38499448638 / build 38499448739 pending.
+- These tests are concrete witnesses, not proof of symbolic generic n nor Plus original MathLive UI; no SY-F-36 PASS until SHA-specific results. Next: inspect CI, diagnose reds, then SY-F-37. Syntax309 OPEN; SG28/DIST BLOCKED.
