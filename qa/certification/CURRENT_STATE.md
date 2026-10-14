@@ -3218,3 +3218,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite parser patch SHA 4b7177ce3bbaaa5aa325e73e93e80fc53b6cc604 specifically handles a parenthesized negative numeric base with odd integer power under odd indexed root, preserving negative real result. Pending CI for that SHA: cumulative 38502030498, H1d 38502030501, build 38502030613.
 - Added permanent SY-F-37 abs(-3)=3 regression on original LaTeX Lite SHA 196748e27af77865a5ee2d74082badf2e716f30c; cumulative 38502049649, H1d 38502049642, build 38502049660 initially IN_PROGRESS. Plus explicit backend HTTP test SHA fd829698f648b49fed343329b71a24f70e6d1886; cumulative 38502056646 and H1d 38502056839 initially QUEUED.
 - No SY-F-36/37 Lite PASS or SY-F-37 Plus PASS asserted before SHA-specific CI. Generic symbolic n and Plus original MathLive routing still require independent testing. Next: verify all latest gates, diagnose regression if red, then official SY-F-38. Syntax309 OPEN; SG28/DIST multinode BLOCKED.
+
+
+## 2026-10-13 — SY-F-37 CI reconciliation and SY-F-38/39 witnesses
+- Confirmed Lite SHA 196748e27af77865a5ee2d74082badf2e716f30c cumulative 38502049649, H1d 38502049642, build 38502049660 SUCCESS, including previous SY-F-36 parser correction and SY-F-37 original LaTeX witness.
+- Confirmed Plus SHA fd829698f648b49fed343329b71a24f70e6d1886 cumulative 38502056646 and H1d 38502056839 SUCCESS for translated backend tests.
+- Added official source-LaTeX abs witnesses SY-F-38 left/right vert -3 and SY-F-39 operatorname abs(-3) in Lite tests/syntax309SyFNumeric.audit.test.ts SHA b72d070648b73443757602e9e63a3e77af7b63a0, cumulative 38503229851, H1d 38503229854, build 38503229842 initially IN_PROGRESS.
+- Added corresponding backend-only explicit abs(-3) controls Plus backend/tests/test_syntax309_syf_numeric.py SHA 757c94423335df7372ec4cc319f02df9ae090cf4, cumulative 38503240594 and H1d 38503240614 initially QUEUED. Do not claim source MathLive paths certified by these Plus backend tests.
+- Next exact objective: verify latest SHA-specific CI outcomes and logs, fix any red without weakening expected abs=3; proceed official SY-F-40 ambiguous nested bars with explicit convention/feedback oracle. Syntax309 OPEN; SG28/DIST real multinode BLOCKED.
