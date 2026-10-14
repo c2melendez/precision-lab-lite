@@ -1,5 +1,12 @@
 # Current Certification State
 
+## Avance SY-N-25 — factorial 170 — 2026-10-14
+- SY-N-24 Plus fix SHA 4e0f2a1174463362d42e34b140baab8ccff936c4: cumulative 38587354032, H1d 38587354160, SG28 backend prototype 38587353975 SUCCESS. Lite último SHA probado por CI e5121d52 cumulative 38586157827, build 38586157834, H1d 38586157853 SUCCESS, pero un ajuste posterior del oráculo bc1c743fef7abaad3c07114fbccaf188a3033983 no tiene corrida propia localizada. Mantener evidencia por SHA estricta; caso SY-N-24 no declarar cierre bilateral completo sobre SHA posterior no ejecutado.
+- SY-N-25 caso oficial `170!` esperado magnitud ~7.257415615e306 (307 dígitos exactos). Regresiones: Lite tests/syntax309SyE23.audit.test.ts commit 09f9484f8955c4418eacc58339e938eb08505e44 (parser/worker, exacto o aproximación finita, recuperación); Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts commit b8c88fdb5fcdc83deb0dc35701d74c15c0edf662 (fuente); Plus backend/tests/test_syntax309_sye23.py commit d1fd7da466f971d4442555ad20163616e00f3093 (MathResponse/HTTP, precisión, recuperación). SY-N-25 OPEN hasta gates finales SHA correctos.
+- SG28/H2 permanece OPEN, DIST multinodo real BLOCKED, Syntax309 global OPEN, ninguna modificación de despliegue producción.
+### Próximo paso exacto
+Revisar CI de SY-N-25 SHA Lite 09f9484f y Plus d1fd7da4; corregir fallos reales, registrar nuevos SHA y gates; cerrar solo tras evidencia. Siguiente caso SY-N-26 `171!` sin `Infinity` silencioso.
+
 ## SY-N-24 — diagnóstico Plus y parche de límite de literales — 2026-10-14
 - Lite en SHA e5121d52 cumulative 38586157827, build 38586157834 y H1d 38586157853 SUCCESS; cambio posterior de tipado de oráculo SHA bc1c743fef7abaad3c07114fbccaf188a3033983 todavía requiere su gate propio/no asumir ejecución.
 - Plus SHA 97b16833dac40ed93131a45915bc44b60b7da121: cumulative 38586185354 FAILURE; backend test `test_syn24_hundred_factorial_exact_or_valid_scientific_and_recovery` recibió `success=false` para `100!`. Frontend job de esa corrida PASS y H1d 38586184587 SUCCESS.
