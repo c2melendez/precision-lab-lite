@@ -10,7 +10,7 @@ test("SY-N-31: scientific UI and exact reentry across viewport sizes", async ({ 
     field.value = String.raw`\frac{1}{3000000}`;
     field.dispatchEvent(new Event("input", { bubbles: true }));
   });
-  await page.getByRole("button", { name: "Calcular", exact: true }).click();
+  await page.locator("button:visible").filter({ hasText: /^Calcular$/ }).first().click();
   const result = page.locator("[data-result-request-id]").first();
   await expect(result).toBeVisible();
   await expect(result).toHaveAttribute("data-result-reentry-latex", /frac|3000000/);
