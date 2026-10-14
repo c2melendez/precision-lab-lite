@@ -4269,3 +4269,10 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - SY-N-31: PASS del oráculo numérico/valor exacto/reentrada dentro del alcance de suites existentes; presentación matemática UI a nueve decimales científicos sin evidencia E2E suficiente. No atribuir certificación de visualización a `toExponential(9)` del propio test ni a `result_approx` HTTP.
 - Próximo paso ejecutable: localizar componente de presentación/formateo de Lite y Plus y agregar pruebas permanentes que ejerzan el render/selección de forma científica real (esperado `3.333333333\\times10^{-7}`), conservando fracción exacta y reentrada. Ejecutar gates por SHA y revisar logs antes de certificar el criterio visual; después avanzar al siguiente fixture oficial de Syntax309. SG28/H2 OPEN; DIST multinodo BLOCKED; no cambios en producción.
 
+
+## SY-N-31 — prueba de presentación científica Lite (2026-10-14)
+- Corrección producto `src/components/ResultPanel.tsx` SHA `254de3cd1498ef90b0eae54d4e89e9f6440a252b`: vista `scn` usa `toExponential(9)` y compone LaTeX `\\times10^{...}`; respeta resultado exacto/reentrada. Antes truncaba presentación con `toExponential(6)`.
+- Regresión permanente `tests/syntax309SyE23.audit.test.ts` SHA `b88c7e5a272123943b60178725baa15bbc3e3a72`: la transformación de salida worker SY-N-31 se compara con el esperado oficial `3.333333333\\times10^{-7}`.
+- Runs disparados automáticamente sobre SHA de prueba: cumulative [38604145396](https://github.com/c2melendez/precision-lab-lite/actions/runs/38604145396), H1d [38604145815](https://github.com/c2melendez/precision-lab-lite/actions/runs/38604145815), build [38604145540](https://github.com/c2melendez/precision-lab-lite/actions/runs/38604145540); IN_PROGRESS al consultar, aún NO PASS.
+- Pendiente: confirmar salida CI por mismo SHA; prueba de renderizado/clic real `scn` con navegador no cubierta por oráculo unitario del formatter; comprobar Plus sin asumir que su frontend comparte componente. SY-N-31 OPEN hasta evidencia bilateral. SG28/H2 OPEN; DIST multinodo BLOCKED.
+
