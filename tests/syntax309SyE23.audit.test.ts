@@ -213,4 +213,18 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     const recovered = parseExpression("2+3").algebrite;
     expect(evaluate(recovered)).toBe("5");
   });
+
+  it("SY-E-31: adjacency is implicit multiplication", () => {
+    const row = rows["SY-E-31"];
+    expect(row.operacion).toBe("convencion");
+    expect(row.entrada).toBe("2\\frac{1}{3}");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("2/3");
+    expect(compileNumeric(parsed, "__unused__")(0)).toBeCloseTo(2/3, 14);
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: { type: "evaluate", requestId: "SY-E-31", expressionAlgebrite: parsed } });
+    const output = scope.postMessage.mock.calls[0][0];
+    expect(output.success).toBe(true);
+    expect(evaluate(parseExpression(output.resultLatex).algebrite)).toBe("2/3");
+  });
 });
