@@ -1,5 +1,19 @@
 # Current Certification State
 
+## Estado vigente — SY-N-13 radical al cuadrado — 2026-10-14
+- Rama canónica bilateral: `qa/syntax-audit-in625-a1`.
+- SY-N-12 permanece PASS en alcance de pruebas previo: Lite SHA `7c623fce605098b17a46c0432390d4ca90e595a4` cumulative 38552636304 SUCCESS; Plus SHA `028c2a0badb18e08f2df506ab661fa411112f81d` cumulative 38552643415 y H1d 38552643428 SUCCESS.
+- SY-N-13 fixture original `\\sqrt{2}^{2}`, operación valor, esperado exactamente `2`. Publicadas regresiones Lite parser/evaluate/handler/reentrada en `tests/syntax309SyE23.audit.test.ts` SHA `fab802ed7c6c4560e454f8db1bd49f0570fee2b4`; Plus conversión LaTeX en `frontend/src/__tests__/syntax309SyEFractions.audit.test.ts` y HTTP MathResponse/reentrada en `backend/tests/test_syntax309_sye23.py`, HEAD técnico `fe8149bfb6f9e7bbcf0fb235b0dd6089f9d9017a`.
+- CI automático disparado por push técnico: Lite cumulative 38553998455, H1d 38553998459, build 38553998558; Plus cumulative final SHA 38554004282, H1d 38554004355. Estaban IN_PROGRESS/QUEUED en última consulta. **SY-N-13 OPEN, sin PASS acreditado todavía.**
+- Sin cambios de producto ni producción. El alcance NO acredita MathLive nativo, interfaz o navegador E2E. SG28/H2 OPEN y DIST multinodo BLOCKED por evidencia distribuida independiente faltante.
+
+### Siguiente paso exacto
+1. Consultar conclusiones y logs de Lite 38553998455/38553998459/38553998558 y Plus 38554004282/38554004355, confirmando SHA; corregir regresiones en la capa correspondiente.
+2. Comprobar que fuente radical y exponente permanecen asociados y que los resultados/reentrada son exactamente 2; no usar redondeo, tolerancia o aserciones parciales como sustituto.
+3. Solo tras PASS acumulativo, H1d y build aplicables, acreditar SY-N-13 bilateral y avanzar SY-N-14 `(\\sqrt{2})^2-2` -> `0`.
+4. Sincronizar CURRENT_STATE/EXECUTION_LOG bilateral, excluir cambios solo documentales de nuevos disparos CI.
+
+
 ## Estado vigente — SY-N-12 decimal y fracción abreviada — 2026-10-14
 Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
 - Rama canónica bilateral qa/syntax-audit-in625-a1.
