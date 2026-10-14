@@ -4105,3 +4105,10 @@ Verificar las cinco conclusiones, jobs/logs y SHA anteriores; investigar FAIL en
 - Plus SHA 06bcc8e4749cc271d95d65bce07586595b989221: cumulative 38570563810 y H1d 38570563960 SUCCESS; pruebas del error HTTP y recuperación. Lite SY-N-22 OPEN hasta tres gates nuevos SHA e548d8c concluidos; no declarar PASS por corrida antigua roja. SG28/H2 OPEN; DIST BLOCKED; sin producción.
 ### Próximo paso exacto
 Consultar tres corridas nuevas Lite 38570940931/38570940775/38570940936, revisar test SY-N-22 y logs; si FAIL diagnosticar y corregir. Si todas SUCCESS, cerrar caso bilateral en alcance probado e iniciar siguiente fixture oficial Syntax309.
+
+## Estado vigente — SY-N-23 factorial no entero — 2026-10-14
+- SY-N-22 PASS bilateral en alcance probado. Lite SHA 1eb0a1ae419682c90cf7654c031e0d71adb8a5d1: cumulative 38571369154, H1d 38571369220, build 38571369212 SUCCESS. Plus SHA 06bcc8e4749cc271d95d65bce07586595b989221: cumulative 38570563810, H1d 38570563960 SUCCESS. No acredita navegador E2E ni SG28 multinodo.
+- SY-N-23 fixture oficial `2.5!`, operación `convencion`, permite Gamma(3.5) ~3.323350970 o error claro. Prueba de Lite parser/worker/recuperación publicada commit dd37ac3b2294185b5d3949bbb5a62fc11da91773. Plus frontend conversión fuente commit 9c0502417136b4ba485ab9f7480362736f67aaae; Plus backend HTTP MathResponse y recuperación commit 930aac924cda12531d83a84b1e783475ad8fd460. No cambios producción.
+- No declarar PASS de SY-N-23 hasta verificar CI correspondiente al SHA real de cada repositorio, incluyendo aproximación Gamma o error de dominio claro, no solo éxito simbólico. Syntax309 global OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED.
+### Próximo paso exacto
+Recuperar nuevos runs en ramas canónicas y jobs/logs del SHA técnico SY-N-23. Si algún motor da éxito simbólico sin aprox correcta o error poco claro, corregir la capa de producto y reejecutar. Después de PASS bilateral iniciar siguiente fila oficial en syntax309_cases.jsonl.
