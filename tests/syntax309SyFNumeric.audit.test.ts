@@ -372,4 +372,12 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(actual).toBe(6);
   });
 
+  it("SY-F-46: original LaTeX lcm of four and six equals twelve", () => {
+    expect(byId["SY-F-46"].operacion).toBe("valor");
+    const parsed = parseExpression(byId["SY-F-46"].entrada).algebrite;
+    const actual = Number(evaluate(parsed));
+    expect(Number.isFinite(actual), "SY-F-46 parsed=" + parsed).toBe(true);
+    expect(actual).toBe(12);
+  });
+
 });
