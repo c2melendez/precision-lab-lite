@@ -1,5 +1,11 @@
 # Certification Execution Log
 
+## 2026-10-14 — SY-N-08 PASS bilateral; SY-N-09 en validación
+- SY-N-08 PASS bilateral: Lite SHA e84b3238 cumulative 38549423591, H1d 38549423562, build 38549423495 SUCCESS; Plus SHA f16f1147 cumulative 38549439711, H1d 38549439475 SUCCESS. Alcance: parser, frontend/worker o HTTP y reentrada; no browser E2E completo.
+- SY-N-09 fixture oficial `4.35\\times100` -> `435` (evitar `434.99999999999994`). Lite tests/syntax309SyE23.audit.test.ts commit 925bd7fc5ce7a998c0b3c193ea2b20b9dc9d16b6 (parser, evaluación, worker, reentrada), Plus backend/tests/test_syntax309_sye23.py commit 30b46a60358797aeca85eb5ba43a46992a97493f (traducción explícita 4.35*100, MathResponse HTTP, entero exacto y reentrada), Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts commit dc3289371a0d05f2877f889f4e067bc57bff9f22 (conversión LaTeX). Pruebas nuevas sin cambios de producto; evaluar resultados antes de declarar PASS.
+- CI SHA finales: Lite cumulative 38550660799, H1d 38550660812, build 38550660845 IN_PROGRESS; Plus cumulative 38550681432 QUEUED, H1d 38550681235 IN_PROGRESS al consultar. Próximo paso: recuperar jobs/logs de esos runs, corregir FAIL, cerrar SY-N-09 solamente con PASS SHA-alineado y avanzar SY-N-10. Syntax309 OPEN; SG28/H2 OPEN y DIST multinodo BLOCKED, sin despliegue.
+
+
 ## 2026-10-14 — SY-N-07 PASS bilateral y SY-N-08 implementado
 - SY-N-07 PASS bilateral en alcance probado: Lite SHA 3a9e6d5d cumulative 38547895810, H1d 38547895813 y build 38547895838 SUCCESS; Plus SHA 01d51cf7 cumulative 38547914335 y H1d 38547914473 SUCCESS. No equivale a E2E navegador.
 - SY-N-08 fixture oficial `1-0.9` -> `0.1`: tests permanentes en Lite tests/syntax309SyE23.audit.test.ts SHA e84b3238be8bad0112db60188696f8499514ebe3 (parser/worker/reentrada), Plus backend/tests/test_syntax309_sye23.py SHA 8b912a9a7c1b65088ae5104d8d21185863b2229a (HTTP MathResponse, racional exacto y reentrada), Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts SHA f16f1147c2e7276741b5ec952f1de1f695291102 (traducción literal). Se comprueba ausencia del artefacto 0.09999999999999998.
