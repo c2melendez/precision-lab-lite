@@ -223,6 +223,7 @@ const LOCALIZED_ALIAS_MAP: Record<string, string> = {
   argtgh: "\\atanh",
   arctgh: "\\atanh",
   lg: "\\log",
+  sgn: "sign",
   raiz: "sqrt",
   "raíz": "sqrt",
   mcd: "gcd",
