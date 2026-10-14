@@ -1,5 +1,11 @@
 # Current Certification State
 
+## SY-D-08 PASS bilateral / SY-D-09 OPEN — 2026-10-14
+- SY-D-08 PASS en alcance: Lite SHA `bde6d25346b9d1bcc6b96fef23ad715146f1dd1d`: cumulative `38632548736`, H1d `38632548593`, E2E científico `38632548468`, build `38632548755` SUCCESS; Plus SHA `cfd7df001772cfa8af4058bb313471165f627e69`: cumulative `38632556794`, H1d `38632556466` SUCCESS.
+- SY-D-09 oficial `\\left(\\frac{1}{2}\\right)^{2}` => `\\frac{1}{4}`. Lite prueba exacta parser/worker/reentrada commit `d3be10bd79cd33ff365bd72890d1cfb7867de9eb`; Plus prueba HTTP con normalización `(1/2)**2`, `MathResponse` y reentrada exacta commit `764fc34c7289ee9d8dd17e521912ee8d2a6c8584`. Plus no acredita canal visual MathLive.
+- SY-D-09 CI Lite cumulative `38635093630`, científico E2E `38635093586`, build `38635093561`, H1d `38635093579` IN_PROGRESS; Plus cumulative `38635112112`, H1d `38635111842` QUEUED. Verificar conclusiones SHA-matched y logs antes de cerrar. Siguiente fixture SY-D-10: `(1+2)(3+4)` => 21. SG28/H2 OPEN, DIST multinodo BLOCKED; sin producción.
+
+
 ## SY-D-07 PASS bilateral / SY-D-08 OPEN — 2026-10-14
 - SY-D-07: Lite SHA `95039ce8779dbee05287da20ca650ad305e8c8e2` cumulative `38631951157`, H1d `38631951309`, build `38631951320`, E2E `38631951443` all SUCCESS; Plus SHA `f5ddee0542adff1d8767a8d5f246f38f2b3bf9a1` cumulative `38631959412`, H1d `38631959207` SUCCESS. PASS restringido a contrato comprobado, no E2E visual Plus.
 - SY-D-08 oficial `\\left(1+2\\right)^{2}` => 9; Lite parser/worker/reentrada commit `bde6d25346b9d1bcc6b96fef23ad715146f1dd1d`; Plus HTTP sobre `(1+2)**2` + reentrada commit `cfd7df001772cfa8af4058bb313471165f627e69`. Plus HTTP normalizado no acredita traducción MathLive.
