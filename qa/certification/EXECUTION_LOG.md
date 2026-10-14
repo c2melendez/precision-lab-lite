@@ -4255,3 +4255,9 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - Plus initial SY-N-31 backend cumulative 38601817684 FAILED because test source oracle used doubled backslashes in Python raw literal; H1d 38601817686 SUCCESS. Corrected the test literals without modifying fixture or expectations, SHA 643c07289a8fdbbbdccb22be5318d1de9c29ee30. New cumulative 38602404105, H1d 38602404128 queued at last check.
 - SY-N-31 OPEN until current SHA-specific results are verified, including real display-format coverage. SG28/H2 OPEN and DIST multinodo BLOCKED.
 
+
+## SY-N-31 scientific result oracle correction — 2026-10-14
+- Lite SHA 9009a2b0691937a06175762cbac6ee51b09edded build 38602384805 SUCCESS; cumulative 38602384573 FAIL solely because the test regex contained an overescaped decimal point and rejected actual correct string 3.333333333e-7. This is HARNESS, not another product defect. Replaced with exact canonical scientific string expectation, SHA 5f080ce8ca21f87297958531cc5687b3ac6fc104. Fresh Lite cumulative 38602654265, H1d 38602653779, build 38602653848 IN_PROGRESS on initial inspection.
+- Plus corrected fixture test SHA 643c07289a8fdbbbdccb22be5318d1de9c29ee30 cumulative 38602404105 and H1d 38602404128 IN_PROGRESS. Do not count old SHA result.
+- SY-N-31 OPEN pending final run logs and scientific UI presentation evidence.
+
