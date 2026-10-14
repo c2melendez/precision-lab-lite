@@ -364,4 +364,12 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(actual).toBe(1);
   });
 
+  it("SY-F-45: original LaTeX gcd of twelve and eighteen is six", () => {
+    expect(byId["SY-F-45"].operacion).toBe("valor");
+    const parsed = parseExpression(byId["SY-F-45"].entrada).algebrite;
+    const actual = Number(evaluate(parsed));
+    expect(Number.isFinite(actual), "SY-F-45 parsed=" + parsed).toBe(true);
+    expect(actual).toBe(6);
+  });
+
 });
