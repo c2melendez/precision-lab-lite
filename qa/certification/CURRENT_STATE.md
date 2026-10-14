@@ -1,5 +1,13 @@
 # Current Certification State
 
+## SY-N-24 — diagnóstico Plus y parche de límite de literales — 2026-10-14
+- Lite en SHA e5121d52 cumulative 38586157827, build 38586157834 y H1d 38586157853 SUCCESS; cambio posterior de tipado de oráculo SHA bc1c743fef7abaad3c07114fbccaf188a3033983 todavía requiere su gate propio/no asumir ejecución.
+- Plus SHA 97b16833dac40ed93131a45915bc44b60b7da121: cumulative 38586185354 FAILURE; backend test `test_syn24_hundred_factorial_exact_or_valid_scientific_and_recovery` recibió `success=false` para `100!`. Frontend job de esa corrida PASS y H1d 38586184587 SUCCESS.
+- Diagnóstico: resultado exacto factorial(100) de 158 dígitos supera tope de 64 dígitos aplicado a literales enteros de origen; no debe rechazar resultado interno por límite pensado para entrada de usuario. Parche Plus `backend/app/services/evaluate_service.py` SHA 4e0f2a1174463362d42e34b140baab8ccff936c4 limita ruta directa a factoriales literales enteros 0..170 de hasta tres dígitos sin substitutions, calcula entero exacto y devuelve aproximación finita. CI nueva Plus cumulative 38587354032, H1d 38587354160, SG28 38587353975; pending.
+- SY-N-24 OPEN mientras falte evidencia CI SHA final; no alterar contrato para aceptar fallo. SG28 multinodo real sigue BLOCKED aunque prototipo PASS; Syntax309 OPEN.
+### Próximo paso exacto
+Verificar jobs/logs de Plus SHA 4e0f2a11, especialmente render del entero grande y seguridad de input. Corregir cualquier FAIL. Verificar eventual CI propia de Lite bc1c743f y si no existe disparar mecanismo autorizado de CI o registrar ausencia sin certificación ficticia. Tras PASS bilateral continuar SY-N-25 `170!`.
+
 ## Estado vigente — SY-N-24 factorial cien — 2026-10-14
 - SY-N-23 PASS bilateral alcance probado: Lite SHA 62e6f770321199cde6d88ebe56ae08086e964097 cumulative 38582347064, H1d 38582347013, build 38582347464 SUCCESS. Plus SHA d40827e93828e4735738803a9e4bde23e55018e3 cumulative 38582029381, H1d 38582029125, SG28 backend 38582029299 SUCCESS. La convención documentada es error claro de dominio para factorial no entero, sin implementar Gamma.
 - SY-N-24 fixture `100!` ~9.332621544e157 y entero exacto de 158 dígitos. Regresiones publicadas Lite tests/syntax309SyE23.audit.test.ts SHA final bc1c743fef7abaad3c07114fbccaf188a3033983 (oracle BigInt tipado, worker, recuperación), Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts SHA 1165415158d4514089e2b23fd19131bdfb200487 y backend/tests/test_syntax309_sye23.py SHA final 97b16833dac40ed93131a45915bc44b60b7da121 (HTTP MathResponse, precisión y recuperación).
