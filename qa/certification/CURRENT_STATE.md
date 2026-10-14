@@ -8,6 +8,8 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - Lite tests/syntax309SyE23.audit.test.ts: fuente original -> parser/evaluate exacto pi; handler auténtico con transporte simulado, requestId y LaTeX reanalizado exacto; decimal finito, redondeo a nueve decimales 3.141592654 y diferencia <5e-10 respecto a referencia independiente 3.141592653589793; reentrada real conserva pi.
 - Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts convierte original \pi a pi. Backend backend/tests/test_syntax309_sye23.py verifica HTTP traducido pi, MathResponse, result_text pi/result_latex \pi, aproximación finita con mismos oráculos, errores nulos y reentrada con nuevo requestId.
 - Alcance parser/handler Lite, conversor frontend Plus y HTTP separados; no acredita interacción MathLive nativa ni E2E completo del caso. TODO/XFAIL no cuentan como PASS.
+- SY-N-27 PASS bilateral en alcance probado. Lite SHA 560142d0914fa6d8c0a55eadd1d6b7fba367890e: cumulative [38593321420](https://github.com/c2melendez/precision-lab-lite/actions/runs/38593321420) SUCCESS (1225 PASS + 30 TODO); H1d 38593321329 y build 38593321528 SUCCESS.
+- Plus SHA 2be3e0d3e5c4703fe9811f3e366d3e07e590c53b: cumulative [38593123224](https://github.com/c2melendez/precision-lab-plus/actions/runs/38593123224) SUCCESS (backend 1113 PASS + 1 XFAIL; frontend 814 PASS + 28 TODO); H1d 38593123212 SUCCESS. Sin cambios producto Plus.
 - Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo real BLOCKED. Sin despliegue ni cambios de producción.
 
 ### Siguiente paso exacto — SY-N-28
