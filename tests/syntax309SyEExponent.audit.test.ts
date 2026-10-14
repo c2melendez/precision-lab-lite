@@ -50,4 +50,17 @@ describe("Syntax309 SY-E initial exponent witnesses", () => {
     expect(actual).toBeCloseTo(0.001, 12);
   });
 
+  it("SY-E-05: nested braced powers preserve exponent grouping", () => {
+    const row = byId["SY-E-05"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("2^{2^{2}}");
+    expect(row.esperado).toBe("16");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(compileNumeric(parsed, "__unused__")(0)).toBe(16);
+    // Unequal exponents distinguish 2^(3^2)=512 from (2^3)^2=64.
+    const nested = parseExpression("2^{3^{2}}").algebrite;
+    const grouped = parseExpression("(2^{3})^{2}").algebrite;
+    expect(compileNumeric(nested, "__unused__")(0)).toBe(512);
+    expect(compileNumeric(grouped, "__unused__")(0)).toBe(64);
+  });
 });

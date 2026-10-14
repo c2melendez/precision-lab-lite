@@ -7,6 +7,10 @@ on:
     paths-ignore:
       - 'qa/certification/**'
       - '**/*.md'
+  pull_request:
+    paths-ignore:
+      - 'qa/certification/**'
+      - '**/*.md'
   workflow_dispatch:
 
 jobs:
