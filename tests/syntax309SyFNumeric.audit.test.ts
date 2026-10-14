@@ -320,7 +320,7 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     try {
       const parsed = parseExpression(input).algebrite;
       for (const [x, expected] of [[-3, 1], [0, 2], [5, 3]] as const) {
-        const substituted = parsed.replace(/\\bx\\b/g, "(" + x + ")");
+        const substituted = parsed.replace(/\bx\b/g, "(" + x + ")");
         const actual = compileNumeric(substituted, "__unused__")(0);
         expect(Number.isFinite(actual), "SY-F-40 input=" + input + " parsed=" + parsed).toBe(true);
         expect(actual).toBeCloseTo(expected, 9);
