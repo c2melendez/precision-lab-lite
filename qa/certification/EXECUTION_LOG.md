@@ -4044,3 +4044,13 @@ Verificar el resultado de cumulative y H1d Plus SHA 9b80bdf; si PASS marcar SY-N
 - Syntax309 OPEN; SG28/H2 OPEN y DIST multinodo BLOCKED. Alcance pruebas parser/worker Lite, conversor Plus y HTTP backend, no certificación E2E de navegador.
 ### Siguiente paso exacto
 Verificar los cinco gates de SY-N-16 en SHA finales, diagnosticar cualquier FAIL, corregir la capa correspondiente, actualizar estado/log bilateral y solo entonces comenzar SY-N-17 (`9007199254740993`) con el fixture original.
+
+
+## Estado vigente — SY-N-17 entero mayor que 2^53 — 2026-10-14
+- SY-N-16 PASS bilateral en alcance probado: Lite SHA c444d4619877e883cb67383deecb0eece6cb51d3, cumulative 38563504911, H1d 38563504953 y build 38563505215 SUCCESS; Plus SHA 6a86be5edf91687adc3995749fb21d7bf3669b92, cumulative 38563522526 y H1d 38563522957 SUCCESS.
+- SY-N-17 fixture oficial `9007199254740993`, valor exacto 2^53+1. No convertir a Number de JavaScript: conservar texto completo en entrada, resultado y reentrada.
+- Pruebas nuevas: Lite parser/worker/reentrada SHA `2839ca1a4aade09869fa42329c4cf988b78643ac`; Plus frontend conversión SHA `73a33a97856604f0cda70a55e8f387dc02762614`, backend HTTP/MathResponse/reentrada SHA final `e79e12f787cd061a48d8650c1b56e7e6314270f5`. No cambios de producción.
+- GitHub Actions SHA final: Lite cumulative [38564140863](https://github.com/c2melendez/precision-lab-lite/actions/runs/38564140863), H1d [38564140855](https://github.com/c2melendez/precision-lab-lite/actions/runs/38564140855), build [38564141310](https://github.com/c2melendez/precision-lab-lite/actions/runs/38564141310); Plus cumulative [38564159278](https://github.com/c2melendez/precision-lab-plus/actions/runs/38564159278) y H1d [38564159286](https://github.com/c2melendez/precision-lab-plus/actions/runs/38564159286). Corridas IN_PROGRESS/QUEUED al recuperar. SY-N-17 OPEN hasta evidencias finales.
+- Syntax 309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. Estas pruebas no sustituyen E2E navegador ni multinodo real.
+### Siguiente paso exacto
+Comprobar los cinco gates SY-N-17 en los SHA finales; diagnosticar/corregir FAIL y sincronizar evidencia. Solo tras PASS bilateral avanzar al fixture SY-N-18 `12\\%` -> `0.12`.
