@@ -1,5 +1,14 @@
 # Current Certification State
 
+## Estado vigente — SY-N-20 factorial cinco — 2026-10-14
+- SY-N-19 PASS bilateral alcance probado: Lite SHA 030bbd67f691c1160d02a45377648fd84a00328f, cumulative 38566176013, H1d 38566176121, build 38566175851 SUCCESS; Plus SHA 08a34ecab054ba631f31b4fe07842d5d391490e9, cumulative 38566201385 y H1d 38566201384 SUCCESS.
+- SY-N-20 fixture oficial `5!` => `120`. Pruebas nuevas Lite parser/evaluación/worker/reentrada SHA 851051583146548b2427d92a0cdc2ecdf636ba0b; Plus frontend conversor SHA 889587a5af6d12cf542b71f5cc5325e88a555f1f; Plus backend HTTP/MathResponse/reentrada SHA final 4a290155efbbf0edfed28be2a3866e0fcf50554f. Sin cambios de producción.
+- Gates en SHA finales: Lite cumulative [38567524099](https://github.com/c2melendez/precision-lab-lite/actions/runs/38567524099), H1d [38567524101](https://github.com/c2melendez/precision-lab-lite/actions/runs/38567524101), build [38567524142](https://github.com/c2melendez/precision-lab-lite/actions/runs/38567524142); Plus cumulative [38567552976](https://github.com/c2melendez/precision-lab-plus/actions/runs/38567552976), H1d [38567553140](https://github.com/c2melendez/precision-lab-plus/actions/runs/38567553140). IN_PROGRESS al iniciar; SY-N-20 OPEN hasta resultados.
+- Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. No navegación E2E acreditada.
+### Próximo paso exacto
+Verificar conclusiones y logs de cinco gates, diagnosticar FAIL, corregir y sincronizar; tras PASS bilateral iniciar SY-N-21 `0!` => `1`.
+
+
 ## Estado vigente — SY-N-19 porcentaje multiplicado — 2026-10-14
 - SY-N-18 PASS bilateral en alcance probado: Lite SHA 5857b199c5c707d5f5ad5bbd521ab6e50beb1a58, cumulative 38565174806, H1d 38565174629 y build 38565174626 SUCCESS; Plus SHA 58e82c85d15dade5b070d2e3362b90a5d0437194, cumulative 38565197946 y H1d 38565197938 SUCCESS.
 - SY-N-19 fixture canónico `50\\%\\times200` valor 100. Regresiones: Lite `tests/syntax309SyE23.audit.test.ts` SHA 030bbd67f691c1160d02a45377648fd84a00328f; Plus conversor `frontend/src/__tests__/syntax309SyEFractions.audit.test.ts` SHA b70faa7edb94ef93d6870757b7b9167e71f05edc; backend HTTP/MathResponse/reentrada `backend/tests/test_syntax309_sye23.py` SHA final 08a34ecab054ba631f31b4fe07842d5d391490e9.
