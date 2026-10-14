@@ -3,6 +3,7 @@ import fixture from "../qa/certification/syntax309_cases.jsonl?raw";
 import { parseExpression } from "../src/engine/parsing";
 import { evaluate, toLatex } from "../src/engine/algebriteClient";
 import { compileNumeric } from "../src/engine/numericFallback";
+import { ErrorCode } from "../src/types";
 
 const rows = Object.fromEntries(fixture.trim().split("\n").map(line => {
   const row = JSON.parse(line); return [row.id, row];
@@ -19,7 +20,7 @@ beforeAll(async () => {
 });
 afterAll(() => vi.unstubAllGlobals());
 
-describe("Syntax309 SY-E-17/18 principal complex powers — original Lite source", () => {
+describe("Syntax309 SY-E-17..20 power conventions and domain — original Lite source", () => {
   it("preserves sqrt(2)*i through the scientific worker handler", () => {
     const row = rows["SY-E-17"];
     expect(row.operacion).toBe("convencion");
@@ -105,6 +106,53 @@ describe("Syntax309 SY-E-17/18 principal complex powers — original Lite source
       const returned = parseExpression(latex).algebrite;
       expect(evaluate("(" + returned + ")-(" + raw + ")"), latex).toBe("0");
     }
+  });
+
+  it("SY-E-19: declares the existing zero-to-zero convention as one", () => {
+    const row = rows["SY-E-19"];
+    expect(row.operacion).toBe("convencion");
+    expect(row.entrada).toBe("0^{0}");
+    expect(row.esperado).toContain("convención declarada");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const raw = evaluate(parsed);
+    console.info("SY-E-19_CONVENTION", JSON.stringify({ parsed, raw }));
+    expect(raw).toBe("1");
+    workerScope.postMessage.mockClear();
+    workerScope.onmessage!({ data: {
+      type: "evaluate", requestId: "SY-E-19", expressionAlgebrite: parsed,
+    } });
+    const result = workerScope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-E-19");
+    expect(result.resultLatex).toBe("1");
+    expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("1");
+  });
+  it("SY-E-20: zero to a negative power is a clear domain error, then recovers", () => {
+    const row = rows["SY-E-20"];
+    expect(row.operacion).toBe("error");
+    expect(row.entrada).toBe("0^{-1}");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(() => evaluate(parsed)).toThrowError(expect.objectContaining({
+      code: ErrorCode.DOMAIN_ERROR, message: expect.stringMatching(/cero|zero|divisi/i),
+    }));
+    workerScope.postMessage.mockClear();
+    workerScope.onmessage!({ data: {
+      type: "evaluate", requestId: "SY-E-20", expressionAlgebrite: parsed,
+    } });
+    const result = workerScope.postMessage.mock.calls[0][0];
+    expect(result.success).toBe(false);
+    expect(result.requestId).toBe("SY-E-20");
+    expect(result.errorCode).toBe(ErrorCode.DOMAIN_ERROR);
+    expect(result.errorMessage).toMatch(/cero|zero|divisi/i);
+    expect(result.resultLatex).toBeNull();
+    workerScope.postMessage.mockClear();
+    workerScope.onmessage!({ data: {
+      type: "evaluate", requestId: "SY-E-20-recovery", expressionAlgebrite: parseExpression("2+3").algebrite,
+    } });
+    const recovered = workerScope.postMessage.mock.calls[0][0];
+    expect(recovered.success).toBe(true);
+    expect(recovered.requestId).toBe("SY-E-20-recovery");
+    expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
   });
 
 });
