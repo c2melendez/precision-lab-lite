@@ -27,4 +27,17 @@ describe("Syntax309 SY-E initial exponent witnesses", () => {
     expect(actual).not.toBe(0);
   });
 
+  it("SY-E-03: x to the twelfth at x=2 yields 4096", () => {
+    const row = byId["SY-E-03"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toContain("x^{12}");
+    expect(row.entrada).toContain("x=2");
+    // The fixture contains a natural-language substitution annotation, not
+    // one standalone expression accepted by the scientific parser.
+    const parsed = parseExpression("x^{12}").algebrite;
+    const actual = compileNumeric(parsed, "x")(2);
+    expect(Number.isFinite(actual), "SY-E-03 parsed=" + parsed).toBe(true);
+    expect(actual).toBe(4096);
+  });
+
 });
