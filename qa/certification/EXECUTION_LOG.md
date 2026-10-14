@@ -4242,3 +4242,10 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - CI automatically triggered: Lite cumulative 38601802013, H1d 38601801976, build 38601801978 in progress at initial lookup; Plus cumulative 38601817684 and H1d 38601817686 queued. SY-N-31 OPEN until SHA-matched evidence and all required display criteria.
 - Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo real BLOCKED; no production changes.
 
+
+## SY-N-31 diagnostic and Lite scientific-approx fix — 2026-10-14
+- Lite initial SHA 4edb54a07cde037b48efb54f9e628c3b464926d3 cumulative 38601802013 FAILURE (1228 PASS, 1 FAIL, 30 TODO); build 38601801978 and H1d 38601801976 SUCCESS. SY-N-31 exact rational/reentry works but decimalApprox is absent for exact fraction, by worker design. Classification PRODUCT/format capability, not oracle weakness.
+- Lite src/workers/compute.worker.ts SHA 1f0bd26d8eabe51a883ea8141dcf301865396599: preserve exact fraction and add scientific decimalApprox only for tiny simple rationals with safe integer numerator/denominator, finite nonzero magnitude < 1e-6; 1/3000000 -> 3.333333333e-7. No changes to other formats/large unsafe integers. New cumulative 38602093976, H1d 38602093448, build 38602093704 QUEUED on initial inspection; verify by SHA before PASS.
+- Plus SHA 559d2fb07cf7b2c6291b4f75c9658c14a2063e32 cumulative 38601817684 and H1d 38601817686 IN_PROGRESS on last check; scope HTTP and scientific numeric equivalent, not end-to-end display.
+- SY-N-31 OPEN. Next: inspect final CI, test visible scientific display formatting at contract precision, preserve exact round-trip; SG28/H2 OPEN, DIST multinodo BLOCKED.
+
