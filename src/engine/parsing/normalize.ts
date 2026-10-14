@@ -709,6 +709,10 @@ function validateInputStructureG3(input: string): void {
 
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
+  // SY-E-30: reject an empty original denominator before generic TeX normalization.
+  if (/\\frac\s*\{[^{}]+\}\s*\{\s*\}/.test(latex)) {
+    throw parseError("Denominador vacío: completa el denominador de la fracción.");
+  }
   if (hasRepeatedBracedSuperscript(latex)) {
     throw parseError("Doble superíndice sin agrupar: usa (x^{2})^{3} o x^{2^{3}}.");
   }
