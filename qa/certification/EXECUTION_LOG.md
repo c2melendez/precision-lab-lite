@@ -3523,3 +3523,22 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 
 
 2026-10-13 SY-E-03 bilateral gates confirmed: Lite SHA 2f617b1906b3eb60bcd4a687379f1a94d8748c92 cumulative 38511233712 SUCCESS; Plus SHA 4651ed12b5735d58a9e67072e4af75eebba7a460 cumulative 38511248173 SUCCESS. This validates x^12 at x=2 =4096 as expression + independent substitution, NOT direct natural-language LaTeX annotation parsing. Official SY-E-04 10^{-3}=0.001 tests published Lite SHA b24d252e8e4c9ea2e2600179a086adfd67342045 cumulative 38511416734, H1d 38511416741, build 38511416781; Plus SHA f5624448180965193488de1b1f6596d807bf9abb cumulative 38511428018, H1d 38511427856. CI initially running/queued. Verify SHA-specific outcomes and correct failures; next SY-E-05. Syntax309 OPEN, SG28/DIST independent-host BLOCKED.
+
+
+## Estado vigente — 2026-10-14 UTC / 2026-10-13 Honduras
+Esta sección prevalece sobre las fotografías históricas conservadas debajo.
+- Rama canónica bilateral: `qa/syntax-audit-in625-a1`.
+- SY-E-04 confirmado: Lite SHA b24d252e8e4c9ea2e2600179a086adfd67342045 cumulative 38511416734, H1d 38511416741 y build 38511416781 SUCCESS; Plus SHA f5624448180965193488de1b1f6596d807bf9abb cumulative 38511428018 y H1d 38511427856 SUCCESS. Resultado 10^-3 = 0.001.
+- SY-E-05 confirmado en alcance parcial: Lite SHA 0ae996a756a7d4cd52e5bc7b58f26a9cde28672b cumulative 38512067119, H1d 38512066234, build 38512066314 SUCCESS; Plus SHA 09aee8bc792a4f734b631a9ec7a89cfcfbcc540d cumulative 38512070814, H1d 38512070837 SUCCESS. Lite 1159 PASS + 30 TODO; Plus backend 1025 PASS + 1 XFAIL y frontend 757 PASS (omisiones no cuentan como PASS).
+- Oráculo SY-E-05 preserva fixture 2^{2^{2}}=16 y agrega controles 2^{3^{2}}=512 y (2^{3})^{2}=64 para detectar asociación incorrecta. Lite prueba fuente LaTeX → parser → compileNumeric; Plus prueba POST /api/v1/evaluate con expresión explícita traducida. No implica MathLive/teclado/UI de Plus.
+- CI: acumulativo bilateral y build Lite ahora incluyen pull_request además de push y workflow_dispatch. H1d bilateral conserva eventos y añade exclusión documental en PR. push y PR excluyen cambios solo qa/certification/** o **/*.md; cambios mixtos técnicos sí ejecutan gates. Los nuevos push del SHA correcto fueron observados; el comportamiento PR todavía no tiene evento nuevo de evidencia.
+- SY-E-06 publicado: Lite SHA aa577a47c189f4ab5289addbf006a6d6b90099d9 en tests/syntax309SyEExponent.audit.test.ts; Plus SHA 824175e28213055ac913b20b141acb70f96c4a6b en backend/tests/test_syntax309_sye_exponent.py. Comparar ambas representaciones contra ocho anclas independientes: x=0,1/16,1/4,1,4,9,16,100; raíces 0,0.25,0.5,1,2,3,4,10.
+- Gates SY-E-06: Lite cumulative 38512329462, H1d 38512329538, build 38512329554; Plus cumulative 38512334793, H1d 38512334857. Última observación IN_PROGRESS: NO declarar PASS aún.
+- Alcance SY-E-06: testigos finitos sobre x>=0, no demostración simbólica general ni certificación de ramas complejas. Plus usa backend explícito, sin acreditar fuente LaTeX de UI.
+- Syntax309 OPEN; IN625 H2/SG28 OPEN y DIST multinodo BLOCKED hasta evidencia de nodos independientes. SY-P-23 XFAIL y TODO permanecen abiertos.
+
+### Siguiente paso exacto
+1. Consultar los gates SY-E-06 anteriores y jobs/logs del SHA correcto; diagnosticar y corregir cualquier rojo sin alterar anclas matemáticas.
+2. Solo con CI verificada registrar PASS de estos testigos reales acotados. Mantener los gaps de UI/teclado y dominios no probados.
+3. Iniciar SY-E-07 oficial x^{0.5} equivalente a sqrt(x), usando las mismas anclas reales independientes y trazabilidad desde syntax309_cases.jsonl; validar fuente en Lite y distinguir traducción backend de Plus.
+4. Sincronizar CURRENT_STATE y EXECUTION_LOG; los commits solo documentales no deben relanzar CI.
