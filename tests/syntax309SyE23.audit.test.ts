@@ -728,7 +728,7 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     const response = scope.postMessage.mock.calls[0][0];
     expect(response.success, JSON.stringify(response)).toBe(true);
     expect(response.requestId).toBe("SY-N-24");
-    const exact = BigInt(Array.from({length: 100}, (_, i) => i + 1).reduce((p, n) => p * BigInt(n), 1n)).toString();
+    const exact = BigInt(Array.from({length: 100}, (_, i) => BigInt(i + 1)).reduce((p, n) => p * n, 1n)).toString();
     expect(exact.length).toBe(158);
     const rendered = String(response.resultLatex);
     expect(rendered).not.toMatch(/Infinity|NaN|undefined/);
