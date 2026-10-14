@@ -896,4 +896,29 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     }
   });
 
+
+  it("SY-N-31: small rational remains exact and approximates in scientific notation", () => {
+    const row = rows["SY-N-31"];
+    expect(row.entrada).toBe("\\frac{1}{3000000}");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("3.333333333\\times10^{-7}");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("1/3000000");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-31",expressionAlgebrite:parsed}});
+    const reply = scope.postMessage.mock.calls[0][0];
+    expect(reply.success, JSON.stringify(reply)).toBe(true);
+    expect(reply.requestId).toBe("SY-N-31");
+    expect(evaluate(parseExpression(reply.resultLatex).algebrite)).toBe("1/3000000");
+    const approx = Number(String(reply.decimalApprox).replace(/…|\\.\\.\\./g, ""));
+    expect(Number.isFinite(approx)).toBe(true);
+    expect(approx).toBeCloseTo(1 / 3000000, 13);
+    expect(approx.toExponential(9)).toMatch(/^3\\.33333333[0-9]e-7$/);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-31-reentry",expressionAlgebrite:parseExpression(reply.resultLatex).algebrite}});
+    const repeated = scope.postMessage.mock.calls[0][0];
+    expect(repeated.success).toBe(true);
+    expect(evaluate(parseExpression(repeated.resultLatex).algebrite)).toBe("1/3000000");
+  });
+
 });
