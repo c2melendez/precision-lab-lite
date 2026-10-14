@@ -185,4 +185,50 @@ describe("Syntax309 SY-E-17..20 power conventions and domain — original Lite s
     expect(evaluate(parseExpression(reentered.resultLatex).algebrite)).toBe("1/2");
   });
 
+  it("SY-E-22: nested fraction preserves equivalence and both original exclusions", () => {
+    const row = rows["SY-E-22"];
+    expect(row.entrada).toBe("\\frac{1}{1+\\frac{1}{x}}");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const raw = evaluate(parsed);
+    expect(evaluate("(" + raw + ")-x/(x+1)")).toBe("0");
+    workerScope.postMessage.mockClear();
+    workerScope.onmessage!({ data: {
+      type: "evaluate", requestId: "SY-E-22", expressionAlgebrite: parsed,
+    } });
+    const result = workerScope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-E-22");
+    const returned = parseExpression(result.resultLatex).algebrite;
+    expect(evaluate("(" + returned + ")-x/(x+1)")).toBe("0");
+    const conditions = result.domainConditions as Array<{
+      kind: string; operator: string; expressionAlgebrite: string; comparisonAlgebrite: string;
+    }>;
+    expect(conditions.length).toBeGreaterThanOrEqual(2);
+    const allowed = (x: number) => conditions.every(c => {
+      expect(c.kind).toBe("denominator");
+      expect(c.operator).toBe("!=");
+      const value = compileNumeric(c.expressionAlgebrite, "x")(x);
+      return Number.isFinite(value) && value !== Number(c.comparisonAlgebrite);
+    });
+    for (const [x, expected] of [[1, 0.5], [2, 2/3], [-2, 2]]) {
+      expect(allowed(x)).toBe(true);
+      expect(compileNumeric(parsed, "x")(x)).toBeCloseTo(expected, 12);
+      expect(compileNumeric(returned, "x")(x)).toBeCloseTo(expected, 12);
+    }
+    expect(allowed(0)).toBe(false);
+    expect(allowed(-1)).toBe(false);
+    // Reentry of the bare transformed expression cannot carry source metadata.
+    // The original result's domainConditions must accompany its equivalence claim.
+    for (const x of [0, -1]) {
+      workerScope.postMessage.mockClear();
+      workerScope.onmessage!({ data: {
+        type: "evaluate", requestId: "SY-E-22-excluded-" + x,
+        expressionAlgebrite: parsed.replace(/\bx\b/g, "(" + x + ")"),
+      } });
+      const invalid = workerScope.postMessage.mock.calls[0][0];
+      expect(invalid.success, JSON.stringify(invalid)).toBe(false);
+      expect(invalid.errorCode).toBe(ErrorCode.DOMAIN_ERROR);
+    }
+  });
+
 });
