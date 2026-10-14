@@ -4499,3 +4499,11 @@ Verificar SHA finales y logs, corregir regresiones verdaderas. Con PASS bilatera
 - SY-U-08 OPEN hasta gates y logs finales por SHA; Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. Sin despliegue.
 ### Próximo paso exacto
 Verificar resultados SY-U-08 Lite/Plus por SHA, corregir fallas reales; al PASS bilateral proseguir con SY-U-09 `2−1` -> `1` Unicode U+2212 de la matriz oficial.
+
+## 2026-10-14 — SY-U-08 PASS y SY-U-09 Unicode minus abierto
+- SY-U-08 `3·4` => `12` PASS bilateral alcance automatizado. Lite SHA 4ee503b7908affc1784dac5ecc39b0a854632d0b: cumulative 38655896566, H1d 38655896588, build 38655896585, E2E regresión 38655896577 SUCCESS. Plus SHA e8c1f8e38cc3b7b7d86ea69571f5f09ceabc828c: cumulative 38655922516, H1d 38655922493 SUCCESS. E2E regresión no acredita UI específica del fixture.
+- SY-U-09 fixture oficial `2−1` U+2212 => `1`; pruebas Lite parser/worker/reentrada SHA 1f2593ede674fdccee271c9919500ece768d9083; Plus frontend conversor SHA be6918bfa4799b18169fa7783ac9cb6a334aa605, backend HTTP Unicode original/MathResponse/reentrada SHA 6bc28cb3325f62957a5e954c617abd6189a59ee4. Fix de producto Plus parser `normalize_unicode` U+2212 -> ASCII `-` SHA final 16601bcd6b0c8962d65d48e53a3297cff5f976c0.
+- Gates Lite para SHA 1f2593e: cumulative [38657149583](https://github.com/c2melendez/precision-lab-lite/actions/runs/38657149583), H1d 38657149676, build 38657149622, E2E 38657149580, todos IN_PROGRESS al consultar. Plus SHA 16601bc: cumulative [38657187390](https://github.com/c2melendez/precision-lab-plus/actions/runs/38657187390), H1d 38657187397, ambos QUEUED; ignorar los gates de commits intermedios para cierre.
+- SY-U-09 OPEN hasta PASS verificable por logs/SHA. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED; sin producción.
+### Siguiente paso exacto
+Consultar gates del SHA final, diagnosticar fallo sin relajar oráculo, registrar cierre si corresponde. Siguiente fixture oficial SY-U-10 es raya corta `2–1` U+2013, operación `convencion`: admitir resultado `1` o aviso explícito según contrato, nunca transformación silenciosa incorrecta.
