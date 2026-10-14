@@ -3472,3 +3472,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - SY-F-43 Lite SHA 29dc6f5370d247e8cf08d558d2b243b60894cddc cumulative 38508156912 SUCCESS; Plus SHA e3f0af35442c065071d040eec4dff125a776e1cb cumulative 38508051426 SUCCESS. Source-LaTeX original in Lite and explicit backend sign(-5) in Plus passed their distinct scopes. Plus original UI MathLive path remains unverified.
 - Next official fixture SY-F-44: 10\\bmod3 expects 1. Lite source LaTeX test in tests/syntax309SyFNumeric.audit.test.ts published SHA 70d637bbe928e2c7309ddab21c148865c5f33599; Plus backend-only HTTP mod(10,3) test in backend/tests/test_syntax309_syf_numeric.py SHA 9438850508e5b3c618f285532b98e517c619fb7b.
 - Auto CI Lite cumulative 38508432359, H1d 38508432358, build 38508432394; Plus cumulative 38508436382, H1d 38508436392. First observation: Lite IN_PROGRESS, Plus QUEUED. Do not claim SY-F-44 PASS without SHA-specific results. Next exact step: review failed tests/logs and fix correct layer, then proceed official SY-F-45 gcd(12,18)=6. Syntax309 OPEN; SG28/DIST real multinode BLOCKED.
+
+
+### 2026-10-13 — SY-F-44 first CI failure and Lite modulo fallback correction
+- Lite SY-F-44 original LaTeX 10\\bmod3 test SHA 70d637bbe928e2c7309ddab21c148865c5f33599, cumulative 38508432359 FAILURE: 1149 PASS, 1 FAIL, 30 TODO, specifically numericFallback could not evaluate known binary function "mod"; this is PRODUCT gap in numeric fallback, not an oracle error.
+- Lite src/engine/numericFallback.ts fix SHA eee74756705b42b2512eb7d9c85ea78d0be9bda9 adds two-argument modulo evaluation with zero-divisor and finite-domain checks; retains 10 mod 3 = 1 independent assertion. CI cumulative 38508533913, H1d 38508533996, build 38508533870 IN_PROGRESS at initial observation.
+- Plus backend-only explicit mod(10,3) test SHA 9438850508e5b3c618f285532b98e517c619fb7b cumulative 38508436382 IN_PROGRESS at last observation. No claim of original typed \\bmod MathLive route in Plus.
+- Next: verify SHA-specific CI, repair any remaining red without relaxing oracle, then SY-F-45 gcd(12,18)=6. Syntax309 OPEN; SG28/DIST independent-node BLOCKED.
