@@ -1,5 +1,14 @@
 # Current Certification State
 
+## SY-U-04 — pruebas publicadas, CI pendiente — 2026-10-14
+- Fixture oficial: entrada `3*4`, operacion `valor`, esperado `12`.
+- Lite test parser/worker/reentrada commit `f0688fa98e2139268a3cc112c546cccb3c391c2f`: cumulative [38652400493](https://github.com/c2melendez/precision-lab-lite/actions/runs/38652400493), H1d [38652400544](https://github.com/c2melendez/precision-lab-lite/actions/runs/38652400544), build [38652400598](https://github.com/c2melendez/precision-lab-lite/actions/runs/38652400598), científico UI E2E [38652400491](https://github.com/c2melendez/precision-lab-lite/actions/runs/38652400491) en progreso en primera consulta.
+- Plus frontend conversor commit `7b84ba5a992f900c93f3362bedafcd645694901d`; backend test HTTP real/MathResponse/reentrada commit final `d455e67a577a6b8fb3d5c4ae8f46c5b16338ae75`. Gates finales cumulative [38652409209](https://github.com/c2melendez/precision-lab-plus/actions/runs/38652409209), H1d [38652409204](https://github.com/c2melendez/precision-lab-plus/actions/runs/38652409204) inicialmente QUEUED. No contar gates intermedios como validación del SHA final.
+- SY-U-04 OPEN hasta PASS verificable por logs y SHA en ambos motores. No hay prueba visual específica nueva. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED.
+### Siguiente paso
+Verificar resultado de los gates finales; clasificar y corregir fallos sin relajar oráculos; al PASS actualizar cierre y comenzar SY-U-05 (`12/4` = `3`).
+
+
 ## Estado vigente — SY-U-03 multiplicación cdot — 2026-10-14
 Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
 - Caso oficial SY-U-03 de syntax309_cases.jsonl: entrada 3\cdot4, operacion=valor, esperado 12.
