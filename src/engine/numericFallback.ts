@@ -157,6 +157,25 @@ export function compileNumeric(expr: string, variable: string): Fn {
       if (name === "pi") return () => Math.PI;
       if (name === "e" && peek() !== "(") return () => Math.E;
 
+      // SY-F-44: evaluate two-argument modulo without treating "mod" as a variable.
+      if (name === "mod") {
+        if (peek() !== "(") throw parseError('Se esperaba "(" después de "mod".');
+        pos++;
+        const dividend = parseExpr();
+        if (peek() !== ",") throw parseError('Se esperaba "," entre los argumentos de "mod".');
+        pos++;
+        const divisor = parseExpr();
+        if (peek() !== ")") throw parseError('Se esperaba ")" después de "mod".');
+        pos++;
+        return (x) => {
+          const a = dividend(x);
+          const b = divisor(x);
+          return !Number.isFinite(a) || !Number.isFinite(b) || Math.abs(b) < SINGULAR_EPSILON
+            ? NaN
+            : ((a % b) + Math.abs(b)) % Math.abs(b);
+        };
+      }
+
       if (UNARY_FUNCTIONS[name]) {
         if (peek() !== "(") throw parseError(`Se esperaba "(" después de "${name}".`);
         pos++;
