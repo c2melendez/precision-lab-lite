@@ -3226,3 +3226,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Added official source-LaTeX abs witnesses SY-F-38 left/right vert -3 and SY-F-39 operatorname abs(-3) in Lite tests/syntax309SyFNumeric.audit.test.ts SHA b72d070648b73443757602e9e63a3e77af7b63a0, cumulative 38503229851, H1d 38503229854, build 38503229842 initially IN_PROGRESS.
 - Added corresponding backend-only explicit abs(-3) controls Plus backend/tests/test_syntax309_syf_numeric.py SHA 757c94423335df7372ec4cc319f02df9ae090cf4, cumulative 38503240594 and H1d 38503240614 initially QUEUED. Do not claim source MathLive paths certified by these Plus backend tests.
 - Next exact objective: verify latest SHA-specific CI outcomes and logs, fix any red without weakening expected abs=3; proceed official SY-F-40 ambiguous nested bars with explicit convention/feedback oracle. Syntax309 OPEN; SG28/DIST real multinode BLOCKED.
+
+
+### 2026-10-13 — SY-F-38/39 parser correction
+- Lite original LaTeX witness SHA b72d070648b73443757602e9e63a3e77af7b63a0 cumulative 38503229851 failed only SY-F-38: unsupported `\\left\\vert ... \\right\\vert` delimiters; SY-F-39 passed (1144 pass, 1 fail, 30 TODO).
+- Corrected Lite delimiter normalization to handle `\\left\\vert` and `\\right\\vert` as absolute bars before scanning; parser commit ef95355556749af4ed43aa4f22f86fc6e6e98ece. Push-triggered cumulative 38503390859, H1d 38503390756 and build 38503390748 queued at initial check; PASS pending.
+- Plus SY-F-38/39 backend translated abs(-3) tests SHA 757c94423335df7372ec4cc319f02df9ae090cf4; cumulative 38503240594, H1d 38503240614 in progress. Plus does not certify source LaTeX delimiters.
+- Next: inspect latest gate results by SHA; fix red and then address official SY-F-40 ambiguity. Syntax309 OPEN; SG28/DIST multinode BLOCKED.
