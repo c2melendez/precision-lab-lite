@@ -1,5 +1,13 @@
 # Current Certification State
 
+## Estado vigente — SY-E-29 (2026-10-14)
+- SY-E-28 PASS bilateral, evidencia en EXECUTION_LOG.md.
+- SY-E-29 implementado en tests/syntax309SyE23.audit.test.ts, commit 7e9547f9d7d1f46794df4f3283c449066fa0f339.
+- Primer CI 38529981106 FAILURE por syntax error del regex en test (HARNESS); corregido y reactivado CI cumulative 38530120709, H1d 38530120708, build 38530120710. Pendiente verificar resultado, no declarar PASS.
+- Plus SHA b92ca7a5f765d858f78863af2f53122ea185a506, cumulative 38530033515 y H1d 38530033534 pendientes.
+- Siguiente SY-E-30 tras cierre: fracción con denominador vacío; Syntax309 OPEN, H2 OPEN, DIST multinodo BLOCKED.
+
+
 ## Estado vigente — SY-E-28 división entre cero — 2026-10-14
 - Rama canónica bilateral: qa/syntax-audit-in625-a1.
 - SY-E-27: Lite SHA f4b7c3bfcab49a806e2409dae305650c3bad0a32: cumulative 38528496932, H1d 38528496898 y build 38528496900 SUCCESS. Plus SHA 5c71dc8c6aade0d91c6e785bf1ee556ee9df1610: cumulative 38528558739 y H1d 38528558761 SUCCESS. PASS acotado, no prueba MathLive/browser real.
