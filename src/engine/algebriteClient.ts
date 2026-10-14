@@ -234,9 +234,11 @@ export function toLatex(algebriteResult: string): string {
  */
 export function toDecimalApprox(algebriteResult: string): string | null {
   // Algebrite float() prints only six decimal places by default. Preserve
-  // the native double precision of pi without mutating CAS print settings
-  // or replacing the exact symbolic result used for reentry.
-  if (algebriteResult.trim() === "pi") return String(Math.PI);
+  // native double precision for exact built-in constants without changing
+  // CAS print settings or the symbolic expression used for reentry.
+  const exactConstant = algebriteResult.trim();
+  if (exactConstant === "pi") return String(Math.PI);
+  if (exactConstant === "e" || exactConstant === "exp(1)") return String(Math.E);
   try {
     const floated: string = Algebrite.run(`float(${algebriteResult})`);
     if (typeof floated !== "string" || floated.length === 0 || /stop|Stop/.test(floated)) {
