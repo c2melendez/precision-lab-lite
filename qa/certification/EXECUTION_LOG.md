@@ -3589,3 +3589,26 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 3. Añadir test en frontend/src/__tests__/syntax309SyEInvalid.audit.test.ts Plus: latexToBackendSyntax(fuente original) debe rechazar con mensaje claro antes de que MathLive/ASCII borre el exponente. No sustituirlo por entrada backend traducida.
 4. Reproducir en CI y corregir solo la capa fallida; revisar EN-ER-27 y otros oráculos anteriores si la cobertura nueva revela conflicto. Conservar regresiones y verificar acumulativo, H1d y build Lite en el SHA correcto.
 5. Registrar evidencia bilateral sin disparar gates con commits documentales; luego SY-E-13 (^{2}, falta base). SY-E-12 iniciado en preparación, sin publicación ni ejecución aún: NO PASS.
+
+
+## Estado vigente — SY-E-12/13 y recuperación UI — 2026-10-14 UTC / 2026-10-13 Honduras
+Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
+- Rama canónica bilateral resuelta por README: qa/syntax-audit-in625-a1.
+- Fixture oficial: SY-E-12 x^{} -> error claro por exponente vacío; SY-E-13 ^{2} -> error claro por falta de base. Fuentes y oráculos se mantuvieron sin cambios.
+- Lite SHA 5c2f705679e33174be87931546863157e18fa5f9: cumulative 38514389197/job 115689786354, H1d 38514388981 y build 38514388909 SUCCESS; 1177 PASS + 30 TODO. El producto ya tenía ambas validaciones en validateInputStructureG3; se añadieron regresiones originales y cinco controles válidos (incluido x^{0}). No cambio de motor Lite.
+- Plus reproducción SHA 5f999091da164ca06b417329f31e81abac163b6b: cumulative 38514393361/frontend job 115689799119 FAILURE, exactamente SY-E-12 y SY-E-13: latexToBackendSyntax no lanzó error. Clasificación PRODUCT / validación fuente previa a conversión.
+- Plus corrección inicial SHA 99e1ec0b1f847bb9277b7f75a8696bbfec9d47f5: nuevo módulo frontend/src/components/exponentSourceValidation.ts preserva guard SY-E-11 y rechaza exponente vacío o sin base; NaturalMathField.tsx invoca el guard antes de conversión.
+- BasicMode.tsx y SimpleBasicMode.tsx validan antes de enviar y muestran validationError en pantalla; entrada inválida no entra al helper de envío. Basic preserva invalidación de respuestas tardías antes del guard (ajuste SHA 2fa3ea8e39b99c6da3c7ee185ab1baf95fa0220a).
+- Harness UI nuevo syntax309SyEInvalidUi.audit.test.tsx: seis casos (SY-E-11..13 × Científica/Simple), editor sustituido por input de test; validación/conversión reales, helper HTTP simulado. Confirma alerta, cero llamadas al envío, carga desactivada y recuperación posterior con 2+3. NO equivale a E2E nativo MathLive de estas entradas crudas.
+- Typecheck de Plus SHA 2fa3ea8e39b99c6da3c7ee185ab1baf95fa0220a, cumulative 38514811411/frontend job 115691107014 FAILURE por clave errorMessage inexistente en el test nuevo; clasificación HARNESS. Corregido a lastErrorMessage según UIState, sin cambiar producto ni oráculos.
+- Plus SHA final fc28df838c33a955313b036fff2fca93f0645f5b: cumulative 38514979978, frontend job 115691634366 y backend job 115691634115 SUCCESS; H1d 38514980029 SUCCESS. Frontend 776 PASS + 28 TODO; backend 1061 PASS + 1 XFAIL. Omisiones NO cuentan como PASS.
+- Regresión SG28 activada por BasicMode: run 38514811429/job 115691106895, SHA 2fa3ea8e39b99c6da3c7ee185ab1baf95fa0220a SUCCESS, 21/21 Playwright (7 desktop + 7 tablet + 7 mobile) contra backend aislado de CI. Comparación hasta SHA final cambia solo el test UI: código de producto idéntico. No se confundió esta evidencia de cancelación con E2E de exponentes ni con certificación multinodo.
+- SY-E-12 y SY-E-13: PASS de validación fuente en ambos productos. Plus adicional: PASS de recuperación de componentes con editor simulado. Alcance de MathLive real / UI nativa sigue pendiente en MANUAL_CAPABILITY_GAPS.
+- Syntax309 OPEN; IN625 H2/SG28 OPEN y DIST multinodo BLOCKED hasta evidencia de nodos independientes. Producción y flags de despliegue no cambiados.
+
+### Siguiente paso exacto — SY-E-14
+1. Fuente oficial qa/certification/syntax309_cases.jsonl: 2^{3.5}, operacion=valor, esperado=11.31370850. Identidad independiente: 8*sqrt(2)=11.313708498984761.
+2. Añadir caso a tests/syntax309SyEExponent.audit.test.ts Lite: fuente original -> parseExpression -> compileNumeric, resultado finito y ancla independiente con tolerancia 1e-12; no fabricar el oráculo desde el motor evaluado.
+3. Añadir caso a backend/tests/test_syntax309_sye_exponent.py Plus: POST /api/v1/evaluate con expresión explícita 2^3.5, status 200, success true y result_approx 11.313708498984761 (rel/abs 1e-12). Distinguir esta traducción backend de la fuente/UI MathLive.
+4. Publicar regresiones y verificar acumulativo, H1d y build Lite con SHA/runs reales. Corregir producto/harness según logs. Continuar SY-E-15 y SY-E-16 en orden; SY-E-14 iniciado en preparación, no publicado/ejecutado: NO PASS.
+5. Persistir evidencia bilateral sin relanzamientos por documentación. No contabilizar TODO/XFAIL ni capacidades manuales como aprobadas.
