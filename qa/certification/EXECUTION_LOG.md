@@ -4420,3 +4420,20 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 4. Publicar pruebas, verificar gates por SHA, corregir fallos y sincronizar evidencia bilateral.
 5. Después SY-U-03: 3\cdot4 -> 12. Ambos pendientes; no ejecutados en este cierre.
 
+
+## Estado vigente — SY-U-02 división — 2026-10-14
+Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
+- Caso oficial SY-U-02 de syntax309_cases.jsonl: entrada 12\div4, operacion=valor, esperado 3.
+- Lite tests/syntax309SyE23.audit.test.ts: fuente original -> parser/evaluación exacta 3 -> handler worker auténtico con transporte simulado, requestId y resultLatex 3 -> reanálisis y segunda ejecución del resultado real con nuevo requestId.
+- Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts: conversión completa de fuente original 12\div4 a 12/4 y conversión del resultado 3. Backend backend/tests/test_syntax309_sye23.py: HTTP con traducción explícita 12/4, contrato MathResponse, éxito/scalar/input/requestId, texto/LaTeX/aproximado 3, errores nulos y segunda petición con result_text real y requestId distinto.
+- Sin cambios de producto. Alcance automatizado: parser/handler Lite y conversor/HTTP Plus separados; no acredita interacción visual específica SY-U-02. Los gates E2E existentes son regresión. TODO/XFAIL no cuentan como PASS.
+- SY-U-02 PASS bilateral en el alcance descrito. Lite SHA 18e9363524e9da13cbe2d5ba0a57868cfcead17d: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38648867112 (1245 PASS + 30 TODO), H1d 38648867078, build 38648867276 y científico UI E2E 38648867097: todos SUCCESS. Plus SHA 52b07ba898acbc1609321963110e47d141046690: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38648872721 (backend 1133 PASS + 1 XFAIL; frontend 822 PASS + 28 TODO) y H1d 38648872678: todos SUCCESS. Conclusiones verificadas para estos SHA y conteos leídos de logs.
+- Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo BLOCKED. Se mantiene avance matemático paralelo según política autorizada; sin despliegue de producción.
+
+### Siguiente paso exacto — SY-U-03
+1. Fixture original 3\cdot4, operacion=valor, esperado 12.
+2. Lite: original -> parser/evaluación exacta 12 -> handler worker -> reentrada de salida real.
+3. Plus: conversión íntegra de fuente original a multiplicación y HTTP explícito 3*4; MathResponse y reentrada exacta 12.
+4. Verificar todos los gates del SHA antes de PASS; corregir cualquier fallo y registrar evidencia bilateral.
+5. Después SY-U-04: 3*4 -> 12. SY-U-03 y SY-U-04 aún pendientes.
+
