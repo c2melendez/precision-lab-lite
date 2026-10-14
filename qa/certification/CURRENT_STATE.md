@@ -3180,3 +3180,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite first cumulative on SHA 6a82a4749727df5f24a2353a260f61cf85bb93b4 run 38487203521 FAILURE: 1130 PASS / 1 FAIL / 30 TODO. The failing assertion incorrectly double-escaped its JS regex; parsed source `\\arcsin2` was correctly recognized as `arcsin(2)`. Classify this first red as HARNESS, not product.
 - Corrected parser assertion at Lite technical test SHA f6cb2cde5f64099dee9f07b031590fd1bc3c567a; new cumulative 38487294016, H1d 38487293967, build 38487294111 queued initially. Independent real-domain check unchanged.
 - Plus SY-F-29 translated-backend test SHA 0df8bc5cca5e06b356a301c92de02173a7a179aa, cumulative 38487186347 and H1d 38487186068 in progress at last observation. No SY-F-29 PASS until logs verified on both SHA. Next: verify gates, diagnose any remaining real-domain handling red, then SY-F-30/31.
+
+
+## 2026-10-13 — SY-F-29 PASS and SY-F-30/31 regression submitted
+- Lite original LaTeX SY-F-29 technical SHA f6cb2cde5f64099dee9f07b031590fd1bc3c567a cumulative 38487294016, H1d 38487293967 and build 38487294111 all SUCCESS. Plus translated HTTP SY-F-29 SHA 0df8bc5cca5e06b356a301c92de02173a7a179aa cumulative 38487186347 and H1d 38487186068 SUCCESS. Prior Lite red was a test regex escape defect, repaired without oracle weakening.
+- Published SY-F-30 and SY-F-31 original fixture-LaTeX numeric witnesses (root scope sqrt(x)*y != sqrt(x*y), bare sqrt3) Lite SHA 389e35dfa30f8a476bfa3264d5e81e4a7a79a646: cumulative 38487550871, build 38487550905, H1d 38487550870 IN_PROGRESS initially.
+- Published corresponding explicit HTTP backend witnesses Plus SHA ea3d248eea8c4d54da7b06969f19436842d46df8: cumulative 38487574532, H1d 38487574472 IN_PROGRESS initially. Plus still does not certify source MathLive syntax.
+- Next executable: verify new runs and logs, fix any parser/product/harness red with permanent regression; proceed to SY-F-32 per official matrix. Syntax309 OPEN; H2/SG28/DIST real multinode BLOCKED, no global IN625 closure.
