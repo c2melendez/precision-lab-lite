@@ -91,3 +91,10 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - Pendiente: modo real y error claro al usuario, si existe tal modo; EvaluateRequest no expone selector de dominio. No inventar campo de API ni convertir NaN interno en PASS de error humano.
 - Pendiente: Worker nativo / MathLive / teclado/UI de esta fuente en Lite y ruta original LaTeX de Plus; el harness de worker y traducción backend no los sustituyen.
 - Esta limitación no elimina la evidencia matemática ya acreditada y no cierra Syntax309 global ni H2/DIST.
+
+
+## 2026-10-14 — SY-E-18: rama y representación
+- PASS acotado de rama principal 1+sqrt(3)*i en ambos caminos probados; Lite corrige la salida numérica compleja para no convertirla en una raíz impar real al reingresar.
+- Lite handler verdadero usa transporte self/postMessage simulado; no acredita un Worker/MathLive/browser E2E de SY-E-18. Plus prueba traducción backend original equivalente, no la conversión UI original ni su reentrada MathLive.
+- La preparación rectangular del renderizador Lite se aplica a potencias negativas/fraccionarias cuyo Re/Im se evalúan como números reales finitos. Potencias complejas simbólicas/dependientes de variables conservan el camino anterior y no quedan certificadas por esta regresión.
+- Las raíces impares reales explícitas mantienen su convención; se corrige su agrupación con coeficientes. No confundir esos otros inputs con el caso de potencia original SY-E-18.

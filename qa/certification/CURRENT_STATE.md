@@ -1,5 +1,31 @@
 # Current Certification State
 
+## Estado vigente — SY-E-18 y corrección round-trip Lite — 2026-10-14 (UTC y Honduras)
+Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
+- Rama canónica bilateral resuelta desde README: qa/syntax-audit-in625-a1.
+- Fixture original SY-E-18: (-8)^{\\frac{1}{3}}, convención admite -2 real o 1+sqrt(3)*i principal; entrada intacta, nunca sustituida por cbrt/root.
+- Convención efectivamente verificada en ambos caminos: rama compleja principal, Re=1, Im positiva=1.7320508075688772, cubo=-8+0i. La raíz -2 y la rama 1-sqrt(3)*i no se confundieron con esta rama.
+- Lite test inicial SHA 16c77af5b80449a2aa4bcf940ba18c898c192626, cumulative 38520149133/job 115707752711 FAILURE: cálculo fuente correcto raw=2*(-1)^(1/3), real(raw)=1, imag(raw)=3^(1/2); falla exclusivamente reentrada de salida del worker.
+- Diagnóstico Lite SHA 59c3d9dad782dfb4a8a16684551711fd22c6256d, cumulative 38520354076 FAILURE: worker MathResult.resultLatex=2\\sqrt[3]{-1}; parseExpression lo transforma a 2-((1)^(1/(3))) y evaluate retorna 1. Clasificación PRODUCT: impresión cambia potencia compleja a radical real + falta de agrupación de raíz real negativa en producto implícito.
+- Lite fix SHA 98eec9f17b4ca9051e7d1045ae56b6a029422612:
+  - src/engine/parsing/normalize.ts agrupa raíces reales impares negativas como un átomo; el coeficiente precedente sigue siendo multiplicación, no resta.
+  - src/engine/algebriteClient.ts prepara las potencias numéricas complejas de base negativa/fracción como componentes rectangulares exactos antes de printlatex. Solo si real/imag son números finitos y Im!=0; casos simbólicos/variables mantienen fallback anterior. No cambia valor calculado ni entrada.
+- Regresiones permanentes tests/syntax309SyEComplex.audit.test.ts: SY-E-17 conservado; SY-E-18 fuente/ramas/componentes/cubo y handler worker real con transporte self/postMessage simulado; reentrada exacta de salida. Tres controles de radical real multiplicado (2*root3(-1)=-2, 3*root3(-8)=-6, 2*root3((-2)^3)=-4) y dos potencias complejas (1/3,2/3) renderizadas/reingresadas sin cambio de rama.
+- Lite evidencia corregida: raw=2*(-1)^(1/3), resultLatex=1+i\\sqrt{3}, returned=1+i*sqrt(3), diferencia exacta=0. Cumulative 38520735948/job 115709582130, build 38520736185 y H1d 38520736009 SUCCESS; 1184 PASS + 30 TODO.
+- Plus SHA ddca005e23b9905324ee4c45bc0b91511bf756e2, backend/tests/test_syntax309_sye_complex.py: POST /api/v1/evaluate real (-8)^(1/3), MathResponse, éxito/operation/scalar/request_id/input_text/error nulo, result_approx=None, texto/LaTeX no vacíos y duración finita. Notación devuelta contrastada con coordenadas fijas y cubo independiente. Exacta notación de potencia principal es admisible aunque aún no esté expandida en a+bI.
+- Plus cumulative 38520153753/frontend job 115707767409 y backend job 115707767644 SUCCESS, H1d 38520153765 SUCCESS. Backend 1066 PASS + 1 XFAIL; frontend 776 PASS + 28 TODO. Sin cambio de producto Plus requerido.
+- SY-E-18 PASS de rama compleja principal en estos alcances; round-trip del handler Lite corregido/verificado. Worker navegador/MathLive nativo y ruta original UI Plus no acreditados aquí. TODO/XFAIL no cuentan como PASS.
+- Syntax309 OPEN; IN625 H2/SG28 OPEN, DIST multinodo BLOCKED hasta evidencia de nodos independientes. No cambio de producción ni redefinición de contratos/API.
+
+### Siguiente paso exacto — SY-E-19
+1. Fixture oficial 0^{0}, operacion=convencion: indeterminada o 1 por convención declarada. Caracterizar el comportamiento real de ambos motores y declararlo, sin imponer una convención nueva para obtener verde.
+2. Lite: fuente original parseExpression -> evaluate y handler de worker existente; comprobar MathResult y reentrada. Si el motor adopta 1, fijar regresión exacta a 1. Si devuelve error de indeterminación, exigir código/mensaje claro; NaN no es PASS.
+3. Plus: POST /api/v1/evaluate con 0^0 y MathResponse completo pertinente. Pin del comportamiento comprobado: éxito con result_approx=1 y exacto 1, o error de dominio/indeterminación claro según convención declarada.
+4. No sustituir la fuente por 0^1, 1^0 ni un literal 1. Contrastar fixture/oráculo independiente y documentar discrepancias de convención Lite/Plus.
+5. Publicar tests, verificar SHA y acumulativo/H1d/build Lite; clasificar cada rojo y corregir la capa correspondiente. Persistir trazabilidad bilateral sin CI documental. Luego SY-E-20.
+6. SY-E-19 iniciado en preparación de convención/oráculos, sin test publicado/ejecución: NO PASS.
+
+
 ## Estado vigente — SY-E-17 rama compleja principal — 2026-10-14 UTC / 2026-10-13 Honduras
 Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
 - Rama canónica bilateral confirmada desde README: qa/syntax-audit-in625-a1.
