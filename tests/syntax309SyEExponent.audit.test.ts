@@ -91,4 +91,50 @@ describe("Syntax309 SY-E initial exponent witnesses", () => {
     }
   });
 
+  it("SY-E-08: original source and expected form match independent real anchors", () => {
+    const row = byId["SY-E-08"];
+    expect(row.operacion).toBe("equivalente");
+    expect(row.entrada).toBe("x^{-1}");
+    expect(row.esperado).toBe("\\frac{1}{x}");
+    const entered = compileNumeric(parseExpression(row.entrada).algebrite, "x");
+    const expectedForm = compileNumeric(parseExpression(row.esperado).algebrite, "x");
+    const anchors: Array<[number, number]> = [[-4,-0.25],[-1,-1],[-0.25,-4],[0.25,4],[1,1],[4,0.25]];
+    for (const [x, expected] of anchors) {
+      expect(entered(x), "SY-E-08 source at x=" + x).toBeCloseTo(expected, 12);
+      expect(expectedForm(x), "SY-E-08 expected form at x=" + x).toBeCloseTo(expected, 12);
+    }
+    // Finite real-domain witnesses; no claim of UI or general symbolic proof.
+    // x=0 is excluded; the zero-base error contract is covered by SY-E-20.
+  });
+
+  it("SY-E-09: original source and expected form match independent real anchors", () => {
+    const row = byId["SY-E-09"];
+    expect(row.operacion).toBe("equivalente");
+    expect(row.entrada).toBe("\\left(x^{2}\\right)^{3}");
+    expect(row.esperado).toBe("x^{6}");
+    const entered = compileNumeric(parseExpression(row.entrada).algebrite, "x");
+    const expectedForm = compileNumeric(parseExpression(row.esperado).algebrite, "x");
+    const anchors: Array<[number, number]> = [[-3,729],[-2,64],[-1,1],[0,0],[0.5,0.015625],[2,64],[3,729]];
+    for (const [x, expected] of anchors) {
+      expect(entered(x), "SY-E-09 source at x=" + x).toBeCloseTo(expected, 12);
+      expect(expectedForm(x), "SY-E-09 expected form at x=" + x).toBeCloseTo(expected, 12);
+    }
+    // Finite real-domain witnesses; no claim of UI or general symbolic proof.
+  });
+
+  it("SY-E-10: original source and expected form match independent real anchors", () => {
+    const row = byId["SY-E-10"];
+    expect(row.operacion).toBe("equivalente");
+    expect(row.entrada).toBe("x^{2^{3}}");
+    expect(row.esperado).toBe("x^{8}");
+    const entered = compileNumeric(parseExpression(row.entrada).algebrite, "x");
+    const expectedForm = compileNumeric(parseExpression(row.esperado).algebrite, "x");
+    const anchors: Array<[number, number]> = [[-3,6561],[-2,256],[-1,1],[0,0],[0.5,0.00390625],[2,256],[3,6561]];
+    for (const [x, expected] of anchors) {
+      expect(entered(x), "SY-E-10 source at x=" + x).toBeCloseTo(expected, 12);
+      expect(expectedForm(x), "SY-E-10 expected form at x=" + x).toBeCloseTo(expected, 12);
+    }
+    // Finite real-domain witnesses; no claim of UI or general symbolic proof.
+  });
+
 });
