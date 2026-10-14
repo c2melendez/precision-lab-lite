@@ -3322,3 +3322,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - SY-F-46 Lite SHA 270dd14259be04b516068fd7acc6c4fcd58e7242 cumulative 38508973764 SUCCESS (original LaTeX lcm(4,6)=12 via parser and Algebrite). Plus backend-only lcm SHA 855ae9b05a19c0e82375be26a7d93f6771233bc1 cumulative 38508978167 IN_PROGRESS at observation, not formally closed bilaterally.
 - SY-F-47 official fixture \\max(1,5,3) expected 5. Lite source LaTeX evaluation regression SHA ad2cd15d06ce67c539034a24c530da113b5960b0 in tests/syntax309SyFNumeric.audit.test.ts. Plus backend-only explicit max(1,5,3) HTTP regression SHA fdbbf02ad9dd5cdd1698e0bcafe324ef95a7c18c in backend/tests/test_syntax309_syf_numeric.py.
 - Auto CI: Lite cumulative 38509065880, H1d 38509065870, build 38509065929; Plus cumulative 38509070451 and H1d 38509070426. Initially IN_PROGRESS/QUEUED. Do not infer PASS without SHA-specific logs. Next inspect gates for both SY-F-46 Plus and SY-F-47, fix regressions then proceed SY-F-48 min(1,5,3)=1. Syntax309 OPEN; SG28/DIST multinode remains BLOCKED.
+
+
+### 2026-10-13 — SY-F-46 bilateral PASS and SY-F-47 Lite oracle route repair
+- SY-F-46 Lite cumulative 38508973764 SUCCESS SHA 270dd14259be04b516068fd7acc6c4fcd58e7242 and Plus cumulative 38508978167 SUCCESS SHA 855ae9b05a19c0e82375be26a7d93f6771233bc1.
+- SY-F-47 first Lite cumulative 38509065880 FAILED only source-LaTeX max(1,5,3): parser correctly produced max(1,5,3), but test incorrectly called Algebrite directly. Canonical product min/max implementation is tryStatFunction() in src/engine/statFunctions.ts; issue is HARNESS/ORACLE routing, not proof of product defect. Corrected test SHA c0e65d6924626b16afc170a2f00c5f931b13af88, preserving expected 5, cumulative 38509219981, H1d 38509219582, build 38509219658 IN_PROGRESS at initial check.
+- Plus backend-only max(1,5,3) SHA fdbbf02ad9dd5cdd1698e0bcafe324ef95a7c18c cumulative 38509070451 still IN_PROGRESS at last check. Do not claim Plus original LaTeX UI route.
+- Next check latest SHA-specific CI, classify any residual red and then official SY-F-48 min(1,5,3)=1. Syntax309 OPEN; SG28/DIST multinode BLOCKED.
