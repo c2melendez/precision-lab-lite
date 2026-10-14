@@ -315,4 +315,21 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(compileNumeric(evaluate(parseExpression(result.resultLatex).algebrite), "__unused__")(0)).toBe(0.3);
   });
 
+  it("SY-N-07: multiplying decimal 0.1 by 3 retains exact 0.3 through worker and reentry", () => {
+    const row = rows["SY-N-07"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("0.1\\times3");
+    expect(row.esperado).toBe("0.3");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const exact = evaluate(parsed);
+    expect(compileNumeric(exact, "__unused__")(0)).toBe(0.3);
+    expect(exact).not.toContain("0.30000000000000004");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-07",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.resultLatex).not.toContain("0.30000000000000004");
+    expect(compileNumeric(evaluate(parseExpression(result.resultLatex).algebrite), "__unused__")(0)).toBe(0.3);
+  });
+
 });
