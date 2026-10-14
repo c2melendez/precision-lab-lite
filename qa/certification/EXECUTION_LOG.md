@@ -3999,3 +3999,11 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 2. Solo tras evidencia verde bilateral, marcar SY-N-14 PASS en alcance y recuperar siguiente fixture directamente de `qa/certification/syntax309_cases.jsonl`; no inferir el ID/resultado.
 3. Registrar evidencia definitiva y sincronizar estado/log en Lite y Plus sin relanzar CI con commits documentales.
 
+
+
+## Actualización correctiva SY-N-14 — 2026-10-14
+- El primer Lite cumulative 38554589308 en SHA 52e213f2689cb2ecae328a3c89efefd15526c4b4 fue FAIL de ORÁCULO: la prueba esperaba una representación del fixture diferente a la fuente canónica real `\\left(\\sqrt{2}\\right)^{2}-2`. No modificar fixture, motor ni criterio de cero exacto.
+- Se corrigió la aserción en las pruebas Lite y Plus para conservar el texto original. Lite SHA técnico 7caaffdf3e47a133e50341ef13209ff9d0ccc53c; Plus SHA técnico final b974891c7a2510a2eaa2e15397c06b6c26771dc2.
+- Nuevos gates Lite cumulative 38554735293, H1d 38554735367 y build 38554735426; Plus cumulative 38554751691 y H1d 38554751942; en ejecución al último chequeo. SY-N-14 sigue OPEN hasta PASS verificable en SHA finales.
+### Próximo paso exacto
+Consultar jobs/logs de esos cinco runs, corregir regresiones confirmadas, no marcar PASS ni avanzar SY-N-15 sin acreditación de SY-N-14; después sincronizar evidencia y seguir el orden del fixture canónico.
