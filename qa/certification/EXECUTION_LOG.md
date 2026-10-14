@@ -4196,3 +4196,10 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 ### Evidencia de cierre SY-N-27
 - SY-N-27 PASS bilateral en alcance probado. Lite SHA 560142d0914fa6d8c0a55eadd1d6b7fba367890e: cumulative [38593321420](https://github.com/c2melendez/precision-lab-lite/actions/runs/38593321420) SUCCESS (1225 PASS + 30 TODO); H1d 38593321329 y build 38593321528 SUCCESS.
 - Plus SHA 2be3e0d3e5c4703fe9811f3e366d3e07e590c53b: cumulative [38593123224](https://github.com/c2melendez/precision-lab-plus/actions/runs/38593123224) SUCCESS (backend 1113 PASS + 1 XFAIL; frontend 814 PASS + 28 TODO); H1d 38593123212 SUCCESS. Sin cambios producto Plus.
+
+## 2026-10-14 — SY-N-28 Euler precision diagnosis
+- Lite cumulative 38595824578 SHA 2d05251c: 1225 PASS / 1 FAIL / 30 TODO. Decimal 2.718282000 versus 2.718281828. PRODUCT float() precision.
+- Corrección Lite src/engine/algebriteClient.ts SHA 9305f4aee1b9c9aad4da0895b7860f9ee2a945f7: String(Math.E) para e/exp(1) exactos; no cambia oráculo, CAS global ni identidad simbólica.
+- Nuevas corridas Lite cumulative 38596645811, H1d 38596645529, build 38596645394: IN_PROGRESS al consultar.
+- Plus SHA 80d003a18cf93b1755b35f2f04dd583724bbf446: cumulative 38595835120 SUCCESS, H1d 38595835370 SUCCESS.
+- SY-N-28 OPEN hasta confirmar nuevo Lite SHA; SG28/H2 OPEN y DIST multinodo BLOCKED.
