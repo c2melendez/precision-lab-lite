@@ -828,4 +828,28 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(repeated.resultLatex).algebrite)).toBe("pi");
   });
 
+  it("SY-N-28: Euler constant preserves identity, decimal precision and reentry", () => {
+    const row = rows["SY-N-28"];
+    expect(row.entrada).toBe("e");
+    expect(row.esperado).toBe("2.718281828");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate("(" + evaluate(parsed) + ")-exp(1)")).toBe("0");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-28",expressionAlgebrite:parsed}});
+    const reply = scope.postMessage.mock.calls[0][0];
+    expect(reply.success, JSON.stringify(reply)).toBe(true);
+    expect(reply.requestId).toBe("SY-N-28");
+    const returned = parseExpression(reply.resultLatex).algebrite;
+    expect(evaluate("(" + returned + ")-exp(1)")).toBe("0");
+    const approx = Number(String(reply.decimalApprox).replace(/…|\.\.\./g, ""));
+    expect(Number.isFinite(approx), JSON.stringify(reply)).toBe(true);
+    expect(approx.toFixed(9)).toBe("2.718281828");
+    expect(Math.abs(approx - 2.718281828459045)).toBeLessThan(5e-10);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-28-reentry",expressionAlgebrite:returned}});
+    const repeated = scope.postMessage.mock.calls[0][0];
+    expect(repeated.success).toBe(true);
+    expect(evaluate("(" + parseExpression(repeated.resultLatex).algebrite + ")-exp(1)")).toBe("0");
+  });
+
 });
