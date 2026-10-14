@@ -155,4 +155,34 @@ describe("Syntax309 SY-E-17..20 power conventions and domain — original Lite s
     expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
   });
 
+  it("SY-E-21: abbreviated fraction preserves exact value and worker result reentry", () => {
+    const row = rows["SY-E-21"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("\\frac12");
+    expect(row.esperado).toBe("\\frac{1}{2}");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("1/2");
+    expect(compileNumeric(parsed, "__unused__")(0)).toBe(0.5);
+    workerScope.postMessage.mockClear();
+    workerScope.onmessage!({ data: {
+      type: "evaluate", requestId: "SY-E-21", expressionAlgebrite: parsed,
+    } });
+    expect(workerScope.postMessage).toHaveBeenCalledTimes(1);
+    const result = workerScope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-E-21");
+    expect(result.resultLatex).toBeTypeOf("string");
+    const returned = parseExpression(result.resultLatex).algebrite;
+    expect(evaluate(returned)).toBe("1/2");
+    expect(compileNumeric(returned, "__unused__")(0)).toBe(0.5);
+    workerScope.postMessage.mockClear();
+    workerScope.onmessage!({ data: {
+      type: "evaluate", requestId: "SY-E-21-reentry", expressionAlgebrite: returned,
+    } });
+    const reentered = workerScope.postMessage.mock.calls[0][0];
+    expect(reentered.success).toBe(true);
+    expect(reentered.requestId).toBe("SY-E-21-reentry");
+    expect(evaluate(parseExpression(reentered.resultLatex).algebrite)).toBe("1/2");
+  });
+
 });
