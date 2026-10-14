@@ -526,6 +526,8 @@ function normalizeDelimiterSyntax(input: string): string {
     .replace(/\\lceil/g, "ceiling(")
     .replace(/\\rceil/g, ")")
     // Barras LaTeX explícitas. Normalizar left/right antes del scanner.
+    .replace(/\\left\\vert/g, "|")
+    .replace(/\\right\\vert/g, "|")
     .replace(/\\left\|/g, "|")
     .replace(/\\right\|/g, "|")
     // El caso adyacente es producto.
