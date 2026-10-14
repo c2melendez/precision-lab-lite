@@ -1,5 +1,12 @@
 # Current Certification State
 
+## SY-D-02 PASS bilateral / SY-D-03 abierto (2026-10-14)
+- SY-D-02 PASS alcance verificado: Lite SHA 5e920cea270979ea8cc66d9a70f925001d073580 cumulative 38625444359, H1d 38625444330, build 38625444465 y científico E2E 38625444456 SUCCESS. Plus SHA 6d880c8ebb5a182a26e832eb908aaa6a629396bc cumulative 38625477765 y H1d 38625477804 SUCCESS.
+- Caso oficial SY-D-03: entrada (), requiere error claro de paréntesis vacíos. Agregada regresión parser/evaluate Lite tests/syntax309SyE23.audit.test.ts SHA 7b3a62f0692471814c3947d0ca533c66f215c0a8; Plus rechazo HTTP backend/tests/test_syntax309_sye23.py SHA e1314fa42eb827fa86bf84b6682084667092968e.
+- Nuevas ejecuciones detectadas: Lite cumulative 38627185469 y scientific UI E2E 38627185399 QUEUED; Plus cumulative 38627177726 y H1d 38627177431 IN_PROGRESS. Buscar cualquier otra ejecución Lite sobre SHA exacto y validar resultados; SY-D-03 OPEN hasta CI.
+- SG28/H2 OPEN, DIST multinodo BLOCKED; no cambios en producción.
+
+
 ## SY-D-01 closed / SY-D-02 started — 2026-10-14
 - SY-D-01 bilateral PASS in tested parser/worker and HTTP scope. Lite SHA 330f767d69fb750e703252e974602a7a840c5271: cumulative 38624843113, H1d 38624843112, build 38624843128, scientific E2E regression 38624843192 all SUCCESS. Plus SHA 278a8146ba50f341d7f0784e749b1862280058fa: cumulative 38624871948 and H1d 38624871537 SUCCESS.
 - New official fixture SY-D-02: literal 2+3), unpaired closing parenthesis must yield explicit error; no silent 5.
