@@ -558,6 +558,12 @@ function normalizeDelimiterSyntax(input: string): string {
     .replace(/\\lvert/g, "abs(")
     .replace(/\\rvert/g, ")");
 
+  // SY-D-06: corchetes simples de agrupación equivalen a paréntesis.
+  // Preservar índices de raíz (\sqrt[3]{x}), que tienen otra semántica.
+  expr = expr.replace(/\[([^\[\]]+)\]/g, (whole, inner: string, offset: number, source: string) =>
+    /\\sqrt\s*$/.test(source.slice(0, offset)) ? whole : "(" + inner + ")"
+  );
+
   // Barra simple |...|, incluyendo anidamiento como ||x|-1|.
   // Si no hay un absoluto abierto, "|" abre. Si lo hay, abre únicamente
   // cuando aparece en posición de inicio de operando; en otro caso cierra.
