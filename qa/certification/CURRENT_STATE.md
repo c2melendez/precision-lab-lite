@@ -1,5 +1,12 @@
 # Current Certification State
 
+## Seguimiento SY-N-29 — 2026-10-14
+- Lite SHA cddc6b34 cumulative 38597439625 FAILURE: 1226 PASS, 1 FAIL, 30 TODO; H1d 38597439807 y build 38597439651 SUCCESS. El test asumía que el rechazo de 1,5+2 ocurría en parseExpression; en realidad la excepción de sintaxis provino de evaluate (Algebrite reportó "Stop: syntax error"). Clasificación HARNESS en el oráculo de fase; el contrato oficial permite resultado 3.5 o aviso claro.
+- Lite regresión revisada SHA e7841a5c3529196664ca9b9484bff53b281325f7 (precedida por 2b411fd): separa resultado de excepción y jamás captura sus propias aserciones; requiere diagnóstico sintáctico en rechazo. CI SHA final cumulative 38599405743, H1d 38599405223, build 38599405308 inicialmente QUEUED. No declarar PASS hasta verificación del SHA final.
+- Plus SHA c96b9c9b511edba7b525434fb4a0ef460d15f91e: cumulative 38597448132 y H1d 38597447960 SUCCESS. Cobertura frontend de conversión; falta profundizar contrato backend HTTP y reentrada para cerrar SY-N-29.
+- Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo real BLOCKED. Próximo: verificar gates Lite finales, implementar cobertura backend Plus y cerrar solo con evidencia apropiada. SY-N-30 aún no iniciado.
+
+
 ## Cierre SY-N-28 e inicio SY-N-29 — 2026-10-14
 - SY-N-28 PASS bilateral en alcance probado. Lite SHA producto 9305f4aee1b9c9aad4da0895b7860f9ee2a945f7: cumulative 38596645811 SUCCESS (1226 PASS + 30 TODO), H1d 38596645529 SUCCESS, build 38596645394 SUCCESS. Plus SHA 80d003a18cf93b1755b35f2f04dd583724bbf446: cumulative 38595835120 y H1d 38595835370 SUCCESS.
 - Alcance: parser/worker Lite; conversión frontend y HTTP Plus; no E2E nativo completo. Syntax309 general OPEN; SG28/H2 OPEN; DIST multinodo real BLOCKED.
