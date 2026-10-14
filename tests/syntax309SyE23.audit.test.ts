@@ -775,4 +775,32 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
   });
 
+
+  it("SY-N-26: 171 factorial never returns silent Infinity and worker recovers", () => {
+    const row = rows["SY-N-26"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("171!");
+    const exact = Array.from({length:171}, (_,i)=>BigInt(i+1)).reduce((p,n)=>p*n,1n).toString();
+    expect(exact.length).toBe(310);
+    const parsed = parseExpression(row.entrada).algebrite;
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-26",expressionAlgebrite:parsed}});
+    const reply = scope.postMessage.mock.calls[0][0];
+    expect(reply.requestId).toBe("SY-N-26");
+    if(reply.success) {
+      expect(String(reply.resultLatex)).not.toMatch(/Infinity|NaN|undefined/i);
+      expect(String(reply.resultLatex)).toBe(exact);
+      expect(reply.decimalApprox == null || Number.isFinite(Number(reply.decimalApprox))).toBe(true);
+    } else {
+      expect([ErrorCode.DOMAIN_ERROR, ErrorCode.COMPLEXITY_LIMIT, ErrorCode.UNSUPPORTED_OPERATION]).toContain(reply.errorCode);
+      expect(reply.errorMessage).toMatch(/desbord|overflow|límite|limite|factorial|grande|large/i);
+      expect(reply.resultLatex).toBeNull();
+    }
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-26-recovery",expressionAlgebrite:parseExpression("2+3").algebrite}});
+    const recovered = scope.postMessage.mock.calls[0][0];
+    expect(recovered.success).toBe(true);
+    expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
+  });
+
 });
