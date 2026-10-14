@@ -137,4 +137,40 @@ describe("Syntax309 SY-E initial exponent witnesses", () => {
     // Finite real-domain witnesses; no claim of UI or general symbolic proof.
   });
 
+  it("SY-E-14: original exponent source matches its independent numeric oracle", () => {
+    const row = byId["SY-E-14"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("2^{3.5}");
+    expect(row.esperado).toBe("11.31370850");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const actual = compileNumeric(parsed, "__unused__")(0);
+    expect(Number.isFinite(actual), "SY-E-14 parsed=" + parsed).toBe(true);
+    expect(actual).toBeCloseTo(11.313708498984761, 12);
+  });
+
+  it("SY-E-15: original exponent source matches its independent numeric oracle", () => {
+    const row = byId["SY-E-15"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("2^{-0.5}");
+    expect(row.esperado).toBe("0.7071067812");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const actual = compileNumeric(parsed, "__unused__")(0);
+    expect(Number.isFinite(actual), "SY-E-15 parsed=" + parsed).toBe(true);
+    expect(actual).toBeCloseTo(0.7071067811865476, 12);
+  });
+
+  it("SY-E-16: original exponent source matches its independent numeric oracle", () => {
+    const row = byId["SY-E-16"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("(-2)^{3}");
+    expect(row.esperado).toBe("-8");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const actual = compileNumeric(parsed, "__unused__")(0);
+    expect(Number.isFinite(actual), "SY-E-16 parsed=" + parsed).toBe(true);
+    expect(actual).toBeCloseTo(-8, 12);
+    // Odd powers cannot detect a lost base grouping; these even-power controls can.
+    expect(compileNumeric(parseExpression("(-2)^{2}").algebrite, "__unused__")(0)).toBe(4);
+    expect(compileNumeric(parseExpression("-2^{2}").algebrite, "__unused__")(0)).toBe(-4);
+  });
+
 });
