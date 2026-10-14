@@ -1,5 +1,15 @@
 # Current Certification State
 
+## Estado vigente — SY-E-25 fracción text-style — 2026-10-14
+- Rama bilateral canónica: qa/syntax-audit-in625-a1.
+- SY-E-24 cerrado en el alcance probado: Lite SHA 90933b7e1eb5deedf6ed19906a06647c035e76d7, cumulative 38526962857, H1d 38526962770 y build 38526962874 SUCCESS; Plus SHA 07a6d61e9d896e9a91559b670054125708811b48, cumulative 38527005438 y H1d 38527005428 SUCCESS.
+- SY-E-25 fixture original intacto: \\tfrac{3}{4}, operacion=valor, esperado \\frac{3}{4}. Lite parser, valor exacto 3/4, aproximación 0.75, worker handler y reentrada en tests/syntax309SyE23.audit.test.ts, SHA técnico 38b6986d298b68dc55e2b6317c22351f26573b15.
+- Plus test backend HTTP /evaluate de traducción explícita 3/4, MathResponse completo, exactitud, LaTeX, aproximación y reentrada en backend/tests/test_syntax309_sye23.py, SHA 7e5a612266c1871377e34dc06b3a03bf4c82b670. Test frontend original latexToBackendSyntax en frontend/src/__tests__/syntax309SyEFractions.audit.test.ts, SHA final técnico a7a7ec8fcb63836811b30df740c00deb0b36a2bb.
+- CI de SY-E-25 disparada por push: Lite cumulative 38527628426, H1d 38527628292, build 38527628369; Plus cumulative 38527624687 y H1d 38527624681. Verificar conclusión/jobs/logs; a la hora de registro estaban pendientes.
+- SY-E-25 IMPLEMENTADO, NO declarar PASS bilateral hasta evidencia de CI alineada con los SHA técnicos. No se acredita teclado/MathLive nativo o navegador por parser/HTTP aislados.
+- Siguiente paso: confirmar gates y corregir rojos de SY-E-25 si existen. Al cierre, iniciar SY-E-26 fixture \\frac{1}{3}+\\frac{1}{6} -> \\frac{1}{2}. Syntax309 OPEN, H2/SG28 OPEN, DIST multinodo BLOCKED. Sin despliegue.
+
+
 ## Registro SY-E-24 — 2026-10-14
 - Rama canónica: qa/syntax-audit-in625-a1; fixture exacto original SY-E-24: \dfrac{3}{4}; esperado \frac{3}{4}; operación valor.
 - SY-E-23 previo: Lite cumulative 38525970770, H1d 38525970768 y build 38525970780 SUCCESS; Plus cumulative 38526121387 y H1d 38526121378 SUCCESS, SHA técnico Plus 9bf9e4214d7ad31b10a007433675dc789558c7f8.
