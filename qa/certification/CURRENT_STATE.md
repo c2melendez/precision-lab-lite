@@ -1,5 +1,27 @@
 # Current Certification State
 
+## Estado vigente — SY-E-08..11 — 2026-10-14 UTC / 2026-10-13 Honduras
+Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
+- Rama canónica verificada en ambos punteros README: qa/syntax-audit-in625-a1.
+- SY-E-08..10: testigos reales acotados PASS. Lite SHA ea1766e2f0d1528fd4e79d7680064414791d3f52: cumulative 38513201365, H1d 38513201569 y build 38513201324 SUCCESS; 1164 PASS + 30 TODO. Plus SHA 4be1f2a8303f29fa9530961e5e4fdb364f0e167e: cumulative 38513204653 y H1d 38513204698 SUCCESS; backend 1061 PASS + 1 XFAIL, frontend 757 PASS + 28 TODO. Omisiones no cuentan como PASS.
+- Oráculos independientes: SY-E-08 x^-1=1/x con seis anclas no nulas positivas/negativas; x=0 excluido del dominio (error se evalúa en SY-E-20). SY-E-09 (x²)³=x⁶ y SY-E-10 x^(2³)=x⁸ con siete anclas cada uno, incluidos 0, negativos y 1/2. En x=2 distinguen 64 de 256.
+- Alcance SY-E-08..10: fuente LaTeX original y forma equivalente por parseExpression/compileNumeric en Lite; expresiones traducidas y substitutions a POST /api/v1/evaluate real en Plus. Testigos finitos, no demostración simbólica general ni certificación completa de UI/MathLive/teclado Plus.
+- SY-E-11 producto reproducido: Lite test SHA c4420174e61b97e98e6ca9b9be1f3a255d51213d run 38513427886/job 115686833342 FAILURE; Plus test SHA c58340168d7f61b5f6ef86940700fa5a43d834af run 38513432547/frontend job 115686847863 FAILURE. Fuente oficial x^{2}^{3} NO produjo error antes del arreglo. Clasificación PRODUCT / validación fuente LaTeX.
+- Corrección: escáner de llaves balanceadas detecta un segundo superíndice entre llaves sobre la misma base antes de conversión. Lite src/engine/parsing/normalize.ts lanza PARSE_ERROR; Plus frontend/src/components/NaturalMathField.tsx lanza Error claro: "Doble superíndice sin agrupar: usa (x^{2})^{3} o x^{2^{3}}." No cambia cálculo ni interpretación de formas agrupadas válidas.
+- Regresión permanente bilateral en syntax309SyEInvalid.audit.test.ts: fuente oficial SY-E-11, tres variantes repetidas (espacios, anidamiento y doble superíndice interior), controles SY-E-09 y SY-E-10 aceptados.
+- Lite corrección SHA 0a9c08784d338b806ebbdb65782e89f278850618: cumulative 38513564093, H1d 38513564090 y build 38513564111 SUCCESS; 1170 PASS + 30 TODO.
+- Plus primer arreglo SHA 0c225dbeb251b397d4c34858dcd6b708d8c5180b run 38513568347/frontend job 115687258235 FAILURE únicamente por EN-EX-23 antiguo: exigía conversión sin TeX de la misma fuente inválida, sin oráculo de rechazo. Clasificación HARNESS/ORÁCULO permisivo en conflicto con fixture SY-E-11. Se conservó el caso EN-EX-23 y se reforzó para exigir error claro, sin quitar tests, cambiar fixture ni relajar criterios.
+- Plus corrección + oráculo SHA d636c21caed1ff1e0c4b6b2bfe57b5788056174c: cumulative 38513734662 y H1d 38513734698 SUCCESS. Frontend 763 PASS + 28 TODO; backend 1061 PASS + 1 XFAIL. SY-E-11 PASS de validación fuente confirmado por ambos gates; no declaración de E2E de error en UI.
+- Syntax309 OPEN; IN625 H2/SG28 OPEN, DIST multinodo BLOCKED hasta evidencia de nodos independientes. SY-P-23 XFAIL y TODO siguen abiertos. Producción y bandera distribuida no modificadas.
+
+### Siguiente paso exacto — SY-E-12
+1. Fuente oficial en qa/certification/syntax309_cases.jsonl: x^{}; operacion=error; esperado=error claro por exponente vacío.
+2. Añadir test en tests/syntax309SyEInvalid.audit.test.ts Lite: parseExpression(fuente) debe lanzar PARSE_ERROR con mensaje útil sobre vacío/exponente; controles x^{0} y fuentes agrupadas válidas deben aceptarse.
+3. Añadir test en frontend/src/__tests__/syntax309SyEInvalid.audit.test.ts Plus: latexToBackendSyntax(fuente original) debe rechazar con mensaje claro antes de que MathLive/ASCII borre el exponente. No sustituirlo por entrada backend traducida.
+4. Reproducir en CI y corregir solo la capa fallida; revisar EN-ER-27 y otros oráculos anteriores si la cobertura nueva revela conflicto. Conservar regresiones y verificar acumulativo, H1d y build Lite en el SHA correcto.
+5. Registrar evidencia bilateral sin disparar gates con commits documentales; luego SY-E-13 (^{2}, falta base). SY-E-12 iniciado en preparación, sin publicación ni ejecución aún: NO PASS.
+
+
 ## Estado vigente — 2026-10-14 UTC / 2026-10-13 Honduras
 Esta sección prevalece sobre las fotografías históricas conservadas debajo.
 - Rama canónica bilateral: `qa/syntax-audit-in625-a1`.
