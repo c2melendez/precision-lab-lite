@@ -4128,3 +4128,11 @@ Query Lite workflows for SHA 62e6f770 and Plus workflows for SHA d40827e9; inspe
 - Syntax309 global OPEN; SG28/H2 OPEN, DIST multinodo BLOCKED; sin despliegue producción ni E2E de navegador SY-N-24 acreditado.
 ### Próximo paso exacto
 Consultar CI del SHA final Lite bc1c743f y Plus 97b16833. Diagnosticar FAIL en tests de factorial de 100 y corregir capa adecuada sin aceptar Infinity/NaN ni fingir exactitud. Tras cierre bilateral iniciar SY-N-25 `170!`.
+
+## SY-N-24 — diagnóstico Plus y parche de límite de literales — 2026-10-14
+- Lite en SHA e5121d52 cumulative 38586157827, build 38586157834 y H1d 38586157853 SUCCESS; cambio posterior de tipado de oráculo SHA bc1c743fef7abaad3c07114fbccaf188a3033983 todavía requiere su gate propio/no asumir ejecución.
+- Plus SHA 97b16833dac40ed93131a45915bc44b60b7da121: cumulative 38586185354 FAILURE; backend test `test_syn24_hundred_factorial_exact_or_valid_scientific_and_recovery` recibió `success=false` para `100!`. Frontend job de esa corrida PASS y H1d 38586184587 SUCCESS.
+- Diagnóstico: resultado exacto factorial(100) de 158 dígitos supera tope de 64 dígitos aplicado a literales enteros de origen; no debe rechazar resultado interno por límite pensado para entrada de usuario. Parche Plus `backend/app/services/evaluate_service.py` SHA 4e0f2a1174463362d42e34b140baab8ccff936c4 limita ruta directa a factoriales literales enteros 0..170 de hasta tres dígitos sin substitutions, calcula entero exacto y devuelve aproximación finita. CI nueva Plus cumulative 38587354032, H1d 38587354160, SG28 38587353975; pending.
+- SY-N-24 OPEN mientras falte evidencia CI SHA final; no alterar contrato para aceptar fallo. SG28 multinodo real sigue BLOCKED aunque prototipo PASS; Syntax309 OPEN.
+### Próximo paso exacto
+Verificar jobs/logs de Plus SHA 4e0f2a11, especialmente render del entero grande y seguridad de input. Corregir cualquier FAIL. Verificar eventual CI propia de Lite bc1c743f y si no existe disparar mecanismo autorizado de CI o registrar ausencia sin certificación ficticia. Tras PASS bilateral continuar SY-N-25 `170!`.
