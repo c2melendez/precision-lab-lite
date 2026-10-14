@@ -3351,3 +3351,6 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 
 
 2026-10-13 SY-E-03: SY-E-02 gates green Lite 38510821961, Plus 38510798815. SY-E-03 x^12 with x=2 expects 4096; source fixture contains a textual substitution annotation, which is not certified as directly parsable. Tests committed Lite 2f617b1906b3eb60bcd4a687379f1a94d8748c92 (cumulative 38511233712 SUCCESS) and Plus 4651ed12b5735d58a9e67072e4af75eebba7a460 (cumulative 38511248173 in progress at last observation). Next verify Plus and proceed SY-E-04. Syntax309 OPEN; SG28/DIST BLOCKED.
+
+
+2026-10-13 SY-E-03 bilateral gates confirmed: Lite SHA 2f617b1906b3eb60bcd4a687379f1a94d8748c92 cumulative 38511233712 SUCCESS; Plus SHA 4651ed12b5735d58a9e67072e4af75eebba7a460 cumulative 38511248173 SUCCESS. This validates x^12 at x=2 =4096 as expression + independent substitution, NOT direct natural-language LaTeX annotation parsing. Official SY-E-04 10^{-3}=0.001 tests published Lite SHA b24d252e8e4c9ea2e2600179a086adfd67342045 cumulative 38511416734, H1d 38511416741, build 38511416781; Plus SHA f5624448180965193488de1b1f6596d807bf9abb cumulative 38511428018, H1d 38511427856. CI initially running/queued. Verify SHA-specific outcomes and correct failures; next SY-E-05. Syntax309 OPEN, SG28/DIST independent-host BLOCKED.
