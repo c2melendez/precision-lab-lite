@@ -1,0 +1,36 @@
+name: Syntax309 SY-N-31 Scientific UI E2E
+
+on:
+  push:
+    branches: [qa/syntax-audit-in625-a1]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'e2e/syntax309-scientific.spec.ts'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'playwright.config.ts'
+      - '.github/workflows/syntax309-scientific-e2e.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scientific-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install app dependencies
+        run: npm ci
+      - name: Install Playwright runner
+        run: npm install --no-save --package-lock=false @playwright/test
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Native desktop/tablet/mobile scientific result verification
+        run: npx playwright test e2e/syntax309-scientific.spec.ts
