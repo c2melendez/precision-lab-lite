@@ -3409,3 +3409,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Corrected Lite delimiter normalization to handle `\\left\\vert` and `\\right\\vert` as absolute bars before scanning; parser commit ef95355556749af4ed43aa4f22f86fc6e6e98ece. Push-triggered cumulative 38503390859, H1d 38503390756 and build 38503390748 queued at initial check; PASS pending.
 - Plus SY-F-38/39 backend translated abs(-3) tests SHA 757c94423335df7372ec4cc319f02df9ae090cf4; cumulative 38503240594, H1d 38503240614 in progress. Plus does not certify source LaTeX delimiters.
 - Next: inspect latest gate results by SHA; fix red and then address official SY-F-40 ambiguity. Syntax309 OPEN; SG28/DIST multinode BLOCKED.
+
+
+### 2026-10-13 — SY-F-38/39 green and SY-F-40 started
+- Lite parser fix ef95355556749af4ed43aa4f22f86fc6e6e98ece cumulative 38503390859 SUCCESS (source LaTeX delimiters); Plus translated backend absolute-value SHA 757c94423335df7372ec4cc319f02df9ae090cf4 cumulative 38503240594 SUCCESS. Both only attest to their respective test layers.
+- Published official SY-F-40 nested absolute bar tests Lite SHA 93603c2ad1bd5a9588f515ddd826a0e071d892d2: test accepts mathematically correct | |x|-2 | across x=-3,0,5, or meaningful ambiguity/delimiter feedback. CI cumulative 38503507177, H1d 38503507167, build 38503507118 in progress initially.
+- Plus backend-only explicit abs(abs(x)-2) witnesses SHA 97880a23a694ea92f4bb8dea64d1a3d56690faf4, cumulative 38503514125 and H1d 38503514179 queued initially. Cannot use this to claim keyboard typed-bar handling.
+- Next: diagnose latest CI, refine SY-F-40 semantic error discrimination if needed, then advance SY-F-41 per official matrix. Syntax309 OPEN; SG28/DIST multinode BLOCKED.
