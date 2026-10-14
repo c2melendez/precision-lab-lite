@@ -1,5 +1,12 @@
 # Certification Execution Log
 
+## 2026-10-14 — SY-N-04 PASS bilateral; SY-N-05 implementado y en CI
+- SY-N-04 PASS bilateral en alcance probado: Lite SHA 6bdc0605 cumulative 38544520290, H1d 38544519457, build 38544519535 SUCCESS; Plus SHA b6b6bf30 cumulative 38544537089, H1d 38544537082 SUCCESS. No acredita browser E2E completo.
+- SY-N-05 fuente original `1\\mathrm{e}3`, nota contractual permite 1000 o error claro. Se declara convención de aceptación 1000 únicamente para esa forma LaTeX exacta, sin habilitar `1e3` genérico en backend Plus. Código frontend Plus `frontend/src/components/NaturalMathField.tsx` SHA final `ab3b848046e74518cbc39a28270657564ef39302`; Lite `src/engine/parsing/normalize.ts` SHA final `f7d70e0838d657eaf7088b48a99ddec3472b59a1`. Se corrigió regex de escape a coincidencia de una barra LaTeX real.
+- Pruebas permanentes: Lite tests/syntax309SyE23.audit.test.ts SHA 652e22fdecca68354462215017c3044214c282d5, Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts SHA 70b86bd9e48f7ec7f8f188a22165629197b9854b y backend/tests/test_syntax309_sye23.py SHA 5f7ea1d8636cb8c982e5fc1e30e0ed7977673394 (HTTP traducción explícita 1000 y reentrada). No atribuir HTTP directo a entrada LaTeX original.
+- Nuevos gates de SHA final: Lite cumulative 38545607246, H1d 38545607144, build 38545607156 IN_PROGRESS; Plus cumulative 38545615094 IN_PROGRESS, H1d 38545615080 QUEUED. SY-N-05 no PASS hasta cierre real de los gates del SHA final. Siguiente objetivo: revisar jobs/logs, reparar rojos y continuar SY-N-06. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED, sin producción.
+
+
 ## 2026-10-14 — SY-N-03 PASS bilateral y SY-N-04 tests publicados
 - SY-N-03 fixture 00012 -> 12: Plus SHA 7dcd5a9a cumulative 38543805176 SUCCESS, H1d 38543805075 SUCCESS; Lite SHA 2b70ab72 cumulative 38543760772, H1d 38543760831 y build 38543760788 SUCCESS. PASS bilateral dentro del alcance parser/worker/HTTP; no sustituye browser E2E.
 - Siguiente fixture oficial SY-N-04: `1.2\\times10^{3}` -> 1200. Prueba Lite parser/worker/reentrada publicada SHA 6bdc060501606071cc3b47d4e84b810d54f44d7a; Plus frontend traducción original LaTeX SHA 704cf8a3419db3bcf39742908d2e5bb7d8fb790b y backend HTTP MathResponse exacto/reentrada SHA b6b6bf30896e3fd0f71517688d035de4b11ca6b4.
