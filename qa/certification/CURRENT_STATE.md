@@ -3187,3 +3187,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Published SY-F-30 and SY-F-31 original fixture-LaTeX numeric witnesses (root scope sqrt(x)*y != sqrt(x*y), bare sqrt3) Lite SHA 389e35dfa30f8a476bfa3264d5e81e4a7a79a646: cumulative 38487550871, build 38487550905, H1d 38487550870 IN_PROGRESS initially.
 - Published corresponding explicit HTTP backend witnesses Plus SHA ea3d248eea8c4d54da7b06969f19436842d46df8: cumulative 38487574532, H1d 38487574472 IN_PROGRESS initially. Plus still does not certify source MathLive syntax.
 - Next executable: verify new runs and logs, fix any parser/product/harness red with permanent regression; proceed to SY-F-32 per official matrix. Syntax309 OPEN; H2/SG28/DIST real multinode BLOCKED, no global IN625 closure.
+
+
+## 2026-10-13 — SY-F-30/31 CI PASS; SY-F-32/33/34 indexed root regressions
+- Confirmed Lite SY-F-30/31 SHA 389e35dfa30f8a476bfa3264d5e81e4a7a79a646 cumulative 38487550871, H1d 38487550870, build 38487550905 SUCCESS; Plus SHA ea3d248eea8c4d54da7b06969f19436842d46df8 cumulative 38487574532 and H1d 38487574472 SUCCESS.
+- Official next fixtures SY-F-32 cube root 8 => 2, SY-F-33 cube root -8 => -2 real odd-root convention, SY-F-34 fourth root 16 => 2.
+- Published permanent source LaTeX parser/numeric witnesses Lite SHA 22a2211bdbbfd502a53399302531e8b0214b10fb, cumulative 38488740551, H1d 38488739395, build 38488739412 in progress initially.
+- Published explicit backend-only root(8,3), root(-8,3), root(16,4) HTTP controls Plus SHA 17345bfa9caee3381c9ebec642832b0359e06e41; cumulative 38488746945 and H1d 38488746890 queued initially. Plus controls are not original MathLive LaTeX E2E.
+- Do not claim SY-F-32/33/34 PASS before SHA-matched logs and jobs complete. Next: classify potential red at correct layer, preserve real cube-root -8 oracle, rerun gates, then proceed official SY-F-35. Syntax309 OPEN; IN625/SG28/DIST multinode remains BLOCKED.
