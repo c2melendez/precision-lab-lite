@@ -4035,3 +4035,12 @@ Verificar resultados finales de las corridas nuevas; incorporar test HTTP `backe
 - Nueva CI Plus cumulative 38562903741 y H1d 38562903630 IN_PROGRESS al consultar. SY-N-15 OPEN hasta resultado final del SHA corregido. SG28/H2 OPEN; DIST multinodo BLOCKED, sin producción.
 ### Próximo paso exacto
 Verificar el resultado de cumulative y H1d Plus SHA 9b80bdf; si PASS marcar SY-N-15 bilateral y pasar a SY-N-16 (2^{100} => 1267650600228229401496703205376) sin pérdida de precisión, con pruebas y seguimiento de gates.
+
+
+## Estado vigente — SY-N-16 potencia entera exacta — 2026-10-14
+- SY-N-15 PASS bilateral en alcance probado: Lite SHA 2e2ea598776202d46a049be80263ca3d814f7391, cumulative 38560673324 / H1d 38560673329 / build 38560673418 SUCCESS; Plus SHA 9b80bdf3323ef7504d8b15899b07b47511d5e6c9, cumulative 38562903741 y H1d 38562903630 SUCCESS.
+- SY-N-16 fixture oficial `2^{100}` -> `1267650600228229401496703205376`, exactitud decimal de entero de 31 dígitos, sin redondeo IEEE. Pruebas publicadas Lite `tests/syntax309SyE23.audit.test.ts` SHA c444d4619877e883cb67383deecb0eece6cb51d3; Plus frontend `frontend/src/__tests__/syntax309SyEFractions.audit.test.ts` SHA 34bbb6f18c3b236732d368f126d6c806d667ee46; Plus backend HTTP `backend/tests/test_syntax309_sye23.py` SHA final 6a86be5edf91687adc3995749fb21d7bf3669b92. Sin cambios de motor ni producción.
+- Gates del SHA técnico Lite cumulative [38563504911](https://github.com/c2melendez/precision-lab-lite/actions/runs/38563504911), H1d [38563504953](https://github.com/c2melendez/precision-lab-lite/actions/runs/38563504953), build [38563505215](https://github.com/c2melendez/precision-lab-lite/actions/runs/38563505215). Plus SHA final cumulative [38563522526](https://github.com/c2melendez/precision-lab-plus/actions/runs/38563522526), H1d [38563522957](https://github.com/c2melendez/precision-lab-plus/actions/runs/38563522957). IN_PROGRESS al último chequeo. SY-N-16 OPEN hasta verificar conclusiones.
+- Syntax309 OPEN; SG28/H2 OPEN y DIST multinodo BLOCKED. Alcance pruebas parser/worker Lite, conversor Plus y HTTP backend, no certificación E2E de navegador.
+### Siguiente paso exacto
+Verificar los cinco gates de SY-N-16 en SHA finales, diagnosticar cualquier FAIL, corregir la capa correspondiente, actualizar estado/log bilateral y solo entonces comenzar SY-N-17 (`9007199254740993`) con el fixture original.
