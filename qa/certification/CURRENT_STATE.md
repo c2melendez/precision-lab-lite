@@ -1,5 +1,15 @@
 # Current Certification State
 
+## Registro SY-E-24 — 2026-10-14
+- Rama canónica: qa/syntax-audit-in625-a1; fixture exacto original SY-E-24: \dfrac{3}{4}; esperado \frac{3}{4}; operación valor.
+- SY-E-23 previo: Lite cumulative 38525970770, H1d 38525970768 y build 38525970780 SUCCESS; Plus cumulative 38526121387 y H1d 38526121378 SUCCESS, SHA técnico Plus 9bf9e4214d7ad31b10a007433675dc789558c7f8.
+- Lite test original/parser/worker/reentry agregado a tests/syntax309SyE23.audit.test.ts en 90933b7e1eb5deedf6ed19906a06647c035e76d7. Gate cumulative 38526962857 SUCCESS y build 38526962874 SUCCESS; H1d 38526962770: consultar estado final antes de cierre.
+- Plus HTTP MathResponse exactitud/LaTeX/aproximación 0.75 y reentrada en backend/tests/test_syntax309_sye23.py (7c729ecf3a37d852affe62903202fadbe812836b), y conversión original latexToBackendSyntax en frontend/src/__tests__/syntax309SyEFractions.audit.test.ts (07a6d61e9d896e9a91559b670054125708811b48). Gate acumulativo Plus 38527005438 y H1d 38527005428 activados para SHA final, sin declarar PASS mientras están en curso.
+- No confundir la traducción explícita del HTTP con MathLive nativo, ni worker con navegador real. No se alteraron criterios para obtener verde.
+- Estado: SY-E-23 PASS en alcance documentado; SY-E-24 IMPLEMENTED, pendiente cierre bilateral completo con corridas del SHA final y jobs/logs.
+- Siguiente caso al concluir: SY-E-25, fixture original \tfrac{3}{4}, esperado \frac{3}{4}. Syntax309 global OPEN, SG28 H2 OPEN, DIST multinodo BLOCKED.
+
+
 ## Estado vigente — SY-E-22 fracción anidada y dominio original — 2026-10-14
 Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
 - Rama canónica bilateral: qa/syntax-audit-in625-a1.
