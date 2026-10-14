@@ -3793,3 +3793,13 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts SHA 0892d634bde720ee7e88962e61c0d1140e18a734: conversión de LaTeX fuente, sin acreditar interacción MathLive nativa.
 - Corridas por SHA técnico: Lite build 38528496900 SUCCESS, cumulative 38528496932 y H1d 38528496898 pendientes en última consulta; Plus último SHA cumulative 38528558739, H1d 38528558761 pendientes. SY-E-27 IMPLEMENTED, sin PASS bilateral hasta comprobar conclusiones finales del SHA correcto y corregir fallos si existen.
 - Siguiente objetivo tras cerrar SY-E-27: SY-E-28, \\frac{1}{0} exige error claro de división entre cero. No confundir E2E browser con pruebas parser/handler/HTTP. Syntax309 OPEN, SG28 H2 OPEN, DIST multinodo BLOCKED. Producción intacta.
+
+
+## Estado vigente — SY-E-28 división entre cero — 2026-10-14
+- Rama canónica bilateral: qa/syntax-audit-in625-a1.
+- SY-E-27: Lite SHA f4b7c3bfcab49a806e2409dae305650c3bad0a32: cumulative 38528496932, H1d 38528496898 y build 38528496900 SUCCESS. Plus SHA 5c71dc8c6aade0d91c6e785bf1ee556ee9df1610: cumulative 38528558739 y H1d 38528558761 SUCCESS. PASS acotado, no prueba MathLive/browser real.
+- Fixture original SY-E-28: \frac{1}{0}, operacion=error, esperado «error claro: división entre cero».
+- Lite tests/syntax309SyE23.audit.test.ts SHA técnico 92599b8bd6ab5173972ab16070a5a6ea998ab596: fuente original, parser y evaluación DOMAIN_ERROR con mensaje, handler del worker, ausencia de LaTeX válido y recuperación 2+3=5.
+- Plus backend/tests/test_syntax309_sye23.py SHA 5b77f32c9befd53c28e12ccae9922b6208119747: HTTP /evaluate real para traducción explícita 1/0, MathResponse DOMAIN_ERROR, resultados ausentes y recuperación; frontend/src/__tests__/syntax309SyEFractions.audit.test.ts SHA final 0922e0b09ddf318c3acaea68f8993adc9b8ebf75: conversor de LaTeX original preserva el denominador cero.
+- CI disparada: Lite cumulative 38529541491, H1d 38529541214, build 38529541187; Plus SHA final cumulative 38529553628, H1d 38529553662. Última inspección: en curso. NO declarar PASS sin finalización de gates del SHA correcto y evidencia de jobs/logs.
+- Estado: SY-E-28 IMPLEMENTADO, pendiente CI y diagnóstico/corrección de posibles rojos. Siguiente paso: verificar SHA/corridas; si PASS, recuperar SY-E-29 del fixture canónico. Syntax309 global OPEN; H2/SG28 OPEN y DIST multinodo BLOCKED. Sin cambios de producción.
