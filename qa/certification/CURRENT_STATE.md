@@ -3290,3 +3290,9 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite patch src/engine/parsing/normalize.ts SHA 29dc6f5370d247e8cf08d558d2b243b60894cddc adds explicit localized operator alias sgn -> sign. Same input and expected -1 remain untouched. Auto-triggered cumulative 38508156912, H1d 38508156917, build 38508156999 queued at initial observation; verify outcome before PASS.
 - Plus independent backend-only sign(-5) SHA e3f0af35442c065071d040eec4dff125a776e1cb cumulative 38508051426 / H1d 38508051415 in progress at observation; original MathLive operatorname route not covered.
 - Next: inspect latest bilateral CI and logs, repair any genuine regression, then proceed official SY-F-44 modulo 10 mod 3 = 1. SG28/DIST multinode still BLOCKED; Syntax309 OPEN.
+
+
+### 2026-10-13 — SY-F-43 CI reconciled, SY-F-44 modulo witnesses published
+- SY-F-43 Lite SHA 29dc6f5370d247e8cf08d558d2b243b60894cddc cumulative 38508156912 SUCCESS; Plus SHA e3f0af35442c065071d040eec4dff125a776e1cb cumulative 38508051426 SUCCESS. Source-LaTeX original in Lite and explicit backend sign(-5) in Plus passed their distinct scopes. Plus original UI MathLive path remains unverified.
+- Next official fixture SY-F-44: 10\\bmod3 expects 1. Lite source LaTeX test in tests/syntax309SyFNumeric.audit.test.ts published SHA 70d637bbe928e2c7309ddab21c148865c5f33599; Plus backend-only HTTP mod(10,3) test in backend/tests/test_syntax309_syf_numeric.py SHA 9438850508e5b3c618f285532b98e517c619fb7b.
+- Auto CI Lite cumulative 38508432359, H1d 38508432358, build 38508432394; Plus cumulative 38508436382, H1d 38508436392. First observation: Lite IN_PROGRESS, Plus QUEUED. Do not claim SY-F-44 PASS without SHA-specific results. Next exact step: review failed tests/logs and fix correct layer, then proceed official SY-F-45 gcd(12,18)=6. Syntax309 OPEN; SG28/DIST real multinode BLOCKED.
