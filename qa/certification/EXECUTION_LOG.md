@@ -4203,3 +4203,8 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - Nuevas corridas Lite cumulative 38596645811, H1d 38596645529, build 38596645394: IN_PROGRESS al consultar.
 - Plus SHA 80d003a18cf93b1755b35f2f04dd583724bbf446: cumulative 38595835120 SUCCESS, H1d 38595835370 SUCCESS.
 - SY-N-28 OPEN hasta confirmar nuevo Lite SHA; SG28/H2 OPEN y DIST multinodo BLOCKED.
+
+## 2026-10-14 — SY-N-28 closure and SY-N-29 regression started
+- SY-N-28 closed in tested scope: Lite product SHA 9305f4aee1b9c9aad4da0895b7860f9ee2a945f7 cumulative 38596645811 SUCCESS (1226 PASS/30 TODO), H1d 38596645529 SUCCESS, build 38596645394 SUCCESS. Plus SHA 80d003a18cf93b1755b35f2f04dd583724bbf446 cumulative 38595835120 SUCCESS and H1d 38595835370 SUCCESS.
+- SY-N-29 official source 1,5+2 requires 3.5 on locale decimal-comma support or an explicit warning. Published Lite test SHA cddc6b34f3517df6c70c8b8c7291ec544c577683, Plus frontend conversion test SHA c96b9c9b511edba7b525434fb4a0ef460d15f91e. Neither asserts complete E2E or backend coverage alone.
+- Automatic runs: Lite cumulative 38597439625, H1d 38597439807, build 38597439651; Plus cumulative 38597448132, H1d 38597447960. IN_PROGRESS last checked; don't count PASS before logs confirm. SY-N-29 OPEN; next verify failures/locale behavior and extend actual HTTP/backend test and reentry as needed.
