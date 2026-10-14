@@ -1081,4 +1081,23 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(again.resultLatex).algebrite)).toBe("1/4");
   });
 
+  it("SY-D-10: adjacent grouped factors multiply to 21 through worker reentry", () => {
+    const row = rows["SY-D-10"];
+    expect(row.entrada).toBe("(1+2)(3+4)");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("21");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("21");
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: { type: "evaluate", requestId: "SY-D-10", expressionAlgebrite: parsed } });
+    const reply = scope.postMessage.mock.calls[0][0];
+    expect(reply.success, JSON.stringify(reply)).toBe(true);
+    expect(evaluate(parseExpression(reply.resultLatex).algebrite)).toBe("21");
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: { type: "evaluate", requestId: "SY-D-10-reentry", expressionAlgebrite: parseExpression(reply.resultLatex).algebrite } });
+    const again = scope.postMessage.mock.calls[0][0];
+    expect(again.success).toBe(true);
+    expect(evaluate(parseExpression(again.resultLatex).algebrite)).toBe("21");
+  });
+
 });
