@@ -4390,3 +4390,9 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - CI SY-D-12 Lite cumulative 38638019637, build 38638019652, científico E2E 38638019665, H1d 38638019622 IN_PROGRESS; Plus H1d 38638028869, cumulative 38638028858 QUEUED. Validar resultados y logs SHA-matched antes de PASS; siguiente fixture oficial SY-D-13 con diez niveles de paréntesis, esperado 1.
 - SG28/H2 OPEN, DIST multinodo BLOCKED; sin producción.
 
+
+## SY-D-12 PASS bilateral / SY-D-13 OPEN — 2026-10-14
+- SY-D-12 Lite SHA `30260c3787fa948da44523a3c4c88ff2242a8132`, cumulative 38638019637, H1d 38638019622, build 38638019652, científico E2E 38638019665 SUCCESS. Plus SHA `ea5fdc661776a6312c2b94973611f1534e8d8d90`, cumulative 38638028858 y H1d 38638028869 SUCCESS. PASS bilateral en alcance; prueba HTTP Plus no acredita editor MathLive.
+- SY-D-13 oficial `((((((((((1))))))))))` con diez niveles y resultado exacto `1`. Lite test parser/worker/reentrada SHA `cd388d38ac07eb6ab4eb64756fe75698cea8c117`, Plus test HTTP y reentrada SHA `c501ded032f31daadc1e61c6a4cefd8142d6e4d4`.
+- SY-D-13 CI Lite cumulative `38639245245`, H1d `38639245053`, build `38639245026`, científico E2E `38639245183` IN_PROGRESS; Plus cumulative `38639264207` y H1d `38639264059` QUEUED al consultar. Verificar logs SHA-matched y corregir si falla; siguiente fixture SY-D-14 `((2))` => 2. SG28/H2 OPEN y DIST multinodo BLOCKED. Sin cambios producción.
+
