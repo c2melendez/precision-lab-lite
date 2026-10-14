@@ -789,7 +789,19 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
     // "2^(1/2)/2"), se intenta igual una aproximación decimal vía
     // float() para que la pestaña "dec" de ResultPanel no quede
     // mostrando el mismo string simbólico que "sqrt".
-    const decimalApprox = !fraction ? (toDecimalApprox(raw) ?? undefined) : undefined;
+    // SY-N-31: very small exact rationals need a usable scientific decimal
+    // approximation as well as the preserved exact fraction. Avoid computing
+    // with unsafe integers or replacing the authoritative symbolic result.
+    let decimalApprox = !fraction ? (toDecimalApprox(raw) ?? undefined) : undefined;
+    if (fraction && /^-?\\d+\\/\\d+$/.test(raw)) {
+      const [numerator, denominator] = raw.split("/").map(Number);
+      if (Number.isSafeInteger(numerator) && Number.isSafeInteger(denominator) && denominator !== 0) {
+        const numeric = numerator / denominator;
+        if (Number.isFinite(numeric) && numeric !== 0 && Math.abs(numeric) < 1e-6) {
+          decimalApprox = numeric.toExponential(9);
+        }
+      }
+    }
 
     return {
       success: true,
