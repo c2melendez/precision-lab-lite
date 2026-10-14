@@ -923,6 +923,23 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(repeated.resultLatex).algebrite)).toBe("1/3000000");
   });
 
+  it("SY-D-03: empty parentheses must fail with an explicit syntax error", () => {
+    const row = rows["SY-D-03"];
+    expect(row.entrada).toBe("()");
+    expect(row.operacion).toBe("error");
+    let rejection: unknown;
+    try {
+      const parsed = parseExpression(row.entrada).algebrite;
+      evaluate(parsed);
+    } catch (error) {
+      rejection = error;
+    }
+    expect(rejection, "Empty parentheses must not be evaluated as a valid number").toBeDefined();
+    const diagnostic = rejection as { code?: unknown; message?: unknown };
+    expect(diagnostic.code).toBe(ErrorCode.PARSE_ERROR);
+    expect(String(diagnostic.message)).toMatch(/vac[ií]o|empty|par[eé]ntesis|parenthes|syntax|sintax|unexpected|expresi[oó]n/i);
+  });
+
   it("SY-D-02: unmatched closing parenthesis must report an explicit parse error", () => {
     const row = rows["SY-D-02"];
     expect(row.entrada).toBe("2+3)");
