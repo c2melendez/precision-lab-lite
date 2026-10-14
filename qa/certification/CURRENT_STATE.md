@@ -1,5 +1,12 @@
 # Current Certification State
 
+## SY-D-07 iniciado — 2026-10-14
+- SY-D-06 Lite fallo real de parser `[` corregido en `src/engine/parsing/normalize.ts`, SHA `824b1b2a5e4f7d9b2211ea9fdd93336f7396c9b9`; cumulative `38631750527` y build `38631750516` SUCCESS; E2E `38631750479` SUCCESS; H1d `38631750354` aún IN_PROGRESS al consultar. Plus SY-D-06 cumulative `38630792783` y H1d `38630793419` SUCCESS.
+- SY-D-07 caso oficial `\\{1+2\\}\\cdot3`, convención: 9 o error claro si se interpreta como conjunto. Lite regression publicada SHA `95039ce8779dbee05287da20ca650ad305e8c8e2`, Plus regresión HTTP directa SHA `f5ddee0542adff1d8767a8d5f246f38f2b3bf9a1`. No atribuir equivalencia MathLive a test HTTP.
+- Runs SY-D-07 Lite cumulative `38631951157`, H1d `38631951309`, build `38631951320`, E2E `38631951443`; Plus cumulative `38631959412` y H1d `38631959207`; QUEUED/IN_PROGRESS al consultar. Revisar resultados/logs por SHA y corregir antes de PASS; siguiente fixture SY-D-08.
+- SG28/H2 OPEN, DIST multinodo BLOCKED; sin producción.
+
+
 ## SY-D-06 parser fix; recertificación en curso — 2026-10-14
 - Plus SY-D-06 PASS alcance HTTP normalizado: commit `6c2cc5eff1db2ae586aff911a18bafcae8c9b183` cumulative `38630792783` SUCCESS, H1d `38630793419` SUCCESS. No implica prueba de MathLive con corchetes.
 - Lite commit test `4c4c2839a8a591e65d346dfd51e3fff8033a75ec`: cumulative `38630928056` FAILURE (1234 passed / 1 failed / 30 todo), causa PRODUCT parser: "Carácter no reconocido: [" en fixture SY-D-06, no solo harness. H1d `38630927771`, build `38630927849` y científico E2E `38630927995` SUCCESS.
