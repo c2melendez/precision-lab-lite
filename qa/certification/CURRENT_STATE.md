@@ -1,5 +1,11 @@
 # Current Certification State
 
+## 2026-10-14 — SY-N-05 PASS bilateral; SY-N-06 iniciado
+- SY-N-05 PASS bilateral en alcance probado: Lite SHA f7d70e08 cumulative 38545607246, H1d 38545607144 y build 38545607156 SUCCESS; Plus SHA ab3b8480 cumulative 38545615094 y H1d 38545615080 SUCCESS. Convención elegida para fuente LaTeX literal `1\\mathrm{e}3`: valor 1000; no implica aceptación genérica de notación e de backend.
+- SY-N-06 fixture oficial `0.1+0.2` -> `0.3`; rechazo explícito de artefacto `0.30000000000000004`. Pruebas añadidas: Lite `tests/syntax309SyE23.audit.test.ts` SHA a484378106a6e001a449b845f1beeebe5405da98 (parser, evaluación, worker, reentrada); Plus backend `backend/tests/test_syntax309_sye23.py` SHA 7833121280e1ec4e34e8e36f11e93f9d3b99e673 (exactitud SymPy, MathResponse HTTP, reentrada), frontend `frontend/src/__tests__/syntax309SyEFractions.audit.test.ts` SHA b0c920394ba950467b84b1a4cb1397d5c07de52e (entrada fuente y conversión).
+- Nuevos gates en SHA final: Lite cumulative 38546909027, H1d 38546908888, build 38546909337 IN_PROGRESS; Plus cumulative 38546925216 y H1d 38546925113 QUEUED a última consulta. SY-N-06 NO PASS sin logs/conclusiones. Próximo objetivo: revisar gates y corregir FAIL; luego SY-N-07. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED; producción sin cambios.
+
+
 ## 2026-10-14 — SY-N-04 PASS bilateral; SY-N-05 implementado y en CI
 - SY-N-04 PASS bilateral en alcance probado: Lite SHA 6bdc0605 cumulative 38544520290, H1d 38544519457, build 38544519535 SUCCESS; Plus SHA b6b6bf30 cumulative 38544537089, H1d 38544537082 SUCCESS. No acredita browser E2E completo.
 - SY-N-05 fuente original `1\\mathrm{e}3`, nota contractual permite 1000 o error claro. Se declara convención de aceptación 1000 únicamente para esa forma LaTeX exacta, sin habilitar `1e3` genérico en backend Plus. Código frontend Plus `frontend/src/components/NaturalMathField.tsx` SHA final `ab3b848046e74518cbc39a28270657564ef39302`; Lite `src/engine/parsing/normalize.ts` SHA final `f7d70e0838d657eaf7088b48a99ddec3472b59a1`. Se corrigió regex de escape a coincidencia de una barra LaTeX real.
