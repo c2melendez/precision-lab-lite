@@ -1,5 +1,12 @@
 # Current Certification State
 
+### SY-D-06 diagnóstico y corrección — 2026-10-14
+- Lite run 38630788898 FAILED en unit/parity por error de escape exclusivamente en oráculo TS: esperaba dos barras `\\\\cdot` frente a fixture oficial con una `\\cdot`; 1234 tests aprobados, 1 falló y 30 TODO. No evidencia de fallo del producto en ese log.
+- Corregida prueba Lite, commit `4c4c2839a8a591e65d346dfd51e3fff8033a75ec`, sin alterar lógica matemática. Nuevos gates de ese SHA: cumulative 38630928056, H1d 38630927771, build 38630927849, E2E 38630927995 inicialmente QUEUED.
+- Plus permanece en verificación con cumulative 38630792783 y H1d 38630793419 sobre commit 6c2cc5eff1db2ae586aff911a18bafcae8c9b183; consultar logs y conclusiones.
+- SY-D-06 permanece OPEN; criterios: suite parser/worker y reentrada Lite, valor/reentrada HTTP Plus (limitación explícita: no acredita editor Plus) y gates SHA-matched SUCCESS. SG28/H2 OPEN; DIST BLOCKED.
+
+
 ## SY-D-05 PASS acotado / SY-D-06 OPEN — 2026-10-14
 - SY-D-05 completó todas las corridas SHA-matched: Lite 7f607f463ae02f571c408f645092d97f9575e042 cumulative 38629857801, H1d 38629857566, build 38629857861, E2E científico 38629857766 SUCCESS; Plus f48762ac3cb214f8dba997b0f2872fc7b06864a5 cumulative 38629847054, H1d 38629846290 SUCCESS. Validación Plus acotada a HTTP, no a MathLive visual.
 - SY-D-06 oficial `[1+2]\\cdot3` = `9`: Lite test parser/worker/reentrada commit `7d96f224ac6d859cd12ab084da94be70e74def3e`; Plus test HTTP sobre expresión normalizada `(1+2)*3` y reentrada commit `6c2cc5eff1db2ae586aff911a18bafcae8c9b183`. No atribuir prueba de conversión MathLive de Plus al test HTTP.
