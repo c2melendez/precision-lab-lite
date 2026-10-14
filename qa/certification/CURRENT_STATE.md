@@ -1,5 +1,13 @@
 # Current Certification State
 
+## Actualización correctiva SY-N-14 — 2026-10-14
+- El primer Lite cumulative 38554589308 en SHA 52e213f2689cb2ecae328a3c89efefd15526c4b4 fue FAIL de ORÁCULO: la prueba esperaba una representación del fixture diferente a la fuente canónica real `\\left(\\sqrt{2}\\right)^{2}-2`. No modificar fixture, motor ni criterio de cero exacto.
+- Se corrigió la aserción en las pruebas Lite y Plus para conservar el texto original. Lite SHA técnico 7caaffdf3e47a133e50341ef13209ff9d0ccc53c; Plus SHA técnico final b974891c7a2510a2eaa2e15397c06b6c26771dc2.
+- Nuevos gates Lite cumulative 38554735293, H1d 38554735367 y build 38554735426; Plus cumulative 38554751691 y H1d 38554751942; en ejecución al último chequeo. SY-N-14 sigue OPEN hasta PASS verificable en SHA finales.
+### Próximo paso exacto
+Consultar jobs/logs de esos cinco runs, corregir regresiones confirmadas, no marcar PASS ni avanzar SY-N-15 sin acreditación de SY-N-14; después sincronizar evidencia y seguir el orden del fixture canónico.
+
+
 ## Estado vigente — SY-N-14 radical cuadrado menos dos — 2026-10-14
 - SY-N-13 PASS bilateral en alcance parser/worker Lite, conversor frontend Plus y HTTP backend Plus (no E2E navegador): Lite SHA fab802ed7c6c4560e454f8db1bd49f0570fee2b4, cumulative 38553998455, H1d 38553998459, build 38553998558 SUCCESS. Plus SHA fe8149bfb6f9e7bbcf0fb235b0dd6089f9d9017a, cumulative 38554004282, H1d 38554004355 SUCCESS.
 - SY-N-14 fixture original `(\\sqrt{2})^2-2`, operación valor, esperado `0` exacto; incorporadas pruebas de parser/evaluate/handler/reentrada Lite, conversor original Plus y HTTP MathResponse/reentrada Plus. Lite SHA técnico `52e213f2689cb2ecae328a3c89efefd15526c4b4`; Plus SHA técnico `76d2aceb5fba454acb42a83f27ddf8d318bfd6ea`.
