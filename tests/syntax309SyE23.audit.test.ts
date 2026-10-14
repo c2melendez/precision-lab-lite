@@ -746,4 +746,33 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
   });
 
+
+  it("SY-N-25: 170 factorial has finite magnitude and recovery", () => {
+    const row = rows["SY-N-25"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("170!");
+    const expected = Array.from({length: 170}, (_, i) => BigInt(i + 1)).reduce((p, n) => p * n, 1n).toString();
+    expect(expected.length).toBe(307);
+    const parsed = parseExpression(row.entrada).algebrite;
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-25",expressionAlgebrite:parsed}});
+    const response = scope.postMessage.mock.calls[0][0];
+    expect(response.success, JSON.stringify(response)).toBe(true);
+    expect(response.requestId).toBe("SY-N-25");
+    const rendered = String(response.resultLatex);
+    expect(rendered).not.toMatch(/Infinity|NaN|undefined/);
+    if (rendered === expected) {
+      expect(rendered.length).toBe(307);
+    } else {
+      const approx = Number(response.decimalApprox ?? rendered.replace(/\\times10\^\{(\d+)\}/, "e$1"));
+      expect(Number.isFinite(approx), JSON.stringify(response)).toBe(true);
+      expect(approx / 1e306).toBeCloseTo(7.257415615, 7);
+    }
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-25-recovery",expressionAlgebrite:parseExpression("2+3").algebrite}});
+    const recovered = scope.postMessage.mock.calls[0][0];
+    expect(recovered.success).toBe(true);
+    expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
+  });
+
 });
