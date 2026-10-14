@@ -391,4 +391,28 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(repeated.resultLatex).toBe("1005");
   });
 
+  it("SY-N-11: exact one third times three is one through worker and reentry", () => {
+    const row = rows["SY-N-11"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("\\frac{1}{3}\\times3");
+    expect(row.esperado).toBe("1");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("1");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-11",expressionAlgebrite:parsed}});
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-N-11");
+    expect(result.resultLatex).toBe("1");
+    const returned = parseExpression(result.resultLatex).algebrite;
+    expect(evaluate(returned)).toBe("1");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-11-reentry",expressionAlgebrite:returned}});
+    const repeated = scope.postMessage.mock.calls[0][0];
+    expect(repeated.success).toBe(true);
+    expect(repeated.requestId).toBe("SY-N-11-reentry");
+    expect(repeated.resultLatex).toBe("1");
+  });
+
 });
