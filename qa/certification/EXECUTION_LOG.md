@@ -4120,3 +4120,11 @@ Recuperar nuevos runs en ramas canónicas y jobs/logs del SHA técnico SY-N-23. 
 - SY-N-23 OPEN. Syntax309 global OPEN, SG28/H2 OPEN, DIST BLOCKED; no production modifications.
 ### Próximo paso exacto
 Query Lite workflows for SHA 62e6f770 and Plus workflows for SHA d40827e9; inspect cumulative test logs and H1d plus build Lite. If any FAIL, correct layer and rerun. Certify only after bilateral gates for final SHAs and proceed with next official syntax309 case.
+
+## Estado vigente — SY-N-24 factorial cien — 2026-10-14
+- SY-N-23 PASS bilateral alcance probado: Lite SHA 62e6f770321199cde6d88ebe56ae08086e964097 cumulative 38582347064, H1d 38582347013, build 38582347464 SUCCESS. Plus SHA d40827e93828e4735738803a9e4bde23e55018e3 cumulative 38582029381, H1d 38582029125, SG28 backend 38582029299 SUCCESS. La convención documentada es error claro de dominio para factorial no entero, sin implementar Gamma.
+- SY-N-24 fixture `100!` ~9.332621544e157 y entero exacto de 158 dígitos. Regresiones publicadas Lite tests/syntax309SyE23.audit.test.ts SHA final bc1c743fef7abaad3c07114fbccaf188a3033983 (oracle BigInt tipado, worker, recuperación), Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts SHA 1165415158d4514089e2b23fd19131bdfb200487 y backend/tests/test_syntax309_sye23.py SHA final 97b16833dac40ed93131a45915bc44b60b7da121 (HTTP MathResponse, precisión y recuperación).
+- Corridas CI iniciales de Plus SHA 97b16833 cumulative 38586185354 y H1d 38586184587; Lite corridas SHA anterior e5121d52 cumulative 38586157827, H1d 38586157853, build 38586157834; confirmar corridas finales Lite SHA bc1c743f. SY-N-24 OPEN hasta gates finales SUCCESS y revisión de oráculo.
+- Syntax309 global OPEN; SG28/H2 OPEN, DIST multinodo BLOCKED; sin despliegue producción ni E2E de navegador SY-N-24 acreditado.
+### Próximo paso exacto
+Consultar CI del SHA final Lite bc1c743f y Plus 97b16833. Diagnosticar FAIL en tests de factorial de 100 y corregir capa adecuada sin aceptar Infinity/NaN ni fingir exactitud. Tras cierre bilateral iniciar SY-N-25 `170!`.
