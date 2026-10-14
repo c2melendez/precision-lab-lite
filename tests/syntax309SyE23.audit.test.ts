@@ -553,4 +553,28 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(repeat.resultLatex).toBe(expected);
   });
 
+  it("SY-N-17: integer above JS safe limit retains all digits through worker and reentry", () => {
+    const row = rows["SY-N-17"];
+    const expected = "9007199254740993";
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe(expected);
+    expect(row.esperado).toBe(expected);
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe(expected);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-17",expressionAlgebrite:parsed}});
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const response = scope.postMessage.mock.calls[0][0];
+    expect(response.success, JSON.stringify(response)).toBe(true);
+    expect(response.requestId).toBe("SY-N-17");
+    expect(response.resultLatex).toBe(expected);
+    const again = parseExpression(response.resultLatex).algebrite;
+    expect(evaluate(again)).toBe(expected);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-17-reentry",expressionAlgebrite:again}});
+    const repeat = scope.postMessage.mock.calls[0][0];
+    expect(repeat.success).toBe(true);
+    expect(repeat.resultLatex).toBe(expected);
+  });
+
 });
