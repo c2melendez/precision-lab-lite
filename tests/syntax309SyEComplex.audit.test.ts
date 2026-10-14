@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import fixture from "../qa/certification/syntax309_cases.jsonl?raw";
 import { parseExpression } from "../src/engine/parsing";
-import { evaluate } from "../src/engine/algebriteClient";
+import { evaluate, toLatex } from "../src/engine/algebriteClient";
 import { compileNumeric } from "../src/engine/numericFallback";
 
 const rows = Object.fromEntries(fixture.trim().split("\n").map(line => {
@@ -86,6 +86,25 @@ describe("Syntax309 SY-E-17/18 principal complex powers — original Lite source
     console.info("SY-E-18_WORKER_ROUNDTRIP", JSON.stringify({ raw, result, returned, roundtrip: evaluate(returned) }));
     expect(evaluate("(" + returned + ")-(" + raw + ")"), JSON.stringify({ result, returned })).toBe("0");
     // The original power is never substituted by cbrt() or root().
+  });
+
+  it("explicit odd real roots remain multiplicative atoms after a coefficient", () => {
+    for (const [source, expected] of [
+      ["2\\sqrt[3]{-1}", -2],
+      ["3\\sqrt[3]{-8}", -6],
+      ["2\\sqrt[3]{(-2)^{3}}", -4],
+    ] as const) {
+      expect(Number(evaluate(parseExpression(source).algebrite)), source).toBe(expected);
+    }
+  });
+  it("numeric complex power output retains its branch on reentry", () => {
+    for (const source of ["2*(-1)^(1/3)", "(-1)^(2/3)"]) {
+      const raw = evaluate(source);
+      const latex = toLatex(raw);
+      expect(latex).toMatch(/i/);
+      const returned = parseExpression(latex).algebrite;
+      expect(evaluate("(" + returned + ")-(" + raw + ")"), latex).toBe("0");
+    }
   });
 
 });

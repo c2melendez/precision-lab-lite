@@ -166,9 +166,32 @@ export function symbolicLimit(expressionAlgebrite: string, variable: string, poi
  * motivo, se devuelve el string original de Algebrite como fallback: es
  * mejor mostrar la sintaxis nativa que un campo vacío.
  */
+/**
+ * A numerical principal power of a negative base must not be printed as
+ * an unqualified odd real root: that changes its branch on reentry.
+ * Keep exact rectangular components when both are finite real numbers.
+ */
+function prepareComplexPowerForDisplay(result: string): string {
+  if (!/\(-\d+(?:\.\d+)?\)\^\(\d+\/\d+\)/.test(result)) return result;
+  try {
+    const re: string = Algebrite.run("real(" + result + ")");
+    const im: string = Algebrite.run("imag(" + result + ")");
+    const reNumber = compileNumeric(re, "__unused__")(0);
+    const imNumber = compileNumeric(im, "__unused__")(0);
+    if (!Number.isFinite(reNumber) || !Number.isFinite(imNumber) || imNumber === 0) return result;
+    const rectangular: string = Algebrite.run("(" + re + ")+i*(" + im + ")");
+    return typeof rectangular === "string" && rectangular.length > 0 && !/stop|Stop/.test(rectangular)
+      ? rectangular : result;
+  } catch {
+    // Symbolic/free-variable cases keep their existing rendering.
+    return result;
+  }
+}
+
 export function toLatex(algebriteResult: string): string {
   try {
-    const latex: string = Algebrite.run(`printlatex(quote(${algebriteResult}))`);
+    const displayResult = prepareComplexPowerForDisplay(algebriteResult);
+    const latex: string = Algebrite.run(`printlatex(quote(${displayResult}))`);
     if (typeof latex !== "string" || latex.length === 0 || /stop|Stop/.test(latex)) {
       return algebriteResult;
     }

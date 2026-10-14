@@ -490,9 +490,9 @@ function replaceNthRootOnce(input: string): string {
 
   let replacement: string;
   if (numericIndex !== null && numericIndex % 2 === 1 && numericNegative) {
-    replacement = `-((${numericNegative[1]})^(1/(${index})))`;
+    replacement = "(" + `-((${numericNegative[1]})^(1/(${index})))` + ")";
   } else if (numericIndex !== null && numericIndex % 2 === 1 && realNegativePower) {
-    replacement = `-(((${negativeOddPower![1]})^(${negativeOddPower![2]}))^(1/(${index})))`;
+    replacement = "(" + `-(((${negativeOddPower![1]})^(${negativeOddPower![2]}))^(1/(${index})))` + ")";
   } else {
     replacement = `((${radicand})^(1/(${index})))`;
   }
