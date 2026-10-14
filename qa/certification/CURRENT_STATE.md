@@ -1,5 +1,12 @@
 # Current Certification State
 
+## SY-D-10 PASS bilateral / SY-D-11 OPEN — 2026-10-14
+- SY-D-10 Lite SHA `7dda83962b397d86ad7e85be4486b5232c5e6185`: cumulative 38635821397, H1d 38635821463, build 38635821459, científico E2E 38635821434 SUCCESS. Plus SHA `21b8745c576dabc2e1f20c37b11a95cba68b57b7`: cumulative 38635836221, H1d 38635835960 SUCCESS. PASS en alcance de los gates; Plus HTTP no prueba editor visual.
+- SY-D-11 fixture oficial `(1+2)3` => `9`: prueba Lite parser/worker/reentrada publicada SHA `ef8b95f669263e0fa0d9a52216dd08df58211269`, Plus prueba HTTP literal y reentrada SHA `b3a15a95325d6a5cfa70cbc41b02f69dd29e5486`.
+- Gates de ese SHA: Lite cumulative 38636826030, H1d 38636826128, build 38636826055, científico E2E 38636826048 (IN_PROGRESS); Plus cumulative 38636845507 (QUEUED), H1d 38636845539 (IN_PROGRESS). Verificar resultados/logs y corregir fallos antes de cerrar SY-D-11. Próximo fixture SY-D-12 `3(1+2)` => `9`.
+- SG28/H2 OPEN, DIST multinodo BLOCKED, no producción.
+
+
 ## SY-D-09 PASS bilateral / SY-D-10 OPEN — 2026-10-14
 - SY-D-09: Lite SHA `d3be10bd79cd33ff365bd72890d1cfb7867de9eb`, cumulative `38635093630`, H1d `38635093579`, build `38635093561`, E2E científico `38635093586` SUCCESS. Plus SHA `764fc34c7289ee9d8dd17e521912ee8d2a6c8584`, cumulative `38635112112` y H1d `38635111842` SUCCESS. PASS en alcance; no atribuir editor visual Plus a test HTTP.
 - SY-D-10 oficial `(1+2)(3+4)` => `21`, multiplicación implícita sin perder agrupación. Lite prueba parser/worker/reentrada commit `7dda83962b397d86ad7e85be4486b5232c5e6185`; Plus HTTP literal/reentrada commit `21b8745c576dabc2e1f20c37b11a95cba68b57b7`.
