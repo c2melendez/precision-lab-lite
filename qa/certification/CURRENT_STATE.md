@@ -1,5 +1,11 @@
 # Current Certification State
 
+## 2026-10-14 — SY-N-07 PASS bilateral y SY-N-08 implementado
+- SY-N-07 PASS bilateral en alcance probado: Lite SHA 3a9e6d5d cumulative 38547895810, H1d 38547895813 y build 38547895838 SUCCESS; Plus SHA 01d51cf7 cumulative 38547914335 y H1d 38547914473 SUCCESS. No equivale a E2E navegador.
+- SY-N-08 fixture oficial `1-0.9` -> `0.1`: tests permanentes en Lite tests/syntax309SyE23.audit.test.ts SHA e84b3238be8bad0112db60188696f8499514ebe3 (parser/worker/reentrada), Plus backend/tests/test_syntax309_sye23.py SHA 8b912a9a7c1b65088ae5104d8d21185863b2229a (HTTP MathResponse, racional exacto y reentrada), Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts SHA f16f1147c2e7276741b5ec952f1de1f695291102 (traducción literal). Se comprueba ausencia del artefacto 0.09999999999999998.
+- GitHub Actions iniciadas para SHA finales: Lite cumulative 38549423591, H1d 38549423562 y build 38549423495 IN_PROGRESS; Plus cumulative 38549439711/H1d 38549439475 QUEUED. SY-N-08 OPEN hasta revisar resultados y corregir cualquier FAIL. Siguiente caso SY-N-09 `4.35\\times100` -> `435`. Syntax309 OPEN, H2/SG28 OPEN, DIST multinodo BLOCKED; producción sin cambios.
+
+
 ## 2026-10-14 — SY-N-06 PASS bilateral; SY-N-07 en CI
 - SY-N-06 PASS bilateral para `0.1+0.2` -> `0.3`, sin artefacto binario; Lite SHA a4843781 cumulative 38546909027/H1d 38546908888/build 38546909337 SUCCESS; Plus SHA b0c92039 cumulative 38546925216/H1d 38546925113 SUCCESS. Evidencia acotada al alcance de las pruebas; Syntax309 global OPEN.
 - SY-N-07 fixture oficial `0.1\\times3` -> `0.3`. Pruebas permanentes Lite tests/syntax309SyE23.audit.test.ts commit 3a9e6d5da349c158d70f42c9f5aa49023739a605 (fuente, parser, worker, reentrada sin floating artifact); Plus backend/tests/test_syntax309_sye23.py commit 54641cba2e48336361aec55911d46b8423a1a653 (traducción explícita a 0.1*3, HTTP MathResponse, racional exacto y reentrada); Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts commit 01d51cf77064b9972c76a8c1eb054a79d4cbb467 (traducción LaTeX). No atribuir browser E2E a estas pruebas.
