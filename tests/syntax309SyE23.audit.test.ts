@@ -1332,4 +1332,23 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(repeated.resultLatex).toBe("3");
   });
 
+  it("SY-U-08: Unicode middle dot multiplication yields exact twelve and reenters", () => {
+    const row = rows["SY-U-08"];
+    expect(row.entrada).toBe("3·4");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("12");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("12");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-08",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.resultLatex).toBe("12");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-08-reentry",expressionAlgebrite:parseExpression(result.resultLatex).algebrite}});
+    const again = scope.postMessage.mock.calls[0][0];
+    expect(again.success).toBe(true);
+    expect(again.resultLatex).toBe("12");
+  });
+
 });
