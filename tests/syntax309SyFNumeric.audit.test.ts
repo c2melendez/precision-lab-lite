@@ -301,4 +301,10 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(Number.isFinite(numeric), "SY-F-36 parsed=" + parsed).toBe(true);
     expect(numeric).toBeCloseTo(expected, 9);
   });
+  it("SY-F-37: original absolute-value LaTeX of negative three is three", () => {
+    expect(byId["SY-F-37"].operacion).toBe("valor");
+    const parsed = parseExpression(byId["SY-F-37"].entrada).algebrite;
+    const actual = compileNumeric(parsed, "__unused__")(0);
+    expect(actual, "SY-F-37 parsed=" + parsed).toBeCloseTo(3, 9);
+  });
 });
