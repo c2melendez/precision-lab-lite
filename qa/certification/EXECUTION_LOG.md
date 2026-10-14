@@ -3783,3 +3783,13 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - Corridas disparadas: Lite cumulative 38528086111, H1d 38528086106, build 38528086116; Plus SHA final cumulative 38528091466, H1d 38528091438. En la última comprobación estaban queued/in_progress: NO PASS todavía.
 - SY-E-26 IMPLEMENTED, pendiente corroboración de gates, jobs/logs y correcciones si hay rojo. Siguiente caso solo tras cierre: localizar SY-E-27 en qa/certification/syntax309_cases.jsonl y aplicar contrato correspondiente.
 - Syntax309 global OPEN; SG28/H2 OPEN; DIST multinodo BLOCKED por falta de evidencia independiente. Sin cambios de producción.
+
+
+## Estado vigente — SY-E-27 fracción impropia exacta/decimal — 2026-10-14
+- Rama canónica qa/syntax-audit-in625-a1 en ambos repositorios. SY-E-26 cerrado: Lite cumulative 38528086111/H1d 38528086106/build 38528086116 SUCCESS, SHA 78e425d11ae44024dd8cc3f7b16810e91b444023; Plus cumulative 38528091466/H1d 38528091438 SUCCESS, SHA 001dc68a966bd1319b73c7fff95bcfc496cc4e3d.
+- Fixture original SY-E-27: \\frac{22}{7}, operacion=valor, esperado \\frac{22}{7}\\approx3.142857143. \\approx es anotación contractual, no debe estar en el result_latex exacto.
+- Lite tests/syntax309SyE23.audit.test.ts SHA f4b7c3bfcab49a806e2409dae305650c3bad0a32: parser original, racional exacto 22/7, aproximación 22/7, handler worker/LaTeX/reentrada.
+- Plus backend/tests/test_syntax309_sye23.py SHA 5c71dc8c6aade0d91c6e785bf1ee556ee9df1610: MathResponse HTTP real con input backend 22/7, exactitud, aproximación, latex exacto y reentrada. Se corrigió el oráculo del test: result_latex es \\frac{22}{7}, no incluye texto de aproximación del fixture.
+- Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts SHA 0892d634bde720ee7e88962e61c0d1140e18a734: conversión de LaTeX fuente, sin acreditar interacción MathLive nativa.
+- Corridas por SHA técnico: Lite build 38528496900 SUCCESS, cumulative 38528496932 y H1d 38528496898 pendientes en última consulta; Plus último SHA cumulative 38528558739, H1d 38528558761 pendientes. SY-E-27 IMPLEMENTED, sin PASS bilateral hasta comprobar conclusiones finales del SHA correcto y corregir fallos si existen.
+- Siguiente objetivo tras cerrar SY-E-27: SY-E-28, \\frac{1}{0} exige error claro de división entre cero. No confundir E2E browser con pruebas parser/handler/HTTP. Syntax309 OPEN, SG28 H2 OPEN, DIST multinodo BLOCKED. Producción intacta.
