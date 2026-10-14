@@ -4370,3 +4370,9 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - SY-D-09 oficial `\\left(\\frac{1}{2}\\right)^{2}` => `\\frac{1}{4}`. Lite prueba exacta parser/worker/reentrada commit `d3be10bd79cd33ff365bd72890d1cfb7867de9eb`; Plus prueba HTTP con normalización `(1/2)**2`, `MathResponse` y reentrada exacta commit `764fc34c7289ee9d8dd17e521912ee8d2a6c8584`. Plus no acredita canal visual MathLive.
 - SY-D-09 CI Lite cumulative `38635093630`, científico E2E `38635093586`, build `38635093561`, H1d `38635093579` IN_PROGRESS; Plus cumulative `38635112112`, H1d `38635111842` QUEUED. Verificar conclusiones SHA-matched y logs antes de cerrar. Siguiente fixture SY-D-10: `(1+2)(3+4)` => 21. SG28/H2 OPEN, DIST multinodo BLOCKED; sin producción.
 
+
+## SY-D-09 PASS bilateral / SY-D-10 OPEN — 2026-10-14
+- SY-D-09: Lite SHA `d3be10bd79cd33ff365bd72890d1cfb7867de9eb`, cumulative `38635093630`, H1d `38635093579`, build `38635093561`, E2E científico `38635093586` SUCCESS. Plus SHA `764fc34c7289ee9d8dd17e521912ee8d2a6c8584`, cumulative `38635112112` y H1d `38635111842` SUCCESS. PASS en alcance; no atribuir editor visual Plus a test HTTP.
+- SY-D-10 oficial `(1+2)(3+4)` => `21`, multiplicación implícita sin perder agrupación. Lite prueba parser/worker/reentrada commit `7dda83962b397d86ad7e85be4486b5232c5e6185`; Plus HTTP literal/reentrada commit `21b8745c576dabc2e1f20c37b11a95cba68b57b7`.
+- Corridas SY-D-10 Lite cumulative `38635821397`, build `38635821459`, E2E `38635821434`, H1d `38635821463` IN_PROGRESS; Plus H1d `38635835960` y cumulative `38635836221` QUEUED. Revisar logs SHA-matched antes de cerrar; próximo SY-D-11 `(1+2)3` => 9. SG28/H2 OPEN y DIST multinodo BLOCKED; sin producción.
+
