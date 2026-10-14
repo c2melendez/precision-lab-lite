@@ -4223,3 +4223,10 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - Nuevos gates Lite SHA 05963ceb: cumulative 38600336771, H1d 38600336758, build 38600336822 IN_PROGRESS al consultar. Plus SY-N-30 frontend SHA 56784bae47c49417790106e66c8467363dc09f12 cumulative 38600087126, H1d 38600087299 IN_PROGRESS al consultar.
 - SY-N-30 OPEN hasta gates finales y cobertura HTTP Plus. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED.
 
+
+## SY-N-30 Plus corrective action — 2026-10-14
+- Lite SHA 05963ceb2c0588496694971d31b26542fc84bbf8 cumulative 38600336771, H1d 38600336758, build 38600336822 all SUCCESS. Scope parser and regression.
+- Plus SHA 56784bae47c49417790106e66c8467363dc09f12 cumulative 38600087126 FAILURE: frontend SY-N-30 translated 1{,}000+1 to 1.000+1, which would compute 2 rather than 1001; backend job SUCCESS but was not a backend SY-N-30 fixture gate. PRODUCT semantic conversion issue.
+- Plus src/components/NaturalMathField.tsx correction SHA 54725db9880b4060d397878ecafc85f0a38efbfe rejects locale-ambiguous grouping; test strengthened SHA af2f5041f16e37a41647f5d730dc1d2c28d3418a to require explicit separator diagnostic. Final SHA new cumulative 38600895675 and H1d 38600896039 initially QUEUED; do not declare PASS until verified.
+- Risk: both motors reject {,} with a three-digit fractional tail absent a declared locale; future locale policy must distinguish 1{,}000 explicitly. SY-N-30 remains OPEN until Plus gates and backend HTTP/reentry coverage are verified. Next official fixture SY-N-31 is 1/3000000 in scientific notation.
+
