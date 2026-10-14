@@ -4090,3 +4090,11 @@ Verificar conclusiones y logs de cinco gates, diagnosticar FAIL, corregir y sinc
 ### Próximo paso exacto
 Consultar conclusión, jobs y logs de las cinco corridas citadas. Si FAIL, clasificar/corregir producto, harness u oráculo y repetir gates. Si PASS bilateral, cerrar SY-N-21 en alcance probado e iniciar SY-N-22 `(-1)!` => error claro de dominio sin excepción no controlada.
 
+
+## Estado vigente — SY-N-22 factorial negativo — 2026-10-14
+- SY-N-21 PASS bilateral en alcance probado: Lite SHA b3e8a84ab7dabaae02d86dac9bdce2e176ef7a56 gates cumulative 38568932445, H1d 38568932439, build 38568932432 SUCCESS; Plus SHA 3f4849747515497f914a3ccce9ae923060df8291 cumulative 38568949523 y H1d 38568949591 SUCCESS.
+- SY-N-22 fixture oficial `(-1)!` => error claro de factorial no definido. Regresiones técnicas publicadas Lite tests/syntax309SyE23.audit.test.ts SHA 50dd39ffa478c6aec4918a16485503578896813a, validación de error DOMAIN_ERROR/recovery worker; Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts SHA f6cb692a3b0a9efd7ae96fa678b36c8bf342eb40, conservación del operando negativo; Plus backend/tests/test_syntax309_sye23.py SHA final 06bcc8e4749cc271d95d65bce07586595b989221, contrato HTTP MathResponse y posterior 2+3.
+- Gates automáticos del SHA final: Lite cumulative 38570548934, H1d 38570548996, build 38570548943; Plus cumulative 38570563810 y H1d 38570563960. En ejecución al primer chequeo. No atribuir PASS antes de conclusión ni usar corridas intermedias Plus del SHA frontend para certificar backend.
+- SY-N-22 OPEN mientras CI no concluya. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. Estas suites no acreditan navegador MathLive E2E ni coordinación multinodo. Sin cambios en producción.
+### Próximo paso exacto
+Verificar las cinco conclusiones, jobs/logs y SHA anteriores; investigar FAIL en capa producto/harness/oráculo, corregir y volver a ejecutar. Tras PASS bilateral de SY-N-22 iniciar el siguiente caso oficial de Syntax309 en secuencia, identificándolo en syntax309_cases.jsonl.
