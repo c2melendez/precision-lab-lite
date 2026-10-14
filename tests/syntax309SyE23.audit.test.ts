@@ -512,4 +512,20 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(repeated.resultLatex).toBe(row.esperado);
   });
 
+  it("SY-N-15: keeps 10^20 plus one as an exact integer across reentry", () => {
+    const row = rows["SY-N-15"];
+    const expected = "100000000000000000001";
+    expect(row.entrada).toBe("10^{20}+1");
+    expect(row.esperado).toBe(expected);
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe(expected);
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: { type: "evaluate", requestId: "SY-N-15", expressionAlgebrite: parsed } });
+    const reply = scope.postMessage.mock.calls[0][0];
+    expect(reply.success).toBe(true);
+    expect(reply.resultLatex).toBe(expected);
+    const again = parseExpression(reply.resultLatex).algebrite;
+    expect(evaluate(again)).toBe(expected);
+  });
+
 });
