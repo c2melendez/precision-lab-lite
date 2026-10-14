@@ -1119,4 +1119,23 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(repeated.resultLatex).algebrite)).toBe("9");
   });
 
+  it("SY-D-12: numeric literal next to grouped factor multiplies to nine and reenters", () => {
+    const row = rows["SY-D-12"];
+    expect(row.entrada).toBe("3(1+2)");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("9");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("9");
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: { type: "evaluate", requestId: "SY-D-12", expressionAlgebrite: parsed } });
+    const reply = scope.postMessage.mock.calls[0][0];
+    expect(reply.success, JSON.stringify(reply)).toBe(true);
+    expect(evaluate(parseExpression(reply.resultLatex).algebrite)).toBe("9");
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: { type: "evaluate", requestId: "SY-D-12-reentry", expressionAlgebrite: parseExpression(reply.resultLatex).algebrite } });
+    const repeated = scope.postMessage.mock.calls[0][0];
+    expect(repeated.success).toBe(true);
+    expect(evaluate(parseExpression(repeated.resultLatex).algebrite)).toBe("9");
+  });
+
 });
