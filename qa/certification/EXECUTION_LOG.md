@@ -1,5 +1,11 @@
 # Certification Execution Log
 
+## 2026-10-14 — SY-N-01 reparación del oráculo heredado / inicio SY-N-02
+- Plus cumulative 38542476081 SHA 7f6c8bfc: FAILURE por oráculo antiguo backend/tests/test_evaluate.py::test_invalid_decimal_or_scientific_notation[.5] que aún exigía rechazar un decimal válido; 1086 PASS, 1 FAIL, 1 XFAIL. Plus H1d 38542475979 SUCCESS. Se conserva rechazo explícito a 1e5, foo.bar y 5.__class__; prueba heredada corregida en commit 6201e6b2e6bd2c6b62054a6c5352b1168cfb1aa4.
+- SY-N-02 fixture oficial 5. -> 5: Plus backend/app/services/parsing.py permite un punto final numérico acotado, commit 5fdea04fc4b8085fe2a7183dae673a64288782b6; backend/tests/test_syntax309_sye23.py verifica MathResponse HTTP, resultado exacto y reentrada, commit 8fb412a5cc5fdc0862577c02e6c610bb4b47c4c4. Lite tests/syntax309SyE23.audit.test.ts agrega parser, evaluación, worker y reentrada en abda9af5f759eb9b50e09243549a48864d57ca50.
+- Nuevos gates Plus SHA 8fb412a5: cumulative 38543064130/H1d 38543064336 IN_PROGRESS; Lite SHA abda9af5: cumulative 38543092002/H1d 38543091898/build 38543091905 QUEUED al consultar. NO declarar SY-N-01 o SY-N-02 PASS bilateral hasta conclusiones y logs del SHA respectivo. Próximo: verificar gates, corregir rojos; luego fixture SY-N-03. Syntax309 OPEN; SG28/H2 OPEN, DIST multinodo BLOCKED; producción intacta.
+
+
 ## 2026-10-14 — SY-N-01 diagnóstico CI y reparación regex Plus
 - Rama canónica bilateral `qa/syntax-audit-in625-a1`. Plus cumulative `38539952231` (SHA `ef9fd4475f2cbc7ead92921a898e90d9c7964479`): FAILURE del backend, 1086 PASS, 1 FAIL (`tests/test_syntax309_sye23.py::test_syn01_leading_decimal_http_and_reentry`), 1 XFAIL, cobertura 86.63%; frontend PASS. Causa de producto: en `backend/app/services/parsing.py`, la regex raw de normalización usa `\\.` y `\\d` en lugar de `\.` y `\d`; no transforma `.5` a `0.5`. No atribuible a la aproximación numérica.
 - Corrección técnica Plus publicada: `7f6c8bfc1fc0b74ce6d1e3e48a098eb69fd51de5`, regex acotada `(?<![A-Za-z0-9_.])\.(?=\d)`, sin admitir `foo.bar`; conserva test HTTP y validación MathResponse.
