@@ -78,4 +78,17 @@ describe("Syntax309 SY-E initial exponent witnesses", () => {
     // This finite real-domain witness does not certify complex branches.
   });
 
+  it("SY-E-07: decimal exponent matches square root on nonnegative reals", () => {
+    const row = byId["SY-E-07"];
+    expect(row.operacion).toBe("equivalente");
+    expect(row.entrada).toBe("x^{0.5}");
+    expect(row.esperado).toBe("\\sqrt{x}");
+    const power = compileNumeric(parseExpression(row.entrada).algebrite, "x");
+    const root = compileNumeric(parseExpression(row.esperado).algebrite, "x");
+    for (const [x, expected] of [[0, 0], [1 / 16, 0.25], [0.25, 0.5], [1, 1], [4, 2], [9, 3], [16, 4], [100, 10]]) {
+      expect(power(x), "decimal exponent at x=" + x).toBeCloseTo(expected, 12);
+      expect(root(x), "square root at x=" + x).toBeCloseTo(expected, 12);
+    }
+  });
+
 });
