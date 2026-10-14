@@ -1,5 +1,11 @@
 # Current Certification State
 
+## 2026-10-14 — SY-N-03 PASS bilateral y SY-N-04 tests publicados
+- SY-N-03 fixture 00012 -> 12: Plus SHA 7dcd5a9a cumulative 38543805176 SUCCESS, H1d 38543805075 SUCCESS; Lite SHA 2b70ab72 cumulative 38543760772, H1d 38543760831 y build 38543760788 SUCCESS. PASS bilateral dentro del alcance parser/worker/HTTP; no sustituye browser E2E.
+- Siguiente fixture oficial SY-N-04: `1.2\\times10^{3}` -> 1200. Prueba Lite parser/worker/reentrada publicada SHA 6bdc060501606071cc3b47d4e84b810d54f44d7a; Plus frontend traducción original LaTeX SHA 704cf8a3419db3bcf39742908d2e5bb7d8fb790b y backend HTTP MathResponse exacto/reentrada SHA b6b6bf30896e3fd0f71517688d035de4b11ca6b4.
+- CI nuevo: Lite cumulative 38544520290/build 38544519535/H1d 38544519457 IN_PROGRESS; Plus cumulative 38544537089/H1d 38544537082 QUEUED al consultar (SHA b6b6bf30). SY-N-04 PENDIENTE de evidencia del nuevo SHA. Si falla, diagnosticar capa y corregir; si PASS, continuar SY-N-05. No declarar Syntax309 global cerrado; SG28 H2 OPEN y DIST multinodo BLOCKED. No producción.
+
+
 ## 2026-10-14 — SY-N-02 cerrado y SY-N-03 implementado (CI pendiente)
 - SY-N-01 y SY-N-02: PASS bilateral en alcance probado. Plus SHA 8fb412a5: cumulative 38543064130 SUCCESS, H1d 38543064336 SUCCESS; Lite SHA abda9af5: cumulative 38543092002 SUCCESS, H1d 38543091898 SUCCESS, build 38543091905 SUCCESS. No equivale a certificación browser real ni a cierre global Syntax309.
 - Siguiente fixture SY-N-03 original `00012`, resultado `12`. Lite prueba de parser/worker/reentrada commit `2b70ab72a302a184c74541399714b6bbde411c84`; Plus prueba HTTP MathResponse exacto y reentrada `67fe5ad921db5dd71b421d373ef449eaad8cefa6`, corrección producto de entero con ceros iniciales `backend/app/services/parsing.py` commit `7dcd5a9a1634948f8dacba795fedbaa867b4d876`. Normalización Plus limitada a literal entero completo, evita tocar identificadores u otras sintaxis.
