@@ -63,4 +63,19 @@ describe("Syntax309 SY-E initial exponent witnesses", () => {
     expect(compileNumeric(nested, "__unused__")(0)).toBe(512);
     expect(compileNumeric(grouped, "__unused__")(0)).toBe(64);
   });
+  it("SY-E-06: fractional exponent matches square root on nonnegative reals", () => {
+    const row = byId["SY-E-06"];
+    expect(row.operacion).toBe("equivalente");
+    expect(row.entrada).toBe("x^{\\frac{1}{2}}");
+    expect(row.esperado).toBe("\\sqrt{x}");
+    const power = compileNumeric(parseExpression(row.entrada).algebrite, "x");
+    const root = compileNumeric(parseExpression(row.esperado).algebrite, "x");
+    // Independent known values, including zero and fractional bases.
+    for (const [x, expected] of [[0, 0], [1 / 16, 0.25], [0.25, 0.5], [1, 1], [4, 2], [9, 3], [16, 4], [100, 10]]) {
+      expect(power(x), "fractional exponent at x=" + x).toBeCloseTo(expected, 12);
+      expect(root(x), "square root at x=" + x).toBeCloseTo(expected, 12);
+    }
+    // This finite real-domain witness does not certify complex branches.
+  });
+
 });
