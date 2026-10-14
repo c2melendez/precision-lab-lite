@@ -39,6 +39,11 @@ const MAY_NEED_FLOAT = /\b(sinh|cosh|tanh|asinh|acosh|atanh|sign)\(/;
 /** Evalúa/simplifica una expresión. Lanza AppError normalizado en caso de fallo. */
 export function evaluate(expressionLatex: string): string {
   try {
+    // SY-E-29: preserve the original 0/0 indeterminate form before CAS evaluation
+    // loses its provenance. Grouping parentheses do not change literal zero.
+    if (/^0\/0$/.test(expressionLatex.replace(/[\s()]/g, ""))) {
+      throw toAppError(ErrorCode.DOMAIN_ERROR, "Forma indeterminada: 0/0 no está definida.");
+    }
     // IN625 A2: Algebrite no evalúa floor()/ceiling() de forma fiable.
     // Para expresiones puramente numéricas que usen estas funciones,
     // reutilizamos el evaluador numérico propio. Si hay variables libres
