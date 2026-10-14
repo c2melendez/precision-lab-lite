@@ -3542,3 +3542,28 @@ Esta sección prevalece sobre las fotografías históricas conservadas debajo.
 2. Solo con CI verificada registrar PASS de estos testigos reales acotados. Mantener los gaps de UI/teclado y dominios no probados.
 3. Iniciar SY-E-07 oficial x^{0.5} equivalente a sqrt(x), usando las mismas anclas reales independientes y trazabilidad desde syntax309_cases.jsonl; validar fuente en Lite y distinguir traducción backend de Plus.
 4. Sincronizar CURRENT_STATE y EXECUTION_LOG; los commits solo documentales no deben relanzar CI.
+
+
+## Estado vigente — 2026-10-14 UTC / 2026-10-13 Honduras
+Esta sección prevalece sobre las fotografías históricas conservadas debajo.
+- Rama canónica bilateral: `qa/syntax-audit-in625-a1`.
+- SY-E-04 confirmado: Lite SHA b24d252e8e4c9ea2e2600179a086adfd67342045 cumulative 38511416734, H1d 38511416741 y build 38511416781 SUCCESS; Plus SHA f5624448180965193488de1b1f6596d807bf9abb cumulative 38511428018 y H1d 38511427856 SUCCESS. Resultado 10^-3 = 0.001.
+- SY-E-05 confirmado en alcance parcial: Lite SHA 0ae996a756a7d4cd52e5bc7b58f26a9cde28672b cumulative 38512067119, H1d 38512066234, build 38512066314 SUCCESS; Plus SHA 09aee8bc792a4f734b631a9ec7a89cfcfbcc540d cumulative 38512070814, H1d 38512070837 SUCCESS. Lite 1159 PASS + 30 TODO; Plus backend 1025 PASS + 1 XFAIL y frontend 757 PASS (omisiones no cuentan como PASS).
+- Oráculo SY-E-05 preserva fixture 2^{2^{2}}=16 y agrega controles 2^{3^{2}}=512 y (2^{3})^{2}=64 para detectar asociación incorrecta. Lite prueba fuente LaTeX → parser → compileNumeric; Plus prueba POST /api/v1/evaluate con expresión explícita traducida. No implica MathLive/teclado/UI de Plus.
+- CI: acumulativo bilateral y build Lite ahora incluyen pull_request además de push y workflow_dispatch. H1d bilateral conserva eventos y añade exclusión documental en PR. push y PR excluyen cambios solo qa/certification/** o **/*.md; cambios mixtos técnicos sí ejecutan gates. Los nuevos push del SHA correcto fueron observados; el comportamiento PR todavía no tiene evento nuevo de evidencia.
+- SY-E-06 publicado: Lite SHA aa577a47c189f4ab5289addbf006a6d6b90099d9 en tests/syntax309SyEExponent.audit.test.ts; Plus SHA 824175e28213055ac913b20b141acb70f96c4a6b en backend/tests/test_syntax309_sye_exponent.py. Comparar ambas representaciones contra ocho anclas independientes: x=0,1/16,1/4,1,4,9,16,100; raíces 0,0.25,0.5,1,2,3,4,10.
+- SY-E-06 gates confirmados SUCCESS: Lite cumulative 38512329462 (1160 PASS + 30 TODO), H1d 38512329538, build 38512329554; Plus cumulative 38512334793 (backend 1033 PASS + 1 XFAIL; frontend SUCCESS), H1d 38512334857. Los testigos reales acotados PASS; omisiones no cuentan como PASS.
+- Alcance SY-E-06: testigos finitos sobre x>=0, no demostración simbólica general ni certificación de ramas complejas. Plus usa backend explícito, sin acreditar fuente LaTeX de UI.
+- Syntax309 OPEN; IN625 H2/SG28 OPEN y DIST multinodo BLOCKED hasta evidencia de nodos independientes. SY-P-23 XFAIL y TODO permanecen abiertos.
+
+
+- SY-E-07 confirmado en el mismo alcance real acotado: Lite SHA 8a18f5a28832b3b768c7b772acffa11eb32f9a08 cumulative 38512601642 (1161 PASS + 30 TODO), H1d 38512601684 y build 38512601567 SUCCESS. Plus SHA ac36daf16e64f06fe166de5189f073f382bc59a2 cumulative 38512604965 (backend 1041 PASS + 1 XFAIL; frontend SUCCESS) y H1d 38512604998 SUCCESS. Fuente Lite x^{0.5} y backend Plus x^0.5/sqrt(x), ocho anclas independientes; no prueba de ramas complejas ni UI Plus.
+- Verificación documental: los SHA Lite f68d86e9906c4950f28615a36a0ed687ee33738a y Plus 03ed00e01abc3ed10e2571ea731198d2e82a5aab no generaron runs en el listado de Actions consultado después de su publicación; los cambios técnicos sí activaron los gates con SHA esperado.
+- SY-E-08 iniciado en preparación: fixture oficial x^{-1}, esperado frac(1,x), dominio x!=0. Se determinó el siguiente oráculo independiente: x=-4,-1,-1/4,1/4,1,4; esperado -1/4,-1,-4,4,1,1/4. NO publicado ni ejecutado aún, NO cuenta como PASS.
+
+### Siguiente paso exacto — SY-E-08
+1. Modificar tests/syntax309SyEExponent.audit.test.ts en Lite: fuente oficial x^{-1} y fuente esperada \\frac{1}{x} → parseExpression → compileNumeric; exigir las seis anclas numéricas anteriores.
+2. Modificar backend/tests/test_syntax309_sye_exponent.py en Plus: POST /api/v1/evaluate con x^(-1) y 1/x, substitutions x en las seis anclas; status 200, success true y result_approx esperado con tolerancia 1e-12. Mantener explícito que backend traducido no certifica LaTeX/MathLive/UI de Plus.
+3. x=0 está fuera del dominio de la equivalencia; su error contractual se evalúa en SY-E-20, sin contar exclusión como PASS.
+4. Publicar en rama canónica, obtener los nuevos SHA/runs y verificar acumulativo, H1d y build Lite. Clasificar cualquier rojo producto/harness/oráculo y corregir sin relajar anclas.
+5. Actualizar trazabilidad bilateral sin relanzamientos documentales. Después avanzar SY-E-09 (x²)³=x⁶; conservar Syntax309 OPEN y H2/SG28 OPEN/DIST BLOCKED.
