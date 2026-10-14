@@ -4481,3 +4481,13 @@ Consultar resultados finales por SHA y logs para SY-U-04 rerun y SY-U-05, correg
 - SG28/H2 OPEN y DIST multinodo BLOCKED; cierre de Syntax309 OPEN. Pruebas específicas no demuestran experiencia UI completa.
 ### Siguiente paso exacto
 Consultar CI del SHA final, clasificar falla de Unicode como producto/conversor/backend cuando aparezca, corregir sin relajar oráculo y acreditar gates antes de pasar a SY-U-07 (`12÷4` = `3`).
+
+## 2026-10-14 — SY-U-06 diagnosis, Unicode fix, SY-U-07 tests
+- SY-U-06 Lite SHA 70fd6014d722a708e183b4fc4ce063bc5b585b3f gates cumulative 38653388074, H1d 38653388081, build 38653388099, UI regression E2E 38653388058 SUCCESS.
+- Plus SHA 4bb0b8d5d6911f98d60128eb133f4a3d7885e58b H1d 38653411415 SUCCESS, cumulative 38653411448 FAILED en `test_syu06_unicode_multiplication_http_and_reentry`: el backend rechazó la entrada Unicode original 3×4 (1136 PASS y 1 XFAIL restante). Fallo de producto en normalización del parser, no relajar oráculo.
+- Fix Plus `backend/app/services/parsing.py`, SHA 6615b9483e4dbc9d66e426184558b421caa87342: normaliza Unicode × y ÷ hacia * y / antes de interpretar. Las nuevas corridas de ese SHA quedaron en progreso al consultar.
+- SY-U-07 fixture oficial de la matriz: `12÷4` → `3`. Lite prueba parser/worker/reentrada SHA 06e0e9a54e82a3125619267f6d37f3114d2e409b, gates: cumulative [38655026061](https://github.com/c2melendez/precision-lab-lite/actions/runs/38655026061), H1d 38655026168, build 38655026115, científico E2E 38655026226 (in progress).
+- Plus frontend conversor SHA 71dc7b7a61e4b328187619a74da789ba64ab8374, backend HTTP Unicode original, MathResponse/reentrada SHA final 3cf19d4623d2761eb199c30aaf80f0b07cf8207f; cumulative [38655055982](https://github.com/c2melendez/precision-lab-plus/actions/runs/38655055982) y H1d 38655055909 inicialmente QUEUED. Los gates intermedios no sustituyen SHA final.
+- SY-U-06 y SY-U-07 OPEN hasta CI final; Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. No acreditada prueba UI específica por estos casos.
+### Próximo paso
+Verificar SHA finales y logs, corregir regresiones verdaderas. Con PASS bilateral avanzar al caso oficial SY-U-08 `3·4` → `12` (punto medio Unicode U+00B7).
