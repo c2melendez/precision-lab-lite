@@ -852,4 +852,20 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate("(" + parseExpression(repeated.resultLatex).algebrite + ")-exp(1)")).toBe("0");
   });
 
+
+  it("SY-N-29: decimal comma cannot silently change the mathematical value", () => {
+    const row = rows["SY-N-29"];
+    expect(row.entrada).toBe("1,5+2");
+    expect(row.operacion).toBe("convencion");
+    let parsed: string;
+    try {
+      parsed = parseExpression(row.entrada).algebrite;
+    } catch (error) {
+      expect(String(error).trim().length).toBeGreaterThan(0);
+      return; // Explicit parsing rejection is allowed by the source contract.
+    }
+    const result = evaluate(parsed);
+    expect(result, "If the comma is accepted as decimal, the result must be exactly 3.5").toBe("7/2");
+  });
+
 });
