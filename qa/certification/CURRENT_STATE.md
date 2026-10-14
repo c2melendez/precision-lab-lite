@@ -1,5 +1,16 @@
 # Current Certification State
 
+## Estado vigente — SY-N-14 corrección de aproximación exacta — 2026-10-14
+- SY-N-13 PASS bilateral previamente acreditado. SY-N-14 entrada canónica `\\left(\\sqrt{2}\\right)^{2}-2`, esperado `0` exacto.
+- Lite SHA técnico `7caaffdf3e47a133e50341ef13209ff9d0ccc53c`: cumulative 38554735293 SUCCESS, H1d 38554735367 SUCCESS, build 38554735426 SUCCESS. Acredita el alcance parser/worker/reentrada, no MathLive nativo.
+- Plus SHA anterior `b974891c7a2510a2eaa2e15397c06b6c26771dc2`: H1d 38554751942 SUCCESS, pero cumulative 38554751691 FAIL: backend devolvió `result_text=0` y `result_latex=0`, mientras `result_approx=-1.512731216738015e-123`. Fallo de PRODUCTO confirmado, no del fixture ni oráculo.
+- Corrección publicada en Plus `backend/app/services/evaluate_service.py` SHA `88e288237d9273b514fb46c42c251569c5c6b9e7`: para residuos no nulos muy pequeños, solo asignar aproximación cero tras demostrar `sympy.simplify(expr).is_zero is True`; nunca normalizar exclusivamente por cercanía. Conserva las aserciones originales de exactitud.
+- Nuevos gates Plus SHA de corrección: cumulative [38555203162](https://github.com/c2melendez/precision-lab-plus/actions/runs/38555203162), H1d [38555203246](https://github.com/c2melendez/precision-lab-plus/actions/runs/38555203246), SG28 backend [38555203234](https://github.com/c2melendez/precision-lab-plus/actions/runs/38555203234). Inicialmente QUEUED. SY-N-14 global OPEN hasta conclusiones.
+- Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. No cambios en producción.
+### Siguiente paso exacto
+Consultar los tres gates del SHA Plus `88e2882`, diagnosticar cualquier FAIL y corregir; si todos pertinentes SUCCESS, marcar SY-N-14 PASS bilateral en alcance probado y recuperar el siguiente caso desde `syntax309_cases.jsonl`. Sincronizar ambas bitácoras sin relanzar CI documental.
+
+
 ## Actualización correctiva SY-N-14 — 2026-10-14
 - El primer Lite cumulative 38554589308 en SHA 52e213f2689cb2ecae328a3c89efefd15526c4b4 fue FAIL de ORÁCULO: la prueba esperaba una representación del fixture diferente a la fuente canónica real `\\left(\\sqrt{2}\\right)^{2}-2`. No modificar fixture, motor ni criterio de cero exacto.
 - Se corrigió la aserción en las pruebas Lite y Plus para conservar el texto original. Lite SHA técnico 7caaffdf3e47a133e50341ef13209ff9d0ccc53c; Plus SHA técnico final b974891c7a2510a2eaa2e15397c06b6c26771dc2.
