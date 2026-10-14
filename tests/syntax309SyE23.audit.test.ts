@@ -3,6 +3,7 @@ import cases from "../qa/certification/syntax309_cases.jsonl?raw";
 import { parseExpression } from "../src/engine/parsing";
 import { evaluate } from "../src/engine/algebriteClient";
 import { ErrorCode } from "../src/types";
+import { formatScientificResult } from "../src/components/ResultPanel";
 import { compileNumeric } from "../src/engine/numericFallback";
 
 const rows = Object.fromEntries(cases.trim().split("\n").map(line => {
@@ -914,6 +915,7 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(Number.isFinite(approx)).toBe(true);
     expect(approx).toBeCloseTo(1 / 3000000, 13);
     expect(approx.toExponential(9)).toBe("3.333333333e-7");
+    expect(formatScientificResult(String(reply.decimalApprox))).toBe(row.esperado);
     scope.postMessage.mockClear();
     scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-31-reentry",expressionAlgebrite:parseExpression(reply.resultLatex).algebrite}});
     const repeated = scope.postMessage.mock.calls[0][0];
