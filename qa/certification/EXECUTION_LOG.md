@@ -4098,3 +4098,10 @@ Consultar conclusión, jobs y logs de las cinco corridas citadas. Si FAIL, clasi
 - SY-N-22 OPEN mientras CI no concluya. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. Estas suites no acreditan navegador MathLive E2E ni coordinación multinodo. Sin cambios en producción.
 ### Próximo paso exacto
 Verificar las cinco conclusiones, jobs/logs y SHA anteriores; investigar FAIL en capa producto/harness/oráculo, corregir y volver a ejecutar. Tras PASS bilateral de SY-N-22 iniciar el siguiente caso oficial de Syntax309 en secuencia, identificándolo en syntax309_cases.jsonl.
+
+## SY-N-22 — diagnóstico y corrección Lite — 2026-10-14
+- Lite SHA test 50dd39ffa478c6aec4918a16485503578896813a: cumulative 38570548934 FAILURE 1 test / 1219 PASS / 30 TODO; job 115874279105: para `(-1)!` el worker respondió incorrectamente success=true, resultLatex="-1!", decimalApprox="-1.0". H1d 38570548996 SUCCESS, build 38570548943 SUCCESS.
+- Falla de PRODUCTO (CAS devolvió expresión simbólica en vez de DOMAIN_ERROR). Corrección Lite `src/engine/algebriteClient.ts` SHA e548d8c380d7a6e934c00fd78cfe3d822362d30b: guardar factorial de entero negativo explícito antes de delegar a Algebrite; preservar caso `-(1!)` legítimo y positivos. Nueva CI automática Lite cumulative 38570940931, H1d 38570940775, build 38570940936, IN_PROGRESS inicial.
+- Plus SHA 06bcc8e4749cc271d95d65bce07586595b989221: cumulative 38570563810 y H1d 38570563960 SUCCESS; pruebas del error HTTP y recuperación. Lite SY-N-22 OPEN hasta tres gates nuevos SHA e548d8c concluidos; no declarar PASS por corrida antigua roja. SG28/H2 OPEN; DIST BLOCKED; sin producción.
+### Próximo paso exacto
+Consultar tres corridas nuevas Lite 38570940931/38570940775/38570940936, revisar test SY-N-22 y logs; si FAIL diagnosticar y corregir. Si todas SUCCESS, cerrar caso bilateral en alcance probado e iniciar siguiente fixture oficial Syntax309.
