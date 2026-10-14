@@ -4337,3 +4337,10 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - Nuevos runs Lite: cumulative 38630788898, H1d 38630788939, build 38630789162, E2E científico 38630789002; Plus cumulative 38630792783, H1d 38630793419. Al primer chequeo QUEUED/IN_PROGRESS, no se certifica SY-D-06 hasta conclusión/logs sobre SHA correspondiente.
 - Siguiente paso: inspeccionar runs y logs; corregir regresiones producto/harness; si PASS, avanzar con fixture oficial SY-D-07 (`\\{1+2\\}\\cdot3`, convencional: 9 o aviso por llaves como conjunto). SG28/H2 OPEN, DIST BLOCKED; sin producción.
 
+
+### SY-D-06 diagnóstico y corrección — 2026-10-14
+- Lite run 38630788898 FAILED en unit/parity por error de escape exclusivamente en oráculo TS: esperaba dos barras `\\\\cdot` frente a fixture oficial con una `\\cdot`; 1234 tests aprobados, 1 falló y 30 TODO. No evidencia de fallo del producto en ese log.
+- Corregida prueba Lite, commit `4c4c2839a8a591e65d346dfd51e3fff8033a75ec`, sin alterar lógica matemática. Nuevos gates de ese SHA: cumulative 38630928056, H1d 38630927771, build 38630927849, E2E 38630927995 inicialmente QUEUED.
+- Plus permanece en verificación con cumulative 38630792783 y H1d 38630793419 sobre commit 6c2cc5eff1db2ae586aff911a18bafcae8c9b183; consultar logs y conclusiones.
+- SY-D-06 permanece OPEN; criterios: suite parser/worker y reentrada Lite, valor/reentrada HTTP Plus (limitación explícita: no acredita editor Plus) y gates SHA-matched SUCCESS. SG28/H2 OPEN; DIST BLOCKED.
+
