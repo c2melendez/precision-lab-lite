@@ -1,5 +1,13 @@
 # Current Certification State
 
+## SY-N-31 — reconciliación CI verificada (2026-10-14)
+- Rama bilateral: `qa/syntax-audit-in625-a1`.
+- Lite SHA `5f080ce8ca21f87297958531cc5687b3ac6fc104`: cumulative [38602654265](https://github.com/c2melendez/precision-lab-lite/actions/runs/38602654265), H1d [38602653779](https://github.com/c2melendez/precision-lab-lite/actions/runs/38602653779) y build [38602653848](https://github.com/c2melendez/precision-lab-lite/actions/runs/38602653848) COMPLETED/SUCCESS.
+- Plus SHA `643c07289a8fdbbbdccb22be5318d1de9c29ee30`: cumulative [38602404105](https://github.com/c2melendez/precision-lab-plus/actions/runs/38602404105) y H1d [38602404128](https://github.com/c2melendez/precision-lab-plus/actions/runs/38602404128) COMPLETED/SUCCESS.
+- SY-N-31: PASS del oráculo numérico/valor exacto/reentrada dentro del alcance de suites existentes; presentación matemática UI a nueve decimales científicos sin evidencia E2E suficiente. No atribuir certificación de visualización a `toExponential(9)` del propio test ni a `result_approx` HTTP.
+- Próximo paso ejecutable: localizar componente de presentación/formateo de Lite y Plus y agregar pruebas permanentes que ejerzan el render/selección de forma científica real (esperado `3.333333333\\times10^{-7}`), conservando fracción exacta y reentrada. Ejecutar gates por SHA y revisar logs antes de certificar el criterio visual; después avanzar al siguiente fixture oficial de Syntax309. SG28/H2 OPEN; DIST multinodo BLOCKED; no cambios en producción.
+
+
 ## SY-N-31 scientific result oracle correction — 2026-10-14
 - Lite SHA 9009a2b0691937a06175762cbac6ee51b09edded build 38602384805 SUCCESS; cumulative 38602384573 FAIL solely because the test regex contained an overescaped decimal point and rejected actual correct string 3.333333333e-7. This is HARNESS, not another product defect. Replaced with exact canonical scientific string expectation, SHA 5f080ce8ca21f87297958531cc5687b3ac6fc104. Fresh Lite cumulative 38602654265, H1d 38602653779, build 38602653848 IN_PROGRESS on initial inspection.
 - Plus corrected fixture test SHA 643c07289a8fdbbbdccb22be5318d1de9c29ee30 cumulative 38602404105 and H1d 38602404128 IN_PROGRESS. Do not count old SHA result.
