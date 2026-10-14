@@ -577,4 +577,22 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(repeat.resultLatex).toBe(expected);
   });
 
+  it("SY-N-18: original percent equals exact twelve hundredths through worker and reentry", () => {
+    const row = rows["SY-N-18"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("12\\%");
+    expect(row.esperado).toBe("0.12");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const exact = evaluate(parsed);
+    expect(["0.12", "3/25"]).toContain(exact);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-18",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-N-18");
+    expect(["0.12", "\\frac{3}{25}"]).toContain(result.resultLatex);
+    const again = parseExpression(result.resultLatex).algebrite;
+    expect(["0.12", "3/25"]).toContain(evaluate(again));
+  });
+
 });
