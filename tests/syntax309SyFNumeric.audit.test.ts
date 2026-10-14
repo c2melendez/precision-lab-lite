@@ -3,6 +3,7 @@ import fixture from "../qa/certification/syntax309_cases.jsonl?raw";
 import { parseExpression, rewriteReciprocalFunctions } from "../src/engine/parsing";
 import { evaluate } from "../src/engine/algebriteClient";
 import { compileNumeric } from "../src/engine/numericFallback";
+import { tryStatFunction } from "../src/engine/statFunctions";
 
 type Row = { id: string; seccion: string; operacion: string; entrada: string };
 const rows = fixture.trim().split("\n").map(line => JSON.parse(line) as Row);
@@ -383,7 +384,8 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
   it("SY-F-47: original LaTeX maximum of one five three is five", () => {
     expect(byId["SY-F-47"].operacion).toBe("valor");
     const parsed = parseExpression(byId["SY-F-47"].entrada).algebrite;
-    const actual = Number(evaluate(parsed));
+    // min/max are routed through the product statistics evaluator, not native Algebrite.
+    const actual = Number(tryStatFunction(parsed));
     expect(Number.isFinite(actual), "SY-F-47 parsed=" + parsed).toBe(true);
     expect(actual).toBe(5);
   });
