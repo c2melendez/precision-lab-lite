@@ -923,4 +923,21 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(repeated.resultLatex).algebrite)).toBe("1/3000000");
   });
 
+  it("SY-D-01: unclosed opening parenthesis is rejected with a clear syntax diagnostic", () => {
+    const row = rows["SY-D-01"];
+    expect(row.entrada).toBe("(2+3");
+    expect(row.operacion).toBe("error");
+    let rejection: unknown;
+    try {
+      const parsed = parseExpression(row.entrada).algebrite;
+      evaluate(parsed);
+    } catch (error) {
+      rejection = error;
+    }
+    expect(rejection, "An unmatched opening parenthesis must not silently evaluate to 5").toBeDefined();
+    const diagnostic = rejection as { code?: unknown; message?: unknown };
+    expect(diagnostic.code).toBe(ErrorCode.PARSE_ERROR);
+    expect(String(diagnostic.message)).toMatch(/par[eé]ntesis|parenthes|unclos|cerrar|syntax|sintax/i);
+  });
+
 });
