@@ -4491,3 +4491,11 @@ Consultar CI del SHA final, clasificar falla de Unicode como producto/conversor/
 - SY-U-06 y SY-U-07 OPEN hasta CI final; Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. No acreditada prueba UI específica por estos casos.
 ### Próximo paso
 Verificar SHA finales y logs, corregir regresiones verdaderas. Con PASS bilateral avanzar al caso oficial SY-U-08 `3·4` → `12` (punto medio Unicode U+00B7).
+
+## 2026-10-14 — SY-U-07 bilateral PASS, SY-U-08 en validación
+- SY-U-07 PASS bilateral alcance automatizado. Lite SHA 06e0e9a54e82a3125619267f6d37f3114d2e409b: cumulative 38655026061, H1d 38655026168, build 38655026115, científico UI regresión E2E 38655026226 SUCCESS. Plus SHA 3cf19d4623d2761eb199c30aaf80f0b07cf8207f cumulative 38655055982, H1d 38655055909 SUCCESS. El éxito del UI E2E global no acredita interacción específica del fixture SY-U-07.
+- SY-U-08 fuente oficial Unicode punto medio U+00B7 `3·4` -> `12`, operación valor. Lite test parser/worker/reentrada SHA 4ee503b7908affc1784dac5ecc39b0a854632d0b; gates cumulative [38655896566](https://github.com/c2melendez/precision-lab-lite/actions/runs/38655896566), H1d 38655896588, build 38655896585, científico E2E 38655896577 en progreso al consultar.
+- Plus tests frontend SHA f9ec0f60621bcddccf5078584549b32386ad82e4 y backend HTTP Unicode original/reentrada SHA 1b600a449bc0b6ddd0b7456c174e3ae4d641fc25. Corrección producto `backend/app/services/parsing.py` reconoce punto medio -> multiplicación; SHA final e8c1f8e38cc3b7b7d86ea69571f5f09ceabc828c. Gates finales cumulative [38655922516](https://github.com/c2melendez/precision-lab-plus/actions/runs/38655922516) inicialmente queued, H1d 38655922493 in progress. Ignorar gates de SHAs intermedios al cerrar.
+- SY-U-08 OPEN hasta gates y logs finales por SHA; Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. Sin despliegue.
+### Próximo paso exacto
+Verificar resultados SY-U-08 Lite/Plus por SHA, corregir fallas reales; al PASS bilateral proseguir con SY-U-09 `2−1` -> `1` Unicode U+2212 de la matriz oficial.
