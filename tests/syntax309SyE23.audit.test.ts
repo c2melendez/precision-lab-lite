@@ -332,4 +332,21 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(compileNumeric(evaluate(parseExpression(result.resultLatex).algebrite), "__unused__")(0)).toBe(0.3);
   });
 
+  it("SY-N-08: subtracting 0.9 from one retains exact 0.1 through worker and reentry", () => {
+    const row = rows["SY-N-08"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("1-0.9");
+    expect(row.esperado).toBe("0.1");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const exact = evaluate(parsed);
+    expect(compileNumeric(exact, "__unused__")(0)).toBe(0.1);
+    expect(exact).not.toContain("0.09999999999999998");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-08",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.resultLatex).not.toContain("0.09999999999999998");
+    expect(compileNumeric(evaluate(parseExpression(result.resultLatex).algebrite), "__unused__")(0)).toBe(0.1);
+  });
+
 });
