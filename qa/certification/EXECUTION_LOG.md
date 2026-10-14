@@ -4472,3 +4472,12 @@ Verificar resultado de los gates finales; clasificar y corregir fallos sin relaj
 ### Acción siguiente
 Consultar resultados finales por SHA y logs para SY-U-04 rerun y SY-U-05, corregir fallos genuinos. Cerrar bilateralmente solo con evidencia; después identificar siguiente fixture real de syntax309_cases.jsonl, sin inventar identificadores.
 
+
+## 2026-10-14 — cierre SY-U-04/05 y apertura SY-U-06
+- SY-U-04 PASS bilateral para alcance automatizado. Lite SHA f0688fa98e2139268a3cc112c546cccb3c391c2f: cumulative 38652400493, H1d 38652400544, build 38652400598, E2E 38652400491 SUCCESS. Plus SHA d455e67a577a6b8fb3d5c4ae8f46c5b16338ae75: H1d 38652409204 SUCCESS, cumulative 38652409209 SUCCESS en intento 2 después de fallo por umbral temporal SG28 en intento 1; el rerun pasó sin relajar el umbral.
+- SY-U-05 PASS bilateral para alcance automatizado. Lite SHA 6a82fcdde2e3c412be7f2457b9c2b37918bba498: cumulative 38652953440, H1d 38652953470, build 38652953460, E2E 38652953454 SUCCESS. Plus SHA bc94f37f356cfa42e90ffd5a0747732d1ef2f39d: cumulative 38652963777 y H1d 38652963734 SUCCESS.
+- Siguiente fixture oficial `syntax309_cases.jsonl`: SY-U-06, fuente Unicode `3×4` (U+00D7), `valor` esperado `12`. Tests nuevos Lite parser/worker/reentrada commit 70fd6014d722a708e183b4fc4ce063bc5b585b3f; Plus frontend conversor commit 2e3936f491ce72fe08a06972419c1a82022a1656 y backend HTTP Unicode original/MathResponse/reentrada commit 4bb0b8d5d6911f98d60128eb133f4a3d7885e58b.
+- Gates del SHA final Lite cumulative 38653388074, H1d 38653388081, build 38653388099, científico E2E 38653388058: IN_PROGRESS. Plus SHA final cumulative 38653411448 y H1d 38653411415: QUEUED al consultar. No declarar SY-U-06 PASS sin resultados y logs.
+- SG28/H2 OPEN y DIST multinodo BLOCKED; cierre de Syntax309 OPEN. Pruebas específicas no demuestran experiencia UI completa.
+### Siguiente paso exacto
+Consultar CI del SHA final, clasificar falla de Unicode como producto/conversor/backend cuando aparezca, corregir sin relajar oráculo y acreditar gates antes de pasar a SY-U-07 (`12÷4` = `3`).
