@@ -3727,3 +3727,28 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 4. Clasificar cualquier pérdida de restricciones antes de corregir; preservar contratos y regresiones. Publicar cambios, verificar CI por SHA y sincronizar estado/log.
 5. SY-E-22 pendiente, sin ejecución ni PASS acreditados por este cierre.
 
+
+
+## Estado vigente — SY-E-22 fracción anidada y dominio original — 2026-10-14
+Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
+- Rama canónica bilateral: qa/syntax-audit-in625-a1.
+- Fixture original intacto: \frac{1}{1+\frac{1}{x}}; equivalente a x/(x+1) únicamente para x != 0 y x != -1.
+- Lite: fuente original -> parser -> Algebrite y handler worker real (transporte simulado). Diferencia racional simplificada exactamente a cero; LaTeX devuelto reanalizado equivalente. Muestras independientes x=1 -> 1/2, x=2 -> 2/3, x=-2 -> 2 en fuente y salida. domainConditions originales excluyen 0 y -1; ambas sustituciones en la fuente son DOMAIN_ERROR.
+- Primer rojo Lite fue HARNESS: evaluate conservaba la diferencia racional sin reducir. Se añadió simplify a la comprobación de equivalencia, preservando el oráculo exacto y todas las comprobaciones de dominio; no se cambió producto Lite.
+- Plus: primer rojo PRODUCT, /evaluate devolvía domain_conditions=[] pese a simplificar la salida a x/(x+1). El extractor existente no estaba conectado a esta respuesta.
+- Corrección Plus: la presentación extrae restricciones de input_expr original (reparseo dentro del proceso aislado cuando corresponde) y las entrega en MathResponse. El servicio examina denominadores originales antes de que substitutions reconstruya/simplifique el árbol; rechaza base cero de potencias negativas con DOMAIN_ERROR. No impone dominio real a raíces/logaritmos de la convención compleja existente.
+- Plus prueba HTTP real con traducción explícita 1/(1+1/x): equivalencia simbólica exacta, restricciones originales que excluyen ambos puntos, muestras independientes, reentrada del result_text en puntos permitidos y DOMAIN_ERROR en sustituciones excluidas. Controles extra: hueco cancelable (x^2-1)/(x-1) en x=1 y fracción numérica anidada con 1/0.
+- La equivalencia incluye las restricciones del resultado original. Reingresar solo una fórmula simplificada como una nueva expresión no transporta automáticamente sus metadatos históricos.
+- Alcance: Lite parser/handler con transporte simulado y Plus HTTP traducido; no acredita edición nativa MathLive/teclado ni conversión frontend original de SY-E-22.
+- SY-E-22 PASS en los alcances descritos. Lite SHA 7390c2a1919c367c28c81235963569cd22623c8e: cumulative [38524075951](https://github.com/c2melendez/precision-lab-lite/actions/runs/38524075951) SUCCESS (1188 PASS + 30 TODO); H1d [38524076035](https://github.com/c2melendez/precision-lab-lite/actions/runs/38524076035) y build [38524075940](https://github.com/c2melendez/precision-lab-lite/actions/runs/38524075940) SUCCESS. Primer diagnóstico SHA 47d9ff0e190e67e071198e2d6e30c02540818f28, run 38523891774: 1187 PASS + 1 FAIL + 30 TODO, fallo HARNESS de reducción racional.
+- Plus SHA c50c2fc3ab31a5ecd8d9784ff5439b0e0868d2ab: cumulative [38524298915](https://github.com/c2melendez/precision-lab-plus/actions/runs/38524298915) SUCCESS, backend 1078 PASS + 1 XFAIL, frontend 777 PASS + 28 TODO. H1d [38524298883](https://github.com/c2melendez/precision-lab-plus/actions/runs/38524298883) SUCCESS (38 PASS). SG28 aislamiento [38524298898](https://github.com/c2melendez/precision-lab-plus/actions/runs/38524298898) SUCCESS (69 PASS); cancelación UI [38524298926](https://github.com/c2melendez/precision-lab-plus/actions/runs/38524298926) SUCCESS (21 PASS). Estas regresiones no cierran DIST multinodo.
+- Primer Plus SHA 634b6a32725b8eab2f4695b0d03e961f1652d8ab, cumulative 38523895794/backend job 115719631818 FAILURE: domain_conditions vacío observado en HTTP; las aserciones posteriores de sustitución no llegaron a ejecutarse en ese primer intento. La versión corregida verifica todas ellas y los controles extra.
+- Syntax309 OPEN; IN625 H2/SG28 OPEN; DIST multinodo BLOCKED hasta evidencia entre nodos independientes. TODO/XFAIL no cuentan como PASS. Sin cambios de despliegue/producción.
+
+### Siguiente paso exacto — SY-E-23
+1. Fixture \frac{\frac{1}{2}}{\frac{3}{4}}, operacion=valor, esperado \frac{2}{3}.
+2. Lite: fuente original sin aplanar antes del parser, exacto 2/3, aproximado 0.6666666666666666, handler, LaTeX y reentrada.
+3. Plus: HTTP real con traducción explícita (1/2)/(3/4), MathResponse exacto/LaTeX/aproximado y reentrada del resultado real. Añadir conversión frontend original separada para las fracciones anidadas SY-E-22/23.
+4. Mantener denominadores y agrupación originales; verificar CI por SHA y sincronizar estado/log.
+5. SY-E-23 pendiente, sin ejecución ni PASS acreditados por este cierre.
+
