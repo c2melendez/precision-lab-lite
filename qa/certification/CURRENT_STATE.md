@@ -1,5 +1,14 @@
 # Current Certification State
 
+## Estado vigente — SY-N-21 factorial cero — 2026-10-14
+- SY-N-20 PASS bilateral en alcance probado: Lite SHA 851051583146548b2427d92a0cdc2ecdf636ba0b (cumulative 38567524099, H1d 38567524101, build 38567524142: SUCCESS); Plus SHA 4a290155efbbf0edfed28be2a3866e0fcf50554f (cumulative 38567552976, H1d 38567553140: SUCCESS).
+- Fixture canónico SY-N-21 `0!` => `1`. Regresiones publicadas Lite tests/syntax309SyE23.audit.test.ts commit b3e8a84ab7dabaae02d86dac9bdce2e176ef7a56; Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts commit 21a4c6a683253328003bf54687834d0804769270, backend/tests/test_syntax309_sye23.py commit final 3f4849747515497f914a3ccce9ae923060df8291.
+- CI técnica disparada automáticamente: Lite cumulative 38568932445, H1d 38568932439, build 38568932432; Plus cumulative 38568949523, H1d 38568949591. IN_PROGRESS al último chequeo; no declarar PASS hasta conclusión en SHA respectivos. Las corridas intermedias Plus de frontend no sustituyen las del HEAD backend.
+- SY-N-21 OPEN, Syntax309 global OPEN, H2/SG28 OPEN, DIST multinodo BLOCKED. Sin despliegue de producción ni prueba navegador E2E propia para SY-N-21.
+### Próximo paso exacto
+Consultar conclusión, jobs y logs de las cinco corridas citadas. Si FAIL, clasificar/corregir producto, harness u oráculo y repetir gates. Si PASS bilateral, cerrar SY-N-21 en alcance probado e iniciar SY-N-22 `(-1)!` => error claro de dominio sin excepción no controlada.
+
+
 ## Estado vigente — SY-N-20 factorial cinco — 2026-10-14
 - SY-N-19 PASS bilateral alcance probado: Lite SHA 030bbd67f691c1160d02a45377648fd84a00328f, cumulative 38566176013, H1d 38566176121, build 38566175851 SUCCESS; Plus SHA 08a34ecab054ba631f31b4fe07842d5d391490e9, cumulative 38566201385 y H1d 38566201384 SUCCESS.
 - SY-N-20 fixture oficial `5!` => `120`. Pruebas nuevas Lite parser/evaluación/worker/reentrada SHA 851051583146548b2427d92a0cdc2ecdf636ba0b; Plus frontend conversor SHA 889587a5af6d12cf542b71f5cc5325e88a555f1f; Plus backend HTTP/MathResponse/reentrada SHA final 4a290155efbbf0edfed28be2a3866e0fcf50554f. Sin cambios de producción.
