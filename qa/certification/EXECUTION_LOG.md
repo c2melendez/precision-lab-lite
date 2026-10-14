@@ -4351,3 +4351,10 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - Corrección Lite en `src/engine/parsing/normalize.ts`, commit `824b1b2a5e4f7d9b2211ea9fdd93336f7396c9b9`: normaliza `[1+2]` a agrupación con paréntesis, sin reescribir índices de `\\sqrt[3]`. Nueva CI Lite cumulative `38631750527`, H1d `38631750354`, build `38631750516`, E2E `38631750479` QUEUED/IN_PROGRESS al consultar.
 - SY-D-06 OPEN hasta validar logs y SHA; si falla diagnosticar. Próximo fixture oficial SY-D-07: `\\{1+2\\}\\cdot3`, acepta `9` o error claro por llaves interpretadas como conjunto, nunca resultado silenciosamente incorrecto. SG28/H2 OPEN, DIST multinodo BLOCKED. Sin producción.
 
+
+## SY-D-07 iniciado — 2026-10-14
+- SY-D-06 Lite fallo real de parser `[` corregido en `src/engine/parsing/normalize.ts`, SHA `824b1b2a5e4f7d9b2211ea9fdd93336f7396c9b9`; cumulative `38631750527` y build `38631750516` SUCCESS; E2E `38631750479` SUCCESS; H1d `38631750354` aún IN_PROGRESS al consultar. Plus SY-D-06 cumulative `38630792783` y H1d `38630793419` SUCCESS.
+- SY-D-07 caso oficial `\\{1+2\\}\\cdot3`, convención: 9 o error claro si se interpreta como conjunto. Lite regression publicada SHA `95039ce8779dbee05287da20ca650ad305e8c8e2`, Plus regresión HTTP directa SHA `f5ddee0542adff1d8767a8d5f246f38f2b3bf9a1`. No atribuir equivalencia MathLive a test HTTP.
+- Runs SY-D-07 Lite cumulative `38631951157`, H1d `38631951309`, build `38631951320`, E2E `38631951443`; Plus cumulative `38631959412` y H1d `38631959207`; QUEUED/IN_PROGRESS al consultar. Revisar resultados/logs por SHA y corregir antes de PASS; siguiente fixture SY-D-08.
+- SG28/H2 OPEN, DIST multinodo BLOCKED; sin producción.
+
