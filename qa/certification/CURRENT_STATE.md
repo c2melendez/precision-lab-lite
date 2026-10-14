@@ -1,5 +1,14 @@
 # Current Certification State
 
+## Estado vigente — SY-E-30 denominador vacío — 2026-10-14
+- Rama canónica bilateral qa/syntax-audit-in625-a1. SY-E-29 PASS acotado: Lite SHA 42a5bf18146cb3b0eec77a54e18b75b2794c63cb cumulative 38530510982, H1d 38530510821, build 38530510870 SUCCESS; Plus SHA 111344029fe8ff81f0268d83f667364e35832d60 cumulative 38530516550, H1d 38530516582, SG28 backend 38530516517 SUCCESS.
+- Fixture SY-E-30 original \frac{x}{}, operacion=error, esperado «error claro: denominador vacío». Distinguir ausencia de denominador de valor cero. No reemplazar por x/0 ni evaluar silenciosamente.
+- Lite prueba tests/syntax309SyE23.audit.test.ts SHA 0434177cc6c6d9bd0a670304b4b15c7b7fdf4393 exige PARSE_ERROR descriptivo y recuperación. Corrección producto src/engine/parsing/normalize.ts SHA d4bfbf65020aad8b29143794d8bdc4a2eec7781a: rechazo de fracción incompleta antes de normalización.
+- Plus prueba frontend/src/__tests__/syntax309SyEFractions.audit.test.ts SHA d8dc58cf87998603024229aeef7d67e720d0d756 exige error descriptivo y posterior conversión válida. Corrección frontend/src/components/NaturalMathField.tsx SHA 32f50a7144a09331d900f6f8019d65540a9be732: rechazo de fracción incompleta antes de MathLive SSR.
+- CI para SHA final: Lite cumulative 38536342887/H1d 38536342814/build 38536342817; Plus cumulative 38536350587/H1d 38536350799. En curso al último chequeo; NO declarar SY-E-30 PASS antes de conclusiones SHA-alineadas.
+- Alcance: parser/conversor, no browser MathLive nativo; backend Plus no recibe la fuente LaTeX incompleta directamente. Continuar con verificación de gates, investigar rojos, luego siguiente fixture oficial. Syntax309 global OPEN, SG28 H2 OPEN, DIST multinodo BLOCKED, sin cambios producción.
+
+
 ## Estado vigente — SY-E-29 corrección de diagnóstico matemático — 2026-10-14
 - SY-E-28 cerrado bilateralmente en los alcances previos (Lite 38529541491/38529541214/38529541187 SUCCESS; Plus 38529553628/38529553662 SUCCESS).
 - Caso SY-E-29 oficial: fracción 0/0 requiere DOMAIN_ERROR **específico de forma indeterminada**, no texto genérico de división entre cero. Se preserva recuperación 2+3=5 y ausencia de resultado.
