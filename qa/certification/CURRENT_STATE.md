@@ -3210,3 +3210,11 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus SY-F-36 concrete root parity test commit ff261e5ad5ecea2c9dd6e1c51b75cfaa5a00600d; cumulative 38499417987 / H1d 38499417816 pending.
 - Lite SY-F-36 original indexed-root LaTeX test commit b67a7b86b62f1c01f8f369e5f418e948a62b2d0f; cumulative 38499448647 / H1d 38499448638 / build 38499448739 pending.
 - These tests are concrete witnesses, not proof of symbolic generic n nor Plus original MathLive UI; no SY-F-36 PASS until SHA-specific results. Next: inspect CI, diagnose reds, then SY-F-37. Syntax309 OPEN; SG28/DIST BLOCKED.
+
+
+## 2026-10-13 — SY-F-36 root regression diagnosed; SY-F-37 published
+- Plus SY-F-36 backend concrete witnesses SHA ff261e5ad5ecea2c9dd6e1c51b75cfaa5a00600d cumulative 38499417987 and H1d 38499417816 SUCCESS. Original Plus MathLive symbolic-index coverage remains unverified.
+- Lite SHA d1eccdbe9dd37e99967b2270e55f7087969e1f63 cumulative 38499593260 FAILURE (1141 pass, 1 fail, 30 TODO), H1d 38499593140 and build 38499593269 SUCCESS. Remaining case: source LaTeX sqrt[3]{(-3)^3} parsed as ((-3)^3)^(1/3), numeric fallback Math.pow(negative, fraction)=>NaN. Other SY-F-36 witnesses passed; this is real parser/numeric-routing defect, not a reason to relax the oracle.
+- Lite parser patch SHA 4b7177ce3bbaaa5aa325e73e93e80fc53b6cc604 specifically handles a parenthesized negative numeric base with odd integer power under odd indexed root, preserving negative real result. Pending CI for that SHA: cumulative 38502030498, H1d 38502030501, build 38502030613.
+- Added permanent SY-F-37 abs(-3)=3 regression on original LaTeX Lite SHA 196748e27af77865a5ee2d74082badf2e716f30c; cumulative 38502049649, H1d 38502049642, build 38502049660 initially IN_PROGRESS. Plus explicit backend HTTP test SHA fd829698f648b49fed343329b71a24f70e6d1886; cumulative 38502056646 and H1d 38502056839 initially QUEUED.
+- No SY-F-36/37 Lite PASS or SY-F-37 Plus PASS asserted before SHA-specific CI. Generic symbolic n and Plus original MathLive routing still require independent testing. Next: verify all latest gates, diagnose regression if red, then official SY-F-38. Syntax309 OPEN; SG28/DIST multinode BLOCKED.
