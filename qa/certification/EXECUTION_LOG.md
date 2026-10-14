@@ -4249,3 +4249,9 @@ Esta actualización prevalece sobre las fotografías históricas conservadas deb
 - Plus SHA 559d2fb07cf7b2c6291b4f75c9658c14a2063e32 cumulative 38601817684 and H1d 38601817686 IN_PROGRESS on last check; scope HTTP and scientific numeric equivalent, not end-to-end display.
 - SY-N-31 OPEN. Next: inspect final CI, test visible scientific display formatting at contract precision, preserve exact round-trip; SG28/H2 OPEN, DIST multinodo BLOCKED.
 
+
+## SY-N-31 follow-up CI fixes — 2026-10-14
+- Lite product change SHA 1f0bd26d8eabe51a883ea8141dcf301865396599 failed build and cumulative (38602093704, 38602093976) from malformed escaped regex TS1127 at compute.worker.ts:796, not a mathematical regression. Corrected SHA 9009a2b0691937a06175762cbac6ee51b09edded. Fresh CI cumulative 38602384573, H1d 38602384617, build 38602384805 in progress at last check.
+- Plus initial SY-N-31 backend cumulative 38601817684 FAILED because test source oracle used doubled backslashes in Python raw literal; H1d 38601817686 SUCCESS. Corrected the test literals without modifying fixture or expectations, SHA 643c07289a8fdbbbdccb22be5318d1de9c29ee30. New cumulative 38602404105, H1d 38602404128 queued at last check.
+- SY-N-31 OPEN until current SHA-specific results are verified, including real display-format coverage. SG28/H2 OPEN and DIST multinodo BLOCKED.
+
