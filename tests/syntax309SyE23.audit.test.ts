@@ -101,4 +101,30 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(again.resultLatex).algebrite)).toBe("3/4");
   });
 
+  it("SY-E-26: original display-style fraction remains exact through worker and reentry", () => {
+    const row = rows["SY-E-26"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("\\frac{1}{3}+\\frac{1}{6}");
+    expect(row.esperado).toBe("\\frac{1}{2}");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("1/2");
+    expect(compileNumeric(parsed, "__unused__")(0)).toBe(0.5);
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: { type: "evaluate", requestId: "SY-E-26", expressionAlgebrite: parsed } });
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const output = scope.postMessage.mock.calls[0][0];
+    expect(output.success, JSON.stringify(output)).toBe(true);
+    expect(output.requestId).toBe("SY-E-26");
+    expect(output.resultLatex).toBeTypeOf("string");
+    const returned = parseExpression(output.resultLatex).algebrite;
+    expect(evaluate(returned)).toBe("1/2");
+    expect(compileNumeric(returned, "__unused__")(0)).toBe(0.5);
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: { type: "evaluate", requestId: "SY-E-26-reentry", expressionAlgebrite: returned } });
+    const again = scope.postMessage.mock.calls[0][0];
+    expect(again.success, JSON.stringify(again)).toBe(true);
+    expect(again.requestId).toBe("SY-E-26-reentry");
+    expect(evaluate(parseExpression(again.resultLatex).algebrite)).toBe("1/2");
+  });
+
 });
