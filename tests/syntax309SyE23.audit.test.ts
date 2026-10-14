@@ -595,4 +595,26 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(["0.12", "3/25"]).toContain(evaluate(again));
   });
 
+  it("SY-N-19: percent multiplication yields exactly one hundred across reentry", () => {
+    const row = rows["SY-N-19"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("50\\%\\times200");
+    expect(row.esperado).toBe("100");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("100");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-19",expressionAlgebrite:parsed}});
+    const response = scope.postMessage.mock.calls[0][0];
+    expect(response.success, JSON.stringify(response)).toBe(true);
+    expect(response.requestId).toBe("SY-N-19");
+    expect(response.resultLatex).toBe("100");
+    const returned = parseExpression(response.resultLatex).algebrite;
+    expect(evaluate(returned)).toBe("100");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-19-reentry",expressionAlgebrite:returned}});
+    const repeated = scope.postMessage.mock.calls[0][0];
+    expect(repeated.success).toBe(true);
+    expect(repeated.resultLatex).toBe("100");
+  });
+
 });
