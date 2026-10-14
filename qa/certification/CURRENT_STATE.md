@@ -1,5 +1,13 @@
 # Current Certification State
 
+## Estado vigente — SY-N-26 factorial 171 y borde overflow — 2026-10-14
+- SY-N-25 PASS bilateral alcance probado: Lite SHA 09f9484f8955c4418eacc58339e938eb08505e44 cumulative 38588364172, H1d 38588364260, build 38588364074 SUCCESS; Plus SHA d1fd7da466f971d4442555ad20163616e00f3093 cumulative 38588388914 y H1d 38588389004 SUCCESS.
+- SY-N-26 fixture oficial `171!` operación valor: exacto o error de desbordamiento claro, NUNCA Infinity silencioso. Nota de precisión: 171! tiene exactamente 310 dígitos matemáticamente (aunque fila oficial dice 311); no modificar fixture sin decisión de autoridad, conservar evidencia de discrepancia y oracle matemático independiente.
+- Regresiones en SHA Lite 89679d7bc2dc953b6ac79fef9756fb91fe57b81a tests/syntax309SyE23.audit.test.ts (exactitud con BigInt o error claro y recuperación); Plus frontend SHA 33a660bbea76bbcbab136f8d38620b2f559132e0 y backend final SHA 57f8f9ceacb80ca1e54b03222e5078548a5f1718. No cambios producto ni deploy; esperar CI.
+- Gates automáticos del SHA final Lite cumulative 38590118939, H1d 38590118667, build 38590118675; Plus cumulative 38590162439 y H1d 38590162411. Inicialmente in progress/queued. SY-N-26 OPEN, Syntax309 global OPEN, SG28/H2 OPEN y multinodo real DIST BLOCKED.
+### Próximo paso exacto
+Verificar cinco gates finales, diagnosticar errores sin relajar exactitud, corregir si necesario, documentar cierre solo con SUCCESS bilateral y continuar caso oficial siguiente.
+
 ## Avance SY-N-25 — factorial 170 — 2026-10-14
 - SY-N-24 Plus fix SHA 4e0f2a1174463362d42e34b140baab8ccff936c4: cumulative 38587354032, H1d 38587354160, SG28 backend prototype 38587353975 SUCCESS. Lite último SHA probado por CI e5121d52 cumulative 38586157827, build 38586157834, H1d 38586157853 SUCCESS, pero un ajuste posterior del oráculo bc1c743fef7abaad3c07114fbccaf188a3033983 no tiene corrida propia localizada. Mantener evidencia por SHA estricta; caso SY-N-24 no declarar cierre bilateral completo sobre SHA posterior no ejecutado.
 - SY-N-25 caso oficial `170!` esperado magnitud ~7.257415615e306 (307 dígitos exactos). Regresiones: Lite tests/syntax309SyE23.audit.test.ts commit 09f9484f8955c4418eacc58339e938eb08505e44 (parser/worker, exacto o aproximación finita, recuperación); Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts commit b8c88fdb5fcdc83deb0dc35701d74c15c0edf662 (fuente); Plus backend/tests/test_syntax309_sye23.py commit d1fd7da466f971d4442555ad20163616e00f3093 (MathResponse/HTTP, precisión, recuperación). SY-N-25 OPEN hasta gates finales SHA correctos.
