@@ -3276,3 +3276,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Plus parser fix SHA 0fee409f4a681897e10e81d9ea20f19fe90667c3 in backend/app/services/parsing.py: explicit SymPy floor/ceiling whitelisted plus ceil alias; gate 38507337647 (in progress initially). No relaxation of oracle or parsing safety.
 - Official SY-F-42 ceiling(3.2)=4 introduced as independent regression Lite source LaTeX test SHA 727262763c23b97c620237fecad60d5f8b27935f; Plus explicit backend HTTP test SHA 83f19516227fbc942e4b2bb1ade8007b499d5f3c. Auto CI Lite cumulative 38507353149, H1d 38507353195, build 38507353301; Plus cumulative 38507357259, H1d 38507357247; QUEUED/IN_PROGRESS at initial query, not PASS yet.
 - Next exact action: inspect latest SHA-specific cumulative/job logs and results, fix any floor/ceiling regression in the affected layer, do not claim original Plus MathLive LaTeX covered by HTTP test, then advance official SY-F-43 sign(-5)=-1. Syntax309 OPEN, SG28/DIST multinode BLOCKED.
+
+
+### 2026-10-13 — SY-F-42 bilateral gates verified; SY-F-43 sign witness underway
+- SY-F-42 Lite cumulative 38507353149 SUCCESS at SHA 727262763c23b97c620237fecad60d5f8b27935f; Plus cumulative 38507357259 SUCCESS at SHA 83f19516227fbc942e4b2bb1ade8007b499d5f3c. Plus previous parser whitelist fix for floor/ceil/ceiling is included in successful gate.
+- SY-F-43 official fixture: \\operatorname{sgn}(-5) expects -1. Published source LaTeX numeric oracle in Lite tests/syntax309SyFNumeric.audit.test.ts SHA af2c98f95c744bf79f4ed55e29da87312c0606d5; backend-only HTTP sign(-5) oracle in Plus backend/tests/test_syntax309_syf_numeric.py SHA e3f0af35442c065071d040eec4dff125a776e1cb. Plus does not yet test original MathLive LaTeX route.
+- Push-triggered new gates: Lite cumulative 38508046721, H1d 38508046723, build 38508046693 (in progress at first check); Plus cumulative 38508051426 and H1d 38508051415 (queued at first check). Do not count SY-F-43 PASS before actual results.
+- Next: inspect SHA-specific CI, classify/fix any SY-F-43 parser or oracle failure, then proceed official SY-F-44 modulo. Syntax309 OPEN; SG28/DIST real multinode still BLOCKED.
