@@ -1,5 +1,13 @@
 # Current Certification State
 
+## SY-N-30 diagnóstico y corrección — 2026-10-14
+- SY-N-29 Plus HTTP SHA 84a19b63e344a6c4dfa766fbb7a83e46931ca396 cumulative 38599979079 SUCCESS, H1d 38599979072 SUCCESS. Lite SY-N-29 SHA 4fa797dfa51ae3c7a3e5fd641bd9f1426aa0e357 cumulative 38599571387, H1d 38599571441, build 38599571389 SUCCESS. SY-N-29 PASS bilateral en alcance probado (sin E2E MathLive nativo).
+- SY-N-30 Lite prueba SHA e6f21f0e cumulative 38600073645 FAILURE (1227 PASS, 1 FAIL, 30 TODO): entrada `1{,}000+1` se redujo silenciosamente a `2` por la conversión global MathLive `{,}` a punto decimal. Clasificación PRODUCT/ambigüedad regional. H1d 38600073618 y build 38600073694 SUCCESS.
+- Corrección src/engine/parsing/normalize.ts SHA 05963ceb2c0588496694971d31b26542fc84bbf8: rechaza agrupaciones de coma con tres dígitos al no conocer configuración regional, con PARSE_ERROR y aviso de separador ambiguo, antes de convertir `{,}` a punto. Posible impacto: también rechaza algunos decimales de tres dígitos que usan `{,}`; requerirá posterior decisión explícita de locale para distinguir esos formatos. No declarar que el parser soporta separadores de miles.
+- Nuevos gates Lite SHA 05963ceb: cumulative 38600336771, H1d 38600336758, build 38600336822 IN_PROGRESS al consultar. Plus SY-N-30 frontend SHA 56784bae47c49417790106e66c8467363dc09f12 cumulative 38600087126, H1d 38600087299 IN_PROGRESS al consultar.
+- SY-N-30 OPEN hasta gates finales y cobertura HTTP Plus. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED.
+
+
 ## SY-N-29 CI y apertura de SY-N-30 — 2026-10-14
 - Lite SY-N-29 corregido SHA 4fa797dfa51ae3c7a3e5fd641bd9f1426aa0e357: cumulative 38599571387 SUCCESS (1227 PASS/30 TODO), H1d 38599571441 SUCCESS, build 38599571389 SUCCESS. Error original de test al serializar AppError ya corregido; evita aceptar un resultado erróneo como rechazo.
 - Plus SY-N-29 prueba frontend SHA c96b9c9 cumulative 38597448132 y H1d 38597447960 SUCCESS. Añadido caso backend HTTP y recuperación SHA 84a19b63e344a6c4dfa766fbb7a83e46931ca396, cumulative 38599979079 y H1d 38599979072 aún en curso al consultar; cierre HTTP depende del resultado real.
