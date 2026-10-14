@@ -177,4 +177,28 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(recovered.success).toBe(true);
     expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
   });
+
+  it("SY-E-29: zero over zero is identified as indeterminate, then recovers", () => {
+    const row = rows["SY-E-29"];
+    expect(row.operacion).toBe("error");
+    expect(row.entrada).toBe("\\frac{0}{0}");
+    expect(row.esperado).toMatch(/indeterminado/);
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(() => evaluate(parsed)).toThrowError(expect.objectContaining({
+      code: ErrorCode.DOMAIN_ERROR, message: expect.stringMatching(/indeterm|0\\s*\\/\\s*0/i),
+    }));
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-E-29",expressionAlgebrite:parsed}});
+    const rejected = scope.postMessage.mock.calls[0][0];
+    expect(rejected.success).toBe(false);
+    expect(rejected.errorCode).toBe(ErrorCode.DOMAIN_ERROR);
+    expect(rejected.errorMessage).toMatch(/indeterm|0\\s*\\/\\s*0/i);
+    expect(rejected.resultLatex).toBeNull();
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-E-29-recovery",
+      expressionAlgebrite:parseExpression("2+3").algebrite}});
+    const recovered = scope.postMessage.mock.calls[0][0];
+    expect(recovered.success).toBe(true);
+    expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
+  });
 });
