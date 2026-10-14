@@ -1,5 +1,14 @@
 # Current Certification State
 
+## Seguimiento SY-N-28 — 2026-10-14 (corrección decimal Euler)
+- Fixture oficial e, valor esperado a nueve decimales 2.718281828. En Lite SHA 2d05251c376522038050cb3d29418dcc38f6b4bc, cumulative [38595824578](https://github.com/c2melendez/precision-lab-lite/actions/runs/38595824578) FAILURE: 1225 PASS, 1 FAIL, 30 TODO; test SY-N-28 recibía 2.718282000. H1d 38595824273 y build 38595824429 SUCCESS. Clasificación PRODUCT: Algebrite float() reduce a seis decimales.
+- Corrección Lite src/engine/algebriteClient.ts commit 9305f4aee1b9c9aad4da0895b7860f9ee2a945f7: para constantes exactas e/exp(1) se usa String(Math.E) en decimalApprox, preservando expresión simbólica y configuración CAS. El oráculo original se mantiene sin relajar.
+- Plus SHA 80d003a18cf93b1755b35f2f04dd583724bbf446: cumulative [38595835120](https://github.com/c2melendez/precision-lab-plus/actions/runs/38595835120) SUCCESS; H1d [38595835370](https://github.com/c2melendez/precision-lab-plus/actions/runs/38595835370) SUCCESS.
+- Estado SY-N-28: OPEN hasta evidencia de la corrida Lite del SHA corregido 9305f4a; no atribuir PASS a gates del SHA anterior. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo real BLOCKED; sin despliegue.
+### Siguiente paso exacto
+Localizar los jobs cumulative/H1d/build Lite para SHA 9305f4a y comprobar PASS y alcance por log. Si falla, corregir la capa con evidencia. Solo entonces cerrar SY-N-28 bilateral y comenzar siguiente fixture oficial de Syntax309. Actualizar EXECUTION_LOG junto al cierre verificado.
+
+
 ## Estado vigente — SY-N-27 constante pi y precisión decimal — 2026-10-14
 Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
 - Rama canónica bilateral qa/syntax-audit-in625-a1. Fixture original \pi, resultado decimal esperado 3.141592654.
