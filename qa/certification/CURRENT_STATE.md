@@ -1,5 +1,12 @@
 # Current Certification State
 
+## SY-N-22 — segundo diagnóstico y cobertura original — 2026-10-14
+- Lite SHA e548d8c: cumulative 38570940931 FAIL, mismo caso SY-N-22: salida success=true resultLatex="-1!". Guard de factorial(-n) insuficiente porque entrada parser conserva otra variante del operando agrupado. No relajar oráculo.
+- Se amplió `src/engine/algebriteClient.ts` para reconocer `(-n)!` además de `factorial(-n)`, SHA 76eec309f06e8fe4a4a17485ffd969f4423ea21b. Nuevas corridas automáticas Lite cumulative 38571165368, H1d 38571165400, build 38571165381 QUEUED al iniciar. Si falla de nuevo, inspeccionar parseExpression("(-1)!").algebrite y preservar distinción semántica respecto a -(1!); no aceptar `-1!` como validación factorial negativo.
+- Plus SHA 06bcc8e gates cumulative 38570563810 y H1d 38570563960 SUCCESS. SY-N-22 OPEN hasta Lite PASS correspondiente.
+### Próximo paso exacto
+Consultar 38571165368/38571165400/38571165381 y logs. Ante FAIL, instrumentar salida parser y corregir en la capa adecuada en lugar de ampliar un guard sin evidencia. Tras SUCCESS actualizar cierre bilateral e iniciar siguiente fila oficial.
+
 ## SY-N-22 — diagnóstico y corrección Lite — 2026-10-14
 - Lite SHA test 50dd39ffa478c6aec4918a16485503578896813a: cumulative 38570548934 FAILURE 1 test / 1219 PASS / 30 TODO; job 115874279105: para `(-1)!` el worker respondió incorrectamente success=true, resultLatex="-1!", decimalApprox="-1.0". H1d 38570548996 SUCCESS, build 38570548943 SUCCESS.
 - Falla de PRODUCTO (CAS devolvió expresión simbólica en vez de DOMAIN_ERROR). Corrección Lite `src/engine/algebriteClient.ts` SHA e548d8c380d7a6e934c00fd78cfe3d822362d30b: guardar factorial de entero negativo explícito antes de delegar a Algebrite; preservar caso `-(1!)` legítimo y positivos. Nueva CI automática Lite cumulative 38570940931, H1d 38570940775, build 38570940936, IN_PROGRESS inicial.
