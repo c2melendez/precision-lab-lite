@@ -875,4 +875,25 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     }
   });
 
+
+  it("SY-N-30: thousands separator markup must evaluate as 1001 or report a syntax error", () => {
+    const row = rows["SY-N-30"];
+    expect(row.entrada).toBe("1{,}000+1");
+    expect(row.operacion).toBe("convencion");
+    let value: string | undefined;
+    let rejection: unknown;
+    try {
+      value = evaluate(parseExpression(row.entrada).algebrite);
+    } catch (error) {
+      rejection = error;
+    }
+    if (rejection !== undefined) {
+      const err = rejection as { code?: unknown; message?: unknown };
+      expect(err.code).toBe(ErrorCode.PARSE_ERROR);
+      expect(String(err.message)).toMatch(/syntax|sintax|separator|separador|invalid|inválid|error/i);
+    } else {
+      expect(value, "Accepted thousands separator must yield 1001").toBe("1001");
+    }
+  });
+
 });
