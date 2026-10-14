@@ -1,5 +1,12 @@
 # Current Certification State
 
+## SY-N-22 — tercer parche Lite para agrupación de factorial — 2026-10-14
+- Lite cumulative 38571165368 en SHA 76eec309 FAIL: mismo error de respuesta simbólica `-1!` para `(-1)!`. El pipeline del parser usa expandPostfixOperators y preserva agrupación interna dentro de factorial. La primera guarda aceptaba únicamente `factorial(-1)` sin paréntesis interiores.
+- Se publicó ajuste Lite `src/engine/algebriteClient.ts` SHA 1eb0a1ae419682c90cf7654c031e0d71adb8a5d1 para detectar `factorial((-1))` y formas agrupadas, sin cambiar factorial positivo o negación externa. CI nueva: cumulative 38571369154, build 38571369212, H1d 38571369220 QUEUED inicialmente.
+- Plus cumulative 38570563810 y H1d 38570563960 SUCCESS. SY-N-22 permanece OPEN hasta gates Lite SUCCESS del SHA 1eb0a1ae; ante nuevo FAIL imprimir/parchear AST en origen en vez de seguir ampliando expresiones regulares.
+### Siguiente paso exacto
+Verificar logs de 38571369154/38571369212/38571369220. Reparar los errores confirmados y sincronizar ambas ramas; una vez PASS bilateral continuar secuencia oficial.
+
 ## SY-N-22 — segundo diagnóstico y cobertura original — 2026-10-14
 - Lite SHA e548d8c: cumulative 38570940931 FAIL, mismo caso SY-N-22: salida success=true resultLatex="-1!". Guard de factorial(-n) insuficiente porque entrada parser conserva otra variante del operando agrupado. No relajar oráculo.
 - Se amplió `src/engine/algebriteClient.ts` para reconocer `(-n)!` además de `factorial(-n)`, SHA 76eec309f06e8fe4a4a17485ffd969f4423ea21b. Nuevas corridas automáticas Lite cumulative 38571165368, H1d 38571165400, build 38571165381 QUEUED al iniciar. Si falla de nuevo, inspeccionar parseExpression("(-1)!").algebrite y preservar distinción semántica respecto a -(1!); no aceptar `-1!` como validación factorial negativo.
