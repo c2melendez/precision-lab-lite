@@ -1138,4 +1138,22 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(repeated.resultLatex).algebrite)).toBe("9");
   });
 
+  it("SY-D-13: ten nested parentheses preserve exact unity through worker and reentry", () => {
+    const row = rows["SY-D-13"];
+    expect(row.entrada).toBe("(".repeat(10) + "1" + ")".repeat(10));
+    expect(row.esperado).toBe("1");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("1");
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: { type: "evaluate", requestId: "SY-D-13", expressionAlgebrite: parsed } });
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("1");
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: { type: "evaluate", requestId: "SY-D-13-reentry", expressionAlgebrite: parseExpression(result.resultLatex).algebrite } });
+    const again = scope.postMessage.mock.calls[0][0];
+    expect(again.success).toBe(true);
+    expect(evaluate(parseExpression(again.resultLatex).algebrite)).toBe("1");
+  });
+
 });
