@@ -1,5 +1,11 @@
 # Current Certification State
 
+## SY-D-03 PASS bilateral / SY-D-04 OPEN (2026-10-14)
+- SY-D-03 PASS en alcance probado: Lite SHA 7b3a62f0692471814c3947d0ca533c66f215c0a8 acumulativo 38627185469 y E2E regresión 38627185399 SUCCESS; Plus SHA e1314fa42eb827fa86bf84b6682084667092968e acumulativo 38627177726 y H1d 38627177431 SUCCESS.
+- Nuevo caso SY-D-04: (1+2] debe fallar con error explícito por delimitadores incompatibles, no producir 3. Lite test tests/syntax309SyE23.audit.test.ts commit 1ce2331cfe593fa8209d043183e34a5721aeb35f; Plus backend/tests/test_syntax309_sye23.py commit 1fbbea3aa8287d1fa970e36571586157992586b7.
+- Gates nuevos Lite cumulative 38629071681, H1d 38629071960, build 38629071977, E2E 38629072116 IN_PROGRESS; Plus cumulative 38629079636 y H1d 38629079940 QUEUED. Verificar SHA/logs antes de cerrar SY-D-04. SG28/H2 OPEN y DIST multinodo BLOCKED.
+
+
 ## SY-D-02 PASS bilateral / SY-D-03 abierto (2026-10-14)
 - SY-D-02 PASS alcance verificado: Lite SHA 5e920cea270979ea8cc66d9a70f925001d073580 cumulative 38625444359, H1d 38625444330, build 38625444465 y científico E2E 38625444456 SUCCESS. Plus SHA 6d880c8ebb5a182a26e832eb908aaa6a629396bc cumulative 38625477765 y H1d 38625477804 SUCCESS.
 - Caso oficial SY-D-03: entrada (), requiere error claro de paréntesis vacíos. Agregada regresión parser/evaluate Lite tests/syntax309SyE23.audit.test.ts SHA 7b3a62f0692471814c3947d0ca533c66f215c0a8; Plus rechazo HTTP backend/tests/test_syntax309_sye23.py SHA e1314fa42eb827fa86bf84b6682084667092968e.
