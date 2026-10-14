@@ -3402,3 +3402,10 @@ Verified Plus technical SHA `a0986e5f6c61efcf636f0eaa3c1ac7355ff5c032`: SG28 run
 - Lite parser patch SHA 4b7177ce3bbaaa5aa325e73e93e80fc53b6cc604 specifically handles a parenthesized negative numeric base with odd integer power under odd indexed root, preserving negative real result. Pending CI for that SHA: cumulative 38502030498, H1d 38502030501, build 38502030613.
 - Added permanent SY-F-37 abs(-3)=3 regression on original LaTeX Lite SHA 196748e27af77865a5ee2d74082badf2e716f30c; cumulative 38502049649, H1d 38502049642, build 38502049660 initially IN_PROGRESS. Plus explicit backend HTTP test SHA fd829698f648b49fed343329b71a24f70e6d1886; cumulative 38502056646 and H1d 38502056839 initially QUEUED.
 - No SY-F-36/37 Lite PASS or SY-F-37 Plus PASS asserted before SHA-specific CI. Generic symbolic n and Plus original MathLive routing still require independent testing. Next: verify all latest gates, diagnose regression if red, then official SY-F-38. Syntax309 OPEN; SG28/DIST multinode BLOCKED.
+
+
+### 2026-10-13 — SY-F-38/39 parser correction
+- Lite original LaTeX witness SHA b72d070648b73443757602e9e63a3e77af7b63a0 cumulative 38503229851 failed only SY-F-38: unsupported `\\left\\vert ... \\right\\vert` delimiters; SY-F-39 passed (1144 pass, 1 fail, 30 TODO).
+- Corrected Lite delimiter normalization to handle `\\left\\vert` and `\\right\\vert` as absolute bars before scanning; parser commit ef95355556749af4ed43aa4f22f86fc6e6e98ece. Push-triggered cumulative 38503390859, H1d 38503390756 and build 38503390748 queued at initial check; PASS pending.
+- Plus SY-F-38/39 backend translated abs(-3) tests SHA 757c94423335df7372ec4cc319f02df9ae090cf4; cumulative 38503240594, H1d 38503240614 in progress. Plus does not certify source LaTeX delimiters.
+- Next: inspect latest gate results by SHA; fix red and then address official SY-F-40 ambiguity. Syntax309 OPEN; SG28/DIST multinode BLOCKED.
