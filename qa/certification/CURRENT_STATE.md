@@ -1,5 +1,12 @@
 # Current Certification State
 
+## SY-N-22 — diagnóstico y corrección Lite — 2026-10-14
+- Lite SHA test 50dd39ffa478c6aec4918a16485503578896813a: cumulative 38570548934 FAILURE 1 test / 1219 PASS / 30 TODO; job 115874279105: para `(-1)!` el worker respondió incorrectamente success=true, resultLatex="-1!", decimalApprox="-1.0". H1d 38570548996 SUCCESS, build 38570548943 SUCCESS.
+- Falla de PRODUCTO (CAS devolvió expresión simbólica en vez de DOMAIN_ERROR). Corrección Lite `src/engine/algebriteClient.ts` SHA e548d8c380d7a6e934c00fd78cfe3d822362d30b: guardar factorial de entero negativo explícito antes de delegar a Algebrite; preservar caso `-(1!)` legítimo y positivos. Nueva CI automática Lite cumulative 38570940931, H1d 38570940775, build 38570940936, IN_PROGRESS inicial.
+- Plus SHA 06bcc8e4749cc271d95d65bce07586595b989221: cumulative 38570563810 y H1d 38570563960 SUCCESS; pruebas del error HTTP y recuperación. Lite SY-N-22 OPEN hasta tres gates nuevos SHA e548d8c concluidos; no declarar PASS por corrida antigua roja. SG28/H2 OPEN; DIST BLOCKED; sin producción.
+### Próximo paso exacto
+Consultar tres corridas nuevas Lite 38570940931/38570940775/38570940936, revisar test SY-N-22 y logs; si FAIL diagnosticar y corregir. Si todas SUCCESS, cerrar caso bilateral en alcance probado e iniciar siguiente fixture oficial Syntax309.
+
 ## Estado vigente — SY-N-22 factorial negativo — 2026-10-14
 - SY-N-21 PASS bilateral en alcance probado: Lite SHA b3e8a84ab7dabaae02d86dac9bdce2e176ef7a56 gates cumulative 38568932445, H1d 38568932439, build 38568932432 SUCCESS; Plus SHA 3f4849747515497f914a3ccce9ae923060df8291 cumulative 38568949523 y H1d 38568949591 SUCCESS.
 - SY-N-22 fixture oficial `(-1)!` => error claro de factorial no definido. Regresiones técnicas publicadas Lite tests/syntax309SyE23.audit.test.ts SHA 50dd39ffa478c6aec4918a16485503578896813a, validación de error DOMAIN_ERROR/recovery worker; Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts SHA f6cb692a3b0a9efd7ae96fa678b36c8bf342eb40, conservación del operando negativo; Plus backend/tests/test_syntax309_sye23.py SHA final 06bcc8e4749cc271d95d65bce07586595b989221, contrato HTTP MathResponse y posterior 2+3.
