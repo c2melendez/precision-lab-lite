@@ -803,4 +803,29 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(recovered.resultLatex).algebrite)).toBe("5");
   });
 
+  it("SY-N-27: pi retains exact identity, nine-decimal approximation and reentry", () => {
+    const row = rows["SY-N-27"];
+    expect(row.entrada).toBe("\\pi");
+    expect(row.esperado).toBe("3.141592654");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("pi");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-27",expressionAlgebrite:parsed}});
+    const reply = scope.postMessage.mock.calls[0][0];
+    expect(reply.success, JSON.stringify(reply)).toBe(true);
+    expect(reply.requestId).toBe("SY-N-27");
+    expect(evaluate(parseExpression(reply.resultLatex).algebrite)).toBe("pi");
+    const approx = Number(String(reply.decimalApprox).replace(/…|\.\.\./g, ""));
+    expect(Number.isFinite(approx), JSON.stringify(reply)).toBe(true);
+    expect(approx.toFixed(9)).toBe("3.141592654");
+    expect(Math.abs(approx - 3.141592653589793)).toBeLessThan(5e-10);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-27-reentry",
+      expressionAlgebrite:parseExpression(reply.resultLatex).algebrite}});
+    const repeated = scope.postMessage.mock.calls[0][0];
+    expect(repeated.success).toBe(true);
+    expect(repeated.requestId).toBe("SY-N-27-reentry");
+    expect(evaluate(parseExpression(repeated.resultLatex).algebrite)).toBe("pi");
+  });
+
 });
