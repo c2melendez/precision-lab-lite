@@ -233,6 +233,10 @@ export function toLatex(algebriteResult: string): string {
  * Algebrite no puede reducirlo a float (ej. contiene variables libres).
  */
 export function toDecimalApprox(algebriteResult: string): string | null {
+  // Algebrite float() prints only six decimal places by default. Preserve
+  // the native double precision of pi without mutating CAS print settings
+  // or replacing the exact symbolic result used for reentry.
+  if (algebriteResult.trim() === "pi") return String(Math.PI);
   try {
     const floated: string = Algebrite.run(`float(${algebriteResult})`);
     if (typeof floated !== "string" || floated.length === 0 || /stop|Stop/.test(floated)) {
