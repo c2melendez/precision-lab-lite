@@ -3254,3 +3254,10 @@ Plus SHA f4d0829cebc52944339fc3340aa7f887b2ea9f50: SG28 backend run 38062172534 
 - Lite first SY-F-40 SHA 93603c2ad1bd5a9588f515ddd826a0e071d892d2 cumulative 38503507177 FAILURE. Parser update e480f2e6082058a76d3f339eb24859b9020d9665 added generic \\vert translation, but cumulative 38503643938 still FAILURE. Diagnostic problem: error object stringified as [object Object] in test, concealing cause.
 - Lite test diagnostic SHA c21ab4e058a92c5e99e031b5fa233453b7c754d0 now surfaces actual error.message; cumulative 38503798382, H1d 38503798264, build 38503798331 in progress at last check. Do not certify Lite SY-F-40 until passing CI and correct semantic behavior or useful explicit ambiguity feedback.
 - Next: inspect Lite current failure details and fix correct layer, then official SY-F-41. Syntax309 OPEN; SG28/DIST independent-host certification BLOCKED.
+
+
+### 2026-10-13 — SY-F-40 original Lite source oracle correction
+- Lite cumulative 38503798382 FAILED due an actual diagnostic `No se puede evaluar numéricamente la variable/función desconocida "x"`; the test did not substitute x, because its regex matched literal backslashes rather than word boundaries. This is a HARNESS bug, not proof that nested-bar mathematics is incorrect. The prior generic error message obscured the true source.
+- Corrected numeric witness substitution to a proper word-boundary regex in test commit 169d1135c03ce75431d0fc9ca32bbef3f729e889. New cumulative 38503933639, H1d 38503933638, build 38503933720 in progress at first check. Must verify results before Lite SY-F-40 PASS.
+- Plus explicit HTTP SY-F-40 at SHA 97880a23a694ea92f4bb8dea64d1a3d56690faf4 cumulative 38503514125 and H1d 38503514179 SUCCESS; typed-bar frontend remains unverified.
+- Next: verify Lite latest SHA CI, fix any genuine residual failure, move SY-F-41. Syntax309 OPEN; SG28/DIST multinode BLOCKED.
