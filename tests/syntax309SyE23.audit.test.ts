@@ -1041,4 +1041,24 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     } else { expect(result).toBe("9"); }
   });
 
+  it("SY-D-08: LaTeX left/right parentheses preserve exponent and worker reentry", () => {
+    const row = rows["SY-D-08"];
+    expect(row.entrada).toBe(String.raw`\left(1+2\right)^{2}`);
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("9");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("9");
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: { type: "evaluate", requestId: "SY-D-08", expressionAlgebrite: parsed } });
+    const reply = scope.postMessage.mock.calls[0][0];
+    expect(reply.success, JSON.stringify(reply)).toBe(true);
+    expect(reply.requestId).toBe("SY-D-08");
+    expect(evaluate(parseExpression(reply.resultLatex).algebrite)).toBe("9");
+    scope.postMessage.mockClear();
+    scope.onmessage!({ data: { type: "evaluate", requestId: "SY-D-08-reentry", expressionAlgebrite: parseExpression(reply.resultLatex).algebrite } });
+    const repeated = scope.postMessage.mock.calls[0][0];
+    expect(repeated.success).toBe(true);
+    expect(evaluate(parseExpression(repeated.resultLatex).algebrite)).toBe("9");
+  });
+
 });
