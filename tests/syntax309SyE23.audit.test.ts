@@ -256,4 +256,18 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(result.success, JSON.stringify(result)).toBe(true);
     expect(compileNumeric(evaluate(parseExpression(result.resultLatex).algebrite), "__unused__")(0)).toBe(5);
   });
+
+  it("SY-N-03: leading zero integer remains twelve through parser, worker and reentry", () => {
+    const row = rows["SY-N-03"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("00012");
+    expect(row.esperado).toBe("12");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(compileNumeric(evaluate(parsed), "__unused__")(0)).toBe(12);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-03",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(compileNumeric(evaluate(parseExpression(result.resultLatex).algebrite), "__unused__")(0)).toBe(12);
+  });
 });
