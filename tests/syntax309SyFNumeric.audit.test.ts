@@ -380,4 +380,12 @@ describe("Syntax309 SY-F — numeric witnesses via Lite parser and engine", () =
     expect(actual).toBe(12);
   });
 
+  it("SY-F-47: original LaTeX maximum of one five three is five", () => {
+    expect(byId["SY-F-47"].operacion).toBe("valor");
+    const parsed = parseExpression(byId["SY-F-47"].entrada).algebrite;
+    const actual = Number(evaluate(parsed));
+    expect(Number.isFinite(actual), "SY-F-47 parsed=" + parsed).toBe(true);
+    expect(actual).toBe(5);
+  });
+
 });
