@@ -1296,4 +1296,20 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(repeated.resultLatex).toBe("3");
   });
 
+  it("SY-U-06: Unicode multiplication preserves exact twelve and worker reentry", () => {
+    const row = rows["SY-U-06"];
+    expect(row.entrada).toBe("3×4");
+    expect(row.esperado).toBe("12");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("12");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-06",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.resultLatex).toBe("12");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-06-reentry",expressionAlgebrite:parseExpression(result.resultLatex).algebrite}});
+    expect(scope.postMessage.mock.calls[0][0].resultLatex).toBe("12");
+  });
+
 });
