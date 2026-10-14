@@ -1,5 +1,10 @@
 # Current Certification State
 
+## SY-N-30 backend HTTP supplementary gate — 2026-10-14
+- Plus backend/tests/test_syntax309_sye23.py SHA fafd2663003b050bd15fdeeb427d998fee8a43af adds explicit ungrouped translation 1000+1 -> 1001 with MathResponse, result_approx and HTTP reentry; this is separate from the frontend ambiguity rejection, not proof that the original markup is natively accepted.
+- Final Plus SHA fafd2663 cumulative 38601102412 and H1d 38601102386 newly queued. Prior runs for af2f5041 still in progress at last check. Use ONLY successful gates on final SHA for closure. SY-N-30 OPEN; SY-N-31 next.
+
+
 ## SY-N-30 Plus corrective action — 2026-10-14
 - Lite SHA 05963ceb2c0588496694971d31b26542fc84bbf8 cumulative 38600336771, H1d 38600336758, build 38600336822 all SUCCESS. Scope parser and regression.
 - Plus SHA 56784bae47c49417790106e66c8467363dc09f12 cumulative 38600087126 FAILURE: frontend SY-N-30 translated 1{,}000+1 to 1.000+1, which would compute 2 rather than 1001; backend job SUCCESS but was not a backend SY-N-30 fixture gate. PRODUCT semantic conversion issue.
