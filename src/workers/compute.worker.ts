@@ -793,7 +793,7 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
     // approximation as well as the preserved exact fraction. Avoid computing
     // with unsafe integers or replacing the authoritative symbolic result.
     let decimalApprox = !fraction ? (toDecimalApprox(raw) ?? undefined) : undefined;
-    if (fraction && /^-?\\d+\\/\\d+$/.test(raw)) {
+    if (fraction && /^-?\d+\/\d+$/.test(raw)) {
       const [numerator, denominator] = raw.split("/").map(Number);
       if (Number.isSafeInteger(numerator) && Number.isSafeInteger(denominator) && denominator !== 0) {
         const numeric = numerator / denominator;
