@@ -1027,4 +1027,18 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(repeated.resultLatex).algebrite)).toBe("9");
   });
 
+  it("SY-D-07: braced grouping yields nine or explicit syntax error", () => {
+    const row = rows["SY-D-07"];
+    expect(row.entrada).toBe("\\{1+2\\}\\cdot3");
+    expect(row.operacion).toBe("convencion");
+    let result: string | undefined;
+    let rejection: unknown;
+    try { result = evaluate(parseExpression(row.entrada).algebrite); } catch (error) { rejection = error; }
+    if (rejection !== undefined) {
+      const diagnostic = rejection as { code?: unknown; message?: unknown };
+      expect(diagnostic.code).toBe(ErrorCode.PARSE_ERROR);
+      expect(String(diagnostic.message)).toMatch(/llave|brace|set|conjunto|syntax|sintax|unrecognized|reconocid|invalid|inválid/i);
+    } else { expect(result).toBe("9"); }
+  });
+
 });
