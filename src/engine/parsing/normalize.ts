@@ -459,9 +459,18 @@ function replaceNthRootOnce(input: string): string {
   const numericIndex = /^\d+$/.test(index) ? Number(index) : null;
   const numericNegative = radicand.match(/^\s*-\s*(\d+(?:\.\d+)?)\s*$/);
 
+  // A negative constant raised to an odd positive integer remains negative.
+  // Preserve the real odd-root convention without taking Math.pow(negative, 1/3),
+  // which evaluates to NaN in the numeric fallback.
+  const negativeOddPower = radicand.match(/^\s*\(\s*-\s*(\d+(?:\.\d+)?)\s*\)\s*\^\s*\{?\s*(\d+)\s*\}?\s*$/);
+  const realNegativePower = negativeOddPower && Number(negativeOddPower[2]) % 2 === 1;
+
+
   let replacement: string;
   if (numericIndex !== null && numericIndex % 2 === 1 && numericNegative) {
     replacement = `-((${numericNegative[1]})^(1/(${index})))`;
+  } else if (numericIndex !== null && numericIndex % 2 === 1 && realNegativePower) {
+    replacement = `-(((${negativeOddPower![1]})^(${negativeOddPower![2]}))^(1/(${index})))`;
   } else {
     replacement = `((${radicand})^(1/(${index})))`;
   }
