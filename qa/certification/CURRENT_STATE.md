@@ -1,5 +1,30 @@
 # Current Certification State
 
+## Estado vigente — SY-E-19/20 y diagnóstico de división por cero — 2026-10-14 (UTC y Honduras)
+Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
+- Rama canónica bilateral resuelta desde README: qa/syntax-audit-in625-a1.
+- SY-E-19 fixture original 0^{0}, operacion=convencion. Convención efectiva confirmada y declarada en ambos motores: evaluación literal 0^0=1. No se sustituyó entrada por un literal ni se impuso una convención nueva; los límites indeterminados de tipo 0^0 no quedan acreditados por este caso.
+- Lite SHA 5b6c1b6edbf7d5e444f99f19da076c5ac31c3f4e, tests/syntax309SyEComplex.audit.test.ts: fuente original -> parseExpression -> evaluate da raw=1; handler worker auténtico (transporte self/postMessage simulado) devuelve éxito/resultLatex=1/requestId correcto; reentrada de la salida conserva 1.
+- SY-E-20 Lite fuente original 0^{-1}: evaluate lanza DOMAIN_ERROR con mensaje de división/cero; handler devuelve success=false, errorCode DOMAIN_ERROR, errorMessage claro y resultLatex=null. Inmediatamente después evalúa 2+3=5 con nuevo requestId; preserva recuperación.
+- Lite cumulative 38521665688/job 115712530816, H1d 38521665743 y build 38521665689 SUCCESS; 1186 PASS + 30 TODO.
+- Plus test inicial SHA 1d2a54e035a47e519482e69120c03e4b0ec3037b, cumulative 38521670749/backend job 115712547822 FAILURE (1067 PASS + 1 FAIL + 1 XFAIL): SY-E-19 pasó con exacto/LaTeX/aproximado 1; SY-E-20 ya rechazaba 0^(-1) con DOMAIN_ERROR pero mensaje genérico no identificaba división por cero. Clasificación PRODUCT / diagnóstico público incompleto, no fallo del cálculo ni oráculo.
+- Plus fix SHA 93cd0cc0090e1dcb46a5b467942a11f4837a9103: backend/app/services/evaluate_service.py inspecciona potencias de base cero y exponente negativo en la expresión numérica antes de evalf; conserva DOMAIN_ERROR/HTTP 200 y emite "División entre cero: cero no admite exponentes negativos." Exponente cero no es negativo: 0^0 sigue siendo 1. Variables libres conservan el camino simbólico anterior.
+- Tests Plus backend/tests/test_syntax309_sye_complex.py: SY-E-19 HTTP real 0^0 + MathResponse + éxito/operation/scalar/input_text/request_id/texto/LaTeX/aproximado 1 y errores nulos. SY-E-20 HTTP real 0^(-1) + DOMAIN_ERROR/mensaje específico/resultados vacíos y recuperación 2+3=5 con request_id distinto.
+- Regresiones extra Plus: 0^(-2) y 1/0 con diagnóstico de cero; controles válidos 0^1=0, 0^2=0 y 2^(-1)=0.5 preservados. No cambios de API/whitelist ni reducción de criterios.
+- Plus cumulative 38521996563/backend job 115713589471 SUCCESS (1073 PASS + 1 XFAIL), frontend job 115713589764 SUCCESS (776 PASS + 28 TODO); H1d 38521996527/job 115713589204 SUCCESS.
+- Gate adicional activado por evaluate_service: SG28 Plus Backend Isolation Prototype 38521996526/job 115713588908 SUCCESS, 69 PASS, mismo SHA. Acredita su regresión pertinente, no cierre H2/DIST multinodo.
+- SY-E-19 y SY-E-20 PASS en los alcances descritos; Plus usa traducción backend explícita y Lite handler con transporte simulado. MathLive/browser/teclado/UI nativos y declaración visible de convenciones en UI no acreditados por estas pruebas. TODO/XFAIL no cuentan como PASS.
+- Syntax309 OPEN; IN625 H2/SG28 OPEN y DIST multinodo BLOCKED hasta evidencia entre nodos independientes. Producción y flags de despliegue no cambiados.
+
+### Siguiente paso exacto — SY-E-21
+1. Fixture oficial qa/certification/syntax309_cases.jsonl: \\frac12, operacion=valor, esperado=\\frac{1}{2}; abreviatura TeX de un solo dígito.
+2. Lite: añadir fuente original a tests/syntax309SyEExponent.audit.test.ts y/o harness worker existente. Exigir valor exacto 1/2, numérico 0.5, resultLatex equivalente y reentrada preservada; no cambiar fuente a \\frac{1}{2} antes del parser para ocultar pérdida de tokens.
+3. Plus: POST /api/v1/evaluate real con traducción explícita 1/2, MathResponse exacto/LaTeX/aproximado 0.5. Separar conversión original \\frac12/MathLive como prueba frontend si se implementa; no inferirla del HTTP traducido.
+4. Publicar regresiones, obtener SHA/runs y revisar acumulativo/H1d/build Lite; clasificar rojos y corregir la capa adecuada sin alterar oráculo. Sincronizar trazabilidad sin CI documental.
+5. Luego SY-E-22 fracción anidada; contemplar sus restricciones de dominio x!=0 y x!=-1 al comparar con x/(x+1), sin extender silenciosamente el dominio original.
+6. SY-E-21 iniciado en preparación de fuente/oráculos, sin test publicado/ejecución: NO PASS.
+
+
 ## Estado vigente — SY-E-18 y corrección round-trip Lite — 2026-10-14 (UTC y Honduras)
 Esta actualización prevalece sobre las fotografías históricas conservadas debajo.
 - Rama canónica bilateral resuelta desde README: qa/syntax-audit-in625-a1.
