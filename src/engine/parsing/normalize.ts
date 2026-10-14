@@ -710,7 +710,7 @@ function validateInputStructureG3(input: string): void {
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
   // SY-N-05: explicit calculator-e convention for the canonical original source.
-  if (/^1\\\\mathrm\{e\}3$/.test(latex.trim())) return "1000";
+  if (/^1\\mathrm\{e\}3$/.test(latex.trim())) return "1000";
   // SY-E-30: reject an empty original denominator before generic TeX normalization.
   if (/\\frac\s*\{[^{}]+\}\s*\{\s*\}/.test(latex)) {
     throw parseError("Denominador vacío: completa el denominador de la fracción.");
