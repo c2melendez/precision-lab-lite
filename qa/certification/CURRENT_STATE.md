@@ -1,5 +1,13 @@
 # Current Certification State
 
+## Cierre SY-N-28 e inicio SY-N-29 — 2026-10-14
+- SY-N-28 PASS bilateral en alcance probado. Lite SHA producto 9305f4aee1b9c9aad4da0895b7860f9ee2a945f7: cumulative 38596645811 SUCCESS (1226 PASS + 30 TODO), H1d 38596645529 SUCCESS, build 38596645394 SUCCESS. Plus SHA 80d003a18cf93b1755b35f2f04dd583724bbf446: cumulative 38595835120 y H1d 38595835370 SUCCESS.
+- Alcance: parser/worker Lite; conversión frontend y HTTP Plus; no E2E nativo completo. Syntax309 general OPEN; SG28/H2 OPEN; DIST multinodo real BLOCKED.
+- Siguiente caso oficial SY-N-29: entrada literal `1,5+2`, operación convención, esperado `3.5 (coma decimal) o aviso`; nota oficial «Separador decimal: declarar la configuración regional». No asumir automáticamente que coma siempre significa decimal ni permitir interpretación silenciosa como lista.
+### Siguiente paso ejecutable — SY-N-29
+Verificar parser Lite y conversor/HTTP Plus frente a `1,5+2`; agregar pruebas de manejo explícito de configuración regional (3.5 o aviso claro), recuperación y reentrada, luego CI acumulativa por SHA; documentar cualquier ambigüedad como fallo. Después SY-N-30: `1{,}000+1`.
+
+
 ## Seguimiento SY-N-28 — 2026-10-14 (corrección decimal Euler)
 - Fixture oficial e, valor esperado a nueve decimales 2.718281828. En Lite SHA 2d05251c376522038050cb3d29418dcc38f6b4bc, cumulative [38595824578](https://github.com/c2melendez/precision-lab-lite/actions/runs/38595824578) FAILURE: 1225 PASS, 1 FAIL, 30 TODO; test SY-N-28 recibía 2.718282000. H1d 38595824273 y build 38595824429 SUCCESS. Clasificación PRODUCT: Algebrite float() reduce a seis decimales.
 - Corrección Lite src/engine/algebriteClient.ts commit 9305f4aee1b9c9aad4da0895b7860f9ee2a945f7: para constantes exactas e/exp(1) se usa String(Math.E) en decimalApprox, preservando expresión simbólica y configuración CAS. El oráculo original se mantiene sin relajar.
