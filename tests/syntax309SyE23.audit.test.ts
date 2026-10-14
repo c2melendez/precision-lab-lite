@@ -227,4 +227,19 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(output.success).toBe(true);
     expect(evaluate(parseExpression(output.resultLatex).algebrite)).toBe("2/3");
   });
+
+  it("SY-N-01: leading-dot decimal remains 0.5 through parser, worker, and reentry", () => {
+    const row = rows["SY-N-01"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe(".5");
+    expect(row.esperado).toBe("0.5");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(Number(evaluate(parsed))).toBe(0.5);
+    expect(compileNumeric(parsed, "__unused__")(0)).toBe(0.5);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-01",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(Number(evaluate(parseExpression(result.resultLatex).algebrite))).toBe(0.5);
+  });
 });
