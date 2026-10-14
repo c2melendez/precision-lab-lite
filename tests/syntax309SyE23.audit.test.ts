@@ -439,4 +439,29 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(repeated.resultLatex).toBe("2");
   });
 
+  it("SY-N-13: original squared radical is exactly two through worker and reentry", () => {
+    const row = rows["SY-N-13"];
+    expect(row.operacion).toBe("valor");
+    expect(row.entrada).toBe("\\sqrt{2}^{2}");
+    expect(row.esperado).toBe("2");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(parsed).toMatch(/sqrt|2\^\(1\/2\)|2\^0\.5|2\^\(1\/2\)/i);
+    expect(evaluate(parsed)).toBe("2");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-13",expressionAlgebrite:parsed}});
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-N-13");
+    expect(result.resultLatex).toBe("2");
+    const returned = parseExpression(result.resultLatex).algebrite;
+    expect(evaluate(returned)).toBe("2");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-N-13-reentry",expressionAlgebrite:returned}});
+    const repeated = scope.postMessage.mock.calls[0][0];
+    expect(repeated.success, JSON.stringify(repeated)).toBe(true);
+    expect(repeated.requestId).toBe("SY-N-13-reentry");
+    expect(repeated.resultLatex).toBe("2");
+  });
+
 });
