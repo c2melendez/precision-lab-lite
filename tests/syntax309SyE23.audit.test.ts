@@ -1554,4 +1554,18 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("3");
   });
 
+  it("SY-U-22: incomplete trailing operator must report a parse error", () => {
+    const row = rows["SY-U-22"];
+    expect(row.entrada).toBe("2+");
+    expect(row.operacion).toBe("error");
+    expect(row.esperado).toContain("expresión incompleta");
+    let failure: unknown;
+    try { evaluate(parseExpression(row.entrada).algebrite); }
+    catch (error) { failure = error; }
+    expect(failure, "Incomplete expression must not yield a numerical result").toBeDefined();
+    const diagnostic = failure as {code?: unknown; message?: unknown};
+    expect(diagnostic.code).toBe(ErrorCode.PARSE_ERROR);
+    expect(String(diagnostic.message)).toMatch(/incomplet|operador|operand|syntax|sintax|unexpected|expresi[oó]n/i);
+  });
+
 });
