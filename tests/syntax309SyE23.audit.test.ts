@@ -1733,4 +1733,19 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate("(" + repeated + ")-(" + expected + ")")).toBe("0");
   });
 
+  it("SY-V-06: two-argument function definition and invocation evaluates to five", () => {
+    const row = rows["SY-V-06"];
+    expect(row.entrada).toBe("g(x,y)=x+y;\\ g(2,3)");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("5");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("5");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-06",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-06");
+    expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("5");
+  });
+
 });
