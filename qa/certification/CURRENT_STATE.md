@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-13 PASS bilateral y SY-U-14 espacios finos en validación
+- SY-U-13 valor Unicode π 3.141592654 PASS bilateral en alcance automatizado: Lite SHA 59186f6f38c770aa516f2ed3ade73dc52cacf45f cumulative 38659445593, H1d 38659445518, build 38659445627 y E2E genérico 38659445791 SUCCESS. Plus SHA 53dde779ff1732860f34dce8ff2704f18320d240 cumulative 38659323354 y H1d 38659323311 SUCCESS. El E2E genérico no demuestra UI específica del caso.
+- SY-U-14 fixture oficial entrada LaTeX `3\\,+\\,4`, operación valor, esperado 7. Pruebas permanentes de fuente literal, resultado y reentrada publicadas Lite SHA 55abceb577f39b9802df9be0cdc00a0e8e98012d en tests/syntax309SyE23.audit.test.ts y Plus SHA 5d035dd9a8e8fefdc6e151f1dc5159cd2e8c9e00 en backend/tests/test_syntax309_sye23.py.
+- Nuevos gates por SHA: Lite cumulative 38659756191, H1d 38659756152, build 38659756109 y E2E genérico 38659756098 IN_PROGRESS; Plus cumulative 38659762357 y H1d 38659762372 inicialmente QUEUED. SY-U-14 OPEN sin acreditación prematura.
+- Syntax309 OPEN; SG28/H2 OPEN; DIST real multinodo BLOCKED. Sin despliegue.
+### Siguiente paso exacto
+Verificar gates y logs SHA de SY-U-14, corregir regresiones en capa apropiada, documentar cierre solo al PASS bilateral. Luego siguiente fixture SY-U-15 (`3\\;+\\;4` → 7).
+
+
 ## 2026-10-14 — SY-U-12 gates confirmados / SY-U-13 Unicode π en CI
 - SY-U-12 alcance automatizado PASS bilateral en SHAs finales: Lite 7767c7368d52a2bb3e46c0864a79909bd9716855 cumulative 38658775046, H1d 38658775190, build 38658774890 y regresión UI genérica 38658775060 SUCCESS; Plus d4d59de4b4beae66e9df30d45f059365034de970 cumulative 38658797796 y H1d 38658797787 SUCCESS. La regresión UI genérica NO es evidencia del caso específico Unicode.
 - SY-U-13 caso oficial de qa/certification/syntax309_cases.jsonl: π (Unicode), operación valor, esperado 3.141592654. Regresión permanente de entrada original, precisión nueve decimales y reentrada publicada Lite SHA cf8a45ed0f1fea5a3f5641ee7d64d431ed64499f (tests/syntax309SyE23.audit.test.ts) y Plus SHA 53dde779ff1732860f34dce8ff2704f18320d240 (backend/tests/test_syntax309_sye23.py).
