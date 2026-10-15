@@ -1582,4 +1582,34 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(String(diagnostic.message)).toMatch(/operador|operand|syntax|sintax|unexpected|expresi[oó]n/i);
   });
 
+  it("SY-U-24: spaced numerals follow an explicit bounded convention", () => {
+    const row = rows["SY-U-24"];
+    expect(row.entrada).toBe("2\\ 3");
+    expect(row.operacion).toBe("convencion");
+    expect(row.nota).toContain("Dos números separados por espacio");
+    let parsed: string;
+    try { parsed = parseExpression(row.entrada).algebrite; }
+    catch (error) {
+      const diagnostic = error as {code?: unknown; message?: unknown};
+      expect(diagnostic.code).toBe(ErrorCode.PARSE_ERROR);
+      expect(String(diagnostic.message).length).toBeGreaterThan(0);
+      return;
+    }
+    let value: string;
+    try { value = evaluate(parsed); }
+    catch (error) {
+      const diagnostic = error as {code?: unknown; message?: unknown};
+      expect(diagnostic.code).toBe(ErrorCode.PARSE_ERROR);
+      expect(String(diagnostic.message).length).toBeGreaterThan(0);
+      return;
+    }
+    expect(["6", "23"]).toContain(value);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-24",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-U-24");
+    expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe(value);
+  });
+
 });
