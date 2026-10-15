@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-V-03 Plus parser fix en CI
+- Lite SY-V-03 SHA da54d3ac3691ebdb15cb318a4d9bd4ba2d6f3bc4: cumulative 38679491111, H1d 38679491112, build 38679491095, E2E genérico 38679491122 SUCCESS. E2E genérico no prueba interacción individual.
+- Plus SHA 6b1ee61a1ba8797d2e6031d8cf901afc510f7e6d cumulative 38679471295 FAILURE en test SY-V-03 `\\pi r^{2}` (HTTP success=false), H1d 38679471358 SUCCESS. Defecto clasificado PRODUCT/parsing, no matemática ni oráculo.
+- Plus `backend/app/services/parsing.py` primer fix SHA 3641f724dc83bc48711a98617fddb163892409ab corregido posteriormente por escapes de regex en SHA 7d830bc19e74b81501bd6a3ea95a7fd31ed44b6f. Acepta patrón LaTeX acotado pi por variable con exponente entero entre llaves; traduce a pi*r^n. Oráculo y paridad se conservan.
+- Plus nuevos gates SHA 7d830bc19e74b81501bd6a3ea95a7fd31ed44b6f cumulative 38679916360, H1d 38679916341 QUEUED al revisar. SY-V-03 OPEN hasta resultados completos. Syntax309 OPEN; SG28/H2 OPEN y DIST multinodo BLOCKED, sin deploy.
+### Siguiente paso exacto
+Comprobar Plus cumulative 38679916360 y H1d 38679916341 por SHA 7d830bc; revisar caso específico y demás regresiones, corregir si falla. Solo con PASS bilateral marcar SY-V-03 cerrado e iniciar SY-V-04 (`f(x)=x^{2};\\ f(3)` debe retornar 9).
+
+
 ## 2026-10-14 — SY-V-02 PASS bilateral; SY-V-03 tests publicados
 - SY-V-02 x_{1}+x_{2} cierre en alcance de automatización: Lite SHA 998e24c13b5799a7c2d64f2a69addcef9681f0f2 cumulative 38676806225, H1d 38676806301, build 38676806253 y E2E genérico 38676806326 SUCCESS. Plus corrección parser SHA 87cea4b6a54ccb6a18b4399d3a70d887c4434faa cumulative 38677944467 y H1d 38677944603 SUCCESS. El E2E genérico no certifica UI específica.
 - Se inició SY-V-03 entrada `\\pi r^{2}`, esperado `\\pi\\cdot r^{2}` de matriz Syntax309; tests permanentes Lite `tests/syntax309SyE23.audit.test.ts` SHA da54d3ac3691ebdb15cb318a4d9bd4ba2d6f3bc4 y Plus `backend/tests/test_syntax309_syv03.py` SHA 6b1ee61a1ba8797d2e6031d8cf901afc510f7e6d. Ambos verifican pi como constante, r como variable y reentrada.
