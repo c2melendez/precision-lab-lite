@@ -1,5 +1,13 @@
 # Current Certification State
 
+## 2026-10-15 — SY-V-26 convención de sinx (en ejecución)
+- SY-V-25 PASS bilateral: Lite SHA 2c2acd4ce60fb10e7815fc8d524e1818d2a8b121 cumulative 38710733254, H1d 38710733176, build 38710733177, UI genérico 38710733298 SUCCESS. Plus SHA e8fe2d351e22a5eaf12a2368aa64a27342f193d1 cumulative 38710741404 y H1d 38710741426 SUCCESS.
+- Fixture SY-V-26 'sinx', operación convención, 'sin x' o s*i*n*x. Código inspeccionado: Lite tokenizer solo etiqueta sin como función si le sigue '('; en sinx la interpreta como identificador, con multiplicación implícita posterior. Plus classify_identifiers permite nombres no reconocidos como Symbol; no hay evidencia de que sinx invoque sin(x). Estas convenciones NO son necesariamente equivalentes (Plus puede conservar Symbol sinx; Lite se separa en identificadores). Se distingue de sin(x) explícito y se declara diferencia sin afirmar paridad semántica universal.
+- Tests nuevos: Lite tests/syntax309SyV26.audit.test.ts SHA 1aa2d2d3ff27e83f5cdf86b2405a7a985de29413; Plus backend/tests/test_syntax309_syv26.py SHA 7caee589013c85c5b36283046b3a4d4c88608e61. Verifican la fuente, ausencia de llamada trig implícita y separación de forma explícita; Plus HTTP MathResponse, distinción y reentrada.
+- Nuevos gates: Lite cumulative 38711679361, H1d 38711679281, build 38711679296, E2E genérico 38711679382; Plus cumulative 38711691444 y H1d 38711691567. Corridas IN_PROGRESS/QUEUED al registrar; objetivo OPEN hasta inspección de logs y definición de contrato publicado.
+- Próximo SY-V-27: 'pi' escrito en letras, constante pi o producto p*i según convención; no asumir sin evidencia. Syntax309/IN625/H2/SG28 OPEN; DIST multinodo BLOCKED, sin producción.
+
+
 ## 2026-10-15 — Verificación SY-V-24 y avance SY-V-25
 - SY-V-24 PASS bilateral: Lite SHA fff2c61d680242e4b51afd7bf335d6c3261098db cumulative 38710040630, H1d 38710040661, build 38710040628 y UI genérico 38710040670 SUCCESS. Plus SHA b310ce1c374c649b3502d17e11018c9b1d30e136 cumulative 38710535064 y H1d 38710535053 SUCCESS. Alcance fixture módulo complejo acotado, controles y reentrada; no certifica todas las entradas abs de SymPy/MathLive.
 - SY-V-25: Lite SHA 2c2acd4ce60fb10e7815fc8d524e1818d2a8b121 cumulative 38710733254 SUCCESS (100 archivos PASS), H1d 38710733176 seguía ejecutándose. Plus SHA e8fe2d351e22a5eaf12a2368aa64a27342f193d1 cumulative 38710741404 y H1d 38710741426 IN_PROGRESS. SY-V-25 OPEN hasta confirmación por SHA bilateral.
