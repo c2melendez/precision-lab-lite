@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-24 PASS bilateral; SY-U-25 en CI
+- SY-U-24 fuente `2\\ 3` (convención 6, 23 o aviso) PASS en alcance automatizado: Lite SHA 6bb22766ef8f13e433696e9d77cf70ebfaeedecb cumulative 38673929601, H1d 38673929554, build 38673929553 y E2E genérico 38673929606 SUCCESS. Plus SHA 34ab6aa90f31a18ce63cef35ff6786c39cbe917e cumulative 38673939037 y H1d 38673939095 SUCCESS. No atribuir UI específica al gate genérico.
+- SY-U-25 matriz fuente `2++3`, operación convención, esperado 5 o aviso. Pruebas permanentes publicadas Lite `tests/syntax309SyE23.audit.test.ts` SHA 80bcfaf77a002b3de8f1d186335968595531f7b4; Plus `backend/tests/test_syntax309_sye23.py` SHA b6c8f5d79ff6d376352911b545ca4146b426fc1d. Resultado de éxito exigido exactamente 5 con reentrada, o rechazo explícito estructurado. Oráculos no relajados.
+- CI Lite cumulative 38675000954, H1d 38675001180, build 38675000982 y E2E genérico 38675001060 IN_PROGRESS; Plus cumulative 38675009387 y H1d 38675009328 QUEUED inicialmente. SY-U-25 OPEN hasta evidencia completa del mismo SHA.
+- Syntax309 OPEN; SG28/H2 OPEN, DIST multinodo BLOCKED. Sin deploy.
+### Siguiente paso exacto
+Consultar y diagnosticar gates y logs SY-U-25 en ambos SHA. Si pasa, cerrar alcance bilateral y continuar el fixture oficial SY-U-26 de matriz; corregir producto/harness si falla.
+
+
 ## 2026-10-14 — SY-U-23 PASS bilateral; SY-U-24 convención en CI
 - SY-U-23 `*2` (operador sin operando) PASS en alcance automatizado: Lite SHA 647bd29495fe35af80258085064c44e55f41ab61 cumulative 38673304639, H1d 38673304632, build 38673304590 y E2E genérico 38673304596 SUCCESS; Plus SHA f0d55058b874baa3748a7e4ec9c1ab66a969206b cumulative 38673314378 y H1d 38673314261 SUCCESS. E2E genérico no acredita interacción UI específica.
 - SY-U-24 fila oficial `2\\ 3`, operación convención: esperado 6 o 23 o aviso (dos números separados por espacio). Pruebas permanentes Lite `tests/syntax309SyE23.audit.test.ts` SHA 6bb22766ef8f13e433696e9d77cf70ebfaeedecb, Plus `backend/tests/test_syntax309_sye23.py` SHA 34ab6aa90f31a18ce63cef35ff6786c39cbe917e. Se exige resultado en {6,23} con reentrada coherente, o error explícito estructurado; no cuentan rechazos opacos ni valores arbitrarios.
