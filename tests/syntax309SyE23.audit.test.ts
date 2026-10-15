@@ -2169,4 +2169,41 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(parseExpression("\\binom{n}{2}+1").algebrite).not.toContain("binomialpair");
     expect(evaluate(parseExpression("\\binom{5}{2}").algebrite)).toBe("10");
   });
+
+  it("SY-V-21: bare numeric P is permutations and local P definitions take priority", () => {
+    const row = rows["SY-V-21"];
+    expect(row.entrada).toBe("P(5,2)");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("20");
+    expect(row.nota).toMatch(/función.*P/);
+    const parsed = parseExpression(row.entrada).algebrite;
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-21",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-21");
+    expect(result.resultLatex).toBe("20");
+    expect(result.resultViewLabel).toBe("Permutaciones");
+    expect(result.interpretedLatex).toContain("nPr");
+    const returned = parseExpression(result.resultLatex).algebrite;
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-21-reentry",expressionAlgebrite:returned}});
+    const again = scope.postMessage.mock.calls[0][0];
+    expect(again.success, JSON.stringify(again)).toBe(true);
+    expect(again.requestId).toBe("SY-V-21-reentry");
+    expect(again.resultLatex).toBe("20");
+    expect(evaluate(parseExpression("P(x,y)=x+y;P(5,2)").algebrite)).toBe("7");
+    expect(evaluate(parseExpression("P(x)=x+1;P(5)").algebrite)).toBe("6");
+    for (const [source, expected] of [["P(6,2)","30"], ["P(5,0)","1"], ["P(5,5)","120"]]) {
+      scope.postMessage.mockClear();
+      scope.onmessage!({data:{type:"evaluate",requestId:"permutation-control",expressionAlgebrite:parseExpression(source).algebrite}});
+      const control = scope.postMessage.mock.calls[0][0];
+      expect(control.success, JSON.stringify(control)).toBe(true);
+      expect(control.resultLatex).toBe(expected);
+    }
+    for (const source of ["P(-1,2)", "P(2,5)", "P(171,2)"]) {
+      expect(() => parseExpression(source)).toThrow();
+    }
+  });
+
 });
