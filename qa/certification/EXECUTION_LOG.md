@@ -4833,3 +4833,17 @@ Revisar conclusiones y logs por SHA Lite c1752e5 y Plus 22d3dd1, clasificar fall
 ### Siguiente paso exacto
 Continuar fixture oficial SY-V-13 (límite sin(x)/x en cero, esperado 1), con oráculos y gates por SHA. Mantener el tablero actualizado al cerrar bloques; reconciliar requisitos por módulo para sustituir ND, sin contar tests como ejercicios únicos. Preservar orden del protocolo y avance independiente del bloqueo DIST.
 
+
+## 2026-10-15 — SY-V-13 límite sin(x)/x y reentrada
+- Caso oficial SY-V-13: \lim_{x\to0}\frac{\sin x}{x}, valor esperado 1.
+- Lite: fuente original -> parser -> handler worker real con transporte simulado; límite mediante ruta existente/fallback numérico, valor finito a tolerancia 1e-9 y reentrada de resultLatex real con requestId nuevo.
+- Lite primer SHA 0e246a6bfc94c0ede8cefef0eac17a3b1d1e8228 cumulative 38693180422 FAILURE: 1280 PASS/1 FAIL/30 TODO. Error de producto en reentrada: salida decimal emitida no cumple el formato de entrada. Corrección en algebriteClient.toLatex conserva literales decimales finitos y evita su reimpresión/truncamiento por CAS; regresión de decimal cercano a entero. No se relaja oráculo.
+- Lite primer ajuste 1cb91c6169877de8be63f76f7721a15714fc2854 cumulative 38693389928 FAILURE (1280 PASS/2 FAIL/30 TODO): el fallo de formato quedó corregido; las dos nuevas aserciones confundían una fracción racional del parser con un literal Number y exigían igualdad textual. Clasificación HARNESS. SHA posterior compara valor con compileNumeric y equivalencia racional exacta, preservando tolerancia y oráculo.
+- Plus: frontend detectCalculusIntent con LaTeX original acredita variable x, punto 0, dirección both y conversión íntegra sin(x)/x. Backend /api/v1/limit con traducción explícita, MathResponse, texto/LaTeX exacto 1, errores nulos y reentrada real por /evaluate con aproximación 1.
+- SY-V-13 PASS bilateral en el alcance descrito. Lite SHA 9ae9005bf4598a6c1c785db9f2cd60559aea3047: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38693549546 (1282 PASS +30 TODO), H1d 38693549584, build 38693549420 y E2E científico genérico 38693549424 SUCCESS. Plus SHA bff8bfa0487e8e928d38990a28fc66667d3a7ba0: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38693185310 (1169 backend PASS +1 XFAIL; 833 frontend PASS +28 TODO), H1d 38693185327 SUCCESS. Todos verificados por SHA; logs de acumulativos inspeccionados.
+- Alcance automatizado: Lite parser/handler y Plus detector/conversor/HTTP separados. No acredita teclado/MathLive/UI específica SY-V-13. Lite es límite numérico a tolerancia, no prueba simbólica exacta; Plus devuelve exacto 1. Gates E2E genéricos solo regresión. TODO/XFAIL no PASS.
+- Tablero global actualizado bilateralmente. Syntax309/IN625/H2/SG28 OPEN; DIST multinodo BLOCKED. Sin despliegues de producción.
+
+### Siguiente paso exacto — SY-V-14
+Fixture oficial \lim_{x\to0^{+}}\frac{1}{x}, esperado +\infty. Verificar extracción de dirección derecha, cálculo de infinito y representación/reentrada permitida por contrato en cada canal; no confundir límite lateral con DNE bilateral. Mantener gates por SHA y tablero. No declarar PASS de UI nativa a partir de mocks/HTTP.
+
