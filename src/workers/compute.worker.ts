@@ -465,7 +465,15 @@ function handleSolveChainedInequality(
       if (lower && upper) {
         const lop = lower.op === ">" ? "<" : "<=";
         const uop = upper.op === "<" ? "<" : "<=";
-        resultText = `${lower.value} ${lop} ${variable} ${uop} ${upper.value}`;
+        const low = Number(lower.value);
+        const high = Number(upper.value);
+        if (low > high || (low === high && (lop === "<" || uop === "<"))) {
+          resultText = "No tiene solución real.";
+        } else if (low === high) {
+          resultText = `${variable} = ${lower.value}`;
+        } else {
+          resultText = `${lower.value} ${lop} ${variable} ${uop} ${upper.value}`;
+        }
       }
     }
 
