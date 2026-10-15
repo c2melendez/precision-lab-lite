@@ -2090,4 +2090,36 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     }
   });
 
+
+  it("SY-V-19: original binomial means combinations, yields exact ten and reenters", () => {
+    const row = rows["SY-V-19"];
+    expect(row.entrada).toBe("\\binom{5}{2}");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("10");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("10");
+    // Independent discriminating controls: not the permutation 5*4=20.
+    for (const [source, expected] of [
+      ["\\binom{6}{2}", "15"],
+      ["\\binom{5}{0}", "1"],
+      ["\\binom{5}{5}", "1"],
+      ["\\binom{5}{3}", "10"],
+    ]) expect(evaluate(parseExpression(source).algebrite)).toBe(expected);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-19",expressionAlgebrite:parsed}});
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-19");
+    expect(result.resultLatex).toBe("10");
+    const returned = parseExpression(result.resultLatex).algebrite;
+    expect(evaluate(returned)).toBe("10");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-19-reentry",expressionAlgebrite:returned}});
+    const again = scope.postMessage.mock.calls[0][0];
+    expect(again.success, JSON.stringify(again)).toBe(true);
+    expect(again.requestId).toBe("SY-V-19-reentry");
+    expect(again.resultLatex).toBe("10");
+  });
+
 });
