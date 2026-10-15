@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-V-09 integral indefinida, regresion Lite y fix en CI
+- SY-V-08 PASS bilateral automatizado: Lite SHA 2afe0b4 cumulative 38687281825 H1d 38687281871 build 38687281760 E2E generico 38687281830 SUCCESS; Plus SHA a0d3f34 cumulative 38687904331 H1d 38687904337 SG28 prototipo 38687904332 SUCCESS. H2/SG28 y DIST multinodo real siguen OPEN/BLOCKED.
+- SY-V-09 entrada oficial integral de x, esperado x^2/2+C; tests Lite commit 623d9ff4626d4357d1c72eb9eea07b47337ba978, Plus commit f2b9b1e8740fec8e401df6e48488158bccae42ad, verifican derivada, constante y reentrada.
+- Lite cumulative 38688296876 FAILURE (1276 PASS / 1 FAIL / 30 TODO): test SY-V-09 obtuvo 1/2*x^2 sin C. Correccion producto src/engine/algebriteClient.ts commit 962055ebffe370fb01e32af83f165a28983d48f3 preserva C para integral(x,x) indefinida. Nuevas CI cumulative 38688439139, H1d 38688439162, build 38688439110, E2E generico 38688439164 IN_PROGRESS.
+- Plus cumulative 38688314670 IN_PROGRESS, H1d 38688314662 pendiente de verificacion. SY-V-09 OPEN sin cierre bilateral; no deploy.
+### Siguiente paso exacto
+Revisar resultados/logs nuevos de Lite SHA 962055e y Plus SHA f2b9b1e. Reparar fallos sin cambiar oraculos; solo con gates pertinentes PASS marcar SY-V-09 y empezar SY-V-10 integral con diferencial unido xdx.
+
+
 ## 2026-10-14 — SY-V-08 PASS bilateral; SY-V-09 en CI
 - SY-V-08 Lite SHA 2afe0b44d352b818958d82894397a15e22061757 gates cumulative 38687281825, H1d 38687281871, build 38687281760, E2E generico 38687281830 SUCCESS. Plus SHA a0d3f34e87bc6b32e446c212e0351986a8a48a0e cumulative 38687904331, H1d 38687904337, SG28 prototipo 38687904332 SUCCESS. Cierre bilateral dentro de alcance automatizado, sin certificación multinodo.
 - SY-V-09 caso oficial integral indefinida de x esperado x^2/2+C. Lite tests/syntax309SyE23.audit.test.ts commit 623d9ff4626d4357d1c72eb9eea07b47337ba978; Plus backend/tests/test_syntax309_syv09.py commit f2b9b1e8740fec8e401df6e48488158bccae42ad. Ambos verifican entrada original, derivada igual a x, constante C y reentrada.
