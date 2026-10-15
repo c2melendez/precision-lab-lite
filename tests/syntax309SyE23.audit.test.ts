@@ -1715,4 +1715,22 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("9");
   });
 
+  it("SY-V-05: local function with symbolic argument preserves equivalence on reentry", () => {
+    const row = rows["SY-V-05"];
+    expect(row.entrada).toBe("f(x)=x^{2};\\ f(x+1)");
+    expect(row.operacion).toBe("equivalente");
+    expect(row.esperado).toBe("(x+1)^{2}");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const value = evaluate(parsed);
+    const expected = evaluate(parseExpression("(x+1)^{2}").algebrite);
+    expect(evaluate("(" + value + ")-(" + expected + ")")).toBe("0");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-05",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-05");
+    const repeated = evaluate(parseExpression(result.resultLatex).algebrite);
+    expect(evaluate("(" + repeated + ")-(" + expected + ")")).toBe("0");
+  });
+
 });
