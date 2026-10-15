@@ -57,6 +57,8 @@ describe("SY-Q-16 exact affine/quadratic systems", () => {
       ["x^2+y^2=25","x*y=12"],
       ["x^3+y=1","x+y=2"],
       ["sin(x)+y=1","x+y=2"],
+      ["((x^2)^2)^2+y=1","x+y=2"],
+      ["(x^2-1)/(x-1)+y=1","x+y=2"],
       ["x+y=1","(x+y)^2=1"],
     ]) expect(() => solve(rows)).toThrow();
   });

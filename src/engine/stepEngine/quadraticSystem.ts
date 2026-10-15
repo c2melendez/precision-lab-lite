@@ -11,10 +11,67 @@ const rational = (s: string) => /^-?\d+(?:\/[1-9]\d*)?$/.test(s);
 const atZero = (s: string, variables: string[]): string =>
   variables.reduce((expr, v) => evaluate(`subst(0,${v},${expr})`), s);
 
+// Bound degree before invoking symbolic expansion, including nested powers.
+// Division is limited to constant expressions, so domain holes cannot disappear.
+function boundPolynomial(source: string, variables: string[]): void {
+  const tokens = source.match(/\d+(?:\.\d+)?|[A-Za-z]+|[()+*/^.-]/g) ?? [];
+  if (tokens.length > 250 || tokens.join("") !== source.replace(/\s/g, "")) throw unsupported();
+  let pos = 0;
+  const capped = (n: number) => { if (n > 2) throw unsupported(); return n; };
+  function atom(depth: number): number {
+    if (depth > 32) throw unsupported();
+    const token = tokens[pos++];
+    if (token === "+" || token === "-") return atom(depth + 1);
+    if (token === "(") {
+      const degree = sum(depth + 1);
+      if (tokens[pos++] !== ")") throw unsupported();
+      return degree;
+    }
+    if (/^\d+(?:\.\d+)?$/.test(token ?? "")) return 0;
+    if (variables.includes(token)) return 1;
+    throw unsupported();
+  }
+  function power(depth: number): number {
+    let degree = atom(depth);
+    if (tokens[pos] === "^") {
+      pos++;
+      // Algebrite syntax emitted by the parser uses integer powers.
+      const grouped = tokens[pos] === "(";
+      if (grouped) pos++;
+      const exponent = tokens[pos++];
+      if (!/^[012]$/.test(exponent ?? "")) throw unsupported();
+      if (grouped && tokens[pos++] !== ")") throw unsupported();
+      degree = capped(degree * Number(exponent));
+    }
+    return degree;
+  }
+  function product(depth: number): number {
+    let degree = power(depth);
+    while (tokens[pos] === "*" || tokens[pos] === "/") {
+      const op = tokens[pos++];
+      const rhs = power(depth);
+      if (op === "/" && rhs !== 0) throw unsupported();
+      degree = capped(degree + (op === "*" ? rhs : 0));
+    }
+    return degree;
+  }
+  function sum(depth: number): number {
+    let degree = product(depth);
+    while (tokens[pos] === "+" || tokens[pos] === "-") {
+      pos++;
+      degree = Math.max(degree, product(depth));
+    }
+    return degree;
+  }
+  sum(0);
+  if (pos !== tokens.length) throw unsupported();
+}
+
 function polynomial(source: string, variables: string[]): string[] {
   if (source.length > 500 || !/^[\d\sA-Za-z+*/^().-]+$/.test(source)) throw unsupported();
   const names = source.match(/[A-Za-z]+/g) ?? [];
   if (names.some(name => !variables.includes(name))) throw unsupported();
+  boundPolynomial(source, variables);
   const [x, y] = variables;
   const dx = derivative(source, x);
   const dy = derivative(source, y);
