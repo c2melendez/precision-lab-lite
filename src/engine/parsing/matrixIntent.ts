@@ -30,6 +30,11 @@ function splitMatrixBody(body: string): string[][] {
 }
 
 function parseSingleMatrix(text: string): { env: string; matrix: string[][]; rest: string } | null {
+  // SY-M-05: paired external brackets around a plain matrix environment.
+  const wrapped = /^\\left\[\s*\\begin\{matrix\}([\s\S]*?)\\end\{matrix\}\s*\\right\]/.exec(text.trim());
+  if (wrapped) {
+    return {env: "wrapped", matrix: splitMatrixBody(wrapped[1]), rest: text.trim().slice(wrapped[0].length)};
+  }
   // SY-M-04: a simple LaTeX array has one c/l/r alignment per column.
   // Parse it as matrix data; alignment never enters the arithmetic engine.
   const array = /^\\begin\{array\}\s*\{([clr\s]+)\}([\s\S]*?)\\end\{array\}/.exec(text.trim());
