@@ -212,6 +212,8 @@ function prepareComplexPowerForDisplay(result: string): string {
 }
 
 export function toLatex(algebriteResult: string): string {
+  if (algebriteResult.trim() === "oo") return "\\infty";
+  if (algebriteResult.trim() === "-oo") return "-\\infty";
   // Finite decimal literals are already valid LaTeX. Sending them through
   // printlatex can round/truncate to an ellipsis or a terminal decimal dot,
   // which the input parser correctly rejects on result reentry.

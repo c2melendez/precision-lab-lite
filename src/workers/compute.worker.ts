@@ -7,6 +7,7 @@
 
 import { evaluate, toLatex, toDecimalApprox, ErrorCode as ClientErrorCode } from "../engine/algebriteClient";
 import { toFractionResult, fractionToLatex } from "../engine/fractions";
+import { reciprocalPoleLimit } from "../engine/reciprocalLimit";
 import { compileNumeric, numericLimit, numericLimitAtInfinity } from "../engine/numericFallback";
 import { tryStatFunction, splitTopLevelArgs } from "../engine/statFunctions";
 import { tryComplexFunction, parseComplex } from "../engine/complexFunctions";
@@ -540,6 +541,8 @@ function tryLimitFallback(raw: string): string | null {
     // ejecuta, \infty ya se tradujo a "oo" (misma pasada de normalize.ts)
     // — Number("oo") siempre da NaN, así que se compara como string en
     // vez de intentar convertir primero.
+    const reciprocalPole = reciprocalPoleLimit(body, variable, pointExpr, direction);
+    if (reciprocalPole !== null) return reciprocalPole;
     const pointRaw = evaluate(pointExpr);
     if (pointRaw === "oo" || pointRaw === "-oo") {
       const fn = compileNumeric(body, variable);
@@ -764,7 +767,7 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       const limitFallback = tryLimitFallback(raw);
       if (limitFallback !== null) {
         raw = limitFallback;
-        confidence = "NUMERIC_FALLBACK";
+        confidence = /^-?oo$/.test(limitFallback) ? "SYMBOLIC" : "NUMERIC_FALLBACK";
       }
     }
     if (ALGEBRITE_UNSUPPORTED_NUMERIC.test(raw)) {

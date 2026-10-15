@@ -19,6 +19,7 @@ import {
   toLatex,
   ErrorCode,
 } from "../algebriteClient";
+import { reciprocalPoleLimit } from "../reciprocalLimit";
 import { compileNumeric, numericLimit, numericLimitAtInfinity, simpsonIntegral } from "../numericFallback";
 import { rewriteReciprocalFunctions } from "../parsing";
 import type { Step, AppError, ResultConfidence } from "../../types";
@@ -81,6 +82,19 @@ export function calcLimit(
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
+
+  const reciprocalPole = reciprocalPoleLimit(exprAlgebrite, variable, pointAlgebrite, direction);
+  if (reciprocalPole !== null) {
+    const latex = toLatex(reciprocalPole);
+    return {
+      resultLatex: latex,
+      confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "result", latex, explanation: "Límite lateral exacto del recíproco en cero." },
+      ],
+    };
+  }
 
   try {
     // symbolicLimit ya detecta el caso "Algebrite devolvió la llamada sin

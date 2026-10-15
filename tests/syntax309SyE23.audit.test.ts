@@ -4,6 +4,8 @@ import { parseExpression } from "../src/engine/parsing";
 import { evaluate, toDecimalApprox, toLatex } from "../src/engine/algebriteClient";
 import { ErrorCode } from "../src/types";
 import { formatScientificResult } from "../src/components/ResultPanel";
+import { reciprocalPoleLimit } from "../src/engine/reciprocalLimit";
+import { calcLimit } from "../src/engine/stepEngine/calculus";
 import { compileNumeric } from "../src/engine/numericFallback";
 
 const rows = Object.fromEntries(cases.trim().split("\n").map(line => {
@@ -1914,4 +1916,21 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(parseExpression(again.resultLatex).algebrite).toBe("oo");
   });
 
+  it("reciprocal pole signs depend on side, variable and coefficient in both routes", () => {
+    expect(reciprocalPoleLimit("1/t", "t", "0", "right")).toBe("oo");
+    expect(reciprocalPoleLimit("1/t", "t", "0", "left")).toBe("-oo");
+    expect(reciprocalPoleLimit("-1/t", "t", "0", "right")).toBe("-oo");
+    expect(reciprocalPoleLimit("-1/t", "t", "0", "left")).toBe("oo");
+    expect(reciprocalPoleLimit("1/t", "t", "1", "right")).toBeNull();
+    expect(reciprocalPoleLimit("sin(t)/t", "t", "0", "right")).toBeNull();
+    expect(reciprocalPoleLimit("1/t", "t", "0", "both")).toBeNull();
+    expect(calcLimit("1/t", "t", "0", 0, "right").resultLatex).toBe("\\infty");
+    expect(calcLimit("1/t", "t", "0", 0, "left").resultLatex).toBe("-\\infty");
+    const parsed = parseExpression("\\lim_{t\\to0^{-}}\\frac{1}{t}").algebrite;
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"reciprocal-left-control",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.resultLatex).toBe("-\\infty");
+  });
 });
