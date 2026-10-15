@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-for(const chain of ["x=y=3","y=x=3","x==3"]){
+for(const chain of ["x=y=3","y=x=3","x=3=3"]){
   test("SY-Q-19 native error and recovery: "+chain,async({page})=>{
     await page.addInitScript(()=>localStorage.setItem("precision-lab-layout-mode","split"));
     await page.goto("./");
