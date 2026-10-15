@@ -1,5 +1,11 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-21 Lite producto: doble negación numérica
+- Primer fixture SY-U-21 `--3` => 3: Lite commit 87761131619b33e1503990c0170d2729da1bf57e cumulative 38670309543 FAIL (1263 PASS, 1 FAIL, 30 TODO): Unknown Error Algebrite no devolvió resultado. H1d 38670309085 y build 38670309031 SUCCESS; causa clasificada PRODUCT parser. Plus tests commit 21ee11f22d9ee4834b1456568455648e2055f056 cumulative 38670314472 y H1d 38670314473 en curso al revisar.
+- Fix Lite `src/engine/parsing/normalize.ts` SHA 538e9ae48f7f64521a6803e922fb45cfe954ac96: normaliza signo inicial doble para literal numérico a `-(-3)`, restringido para preservar comportamiento previo de `--x` y `2--3`. Oráculos sin cambios.
+- Gates nuevos Lite SHA 538e9ae48f: cumulative 38670459765, H1d 38670459807, build 38670459776, E2E genérico 38670459766 IN_PROGRESS. SY-U-21 OPEN hasta PASS bilateral por SHA. Siguiente fixture `SY-U-22` entrada `2+` con error claro por expresión incompleta; no asumir certificación UI por E2E genérico. SG28/H2 OPEN, DIST BLOCKED, sin despliegues.
+
+
 ## 2026-10-14 — SY-U-20 PASS bilateral / SY-U-21 en CI
 - SY-U-20 fixture `2*-3` => `-6` verificado: Lite SHA 4328caf318b46c58d8e9db7a45f63254f7393207 cumulative 38669970347, H1d 38669970345, build 38669970377, E2E genérico 38669970326 SUCCESS; Plus SHA 01cc2e26bbafb4a4627608c5eabf599d97f0135f cumulative 38669980533, H1d 38669980587 SUCCESS. PASS bilateral alcance automatizado; UI genérico no prueba interacción concreta SY-U-20.
 - SY-U-21 fixture oficial `--3` => `3` (valor) y reentrada: Lite tests/syntax309SyE23.audit.test.ts commit 87761131619b33e1503990c0170d2729da1bf57e; Plus backend/tests/test_syntax309_sye23.py commit 21ee11f22d9ee4834b1456568455648e2055f056. Mantener regresiones EN-PR-12 y SY-U-19 sin relajarlas.
