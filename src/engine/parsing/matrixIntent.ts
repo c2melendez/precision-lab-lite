@@ -30,6 +30,17 @@ function splitMatrixBody(body: string): string[][] {
 }
 
 function parseSingleMatrix(text: string): { env: string; matrix: string[][]; rest: string } | null {
+  // SY-M-04: a simple LaTeX array has one c/l/r alignment per column.
+  // Parse it as matrix data; alignment never enters the arithmetic engine.
+  const array = /^\\begin\{array\}\s*\{([clr\s]+)\}([\s\S]*?)\\end\{array\}/.exec(text.trim());
+  if (array) {
+    const matrix = splitMatrixBody(array[2]);
+    const columns = array[1].replace(/\s/g, "").length;
+    if (matrix[0].length !== columns) {
+      throw new Error("La especificación de columnas del array no coincide con la matriz.");
+    }
+    return {env: "array", matrix, rest: text.trim().slice(array[0].length)};
+  }
   const m = new RegExp(`^${ENV}`).exec(text.trim());
   if (!m) return null;
   return { env: m[1], matrix: splitMatrixBody(m[2]), rest: text.trim().slice(m[0].length) };
