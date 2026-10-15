@@ -4721,3 +4721,12 @@ Revisar todos los gates sobre SHA Lite 7407ab9 y Plus 819b43f; diagnosticar fall
 ### Siguiente paso exacto
 Inspeccionar cumulative/H1d/build/E2E Lite sobre 7d98c1b y cumulative/H1d/SG28 Plus sobre efc277a. Diagnosticar fallos, corregir sin relajar oráculos; solo entonces cerrar SY-V-04 bilateral e iniciar SY-V-05 `f(x)=x^{2};\\ f(x+1)` esperado `(x+1)^{2}`.
 
+
+## 2026-10-14 — SY-V-04 PASS bilateral; SY-V-05 en CI
+- SY-V-04 f(x)=x^2; f(3) PASS bilateral dentro del alcance automatizado: Lite SHA 7d98c1b6975b0841073c3948e55af9b2ae243b31 cumulative 38680850390, H1d 38680850291, build 38680850379, E2E genérico 38680850431 SUCCESS. Plus SHA efc277a881e4eeb12036cc3d7fb1dc03f5c0f605 cumulative 38680823082, H1d 38680823026 y SG28 prototipo 38680823063 SUCCESS. E2E genérico/SG28 prototipo no certifican multinodo ni UI específica.
+- SY-V-05 fuente original `f(x)=x^{2};\\ f(x+1)`, esperado equivalencia a `(x+1)^{2}`. Pruebas permanentes verifican entrada original, equivalencia matemática y reentrada: Lite `tests/syntax309SyE23.audit.test.ts` SHA 564120aa8aa433eb3df4512e4a3afb6afaa28fb4; Plus `backend/tests/test_syntax309_syv05.py` SHA d9550f8a2b4403a3c57a334c0faaa38a5a12ca59.
+- Nuevos gates Lite cumulative 38682468443, build 38682468478, H1d 38682468580, E2E genérico 38682468594 QUEUED; Plus cumulative 38682452036 y H1d 38682452030 IN_PROGRESS inicialmente. SY-V-05 OPEN hasta resultados finales.
+- Syntax309 OPEN; SG28/H2 OPEN y DIST multinodo BLOCKED; sin producción.
+### Siguiente paso exacto
+Consultar gates SY-V-05 correspondientes a SHA 564120a (Lite) y d9550f8 (Plus); si fallan, reparar sin relajar oráculos. Al verificar PASS bilateral pasar a SY-V-06 `g(x,y)=x+y;\\ g(2,3)` esperado 5.
+
