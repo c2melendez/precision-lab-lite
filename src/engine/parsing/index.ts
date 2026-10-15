@@ -317,6 +317,19 @@ export function parseExpression(
   latex: string,
   angleMode: "RAD" | "GRAD" = "RAD",
 ): ParsedExpression {
+  // SY-V-06: two-parameter local definition followed by one call.
+  // Substitute parameters simultaneously to avoid cascading replacements.
+  const pairCall = latex.match(/^\s*([A-Za-z])\(([A-Za-z]),([A-Za-z])\)\s*=\s*([^;]+);\s*(?:\\\s*)?\1\(([^(),]+),([^(),]+)\)\s*$/);
+  if (pairCall) {
+    const [, , first, second, body, firstValue, secondValue] = pairCall;
+    if (first === second) throw new Error("Los parámetros deben ser distintos.");
+    const substitutions: Record<string, string> = {
+      [first]: "(" + firstValue + ")",
+      [second]: "(" + secondValue + ")",
+    };
+    const substituted = body.replace(/\b[A-Za-z]\b/g, token => substitutions[token] ?? token);
+    return parseExpression(substituted, angleMode);
+  }
   // SY-V-04: ephemeral named function call with no persistent registry.
   const call = latex.match(/^\s*([A-Za-z])\(([A-Za-z])\)\s*=\s*([^;]+);\s*(?:\\\s*)?\1\(([^()]*)\)\s*$/);
   if (call) {
