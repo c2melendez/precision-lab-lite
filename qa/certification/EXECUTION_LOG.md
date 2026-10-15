@@ -4562,3 +4562,12 @@ Inspeccionar resultados y logs de ambos gates finales; corregir defectos sin rel
 ### Siguiente paso exacto
 Consultar resultados y logs de SY-U-16 para SHAs citados; clasificar/corregir regresiones, cerrar con evidencia bilateral, avanzar después al fixture oficial SY-U-17 (dígitos de ancho completo).
 
+
+## 2026-10-14 — SY-U-16 Plus defect / SY-U-17 fullwidth prueba
+- SY-U-16 Lite SHA b898856b54319242ede24e50825bd990c2414516 cumulative 38660813349, H1d 38660813298, build 38660813403, E2E genérico 38660813373 SUCCESS. Plus SHA b4680b58c32fdab5b7428c8fc609f6508f90b47d cumulative 38660820365 FAILED backend test_syu16_nonbreaking_spaces_http_and_reentry, H1d 38660820366 SUCCESS. Defecto PRODUCT: parser backend no normalizaba NBSP U+00A0.
+- Fix Plus parser backend/app/services/parsing.py SHA 28e10f072233ddc5df6e163a93a98e968cc4259b reemplaza NBSP por espacio normal antes de SymPy; no relaja test ni modifica producción. SY-U-16 permanece OPEN hasta gate del SHA posterior.
+- SY-U-17 fixture oficial `２＋３` → 5: pruebas permanentes de entrada original, evaluación exacta y reentrada Lite SHA 0fac6dfa78d9213168e6fde7e5a06dc2cb7e3a56 y Plus SHA aaee9de3448017b55c3afb87cfbd3f688009a609. CI Lite cumulative 38661219679, H1d 38661219653, build 38661219654, UI genérico 38661219648 IN_PROGRESS; Plus cumulative 38661226134 inicialmente QUEUED, H1d 38661226007 IN_PROGRESS.
+- SY-U-16 y SY-U-17 OPEN hasta nuevos gates. Syntax309 OPEN, SG28/H2 OPEN, DIST real multinodo BLOCKED. Sin despliegues.
+### Siguiente paso exacto
+Inspeccionar SHA y logs de SY-U-17 y regresión SY-U-16. En caso de falla real clasificar y corregir producto/harness, verificar de nuevo y solo entonces cerrar bilateral. Siguiente fixture oficial SY-U-18 `2+-3` -> -1.
+
