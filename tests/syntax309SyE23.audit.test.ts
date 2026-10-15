@@ -1370,4 +1370,22 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(again.resultLatex).toBe("1");
   });
 
+  it("SY-U-10: en dash is either correctly evaluated or explicitly rejected", () => {
+    const row = rows["SY-U-10"];
+    expect(row.entrada).toBe("2–1");
+    expect(row.operacion).toBe("convencion");
+    let parsed: string;
+    try { parsed = parseExpression(row.entrada).algebrite; }
+    catch (error) { expect(String(error).length).toBeGreaterThan(0); return; }
+    let value: string;
+    try { value = evaluate(parsed); }
+    catch (error) { expect(String(error).length).toBeGreaterThan(0); return; }
+    expect(value).toBe("1");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-10",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    if (!result.success) { expect(result.error || result.errorMessage).toBeTruthy(); return; }
+    expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("1");
+  });
+
 });
