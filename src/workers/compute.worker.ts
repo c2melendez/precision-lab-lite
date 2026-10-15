@@ -14,6 +14,7 @@ import { tryComplexFunction, parseComplex } from "../engine/complexFunctions";
 import { residueAtRational, singularitiesOfRational } from "../engine/complexAnalysis";
 import { tryPlusMinus } from "../engine/plusMinus";
 import { trySymbolicBinomialPair } from "../engine/binomial";
+import { tryPermutationAlias } from "../engine/permutationAlias";
 import { tryFiniteProduct } from "../engine/product";
 import { validateFiniteSumRange, trySymbolicIdentitySum } from "../engine/sum";
 import { tryCbrtSign } from "../engine/cbrtSign";
@@ -683,6 +684,21 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
         steps: [],
         hasDetailedSteps: false,
         confidence: "NUMERIC_FALLBACK",
+        requestId,
+      };
+    }
+
+    const permutation = tryPermutationAlias(expr);
+    if (permutation !== null) {
+      return {
+        success: true,
+        resultLatex: toLatex(permutation.value),
+        interpretedLatex: "\\operatorname{nPr}(" + permutation.n + "," + permutation.r + ")",
+        resultViewLabel: "Permutaciones",
+        fraction: toFractionResult(permutation.value),
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
         requestId,
       };
     }

@@ -7,6 +7,7 @@
 // ensamblar string Algebrite -> (si es ecuación) aplicar igualdad -> aplicar
 // conversión de ángulo RAD/GRAD.
 
+import { parsePermutationAlias } from "../permutationAlias";
 import { preprocessLatex, normalizeUnicode, validateDecimalPoints } from "./normalize";
 import { tokenize, type Token } from "./tokenize";
 import { insertImplicitMultiplication } from "./implicitMultiplication";
@@ -342,6 +343,13 @@ export function parseExpression(
     const variable = call[2], body = call[3], argument = call[4];
     const substituted = body.replace(new RegExp("\\b" + variable + "\\b", "g"), "(" + argument + ")");
     return parseExpression(substituted, angleMode);
+  }
+  // A local P definition above takes priority over the numeric permutation alias.
+  const permutationAlias = parsePermutationAlias(latex);
+  if (permutationAlias !== null) {
+    const parsed = parseExpression("nPr(" + permutationAlias.n + "," + permutationAlias.r + ")", angleMode);
+    const marker = "permutationalias(" + permutationAlias.n + "," + permutationAlias.r + ")";
+    return { ...parsed, algebrite: marker, leftAlgebrite: marker };
   }
   const preprocessed = preprocessLatex(latex);
   const unicodeNormalized = normalizeUnicode(preprocessed);
