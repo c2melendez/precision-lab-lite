@@ -4553,3 +4553,12 @@ Verificar gates y logs SHA de SY-U-14, corregir regresiones en capa apropiada, d
 ### Siguiente paso exacto
 Inspeccionar resultados y logs de ambos gates finales; corregir defectos sin relajar oráculos y cerrar solo alcance probado. Si PASS bilateral, avanzar al siguiente fixture oficial de la matriz.
 
+
+## 2026-10-14 — SY-U-14/15 PASS bilateral; SY-U-16 espacio duro en CI
+- SY-U-14 y SY-U-15 PASS bilateral alcance automatizado en SHA final Lite 14007e733a9b9f075d3a875994c38ba37e6d9966: cumulative 38660231377, H1d 38660231396, build 38660231367, E2E genérico 38660231308 SUCCESS. Plus SHA 8bac479ff2c40d830035f324b524e0745eb3a9a8 cumulative 38660236919 y H1d 38660236927 SUCCESS. Corrección de producto Plus parser SHA 2da7fc62fe40d6015306a94826b32cb45e7c7b67 incluida. UI E2E Lite es genérico y no certifica interacción específica.
+- SY-U-16 fixture oficial U+00A0 en `3 + 4` => 7. La matriz muestra espacios ordinarios en entrada pero nota exige Unicode NBSP; se inyecta fuente NBSP explícita en test y se verifica texto fuente de matriz. Pruebas con reentrada Lite SHA b898856b54319242ede24e50825bd990c2414516 y Plus SHA b4680b58c32fdab5b7428c8fc609f6508f90b47d.
+- CI Lite cumulative 38660813349, H1d 38660813298, build 38660813403, E2E genérico 38660813373 IN_PROGRESS; Plus cumulative 38660820365 y H1d 38660820366 QUEUED. SY-U-16 OPEN.
+- Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo BLOCKED. Sin deploy.
+### Siguiente paso exacto
+Consultar resultados y logs de SY-U-16 para SHAs citados; clasificar/corregir regresiones, cerrar con evidencia bilateral, avanzar después al fixture oficial SY-U-17 (dígitos de ancho completo).
+
