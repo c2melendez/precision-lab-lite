@@ -1,5 +1,13 @@
 # Current Certification State
 
+## 2026-10-15 — Inicio SY-V-25 (exponencial con sustitución explícita)
+- Fixture original: \\mathrm{e}^{x} \\text{con} x=0, operación valor, esperado 1. Separamos la expresión del texto que indica la sustitución, sin inventar sintaxis ni descartar el requisito x=0.
+- Lite test tests/syntax309SyV25.audit.test.ts commit 2c2acd4ce60fb10e7815fc8d524e1818d2a8b121: parseo de \\mathrm{e}^{x}, sustitución explícita x=0, controles x=1 y reentrada. Plus backend/tests/test_syntax309_syv25.py commit e8fe2d351e22a5eaf12a2368aa64a27342f193d1: POST /evaluate con expression=e^x, substitutions x=0, MathResponse y reentrada, control x=1.
+- CI nuevo Lite cumulative 38710733254, H1d 38710733176, build 38710733177, UI E2E genérico 38710733298. Plus cumulative 38710741404, H1d 38710741426. En curso/queued, no certificado hasta conclusión y logs.
+- SY-V-24: Lite cumulative 38710040630 y gates relacionados SUCCESS en SHA fff2c61. Plus SHA ff205e5 cumulative 38710048292 FAILURE backend 1184 PASS /2 FAIL por macro original lvert/rvert; corrección SHA b310ce1 cumulative 38710535064 todavía IN_PROGRESS última consulta, H1d 38710535053 IN_PROGRESS. Cierre SY-V-24 pendiente del gate Plus; certificar SY-V-25 solo tras su cierre.
+- H2/SG28 OPEN; DIST multinodo BLOCKED; sin despliegue.
+
+
 ## 2026-10-15 — Seguimiento SY-V-24 (corrección Plus)
 - Lite SHA fff2c61d680242e4b51afd7bf335d6c3261098db: cumulative 38710040630, build 38710040628, H1d 38710040661, E2E científico genérico 38710040670 SUCCESS.
 - Plus SHA ff205e57aec1b1bb91e182031cbbadbb4faa4740: cumulative 38710048292 FAILURE (backend 1184 PASS/2 FAIL/1 XFAIL; frontend SUCCESS) debido a entrada LaTeX original \\lvert3+4i\\rvert y variantes de signo no reconocidas por parser/guard. H1d 38710048334 SUCCESS, no basta para cerrar.
