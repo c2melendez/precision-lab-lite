@@ -6,6 +6,9 @@ export type RelationIntent =
 export function detectRelationIntent(latex: string): RelationIntent | null {
   const text = latex.trim();
   if (!text || !text.includes("=")) return null;
+  // A relation has one equality. Leave chains/malformed equalities to the
+  // equation parser, which returns a clear error instead of a relation view.
+  if ((text.match(/=/g) ?? []).length !== 1) return null;
 
   // f(x)=... debe conservarse como definición, no resolverse para x.
   if (/^[a-zA-Z]\s*\(\s*[a-zA-Z]\s*\)\s*=/.test(text)) {
