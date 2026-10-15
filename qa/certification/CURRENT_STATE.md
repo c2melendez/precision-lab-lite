@@ -1,5 +1,13 @@
 # Current Certification State
 
+## 2026-10-14 — SY-V-07 PASS bilateral; SY-V-08 en CI
+- SY-V-07 Lite SHA 3eba65831df2244890bf792db03ea9278baaca4c: cumulative 38684945679, H1d 38684945718, build 38684945701, E2E generico 38684945790 SUCCESS. Plus fix SHA ab81668bce680d16867e3f4446f0ae3856ca6dce: cumulative 38686792285, H1d 38686792521, SG28 prototipo 38686792382 SUCCESS. Cierre bilateral limitado al alcance automatizado.
+- SY-V-08 caso oficial `\\frac{d^{2}}{dx^{2}}x^{3}` equivalente a `6x`. Lite tests/syntax309SyE23.audit.test.ts commit 2afe0b44d352b818958d82894397a15e22061757, Plus backend/tests/test_syntax309_syv08.py commit 1b1c848e460642c8a6e02681bafb8f07bf23fb3b. Verifican entrada original, equivalencia y reentrada.
+- Gates nuevos Lite SHA 2afe0b4: cumulative 38687281825, H1d 38687281871, build 38687281760, E2E generico 38687281830 IN_PROGRESS. Plus SHA 1b1c848: cumulative 38687303976 y H1d 38687303965 QUEUED al consultar. SY-V-08 OPEN, Syntax309 OPEN, H2/SG28 OPEN y DIST multinodo BLOCKED; sin deploy.
+### Siguiente paso exacto
+Verificar las corridas de SY-V-08 por SHA, diagnosticar/regresar cualquier fallo de parser/cálculo/oráculo sin rebajar exigencias; si todos los gates pertinentes pasan, cerrar el caso bilateralmente y tomar SY-V-09 de la matriz oficial.
+
+
 ## 2026-10-14 — SY-V-07 CI
 Lite SHA 3eba658: cumulative 38684945679, H1d 38684945718, build 38684945701, E2E generico 38684945790 SUCCESS. Plus cumulative 38684958975 FAILURE (1162 PASS, 1 FAIL, 1 XFAIL) por entrada original de derivada de SY-V-07; H1d 38684959038 SUCCESS. Plus reparacion en evaluate_service.py SHA ab81668; cumulative 38686792285, H1d 38686792521, SG28 38686792382 pendientes. SY-V-07 OPEN; SG28/H2 OPEN; DIST multinodo BLOCKED. Siguiente: comprobar Plus SHA ab81668 y continuar SY-V-08 tras PASS bilateral.
 
