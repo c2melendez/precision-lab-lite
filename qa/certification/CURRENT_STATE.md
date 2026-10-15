@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-11 PASS bilateral / SY-U-12 raíz Unicode abierta
+- SY-U-11 `x²` interpretación x^2 o aviso explícito PASS bilateral en alcance automatizado: Lite SHA 3cb6d351bcc05e3b41114fa4a1255e1f2876c0a3 cumulative 38658381284, H1d 38658382236, build 38658381317, regresión E2E 38658381484 SUCCESS; Plus SHA 7c6628ce7e09b1bb7a5d9df9da988dea0e5d0172 cumulative 38658395591 y H1d 38658395586 SUCCESS. Regresión UI no acredita interacción visual específica SY-U-11.
+- Nuevo fixture oficial SY-U-12: raíz Unicode `√4`, operación `convencion`, esperado `2` o aviso explícito. Pruebas Lite parser/cálculo y handler/reentrada si interpreta, SHA 7767c7368d52a2bb3e46c0864a79909bd9716855. Plus frontend conversión o rechazo explícito SHA 64b9c53a5e1ef9c3adeb040fee37580188e02ef6; Plus backend HTTP MathResponse, equivalencia numérica 2 o rechazo explícito y reentrada SHA final d4d59de4b4beae66e9df30d45f059365034de970.
+- CI Lite SHA final cumulative [38658775046](https://github.com/c2melendez/precision-lab-lite/actions/runs/38658775046), H1d 38658775190, build 38658774890, regresión E2E 38658775060, todos IN_PROGRESS en primera consulta. Plus SHA final cumulative [38658797796](https://github.com/c2melendez/precision-lab-plus/actions/runs/38658797796), H1d 38658797787, inicialmente QUEUED. No cerrar SY-U-12 antes de leer conclusiones y logs del SHA.
+- Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. Sin modificaciones de producción.
+### Siguiente paso exacto
+Verificar gates por SHA de SY-U-12, corregir fallas reales, cerrar solo con evidencia y avanzar al siguiente fixture oficial SY-U-13 `π` con valor esperado `3.141592654`.
+
+
 ## 2026-10-14 — SY-U-10 PASS bilateral, SY-U-11 superscript pendiente
 - SY-U-10 convención Unicode raya corta `2–1`, interpretación correcta `1` o aviso explícito: PASS bilateral del alcance automatizado, sin evidencia UI E2E específica. Lite SHA 5e1e4f3f0564e72d3102f6fe767bdd8243c0ae91 gates cumulative 38657857695, H1d 38657857748, build 38657857806, regresión E2E 38657857900 SUCCESS. Plus SHA 2b03e5bd5560f5ecdca568c4941dc7c40a36aea1 cumulative 38657877130, H1d 38657877112 SUCCESS. Se conserva sin cambios el contrato de convención.
 - Siguiente fixture oficial SY-U-11 `x²` U+00B2, operación convencion, esperado `x^{2}` o aviso. Lite parser/evaluación o error explícito SHA 3cb6d351bcc05e3b41114fa4a1255e1f2876c0a3; Plus frontend conversión o rechazo SHA 12a2891cc3065bb1d1c690a2655aa847b1bc37d0; backend HTTP MathResponse y comparación matemática x² o rechazo explícito SHA final 7c6628ce7e09b1bb7a5d9df9da988dea0e5d0172.
