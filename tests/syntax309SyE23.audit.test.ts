@@ -2166,6 +2166,7 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(trySymbolicBinomialPair("(factorial(n)/(factorial(2)*factorial((n)-(2))))")).toBeNull();
     expect(trySymbolicBinomialPair("binomialpair(e)")).toBeNull();
     expect(parseExpression("\\binom{n}{3}").algebrite).not.toContain("binomialpair");
+    expect(parseExpression("\\binom{n}{2}+1").algebrite).not.toContain("binomialpair");
     expect(evaluate(parseExpression("\\binom{5}{2}").algebrite)).toBe("10");
   });
 });
