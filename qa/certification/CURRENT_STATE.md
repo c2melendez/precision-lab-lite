@@ -1,5 +1,15 @@
 # Current Certification State
 
+## 2026-10-15 — SY-Q-23 PASS en Lite navegador y Plus conversor/HTTP; siguiente SY-M-01
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial SY-Q-23: entrada Unicode `x≥1`, operación resolver, esperado `x\\in[1,\\infty)`. El extremo 1 está incluido y +infinito es abierto.
+- Corrección bilateral de normalización: los símbolos ≤/≥ se convierten directamente a <=/>=. Antes, el control invertido 1≤x concatenaba el macro con x: Lite rechazaba el backslash y Plus devolvía sólo 1. Se conservan los controles como regresión; las corridas iniciales Lite 38798594098 y Plus 38798596003 fallaron y no son evidencia PASS.
+- Lite SHA `6388922b26c3b529dd03e7f8479536fd93de1097`: parser y manejador Worker 6/6 nuevos; acumulada [38798740287](https://github.com/c2melendez/precision-lab-lite/actions/runs/38798740287) SUCCESS, 1383 PASS +30 TODO, 124 archivos, typecheck/build PASS. Navegador nativo MathLive/Worker [38798740154](https://github.com/c2melendez/precision-lab-lite/actions/runs/38798740154) SUCCESS: 96/96, incluidos 9/9 Q-23 (x≥1, x>1, 1≤x en escritorio/tableta/móvil). H1d 38798740179 SUCCESS 21/21; build diagnóstico 38798740187 SUCCESS. Lite muestra x >= 1, equivalente a [1,+infinito); no se afirma que renderice corchetes.
+- Plus SHA `504cd40a41fe36b96899a5bb10045f74df571bcc`: [38798915730](https://github.com/c2melendez/precision-lab-plus/actions/runs/38798915730) SUCCESS: frontend 849 PASS +28 TODO, 78 archivos, 2/2 nuevos del conversor real; backend 1274 PASS +1 XFAIL, 6/6 nuevos HTTP. Se verifica el Unicode original en el conversor y por separado su contrato ASCII x>=1 en HTTP real, con intervalo SymPy [1,+infinito). No se certifica aceptación Unicode cruda del API ni integración nativa completa de la UI Plus. H1d [38798915714](https://github.com/c2melendez/precision-lab-plus/actions/runs/38798915714) SUCCESS 38/38.
+- Alcance matemático: desigualdad afín de una variable, frontera cerrada frente a estricta, dirección invertida, escala y coeficiente negativo. No se amplía a desigualdades no lineales generales. Los TODO/XFAIL no cuentan como PASS.
+- Continuidad oficial: SY-M-01, operación det, entrada `\\det\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}`, esperado -2. La secuencia alcanza Q-23, pero los gaps históricos y la UI Plus pendiente impiden declarar toda Q o toda Syntax309 certificada. Syntax309/IN625/H2/SG28 siguen ABIERTOS; DIST-01..08 BLOQUEADOS hasta coordinación real entre nodos independientes.
+
+
 ## 2026-10-15 — SY-Q-22 PASS en Lite navegador y Plus conversor/HTTP; siguiente SY-Q-23
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial x<=2, operación resolver, esperado x\in(-\infty,2]; nota Operador ASCII <=. Se usa la fuente ASCII original, no el macro \leq del caso anterior.
