@@ -4964,3 +4964,8 @@ Fixture P(5,2), operacion=valor, esperado 20, nota: permutaciones sin ambigüeda
 ### Siguiente paso exacto — SY-V-22
 Fixture i^{2}, operacion=convencion, esperado -1 como unidad imaginaria o i^{2} como variable según modo; debe declararse interpretación. Investigar modo/símbolos disponibles sin inventar selector ni sobreescribir variable declarada; verificar fuente original, contrato visible y reentrada. Después SY-V-23 conjugado de 3+4i, esperado 3-4i.
 
+
+## 2026-10-15 — SY-V-22 inicio técnico y CI
+- Fixture oficial i^{2}, convención compleja vs variable. Código actual asigna i a constante imaginaria en Lite y Plus, sin selector de variable i verificado. No afirmar modo inexistente.
+- Regresiones publicadas Lite SHA 9462dd4c7261c04ba3443f63603f40f36832bc77 test tests/syntax309SyV22.audit.test.ts; Plus SHA 45d43727ecdd3f47d368003339a940de79698447 backend/tests/test_syntax309_syv22.py. Incluyen i² y (-i)² = -1, contraste variable x; Plus contrato HTTP/reentrada.
+- Nuevos runs Lite cumulative 38708032511, H1d 38708032409, build 38708032427, E2E científico genérico 38708032461; Plus cumulative 38708036941, H1d 38708037003. En progreso en última consulta; SY-V-22 OPEN hasta PASS/evidencia final. SG28/H2 OPEN, DIST multinodo BLOCKED.
