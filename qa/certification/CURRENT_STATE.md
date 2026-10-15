@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-15 — SY-M-02 PASS en Lite navegador y Plus parser/HTTP; siguiente SY-M-03
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial SY-M-02, operación det, entrada `\det\begin{bmatrix}1&2\\3&4\end{bmatrix}`, esperado -2. El parser conserva las cuatro entradas y distingue la matriz literal con corchetes del determinante explícito.
+- Lite SHA `58db829bff6d56fa9c43295019a270ab52943891`: [acumulada 38823842585](https://github.com/c2melendez/precision-lab-lite/actions/runs/38823842585) SUCCESS: 1396 PASS +30 TODO, 126 archivos; 7/7 nuevos de parser, motor y manejador Worker; typecheck/build PASS. [Navegador 38823842693](https://github.com/c2melendez/precision-lab-lite/actions/runs/38823842693) SUCCESS: 114/114, incluidos 9/9 nuevos SY-M-02 con MathLive/Worker reales, en escritorio/tableta/móvil (determinante -2, intercambio de filas +2 y singular 0). Se verifica resultado visible y LaTeX disponible para reentrada; no se atribuye una nueva prueba de pulsar Reusar. H1d 38823842626 SUCCESS 21/21; build diagnóstico 38823842583 SUCCESS.
+- Plus SHA `7fe8ea95b2a34c71d70dbe4a3bacac1a4a2712ae`: [acumulada 38823846056](https://github.com/c2melendez/precision-lab-plus/actions/runs/38823846056) SUCCESS: frontend 854 PASS +28 TODO, 80 archivos, 3/3 nuevos del parser real; backend 1286 PASS +1 XFAIL, 6/6 nuevos HTTP /api/v1/matrix/determinant. El LaTeX bmatrix original se prueba en detectMatrixIntent y su payload estructurado se prueba por separado por HTTP. No se certifica aquí la UI nativa completa de Plus ni que el API reciba LaTeX matricial crudo. [H1d 38823846085](https://github.com/c2melendez/precision-lab-plus/actions/runs/38823846085) SUCCESS 38/38.
+- Controles: signo por intercambio de filas, transposición, singularidad, cambio de entrada, rechazo rectangular; el detector no reconoce como determinante completo una entrada con contenido sobrante o delimitadores desparejados. Esto no acredita el manejo visual completo de cada entrada inválida. Sólo se añadieron pruebas y registro en workflow; no fue necesario cambiar motor ni producto. TODO/XFAIL no cuentan como PASS.
+- Continuidad oficial: SY-M-03, operación det, entrada `\begin{vmatrix}1&2\\3&4\end{vmatrix}`, esperado -2; nota: vmatrix equivale a determinante. El módulo matricial completo no está certificado por estos casos. Syntax309/IN625/H2/SG28 siguen ABIERTOS; gaps históricos y UI Plus pendientes. DIST-01..08 siguen BLOQUEADOS hasta coordinación real entre nodos independientes.
+
+
 ## 2026-10-15 — SY-M-01 PASS en Lite navegador y Plus parser/HTTP; siguiente SY-M-02
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial SY-M-01, operación det, entrada `\det\begin{pmatrix}1&2\\3&4\end{pmatrix}`, esperado -2. La ruta matricial conserva filas y columnas y distingue determinante de literal de matriz.
