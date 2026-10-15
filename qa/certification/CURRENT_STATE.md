@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-V-02 diagnosticado; fix Plus en CI
+- SY-V-02 `x_{1}+x_{2}`: Lite SHA 998e24c13b5799a7c2d64f2a69addcef9681f0f2 cumulative 38676806225, H1d 38676806301, build 38676806253 y E2E genérico 38676806326 SUCCESS. E2E genérico no acredita UI específica.
+- Plus SHA 6e9aeb489c92efc8b958d009ccd081c541a11814 cumulative 38676813456 FAILURE (1157 PASS / 1 FAIL / 1 XFAIL), fallo único `test_syv02_distinct_subscripted_variables_http_and_reentry`: API `success=false`; H1d 38676813443 SUCCESS. Causa producto: falta de normalización de subíndices LaTeX numéricos a identificadores simbólicos.
+- Fix Plus `backend/app/services/parsing.py` SHA 20e818dfa2f8eb4a55b6b1f71993a29a5864ce9a convierte `[A-Za-z]_{[0-9]+}` a `letra_numero`, preservando símbolos distintos y reentrada. Gates Plus cumulative 38677868857 y H1d 38677868827 QUEUED inicialmente; no declarar cierre antes de resultado definitivo.
+- Syntax309 OPEN; H2/SG28 OPEN y DIST multinodo BLOCKED; sin producción.
+### Siguiente paso exacto
+Verificar Plus cumulative 38677868857/H1d 38677868827 por SHA 20e818d; si falla diagnosticar y corregir sin relajar oráculo. Si pasan, cerrar SY-V-02 bilateral y comenzar caso oficial SY-V-03 `\\pi r^{2}` con pruebas permanentes de constante pi, variable r, resultado y reentrada en ambos motores.
+
+
 ## 2026-10-14 — SY-V-01 PASS bilateral; SY-V-02 en CI
 - SY-V-01 `X+x` PASS bilateral alcance automatizado: Lite SHA 557e6971eb4c10dc8f239036e61ea041311cf1a5 cumulative 38675456648, H1d 38675456711, build 38675456712, E2E genérico 38675457020 SUCCESS. Plus SHA e44b85dfef61df2f685fa1351b5f0a738546f3c6 cumulative 38675466626 y H1d 38675466611 SUCCESS. E2E genérico no prueba UI específica del caso.
 - SY-V-02 fila oficial `x_{1}+x_{2}` se deben conservar dos variables distintas. Tests permanentes de parser/evaluación/reentrada Lite `tests/syntax309SyE23.audit.test.ts` SHA 998e24c13b5799a7c2d64f2a69addcef9681f0f2; Plus `backend/tests/test_syntax309_sye23.py` SHA 6e9aeb489c92efc8b958d009ccd081c541a11814.
