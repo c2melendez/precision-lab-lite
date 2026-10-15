@@ -1,5 +1,9 @@
 # Current Certification State
 
+## 2026-10-14 — SY-V-07 CI
+Lite SHA 3eba658: cumulative 38684945679, H1d 38684945718, build 38684945701, E2E generico 38684945790 SUCCESS. Plus cumulative 38684958975 FAILURE (1162 PASS, 1 FAIL, 1 XFAIL) por entrada original de derivada de SY-V-07; H1d 38684959038 SUCCESS. Plus reparacion en evaluate_service.py SHA ab81668; cumulative 38686792285, H1d 38686792521, SG28 38686792382 pendientes. SY-V-07 OPEN; SG28/H2 OPEN; DIST multinodo BLOCKED. Siguiente: comprobar Plus SHA ab81668 y continuar SY-V-08 tras PASS bilateral.
+
+
 ## 2026-10-14 — SY-V-06 PASS bilateral; SY-V-07 CI iniciado
 - SY-V-06 Lite SHA 176e8c50d9a9aaf4d7c95014194e5d0d20fc3f5b: cumulative 38684054970, H1d 38684054978, build 38684055070, E2E genérico 38684055315 SUCCESS. Plus SHA dff3816e9ef71de40e67c4ec291f948becff314d: cumulative 38684070724, H1d 38684070696 y SG28 prototipo 38684070692 SUCCESS. La aprobación es de alcance automatizado, no certificación multinodo ni prueba UI específica.
 - SY-V-07 caso oficial entrada `\\frac{d}{dx}x^{2}`, esperado `2x` con equivalencia y reentrada. Lite test tests/syntax309SyE23.audit.test.ts SHA 3eba65831df2244890bf792db03ea9278baaca4c; Plus test backend/tests/test_syntax309_syv07.py SHA 7e649e2e7437aab3900b8370d7bc0e9a157c479a.
