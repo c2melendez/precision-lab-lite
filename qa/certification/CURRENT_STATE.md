@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-12 gates confirmados / SY-U-13 Unicode π en CI
+- SY-U-12 alcance automatizado PASS bilateral en SHAs finales: Lite 7767c7368d52a2bb3e46c0864a79909bd9716855 cumulative 38658775046, H1d 38658775190, build 38658774890 y regresión UI genérica 38658775060 SUCCESS; Plus d4d59de4b4beae66e9df30d45f059365034de970 cumulative 38658797796 y H1d 38658797787 SUCCESS. La regresión UI genérica NO es evidencia del caso específico Unicode.
+- SY-U-13 caso oficial de qa/certification/syntax309_cases.jsonl: π (Unicode), operación valor, esperado 3.141592654. Regresión permanente de entrada original, precisión nueve decimales y reentrada publicada Lite SHA cf8a45ed0f1fea5a3f5641ee7d64d431ed64499f (tests/syntax309SyE23.audit.test.ts) y Plus SHA 53dde779ff1732860f34dce8ff2704f18320d240 (backend/tests/test_syntax309_sye23.py).
+- CI inicial Lite cumulative 38659318834, H1d 38659318977, build 38659318802 y E2E genérico 38659318917 IN_PROGRESS. Plus cumulative 38659323354 y H1d 38659323311 IN_PROGRESS. No marcar SY-U-13 PASS sin resultado verificable del SHA.
+- Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo real BLOCKED; sin cambios en producción.
+### Siguiente paso exacto
+Revisar jobs/logs y conclusiones de SY-U-13 por SHA. Corregir producto, test u oráculo según evidencia sin relajar precisión. Si PASS bilateral, leer caso SY-U-14 directamente de matriz y comenzar implementación; actualizar EXECUTION_LOG y CURRENT_STATE.
+
+
 ## 2026-10-14 — SY-U-11 PASS bilateral / SY-U-12 raíz Unicode abierta
 - SY-U-11 `x²` interpretación x^2 o aviso explícito PASS bilateral en alcance automatizado: Lite SHA 3cb6d351bcc05e3b41114fa4a1255e1f2876c0a3 cumulative 38658381284, H1d 38658382236, build 38658381317, regresión E2E 38658381484 SUCCESS; Plus SHA 7c6628ce7e09b1bb7a5d9df9da988dea0e5d0172 cumulative 38658395591 y H1d 38658395586 SUCCESS. Regresión UI no acredita interacción visual específica SY-U-11.
 - Nuevo fixture oficial SY-U-12: raíz Unicode `√4`, operación `convencion`, esperado `2` o aviso explícito. Pruebas Lite parser/cálculo y handler/reentrada si interpreta, SHA 7767c7368d52a2bb3e46c0864a79909bd9716855. Plus frontend conversión o rechazo explícito SHA 64b9c53a5e1ef9c3adeb040fee37580188e02ef6; Plus backend HTTP MathResponse, equivalencia numérica 2 o rechazo explícito y reentrada SHA final d4d59de4b4beae66e9df30d45f059365034de970.
