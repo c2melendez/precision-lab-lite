@@ -4977,3 +4977,5 @@ Fixture i^{2}, operacion=convencion, esperado -1 como unidad imaginaria o i^{2} 
 - Gates del SHA final: Lite cumulative 38708814459, H1d 38708814503, build 38708814448 y E2E científico genérico 38708814457; Plus cumulative 38708821069 y H1d 38708821038. In progress/queued al registrar, NO PASS anticipado. Revisar logs y corregir fallos reales antes de cerrar SY-V-23.
 - SG28/H2 OPEN; DIST multinodo BLOCKED; sin despliegue a producción.
 
+
+- Diagnóstico posterior SY-V-23: Lite SHA 333f6d cumulative 38708814459 FAILURE (1296 PASS, 2 FAIL, 30 TODO): el guard de comandos desconocidos rechazó la macro antes de la conversión. Fix Lite SHA 6dbb0b88f1c5ee1e35761e9cb3bb18a46ac0d195 mueve la reescritura acotada al inicio de preprocessLatex, antes del guard. Nuevo cumulative 38708972759 y gates vinculados lanzados, IN_PROGRESS al consultar. Plus cumulative 38708821069: frontend 841 PASS +28 TODO, backend aún en curso; no cierre bilateral.
