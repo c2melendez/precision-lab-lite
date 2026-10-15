@@ -6,6 +6,7 @@ import { ErrorCode } from "../src/types";
 import { formatScientificResult } from "../src/components/ResultPanel";
 import { reciprocalPoleLimit, reciprocalLimitAtInfinity } from "../src/engine/reciprocalLimit";
 import { calcLimit } from "../src/engine/stepEngine/calculus";
+import { trySymbolicBinomialPair } from "../src/engine/binomial";
 import { trySymbolicIdentitySum } from "../src/engine/sum";
 import { compileNumeric } from "../src/engine/numericFallback";
 
@@ -2156,4 +2157,15 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate("expand((" + parseExpression(again.resultLatex).algebrite + ")-(" + expected + "))")).toBe("0");
   });
 
+  it("symbolic pair binomial preserves provenance and is generic in the cardinality name", () => {
+    const parsed = parseExpression("\\binom{m}{2}").algebrite;
+    expect(parsed).toBe("binomialpair(m)");
+    const result = trySymbolicBinomialPair(parsed);
+    expect(result?.variable).toBe("m");
+    expect(evaluate("expand((" + result!.value + ")-m*(m-1)/2)")).toBe("0");
+    expect(trySymbolicBinomialPair("(factorial(n)/(factorial(2)*factorial((n)-(2))))")).toBeNull();
+    expect(trySymbolicBinomialPair("binomialpair(e)")).toBeNull();
+    expect(parseExpression("\\binom{n}{3}").algebrite).not.toContain("binomialpair");
+    expect(evaluate(parseExpression("\\binom{5}{2}").algebrite)).toBe("10");
+  });
 });

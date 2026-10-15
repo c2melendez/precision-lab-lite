@@ -105,7 +105,12 @@ function rewriteBinaryFunction(expr: string, fnName: string, build: (a: string, 
 function rewriteCombinatorics(algebrite: string): string {
   let result = algebrite;
   result = rewriteBinaryFunction(result, "nPr", (n, r) => `(factorial(${n})/factorial((${n})-(${r})))`);
-  result = rewriteBinaryFunction(result, "nCr", (n, r) => `(factorial(${n})/(factorial(${r})*factorial((${n})-(${r}))))`);
+  result = rewriteBinaryFunction(result, "nCr", (n, r) =>
+    // Preserve combinatorial provenance for the worker's symbolic pair rule.
+    // A raw factorial quotient must retain its own domain, not inherit this extension.
+    /^[A-Za-z]$/.test(n) && !/^[eEiI]$/.test(n) && r === "2"
+      ? "binomialpair(" + n + ")"
+      : `(factorial(${n})/(factorial(${r})*factorial((${n})-(${r}))))`);
   return result;
 }
 

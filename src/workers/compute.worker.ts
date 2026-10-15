@@ -13,6 +13,7 @@ import { tryStatFunction, splitTopLevelArgs } from "../engine/statFunctions";
 import { tryComplexFunction, parseComplex } from "../engine/complexFunctions";
 import { residueAtRational, singularitiesOfRational } from "../engine/complexAnalysis";
 import { tryPlusMinus } from "../engine/plusMinus";
+import { trySymbolicBinomialPair } from "../engine/binomial";
 import { tryFiniteProduct } from "../engine/product";
 import { validateFiniteSumRange, trySymbolicIdentitySum } from "../engine/sum";
 import { tryCbrtSign } from "../engine/cbrtSign";
@@ -682,6 +683,27 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
         steps: [],
         hasDetailedSteps: false,
         confidence: "NUMERIC_FALLBACK",
+        requestId,
+      };
+    }
+
+    const symbolicBinomial = trySymbolicBinomialPair(expr);
+    if (symbolicBinomial !== null) {
+      return {
+        success: true,
+        resultLatex: toLatex(symbolicBinomial.value),
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        domainConditions: [{
+          expressionAlgebrite: symbolicBinomial.variable,
+          operator: ">=",
+          comparisonAlgebrite: "0",
+          variable: symbolicBinomial.variable,
+          kind: "domain",
+          text: symbolicBinomial.variable + " debe ser un entero no negativo.",
+          latex: symbolicBinomial.variable + "\\in\\mathbb{Z}_{\\ge0}",
+        }],
         requestId,
       };
     }
