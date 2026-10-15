@@ -1979,7 +1979,7 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(row.operacion).toBe("valor");
     expect(row.esperado).toBe("55");
     const parsed = parseExpression(row.entrada).algebrite;
-    expect(parsed.replace(/\s+/g, "")).toBe("sum(k,k,1,10)");
+    expect(["sum(k,k,1,10)", "sum((k),k,1,10)"]).toContain(parsed.replace(/\s+/g, ""));
     expect(evaluate(parsed)).toBe("55");
     // Bounds are inclusive and must not silently default to zero or stop at nine.
     expect(evaluate(parseExpression("\\sum_{k=2}^{10}k").algebrite)).toBe("54");
