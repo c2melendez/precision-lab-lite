@@ -1748,4 +1748,22 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("5");
   });
 
+  it("SY-V-07: first derivative of x squared equals 2x and survives worker reentry", () => {
+    const row = rows["SY-V-07"];
+    expect(row.entrada).toBe("\\frac{d}{dx}x^{2}");
+    expect(row.operacion).toBe("equivalente");
+    expect(row.esperado).toBe("2x");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const expected = evaluate(parseExpression(row.esperado).algebrite);
+    const actual = evaluate(parsed);
+    expect(evaluate("(" + actual + ")-(" + expected + ")")).toBe("0");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-07",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-07");
+    const repeated = evaluate(parseExpression(result.resultLatex).algebrite);
+    expect(evaluate("(" + repeated + ")-(" + expected + ")")).toBe("0");
+  });
+
 });
