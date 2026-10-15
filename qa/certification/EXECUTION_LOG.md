@@ -4738,3 +4738,13 @@ Consultar gates SY-V-05 correspondientes a SHA 564120a (Lite) y d9550f8 (Plus); 
 ### Siguiente paso exacto
 Verificar conclusiones de SY-V-06 sobre SHAs 85a70b6 y 5e41ea0, diagnosticar y corregir parsing de funciones multivariables si falla, preservar oráculos. Solo tras PASS bilateral avanzar SY-V-07 `\\frac{d}{dx}x^{2}` esperado `2x`.
 
+
+## 2026-10-14 — SY-V-06 multivariable fix bilateral en CI
+- SY-V-06 `g(x,y)=x+y;\\ g(2,3)`, esperado 5: Lite SHA 85a70b6b5b4137a2d054f84178e12366be4384ea cumulative 38682844521 FAILURE (1273 PASS / 1 FAIL / 30 TODO): `Carácter no reconocido: ";"`; H1d 38682844527, build 38682844531, E2E genérico 38682844440 SUCCESS.
+- Plus SHA 5e41ea0fd4f5918fff52acb7cb3673e7e47e0ec0 cumulative 38682824909 FAILURE: test `test_syv06_two_argument_function_definition_http_roundtrip` `success=false`; H1d 38682825042 SUCCESS.
+- Corrección Lite `src/engine/parsing/index.ts` SHA 176e8c50d9a9aaf4d7c95014194e5d0d20fc3f5b: reconoce función local de dos parámetros y aplica sustitución simultánea antes del parser. Gates cumulative 38684054970, H1d 38684054978, build 38684055070, E2E genérico 38684055315 IN_PROGRESS al consultar.
+- Corrección Plus `backend/app/services/evaluate_service.py` SHA dff3816e9ef71de40e67c4ec291f948becff314d: interpreta definición y llamada de dos argumentos, analiza cuerpos/argumentos con parser y sustituye mediante SymPy simultáneo. Gates cumulative 38684070724, H1d 38684070696, SG28 prototipo 38684070692 QUEUED al consultar.
+- SY-V-06 OPEN hasta gates íntegros del SHA técnico; Syntax309 OPEN, H2/SG28 OPEN, DIST multinodo BLOCKED; sin deploy.
+### Siguiente paso exacto
+Verificar gates Lite 176e8c5 y Plus dff3816; corregir cualquier regresión del caso y confirmar reentrada, solo entonces cerrar SY-V-06 y continuar SY-V-07 derivada de x² a 2x.
+
