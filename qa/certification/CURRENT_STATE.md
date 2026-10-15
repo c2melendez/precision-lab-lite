@@ -1,5 +1,18 @@
 # Current Certification State
 
+## 2026-10-15 — SY-V-16 suma finita exacta
+- Fixture original \sum_{k=1}^{10}k, operacion=valor, esperado 55.
+- Lite: fuente original -> parser con cuerpo k o (k), índice k y límites 1..10 intactos -> evaluación exacta 55 -> handler worker real con transporte simulado -> reentrada real con nuevo requestId y 55. Controles independientes 2..10=54 y 1..9=45 evitan errores de extremos inclusivos.
+- Primer SHA Lite ded35bcf793e0d706645f190210283cfbc2ce66c cumulative 38699580709 FAILURE: 1286 PASS/1 FAIL/30 TODO. Clasificación HARNESS: el parser emitía sum((k),k,1,10), equivalente a la cadena literal sum(k,k,1,10) exigida por la prueba. Corregida aserción para admitir ambas expresiones completas preservando oráculos exactos; sin cambios de producto.
+- Plus frontend: LaTeX original convertido íntegramente a sum(k,k,1,10), salida 55 reingresable. Backend HTTP /evaluate con traducción explícita, MathResponse, éxito/scalar/input/requestId, texto/LaTeX/aproximado 55, errores nulos, reentrada real y controles 54/45 para límites modificados.
+- SY-V-16 PASS bilateral en alcance descrito. Lite SHA cf9741e912e83569912e15d7219f7d95a8bb0ee7: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38699746222 (1287 PASS +30 TODO), H1d 38699746097, build 38699746169 y E2E científico genérico 38699745840 SUCCESS. Plus SHA 82770b7020671b681819c007a17091075160e970: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38699585605 (1172 backend PASS +1 XFAIL; 836 frontend PASS +28 TODO), H1d 38699585749 SUCCESS. Logs jobs 116304772663/116304244329/116304244922 inspeccionados; conclusiones verificadas por SHA.
+- Sin cambios de producto. Alcance parser/handler Lite y conversor/HTTP Plus separados; no acredita teclado/MathLive/browser específico SY-V-16. Gates E2E genéricos solo regresión. TODO/XFAIL no PASS.
+- Tablero actualizado bilateralmente. Syntax309/IN625/H2/SG28 OPEN; DIST multinodo BLOCKED. Sin despliegue de producción.
+
+### Siguiente paso exacto — SY-V-17
+Fixture \sum_{k=1}^{n}k, equivalente a \frac{n(n+1)}{2}. Investigar contrato/ruta para cota simbólica n y forma cerrada; no fingir soporte usando únicamente n=10 ni convertir TODO previo en PASS sin prueba general. Acreditar dominio entero no negativo, equivalencia simbólica y controles independientes según contrato. Después SY-V-18 producto k=1..5, esperado 120.
+
+
 ## 2026-10-15 — SY-V-15 recíproco al infinito
 - Fixture original \lim_{x\to\infty}\frac{1}{x}, operacion=valor, esperado 0.
 - Lite: fuente original -> parser punto oo -> handler real con transporte simulado -> resultLatex exactamente 0, confidence SYMBOLIC -> reentrada de salida real con requestId nuevo.
