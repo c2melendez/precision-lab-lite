@@ -317,6 +317,13 @@ export function parseExpression(
   latex: string,
   angleMode: "RAD" | "GRAD" = "RAD",
 ): ParsedExpression {
+  // SY-V-04: ephemeral named function call with no persistent registry.
+  const call = latex.match(/^\s*([A-Za-z])\(([A-Za-z])\)\s*=\s*([^;]+);\s*(?:\\\s*)?\1\(([^()]*)\)\s*$/);
+  if (call) {
+    const variable = call[2], body = call[3], argument = call[4];
+    const substituted = body.replace(new RegExp("\\b" + variable + "\\b", "g"), "(" + argument + ")");
+    return parseExpression(substituted, angleMode);
+  }
   const preprocessed = preprocessLatex(latex);
   const unicodeNormalized = normalizeUnicode(preprocessed);
   validateDecimalPoints(unicodeNormalized);
