@@ -2,6 +2,22 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-Q-17 PASS en Lite navegador y Plus HTTP; siguiente SY-Q-18
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial SY-Q-17 \begin{cases}x>1\\ x<3\end{cases}, operación resolver, esperado x\in(1,3). La intersección excluye 1 y 3 e incluye 2; se verifica el producto, no solo un oráculo externo.
+- Diagnóstico: Científica Lite enviaba cualquier sistema de inecuaciones a linearInequalitySystem (exactamente dos variables). Plus /api/v1/inequality/system también llamaba exclusivamente al solver de polígonos de dos variables. El caso de una variable no tenía ruta funcional en esos flujos.
+- Lite añade src/engine/linearInequalityIntersection.ts: parser afín racional exacto con fraction.js, intersección de hasta diez restricciones y comparación exacta de extremos. Conserva apertura/cierre, restricciones redundantes, signo de coeficiente negativo, intervalos no acotados, singleton y conjunto vacío. No utiliza muestreo ni redondeo decimal de cuatro cifras. Límite 500 caracteres/250 tokens/profundidad 32; rechaza funciones, potencias, productos de variables y denominadores con variables. No certifica inecuaciones univariadas no lineales.
+- Científica Lite enruta una variable al nuevo mensaje inequalityIntersection del worker y muestra notación de conjunto/intervalo con etiqueta Intersección real. Dos variables mantienen el solver poligonal anterior; sus limitaciones de fronteras siguen vigentes y no se dan por resueltas aquí.
+- Plus añade rama de una variable en /api/v1/inequality/system: aplica parsing/guardas existentes y reduce_inequalities/as_set mediante compute_chained_inequality; entrega MathResponse scalar bajo operation inequality_system. Comprueba que las restricciones no contengan símbolos diferentes de la variable solicitada (INVALID_VARIABLE). La rama de dos variables se conserva. No se cambian schemas públicos ni se inventa un modo.
+- Lite SHA ee6b9780da3f6f2e60ff1bc9be398bf2f339f6c7: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38789296100 SUCCESS, job 116609379410, 1351 PASS +30 TODO en 118 archivos; typecheck/build SUCCESS. Build diagnostic 38789296299, H1d 38789296112 (21/21), SG28 cancelación 38789296109 (12/12) y scientific UI 38789296151 (48/48) SUCCESS en el mismo SHA.
+- Lite tests/syntax309SyQ17.audit.test.ts: 16/16 PASS, fuente original, parser y handler real con transporte simulado; permutación de restricciones, cuatro combinaciones de extremos, cambio de signo, restricciones redundantes, singleton, contradicciones, fracciones 1/3 y 2/3 exactas y rechazos fuera de alcance.
+- Lite e2e/syntax309-syq17.spec.ts: 12/12 PASS específicos con MathLive y Web Worker auténticos, escritorio/tablet/móvil (job 116609381141, run 38789296151). Cuatro escenarios: intervalo abierto oficial, cerrado, vacío y singleton. El oráculo de navegador comprueba notación exacta y pertenencia de 0/1/2/3/4 para los intervalos; no basta con encontrar los dígitos 1 y 3. No acredita cada pulsación del teclado virtual ni navegadores diferentes.
+- Plus SHA c45fdf7cff10a38f7ea8284d761bab430ebafff9: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38789301736 SUCCESS. Backend job 116609398956: 1225 PASS +1 XFAIL, incluidos 14/14 test_syntax309_syq17_http.py. Frontend job 116609398544: 841 PASS +28 TODO, typecheck/build SUCCESS. H1d 38789301988: 38/38 PASS, mismo SHA.
+- Plus prueba HTTP real con MathResponse, fuente separada en la lista que exige la API, apertura/cierre, signo, redundancia, vacío/singleton, fracciones y rechazo de variable distinta; request_id diferente en solicitudes separadas. No acredita el flujo Plus de entrada cases por MathLive ni reentrada del texto del conjunto como cálculo nuevo. Tampoco certifica aquí todo lo que SymPy reduce_inequalities pueda resolver.
+- SY-Q-17 PASS únicamente en los canales y dominios descritos. Regresiones SG28 no son evidencia DIST multinodo. TODO/XFAIL siguen pendientes; no se suman como PASS ni como requisitos únicos.
+- Próximo objetivo exacto SY-Q-18: x+y=3; esperado x=3-y con y libre (una ecuación, dos incógnitas). Investigar selección explícita de variable y representación del parámetro libre; no elegir silenciosamente una solución numérica ni declarar sistema determinado.
+- Tablero y registros sincronizados bilateralmente. Syntax309/IN625/H2/SG28 OPEN, DIST-01..08 BLOCKED. Sin despliegue ni cambios de producción.
+
 ## 2026-10-15 — SY-Q-16: dos soluciones no lineales verificadas; siguiente SY-Q-17
 
 - Esta entrada es el estado vigente y prevalece sobre los resúmenes antiguos inferiores. Fixture oficial: \begin{cases}x^{2}+y^{2}=25\\ x+y=7\end{cases}; exige AMBAS soluciones (3,4) y (4,3).
@@ -126,7 +142,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-D Delimitadores | 14 | Recorrido hasta D-14; PASS por alcance registrado, no cierre UI universal |
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
 | SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
-| SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-16, PASS en Lite navegador y Plus HTTP bajo alcance descrito; siguiente Q-17. Otros gaps históricos siguen abiertos |
+| SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-17, PASS en Lite navegador y Plus HTTP bajo alcance descrito; siguiente Q-18. Otros gaps históricos siguen abiertos |
 | SY-M Matrices/vectores | 20 | Pendiente de esta secuencia; no significa módulo sin pruebas |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
@@ -149,7 +165,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-Q-17 (sistema x>1, x<3; intersección abierta (1,3)), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-Q-18 (x+y=3; despeje x=3-y con parámetro y libre), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
