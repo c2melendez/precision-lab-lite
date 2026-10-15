@@ -1766,4 +1766,22 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate("(" + repeated + ")-(" + expected + ")")).toBe("0");
   });
 
+  it("SY-V-08: second derivative of x cubed equals 6x through worker and reentry", () => {
+    const row = rows["SY-V-08"];
+    expect(row.entrada).toBe("\\frac{d^{2}}{dx^{2}}x^{3}");
+    expect(row.operacion).toBe("equivalente");
+    expect(row.esperado).toBe("6x");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const expected = evaluate(parseExpression(row.esperado).algebrite);
+    const actual = evaluate(parsed);
+    expect(evaluate("(" + actual + ")-(" + expected + ")")).toBe("0");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-08",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-08");
+    const repeated = evaluate(parseExpression(result.resultLatex).algebrite);
+    expect(evaluate("(" + repeated + ")-(" + expected + ")")).toBe("0");
+  });
+
 });
