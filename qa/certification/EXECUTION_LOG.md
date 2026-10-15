@@ -4604,3 +4604,12 @@ Consultar gates finales y logs para SY-U-19 por SHA actualizado, corregir cualqu
 - SY-U-19 Lite SHA fadb831c: cumulative 38669228864, H1d 38669228941, build 38669228851 and generic E2E 38669228840 SUCCESS. Plus SHA 91635e8: cumulative 38668850147 and H1d 38668850155 SUCCESS. SY-U-19 PASS automated scope; no case-specific UI claim.
 - SY-U-20 official fixture 2*-3 => -6, new permanent source/evaluation/reentry tests: Lite SHA 4328caf318b46c58d8e9db7a45f63254f7393207 and Plus SHA 01cc2e26bbafb4a4627608c5eabf599d97f0135f.
 - New runs Lite 38669970347 cumulative, 38669970345 H1d, 38669970377 build, 38669970326 generic E2E; Plus 38669980533 cumulative, 38669980587 H1d. In progress on observation. SY-U-20 OPEN until same-SHA outcomes verified. No production change.
+
+## 2026-10-14 — SY-U-20 PASS bilateral / SY-U-21 en CI
+- SY-U-20 fixture `2*-3` => `-6` verificado: Lite SHA 4328caf318b46c58d8e9db7a45f63254f7393207 cumulative 38669970347, H1d 38669970345, build 38669970377, E2E genérico 38669970326 SUCCESS; Plus SHA 01cc2e26bbafb4a4627608c5eabf599d97f0135f cumulative 38669980533, H1d 38669980587 SUCCESS. PASS bilateral alcance automatizado; UI genérico no prueba interacción concreta SY-U-20.
+- SY-U-21 fixture oficial `--3` => `3` (valor) y reentrada: Lite tests/syntax309SyE23.audit.test.ts commit 87761131619b33e1503990c0170d2729da1bf57e; Plus backend/tests/test_syntax309_sye23.py commit 21ee11f22d9ee4834b1456568455648e2055f056. Mantener regresiones EN-PR-12 y SY-U-19 sin relajarlas.
+- Gates nuevos Lite cumulative 38670309543, H1d 38670309085, build 38670309031, E2E genérico 38670309050 IN_PROGRESS inicial; Plus cumulative 38670314472, H1d 38670314473 QUEUED inicial. SY-U-21 OPEN hasta evidencia final por SHA.
+- Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo real BLOCKED. Sin despliegues.
+### Siguiente paso exacto
+Consultar gates y logs por SHA del SY-U-21, corregir si falla en la capa identificada, actualizar estado bilateral y avanzar al fixture SY-U-22 `2+` (error claro expresión incompleta) una vez validado.
+
