@@ -638,12 +638,20 @@ export function BasicScientificMode() {
   // ecuación, ahora SÍ la resuelve de verdad (antes caía silenciosamente
   // en evaluate — ver comentario de handleCalculate arriba).
   const handleSolveEquation = useCallback(() => {
-    if (!latex.includes("=")) {
-      mathField?.insert("=0");
+    const currentLatex = mathField?.value ?? latex;
+    if (!currentLatex.trim()) {
+      fail(ErrorCode.PARSE_ERROR, "Escribe una expresión antes de resolver.", makeRequestId());
+      return;
+    }
+    if (!currentLatex.includes("=")) {
+      // Complete the whole visible expression, independent of caret position.
+      const equation = currentLatex + "=0";
+      if (mathField) mathField.value = equation;
+      handleInputChange(equation);
       return;
     }
     handleCalculate();
-  }, [latex, handleCalculate, mathField]);
+  }, [latex, handleCalculate, mathField, handleInputChange, fail]);
 
   // Fase 1: antes este ícono no hacía nada (onSolveSystem nunca se pasaba
   // a MathKeyboard). Ahora, si el campo todavía no tiene un sistema,
