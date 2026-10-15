@@ -1,5 +1,13 @@
 # Current Certification State
 
+## 2026-10-14 — SY-V-06 PASS bilateral; SY-V-07 CI iniciado
+- SY-V-06 Lite SHA 176e8c50d9a9aaf4d7c95014194e5d0d20fc3f5b: cumulative 38684054970, H1d 38684054978, build 38684055070, E2E genérico 38684055315 SUCCESS. Plus SHA dff3816e9ef71de40e67c4ec291f948becff314d: cumulative 38684070724, H1d 38684070696 y SG28 prototipo 38684070692 SUCCESS. La aprobación es de alcance automatizado, no certificación multinodo ni prueba UI específica.
+- SY-V-07 caso oficial entrada `\\frac{d}{dx}x^{2}`, esperado `2x` con equivalencia y reentrada. Lite test tests/syntax309SyE23.audit.test.ts SHA 3eba65831df2244890bf792db03ea9278baaca4c; Plus test backend/tests/test_syntax309_syv07.py SHA 7e649e2e7437aab3900b8370d7bc0e9a157c479a.
+- CI por push Lite cumulative 38684945679, H1d 38684945718, build 38684945701, E2E genérico 38684945790 IN_PROGRESS; Plus cumulative 38684958975, H1d 38684959038 QUEUED al consultar. SY-V-07 OPEN hasta gates finalizados sobre SHA correspondiente. Syntax309 OPEN, H2/SG28 OPEN, DIST multinodo BLOCKED.
+### Siguiente paso exacto
+Comprobar resultados/logs de SY-V-07 en Lite SHA 3eba658 y Plus SHA 7e649e2. Diagnosticar regresiones matemáticas/parser/oráculo sin reducir exigencia; confirmar equivalencia 2x y reentrada HTTP/worker; tras PASS bilateral iniciar SY-V-08 derivada segunda de x³ esperada 6x.
+
+
 ## 2026-10-14 — SY-V-06 multivariable fix bilateral en CI
 - SY-V-06 `g(x,y)=x+y;\\ g(2,3)`, esperado 5: Lite SHA 85a70b6b5b4137a2d054f84178e12366be4384ea cumulative 38682844521 FAILURE (1273 PASS / 1 FAIL / 30 TODO): `Carácter no reconocido: ";"`; H1d 38682844527, build 38682844531, E2E genérico 38682844440 SUCCESS.
 - Plus SHA 5e41ea0fd4f5918fff52acb7cb3673e7e47e0ec0 cumulative 38682824909 FAILURE: test `test_syv06_two_argument_function_definition_http_roundtrip` `success=false`; H1d 38682825042 SUCCESS.
