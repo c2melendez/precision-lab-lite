@@ -2,6 +2,13 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## Actualización verificada — SY-V-19 (2026-10-15)
+- Avance secuencial: SY-V-19 PASS acotado; siguiente SY-V-20 (binomial n sobre 2, esperado n(n-1)/2).
+- Binomial desde LaTeX original, combinaciones exactas C(5,2)=10 y reentrada real. Controles C(6,2)=15, extremos C(5,0)=C(5,5)=1 y simetría C(5,3)=10 en ambos motores; Lite parser/handler y Plus conversor/HTTP separados.
+- SY-V-19 PASS bilateral en alcance descrito. Lite SHA 69a2ffaf1a86e250911d11d62a47d0571fd339b3: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38703212279 (1291 PASS +30 TODO), H1d 38703212343, build 38703212325 y E2E científico genérico 38703212388 SUCCESS. Plus SHA c99a4d1ba2af0d37f213a435f462eef7413f8ef5: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38703463742 (1176 backend PASS +1 XFAIL; 839 frontend PASS +28 TODO), H1d 38703463798 SUCCESS. Logs jobs 116316163837/116316983879/116316983958 inspeccionados; conclusiones verificadas por SHA.
+- Se corrigió conversión Plus que emitía choose: macro binomial completo con argumentos de llaves simples pasa ahora a nCr. No acredita binomiales anidados/incrustados por esta prueba.
+- Científica PARCIAL, porcentaje global ND; IN625/H2/SG28 OPEN y DIST BLOCKED. No acreditada UI nativa específica. Fotografías anteriores son históricas.
+
 ## Actualización verificada — SY-V-18 (2026-10-15)
 - Avance secuencial: SY-V-18 PASS acotado; siguiente SY-V-19 (binomial 5 sobre 2, esperado 10).
 - Producto finito desde LaTeX original, cuerpo/índice/límites, exacto 120 y reentrada. Controles 3..5=60, 1..4=24 y nombre del índice j en ambos motores. Lite usa ruta real de producto en el handler; Plus conversor y HTTP probados por separado.
@@ -46,7 +53,7 @@ Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisi
 
 ## Lectura rápida
 - Dos frentes principales en evaluación: IN625 (625 casos) y Syntax309 (309 casos). No representan todas las matrices del proyecto ni deben sumarse como requisitos independientes sin deduplicación.
-- Syntax309 ha abordado 7/12 secciones; el avance secuencial llega a SY-V-18. Esto mide recorrido, NO porcentaje certificado.
+- Syntax309 ha abordado 7/12 secciones; el avance secuencial llega a SY-V-19. Esto mide recorrido, NO porcentaje certificado.
 - La regresión actual también ejecuta Matrices, Estadística, Unidades y Gráficas. No es correcto describir toda la CI como exclusivamente sintaxis.
 - Geometría y cierre visual completo requieren inventario de evidencia; ND no significa cero pruebas ni producto inexistente.
 - SG28/H2 OPEN; DIST multinodo BLOCKED. El bloqueo no impide el frente matemático autorizado.
@@ -88,7 +95,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-N Números/precisión | 31 | Abordada; reconciliar convenciones y canales |
 | SY-D Delimitadores | 14 | Recorrido hasta D-14; PASS por alcance registrado, no cierre UI universal |
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
-| SY-V Variables/cálculo | 28 | V-18: gates verdes, siguiente V-19 |
+| SY-V Variables/cálculo | 28 | V-19: gates verdes, siguiente V-20 |
 | SY-Q Ecuaciones/sistemas | 23 | Pendiente de esta secuencia; pueden existir otras suites previas |
 | SY-M Matrices/vectores | 20 | Pendiente de esta secuencia; no significa módulo sin pruebas |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
@@ -112,7 +119,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-V-19 (binomial 5 sobre 2 = 10), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-V-20 (binomial n sobre 2 = n(n-1)/2), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.

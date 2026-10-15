@@ -4918,3 +4918,17 @@ Fixture original \prod_{k=1}^{5}k, operacion=valor, esperado 120. Verificar índ
 ### Siguiente paso exacto — SY-V-19
 Fixture original \binom{5}{2}, operacion=valor, esperado 10. Verificar extracción de ambos argumentos, convención de combinación binomial, exactitud y reentrada real por rutas correctas. Después SY-V-20 binomial n sobre 2, equivalente a n(n-1)/2, manteniendo dominio y alcance explícitos.
 
+
+## 2026-10-15 — SY-V-19 binomial numérico exacto
+- Fixture original \binom{5}{2}, operacion=valor, esperado 10.
+- Lite: fuente original -> parser con reescritura combinatoria por factoriales -> motor exacto 10 -> handler worker real con transporte simulado -> resultLatex 10 -> reentrada real con requestId distinto y exacto 10.
+- Plus frontend: conversión completa de la fuente a nCr(5,2), resultado 10 reingresable. Backend /evaluate con traducción explícita, MathResponse, éxito/scalar/input/requestId, texto/LaTeX/aproximado 10, errores nulos y reentrada del result_text real.
+- Controles independientes en ambos motores: C(6,2)=15; C(5,0)=C(5,5)=1; C(5,3)=10. Distinguen combinaciones de permutaciones y verifican ambos argumentos/extremos/simetría.
+- SY-V-19 PASS bilateral en alcance descrito. Lite SHA 69a2ffaf1a86e250911d11d62a47d0571fd339b3: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38703212279 (1291 PASS +30 TODO), H1d 38703212343, build 38703212325 y E2E científico genérico 38703212388 SUCCESS. Plus SHA c99a4d1ba2af0d37f213a435f462eef7413f8ef5: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38703463742 (1176 backend PASS +1 XFAIL; 839 frontend PASS +28 TODO), H1d 38703463798 SUCCESS. Logs jobs 116316163837/116316983879/116316983958 inspeccionados; conclusiones verificadas por SHA.
+- Plus primer SHA 549cbc1fc7c031c958e6d332fa50050a643fb1bc cumulative 38703218403: frontend FAILURE (838 PASS/1 FAIL/28 TODO). Producto: macro original convertido a (((5)choose(2))) en vez de nCr(5,2). Corrección NaturalMathField intercepta binomial completo de dos argumentos con llaves simples y convierte ambos antes de MathLive; controles de 6/2, 5/0 y expresión 1+4/2. No certifica macros anidados ni binomiales incrustados en expresiones mayores por este parche.
+- Alcance parser/handler Lite y conversor/HTTP Plus separados; no acredita teclado/MathLive/browser específico de SY-V-19. Gates E2E genéricos solo regresión. TODO/XFAIL no PASS.
+- Tablero actualizado bilateralmente. Syntax309/IN625/H2/SG28 OPEN; DIST multinodo BLOCKED. Sin despliegue de producción.
+
+### Siguiente paso exacto — SY-V-20
+Fixture original \binom{n}{2}, equivalente a \frac{n(n-1)}{2}. Comprobar fórmula simbólica general y dominio de combinación binomial declarado, reentrada y controles independientes; no sustituir la prueba general por n=5. Después SY-V-21 P(5,2)=20 según convención de permutaciones, diferenciada de función P definida por usuario.
+
