@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-16/17/18 PASS bilateral; SY-U-19 en CI
+- SY-U-16, SY-U-17, SY-U-18 acreditados en el alcance automatizado en SHA Lite b0a79d232a254a0162353be8bf77dd484fd1f0aa cumulative 38661650990, H1d 38661650964, build 38661651211, E2E genérico 38661650948 SUCCESS; SHA Plus ae1eef5a4e9a490d1198f98c1716a00a7a4ebcb4 cumulative 38661659837 y H1d 38661659843 SUCCESS. Incluyen reparaciones Plus NBSP y dígitos fullwidth; UI E2E genérico no certifica interacción específica de los casos.
+- Fixture oficial SY-U-19: `2--3` -> `5`, operación valor. Regresiones permanentes fuente, cálculo, reentrada publicadas Lite SHA 104f321d9928bd300da318a023824be7f64fe626 en tests/syntax309SyE23.audit.test.ts y Plus SHA 91635e8fcddcb6f5e7dd270e2c47527e62e15a7b en backend/tests/test_syntax309_sye23.py.
+- GitHub Actions Lite cumulative 38668842213, H1d 38668842193, build 38668842165 y E2E genérico 38668842226 IN_PROGRESS. Plus cumulative 38668850147 y H1d 38668850155 inicialmente QUEUED. SY-U-19 OPEN hasta resultados SHA.
+- Syntax309 OPEN, H2/SG28 OPEN y DIST multinodo real BLOCKED. Ningún deploy.
+### Siguiente paso exacto
+Comprobar los resultados y logs de SY-U-19 por SHA; si FALLA diagnosticar y corregir la capa correcta. Si PASS bilateral, avanzar al siguiente fixture oficial SY-U-20 (`2*-3` => `-6`).
+
+
 ## 2026-10-14 — SY-U-17 Plus fix y SY-U-18 en CI
 - SY-U-16 Lite SHA b898856b54319242ede24e50825bd990c2414516 cumulative 38660813349/H1d 38660813298/build 38660813403/UI genérico 38660813373 SUCCESS. Plus SHA b4680b58c32fdab5b7428c8fc609f6508f90b47d cumulative 38660820365 FAIL backend por NBSP; parser reparado en SHA 28e10f072233ddc5df6e163a93a98e968cc4259b. Cierre Plus condicionado a gate nuevo.
 - SY-U-17 Lite SHA 0fac6dfa78d9213168e6fde7e5a06dc2cb7e3a56 cumulative 38661219679/H1d 38661219653/build 38661219654/E2E genérico 38661219648 SUCCESS. Plus SHA aaee9de3448017b55c3afb87cfbd3f688009a609 cumulative 38661226134 FAIL backend test_syu17_fullwidth_digits_and_plus_http_reentry, frontend PASS, H1d 38661226007 SUCCESS. Producto Plus no convertía dígitos/op + de ancho completo. Fix backend/app/services/parsing.py SHA b4fbee94c5bdebca69dc63094a79c4a13163bf86; misma expectativa exacta 5, sin debilitar oráculo.
