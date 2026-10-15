@@ -1642,4 +1642,23 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("5");
   });
 
+  it("SY-V-01: uppercase X and lowercase x remain distinct symbolic variables", () => {
+    const row = rows["SY-V-01"];
+    expect(row.entrada).toBe("X+x");
+    expect(row.operacion).toBe("interpretacion");
+    expect(row.esperado).toBe("X+x");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const value = evaluate(parsed);
+    expect(value).toMatch(/X/);
+    expect(value).toMatch(/x/);
+    expect(value.replace(/\s/g, "")).toMatch(/^(X\+x|x\+X)$/);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-01",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-01");
+    const repeated = evaluate(parseExpression(result.resultLatex).algebrite);
+    expect(repeated.replace(/\s/g, "")).toMatch(/^(X\+x|x\+X)$/);
+  });
+
 });
