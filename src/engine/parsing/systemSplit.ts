@@ -35,6 +35,12 @@ export function splitSystemLatex(latex: string): string[] | null {
     .map((row) => row.replace(/&/g, "").trim())
     .filter((row) => row.length > 0);
 
+
+  // SY-M-04: numeric arrays are matrices, not systems. Preserve array
+  // systems only when every row actually contains a comparison relation.
+  if (match[1] === "array" && !rows.every(row =>
+    /[=<>≤≥]|\\(?:leq?|geq?|lt|gt)(?![A-Za-z])/.test(row))) return null;
+
   return rows.length >= 2 ? rows : null;
 }
 
