@@ -1,5 +1,12 @@
 # Current Certification State
 
+## 2026-10-15 — Seguimiento SY-V-24 (corrección Plus)
+- Lite SHA fff2c61d680242e4b51afd7bf335d6c3261098db: cumulative 38710040630, build 38710040628, H1d 38710040661, E2E científico genérico 38710040670 SUCCESS.
+- Plus SHA ff205e57aec1b1bb91e182031cbbadbb4faa4740: cumulative 38710048292 FAILURE (backend 1184 PASS/2 FAIL/1 XFAIL; frontend SUCCESS) debido a entrada LaTeX original \\lvert3+4i\\rvert y variantes de signo no reconocidas por parser/guard. H1d 38710048334 SUCCESS, no basta para cerrar.
+- Corrección Plus SHA b310ce1c374c649b3502d17e11018c9b1d30e136 en backend/app/services/parsing.py: normalización limitada de barras LaTeX de literal complejo rectangular a abs(re ± im*i) antes de validar G3; mantiene la seguridad para otras formas y las pruebas originales. Cumulative 38710535064 y H1d 38710535053 QUEUED al consultarlos. SY-V-24 continúa OPEN hasta resultado de ese SHA.
+- Próximo objetivo SY-V-25: \\mathrm{e}^{x} con x=0, esperado 1. SG28/H2 OPEN, DIST multinodo BLOCKED.
+
+
 ## 2026-10-15 — SY-V-24 módulo complejo (en validación)
 - Verificación posterior: Lite cumulative 38710040630 SUCCESS (99 archivos PASS) y build 38710040628 SUCCESS SHA fff2c61; H1d 38710040661 y UI genérico 38710040670 IN_PROGRESS al último chequeo. Plus cumulative 38710048292 (frontend/backend) y H1d 38710048334 IN_PROGRESS; no adjudicar PASS bilateral SY-V-24 todavía.
 - SY-V-23 PASS bilateral bajo alcance acotado: Lite SHA 6dbb0b88f1c5ee1e35761e9cb3bb18a46ac0d195 cumulative 38708972759, H1d 38708972775, build 38708972773 y E2E genérico 38708972756 SUCCESS; Plus SHA 5f2a65b5e171fbe253e9b7bf5067833b73d2ba8a cumulative 38709188306 y H1d 38709188030 SUCCESS. No acreditar conjugación general arbitraria ni visual del teclado.
