@@ -1388,4 +1388,18 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("1");
   });
 
+  it("SY-U-11: Unicode superscript must evaluate x squared or explicitly reject", () => {
+    const row = rows["SY-U-11"];
+    expect(row.entrada).toBe("x²");
+    expect(row.operacion).toBe("convencion");
+    let parsed: string;
+    try { parsed = parseExpression(row.entrada).algebrite; }
+    catch (error) { expect(String(error).length).toBeGreaterThan(0); return; }
+    let value: string;
+    try { value = evaluate(parsed); }
+    catch (error) { expect(String(error).length).toBeGreaterThan(0); return; }
+    const canonical = value.replace(/\s+/g, "");
+    expect(["x^2", "x**2", "x^{2}"]).toContain(canonical);
+  });
+
 });
