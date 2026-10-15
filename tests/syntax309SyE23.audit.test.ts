@@ -1784,4 +1784,24 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate("(" + repeated + ")-(" + expected + ")")).toBe("0");
   });
 
+  it("SY-V-09: integral of x retains antiderivative and integration constant on reentry", () => {
+    const row = rows["SY-V-09"];
+    expect(row.entrada).toBe("\\int x\\,dx");
+    expect(row.operacion).toBe("equivalente");
+    expect(row.esperado).toBe("\\frac{x^{2}}{2}+C");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const value = evaluate(parsed);
+    const derivative = evaluate("d(" + value.replace(/\bC\b/g, "0") + ",x)");
+    expect(evaluate("(" + derivative + ")-x")).toBe("0");
+    expect(value).toMatch(/C/);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-09",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-09");
+    const repeated = evaluate(parseExpression(result.resultLatex).algebrite);
+    expect(repeated).toMatch(/C/);
+    expect(evaluate("(d(" + repeated.replace(/\bC\b/g, "0") + ",x))-x")).toBe("0");
+  });
+
 });
