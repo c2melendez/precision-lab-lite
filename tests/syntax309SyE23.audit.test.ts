@@ -2122,4 +2122,38 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(again.resultLatex).toBe("10");
   });
 
+
+  it("SY-V-20: original symbolic binomial has general polynomial identity and real reentry", () => {
+    const row = rows["SY-V-20"];
+    expect(row.entrada).toBe("\\binom{n}{2}");
+    expect(row.operacion).toBe("equivalente");
+    expect(row.esperado).toBe("\\frac{n(n-1)}{2}");
+    const parsed = parseExpression(row.entrada).algebrite;
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-20",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-20");
+    const returned = parseExpression(result.resultLatex).algebrite;
+    const expected = parseExpression(row.esperado).algebrite;
+    expect(evaluate("expand((" + returned + ")-(" + expected + "))")).toBe("0");
+    expect(evaluate("subst(0,n,(" + returned + "))")).toBe("0");
+    expect(evaluate("subst(1,n,(" + returned + "))")).toBe("0");
+    expect(evaluate("expand(subst(n+1,n,(" + returned + "))-(" + returned + ")-n)")).toBe("0");
+    expect(result.domainConditions).toEqual(expect.arrayContaining([
+      expect.objectContaining({variable:"n",kind:"domain",operator:">=",comparisonAlgebrite:"0",text:"n debe ser un entero no negativo."}),
+    ]));
+    for (const count of [2, 3, 5, 10]) {
+      let pairs = 0;
+      for (let a = 0; a < count; a++) for (let b = a+1; b < count; b++) pairs++;
+      expect(evaluate("subst(" + count + ",n,(" + returned + "))")).toBe(String(pairs));
+    }
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-20-reentry",expressionAlgebrite:returned}});
+    const again = scope.postMessage.mock.calls[0][0];
+    expect(again.success, JSON.stringify(again)).toBe(true);
+    expect(again.requestId).toBe("SY-V-20-reentry");
+    expect(evaluate("expand((" + parseExpression(again.resultLatex).algebrite + ")-(" + expected + "))")).toBe("0");
+  });
+
 });
