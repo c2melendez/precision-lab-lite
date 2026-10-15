@@ -1,5 +1,11 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-19 regression EN-PR-12 correction
+- Plus SHA 91635e8fcddcb6f5e7dd270e2c47527e62e15a7b cumulative 38668850147 and H1d 38668850155 SUCCESS.
+- Lite SHA 104f321d9928bd300da318a023824be7f64fe626 cumulative 38668842213 FAIL: source 2--3 yielded 2 instead of 5. First PRODUCT repair f9a617cb5f6b5761c1ca938d17b7ed27c39cf963 cumulative 38669077527 FAIL at preexisting B4 EN-PR-12 leading --x, although SY-U-19 passed. Root: broad negative-sign rewrite also affected prefix unary double-minus.
+- Corrected Lite src/engine/parsing/normalize.ts SHA fadb831c1084a6761dfa8c6580f3e43154bd43d8 uses position-sensitive rewrite for binary subtraction followed by unary negative, leaving leading --x unchanged. Preserve BOTH SY-U-19 and EN-PR-12 oracles; no production change.
+- SY-U-19 OPEN until full Lite cumulative/H1d/build and relevant UI evidence on SHA fadb831c, Plus passed. Next fixture SY-U-20 2*-3 => -6.
+
 ## 2026-10-14 — SY-U-19 Lite double-minus PRODUCT fix
 - SY-U-16/17/18 bilateral automated gates successful: Lite SHA b0a79d232a254a0162353be8bf77dd484fd1f0aa cumulative 38661650990/H1d 38661650964/build 38661651211/E2E generic 38661650948 SUCCESS; Plus SHA ae1eef5a4e9a490d1198f98c1716a00a7a4ebcb4 cumulative 38661659837/H1d 38661659843 SUCCESS.
 - SY-U-19 source `2--3` expected `5`; Lite initial SHA 104f321d9928bd300da318a023824be7f64fe626 cumulative 38668842213 FAILED 1261 pass/1 fail/30 TODO, got 2 instead of 5. PRODUCT parser: unary negative after subtraction was excluded from operator normalizer.
