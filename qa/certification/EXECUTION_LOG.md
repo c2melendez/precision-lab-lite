@@ -4686,3 +4686,11 @@ Verificar Plus cumulative 38677868857/H1d 38677868827 por SHA 20e818d; si falla 
 ## 2026-10-14 — SY-V-02 subscript regex follow-up
 - Plus segunda corrección de escapes de regex en `backend/app/services/parsing.py` SHA 87cea4b6a54ccb6a18b4399d3a70d887c4434faa. El primer cambio 20e818dfa2f8eb4a55b6b1f71993a29a5864ce9a tenía escapes Python incorrectos.
 - Nuevos gates para SHA 87cea4b: cumulative 38677944467 y H1d 38677944603 IN_PROGRESS al último chequeo. No contar PASS sin conclusión. SY-V-02 OPEN; después SY-V-03 `\\pi r^{2}`. SG28/H2 OPEN y DIST BLOCKED.
+
+## 2026-10-14 — SY-V-02 PASS bilateral; SY-V-03 tests publicados
+- SY-V-02 x_{1}+x_{2} cierre en alcance de automatización: Lite SHA 998e24c13b5799a7c2d64f2a69addcef9681f0f2 cumulative 38676806225, H1d 38676806301, build 38676806253 y E2E genérico 38676806326 SUCCESS. Plus corrección parser SHA 87cea4b6a54ccb6a18b4399d3a70d887c4434faa cumulative 38677944467 y H1d 38677944603 SUCCESS. El E2E genérico no certifica UI específica.
+- Se inició SY-V-03 entrada `\\pi r^{2}`, esperado `\\pi\\cdot r^{2}` de matriz Syntax309; tests permanentes Lite `tests/syntax309SyE23.audit.test.ts` SHA da54d3ac3691ebdb15cb318a4d9bd4ba2d6f3bc4 y Plus `backend/tests/test_syntax309_syv03.py` SHA 6b1ee61a1ba8797d2e6031d8cf901afc510f7e6d. Ambos verifican pi como constante, r como variable y reentrada.
+- SY-V-03 OPEN hasta verificar gates del commit técnico correcto; SY-V-02 PASS bilateral; Syntax309 OPEN, H2/SG28 OPEN, DIST BLOCKED. Sin deploy.
+### Siguiente paso exacto
+Localizar nuevas corridas cumulative/H1d Lite+Plus para SHAs da54d3a y 6b1ee61, junto con build Lite y E2E genérico si se disparan. Diagnosticar fallos de SY-V-03, corregir la capa pertinente, exigir los gates acumulativos pertinentes, y avanzar SY-V-04 tras PASS bilateral.
+
