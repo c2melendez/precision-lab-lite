@@ -1,5 +1,12 @@
 # Current Certification State
 
+## 2026-10-15 — SY-V-11 Lite harness routing correction
+- Lite SHA a5ebb80550d04262c8719f8c316c9aa2f859dea6 cumulative 38691357111 FAILED 1278 PASS/1 FAIL/30 TODO. SY-V-11 test called evaluate() directly on parser's `defintegral(x,0,1,x)` marker, which is intentionally resolved by compute.worker tryDefiniteIntegral(), not by raw Algebrite. Class HARNESS, not established product failure.
+- Corrected test Lite SHA c1752e564bb07d8c78bd3436236041eb2f25eff6 sends marker through actual worker route and asserts exact half via returned result/reentry, preserving contract. New Lite cumulative 38691564852, H1d 38691564926, build 38691564930, UI generic 38691564972 IN_PROGRESS. Plus SHA dbab381fd08624a0630fd10fb233f07301f31bdb cumulative 38691366017 and H1d 38691365993 IN_PROGRESS. No SY-V-11 PASS before gates.
+### Siguiente paso exacto
+Revisar logs/status de nuevo SHA Lite y Plus, corregir fallos y certificar alcance automatizado bilateral antes de avanzar a SY-V-12.
+
+
 ## 2026-10-15 — SY-V-10 PASS bilateral / SY-V-11 en CI
 - SY-V-10 automatizado PASS bilateral. Lite SHA b5bcabed2dc91fd216acee8fef5c6284dc56b22c cumulative 38688991015, H1d 38688990881, build 38688990947, E2E genérico 38688991034 SUCCESS. Plus SHA 9e47b89481ae6afe392d208b57b148603e220207 cumulative 38690173912, H1d 38690173890, SG28 prototipo 38690173898 SUCCESS. E2E genérico no acredita UI específica ni certificación multinodo.
 - SY-V-11 fixture oficial `\\int_{0}^{1}x\\,dx` valor esperado fracción exacta `\\frac{1}{2}`. Pruebas originales de exactitud y reentrada publicadas Lite SHA a5ebb80550d04262c8719f8c316c9aa2f859dea6 (tests/syntax309SyE23.audit.test.ts) y Plus SHA dbab381fd08624a0630fd10fb233f07301f31bdb (backend/tests/test_syntax309_syv11.py). GitHub Actions Lite cumulative 38691357111, H1d 38691357052, build 38691357057, E2E genérico 38691357343, Plus cumulative 38691366017 y H1d 38691365993 IN_PROGRESS al consultar.
