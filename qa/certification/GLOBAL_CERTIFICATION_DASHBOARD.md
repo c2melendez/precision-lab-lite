@@ -2,6 +2,16 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-M-04 PASS en Lite navegador y Plus parser/HTTP; siguiente SY-M-05
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial SY-M-04, operación det, entrada `\det\begin{array}{cc}1&2\\3&4\end{array}`, esperado -2.
+- Corrección bilateral: detectMatrixIntent reconoce arrays con especificación simple de columnas c/l/r y comprueba que su longitud coincida con las columnas de los datos. splitSystemLatex ya no clasifica un array numérico como sistema; conserva arrays con relaciones por fila (ecuaciones/desigualdades). El motor de determinantes permanece intacto. No se extiende soporte a especificaciones LaTeX complejas de columnas.
+- La primera corrección del parser pasó unidades, pero el navegador Lite [38825029126](https://github.com/c2melendez/precision-lab-lite/actions/runs/38825029126) falló 9 casos nuevos, con 123 previos aprobados: el array era enviado a sistemas antes de llegar a matrices. Ese fallo no es PASS y motivó la corrección de clasificación y su prueba de regresión. Los commits y corridas intermedias quedan como diagnóstico; la evidencia final corresponde a los SHA siguientes.
+- Lite SHA `8e6d213202835ec2e2d58ee3ba0d392210d401d0`: [acumulada 38825509585](https://github.com/c2melendez/precision-lab-lite/actions/runs/38825509585) SUCCESS, 1412 PASS +30 TODO, 128 archivos, 8/8 nuevos de parser/motor/manejador Worker y separación de sistemas; typecheck/build PASS. [Navegador 38825509963](https://github.com/c2melendez/precision-lab-lite/actions/runs/38825509963) SUCCESS, 132/132, incluidos 9/9 SY-M-04 con MathLive/Worker reales en escritorio/tableta/móvil: original -2, filas intercambiadas +2 y singular 0. Se verifica resultado visible y LaTeX disponible para reentrada, no una nueva pulsación Reusar. H1d 38825509724 SUCCESS 21/21; build diagnóstico 38825509679 SUCCESS.
+- Plus SHA `ad9abbaccf5bc28cd6b3182e7947482b04e203e9`: [acumulada 38825514006](https://github.com/c2melendez/precision-lab-plus/actions/runs/38825514006) SUCCESS: frontend 860 PASS +28 TODO, 82 archivos, 3/3 nuevos del parser y clasificación; backend 1298 PASS +1 XFAIL, 6/6 nuevos HTTP /api/v1/matrix/determinant. Se prueba el array original en detectMatrixIntent y por separado su payload estructurado por HTTP. No se certifica aquí la integración nativa completa de UI Plus ni recepción de LaTeX matricial crudo por el API. [H1d 38825514008](https://github.com/c2melendez/precision-lab-plus/actions/runs/38825514008) SUCCESS 38/38.
+- Alcance: determinante afín a las mismas cuatro entradas, distinción de literal, validación de alineación/filas y controles de signo, singularidad, transposición, entrada modificada y matriz rectangular. No acredita todo el manejo visual de arrays inválidos ni todas las operaciones matriciales. TODO/XFAIL no cuentan como PASS.
+- Continuidad oficial: SY-M-05, operación det, entrada `\det\left[\begin{matrix}1&2\\3&4\end{matrix}\right]`, esperado -2. Syntax309/IN625/H2/SG28 siguen ABIERTOS; gaps históricos y UI Plus pendientes. DIST-01..08 siguen BLOQUEADOS hasta coordinación real entre nodos independientes.
+
 ## 2026-10-15 — SY-M-03 PASS en Lite navegador y Plus parser/HTTP; siguiente SY-M-04
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial SY-M-03, operación det, entrada `\begin{vmatrix}1&2\\3&4\end{vmatrix}`, esperado -2; nota: vmatrix equivale a determinante. Las barras bastan para identificar la operación sin prefijo det; bmatrix sin prefijo conserva intención de literal.
@@ -254,7 +264,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
 | SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
 | SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-23, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente SY-M-01. Otros gaps históricos siguen abiertos |
-| SY-M Matrices/vectores | 20 | Secuencia en M-03, PASS en Lite navegador y Plus parser/HTTP; siguiente M-04. Resto pendiente de esta secuencia |
+| SY-M Matrices/vectores | 20 | Secuencia en M-04, PASS en Lite navegador y Plus parser/HTTP; siguiente M-05. Resto pendiente de esta secuencia |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
 | SY-X Estrés/hostiles | 22 | Pendiente de esta secuencia; ejecutar aislado |
@@ -276,7 +286,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-M-04 (determinante con array de [[1,2],[3,4]], esperado -2), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-M-05 (determinante de matrix envuelta en corchetes LaTeX, esperado -2), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
