@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-16 Plus defect / SY-U-17 fullwidth prueba
+- SY-U-16 Lite SHA b898856b54319242ede24e50825bd990c2414516 cumulative 38660813349, H1d 38660813298, build 38660813403, E2E genérico 38660813373 SUCCESS. Plus SHA b4680b58c32fdab5b7428c8fc609f6508f90b47d cumulative 38660820365 FAILED backend test_syu16_nonbreaking_spaces_http_and_reentry, H1d 38660820366 SUCCESS. Defecto PRODUCT: parser backend no normalizaba NBSP U+00A0.
+- Fix Plus parser backend/app/services/parsing.py SHA 28e10f072233ddc5df6e163a93a98e968cc4259b reemplaza NBSP por espacio normal antes de SymPy; no relaja test ni modifica producción. SY-U-16 permanece OPEN hasta gate del SHA posterior.
+- SY-U-17 fixture oficial `２＋３` → 5: pruebas permanentes de entrada original, evaluación exacta y reentrada Lite SHA 0fac6dfa78d9213168e6fde7e5a06dc2cb7e3a56 y Plus SHA aaee9de3448017b55c3afb87cfbd3f688009a609. CI Lite cumulative 38661219679, H1d 38661219653, build 38661219654, UI genérico 38661219648 IN_PROGRESS; Plus cumulative 38661226134 inicialmente QUEUED, H1d 38661226007 IN_PROGRESS.
+- SY-U-16 y SY-U-17 OPEN hasta nuevos gates. Syntax309 OPEN, SG28/H2 OPEN, DIST real multinodo BLOCKED. Sin despliegues.
+### Siguiente paso exacto
+Inspeccionar SHA y logs de SY-U-17 y regresión SY-U-16. En caso de falla real clasificar y corregir producto/harness, verificar de nuevo y solo entonces cerrar bilateral. Siguiente fixture oficial SY-U-18 `2+-3` -> -1.
+
+
 ## 2026-10-14 — SY-U-14/15 PASS bilateral; SY-U-16 espacio duro en CI
 - SY-U-14 y SY-U-15 PASS bilateral alcance automatizado en SHA final Lite 14007e733a9b9f075d3a875994c38ba37e6d9966: cumulative 38660231377, H1d 38660231396, build 38660231367, E2E genérico 38660231308 SUCCESS. Plus SHA 8bac479ff2c40d830035f324b524e0745eb3a9a8 cumulative 38660236919 y H1d 38660236927 SUCCESS. Corrección de producto Plus parser SHA 2da7fc62fe40d6015306a94826b32cb45e7c7b67 incluida. UI E2E Lite es genérico y no certifica interacción específica.
 - SY-U-16 fixture oficial U+00A0 en `3 + 4` => 7. La matriz muestra espacios ordinarios en entrada pero nota exige Unicode NBSP; se inyecta fuente NBSP explícita en test y se verifica texto fuente de matriz. Pruebas con reentrada Lite SHA b898856b54319242ede24e50825bd990c2414516 y Plus SHA b4680b58c32fdab5b7428c8fc609f6508f90b47d.
