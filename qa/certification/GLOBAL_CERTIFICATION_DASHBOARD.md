@@ -2,6 +2,14 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-M-01 PASS en Lite navegador y Plus parser/HTTP; siguiente SY-M-02
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial SY-M-01, operación det, entrada `\det\begin{pmatrix}1&2\\3&4\end{pmatrix}`, esperado -2. La ruta matricial conserva filas y columnas y distingue determinante de literal de matriz.
+- Lite SHA `c9db2454ff3753895454867dd82ac9fb98ce362c`: [acumulada 38800637780](https://github.com/c2melendez/precision-lab-lite/actions/runs/38800637780) SUCCESS, 1389 PASS +30 TODO, 125 archivos; 6/6 nuevos de parser/motor/manejador Worker, typecheck/build PASS. [Navegador 38800638229](https://github.com/c2melendez/precision-lab-lite/actions/runs/38800638229) SUCCESS, 105/105, incluidos 9/9 nuevos SY-M-01 con MathLive y Worker reales en escritorio/tableta/móvil (original -2, intercambio de filas +2, singular 0). Se verifica resultado visible y LaTeX de resultado disponible para reentrada; no se atribuye una prueba nueva de pulsar Reusar. H1d 38800637829 SUCCESS 21/21; build diagnóstico 38800637751 SUCCESS.
+- Plus SHA `fcc487f640b039522f112f292781657a70ee29f8`: [acumulada 38800642345](https://github.com/c2melendez/precision-lab-plus/actions/runs/38800642345) SUCCESS: frontend 851 PASS +28 TODO, 79 archivos, 2/2 nuevos del parser real; backend 1280 PASS +1 XFAIL, 6/6 nuevos del HTTP real /api/v1/matrix/determinant. El LaTeX original se prueba en detectMatrixIntent; su payload estructurado se prueba por separado por HTTP. No se certifica aquí la integración nativa completa de UI Plus ni un endpoint que acepte LaTeX matricial crudo. [H1d 38800642341](https://github.com/c2melendez/precision-lab-plus/actions/runs/38800642341) SUCCESS 38/38.
+- Controles: cambio de signo al intercambiar filas, invariancia por transposición, singularidad, cambio de una entrada y rechazo rectangular. No se necesitó modificar motor ni producto; sólo pruebas y registro en workflow. Este caso no certifica todas las dimensiones ni todas las operaciones matriciales. TODO/XFAIL no cuentan como PASS.
+- Continuidad oficial: SY-M-02, operación det, entrada `\det\begin{bmatrix}1&2\\3&4\end{bmatrix}`, esperado -2. Syntax309/IN625/H2/SG28 siguen ABIERTOS; gaps históricos y UI Plus pendientes. DIST-01..08 siguen BLOQUEADOS hasta coordinación real entre nodos independientes.
+
 ## 2026-10-15 — SY-Q-23 PASS en Lite navegador y Plus conversor/HTTP; siguiente SY-M-01
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial SY-Q-23: entrada Unicode `x≥1`, operación resolver, esperado `x\\in[1,\\infty)`. El extremo 1 está incluido y +infinito es abierto.
@@ -230,7 +238,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
 | SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
 | SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-23, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente SY-M-01. Otros gaps históricos siguen abiertos |
-| SY-M Matrices/vectores | 20 | Pendiente de esta secuencia; no significa módulo sin pruebas |
+| SY-M Matrices/vectores | 20 | Secuencia en M-01, PASS en Lite navegador y Plus parser/HTTP; siguiente M-02. Resto pendiente de esta secuencia |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
 | SY-X Estrés/hostiles | 22 | Pendiente de esta secuencia; ejecutar aislado |
@@ -252,7 +260,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-M-01 (determinante de la matriz [[1,2],[3,4]], esperado -2), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-M-02 (determinante con bmatrix de [[1,2],[3,4]], esperado -2), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
