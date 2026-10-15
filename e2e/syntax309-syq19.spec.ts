@@ -19,8 +19,10 @@ for(const chain of ["x=y=3","y=x=3","x==3"]){
     await calculate();
     const result=page.locator("[data-result-request-id]").first();
     await expect(result).toBeVisible();
-    await expect.poll(()=>result.locator("math-field[read-only]").first()
-      .evaluate(node=>(node as HTMLElement & {value:string}).value.replace(/\s/g,""))).toBe("x=3");
+    // A numeric equation result uses the decimal text view, while the
+    // reentry attribute retains the actual equation emitted by the worker.
+    await expect(result).toHaveAttribute("data-result-reentry-latex", /^x\s*=\s*3$/);
+    await expect(result.getByText("3",{exact:true})).toBeVisible();
     await expect(page.getByRole("alert")).toHaveCount(0);
     if(chain==="x=y=3"){
       await fill(String.raw`\begin{cases}x=y\\ y=3\end{cases}`);
