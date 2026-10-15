@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-21 PASS bilateral; SY-U-22 en CI
+- SY-U-21 `--3` -> 3: Lite parser fix SHA 538e9ae48f7f64521a6803e922fb45cfe954ac96, cumulative 38670459765, H1d 38670459807, build 38670459776, UI genérico 38670459766 todos SUCCESS. Plus SHA 21ee11f22d9ee4834b1456568455648e2055f056, cumulative 38670314472 y H1d 38670314473 SUCCESS. Alcance automatizado PASS bilateral; E2E genérico no equivale a E2E caso específico.
+- SY-U-22 fixture matriz `2+` operación error, esperado «error claro: expresión incompleta». Pruebas permanentes implementadas Lite `tests/syntax309SyE23.audit.test.ts` commit 4739994312e754093765aee545d616b31ecc3ede, Plus `backend/tests/test_syntax309_sye23.py` commit c4d507e805d0d65142fb444580fe6a5f3a682677. Oráculos exigen rechazo, error semántico y no devolver 2 como cálculo válido.
+- CI Lite cumulative 38672343133, H1d 38672343553, build 38672343179 y E2E genérico 38672343208 en ejecución; Plus cumulative 38672350048, H1d 38672350037 en cola inicial. No declarar PASS hasta comprobar SHA/gates.
+- SY-U-22 OPEN. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. Sin producción.
+### Próximo paso
+Comprobar resultados/logs de SY-U-22 por SHA; corregir capa pertinente si hay fallo; registrar evidencia bilateral y seguir SY-U-23 `*2` («operador sin operando»).
+
+
 ## 2026-10-14 — SY-U-21 Lite producto: doble negación numérica
 - Primer fixture SY-U-21 `--3` => 3: Lite commit 87761131619b33e1503990c0170d2729da1bf57e cumulative 38670309543 FAIL (1263 PASS, 1 FAIL, 30 TODO): Unknown Error Algebrite no devolvió resultado. H1d 38670309085 y build 38670309031 SUCCESS; causa clasificada PRODUCT parser. Plus tests commit 21ee11f22d9ee4834b1456568455648e2055f056 cumulative 38670314472 y H1d 38670314473 en curso al revisar.
 - Fix Lite `src/engine/parsing/normalize.ts` SHA 538e9ae48f7f64521a6803e922fb45cfe954ac96: normaliza signo inicial doble para literal numérico a `-(-3)`, restringido para preservar comportamiento previo de `--x` y `2--3`. Oráculos sin cambios.
