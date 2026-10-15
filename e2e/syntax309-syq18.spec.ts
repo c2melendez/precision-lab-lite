@@ -15,7 +15,9 @@ for (const variable of ["x","y"]) {
     const choice=page.getByRole("combobox",{name:"Variable a despejar"});
     await expect(choice).toBeVisible();
     await expect(choice).toHaveValue("");
-    await expect(page.getByText("Selecciona la variable que deseas despejar.",{exact:true})).toBeVisible();
+    const initial=page.locator("[data-result-request-id]").first();
+    await expect(initial.getByText("Relación implícita",{exact:true})).toBeVisible();
+    await expect.poll(()=>initial.locator("math-field[read-only]").first().evaluate(node=>(node as HTMLElement & {value:string}).value)).toBe("x+y=3");
     await choice.selectOption(variable);
     await calculate();
     const result=page.locator("[data-result-request-id]").first();

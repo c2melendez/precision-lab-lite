@@ -428,7 +428,21 @@ export function BasicScientificMode() {
     }
 
     const relationIntent = detectRelationIntent(currentLatex);
-    if (relationIntent) {
+    let solveSelectedRelation = false;
+    if (relationIntent && relationIntent.kind !== "functionDefinition") {
+      // Preserve the relation view until the user explicitly chooses a variable.
+      try {
+        const relation = parseExpression(currentLatex, angleMode);
+        if (relation.isEquation && relation.freeVariables.length > 1) {
+          setEquationVariables(relation.freeVariables);
+          solveSelectedRelation = equationChoice?.latex === currentLatex &&
+            relation.freeVariables.includes(equationChoice.variable);
+        }
+      } catch {
+        // Relation presentation retains its existing contract.
+      }
+    }
+    if (relationIntent && !solveSelectedRelation) {
       const requestId = makeRequestId();
       const label =
         relationIntent.kind === "functionDefinition"
@@ -537,9 +551,8 @@ export function BasicScientificMode() {
         ? `${toLatex(parsed.leftAlgebrite)} ${parsed.inequalityOperator ?? ""} ${toLatex(parsed.rightAlgebrite)}`
         : toLatex(parsed.algebrite);
 
-    // Rama 2: ecuación de una variable (spec §6 — igual criterio que
-    // AlgebraMode.tsx: 0 o >1 variables libres se rechaza en vez de
-    // adivinar cuál despejar).
+    // Equations with several variables require an explicit choice; all
+    // remaining symbols stay free parameters.
     if (parsed.isEquation) {
       const selected = equationChoice?.latex === currentLatex ? equationChoice.variable : "";
       if (parsed.freeVariables.length > 1 && !parsed.freeVariables.includes(selected)) {
