@@ -4599,3 +4599,8 @@ Comprobar los resultados y logs de SY-U-19 por SHA; si FALLA diagnosticar y corr
 ### Siguiente paso exacto
 Consultar gates finales y logs para SY-U-19 por SHA actualizado, corregir cualquier regresión, cerrar bilateral solo con evidencia. Siguiente fixture SY-U-20 `2*-3` => -6.
 
+
+## 2026-10-14 — SY-U-19 bilateral PASS; SY-U-20 tests published
+- SY-U-19 Lite SHA fadb831c: cumulative 38669228864, H1d 38669228941, build 38669228851 and generic E2E 38669228840 SUCCESS. Plus SHA 91635e8: cumulative 38668850147 and H1d 38668850155 SUCCESS. SY-U-19 PASS automated scope; no case-specific UI claim.
+- SY-U-20 official fixture 2*-3 => -6, new permanent source/evaluation/reentry tests: Lite SHA 4328caf318b46c58d8e9db7a45f63254f7393207 and Plus SHA 01cc2e26bbafb4a4627608c5eabf599d97f0135f.
+- New runs Lite 38669970347 cumulative, 38669970345 H1d, 38669970377 build, 38669970326 generic E2E; Plus 38669980533 cumulative, 38669980587 H1d. In progress on observation. SY-U-20 OPEN until same-SHA outcomes verified. No production change.
