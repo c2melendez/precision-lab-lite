@@ -1,5 +1,13 @@
 # Current Certification State
 
+## 2026-10-15 — SY-V-24 módulo complejo (en validación)
+- SY-V-23 PASS bilateral bajo alcance acotado: Lite SHA 6dbb0b88f1c5ee1e35761e9cb3bb18a46ac0d195 cumulative 38708972759, H1d 38708972775, build 38708972773 y E2E genérico 38708972756 SUCCESS; Plus SHA 5f2a65b5e171fbe253e9b7bf5067833b73d2ba8a cumulative 38709188306 y H1d 38709188030 SUCCESS. No acreditar conjugación general arbitraria ni visual del teclado.
+- Siguiente fixture SY-V-24: entrada original \\lvert3+4i\\rvert, operación valor, esperado 5. Test permanente Lite tests/syntax309SyV24.audit.test.ts SHA fff2c61d680242e4b51afd7bf335d6c3261098db; Plus backend/tests/test_syntax309_syv24.py SHA ff205e57aec1b1bb91e182031cbbadbb4faa4740. Cubren entrada original, respuesta exacta, reentrada y signos de las partes, además del testigo 5+12i → 13. Lite parser norm ya incluye lvert/rvert→abs; Plus requiere validación del contrato HTTP en CI.
+- Corridas activadas: Lite cumulative 38710040630, H1d 38710040661, build 38710040628, UI científico genérico 38710040670; Plus cumulative 38710048292, H1d 38710048334. Estaban IN_PROGRESS/QUEUED al consultar. SY-V-24 OPEN hasta veredicto basado en logs y SHA; si falla clasificar y corregir el producto/harness, sin alterar el oráculo.
+- Próximo caso oficial: SY-V-25 e^x con x=0 esperado 1; conservar condición de sustitución y no evaluar otra operación.
+- Syntax309/IN625/H2/SG28 OPEN, DIST multinodo BLOCKED, sin despliegue.
+
+
 ## 2026-10-15 — SY-V-23 conjugado complejo (ejecución)
 
 - Reconciliación posterior: Lite primer cumulative 38708814459 FAILURE: 1296 PASS / 2 FAIL por rechazo de macro original `\\overline` en guard previo; fix SHA 6dbb0b88f1c5ee1e35761e9cb3bb18a46ac0d195, cumulative 38708972759 SUCCESS, build 38708972773 y UI genérico 38708972756 SUCCESS; H1d 38708972775 IN_PROGRESS al consultar. Plus primer cumulative 38708821069 backend FAILURE: 1182 PASS / 2 FAIL /1 XFAIL, frontend SUCCESS 841 PASS/28 TODO. Fix Plus SHA 5f2a65b5e171fbe253e9b7bf5067833b73d2ba8a normaliza macro acotada antes del validador G3; nueva cumulative 38709188306 y H1d 38709188030 QUEUED. SY-V-23 OPEN hasta evidencia del SHA corregido Plus.
