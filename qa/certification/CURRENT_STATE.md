@@ -1,5 +1,15 @@
 # Current Certification State
 
+## 2026-10-15 — SY-M-05 PASS en Lite navegador y Plus parser/HTTP; siguiente SY-M-06
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial SY-M-05, operación det, entrada `\det\left[\begin{matrix}1&2\\3&4\end{matrix}\right]`, esperado -2.
+- Corrección bilateral en detectMatrixIntent: reconocer una pareja completa de corchetes externos left/right alrededor de matrix, conservar filas/columnas y el contenido posterior para validación. Sin det, esa notación conserva intención de matriz literal. El motor de determinantes no cambia. No se amplía soporte a todas las parejas o estructuras LaTeX posibles.
+- Lite SHA `19d955ff20a87981087a0794661ecf570bbbf68c`: [acumulada 38826198123](https://github.com/c2melendez/precision-lab-lite/actions/runs/38826198123) SUCCESS, 1419 PASS +30 TODO, 129 archivos, 7/7 nuevos del parser/motor/manejador Worker; typecheck/build PASS. [Navegador 38826198194](https://github.com/c2melendez/precision-lab-lite/actions/runs/38826198194) SUCCESS, 141/141, incluidos 9/9 SY-M-05 con MathLive/Worker reales en escritorio/tableta/móvil (original -2, intercambio de filas +2, singular 0). Se comprueba resultado visible y LaTeX disponible para reentrada, no una nueva prueba de pulsar Reusar. H1d 38826198151 SUCCESS 21/21; build diagnóstico 38826198148 SUCCESS.
+- Plus SHA `335b10054360cb0f1cb93fb4d4795db6693086a1`: [acumulada 38826201346](https://github.com/c2melendez/precision-lab-plus/actions/runs/38826201346) SUCCESS: frontend 862 PASS +28 TODO, 83 archivos, 2/2 nuevos del parser real; backend 1304 PASS +1 XFAIL, 6/6 nuevos HTTP /api/v1/matrix/determinant. El LaTeX original se comprueba en detectMatrixIntent y por separado su payload estructurado por HTTP real. No se certifica la integración nativa completa de UI Plus ni que el API reciba LaTeX matricial crudo. [H1d 38826201341](https://github.com/c2melendez/precision-lab-plus/actions/runs/38826201341) SUCCESS 38/38.
+- Controles: literal frente a determinante, corchete de cierre ausente/desparejado, entorno de cierre incorrecto, contenido sobrante, filas irregulares, cambio de signo, transposición, singularidad, entrada modificada y rechazo rectangular. Los controles del detector no certifican todo el manejo visual de errores. TODO/XFAIL no cuentan como PASS.
+- Continuidad oficial: SY-M-06, operación det, entrada `\det[[1,2],[3,4]]`, esperado -2; nota: sintaxis ASCII de listas anidadas. El módulo matricial completo no está certificado por estos casos. Syntax309/IN625/H2/SG28 siguen ABIERTOS; gaps históricos y UI Plus pendientes. DIST-01..08 siguen BLOQUEADOS hasta coordinación real entre nodos independientes.
+
+
 ## 2026-10-15 — SY-M-04 PASS en Lite navegador y Plus parser/HTTP; siguiente SY-M-05
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial SY-M-04, operación det, entrada `\det\begin{array}{cc}1&2\\3&4\end{array}`, esperado -2.
