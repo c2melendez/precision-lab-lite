@@ -1,5 +1,15 @@
 # Current Certification State
 
+## 2026-10-14 — SY-V-06 multivariable fix bilateral en CI
+- SY-V-06 `g(x,y)=x+y;\\ g(2,3)`, esperado 5: Lite SHA 85a70b6b5b4137a2d054f84178e12366be4384ea cumulative 38682844521 FAILURE (1273 PASS / 1 FAIL / 30 TODO): `Carácter no reconocido: ";"`; H1d 38682844527, build 38682844531, E2E genérico 38682844440 SUCCESS.
+- Plus SHA 5e41ea0fd4f5918fff52acb7cb3673e7e47e0ec0 cumulative 38682824909 FAILURE: test `test_syv06_two_argument_function_definition_http_roundtrip` `success=false`; H1d 38682825042 SUCCESS.
+- Corrección Lite `src/engine/parsing/index.ts` SHA 176e8c50d9a9aaf4d7c95014194e5d0d20fc3f5b: reconoce función local de dos parámetros y aplica sustitución simultánea antes del parser. Gates cumulative 38684054970, H1d 38684054978, build 38684055070, E2E genérico 38684055315 IN_PROGRESS al consultar.
+- Corrección Plus `backend/app/services/evaluate_service.py` SHA dff3816e9ef71de40e67c4ec291f948becff314d: interpreta definición y llamada de dos argumentos, analiza cuerpos/argumentos con parser y sustituye mediante SymPy simultáneo. Gates cumulative 38684070724, H1d 38684070696, SG28 prototipo 38684070692 QUEUED al consultar.
+- SY-V-06 OPEN hasta gates íntegros del SHA técnico; Syntax309 OPEN, H2/SG28 OPEN, DIST multinodo BLOCKED; sin deploy.
+### Siguiente paso exacto
+Verificar gates Lite 176e8c5 y Plus dff3816; corregir cualquier regresión del caso y confirmar reentrada, solo entonces cerrar SY-V-06 y continuar SY-V-07 derivada de x² a 2x.
+
+
 ## 2026-10-14 — SY-V-05 PASS bilateral; SY-V-06 en CI
 - SY-V-05 `f(x)=x^{2};\\ f(x+1)` PASS bilateral en pruebas automatizadas: Lite SHA 564120aa8aa433eb3df4512e4a3afb6afaa28fb4 cumulative 38682468443, H1d 38682468580, build 38682468478 y E2E genérico 38682468594 SUCCESS; Plus SHA d9550f8a2b4403a3c57a334c0faaa38a5a12ca59 cumulative 38682452036, H1d 38682452030 SUCCESS. E2E genérico no es verificación UI específica.
 - SY-V-06 entrada oficial `g(x,y)=x+y;\\ g(2,3)`, esperado 5. Pruebas permanentes de ingreso original/evaluación/reentrada: Lite `tests/syntax309SyE23.audit.test.ts` SHA 85a70b6b5b4137a2d054f84178e12366be4384ea; Plus `backend/tests/test_syntax309_syv06.py` SHA 5e41ea0fd4f5918fff52acb7cb3673e7e47e0ec0.
