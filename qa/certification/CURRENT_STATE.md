@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-19 PASS / SY-U-20 en CI
+- SY-U-19 Lite SHA fadb831c1: cumulative 38669228864, H1d 38669228941, build 38669228851 y UI E2E genérico 38669228840 SUCCESS. Plus SHA 91635e8: cumulative 38668850147, H1d 38668850155 SUCCESS. Alcance automatizado de SY-U-19 PASS bilateral; UI E2E genérico no equivale a interacción específica.
+- SY-U-20 entrada matriz `2*-3` => `-6`: pruebas permanentes de fuente, evaluación y reentrada añadidas Lite SHA 4328caf318b46c58d8e9db7a45f63254f7393207 y Plus SHA 01cc2e26bbafb4a4627608c5eabf599d97f0135f.
+- Nuevos gates Lite cumulative 38669970347, H1d 38669970345, build 38669970377, E2E genérico 38669970326 IN_PROGRESS al consultar; Plus cumulative 38669980533 y H1d 38669980587 IN_PROGRESS. SY-U-20 OPEN hasta resultado por SHA y evidencia. No relajar oráculos.
+- Syntax309 OPEN; H2/SG28 OPEN; DIST multinodo BLOCKED. Sin despliegue.
+### Siguiente paso exacto
+Verificar logs y resultados de gates nuevos del SHA Lite 4328caf y Plus 01cc2e2. Clasificar y corregir fallos de producto/harness/oráculo. Si pasan, registrar cierre SY-U-20 y continuar fixture oficial posterior de matriz Syntax309.
+
+
 ## 2026-10-14 — SY-U-19 regression EN-PR-12 correction
 - Plus SHA 91635e8fcddcb6f5e7dd270e2c47527e62e15a7b cumulative 38668850147 and H1d 38668850155 SUCCESS.
 - Lite SHA 104f321d9928bd300da318a023824be7f64fe626 cumulative 38668842213 FAIL: source 2--3 yielded 2 instead of 5. First PRODUCT repair f9a617cb5f6b5761c1ca938d17b7ed27c39cf963 cumulative 38669077527 FAIL at preexisting B4 EN-PR-12 leading --x, although SY-U-19 passed. Root: broad negative-sign rewrite also affected prefix unary double-minus.
