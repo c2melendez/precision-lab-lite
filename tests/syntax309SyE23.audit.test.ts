@@ -1839,4 +1839,22 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate("(" + evaluate(parseExpression(result.resultLatex).algebrite) + ")-(1/2)")).toBe("0");
   });
 
+  it("SY-V-12: integral x dy treats x as constant and preserves C on reentry", () => {
+    const row = rows["SY-V-12"];
+    expect(row.entrada).toBe("\\int x\\,dy");
+    expect(row.operacion).toBe("equivalente");
+    expect(row.esperado).toBe("xy+C");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const value = evaluate(parsed);
+    expect(value).toMatch(/C/);
+    expect(evaluate("(d(" + value.replace(/\bC\b/g, "0") + ",y))-x")).toBe("0");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-12",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    const repeated = evaluate(parseExpression(result.resultLatex).algebrite);
+    expect(repeated).toMatch(/C/);
+    expect(evaluate("(d(" + repeated.replace(/\bC\b/g, "0") + ",y))-x")).toBe("0");
+  });
+
 });
