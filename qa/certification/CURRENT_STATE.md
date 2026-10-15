@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-25 PASS bilateral; se inicia SY-V-01
+- SY-U-25 `2++3` (convención 5 o aviso) PASS en alcance automatizado: Lite SHA 80bcfaf77a002b3de8f1d186335968595531f7b4 cumulative 38675000954, H1d 38675001180, build 38675000982, E2E genérico 38675001060 SUCCESS; Plus SHA b6c8f5d79ff6d376352911b545ca4146b426fc1d cumulative 38675009387, H1d 38675009328 SUCCESS. No atribuir E2E de caso específico.
+- Corrección de secuencia canónica: la matriz `syntax309_cases.jsonl` termina sección U en SY-U-25; SY-U-26 no existe. Se inicia SY-V-01 entrada `X+x`, distinción de variables mayúscula y minúscula. Tests permanentes implementados Lite SHA 557e6971eb4c10dc8f239036e61ea041311cf1a5 (`tests/syntax309SyE23.audit.test.ts`), Plus SHA e44b85dfef61df2f685fa1351b5f0a738546f3c6 (`backend/tests/test_syntax309_sye23.py`). Oráculos exigen conservar símbolos independientes y reentrada.
+- CI Lite cumulative 38675456648, H1d 38675456711, build 38675456712, E2E genérico 38675457020; Plus cumulative 38675466626, H1d 38675466611 IN_PROGRESS al revisar. SY-V-01 OPEN hasta gates finales.
+- Syntax309 OPEN; H2/SG28 OPEN, DIST multinodo real BLOCKED. Sin deploy.
+### Siguiente paso exacto
+Consultar logs y gates SY-V-01 en SHAs citados; corregir divergencia real de símbolos/parsing sin relajar oráculos, acreditar bilateralmente y seguir SY-V-02 `x_{1}+x_{2}` como variables distintas.
+
+
 ## 2026-10-14 — SY-U-24 PASS bilateral; SY-U-25 en CI
 - SY-U-24 fuente `2\\ 3` (convención 6, 23 o aviso) PASS en alcance automatizado: Lite SHA 6bb22766ef8f13e433696e9d77cf70ebfaeedecb cumulative 38673929601, H1d 38673929554, build 38673929553 y E2E genérico 38673929606 SUCCESS. Plus SHA 34ab6aa90f31a18ce63cef35ff6786c39cbe917e cumulative 38673939037 y H1d 38673939095 SUCCESS. No atribuir UI específica al gate genérico.
 - SY-U-25 matriz fuente `2++3`, operación convención, esperado 5 o aviso. Pruebas permanentes publicadas Lite `tests/syntax309SyE23.audit.test.ts` SHA 80bcfaf77a002b3de8f1d186335968595531f7b4; Plus `backend/tests/test_syntax309_sye23.py` SHA b6c8f5d79ff6d376352911b545ca4146b426fc1d. Resultado de éxito exigido exactamente 5 con reentrada, o rechazo explícito estructurado. Oráculos no relajados.
