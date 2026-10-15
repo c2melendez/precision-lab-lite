@@ -715,6 +715,9 @@ function validateInputStructureG3(input: string): void {
 
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
 export function preprocessLatex(latex: string): string {
+  // SY-V-23: bounded numeric conjugate before unknown-LaTeX-command guard.
+  latex = latex.replace(/\\overline\{\s*([+-]?\d+(?:\.\d+)?)\s*([+-])\s*(\d+(?:\.\d+)?)\s*(?:\\mathrm\{i\}|i)\s*\}/g,
+    (_whole, real, sign, imag) => "(" + real + (sign === "+" ? "-" : "+") + imag + "*i)");
   // SY-N-30: {,} is used both as decimal punctuation and as thousands
   // grouping in imported LaTeX. A three-digit group cannot be
   // disambiguated without a declared locale. Reject rather than silently
