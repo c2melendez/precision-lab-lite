@@ -6,6 +6,7 @@ import { ErrorCode } from "../src/types";
 import { formatScientificResult } from "../src/components/ResultPanel";
 import { reciprocalPoleLimit, reciprocalLimitAtInfinity } from "../src/engine/reciprocalLimit";
 import { calcLimit } from "../src/engine/stepEngine/calculus";
+import { trySymbolicIdentitySum } from "../src/engine/sum";
 import { compileNumeric } from "../src/engine/numericFallback";
 
 const rows = Object.fromEntries(cases.trim().split("\n").map(line => {
@@ -1999,6 +2000,56 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(again.success, JSON.stringify(again)).toBe(true);
     expect(again.requestId).toBe("SY-V-16-reentry");
     expect(again.resultLatex).toBe("55");
+  });
+
+
+  it("SY-V-17: original symbolic sum has a closed form, domain and true output reentry", () => {
+    const row = rows["SY-V-17"];
+    expect(row.entrada).toBe("\\sum_{k=1}^{n}k");
+    expect(row.operacion).toBe("equivalente");
+    expect(row.esperado).toBe("\\frac{n(n+1)}{2}");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(["sum(k,k,1,n)", "sum((k),k,1,n)"]).toContain(parsed.replace(/\s+/g, ""));
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-17",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-17");
+    expect(result.confidence).toBe("SYMBOLIC");
+    expect(result.domainConditions).toEqual(expect.arrayContaining([
+      expect.objectContaining({variable:"n",kind:"domain",operator:">=",comparisonAlgebrite:"0",text:"n debe ser un entero no negativo."}),
+    ]));
+    const returned = parseExpression(result.resultLatex).algebrite;
+    const expected = parseExpression(row.esperado).algebrite;
+    expect(evaluate("expand((" + returned + ")-(" + expected + "))")).toBe("0");
+    // Base case and recurrence prove the whole natural-number family.
+    expect(evaluate("subst(0,n,(" + returned + "))")).toBe("0");
+    expect(evaluate("expand(subst(n+1,n,(" + returned + "))-(" + returned + ")-(n+1))")).toBe("0");
+    for (const count of [0, 1, 2, 10, 20]) {
+      const independent = Array.from({length:count}, (_, i) => i + 1).reduce((a,b) => a+b, 0);
+      expect(evaluate("subst(" + count + ",n,(" + returned + "))")).toBe(String(independent));
+    }
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-17-reentry",expressionAlgebrite:returned}});
+    const again = scope.postMessage.mock.calls[0][0];
+    expect(again.success, JSON.stringify(again)).toBe(true);
+    expect(again.requestId).toBe("SY-V-17-reentry");
+    expect(evaluate("expand((" + parseExpression(again.resultLatex).algebrite + ")-(" + expected + "))")).toBe("0");
+  });
+
+  it("symbolic identity sum is generic in names and does not bypass unsupported sums or finite limits", () => {
+    const symbolic = trySymbolicIdentitySum("sum(j,j,1,m)");
+    expect(symbolic?.bound).toBe("m");
+    expect(evaluate("expand((" + symbolic!.value + ")-m*(m+1)/2)")).toBe("0");
+    for (const source of ["sum(k^2,k,1,n)", "sum(k,k,2,n)", "sum(k,k,1,k)", "sum(k,k,1,e)"]) {
+      expect(trySymbolicIdentitySum(source)).toBeNull();
+    }
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"symbolic-sum-scope",expressionAlgebrite:"sum(k^2,k,1,n)"}});
+    expect(scope.postMessage.mock.calls[0][0].success).toBe(false);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"finite-sum-guard",expressionAlgebrite:"sum(k,k,1,10002)"}});
+    expect(scope.postMessage.mock.calls[0][0]).toEqual(expect.objectContaining({success:false,errorCode:ErrorCode.COMPLEXITY_LIMIT}));
   });
 
 });

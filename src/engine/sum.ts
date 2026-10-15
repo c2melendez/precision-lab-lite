@@ -35,3 +35,17 @@ export function validateFiniteSumRange(expr: string): boolean {
   }
   return true;
 }
+
+// Closed form only for sum(index,index,1,bound), with a single-letter
+// symbolic bound distinct from the index and calculator constants.
+// The result carries an explicit nonnegative-integer domain condition.
+export function trySymbolicIdentitySum(expr: string): { value: string; bound: string } | null {
+  if (!expr.startsWith("sum(") || !expr.endsWith(")")) return null;
+  const args = splitTopLevelArgs(expr.slice(4, -1)).map(x => x.trim());
+  if (args.length !== 4) return null;
+  const [body, index, lower, upper] = args;
+  if (!/^[A-Za-z]$/.test(index) || !/^[A-Za-z]$/.test(upper)
+      || upper === index || /^[eEiI]$/.test(upper)) return null;
+  if (evaluate(body) !== index || evaluate(lower) !== "1") return null;
+  return { value: evaluate(upper + "*(" + upper + "+1)/2"), bound: upper };
+}

@@ -14,7 +14,7 @@ import { tryComplexFunction, parseComplex } from "../engine/complexFunctions";
 import { residueAtRational, singularitiesOfRational } from "../engine/complexAnalysis";
 import { tryPlusMinus } from "../engine/plusMinus";
 import { tryFiniteProduct } from "../engine/product";
-import { validateFiniteSumRange } from "../engine/sum";
+import { validateFiniteSumRange, trySymbolicIdentitySum } from "../engine/sum";
 import { tryCbrtSign } from "../engine/cbrtSign";
 import { solveLinearInequalitySystem } from "../engine/stepEngine/linearInequalitySystem";
 import type { InequalityOperator } from "../engine/parsing/inequalitySplit";
@@ -682,6 +682,27 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
         steps: [],
         hasDetailedSteps: false,
         confidence: "NUMERIC_FALLBACK",
+        requestId,
+      };
+    }
+
+    const symbolicSum = trySymbolicIdentitySum(expr);
+    if (symbolicSum !== null) {
+      return {
+        success: true,
+        resultLatex: toLatex(symbolicSum.value),
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        domainConditions: [{
+          expressionAlgebrite: symbolicSum.bound,
+          operator: ">=",
+          comparisonAlgebrite: "0",
+          variable: symbolicSum.bound,
+          kind: "domain",
+          text: symbolicSum.bound + " debe ser un entero no negativo.",
+          latex: symbolicSum.bound + "\\in\\mathbb{Z}_{\\ge0}",
+        }],
         requestId,
       };
     }
