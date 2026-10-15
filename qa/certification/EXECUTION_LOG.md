@@ -4994,3 +4994,11 @@ Fixture i^{2}, operacion=convencion, esperado -1 como unidad imaginaria o i^{2} 
 - Corrección Plus SHA b310ce1c374c649b3502d17e11018c9b1d30e136 en backend/app/services/parsing.py: normalización limitada de barras LaTeX de literal complejo rectangular a abs(re ± im*i) antes de validar G3; mantiene la seguridad para otras formas y las pruebas originales. Cumulative 38710535064 y H1d 38710535053 QUEUED al consultarlos. SY-V-24 continúa OPEN hasta resultado de ese SHA.
 - Próximo objetivo SY-V-25: \\mathrm{e}^{x} con x=0, esperado 1. SG28/H2 OPEN, DIST multinodo BLOCKED.
 
+
+## 2026-10-15 — Inicio SY-V-25 (exponencial con sustitución explícita)
+- Fixture original: \\mathrm{e}^{x} \\text{con} x=0, operación valor, esperado 1. Separamos la expresión del texto que indica la sustitución, sin inventar sintaxis ni descartar el requisito x=0.
+- Lite test tests/syntax309SyV25.audit.test.ts commit 2c2acd4ce60fb10e7815fc8d524e1818d2a8b121: parseo de \\mathrm{e}^{x}, sustitución explícita x=0, controles x=1 y reentrada. Plus backend/tests/test_syntax309_syv25.py commit e8fe2d351e22a5eaf12a2368aa64a27342f193d1: POST /evaluate con expression=e^x, substitutions x=0, MathResponse y reentrada, control x=1.
+- CI nuevo Lite cumulative 38710733254, H1d 38710733176, build 38710733177, UI E2E genérico 38710733298. Plus cumulative 38710741404, H1d 38710741426. En curso/queued, no certificado hasta conclusión y logs.
+- SY-V-24: Lite cumulative 38710040630 y gates relacionados SUCCESS en SHA fff2c61. Plus SHA ff205e5 cumulative 38710048292 FAILURE backend 1184 PASS /2 FAIL por macro original lvert/rvert; corrección SHA b310ce1 cumulative 38710535064 todavía IN_PROGRESS última consulta, H1d 38710535053 IN_PROGRESS. Cierre SY-V-24 pendiente del gate Plus; certificar SY-V-25 solo tras su cierre.
+- H2/SG28 OPEN; DIST multinodo BLOCKED; sin despliegue.
+
