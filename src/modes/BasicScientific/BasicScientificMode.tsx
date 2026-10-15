@@ -440,12 +440,12 @@ export function BasicScientificMode() {
 
     const requestId = makeRequestId();
     // SY-Q-09: finite point exclusion, without changing ordered-inequality routing.
-    const exclusion = /^([A-Za-z])(?:\\\\neq|≠|!=)([+-]?(?:\\d+(?:\\.\\d+)?|\\.\\d+))$/.exec(currentLatex.replace(/\\s+/g, ""));
+    const exclusion = /^([A-Za-z])(?:\\neq|≠|!=)([+-]?(?:\d+(?:\.\d+)?|\.\d+))$/.exec(currentLatex.replace(/\s+/g, ""));
     if (exclusion) {
       const [, variable, excluded] = exclusion;
       onSuccess("Científica (exclusión puntual)", currentLatex, {
         success: true,
-        resultLatex: `${variable}\\in\\mathbb{R}\\setminus\\{${excluded}\\}`,
+        resultLatex: `${variable}\\\in\\\mathbb{R}\\setminus\\\{${excluded}\\\}`,
         interpretedLatex: currentLatex,
         resultViewLabel: "Conjunto solución",
         steps: [],
