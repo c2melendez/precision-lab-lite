@@ -19,7 +19,7 @@ import {
   toLatex,
   ErrorCode,
 } from "../algebriteClient";
-import { reciprocalPoleLimit } from "../reciprocalLimit";
+import { reciprocalPoleLimit, reciprocalLimitAtInfinity } from "../reciprocalLimit";
 import { compileNumeric, numericLimit, numericLimitAtInfinity, simpsonIntegral } from "../numericFallback";
 import { rewriteReciprocalFunctions } from "../parsing";
 import type { Step, AppError, ResultConfidence } from "../../types";
@@ -83,7 +83,8 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
-  const reciprocalPole = reciprocalPoleLimit(exprAlgebrite, variable, pointAlgebrite, direction);
+  const reciprocalPole = reciprocalPoleLimit(exprAlgebrite, variable, pointAlgebrite, direction)
+    ?? reciprocalLimitAtInfinity(exprAlgebrite, variable, pointAlgebrite);
   if (reciprocalPole !== null) {
     const latex = toLatex(reciprocalPole);
     return {
@@ -91,7 +92,7 @@ export function calcLimit(
       confidence: "SYMBOLIC",
       steps: [
         { id: "original", latex: limitLatex, explanation: "Límite planteado." },
-        { id: "result", latex, explanation: "Límite lateral exacto del recíproco en cero." },
+        { id: "result", latex, explanation: isInfinite ? "Límite exacto del recíproco al infinito." : "Límite lateral exacto del recíproco en cero." },
       ],
     };
   }

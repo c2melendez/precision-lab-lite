@@ -7,7 +7,7 @@
 
 import { evaluate, toLatex, toDecimalApprox, ErrorCode as ClientErrorCode } from "../engine/algebriteClient";
 import { toFractionResult, fractionToLatex } from "../engine/fractions";
-import { reciprocalPoleLimit } from "../engine/reciprocalLimit";
+import { reciprocalPoleLimit, reciprocalLimitAtInfinity } from "../engine/reciprocalLimit";
 import { compileNumeric, numericLimit, numericLimitAtInfinity } from "../engine/numericFallback";
 import { tryStatFunction, splitTopLevelArgs } from "../engine/statFunctions";
 import { tryComplexFunction, parseComplex } from "../engine/complexFunctions";
@@ -526,35 +526,30 @@ const ALGEBRITE_UNSUPPORTED_NUMERIC = /\b(asinh|acosh|atanh|sign)\(/;
  * (compileNumeric + numericLimit), reconstruyendo cuerpo/variable/punto a
  * partir de la propia llamada sin evaluar.
  */
-function tryLimitFallback(raw: string): string | null {
+function tryLimitFallback(raw: string): { value: string; confidence: ResultConfidence } | null {
   const match = raw.match(/^limit\((.*)\)$/s);
   if (!match) return null;
   const args = splitTopLevelArgs(match[1]);
   if (args.length !== 3 && args.length !== 4) return null;
   const [body, variable, pointExpr, directionArg] = args;
   try {
-    // Fase 2 externa (hueco #4): límite lateral — 4to argumento opcional,
-    // 1=derecha, -1=izquierda (ver normalize.ts, sufijo ^+/^- del punto).
     const direction = directionArg === "1" ? "right" : directionArg === "-1" ? "left" : "both";
-
-    // Fase 2 externa (hueco #3): límite al infinito. Para cuando esto se
-    // ejecuta, \infty ya se tradujo a "oo" (misma pasada de normalize.ts)
-    // — Number("oo") siempre da NaN, así que se compara como string en
-    // vez de intentar convertir primero.
-    const reciprocalPole = reciprocalPoleLimit(body, variable, pointExpr, direction);
-    if (reciprocalPole !== null) return reciprocalPole;
     const pointRaw = evaluate(pointExpr);
+    const exact = reciprocalPoleLimit(body, variable, pointRaw, direction)
+      ?? reciprocalLimitAtInfinity(body, variable, pointRaw);
+    if (exact !== null) return { value: exact, confidence: "SYMBOLIC" };
     if (pointRaw === "oo" || pointRaw === "-oo") {
       const fn = compileNumeric(body, variable);
       const { value, converged } = numericLimitAtInfinity(fn, pointRaw === "oo" ? 1 : -1);
-      return Number.isFinite(value) && converged ? String(value) : null;
+      return Number.isFinite(value) && converged
+        ? { value: String(value), confidence: "NUMERIC_FALLBACK" } : null;
     }
-
     const pointNumeric = Number(pointRaw);
     if (!Number.isFinite(pointNumeric)) return null;
     const fn = compileNumeric(body, variable);
     const { value, converged } = numericLimit(fn, pointNumeric, direction);
-    return Number.isFinite(value) && converged ? String(value) : null;
+    return Number.isFinite(value) && converged
+      ? { value: String(value), confidence: "NUMERIC_FALLBACK" } : null;
   } catch {
     return null;
   }
@@ -766,8 +761,8 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
     if (/^limit\(/.test(raw)) {
       const limitFallback = tryLimitFallback(raw);
       if (limitFallback !== null) {
-        raw = limitFallback;
-        confidence = /^-?oo$/.test(limitFallback) ? "SYMBOLIC" : "NUMERIC_FALLBACK";
+        raw = limitFallback.value;
+        confidence = limitFallback.confidence;
       }
     }
     if (ALGEBRITE_UNSUPPORTED_NUMERIC.test(raw)) {

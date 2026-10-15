@@ -4,7 +4,7 @@ import { parseExpression } from "../src/engine/parsing";
 import { evaluate, toDecimalApprox, toLatex } from "../src/engine/algebriteClient";
 import { ErrorCode } from "../src/types";
 import { formatScientificResult } from "../src/components/ResultPanel";
-import { reciprocalPoleLimit } from "../src/engine/reciprocalLimit";
+import { reciprocalPoleLimit, reciprocalLimitAtInfinity } from "../src/engine/reciprocalLimit";
 import { calcLimit } from "../src/engine/stepEngine/calculus";
 import { compileNumeric } from "../src/engine/numericFallback";
 
@@ -1933,4 +1933,43 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(result.success, JSON.stringify(result)).toBe(true);
     expect(result.resultLatex).toBe("-\\infty");
   });
+
+  it("SY-V-15: original reciprocal limit at infinity is exact zero and reenters", () => {
+    const row = rows["SY-V-15"];
+    expect(row.entrada).toBe("\\lim_{x\\to\\infty}\\frac{1}{x}");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("0");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(parsed.replace(/\s+/g, "")).toMatch(/^limit\(.+,x,oo\)$/);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-15",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-15");
+    expect(result.resultLatex).toBe("0");
+    expect(result.confidence).toBe("SYMBOLIC");
+    const returned = parseExpression(result.resultLatex).algebrite;
+    expect(evaluate(returned)).toBe("0");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-15-reentry",expressionAlgebrite:returned}});
+    const again = scope.postMessage.mock.calls[0][0];
+    expect(again.success, JSON.stringify(again)).toBe(true);
+    expect(again.requestId).toBe("SY-V-15-reentry");
+    expect(evaluate(parseExpression(again.resultLatex).algebrite)).toBe("0");
+  });
+
+  it("reciprocal limits at either infinity share the exact rule across both routes", () => {
+    for (const point of ["oo", "-oo"]) {
+      for (const body of ["1/t", "-1/t"]) {
+        expect(reciprocalLimitAtInfinity(body, "t", point)).toBe("0");
+        const result = calcLimit(body, "t", point, point === "oo" ? Infinity : -Infinity);
+        expect(result.resultLatex).toBe("0");
+        expect(result.confidence).toBe("SYMBOLIC");
+      }
+    }
+    expect(reciprocalLimitAtInfinity("t", "t", "oo")).toBeNull();
+    expect(reciprocalLimitAtInfinity("sin(t)", "t", "oo")).toBeNull();
+    expect(reciprocalLimitAtInfinity("1/t", "t", "0")).toBeNull();
+  });
+
 });
