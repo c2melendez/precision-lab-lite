@@ -4531,3 +4531,7 @@ Verificar gates por SHA; clasificar y corregir falla real de superíndice sin si
 - Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. Sin modificaciones de producción.
 ### Siguiente paso exacto
 Verificar gates por SHA de SY-U-12, corregir fallas reales, cerrar solo con evidencia y avanzar al siguiente fixture oficial SY-U-13 `π` con valor esperado `3.141592654`.
+
+## 2026-10-14 — SY-U-12 certification and SY-U-13 Unicode pi regression
+- Confirmed SY-U-12 SHA-specific Lite cumulative 38658775046, H1d 38658775190, build 38658774890, generic UI E2E 38658775060 SUCCESS. Plus cumulative 38658797796, H1d 38658797787 SUCCESS. Generic UI E2E does not certify fixture-specific visual behavior.
+- SY-U-13 original Unicode π fixture expected decimal 3.141592654; permanent tests published Lite cf8a45ed0f1fea5a3f5641ee7d64d431ed64499f and Plus 53dde779ff1732860f34dce8ff2704f18320d240. New CI Lite cumulative 38659318834, H1d 38659318977, build 38659318802, UI 38659318917; Plus cumulative 38659323354 and H1d 38659323311 IN_PROGRESS at check. SY-U-13 OPEN until evidence final.
