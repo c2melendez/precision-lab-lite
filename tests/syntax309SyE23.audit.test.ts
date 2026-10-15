@@ -1661,4 +1661,23 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(repeated.replace(/\s/g, "")).toMatch(/^(X\+x|x\+X)$/);
   });
 
+  it("SY-V-02: distinct subscripted variables survive symbolic worker reentry", () => {
+    const row = rows["SY-V-02"];
+    expect(row.entrada).toBe("x_{1}+x_{2}");
+    expect(row.operacion).toBe("interpretacion");
+    expect(row.esperado).toBe("x_{1}+x_{2}");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const value = evaluate(parsed);
+    const terms = value.replace(/\s/g, "").split("+");
+    expect(terms).toHaveLength(2);
+    expect(new Set(terms).size).toBe(2);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-02",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-02");
+    const repeated = evaluate(parseExpression(result.resultLatex).algebrite);
+    expect(new Set(repeated.replace(/\s/g, "").split("+"))).toEqual(new Set(terms));
+  });
+
 });
