@@ -5016,3 +5016,10 @@ Fixture i^{2}, operacion=convencion, esperado -1 como unidad imaginaria o i^{2} 
 - Nuevos gates: Lite cumulative 38711679361, H1d 38711679281, build 38711679296, E2E genérico 38711679382; Plus cumulative 38711691444 y H1d 38711691567. Corridas IN_PROGRESS/QUEUED al registrar; objetivo OPEN hasta inspección de logs y definición de contrato publicado.
 - Próximo SY-V-27: 'pi' escrito en letras, constante pi o producto p*i según convención; no asumir sin evidencia. Syntax309/IN625/H2/SG28 OPEN; DIST multinodo BLOCKED, sin producción.
 
+
+
+### 2026-10-15 — SY-V-26 comprobado; SY-V-27 iniciado
+- SY-V-26: Lite SHA 1aa2d2d3ff27e83f5cdf86b2405a7a985de29413 cumulative 38711679361, H1d 38711679281, build 38711679296, UI científico 38711679382 SUCCESS. Plus SHA 7caee589013c85c5b36283046b3a4d4c88608e61 cumulative 38711691444, H1d 38711691567 SUCCESS. PASS bilateral acotado a convenciones y rutas ensayadas; no equivale a certificación completa de la matriz.
+- Caso oficial SY-V-27: entrada ASCII `pi`, operación `convencion`, alternativas pi constante o producto p*i; declarar la convención. Implementaciones actuales reconocen pi como constante reservada. Añadidas pruebas permanentes Lite tests/syntax309SyV27.audit.test.ts commit 5bfe38d6bc5dfa019094e7a9d04916d4de426053 y Plus backend/tests/test_syntax309_syv27.py commit e2bdcdd7356675d98ea48bbe34904fefac52d5f9. Verifican diferencia frente a producto explícito y reentrada Plus; no prueban selector de usuario ni UI MathLive Plus.
+- CI automático inicial en SHA técnico: Lite cumulative 38713211428, H1d 38713211413, build 38713211201, UI científico 38713211799; Plus cumulative 38713217281 y H1d 38713217711. IN_PROGRESS al consultar; SY-V-27 OPEN hasta revisión SHA/logs. Si falla, diagnosticar producto/harness/oráculo y corregir sin relajar criterio. Siguiente fixture oficial SY-V-28: `\\alpha+\\alpha` esperado `2\\alpha`; verificar cadena fuente y rutas antes de su implementación.
+- Syntax309/IN625/H2/SG28 OPEN; DIST-01..08 multinodo BLOCKED. Sin despliegue ni activación del aislamiento opt-in.
