@@ -4682,3 +4682,7 @@ Consultar gates finales y logs SY-V-02 en ambos motores, reparar en caso de fall
 ### Siguiente paso exacto
 Verificar Plus cumulative 38677868857/H1d 38677868827 por SHA 20e818d; si falla diagnosticar y corregir sin relajar oráculo. Si pasan, cerrar SY-V-02 bilateral y comenzar caso oficial SY-V-03 `\\pi r^{2}` con pruebas permanentes de constante pi, variable r, resultado y reentrada en ambos motores.
 
+
+## 2026-10-14 — SY-V-02 subscript regex follow-up
+- Plus segunda corrección de escapes de regex en `backend/app/services/parsing.py` SHA 87cea4b6a54ccb6a18b4399d3a70d887c4434faa. El primer cambio 20e818dfa2f8eb4a55b6b1f71993a29a5864ce9a tenía escapes Python incorrectos.
+- Nuevos gates para SHA 87cea4b: cumulative 38677944467 y H1d 38677944603 IN_PROGRESS al último chequeo. No contar PASS sin conclusión. SY-V-02 OPEN; después SY-V-03 `\\pi r^{2}`. SG28/H2 OPEN y DIST BLOCKED.
