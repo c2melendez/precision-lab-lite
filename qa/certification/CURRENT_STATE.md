@@ -1,5 +1,12 @@
 # Current Certification State
 
+## 2026-10-15 — SY-V-11 PASS; SY-V-12 CI
+- SY-V-11 Lite c1752e5 cumulative 38691564852/H1d 38691564926/build 38691564930/UI generic 38691564972 SUCCESS. Plus 22d3dd1 cumulative 38691792723/H1d 38691792693/SG28 prototype 38691792757 SUCCESS. H2/DIST remain open/blocked.
+- SY-V-12 Lite fad5697 cumulative 38692018733 and Plus cafe0f8 cumulative 38691996868 running. Plus product integration support 40d15d7. Exact input integral x dy, expect xy+C; tests require derivative x and C reentry. OPEN pending CI.
+### Next
+Verify gates SHA-specific, fix any failed tests and begin official SY-V-13.
+
+
 ## 2026-10-15 — SY-V-11 Plus bounded-integral product correction
 - Plus SHA dbab381fd08624a0630fd10fb233f07301f31bdb cumulative 38691366017 FAILED: backend HTTP devolvió success=false para original `\\int_{0}^{1}x\\,dx`; H1d 38691365993 SUCCESS. PRODUCT: evaluate_service.py no reconocía la integral definida en formato oficial.
 - Plus SHA 22d3dd17274ea9f96178faf6f75364e06ac13e2f corrige ruta acotada: reconoce límites 0..1, integra mediante sympy.integrate y devuelve 1/2 exacto sin constante C. Nuevos gates cumulative 38691792723, H1d 38691792693, SG28 prototipo 38691792757 IN_PROGRESS inicial.
