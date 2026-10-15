@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-V-01 PASS bilateral; SY-V-02 en CI
+- SY-V-01 `X+x` PASS bilateral alcance automatizado: Lite SHA 557e6971eb4c10dc8f239036e61ea041311cf1a5 cumulative 38675456648, H1d 38675456711, build 38675456712, E2E genérico 38675457020 SUCCESS. Plus SHA e44b85dfef61df2f685fa1351b5f0a738546f3c6 cumulative 38675466626 y H1d 38675466611 SUCCESS. E2E genérico no prueba UI específica del caso.
+- SY-V-02 fila oficial `x_{1}+x_{2}` se deben conservar dos variables distintas. Tests permanentes de parser/evaluación/reentrada Lite `tests/syntax309SyE23.audit.test.ts` SHA 998e24c13b5799a7c2d64f2a69addcef9681f0f2; Plus `backend/tests/test_syntax309_sye23.py` SHA 6e9aeb489c92efc8b958d009ccd081c541a11814.
+- Nuevos gates Lite cumulative 38676806225, H1d 38676806301, build 38676806253, E2E genérico 38676806326 IN_PROGRESS inicial; Plus cumulative 38676813456 y H1d 38676813443 IN_PROGRESS. SY-V-02 OPEN hasta evidencia por SHA y diagnóstico si falla.
+- Syntax309 OPEN; SG28/H2 OPEN, DIST multinodo BLOCKED. Sin despliegue.
+### Siguiente paso exacto
+Consultar gates finales y logs SY-V-02 en ambos motores, reparar en caso de fallo sin relajar requisitos, registrar estado bilateral y avanzar SY-V-03 `\\pi r^{2}` (constante pi y variable r).
+
+
 ## 2026-10-14 — SY-U-25 PASS bilateral; se inicia SY-V-01
 - SY-U-25 `2++3` (convención 5 o aviso) PASS en alcance automatizado: Lite SHA 80bcfaf77a002b3de8f1d186335968595531f7b4 cumulative 38675000954, H1d 38675001180, build 38675000982, E2E genérico 38675001060 SUCCESS; Plus SHA b6c8f5d79ff6d376352911b545ca4146b426fc1d cumulative 38675009387, H1d 38675009328 SUCCESS. No atribuir E2E de caso específico.
 - Corrección de secuencia canónica: la matriz `syntax309_cases.jsonl` termina sección U en SY-U-25; SY-U-26 no existe. Se inicia SY-V-01 entrada `X+x`, distinción de variables mayúscula y minúscula. Tests permanentes implementados Lite SHA 557e6971eb4c10dc8f239036e61ea041311cf1a5 (`tests/syntax309SyE23.audit.test.ts`), Plus SHA e44b85dfef61df2f685fa1351b5f0a738546f3c6 (`backend/tests/test_syntax309_sye23.py`). Oráculos exigen conservar símbolos independientes y reentrada.
