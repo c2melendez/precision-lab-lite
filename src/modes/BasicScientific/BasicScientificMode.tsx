@@ -439,6 +439,25 @@ export function BasicScientificMode() {
     }
 
     const requestId = makeRequestId();
+    // SY-Q-10: strict real absolute inequality, exactly |x| < nonnegative finite bound.
+    // Boundaries are excluded; do not generalize this guarded path to arbitrary abs expressions.
+    const absStrict = /^\\\\lvert\\s*([A-Za-z])\\s*\\\\rvert\\s*<\\s*(\\d+(?:\\.\\d+)?|\\.\\d+)$/.exec(currentLatex.trim());
+    if (absStrict) {
+      const [, variable, limitText] = absStrict;
+      const limit = Number(limitText);
+      if (Number.isFinite(limit) && limit >= 0) {
+        const resultLatex = limit === 0
+          ? "\\\\varnothing"
+          : `${variable}\\\\in(-${limitText},${limitText})`;
+        onSuccess("Científica (valor absoluto)", currentLatex, {
+          success: true,
+          resultLatex,
+          interpretedLatex: currentLatex,
+          resultViewLabel: "Conjunto solución",
+        }, requestId);
+        return;
+      }
+    }
     // SY-Q-09: finite point exclusion, without changing ordered-inequality routing.
     const exclusion = /^([A-Za-z])(?:\\neq|≠|!=)([+-]?(?:\d+(?:\.\d+)?|\.\d+))$/.exec(currentLatex.replace(/\s+/g, ""));
     if (exclusion) {
