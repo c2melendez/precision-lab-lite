@@ -4613,3 +4613,9 @@ Consultar gates finales y logs para SY-U-19 por SHA actualizado, corregir cualqu
 ### Siguiente paso exacto
 Consultar gates y logs por SHA del SY-U-21, corregir si falla en la capa identificada, actualizar estado bilateral y avanzar al fixture SY-U-22 `2+` (error claro expresión incompleta) una vez validado.
 
+
+## 2026-10-14 — SY-U-21 Lite producto: doble negación numérica
+- Primer fixture SY-U-21 `--3` => 3: Lite commit 87761131619b33e1503990c0170d2729da1bf57e cumulative 38670309543 FAIL (1263 PASS, 1 FAIL, 30 TODO): Unknown Error Algebrite no devolvió resultado. H1d 38670309085 y build 38670309031 SUCCESS; causa clasificada PRODUCT parser. Plus tests commit 21ee11f22d9ee4834b1456568455648e2055f056 cumulative 38670314472 y H1d 38670314473 en curso al revisar.
+- Fix Lite `src/engine/parsing/normalize.ts` SHA 538e9ae48f7f64521a6803e922fb45cfe954ac96: normaliza signo inicial doble para literal numérico a `-(-3)`, restringido para preservar comportamiento previo de `--x` y `2--3`. Oráculos sin cambios.
+- Gates nuevos Lite SHA 538e9ae48f: cumulative 38670459765, H1d 38670459807, build 38670459776, E2E genérico 38670459766 IN_PROGRESS. SY-U-21 OPEN hasta PASS bilateral por SHA. Siguiente fixture `SY-U-22` entrada `2+` con error claro por expresión incompleta; no asumir certificación UI por E2E genérico. SG28/H2 OPEN, DIST BLOCKED, sin despliegues.
+
