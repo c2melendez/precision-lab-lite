@@ -73,6 +73,14 @@ function readRealIntervalUnion(latex: string): string | null {
 
 export function BasicScientificMode() {
   const [latex, setLatex] = useState("");
+  const [equationVariables, setEquationVariables] = useState<string[]>([]);
+  const [equationChoice, setEquationChoice] = useState<{latex:string; variable:string} | null>(null);
+  const handleInputChange = useCallback((value: string) => {
+    setLatex(value);
+    setEquationVariables([]);
+    setEquationChoice(null);
+  }, []);
+
   const [result, setResult] = useState<MathResult | null>(null);
   const [angleMode, setAngleMode] = useState<"RAD" | "GRAD">("RAD");
   const [mathField, setMathField] = useState<MathFieldRef>(null);
@@ -533,26 +541,26 @@ export function BasicScientificMode() {
     // AlgebraMode.tsx: 0 o >1 variables libres se rechaza en vez de
     // adivinar cuál despejar).
     if (parsed.isEquation) {
-      if (parsed.freeVariables.length > 1) {
-        fail(
-          ErrorCode.PARSE_ERROR,
-          `Hay más de una variable (${parsed.freeVariables.join(", ")}); usa la pestaña Álgebra para elegir cuál despejar.`,
-          requestId,
-        );
+      const selected = equationChoice?.latex === currentLatex ? equationChoice.variable : "";
+      if (parsed.freeVariables.length > 1 && !parsed.freeVariables.includes(selected)) {
+        setEquationVariables(parsed.freeVariables);
+        fail(ErrorCode.PARSE_ERROR, "Selecciona la variable que deseas despejar.", requestId);
         return;
       }
+      const variable = parsed.freeVariables.length > 1 ? selected : parsed.freeVariables[0] ?? "x";
+      const parameters = parsed.freeVariables.filter(v => v !== variable);
       worker.onmessage = (e: MessageEvent<MathResult>) =>
         onSuccess("Científica (ecuación)", currentLatex, {
           ...e.data,
           interpretedLatex,
-          resultViewLabel: "Solución",
+          resultViewLabel: parameters.length ? `Solución para ${variable}; ${parameters.join(", ")} libre(s)` : "Solución",
         });
       dispatchWorker(worker, {
         type: "solveAlgebra",
         requestId,
         leftAlgebrite: parsed.leftAlgebrite,
         rightAlgebrite: parsed.rightAlgebrite,
-        variable: parsed.freeVariables[0] ?? "x",
+        variable,
       });
       return;
     }
@@ -602,7 +610,7 @@ export function BasicScientificMode() {
       });
     };
     dispatchWorker(worker, { type: "evaluate", requestId, expressionAlgebrite: parsed.algebrite });
-  }, [latex, mathField, angleMode, getWorker, fail, onSuccess, runSystem, dispatchWorker, handleCancelComputation]);
+  }, [latex, mathField, angleMode, getWorker, fail, onSuccess, runSystem, dispatchWorker, handleCancelComputation, equationChoice]);
 
   // El dock del teclado vive en un store compartido y puede conservar un
   // ReactNode creado por el render inmediatamente anterior. Mantener una
@@ -810,9 +818,26 @@ export function BasicScientificMode() {
           Interpretación ambigua de a/bc: escribe (a/b)*c o a/(b*c) para indicar la agrupación. Si bc es una única variable, consérvala como identificador definido.
         </p>
       )}
+      {equationVariables.length > 1 && (
+        <div className="rounded-lg border border-paper-line bg-paper-soft p-3 text-sm text-ink">
+          <label className="flex items-center gap-2">
+            Variable a despejar
+            <select
+              aria-label="Variable a despejar"
+              className="rounded border border-paper-line bg-paper px-2 py-1"
+              value={equationChoice?.variable ?? ""}
+              onChange={event => setEquationChoice({latex: mathField?.value ?? latex, variable:event.target.value})}
+            >
+              <option value="">Selecciona una variable</option>
+              {equationVariables.map(variable => <option key={variable} value={variable}>{variable}</option>)}
+            </select>
+          </label>
+          <p>Las demás variables se conservan como parámetros libres.</p>
+        </div>
+      )}
       <Screen
         latex={latex}
-        onChangeLatex={setLatex}
+        onChangeLatex={handleInputChange}
         placeholder="Escribe una expresión, ecuación o sistema…"
         fieldRef={setMathField}
         result={result}
