@@ -2,6 +2,21 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-Q-16: dos soluciones no lineales verificadas; siguiente SY-Q-17
+
+- Esta entrada es el estado vigente y prevalece sobre los resúmenes antiguos inferiores. Fixture oficial: \begin{cases}x^{2}+y^{2}=25\\ x+y=7\end{cases}; exige AMBAS soluciones (3,4) y (4,3).
+- Plus SHA 28ab5abdc7a0db03de78c9268a8d18ee4b793b9f: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38786503451 y H1d 38786503536 SUCCESS. Logs backend job 116599734987: 1211 PASS +1 XFAIL, incluido test_syntax309_syq16_http.py::test_syq16_nonlinear_system_all_exact_roots. Frontend job 116599734624: 841 PASS +28 TODO. Alcance HTTP /api/v1/solve/system con lista de ecuaciones; no acredita ingreso de cases en MathLive/UI de Plus.
+- Lite cerró la falta de capacidad del caso mediante src/engine/stepEngine/quadraticSystem.ts: sustitución exacta para dos ecuaciones polinómicas con coeficientes racionales, una afín y otra de grado máximo dos. Extrae y reconstruye coeficientes, elimina una variable con pivote no nulo, usa fórmula cuadrática exacta, elimina duplicados y verifica cada pareja en ambas ecuaciones originales. Declara soluciones REALES; discriminante negativo devuelve conjunto vacío. Sistemas lineales continúan por su solver anterior. Sistemas con dos ecuaciones no lineales, familias infinitas, funciones, grados superiores o denominadores con variables se rechazan explícitamente. No es un solver no lineal general.
+- Guardas anteriores a expansión: máximo 500 caracteres, 250 tokens, profundidad 32 y grado estructural máximo dos, incluyendo potencias anidadas. No permite cancelar denominadores con variables ni expandir potencias de grado explosivo.
+- Científica Lite despacha solveSystem al worker y representa las dos parejas como alternativas, con etiqueta Soluciones reales. No se modifica el solver lineal usado por otras rutas.
+- Lite commit inicial 9a4ed9848cd97f7262105e7c638769f7d9831f30 y revisión final f211e8935dcb543482ddaeeafcdddb20d135d2bf. SHA FINAL: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38787638040 SUCCESS, job 116603654939: 1335 PASS +30 TODO, 117 archivos; typecheck y build SUCCESS. Build diagnostic 38787637606, H1d 38787637768 (21/21), scientific UI 38787637795 (36/36) SUCCESS en ese mismo SHA.
+- Pruebas permanentes tests/syntax309SyQ16.solver.test.ts (5/5): fixture, dos raíces y prueba independiente suma/producto, handler real con transporte simulado, intercambio de ecuaciones, pivote cero, tangencia, conjunto real vacío, radicales/racionales exactos y rechazos fuera de alcance. El test histórico intake solo comprueba ingreso y no acredita resolución.
+- Navegador REAL e2e/syntax309-syq16.spec.ts, registrado en el workflow científico: fixture original y control y=4, ambos pares visibles, MathLive y Web Worker auténticos; 6/6 PASS en desktop/tablet/mobile (job 116603653646, run 38787637795). No acredita pulsar cada tecla del teclado virtual ni otros navegadores.
+- Regresión SG28 cancelación Lite 38787542657 SUCCESS pertenece al commit inicial 9a4ed984, que introdujo la ruta UI/worker; no atribuirla al SHA final del guard. No demuestra DIST multinodo.
+- SY-Q-16 PASS en los canales descritos: Lite navegador nativo y Plus HTTP. La nota histórica Lite BLOCKED queda superada únicamente para esta capacidad acotada; Plus UI, sistemas no lineales generales y reconciliación global permanecen pendientes.
+- Siguiente objetivo exacto SY-Q-17: \begin{cases}x>1\\ x<3\end{cases}, esperado x\in(1,3). Verificar intersección unidimensional y extremos abiertos; no confundirla con región poligonal de dos variables ni acreditar un oráculo sin producto.
+- Syntax309/IN625/H2/SG28 OPEN; DIST-01..08 BLOCKED. TODO/XFAIL no son PASS; no despliegue ni cambios de producción.
+
 ## Actualización verificada — SY-V-21 (2026-10-15)
 - Avance secuencial: SY-V-21 PASS acotado; siguiente SY-V-22 (convención de i como unidad imaginaria o variable).
 - P(5,2)=20 por alias numérico completo de permutaciones, con interpretación nPr explícita. Definición local P tiene prioridad: testigos 7 y 6; controles 30/1/120, límites y reentrada real.
@@ -110,8 +125,8 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-N Números/precisión | 31 | Abordada; reconciliar convenciones y canales |
 | SY-D Delimitadores | 14 | Recorrido hasta D-14; PASS por alcance registrado, no cierre UI universal |
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
-| SY-V Variables/cálculo | 28 | V-21: gates verdes, siguiente V-22 |
-| SY-Q Ecuaciones/sistemas | 23 | Pendiente de esta secuencia; pueden existir otras suites previas |
+| SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
+| SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-16, PASS en Lite navegador y Plus HTTP bajo alcance descrito; siguiente Q-17. Otros gaps históricos siguen abiertos |
 | SY-M Matrices/vectores | 20 | Pendiente de esta secuencia; no significa módulo sin pruebas |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
@@ -134,7 +149,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-V-22 (convención de i como unidad imaginaria o variable), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-Q-17 (sistema x>1, x<3; intersección abierta (1,3)), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.

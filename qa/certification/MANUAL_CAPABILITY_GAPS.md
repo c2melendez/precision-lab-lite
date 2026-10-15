@@ -107,3 +107,10 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - OFFICIAL fixture `\\begin{cases}x^{2}+y^{2}=25\\\\ x+y=7\\end{cases}` requires both `(3,4)` and `(4,3)`.
 - Verified Lite real scientific `runSystem` dispatches `linearSystem` worker; `src/engine/stepEngine/linearSystem.ts` explicitly only extracts linear coefficients and Gauss-Jordan. Existing routing cannot be counted as nonlinear two-solution support. `tests/syntax309SyQ16.intake.test.ts` is only an intake/fixture test, NOT a passing nonlinear solver or end-to-end result.
 - Classification: PRODUCT/CAPABILITY GAP, SY-Q-16 Lite BLOCKED pending legitimate nonlinear system solver, full two-root oracle and real MathLive+worker E2E. Plus `/api/v1/solve/system` nonlinear solver has targeted two-root HTTP regression; check SHA-specific gates. Do not weaken oracle to a single result.
+
+
+## 2026-10-15 — Actualización SY-Q-16: capacidad acotada verificada
+- La clasificación histórica Lite BLOCKED para este fixture queda superada por solver afín/cuadrático y prueba nativa de ambas raíces en desktop/tablet/mobile. Lite SHA f211e8935dcb543482ddaeeafcdddb20d135d2bf, cumulative 38787638040 y browser 38787637795 SUCCESS (6 comprobaciones específicas de Q16).
+- Plus SHA 28ab5abdc7a0db03de78c9268a8d18ee4b793b9f, cumulative 38786503451 y H1d 38786503536 SUCCESS; ambas soluciones probadas en HTTP. Plus ingreso cases por interfaz MathLive sigue SIN ACREDITAR.
+- Capacidad Lite limitada a dos ecuaciones polinómicas racionales, una afín y otra hasta grado dos, soluciones reales; no certifica sistemas generales, raíces complejas de sistemas, familias infinitas o cualquier sistema con dos ecuaciones no lineales. Los rechazos no equivalen a resolución.
+- El test intake histórico no demuestra solución; la evidencia actual está en syntax309SyQ16.solver.test.ts y e2e/syntax309-syq16.spec.ts. Teclado virtual por pulsación y otros navegadores pendientes. H2/SG28 OPEN, DIST multinodo BLOCKED.
