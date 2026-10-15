@@ -1467,4 +1467,19 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("7");
   });
 
+  it("SY-U-16: nonbreaking Unicode spaces preserve addition and worker reentry", () => {
+    const row = rows["SY-U-16"];
+    expect(row.nota).toContain("U+00A0");
+    const source = "3\u00a0+\u00a04";
+    expect(row.entrada.replace(/ /g, "\u00a0")).toBe(source);
+    expect(row.esperado).toBe("7");
+    const parsed = parseExpression(source).algebrite;
+    expect(evaluate(parsed)).toBe("7");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-16",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("7");
+  });
+
 });
