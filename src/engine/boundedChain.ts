@@ -11,8 +11,8 @@ export interface BoundedChain {
   resultText: string;
 }
 export function solveBoundedChain(source: string): BoundedChain {
-  const text = source.replace(/\\\\leq?/g, "<=").replace(/\\\\geq?/g, ">=").replace(/≤/g, "<=").replace(/≥/g, ">=").replace(/\\s+/g, "");
-  const match = /^([+-]?(?:\\d+(?:\\.\\d+)?|\\.\\d+))(<=|<)([A-Za-z])(<=|<)([+-]?(?:\\d+(?:\\.\\d+)?|\\.\\d+))$/.exec(text);
+  const text = source.replace(/\\leq?/g, "<=").replace(/\\geq?/g, ">=").replace(/≤/g, "<=").replace(/≥/g, ">=").replace(/\s+/g, "");
+  const match = /^([+-]?(?:\d+(?:\.\d+)?|\.\d+))(<=|<)([A-Za-z])(<=|<)([+-]?(?:\d+(?:\.\d+)?|\.\d+))$/.exec(text);
   if (!match) throw new Error("Desigualdad encadenada fuera del alcance lineal acotado.");
   const lower = Number(match[1]), upper = Number(match[5]);
   if (!Number.isFinite(lower) || !Number.isFinite(upper) || lower >= upper)
