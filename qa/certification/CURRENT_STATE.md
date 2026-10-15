@@ -1,5 +1,11 @@
 # Current Certification State
 
+## 2026-10-15 — Verificación SY-V-24 y avance SY-V-25
+- SY-V-24 PASS bilateral: Lite SHA fff2c61d680242e4b51afd7bf335d6c3261098db cumulative 38710040630, H1d 38710040661, build 38710040628 y UI genérico 38710040670 SUCCESS. Plus SHA b310ce1c374c649b3502d17e11018c9b1d30e136 cumulative 38710535064 y H1d 38710535053 SUCCESS. Alcance fixture módulo complejo acotado, controles y reentrada; no certifica todas las entradas abs de SymPy/MathLive.
+- SY-V-25: Lite SHA 2c2acd4ce60fb10e7815fc8d524e1818d2a8b121 cumulative 38710733254 SUCCESS (100 archivos PASS), H1d 38710733176 seguía ejecutándose. Plus SHA e8fe2d351e22a5eaf12a2368aa64a27342f193d1 cumulative 38710741404 y H1d 38710741426 IN_PROGRESS. SY-V-25 OPEN hasta confirmación por SHA bilateral.
+- Bloqueos globales H2/SG28 OPEN, DIST multinodo BLOCKED.
+
+
 ## 2026-10-15 — Inicio SY-V-25 (exponencial con sustitución explícita)
 - Fixture original: \\mathrm{e}^{x} \\text{con} x=0, operación valor, esperado 1. Separamos la expresión del texto que indica la sustitución, sin inventar sintaxis ni descartar el requisito x=0.
 - Lite test tests/syntax309SyV25.audit.test.ts commit 2c2acd4ce60fb10e7815fc8d524e1818d2a8b121: parseo de \\mathrm{e}^{x}, sustitución explícita x=0, controles x=1 y reentrada. Plus backend/tests/test_syntax309_syv25.py commit e8fe2d351e22a5eaf12a2368aa64a27342f193d1: POST /evaluate con expression=e^x, substitutions x=0, MathResponse y reentrada, control x=1.
