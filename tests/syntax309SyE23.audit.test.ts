@@ -1568,4 +1568,18 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(String(diagnostic.message)).toMatch(/incomplet|operador|operand|syntax|sintax|unexpected|expresi[oó]n/i);
   });
 
+  it("SY-U-23: leading multiplication operator requires a left operand", () => {
+    const row = rows["SY-U-23"];
+    expect(row.entrada).toBe("*2");
+    expect(row.operacion).toBe("error");
+    expect(row.esperado).toContain("operador sin operando");
+    let failure: unknown;
+    try { evaluate(parseExpression(row.entrada).algebrite); }
+    catch (error) { failure = error; }
+    expect(failure, "Missing left operand must not become a valid result").toBeDefined();
+    const diagnostic = failure as {code?: unknown; message?: unknown};
+    expect(diagnostic.code).toBe(ErrorCode.PARSE_ERROR);
+    expect(String(diagnostic.message)).toMatch(/operador|operand|syntax|sintax|unexpected|expresi[oó]n/i);
+  });
+
 });
