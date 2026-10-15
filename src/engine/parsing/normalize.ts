@@ -139,8 +139,8 @@ function normalizeUnicodePaste(input: string): string {
     .replace(/π/g, "\\pi")
     .replace(/θ/g, "\\theta")
     .replace(/∞/g, "\\infty")
-    .replace(/≤/g, "\\le")
-    .replace(/≥/g, "\\ge")
+    .replace(/≤/g, "<=")
+    .replace(/≥/g, ">=")
     .replace(/≠/g, "\\ne")
     .replace(/±/g, "\\pm")
     .replace(/[’′]/g, (mark, index: number, original: string) =>
