@@ -4795,3 +4795,11 @@ Verificar gates Lite 176e8c5 y Plus dff3816; corregir cualquier regresión del c
 ### Siguiente paso exacto
 Verificar Plus gates 38690173912, 38690173890 y 38690173898 en SHA 9e47b89, corregir regresiones si ocurren, cerrar SY-V-10 solo con PASS bilateral y comenzar siguiente caso oficial de Syntax309.
 
+
+## 2026-10-15 — SY-V-10 PASS bilateral / SY-V-11 en CI
+- SY-V-10 automatizado PASS bilateral. Lite SHA b5bcabed2dc91fd216acee8fef5c6284dc56b22c cumulative 38688991015, H1d 38688990881, build 38688990947, E2E genérico 38688991034 SUCCESS. Plus SHA 9e47b89481ae6afe392d208b57b148603e220207 cumulative 38690173912, H1d 38690173890, SG28 prototipo 38690173898 SUCCESS. E2E genérico no acredita UI específica ni certificación multinodo.
+- SY-V-11 fixture oficial `\\int_{0}^{1}x\\,dx` valor esperado fracción exacta `\\frac{1}{2}`. Pruebas originales de exactitud y reentrada publicadas Lite SHA a5ebb80550d04262c8719f8c316c9aa2f859dea6 (tests/syntax309SyE23.audit.test.ts) y Plus SHA dbab381fd08624a0630fd10fb233f07301f31bdb (backend/tests/test_syntax309_syv11.py). GitHub Actions Lite cumulative 38691357111, H1d 38691357052, build 38691357057, E2E genérico 38691357343, Plus cumulative 38691366017 y H1d 38691365993 IN_PROGRESS al consultar.
+- SY-V-11 OPEN hasta CI del SHA indicado. Syntax309 OPEN; H2/SG28 OPEN; DIST multinodo BLOCKED. No deploy.
+### Siguiente paso exacto
+Comprobar conclusiones/logs de gates SY-V-11, corregir la capa de fallas reales y pasar al fixture oficial SY-V-12 `\\int x\\,dy` esperado `xy+C` solo tras evidencia suficiente.
+
