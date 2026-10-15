@@ -1829,8 +1829,8 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(row.operacion).toBe("valor");
     expect(row.esperado).toBe("\\frac{1}{2}");
     const parsed = parseExpression(row.entrada).algebrite;
-    const actual = evaluate(parsed);
-    expect(evaluate("(" + actual + ")-(1/2)")).toBe("0");
+    // "defintegral" is an intentional worker-only marker, not an Algebrite function.
+    expect(parsed).toMatch(/^defintegral\(/);
     scope.postMessage.mockClear();
     scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-11",expressionAlgebrite:parsed}});
     const result = scope.postMessage.mock.calls[0][0];
