@@ -12,6 +12,7 @@ on:
       - 'e2e/syntax309-syq10.spec.ts'
       - 'e2e/syntax309-syq11.spec.ts'
       - 'e2e/syntax309-syq12.spec.ts'
+      - 'e2e/syntax309-syq13.spec.ts'
       - 'package.json'
       - 'package-lock.json'
       - 'playwright.config.ts'
@@ -38,4 +39,4 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Native desktop/tablet/mobile scientific result verification
-        run: npx playwright test e2e/syntax309-scientific.spec.ts e2e/syntax309-syq08.spec.ts e2e/syntax309-syq09.spec.ts e2e/syntax309-syq10.spec.ts e2e/syntax309-syq11.spec.ts e2e/syntax309-syq12.spec.ts
+        run: npx playwright test e2e/syntax309-scientific.spec.ts e2e/syntax309-syq08.spec.ts e2e/syntax309-syq09.spec.ts e2e/syntax309-syq10.spec.ts e2e/syntax309-syq11.spec.ts e2e/syntax309-syq12.spec.ts e2e/syntax309-syq13.spec.ts
