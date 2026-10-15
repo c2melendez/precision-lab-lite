@@ -4861,3 +4861,18 @@ Fixture oficial \lim_{x\to0^{+}}\frac{1}{x}, esperado +\infty. Verificar extracc
 ### Siguiente paso exacto — SY-V-15
 Fixture original \lim_{x\to\infty}\frac{1}{x}, valor esperado 0. Comprobar fuente, dirección/punto infinito, valor a tolerancia explícita o exacto según ruta y reentrada real; no declarar respuesta exacta a partir de una muestra finita. Mantener gates por SHA y tablero.
 
+
+## 2026-10-15 — SY-V-15 recíproco al infinito
+- Fixture original \lim_{x\to\infty}\frac{1}{x}, operacion=valor, esperado 0.
+- Lite: fuente original -> parser punto oo -> handler real con transporte simulado -> resultLatex exactamente 0, confidence SYMBOLIC -> reentrada de salida real con requestId nuevo.
+- Corrección de producto Lite: reciprocalLimitAtInfinity resuelve exactamente ±1/variable para puntos oo/-oo y comparte regla entre worker inline y calcLimit; elimina la dependencia de la última muestra finita para esta familia. El fallback numérico de otros límites se conserva y no queda certificado en general. Metadata del worker ahora conserva la distinción de prueba exacta frente a aproximación numérica.
+- Controles Lite: variable t, recíproco positivo/negativo, ambos infinitos, ruta calcLimit exacta; regla no aplica a t, sin(t) ni punto finito.
+- Primer SHA Lite 176b408daf06962d415674349c68ed207aa75cf8 cumulative 38697148794 FAILURE (1285 PASS/1 FAIL/30 TODO): nuevas pruebas pasaron; tests/calculus.test.ts esperaba NUMERIC_FALLBACK para un resultado ahora exacto SYMBOLIC. Clasificación HARNESS desactualizado, corregido reforzando ambas regresiones de infinitos a cero exacto y confidence SYMBOLIC.
+- Plus frontend: fuente original -> detectCalculusIntent, variable x/punto oo/dirección both, conversión íntegra 1/x. Backend: /limit con traducción explícita y MathResponse, texto/LaTeX exacto 0, errores nulos; reentrada del result_text real en /evaluate, aproximación cero y requestId distinto.
+- SY-V-15 PASS bilateral en alcance descrito. Lite SHA da6106faba884624aa43f0a952d22461d0f140a3: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38697304633 (1286 PASS +30 TODO), H1d 38697304666, build 38697304652 y E2E científico genérico 38697304669 SUCCESS. Plus SHA 40967048d303adb10b8dc1c785f639ac9bc58e00: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38697154070 (1171 backend PASS +1 XFAIL; 835 frontend PASS +28 TODO), H1d 38697154001 SUCCESS. Logs jobs 116296808441/116296328230/116296327940 inspeccionados; conclusiones verificadas por SHA.
+- Alcance: parser/handler Lite y detector/conversor/HTTP Plus separados, no teclado/MathLive/browser específico de SY-V-15. No certificar otros límites al infinito por esta regla acotada. TODO/XFAIL no PASS.
+- Tablero global actualizado bilateralmente. Syntax309/IN625/H2/SG28 OPEN; DIST multinodo BLOCKED. Sin despliegue de producción.
+
+### Siguiente paso exacto — SY-V-16
+Fixture original \sum_{k=1}^{10}k, operacion=valor, esperado 55. Verificar fuente original, índice y límites, ruta de suma finita correcta, exactitud y reentrada real. No desviar una suma finita al parser genérico si usa marcador específico. Mantener gates por SHA y tablero; después SY-V-17 suma simbólica hasta n.
+
