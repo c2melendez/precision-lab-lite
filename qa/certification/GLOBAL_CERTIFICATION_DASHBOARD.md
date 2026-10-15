@@ -2,6 +2,21 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-Q-21 PASS en Lite navegador y Plus conversor/HTTP; siguiente SY-Q-22
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial x\leq2, operación resolver, esperado x\in(-\infty,2]. El 2 está incluido; los valores mayores quedan excluidos y no existe cota inferior finita.
+- No se encontró un defecto de producto en los caminos probados. Se añadieron regresiones permanentes; no se cambia el motor para imponer igualdad textual entre representaciones matemáticamente equivalentes.
+- Lite conserva su salida relacional x <= 2, devuelta como \text{x <= 2}. Es equivalente sobre los reales al intervalo (-∞,2]; NO se afirma que Lite imprima ese intervalo ni que dibuje un extremo infinito. La interpretación relacional tiene límite inferior no acotado y cierre en 2. La apertura del extremo infinito pertenece a la notación del intervalo equivalente, no a un número real adicional.
+- Lite tests/syntax309SyQ21.audit.test.ts 6/6 PASS: fuente exacta \leq, isInequality sin isEquation, operador <=, variable x, solver y handler reales con transporte simulado, salida relacional exacta y correspondencia semántica con el intervalo esperado. Controles x<2 excluye 2, 2\geq x invierte lados correctamente, 3x\leq6, -x\geq-2 y cambio de cota a 3.
+- Lite e2e/syntax309-syq21.spec.ts 9/9 específicos PASS con MathLive y Web Worker auténticos, escritorio/tablet/móvil. Fuente oficial y controles estricto/invertido; se lee el operador y la cota de la salida realmente visible, se exige x<=2 o x<2 según el caso y se comprueban valores finitos de ambos lados y en 2. No basta con encontrar el dígito 2. No acredita todas las pulsaciones del teclado, otros navegadores ni una gráfica del intervalo.
+- Lite SHA efab861d0b369709f3375fea2bfebd5ce7d04a65: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38795237253 SUCCESS, job 116629768552, 1370 PASS +30 TODO en 122 archivos; typecheck/build SUCCESS. Build diagnostic 38795237221 y H1d 38795237235 (21/21) SUCCESS. Scientific UI https://github.com/c2melendez/precision-lab-lite/actions/runs/38795237326 SUCCESS, job 116629767012, 78/78; todos en el mismo SHA.
+- Plus frontend syntax309SyQ21.audit.test.ts 2/2 PASS del conversor real: x\leq2 -> x<=2, conservación de < estricto y conversión de comparación invertida \geq. Backend test_syntax309_syq21_http.py 6/6 PASS HTTP real: payload ASCII correspondiente, MathResponse, input_text, resultado exacto Interval(-oo, 2), LaTeX de (-∞,2], extremo izquierdo abierto/derecho cerrado y controles de signo/cota/dirección/estrictez.
+- Conversor y HTTP Plus se prueban por separado. La traducción de la fuente oficial al canal ASCII está explícita en el test; no se atribuye al backend aceptación de LaTeX crudo ni se acredita el flujo integrado Plus MathLive/teclado/UI de esta fuente.
+- Plus SHA 16e7f3020ba4cd6f7f7e648ed8ec10eb88e0ce2c: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38795244609 SUCCESS. Backend job 116629794091: 1262 PASS +1 XFAIL; frontend job 116629794567: 845 PASS +28 TODO en 76 archivos, typecheck/build SUCCESS. H1d 38795244568 (38/38) SUCCESS, mismo SHA.
+- SY-Q-21 PASS bajo esos canales y testigos; no certifica inecuaciones univariadas generales, raíces aproximadas, precisión de cotas no enteras ni reentrada de cualquier notación de conjuntos. Este paso modifica pruebas y registro, no producto. No sumar ejecuciones/controles como requisitos oficiales únicos.
+- Siguiente objetivo exacto SY-Q-22: x<=2 escrito en ASCII, esperado x\in(-\infty,2]. Verificar el canal ASCII explícito y que <= no sea confundido con una igualdad; no sustituir su fuente por el macro del caso anterior.
+- Tablero y registros sincronizados bilateralmente. Syntax309/IN625/H2/SG28 OPEN; DIST-01..08 BLOCKED. TODO/XFAIL no son PASS; no despliegue ni cambios de producción.
+
 ## 2026-10-15 — SY-Q-20 PASS por intención explícita de ecuación; siguiente SY-Q-21
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial x^{2}-4, operación convención; sin =, al pedir ecuación se trata como x^{2}-4=0 o se avisa. Se distingue evaluar la expresión de pedir sus raíces.
@@ -189,7 +204,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-D Delimitadores | 14 | Recorrido hasta D-14; PASS por alcance registrado, no cierre UI universal |
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
 | SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
-| SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-20, PASS en Lite acción nativa y Plus conversor/HTTP bajo alcance descrito; siguiente Q-21. Otros gaps históricos siguen abiertos |
+| SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-21, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente Q-22. Otros gaps históricos siguen abiertos |
 | SY-M Matrices/vectores | 20 | Pendiente de esta secuencia; no significa módulo sin pruebas |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
@@ -212,7 +227,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-Q-21 (x≤2; intervalo hasta 2 incluido y extremo infinito abierto), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-Q-22 (x<=2 escrito en ASCII; conservar comparación no estricta), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
