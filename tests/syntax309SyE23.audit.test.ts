@@ -1402,4 +1402,22 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(["x^2", "x**2", "x^{2}"]).toContain(canonical);
   });
 
+  it("SY-U-12: Unicode root gives two or explicit rejection", () => {
+    const row = rows["SY-U-12"];
+    expect(row.entrada).toBe("√4");
+    expect(row.operacion).toBe("convencion");
+    let parsed: string;
+    try { parsed = parseExpression(row.entrada).algebrite; }
+    catch (error) { expect(String(error).length).toBeGreaterThan(0); return; }
+    let value: string;
+    try { value = evaluate(parsed); }
+    catch (error) { expect(String(error).length).toBeGreaterThan(0); return; }
+    expect(value).toBe("2");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-12",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    if (!result.success) { expect(result.error || result.errorMessage).toBeTruthy(); return; }
+    expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("2");
+  });
+
 });
