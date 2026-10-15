@@ -2,6 +2,23 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-Q-18 PASS en Lite navegador y Plus HTTP; siguiente SY-Q-19
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial x+y=3; esperado una ecuación, dos incógnitas: x=3-y con y libre. No se selecciona una solución numérica ni una variable silenciosamente.
+- Diagnóstico inicial Lite: Científica rechazaba múltiples variables y remitía a Álgebra, que está oculta en navegación y tampoco implementa selección. El motor solveAlgebra ya puede aislar x con y simbólica; se corrigió el flujo público, sin sustituirlo por un oráculo.
+- Primer commit Lite b3a084df76d65b6203691468a16ab141a9833b12: cumulative 38790604054, build 38790603954, H1d 38790604071 y SG28 38790604226 SUCCESS. Browser 38790604084 FAILURE, 48 PASS /6 FAIL: el selector no aparecía porque detectRelationIntent clasificaba la igualdad como relación implícita y retornaba antes de llegar a la selección. Fallo real de prioridad de rutas, no matemático ni de equivalencia del oráculo.
+- Corrección Lite b9c19e941bacdf124f8abac186c251e82a337af0: las relaciones ordinarias con varias variables ofrecen Variable a despejar, inicialmente vacía. Se conserva primero la presentación de relación y su uso gráfico; solo después de elegir explícitamente un símbolo se invoca solveAlgebra para él. Las definiciones f(x)=... conservan su prioridad. El resultado indica Solución para x; y libre(s), o la alternativa elegida. La elección se vincula a la entrada y se limpia al cambiarla.
+- No se reabre una pestaña oculta ni se agrega un modo de cálculo. El selector vive en Científica; x=3-y y y=3-x son vistas de la misma familia. Los demás símbolos se conservan como parámetros, no como valores fijados.
+- Lite SHA FINAL b9c19e941bacdf124f8abac186c251e82a337af0: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38791252349 SUCCESS, job 116616071725, 1353 PASS +30 TODO en 119 archivos; typecheck/build SUCCESS. Build diagnostic 38791252094, H1d 38791251977 (21/21), SG28 cancelación 38791252192 (12/12) y scientific UI 38791252215 (54/54) SUCCESS en el mismo SHA.
+- Lite tests/syntax309SyQ18.audit.test.ts 2/2 PASS: fixture oficial, identidad simbólica (3-y)+y-3=0 para y libre, testigos de sustitución adicionales, handler real con transporte simulado, reentrada de su resultado real como ecuación equivalente y controles al elegir y o escalar coeficientes.
+- Lite e2e/syntax309-syq18.spec.ts: 6/6 PASS específicos con MathLive y Web Worker auténticos en escritorio/tablet/móvil (job 116616071635, run 38791252215). Comprueba presentación inicial como relación, selector vacío, elección explícita de x o y, resultado y etiqueta del parámetro libre, reentrada del LaTeX realmente emitido con nuevo requestId y limpieza de selección al pasar a a+b=5. No acredita cada pulsación del teclado virtual ni otros navegadores.
+- Plus ya admitía variable explícita en POST /api/v1/solve. solve_service añade advertencia pública Se despeja x; parámetros libres: y. Omitir variable con x+y=3 mantiene AMBIGUOUS_VARIABLE. No cambia schemas ni inventa una variable por defecto.
+- Plus SHA d19a33681090f145bd77aeea8cbb53f2c449fd88: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38790613853 SUCCESS. Backend job 116613876752: 1228 PASS +1 XFAIL, incluidas 3/3 pruebas test_syntax309_syq18_http.py; frontend job 116613877130: 841 PASS +28 TODO y typecheck/build SUCCESS. H1d 38790613723 (38/38) SUCCESS, mismo SHA.
+- Plus HTTP real valida MathResponse y warnings, conserva exclusivamente y en los símbolos libres de la solución al elegir x, demuestra la identidad por simplificación simbólica y prueba valores adicionales; reingresa x= seguido del resultado real y verifica equivalencia con requestId diferente. Elegir y y coeficientes escalados también se comprueba. Plus UI/MathLive y su selección visible siguen SIN ACREDITAR.
+- SY-Q-18 PASS en los canales y testigos descritos; no certifica el despeje de toda ecuación paramétrica, condiciones excepcionales de coeficientes simbólicos, ramas ni todos los dominios de parámetros. El motor y sus limitaciones previas no se declaran universalmente certificados por exponer el selector.
+- Próximo objetivo exacto SY-Q-19: entrada x=y=3, operación error, esperado error claro o interpretación declarada de igualdad encadenada. Verificar que no se presente una cadena ambigua como ecuación ordinaria resuelta.
+- Tablero y registros sincronizados bilateralmente. Syntax309/IN625/H2/SG28 OPEN, DIST-01..08 BLOCKED. TODO/XFAIL no son PASS; regresiones SG28 no certifican DIST multinodo. Sin despliegue ni cambios de producción.
+
 ## 2026-10-15 — SY-Q-17 PASS en Lite navegador y Plus HTTP; siguiente SY-Q-18
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial SY-Q-17 \begin{cases}x>1\\ x<3\end{cases}, operación resolver, esperado x\in(1,3). La intersección excluye 1 y 3 e incluye 2; se verifica el producto, no solo un oráculo externo.
@@ -142,7 +159,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-D Delimitadores | 14 | Recorrido hasta D-14; PASS por alcance registrado, no cierre UI universal |
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
 | SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
-| SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-17, PASS en Lite navegador y Plus HTTP bajo alcance descrito; siguiente Q-18. Otros gaps históricos siguen abiertos |
+| SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-18, PASS en Lite navegador y Plus HTTP bajo alcance descrito; siguiente Q-19. Otros gaps históricos siguen abiertos |
 | SY-M Matrices/vectores | 20 | Pendiente de esta secuencia; no significa módulo sin pruebas |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
@@ -165,7 +182,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-Q-18 (x+y=3; despeje x=3-y con parámetro y libre), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-Q-19 (x=y=3; error claro o interpretación declarada de igualdad encadenada), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
