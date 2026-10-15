@@ -1482,4 +1482,17 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("7");
   });
 
+  it("SY-U-17: fullwidth digits and plus preserve exact five and reentry", () => {
+    const row = rows["SY-U-17"];
+    expect(row.entrada).toBe("２＋３");
+    expect(row.esperado).toBe("5");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("5");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-17",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("5");
+  });
+
 });
