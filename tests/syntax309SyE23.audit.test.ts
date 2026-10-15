@@ -1420,4 +1420,21 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("2");
   });
 
+  it("SY-U-13: original Unicode pi retains nine-decimal precision and symbolic reentry", () => {
+    const row = rows["SY-U-13"];
+    expect(row.entrada).toBe("π");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("3.141592654");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const value = evaluate(parsed);
+    expect(Number(value).toFixed(9)).toBe(row.esperado);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-13",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-U-13");
+    const repeated = parseExpression(result.resultLatex).algebrite;
+    expect(Number(evaluate(repeated)).toFixed(9)).toBe(row.esperado);
+  });
+
 });
