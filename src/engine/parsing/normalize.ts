@@ -786,7 +786,7 @@ export function preprocessLatex(latex: string): string {
 
   // SY-V-23: conjugado de literal complejo rectangular, sin transformar
   // expresiones simbolicas ni introducir una funcion CAS no soportada.
-  expr = expr.replace(/\\\\overline\\{\\s*([+-]?\\d+(?:\\.\\d+)?)\\s*([+-])\\s*(\\d+(?:\\.\\d+)?)\\s*\\\\?(?:mathrm\\{i\\}|i)\\s*\\}/g,
+  expr = expr.replace(/\\overline\{\s*([+-]?\d+(?:\.\d+)?)\s*([+-])\s*(\d+(?:\.\d+)?)\s*(?:\\mathrm\{i\}|i)\s*\}/g,
     (_whole, real, sign, imag) => `(${real}${sign === "+" ? "-" : "+"}${imag}*i)`);
 
   // IN625 A3 — operadores/combinatoria y relaciones equivalentes.
