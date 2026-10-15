@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-22 PASS bilateral; SY-U-23 en CI
+- SY-U-22 entrada `2+` (error expresión incompleta): Lite SHA 4739994312e754093765aee545d616b31ecc3ede cumulative 38672343133, H1d 38672343553, build 38672343179 y E2E genérico 38672343208 SUCCESS. Plus SHA c4d507e805d0d65142fb444580fe6a5f3a682677 cumulative 38672350048 y H1d 38672350037 SUCCESS. PASS bilateral para alcance automatizado; E2E genérico no implica prueba UI específica del caso.
+- SY-U-23 fixture oficial `*2` («error claro: operador sin operando»): pruebas permanentes del rechazo semántico y código de error añadidas a Lite `tests/syntax309SyE23.audit.test.ts` commit 647bd29495fe35af80258085064c44e55f41ab61 y Plus `backend/tests/test_syntax309_sye23.py` commit f0d55058b874baa3748a7e4ec9c1ab66a969206b; no se aceptará resultado válido `2`.
+- Nuevas corridas Lite cumulative 38673304639, H1d 38673304632, build 38673304590, E2E genérico 38673304596; Plus cumulative 38673314378, H1d 38673314261 en ejecución inicial. SY-U-23 OPEN pendiente de verificar resultados finales y logs por SHA.
+- Syntax309 OPEN; SG28/H2 OPEN, DIST multinodo BLOCKED; sin despliegues.
+### Siguiente paso exacto
+Inspeccionar SY-U-23 acumulativos y logs por SHA; si FALLA clasificar y corregir sin relajar oráculo; tras PASS bilateral iniciar fixture oficial SY-U-24.
+
+
 ## 2026-10-14 — SY-U-21 PASS bilateral; SY-U-22 en CI
 - SY-U-21 `--3` -> 3: Lite parser fix SHA 538e9ae48f7f64521a6803e922fb45cfe954ac96, cumulative 38670459765, H1d 38670459807, build 38670459776, UI genérico 38670459766 todos SUCCESS. Plus SHA 21ee11f22d9ee4834b1456568455648e2055f056, cumulative 38670314472 y H1d 38670314473 SUCCESS. Alcance automatizado PASS bilateral; E2E genérico no equivale a E2E caso específico.
 - SY-U-22 fixture matriz `2+` operación error, esperado «error claro: expresión incompleta». Pruebas permanentes implementadas Lite `tests/syntax309SyE23.audit.test.ts` commit 4739994312e754093765aee545d616b31ecc3ede, Plus `backend/tests/test_syntax309_sye23.py` commit c4d507e805d0d65142fb444580fe6a5f3a682677. Oráculos exigen rechazo, error semántico y no devolver 2 como cálculo válido.
