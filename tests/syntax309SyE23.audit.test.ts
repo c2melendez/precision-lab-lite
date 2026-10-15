@@ -1680,4 +1680,24 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(new Set(repeated.replace(/\s/g, "").split("+"))).toEqual(new Set(terms));
   });
 
+  it("SY-V-03: pi is a constant and r remains a symbolic variable across worker reentry", () => {
+    const row = rows["SY-V-03"];
+    expect(row.entrada).toBe("\\pi r^{2}");
+    expect(row.operacion).toBe("interpretacion");
+    expect(row.esperado).toBe("\\pi\\cdot r^{2}");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const value = evaluate(parsed);
+    expect(value).toMatch(/pi/);
+    expect(value).toMatch(/r/);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-03",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-03");
+    const repeated = evaluate(parseExpression(result.resultLatex).algebrite);
+    expect(repeated.replace(/\\s/g, "")).toBe(value.replace(/\\s/g, ""));
+    expect(repeated).toMatch(/pi/);
+    expect(repeated).toMatch(/r/);
+  });
+
 });
