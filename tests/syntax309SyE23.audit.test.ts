@@ -1495,4 +1495,18 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("5");
   });
 
+  it("SY-U-18: consecutive plus/minus operators yield negative one and worker reentry", () => {
+    const row = rows["SY-U-18"];
+    expect(row.entrada).toBe("2+-3");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("-1");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("-1");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-18",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("-1");
+  });
+
 });
