@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-14 diagnóstico Plus / SY-U-15 pruebas
+- SY-U-14 Lite SHA 55abceb577f39b9802df9be0cdc00a0e8e98012d: cumulative 38659756191, H1d 38659756152, build 38659756109, E2E genérico 38659756098 SUCCESS. Plus SHA 5d035dd9a8e8fefdc6e151f1dc5159cd2e8c9e00: cumulative 38659762357 FAILURE backend en test_syu14_thin_latex_spaces_http_and_reentry; frontend SUCCESS, H1d 38659762372 SUCCESS. Causa PRODUCT backend: normalización desconocía separadores LaTeX `\\,`.
+- Fix Plus backend/app/services/parsing.py SHA 2da7fc62fe40d6015306a94826b32cb45e7c7b67: convierte comandos de espaciado matemático a espacio antes del parse, sin alterar aritmética. No cerrar SY-U-14 hasta gate de ese cambio o posterior.
+- SY-U-15 fixture oficial `3\\;+\\;4` => `7`, tests originales con reentrada publicados Lite SHA 14007e733a9b9f075d3a875994c38ba37e6d9966 y Plus SHA 8bac479ff2c40d830035f324b524e0745eb3a9a8. CI Lite cumulative 38660231377, H1d 38660231396, build 38660231367, E2E genérico 38660231308 IN_PROGRESS; Plus cumulative 38660236919 y H1d 38660236927 QUEUED. Deben verificarse ambos SY-U-14 y SY-U-15 bajo SHA final.
+- Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo real BLOCKED; sin despliegue.
+### Siguiente paso exacto
+Inspeccionar resultados y logs de ambos gates finales; corregir defectos sin relajar oráculos y cerrar solo alcance probado. Si PASS bilateral, avanzar al siguiente fixture oficial de la matriz.
+
+
 ## 2026-10-14 — SY-U-13 PASS bilateral y SY-U-14 espacios finos en validación
 - SY-U-13 valor Unicode π 3.141592654 PASS bilateral en alcance automatizado: Lite SHA 59186f6f38c770aa516f2ed3ade73dc52cacf45f cumulative 38659445593, H1d 38659445518, build 38659445627 y E2E genérico 38659445791 SUCCESS. Plus SHA 53dde779ff1732860f34dce8ff2704f18320d240 cumulative 38659323354 y H1d 38659323311 SUCCESS. El E2E genérico no demuestra UI específica del caso.
 - SY-U-14 fixture oficial entrada LaTeX `3\\,+\\,4`, operación valor, esperado 7. Pruebas permanentes de fuente literal, resultado y reentrada publicadas Lite SHA 55abceb577f39b9802df9be0cdc00a0e8e98012d en tests/syntax309SyE23.audit.test.ts y Plus SHA 5d035dd9a8e8fefdc6e151f1dc5159cd2e8c9e00 en backend/tests/test_syntax309_sye23.py.
