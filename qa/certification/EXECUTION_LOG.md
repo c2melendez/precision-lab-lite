@@ -4819,3 +4819,8 @@ Revisar logs/status de nuevo SHA Lite y Plus, corregir fallos y certificar alcan
 ### Siguiente paso exacto
 Revisar conclusiones y logs por SHA Lite c1752e5 y Plus 22d3dd1, clasificar fallas y cerrar alcance bilateral solo cuando corresponda; avanzar a SY-V-12 `\\int x\\,dy` con constante C y variable y.
 
+
+## 2026-10-15 — SY-V-11 cerrado y SY-V-12 iniciado
+- SY-V-11 Lite c1752e5: cumulative 38691564852, H1d 38691564926, build 38691564930, E2E generico 38691564972 SUCCESS; Plus 22d3dd1: cumulative 38691792723, H1d 38691792693, SG28 prototipo 38691792757 SUCCESS. PASS automatizado bilateral, SG28/DIST real no certificado.
+- SY-V-12 fuente integral x dy, esperado xy+C. Lite fad5697 tests y cumulative 38692018733; Plus implementacion 40d15d7 y tests cafe0f8, cumulative 38691996868; ambos inicialmente en progreso. SY-V-12 OPEN hasta gates finales. Syntax309 OPEN, H2/SG28 OPEN y DIST multinodo BLOCKED.
+- Siguiente: verificar CI de ambos SHA, corregir defectos y comenzar SY-V-13 limite sin(x)/x esperado 1.
