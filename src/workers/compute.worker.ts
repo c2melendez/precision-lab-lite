@@ -21,6 +21,7 @@ import { tryCbrtSign } from "../engine/cbrtSign";
 import { solveLinearInequalitySystem } from "../engine/stepEngine/linearInequalitySystem";
 import type { InequalityOperator } from "../engine/parsing/inequalitySplit";
 import { solveInequality } from "../engine/inequality";
+import { intersectLinearInequalities, type LinearConstraint } from "../engine/linearInequalityIntersection";
 import { solveAlgebra } from "../engine/stepEngine/algebra";
 import {
   calcDerivative,
@@ -98,6 +99,7 @@ export type ComputeRequest =
       lower: number;
       upper: number;
     }
+  | { type: "inequalityIntersection"; requestId: string; inequalities: LinearConstraint[]; variable: string }
   | { type: "solveSystem"; requestId: string; equationsAlgebrite: string[]; variables: string[] }
   | { type: "linearSystem"; requestId: string; equationsAlgebrite: string[]; variables: string[] }
   | {
@@ -237,6 +239,17 @@ function handle(msg: ComputeRequest): MathResult {
       return runCalculus(msg.requestId, msg.expressionAlgebrite, () =>
         calcDefiniteIntegral(msg.expressionAlgebrite, msg.variable, msg.lower, msg.upper),
       );
+    case "inequalityIntersection":
+      try {
+        return {
+          success: true, resultLatex: intersectLinearInequalities(msg.inequalities, msg.variable),
+          resultViewLabel: "Intersección real", steps: [], hasDetailedSteps: false,
+          confidence: "SYMBOLIC", requestId: msg.requestId,
+        };
+      } catch (err) {
+        const appErr = err as AppError;
+        return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), msg.requestId);
+      }
     case "solveSystem":
       return handlePolynomialSystem(msg.equationsAlgebrite, msg.variables, msg.requestId);
     case "linearSystem":

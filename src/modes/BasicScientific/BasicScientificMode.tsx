@@ -168,9 +168,8 @@ export function BasicScientificMode() {
       const allInequalities = parsedRows.every((p) => p.isInequality);
 
       if (allInequalities) {
-        // Alcance confirmado en linearInequalitySystem.ts: exactamente 2
-        // variables — el propio motor rechaza cualquier otro conteo con
-        // un mensaje explícito, no hace falta duplicar esa validación acá.
+        // One variable is an exact intersection on the real line; two
+        // variables retain the existing polygon-region solver.
         const allVariables = new Set<string>();
         parsedRows.forEach((p) => p.freeVariables.forEach((v) => allVariables.add(v)));
         const variables = [...allVariables].sort();
@@ -182,7 +181,11 @@ export function BasicScientificMode() {
         const worker = getWorker();
         worker.onmessage = (e: MessageEvent<MathResult>) =>
           onSuccess("Científica (sistema de inecuaciones)", rows.join("; "), e.data);
-        dispatchWorker(worker, { type: "linearInequalitySystem", requestId, inequalities, variables });
+        if (variables.length === 1) {
+          dispatchWorker(worker, { type: "inequalityIntersection", requestId, inequalities, variable: variables[0] });
+        } else {
+          dispatchWorker(worker, { type: "linearInequalitySystem", requestId, inequalities, variables });
+        }
         return;
       }
 
