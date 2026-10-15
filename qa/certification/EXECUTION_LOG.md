@@ -4711,3 +4711,13 @@ Comprobar Plus cumulative 38679916360 y H1d 38679916341 por SHA 7d830bc; revisar
 ### Siguiente paso exacto
 Revisar todos los gates sobre SHA Lite 7407ab9 y Plus 819b43f; diagnosticar fallo de SY-V-04 producto/parser frente a harness, corregir manteniendo test de entrada original, recertificar y después continuar SY-V-05.
 
+
+## 2026-10-14 — SY-V-04 falla original y corrección de función efímera en CI
+- Plus cumulative 38680308014 SHA 819b43f59470bcbe68731eebd3a3bb011532d6f2 FAILURE: 1159 PASS / 1 FAIL / 1 XFAIL; test `test_syv04_function_definition_application_original_expression` recibió `success=false`. Plus H1d 38680307986 SUCCESS.
+- Lite cumulative 38680324474 SHA 7407ab9c18e2072e8dcbb82fe1f3e914c9b3ba87 FAILURE: 1271 PASS / 1 FAIL / 30 TODO. Caso SY-V-04 con `Carácter no reconocido: ";"`; H1d 38680324515 y build 38680324482 SUCCESS.
+- Fix Lite `src/engine/parsing/index.ts` SHA 7d98c1b6975b0841073c3948e55af9b2ae243b31: interpreta una definición seguida inmediatamente de llamada como sustitución local y remite expresión sustituida al parser existente. Nuevos gates cumulative 38680850390, H1d 38680850291, build 38680850379 y E2E genérico 38680850431 QUEUED.
+- Fix Plus `backend/app/services/evaluate_service.py` SHA efc277a881e4eeb12036cc3d7fb1dc03f5c0f605: reconoce definición efímera, parsea cuerpo y argumento mediante parser existente y evalúa la sustitución. Nuevos cumulative 38680823082, H1d 38680823026, SG28 38680823063 IN_PROGRESS; no se manipula flags de producción.
+- SY-V-04 OPEN hasta gates confirmados por SHA; Syntax309 OPEN, SG28/H2 OPEN y DIST multinodo BLOCKED.
+### Siguiente paso exacto
+Inspeccionar cumulative/H1d/build/E2E Lite sobre 7d98c1b y cumulative/H1d/SG28 Plus sobre efc277a. Diagnosticar fallos, corregir sin relajar oráculos; solo entonces cerrar SY-V-04 bilateral e iniciar SY-V-05 `f(x)=x^{2};\\ f(x+1)` esperado `(x+1)^{2}`.
+
