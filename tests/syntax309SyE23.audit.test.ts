@@ -1972,4 +1972,33 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(reciprocalLimitAtInfinity("1/t", "t", "0")).toBeNull();
   });
 
+
+  it("SY-V-16: original finite sum preserves index, bounds, exact 55 and reentry", () => {
+    const row = rows["SY-V-16"];
+    expect(row.entrada).toBe("\\sum_{k=1}^{10}k");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("55");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(parsed.replace(/\s+/g, "")).toBe("sum(k,k,1,10)");
+    expect(evaluate(parsed)).toBe("55");
+    // Bounds are inclusive and must not silently default to zero or stop at nine.
+    expect(evaluate(parseExpression("\\sum_{k=2}^{10}k").algebrite)).toBe("54");
+    expect(evaluate(parseExpression("\\sum_{k=1}^{9}k").algebrite)).toBe("45");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-16",expressionAlgebrite:parsed}});
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-16");
+    expect(result.resultLatex).toBe("55");
+    const returned = parseExpression(result.resultLatex).algebrite;
+    expect(evaluate(returned)).toBe("55");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-16-reentry",expressionAlgebrite:returned}});
+    const again = scope.postMessage.mock.calls[0][0];
+    expect(again.success, JSON.stringify(again)).toBe(true);
+    expect(again.requestId).toBe("SY-V-16-reentry");
+    expect(again.resultLatex).toBe("55");
+  });
+
 });
