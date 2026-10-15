@@ -2,6 +2,22 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-Q-22 PASS en Lite navegador y Plus conversor/HTTP; siguiente SY-Q-23
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial x<=2, operación resolver, esperado x\in(-\infty,2]; nota Operador ASCII <=. Se usa la fuente ASCII original, no el macro \leq del caso anterior.
+- El parser Lite identifica <= antes de separar ecuaciones: isInequality=true, isEquation=false, operador <= y variable x. La salida x <= 2 es equivalente al intervalo esperado sobre los reales: 2 incluido, valores mayores excluidos, sin cota inferior finita. No se exige a Lite imprimir una notación de intervalo diferente de su representación relacional correcta.
+- Lite tests/syntax309SyQ22.audit.test.ts 7/7 PASS: fuente/nota originales, clasificación y solución, handler real con transporte simulado e identidad de solicitud, control x=2 como ecuación y controles estrictos, invertidos, coeficiente negativo/escalado y cambio de cota. El control matemático conserva la semántica del extremo cerrado.
+- Fallo inicial de harness: cumulative Lite 38796396191, SHA 5956ac498ad7e10f4fec11ce03c1017ffb4dabf4, 1376 PASS /1 FAIL /30 TODO. La prueba enviaba requestId syq22 y esperaba syq21; cálculo y clasificación habían pasado. Se corrigió la referencia y se vinculó envío/aserción a una constante única. No se cambió producto ni se debilitó el oráculo matemático. Commit intermedio 03a57fa1b8488bd904373bf651071e910da2a093; evidencia final únicamente en SHA 52814565a9d51b1ac6f3e574b87dd8bb79f526ac.
+- Lite SHA FINAL 52814565a9d51b1ac6f3e574b87dd8bb79f526ac: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38796794200 SUCCESS, job 116635190906, 1377 PASS +30 TODO en 123 archivos; typecheck/build SUCCESS. Build diagnostic 38796793807 y H1d 38796794231 (21/21) SUCCESS. Scientific UI https://github.com/c2melendez/precision-lab-lite/actions/runs/38796793771 SUCCESS, job 116635189268, 87/87, todos en el mismo SHA.
+- Lite e2e/syntax309-syq22.spec.ts 9/9 específicos PASS con MathLive/Web Worker auténticos en escritorio/tablet/móvil. Se ingresa ASCII x<=2, x<2 y 2>=x; se lee el operador y la cota del resultado visible y se verifica pertenencia de valores de ambos lados y en 2. Después se introduce x=2: salida exacta de ecuación x=2, 2 visible y requestId nuevo. Así se acredita distinción pública de desigualdad/ecuación, no solo un resultado textual parecido.
+- La entrada nativa del test se asigna al editor como ASCII; MathLive puede canonicalizar su serialización. No se afirma ejecución de cada pulsación física/virtual de esos caracteres ni cobertura de otros navegadores.
+- Plus backend/tests/test_syntax309_syq22_http.py 6/6 PASS HTTP real con el fixture ASCII sin traducción: MathResponse, operation inequality, tipo scalar, input_text original, intervalo exacto Interval(-oo, 2) y su LaTeX, controles con espacios/lados/estrictez/coeficiente. La solicitud separada /solve con x=2 entrega operation solve, equation_solutions, una solución 2 y requestId distinto.
+- Plus frontend syntax309SyQ22.audit.test.ts 2/2 PASS del conversor real: conserva ambos caracteres de <= y distingue x=2 y x<2. Conversor y HTTP están probados por separado; Plus MathLive/UI integrada de este caso sigue SIN ACREDITAR.
+- Plus SHA b2190cda656d194035923c46f2ab05bec77aca80: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38796402244 SUCCESS. Backend job 116633826487: 1268 PASS +1 XFAIL; frontend job 116633827215: 847 PASS +28 TODO en 77 archivos, typecheck/build SUCCESS. H1d 38796402245 (38/38) SUCCESS, mismo SHA.
+- SY-Q-22 PASS en los canales y testigos descritos; solo pruebas/registro/workflow, sin modificación del motor ni del producto. No certifica todas las comparaciones ASCII, cotas aproximadas, reentrada de cualquier conjunto ni paridad de todos los canales. Controles y reejecuciones no se cuentan como requisitos oficiales únicos.
+- Siguiente objetivo exacto SY-Q-23: x≥1 con símbolo Unicode ≥, esperado x\in[1,\infty). Verificar esa fuente original, inclusión de 1, dirección de la desigualdad y extremo infinito abierto; no sustituir la entrada Unicode por >= sin comprobar su conversión.
+- Tablero y registros sincronizados bilateralmente. Syntax309/IN625/H2/SG28 OPEN; DIST-01..08 BLOCKED. TODO/XFAIL no son PASS. Sin despliegue ni cambios de producción.
+
 ## 2026-10-15 — SY-Q-21 PASS en Lite navegador y Plus conversor/HTTP; siguiente SY-Q-22
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial x\leq2, operación resolver, esperado x\in(-\infty,2]. El 2 está incluido; los valores mayores quedan excluidos y no existe cota inferior finita.
@@ -204,7 +220,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-D Delimitadores | 14 | Recorrido hasta D-14; PASS por alcance registrado, no cierre UI universal |
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
 | SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
-| SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-21, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente Q-22. Otros gaps históricos siguen abiertos |
+| SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-22, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente Q-23. Otros gaps históricos siguen abiertos |
 | SY-M Matrices/vectores | 20 | Pendiente de esta secuencia; no significa módulo sin pruebas |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
@@ -227,7 +243,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-Q-22 (x<=2 escrito en ASCII; conservar comparación no estricta), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-Q-23 (x≥1 con Unicode; inclusión de 1 e intervalo hacia infinito), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
