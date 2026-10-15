@@ -27,13 +27,14 @@ describe("SY-Q-22 ASCII comparison before equation splitting",()=>{
   expect(represented).toEqual({lower:-Infinity,lowerClosed:false,upper:2,upperClosed:true});
   const belongs=(x:number)=>x<=represented.upper;
   expect([-1000000,1,2,3].map(belongs)).toEqual([true,true,true,false]);
+  const requestId = "syq22";
   scope.postMessage.mockClear();
   scope.onmessage!({data:{type:"solveInequality",diffAlgebrite:p.algebrite,
-   operator:p.inequalityOperator,variable:"x",requestId:"syq22"}});
+   operator:p.inequalityOperator,variable:"x",requestId}});
   const reply=scope.postMessage.mock.calls.at(-1)![0];
   expect(reply.success,JSON.stringify(reply)).toBe(true);
   expect(reply.resultLatex).toBe("\\text{x <= 2}");
-  expect(reply.requestId).toBe("syq22");
+  expect(reply.requestId).toBe(requestId);
  });
  it("distinguishes an ordinary equality from <= before solving",()=>{
   const p=parseExpression("x=2");
