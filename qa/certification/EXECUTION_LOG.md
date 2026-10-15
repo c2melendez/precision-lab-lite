@@ -4777,3 +4777,8 @@ Verificar gates Lite 176e8c5 y Plus dff3816; corregir cualquier regresión del c
 - SY-V-08 PASS bilateral Lite 38687281825/38687281871/38687281760/38687281830, Plus 38687904331/38687904337/38687904332.
 - SY-V-09 tests Lite SHA 623d9ff, Plus SHA f2b9b1e. Lite cumulative 38688296876 FAIL: antiderivada 1/2*x^2 sin C, 1276 PASS/1 FAIL/30 TODO.
 - Fix Lite SHA 962055e preserva constante para integral(x,x); CI cumulative 38688439139 H1d 38688439162 build 38688439110 E2E 38688439164 IN_PROGRESS. Plus cumulative 38688314670 aun IN_PROGRESS al consultar. SY-V-09 OPEN.
+
+## SY-V-09 seguimiento — 2026-10-14
+- Plus SHA f2b9b1e cumulative 38688314670 FAILURE en caso SY-V-09 por success=false al evaluar integral de x; H1d 38688314662 SUCCESS. Plus backend/app/services/evaluate_service.py correccion acotada SHA 9047ae6863c0a85daa8d2c6050c62af3f2b27f95; nuevos gates cumulative 38688617641, H1d 38688617762, SG28 prototipo 38688617717 QUEUED al consultar.
+- Lite SHA 623d9ff cumulative 38688296876 FAILURE 1276 PASS/1 FAIL/30 TODO: antiderivada sin C. Primer parche SHA 962055e cumulative 38688439139 FAILURE, seguia omitiendo C por formato de entrada distinto. Segundo parche SHA 7aa00d5e29b7486300608cd6f13d4f4315d315c1 preserva C en llamadas integral() indefinidas; CI cumulative 38688574773, H1d 38688574813, build 38688574774 SUCCESS, E2E generico 38688574778 IN_PROGRESS al consultar.
+- SY-V-09 OPEN: comprobar cumulative y H1d actuales y reentrada, diagnosticar cualquier error restante antes de avanzar a SY-V-10. SG28/H2 OPEN y DIST multinodo BLOCKED.
