@@ -30,6 +30,20 @@ function splitMatrixBody(body: string): string[][] {
 }
 
 function parseSingleMatrix(text: string): { env: string; matrix: string[][]; rest: string } | null {
+  // SY-M-06: numeric nested lists, including MathLive's sized brackets.
+  // This is a data grammar, never JavaScript/JSON code execution.
+  const ascii = text.trim().replace(/\\left(?=\[)|\\right(?=\])/g, "");
+  const lists = /^\[\s*(\[[^[\]]+\](?:\s*,\s*\[[^[\]]+\])*)\s*\]$/.exec(ascii);
+  if (lists) {
+    const matrix = [...lists[1].matchAll(/\[([^[\]]+)\]/g)]
+      .map(row => row[1].split(",").map(cell => cell.trim()));
+    const numeric = /^[+-]?\d+(?:\.\d+)?(?:\/[+-]?\d+)?$/;
+    if (!matrix.every(row => row.every(cell => numeric.test(cell)))) return null;
+    if (matrix.some(row => row.length !== matrix[0].length)) {
+      throw new Error("Todas las filas de la matriz deben tener la misma longitud.");
+    }
+    return {env: "ascii", matrix, rest: ""};
+  }
   // SY-M-05: paired external brackets around a plain matrix environment.
   const wrapped = /^\\left\[\s*\\begin\{matrix\}([\s\S]*?)\\end\{matrix\}\s*\\right\]/.exec(text.trim());
   if (wrapped) {

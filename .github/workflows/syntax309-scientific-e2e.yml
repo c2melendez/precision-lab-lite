@@ -28,6 +28,7 @@ on:
       - 'e2e/syntax309-sym03.spec.ts'
       - 'e2e/syntax309-sym04.spec.ts'
       - 'e2e/syntax309-sym05.spec.ts'
+      - 'e2e/syntax309-sym06.spec.ts'
       - 'package.json'
       - 'package-lock.json'
       - 'playwright.config.ts'
@@ -54,4 +55,4 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Native desktop/tablet/mobile scientific result verification
-        run: npx playwright test e2e/syntax309-scientific.spec.ts e2e/syntax309-syq08.spec.ts e2e/syntax309-syq09.spec.ts e2e/syntax309-syq10.spec.ts e2e/syntax309-syq11.spec.ts e2e/syntax309-syq12.spec.ts e2e/syntax309-syq13.spec.ts e2e/syntax309-syq14.spec.ts e2e/syntax309-syq15.spec.ts e2e/syntax309-syq16.spec.ts e2e/syntax309-syq17.spec.ts e2e/syntax309-syq18.spec.ts e2e/syntax309-syq19.spec.ts e2e/syntax309-syq20.spec.ts e2e/syntax309-syq21.spec.ts e2e/syntax309-syq22.spec.ts e2e/syntax309-syq23.spec.ts e2e/syntax309-sym01.spec.ts e2e/syntax309-sym02.spec.ts e2e/syntax309-sym03.spec.ts e2e/syntax309-sym04.spec.ts e2e/syntax309-sym05.spec.ts
+        run: npx playwright test e2e/syntax309-scientific.spec.ts e2e/syntax309-syq08.spec.ts e2e/syntax309-syq09.spec.ts e2e/syntax309-syq10.spec.ts e2e/syntax309-syq11.spec.ts e2e/syntax309-syq12.spec.ts e2e/syntax309-syq13.spec.ts e2e/syntax309-syq14.spec.ts e2e/syntax309-syq15.spec.ts e2e/syntax309-syq16.spec.ts e2e/syntax309-syq17.spec.ts e2e/syntax309-syq18.spec.ts e2e/syntax309-syq19.spec.ts e2e/syntax309-syq20.spec.ts e2e/syntax309-syq21.spec.ts e2e/syntax309-syq22.spec.ts e2e/syntax309-syq23.spec.ts e2e/syntax309-sym01.spec.ts e2e/syntax309-sym02.spec.ts e2e/syntax309-sym03.spec.ts e2e/syntax309-sym04.spec.ts e2e/syntax309-sym05.spec.ts e2e/syntax309-sym06.spec.ts
