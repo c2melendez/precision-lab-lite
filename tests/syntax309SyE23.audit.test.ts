@@ -2052,4 +2052,42 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(scope.postMessage.mock.calls[0][0]).toEqual(expect.objectContaining({success:false,errorCode:ErrorCode.COMPLEXITY_LIMIT}));
   });
 
+
+  it("SY-V-18: original finite product preserves bounds, yields 120 and reenters", () => {
+    const row = rows["SY-V-18"];
+    expect(row.entrada).toBe("\\prod_{k=1}^{5}k");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("120");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(["product(k,k,1,5)", "product((k),k,1,5)"]).toContain(parsed.replace(/\s+/g, ""));
+    // product() is dispatched by the real worker's finite-product helper.
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-18",expressionAlgebrite:parsed}});
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-18");
+    expect(result.resultLatex).toBe("120");
+    expect(result.confidence).toBe("SYMBOLIC");
+    const returned = parseExpression(result.resultLatex).algebrite;
+    expect(evaluate(returned)).toBe("120");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-18-reentry",expressionAlgebrite:returned}});
+    const again = scope.postMessage.mock.calls[0][0];
+    expect(again.success, JSON.stringify(again)).toBe(true);
+    expect(again.requestId).toBe("SY-V-18-reentry");
+    expect(again.resultLatex).toBe("120");
+    for (const [source, expected] of [
+      ["\\prod_{k=3}^{5}k", "60"],
+      ["\\prod_{k=1}^{4}k", "24"],
+      ["\\prod_{j=1}^{5}j", "120"],
+    ]) {
+      scope.postMessage.mockClear();
+      scope.onmessage!({data:{type:"evaluate",requestId:"product-bounds-control",expressionAlgebrite:parseExpression(source).algebrite}});
+      const control = scope.postMessage.mock.calls[0][0];
+      expect(control.success, JSON.stringify(control)).toBe(true);
+      expect(control.resultLatex).toBe(expected);
+    }
+  });
+
 });
