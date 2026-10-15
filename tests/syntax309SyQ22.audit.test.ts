@@ -33,7 +33,7 @@ describe("SY-Q-22 ASCII comparison before equation splitting",()=>{
   const reply=scope.postMessage.mock.calls.at(-1)![0];
   expect(reply.success,JSON.stringify(reply)).toBe(true);
   expect(reply.resultLatex).toBe("\\text{x <= 2}");
-  expect(reply.requestId).toBe("syq21");
+  expect(reply.requestId).toBe("syq22");
  });
  it("distinguishes an ordinary equality from <= before solving",()=>{
   const p=parseExpression("x=2");
