@@ -1,5 +1,21 @@
 # Current Certification State
 
+## 2026-10-15 — SY-V-21 alias acotado de permutaciones
+- Fixture P(5,2), operacion=valor, esperado 20; nota exige evitar ambigüedad con función P definida por usuario.
+- Primer Lite 3b82fa8cb9afd5c58055d76b43e376f73dc036c7 cumulative 38706306877 FAILURE: 1293 PASS/1 FAIL/30 TODO; parser trataba P como variable y el motor rechazaba P*(5,2). Primera Plus 88b5dd2f49a74abb566754a649b7a71a79c5d88e cumulative 38706312569 backend FAILURE (1178 PASS/2 FAIL/1 XFAIL), sin soporte explícito del alias.
+- Convención implementada: llamada completa P(n,r) con literales enteros y 0 <= r <= n <= 170, sujeta además a las guardas existentes de complejidad/resultado. P no se registra como función global; definiciones locales completas se resuelven antes. No habilita alias simbólico, llamadas compuestas ni registro persistente de funciones.
+- Lite parsePermutationAlias valida dominio; parser conserva procedencia mediante marcador interno permutationalias; handler calcula producto descendente exacto con BigInt y devuelve interpretedLatex nPr / resultViewLabel Permutaciones. Mantiene reentrada real del resultado numérico con nuevo requestId.
+- Plus parser reconoce solo esa llamada numérica completa con FallingFactorial y guardas; evaluate_service declara alias en resultado y router entrega warning público de permutaciones/nPr. Si substitutions declara P, rechaza VALIDATION_ERROR en vez de sobreescribirla. Frontend conserva la llamada y la definición local ASCII completa sin convertirla en otra función.
+- Pruebas: original P(5,2)=20, controles P(6,2)=30, P(5,0)=1, P(5,5)=120, reentrada real. P(x,y)=x+y;P(5,2) devuelve 7 y P(x)=x+1;P(5) devuelve 6; llamada posterior aislada vuelve a convención 20 (sin registro persistente). Rechazos de dominio negativo, r>n, n>170; API añade argumento fraccionario y declaración P conflictiva.
+- SY-V-21 PASS bilateral en alcance descrito. Lite SHA 979ea108a9483b606a73e98d127cc7835ff3d370: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38706649471 (1294 PASS +30 TODO), H1d 38706649750, build 38706649469 y E2E científico genérico 38706649479 SUCCESS. Plus SHA 3d2b6e65beb48ed4fff46b5522ac4144063b5735: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38706653377 (1180 backend PASS +1 XFAIL; 841 frontend PASS +28 TODO), H1d 38706653381, aislamiento prototipo SG28 38706653320 y cancelación UI SG28 38706653389 SUCCESS. Logs jobs 116327596770/116327611262/116327610760 inspeccionados; conclusiones verificadas por SHA. Prototipos/regresiones SG28 no acreditan DIST multinodo.
+- Alcance parser/handler Lite y conversor/HTTP Plus separados; presencia de interpretación/advertencia en contrato de salida, no verificación visual nativa. No acredita teclado/MathLive/browser específico ni funciones P persistentes. Conserva gaps de registry previos.
+- No certifica todos los valores hasta 170 ni todas las permutaciones; solo testigos y rutas descritos. Guardas de complejidad/resultado pueden rechazar magnitudes grandes. TODO/XFAIL no PASS.
+- Tablero actualizado bilateralmente. Syntax309/IN625/H2/SG28 OPEN; DIST multinodo BLOCKED; sin despliegue de producción.
+
+### Siguiente paso exacto — SY-V-22
+Fixture i^{2}, operacion=convencion, esperado -1 como unidad imaginaria o i^{2} como variable según modo; debe declararse interpretación. Investigar modo/símbolos disponibles sin inventar selector ni sobreescribir variable declarada; verificar fuente original, contrato visible y reentrada. Después SY-V-23 conjugado de 3+4i, esperado 3-4i.
+
+
 ## 2026-10-15 — SY-V-20 binomial simbólico de pares
 - Fixture original \binom{n}{2}, operacion=equivalente, esperado \frac{n(n-1)}{2}.
 - Primer Lite c145f6a9e692194ef20a177190166928c3a9c37e cumulative 38704459050 FAILURE (1291 PASS/1 FAIL/30 TODO): salida n!/(2*(n-2)!) sin forma polinómica ni extensión combinatoria para cardinalidades 0/1. Prueba de equivalencia general no daba cero.

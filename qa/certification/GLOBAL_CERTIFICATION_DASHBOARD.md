@@ -2,6 +2,13 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## Actualización verificada — SY-V-21 (2026-10-15)
+- Avance secuencial: SY-V-21 PASS acotado; siguiente SY-V-22 (convención de i como unidad imaginaria o variable).
+- P(5,2)=20 por alias numérico completo de permutaciones, con interpretación nPr explícita. Definición local P tiene prioridad: testigos 7 y 6; controles 30/1/120, límites y reentrada real.
+- No hay registro persistente de funciones. Alias limitado a literales enteros 0 <= r <= n <= 170 y guardas de complejidad; no se certifica todo ese rango ni formas simbólicas/compuestas. Declaración conflictiva P en substitutions Plus se rechaza.
+- SY-V-21 PASS bilateral en alcance descrito. Lite SHA 979ea108a9483b606a73e98d127cc7835ff3d370: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38706649471 (1294 PASS +30 TODO), H1d 38706649750, build 38706649469 y E2E científico genérico 38706649479 SUCCESS. Plus SHA 3d2b6e65beb48ed4fff46b5522ac4144063b5735: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38706653377 (1180 backend PASS +1 XFAIL; 841 frontend PASS +28 TODO), H1d 38706653381, aislamiento prototipo SG28 38706653320 y cancelación UI SG28 38706653389 SUCCESS. Logs jobs 116327596770/116327611262/116327610760 inspeccionados; conclusiones verificadas por SHA. Prototipos/regresiones SG28 no acreditan DIST multinodo.
+- Científica PARCIAL, porcentaje global ND; contrato de interpretación/advertencia probado, render/UI nativa específica pendiente. IN625/H2/SG28 OPEN y DIST BLOCKED. Fotografías inferiores son históricas.
+
 ## Actualización verificada — SY-V-20 (2026-10-15)
 - Avance secuencial: SY-V-20 PASS acotado; siguiente SY-V-21 (P(5,2)=20 bajo convención explícita de permutaciones).
 - Binomial simbólico completo de variable de una letra sobre 2: forma exacta n(n-1)/2 y dominio combinatorio declarado. Pruebas generales de equivalencia, bases, recurrencia y conteo de pares; reentrada de la salida real.
@@ -61,7 +68,7 @@ Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisi
 
 ## Lectura rápida
 - Dos frentes principales en evaluación: IN625 (625 casos) y Syntax309 (309 casos). No representan todas las matrices del proyecto ni deben sumarse como requisitos independientes sin deduplicación.
-- Syntax309 ha abordado 7/12 secciones; el avance secuencial llega a SY-V-20. Esto mide recorrido, NO porcentaje certificado.
+- Syntax309 ha abordado 7/12 secciones; el avance secuencial llega a SY-V-21. Esto mide recorrido, NO porcentaje certificado.
 - La regresión actual también ejecuta Matrices, Estadística, Unidades y Gráficas. No es correcto describir toda la CI como exclusivamente sintaxis.
 - Geometría y cierre visual completo requieren inventario de evidencia; ND no significa cero pruebas ni producto inexistente.
 - SG28/H2 OPEN; DIST multinodo BLOCKED. El bloqueo no impide el frente matemático autorizado.
@@ -103,7 +110,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-N Números/precisión | 31 | Abordada; reconciliar convenciones y canales |
 | SY-D Delimitadores | 14 | Recorrido hasta D-14; PASS por alcance registrado, no cierre UI universal |
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
-| SY-V Variables/cálculo | 28 | V-20: gates verdes, siguiente V-21 |
+| SY-V Variables/cálculo | 28 | V-21: gates verdes, siguiente V-22 |
 | SY-Q Ecuaciones/sistemas | 23 | Pendiente de esta secuencia; pueden existir otras suites previas |
 | SY-M Matrices/vectores | 20 | Pendiente de esta secuencia; no significa módulo sin pruebas |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
@@ -127,7 +134,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-V-21 (P(5,2)=20, convención de permutaciones), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-V-22 (convención de i como unidad imaginaria o variable), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
