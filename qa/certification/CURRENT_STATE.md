@@ -1,5 +1,11 @@
 # Current Certification State
 
+## SY-V-09 seguimiento — 2026-10-14
+- Plus SHA f2b9b1e cumulative 38688314670 FAILURE en caso SY-V-09 por success=false al evaluar integral de x; H1d 38688314662 SUCCESS. Plus backend/app/services/evaluate_service.py correccion acotada SHA 9047ae6863c0a85daa8d2c6050c62af3f2b27f95; nuevos gates cumulative 38688617641, H1d 38688617762, SG28 prototipo 38688617717 QUEUED al consultar.
+- Lite SHA 623d9ff cumulative 38688296876 FAILURE 1276 PASS/1 FAIL/30 TODO: antiderivada sin C. Primer parche SHA 962055e cumulative 38688439139 FAILURE, seguia omitiendo C por formato de entrada distinto. Segundo parche SHA 7aa00d5e29b7486300608cd6f13d4f4315d315c1 preserva C en llamadas integral() indefinidas; CI cumulative 38688574773, H1d 38688574813, build 38688574774 SUCCESS, E2E generico 38688574778 IN_PROGRESS al consultar.
+- SY-V-09 OPEN: comprobar cumulative y H1d actuales y reentrada, diagnosticar cualquier error restante antes de avanzar a SY-V-10. SG28/H2 OPEN y DIST multinodo BLOCKED.
+
+
 ## 2026-10-14 — SY-V-09 integral indefinida, regresion Lite y fix en CI
 - SY-V-08 PASS bilateral automatizado: Lite SHA 2afe0b4 cumulative 38687281825 H1d 38687281871 build 38687281760 E2E generico 38687281830 SUCCESS; Plus SHA a0d3f34 cumulative 38687904331 H1d 38687904337 SG28 prototipo 38687904332 SUCCESS. H2/SG28 y DIST multinodo real siguen OPEN/BLOCKED.
 - SY-V-09 entrada oficial integral de x, esperado x^2/2+C; tests Lite commit 623d9ff4626d4357d1c72eb9eea07b47337ba978, Plus commit f2b9b1e8740fec8e401df6e48488158bccae42ad, verifican derivada, constante y reentrada.
