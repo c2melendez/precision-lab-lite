@@ -4507,3 +4507,11 @@ Verificar resultados SY-U-08 Lite/Plus por SHA, corregir fallas reales; al PASS 
 - SY-U-09 OPEN hasta PASS verificable por logs/SHA. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED; sin producción.
 ### Siguiente paso exacto
 Consultar gates del SHA final, diagnosticar fallo sin relajar oráculo, registrar cierre si corresponde. Siguiente fixture oficial SY-U-10 es raya corta `2–1` U+2013, operación `convencion`: admitir resultado `1` o aviso explícito según contrato, nunca transformación silenciosa incorrecta.
+
+## 2026-10-14 — SY-U-09 PASS bilateral y SY-U-10 convención en validación
+- SY-U-09 `2−1` U+2212 => `1` PASS bilateral en alcance automatizado. Lite SHA 1f2593ede674fdccee271c9919500ece768d9083 cumulative 38657149583, H1d 38657149676, build 38657149622, regresión UI E2E 38657149580 SUCCESS. Plus SHA 16601bcd6b0c8962d65d48e53a3297cff5f976c0 cumulative 38657187390 y H1d 38657187397 SUCCESS.
+- Siguiente caso oficial SY-U-10: entrada literal `2–1` con U+2013, operación `convencion`, esperado `1` o aviso explícito. Prohibida una interpretación silenciosa diferente. Lite prueba parser/evaluación o error explícito, handler/reentrada si éxito, SHA 5e1e4f3f0564e72d3102f6fe767bdd8243c0ae91. Plus frontend prueba traducción o conservación para rechazo SHA 65eb1bd32cc7ca96495ccd28c41a23d02ebbe0fc; Plus backend HTTP MathResponse valor 1 o error explícito SHA final 2b03e5bd5560f5ecdca568c4941dc7c40a36aea1.
+- CI Lite SHA final: cumulative [38657857695](https://github.com/c2melendez/precision-lab-lite/actions/runs/38657857695), H1d 38657857748, build 38657857806, UI E2E regresión 38657857900, todos IN_PROGRESS al consultar. Plus SHA final: cumulative [38657877130](https://github.com/c2melendez/precision-lab-plus/actions/runs/38657877130), H1d 38657877112, inicialmente QUEUED. No contar SHAs intermedios ni declarar PASS antes de evidencia final.
+- Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo BLOCKED. No UI E2E específico SY-U-10, ni despliegue.
+### Próximo paso exacto
+Consultar conclusiones y logs de gates SY-U-10 por SHA. Si hay falla, clasificar y corregir capa afectada sin debilitar oráculo. Si pasa, cerrar bilateralmente alcance automatizado y obtener siguiente fixture directamente de syntax309_cases.jsonl.
