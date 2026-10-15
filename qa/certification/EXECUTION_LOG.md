@@ -4730,3 +4730,11 @@ Inspeccionar cumulative/H1d/build/E2E Lite sobre 7d98c1b y cumulative/H1d/SG28 P
 ### Siguiente paso exacto
 Consultar gates SY-V-05 correspondientes a SHA 564120a (Lite) y d9550f8 (Plus); si fallan, reparar sin relajar oráculos. Al verificar PASS bilateral pasar a SY-V-06 `g(x,y)=x+y;\\ g(2,3)` esperado 5.
 
+
+## 2026-10-14 — SY-V-05 PASS bilateral; SY-V-06 en CI
+- SY-V-05 `f(x)=x^{2};\\ f(x+1)` PASS bilateral en pruebas automatizadas: Lite SHA 564120aa8aa433eb3df4512e4a3afb6afaa28fb4 cumulative 38682468443, H1d 38682468580, build 38682468478 y E2E genérico 38682468594 SUCCESS; Plus SHA d9550f8a2b4403a3c57a334c0faaa38a5a12ca59 cumulative 38682452036, H1d 38682452030 SUCCESS. E2E genérico no es verificación UI específica.
+- SY-V-06 entrada oficial `g(x,y)=x+y;\\ g(2,3)`, esperado 5. Pruebas permanentes de ingreso original/evaluación/reentrada: Lite `tests/syntax309SyE23.audit.test.ts` SHA 85a70b6b5b4137a2d054f84178e12366be4384ea; Plus `backend/tests/test_syntax309_syv06.py` SHA 5e41ea0fd4f5918fff52acb7cb3673e7e47e0ec0.
+- CI Lite cumulative 38682844521, build 38682844531, H1d 38682844527, E2E genérico 38682844440 QUEUED; Plus cumulative 38682824909 y H1d 38682825042 IN_PROGRESS inicialmente. SY-V-06 OPEN pendiente de validación por SHA. Syntax309 OPEN, H2/SG28 OPEN y DIST multinodo BLOCKED; sin producción.
+### Siguiente paso exacto
+Verificar conclusiones de SY-V-06 sobre SHAs 85a70b6 y 5e41ea0, diagnosticar y corregir parsing de funciones multivariables si falla, preservar oráculos. Solo tras PASS bilateral avanzar SY-V-07 `\\frac{d}{dx}x^{2}` esperado `2x`.
+
