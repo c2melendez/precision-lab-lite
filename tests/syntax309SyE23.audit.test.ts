@@ -1873,7 +1873,7 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(result.success, JSON.stringify(result)).toBe(true);
     expect(result.requestId).toBe("SY-V-13");
     const returned = parseExpression(result.resultLatex).algebrite;
-    const numeric = Number(evaluate(returned));
+    const numeric = compileNumeric(returned, "__unused__")(0);
     expect(Number.isFinite(numeric)).toBe(true);
     expect(numeric).toBeCloseTo(1, 9);
     scope.postMessage.mockClear();
@@ -1881,13 +1881,13 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     const again = scope.postMessage.mock.calls[0][0];
     expect(again.success, JSON.stringify(again)).toBe(true);
     expect(again.requestId).toBe("SY-V-13-reentry");
-    expect(Number(evaluate(parseExpression(again.resultLatex).algebrite))).toBeCloseTo(1, 9);
+    expect(compileNumeric(parseExpression(again.resultLatex).algebrite, "__unused__")(0)).toBeCloseTo(1, 9);
   });
 
   it("preserves a finite near-integer decimal without CAS display truncation", () => {
     const decimal = "0.9999999999999998";
     expect(toLatex(decimal)).toBe(decimal);
     const returned = parseExpression(toLatex(decimal)).algebrite;
-    expect(returned).toBe(decimal);
+    expect(evaluate("(" + returned + ")-(9999999999999998/10000000000000000)")).toBe("0");
   });
 });
