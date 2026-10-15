@@ -4628,3 +4628,12 @@ Consultar gates y logs por SHA del SY-U-21, corregir si falla en la capa identif
 ### Próximo paso
 Comprobar resultados/logs de SY-U-22 por SHA; corregir capa pertinente si hay fallo; registrar evidencia bilateral y seguir SY-U-23 `*2` («operador sin operando»).
 
+
+## 2026-10-14 — SY-U-22 PASS bilateral; SY-U-23 en CI
+- SY-U-22 entrada `2+` (error expresión incompleta): Lite SHA 4739994312e754093765aee545d616b31ecc3ede cumulative 38672343133, H1d 38672343553, build 38672343179 y E2E genérico 38672343208 SUCCESS. Plus SHA c4d507e805d0d65142fb444580fe6a5f3a682677 cumulative 38672350048 y H1d 38672350037 SUCCESS. PASS bilateral para alcance automatizado; E2E genérico no implica prueba UI específica del caso.
+- SY-U-23 fixture oficial `*2` («error claro: operador sin operando»): pruebas permanentes del rechazo semántico y código de error añadidas a Lite `tests/syntax309SyE23.audit.test.ts` commit 647bd29495fe35af80258085064c44e55f41ab61 y Plus `backend/tests/test_syntax309_sye23.py` commit f0d55058b874baa3748a7e4ec9c1ab66a969206b; no se aceptará resultado válido `2`.
+- Nuevas corridas Lite cumulative 38673304639, H1d 38673304632, build 38673304590, E2E genérico 38673304596; Plus cumulative 38673314378, H1d 38673314261 en ejecución inicial. SY-U-23 OPEN pendiente de verificar resultados finales y logs por SHA.
+- Syntax309 OPEN; SG28/H2 OPEN, DIST multinodo BLOCKED; sin despliegues.
+### Siguiente paso exacto
+Inspeccionar SY-U-23 acumulativos y logs por SHA; si FALLA clasificar y corregir sin relajar oráculo; tras PASS bilateral iniciar fixture oficial SY-U-24.
+
