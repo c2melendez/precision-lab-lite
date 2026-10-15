@@ -1,5 +1,12 @@
 # Current Certification State
 
+## 2026-10-15 — SY-V-22 unidad imaginaria (certificación en curso)
+- Fixture oficial i^{2}; operacion=convencion; resultado -1 en modo complejo o expresión simbólica i² si i fuera variable, interpretación declarada obligatoria. Código inspeccionado: Lite constants.ts RESERVERED_CONSTANTS incluye i; Plus parsing.py ALLOWED_CONSTANTS asigna i a sympy.I. No consta selector de modo para redefinir i, por lo que este objetivo verifica la convención existente de constante imaginaria, sin inventar un modo.
+- Tests nuevos: Lite tests/syntax309SyV22.audit.test.ts SHA 9462dd4c7261c04ba3443f63603f40f36832bc77; Plus backend/tests/test_syntax309_syv22.py SHA 45d43727ecdd3f47d368003339a940de79698447. Cubren i²=-1, (-i)²=-1, contraste x², fuente fixture; Plus valida HTTP MathResponse y reentrada real.
+- CI disparado automáticamente: Lite cumulative 38708032511 / H1d 38708032409 / build 38708032427 / E2E científico genérico 38708032461; Plus cumulative 38708036941 / H1d 38708037003. Corridas QUEUED al consultar. No adjudicar PASS antes de concluir ni confundir E2E genérico con comprobación de selector inexistente.
+- SY-V-22 OPEN hasta inspección de resultado y logs en ambos SHA. Siguiente SY-V-23 conjugado de 3+4i; SG28/H2 OPEN, DIST multinodo BLOCKED y sin despliegue.
+
+
 ## 2026-10-15 — SY-V-21 alias acotado de permutaciones
 - Fixture P(5,2), operacion=valor, esperado 20; nota exige evitar ambigüedad con función P definida por usuario.
 - Primer Lite 3b82fa8cb9afd5c58055d76b43e376f73dc036c7 cumulative 38706306877 FAILURE: 1293 PASS/1 FAIL/30 TODO; parser trataba P como variable y el motor rechazaba P*(5,2). Primera Plus 88b5dd2f49a74abb566754a649b7a71a79c5d88e cumulative 38706312569 backend FAILURE (1178 PASS/2 FAIL/1 XFAIL), sin soporte explícito del alias.
