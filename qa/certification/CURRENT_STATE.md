@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-23 PASS bilateral; SY-U-24 convención en CI
+- SY-U-23 `*2` (operador sin operando) PASS en alcance automatizado: Lite SHA 647bd29495fe35af80258085064c44e55f41ab61 cumulative 38673304639, H1d 38673304632, build 38673304590 y E2E genérico 38673304596 SUCCESS; Plus SHA f0d55058b874baa3748a7e4ec9c1ab66a969206b cumulative 38673314378 y H1d 38673314261 SUCCESS. E2E genérico no acredita interacción UI específica.
+- SY-U-24 fila oficial `2\\ 3`, operación convención: esperado 6 o 23 o aviso (dos números separados por espacio). Pruebas permanentes Lite `tests/syntax309SyE23.audit.test.ts` SHA 6bb22766ef8f13e433696e9d77cf70ebfaeedecb, Plus `backend/tests/test_syntax309_sye23.py` SHA 34ab6aa90f31a18ce63cef35ff6786c39cbe917e. Se exige resultado en {6,23} con reentrada coherente, o error explícito estructurado; no cuentan rechazos opacos ni valores arbitrarios.
+- Gates Lite cumulative 38673929601, H1d 38673929554, build 38673929553, E2E genérico 38673929606 iniciados; Plus cumulative 38673939037 y H1d 38673939095 iniciados. SY-U-24 OPEN hasta ver resultados por SHA; próximo fixture SY-U-25 `2++3` (5 o aviso).
+- Syntax309 OPEN; H2/SG28 OPEN y DIST multinodo real BLOCKED; sin deploy.
+### Siguiente paso exacto
+Consultar resultado/logs de SY-U-24 por SHA en ambos repositorios, reparar regresiones confirmadas, registrar cierre únicamente con PASS bilateral y continuar SY-U-25.
+
+
 ## 2026-10-14 — SY-U-22 PASS bilateral; SY-U-23 en CI
 - SY-U-22 entrada `2+` (error expresión incompleta): Lite SHA 4739994312e754093765aee545d616b31ecc3ede cumulative 38672343133, H1d 38672343553, build 38672343179 y E2E genérico 38672343208 SUCCESS. Plus SHA c4d507e805d0d65142fb444580fe6a5f3a682677 cumulative 38672350048 y H1d 38672350037 SUCCESS. PASS bilateral para alcance automatizado; E2E genérico no implica prueba UI específica del caso.
 - SY-U-23 fixture oficial `*2` («error claro: operador sin operando»): pruebas permanentes del rechazo semántico y código de error añadidas a Lite `tests/syntax309SyE23.audit.test.ts` commit 647bd29495fe35af80258085064c44e55f41ab61 y Plus `backend/tests/test_syntax309_sye23.py` commit f0d55058b874baa3748a7e4ec9c1ab66a969206b; no se aceptará resultado válido `2`.
