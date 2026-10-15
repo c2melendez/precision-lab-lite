@@ -4987,3 +4987,10 @@ Fixture i^{2}, operacion=convencion, esperado -1 como unidad imaginaria o i^{2} 
 - Próximo caso oficial: SY-V-25 e^x con x=0 esperado 1; conservar condición de sustitución y no evaluar otra operación.
 - Syntax309/IN625/H2/SG28 OPEN, DIST multinodo BLOCKED, sin despliegue.
 
+
+## 2026-10-15 — Seguimiento SY-V-24 (corrección Plus)
+- Lite SHA fff2c61d680242e4b51afd7bf335d6c3261098db: cumulative 38710040630, build 38710040628, H1d 38710040661, E2E científico genérico 38710040670 SUCCESS.
+- Plus SHA ff205e57aec1b1bb91e182031cbbadbb4faa4740: cumulative 38710048292 FAILURE (backend 1184 PASS/2 FAIL/1 XFAIL; frontend SUCCESS) debido a entrada LaTeX original \\lvert3+4i\\rvert y variantes de signo no reconocidas por parser/guard. H1d 38710048334 SUCCESS, no basta para cerrar.
+- Corrección Plus SHA b310ce1c374c649b3502d17e11018c9b1d30e136 en backend/app/services/parsing.py: normalización limitada de barras LaTeX de literal complejo rectangular a abs(re ± im*i) antes de validar G3; mantiene la seguridad para otras formas y las pruebas originales. Cumulative 38710535064 y H1d 38710535053 QUEUED al consultarlos. SY-V-24 continúa OPEN hasta resultado de ese SHA.
+- Próximo objetivo SY-V-25: \\mathrm{e}^{x} con x=0, esperado 1. SG28/H2 OPEN, DIST multinodo BLOCKED.
+
