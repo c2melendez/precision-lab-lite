@@ -16,7 +16,8 @@ for(const [source,expected] of cases){
   },source);
   await page.locator("button:visible").filter({hasText:/^Calcular$/}).first().click();
   const result=page.locator("[data-result-request-id]").first();
-  await expect(result).toBeVisible();
+  const serialized=await input.evaluate(node=>(node as HTMLElement & {value:string}).value);
+  await expect(result,JSON.stringify({serialized,body:await page.locator("body").innerText()})).toBeVisible();
   await expect(result.getByText(expected,{exact:true})).toBeVisible();
   await expect(result).toHaveAttribute("data-result-reentry-latex",new RegExp(expected+"$"));
  });
