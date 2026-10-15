@@ -1524,4 +1524,19 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("5");
   });
 
+  it("SY-U-20: multiply by negative three and preserve worker reentry", () => {
+    const row = rows["SY-U-20"];
+    expect(row.entrada).toBe("2*-3");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("-6");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("-6");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-20",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-U-20");
+    expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("-6");
+  });
+
 });
