@@ -4589,3 +4589,13 @@ Verificar resultados completos y logs del SHA final SY-U-18 que incluye regresio
 ### Siguiente paso exacto
 Comprobar los resultados y logs de SY-U-19 por SHA; si FALLA diagnosticar y corregir la capa correcta. Si PASS bilateral, avanzar al siguiente fixture oficial SY-U-20 (`2*-3` => `-6`).
 
+
+## 2026-10-14 — SY-U-19 Lite double-minus PRODUCT fix
+- SY-U-16/17/18 bilateral automated gates successful: Lite SHA b0a79d232a254a0162353be8bf77dd484fd1f0aa cumulative 38661650990/H1d 38661650964/build 38661651211/E2E generic 38661650948 SUCCESS; Plus SHA ae1eef5a4e9a490d1198f98c1716a00a7a4ebcb4 cumulative 38661659837/H1d 38661659843 SUCCESS.
+- SY-U-19 source `2--3` expected `5`; Lite initial SHA 104f321d9928bd300da318a023824be7f64fe626 cumulative 38668842213 FAILED 1261 pass/1 fail/30 TODO, got 2 instead of 5. PRODUCT parser: unary negative after subtraction was excluded from operator normalizer.
+- Fix Lite src/engine/parsing/normalize.ts SHA f9a617cb5f6b5761c1ca938d17b7ed27c39cf963: explicitar resta seguida de signo unario `2-(-3)`, conservar 2+-3, 2*-3 y resto de regresiones. Nuevos gates Lite cumulative 38669077527, H1d 38669077594, build 38669077939, E2E generic 38669077551 en curso/cola.
+- Plus SY-U-19 SHA 91635e8fcddcb6f5e7dd270e2c47527e62e15a7b cumulative 38668850147 IN_PROGRESS, H1d 38668850155 SUCCESS al verificar. No atribuir PASS de Plus hasta cumulative concluido.
+- SY-U-19 OPEN; Syntax309 OPEN; H2/SG28 OPEN, DIST multinodo BLOCKED. No deploy.
+### Siguiente paso exacto
+Consultar gates finales y logs para SY-U-19 por SHA actualizado, corregir cualquier regresión, cerrar bilateral solo con evidencia. Siguiente fixture SY-U-20 `2*-3` => -6.
+
