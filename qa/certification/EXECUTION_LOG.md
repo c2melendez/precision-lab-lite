@@ -4544,3 +4544,12 @@ Verificar gates por SHA de SY-U-12, corregir fallas reales, cerrar solo con evid
 ### Siguiente paso exacto
 Verificar gates y logs SHA de SY-U-14, corregir regresiones en capa apropiada, documentar cierre solo al PASS bilateral. Luego siguiente fixture SY-U-15 (`3\\;+\\;4` → 7).
 
+
+## 2026-10-14 — SY-U-14 diagnóstico Plus / SY-U-15 pruebas
+- SY-U-14 Lite SHA 55abceb577f39b9802df9be0cdc00a0e8e98012d: cumulative 38659756191, H1d 38659756152, build 38659756109, E2E genérico 38659756098 SUCCESS. Plus SHA 5d035dd9a8e8fefdc6e151f1dc5159cd2e8c9e00: cumulative 38659762357 FAILURE backend en test_syu14_thin_latex_spaces_http_and_reentry; frontend SUCCESS, H1d 38659762372 SUCCESS. Causa PRODUCT backend: normalización desconocía separadores LaTeX `\\,`.
+- Fix Plus backend/app/services/parsing.py SHA 2da7fc62fe40d6015306a94826b32cb45e7c7b67: convierte comandos de espaciado matemático a espacio antes del parse, sin alterar aritmética. No cerrar SY-U-14 hasta gate de ese cambio o posterior.
+- SY-U-15 fixture oficial `3\\;+\\;4` => `7`, tests originales con reentrada publicados Lite SHA 14007e733a9b9f075d3a875994c38ba37e6d9966 y Plus SHA 8bac479ff2c40d830035f324b524e0745eb3a9a8. CI Lite cumulative 38660231377, H1d 38660231396, build 38660231367, E2E genérico 38660231308 IN_PROGRESS; Plus cumulative 38660236919 y H1d 38660236927 QUEUED. Deben verificarse ambos SY-U-14 y SY-U-15 bajo SHA final.
+- Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo real BLOCKED; sin despliegue.
+### Siguiente paso exacto
+Inspeccionar resultados y logs de ambos gates finales; corregir defectos sin relajar oráculos y cerrar solo alcance probado. Si PASS bilateral, avanzar al siguiente fixture oficial de la matriz.
+
