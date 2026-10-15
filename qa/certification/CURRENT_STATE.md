@@ -1,5 +1,13 @@
 # Current Certification State
 
+## 2026-10-15 — SY-V-23 conjugado complejo (ejecución)
+- SY-V-22 gates de Lite SHA 9462dd4 (cumulative 38708032511, H1d 38708032409, build 38708032427, UI genérico 38708032461) y Plus SHA 45d4372 (cumulative 38708036941, H1d 38708037003): SUCCESS. SY-V-22 PASS bilateral en el alcance declarado de constante imaginaria, sin selector de variable i.
+- SY-V-23 fixture original \\overline{3+4i}, esperado 3-4i. Se añadió conversión acotada de literal rectangular con coeficientes numéricos, manteniendo sin sustitución global las formas simbólicas; Lite normalize.ts pasa al motor la conjugación de partes numéricas; Plus parsing.py normaliza la macro fuente a conj(...) en función allowlisted de SymPy. No constituye soporte de conjugado arbitrario anidado/simbólico.
+- Código Lite SHA ef4cfc0242613cb3f314f6ab40f5d262dbbe4f16; test original/reentrada y signos tests/syntax309SyV23.audit.test.ts SHA 333f6d473a35fe37ad7c7536e22a89f912aef200. Plus código SHA 5c9146154ac29c7b6f940b7484f1e05949d14d46; test HTTP MathResponse/reentrada y signos SHA 88c77dae1ddcb38953a7cfe4462dd5f9e53aeb68.
+- Gates del SHA final: Lite cumulative 38708814459, H1d 38708814503, build 38708814448 y E2E científico genérico 38708814457; Plus cumulative 38708821069 y H1d 38708821038. In progress/queued al registrar, NO PASS anticipado. Revisar logs y corregir fallos reales antes de cerrar SY-V-23.
+- SG28/H2 OPEN; DIST multinodo BLOCKED; sin despliegue a producción.
+
+
 ## 2026-10-15 — SY-V-22 unidad imaginaria (certificación en curso)
 - Fixture oficial i^{2}; operacion=convencion; resultado -1 en modo complejo o expresión simbólica i² si i fuera variable, interpretación declarada obligatoria. Código inspeccionado: Lite constants.ts RESERVERED_CONSTANTS incluye i; Plus parsing.py ALLOWED_CONSTANTS asigna i a sympy.I. No consta selector de modo para redefinir i, por lo que este objetivo verifica la convención existente de constante imaginaria, sin inventar un modo.
 - Tests nuevos: Lite tests/syntax309SyV22.audit.test.ts SHA 9462dd4c7261c04ba3443f63603f40f36832bc77; Plus backend/tests/test_syntax309_syv22.py SHA 45d43727ecdd3f47d368003339a940de79698447. Cubren i²=-1, (-i)²=-1, contraste x², fuente fixture; Plus valida HTTP MathResponse y reentrada real.
