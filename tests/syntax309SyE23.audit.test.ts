@@ -1857,4 +1857,31 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate("(d(" + repeated.replace(/\bC\b/g, "0") + ",y))-x")).toBe("0");
   });
 
+
+  it("SY-V-13: original sinc limit converges to unity through worker and reentry", () => {
+    const row = rows["SY-V-13"];
+    expect(row.entrada).toBe("\\lim_{x\\to0}\\frac{\\sin x}{x}");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("1");
+    const parsed = parseExpression(row.entrada).algebrite;
+    // Algebrite may leave limit() unevaluated; exercise the real worker fallback.
+    expect(parsed.replace(/\s+/g, "")).toMatch(/^limit\(.+,x,0\)$/);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-13",expressionAlgebrite:parsed}});
+    expect(scope.postMessage).toHaveBeenCalledTimes(1);
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-13");
+    const returned = parseExpression(result.resultLatex).algebrite;
+    const numeric = Number(evaluate(returned));
+    expect(Number.isFinite(numeric)).toBe(true);
+    expect(numeric).toBeCloseTo(1, 9);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-13-reentry",expressionAlgebrite:returned}});
+    const again = scope.postMessage.mock.calls[0][0];
+    expect(again.success, JSON.stringify(again)).toBe(true);
+    expect(again.requestId).toBe("SY-V-13-reentry");
+    expect(Number(evaluate(parseExpression(again.resultLatex).algebrite))).toBeCloseTo(1, 9);
+  });
+
 });
