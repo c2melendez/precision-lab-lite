@@ -1214,7 +1214,8 @@ export function preprocessLatex(latex: string): string {
   // El signo negativo tras una resta también es unario: 2--3 = 2-(-3).
   // Mantener agrupación explícita evita que el motor ignore el segundo signo.
   expr = expr
-    .replace(/([+*/-])-([A-Za-z0-9.]+)/g, "$1(-$2)")
+    .replace(/([+*/])-([A-Za-z0-9.]+)/g, "$1(-$2)")
+    .replace(/(?<=[A-Za-z0-9.)])--([A-Za-z0-9.]+)/g, "-(-$1)")
     .replace(/\+\+([A-Za-z0-9.]+)/g, "+$1");
 
   // IN625 B1/B2 — exponentes y subíndices.
