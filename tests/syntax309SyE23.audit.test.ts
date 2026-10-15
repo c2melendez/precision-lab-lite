@@ -1823,4 +1823,20 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate("(d(" + repeated.replace(/\bC\b/g, "0") + ",x))-x")).toBe("0");
   });
 
+  it("SY-V-11: definite integral of x from zero to one equals exact half and reenters", () => {
+    const row = rows["SY-V-11"];
+    expect(row.entrada).toBe("\\int_{0}^{1}x\\,dx");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("\\frac{1}{2}");
+    const parsed = parseExpression(row.entrada).algebrite;
+    const actual = evaluate(parsed);
+    expect(evaluate("(" + actual + ")-(1/2)")).toBe("0");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-11",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-11");
+    expect(evaluate("(" + evaluate(parseExpression(result.resultLatex).algebrite) + ")-(1/2)")).toBe("0");
+  });
+
 });
