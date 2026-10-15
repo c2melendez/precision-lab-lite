@@ -215,7 +215,7 @@ export function BasicScientificMode() {
       const worker = getWorker();
       worker.onmessage = (e: MessageEvent<MathResult>) =>
         onSuccess("Científica (sistema)", rows.join("; "), e.data);
-      dispatchWorker(worker, { type: "linearSystem", requestId, equationsAlgebrite, variables });
+      dispatchWorker(worker, { type: "solveSystem", requestId, equationsAlgebrite, variables });
     },
     [angleMode, getWorker, fail, onSuccess, dispatchWorker],
   );

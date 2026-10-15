@@ -29,6 +29,7 @@ import {
   calcDefiniteIntegral,
 } from "../engine/stepEngine/calculus";
 import { solveLinearSystem } from "../engine/stepEngine/linearSystem";
+import { tryQuadraticSystem } from "../engine/stepEngine/quadraticSystem";
 import {
   toFractionMatrix,
   addMatrices,
@@ -97,6 +98,7 @@ export type ComputeRequest =
       lower: number;
       upper: number;
     }
+  | { type: "solveSystem"; requestId: string; equationsAlgebrite: string[]; variables: string[] }
   | { type: "linearSystem"; requestId: string; equationsAlgebrite: string[]; variables: string[] }
   | {
       type: "matrixOp";
@@ -235,6 +237,8 @@ function handle(msg: ComputeRequest): MathResult {
       return runCalculus(msg.requestId, msg.expressionAlgebrite, () =>
         calcDefiniteIntegral(msg.expressionAlgebrite, msg.variable, msg.lower, msg.upper),
       );
+    case "solveSystem":
+      return handlePolynomialSystem(msg.equationsAlgebrite, msg.variables, msg.requestId);
     case "linearSystem":
       return handleLinearSystem(msg.equationsAlgebrite, msg.variables, msg.requestId);
     case "matrixOp":
@@ -912,6 +916,28 @@ function runCalculus(
       appErr.message ?? String(err),
       requestId,
     );
+  }
+}
+
+function handlePolynomialSystem(equations: string[], variables: string[], requestId: string): MathResult {
+  try {
+    const roots = tryQuadraticSystem(equations, variables);
+    if (roots === null) return handleLinearSystem(equations, variables, requestId);
+    return {
+      success: true,
+      resultLatex: roots.length
+        ? roots.map(pair => variables.map((v, i) => v + " = " + toLatex(pair[i])).join(",\\ ")).join("\\quad\\text{o}\\quad ")
+        : "\\varnothing",
+      interpretedLatex: "\\text{Soluciones reales; sustitución lineal en ecuación cuadrática}",
+      resultViewLabel: "Soluciones reales",
+      steps: [],
+      hasDetailedSteps: false,
+      confidence: "SYMBOLIC",
+      requestId,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), requestId);
   }
 }
 
