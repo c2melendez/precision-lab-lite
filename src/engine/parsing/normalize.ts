@@ -1216,6 +1216,9 @@ export function preprocessLatex(latex: string): string {
   expr = expr
     .replace(/([+*/])-([A-Za-z0-9.]+)/g, "$1(-$2)")
     .replace(/(?<=[A-Za-z0-9.)])--([A-Za-z0-9.]+)/g, "-(-$1)")
+    // SY-U-21: preserve leading double negation of numeric operands.
+    // Restrict to numeric literals so symbolic --x keeps its existing B4 behavior.
+    .replace(/^\s*--(\d+(?:\.\d+)?)(?![\w.])/g, "-(-$1)")
     .replace(/\+\+([A-Za-z0-9.]+)/g, "+$1");
 
   // IN625 B1/B2 — exponentes y subíndices.
