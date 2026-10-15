@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-09 PASS bilateral y SY-U-10 convención en validación
+- SY-U-09 `2−1` U+2212 => `1` PASS bilateral en alcance automatizado. Lite SHA 1f2593ede674fdccee271c9919500ece768d9083 cumulative 38657149583, H1d 38657149676, build 38657149622, regresión UI E2E 38657149580 SUCCESS. Plus SHA 16601bcd6b0c8962d65d48e53a3297cff5f976c0 cumulative 38657187390 y H1d 38657187397 SUCCESS.
+- Siguiente caso oficial SY-U-10: entrada literal `2–1` con U+2013, operación `convencion`, esperado `1` o aviso explícito. Prohibida una interpretación silenciosa diferente. Lite prueba parser/evaluación o error explícito, handler/reentrada si éxito, SHA 5e1e4f3f0564e72d3102f6fe767bdd8243c0ae91. Plus frontend prueba traducción o conservación para rechazo SHA 65eb1bd32cc7ca96495ccd28c41a23d02ebbe0fc; Plus backend HTTP MathResponse valor 1 o error explícito SHA final 2b03e5bd5560f5ecdca568c4941dc7c40a36aea1.
+- CI Lite SHA final: cumulative [38657857695](https://github.com/c2melendez/precision-lab-lite/actions/runs/38657857695), H1d 38657857748, build 38657857806, UI E2E regresión 38657857900, todos IN_PROGRESS al consultar. Plus SHA final: cumulative [38657877130](https://github.com/c2melendez/precision-lab-plus/actions/runs/38657877130), H1d 38657877112, inicialmente QUEUED. No contar SHAs intermedios ni declarar PASS antes de evidencia final.
+- Syntax309 OPEN; SG28/H2 OPEN; DIST multinodo BLOCKED. No UI E2E específico SY-U-10, ni despliegue.
+### Próximo paso exacto
+Consultar conclusiones y logs de gates SY-U-10 por SHA. Si hay falla, clasificar y corregir capa afectada sin debilitar oráculo. Si pasa, cerrar bilateralmente alcance automatizado y obtener siguiente fixture directamente de syntax309_cases.jsonl.
+
+
 ## 2026-10-14 — SY-U-08 PASS y SY-U-09 Unicode minus abierto
 - SY-U-08 `3·4` => `12` PASS bilateral alcance automatizado. Lite SHA 4ee503b7908affc1784dac5ecc39b0a854632d0b: cumulative 38655896566, H1d 38655896588, build 38655896585, E2E regresión 38655896577 SUCCESS. Plus SHA e8c1f8e38cc3b7b7d86ea69571f5f09ceabc828c: cumulative 38655922516, H1d 38655922493 SUCCESS. E2E regresión no acredita UI específica del fixture.
 - SY-U-09 fixture oficial `2−1` U+2212 => `1`; pruebas Lite parser/worker/reentrada SHA 1f2593ede674fdccee271c9919500ece768d9083; Plus frontend conversor SHA be6918bfa4799b18169fa7783ac9cb6a334aa605, backend HTTP Unicode original/MathResponse/reentrada SHA 6bc28cb3325f62957a5e954c617abd6189a59ee4. Fix de producto Plus parser `normalize_unicode` U+2212 -> ASCII `-` SHA final 16601bcd6b0c8962d65d48e53a3297cff5f976c0.
