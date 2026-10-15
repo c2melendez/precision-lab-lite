@@ -784,6 +784,11 @@ export function preprocessLatex(latex: string): string {
     (_m, prefix, mantissa, exponent) => `${prefix}(${mantissa}*10^(${exponent}))`,
   );
 
+  // SY-V-23: conjugado de literal complejo rectangular, sin transformar
+  // expresiones simbolicas ni introducir una funcion CAS no soportada.
+  expr = expr.replace(/\\\\overline\\{\\s*([+-]?\\d+(?:\\.\\d+)?)\\s*([+-])\\s*(\\d+(?:\\.\\d+)?)\\s*\\\\?(?:mathrm\\{i\\}|i)\\s*\\}/g,
+    (_whole, real, sign, imag) => `(${real}${sign === "+" ? "-" : "+"}${imag}*i)`);
+
   // IN625 A3 — operadores/combinatoria y relaciones equivalentes.
   // Normalización general de macros LaTeX al contrato lineal del motor.
   expr = expr
