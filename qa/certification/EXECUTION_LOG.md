@@ -4703,3 +4703,11 @@ Localizar nuevas corridas cumulative/H1d Lite+Plus para SHAs da54d3a y 6b1ee61, 
 ### Siguiente paso exacto
 Comprobar Plus cumulative 38679916360 y H1d 38679916341 por SHA 7d830bc; revisar caso específico y demás regresiones, corregir si falla. Solo con PASS bilateral marcar SY-V-03 cerrado e iniciar SY-V-04 (`f(x)=x^{2};\\ f(3)` debe retornar 9).
 
+
+## 2026-10-14 — SY-V-03 PASS bilateral; SY-V-04 gate iniciado
+- SY-V-03 entrada original `\\pi r^{2}`: Lite SHA da54d3ac3691ebdb15cb318a4d9bd4ba2d6f3bc4 cumulative 38679491111, H1d 38679491112, build 38679491095 y E2E genérico 38679491122 SUCCESS. Plus SHA 7d830bc19e74b81501bd6a3ea95a7fd31ed44b6f cumulative 38679916360, H1d 38679916341 SUCCESS. SY-V-03 PASS bilateral en alcance automatizado, no E2E específico.
+- SY-V-04 matriz oficial entrada `f(x)=x^{2};\\ f(3)`, esperado exacto 9. Nuevos tests permanentes exigen entrada original, evaluación y reentrada: Lite `tests/syntax309SyE23.audit.test.ts` SHA 7407ab9c18e2072e8dcbb82fe1f3e914c9b3ba87; Plus `backend/tests/test_syntax309_syv04.py` SHA 819b43f59470bcbe68731eebd3a3bb011532d6f2. No se usa traducción manual como sustituto.
+- Nuevos gates Lite cumulative 38680324474, H1d 38680324515, build 38680324482, E2E genérico 38680324487 QUEUED inicialmente. Plus cumulative 38680308014 y H1d 38680307986 IN_PROGRESS inicialmente. SY-V-04 OPEN, Syntax309 OPEN, SG28/H2 OPEN y DIST multinodo BLOCKED. Sin deploy.
+### Siguiente paso exacto
+Revisar todos los gates sobre SHA Lite 7407ab9 y Plus 819b43f; diagnosticar fallo de SY-V-04 producto/parser frente a harness, corregir manteniendo test de entrada original, recertificar y después continuar SY-V-05.
+
