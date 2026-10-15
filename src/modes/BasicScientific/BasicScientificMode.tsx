@@ -445,7 +445,7 @@ export function BasicScientificMode() {
       const [, variable, excluded] = exclusion;
       onSuccess("Científica (exclusión puntual)", currentLatex, {
         success: true,
-        resultLatex: `${variable}\\\in\\\mathbb{R}\\setminus\\\{${excluded}\\\}`,
+        resultLatex: `${variable}\\in\\mathbb{R}\\setminus\\{${excluded}\\}`,
         interpretedLatex: currentLatex,
         resultViewLabel: "Conjunto solución",
         steps: [],
