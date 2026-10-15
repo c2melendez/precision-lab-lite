@@ -4810,3 +4810,12 @@ Comprobar conclusiones/logs de gates SY-V-11, corregir la capa de fallas reales 
 ### Siguiente paso exacto
 Revisar logs/status de nuevo SHA Lite y Plus, corregir fallos y certificar alcance automatizado bilateral antes de avanzar a SY-V-12.
 
+
+## 2026-10-15 — SY-V-11 Plus bounded-integral product correction
+- Plus SHA dbab381fd08624a0630fd10fb233f07301f31bdb cumulative 38691366017 FAILED: backend HTTP devolvió success=false para original `\\int_{0}^{1}x\\,dx`; H1d 38691365993 SUCCESS. PRODUCT: evaluate_service.py no reconocía la integral definida en formato oficial.
+- Plus SHA 22d3dd17274ea9f96178faf6f75364e06ac13e2f corrige ruta acotada: reconoce límites 0..1, integra mediante sympy.integrate y devuelve 1/2 exacto sin constante C. Nuevos gates cumulative 38691792723, H1d 38691792693, SG28 prototipo 38691792757 IN_PROGRESS inicial.
+- Lite SHA a5ebb80550d04262c8719f8c316c9aa2f859dea6 cumulative 38691357111 FAILED por HARNESS: test invocó evaluate() directo sobre marcador interno defintegral, calculado realmente por worker. Test ajustado SHA c1752e564bb07d8c78bd3436236041eb2f25eff6; cumulative 38691564852 SUCCESS, build 38691564930 SUCCESS; H1d 38691564926 y E2E genérico 38691564972 pendientes consulta final.
+- SY-V-11 OPEN hasta gates completos del SHA final. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED.
+### Siguiente paso exacto
+Revisar conclusiones y logs por SHA Lite c1752e5 y Plus 22d3dd1, clasificar fallas y cerrar alcance bilateral solo cuando corresponda; avanzar a SY-V-12 `\\int x\\,dy` con constante C y variable y.
+
