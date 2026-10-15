@@ -1612,4 +1612,34 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe(value);
   });
 
+  it("SY-U-25: consecutive plus uses five or explicit syntax rejection", () => {
+    const row = rows["SY-U-25"];
+    expect(row.entrada).toBe("2++3");
+    expect(row.operacion).toBe("convencion");
+    expect(row.esperado).toContain("5");
+    let parsed: string;
+    try { parsed = parseExpression(row.entrada).algebrite; }
+    catch (error) {
+      const diagnostic = error as {code?: unknown; message?: unknown};
+      expect(diagnostic.code).toBe(ErrorCode.PARSE_ERROR);
+      expect(String(diagnostic.message).length).toBeGreaterThan(0);
+      return;
+    }
+    let value: string;
+    try { value = evaluate(parsed); }
+    catch (error) {
+      const diagnostic = error as {code?: unknown; message?: unknown};
+      expect(diagnostic.code).toBe(ErrorCode.PARSE_ERROR);
+      expect(String(diagnostic.message).length).toBeGreaterThan(0);
+      return;
+    }
+    expect(value).toBe("5");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-25",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-U-25");
+    expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("5");
+  });
+
 });
