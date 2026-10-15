@@ -4664,3 +4664,12 @@ Consultar y diagnosticar gates y logs SY-U-25 en ambos SHA. Si pasa, cerrar alca
 ### Siguiente paso exacto
 Consultar logs y gates SY-V-01 en SHAs citados; corregir divergencia real de símbolos/parsing sin relajar oráculos, acreditar bilateralmente y seguir SY-V-02 `x_{1}+x_{2}` como variables distintas.
 
+
+## 2026-10-14 — SY-V-01 PASS bilateral; SY-V-02 en CI
+- SY-V-01 `X+x` PASS bilateral alcance automatizado: Lite SHA 557e6971eb4c10dc8f239036e61ea041311cf1a5 cumulative 38675456648, H1d 38675456711, build 38675456712, E2E genérico 38675457020 SUCCESS. Plus SHA e44b85dfef61df2f685fa1351b5f0a738546f3c6 cumulative 38675466626 y H1d 38675466611 SUCCESS. E2E genérico no prueba UI específica del caso.
+- SY-V-02 fila oficial `x_{1}+x_{2}` se deben conservar dos variables distintas. Tests permanentes de parser/evaluación/reentrada Lite `tests/syntax309SyE23.audit.test.ts` SHA 998e24c13b5799a7c2d64f2a69addcef9681f0f2; Plus `backend/tests/test_syntax309_sye23.py` SHA 6e9aeb489c92efc8b958d009ccd081c541a11814.
+- Nuevos gates Lite cumulative 38676806225, H1d 38676806301, build 38676806253, E2E genérico 38676806326 IN_PROGRESS inicial; Plus cumulative 38676813456 y H1d 38676813443 IN_PROGRESS. SY-V-02 OPEN hasta evidencia por SHA y diagnóstico si falla.
+- Syntax309 OPEN; SG28/H2 OPEN, DIST multinodo BLOCKED. Sin despliegue.
+### Siguiente paso exacto
+Consultar gates finales y logs SY-V-02 en ambos motores, reparar en caso de fallo sin relajar requisitos, registrar estado bilateral y avanzar SY-V-03 `\\pi r^{2}` (constante pi y variable r).
+
