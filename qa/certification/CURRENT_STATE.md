@@ -1,6 +1,8 @@
 # Current Certification State
 
 ## 2026-10-15 — SY-V-23 conjugado complejo (ejecución)
+
+- Reconciliación posterior: Lite primer cumulative 38708814459 FAILURE: 1296 PASS / 2 FAIL por rechazo de macro original `\\overline` en guard previo; fix SHA 6dbb0b88f1c5ee1e35761e9cb3bb18a46ac0d195, cumulative 38708972759 SUCCESS, build 38708972773 y UI genérico 38708972756 SUCCESS; H1d 38708972775 IN_PROGRESS al consultar. Plus primer cumulative 38708821069 backend FAILURE: 1182 PASS / 2 FAIL /1 XFAIL, frontend SUCCESS 841 PASS/28 TODO. Fix Plus SHA 5f2a65b5e171fbe253e9b7bf5067833b73d2ba8a normaliza macro acotada antes del validador G3; nueva cumulative 38709188306 y H1d 38709188030 QUEUED. SY-V-23 OPEN hasta evidencia del SHA corregido Plus.
 - SY-V-22 gates de Lite SHA 9462dd4 (cumulative 38708032511, H1d 38708032409, build 38708032427, UI genérico 38708032461) y Plus SHA 45d4372 (cumulative 38708036941, H1d 38708037003): SUCCESS. SY-V-22 PASS bilateral en el alcance declarado de constante imaginaria, sin selector de variable i.
 - SY-V-23 fixture original \\overline{3+4i}, esperado 3-4i. Se añadió conversión acotada de literal rectangular con coeficientes numéricos, manteniendo sin sustitución global las formas simbólicas; Lite normalize.ts pasa al motor la conjugación de partes numéricas; Plus parsing.py normaliza la macro fuente a conj(...) en función allowlisted de SymPy. No constituye soporte de conjugado arbitrario anidado/simbólico.
 - Código Lite SHA ef4cfc0242613cb3f314f6ab40f5d262dbbe4f16; test original/reentrada y signos tests/syntax309SyV23.audit.test.ts SHA 333f6d473a35fe37ad7c7536e22a89f912aef200. Plus código SHA 5c9146154ac29c7b6f940b7484f1e05949d14d46; test HTTP MathResponse/reentrada y signos SHA 88c77dae1ddcb38953a7cfe4462dd5f9e53aeb68.
