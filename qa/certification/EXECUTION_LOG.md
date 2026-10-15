@@ -5002,3 +5002,9 @@ Fixture i^{2}, operacion=convencion, esperado -1 como unidad imaginaria o i^{2} 
 - SY-V-24: Lite cumulative 38710040630 y gates relacionados SUCCESS en SHA fff2c61. Plus SHA ff205e5 cumulative 38710048292 FAILURE backend 1184 PASS /2 FAIL por macro original lvert/rvert; corrección SHA b310ce1 cumulative 38710535064 todavía IN_PROGRESS última consulta, H1d 38710535053 IN_PROGRESS. Cierre SY-V-24 pendiente del gate Plus; certificar SY-V-25 solo tras su cierre.
 - H2/SG28 OPEN; DIST multinodo BLOCKED; sin despliegue.
 
+
+## 2026-10-15 — Verificación SY-V-24 y avance SY-V-25
+- SY-V-24 PASS bilateral: Lite SHA fff2c61d680242e4b51afd7bf335d6c3261098db cumulative 38710040630, H1d 38710040661, build 38710040628 y UI genérico 38710040670 SUCCESS. Plus SHA b310ce1c374c649b3502d17e11018c9b1d30e136 cumulative 38710535064 y H1d 38710535053 SUCCESS. Alcance fixture módulo complejo acotado, controles y reentrada; no certifica todas las entradas abs de SymPy/MathLive.
+- SY-V-25: Lite SHA 2c2acd4ce60fb10e7815fc8d524e1818d2a8b121 cumulative 38710733254 SUCCESS (100 archivos PASS), H1d 38710733176 seguía ejecutándose. Plus SHA e8fe2d351e22a5eaf12a2368aa64a27342f193d1 cumulative 38710741404 y H1d 38710741426 IN_PROGRESS. SY-V-25 OPEN hasta confirmación por SHA bilateral.
+- Bloqueos globales H2/SG28 OPEN, DIST multinodo BLOCKED.
+
