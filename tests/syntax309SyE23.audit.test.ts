@@ -1890,4 +1890,28 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     const returned = parseExpression(toLatex(decimal)).algebrite;
     expect(evaluate("(" + returned + ")-(9999999999999998/10000000000000000)")).toBe("0");
   });
+
+  it("SY-V-14: original right reciprocal limit returns positive infinity and reenters", () => {
+    const row = rows["SY-V-14"];
+    expect(row.entrada).toBe("\\lim_{x\\to0^{+}}\\frac{1}{x}");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("+\\infty");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(parsed.replace(/\s+/g, "")).toMatch(/^limit\(.+,x,0,1\)$/);
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-14",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.requestId).toBe("SY-V-14");
+    expect(result.resultLatex).toMatch(/^\+?\\infty$/);
+    const returned = parseExpression(result.resultLatex).algebrite;
+    expect(returned).toBe("oo");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-V-14-reentry",expressionAlgebrite:returned}});
+    const again = scope.postMessage.mock.calls[0][0];
+    expect(again.success, JSON.stringify(again)).toBe(true);
+    expect(again.requestId).toBe("SY-V-14-reentry");
+    expect(parseExpression(again.resultLatex).algebrite).toBe("oo");
+  });
+
 });
