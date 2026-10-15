@@ -4772,3 +4772,8 @@ Verificar gates Lite 176e8c5 y Plus dff3816; corregir cualquier regresión del c
 ## 2026-10-14 — SY-V-08 aprobado, SY-V-09 iniciado
 - SY-V-08 Lite cumulative 38687281825, H1d 38687281871, build 38687281760, E2E genérico 38687281830 SUCCESS. Plus cumulative 38687904331, H1d 38687904337, SG28 prototipo 38687904332 SUCCESS; PASS bilateral automatizado.
 - SY-V-09 integral x con diferencial y constante C: tests Lite SHA 623d9ff y Plus SHA f2b9b1e. CI Lite 38688296876/38688296872/38688296913/38688296875 IN_PROGRESS, Plus 38688314670/38688314662 QUEUED. OPEN hasta gates.
+
+## 2026-10-14 — SY-V-09 parcial y reparacion Lite
+- SY-V-08 PASS bilateral Lite 38687281825/38687281871/38687281760/38687281830, Plus 38687904331/38687904337/38687904332.
+- SY-V-09 tests Lite SHA 623d9ff, Plus SHA f2b9b1e. Lite cumulative 38688296876 FAIL: antiderivada 1/2*x^2 sin C, 1276 PASS/1 FAIL/30 TODO.
+- Fix Lite SHA 962055e preserva constante para integral(x,x); CI cumulative 38688439139 H1d 38688439162 build 38688439110 E2E 38688439164 IN_PROGRESS. Plus cumulative 38688314670 aun IN_PROGRESS al consultar. SY-V-09 OPEN.
