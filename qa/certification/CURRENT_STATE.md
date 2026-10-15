@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-U-10 PASS bilateral, SY-U-11 superscript pendiente
+- SY-U-10 convención Unicode raya corta `2–1`, interpretación correcta `1` o aviso explícito: PASS bilateral del alcance automatizado, sin evidencia UI E2E específica. Lite SHA 5e1e4f3f0564e72d3102f6fe767bdd8243c0ae91 gates cumulative 38657857695, H1d 38657857748, build 38657857806, regresión E2E 38657857900 SUCCESS. Plus SHA 2b03e5bd5560f5ecdca568c4941dc7c40a36aea1 cumulative 38657877130, H1d 38657877112 SUCCESS. Se conserva sin cambios el contrato de convención.
+- Siguiente fixture oficial SY-U-11 `x²` U+00B2, operación convencion, esperado `x^{2}` o aviso. Lite parser/evaluación o error explícito SHA 3cb6d351bcc05e3b41114fa4a1255e1f2876c0a3; Plus frontend conversión o rechazo SHA 12a2891cc3065bb1d1c690a2655aa847b1bc37d0; backend HTTP MathResponse y comparación matemática x² o rechazo explícito SHA final 7c6628ce7e09b1bb7a5d9df9da988dea0e5d0172.
+- Lite gates SHA final cumulative [38658381284](https://github.com/c2melendez/precision-lab-lite/actions/runs/38658381284), H1d 38658382236, build 38658381317, regresión E2E 38658381484 IN_PROGRESS. Plus SHA final cumulative [38658395591](https://github.com/c2melendez/precision-lab-plus/actions/runs/38658395591), H1d 38658395586 QUEUED. No dar PASS antes de verificar logs/conclusiones, ni usar gates de SHAs intermedios.
+- SY-U-11 OPEN; Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED. Sin despliegue.
+### Siguiente paso exacto
+Verificar gates por SHA; clasificar y corregir falla real de superíndice sin silenciar errores. Después SY-U-12: raíz Unicode `√4` -> `2` o aviso (caso oficial).
+
+
 ## 2026-10-14 — SY-U-09 PASS bilateral y SY-U-10 convención en validación
 - SY-U-09 `2−1` U+2212 => `1` PASS bilateral en alcance automatizado. Lite SHA 1f2593ede674fdccee271c9919500ece768d9083 cumulative 38657149583, H1d 38657149676, build 38657149622, regresión UI E2E 38657149580 SUCCESS. Plus SHA 16601bcd6b0c8962d65d48e53a3297cff5f976c0 cumulative 38657187390 y H1d 38657187397 SUCCESS.
 - Siguiente caso oficial SY-U-10: entrada literal `2–1` con U+2013, operación `convencion`, esperado `1` o aviso explícito. Prohibida una interpretación silenciosa diferente. Lite prueba parser/evaluación o error explícito, handler/reentrada si éxito, SHA 5e1e4f3f0564e72d3102f6fe767bdd8243c0ae91. Plus frontend prueba traducción o conservación para rechazo SHA 65eb1bd32cc7ca96495ccd28c41a23d02ebbe0fc; Plus backend HTTP MathResponse valor 1 o error explícito SHA final 2b03e5bd5560f5ecdca568c4941dc7c40a36aea1.
