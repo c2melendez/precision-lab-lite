@@ -4763,3 +4763,8 @@ Verificar gates Lite 176e8c5 y Plus dff3816; corregir cualquier regresión del c
 - SY-V-07 Lite cumulative 38684945679, H1d 38684945718, build 38684945701, E2E genérico 38684945790 SUCCESS SHA 3eba658. Plus cumulative 38686792285, H1d 38686792521, SG28 prototipo 38686792382 SUCCESS SHA ab81668.
 - SY-V-08 pruebas permanentes para derivada segunda de x³ esperada 6x y reentrada, Lite commit 2afe0b4, Plus commit 1b1c848.
 - CI Lite cumulative 38687281825, H1d 38687281871, build 38687281760, E2E generico 38687281830 IN_PROGRESS. Plus cumulative 38687303976 y H1d 38687303965 QUEUED al consultar; SY-V-08 OPEN.
+
+## 2026-10-14 — SY-V-08 fallo Plus y reparación
+- Lite SHA 2afe0b4 gates cumulative 38687281825, H1d 38687281871, build 38687281760 y E2E generico 38687281830 SUCCESS.
+- Plus SHA 1b1c848 cumulative 38687303976 FAILURE: 1163 PASS/1 FAIL/1 XFAIL; SY-V-08 HTTP devolvió success=false; H1d 38687303965 SUCCESS. Producto/parser.
+- Plus fix SHA a0d3f34 para Leibniz de segundo orden; gates 38687904331 cumulative, 38687904337 H1d, 38687904332 SG28 QUEUED al consultar. No declarar cierre antes de verificar ese SHA.
