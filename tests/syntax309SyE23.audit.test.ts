@@ -1,7 +1,7 @@
 import { beforeAll, afterAll, describe, expect, it, vi } from "vitest";
 import cases from "../qa/certification/syntax309_cases.jsonl?raw";
 import { parseExpression } from "../src/engine/parsing";
-import { evaluate, toDecimalApprox } from "../src/engine/algebriteClient";
+import { evaluate, toDecimalApprox, toLatex } from "../src/engine/algebriteClient";
 import { ErrorCode } from "../src/types";
 import { formatScientificResult } from "../src/components/ResultPanel";
 import { compileNumeric } from "../src/engine/numericFallback";
@@ -1884,4 +1884,10 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(Number(evaluate(parseExpression(again.resultLatex).algebrite))).toBeCloseTo(1, 9);
   });
 
+  it("preserves a finite near-integer decimal without CAS display truncation", () => {
+    const decimal = "0.9999999999999998";
+    expect(toLatex(decimal)).toBe(decimal);
+    const returned = parseExpression(toLatex(decimal)).algebrite;
+    expect(returned).toBe(decimal);
+  });
 });

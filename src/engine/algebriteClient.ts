@@ -212,6 +212,11 @@ function prepareComplexPowerForDisplay(result: string): string {
 }
 
 export function toLatex(algebriteResult: string): string {
+  // Finite decimal literals are already valid LaTeX. Sending them through
+  // printlatex can round/truncate to an ellipsis or a terminal decimal dot,
+  // which the input parser correctly rejects on result reentry.
+  // Preserve every digit of the numerical fallback rather than reprinting it.
+  if (/^-?\d+\.\d+$/.test(algebriteResult.trim())) return algebriteResult.trim();
   try {
     const displayResult = prepareComplexPowerForDisplay(algebriteResult);
     const latex: string = Algebrite.run(`printlatex(quote(${displayResult}))`);
