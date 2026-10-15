@@ -445,7 +445,7 @@ export function BasicScientificMode() {
       const [, variable, limitText] = absStrict;
       const limit = Number(limitText);
       if (Number.isFinite(limit) && limit >= 0) {
-        const resultLatex = limit === 0 ? "\\varnothing" : `\${variable}\\in(-\${limitText},\${limitText})`;
+        const resultLatex = limit === 0 ? "\\varnothing" : `${variable}\\in(-${limitText},${limitText})`;
         onSuccess("Científica (valor absoluto)", currentLatex, {
           success: true,
           resultLatex,
