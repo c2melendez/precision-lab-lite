@@ -4803,3 +4803,10 @@ Verificar Plus gates 38690173912, 38690173890 y 38690173898 en SHA 9e47b89, corr
 ### Siguiente paso exacto
 Comprobar conclusiones/logs de gates SY-V-11, corregir la capa de fallas reales y pasar al fixture oficial SY-V-12 `\\int x\\,dy` esperado `xy+C` solo tras evidencia suficiente.
 
+
+## 2026-10-15 — SY-V-11 Lite harness routing correction
+- Lite SHA a5ebb80550d04262c8719f8c316c9aa2f859dea6 cumulative 38691357111 FAILED 1278 PASS/1 FAIL/30 TODO. SY-V-11 test called evaluate() directly on parser's `defintegral(x,0,1,x)` marker, which is intentionally resolved by compute.worker tryDefiniteIntegral(), not by raw Algebrite. Class HARNESS, not established product failure.
+- Corrected test Lite SHA c1752e564bb07d8c78bd3436236041eb2f25eff6 sends marker through actual worker route and asserts exact half via returned result/reentry, preserving contract. New Lite cumulative 38691564852, H1d 38691564926, build 38691564930, UI generic 38691564972 IN_PROGRESS. Plus SHA dbab381fd08624a0630fd10fb233f07301f31bdb cumulative 38691366017 and H1d 38691365993 IN_PROGRESS. No SY-V-11 PASS before gates.
+### Siguiente paso exacto
+Revisar logs/status de nuevo SHA Lite y Plus, corregir fallos y certificar alcance automatizado bilateral antes de avanzar a SY-V-12.
+
