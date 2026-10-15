@@ -4694,3 +4694,12 @@ Verificar Plus cumulative 38677868857/H1d 38677868827 por SHA 20e818d; si falla 
 ### Siguiente paso exacto
 Localizar nuevas corridas cumulative/H1d Lite+Plus para SHAs da54d3a y 6b1ee61, junto con build Lite y E2E genérico si se disparan. Diagnosticar fallos de SY-V-03, corregir la capa pertinente, exigir los gates acumulativos pertinentes, y avanzar SY-V-04 tras PASS bilateral.
 
+
+## 2026-10-14 — SY-V-03 Plus parser fix en CI
+- Lite SY-V-03 SHA da54d3ac3691ebdb15cb318a4d9bd4ba2d6f3bc4: cumulative 38679491111, H1d 38679491112, build 38679491095, E2E genérico 38679491122 SUCCESS. E2E genérico no prueba interacción individual.
+- Plus SHA 6b1ee61a1ba8797d2e6031d8cf901afc510f7e6d cumulative 38679471295 FAILURE en test SY-V-03 `\\pi r^{2}` (HTTP success=false), H1d 38679471358 SUCCESS. Defecto clasificado PRODUCT/parsing, no matemática ni oráculo.
+- Plus `backend/app/services/parsing.py` primer fix SHA 3641f724dc83bc48711a98617fddb163892409ab corregido posteriormente por escapes de regex en SHA 7d830bc19e74b81501bd6a3ea95a7fd31ed44b6f. Acepta patrón LaTeX acotado pi por variable con exponente entero entre llaves; traduce a pi*r^n. Oráculo y paridad se conservan.
+- Plus nuevos gates SHA 7d830bc19e74b81501bd6a3ea95a7fd31ed44b6f cumulative 38679916360, H1d 38679916341 QUEUED al revisar. SY-V-03 OPEN hasta resultados completos. Syntax309 OPEN; SG28/H2 OPEN y DIST multinodo BLOCKED, sin deploy.
+### Siguiente paso exacto
+Comprobar Plus cumulative 38679916360 y H1d 38679916341 por SHA 7d830bc; revisar caso específico y demás regresiones, corregir si falla. Solo con PASS bilateral marcar SY-V-03 cerrado e iniciar SY-V-04 (`f(x)=x^{2};\\ f(3)` debe retornar 9).
+
