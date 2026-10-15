@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-15 — SY-V-10 Plus parser fix en CI
+- Lite SY-V-10 SHA b5bcabed2dc91fd216acee8fef5c6284dc56b22c: cumulative 38688991015, H1d 38688990881, build 38688990947, E2E genérico 38688991034 SUCCESS; alcance automatizado.
+- Plus SHA 3c3603053216da913c000fac09edcd902706b349: cumulative 38689007820 FAILURE (1165 PASS / 1 FAIL / 1 XFAIL), test_syv10_attached_differential_http_roundtrip resultó success=false; H1d 38689007767 SUCCESS. Causa PRODUCT/parsing: solo aceptaba separador LaTeX explícito entre x y dx.
+- Corrección Plus backend/app/services/evaluate_service.py SHA 9e47b89481ae6afe392d208b57b148603e220207: aceptar integral indefinida de x con diferencial unido o separado, conservar C y pruebas sin rebajar oráculo.
+- Nuevos gates Plus cumulative 38690173912, H1d 38690173890, SG28 prototipo 38690173898 QUEUED al consultar. SY-V-10 OPEN hasta evidencia del SHA corregido. Syntax309 OPEN, H2/SG28 OPEN, DIST multinodo BLOCKED; sin deploy.
+### Siguiente paso exacto
+Verificar Plus gates 38690173912, 38690173890 y 38690173898 en SHA 9e47b89, corregir regresiones si ocurren, cerrar SY-V-10 solo con PASS bilateral y comenzar siguiente caso oficial de Syntax309.
+
+
 ## 2026-10-14 — SY-V-09 PASS bilateral; SY-V-10 en CI
 - SY-V-09 Lite SHA 7aa00d5e29b7486300608cd6f13d4f4315d315c1: cumulative 38688574773, H1d 38688574813, build 38688574774, E2E generico 38688574778 SUCCESS. Plus SHA 9047ae6863c0a85daa8d2c6050c62af3f2b27f95: cumulative 38688617641, H1d 38688617762, SG28 prototipo 38688617717 SUCCESS. PASS bilateral automatizado, no implica certificacion SG28 multinodo.
 - SY-V-10 caso oficial integral indefinida con diferencial unido `\\int xdx` y esperado `\\frac{x^{2}}{2}+C`. Tests de entrada original, derivada simbolica, constante C y reentrada: Lite tests/syntax309SyE23.audit.test.ts commit b5bcabed2dc91fd216acee8fef5c6284dc56b22c; Plus backend/tests/test_syntax309_syv10.py commit 3c3603053216da913c000fac09edcd902706b349.
