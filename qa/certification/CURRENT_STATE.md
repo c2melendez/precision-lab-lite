@@ -1,5 +1,21 @@
 # Current Certification State
 
+## 2026-10-15 — SY-V-17 suma simbólica con dominio declarado
+- Fixture original \sum_{k=1}^{n}k, operacion=equivalente, esperado \frac{n(n+1)}{2}.
+- Gap confirmado por lectura del código anterior: validateFiniteSumRange Lite y _try_parse_finite_aggregate Plus solo aceptaban límites numéricos enteros. No se sustituyó el ejercicio simbólico por un caso numérico.
+- Nueva capacidad acotada bilateral: sum(indice,indice,1,cota) con nombres de una letra, cota simbólica distinta del índice y de constantes reservadas. Forma cerrada exacta cota*(cota+1)/2, sin iteración simbólica. No habilita Sum AST arbitrario, sumas de potencias con cota simbólica ni cambia el guard de rangos finitos.
+- Lite src/engine/sum.ts + worker: resolver antes de validación finita y devolver confidence SYMBOLIC y domainConditions visible: cota entero no negativo. Prueba fuente original, parser, handler real con transporte simulado, equivalencia simbólica, base 0, recurrencia S(n+1)-S(n)=n+1 y testigos numéricos independientes; reentrada de salida real conserva equivalencia.
+- Plus parsing.py/evaluate_service.py/evaluate router: forma cerrada segura, advertencia pública de entero no negativo; substitutions de la cota se validan (negativos/fracciones rechazados DOMAIN_ERROR), permite evaluar la fórmula sin iteración a n=1000000. Conversor original probado por separado. HTTP MathResponse, resultado simbólico sin aproximación, equivalencia general/base/recurrencia, nuevo requestId en reentrada; controles de nombres, formas no soportadas y COMPLEXITY_LIMIT de suma finita.
+- SY-V-17 PASS bilateral en alcance acotado descrito. Lite SHA e62fd255fe66f6fb4aad49efb600022da727aaa4: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38701974251 (1289 PASS +30 TODO), H1d 38701974247, build 38701974207 y E2E científico genérico 38701974306 SUCCESS. Plus SHA 2b91315546400ffa91121c531668aa481357c1a1: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38701979974 (1174 backend PASS +1 XFAIL; 837 frontend PASS +28 TODO), H1d 38701980002, aislamiento prototipo SG28 38701980087 y cancelación UI SG28 38701980042 SUCCESS. Logs jobs 116312086826/116312105981/116312106221 inspeccionados; conclusiones verificadas por SHA. SG28 regresiones no acreditan DIST multinodo.
+- Alcance: parser/handler Lite y conversor/HTTP Plus separados. No acredita interacción específica teclado/MathLive/browser ni render visual de advertencia/condición; sí presencia de condición/advertencia en contrato de salida.
+- Reentrada de la fórmula polinómica conserva valor, pero no transporta automáticamente la condición discreta de la suma original. No atribuir a esa fórmula aislada validación de dominio heredado. La pertenencia entera se declara en texto/LaTeX Lite; su operador estructurado >= solo expresa la no negatividad. Validación API de substitutions sí rechaza cota no entera/negativa.
+- EN-CA-27 histórico TODO no se convierte automáticamente en PASS: esta cobertura acredita únicamente la familia descrita, no toda suma simbólica. Mantener otras capacidades manuales/TODO; no declarar cierre de IN625.
+- Tablero actualizado bilateralmente. Syntax309/IN625/H2/SG28 OPEN; DIST multinodo BLOCKED; sin despliegue de producción.
+
+### Siguiente paso exacto — SY-V-18
+Fixture original \prod_{k=1}^{5}k, operacion=valor, esperado 120. Verificar índice/límites, ruta producto finito, exactitud y reentrada real. Después SY-V-19 binomial 5 sobre 2, esperado 10. Mantener gates por SHA, restricciones y tablero.
+
+
 ## 2026-10-15 — SY-V-16 suma finita exacta
 - Fixture original \sum_{k=1}^{10}k, operacion=valor, esperado 55.
 - Lite: fuente original -> parser con cuerpo k o (k), índice k y límites 1..10 intactos -> evaluación exacta 55 -> handler worker real con transporte simulado -> reentrada real con nuevo requestId y 55. Controles independientes 2..10=54 y 1..9=45 evitan errores de extremos inclusivos.

@@ -2,6 +2,14 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## Actualización verificada — SY-V-17 (2026-10-15)
+- Avance secuencial: SY-V-17 PASS acotado; siguiente SY-V-18 (producto de k desde 1 hasta 5, esperado 120).
+- Nueva capacidad bilateral: suma simbólica del propio índice desde 1 hasta una cota de una letra, con fórmula cerrada y dominio explícito de entero no negativo. Prueba de equivalencia general, base y recurrencia; no solo testigo n=10.
+- Lite devuelve condición de dominio y Plus advertencia pública; API Plus valida las sustituciones de la cota. Reentrada de la fórmula conserva equivalencia, pero la fórmula aislada no hereda automáticamente el dominio discreto de la suma.
+- Ámbito acotado; no se habilitan todas las sumas simbólicas ni se elimina EN-CA-27 TODO histórico por esta evidencia. Guard de rangos finitos conserva su regresión.
+- SY-V-17 PASS bilateral en alcance acotado descrito. Lite SHA e62fd255fe66f6fb4aad49efb600022da727aaa4: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38701974251 (1289 PASS +30 TODO), H1d 38701974247, build 38701974207 y E2E científico genérico 38701974306 SUCCESS. Plus SHA 2b91315546400ffa91121c531668aa481357c1a1: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38701979974 (1174 backend PASS +1 XFAIL; 837 frontend PASS +28 TODO), H1d 38701980002, aislamiento prototipo SG28 38701980087 y cancelación UI SG28 38701980042 SUCCESS. Logs jobs 116312086826/116312105981/116312106221 inspeccionados; conclusiones verificadas por SHA. SG28 regresiones no acreditan DIST multinodo.
+- Científica PARCIAL, porcentaje global ND; IN625/H2/SG28 OPEN y DIST BLOCKED. Presencia de metadatos/advertencia comprobada, render UI nativo específico pendiente. Fotografías anteriores son históricas.
+
 ## Actualización verificada — SY-V-16 (2026-10-15)
 - Avance secuencial: SY-V-16 PASS acotado; siguiente SY-V-17 (suma simbólica de k desde 1 hasta n, esperado n(n+1)/2).
 - Lite: fuente, índice y extremos de suma finita, parser/motor/handler y salida real reingresada. Plus: conversión íntegra de fuente y HTTP con contrato MathResponse, exacto 55 y reentrada. Controles de límites 2..10=54 y 1..9=45 en ambos motores.
@@ -32,7 +40,7 @@ Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisi
 
 ## Lectura rápida
 - Dos frentes principales en evaluación: IN625 (625 casos) y Syntax309 (309 casos). No representan todas las matrices del proyecto ni deben sumarse como requisitos independientes sin deduplicación.
-- Syntax309 ha abordado 7/12 secciones; el avance secuencial llega a SY-V-16. Esto mide recorrido, NO porcentaje certificado.
+- Syntax309 ha abordado 7/12 secciones; el avance secuencial llega a SY-V-17. Esto mide recorrido, NO porcentaje certificado.
 - La regresión actual también ejecuta Matrices, Estadística, Unidades y Gráficas. No es correcto describir toda la CI como exclusivamente sintaxis.
 - Geometría y cierre visual completo requieren inventario de evidencia; ND no significa cero pruebas ni producto inexistente.
 - SG28/H2 OPEN; DIST multinodo BLOCKED. El bloqueo no impide el frente matemático autorizado.
@@ -74,7 +82,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-N Números/precisión | 31 | Abordada; reconciliar convenciones y canales |
 | SY-D Delimitadores | 14 | Recorrido hasta D-14; PASS por alcance registrado, no cierre UI universal |
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
-| SY-V Variables/cálculo | 28 | V-16: gates verdes, siguiente V-17 |
+| SY-V Variables/cálculo | 28 | V-17: gates verdes, siguiente V-18 |
 | SY-Q Ecuaciones/sistemas | 23 | Pendiente de esta secuencia; pueden existir otras suites previas |
 | SY-M Matrices/vectores | 20 | Pendiente de esta secuencia; no significa módulo sin pruebas |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
@@ -98,7 +106,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-V-17 (suma simbólica de k desde 1 hasta n = n(n+1)/2), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-V-18 (producto de k desde 1 hasta 5 = 120), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
