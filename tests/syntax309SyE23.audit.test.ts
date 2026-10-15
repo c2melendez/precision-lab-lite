@@ -1,7 +1,7 @@
 import { beforeAll, afterAll, describe, expect, it, vi } from "vitest";
 import cases from "../qa/certification/syntax309_cases.jsonl?raw";
 import { parseExpression } from "../src/engine/parsing";
-import { evaluate } from "../src/engine/algebriteClient";
+import { evaluate, toDecimalApprox } from "../src/engine/algebriteClient";
 import { ErrorCode } from "../src/types";
 import { formatScientificResult } from "../src/components/ResultPanel";
 import { compileNumeric } from "../src/engine/numericFallback";
@@ -1427,14 +1427,14 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(row.esperado).toBe("3.141592654");
     const parsed = parseExpression(row.entrada).algebrite;
     const value = evaluate(parsed);
-    expect(Number(value).toFixed(9)).toBe(row.esperado);
+    expect(Number(toDecimalApprox(value)).toFixed(9)).toBe(row.esperado);
     scope.postMessage.mockClear();
     scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-13",expressionAlgebrite:parsed}});
     const result = scope.postMessage.mock.calls[0][0];
     expect(result.success, JSON.stringify(result)).toBe(true);
     expect(result.requestId).toBe("SY-U-13");
     const repeated = parseExpression(result.resultLatex).algebrite;
-    expect(Number(evaluate(repeated)).toFixed(9)).toBe(row.esperado);
+    expect(Number(toDecimalApprox(evaluate(repeated))).toFixed(9)).toBe(row.esperado);
   });
 
 });
