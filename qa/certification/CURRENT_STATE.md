@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-14 — SY-V-08 Lite PASS, Plus derivada segunda en CI
+- SY-V-08 Lite SHA 2afe0b44d352b818958d82894397a15e22061757: cumulative 38687281825, H1d 38687281871, build 38687281760, E2E generico 38687281830 SUCCESS. Validación genérica E2E no prueba la UI específica.
+- Plus SHA 1b1c848e460642c8a6e02681bafb8f07bf23fb3b cumulative 38687303976 FAILURE: 1163 PASS, 1 FAIL, 1 XFAIL; falló test_syv08_second_derivative_original_source_http_roundtrip al devolver success=false para la entrada original. Plus H1d 38687303965 SUCCESS. Clasificación PRODUCT/parsing, sin cambios al oráculo.
+- Plus fix backend/app/services/evaluate_service.py SHA a0d3f34e87bc6b32e446c212e0351986a8a48a0e: deriva dos veces el monomio en notación Leibniz `\\frac{d^{2}}{dx^{2}}x^{3}` empleando parser existente y SymPy. Nuevos gates Plus cumulative 38687904331, H1d 38687904337, SG28 prototipo 38687904332 QUEUED al consultar.
+- SY-V-08 OPEN hasta evidencia final Plus SHA a0d3f34. Syntax309 OPEN; H2/SG28 OPEN y DIST multinodo real BLOCKED, sin despliegue.
+### Siguiente paso exacto
+Verificar el resultado del cumulative Plus 38687904331, H1d 38687904337 y SG28 38687904332 por SHA a0d3f34. Corregir si falla sin disminuir los oráculos; tras PASS bilateral iniciar SY-V-09 de la matriz oficial.
+
+
 ## 2026-10-14 — SY-V-07 PASS bilateral; SY-V-08 en CI
 - SY-V-07 Lite SHA 3eba65831df2244890bf792db03ea9278baaca4c: cumulative 38684945679, H1d 38684945718, build 38684945701, E2E generico 38684945790 SUCCESS. Plus fix SHA ab81668bce680d16867e3f4446f0ae3856ca6dce: cumulative 38686792285, H1d 38686792521, SG28 prototipo 38686792382 SUCCESS. Cierre bilateral limitado al alcance automatizado.
 - SY-V-08 caso oficial `\\frac{d^{2}}{dx^{2}}x^{3}` equivalente a `6x`. Lite tests/syntax309SyE23.audit.test.ts commit 2afe0b44d352b818958d82894397a15e22061757, Plus backend/tests/test_syntax309_syv08.py commit 1b1c848e460642c8a6e02681bafb8f07bf23fb3b. Verifican entrada original, equivalencia y reentrada.
