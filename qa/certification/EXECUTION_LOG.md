@@ -4571,3 +4571,12 @@ Consultar resultados y logs de SY-U-16 para SHAs citados; clasificar/corregir re
 ### Siguiente paso exacto
 Inspeccionar SHA y logs de SY-U-17 y regresión SY-U-16. En caso de falla real clasificar y corregir producto/harness, verificar de nuevo y solo entonces cerrar bilateral. Siguiente fixture oficial SY-U-18 `2+-3` -> -1.
 
+
+## 2026-10-14 — SY-U-17 Plus fix y SY-U-18 en CI
+- SY-U-16 Lite SHA b898856b54319242ede24e50825bd990c2414516 cumulative 38660813349/H1d 38660813298/build 38660813403/UI genérico 38660813373 SUCCESS. Plus SHA b4680b58c32fdab5b7428c8fc609f6508f90b47d cumulative 38660820365 FAIL backend por NBSP; parser reparado en SHA 28e10f072233ddc5df6e163a93a98e968cc4259b. Cierre Plus condicionado a gate nuevo.
+- SY-U-17 Lite SHA 0fac6dfa78d9213168e6fde7e5a06dc2cb7e3a56 cumulative 38661219679/H1d 38661219653/build 38661219654/E2E genérico 38661219648 SUCCESS. Plus SHA aaee9de3448017b55c3afb87cfbd3f688009a609 cumulative 38661226134 FAIL backend test_syu17_fullwidth_digits_and_plus_http_reentry, frontend PASS, H1d 38661226007 SUCCESS. Producto Plus no convertía dígitos/op + de ancho completo. Fix backend/app/services/parsing.py SHA b4fbee94c5bdebca69dc63094a79c4a13163bf86; misma expectativa exacta 5, sin debilitar oráculo.
+- SY-U-18 fixture oficial 2+-3 => -1; casos fuente, HTTP/worker y reentrada publicados Lite SHA b0a79d232a254a0162353be8bf77dd484fd1f0aa y Plus SHA ae1eef5a4e9a490d1198f98c1716a00a7a4ebcb4. Nuevos gates Lite cumulative 38661650990/H1d 38661650964/build 38661651211/E2E genérico 38661650948; Plus cumulative 38661659837/H1d 38661659843 IN_PROGRESS al consultar. SY-U-16/17/18 pendientes cierre final SHA.
+- Syntax309 OPEN, H2/SG28 OPEN, DIST multinodo BLOCKED. Sin despliegue.
+### Siguiente paso exacto
+Verificar resultados completos y logs del SHA final SY-U-18 que incluye regresiones SY-U-16/17; corregir fallos y documentar cierre solo con PASS bilateral. Consultar próximo fixture oficial SY-U-19.
+
