@@ -4637,3 +4637,12 @@ Comprobar resultados/logs de SY-U-22 por SHA; corregir capa pertinente si hay fa
 ### Siguiente paso exacto
 Inspeccionar SY-U-23 acumulativos y logs por SHA; si FALLA clasificar y corregir sin relajar oráculo; tras PASS bilateral iniciar fixture oficial SY-U-24.
 
+
+## 2026-10-14 — SY-U-23 PASS bilateral; SY-U-24 convención en CI
+- SY-U-23 `*2` (operador sin operando) PASS en alcance automatizado: Lite SHA 647bd29495fe35af80258085064c44e55f41ab61 cumulative 38673304639, H1d 38673304632, build 38673304590 y E2E genérico 38673304596 SUCCESS; Plus SHA f0d55058b874baa3748a7e4ec9c1ab66a969206b cumulative 38673314378 y H1d 38673314261 SUCCESS. E2E genérico no acredita interacción UI específica.
+- SY-U-24 fila oficial `2\\ 3`, operación convención: esperado 6 o 23 o aviso (dos números separados por espacio). Pruebas permanentes Lite `tests/syntax309SyE23.audit.test.ts` SHA 6bb22766ef8f13e433696e9d77cf70ebfaeedecb, Plus `backend/tests/test_syntax309_sye23.py` SHA 34ab6aa90f31a18ce63cef35ff6786c39cbe917e. Se exige resultado en {6,23} con reentrada coherente, o error explícito estructurado; no cuentan rechazos opacos ni valores arbitrarios.
+- Gates Lite cumulative 38673929601, H1d 38673929554, build 38673929553, E2E genérico 38673929606 iniciados; Plus cumulative 38673939037 y H1d 38673939095 iniciados. SY-U-24 OPEN hasta ver resultados por SHA; próximo fixture SY-U-25 `2++3` (5 o aviso).
+- Syntax309 OPEN; H2/SG28 OPEN y DIST multinodo real BLOCKED; sin deploy.
+### Siguiente paso exacto
+Consultar resultado/logs de SY-U-24 por SHA en ambos repositorios, reparar regresiones confirmadas, registrar cierre únicamente con PASS bilateral y continuar SY-U-25.
+
