@@ -4753,3 +4753,8 @@ Verificar gates Lite 176e8c5 y Plus dff3816; corregir cualquier regresión del c
 - Lite SY-V-06 SHA 176e8c5: cumulative 38684054970, H1d 38684054978, build 38684055070 y E2E genérico 38684055315 SUCCESS. Plus SHA dff3816: cumulative 38684070724, H1d 38684070696 y SG28 prototipo 38684070692 SUCCESS.
 - SY-V-07 prueba original `\\frac{d}{dx}x^{2}` = `2x` y reentrada: Lite commit 3eba65831df2244890bf792db03ea9278baaca4c, Plus commit 7e649e2e7437aab3900b8370d7bc0e9a157c479a.
 - Lite CI 38684945679/38684945718/38684945701/38684945790 IN_PROGRESS; Plus CI 38684958975/38684959038 QUEUED al consultar. No PASS aún para SY-V-07. SIGUIENTE: evaluar gates y seguir SY-V-08 tras cierre verificable.
+
+## 2026-10-14 — SY-V-07 error Plus, corrección e integración
+- Lite cumulative 38684945679, H1d 38684945718, build 38684945701 y E2E genérico 38684945790 SUCCESS, SHA 3eba658.
+- Plus cumulative 38684958975 FAILURE 1162 PASS/1 FAIL/1 XFAIL; caso SY-V-07 retornó success=false; H1d 38684959038 SUCCESS. PRODUCT/parser.
+- Plus fix evaluate_service.py SHA 306efc8 y regex correcta SHA ab81668; CI por push en SHA ab81668: cumulative 38686792285, H1d 38686792521, SG28 38686792382 IN_PROGRESS. Esperar conclusión de ese SHA, sin declarar PASS.
