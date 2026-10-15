@@ -7,6 +7,7 @@ on:
       - 'src/**'
       - 'tests/**'
       - 'e2e/syntax309-scientific.spec.ts'
+      - 'e2e/syntax309-syq08.spec.ts'
       - 'package.json'
       - 'package-lock.json'
       - 'playwright.config.ts'
@@ -33,4 +34,4 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Native desktop/tablet/mobile scientific result verification
-        run: npx playwright test e2e/syntax309-scientific.spec.ts
+        run: npx playwright test e2e/syntax309-scientific.spec.ts e2e/syntax309-syq08.spec.ts
