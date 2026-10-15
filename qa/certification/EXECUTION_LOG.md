@@ -4824,3 +4824,12 @@ Revisar conclusiones y logs por SHA Lite c1752e5 y Plus 22d3dd1, clasificar fall
 - SY-V-11 Lite c1752e5: cumulative 38691564852, H1d 38691564926, build 38691564930, E2E generico 38691564972 SUCCESS; Plus 22d3dd1: cumulative 38691792723, H1d 38691792693, SG28 prototipo 38691792757 SUCCESS. PASS automatizado bilateral, SG28/DIST real no certificado.
 - SY-V-12 fuente integral x dy, esperado xy+C. Lite fad5697 tests y cumulative 38692018733; Plus implementacion 40d15d7 y tests cafe0f8, cumulative 38691996868; ambos inicialmente en progreso. SY-V-12 OPEN hasta gates finales. Syntax309 OPEN, H2/SG28 OPEN y DIST multinodo BLOCKED.
 - Siguiente: verificar CI de ambos SHA, corregir defectos y comenzar SY-V-13 limite sin(x)/x esperado 1.
+
+## 2026-10-15 — Tablero global publicado y SY-V-12 verificado
+- Nuevo [GLOBAL_CERTIFICATION_DASHBOARD.md](GLOBAL_CERTIFICATION_DASHBOARD.md): seis módulos, áreas transversales, 12 secciones Syntax309, evidencia por SHA y backlog. ND significa conteo de requisitos no reconciliado, no cero pruebas. Regresiones de Matrices/Estadística/Unidades/Gráficas sí aparecen aprobadas en logs actuales; no limitar la descripción global a sintaxis.
+- SY-V-12 PASS en alcance automatizado: Lite fad5697aa2f59ae554a416cccfc53c6ad6851470 cumulative 38692018733 (1280 PASS +30 TODO), H1d 38692018735, build 38692018785 y E2E genérico 38692018821 SUCCESS. Plus cafe0f8b2cf6f0e37afcdb302b57534ddc3ab346 cumulative 38691996868 (1168 backend PASS +1 XFAIL; 832 frontend PASS +28 TODO) y H1d 38691996750 SUCCESS. Logs inspeccionados jobs 116279868315/116279795750/116279796053.
+- Alcance SY-V-12: fuente integral x dy, presencia C y derivada respecto y igual x, incluida reentrada; no prueba MathLive/browser específico ni unicidad de constante en todos los parámetros. SG28 prototipo 38691963524 SUCCESS pertenece al SHA de producto 40d15d7861d69ea3b638ee6ace555e5a3e770bab; no a cafe0f8 ni certificación DIST real.
+- Syntax309/IN625/H2/SG28 OPEN, DIST BLOCKED. Sin cambios de producto ni nuevos runs; solo documentación.
+### Siguiente paso exacto
+Continuar fixture oficial SY-V-13 (límite sin(x)/x en cero, esperado 1), con oráculos y gates por SHA. Mantener el tablero actualizado al cerrar bloques; reconciliar requisitos por módulo para sustituir ND, sin contar tests como ejercicios únicos. Preservar orden del protocolo y avance independiente del bloqueo DIST.
+

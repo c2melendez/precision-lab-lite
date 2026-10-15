@@ -30,3 +30,6 @@ No reconstruir el contexto desde el chat, ZIPs ni handoffs históricos. Leer est
 
 ## Regla de sincronización
 Toda modificación sustantiva del estado de certificación debe reflejarse en ambos repositorios durante la misma operación lógica. `CURRENT_STATE.md` debe describir Lite y Plus conjuntamente aunque el archivo exista duplicado en ambos repositorios.
+
+## Tablero global
+Consultar [GLOBAL_CERTIFICATION_DASHBOARD.md](GLOBAL_CERTIFICATION_DASHBOARD.md) para alcance por módulo, evidencia, bloqueos y pendientes. Actualizarlo con los cierres bilaterales; sus conteos de tests no son porcentajes de requisitos certificados.
