@@ -1211,9 +1211,10 @@ export function preprocessLatex(latex: string): string {
 
   // IN625 B4 — signos unarios tras operador.
   // Algebrite no acepta de forma consistente secuencias como 2+-3 / 2*-3.
-  // Se explicita el signo unario sin alterar 2--3 ni --x.
+  // El signo negativo tras una resta también es unario: 2--3 = 2-(-3).
+  // Mantener agrupación explícita evita que el motor ignore el segundo signo.
   expr = expr
-    .replace(/([+*/])-([A-Za-z0-9.]+)/g, "$1(-$2)")
+    .replace(/([+*/-])-([A-Za-z0-9.]+)/g, "$1(-$2)")
     .replace(/\+\+([A-Za-z0-9.]+)/g, "+$1");
 
   // IN625 B1/B2 — exponentes y subíndices.
