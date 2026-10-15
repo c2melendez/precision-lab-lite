@@ -4,6 +4,7 @@
 - SY-V-02 `x_{1}+x_{2}`: Lite SHA 998e24c13b5799a7c2d64f2a69addcef9681f0f2 cumulative 38676806225, H1d 38676806301, build 38676806253 y E2E genérico 38676806326 SUCCESS. E2E genérico no acredita UI específica.
 - Plus SHA 6e9aeb489c92efc8b958d009ccd081c541a11814 cumulative 38676813456 FAILURE (1157 PASS / 1 FAIL / 1 XFAIL), fallo único `test_syv02_distinct_subscripted_variables_http_and_reentry`: API `success=false`; H1d 38676813443 SUCCESS. Causa producto: falta de normalización de subíndices LaTeX numéricos a identificadores simbólicos.
 - Fix Plus `backend/app/services/parsing.py` SHA 20e818dfa2f8eb4a55b6b1f71993a29a5864ce9a convierte `[A-Za-z]_{[0-9]+}` a `letra_numero`, preservando símbolos distintos y reentrada. Gates Plus cumulative 38677868857 y H1d 38677868827 QUEUED inicialmente; no declarar cierre antes de resultado definitivo.
+- Corrección adicional Plus SHA 87cea4b6a54ccb6a18b4399d3a70d887c4434faa: sintaxis de escapes de regex Python ajustada al patrón `r"\{"` y retroreferencias `r"\1_\2"`; gates nuevos cumulative 38677944467 y H1d 38677944603 QUEUED inicialmente. Se exige evidencia del SHA 87cea4b para cierre, no del anterior.
 - Syntax309 OPEN; H2/SG28 OPEN y DIST multinodo BLOCKED; sin producción.
 ### Siguiente paso exacto
 Verificar Plus cumulative 38677868857/H1d 38677868827 por SHA 20e818d; si falla diagnosticar y corregir sin relajar oráculo. Si pasan, cerrar SY-V-02 bilateral y comenzar caso oficial SY-V-03 `\\pi r^{2}` con pruebas permanentes de constante pi, variable r, resultado y reentrada en ambos motores.
