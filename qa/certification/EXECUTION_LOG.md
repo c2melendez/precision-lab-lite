@@ -4580,3 +4580,12 @@ Inspeccionar SHA y logs de SY-U-17 y regresión SY-U-16. En caso de falla real c
 ### Siguiente paso exacto
 Verificar resultados completos y logs del SHA final SY-U-18 que incluye regresiones SY-U-16/17; corregir fallos y documentar cierre solo con PASS bilateral. Consultar próximo fixture oficial SY-U-19.
 
+
+## 2026-10-14 — SY-U-16/17/18 PASS bilateral; SY-U-19 en CI
+- SY-U-16, SY-U-17, SY-U-18 acreditados en el alcance automatizado en SHA Lite b0a79d232a254a0162353be8bf77dd484fd1f0aa cumulative 38661650990, H1d 38661650964, build 38661651211, E2E genérico 38661650948 SUCCESS; SHA Plus ae1eef5a4e9a490d1198f98c1716a00a7a4ebcb4 cumulative 38661659837 y H1d 38661659843 SUCCESS. Incluyen reparaciones Plus NBSP y dígitos fullwidth; UI E2E genérico no certifica interacción específica de los casos.
+- Fixture oficial SY-U-19: `2--3` -> `5`, operación valor. Regresiones permanentes fuente, cálculo, reentrada publicadas Lite SHA 104f321d9928bd300da318a023824be7f64fe626 en tests/syntax309SyE23.audit.test.ts y Plus SHA 91635e8fcddcb6f5e7dd270e2c47527e62e15a7b en backend/tests/test_syntax309_sye23.py.
+- GitHub Actions Lite cumulative 38668842213, H1d 38668842193, build 38668842165 y E2E genérico 38668842226 IN_PROGRESS. Plus cumulative 38668850147 y H1d 38668850155 inicialmente QUEUED. SY-U-19 OPEN hasta resultados SHA.
+- Syntax309 OPEN, H2/SG28 OPEN y DIST multinodo real BLOCKED. Ningún deploy.
+### Siguiente paso exacto
+Comprobar los resultados y logs de SY-U-19 por SHA; si FALLA diagnosticar y corregir la capa correcta. Si PASS bilateral, avanzar al siguiente fixture oficial SY-U-20 (`2*-3` => `-6`).
+
