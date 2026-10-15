@@ -1,5 +1,14 @@
 # Current Certification State
 
+## 2026-10-15 — SY-V-11 Plus bounded-integral product correction
+- Plus SHA dbab381fd08624a0630fd10fb233f07301f31bdb cumulative 38691366017 FAILED: backend HTTP devolvió success=false para original `\\int_{0}^{1}x\\,dx`; H1d 38691365993 SUCCESS. PRODUCT: evaluate_service.py no reconocía la integral definida en formato oficial.
+- Plus SHA 22d3dd17274ea9f96178faf6f75364e06ac13e2f corrige ruta acotada: reconoce límites 0..1, integra mediante sympy.integrate y devuelve 1/2 exacto sin constante C. Nuevos gates cumulative 38691792723, H1d 38691792693, SG28 prototipo 38691792757 IN_PROGRESS inicial.
+- Lite SHA a5ebb80550d04262c8719f8c316c9aa2f859dea6 cumulative 38691357111 FAILED por HARNESS: test invocó evaluate() directo sobre marcador interno defintegral, calculado realmente por worker. Test ajustado SHA c1752e564bb07d8c78bd3436236041eb2f25eff6; cumulative 38691564852 SUCCESS, build 38691564930 SUCCESS; H1d 38691564926 y E2E genérico 38691564972 pendientes consulta final.
+- SY-V-11 OPEN hasta gates completos del SHA final. Syntax309 OPEN, SG28/H2 OPEN, DIST multinodo BLOCKED.
+### Siguiente paso exacto
+Revisar conclusiones y logs por SHA Lite c1752e5 y Plus 22d3dd1, clasificar fallas y cerrar alcance bilateral solo cuando corresponda; avanzar a SY-V-12 `\\int x\\,dy` con constante C y variable y.
+
+
 ## 2026-10-15 — SY-V-11 Lite harness routing correction
 - Lite SHA a5ebb80550d04262c8719f8c316c9aa2f859dea6 cumulative 38691357111 FAILED 1278 PASS/1 FAIL/30 TODO. SY-V-11 test called evaluate() directly on parser's `defintegral(x,0,1,x)` marker, which is intentionally resolved by compute.worker tryDefiniteIntegral(), not by raw Algebrite. Class HARNESS, not established product failure.
 - Corrected test Lite SHA c1752e564bb07d8c78bd3436236041eb2f25eff6 sends marker through actual worker route and asserts exact half via returned result/reentry, preserving contract. New Lite cumulative 38691564852, H1d 38691564926, build 38691564930, UI generic 38691564972 IN_PROGRESS. Plus SHA dbab381fd08624a0630fd10fb233f07301f31bdb cumulative 38691366017 and H1d 38691365993 IN_PROGRESS. No SY-V-11 PASS before gates.
