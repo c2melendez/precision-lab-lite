@@ -2,6 +2,21 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-Q-19 PASS en Lite navegador y Plus HTTP; siguiente SY-Q-20
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial x=y=3, operación error, esperado error claro o interpretación declarada de igualdad encadenada. Convención verificada: RECHAZO claro de la cadena, sin fingir una única ecuación resuelta.
+- Diagnóstico Lite: splitEquation ya rechaza más de un signo =, pero detectRelationIntent podía interceptar x=y=3 o y=x=3 y presentarlas exitosamente como relaciones. Se restringe ese detector a una igualdad; las cadenas continúan al parser y se muestran como PARSE_ERROR con Más de un signo "=" en la expresión. No se cambia la matemática del solver.
+- Pruebas permanentes Lite tests/syntax309SyQ19.audit.test.ts 9/9: fixture, cadenas reordenadas/espaciadas, varios términos, igualdad anidada y definición malformada, preservación de relación implícita/ explícita y función con una igualdad, además de sistemas separados por renglones.
+- Clasificación de fallo de oráculo: el primer cumulative Lite 38792371576 (SHA a6e612becc26924f1788773482742b61d71fc2ff) falló con 1361 PASS /1 FAIL /30 TODO porque el test adicional x==3 asumía rechazo. normalizeExternalComparisons ya importa == como alias de =. Se conserva esa convención existente y se comprueba equivalencia con x=3; no se relaja el rechazo del fixture x=y=3. Las variantes de cadena reales sustituyen ese control. Plus rechaza == en su API; esta diferencia de canal/importación queda declarada, no se afirma paridad universal de alias.
+- Ajuste de harness de recuperación: ResultPanel muestra un resultado numérico mediante texto decimal, no como math-field de ecuación. El test exige tanto el 3 visible como data-result-reentry-latex exacto x=3 del worker. No se modifica producto para imponer una representación que no corresponde a esa vista. Commit intermedio 96bac86100ef71729cc1dde07f9080fd6ccfb451; SHA final de pruebas 907a06af277ab4452cec313189c0c3039bf4b428.
+- Lite SHA FINAL 907a06af277ab4452cec313189c0c3039bf4b428: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38792705389 SUCCESS, job 116621074590, 1362 PASS +30 TODO en 120 archivos; typecheck/build SUCCESS. Build diagnostic 38792705638 y H1d 38792705468 (21/21) SUCCESS, mismo SHA.
+- Lite navegador e2e/syntax309-syq19.spec.ts: 9/9 específicos PASS con MathLive/Web Worker auténticos en escritorio/tablet/móvil; run https://github.com/c2melendez/precision-lab-lite/actions/runs/38792705449 SUCCESS, job 116621074926, 63/63 suite científica. Rechaza x=y=3, y=x=3 y x=3=3 con alerta, sin resultado exitoso ni selector de variable; luego x+1=4 recupera cálculo y produce 3. El control con dos renglones x=y y y=3 sí devuelve x=3,y=3: no se confunde cadena con sistema explícito.
+- Plus no necesitó corrección de producto: su parser de /api/v1/solve ya rechaza múltiples signos =. backend/tests/test_syntax309_syq19_http.py 23/23 PASS: original, variantes con/sin variable explícita x/y, MathResponse de error sin soluciones, recuperación x+1=4 con requestId nuevo y sistema explícito x=y; y=3 que devuelve ambas asignaciones.
+- Plus SHA 5515037fdd10a944d3dbd033ab7c249cbace1a1a: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38792377332 SUCCESS. Backend job 116619937469: 1251 PASS +1 XFAIL; frontend job 116619937500: 841 PASS +28 TODO, typecheck/build SUCCESS. H1d 38792377073 (38/38) SUCCESS en el mismo SHA.
+- SY-Q-19 PASS solo en esos canales y fuentes: Lite navegador nativo y Plus HTTP. Plus MathLive/interfaz nativa de esta entrada sigue SIN ACREDITAR; no se prueba cada pulsación del teclado virtual ni otros navegadores. No certifica todo sistema de igualdades, todas las convenciones externas de comparación ni paridad universal del importador.
+- Siguiente objetivo exacto SY-Q-20: x^{2}-4 sin =, operación convención. En modo/acción de ecuación, tratar como x^{2}-4=0 o avisar; declarar comportamiento y distinguirlo de evaluar una expresión ordinaria. Verificar la ruta de usuario que realmente pide resolver.
+- Tablero y registros sincronizados bilateralmente. Syntax309/IN625/H2/SG28 OPEN; DIST-01..08 BLOCKED. TODO/XFAIL no son PASS ni requisitos únicos. Sin despliegue ni cambios de producción.
+
 ## 2026-10-15 — SY-Q-18 PASS en Lite navegador y Plus HTTP; siguiente SY-Q-19
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fixture oficial x+y=3; esperado una ecuación, dos incógnitas: x=3-y con y libre. No se selecciona una solución numérica ni una variable silenciosamente.
@@ -159,7 +174,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-D Delimitadores | 14 | Recorrido hasta D-14; PASS por alcance registrado, no cierre UI universal |
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
 | SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
-| SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-18, PASS en Lite navegador y Plus HTTP bajo alcance descrito; siguiente Q-19. Otros gaps históricos siguen abiertos |
+| SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-19, PASS en Lite navegador y Plus HTTP bajo alcance descrito; siguiente Q-20. Otros gaps históricos siguen abiertos |
 | SY-M Matrices/vectores | 20 | Pendiente de esta secuencia; no significa módulo sin pruebas |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
@@ -182,7 +197,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-Q-19 (x=y=3; error claro o interpretación declarada de igualdad encadenada), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-Q-20 (x²-4 sin igualdad; declarar convención al pedir resolver), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
