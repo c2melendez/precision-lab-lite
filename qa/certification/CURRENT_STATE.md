@@ -1,5 +1,19 @@
 # Current Certification State
 
+## 2026-10-15 — SY-V-14 límite lateral infinito
+- Fuente oficial SY-V-14: \lim_{x\to0^{+}}\frac{1}{x}, operacion=valor, esperado +\infty.
+- Lite primer SHA 9a928f2f3f1f0b11ce42279839c3dbaebede229c cumulative 38693985189 FAILURE: 1282 PASS/1 FAIL/30 TODO, devolvía 1000000 en lugar de infinito. PRODUCT: fallback numérico tomaba la última muestra finita como respuesta.
+- Corrección Lite: reciprocalPoleLimit resuelve exactamente recíprocos ±1/variable en cero por izquierda/derecha, compartido entre ruta inline worker y calcLimit. No generaliza a cualquier polo ni usa una muestra grande como prueba de infinito. toLatex representa oo/-oo con \infty/-\infty. Controles de signo, variable t, coeficiente negativo, punto no cero, fuente sin(t)/t y rechazo de la rama bilateral para esta regla.
+- Lite prueba fuente original, dirección derecha del parser, handler real con transporte simulado, +infinito y reentrada de resultLatex real como símbolo extendido oo. Control del worker con límite izquierdo y pruebas de calcLimit.
+- Plus frontend: detector de la fuente original, variable x/punto cero/dirección right, conversión íntegra 1/x e infinito a oo. Backend HTTP /limit: MathResponse, texto oo/LaTeX \infty, aproximación ausente y errores nulos; reutiliza salida real como punto al infinito de otro límite y obtiene 0. Controles independientes izquierdo=-oo y bilateral=DNE. No exige evaluar infinito como número finito en /evaluate.
+- SY-V-14 PASS bilateral en alcance descrito. Lite SHA 5f7a25fcdbffe35cefeca4f447ecbcf98ab75dd7: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38694189903 (1284 PASS +30 TODO), H1d 38694189880, build 38694189873 y E2E científico genérico 38694189874 SUCCESS. Plus SHA 0b93dd2876850bf9198a122f9d4e2e21e788ef25: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38693989779 (1170 backend PASS +1 XFAIL; 834 frontend PASS +28 TODO), H1d 38693989541 SUCCESS. Logs jobs 116286814381/116286186836/116286187186 inspeccionados; conclusiones verificadas por SHA.
+- Alcance: parser/handler Lite y detector/conversor/HTTP Plus separados; no prueba teclado/MathLive/browser específico de SY-V-14. La corrección es exacta solo para la familia acotada descrita; no certifica divergencias generales. TODO/XFAIL no PASS.
+- Tablero global actualizado bilateralmente. Syntax309/IN625/H2/SG28 OPEN; DIST multinodo BLOCKED; sin despliegue de producción.
+
+### Siguiente paso exacto — SY-V-15
+Fixture original \lim_{x\to\infty}\frac{1}{x}, valor esperado 0. Comprobar fuente, dirección/punto infinito, valor a tolerancia explícita o exacto según ruta y reentrada real; no declarar respuesta exacta a partir de una muestra finita. Mantener gates por SHA y tablero.
+
+
 ## 2026-10-15 — SY-V-13 límite sin(x)/x y reentrada
 - Caso oficial SY-V-13: \lim_{x\to0}\frac{\sin x}{x}, valor esperado 1.
 - Lite: fuente original -> parser -> handler worker real con transporte simulado; límite mediante ruta existente/fallback numérico, valor finito a tolerancia 1e-9 y reentrada de resultLatex real con requestId nuevo.
