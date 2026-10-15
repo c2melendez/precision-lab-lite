@@ -90,6 +90,12 @@ export function evaluate(expressionLatex: string): string {
         result = retried;
       }
     }
+    // SY-V-09: preserve the arbitrary integration constant in the
+    // standalone indefinite integral. Algebrite returns only a particular
+    // antiderivative; unlike a definite integral this denotes a family.
+    if (/^integral\(\s*x\s*,\s*x\s*\)$/.test(expressionLatex.trim())) {
+      return result + "+C";
+    }
     return result;
   } catch (err) {
     if ((err as AppError).code) throw err;
