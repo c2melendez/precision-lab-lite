@@ -1437,4 +1437,19 @@ describe("Syntax309 SY-E-23 nested numeric fractions: original source", () => {
     expect(Number(toDecimalApprox(evaluate(repeated))).toFixed(9)).toBe(row.esperado);
   });
 
+  it("SY-U-14: thin LaTeX spaces preserve addition and worker reentry", () => {
+    const row = rows["SY-U-14"];
+    expect(row.entrada).toBe("3\\,+\\,4");
+    expect(row.operacion).toBe("valor");
+    expect(row.esperado).toBe("7");
+    const parsed = parseExpression(row.entrada).algebrite;
+    expect(evaluate(parsed)).toBe("7");
+    scope.postMessage.mockClear();
+    scope.onmessage!({data:{type:"evaluate",requestId:"SY-U-14",expressionAlgebrite:parsed}});
+    const result = scope.postMessage.mock.calls[0][0];
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    expect(result.resultLatex).toBe("7");
+    expect(evaluate(parseExpression(result.resultLatex).algebrite)).toBe("7");
+  });
+
 });
