@@ -1,5 +1,18 @@
 # Current Certification State
 
+## 2026-10-15 — SY-V-18 producto finito exacto
+- Fixture original \prod_{k=1}^{5}k, operacion=valor, esperado 120.
+- Lite: fuente original -> parser product(k,k,1,5) o product((k),k,1,5), preservando cuerpo/índice/límites -> handler worker real con transporte simulado y ruta tryFiniteProduct -> resultLatex 120/confidence SYMBOLIC -> reentrada real de la salida con nuevo requestId y exacto 120.
+- Plus frontend: convierte íntegramente la fuente a product(k,k,1,5), resultado 120 reingresable. Backend HTTP /evaluate con traducción explícita, contrato MathResponse, éxito/scalar/input/requestId, texto/LaTeX/aproximado 120, errores nulos y segunda petición con result_text real y requestId distinto.
+- Controles independientes en ambos motores: producto 3..5=60, 1..4=24 y renombrado del índice a j conserva 120. Evita que la prueba pase con límites ignorados o índice fijo.
+- SY-V-18 PASS bilateral en alcance descrito. Lite SHA d26adf0298b8c88ae253c16821accde7df83d653: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38702654968 (1290 PASS +30 TODO), H1d 38702654841, build 38702654832 y E2E científico genérico 38702654909 SUCCESS. Plus SHA e60486901b16691d167048c68636cf34aeeeff53: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38702660203 (1175 backend PASS +1 XFAIL; 838 frontend PASS +28 TODO), H1d 38702660164 SUCCESS. Logs jobs 116314338175/116314355683/116314355334 inspeccionados; conclusiones verificadas por SHA.
+- Sin cambios de producto. Alcance parser/handler Lite y conversor/HTTP Plus separados; no acredita teclado/MathLive/browser específico de SY-V-18. Gates E2E genéricos solo regresión. TODO/XFAIL no PASS.
+- Tablero actualizado bilateralmente. Syntax309/IN625/H2/SG28 OPEN; DIST multinodo BLOCKED. Sin despliegue de producción.
+
+### Siguiente paso exacto — SY-V-19
+Fixture original \binom{5}{2}, operacion=valor, esperado 10. Verificar extracción de ambos argumentos, convención de combinación binomial, exactitud y reentrada real por rutas correctas. Después SY-V-20 binomial n sobre 2, equivalente a n(n-1)/2, manteniendo dominio y alcance explícitos.
+
+
 ## 2026-10-15 — SY-V-17 suma simbólica con dominio declarado
 - Fixture original \sum_{k=1}^{n}k, operacion=equivalente, esperado \frac{n(n+1)}{2}.
 - Gap confirmado por lectura del código anterior: validateFiniteSumRange Lite y _try_parse_finite_aggregate Plus solo aceptaban límites numéricos enteros. No se sustituyó el ejercicio simbólico por un caso numérico.

@@ -2,6 +2,12 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## Actualización verificada — SY-V-18 (2026-10-15)
+- Avance secuencial: SY-V-18 PASS acotado; siguiente SY-V-19 (binomial 5 sobre 2, esperado 10).
+- Producto finito desde LaTeX original, cuerpo/índice/límites, exacto 120 y reentrada. Controles 3..5=60, 1..4=24 y nombre del índice j en ambos motores. Lite usa ruta real de producto en el handler; Plus conversor y HTTP probados por separado.
+- SY-V-18 PASS bilateral en alcance descrito. Lite SHA d26adf0298b8c88ae253c16821accde7df83d653: cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/38702654968 (1290 PASS +30 TODO), H1d 38702654841, build 38702654832 y E2E científico genérico 38702654909 SUCCESS. Plus SHA e60486901b16691d167048c68636cf34aeeeff53: cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/38702660203 (1175 backend PASS +1 XFAIL; 838 frontend PASS +28 TODO), H1d 38702660164 SUCCESS. Logs jobs 116314338175/116314355683/116314355334 inspeccionados; conclusiones verificadas por SHA.
+- Solo pruebas/documentación; sin cambios de producto. Científica PARCIAL, porcentaje global ND; IN625/H2/SG28 OPEN y DIST BLOCKED. UI nativa específica pendiente. Fotografías anteriores son históricas.
+
 ## Actualización verificada — SY-V-17 (2026-10-15)
 - Avance secuencial: SY-V-17 PASS acotado; siguiente SY-V-18 (producto de k desde 1 hasta 5, esperado 120).
 - Nueva capacidad bilateral: suma simbólica del propio índice desde 1 hasta una cota de una letra, con fórmula cerrada y dominio explícito de entero no negativo. Prueba de equivalencia general, base y recurrencia; no solo testigo n=10.
@@ -40,7 +46,7 @@ Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisi
 
 ## Lectura rápida
 - Dos frentes principales en evaluación: IN625 (625 casos) y Syntax309 (309 casos). No representan todas las matrices del proyecto ni deben sumarse como requisitos independientes sin deduplicación.
-- Syntax309 ha abordado 7/12 secciones; el avance secuencial llega a SY-V-17. Esto mide recorrido, NO porcentaje certificado.
+- Syntax309 ha abordado 7/12 secciones; el avance secuencial llega a SY-V-18. Esto mide recorrido, NO porcentaje certificado.
 - La regresión actual también ejecuta Matrices, Estadística, Unidades y Gráficas. No es correcto describir toda la CI como exclusivamente sintaxis.
 - Geometría y cierre visual completo requieren inventario de evidencia; ND no significa cero pruebas ni producto inexistente.
 - SG28/H2 OPEN; DIST multinodo BLOCKED. El bloqueo no impide el frente matemático autorizado.
@@ -82,7 +88,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-N Números/precisión | 31 | Abordada; reconciliar convenciones y canales |
 | SY-D Delimitadores | 14 | Recorrido hasta D-14; PASS por alcance registrado, no cierre UI universal |
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
-| SY-V Variables/cálculo | 28 | V-17: gates verdes, siguiente V-18 |
+| SY-V Variables/cálculo | 28 | V-18: gates verdes, siguiente V-19 |
 | SY-Q Ecuaciones/sistemas | 23 | Pendiente de esta secuencia; pueden existir otras suites previas |
 | SY-M Matrices/vectores | 20 | Pendiente de esta secuencia; no significa módulo sin pruebas |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
@@ -106,7 +112,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-V-18 (producto de k desde 1 hasta 5 = 120), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-V-19 (binomial 5 sobre 2 = 10), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
