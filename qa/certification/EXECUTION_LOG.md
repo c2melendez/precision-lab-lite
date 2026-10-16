@@ -1,5 +1,11 @@
 # Certification Execution Log
 
+## 2026-10-15 — Inicio de SY-S-03
+- SY-S-02: gates acumulativos Plus 38846847337 y Lite 38846843845 exitosos sobre los SHA correspondientes.
+- SY-S-03: publicadas corrección del conversor de cotangente y regresiones Plus (HEAD ccac2acc); regresiones unitarias y Playwright Lite (HEAD 2225b888), workflow científico ampliado.
+- Corridas abiertas al registrar: Plus acumulativa 38847939932, H1d 38847939962; Lite acumulativa 38848004920, navegador 38848004905. Conclusión pendiente, no PASS.
+
+
 ## 2026-10-14 — SY-N-08 PASS bilateral; SY-N-09 en validación
 - SY-N-08 PASS bilateral: Lite SHA e84b3238 cumulative 38549423591, H1d 38549423562, build 38549423495 SUCCESS; Plus SHA f16f1147 cumulative 38549439711, H1d 38549439475 SUCCESS. Alcance: parser, frontend/worker o HTTP y reentrada; no browser E2E completo.
 - SY-N-09 fixture oficial `4.35\\times100` -> `435` (evitar `434.99999999999994`). Lite tests/syntax309SyE23.audit.test.ts commit 925bd7fc5ce7a998c0b3c193ea2b20b9dc9d16b6 (parser, evaluación, worker, reentrada), Plus backend/tests/test_syntax309_sye23.py commit 30b46a60358797aeca85eb5ba43a46992a97493f (traducción explícita 4.35*100, MathResponse HTTP, entero exacto y reentrada), Plus frontend/src/__tests__/syntax309SyEFractions.audit.test.ts commit dc3289371a0d05f2877f889f4e067bc57bff9f22 (conversión LaTeX). Pruebas nuevas sin cambios de producto; evaluar resultados antes de declarar PASS.
