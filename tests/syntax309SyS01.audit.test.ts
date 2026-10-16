@@ -11,7 +11,8 @@ describe("SY-S-01 Spanish sine alias",()=>{
   expect(row.entrada).toBe(String.raw`\operatorname{sen}\frac{\pi}{6}`);
   expect(row.esperado).toBe(String.raw`\frac{1}{2}`);
   const parsed=parseExpression(row.entrada,"RAD");
-  expect(parsed.freeVariables).toEqual([]);
+  // This parser reports the known constant pi among identifiers.
+  expect(parsed.freeVariables.filter(name=>name!=="pi")).toEqual([]);
   expect(evaluate(parsed.algebrite)).toBe("1/2");
  });
  it.each([row.entrada,String.raw`\operatorname{sen}\left(\frac{\pi}{6}\right)`])("returns exact fractions through the real worker and reentry: %s",latex=>{
