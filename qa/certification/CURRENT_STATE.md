@@ -1,5 +1,13 @@
 # Current Certification State
 
+## 2026-10-16 — SY-S-12 Plus regex corregido; recertificación en curso
+- Lite build diagnostic [38862179710](https://github.com/c2melendez/precision-lab-lite/actions/runs/38862179710) SUCCESS SHA 1eb99cb4d5565a8e4ccadd65f029caf6cd942536; esto acredita compilación, no por sí solo E2E SY-S-12.
+- Plus acumulativo [38862146389](https://github.com/c2melendez/precision-lab-plus/actions/runs/38862146389) FAILURE SHA 487e36584b18248cefffa737a44a7fe72d934bbd: 1362 passed, 1 failed (test_syntax309_sys12_http.py, raiz(16) PARSE_ERROR), 1 xfailed. Frontend SUCCESS.
+- Causa confirmada: regex de raiz(16) en backend/app/services/evaluate_service.py con doble escape en raw string; corregida al patrón Python de espacios/paréntesis sin modificar el oráculo exacto 4. Plus SHA técnico ce98df838481761121f3be2fed4809de8a9eea62.
+- Nuevas corridas Plus por push técnico: acumulativa [38862908867](https://github.com/c2melendez/precision-lab-plus/actions/runs/38862908867), H1d [38862908877](https://github.com/c2melendez/precision-lab-plus/actions/runs/38862908877), SG28 prototipo [38862908900](https://github.com/c2melendez/precision-lab-plus/actions/runs/38862908900); QUEUED al último chequeo, ningún PASS nuevo aún acreditado.
+- Siguiente paso exacto: consultar jobs/logs del acumulativo Plus 38862908867 sobre SHA ce98df83; confirmar test SY-S-12 nombrado, H1d y SG28 en ese SHA; comprobar suite acumulativa y E2E nativo Lite SY-S-12 (si falta, agregarlo); solo entonces calificar el caso y avanzar a SY-S-13. SG28/H2 OPEN; DIST multinodo BLOCKED. No producción/merge.
+
+
 ## 2026-10-15 — SY-S-09 PASS y SY-S-10 iniciado
 - SY-S-09 `\\operatorname{tgh}1` -> `0.7615941560`: Lite SHA 471d8f12c028506787445cf72eea855897dd4900 cumulative 38856765031, H1d 38856765040, build 38856765001, native scientific E2E 38856765061 SUCCESS. Plus SHA 6bf33d0ab7643a2d514e81d8fd7539d017485658 cumulative 38856750196 y H1d 38856750022 SUCCESS. Solo rutas probadas; sin Plus native full UI E2E.
 - SY-S-10 caso oficial `\\operatorname{argsenh}1` esperado `0.881373587` tolerancia 5e-10. Lite nuevo `tests/syntax309SyS10.audit.test.ts` SHA 9d58b821 y navegador `e2e/syntax309-sys10.spec.ts` SHA 630d81bc; workflow científico SHA 87ff9d1b19d9e2fd7f505329db97d2423a00bb16. Plus nuevo `backend/tests/test_syntax309_sys10_http.py` SHA e4705019 y conversor `frontend/src/__tests__/syntax309SyS10.audit.test.ts` SHA 30b676b5ac1c63653fe8200dce447223be600bb9.
