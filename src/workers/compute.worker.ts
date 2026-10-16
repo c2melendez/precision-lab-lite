@@ -845,7 +845,7 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
     // SY-S-08: evaluate native numeric hyperbolic calls through the independent
     // parser before Algebrite can turn float(sinh(1)) into a spurious NaN.
     // Symbolic/free-variable inputs and unsupported expressions still use CAS.
-    if (/\\b(?:sinh|cosh|tanh)\\(/.test(expr)) {
+    if (/\b(?:sinh|cosh|tanh)\(/.test(expr)) {
       const numeric = tryNumericFallback(expr);
       if (numeric !== null && Number.isFinite(Number(numeric))) {
         return {
