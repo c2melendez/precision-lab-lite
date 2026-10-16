@@ -1,5 +1,15 @@
 # Certification Execution Log
 
+## 2026-10-15 — SY-S-05 gates acumulativos PASS; navegador Lite iniciado
+
+- Fixture SY-S-05: `\\operatorname{arcsen}\\frac{1}{2}` → `\\frac{\\pi}{6}` en radianes.
+- Plus SHA técnico `8d2731a9`: acumulado [38850186814](https://github.com/c2melendez/precision-lab-plus/actions/runs/38850186814) SUCCESS, H1d [38850186803](https://github.com/c2melendez/precision-lab-plus/actions/runs/38850186803) SUCCESS. Cubre conversión y HTTP por separado, no flujo navegador Plus.
+- Lite SHA `1ac607f6`: acumulado [38850191010](https://github.com/c2melendez/precision-lab-lite/actions/runs/38850191010) SUCCESS. Nuevo E2E específico `e2e/syntax309-sys05.spec.ts` añadido al workflow de escritorio/tableta/móvil, commit técnico `54969c36`; [E2E 38850799514](https://github.com/c2melendez/precision-lab-lite/actions/runs/38850799514) disparado, además de [acumulativa 38850799410](https://github.com/c2melendez/precision-lab-lite/actions/runs/38850799410).
+- No atribuir PASS al nuevo E2E hasta resultado y logs. El E2E observa MathLive, resultado con pi y reentrada, pero la exactitud simbólica queda validada separadamente por oráculos matemáticos de la suite unitaria.
+- Próxima ejecución: verificar E2E 38850799514 y acumulativa 38850799410 en SHA `54969c36`, corregir fallos del flujo UI si aparecen; tras resultados, continuar con SY-S-06: `\\operatorname{arctg}1` → `\\frac{\\pi}{4}`.
+- Contrato global IN625/H2/SG28 sigue OPEN, DIST-01..08 BLOCKED; sin merge ni despliegue.
+
+
 ## 2026-10-15 — SY-S-04 PASS bilateral; SY-S-05 en validación CI
 
 - SY-S-04 `\\operatorname{cosec}\\frac{\\pi}{6}` → 2: cuatro gates SUCCESS sobre SHA técnico correcto. Plus IN625 acumulativo [38848312931](https://github.com/c2melendez/precision-lab-plus/actions/runs/38848312931) y H1d [38848313211](https://github.com/c2melendez/precision-lab-plus/actions/runs/38848313211) en `cbb139b4`; Lite acumulativo [38848342517](https://github.com/c2melendez/precision-lab-lite/actions/runs/38848342517) y navegador [38848342516](https://github.com/c2melendez/precision-lab-lite/actions/runs/38848342516) en `62f706c4`. El alcance Plus continúa siendo conversor y HTTP separados, no flujo integral nativo.
