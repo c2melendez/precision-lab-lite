@@ -1,5 +1,11 @@
 # Current Certification State
 
+### 2026-10-15 — SY-S-08 corrección de sintaxis del parche Lite
+- Primer intento Lite SHA a0210c6182de319594b441868b06413621401ef9 activó CI pero falló por error de compilación TypeScript TS1005 en regex de algebriteClient.ts línea 98 (logs acumulativo 38854594282, build 38854594390). Este fallo es del nuevo parche, no acredita falla matemática adicional.
+- Corregidos escapes del regex (identificador de función y elipsis no finita), commit técnico Lite [871c50d](https://github.com/c2melendez/precision-lab-lite/commit/871c50dd366d16d1f58f7805c735a38a97c6436b). Nuevas ejecuciones: acumulativa [38854684759](https://github.com/c2melendez/precision-lab-lite/actions/runs/38854684759), build [38854684776](https://github.com/c2melendez/precision-lab-lite/actions/runs/38854684776), H1d [38854684682](https://github.com/c2melendez/precision-lab-lite/actions/runs/38854684682), navegador general [38854684685](https://github.com/c2melendez/precision-lab-lite/actions/runs/38854684685). Inicialmente QUEUED. Confirmar verdict por SHA y test SY-S-08 antes de cierre. El test numérico estricto y el fixture quedan intactos.
+- Sin E2E específico SY-S-08 todavía; Plus en verde en ruta acotada. Syntax309 y SG28/H2 siguen OPEN, DIST BLOCKED.
+
+
 ## 2026-10-15 — SY-S-08: corrección numérica Lite sometida a CI
 
 - Fuente oficial `\\operatorname{senh}1` => `1.175201194`, tolerancia absoluta `5e-10`. Plus SHA `fedf1dc6`: gate acumulativo [38853649672](https://github.com/c2melendez/precision-lab-plus/actions/runs/38853649672) y H1d [38853649751](https://github.com/c2melendez/precision-lab-plus/actions/runs/38853649751) SUCCESS (HTTP/conversor; no E2E UI integral).
