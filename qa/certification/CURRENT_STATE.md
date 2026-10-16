@@ -1,5 +1,15 @@
 # Current Certification State
 
+## 2026-10-15 — SY-M-08 PASS en Lite navegador y Plus parser/formulario simulado/HTTP; siguiente SY-M-09
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-08, operación error, entrada `\begin{pmatrix}\end{pmatrix}`, esperado error claro: matriz vacía.
+- Corrección bilateral: una grilla con todas las celdas vacías o placeholders recibe el mensaje "La matriz no puede estar vacía", también cuando el editor materializa celdas de relleno. Se conserva el error de filas incompletas del caso M-07 y se aceptan ceros explícitos. Plus distingue filas completamente vacías antes de construir SymPy. Sin cambios al cálculo de matrices válidas.
+- Lite SHA `8e5bb59caa2e7315d4c02b771af9e6d4b86ff511`: [acumulada 38828812179](https://github.com/c2melendez/precision-lab-lite/actions/runs/38828812179) SUCCESS, 1432 PASS +30 TODO, 132 archivos, 3/3 nuevos del parser; typecheck/build PASS. [Navegador 38828811847](https://github.com/c2melendez/precision-lab-lite/actions/runs/38828811847) SUCCESS, 156/156, incluidos 3/3 SY-M-08 en escritorio/tableta/móvil: MathLive real recibe fuente vacía, aparece alerta de matriz vacía, no aparece resultado exitoso ni excepción sin manejar, y la corrección al determinante válido devuelve -2. H1d 38828812019 SUCCESS 21/21; build diagnóstico 38828811896 SUCCESS.
+- Plus SHA `4df8f2003df8225a14291389e486593c76648955`: [acumulada 38828815984](https://github.com/c2melendez/precision-lab-plus/actions/runs/38828815984) SUCCESS: frontend 872 PASS +28 TODO, 88 archivos, 3/3 nuevos del parser y 1/1 formulario con editor/transporte simulados (alerta sin HTTP y recuperación con payload correcto). Backend 1318 PASS +1 XFAIL, 5/5 nuevos HTTP/fixture: filas vacías reciben PARSE_ERROR claro y permiten recuperación; lista exterior vacía [] conserva rechazo 422 del schema existente; ceros explícitos producen 0. Son contratos distintos documentados, no se presenta [] como respuesta MathResponse 200. [H1d 38828816001](https://github.com/c2melendez/precision-lab-plus/actions/runs/38828816001) SUCCESS 38/38.
+- Alcance: detector y UI nativa Lite; parser y formulario simulado Plus, con backend HTTP real por separado. No certifica la integración nativa completa de UI Plus. TODO/XFAIL no cuentan como PASS. El módulo matricial completo no queda certificado por este caso.
+- Continuidad oficial: SY-M-09, operación det, entrada `\det\begin{pmatrix}\frac12&\sqrt2\\\pi&e\end{pmatrix}`, esperado `\frac{e}{2}-\sqrt{2}\pi\approx-3.0837`; nota: entradas con fracciones, radicales y constantes. Syntax309/IN625/H2/SG28 siguen ABIERTOS; gaps históricos y UI Plus pendientes. DIST-01..08 siguen BLOQUEADOS hasta coordinación real entre nodos independientes.
+
+
 ## 2026-10-15 — SY-M-07 PASS en Lite navegador y Plus parser/formulario simulado/HTTP; siguiente SY-M-08
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-07, operación error, entrada `\begin{pmatrix}1&2\\3\end{pmatrix}`, esperado error claro: filas de distinta longitud.
