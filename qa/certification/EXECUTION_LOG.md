@@ -1,5 +1,12 @@
 # Certification Execution Log
 
+## 2026-10-16 — SY-R-11 verificación HTTP y nuevo E2E nativo Lite
+- Confirmación GitHub: Lite scientific 38888616984 SUCCESS sobre 6188a5ed (suite previa sin caso browser SY-R-11); Plus cumulative 38888846559 SUCCESS sobre d285774, con jobs frontend/backend PASS, incluidas pruebas HTTP reales de inversa y A·B/B·A. No confundir con cierre de toda Syntax309.
+- Nuevo E2E Lite `e2e/syntax309-syr11.spec.ts` commit 199979ca875903875f629b756e247064f474536f: MathLive, Worker, matriz renderizada, producto exacto con B, recuperación del LaTeX y segundo request_id. Workflow científico actualizado para ejecutar el caso en push, SHA técnico final `ff66e8a921975e24e297d8058d1fddf4388317d2`. Corridas para ese SHA: cumulative 38889566773, build 38889566627, científica 38889566688, H1d 38889566654, observadas IN_PROGRESS; no atribuir PASS previo a nuevo E2E.
+- Próximo paso obligatorio: verificar esos cuatro jobs/logs de Lite y corregir cualquier FAIL en parser/producto/oráculo. Si pasan, registrar SY-R-11 como PASS acotado (Plus HTTP y frontend por separado; Lite nativo) con límites de integración UI Plus y paso manual si aplica; comenzar SY-R-12 `\\text{no existe}` → rechazo comprensible sin ejecutar texto arbitrario. H2/SG28 OPEN; DIST multinodo BLOCKED.
+
+
+
 ## 2026-10-16 — SY-R-11 gate Lite aprobado, Plus HTTP publicado
 - Lite `6188a5edaff1be0d9ef404b4d8c5bc6090f9c4fd`: cumulative [38888617070](https://github.com/c2melendez/precision-lab-lite/actions/runs/38888617070) SUCCESS, job 116932389139: 1551 PASS /30 TODO, 172 archivos, typecheck/build PASS. Build 38888617120 y H1d 38888617024 SUCCESS; científica 38888616984 todavía IN_PROGRESS al último chequeo. Este gate no incluye E2E específico de SY-R-11.
 - Plus amplía cobertura a backend HTTP REAL mediante `backend/tests/test_syntax309_syr11_http.py` SHA `d28577440b28ef59609f55fbb4de6bc590876e5f`: /matrix/inverse, /matrix/operations multiply A·B y B·A, reentrada desde result_data y mutantes; matrices SymPy exactas. CI acumulativa [38888846559](https://github.com/c2melendez/precision-lab-plus/actions/runs/38888846559) y H1d 38888846746 QUEUED al observarlas, no PASS aún. Corridas anteriores Plus 38888653441/38888653563 del SHA frontend 4170a62 seguían IN_PROGRESS.
