@@ -41,4 +41,10 @@ describe("SY-R-14 exact absolute value with ephemeral substitution",()=>{
   }
   expect(parseExpression("x").freeVariables).toEqual(["x"]);
  });
+ it.each([
+  String.raw`\left\lvert x\rvert\ \text{con}\ x=-4`,
+  String.raw`\lvert x\right\rvert\ \text{con}\ x=-4`,
+ ])("rejects unpaired sizing %s",input=>{
+  expect(()=>parseExpression(input)).toThrow();
+ });
 });

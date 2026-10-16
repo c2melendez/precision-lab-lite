@@ -547,6 +547,9 @@ function normalizeDelimiterSyntax(input: string): string {
     .replace(/\\rfloor/g, ")")
     .replace(/\\lceil/g, "ceiling(")
     .replace(/\\rceil/g, ")")
+    // SY-R-14: sized explicit bars retain absolute-value semantics.
+    // G3 has already checked the original left/right structure.
+    .replace(/\\left(?=\\lvert)|\\right(?=\\rvert)/g, "")
     // Barras LaTeX explícitas. Normalizar left/right antes del scanner.
     .replace(/\\left\\vert/g, "|")
     .replace(/\\right\\vert/g, "|")
