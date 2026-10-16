@@ -1,5 +1,14 @@
 # Certification Execution Log
 
+## 2026-10-16 — SY-R-10 CI verificada; SY-R-11 pruebas publicadas, gates pendientes
+- Rama canónica verificada en README de main de Lite y Plus: `qa/syntax-audit-in625-a1`. HEAD técnico SY-R-10: Lite cfc43b7c68c0b2d3eb4418edb38f45690c2d4b90, Plus 597cab323efe3d94d7b4861bc9d5eb340915dd46. El CURRENT_STATE anterior (SY-R-09) estaba desactualizado.
+- SY-R-10: Lite cumulative 38887554533 SUCCESS, científica 38887554561 SUCCESS con 369/369 browser tests, incluidas tres SY-R-10 desktop/tablet/mobile (reentrada racional y exclusión x=1). Plus cumulative 38887559357 SUCCESS, backend 1412 PASS /1 XFAIL; frontend y build SUCCESS. Evidencia en los SHA correspondientes, no declaración global.
+- Siguiente fixture oficial SY-R-11: matriz [-2,1;3/2,-1/2] que multiplicada por [1,2;3,4] produce identidad. No modificar matriz/expected oficiales.
+- Tests nuevos: Lite `tests/syntax309SyR11.audit.test.ts` SHA 6188a5edaff1be0d9ef404b4d8c5bc6090f9c4fd (fracciones exactas, A·B=B·A=I, inversa del motor y mutantes); Plus `frontend/src/__tests__/syntax309SyR11.audit.test.ts` SHA 4170a62199056117cf85b98e0b0cc8c028252d5f (intake del conversor y oráculo independiente escalado a enteros).
+- Nuevos runs activados automáticamente por push: Lite cumulative 38888617070, build 38888617120, científica 38888616984, H1d 38888617024; Plus cumulative 38888653441, H1d 38888653563. Todos IN_PROGRESS al observarlos; NO atribuir PASS antes de conclusión.
+- Cobertura SY-R-11 aún parcial: falta verificar multiplicación/matriz en endpoint público Plus, UI MathLive+Worker nativa en Lite para este caso y reconciliar resultados CI y logs. No llamar al oráculo frontend Plus certificación de motor Plus.
+- Siguiente paso exacto: consultar estos seis runs, diagnosticar fallos y corregir; agregar validación del producto Plus mediante su ruta de matrices y E2E nativo Lite SY-R-11; ejecutar gates del SHA técnico final y documentar evidencia. Luego SY-R-12. H2/SG28 OPEN, DIST-01..08 multinodo BLOCKED; no merge, despliegue ni cambios de seguridad.
+
 ## 2026-10-15 — SY-S-08 FAIL confirmado en Lite Worker; no cerrar
 
 - Plus: IN625 acumulativa [38853649672](https://github.com/c2melendez/precision-lab-plus/actions/runs/38853649672) SUCCESS para SHA `fedf1dc6`, prueba HTTP y conversor. No equivale a E2E integral.
