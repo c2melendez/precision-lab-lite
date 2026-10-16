@@ -1,5 +1,13 @@
 # Current Certification State
 
+## 2026-10-15 — SY-S-07 parcialmente verificado; SY-S-08 pruebas publicadas
+
+- SY-S-07 `\\operatorname{arcctg}1` → `\\frac{\\pi}{4}`: Plus acumulativo [38853224631](https://github.com/c2melendez/precision-lab-plus/actions/runs/38853224631) SUCCESS y H1d [38853224635](https://github.com/c2melendez/precision-lab-plus/actions/runs/38853224635) SUCCESS sobre `5c07bdb4`. Lite acumulativo [38853276094](https://github.com/c2melendez/precision-lab-lite/actions/runs/38853276094) SUCCESS sobre `4d70930e`; E2E [38853276191](https://github.com/c2melendez/precision-lab-lite/actions/runs/38853276191) seguía IN_PROGRESS en última consulta, no declarar cierre E2E hasta su conclusión.
+- SY-S-08 fixture oficial de Syntax309: `\\operatorname{senh}1` → aproximación `1.175201194`, tolerancia decimal abs 5e-10. Ambos normalizadores incluyen alias `senh` → `sinh`. Añadidos tests Plus de frontend para conversión y HTTP para cálculo/reentrada, último SHA técnico `fedf1dc6`, [gate acumulativo 38853649672](https://github.com/c2melendez/precision-lab-plus/actions/runs/38853649672) y [H1d 38853649751](https://github.com/c2melendez/precision-lab-plus/actions/runs/38853649751) iniciados.
+- Lite: nuevo oráculo unitario para fixture SY-S-08, SHA `af6ff2c9`; [acumulativo 38853652319](https://github.com/c2melendez/precision-lab-lite/actions/runs/38853652319) y E2E acumulado [38853652390](https://github.com/c2melendez/precision-lab-lite/actions/runs/38853652390) activados. No se añadió aún test de navegador SY-S-08 específico ni se afirma flujo integral Plus.
+- Siguiente: revisar logs y resultados de SY-S-07 E2E, SY-S-08 acumulados. Corregir cualquier error confirmado, ampliar E2E específico SY-S-08 y luego seguir SY-S-09. Syntax309/IN625/H2/SG28 OPEN; DIST-01..08 BLOCKED; sin merge ni despliegue.
+
+
 ## 2026-10-15 — SY-S-06 gates verificados; SY-S-07 publicado con CI iniciado
 
 - SY-S-06: Plus SHA técnico `c5eaca8c`: gate acumulativo [38852664398](https://github.com/c2melendez/precision-lab-plus/actions/runs/38852664398) SUCCESS, H1d [38852664431](https://github.com/c2melendez/precision-lab-plus/actions/runs/38852664431) SUCCESS. Lite SHA `8f3c2957`: acumulativo [38852522883](https://github.com/c2melendez/precision-lab-lite/actions/runs/38852522883) SUCCESS y navegador [38852522907](https://github.com/c2melendez/precision-lab-lite/actions/runs/38852522907) SUCCESS (alias y agrupación × 3 viewports). Alcance Plus frontend conversor y backend HTTP separados, no E2E nativo integral.
