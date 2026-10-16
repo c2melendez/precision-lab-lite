@@ -5764,3 +5764,12 @@ Fixture i^{2}, operacion=convencion, esperado -1 como unidad imaginaria o i^{2} 
 - Política CI inspeccionada: gates acumulativos bilaterales conservan push canónico, pull_request, workflow_dispatch y exclusión de documentación. Científica Lite añade specs sys19/sys20 a filtros y comando; no hay cambios de producto todavía.
 - Siguiente paso exacto: obtener jobs/logs finales y resolver fallos de la capa correcta. Cerrar SY-S-19/20 solo con fuente/caso, valor y reentrada exactos en los SHA indicados. Después comenzar SY-R-01..03 (salidas con sqrt(2)/2, 2sqrt(3), pi/6), conservando los esperados oficiales y la precisión requerida.
 - H2/SG28 OPEN; DIST multinodo BLOCKED. No merge ni producción; no se activa aislamiento de evaluate.
+
+
+## 2026-10-16 — SY-S-19/20: defecto de serialización Plus corregido
+- Lite SHA 988e59eaf0c8f1c858284acf6527b041619efc80 cumulative 38870225883 SUCCESS: job 116872314698, 1509 passed / 30 TODO; 8 tests nuevos (parser y handler Worker RAD/GRAD) exactos 1/2 y reentrada PASS. H1d 38870225948 SUCCESS; navegador 38870226129 todavía en curso.
+- Plus SHA inicial 7b0d5873f2e530921ab9cef1fb940ff5feb98284 cumulative 38870229923 FAILURE: frontend 930 passed / 2 failed / 28 TODO. Fuente original literal ° traduce correctamente sin(((30)*pi/180)); las dos pruebas de serialización 30^{circ} recibieron sin(30^@). Causa PRODUCT/CONVERSOR, no oráculo. Backend job 116872386409: 1373 passed / 1 XFAIL, cuatro pruebas SY-S-19/20 rad/deg PASS; H1d 38870230062 SUCCESS, no sustituyen frontend fallido.
+- Corrección Plus frontend/src/components/NaturalMathField.tsx antes de convertLatexToAsciiMath: normalizar ^{circ}, ^circ y degree (macros LaTeX con backslash) al carácter °; misma semántica angular explícita, sin cálculo especial de 30 ni cambio backend. Regresiones de ambos casos verifican las tres serializaciones, alias sen y fuente literal original.
+- Nuevo SHA Plus 1427c3f08654fc674b2f19c57eb7ff6f964a4ec1: cumulative 38870442424 y H1d 38870442583 por push. Frontend job 116873007173 SUCCESS; backend y H1d aún IN_PROGRESS al registrar. SY-S-19/20 continúan OPEN bilateral hasta logs finales y navegador Lite.
+- Preparado siguiente lote SY-R-01..03 en identificación/pruebas, aún sin ejecución ni PASS: valor decimal oficial y reentrada de sqrt(2)/2, 2sqrt(3), pi/6. No rebajar tolerancia oficial de matriz por truncación de display.
+- H2/SG28 OPEN, DIST BLOCKED. Sin producción/merge.
