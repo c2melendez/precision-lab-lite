@@ -714,6 +714,26 @@ function validateInputStructureG3(input: string): void {
 }
 
 /** Etapa 1: macros LaTeX -> notación lineal compatible con Algebrite. */
+/**
+ * Plain calculator log(x), like the visual \log, is base ten.
+ * Keep explicit log(x, base), ln(x), and generated CAS log calls separate.
+ */
+function normalizePlainCommonLog(source: string): string {
+  return source.replace(/(^|[^A-Za-z0-9_\\])log\s*\(/g, (match, prefix: string, offset: number) => {
+    const open = offset + match.length - 1;
+    let depth = 1;
+    let hasComma = false;
+    for (let i = open + 1; i < source.length; i++) {
+      if (source[i] === "(" || source[i] === "{") depth++;
+      else if (source[i] === ")" || source[i] === "}") {
+        depth--;
+        if (depth === 0) return hasComma ? match : prefix + "log10(";
+      } else if (source[i] === "," && depth === 1) hasComma = true;
+    }
+    return match; // Let the existing parser diagnose incomplete arguments.
+  });
+}
+
 export function preprocessLatex(latex: string): string {
   // SY-V-23: bounded numeric conjugate before unknown-LaTeX-command guard.
   latex = latex.replace(/\\overline\{\s*([+-]?\d+(?:\.\d+)?)\s*([+-])\s*(\d+(?:\.\d+)?)\s*(?:\\mathrm\{i\}|i)\s*\}/g,
@@ -752,7 +772,7 @@ export function preprocessLatex(latex: string): string {
     })[fn as "sinh" | "cosh" | "tanh" | "csch" | "sech" | "coth"],
   );
 
-  let expr = normalizeLocalizedAliases(normalizeDelimiterSyntax(latex));
+  let expr = normalizePlainCommonLog(normalizeLocalizedAliases(normalizeDelimiterSyntax(latex)));
 
   // IN625 E1b — variantes tipográficas equivalentes de límites.
   expr = expr.replace(/\\displaystyle/g, "").replace(/\\rightarrow/g, "\\to");

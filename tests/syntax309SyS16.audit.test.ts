@@ -14,3 +14,16 @@ describe("SY-S-16 official plain-text function", () => {
   expect(evaluate(parseExpression(result, "RAD").algebrite)).toBe(row.esperado);
  });
 });
+
+describe("SY-S-16 logarithm conventions", () => {
+ it.each([
+  ["log(10)", "1"],
+  ["log(1000)", "3"],
+  ["ln(e)", "1"],
+  ["log(8,2)", "3"],
+  ["log(100)+ln(e)", "3"],
+ ])("evaluates %s as %s without changing explicit bases", (input, expected) => {
+  expect(evaluate(parseExpression(input, "RAD").algebrite)).toBe(expected);
+ });
+});
+
