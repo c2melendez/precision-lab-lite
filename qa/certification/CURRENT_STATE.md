@@ -1,5 +1,12 @@
 # Current Certification State
 
+## 2026-10-16 — SY-R-12 E2E aún FAIL; volcado de estado DOM real
+- Lite científica 38915737138 FAILURE, 372 PASS / 3 FAIL (desktop/tablet/mobile) SY-R-12. El E2E seguía sin encontrar `[role=alert]`; al obtener `null` el `expect.toContain` fallaba sin el diagnóstico JSON necesario. No hay evidencia para cerrar SY-R-12.
+- Commit de diagnóstico Lite `eeaec5cc2004a4b53e69a1b4d8648ba50f4fb73d`: `e2e/syntax309-syr12.spec.ts` toma una instantánea síncrona de DOM con valor MathLive, alertas, tarjetas de resultado y extracto de texto visible, y arroja un error que incluye JSON cuando no aparece la alerta matemática esperada. Se conserva prueba de recuperación con 2+3. No se modificó el motor para esconder el fallo.
+- CI SHA eeaec5cc: científica `38969978401`, acumulativo `38969978348`, build `38969978419`, H1d `38969978344`, observadas QUEUED/IN_PROGRESS. Próxima ejecución: leer error `SY-R-12 native diagnostics` de 38969978401 para localizar el estado exacto de la UI, corregir el problema real y volver a probar desktop/tablet/mobile.
+- Plus acumulativo previamente aprobado sobre SHA 94d8f73 para unitarias frontend SY-R-12; falta validación visible Plus. H2/SG28 OPEN, DIST multinodo BLOCKED; no merge ni despliegue.
+
+
 ## 2026-10-16 — SY-X-03 PASS acotado: sintaxis de barras invertidas y recuperación
 
 - Rama canónica verificada desde README de main en ambos repositorios: `qa/syntax-audit-in625-a1`. Fixture original SY-X-03 contiene dos barras invertidas (longitud 2), operación error y esperado "error claro de sintaxis", intactos. Se distingue de backslash+espacio de SY-X-02; no se altera el JSONL ni se sustituye la fuente por vacío.
