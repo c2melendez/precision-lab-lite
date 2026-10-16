@@ -318,7 +318,10 @@ export function BasicScientificMode() {
             ? {...e.data,resultLatex:"\\left("+e.data.resultLatex+"\\right)",resultViewLabel:"Vector en base canónica"}
             : e.data);
 
-      if (matrixIntent.kind === "basis") {
+      if (matrixIntent.kind === "absolute") {
+        const scalar = parseExpression(matrixIntent.scalar, angleMode);
+        dispatchWorker(worker, {type:"evaluate",requestId,expressionAlgebrite:"abs("+scalar.algebrite+")"});
+      } else if (matrixIntent.kind === "basis") {
         dispatchWorker(worker, { type: "matrixOp", requestId, op: "literal", a: matrixIntent.matrix });
       } else if (matrixIntent.kind === "inverse") {
         dispatchWorker(worker, { type: "matrixOp", requestId, op: "inverse", a: matrixIntent.matrix });

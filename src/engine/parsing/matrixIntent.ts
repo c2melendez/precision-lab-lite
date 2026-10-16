@@ -1,4 +1,5 @@
 export type MatrixIntent =
+  | { kind: "absolute"; scalar: string }
   | { kind: "basis"; matrix: string[][] }
   | { kind: "literal"; matrix: string[][] }
   | { kind: "determinant"; matrix: string[][] }
@@ -91,6 +92,26 @@ export function isNamedVectorDotSource(latex:string):boolean {
 }
 
 export function detectMatrixIntent(latex: string): MatrixIntent | null {
+  // SY-M-16: a local declaration supplies the type; an unbound name has no inferred type.
+  const barsText = latex.trim().replace(/\\left(?=\\lvert|\|)|\\right(?=\\rvert|\|)/g, "")
+    .replace(/\\lvert/g, "|").replace(/\\rvert/g, "|").replace(/\\[, ]|\s/g, "");
+  const namedBars = /^\|([A-Za-z])\|(?:\\text\{con\}([A-Za-z])=([\s\S]+))?$/.exec(barsText);
+  if (namedBars) {
+    const [,name,declared,value] = namedBars;
+    if (!declared) throw new Error("Declara el tipo de "+name+": si es matriz, las barras indican determinante; si es escalar, valor absoluto.");
+    if (declared !== name) throw new Error("La declaración debe corresponder al nombre entre barras.");
+    const matrix = parseSingleMatrix(value);
+    if (matrix) {
+      if (matrix.rest.trim()) throw new Error("La declaración de la matriz contiene texto adicional.");
+      return {kind:"determinant",matrix:matrix.matrix};
+    }
+    if (/^[+-]?\d+(?:\.\d+)?(?:\/[+-]?\d+)?$/.test(value)) {
+      const [numerator,denominator="1"] = value.split("/");
+      if (!Number.isFinite(Number(numerator)/Number(denominator))) throw new Error("El escalar debe ser real y finito.");
+      return {kind:"absolute",scalar:value};
+    }
+    throw new Error("Declara una matriz explícita o un escalar numérico real para decidir el significado de las barras.");
+  }
   // SY-M-15: explicit named vectors select cross-product semantics, never scalar multiplication.
   const crossText = latex.trim().replace(/\\[, ]|\s/g, "");
   if (/^\\vec\{[A-Za-z]\}\\times\\vec\{[A-Za-z]\}$/.test(crossText)) {
