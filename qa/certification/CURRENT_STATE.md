@@ -1,5 +1,13 @@
 # Current Certification State
 
+## 2026-10-15 — SY-S-05 E2E harness corregido; SY-S-06 iniciado
+
+- SY-S-05: Plus SHA `8d2731a9`, acumulada 38850186814 y H1d 38850186803 SUCCESS. Lite `54969c36`, acumulativa 38850799410 SUCCESS; E2E 38850799514 FAIL: 6/6 casos fallaron por selector `math-field[read-only]` inexistente para resultado simbólico, mientras `data-result-reentry-latex` ya contenía pi y 6. Clasificación preliminar harness/expectativa UI, no error matemático demostrado.
+- Lite: corregido únicamente el oráculo E2E `e2e/syntax309-sys05.spec.ts` para comprobar reentrada simbólica real sin exigir un campo readonly; SHA `a0ccdf0b`. Revalidación navegador [38851479297](https://github.com/c2melendez/precision-lab-lite/actions/runs/38851479297), acumulativa [38851479254](https://github.com/c2melendez/precision-lab-lite/actions/runs/38851479254) SUCCESS. No declarar el E2E PASS hasta su conclusión.
+- Siguiente fixture oficial SY-S-06: `\\operatorname{arctg}1` → `\\frac{\\pi}{4}` en RAD. Añadidas pruebas permanentes Plus de traducción frontend y HTTP exacto/reentrada, SHA `cbe74176`, [gate 38851543037](https://github.com/c2melendez/precision-lab-plus/actions/runs/38851543037). Lite prueba exactitud por equivalencia simbólica en parser/evaluador, SHA `07669e68`, [gate 38851547650](https://github.com/c2melendez/precision-lab-lite/actions/runs/38851547650). Los gates están pendientes de conclusión.
+- Próximo paso: revisar logs de la revalidación E2E SY-S-05 y gates SY-S-06; corregir producto/harness según evidencia, y añadir E2E nativo específico SY-S-06 cuando sus oráculos estén estabilizados. No certificación integral: IN625/H2/SG28 OPEN y DIST-01..08 BLOCKED, sin merge ni deploy.
+
+
 ## 2026-10-15 — SY-S-05 gates acumulativos PASS; navegador Lite iniciado
 
 - Fixture SY-S-05: `\\operatorname{arcsen}\\frac{1}{2}` → `\\frac{\\pi}{6}` en radianes.
