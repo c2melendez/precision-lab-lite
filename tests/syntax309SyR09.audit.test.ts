@@ -47,3 +47,13 @@ describe("SY-R-09 antiderivative result reentry and real differentiation", () =>
   equivalent(result.resultLatex, "x^2");
  });
 });
+
+describe("SY-R-09 parenthesized derivative binding regression", () => {
+ it.each([
+  [String.raw`\frac{d}{dy}\left(x^2y+C\right)`, "x^2"],
+  [String.raw`\frac{d^2}{dy^2}\left(y^3/3+C\right)`, "2*y"],
+  [String.raw`\frac{d}{dC}\left(x^2+C\right)`, "1"],
+ ])("binds the explicitly declared variable in %s", (source, expected) => {
+  equivalent(reply(source).resultLatex, expected);
+ });
+});

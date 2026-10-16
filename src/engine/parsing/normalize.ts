@@ -963,10 +963,11 @@ export function preprocessLatex(latex: string): string {
   // probando el paquete real que SÍ soporta un 3er argumento de orden,
   // no solo dos llamadas anidadas).
   {
-    const dMatch = expr.match(/\\frac\{d(?:\^\{?(\d+)\}?)?\}\{dx(?:\^\{?\d+\}?)?\}\\left\(/);
+    const dMatch = expr.match(/\\frac\{d(?:\^\{?(\d+)\}?)?\}\{d([a-zA-Z])(?:\^\{?\d+\}?)?\}\\left\(/);
     if (dMatch) {
       const idx = dMatch.index!;
       const order = dMatch[1] ? Number(dMatch[1]) : 1;
+      const variable = dMatch[2];
       let depth = 1;
       let j = idx + dMatch[0].length;
       while (j < expr.length && depth > 0) {
@@ -985,7 +986,7 @@ export function preprocessLatex(latex: string): string {
       }
       const body = expr.slice(idx + dMatch[0].length, j - 7);
       const orderArg = order === 1 ? "" : `,${order}`;
-      expr = `${expr.slice(0, idx)}d((${body}),x${orderArg})${expr.slice(j)}`;
+      expr = `${expr.slice(0, idx)}d((${body}),${variable}${orderArg})${expr.slice(j)}`;
     }
   }
 
