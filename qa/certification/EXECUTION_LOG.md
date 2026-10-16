@@ -1,5 +1,13 @@
 # Certification Execution Log
 
+## 2026-10-15 — SY-S-06: segundo diagnóstico Plus, E2E Lite activado
+
+- Plus `38852136491` FAIL: backend PASS; frontend 917 PASS, 28 TODO y 1 FAIL (fixture SY-S-06), aún produce `arctan1` y no `atan(1)`. H1d `38852136716` SUCCESS. La corrección previa `d1341244` era demasiado tardía en la cadena de normalización. Clasificación: producto/conversor frontend, no backend.
+- Nueva corrección Plus: tratar `\\operatorname{arctg}1` antes de normalización genérica y devolver `atan(1)`, conservando el test exacto SY-S-06. SHA `6d7c4af7`, acumulativa [38852497592](https://github.com/c2melendez/precision-lab-plus/actions/runs/38852497592) y H1d [38852497604](https://github.com/c2melendez/precision-lab-plus/actions/runs/38852497604) abiertas. No declarar PASS hasta verificar logs.
+- Lite: SY-S-06 test matemático previo PASÓ gate 38851547650 en SHA 07669e68; nuevo E2E `e2e/syntax309-sys06.spec.ts` cubre alias oficial y versión con paréntesis en escritorio/tableta/móvil, revisa resultado y reentrada simbólica sin imponer `math-field[read-only]`. YAML CI ampliado; SHA técnico `8f3c2957`, [navegador 38852522907](https://github.com/c2melendez/precision-lab-lite/actions/runs/38852522907), [acumulativa 38852522883](https://github.com/c2melendez/precision-lab-lite/actions/runs/38852522883) pendientes.
+- SY-S-05 navegador corrigió harness y pasó en 38851479297. Continuidad: verificar Plus y Lite para SY-S-06, corregir regresiones; siguiente fixture de matriz SY-S-07 pendiente de consulta exacta. Syntax309/IN625/H2/SG28 OPEN; DIST-01..08 BLOCKED. Sin merge ni despliegue.
+
+
 ## 2026-10-15 — SY-S-05 revalidado; SY-S-06 conversor corregido, CI abierto
 
 - SY-S-05 Lite navegador: run [38851479297](https://github.com/c2melendez/precision-lab-lite/actions/runs/38851479297) SUCCESS en SHA `a0ccdf0b` después de corregir expectativa del harness de `math-field[read-only]`. Plus acumulativa 38850186814 y H1d 38850186803 SUCCESS, Lite acumulativa 38851479254 SUCCESS. Los oráculos de frontend/backend Plus y navegador Lite son evidencias separadas; no se afirma E2E nativo Plus.
