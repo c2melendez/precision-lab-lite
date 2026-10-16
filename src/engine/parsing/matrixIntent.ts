@@ -22,6 +22,9 @@ function splitMatrixBody(body: string): string[][] {
     return `${numerator}/${denominator}`;
   };
   const matrix = rows.map((row) => row.split("&").map(normalizeCell));
+  if (matrix.every(row => row.every(cell => !cell.trim() || /^\\placeholder(?:\{[^{}]*\})?$/.test(cell.trim())))) {
+    throw new Error("La matriz no puede estar vacía.");
+  }
   // A blank cell inserted by the editor is missing input, not numeric zero.
   if (matrix.some(row => row.some(cell => !cell.trim() || /^\\placeholder(?:\{[^{}]*\})?$/.test(cell.trim())))) {
     throw new Error("Todas las filas de la matriz deben tener la misma longitud; completa las celdas vacías.");
