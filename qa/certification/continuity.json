@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "revision": 2,
+  "repository": "c2melendez/precision-lab-lite",
+  "canonical_branch": "qa/syntax-audit-in625-a1",
+  "technical_baseline_sha": "1a0da3fafae1dcd2d654b527ac85ce45d47a52a2",
+  "baseline_case": "SY-X-03",
+  "baseline_status": "PASS_SCOPED",
+  "global_certification": "OPEN",
+  "prose_only_paths": [
+    "README.md",
+    "qa/certification/README.md",
+    "qa/certification/CURRENT_STATE.md",
+    "qa/certification/EXECUTION_LOG.md",
+    "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md",
+    "qa/certification/MANUAL_CAPABILITY_GAPS.md",
+    "qa/certification/CONTINUATION_PROMPT.md",
+    "qa/certification/CONTINUITY.md",
+    "qa/certification/history/2026-10-16_pre_continuity_CURRENT_STATE.md",
+    "qa/certification/history/2026-10-16_pre_continuity_GLOBAL_CERTIFICATION_DASHBOARD.md",
+    "qa/certification/history/2026-10-16_pre_continuity_EXECUTION_LOG.md",
+    "qa/certification/SECURITY_REMEDIATION.md",
+    "qa/certification/history/2026-10-16_concurrent_CURRENT_STATE.md",
+    "qa/certification/history/2026-10-16_concurrent_EXECUTION_LOG.md"
+  ],
+  "gates": {
+    "cumulative": {
+      "workflow": ".github/workflows/in625-cumulative-certification.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    "h1d": {
+      "workflow": ".github/workflows/in625-h1d-reentry.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    "security": {
+      "workflow": ".github/workflows/s25-security.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "allow_reuse": false,
+      "max_evidence_age_hours": 24
+    },
+    "fixture_integrity": {
+      "workflow": ".github/workflows/syntax309-integrity.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    "scientific": {
+      "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    "sg28_cancel": {
+      "workflow": ".github/workflows/in625-sg28-scientific-cancel.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    }
+  },
+  "evidence_by_channel": {
+    "unit_worker": {
+      "run_id": 38964686770,
+      "status": "PASS_SCOPED",
+      "counts": {
+        "pass": 1583,
+        "todo": 30
+      }
+    },
+    "native_ui": {
+      "run_id": 38964686825,
+      "status": "PASS_SCOPED",
+      "counts": {
+        "pass": 393,
+        "skip": 0
+      },
+      "profiles": [
+        "desktop",
+        "tablet",
+        "mobile"
+      ]
+    }
+  },
+  "next_action": {
+    "id": "VERIFY-CONSOLIDATED-CI",
+    "status": "OPEN",
+    "action": "After the consolidated technical push inspect existing cumulative/H1d/native/dependency gate runs and their jobs/logs. Do not dispatch duplicate runs. Resolve focused failures, then reconcile this ledger.",
+    "exit_criteria": [
+      "Published technical SHA known",
+      "Relevant actual runs inspected",
+      "PASS/FAIL/BLOCKED recorded per channel",
+      "Next actionable task chosen after reconciliation"
+    ]
+  },
+  "blockers": [
+    {
+      "id": "H2-SG28-DIST-01..08",
+      "status": "BLOCKED",
+      "exit_criteria": "Integrated independent-host admission global K=1 with shared durable fencing/mTLS, real cancellation/recovery, logs and SHA; independent-runner preflight is insufficient",
+      "next_action": "Complete actual shared-admission integration and staging evidence; do not rerun unchanged preflights",
+      "dependencies": [
+        {
+          "id": "SG28-GRANT-LIFETIME-FENCING",
+          "status": "OPEN",
+          "evidence": "Current coordinator grant generation/TTL does not prove child-process fencing; lease lifetime must cover all phases and cleanup",
+          "next_action": "Resolve total lifetime/renewal, cancellation on uncertainty and effective worker fencing contract before integrated wiring"
+        },
+        {
+          "id": "SG28-EXTERNAL-TOPOLOGY",
+          "status": "BLOCKED",
+          "next_action": "After safe integration, obtain authorized independent-host shared-coordinator mTLS staging evidence"
+        }
+      ],
+      "responsible_role": "backend/infra maintainers"
+    },
+    {
+      "id": "SECURITY-S25",
+      "status": "BLOCKED",
+      "exit_criteria": "Remediate braces dependency chain without suppressing high findings; validate build/visual compatibility and fresh S25",
+      "next_action": "Verify one consolidated dependency gate; then act only on patched braces availability or an explicit Tailwind migration objective",
+      "responsible_role": "certification maintainer"
+    },
+    {
+      "id": "SY-P-23",
+      "status": "OPEN",
+      "exit_criteria": "Explicit bilateral a/bc convention decision and regression; keep XFAIL until resolved",
+      "next_action": "Review canonical convention and acceptance criteria",
+      "responsible_role": "certification maintainer"
+    },
+    {
+      "id": "SY-X-04-PLUS-HTTP",
+      "status": "BLOCKED",
+      "exit_criteria": "Explicit reconciliation of 999-character input with max_length=500 AND AST max200 without pre-simplifying the source",
+      "next_action": "Read SY_X_04_LENGTH_CONTRACT.md; do not rerun identical rejection tests until limits/acceptance change",
+      "responsible_role": "certification maintainer"
+    }
+  ],
+  "work_in_progress": {
+    "id": "AUDIT-REMEDIATION-20261016",
+    "status": "IMPLEMENTED_LOCALLY_CI_PENDING",
+    "changes": [
+      "Continuity ledger and conservative input fingerprints",
+      "Exact-SHA CI evidence guard",
+      "source-map-js patch update",
+      "SY-X-04 expanded input and contract boundaries",
+      "Expanded 500-term native sum"
+    ]
+  },
+  "cases": {
+    "SY-X-03": {
+      "status": "PASS_SCOPED",
+      "native_plus": "CI_PENDING"
+    },
+    "SY-X-04": {
+      "status": "PARTIAL_BLOCKED",
+      "lite": "LOCAL_PASS_CI_PENDING",
+      "plus_http": "BLOCKED_LENGTH_AND_AST",
+      "official_expected": "500x"
+    }
+  }
+}

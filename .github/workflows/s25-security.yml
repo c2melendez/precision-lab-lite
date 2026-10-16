@@ -1,6 +1,7 @@
 name: S25 Security Gate
 
 on:
+  workflow_call:
   pull_request:
     paths:
       - "src/**"

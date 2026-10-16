@@ -33,3 +33,7 @@ Toda modificación sustantiva del estado de certificación debe reflejarse en am
 
 ## Tablero global
 Consultar [GLOBAL_CERTIFICATION_DASHBOARD.md](GLOBAL_CERTIFICATION_DASHBOARD.md) para alcance por módulo, evidencia, bloqueos y pendientes. Actualizarlo con los cierres bilaterales; sus conteos de tests no son porcentajes de requisitos certificados.
+
+
+## Continuidad entre sesiones
+Tras resolver la rama canónica, leer [continuity.json](continuity.json) y [CONTINUITY.md](CONTINUITY.md) antes de lanzar Actions. CURRENT_STATE y el tablero muestran solo el corte vigente; la historia anterior está archivada con enlaces en EXECUTION_LOG. No confundir un run REUSE con una ejecución de tests nueva.

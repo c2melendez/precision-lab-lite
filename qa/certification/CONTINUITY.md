@@ -1,0 +1,89 @@
+# Continuidad verificable y prevención de ejecuciones redundantes
+
+`continuity.json` es el índice estructurado vigente. No sustituye contratos, logs ni GitHub Actions. `CURRENT_STATE.md` presenta este índice a personas; `EXECUTION_LOG.md` conserva historia. Si difieren, reconciliar evidencia real antes de programar pruebas. El prompt externo es únicamente bootstrap.
+
+## Arranque de cada sesión
+
+1. Resolver repositorio/rama canónica desde README de la rama predeterminada en ambos productos. Leer el índice, protocolo, gaps y contratos del bloque. No heredar SHA del chat.
+2. Consultar HEAD y runs recientes **incluidos push y pull_request**, paginando hasta encontrar los gates de interés. Incluir intentos repetidos, jobs y logs. Un listado PR vacío no significa ausencia de runs push.
+3. Generar observaciones desde esa consulta y ejecutar el planificador. El archivo de observaciones es temporal, no una copia del ledger. Los snapshots caducan a los 15 minutos. Antes de cada publicación/dispatch volver a consultar HEAD/runs aunque todavía no haya caducado el snapshot.
+4. Para cada gate, comparar su huella de insumos con ejecuciones anteriores. Una huella distinta requiere ejecución; la misma huella en curso requiere esperar/inspeccionar; la misma huella fallida requiere diagnóstico; evidencia aprobada revisada permite reutilización con el SHA de origen explícito. No crear commits vacíos, modificar documentación artificialmente ni relanzar un gate verde para despertar CI.
+5. Antes de publicar, releer HEAD y usar actualización de referencia con `expected_sha`. Si cambió, reconciliar/rebasar y recalcular; no sobrescribir trabajo de otra sesión. No existe un lock permanente: una sesión interrumpida no debe impedir a la siguiente continuar. Para una corrida en curso, GitHub es autoridad. Un campo local de intención de trabajo no equivale a una corrida ni reserva exclusividad.
+6. Publicar cambio técnico consolidado, comprobar que el push activa el workflow correcto para ese SHA y registrar su ID. Las actualizaciones posteriores del índice y prosa no deben despertar E2E. No repetir despacho manual si apareció el run esperado. La concurrencia de workflows es una segunda defensa contra eventos duplicados/obsoletos, no una evidencia de aprobación.
+
+## Huella y alcance
+
+`scripts/certification/continuity.py` usa SHA-256 sobre ruta, modo, tipo y OID Git de todos los insumos seleccionados, configuración del gate y versión del planificador. Incluye adiciones, cambios y eliminaciones. Por defecto los gates usan `inputs: ["*"]`, cobertura conservadora de todo el árbol. Las únicas exclusiones son las rutas **exactas** declaradas como prosa y el índice `continuity.json` para evitar autorreferencia. Los objetos `tree` intermedios no son insumos; blobs, symlinks y submodules sí.
+
+No excluir `qa/certification/**`: fixtures JSONL, verificadores, contratos de aceptación, scripts, tests, workflows, dependencias y lockfiles son insumos. Los contratos `.md` no están en la lista de prosa. Cambiar criterios externos exige incrementar `acceptance_revision` y revisar la evidencia contra esos criterios; un run antiguo sin esta revisión queda REVIEW. La revisión no se infiere del color verde.
+
+`technical_baseline_sha` identifica evidencia histórica y **no es HEAD**. Un commit documental puede tener SHA distinto conservando huella técnica. No escribir el SHA del propio commit dentro del índice: es imposible hacerlo sin crear otra revisión. El planificador usa el HEAD observado externamente y devuelve SHA de evidencia, nunca inventa una ejecución en HEAD.
+
+La selección conservadora puede ejecutar de más cuando cambia un insumo ajeno al gate. Solo reducir `inputs` tras revisar dependencias reales y añadir pruebas de que no excluye regresiones. El planificador no altera checks requeridos ni sustituye los gates de cierre.
+
+## Formato de observaciones
+
+Ejemplo de estructura (los placeholders deben reemplazarse con datos de GitHub):
+
+```json
+{
+  "repository": "c2melendez/precision-lab-lite",
+  "branch": "RAMA_CANONICA_VERIFICADA",
+  "head_sha": "SHA_HEAD_VERIFICADO",
+  "fetched_at": "ISO8601_UTC_DE_LA_CONSULTA",
+  "runs": [{
+    "id": 123,
+    "path": ".github/workflows/in625-cumulative-certification.yml",
+    "head_sha": "SHA_DEL_RUN",
+    "created_at": "ISO8601_UTC_DEL_RUN",
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [{"id": 456, "conclusion": "success"}],
+    "logs_reviewed": false,
+    "evidence_executed": false,
+    "acceptance_revision": null
+  }]
+}
+```
+
+`logs_reviewed=true` solo después de comprobar logs, casos esperados, TODO/XFAIL/SKIP y alcance. No significa ausencia de TODO: esos casos se excluyen expresamente del PASS. `acceptance_revision` se acredita después de revisar que esa ejecución satisface los criterios actuales del gate, incluidos canales/perfiles. Los jobs deben enumerarse completos; no omitir jobs rojos u omitidos para lograr REUSE. Una prueba omitida exige revisión y constancia de su límite: jamás convierte una capability pendiente en PASS. El índice guarda evidencia por canal, no una certificación global por color del workflow.
+
+`evidence_executed=true` requiere revisar mediante API los pasos obligatorios del job y sus logs: las pruebas deben haberse ejecutado realmente. Un job verde con todos sus pasos de prueba omitidos por el guard no es evidencia de ejecución. Si el guard anuncia REUSE, resolver la cadena hasta el run de origen, consultar sus jobs/pasos/logs, comprobar huella y criterios y registrar ese origen como evidencia; no atribuir pruebas al run que solo reutilizó. Una cadena sin origen ejecutado verificable permanece REVIEW. Nunca asignar `logs_reviewed` ni `evidence_executed` por el color verde.
+
+Con checkout limpio en el HEAD consultado:
+
+```sh
+python scripts/certification/continuity.py --observations /tmp/observations.json
+python -m unittest discover -s scripts/certification -p 'test_*.py' -v
+```
+
+Sin checkout, los conectores pueden recuperar árboles recursivos GitHub por **commit exacto** de HEAD y runs anteriores. Preparar `manifest.json` con `{"commits":{"SHA":{"tree":[{"path":"archivo","mode":"100644","type":"blob","sha":"OID"}],"truncated":false}}}`. El vínculo clave SHA/árbol debe proceder de la consulta GitHub, no de una asociación inventada. Árbol truncado o incompleto se rechaza. Guardar estado local y ejecutar:
+
+```sh
+python scripts/certification/continuity.py --repo /ruta/snapshot --state qa/certification/continuity.json --manifest /tmp/manifest.json --observations /tmp/observations.json
+```
+
+En CI se puede emitir una huella auditable, sin declarar evidencia:
+
+```sh
+python scripts/certification/continuity.py --fingerprint cumulative --sha "$GITHUB_SHA"
+```
+
+El JSON emitido puede guardarse como artefacto del run. No es una firma criptográfica del servicio ni permite confiar en archivos de observaciones aportados por terceros. El planificador es deliberadamente offline y requiere observaciones confiables de GitHub; no despacha ni cancela workflows. Se puede aplicar el mismo algoritmo mediante herramientas de conector cuando no haya Python, conservando sus precondiciones.
+
+## Decisiones
+
+| Decisión | Acción de la sesión |
+|---|---|
+| RUN | Preparar/usar el disparador técnico pertinente; comprobar primero que no apareció un run equivalente. |
+| WAIT | Consultar jobs/logs del run existente. Continuar trabajo independiente. |
+| REUSE | Referenciar run/SHA original y huella; no afirmar una ejecución nueva o cierre global. |
+| DIAGNOSE | Clasificar producto/harness/oráculo/capability/infra. Probar focalmente; nuevo gate completo tras una corrección consolidada. Un retry por fallo transitorio exige razón y evidencia en el log. |
+| REVIEW | Revisar jobs/logs/criterios o causa de cancelación; no despachar automáticamente ni acreditar PASS. |
+| REFRESH | Actualizar HEAD, objetos o metadata; ningún resultado se reutiliza con un snapshot vencido. |
+
+Los bloqueos del índice mantienen condición de salida y siguiente acción. Solo repetir una prueba de capability si cambió la precondición que podía resolverla; un preflight verde de runners no certifica DIST. Un fallo persistente sin cambio de insumos se diagnostica, no se combate con una secuencia de reruns idénticos.
+
+## Contratos Markdown y filtros CI
+Los contratos EXECUTION_PROTOCOL, SG28_DISTRIBUTED_ACCEPTANCE, SY_P_23_CONVENTION, SY_X_04_LENGTH_CONTRACT, SY_X_04_LENGTH_DECISION y SG28_INTEGRATION_EXIT_CRITERIA se incluyen explícitamente en filtros como excepciones técnicas al Markdown. Los snapshots/logs/tablero/prompts y archivos históricos son prosa de cierre; no despiertan CI. Al añadir un contrato ejecutable, actualizar los filtros y acceptance_revision.

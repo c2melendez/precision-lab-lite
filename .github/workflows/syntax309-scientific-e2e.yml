@@ -81,18 +81,40 @@ on:
       - 'e2e/syntax309-syx02.spec.ts'
       - 'e2e/syntax309-syx03.spec.ts'
       - 'e2e/syntax309-syx04.spec.ts'
+      - 'qa/certification/syntax309_*.jsonl'
+      - 'qa/certification/check_syntax309_fixture.py'
+      - 'qa/certification/EXECUTION_PROTOCOL.md'
+      - 'qa/certification/SG28_DISTRIBUTED_ACCEPTANCE.md'
+      - 'qa/certification/SY_P_23_CONVENTION.md'
+      - 'qa/certification/SY_X_04_LENGTH_CONTRACT.md'
+      - 'qa/certification/SY_X_04_LENGTH_DECISION.md'
+      - 'qa/certification/SG28_INTEGRATION_EXIT_CRITERIA.md'
+      - 'scripts/certification/**'
       - 'package.json'
       - 'package-lock.json'
       - 'playwright.config.ts'
       - '.github/workflows/syntax309-scientific-e2e.yml'
   pull_request:
-    paths-ignore:
-      - 'qa/certification/**'
-      - '**/*.md'
+    paths:
+      - '**'
+      - '!**/*.md'
+      - '!qa/certification/continuity.json'
+      - 'qa/certification/EXECUTION_PROTOCOL.md'
+      - 'qa/certification/SG28_DISTRIBUTED_ACCEPTANCE.md'
+      - 'qa/certification/SY_P_23_CONVENTION.md'
+      - 'qa/certification/SY_X_04_LENGTH_CONTRACT.md'
+      - 'qa/certification/SY_X_04_LENGTH_DECISION.md'
+      - 'qa/certification/SG28_INTEGRATION_EXIT_CRITERIA.md'
   workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for revalidating this SHA (recorded in the guard log)'
+        required: true
+        type: string
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   scientific-ui:
@@ -100,17 +122,30 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
+      - name: Reuse only verified evidence for this checkout
+        id: certification_guard
+        working-directory: .
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REVALIDATION_REASON: ${{ inputs.reason }}
+        run: python3 scripts/certification/ci_guard.py --profile lite-scientific
       - uses: actions/setup-node@v4
+        if: steps.certification_guard.outputs.skip != 'true'
         with:
           node-version: '22'
           cache: npm
       - name: Install app dependencies
+        if: steps.certification_guard.outputs.skip != 'true'
         run: npm ci
       - name: Install Playwright runner
+        if: steps.certification_guard.outputs.skip != 'true'
         run: npm install --no-save --package-lock=false @playwright/test
       - name: Validate scientific E2E specs before browser installation
+        if: steps.certification_guard.outputs.skip != 'true'
         run: npx playwright test --list e2e/syntax309-*.spec.ts
       - name: Install Chromium
+        if: steps.certification_guard.outputs.skip != 'true'
         run: npx playwright install --with-deps chromium
       - name: Native desktop/tablet/mobile scientific result verification
+        if: steps.certification_guard.outputs.skip != 'true'
         run: npx playwright test e2e/syntax309-scientific.spec.ts e2e/syntax309-syq08.spec.ts e2e/syntax309-syq09.spec.ts e2e/syntax309-syq10.spec.ts e2e/syntax309-syq11.spec.ts e2e/syntax309-syq12.spec.ts e2e/syntax309-syq13.spec.ts e2e/syntax309-syq14.spec.ts e2e/syntax309-syq15.spec.ts e2e/syntax309-syq16.spec.ts e2e/syntax309-syq17.spec.ts e2e/syntax309-syq18.spec.ts e2e/syntax309-syq19.spec.ts e2e/syntax309-syq20.spec.ts e2e/syntax309-syq21.spec.ts e2e/syntax309-syq22.spec.ts e2e/syntax309-syq23.spec.ts e2e/syntax309-sym01.spec.ts e2e/syntax309-sym02.spec.ts e2e/syntax309-sym03.spec.ts e2e/syntax309-sym04.spec.ts e2e/syntax309-sym05.spec.ts e2e/syntax309-sym06.spec.ts e2e/syntax309-sym07.spec.ts e2e/syntax309-sym08.spec.ts e2e/syntax309-sym09.spec.ts e2e/syntax309-sym10.spec.ts e2e/syntax309-sym11.spec.ts e2e/syntax309-sym12.spec.ts e2e/syntax309-sym13.spec.ts e2e/syntax309-sym14.spec.ts e2e/syntax309-sym15.spec.ts e2e/syntax309-sym16.spec.ts e2e/syntax309-sym17.spec.ts e2e/syntax309-sym18.spec.ts e2e/syntax309-sym19.spec.ts e2e/syntax309-sym20.spec.ts e2e/syntax309-sys01.spec.ts e2e/syntax309-sys02.spec.ts e2e/syntax309-sys03.spec.ts e2e/syntax309-sys04.spec.ts e2e/syntax309-sys05.spec.ts e2e/syntax309-sys06.spec.ts e2e/syntax309-sys07.spec.ts e2e/syntax309-sys08.spec.ts e2e/syntax309-sys09.spec.ts e2e/syntax309-sys10.spec.ts e2e/syntax309-sys11.spec.ts e2e/syntax309-sys12.spec.ts e2e/syntax309-sys13.spec.ts e2e/syntax309-sys14.spec.ts e2e/syntax309-sys15.spec.ts e2e/syntax309-sys16.spec.ts e2e/syntax309-sys17.spec.ts e2e/syntax309-sys18.spec.ts e2e/syntax309-sys19.spec.ts e2e/syntax309-sys20.spec.ts e2e/syntax309-syr01.spec.ts e2e/syntax309-syr02.spec.ts e2e/syntax309-syr03.spec.ts e2e/syntax309-syr04.spec.ts e2e/syntax309-syr05.spec.ts e2e/syntax309-syr06.spec.ts e2e/syntax309-syr07.spec.ts e2e/syntax309-syr08.spec.ts e2e/syntax309-syr09.spec.ts e2e/syntax309-syr10.spec.ts e2e/syntax309-syr11.spec.ts e2e/syntax309-syr12.spec.ts e2e/syntax309-syr13.spec.ts e2e/syntax309-syr14.spec.ts e2e/syntax309-syx01.spec.ts e2e/syntax309-syx02.spec.ts e2e/syntax309-syx03.spec.ts e2e/syntax309-syx04.spec.ts

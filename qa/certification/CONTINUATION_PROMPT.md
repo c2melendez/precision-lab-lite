@@ -52,3 +52,7 @@ Cuando CURRENT_STATE indique SG28 abierto, EJECUTA su integración progresiva co
 9. Tras cada avance técnico, actualizar CURRENT_STATE con siguiente paso EXACTO ejecutable y rutas/gates/evidencia pendiente; anexar historial a EXECUTION_LOG en ambos repos; no activar CI con commits exclusivamente documentales. Después de cierre, avanzar inmediatamente al siguiente bloque canónico.
 
 Este es un procedimiento permanente, NO un snapshot: verificar siempre los detalles dinámicos en GitHub. Realizar las operaciones técnicas disponibles en la sesión sin pedir permiso por cada commit y sin prometer trabajo asíncrono.
+
+
+## Continuidad obligatoria antes de ejecutar
+Resolver README de main y luego `continuity.json` + `CONTINUITY.md`. Verificar HEAD y Actions (push y PR), huellas, jobs/pasos realmente ejecutados y logs. Aplicar RUN/WAIT/REUSE/DIAGNOSE/REVIEW/REFRESH; si state_status=RECONCILE, resolver el estado antes de heredar próximo objetivo. No despachar un gate equivalente en curso, ni repetir un verde vigente o fallo inalterado por cambiar de sesión. Conservar run/SHA de origen cuando se reutilice. Actualizar el índice con SHA técnico conocido mediante un commit documental posterior, sin autorreferencia. Los bloqueos solo se reensayan si cambian sus precondiciones.
