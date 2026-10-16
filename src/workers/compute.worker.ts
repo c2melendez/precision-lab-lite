@@ -1124,7 +1124,11 @@ function handleMatrixOp(
       }
       case "inverse": {
         const { result, steps: s } = invertMatrix(a);
-        resultLatex = result.map((row) => row.map((v) => v.toFraction(true)).join(", ")).join(" | ");
+        const cellLatex = (value: typeof result[number][number]): string => {
+          const [numerator,denominator] = value.toFraction().split("/");
+          return denominator ? "\\frac{"+numerator+"}{"+denominator+"}" : numerator;
+        };
+        resultLatex = "\\begin{pmatrix}"+result.map(row=>row.map(cellLatex).join(" & ")).join(" \\\\ ")+"\\end{pmatrix}";
         steps = s;
         break;
       }
