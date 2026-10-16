@@ -94,8 +94,8 @@ export function evaluate(expressionLatex: string): string {
     // Only replace a non-finite hyperbolic result when our independent numeric
     // parser can evaluate the entire expression to a finite real number.
     // Preserve symbolic expressions and reject truly undefined results.
-    if (/^(?:NaN|Infinity|-Infinity)(?:\\.\\.\\.)?$/.test(result.trim()) &&
-        /\\b(?:sinh|cosh|tanh)\\(/.test(expressionLatex)) {
+    if (/^(?:NaN|Infinity|-Infinity)(?:\.\.\.)?$/.test(result.trim()) &&
+        /\b(?:sinh|cosh|tanh)\(/.test(expressionLatex)) {
       try {
         const numeric = compileNumeric(expressionLatex, "__unused__")(0);
         if (Number.isFinite(numeric)) return String(numeric);
