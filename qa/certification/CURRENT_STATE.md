@@ -1,5 +1,17 @@
 # Current Certification State
 
+## 2026-10-16 — SY-R-04 reproducción y corrección publicadas
+- Rama canónica qa/syntax-audit-in625-a1 recuperada desde main; HEAD inicial Lite b3671b21 / Plus 1d00f65f. Fuente original fixture: e^{-x^{2}} con separador LaTeX text{con} y x=1; esperado 0.3678794412, tolerancia relativa 1e-9. JSONL intacto.
+- Baseline Lite SHA b2a4ba551c8673590ab1466313202f1e05a44db3, cumulative 38876264161 FAIL (job 116891952686): 1522 passed, 6 failed, 30 TODO. La asignación se interpretaba como ecuación; Worker daba respuesta simbólica sin aproximación para la fuente original. Variantes con otra variable/base/valor y validación de RHS detectaron el mismo fallo de parser/routing. No se declara fallo del valor de exp(-1) a partir de esa entrada.
+- Baseline Plus SHA 75223546afa8006fbe52c366bb52ac64be54e904, cumulative 38876268694 FAIL: frontend job 116891968439, 936 passed / 2 failed / 28 TODO; convertía con en c o n. Tests HTTP separan fuente original y control estructurado substitutions; los resultados backend se registran tras revisar logs, sin inferirlos del frontend.
+- Corrección Lite SHA 0288885a24742def397bd6710adc10a20a2bd98c: helper readInlineSubstitution reconoce una asignación temporal explícita; parser valida cuerpo y valor mediante pipeline ordinario, exige RHS real finito sin símbolos libres y reemplaza solo el identificador completo. Científica despacha cálculo real al Worker antes del routing de ecuaciones; sin hardcode del resultado. e/i reservados y asignaciones múltiples rechazadas.
+- Corrección Plus SHA d5acee96fb93f9e022d99352721c7cf084d420d6: conversor preserva marcador con y convierte fragmentos matemáticos por separado; servicio normaliza agrupación aritmética balanceada y reutiliza parser seguro/substitutions, RHS real finito. Conflicto inline + substitutions se rechaza, sin sobrescritura silenciosa. No parser genérico de lenguaje natural.
+- Regresiones permanentes: Lite tests/syntax309SyR04.audit.test.ts y e2e/syntax309-syr04.spec.ts (desktop/tablet/mobile, decimal visible + nuevo cálculo del LaTeX resultado); Plus frontend/src/__tests__/syntax309SyR04.audit.test.ts y backend/tests/test_syntax309_syr04_http.py (fuente original, control API, otras bases/variables/valores, errores de RHS/conflicto, exactitud y reentrada).
+- Push final verificado: Lite cumulative 38876558404, científica 38876558318, H1d 38876558282, build 38876558365, SG28 UI 38876558472; Plus cumulative 38876563822, H1d 38876563827, SG28 prototipo 38876563856. Build Lite SUCCESS; demás en curso al registrar, ningún cierre nuevo aún.
+- Siguiente paso exacto: consultar jobs/logs de esos SHA, corregir regresiones por capa, comprobar caso nombrado E2E y respuesta HTTP exacta. Solo entonces SY-R-04 PASS en alcance ensayado y continuar SY-R-05 arsinh(1), seguido SY-R-06 ln(2). H2/SG28 OPEN, DIST multinodo BLOCKED; no merge/producción ni activación de aislamiento.
+
+## Evidencia anterior
+
 ## 2026-10-16 — SY-S-19/20 y SY-R-01..03 PASS en alcance probado
 - Rama canónica verificada desde main en Lite/Plus: qa/syntax-audit-in625-a1. PR existentes Lite #48 y Plus #29 abiertos hacia main, sin merge. No cierre global de IN625/Syntax309.
 - SY-S-19 sin(30°) y SY-S-20 sen(30°) devuelven 1/2 exacto en RAD/GRAD Lite y testigo HTTP rad/deg Plus. Evidencia específica Lite SHA 988e59eaf0c8f1c858284acf6527b041619efc80: cumulative 38870225883 (1509 PASS, 30 TODO), H1d 38870225948, build 38870225993 y UI 38870226129 SUCCESS; 339 E2E, incluidos 12 nuevos (casos × modos × desktop/tablet/mobile).
