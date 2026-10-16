@@ -1,4 +1,5 @@
 export type MatrixIntent =
+  | { kind: "basis"; matrix: string[][] }
   | { kind: "literal"; matrix: string[][] }
   | { kind: "determinant"; matrix: string[][] }
   | { kind: "inverse"; matrix: string[][] }
@@ -83,6 +84,30 @@ function parseSingleMatrix(text: string): { env: string; matrix: string[][]; res
 }
 
 export function detectMatrixIntent(latex: string): MatrixIntent | null {
+  // SY-M-13: bounded integer combinations of explicit bold basis symbols.
+  const basisText = latex.trim().replace(/\\[, ]|\s/g, "");
+  if (/^[+-]?\d*\\mathbf\{[ijk]\}/.test(basisText)) {
+    if (basisText.length > 256) throw new Error("Expresión de base canónica demasiado larga.");
+    const values = [0,0,0];
+    const term = /([+-]?)(\d*)\\mathbf\{([ijk])\}/y;
+    let position = 0;
+    while (position < basisText.length) {
+      term.lastIndex = position;
+      const match = term.exec(basisText);
+      if (!match || (position > 0 && !match[1])) {
+        throw new Error("Usa una suma de coeficientes enteros con los vectores de base canónica en negrita.");
+      }
+      const coefficient = Number(match[2] || "1") * (match[1] === "-" ? -1 : 1);
+      const index = "ijk".indexOf(match[3]);
+      if (!Number.isSafeInteger(coefficient) || Math.abs(coefficient) > 1e9) {
+        throw new Error("Coeficiente fuera del alcance de esta notación de base canónica.");
+      }
+      values[index] += coefficient;
+      if (!Number.isSafeInteger(values[index])) throw new Error("Coordenada fuera de rango.");
+      position = term.lastIndex;
+    }
+    return {kind:"basis",matrix:[values.map(String)]};
+  }
   // SY-M-12: do not silently interpret coordinate/interval tuples as vectors.
   const tupleText = latex.trim().replace(/\\left(?=\()|\\right(?=\))/g, "");
   if (/^\([^()]*,[^()]*\)\s*\\cdot(?![A-Za-z])\s*\([^()]*,[^()]*\)$/.test(tupleText)) {

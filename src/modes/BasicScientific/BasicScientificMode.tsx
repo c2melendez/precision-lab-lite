@@ -313,7 +313,10 @@ export function BasicScientificMode() {
       const requestId = makeRequestId();
       const worker = getWorker();
       worker.onmessage = (e: MessageEvent<MathResult>) =>
-        onSuccess("Científica (matriz)", currentLatex, e.data);
+        onSuccess("Científica (matriz)", currentLatex,
+          matrixIntent.kind === "basis" && e.data.success
+            ? {...e.data,resultLatex:"\\left("+e.data.resultLatex+"\\right)",resultViewLabel:"Vector en base canónica"}
+            : e.data);
 
       if (matrixIntent.kind === "inverse") {
         dispatchWorker(worker, { type: "matrixOp", requestId, op: "inverse", a: matrixIntent.matrix });
