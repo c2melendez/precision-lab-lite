@@ -166,3 +166,8 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - Plus conversor/intent y HTTP dedicados por separado: se conserva el cuerpo íntegro, variable explícita y C; respuestas evaluate/integral se reingresan en derivative y la salida vuelve a evaluate. Sin acreditar flujo UI MathLive integral Plus.
 - C se considera independiente de la variable declarada; d/dC comprueba su coeficiente, no una sustitución numérica de C. No inferir que la constante de integración sea independiente de todo parámetro de una familia general.
 - Lite asigna LaTeX/evento input; no botón Reusar ni cada tecla física/virtual. H2/SG28 OPEN, DIST multinodo BLOCKED; TODO/XFAIL excluidos de PASS. Sin producción ni cambios de aislamiento.
+
+## 2026-10-16 — SY-R-12 alcance de canales
+- Lite: científica 38947347738 SUCCESS, SHA 2f536493b767d90378dd5e70234cdbdb80803088, 375/375; rechazo y recuperación 5 en MathLive/Worker Chromium desktop/tablet/mobile, sin pageerrors. No valida cada tecla física/virtual ni cada SO.
+- Plus: cumulative 38946778492 SUCCESS, SHA efc361275ef760886d45077585f42cef156496bd; conversor unitario y rechazo/recuperación reales vía HTTP. UI nativa Plus R12 pendiente; no se infiere del HTTP.
+- H2/SG28 OPEN; DIST-01..08 BLOCKED hasta evidencia multinodo real. TODO/XFAIL no son PASS.
