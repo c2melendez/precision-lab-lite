@@ -272,7 +272,7 @@ export function BasicScientificMode() {
       onSuccess("Científica (raíz)", currentLatex, {
         success: true,
         resultLatex: "4",
-        interpretedLatex: "\\\\sqrt{16}",
+        interpretedLatex: "\\sqrt{16}",
         resultViewLabel: "Valor exacto",
         steps: [],
         hasDetailedSteps: false,
