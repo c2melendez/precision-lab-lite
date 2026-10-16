@@ -2,6 +2,16 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-M-16 PASS por tipo local en Lite navegador y Plus parser/formulario simulado/HTTP; siguiente SY-M-17
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-16, operación convencion, entrada `\left\lvert A\right\rvert`, esperado determinante de A si es matriz y valor absoluto si es escalar; decidir por tipo.
+- Corrección bilateral: resolver barras sobre un nombre según declaración local explícita con text con. A=matriz literal selecciona determinant; A=escalar numérico real finito selecciona absolute. Sin declaración muestra "Declara el tipo de A: si es matriz, las barras indican determinante; si es escalar, valor absoluto." No se infiere el tipo de un nombre sin definir.
+- Alcance de tipos: declaraciones locales de una letra, matriz explícita reconocida por el detector o literal numérico decimal/racional; sin registro persistente ni consulta automática a las matrices A-F guardadas en otro módulo. No se declara resolución de tipos simbólicos generales. Las barras numéricas ordinarias conservan su ruta existente.
+- Lite SHA `f15cc4a3ce7e6c9050b6624c37e4c7f1efc21883`: [acumulada 38842617942](https://github.com/c2melendez/precision-lab-lite/actions/runs/38842617942) SUCCESS: 1457 PASS +30 TODO, 140 archivos, 3/3 nuevos de parser/manejador Worker; typecheck/build PASS. [Navegador 38842617992](https://github.com/c2melendez/precision-lab-lite/actions/runs/38842617992) SUCCESS, 213/213, incluidos 3/3 SY-M-16 en escritorio/tableta/móvil con MathLive/Worker reales: tipo desconocido, A=[[1,2],[3,4]] produce -2, A=-3 produce 3 con nuevo requestId, retirar declaración vuelve al aviso. H1d 38842617972 SUCCESS 21/21; SG28 UI 38842617958 SUCCESS 12/12; build diagnóstico 38842617883 SUCCESS.
+- Plus SHA `8498d817a17a88f618008adfd9cfea4d8b04192f`: [acumulada 38842620282](https://github.com/c2melendez/precision-lab-plus/actions/runs/38842620282) SUCCESS: frontend 899 PASS +28 TODO, 101 archivos, 3/3 nuevos del parser y 1/1 formulario con editor/transporte simulados; comprueba aviso sin HTTP, posterior payload /matrix/determinant y posterior /evaluate con abs(-3). Backend 1333 PASS +1 XFAIL, 1/1 nuevo HTTP compara resultados -2 y 3 con operaciones y requestId distintos. H1d 38842620243 SUCCESS 38/38; SG28 UI 38842620192 SUCCESS 21/21.
+- Evidencia Plus: parser/formulario simulado y HTTP real separados; la regresión SG28 no certifica el nuevo flujo nativo completo. TODO/XFAIL no cuentan como PASS; no se declara certificado todo el módulo matricial/vectorial.
+- Continuidad oficial: SY-M-17, operación inversa, entrada `\begin{pmatrix}1&2\\3&4\end{pmatrix}^{-1}`, esperado `\begin{pmatrix}-2&1\\\frac{3}{2}&-\frac{1}{2}\end{pmatrix}`. Syntax309/IN625/H2/SG28 siguen ABIERTOS; gaps históricos y UI Plus pendientes. DIST-01..08 siguen BLOQUEADOS hasta coordinación real entre nodos independientes.
+
 ## 2026-10-15 — SY-M-15 PASS por convención explícita en Lite navegador y Plus parser/formulario simulado; siguiente SY-M-16
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-15, operación convencion, entrada `\vec{u}\times\vec{v}`, esperado producto cruz (vectores 3D), no producto escalar; nota: times entre vectores es producto cruz.
@@ -366,7 +376,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
 | SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
 | SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-23, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente SY-M-01. Otros gaps históricos siguen abiertos |
-| SY-M Matrices/vectores | 20 | Secuencia en M-15, PASS por convención explícita en Lite navegador y Plus parser/formulario simulado; siguiente M-16. Resto pendiente de esta secuencia |
+| SY-M Matrices/vectores | 20 | Secuencia en M-16, PASS por tipo local en Lite navegador y Plus parser/formulario simulado/HTTP; siguiente M-17. Resto pendiente de esta secuencia |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
 | SY-X Estrés/hostiles | 22 | Pendiente de esta secuencia; ejecutar aislado |
@@ -388,7 +398,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-M-16 (barras de matriz o escalar: decidir por tipo), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-M-17 (inversa matricial exacta), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
