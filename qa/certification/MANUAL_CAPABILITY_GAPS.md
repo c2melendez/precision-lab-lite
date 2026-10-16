@@ -114,3 +114,11 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - Plus SHA 28ab5abdc7a0db03de78c9268a8d18ee4b793b9f, cumulative 38786503451 y H1d 38786503536 SUCCESS; ambas soluciones probadas en HTTP. Plus ingreso cases por interfaz MathLive sigue SIN ACREDITAR.
 - Capacidad Lite limitada a dos ecuaciones polinómicas racionales, una afín y otra hasta grado dos, soluciones reales; no certifica sistemas generales, raíces complejas de sistemas, familias infinitas o cualquier sistema con dos ecuaciones no lineales. Los rechazos no equivalen a resolución.
 - El test intake histórico no demuestra solución; la evidencia actual está en syntax309SyQ16.solver.test.ts y e2e/syntax309-syq16.spec.ts. Teclado virtual por pulsación y otros navegadores pendientes. H2/SG28 OPEN, DIST multinodo BLOCKED.
+
+
+## 2026-10-16 — Alcance de canales SY-S-19/20 y SY-R-01..03
+- SY-S-19/20 Lite: pruebas nativas MathLive + Worker, en RAD/GRAD y desktop/tablet/mobile, usan asignación de fuente LaTeX y evento input. No acreditan cada tecla física/virtual ni comportamiento regional de teclado.
+- SY-S-19/20 Plus: conversor real de grados/alias y HTTP traducido exacto probados por separado en rad/deg. Sin prueba nativa integral de este flujo Plus; no contar ese canal como PASS por sumar ambas capas.
+- SY-R-01..03 Plus: HTTP usa testigos de backend equivalentes sqrt(2)/2, 2*sqrt(3), pi/6 y reentrada del result_text. La conversión de su LaTeX original, UI integral y nueva acción Reusar no quedan acreditadas por esos tests.
+- SY-R-01..03 Lite: distinguir harness del handler Worker (transporte self/postMessage simulado) de los specs e2e/syntax309-syr01.spec.ts..syr03.spec.ts. Estos últimos, run 38871060466 SUCCESS en SHA 3995f8f0, prueban reentrada real del LaTeX resultado mediante nuevo cálculo; no prueban una pulsación del botón Reusar.
+- H2/SG28 y DIST conservan sus requisitos independientes. Estos avances matemáticos no cierran IN625/Syntax309 globalmente.
