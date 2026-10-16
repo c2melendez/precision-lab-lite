@@ -176,3 +176,8 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - Lite SHA f8f0a44f85fc533d5f3bfaaaf33aca26451b5714, científica 38949824189 SUCCESS (378/378): MathLive/Worker real en Chromium desktop/tablet/mobile, valor 3 y reentrada; asignación de LaTeX/evento input, no cada tecla ni cada SO.
 - Plus SHA 0b14bacf60c1e495fcfb83a3df22dc660e20ec54, cumulative 38950436675 SUCCESS: conversor y HTTP original/testigo ASCII/substitutions/reentrada exacta; UI nativa Plus R13 pendiente. Normalización nueva acotada a raíces indexadas de radicandos atómicos y fracciones numéricas; no soporte general LaTeX ni acreditación de ramas complejas/radicandos negativos.
 - TODO/XFAIL no son PASS; H2/SG28 OPEN y DIST-01..08 multinodo BLOCKED.
+
+## 2026-10-16 — SY-R-14 alcance acotado
+- Lite SHA 07da1be79dbe2f0ffd82134ae6bc530f5c913cb2, científica 38952417593 SUCCESS (381/381): valor absoluto y control |x|+x negativo, resultados 4 y 0 con reentrada en Chromium desktop/tablet/mobile. MathLive y Worker reales mediante asignación de LaTeX/evento input; no cada tecla física/virtual ni cada SO.
+- Plus SHA d132c5ce1a95c520cbf18c88e493a6549893f1c6, cumulative 38952224765 SUCCESS: conversor y HTTP original/testigo/substitutions/reentrada exacta; UI nativa Plus R14 pendiente. Conversión backend de barras con sizing acotada a una variable de una letra, sin acreditar todas las expresiones entre barras.
+- TODO/XFAIL no son PASS; H2/SG28 OPEN y DIST-01..08 multinodo BLOCKED.
