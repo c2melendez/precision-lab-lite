@@ -1,5 +1,12 @@
 # Certification Execution Log
 
+## 2026-10-15 — SY-S-06 nuevo intento Plus y navegador Lite confirmado
+
+- Lite E2E [38852522907](https://github.com/c2melendez/precision-lab-lite/actions/runs/38852522907) SUCCESS para SHA `8f3c2957`; Lite acumulado 38852522883 SUCCESS. Incluye alias oficial y agrupado × tres dispositivos.
+- Plus gate 38852497592 falló tras intento anterior; conservada prueba frontend de `arctg1` frente a `atan(1)`. Nueva corrección anterior a normalización de alias en `frontend/src/components/NaturalMathField.tsx`, commit `c5eaca8c`. [Gate acumulativo 38852664398](https://github.com/c2melendez/precision-lab-plus/actions/runs/38852664398), [H1d 38852664431](https://github.com/c2melendez/precision-lab-plus/actions/runs/38852664431): en ejecución al revisar, no PASS.
+- Próxima acción: examinar conclusión y log del gate Plus en `c5eaca8c`; corregir sin relajar oráculo si vuelve a salir `arctan1`. Solo después cerrar SY-S-06 en su alcance y avanzar al fixture oficial SY-S-07. Sin merge ni despliegue, IN625/SG28/H2 abiertos y DIST bloqueado.
+
+
 ## 2026-10-15 — SY-S-06: segundo diagnóstico Plus, E2E Lite activado
 
 - Plus `38852136491` FAIL: backend PASS; frontend 917 PASS, 28 TODO y 1 FAIL (fixture SY-S-06), aún produce `arctan1` y no `atan(1)`. H1d `38852136716` SUCCESS. La corrección previa `d1341244` era demasiado tardía en la cadena de normalización. Clasificación: producto/conversor frontend, no backend.
