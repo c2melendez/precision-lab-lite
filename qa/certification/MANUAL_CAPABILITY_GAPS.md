@@ -171,3 +171,8 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - Lite: científica 38947347738 SUCCESS, SHA 2f536493b767d90378dd5e70234cdbdb80803088, 375/375; rechazo y recuperación 5 en MathLive/Worker Chromium desktop/tablet/mobile, sin pageerrors. No valida cada tecla física/virtual ni cada SO.
 - Plus: cumulative 38946778492 SUCCESS, SHA efc361275ef760886d45077585f42cef156496bd; conversor unitario y rechazo/recuperación reales vía HTTP. UI nativa Plus R12 pendiente; no se infiere del HTTP.
 - H2/SG28 OPEN; DIST-01..08 BLOCKED hasta evidencia multinodo real. TODO/XFAIL no son PASS.
+
+## 2026-10-16 — SY-R-13 alcance acotado
+- Lite SHA f8f0a44f85fc533d5f3bfaaaf33aca26451b5714, científica 38949824189 SUCCESS (378/378): MathLive/Worker real en Chromium desktop/tablet/mobile, valor 3 y reentrada; asignación de LaTeX/evento input, no cada tecla ni cada SO.
+- Plus SHA 0b14bacf60c1e495fcfb83a3df22dc660e20ec54, cumulative 38950436675 SUCCESS: conversor y HTTP original/testigo ASCII/substitutions/reentrada exacta; UI nativa Plus R13 pendiente. Normalización nueva acotada a raíces indexadas de radicandos atómicos y fracciones numéricas; no soporte general LaTeX ni acreditación de ramas complejas/radicandos negativos.
+- TODO/XFAIL no son PASS; H2/SG28 OPEN y DIST-01..08 multinodo BLOCKED.
