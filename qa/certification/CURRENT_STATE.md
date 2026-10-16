@@ -1,5 +1,13 @@
 # Current Certification State
 
+## 2026-10-16 — SY-R-11 corrección producto serialización de matriz y gates
+- Lite científica [38890398578](https://github.com/c2melendez/precision-lab-lite/actions/runs/38890398578) FAILURE SHA c6c28b6: 369 PASS /3 FAIL SY-R-11 (desktop/tablet/mobile). Log job 116938204928: `unparsedLatex: "-2, 1 | 1 1/2, -1/2"`, esperaba matriz racional exacta `[[-2,1],[3/2,-1/2]]`.
+- Causa PRODUCTO identificada en `src/workers/compute.worker.ts`, rama `case "power"`: emite `toFraction(true).join(", ") / join(" | ")`, que no es representación matemática matricial reversible. La pantalla científica usa `power(exponent:1)` para matriz literal. No es falla de sincronización ni del oráculo.
+- Cambio técnico Lite SHA `7bf710e9e18dd0660b61c30333d5cc763dbda0fc`: serializar resultado de `power` en `\\begin{pmatrix}...\\end{pmatrix}` y celdas `\\frac{numerador}{denominador}` exactas, respetando orden/filas/columnas. Sin rebajar la verificación E2E ni modificar otras operaciones.
+- Nuevas corridas de este SHA en progreso al registrar: científica [38891044289](https://github.com/c2melendez/precision-lab-lite/actions/runs/38891044289), cumulative 38891044419, build 38891044450 y H1d 38891044317. No declarar PASS antes de logs finales. Plus cumulative 38888846559 SUCCESS sobre d285774 (HTTP matrices), sin cambio técnico Plus en esta fase.
+- Siguiente acción exacta: verificar científica 38891044289 y cumulative 38891044419, diagnosticar fallos si ocurren. Tras cierre de SY-R-11 acotado, empezar fixture oficial SY-R-12 `\\text{no existe}` con rechazo claro en Lite/Plus y verificación nativa/HTTP; mantener H2/SG28 abierto y DIST multinodo bloqueado.
+
+
 ## 2026-10-16 — SY-R-11 E2E FAIL real; diagnóstico y nueva corrida
 - Lite SHA ff66e8a921975e24e297d8058d1fddf4388317d2: cumulative 38889566773 SUCCESS (1551 PASS/30 TODO); scientific 38889566688 FAILURE (369 PASS, 3 FAIL en SY-R-11 desktop/tablet/mobile). Logs job 116935496180: el oráculo esperaba detectMatrixIntent(displayed).kind = literal, recibió undefined; fallo común a todos los dispositivos, sin conclusión todavía sobre si es serialización, disponibilidad temporal o producto. No contar como PASS ni deshabilitar prueba.
 - Nuevo commit de diagnóstico/corrección de sincronización Lite c6c28b6b795d892504071c728e765273e488e39e modifica e2e/syntax309-syr11.spec.ts: expect.poll lee el resultado MathLive y expone el LaTeX no interpretable y celdas esperadas en caso de fallo. La comparación racional de producto real sigue obligatoria.
