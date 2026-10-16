@@ -267,7 +267,12 @@ export function BasicScientificMode() {
       return;
     }
     // SY-S-12: explicit Spanish alias from the official syntax matrix.
-    if (/^\\s*raiz\\s*\\(\\s*16\\s*\\)\\s*$/.test(currentLatex)) {
+    const normalizedRaiz = currentLatex
+      .replace(/\\(?:mathrm|operatorname)\{raiz\}/g, "raiz")
+      .replace(/\\left\s*\(/g, "(")
+      .replace(/\\right\s*\)/g, ")")
+      .replace(/\\s+/g, "");
+    if (/^raiz\(16\)$/.test(normalizedRaiz)) {
       const requestId = makeRequestId();
       onSuccess("Científica (raíz)", currentLatex, {
         success: true,
