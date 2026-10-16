@@ -14,7 +14,10 @@ test("SY-R-12 native scientific UI rejects nonmathematical text and recovers",as
  await calculate.click();
  const alert=page.locator("[role=alert]").first();
  try {
-  await expect(alert).toBeVisible();
+  try { await expect(alert).toBeVisible(); } catch (error) {
+   const diagnostic=await page.evaluate(()=>({input:(document.querySelector("math-field[aria-label=\'Entrada matemática\']") as HTMLElement & {value:string})?.value,alerts:[...document.querySelectorAll("[role=alert]")].map(n=>n.textContent),results:[...document.querySelectorAll("[data-result-request-id]")].map(n=>n.textContent?.slice(0,300)),body:document.body.innerText.slice(-1200)}));
+   throw Error("SY-R-12 native diagnostics: "+JSON.stringify(diagnostic),{cause:error});
+  }
   await expect(alert).toContainText("Entrada no matemática: escribe una expresión válida.");
   await expect(page.locator("[data-result-request-id]")).toHaveCount(0);
  } finally {
@@ -25,15 +28,6 @@ test("SY-R-12 native scientific UI rejects nonmathematical text and recovers",as
    errors,calculations
   }));
  }
- await input.evaluate(node=>{(node as HTMLElement & {value:string}).value="2+3";node.dispatchEvent(new Event("input",{bubbles:true}));});
- await calculate.click();
- const result=page.locator("[data-result-request-id]").first();
- await expect(result).toBeVisible();
- await expect(result.locator(".a11y-scale-result-3xl").first()).toHaveText("5");
- await expect(page.locator("[role=alert]")).toHaveCount(0);
- expect(errors).toEqual([]);
-}) const diagnostic=await page.evaluate(()=>({input:(document.querySelector("math-field[aria-label='Entrada matemática']") as HTMLElement & {value:string})?.value,alerts:[...document.querySelectorAll("[role=alert]")].map(n=>n.textContent),results:[...document.querySelectorAll("[data-result-request-id]")].map(n=>n.textContent?.slice(0,300)),body:document.body.innerText.slice(-1200)}));
- if(!diagnostic.alerts.some(x=>x?.includes("Entrada no matemática")))throw Error("SY-R-12 native diagnostics: "+JSON.stringify(diagnostic));
  await input.evaluate(node=>{(node as HTMLElement & {value:string}).value="2+3";node.dispatchEvent(new Event("input",{bubbles:true}));});
  await calculate.click();
  const result=page.locator("[data-result-request-id]").first();
