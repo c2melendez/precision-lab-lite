@@ -5,6 +5,20 @@ Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisi
 
 
 
+
+## 2026-10-16 — SY-R-08 PASS acotado; complejo binómico y unidad imaginaria
+- Rama canónica qa/syntax-audit-in625-a1 verificada desde README de main en ambos repositorios. PR Lite #48 y Plus #29 abiertos hacia main, sin merge. No cierre global IN625/Syntax309.
+- Fixture original SY-R-08: entrada y esperado 1+2i. JSONL/esperados intactos. Oráculos comparan componentes real/imaginaria exactas y reentrada; no Number del complejo completo ni aproximación real obligatoria. Sin cambios de producto en este objetivo.
+- Lite SHA técnico final 8657bca1f576825a01dec11746898e44dc5e5cc6: [cumulative 38884815761](https://github.com/c2melendez/precision-lab-lite/actions/runs/38884815761) SUCCESS, job 116919880345: 1539 PASS /30 TODO, 169 archivos. Cuatro tests Worker: fuente original, 3-4i, -2+3i y (1+2i)^2, con reentrada. Salidas 1+2i y -3+4i, confidence SYMBOLIC; cuadrado acredita semántica i^2=-1. Typecheck/build, build 38884815685 y H1d 38884815630 SUCCESS.
+- [Lite científica 38884815669](https://github.com/c2melendez/precision-lab-lite/actions/runs/38884815669) SUCCESS en ese mismo SHA, job 116919879878: 363/363 E2E. Tres SY-R-08 desktop/tablet/mobile nombrados PASS: math-field de salida visible, value LaTeX binómico completo y nuevo cálculo del LaTeX resultado con data-result-request-id distinto. Oráculo visual permite espacios, signo menos Unicode y orden equivalente de los dos términos; no basta presencia de dígitos/i.
+- Plus SHA técnico final 56993fdf1448e79cb55ece2dbbf6e8bb83eda751: [cumulative 38884110153](https://github.com/c2melendez/precision-lab-plus/actions/runs/38884110153) SUCCESS; frontend job 116917585414: 950 PASS /28 TODO, 129 archivos, typecheck/build SUCCESS. Backend job 116917585094: 1402 PASS /1 XFAIL. H1d 38884110089 SUCCESS.
+- Plus tres tests de conversor preservan coeficientes/signos e identificador i de fuente original y variantes. Cinco HTTP testigos: 1+2i, equivalente 1+2*i, 3-4i, -2+3i y cuadrado (1+2i)^2. Exigen MathResponse escalar, LaTeX presente, texto exacto sin Float/símbolos libres, componentes correctas y reentrada del result_text. Comparación SymPy usa unidad imaginaria explícita; cuadrado evita acreditar mero eco de una variable i.
+- Primera revisión de tests: Lite 864b99b3 cumulative 38883925775 PASS 1538; luego se añadió el cuadrado como control semántico de i. Plus 810c48c3 tenía cuatro testigos HTTP. El cierre usa gates del SHA final con ese control adicional, no se atribuyen runs iniciales al SHA posterior.
+- Diagnóstico de harness: UI anterior 38884107098 falló solo tres SY-R-08 (360 PASS /3 FAIL), porque innerText del host simbólico Shadow DOM era vacío. ResultPanel/StaticMath y spec SY-S-19 confirmaron la capa correcta: campo read-only visible + propiedad value. Corrección solo del spec, misma equivalencia binómica y nuevo cálculo exigidos; historial en EXECUTION_LOG.
+- Límites: Lite asignación de fuente/evento input y Worker real en navegador; no botón Reusar ni cada tecla física/virtual. Plus conversor y HTTP probados por separado, sin acreditar UI MathLive integral. No inferir todas las representaciones polares/ramas complejas. TODO/XFAIL excluidos de PASS.
+- H2/SG28 global OPEN y DIST-01..08 multinodo BLOCKED. Sin producción, despliegue, merge, release ni cambios de aislamiento.
+- Siguiente objetivo identificado desde JSONL: SY-R-09, fuente fracción x^3/3 + C; al derivar da x^2. Siguiente paso exacto: agregar tests/syntax309SyR09.audit.test.ts, frontend/src/__tests__/syntax309SyR09.audit.test.ts, backend/tests/test_syntax309_syr09_http.py y e2e/syntax309-syr09.spec.ts registrado en workflow pertinente. Verificar fuente original, preservación de C como constante independiente de x, reentrada de salida y derivada x^2 en operación real; no sustituir una comprobación textual por derivación ni confundir derivación respecto a x con C. Ejecutar gates del nuevo SHA. No tests/certificación R09 publicados aquí.
+
 ## 2026-10-16 — SY-R-07 PASS acotado; número pequeño y reentrada preservados
 - Rama canónica qa/syntax-audit-in625-a1 verificada desde README de main en ambos repositorios. PR Lite #48 y Plus #29 abiertos hacia main, sin merge. No cierre global IN625/Syntax309.
 - Fixture original SY-R-07: `1.5\times10^{-7}`, esperado 0.00000015. JSONL/esperados intactos. Tolerancia estrictamente relativa 1e-9*abs(esperado), equivalente a 1.5e-16 para el oficial; no max(1,...) ni aceptación de cero. Trabajo de tests/certificación, sin cambios de producto.
@@ -530,7 +544,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-23, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente SY-M-01. Otros gaps históricos siguen abiertos |
 | SY-M Matrices/vectores | 20 | Secuencia alcanza M-20, PASS en Lite navegador y Plus parser/formulario/HTTP según alcance de cada caso. Pendiente flujo nativo integral Plus; no equivale a certificar todo el módulo |
 | SY-S Alias en español | 20 | Secuencia en S-01, PASS en Lite navegador y Plus conversor/HTTP; siguiente S-02. Resto pendiente de esta secuencia |
-| SY-R Reentrada | 14 | Secuencia hasta SY-R-07 con PASS acotado por caso; siguiente SY-R-08. Consultar canales/SHA/runs en CURRENT_STATE y EXECUTION_LOG; IN625 H1 es evidencia distinta |
+| SY-R Reentrada | 14 | Secuencia hasta SY-R-08 con PASS acotado por caso; siguiente SY-R-09. Consultar canales/SHA/runs en CURRENT_STATE y EXECUTION_LOG; IN625 H1 es evidencia distinta |
 | SY-X Estrés/hostiles | 22 | Pendiente de esta secuencia; ejecutar aislado |
 | Total | 309 | Certificación integral OPEN |
 

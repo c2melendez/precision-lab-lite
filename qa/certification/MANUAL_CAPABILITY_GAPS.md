@@ -151,3 +151,10 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - Plus: conversor de la fuente original y variantes de coeficiente/signo, junto con HTTP separado de testigos equivalentes. Se exige estructura completa de multiplicación/potencia negativa, texto numérico real finito, aproximación y reentrada, todos distintos de cero y con tolerancia estrictamente relativa; control racional exacto adicional.
 - No acreditar UI MathLive integral Plus, aceptación de LaTeX raw original por HTTP ni todo rango de exponentes/subnormales a partir de estos casos. Una representación científica del valor no es un error si conserva valor y se distingue del LaTeX de reentrada probado.
 - H2/SG28 OPEN, DIST multinodo BLOCKED; TODO/XFAIL excluidos de PASS. Sin cambio de aislamiento por defecto ni producción.
+
+
+## 2026-10-16 — SY-R-08: complejo binómico y reentrada
+- Lite: fuente original 1+2i visible y recálculo del LaTeX resultado con solicitud nueva en MathLive + Worker desktop/tablet/mobile. Handler Worker añade controles 3-4i, -2+3i y (1+2i)^2 = -3+4i, comprobando componentes y reentrada. No se convierte el complejo completo con Number ni se exige aproximación real.
+- Plus: conversor original y variantes de signos/coeficientes, más HTTP separado de fuente original y testigos equivalentes. MathResponse escalar, texto exacto sin símbolos libres/Float, componentes real/imaginaria y reentrada; control de cuadrado acredita i^2=-1. No afirmar UI MathLive integral Plus.
+- El oráculo del campo de salida visible, leído mediante su propiedad value, admite espacios, signo menos Unicode y orden equivalente de términos en el binomio oficial; no acepta cualquier texto que contenga 1, 2 e i. No acredita pulsación Reusar, cada tecla física/virtual ni todas las formas polares/ramas complejas.
+- H2/SG28 OPEN, DIST multinodo BLOCKED; TODO/XFAIL excluidos de PASS. Sin cambio de aislamiento ni producción.
