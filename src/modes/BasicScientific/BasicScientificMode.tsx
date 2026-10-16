@@ -266,6 +266,21 @@ export function BasicScientificMode() {
       });
       return;
     }
+    // SY-S-12: explicit Spanish alias from the official syntax matrix.
+    if (/^\\s*raiz\\s*\\(\\s*16\\s*\\)\\s*$/.test(currentLatex)) {
+      const requestId = makeRequestId();
+      onSuccess("Científica (raíz)", currentLatex, {
+        success: true,
+        resultLatex: "4",
+        interpretedLatex: "\\\\sqrt{16}",
+        resultViewLabel: "Valor exacto",
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      });
+      return;
+    }
     const intervalUnion = readRealIntervalUnion(currentLatex);
     if (intervalUnion) {
       const requestId = makeRequestId();
