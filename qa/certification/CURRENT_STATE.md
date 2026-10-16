@@ -1,5 +1,11 @@
 # Current Certification State
 
+## 2026-10-16 — SY-X-04 integrado al gate científico Lite
+- Se verificó `.github/workflows/syntax309-scientific-e2e.yml`: su `push.paths` y comando Playwright incluían SY-X-01..03 pero omitían `e2e/syntax309-syx04.spec.ts`. Esto impedía detectar el archivo añadido en el gate nativo.
+- Commit Lite `fa7739347496b101351fa586df299afa15e0f354`: agrega SY-X-04 al filtro `push` y al mismo comando de Playwright para desktop/tablet/mobile, sin crear workflow redundante. La prueba fue añadida antes en `3c5dcce2c97cb1de8ed145b6857c1a9ccf793f40`.
+- SY-X-04 sigue PENDING CI/PLUS. Siguiente paso obligatorio: recuperar run científico para SHA `fa7739347496b101351fa586df299afa15e0f354` (o sucesor que conserve el cambio), inspeccionar jobs y el valor serializado de 500 términos; si falla, diagnosticar antes de editar expectativas. Añadir cobertura funcional equivalente y límites HTTP de Plus. SY-R-12 sigue OPEN hasta evidencia específica. No se ha declarado PASS ni se ha ejecutado un despacho redundante.
+
+
 ## 2026-10-16 — SY-X-04: E2E explícito incorporado (no certificado)
 - Lite commit `3c5dcce2c97cb1de8ed145b6857c1a9ccf793f40`: nuevo `e2e/syntax309-syx04.spec.ts`. Genera 500 sumandos reales `x+x+...` (999 caracteres), verifica conservación de la fuente MathLive, solicita `500x` y comprueba recuperación posterior `2+3=5` sin alerta. No sustituye el fixture descriptivo por `500*x` ni modifica el motor.
 - Estado SY-X-04: TEST ADDED / PENDING CI; no se ha confirmado resultado ni incorporación del archivo al comando de scientific-ui. Verificar configuración de workflows (la corrida previa enumeraba tests explícitos hasta SY-X-03), incorporar SY-X-04 al gate, ejecutar en desktop/tablet/mobile, revisar límites de longitud backend Plus y contratos, añadir tests de ambas variantes y obtener evidencias antes de declarar PASS. Si MathLive serializa distinto, diagnosticar y corregir la capa real, sin relajar el oráculo.
