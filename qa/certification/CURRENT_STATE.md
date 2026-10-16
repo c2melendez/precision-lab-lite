@@ -32,3 +32,6 @@ Estas son validaciones locales del lote preparado; las conclusiones CI y SHA de 
 | Manuales/visual/historial y cobertura global | PARCIAL/ND | [Gaps](MANUAL_CAPABILITY_GAPS.md) y tablero; reconciliar requisito/canal antes de calcular porcentajes. |
 
 Política de dos frentes vigente: los bloqueos anteriores no detienen trabajo matemático independiente, pero impiden el cierre global correspondiente. No producción, deploy, merge, release ni activación remota de flags.
+
+## 2026-10-16 — checkpoint publicado, CI en curso
+SHA técnico lite: `fa974e49feb135290b5bdac63c49114f227c7239`. Runs automáticos observados: [IN625 Cumulative Certification Gate 38983494314](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494314); [IN625 H1d Reentry Diagnostic 38983494355](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494355); [Syntax309 SY-N-31 Scientific UI E2E 38983494311](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494311); [Certification dependency and security gates 38983494649](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494649). Estado observado: en curso/cola, no PASS anticipado. El siguiente LLM debe consultar esos IDs y no volver a despacharlos. El guard y ledger distinguen evidencia ejecutada de REUSE.
