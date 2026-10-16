@@ -2,6 +2,17 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-M-13 PASS en Lite navegador y Plus parser/formulario simulado; siguiente SY-M-14
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-13, operación vectores, entrada `\mathbf{i}+2\mathbf{j}-\mathbf{k}`, esperado (1,2,-1); nota: notación de base canónica.
+- Corrección bilateral: intención basis para combinaciones enteras de símbolos i/j/k explícitamente en negrita; suma términos repetidos, mantiene orden fijo (i,j,k) y rechaza términos no admitidos. Alcance: texto de hasta 256 caracteres, coeficientes enteros con valor absoluto hasta 10^9 y coordenadas enteras seguras. No se redefine la i ordinaria, ni se declara soporte de coeficientes simbólicos/fraccionarios generales.
+- Lite devuelve las coordenadas por nueva operación literal del Worker (conversión exacta a Fraction, sin potencia) y las muestra como vector con paréntesis y etiqueta de base canónica. Plus transforma y presenta localmente los datos matriciales y un aviso de coordenadas; no necesita HTTP para esta conversión de notación. No se cambia el cálculo de operaciones matriciales existentes.
+- Lite SHA final `99a106b454ace688abc0636410bfa29fe1a9a1ae`: [acumulada 38839202049](https://github.com/c2melendez/precision-lab-lite/actions/runs/38839202049) SUCCESS, 1448 PASS +30 TODO, 137 archivos, 3/3 nuevos del parser/manejador Worker; typecheck/build PASS. [Navegador 38839202034](https://github.com/c2melendez/precision-lab-lite/actions/runs/38839202034) SUCCESS, 195/195, incluidos 9/9 SY-M-13 en escritorio/tableta/móvil: fuente original, términos reordenados y repetidos, resultado visible y LaTeX del vector (1,2,-1) o control (1,0,0). H1d 38839201999 SUCCESS 21/21; SG28 UI 38839202023 SUCCESS 12/12; build diagnóstico 38839202024 SUCCESS.
+- Plus SHA final `ca1234b32b670c292d696eadc6ec0469943cfb58`: [acumulada 38839299181](https://github.com/c2melendez/precision-lab-plus/actions/runs/38839299181) SUCCESS: frontend 888 PASS +28 TODO, 95 archivos, 3/3 nuevos del parser y 1/1 formulario con editor/transporte simulados, coordenadas visibles y ausencia de llamada HTTP. Backend acumulado 1329 PASS +1 XFAIL, sin cambios ni casos HTTP nuevos porque la transformación es local. H1d 38839299109 SUCCESS 38/38. SG28 UI 38839090936 SUCCESS 21/21 en SHA de producto 9796b736b506adfd5e375e79e72da4159fcbc046; cambios posteriores Plus sólo ajustaron la prueba del formulario.
+- Historial: primera acumulada Lite 38839087972 falló el caso nuevo porque el vector 1×3 se enviaba a potencia, que exige matriz cuadrada; corregido con literal Worker. Los intentos frontend Plus previos detectaron un import sobrante y luego una comparación exacta que no reconocía el aviso renderizado; prueba corregida sin cambiar el resultado esperado. Intentos fallidos y TODO/XFAIL no cuentan como PASS.
+- Alcance Plus: parser y formulario simulado; sigue pendiente la integración nativa completa del nuevo flujo. No se declara certificado todo el módulo matricial/vectorial.
+- Continuidad oficial: SY-M-14, operación vectores, entrada `\vec{u}\cdot\vec{v}\ \text{con}\ \vec{u}=(1,2,3),\ \vec{v}=(4,5,6)`, esperado 32. Syntax309/IN625/H2/SG28 siguen ABIERTOS; gaps históricos y UI Plus pendientes. DIST-01..08 siguen BLOQUEADOS hasta coordinación real entre nodos independientes.
+
 ## 2026-10-15 — SY-M-12 PASS por aviso explícito en Lite navegador y Plus parser/formulario simulado; siguiente SY-M-13
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-12, operación convencion, entrada `(1,2,3)\cdot(4,5,6)`, esperado `32\ \text{o aviso}`; nota: tupla puede ser vector, punto o intervalo según contexto; declarar.
@@ -337,7 +348,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
 | SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
 | SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-23, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente SY-M-01. Otros gaps históricos siguen abiertos |
-| SY-M Matrices/vectores | 20 | Secuencia en M-12, PASS por aviso en Lite navegador y Plus parser/formulario simulado; siguiente M-13. Resto pendiente de esta secuencia |
+| SY-M Matrices/vectores | 20 | Secuencia en M-13, PASS en Lite navegador y Plus parser/formulario simulado; siguiente M-14. Resto pendiente de esta secuencia |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
 | SY-X Estrés/hostiles | 22 | Pendiente de esta secuencia; ejecutar aislado |
@@ -359,7 +370,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-M-13 (notación de base canónica, esperado (1,2,-1)), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-M-14 (vectores nombrados con componentes declaradas, esperado 32), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
