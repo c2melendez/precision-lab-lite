@@ -1,5 +1,16 @@
 # Current Certification State
 
+## 2026-10-16 — SY-S-12 PASS acotado; SY-S-13/14 implementados
+- Rama canónica verificada desde main en ambos repositorios: qa/syntax-audit-in625-a1.
+- SY-S-12 Plus SHA ce98df838481761121f3be2fed4809de8a9eea62: acumulativo 38862908867 SUCCESS (backend job 116849064501: test_sys12_raiz16_exact_and_reentry PASSED, 1363 passed / 1 xfailed), H1d 38862908877 SUCCESS y SG28 prototipo 38862908900 SUCCESS (69 passed). XFAIL no se cuenta como PASS.
+- SY-S-12 Lite SHA 1eb99cb4d5565a8e4ccadd65f029caf6cd942536: acumulativo 38862179442, build 38862179710, H1d 38862179470, SG28 UI 38862179456 y científica 38862179483 SUCCESS. Job 116846733961 acredita test SY-S-12 exacto 4 en desktop/tablet/mobile, 309 passed en total.
+- Alcance: PASS caso SY-S-12 en HTTP Plus y UI nativa Lite; no certifica alias general raiz ni UI integral Plus.
+- Nuevos casos oficiales SY-S-13 sin(0)=0 y SY-S-14 exp(0)=1: regresiones permanentes de parser/Algebrite/reentrada y navegador Lite; MathResponse/HTTP/reentrada y conversor Plus. Sin cambios al producto. Commits Lite 1a4694a4a96415ebdb889929f6531a42b040554e y Plus 94d2ff779172b3fbde9b3b6cb1ac391553fca7ba.
+- Push técnico comprobado: Lite acumulativo 38868505125, H1d 38868504569, build 38868504575, UI 38868504449; Plus acumulativo 38868507204 y H1d 38868507203. IN_PROGRESS al registrar; SY-S-13/14 OPEN hasta logs finales en estos SHA.
+- Workflow científico Lite incluye nuevos specs y evento pull_request con exclusión documental; push canónico y workflow_dispatch conservados. Gates acumulativos bilaterales conservan exclusión documental.
+- Siguiente paso exacto: comprobar jobs/logs de las seis corridas nuevas, tests nombrados SY-S-13/14 y oráculos exactos 0/1; diagnosticar cualquier FAIL. Tras PASS bilateral, continuar fixture SY-S-15 ln(e)=1, seguido SY-S-16 log(100)=2 (convención base diez). SG28/H2 OPEN, DIST multinodo BLOCKED. Sin merge/despliegue ni activación de aislamiento en producción.
+
+
 ## 2026-10-16 — SY-S-12 Plus regex corregido; recertificación en curso
 - Lite build diagnostic [38862179710](https://github.com/c2melendez/precision-lab-lite/actions/runs/38862179710) SUCCESS SHA 1eb99cb4d5565a8e4ccadd65f029caf6cd942536; esto acredita compilación, no por sí solo E2E SY-S-12.
 - Plus acumulativo [38862146389](https://github.com/c2melendez/precision-lab-plus/actions/runs/38862146389) FAILURE SHA 487e36584b18248cefffa737a44a7fe72d934bbd: 1362 passed, 1 failed (test_syntax309_sys12_http.py, raiz(16) PARSE_ERROR), 1 xfailed. Frontend SUCCESS.
