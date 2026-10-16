@@ -32,4 +32,13 @@ test("SY-R-12 native scientific UI rejects nonmathematical text and recovers",as
  await expect(result.locator(".a11y-scale-result-3xl").first()).toHaveText("5");
  await expect(page.locator("[role=alert]")).toHaveCount(0);
  expect(errors).toEqual([]);
+}) const diagnostic=await page.evaluate(()=>({input:(document.querySelector("math-field[aria-label='Entrada matemática']") as HTMLElement & {value:string})?.value,alerts:[...document.querySelectorAll("[role=alert]")].map(n=>n.textContent),results:[...document.querySelectorAll("[data-result-request-id]")].map(n=>n.textContent?.slice(0,300)),body:document.body.innerText.slice(-1200)}));
+ if(!diagnostic.alerts.some(x=>x?.includes("Entrada no matemática")))throw Error("SY-R-12 native diagnostics: "+JSON.stringify(diagnostic));
+ await input.evaluate(node=>{(node as HTMLElement & {value:string}).value="2+3";node.dispatchEvent(new Event("input",{bubbles:true}));});
+ await calculate.click();
+ const result=page.locator("[data-result-request-id]").first();
+ await expect(result).toBeVisible();
+ await expect(result.locator(".a11y-scale-result-3xl").first()).toHaveText("5");
+ await expect(page.locator("[role=alert]")).toHaveCount(0);
+ expect(errors).toEqual([]);
 });
