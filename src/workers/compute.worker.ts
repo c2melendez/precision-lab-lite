@@ -5,6 +5,7 @@
 // Módulo 1: "evaluate" (Modo 1). Módulo 3: "solveAlgebra" (Modo 2 - Álgebra).
 // Los demás tipos de operación se añaden en módulos posteriores.
 
+import { constantDeterminant } from "../engine/constantDeterminant";
 import { evaluate, toLatex, toDecimalApprox, ErrorCode as ClientErrorCode } from "../engine/algebriteClient";
 import { toFractionResult, fractionToLatex } from "../engine/fractions";
 import { reciprocalPoleLimit, reciprocalLimitAtInfinity } from "../engine/reciprocalLimit";
@@ -1072,6 +1073,10 @@ function handleMatrixOp(
   requestId: string,
 ): MathResult {
   try {
+    if (msg.op === "determinant") {
+      const constant = constantDeterminant(msg.a, requestId);
+      if (constant) return constant;
+    }
     const a = toFractionMatrix(msg.a);
     const b = msg.b ? toFractionMatrix(msg.b) : undefined;
 
