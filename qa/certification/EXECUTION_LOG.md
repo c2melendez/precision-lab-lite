@@ -1,3 +1,9 @@
+## 2026-10-16 — SY-X-04 Plus: nueva regresión del conversor, pendiente de CI
+- Commit Plus `5e63fcb6d12bc8f42e8aa8f2311e0feed9d86ec0` añade `frontend/src/components/syntax309-syx04.test.ts`, que exige preservar los 500 sumandos de x (999 caracteres) sin sustituirlos por `500*x` y comprueba conversión posterior de 2+3.
+- Verificado el código del conversor `latexToBackendSyntax` en `frontend/src/components/NaturalMathField.tsx`. Resultado de la nueva prueba NO verificado por CI; si falla, diagnosticar diferencias de serialización MathLive frente a error del conversor. No relajar la exigencia de conservar los términos sin evidencia ni cambiar producto sin causa confirmada.
+- Plus HTTP mantiene `EvaluateRequest.expression` máximo 500; el nuevo test de frontend no certifica que la API acepte 999 caracteres. El test backend 422/recovery sigue pendiente de CI. Lite UI y SY-R-12 también pendientes de resultados. No declarar PASS global SY-X-04.
+- Siguiente paso exacto: obtener runs y jobs de los commits técnicos Lite `fa7739347` y Plus `5e63fcb6d`/`3c425c124`; verificar cobertura automática y corregir fallos causales. Reconciliar límite contractual de 500 sin modificarlo inadvertidamente.
+
 ## 2026-10-16 — SY-X-04 Plus: límite HTTP documentado y regresión permanente
 - Confirmado por código `backend/app/schemas/requests.py`: `EvaluateRequest.expression` tiene `max_length=500`; los 500 sumandos reales de x ocupan 999 caracteres. No se puede certificar la expansión vía `/api/v1/evaluate` sin cambio contractual autorizado. No se cambia el schema para fabricar PASS.
 - Commit Plus `3c425c124595a7f4deb03fc0e5fc3644d81913fd`: `backend/tests/test_syntax309_syx04_http_limit.py` envía 500 sumandos explícitos y exige HTTP 422, `VALIDATION_ERROR`, `MathResponse` sin resultados, request_id, seguido de recuperación HTTP 200 y resultado 5 para 2+3. La cobertura certifica rechazo seguro/recovery solamente, no resultado 500x por API.
