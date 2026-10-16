@@ -604,6 +604,11 @@ function normalizeDelimiterSyntax(input: string): string {
 function validateInputStructureG3(input: string): void {
   // H2 EN-SG-22: evitar procesar entradas desproporcionadas en el CAS.
   if (input.length > 65536) throw parseError("Entrada demasiado larga (máximo 65536 caracteres).");
+  // SY-X-02: inspect original spacing before trim can leave a lone backslash.
+  // Only layout commands disappear; mathematical content is never discarded.
+  if (!input.replace(/\\(?:[,;!: ]|qquad\b|quad\b)/g, "").trim()) {
+    throw parseError("Escriba una expresión antes de calcular.");
+  }
   // Validar la estructura equivalente después de retirar únicamente
   // modificadores visuales de delimitación. La normalización completa
   // sigue ocurriendo después de G3; aquí no se tocan expresiones matemáticas.
