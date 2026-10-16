@@ -1,5 +1,10 @@
 # Current Certification State
 
+## 2026-10-16 — SY-X-04 Plus: regresión de espacios registrada
+- Commit Plus `a2fbdece01c08e1ce5eae90a6a285c293cae9783`: `frontend/src/components/syntax309-syx04.test.ts` agrega 500 términos separados por espacios alrededor de +; exige conversión sin pérdida de sumandos. Prueba publicada, no CI PASS confirmado.
+- Se recuperó sincronización del historial Plus mediante `d3a07d6ecbd260a9156c6e766ff901a1b63b695f`; Lite ya tenía registro histórico. SY-X-04 HTTP sigue condicionado por el límite de 500 caracteres. CI por SHA pendiente bajo issue Lite #50.
+
+
 ## 2026-10-16 — SY-X-04: propuesta de resolución contractual, no aprobada
 - Documento de decisión bilateral `qa/certification/SY_X_04_LENGTH_DECISION.md` (Plus `dc11c29aad94fba662c1a101ef22de841eb5b4da`; Lite `cb7d0ce4af9d7ab19b8f07a85d3ebbbce2540748`). Evalúa conservar max_length=500 con capability parcial, ampliar expresamente a >=999 caracteres tras autorización y pruebas de límites de recursos, o introducir API versionada. No se modificó contrato ni motor.
 - Preferencia de diseño sujeta a aprobación: ampliar acotadamente EvaluateRequest a un valor documentado (p.ej. 1024), solo tras analizar parser, límites AST, SG28, seguridad, clientes y gates de regresión, con entrada literal intacta; mientras tanto no declarar SY-X-04 Plus HTTP PASS. Corridas pendientes bajo issue Lite #50.
