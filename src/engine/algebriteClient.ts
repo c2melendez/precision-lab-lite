@@ -90,6 +90,20 @@ export function evaluate(expressionLatex: string): string {
         result = retried;
       }
     }
+    // SY-S-08: Algebrite sometimes returns "NaN..." after float(sinh(1)).
+    // Only replace a non-finite hyperbolic result when our independent numeric
+    // parser can evaluate the entire expression to a finite real number.
+    // Preserve symbolic expressions and reject truly undefined results.
+    if (/^(?:NaN|Infinity|-Infinity)(?:\\.\\.\\.)?$/.test(result.trim()) &&
+        /\\b(?:sinh|cosh|tanh)\\(/.test(expressionLatex)) {
+      try {
+        const numeric = compileNumeric(expressionLatex, "__unused__")(0);
+        if (Number.isFinite(numeric)) return String(numeric);
+      } catch {
+        // Preserve the failure; never mark an unrecognized input as numeric.
+      }
+      throw toAppError(ErrorCode.DOMAIN_ERROR, "El cálculo hiperbólico no produjo un valor finito.");
+    }
     // SY-V-09: preserve the arbitrary integration constant in the
     // standalone indefinite integral. Algebrite returns only a particular
     // antiderivative; unlike a definite integral this denotes a family.
