@@ -1,5 +1,13 @@
 # Certification Execution Log
 
+## 2026-10-16 — SY-R-12 E2E error persistente y normalización MathLive
+- Lite [38908415715](https://github.com/c2melendez/precision-lab-lite/actions/runs/38908415715) FAILURE SHA bfe7921: 372 passed, 3 failed SY-R-12 desktop/tablet/mobile. Diagnóstico anterior falló por timeout al esperar el texto de error visible, sin incluir valores reales de `serialized` ni `alert` en el fallo.
+- Diagnóstico revisado `e2e/syntax309-syr12.spec.ts`, SHA 548973cc066251997f37ea13564f23841425f829: muestra `serialized`, `alert` y contenido del resultado como contexto de aserción, conservando exigencia de rechazo/recuperación.
+- Guard `parseExpression` Lite mejorado SHA `6be7bd42f1cbeefdd309951cda98eadb20d912c3`: normaliza formas MathLive `\\text{...}`, `\\mathrm{...}`, `\\operatorname{...}`, espacios escapados y whitespace antes de comparar estrictamente con `no existe`. No afecta símbolos matemáticos fuera de esta frase. No se ha probado aún la nueva variante E2E.
+- Runs SHA 6be7bd42: científica 38912852386, cumulative 38912851934, build 38912851944, H1d 38912852036 en progreso al registrar. Diagnóstico SHA previo 548973cc científica 38912778906 en progreso. Plus cumulative 38891951302 SUCCESS para rechazo unitario; falta un E2E de interfaz Plus.
+- Acción siguiente: examinar logs de 38912778906 (fuente exacta), de 38912852386 (gate sobre corrección), resolver causa probada y cerrar SY-R-12 solo con E2E SUCCESS. H2/SG28 OPEN; DIST multinodo BLOCKED.
+
+
 ## 2026-10-16 — SY-R-12 E2E browser FAIL, diagnóstico publicado
 - SY-R-11 cerrado acotado; SY-R-12 Lite cumulative 38894721459 SUCCESS, build 38894721481 SUCCESS, H1d 38894721436 SUCCESS; Plus cumulative 38891951302 SUCCESS.
 - Lite científica 38894721463 FAILURE (372 passed, tres fallos nuevos SY-R-12 desktop/tablet/mobile); error real: interfaz no encuentra el mensaje esperado `Entrada no matemática: escribe una expresión válida.`. Esto significa que las unitarias no prueban todavía el recorrido MathLive → entrada serializada → parseExpression → aviso UI. No declarar SY-R-12 PASS browser.
