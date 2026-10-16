@@ -302,7 +302,13 @@ export function BasicScientificMode() {
 
     // H1 EN-RE-13: las matrices escritas/pegadas en la pantalla científica
     // deben usar el mismo motor matricial que el módulo dedicado.
-    const matrixIntent = detectMatrixIntent(currentLatex);
+    let matrixIntent: ReturnType<typeof detectMatrixIntent>;
+    try {
+      matrixIntent = detectMatrixIntent(currentLatex);
+    } catch (error) {
+      fail(ErrorCode.PARSE_ERROR, error instanceof Error ? error.message : "La matriz no es válida.", makeRequestId());
+      return;
+    }
     if (matrixIntent) {
       const requestId = makeRequestId();
       const worker = getWorker();
