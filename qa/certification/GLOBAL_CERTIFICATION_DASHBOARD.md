@@ -2,6 +2,15 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-M-15 PASS por convención explícita en Lite navegador y Plus parser/formulario simulado; siguiente SY-M-16
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-15, operación convencion, entrada `\vec{u}\times\vec{v}`, esperado producto cruz (vectores 3D), no producto escalar; nota: times entre vectores es producto cruz.
+- Corrección bilateral: detectar dos vectores nombrados explícitos unidos por times antes de la ruta algebraica genérica. Aviso: "× entre vectores representa el producto cruz de vectores 3D. Faltan sus componentes; introdúcelas en la operación de producto cruz del módulo Matrices." El fixture sin componentes no produce un valor inventado. No se añade en este caso un nuevo evaluador de declaraciones locales con times ni se afirma cálculo numérico desde esa fuente incompleta.
+- Lite SHA `c89ce582676f2b965aead9e691c336b4b53ba906`: [acumulada 38842091499](https://github.com/c2melendez/precision-lab-lite/actions/runs/38842091499) SUCCESS: 1454 PASS +30 TODO, 139 archivos, 3/3 nuevos de convención/parser/manejador Worker; typecheck/build PASS. El control del Worker existente distingue cross=(-3,6,-3) y dot=32 para los mismos datos; no se presenta como cálculo de la fuente sin componentes. [Navegador 38842091480](https://github.com/c2melendez/precision-lab-lite/actions/runs/38842091480) SUCCESS, 210/210, incluidos 6/6 SY-M-15 en escritorio/tableta/móvil: fuente original y nombres/espacios distintos, aviso cruz/3D/componentes, ningún resultado exitoso ni pageerror, recuperación a 2 times 3 devuelve 6. H1d 38842091479 SUCCESS 21/21; build diagnóstico 38842091502 SUCCESS.
+- Plus SHA `71a4bb677a9011d96347fd3852c1d76ffeed6a44`: [acumulada 38842096356](https://github.com/c2melendez/precision-lab-plus/actions/runs/38842096356) SUCCESS: frontend 895 PASS +28 TODO, 99 archivos, 2/2 nuevos del parser y 1/1 formulario con editor/transporte simulados; comprueba aviso antes de HTTP y recuperación a un producto escalar explícito de ángulos por su ruta dot independiente. Backend acumulado 1332 PASS +1 XFAIL, sin cambios ni casos HTTP nuevos porque la decisión sobre fuente incompleta ocurre en cliente. H1d 38842096251 SUCCESS 38/38.
+- Alcance: convención de producto cruz reconocida y falta de componentes declarada claramente; la multiplicación escalar ordinaria conserva su ruta. El nuevo flujo nativo completo de Plus sigue pendiente. TODO/XFAIL no cuentan como PASS; no se declara certificado todo el módulo matricial/vectorial.
+- Continuidad oficial: SY-M-16, operación convencion, entrada `\left\lvert A\right\rvert`, esperado determinante de A si es matriz y valor absoluto si es escalar; decidir por el tipo. Syntax309/IN625/H2/SG28 siguen ABIERTOS; gaps históricos y UI Plus pendientes. DIST-01..08 siguen BLOQUEADOS hasta coordinación real entre nodos independientes.
+
 ## 2026-10-15 — SY-M-14 PASS en Lite navegador y Plus parser/formulario simulado/HTTP; siguiente SY-M-15
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-14, operación vectores, entrada `\vec{u}\cdot\vec{v}\ \text{con}\ \vec{u}=(1,2,3),\ \vec{v}=(4,5,6)`, esperado 32.
@@ -357,7 +366,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
 | SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
 | SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-23, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente SY-M-01. Otros gaps históricos siguen abiertos |
-| SY-M Matrices/vectores | 20 | Secuencia en M-14, PASS en Lite navegador y Plus parser/formulario simulado/HTTP; siguiente M-15. Resto pendiente de esta secuencia |
+| SY-M Matrices/vectores | 20 | Secuencia en M-15, PASS por convención explícita en Lite navegador y Plus parser/formulario simulado; siguiente M-16. Resto pendiente de esta secuencia |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
 | SY-X Estrés/hostiles | 22 | Pendiente de esta secuencia; ejecutar aislado |
@@ -379,7 +388,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-M-15 (declarar producto cruz entre vectores 3D), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-M-16 (barras de matriz o escalar: decidir por tipo), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
