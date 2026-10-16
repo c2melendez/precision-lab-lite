@@ -5622,3 +5622,11 @@ Fixture i^{2}, operacion=convencion, esperado -1 como unidad imaginaria o i^{2} 
 - TODO/XFAIL no cuentan como PASS. Syntax309/IN625/H2/SG28 siguen OPEN; DIST-01..08 BLOCKED por coordinación multinodo independiente pendiente. Sin merge a main ni despliegue.
 - Siguiente fixture oficial: SY-S-02, `\operatorname{tg}\frac{\pi}{4}` → 1. No se declara evaluado.
 
+
+
+## 2026-10-15 — SY-S-08: corrección numérica Lite sometida a CI
+
+- Fuente oficial `\\operatorname{senh}1` => `1.175201194`, tolerancia absoluta `5e-10`. Plus SHA `fedf1dc6`: gate acumulativo [38853649672](https://github.com/c2melendez/precision-lab-plus/actions/runs/38853649672) y H1d [38853649751](https://github.com/c2melendez/precision-lab-plus/actions/runs/38853649751) SUCCESS (HTTP/conversor; no E2E UI integral).
+- Lite SHA `f4cce56f`: gate [38853850039](https://github.com/c2melendez/precision-lab-lite/actions/runs/38853850039) FAILURE por `tests/syntax309SyS08.audit.test.ts`; Worker `success:true` y `resultLatex:NaN...`, prueba rechaza valor no finito. 1487 PASS, 1 FAIL, 30 TODO. H1d/build/E2E genérico de esa revisión SUCCESS pero no sustituyen el test nombrado.
+- Diagnóstico: `algebriteClient.evaluate` acepta el texto no finito devuelto por `float` de hiperbólica; nuevo commit técnico Lite [a0210c6](https://github.com/c2melendez/precision-lab-lite/commit/a0210c6182de319594b441868b06413621401ef9) agrega fallback con `compileNumeric` únicamente para `sinh/cosh/tanh` cuando el resultado es NaN/Infinity y obliga finitud, sin modificar el oráculo de 5e-10. CI disparado: acumulativa [38854594282](https://github.com/c2melendez/precision-lab-lite/actions/runs/38854594282), navegador [38854594285](https://github.com/c2melendez/precision-lab-lite/actions/runs/38854594285), H1d [38854594389](https://github.com/c2melendez/precision-lab-lite/actions/runs/38854594389), build [38854594390](https://github.com/c2melendez/precision-lab-lite/actions/runs/38854594390), inicialmente QUEUED.
+- SY-S-08 OPEN hasta observar PASS del test nombrado y gates Lite en SHA `a0210c6`, luego agregar cobertura de navegador Lite específica de SY-S-08 y validar nueva revisión. Siguiente fixture SY-S-09 solo después de resolver regresiones. H2/SG28 OPEN, DIST multinodo BLOCKED. Sin producción ni merges.
