@@ -7,6 +7,8 @@
 // ensamblar string Algebrite -> (si es ecuación) aplicar igualdad -> aplicar
 // conversión de ángulo RAD/GRAD.
 
+import { readInlineSubstitution } from "./inlineSubstitution";
+import { compileNumeric } from "../numericFallback";
 import { parsePermutationAlias } from "../permutationAlias";
 import { preprocessLatex, normalizeUnicode, validateDecimalPoints } from "./normalize";
 import { tokenize, type Token } from "./tokenize";
@@ -324,6 +326,30 @@ export function parseExpression(
   latex: string,
   angleMode: "RAD" | "GRAD" = "RAD",
 ): ParsedExpression {
+  // SY-R-04: parse both fragments normally, validate a finite real value,
+  // then replace only the complete parsed identifier. Do not route the
+  // assignment as an equation or persist it in a global variable registry.
+  const inline = readInlineSubstitution(latex);
+  if (inline) {
+    const body = parseExpression(inline.body, angleMode);
+    const value = parseExpression(inline.value, "RAD");
+    if (body.isEquation || body.isInequality || value.isEquation || value.isInequality) {
+      throw new Error("La sustitución requiere una expresión y un valor numérico.");
+    }
+    try {
+      const numeric = compileNumeric(value.algebrite.replace(/\blog\s*\(/g, "ln("), "")(0);
+      if (!Number.isFinite(numeric)) throw new Error("Valor no finito.");
+    } catch {
+      throw new Error("El valor de sustitución debe ser un número real finito sin variables libres.");
+    }
+    const pattern = new RegExp("\\b" + inline.variable + "\\b", "g");
+    const substituted = body.algebrite.replace(pattern, "(" + value.algebrite + ")");
+    return {
+      ...body, algebrite: substituted, leftAlgebrite: substituted, rightAlgebrite: "0",
+      freeVariables: body.freeVariables.filter(name => name !== inline.variable),
+    };
+  }
+
   // SY-V-06: two-parameter local definition followed by one call.
   // Substitute parameters simultaneously to avoid cascading replacements.
   const pairCall = latex.match(/^\s*([A-Za-z])\(([A-Za-z]),([A-Za-z])\)\s*=\s*([^;]+);\s*(?:\\\s*)?\1\(([^(),]+),([^(),]+)\)\s*$/);

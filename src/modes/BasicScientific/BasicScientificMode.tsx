@@ -6,6 +6,7 @@ import { Screen } from "../../components/Screen";
 import { type SessionHistoryEntry } from "../../components/HistoryLog";
 import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { parseExpression } from "../../engine/parsing";
+import { readInlineSubstitution } from "../../engine/parsing/inlineSubstitution";
 import { toLatex } from "../../engine/algebriteClient";
 import { splitSystemLatex, splitFreeSystemLatex } from "../../engine/parsing/systemSplit";
 import { detectPiecewiseIntent } from "../../engine/parsing/piecewiseIntent";
@@ -264,6 +265,23 @@ export function BasicScientificMode() {
         confidence: "SYMBOLIC",
         requestId,
       });
+      return;
+    }
+    // SY-R-04: a validated ephemeral binding is evaluation, not an equation.
+    // Run the real mathematical Worker; never synthesize the expected answer.
+    try {
+      if (readInlineSubstitution(currentLatex)) {
+        const requestId = makeRequestId();
+        const parsed = parseExpression(currentLatex, angleMode);
+        const worker = getWorker();
+        worker.onmessage = (e: MessageEvent<MathResult>) =>
+          onSuccess("Científica (sustitución)", currentLatex, e.data);
+        dispatchWorker(worker, { type: "evaluate", requestId, expressionAlgebrite: parsed.algebrite });
+        return;
+      }
+    } catch (err) {
+      const appErr = err as { code?: ErrorCode; message?: string };
+      fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Sustitución inválida.", makeRequestId());
       return;
     }
     // SY-S-12: explicit Spanish alias from the official syntax matrix.
