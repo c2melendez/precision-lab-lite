@@ -1,5 +1,13 @@
 # Certification Execution Log
 
+## 2026-10-15 — SY-S-04 PASS bilateral; SY-S-05 en validación CI
+
+- SY-S-04 `\\operatorname{cosec}\\frac{\\pi}{6}` → 2: cuatro gates SUCCESS sobre SHA técnico correcto. Plus IN625 acumulativo [38848312931](https://github.com/c2melendez/precision-lab-plus/actions/runs/38848312931) y H1d [38848313211](https://github.com/c2melendez/precision-lab-plus/actions/runs/38848313211) en `cbb139b4`; Lite acumulativo [38848342517](https://github.com/c2melendez/precision-lab-lite/actions/runs/38848342517) y navegador [38848342516](https://github.com/c2melendez/precision-lab-lite/actions/runs/38848342516) en `62f706c4`. El alcance Plus continúa siendo conversor y HTTP separados, no flujo integral nativo.
+- SY-S-05 `\\operatorname{arcsen}\\frac{1}{2}` → `\\frac{\\pi}{6}` en RAD: Plus mejora preconversión a `arcsin((1)/(2))`, añade Vitest de argumento y equivalencia con agrupación y prueba HTTP de exactitud simbólica/reentrada. HEAD técnico `8d2731a9`. Plus acumulativo [38850186814](https://github.com/c2melendez/precision-lab-plus/actions/runs/38850186814) y H1d [38850186803](https://github.com/c2melendez/precision-lab-plus/actions/runs/38850186803) iniciados.
+- Lite prueba fixture oficial, parser y equivalencia simbólica sin imponer serialización textual particular; HEAD técnico `1ac607f6`. Acumulativo [38850191010](https://github.com/c2melendez/precision-lab-lite/actions/runs/38850191010) iniciado. No se creó un E2E específico SY-S-05 ni se declara flujo navegador certificado.
+- Próxima acción obligatoria: verificar jobs/logs de ambos SHA, corregir casos fallidos y ampliar evidencia E2E cuando corresponda. No dar PASS a SY-S-05 antes de las corridas. Syntax309/IN625/H2/SG28 OPEN, DIST-01..08 BLOCKED. Sin merge ni producción.
+
+
 ## 2026-10-15 — SY-S-03 gates PASS; SY-S-04 implementado, CI pendiente
 
 - SY-S-03 oficial `\\operatorname{ctg}\\frac{\\pi}{4}` → 1: Plus acumulativo [38847939932](https://github.com/c2melendez/precision-lab-plus/actions/runs/38847939932) SUCCESS y H1d [38847939962](https://github.com/c2melendez/precision-lab-plus/actions/runs/38847939962) SUCCESS en SHA `ccac2acc`; Lite acumulativo [38848004920](https://github.com/c2melendez/precision-lab-lite/actions/runs/38848004920) SUCCESS (1480 PASS, 30 TODO) y navegador [38848004905](https://github.com/c2melendez/precision-lab-lite/actions/runs/38848004905) SUCCESS sobre `2225b888`. Sigue pendiente E2E nativo end-to-end Plus, separado de conversor/HTTP.
