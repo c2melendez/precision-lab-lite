@@ -31,4 +31,5 @@ test("SY-R-12 native scientific UI rejects nonmathematical text and recovers",as
  await expect(result).toBeVisible();
  await expect(result.locator(".a11y-scale-result-3xl").first()).toHaveText("5");
  await expect(page.locator("[role=alert]")).toHaveCount(0);
+ expect(errors).toEqual([]);
 });
