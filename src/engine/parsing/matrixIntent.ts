@@ -83,6 +83,11 @@ function parseSingleMatrix(text: string): { env: string; matrix: string[][]; res
 }
 
 export function detectMatrixIntent(latex: string): MatrixIntent | null {
+  // SY-M-12: do not silently interpret coordinate/interval tuples as vectors.
+  const tupleText = latex.trim().replace(/\\left(?=\()|\\right(?=\))/g, "");
+  if (/^\([^()]*,[^()]*\)\s*\\cdot(?![A-Za-z])\s*\([^()]*,[^()]*\)$/.test(tupleText)) {
+    throw new Error("Las tuplas entre paréntesis son ambiguas. Para el producto escalar, escribe vectores entre ángulos, por ejemplo ⟨1,2,3⟩·⟨4,5,6⟩.");
+  }
   let text = latex.trim();
   let explicitDet = false;
   if (text.startsWith("\\det")) {
