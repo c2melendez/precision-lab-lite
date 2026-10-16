@@ -184,7 +184,7 @@ export function detectMatrixIntent(latex: string): MatrixIntent | null {
 
   const suffix = first.rest.trim();
   if (suffix === "^{-1}" || suffix === "^-1") return { kind: "inverse", matrix: first.matrix };
-  if (suffix === "^{T}" || suffix === "^T") return { kind: "transpose", matrix: first.matrix };
+  if (/^\^(?:T|\{T\}|\\top|\{\\top\s*\})$/.test(suffix)) return { kind: "transpose", matrix: first.matrix };
   const dot = /^\\cdot(?![A-Za-z])\s*/.exec(suffix);
   if (dot) {
     const second = parseSingleMatrix(suffix.slice(dot[0].length));
