@@ -2,6 +2,15 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-M-17 PASS en Lite navegador y Plus parser/HTTP; siguiente SY-M-18
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-17, operación inversa, entrada `\begin{pmatrix}1&2\\3&4\end{pmatrix}^{-1}`, esperado `\begin{pmatrix}-2&1\\\frac{3}{2}&-\frac{1}{2}\end{pmatrix}`.
+- Corrección Lite: serializar la salida inverse del Worker como matriz LaTeX pmatrix, con fracciones impropias exactas y signos conservados, en lugar de filas aplanadas con posibles fracciones mixtas. No se cambia el algoritmo de inversión. El resultado conserva estructura y valores al volver a analizarlo.
+- Lite SHA `4c79e13bbf009ed4014fc5e5ded2132f8c2462f6`: [acumulada 38843299255](https://github.com/c2melendez/precision-lab-lite/actions/runs/38843299255) SUCCESS: 1460 PASS +30 TODO, 141 archivos, 3/3 nuevos del parser/motor/manejador Worker; typecheck/build PASS. Verifica las cuatro entradas racionales y ambos productos identidad A·A^-1 y A^-1·A, además de singular/no cuadrada. [Navegador 38843299360](https://github.com/c2melendez/precision-lab-lite/actions/runs/38843299360) SUCCESS, 222/222, incluidos 9/9 SY-M-17 en escritorio/tableta/móvil: inversa original, control diagonal fraccionario y rechazo singular. Comprueba las celdas en el MathLive readonly real y en el LaTeX de resultado mediante reanálisis; no se atribuye una nueva pulsación del botón Reusar. H1d 38843299290 SUCCESS 21/21; build diagnóstico 38843299337 SUCCESS.
+- Plus SHA `9f6ed823aa3180163ff7b8195b07098d6eae6210`: [acumulada 38843302792](https://github.com/c2melendez/precision-lab-plus/actions/runs/38843302792) SUCCESS: frontend 900 PASS +28 TODO, 102 archivos, 1/1 nuevo del parser que distingue inverse de power; backend 1336 PASS +1 XFAIL, 3/3 nuevos HTTP /matrix/inverse, matriz racional exacta sin Float, ambos productos identidad y rechazos SINGULAR_MATRIX/DIMENSION_MISMATCH. No fue necesario cambiar producto Plus. H1d 38843302822 SUCCESS 38/38.
+- Alcance Plus: parser y HTTP real separados; sigue pendiente la integración nativa completa del nuevo flujo. TODO/XFAIL no cuentan como PASS. Un caso 2×2 y sus controles no certifican todas las dimensiones ni el módulo completo.
+- Continuidad oficial: SY-M-18, operación matriz, entrada `\begin{pmatrix}1&2\\3&4\end{pmatrix}^{T}`, esperado `\begin{pmatrix}1&3\\2&4\end{pmatrix}`. Syntax309/IN625/H2/SG28 siguen ABIERTOS; gaps históricos y UI Plus pendientes. DIST-01..08 siguen BLOQUEADOS hasta coordinación real entre nodos independientes.
+
 ## 2026-10-15 — SY-M-16 PASS por tipo local en Lite navegador y Plus parser/formulario simulado/HTTP; siguiente SY-M-17
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-16, operación convencion, entrada `\left\lvert A\right\rvert`, esperado determinante de A si es matriz y valor absoluto si es escalar; decidir por tipo.
@@ -376,7 +385,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
 | SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
 | SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-23, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente SY-M-01. Otros gaps históricos siguen abiertos |
-| SY-M Matrices/vectores | 20 | Secuencia en M-16, PASS por tipo local en Lite navegador y Plus parser/formulario simulado/HTTP; siguiente M-17. Resto pendiente de esta secuencia |
+| SY-M Matrices/vectores | 20 | Secuencia en M-17, PASS en Lite navegador y Plus parser/HTTP; siguiente M-18. Resto pendiente de esta secuencia |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
 | SY-X Estrés/hostiles | 22 | Pendiente de esta secuencia; ejecutar aislado |
@@ -398,7 +407,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-M-17 (inversa matricial exacta), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-M-18 (transpuesta matricial), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
