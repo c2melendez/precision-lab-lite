@@ -1,5 +1,16 @@
 # Current Certification State
 
+## 2026-10-16 — SY-S-19/20 implementados; gates activos
+- Rama canónica recuperada desde README de main en ambos repositorios: qa/syntax-audit-in625-a1. HEAD inicial Lite 26986b0e0bf5aee39cbd4f1259db2047a330d88d / Plus 5cdd52b1b975bf494599ee2d08ba10125ad91650; cierres SY-S-12..18 conservados.
+- Fixtures oficiales: SY-S-19 sin(30°), SY-S-20 sen(30°), ambos esperan LaTeX exacto 1/2. Nuevas regresiones Lite parser/Worker/reentrada en RAD/GRAD, más navegador nativo desktop/tablet/mobile en ambos modos. E2E verifica atributo de reentrada y vista frac readonly exacta; registra serialización MathLive para diagnóstico.
+- Plus: regresiones conversor real desde fuente original y serialización nativa 30^{circ}; test HTTP usa testigo explícito traducido sin(((30)*pi/180)), exige MathResponse escalar exacto sin Float, LaTeX 1/2, aproximación0.5 y reentrada en rad/deg. Conversor y HTTP son rutas separadas; no certificar UI nativo integral Plus.
+- Commits técnicos Lite 988e59eaf0c8f1c858284acf6527b041619efc80 / Plus 7b0d5873f2e530921ab9cef1fb940ff5feb98284. Push confirmado: Lite cumulative 38870225883, científica 38870226129, H1d 38870225948, build 38870225993; Plus cumulative 38870229923 y H1d 38870230062. IN_PROGRESS al registrar, todavía no declarar PASS SY-S-19/20.
+- Política CI inspeccionada: gates acumulativos bilaterales conservan push canónico, pull_request, workflow_dispatch y exclusión de documentación. Científica Lite añade specs sys19/sys20 a filtros y comando; no hay cambios de producto todavía.
+- Siguiente paso exacto: obtener jobs/logs finales y resolver fallos de la capa correcta. Cerrar SY-S-19/20 solo con fuente/caso, valor y reentrada exactos en los SHA indicados. Después comenzar SY-R-01..03 (salidas con sqrt(2)/2, 2sqrt(3), pi/6), conservando los esperados oficiales y la precisión requerida.
+- H2/SG28 OPEN; DIST multinodo BLOCKED. No merge ni producción; no se activa aislamiento de evaluate.
+
+## Evidencia anterior
+
 ## 2026-10-16 — SY-S-12..18 PASS en alcance probado; siguiente SY-S-19/20
 - Estado vigente: sustituye estados IN_PROGRESS/FAIL históricos de estos casos solo en los SHA/canales acreditados abajo. No certifica globalmente Syntax309 ni IN625.
 - SY-S-12 raiz(16)=4: Plus ce98df83, cumulative 38862908867 y H1d 38862908877 SUCCESS; test HTTP exacto/reentrada PASS. Lite 1eb99cb4, cumulative 38862179442, build 38862179710, H1d 38862179470 y UI 38862179483 SUCCESS; caso nativo en desktop/tablet/mobile. Conserva alcance acotado, no alias general.
