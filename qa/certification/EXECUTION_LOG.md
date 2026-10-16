@@ -1,5 +1,13 @@
 # Certification Execution Log
 
+## 2026-10-15 — SY-S-05 revalidado; SY-S-06 conversor corregido, CI abierto
+
+- SY-S-05 Lite navegador: run [38851479297](https://github.com/c2melendez/precision-lab-lite/actions/runs/38851479297) SUCCESS en SHA `a0ccdf0b` después de corregir expectativa del harness de `math-field[read-only]`. Plus acumulativa 38850186814 y H1d 38850186803 SUCCESS, Lite acumulativa 38851479254 SUCCESS. Los oráculos de frontend/backend Plus y navegador Lite son evidencias separadas; no se afirma E2E nativo Plus.
+- SY-S-06 oficial `\\operatorname{arctg}1` → `\\frac{\\pi}{4}`: Lite acumulativa [38851547650](https://github.com/c2melendez/precision-lab-lite/actions/runs/38851547650) SUCCESS en `07669e68`. Plus H1d [38851543368](https://github.com/c2melendez/precision-lab-plus/actions/runs/38851543368) SUCCESS; acumulativa [38851543037](https://github.com/c2melendez/precision-lab-plus/actions/runs/38851543037) FAIL por 1 test nuevo frontend: `arctan1` en vez de `arctan(1)`; backend PASS. Clasificación: defecto confirmado de traducción frontend.
+- Corregido `frontend/src/components/NaturalMathField.tsx`: la función inversa de tangente seguida de argumento escalar completo produce `atan(1)` antes de la conversión MathLive. SHA técnico Plus `d1341244`; [acumulativa 38852136491](https://github.com/c2melendez/precision-lab-plus/actions/runs/38852136491) y [H1d 38852136716](https://github.com/c2melendez/precision-lab-plus/actions/runs/38852136716) activados, resultado pendiente.
+- Próximo: verificar pruebas del SHA `d1341244` y corregir si fallan; añadir E2E Lite SY-S-06 (escritorio/tableta/móvil) sin relajar exactitud, revisar luego fixture SY-S-07. IN625/H2/SG28 OPEN y DIST-01..08 BLOCKED; sin merge ni producción.
+
+
 ## 2026-10-15 — SY-S-05 E2E harness corregido; SY-S-06 iniciado
 
 - SY-S-05: Plus SHA `8d2731a9`, acumulada 38850186814 y H1d 38850186803 SUCCESS. Lite `54969c36`, acumulativa 38850799410 SUCCESS; E2E 38850799514 FAIL: 6/6 casos fallaron por selector `math-field[read-only]` inexistente para resultado simbólico, mientras `data-result-reentry-latex` ya contenía pi y 6. Clasificación preliminar harness/expectativa UI, no error matemático demostrado.
