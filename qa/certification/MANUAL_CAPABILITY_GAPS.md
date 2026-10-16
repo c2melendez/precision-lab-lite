@@ -130,3 +130,10 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - Feature deliberadamente acotada a un binding numérico real finito y temporal. No múltiples sustituciones escalares inline, RHS con símbolos libres/no finito, ni mezcla con substitutions de API. No afirmar lenguaje natural general o toda entrada LaTeX raw del endpoint.
 - Las declaraciones matriciales/vectoriales con con conservan su gramática propia y prioridad. Regresión SY-M-14/16 verificada como restaurada por doce pruebas nativas en el run final; el nuevo helper no sustituye su parser.
 - La bandera de aislamiento permanece off por defecto. La paridad R04 off/on no certifica cancelación distribuida SG28/H2/DIST.
+
+
+## 2026-10-16 — SY-R-05: alcance de arsinh y reentrada
+- Lite: fuente original operatorname{arsinh}(1), aproximación y nuevo cálculo del LaTeX resultado probados en MathLive + Worker, desktop/tablet/mobile. La respuesta usa NUMERIC_FALLBACK y conserva valor numérico, no una forma simbólica exacta de asinh(1). No se atribuye pulsación Reusar ni certificación de cada tecla física/virtual.
+- Plus: conversor real de la fuente original y variantes -1/2 produce un identificador asinh íntegro; tests HTTP separados verifican testigos asinh(1), asinh(-1), asinh(2), texto exacto sin Float, aproximación finita y reentrada del result_text. No demuestra UI MathLive integral Plus ni aceptación de LaTeX original raw por HTTP.
+- El primer oráculo eliminaba todos los espacios y ocultaba a s i n h (1). El oráculo reforzado solo permite espacios entre tokens; el producto recompone asinh antes de HTTP. No confundir normalización textual en el test con conversión válida de producto.
+- H2/SG28 OPEN, DIST-01..08 multinodo BLOCKED. Sin cambio de aislamiento por defecto ni producción.
