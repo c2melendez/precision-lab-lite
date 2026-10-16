@@ -1,5 +1,12 @@
 # Current Certification State
 
+## 2026-10-16 — SY-R-12 acumulativos PASS, E2E nativo nuevo pendiente
+- Lite cumulative 38891942863 SUCCESS, scientific 38891942824 SUCCESS, build 38891942793 SUCCESS sobre SHA técnico 6da308fe. Plus cumulative 38891951302 SUCCESS y H1d 38891951340 SUCCESS sobre SHA técnico 94d8f73f. La corrección de replaceAll a replace saneó el typecheck.
+- SY-R-12 unitarias Lite `tests/syntax309SyR12.audit.test.ts` y Plus `frontend/src/__tests__/syntax309SyR12.audit.test.ts` pasan sus acumulativos (entrada normativa `\\text{no existe}` / operacion:error / rechazo). Se mantiene la distinción entre prueba de normalización y prueba E2E.
+- Nuevo `e2e/syntax309-syr12.spec.ts` Lite SHA 198331b76b9c99cc933d0f217f3307efd1e01cec: escribe la entrada oficial MathLive, pulsa Calcular, comprueba mensaje `Entrada no matemática: escribe una expresión válida.`, cambia a `2+3` y comprueba recuperación. Workflow `.github/workflows/syntax309-scientific-e2e.yml` extendido para inclusión automática, SHA final 3b5393a6698df2310e0d821c01b8db0dd8cbf384. Gates nuevas: científica 38894721463, cumulative 38894721459, build 38894721481, H1d 38894721436 observadas QUEUED; no declarar PASS E2E hasta validación real.
+- Próximo paso: revisar logs de 38894721463, corregir error/UI si falla. Considerar prueba de integración backend Plus para rechazo y recuperación; no afirmar SY-R-12 certificado globalmente por unitarias. H2/SG28 OPEN, DIST multinodo BLOCKED. No merge/release.
+
+
 ## 2026-10-16 — SY-R-11 gates cerrados y SY-R-12 en validación
 - SY-R-11 Lite commit técnico 7bf710e9e18dd0660b61c30333d5cc763dbda0fc: científica 38891044289 SUCCESS, cumulative 38891044419 SUCCESS, build 38891044450 SUCCESS, H1d 38891044317 SUCCESS. Plus SHA d285774 cumulative 38888846559 SUCCESS (backend HTTP + frontend). CIERRE AUTOMATIZADO ACOTADO SY-R-11; no significa certificación general H2/SG28 ni DIST.
 - SY-R-12 fixture oficial `\\text{no existe}` / operacion:error / texto no ingresable, error claro. Lite nueva prueba `tests/syntax309SyR12.audit.test.ts` SHA b0c1fa19; guard de parseExpression `src/engine/parsing/index.ts`, SHA 4cd2ff8. Plus guard `frontend/src/components/NaturalMathField.tsx` SHA 01f6989 y nueva prueba `frontend/src/__tests__/syntax309SyR12.audit.test.ts` SHA d9ecd7bf.
