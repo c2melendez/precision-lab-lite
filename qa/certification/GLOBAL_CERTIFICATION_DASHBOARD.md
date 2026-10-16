@@ -2,6 +2,16 @@
 Fecha de corte: 2026-10-16 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-16 — SY-S-19/20 PASS en alcance probado; SY-R-01..03 iniciado
+- SY-S-19 sin(30°) y SY-S-20 sen(30°): exacto 1/2, sin doble conversión angular, PASS en las rutas documentadas abajo. No cierra Syntax309 ni IN625.
+- Lite SHA 988e59eaf0c8f1c858284acf6527b041619efc80: cumulative 38870225883 SUCCESS (1509 passed, 30 TODO; ocho nuevos parser/Worker RAD/GRAD), H1d 38870225948 y build 38870225993 SUCCESS. Científica UI 38870226129 SUCCESS, job 116872315751: 339 passed; 12 nuevos E2E (dos casos × RAD/GRAD × desktop/tablet/mobile), MathLive original, atributo exacto de reentrada y fracción readonly 1/2.
+- Plus SHA 1427c3f08654fc674b2f19c57eb7ff6f964a4ec1: cumulative 38870442424 y H1d 38870442583 SUCCESS. Frontend job 116873007173: 936 passed, 28 TODO; ocho tests nuevos preservan °, ^{circ}, ^circ y degree (macros con backslash), incluyendo alias sen. Backend job 116873007381: 1373 passed, 1 XFAIL; testigos HTTP traducidos exactos en rad/deg, MathResponse sin Float y reentrada. UI MathLive integral Plus no acreditada por estas capas separadas.
+- Defecto producto confirmado y corregido: serialización de grados nativa convertida antes a exponente 30^@ por convertLatexToAsciiMath. Normalizar variantes conocidas al símbolo ° antes de ASCII; no hardcode de 30, no cambio de oráculo ni semántica backend.
+- Se alcanza el último fixture SY-S (20). Esto no equivale a cierre integral de alias/español ni de canales pendientes; conservar alcances/gaps históricos. TODO/XFAIL no cuentan como PASS.
+- Siguiente lote en ejecución: SY-R-01 sqrt(2)/2 esperado 0.7071067812; SY-R-02 2sqrt(3) esperado 3.464101615; SY-R-03 pi/6 esperado 0.5235987756. Nuevas pruebas verifican respuesta Worker Lite, decimal visible y reentrada exacta; Plus HTTP equivalente exacto/aproximación y reentrada. Aplicar tolerancia relativa oficial 1e-9 con escala max(1,|esperado|), nunca tolerancia basada en solo seis cifras de display. Los nuevos casos permanecen OPEN hasta gates propios.
+- Siguiente paso exacto: verificar tests/syntax309SyR01to03.audit.test.ts y backend/tests/test_syntax309_syr01_http.py..syr03_http.py en el nuevo SHA técnico; diagnosticar precisión/serialización si FAIL. Incorporar y ejecutar specs e2e/syntax309-syr01.spec.ts..syr03.spec.ts con reutilización real del LaTeX resultado y nuevo request_id. No certificar navegador por harness Worker.
+- H2/SG28 OPEN, DIST multinodo BLOCKED; pendientes UI Plus y hardware/canales no se ocultan. Sin producción/merge ni activación de aislamiento.
+
 ## 2026-10-16 — SY-S-12..18 PASS en alcance probado; siguiente SY-S-19/20
 - Estado vigente: sustituye estados IN_PROGRESS/FAIL históricos de estos casos solo en los SHA/canales acreditados abajo. No certifica globalmente Syntax309 ni IN625.
 - SY-S-12 raiz(16)=4: Plus ce98df83, cumulative 38862908867 y H1d 38862908877 SUCCESS; test HTTP exacto/reentrada PASS. Lite 1eb99cb4, cumulative 38862179442, build 38862179710, H1d 38862179470 y UI 38862179483 SUCCESS; caso nativo en desktop/tablet/mobile. Conserva alcance acotado, no alias general.
