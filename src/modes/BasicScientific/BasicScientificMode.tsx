@@ -323,6 +323,8 @@ export function BasicScientificMode() {
         dispatchWorker(worker, { type: "matrixOp", requestId, op: "transpose", a: matrixIntent.matrix });
       } else if (matrixIntent.kind === "determinant") {
         dispatchWorker(worker, { type: "matrixOp", requestId, op: "determinant", a: matrixIntent.matrix });
+      } else if (matrixIntent.kind === "dot") {
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "dot", a: matrixIntent.left, b: matrixIntent.right });
       } else if (matrixIntent.kind === "multiply") {
         dispatchWorker(worker, { type: "matrixOp", requestId, op: "multiply", a: matrixIntent.left, b: matrixIntent.right });
       } else {

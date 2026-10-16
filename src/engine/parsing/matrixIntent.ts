@@ -4,6 +4,7 @@ export type MatrixIntent =
   | { kind: "inverse"; matrix: string[][] }
   | { kind: "power"; matrix: string[][]; exponent: number }
   | { kind: "transpose"; matrix: string[][] }
+  | { kind: "dot"; left: string[][]; right: string[][] }
   | { kind: "multiply"; left: string[][]; right: string[][] };
 
 const ENV = String.raw`\\begin\{(p|b|v)matrix\}([\s\S]*?)\\end\{\1matrix\}`;
@@ -91,6 +92,20 @@ export function detectMatrixIntent(latex: string): MatrixIntent | null {
   const suffix = first.rest.trim();
   if (suffix === "^{-1}" || suffix === "^-1") return { kind: "inverse", matrix: first.matrix };
   if (suffix === "^{T}" || suffix === "^T") return { kind: "transpose", matrix: first.matrix };
+  const dot = /^\\cdot(?![A-Za-z])\s*/.exec(suffix);
+  if (dot) {
+    const second = parseSingleMatrix(suffix.slice(dot[0].length));
+    if (!second || second.rest.trim()) return null;
+    const length = (matrix:string[][]):number => {
+      if (matrix.length === 1) return matrix[0].length;
+      if (matrix.every(row => row.length === 1)) return matrix.length;
+      throw new Error("El producto escalar requiere vectores fila o columna.");
+    };
+    if (length(first.matrix) !== length(second.matrix)) {
+      throw new Error("El producto escalar requiere vectores de la misma longitud.");
+    }
+    return {kind: "dot", left:first.matrix, right:second.matrix};
+  }
   const power = /^\^\{?(-?\d+)\}?$/.exec(suffix);
   if (power) return { kind: "power", matrix: first.matrix, exponent: Number(power[1]) };
 
