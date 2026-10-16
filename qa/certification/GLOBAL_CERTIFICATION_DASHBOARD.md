@@ -2,6 +2,15 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-M-18 PASS en Lite navegador y Plus parser/HTTP; siguiente SY-M-19
+
+- Estado vigente: esta entrada prevalece sobre fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-18: `\begin{pmatrix}1&2\\3&4\end{pmatrix}^{T}` → `\begin{pmatrix}1&3\\2&4\end{pmatrix}`.
+- Corrección Lite: el Worker devuelve transpose como pmatrix con celdas y fracciones exactas, conservando signos y dimensiones, en lugar de filas aplanadas. Algoritmo de transposición sin cambios. Controles: matriz oficial 2x2 y rectangular 2x3 con -1/2 y 5/3; segunda transpuesta restaura el original en motor y HTTP.
+- Lite SHA `4043c7490c6b7ff23cf38119524e6a1192157d0c`: [acumulada 38844335506](https://github.com/c2melendez/precision-lab-lite/actions/runs/38844335506) SUCCESS: 1463 PASS +30 TODO, 142 archivos, 3/3 nuevos parser/motor/Worker; typecheck/build PASS. [Navegador 38844335523](https://github.com/c2melendez/precision-lab-lite/actions/runs/38844335523) SUCCESS: 228/228, incluidos 6/6 nuevos (oficial y rectangular × escritorio/tableta/móvil). Verifica celdas en MathLive readonly real y reanaliza data-result-reentry-latex. Entrada por asignación del LaTeX al MathLive real y evento input; no prueba cada tecla física ni una nueva pulsación de Reusar. H1d 38844335479 SUCCESS 21/21; build diagnóstico 38844335511 SUCCESS.
+- Plus SHA `7cb8dae31f3ef256d8d022f3f893611ef1353dff`: [acumulada 38844338697](https://github.com/c2melendez/precision-lab-plus/actions/runs/38844338697) SUCCESS: frontend 901 PASS +28 TODO, 103 archivos, 1/1 nuevo del detector real que distingue transpose de power; backend 1338 PASS +1 XFAIL, 2/2 nuevos HTTP con MathResponse real, entradas y dimensiones exactas, sin Float y doble transpuesta. H1d 38844338725 SUCCESS 38/38. Se prueban parser y HTTP por separado; queda pendiente flujo nativo integral Plus para este caso.
+- TODO/XFAIL no cuentan como PASS. Syntax309/IN625/H2/SG28 siguen OPEN; DIST-01..08 BLOCKED por coordinación multinodo independiente pendiente. Sin merge a main ni despliegue.
+- Siguiente objetivo: fixture oficial SY-M-19, variante de transpuesta con `^{\top}`, esperado [[1,3],[2,4]]. No se declara evaluado por compartir operación con M-18.
+
 ## 2026-10-15 — SY-M-17 PASS en Lite navegador y Plus parser/HTTP; siguiente SY-M-18
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-17, operación inversa, entrada `\begin{pmatrix}1&2\\3&4\end{pmatrix}^{-1}`, esperado `\begin{pmatrix}-2&1\\\frac{3}{2}&-\frac{1}{2}\end{pmatrix}`.
@@ -385,7 +394,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
 | SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
 | SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-23, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente SY-M-01. Otros gaps históricos siguen abiertos |
-| SY-M Matrices/vectores | 20 | Secuencia en M-17, PASS en Lite navegador y Plus parser/HTTP; siguiente M-18. Resto pendiente de esta secuencia |
+| SY-M Matrices/vectores | 20 | Secuencia en M-18, PASS en Lite navegador y Plus parser/HTTP; siguiente M-19. Resto pendiente de esta secuencia |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
 | SY-X Estrés/hostiles | 22 | Pendiente de esta secuencia; ejecutar aislado |
@@ -407,7 +416,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-M-18 (transpuesta matricial), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-M-19 (transpuesta con ^{\top}), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.

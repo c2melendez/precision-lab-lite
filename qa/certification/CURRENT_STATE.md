@@ -1,5 +1,15 @@
 # Current Certification State
 
+## 2026-10-15 — SY-M-18 PASS en Lite navegador y Plus parser/HTTP; siguiente SY-M-19
+
+- Estado vigente: esta entrada prevalece sobre fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-18: `\begin{pmatrix}1&2\\3&4\end{pmatrix}^{T}` → `\begin{pmatrix}1&3\\2&4\end{pmatrix}`.
+- Corrección Lite: el Worker devuelve transpose como pmatrix con celdas y fracciones exactas, conservando signos y dimensiones, en lugar de filas aplanadas. Algoritmo de transposición sin cambios. Controles: matriz oficial 2x2 y rectangular 2x3 con -1/2 y 5/3; segunda transpuesta restaura el original en motor y HTTP.
+- Lite SHA `4043c7490c6b7ff23cf38119524e6a1192157d0c`: [acumulada 38844335506](https://github.com/c2melendez/precision-lab-lite/actions/runs/38844335506) SUCCESS: 1463 PASS +30 TODO, 142 archivos, 3/3 nuevos parser/motor/Worker; typecheck/build PASS. [Navegador 38844335523](https://github.com/c2melendez/precision-lab-lite/actions/runs/38844335523) SUCCESS: 228/228, incluidos 6/6 nuevos (oficial y rectangular × escritorio/tableta/móvil). Verifica celdas en MathLive readonly real y reanaliza data-result-reentry-latex. Entrada por asignación del LaTeX al MathLive real y evento input; no prueba cada tecla física ni una nueva pulsación de Reusar. H1d 38844335479 SUCCESS 21/21; build diagnóstico 38844335511 SUCCESS.
+- Plus SHA `7cb8dae31f3ef256d8d022f3f893611ef1353dff`: [acumulada 38844338697](https://github.com/c2melendez/precision-lab-plus/actions/runs/38844338697) SUCCESS: frontend 901 PASS +28 TODO, 103 archivos, 1/1 nuevo del detector real que distingue transpose de power; backend 1338 PASS +1 XFAIL, 2/2 nuevos HTTP con MathResponse real, entradas y dimensiones exactas, sin Float y doble transpuesta. H1d 38844338725 SUCCESS 38/38. Se prueban parser y HTTP por separado; queda pendiente flujo nativo integral Plus para este caso.
+- TODO/XFAIL no cuentan como PASS. Syntax309/IN625/H2/SG28 siguen OPEN; DIST-01..08 BLOCKED por coordinación multinodo independiente pendiente. Sin merge a main ni despliegue.
+- Siguiente objetivo: fixture oficial SY-M-19, variante de transpuesta con `^{\top}`, esperado [[1,3],[2,4]]. No se declara evaluado por compartir operación con M-18.
+
+
 ## 2026-10-15 — SY-M-17 PASS en Lite navegador y Plus parser/HTTP; siguiente SY-M-18
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-17, operación inversa, entrada `\begin{pmatrix}1&2\\3&4\end{pmatrix}^{-1}`, esperado `\begin{pmatrix}-2&1\\\frac{3}{2}&-\frac{1}{2}\end{pmatrix}`.
