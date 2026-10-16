@@ -137,3 +137,10 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - Plus: conversor real de la fuente original y variantes -1/2 produce un identificador asinh íntegro; tests HTTP separados verifican testigos asinh(1), asinh(-1), asinh(2), texto exacto sin Float, aproximación finita y reentrada del result_text. No demuestra UI MathLive integral Plus ni aceptación de LaTeX original raw por HTTP.
 - El primer oráculo eliminaba todos los espacios y ocultaba a s i n h (1). El oráculo reforzado solo permite espacios entre tokens; el producto recompone asinh antes de HTTP. No confundir normalización textual en el test con conversión válida de producto.
 - H2/SG28 OPEN, DIST-01..08 multinodo BLOCKED. Sin cambio de aislamiento por defecto ni producción.
+
+
+## 2026-10-16 — SY-R-06: canales de logaritmo natural y reentrada
+- Lite: fixture original ln(2), salida simbólica LaTeX ln(2), aproximación finita y recálculo del resultado con nueva solicitud probados en MathLive + Worker desktop/tablet/mobile. Asignación de LaTeX/evento input; no acredita botón Reusar ni cada tecla física/virtual.
+- Plus: conversor real de fuente original y controles ln(3)/log(2), junto con HTTP separado de testigos equivalentes; oráculos verifican identificador íntegro, texto exacto sin Float, aproximación y valor conservado al reingresar result_text. No afirmar flujo UI MathLive integral Plus ni aceptación de LaTeX raw original por HTTP.
+- La distinción ln natural / log base diez se comprueba en cálculo y reentrada; no basta comparar texto quitando espacios ni suponer la base a partir del nombre emitido por un CAS.
+- SG28/H2 permanece OPEN y DIST multinodo BLOCKED; sin cambio de flags/producción. TODO/XFAIL no cuentan como PASS.
