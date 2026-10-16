@@ -1,5 +1,11 @@
 # Current Certification State
 
+## 2026-10-16 — SY-X-04: E2E explícito incorporado (no certificado)
+- Lite commit `3c5dcce2c97cb1de8ed145b6857c1a9ccf793f40`: nuevo `e2e/syntax309-syx04.spec.ts`. Genera 500 sumandos reales `x+x+...` (999 caracteres), verifica conservación de la fuente MathLive, solicita `500x` y comprueba recuperación posterior `2+3=5` sin alerta. No sustituye el fixture descriptivo por `500*x` ni modifica el motor.
+- Estado SY-X-04: TEST ADDED / PENDING CI; no se ha confirmado resultado ni incorporación del archivo al comando de scientific-ui. Verificar configuración de workflows (la corrida previa enumeraba tests explícitos hasta SY-X-03), incorporar SY-X-04 al gate, ejecutar en desktop/tablet/mobile, revisar límites de longitud backend Plus y contratos, añadir tests de ambas variantes y obtener evidencias antes de declarar PASS. Si MathLive serializa distinto, diagnosticar y corregir la capa real, sin relajar el oráculo.
+- SY-R-12: se conserva OPEN. El conector de GitHub disponible no lista corridas `push` por SHA; `fetch_commit_workflow_runs` cubre PR y puede devolver vacío indebidamente. No se ha comprobado la corrida nueva del SHA de reparación `2915a76`, ni se ha disparado manualmente un gate duplicado. Siguiente prioridad: recuperar runs/jobs del commit, evaluar fallos, y resolver cobertura de ejecución SY-X-04.
+
+
 ## 2026-10-16 — SY-R-12: reparación sintáctica del E2E, pendiente de evidencia del nuevo SHA
 - Evidencia anterior: Lite scientific-ui run 38969978401, job 117205682399, FAILURE por SyntaxError `Missing semicolon (35:2)` en `e2e/syntax309-syr12.spec.ts`; el parser encontró `}) const diagnostic` y el gate no llegó a evaluar SY-R-12. Categoría HARNESS/TEST; no hay diagnóstico del motor de ese run.
 - Lite commit técnico `2915a76ca5879eb1a9eecf0e9420e40d18ed0beb`: elimina el fragmento duplicado posterior al cierre de test y conserva un volcado DOM explícito si no aparece el alert. No se cambió motor/producto, fixture ni oráculo.
