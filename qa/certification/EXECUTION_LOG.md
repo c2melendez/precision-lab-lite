@@ -1,5 +1,12 @@
 # Certification Execution Log
 
+## 2026-10-16 — SY-R-11 gate Lite aprobado, Plus HTTP publicado
+- Lite `6188a5edaff1be0d9ef404b4d8c5bc6090f9c4fd`: cumulative [38888617070](https://github.com/c2melendez/precision-lab-lite/actions/runs/38888617070) SUCCESS, job 116932389139: 1551 PASS /30 TODO, 172 archivos, typecheck/build PASS. Build 38888617120 y H1d 38888617024 SUCCESS; científica 38888616984 todavía IN_PROGRESS al último chequeo. Este gate no incluye E2E específico de SY-R-11.
+- Plus amplía cobertura a backend HTTP REAL mediante `backend/tests/test_syntax309_syr11_http.py` SHA `d28577440b28ef59609f55fbb4de6bc590876e5f`: /matrix/inverse, /matrix/operations multiply A·B y B·A, reentrada desde result_data y mutantes; matrices SymPy exactas. CI acumulativa [38888846559](https://github.com/c2melendez/precision-lab-plus/actions/runs/38888846559) y H1d 38888846746 QUEUED al observarlas, no PASS aún. Corridas anteriores Plus 38888653441/38888653563 del SHA frontend 4170a62 seguían IN_PROGRESS.
+- Próximo paso: comprobar SHA d285774 y logs Plus (arreglar si FAIL), resultado E2E Lite 38888616984; después añadir E2E Lite específico SY-R-11 con MathLive + Worker nativos y reentrada de la matriz, ejecutar gates y certificar solo cobertura efectivamente demostrada. Seguidamente SY-R-12. H2/SG28 OPEN y DIST multinodo BLOCKED.
+
+
+
 ## 2026-10-16 — SY-R-10 CI verificada; SY-R-11 pruebas publicadas, gates pendientes
 - Rama canónica verificada en README de main de Lite y Plus: `qa/syntax-audit-in625-a1`. HEAD técnico SY-R-10: Lite cfc43b7c68c0b2d3eb4418edb38f45690c2d4b90, Plus 597cab323efe3d94d7b4861bc9d5eb340915dd46. El CURRENT_STATE anterior (SY-R-09) estaba desactualizado.
 - SY-R-10: Lite cumulative 38887554533 SUCCESS, científica 38887554561 SUCCESS con 369/369 browser tests, incluidas tres SY-R-10 desktop/tablet/mobile (reentrada racional y exclusión x=1). Plus cumulative 38887559357 SUCCESS, backend 1412 PASS /1 XFAIL; frontend y build SUCCESS. Evidencia en los SHA correspondientes, no declaración global.
