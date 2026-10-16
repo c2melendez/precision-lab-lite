@@ -16,7 +16,7 @@ function reply(latex: string, requestId: string) {
 }
 function assertOfficial(value: number, expected: string) {
  expect(Number.isFinite(value)).toBe(true);
- expect(Math.abs(value - Number(expected))).toBeLessThanOrEqual(1e-9 * Math.max(1, Math.abs(Number(expected))));
+ expect(Math.abs(value - Number(expected))).toBeLessThanOrEqual(1e-9 * Math.abs(Number(expected)));
 }
 describe("Syntax309 SY-R-01..03 numeric display and exact reentry", () => {
  it.each(["SY-R-01", "SY-R-02", "SY-R-03"])("%s preserves numeric value through real Worker response and reentry", id => {

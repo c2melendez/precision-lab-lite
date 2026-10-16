@@ -283,6 +283,20 @@ export function toDecimalApprox(algebriteResult: string): string | null {
   const exactConstant = algebriteResult.trim();
   if (exactConstant === "pi") return String(Math.PI);
   if (exactConstant === "e" || exactConstant === "exp(1)") return String(Math.E);
+  // SY-R-01..03: prefer the full finite double for a closed real expression,
+  // instead of Algebrite's six-digit float printer. The exact CAS expression
+  // remains authoritative for LaTeX/reentry. Native CAS log() is natural;
+  // the numeric parser uses ln() for that meaning (plain log is base ten).
+  try {
+    const numericSource = algebriteResult.replace(/\blog\s*\(/g, "ln(");
+    // Empty variable name cannot match an input identifier: no free variable
+    // may be silently substituted just to produce an approximation.
+    const numeric = compileNumeric(numericSource, "")(0);
+    if (Number.isFinite(numeric)) return String(numeric);
+  } catch {
+    // Complex/symbolic/unsupported expressions retain the existing CAS path.
+  }
+
   try {
     const floated: string = Algebrite.run(`float(${algebriteResult})`);
     if (typeof floated !== "string" || floated.length === 0 || /stop|Stop/.test(floated)) {
