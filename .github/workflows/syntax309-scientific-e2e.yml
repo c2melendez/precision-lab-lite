@@ -108,6 +108,8 @@ jobs:
         run: npm ci
       - name: Install Playwright runner
         run: npm install --no-save --package-lock=false @playwright/test
+      - name: Validate scientific E2E specs before browser installation
+        run: npx playwright test --list e2e/syntax309-*.spec.ts
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Native desktop/tablet/mobile scientific result verification
