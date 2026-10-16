@@ -1,6 +1,8 @@
 import {test,expect} from "@playwright/test";
 
 test("SY-X-04 expands five hundred x terms and recovers",async({page})=>{
+ const errors:string[]=[];
+ page.on("pageerror",error=>errors.push(error.message));
  await page.addInitScript(()=>localStorage.setItem("precision-lab-layout-mode","split"));
  await page.goto("./");
  const input=page.locator("math-field[aria-label='Entrada matemática']").first();
@@ -18,13 +20,17 @@ test("SY-X-04 expands five hundred x terms and recovers",async({page})=>{
  await calculate.click();
  const result=page.locator("[data-result-request-id]").first();
  await expect(result).toBeVisible();
- await expect(result.locator(".a11y-scale-result-3xl").first()).toHaveText(/500\s*x/);
+ await expect(result.locator(".a11y-scale-result-3xl").first()).toHaveText(/^500\s*\*?\s*x$/);
+ const firstRequestId=await result.getAttribute("data-result-request-id");
+ expect(firstRequestId).toBeTruthy();
  await expect(page.locator("[role=alert]")).toHaveCount(0);
  await input.evaluate(element=>{
   (element as HTMLElement & {value:string}).value="2+3";
   element.dispatchEvent(new Event("input",{bubbles:true}));
  });
  await calculate.click();
+ await expect(result).not.toHaveAttribute("data-result-request-id",firstRequestId!);
  await expect(result.locator(".a11y-scale-result-3xl").first()).toHaveText("5");
  await expect(page.locator("[role=alert]")).toHaveCount(0);
+ expect(errors).toEqual([]);
 });
