@@ -1,5 +1,13 @@
 # Current Certification State
 
+## 2026-10-16 — SY-R-11 E2E FAIL real; diagnóstico y nueva corrida
+- Lite SHA ff66e8a921975e24e297d8058d1fddf4388317d2: cumulative 38889566773 SUCCESS (1551 PASS/30 TODO); scientific 38889566688 FAILURE (369 PASS, 3 FAIL en SY-R-11 desktop/tablet/mobile). Logs job 116935496180: el oráculo esperaba detectMatrixIntent(displayed).kind = literal, recibió undefined; fallo común a todos los dispositivos, sin conclusión todavía sobre si es serialización, disponibilidad temporal o producto. No contar como PASS ni deshabilitar prueba.
+- Nuevo commit de diagnóstico/corrección de sincronización Lite c6c28b6b795d892504071c728e765273e488e39e modifica e2e/syntax309-syr11.spec.ts: expect.poll lee el resultado MathLive y expone el LaTeX no interpretable y celdas esperadas en caso de fallo. La comparación racional de producto real sigue obligatoria.
+- CI push SHA c6c28b6b: científica 38890398578, cumulative 38890398417, build 38890398406, H1d 38890398388 en progreso/cola, no PASS aún. Plus SHA d285774 cumulative 38888846559 SUCCESS con frontend/backend.
+- Siguiente acción exacta: revisar corrida 38890398578, inspeccionar `unparsedLatex` si falla, corregir parser UI/producto o harness según evidencia sin rebajar oráculo, ejecutar nueva científica y acumulativo. Tras SY-R-11, iniciar SY-R-12 texto no ingresable. H2/SG28 OPEN y DIST multinodo BLOCKED.
+
+
+
 ## 2026-10-16 — SY-R-11 verificación HTTP y nuevo E2E nativo Lite
 - Confirmación GitHub: Lite scientific 38888616984 SUCCESS sobre 6188a5ed (suite previa sin caso browser SY-R-11); Plus cumulative 38888846559 SUCCESS sobre d285774, con jobs frontend/backend PASS, incluidas pruebas HTTP reales de inversa y A·B/B·A. No confundir con cierre de toda Syntax309.
 - Nuevo E2E Lite `e2e/syntax309-syr11.spec.ts` commit 199979ca875903875f629b756e247064f474536f: MathLive, Worker, matriz renderizada, producto exacto con B, recuperación del LaTeX y segundo request_id. Workflow científico actualizado para ejecutar el caso en push, SHA técnico final `ff66e8a921975e24e297d8058d1fddf4388317d2`. Corridas para ese SHA: cumulative 38889566773, build 38889566627, científica 38889566688, H1d 38889566654, observadas IN_PROGRESS; no atribuir PASS previo a nuevo E2E.
