@@ -2,6 +2,15 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-M-14 PASS en Lite navegador y Plus parser/formulario simulado/HTTP; siguiente SY-M-15
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-14, operación vectores, entrada `\vec{u}\cdot\vec{v}\ \text{con}\ \vec{u}=(1,2,3),\ \vec{v}=(4,5,6)`, esperado 32.
+- Corrección bilateral: detectar producto escalar de vectores con dos declaraciones locales, resolver los nombres contra esas declaraciones, extraer componentes numéricas y usar dot existente. Evitar que splitFreeSystemLatex clasifique esta fuente como sistema de ecuaciones. No crear asignaciones persistentes ni evaluar código. Alcance: nombres de una letra, sintaxis explícita vec/text con, dos declaraciones distintas, hasta 512 caracteres y de una a seis componentes numéricas por vector.
+- Lite SHA `7f290fa6eac96c7c84b3cddeece158bd09b3dcc6`: [acumulada 38840043554](https://github.com/c2melendez/precision-lab-lite/actions/runs/38840043554) SUCCESS: 1451 PASS +30 TODO, 138 archivos, 3/3 nuevos del parser/manejador Worker; typecheck/build PASS. [Navegador 38840043602](https://github.com/c2melendez/precision-lab-lite/actions/runs/38840043602) SUCCESS, 204/204, incluidos 9/9 SY-M-14 en escritorio/tableta/móvil: fuente original 32, nombres/declaraciones reordenados 32, datos cambiados 2. MathLive/Worker reales, resultado visible y LaTeX de resultado comprobados. H1d 38840043590 SUCCESS 21/21; build diagnóstico 38840043693 SUCCESS.
+- Plus SHA `bf91f0f883ec53c919541171a1e1452e70c5e905`: [acumulada 38840047767](https://github.com/c2melendez/precision-lab-plus/actions/runs/38840047767) SUCCESS: frontend 892 PASS +28 TODO, 97 archivos, 3/3 nuevos del parser y 1/1 formulario con editor/transporte simulados; confirma envío correcto a /matrix/operations con operation dot. Backend 1332 PASS +1 XFAIL, 3/3 nuevos HTTP para payload original, datos modificados e intercambio. [H1d 38840047766](https://github.com/c2melendez/precision-lab-plus/actions/runs/38840047766) SUCCESS 38/38.
+- Controles del parser: declaraciones duplicadas, nombres sin definición, longitudes incompatibles, datos actuales y ausencia de persistencia; sistemas libres ordinarios mantienen su ruta. La evidencia Plus separa parser/formulario simulado y HTTP real; continúa pendiente el nuevo flujo nativo completo. TODO/XFAIL no cuentan como PASS; no se declara certificado todo el módulo matricial/vectorial.
+- Continuidad oficial: SY-M-15, operación convencion, entrada `\vec{u}\times\vec{v}`, esperado producto cruz (vectores 3D), no producto escalar; nota: times entre vectores es producto cruz. Syntax309/IN625/H2/SG28 siguen ABIERTOS; gaps históricos y UI Plus pendientes. DIST-01..08 siguen BLOQUEADOS hasta coordinación real entre nodos independientes.
+
 ## 2026-10-15 — SY-M-13 PASS en Lite navegador y Plus parser/formulario simulado; siguiente SY-M-14
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-13, operación vectores, entrada `\mathbf{i}+2\mathbf{j}-\mathbf{k}`, esperado (1,2,-1); nota: notación de base canónica.
@@ -348,7 +357,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
 | SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
 | SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-23, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente SY-M-01. Otros gaps históricos siguen abiertos |
-| SY-M Matrices/vectores | 20 | Secuencia en M-13, PASS en Lite navegador y Plus parser/formulario simulado; siguiente M-14. Resto pendiente de esta secuencia |
+| SY-M Matrices/vectores | 20 | Secuencia en M-14, PASS en Lite navegador y Plus parser/formulario simulado/HTTP; siguiente M-15. Resto pendiente de esta secuencia |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
 | SY-X Estrés/hostiles | 22 | Pendiente de esta secuencia; ejecutar aislado |
@@ -370,7 +379,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-M-14 (vectores nombrados con componentes declaradas, esperado 32), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-M-15 (declarar producto cruz entre vectores 3D), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
