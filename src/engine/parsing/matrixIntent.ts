@@ -38,6 +38,15 @@ function splitMatrixBody(body: string): string[][] {
 }
 
 function parseSingleMatrix(text: string): { env: string; matrix: string[][]; rest: string } | null {
+  // SY-M-11: angle vectors with paired optional sized delimiters.
+  const angle = /^(?:\\langle([\s\S]*?)\\rangle|\\left\\langle([\s\S]*?)\\right\\rangle)/.exec(text.trim());
+  if (angle) {
+    const cells = (angle[1] ?? angle[2]).split(",").map(cell => cell.trim());
+    if (!cells.length || !cells.every(cell => /^[+-]?\d+(?:\.\d+)?(?:\/[+-]?\d+)?$/.test(cell))) {
+      throw new Error("El vector entre ángulos requiere componentes numéricas completas.");
+    }
+    return {env:"angle",matrix:[cells],rest:text.trim().slice(angle[0].length)};
+  }
   // SY-M-06: numeric nested lists, including MathLive's sized brackets.
   // This is a data grammar, never JavaScript/JSON code execution.
   const ascii = text.trim().replace(/\\left(?=\[)|\\right(?=\])/g, "");
