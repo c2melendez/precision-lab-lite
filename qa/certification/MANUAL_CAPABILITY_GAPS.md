@@ -186,3 +186,8 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - Lite SHA 238442fdd742f3c194ced2d689c35a8efb0dac2c, científica 38954833821 SUCCESS (384/384): campo realmente vacío, Calcular deshabilitado, conservación del resultado al borrar y recuperación 5 en Chromium desktop/tablet/mobile, sin pageerrors. MathLive/Worker reales con asignación de valor y evento input; no prueba cada tecla/SO ni envío por Enter vacío.
 - Plus SHA b139dd22ff0fc969e3bceed68fee88d10d88e5b3, cumulative 38954842181 SUCCESS: conversor y API TestClient real, dos rechazos 422 VALIDATION_ERROR alternados con recuperación 5; UI nativa Plus X01 pendiente. No se deduce UI del HTTP.
 - Espacios puros o LaTeX escapados se evalúan en SY-X-02; no se acreditan por probar el string vacío. H2/SG28 OPEN; DIST-01..08 multinodo BLOCKED. TODO/XFAIL no son PASS.
+
+## 2026-10-16 — SY-X-02 alcance acotado
+- Lite SHA 9891620f5143b3752289ab2a75462f894c757950, científica 38962952706 SUCCESS (387/387): MathLive conserva los cuatro espacios escapados, Calcular está habilitado y muestra aviso explícito de vacío; dos recuperaciones 5 en desktop/tablet/mobile, sin pageerrors. MathLive/Worker reales mediante asignación de LaTeX/evento input, no cada tecla/SO ni envío por Enter.
+- Plus SHA 9f7459676d9d46c77df232842cd5360b6cfd4c12, cumulative 38963054983 SUCCESS: conversor produce "" y API valida fuente original con HTTP 200 PARSE_ERROR de vacío, testigo "" con HTTP 422 VALIDATION_ERROR; recuperaciones 5 en TestClient real. UI nativa Plus X02 pendiente; no inferida del HTTP.
+- La normalización no acredita cualquier comando como vacío ni resuelve SY-X-03. TODO/XFAIL no son PASS; H2/SG28 OPEN, DIST-01..08 multinodo BLOCKED.
