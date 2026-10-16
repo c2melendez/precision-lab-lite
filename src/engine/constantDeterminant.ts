@@ -12,7 +12,7 @@ export function constantDeterminant(cells:(string|number)[][],requestId:string):
   const source=String(cell);
   if(source.length>128) return fail("Celda demasiado larga.");
   const p=parseExpression(source);
-  if(p.isEquation||p.isInequality||p.freeVariables.length ||
+  if(p.isEquation||p.isInequality||p.freeVariables.some(variable=>variable!=="pi" && variable!=="e") ||
      !/^(?:sqrt|pi|e|[0-9+\-*/^().\s])+$/.test(p.algebrite)){
    return fail("Este determinante requiere celdas numéricas reales con fracciones, raíces, pi o e.");
   }
