@@ -1,5 +1,12 @@
 # Current Certification State
 
+## 2026-10-16 — SY-R-12: reparación sintáctica del E2E, pendiente de evidencia del nuevo SHA
+- Evidencia anterior: Lite scientific-ui run 38969978401, job 117205682399, FAILURE por SyntaxError `Missing semicolon (35:2)` en `e2e/syntax309-syr12.spec.ts`; el parser encontró `}) const diagnostic` y el gate no llegó a evaluar SY-R-12. Categoría HARNESS/TEST; no hay diagnóstico del motor de ese run.
+- Lite commit técnico `2915a76ca5879eb1a9eecf0e9420e40d18ed0beb`: elimina el fragmento duplicado posterior al cierre de test y conserva un volcado DOM explícito si no aparece el alert. No se cambió motor/producto, fixture ni oráculo.
+- El gate acumulativo anterior 38969978348 concluyó SUCCESS, pero corresponde al SHA anterior, NO acredita el commit 2915a76 ni la UI SY-R-12.
+- Estado: SY-R-12 OPEN/PENDING CI. Siguiente paso exacto: localizar corrida scientific-ui en rama `qa/syntax-audit-in625-a1` para SHA `2915a76ca5879eb1a9eecf0e9420e40d18ed0beb`; leer job/logs, verificar compilación del spec y su resultado desktop/tablet/mobile. Si falla, usar `SY-R-12 native diagnostics` y `SY-R-12 OBSERVED` para separar ingesta MathLive, clasificación y UI; corregir solo la capa confirmada; ejecutar gates requeridos y documentar SHA/run. No relanzar el gate del SHA viejo. Plus UI nativa sigue pendiente. SG28/H2 OPEN y DIST multinodo BLOCKED. No declarar PASS sin la corrida.
+
+
 ## 2026-10-16 — SY-R-12 E2E aún FAIL; volcado de estado DOM real
 - Lite científica 38915737138 FAILURE, 372 PASS / 3 FAIL (desktop/tablet/mobile) SY-R-12. El E2E seguía sin encontrar `[role=alert]`; al obtener `null` el `expect.toContain` fallaba sin el diagnóstico JSON necesario. No hay evidencia para cerrar SY-R-12.
 - Commit de diagnóstico Lite `eeaec5cc2004a4b53e69a1b4d8648ba50f4fb73d`: `e2e/syntax309-syr12.spec.ts` toma una instantánea síncrona de DOM con valor MathLive, alertas, tarjetas de resultado y extracto de texto visible, y arroja un error que incluye JSON cuando no aparece la alerta matemática esperada. Se conserva prueba de recuperación con 2+3. No se modificó el motor para esconder el fallo.
