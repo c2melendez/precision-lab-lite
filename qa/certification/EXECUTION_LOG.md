@@ -1,5 +1,12 @@
 # Certification Execution Log
 
+## 2026-10-15 — SY-S-08 FAIL confirmado en Lite Worker; no cerrar
+
+- Plus: IN625 acumulativa [38853649672](https://github.com/c2melendez/precision-lab-plus/actions/runs/38853649672) SUCCESS para SHA `fedf1dc6`, prueba HTTP y conversor. No equivale a E2E integral.
+- Lite: primera acumulada [38853652319](https://github.com/c2melendez/precision-lab-lite/actions/runs/38853652319) FAIL por Number(evaluate(...)) no finito. Se migró el oráculo al Worker real sin rebajar tolerancia; SHA `f4cce56f`. Segunda acumulada [38853850039](https://github.com/c2melendez/precision-lab-lite/actions/runs/38853850039) también FAIL, y su log confirma respuesta `{"success":true,"resultLatex":"NaN...","confidence":"SYMBOLIC","requestId":"sys08"}` para el fixture `\\operatorname{senh}1`, donde el contrato espera `1.175201194`. Esto evidencia defecto producto/parser-Worker o error de señalización de éxito, no fallo meramente cosmético del test.
+- Criterio: SY-S-08 permanece FAIL Lite / no certificado bilateralmente. No silenciar NaN ni marcarlo TODO/XFAIL. Siguiente paso exacto: diagnosticar `parseExpression` para alias `senh` sin paréntesis, cadena `compute.worker` y `algebriteClient`; corregir la causa y asegurar rechazo de NaN como éxito; reejecutar acumulativa Lite y E2E nativo. H2/SG28/IN625 OPEN; DIST BLOCKED; sin merge ni despliegue.
+
+
 ## 2026-10-15 — SY-S-07 browser PASS; SY-S-08 Worker oracle correction pending CI
 
 - SY-S-07 oficial `\\operatorname{arcctg}1` → `\\frac{\\pi}{4}`: Plus acumulativo 38853224631 SUCCESS, H1d 38853224635 SUCCESS en `5c07bdb4`. Lite acumulativo 38853276094 SUCCESS y E2E desktop/tablet/mobile [38853276191](https://github.com/c2melendez/precision-lab-lite/actions/runs/38853276191) SUCCESS en `4d70930e`. Mantener alcance declarado: no E2E integral Plus.
