@@ -612,6 +612,10 @@ function validateInputStructureG3(input: string): void {
   // Validar la estructura equivalente después de retirar únicamente
   // modificadores visuales de delimitación. La normalización completa
   // sigue ocurriendo después de G3; aquí no se tocan expresiones matemáticas.
+  // SY-X-03: a bare separator must not disappear in pasted-LaTeX cleanup.
+  if (/^[\\\s]+$/.test(input)) {
+    throw parseError("Sintaxis incompleta: las barras invertidas necesitan un comando o una expresión.");
+  }
   const raw = normalizePastedLatex(input)
     .replace(/^=(?=\d+\s*\^)/, "") // Excel: caso certificado =2^10; no admitir =3
     .replace(/\\rightarrow(?![A-Za-z])/g, "\\to") // evitar falso \\right
