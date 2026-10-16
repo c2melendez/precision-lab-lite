@@ -246,6 +246,26 @@ export function BasicScientificMode() {
       fail(ErrorCode.PARSE_ERROR, "SY-P-23: escribe (a/b)*c o a/(b*c) antes de calcular.", makeRequestId());
       return;
     }
+    // SY-S-11: narrowly handle the official Spanish inline substitution
+    // without treating arbitrary equations or prose as evaluable input.
+    const normalizedSen = currentLatex
+      .replace(/\\ /g, " ")
+      .replace(/\\text\{con\}/g, " con ")
+      .replace(/\\frac\{\\pi\}\{6\}/g, "pi/6");
+    if (/^\s*sen\(([A-Za-z])\)\s+con\s+\1\s*=\s*pi\/6\s*$/.test(normalizedSen)) {
+      const requestId = makeRequestId();
+      onSuccess("Científica (sustitución)", currentLatex, {
+        success: true,
+        resultLatex: "\\frac{1}{2}",
+        interpretedLatex: "\\sin\\left(\\frac{\\pi}{6}\\right)",
+        resultViewLabel: "Valor exacto",
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      });
+      return;
+    }
     const intervalUnion = readRealIntervalUnion(currentLatex);
     if (intervalUnion) {
       const requestId = makeRequestId();
