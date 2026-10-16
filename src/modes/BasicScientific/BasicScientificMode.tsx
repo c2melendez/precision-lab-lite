@@ -267,23 +267,6 @@ export function BasicScientificMode() {
       });
       return;
     }
-    // SY-R-04: a validated ephemeral binding is evaluation, not an equation.
-    // Run the real mathematical Worker; never synthesize the expected answer.
-    try {
-      if (readInlineSubstitution(currentLatex)) {
-        const requestId = makeRequestId();
-        const parsed = parseExpression(currentLatex, angleMode);
-        const worker = getWorker();
-        worker.onmessage = (e: MessageEvent<MathResult>) =>
-          onSuccess("Científica (sustitución)", currentLatex, e.data);
-        dispatchWorker(worker, { type: "evaluate", requestId, expressionAlgebrite: parsed.algebrite });
-        return;
-      }
-    } catch (err) {
-      const appErr = err as { code?: ErrorCode; message?: string };
-      fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Sustitución inválida.", makeRequestId());
-      return;
-    }
     // SY-S-12: explicit Spanish alias from the official syntax matrix.
     const normalizedRaiz = currentLatex
       .replace(/\\(?:mathrm|operatorname)\{raiz\}/g, "raiz")
@@ -400,6 +383,26 @@ export function BasicScientificMode() {
         // una representación matricial canónica sin inventar semántica.
         dispatchWorker(worker, { type: "matrixOp", requestId, op: "power", a: matrixIntent.matrix, exponent: 1 });
       }
+      return;
+    }
+
+    // Matrix/vector declarations have their own typed binding grammar and
+    // must be routed before the scalar-only inline substitution grammar.
+    // SY-R-04: a validated ephemeral binding is evaluation, not an equation.
+    // Run the real mathematical Worker; never synthesize the expected answer.
+    try {
+      if (readInlineSubstitution(currentLatex)) {
+        const requestId = makeRequestId();
+        const parsed = parseExpression(currentLatex, angleMode);
+        const worker = getWorker();
+        worker.onmessage = (e: MessageEvent<MathResult>) =>
+          onSuccess("Científica (sustitución)", currentLatex, e.data);
+        dispatchWorker(worker, { type: "evaluate", requestId, expressionAlgebrite: parsed.algebrite });
+        return;
+      }
+    } catch (err) {
+      const appErr = err as { code?: ErrorCode; message?: string };
+      fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Sustitución inválida.", makeRequestId());
       return;
     }
 
