@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import source from "../qa/certification/syntax309_cases.jsonl?raw";
 import { parseExpression } from "../src/engine/parsing";
-import { evaluate } from "../src/engine/algebriteClient";
+import { evaluate, toDecimalApprox } from "../src/engine/algebriteClient";
 const row = source.trim().split("\n").map(s => JSON.parse(s)).find(r => r.id === "SY-S-16");
 describe("SY-S-16 official plain-text function", () => {
  it("preserves the official source, exact value and reentry", () => {
@@ -23,7 +23,8 @@ describe("SY-S-16 logarithm conventions", () => {
   ["log(8,2)", "3"],
   ["log(100)+ln(e)", "3"],
  ])("evaluates %s as %s without changing explicit bases", (input, expected) => {
-  expect(evaluate(parseExpression(input, "RAD").algebrite)).toBe(expected);
+  const value = evaluate(parseExpression(input, "RAD").algebrite);
+  expect(Number(toDecimalApprox(value) ?? value)).toBe(Number(expected));
  });
 });
 

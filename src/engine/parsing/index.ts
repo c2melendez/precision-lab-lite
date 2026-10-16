@@ -134,7 +134,13 @@ function rewriteLogBase(algebrite: string): string {
  * Algebrite usa log(...) como log natural, así que el log común se
  * expresa por cambio de base sin alterar ln(...) ni log(...) plano. */
 function rewriteCommonLog(algebrite: string): string {
-  return rewriteUnaryFunction(algebrite, "log10", (a) => `(log(${a})/log(10))`);
+  return rewriteUnaryFunction(algebrite, "log10", (a) => {
+    // Integer powers of ten have an exact integer logarithm, independent
+    // of CAS log simplification and floating-point rounding.
+    const literal = a.trim();
+    if (/^10*$/.test(literal)) return String(literal.length - 1);
+    return `(log(${a})/log(10))`;
+  });
 }
 
 // Fix (cierre de la suite de paridad de teclado v1.0): ni sec/csc/cot,
