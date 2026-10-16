@@ -2,6 +2,16 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-M-09 PASS en Lite navegador y Plus conversor/HTTP; siguiente SY-M-10
+
+- Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-09, operación det, entrada `\det\begin{pmatrix}\frac12&\sqrt2\\\pi&e\end{pmatrix}`, esperado e/2-sqrt(2)*pi, aproximadamente -3.0837. Valor numérico comprobado: -3.083742023928844.
+- Cambio Lite: nueva ruta constantDeterminant para determinantes 2×2 con constantes reales, fracciones y raíces, anterior a la conversión Fraction.js. Cada celda pasa por el parser, sin variables libres salvo identificadores de las constantes pi/e; gramática acotada y validación de valor real finito. Evalúa ad-bc con Algebrite, conserva LaTeX exacto y aproximación separada. Matrices racionales siguen por Fraction.js. No se declara soporte general de todas las operaciones/dimensiones con celdas simbólicas.
+- Lite SHA final `521ec5b863ad6b915dc015397ae4458b4418fce7`: [acumulada 38833003207](https://github.com/c2melendez/precision-lab-lite/actions/runs/38833003207) SUCCESS, 1435 PASS +30 TODO, 133 archivos, 3/3 nuevos del motor/manejador Worker; typecheck/build PASS. Comprueba equivalencia exacta por simplificación a cero, aproximación a 12 decimales, intercambio de filas, dependencia, ruta racional intacta y rechazo de variables/valores no reales. [Navegador 38833003190](https://github.com/c2melendez/precision-lab-lite/actions/runs/38833003190) SUCCESS, 162/162, incluidos 6/6 SY-M-09 en escritorio/tableta/móvil: entrada original y filas intercambiadas, resultado numérico visible y conservación de pi/e en el LaTeX exacto. H1d 38833003201 SUCCESS 21/21; build diagnóstico 38833003186 SUCCESS.
+- Primera corrida Lite 38832881258 falló 2 pruebas nuevas (1433 PASS +30 TODO): pi/e se incluían en identificadores del parser y la validación de la nueva ruta los confundía con variables libres. Se corrigió exclusivamente la excepción para las dos constantes permitidas; ese intento no es PASS.
+- Plus SHA `3926d60305adca4d64a3991444564be0d25892ca`: [acumulada 38832885265](https://github.com/c2melendez/precision-lab-plus/actions/runs/38832885265) SUCCESS: frontend 873 PASS +28 TODO, 89 archivos, 1/1 nuevo sobre detectMatrixIntent y conversor real de las cuatro celdas; backend 1321 PASS +1 XFAIL, 3/3 nuevos HTTP con equivalencia exacta SymPy, aproximación a 12 decimales, signo y determinante cero. No fue necesario modificar producto Plus. [H1d 38832885565](https://github.com/c2melendez/precision-lab-plus/actions/runs/38832885565) SUCCESS 38/38. El conversor y el HTTP real se verifican por separado; sigue pendiente la integración nativa completa de UI Plus.
+- TODO/XFAIL no cuentan como PASS. La evidencia de un determinante 2×2 no certifica el módulo matricial completo.
+- Continuidad oficial: SY-M-10, operación vectores, entrada `\begin{pmatrix}1\\2\\3\end{pmatrix}\cdot\begin{pmatrix}4\\5\\6\end{pmatrix}`, esperado 32. Syntax309/IN625/H2/SG28 siguen ABIERTOS; gaps históricos y UI Plus pendientes. DIST-01..08 siguen BLOQUEADOS hasta coordinación real entre nodos independientes.
+
 ## 2026-10-15 — SY-M-08 PASS en Lite navegador y Plus parser/formulario simulado/HTTP; siguiente SY-M-09
 
 - Estado vigente: esta entrada prevalece sobre las fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-08, operación error, entrada `\begin{pmatrix}\end{pmatrix}`, esperado error claro: matriz vacía.
@@ -300,7 +310,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-U Operadores/Unicode | 25 | Recorrido hasta U-25 según CURRENT_STATE; revisar alcance por caso |
 | SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
 | SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-23, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente SY-M-01. Otros gaps históricos siguen abiertos |
-| SY-M Matrices/vectores | 20 | Secuencia en M-08, PASS en Lite navegador y Plus parser/formulario simulado/HTTP; siguiente M-09. Resto pendiente de esta secuencia |
+| SY-M Matrices/vectores | 20 | Secuencia en M-09, PASS en Lite navegador y Plus conversor/HTTP; siguiente M-10. Resto pendiente de esta secuencia |
 | SY-S Alias en español | 20 | Pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
 | SY-X Estrés/hostiles | 22 | Pendiente de esta secuencia; ejecutar aislado |
@@ -322,7 +332,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-M-09 (determinante con fracciones, radicales y constantes), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-M-10 (producto escalar de vectores, esperado 32), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
