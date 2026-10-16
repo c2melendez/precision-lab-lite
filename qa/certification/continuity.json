@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 3,
+  "revision": 4,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "fa974e49feb135290b5bdac63c49114f227c7239",
-  "baseline_case": "SY-X-03",
+  "baseline_case": "SY-X-04",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -39,13 +39,14 @@
       "acceptance_revision": "2026-10-16-continuity-v1"
     },
     "security": {
-      "workflow": ".github/workflows/s25-security.yml",
+      "workflow": ".github/workflows/certification-dependency-gates.yml",
       "inputs": [
         "*"
       ],
       "acceptance_revision": "2026-10-16-continuity-v1",
       "allow_reuse": false,
-      "max_evidence_age_hours": 24
+      "max_evidence_age_hours": 24,
+      "dispatch_policy": "Do not rerun unchanged BLOCKED dependencies; inspect recorded failed job until advisory/lock or approved migration changes"
     },
     "fixture_integrity": {
       "workflow": ".github/workflows/syntax309-integrity.yml",
@@ -71,36 +72,36 @@
   },
   "evidence_by_channel": {
     "unit_worker": {
-      "run_id": 38964686770,
+      "run_id": 38983494314,
+      "technical_sha": "fa974e49feb135290b5bdac63c49114f227c7239",
       "status": "PASS_SCOPED",
       "counts": {
-        "pass": 1583,
+        "pass": 1586,
         "todo": 30
       }
     },
     "native_ui": {
-      "run_id": 38964686825,
+      "run_id": 38983494311,
+      "technical_sha": "fa974e49feb135290b5bdac63c49114f227c7239",
       "status": "PASS_SCOPED",
       "counts": {
-        "pass": 393,
+        "pass": 396,
         "skip": 0
       },
       "profiles": [
-        "desktop",
-        "tablet",
-        "mobile"
+        "desktop-chromium",
+        "tablet-chromium",
+        "mobile-chromium"
       ]
     }
   },
   "next_action": {
-    "id": "VERIFY-CONSOLIDATED-CI",
+    "id": "VERIFY-PLUS-NATIVE-FOLLOWUP",
     "status": "WAIT",
-    "action": "Inspect the recorded existing Actions runs and their jobs/logs. Do not dispatch duplicates. Continue independent documentation; diagnose only a concrete failed gate.",
+    "action": "Inspect the existing Plus follow-up runs recorded in its continuity.json. Do not rerun approved Lite mathematical/native gates. Security remains BLOCKED; use the precondition-change rule.",
     "exit_criteria": [
-      "Every recorded run concluded and logs reviewed",
-      "Original evidence retained when a run reuses prior results",
-      "PASS/FAIL/BLOCKED recorded per channel",
-      "One next executable task chosen"
+      "Plus native X01-X03 follow-up and S19 initial-run logs reviewed",
+      "States reconciled without new Lite tests"
     ]
   },
   "blockers": [
@@ -148,43 +149,36 @@
   ],
   "work_in_progress": {
     "id": "AUDIT-REMEDIATION-20261016",
-    "status": "CI_RUNNING",
-    "changes": [
-      "Continuity ledger and conservative input fingerprints",
-      "Exact-SHA CI evidence guard",
-      "source-map-js patch update",
-      "SY-X-04 expanded input and contract boundaries",
-      "Expanded 500-term native sum"
-    ],
+    "status": "VERIFIED_WITH_BLOCKERS",
     "technical_sha": "fa974e49feb135290b5bdac63c49114f227c7239",
     "runs": [
       {
-        "id": 38983494314,
-        "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494314"
-      },
-      {
-        "id": 38983494355,
-        "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494355"
-      },
-      {
         "id": 38983494311,
         "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-        "status": "in_progress",
-        "conclusion": null,
+        "status": "completed",
+        "conclusion": "success",
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494311"
       },
       {
         "id": 38983494649,
         "workflow": ".github/workflows/certification-dependency-gates.yml",
-        "status": "in_progress",
-        "conclusion": null,
+        "status": "completed",
+        "conclusion": "failure",
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494649"
+      },
+      {
+        "id": 38983494314,
+        "workflow": ".github/workflows/in625-cumulative-certification.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494314"
+      },
+      {
+        "id": 38983494355,
+        "workflow": ".github/workflows/in625-h1d-reentry.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494355"
       }
     ]
   },
@@ -195,7 +189,7 @@
     },
     "SY-X-04": {
       "status": "PARTIAL_BLOCKED",
-      "lite": "LOCAL_PASS_CI_PENDING",
+      "lite": "PASS_SCOPED_NATIVE_AND_WORKER",
       "plus_http": "BLOCKED_LENGTH_AND_AST",
       "official_expected": "500x"
     }
