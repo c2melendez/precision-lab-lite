@@ -191,3 +191,8 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - Lite SHA 9891620f5143b3752289ab2a75462f894c757950, científica 38962952706 SUCCESS (387/387): MathLive conserva los cuatro espacios escapados, Calcular está habilitado y muestra aviso explícito de vacío; dos recuperaciones 5 en desktop/tablet/mobile, sin pageerrors. MathLive/Worker reales mediante asignación de LaTeX/evento input, no cada tecla/SO ni envío por Enter.
 - Plus SHA 9f7459676d9d46c77df232842cd5360b6cfd4c12, cumulative 38963054983 SUCCESS: conversor produce "" y API valida fuente original con HTTP 200 PARSE_ERROR de vacío, testigo "" con HTTP 422 VALIDATION_ERROR; recuperaciones 5 en TestClient real. UI nativa Plus X02 pendiente; no inferida del HTTP.
 - La normalización no acredita cualquier comando como vacío ni resuelve SY-X-03. TODO/XFAIL no son PASS; H2/SG28 OPEN, DIST-01..08 multinodo BLOCKED.
+
+## 2026-10-16 — SY-X-03 alcance acotado
+- Lite SHA b86ae0ff98f4b9e6c36986b069a9a9cf13584f03, científica 38964686825 SUCCESS (393/393, sin SKIP): MathLive conserva las dos barras originales, Calcular habilitado, rechazo claro PARSE_ERROR de sintaxis y dos recuperaciones 5 por perfil Chromium desktop/tablet/mobile, sin pageerrors. No hay límite de ingesta observado para este fixture en la corrida; la rama condicional de CAPABILITY no se activó.
+- Plus SHA f3d43319ca7c46c951ceed36b67bd665399939de, cumulative 38964550443 SUCCESS: conversor rechaza antes de borrar el separador en ASCII; backend HTTP real rechaza las tres fuentes y recupera 5. UI nativa Plus X03 pendiente; no inferida del conversor/API.
+- Lite E2E usa asignación de LaTeX/evento input y Worker real, no cada tecla/SO. TODO/XFAIL/SKIP no son PASS; H2/SG28 OPEN, DIST-01..08 multinodo BLOCKED.
