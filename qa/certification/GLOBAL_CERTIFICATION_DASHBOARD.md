@@ -2,6 +2,16 @@
 Fecha de corte: 2026-10-15 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-15 — SY-S-01 PASS en Lite navegador y Plus conversor/HTTP; siguiente SY-S-02
+
+- Estado vigente: prevalece sobre fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-S-01 (Alias en español): `\operatorname{sen}\frac{\pi}{6}` → `\frac{1}{2}` en radianes.
+- Hallazgo y corrección Plus: el alias ya se normalizaba a sin, pero MathLive convertía la forma sin paréntesis en sin(pi)/6. Antes de esa conversión se conserva una fracción completa, de numerador/denominador sin llaves anidadas, como argumento de seno: sin((pi)/(6)). No se afirma soporte general nuevo de todos los alias ni todos los argumentos compuestos. Prueba del conversor compara salida exacta con la variante agrupada.
+- Lite SHA `e9932488796f253dea2dd407218e030c20ebced5`: [acumulada 38846431768](https://github.com/c2melendez/precision-lab-lite/actions/runs/38846431768) SUCCESS, 1474 PASS +30 TODO, 145 archivos, 3/3 nuevos del fixture/parser/Worker y reentrada con valor exacto 1/2 y decimal 0.5; typecheck/build PASS. No se modifica producto Lite. La prueba inicial 38846327515 falló por asumir freeVariables vacío: este parser incluye la constante pi como identificador; se ajustó solamente esa suposición manteniendo el rechazo de otros identificadores y la evaluación exacta.
+- [Lite navegador 38846431797](https://github.com/c2melendez/precision-lab-lite/actions/runs/38846431797) SUCCESS 249/249, incluidos 6/6 SY-S-01 (oficial y agrupada × escritorio/tableta/móvil). MathLive real → UI → Worker → fracción readonly 1/2 y data-result-reentry-latex exacto. Entrada por asignación LaTeX y evento input; no prueba cada tecla física ni una nueva pulsación Reusar. H1d 38846431773 SUCCESS 21/21; build diagnóstico 38846431756 SUCCESS.
+- Plus SHA `71601491aad557be498e3367c33dc32d76e08074`: [acumulada 38846466289](https://github.com/c2melendez/precision-lab-plus/actions/runs/38846466289) SUCCESS: frontend 909 PASS +28 TODO, 107 archivos, 2/2 nuevos del conversor real; backend 1343 PASS +1 XFAIL, 2/2 nuevos HTTP con traducciones explícitas sin(pi/6) y sin((pi)/(6)), MathResponse, valor racional sin Float, LaTeX 1/2, aproximación 0.5 y reentrada. H1d 38846466263 SUCCESS 38/38. Corrida inicial Plus 38846331278 detectó y motivó la corrección de agrupación; no cuenta como PASS. Conversor y HTTP se prueban por separado: pendiente flujo nativo integral Plus para este caso.
+- TODO/XFAIL no cuentan como PASS. Syntax309/IN625/H2/SG28 siguen OPEN; DIST-01..08 BLOCKED por coordinación multinodo independiente pendiente. Sin merge a main ni despliegue.
+- Siguiente fixture oficial: SY-S-02, `\operatorname{tg}\frac{\pi}{4}` → 1. No se declara evaluado.
+
 ## 2026-10-15 — SY-M-20 PASS en Lite navegador y Plus parser/formulario/HTTP; siguiente SY-S-01
 
 - Estado vigente: prevalece sobre fotografías históricas inferiores. Fecha local America/Tegucigalpa. Fixture oficial SY-M-20: `2\begin{pmatrix}1&2\\3&4\end{pmatrix}` → [[2,4],[6,8]].
@@ -413,7 +423,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-V Variables/cálculo | 28 | Recorrido posterior a V-21 registrado en CURRENT_STATE; reconciliación de convenciones/canales pendiente |
 | SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-23, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente SY-M-01. Otros gaps históricos siguen abiertos |
 | SY-M Matrices/vectores | 20 | Secuencia alcanza M-20, PASS en Lite navegador y Plus parser/formulario/HTTP según alcance de cada caso. Pendiente flujo nativo integral Plus; no equivale a certificar todo el módulo |
-| SY-S Alias en español | 20 | Siguiente bloque: comenzar por fixture oficial S-01; pendiente de esta secuencia |
+| SY-S Alias en español | 20 | Secuencia en S-01, PASS en Lite navegador y Plus conversor/HTTP; siguiente S-02. Resto pendiente de esta secuencia |
 | SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
 | SY-X Estrés/hostiles | 22 | Pendiente de esta secuencia; ejecutar aislado |
 | Total | 309 | Certificación integral OPEN |
@@ -434,7 +444,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-S-01 (alias español sen, esperado 1/2), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: consultar fixture oficial y continuar SY-S-02 (alias español tg, esperado 1), tras resolver cualquier regresión. No volver a U-04.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
