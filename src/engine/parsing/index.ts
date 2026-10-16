@@ -327,7 +327,7 @@ export function parseExpression(
   angleMode: "RAD" | "GRAD" = "RAD",
 ): ParsedExpression {
   // SY-R-12: do not interpret this prose-only input as multiplied variables.
-  if (latex.replace('\\text', '').replace('\\mathrm', '').replace('{', '').replace('}', '').trim().toLowerCase() === 'no existe') {
+  if (latex.replace(/\\(?:text|mathrm|operatorname)\s*\{/g, '').replace(/[{}]/g, '').replace(/\\(?:,|;|!| )/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase() === 'no existe') {
     throw new Error('Entrada no matemática: escribe una expresión válida.');
   }
   // SY-R-04: parse both fragments normally, validate a finite real value,
