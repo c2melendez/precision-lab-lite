@@ -122,3 +122,11 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - SY-R-01..03 Plus: HTTP usa testigos de backend equivalentes sqrt(2)/2, 2*sqrt(3), pi/6 y reentrada del result_text. La conversión de su LaTeX original, UI integral y nueva acción Reusar no quedan acreditadas por esos tests.
 - SY-R-01..03 Lite: distinguir harness del handler Worker (transporte self/postMessage simulado) de los specs e2e/syntax309-syr01.spec.ts..syr03.spec.ts. Estos últimos, run 38871060466 SUCCESS en SHA 3995f8f0, prueban reentrada real del LaTeX resultado mediante nuevo cálculo; no prueban una pulsación del botón Reusar.
 - H2/SG28 y DIST conservan sus requisitos independientes. Estos avances matemáticos no cierran IN625/Syntax309 globalmente.
+
+
+## 2026-10-16 — SY-R-04: alcance del binding escalar y de los canales
+- Lite PASS nativo en run 38877487918, SHA 7889b6e7, incluye fuente original, decimal visible y recálculo del LaTeX de salida con solicitud nueva en desktop/tablet/mobile. Usa asignación de fuente + evento input; no acredita botón Reusar ni cada tecla física/virtual.
+- Plus PASS: conversor real original con cuerpo/exponente/valor comprobados y HTTP de fuente original o testigo emitido por conversor. Comparación completa MathResponse off/on en CI incluye input_latex, texto exacto y aproximación; no demuestra flujo UI MathLive integral Plus.
+- Feature deliberadamente acotada a un binding numérico real finito y temporal. No múltiples sustituciones escalares inline, RHS con símbolos libres/no finito, ni mezcla con substitutions de API. No afirmar lenguaje natural general o toda entrada LaTeX raw del endpoint.
+- Las declaraciones matriciales/vectoriales con con conservan su gramática propia y prioridad. Regresión SY-M-14/16 verificada como restaurada por doce pruebas nativas en el run final; el nuevo helper no sustituye su parser.
+- La bandera de aislamiento permanece off por defecto. La paridad R04 off/on no certifica cancelación distribuida SG28/H2/DIST.
