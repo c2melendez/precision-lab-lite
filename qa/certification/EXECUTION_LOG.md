@@ -1,5 +1,11 @@
 # Certification Execution Log
 
+## 2026-10-16 — SY-R-11 gates cerrados y SY-R-12 en validación
+- SY-R-11 Lite commit técnico 7bf710e9e18dd0660b61c30333d5cc763dbda0fc: científica 38891044289 SUCCESS, cumulative 38891044419 SUCCESS, build 38891044450 SUCCESS, H1d 38891044317 SUCCESS. Plus SHA d285774 cumulative 38888846559 SUCCESS (backend HTTP + frontend). CIERRE AUTOMATIZADO ACOTADO SY-R-11; no significa certificación general H2/SG28 ni DIST.
+- SY-R-12 fixture oficial `\\text{no existe}` / operacion:error / texto no ingresable, error claro. Lite nueva prueba `tests/syntax309SyR12.audit.test.ts` SHA b0c1fa19; guard de parseExpression `src/engine/parsing/index.ts`, SHA 4cd2ff8. Plus guard `frontend/src/components/NaturalMathField.tsx` SHA 01f6989 y nueva prueba `frontend/src/__tests__/syntax309SyR12.audit.test.ts` SHA d9ecd7bf.
+- Lite cumulative 38891851946 FAIL por TYPECHECK: TypeScript target no soporta String.replaceAll (TS2550); corrección publicada en Lite SHA 6da308fe15e97dc465cc4e3adae2ee68c6fcfc4f y Plus SHA 94d8f73f07c99cbace2d2eca03b88cc0bc57d88f usando replace. No presentar SY-R-12 como PASS hasta pasar nuevos gates y comprobar efectivo rechazo visible/HTTP. Mantener H2/SG28 OPEN, DIST multinodo BLOCKED y no merge/release.
+
+
 ## 2026-10-16 — SY-R-11 corrección producto serialización de matriz y gates
 - Lite científica [38890398578](https://github.com/c2melendez/precision-lab-lite/actions/runs/38890398578) FAILURE SHA c6c28b6: 369 PASS /3 FAIL SY-R-11 (desktop/tablet/mobile). Log job 116938204928: `unparsedLatex: "-2, 1 | 1 1/2, -1/2"`, esperaba matriz racional exacta `[[-2,1],[3/2,-1/2]]`.
 - Causa PRODUCTO identificada en `src/workers/compute.worker.ts`, rama `case "power"`: emite `toFraction(true).join(", ") / join(" | ")`, que no es representación matemática matricial reversible. La pantalla científica usa `power(exponent:1)` para matriz literal. No es falla de sincronización ni del oráculo.
