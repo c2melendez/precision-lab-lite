@@ -1,5 +1,12 @@
 # Certification Execution Log
 
+## 2026-10-16 — SY-R-12 diagnóstico E2E sin bloqueo asíncrono
+- Lite E2E 38912778906 FAILURE (372 PASS /3 FAIL), E2E 38912852386 FAILURE (372 PASS /3 FAIL) desktop/tablet/mobile. Causa de fallo observable del test diagnóstico: esperó `[role=alert]` vía `locator.textContent()` sin timeout corto y agotó los 30 s globales; la normalización de `parseExpression` SHA 6be7bd42 no bastó para hacerlo aparecer. No atribuir éxito al caso SY-R-12.
+- Cumulative Lite 38912851934 SUCCESS, build 38912851944 SUCCESS, H1d 38912852036 SUCCESS, Plus cumulative 38891951302 SUCCESS. Prueban compatibilidad de cambios, NO experiencia UI SY-R-12.
+- Nueva prueba diagnóstica `e2e/syntax309-syr12.spec.ts` Lite commit `4ec62c7b768fd02308fe1aa27d78e57ace19688b`: recupera valor serializado del editor, ausencia de alerta y resultado con timeout de 1 segundo, incorporándolos al error de aserción inmediatamente, en vez de consumir 30 segundos sin evidencia.
+- Nuevas corridas SHA 4ec62c7: científica 38915737138, acumulativa 38915737958, build 38915737798, H1d 38915737053 observadas IN_PROGRESS. Próximo paso verificar diagnostic y corregir la ruta MathLive/parseExpression/error de forma específica, luego revalidar científica desktop/tablet/mobile. H2/SG28 OPEN; DIST bloqueado; sin merges.
+
+
 ## 2026-10-16 — SY-R-12 E2E error persistente y normalización MathLive
 - Lite [38908415715](https://github.com/c2melendez/precision-lab-lite/actions/runs/38908415715) FAILURE SHA bfe7921: 372 passed, 3 failed SY-R-12 desktop/tablet/mobile. Diagnóstico anterior falló por timeout al esperar el texto de error visible, sin incluir valores reales de `serialized` ni `alert` en el fallo.
 - Diagnóstico revisado `e2e/syntax309-syr12.spec.ts`, SHA 548973cc066251997f37ea13564f23841425f829: muestra `serialized`, `alert` y contenido del resultado como contexto de aserción, conservando exigencia de rechazo/recuperación.
