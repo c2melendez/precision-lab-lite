@@ -158,3 +158,11 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - Plus: conversor original y variantes de signos/coeficientes, más HTTP separado de fuente original y testigos equivalentes. MathResponse escalar, texto exacto sin símbolos libres/Float, componentes real/imaginaria y reentrada; control de cuadrado acredita i^2=-1. No afirmar UI MathLive integral Plus.
 - El oráculo del campo de salida visible, leído mediante su propiedad value, admite espacios, signo menos Unicode y orden equivalente de términos en el binomio oficial; no acepta cualquier texto que contenga 1, 2 e i. No acredita pulsación Reusar, cada tecla física/virtual ni todas las formas polares/ramas complejas.
 - H2/SG28 OPEN, DIST multinodo BLOCKED; TODO/XFAIL excluidos de PASS. Sin cambio de aislamiento ni producción.
+
+
+## 2026-10-16 — SY-R-09: antiderivada, constante y derivación
+- Lite navegador: fuente original x^3/3+C evaluada; su LaTeX de salida se reingresa en d/dx explícita en la pantalla científica, se comprueba x^2 en math-field read-only visible y se recalcula la salida con nueva solicitud. No acredita generación de la integral mediante botones ni el formulario Cálculo dedicado.
+- Lite harness Worker añade cadena integral indefinida real x^2 → x^3/3+C → derivada x^2, equivalencia simbólica exacta, controles con variable y/coeficiente 7C, derivada respecto a C y derivadas naturales parentizadas con variable declarada. Transporte self/postMessage simulado se distingue del Worker real de los E2E.
+- Plus conversor/intent y HTTP dedicados por separado: se conserva el cuerpo íntegro, variable explícita y C; respuestas evaluate/integral se reingresan en derivative y la salida vuelve a evaluate. Sin acreditar flujo UI MathLive integral Plus.
+- C se considera independiente de la variable declarada; d/dC comprueba su coeficiente, no una sustitución numérica de C. No inferir que la constante de integración sea independiente de todo parámetro de una familia general.
+- Lite asigna LaTeX/evento input; no botón Reusar ni cada tecla física/virtual. H2/SG28 OPEN, DIST multinodo BLOCKED; TODO/XFAIL excluidos de PASS. Sin producción ni cambios de aislamiento.

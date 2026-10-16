@@ -6,6 +6,19 @@ Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisi
 
 
 
+
+## 2026-10-16 — SY-R-09 PASS acotado; constante preservada y derivación real
+- Rama canónica qa/syntax-audit-in625-a1 verificada desde README de main en ambos repositorios. PR Lite #48 y Plus #29 abiertos hacia main, sin merge. No cierre global IN625/Syntax309.
+- Fixture original SY-R-09: fracción x^3/3 + C, esperado al derivar x^2. JSONL/esperados intactos. Se evalúa la fuente, se reingresa su salida conservando C y se deriva mediante operación real, con equivalencia simbólica exacta; d/dC comprueba coeficiente 1 o 7 en controles.
+- Lite SHA técnico final 42d0bc8b7dd9e4c630d50d1a0d7ce6a41ebd2db8: [cumulative 38886307589](https://github.com/c2melendez/precision-lab-lite/actions/runs/38886307589) SUCCESS, job 116924782546: 1546 PASS /30 TODO, 170 archivos. Siete tests R09: original, variable y, 7C, integral Worker real x^2 → x^3/3+C → derivada x^2, y tres controles de variable explícita en notación parentizada (mezcla x/y, segundo orden y y d/dC). Typecheck/build, build 38886307608 y H1d 38886307661 SUCCESS.
+- Corrección PRODUCT/NORMALIZACIÓN Lite: matcher parentizado de d/dx capturaba solo x; forma d/dy caía a fracción algebraica, aunque derivada Worker explícita era correcta. normalize.ts captura variable latina declarada y la emite en d(cuerpo,variable,orden), conservando balanceo/orden. Sin nuevo motor ni hardcode de derivada o de C. Baseline df653c0e cumulative 38886073356: 1542 PASS /1 FAIL /30 TODO; fallo con y documentado en EXECUTION_LOG.
+- [Lite científica 38886307602](https://github.com/c2melendez/precision-lab-lite/actions/runs/38886307602) SUCCESS en ese mismo SHA, job 116924781944: 366/366 E2E; tres SY-R-09 desktop/tablet/mobile nombrados PASS. Fuente original → math-field read-only con C → reentrada en d/dx explícita → x^2 visible → recalcular x^2, con nuevos data-result-request-id. No se acredita botón Reusar ni generación de integral por botones ni formulario Cálculo dedicado.
+- Plus SHA técnico final de tests 3a62d6657a6db192bd14a5056d60fd9a397bde0b: [cumulative 38886382565](https://github.com/c2melendez/precision-lab-plus/actions/runs/38886382565) SUCCESS; frontend job 116925026822: 953 PASS /28 TODO, 130 archivos, typecheck/build SUCCESS. Backend job 116925027068: 1408 PASS /1 XFAIL. H1d 38886382645 SUCCESS. Sin cambio de producto Plus.
+- Plus conversor emite (x^3)/(3)+C y (y^4)/(4)+C; tres tests verifican cuerpo completo, C y extracción de variable/cuerpo de d/dx. Seis HTTP tests validan fuentes equivalentes, los dos testigos exactos del conversor, coeficiente 7C y cadena integral → salida → derivative. MathResponse escalar, exactitud sin Float, evaluate/reentrada/derivative/evaluate y d/dC correctos. UI integral Plus aún sin acreditar.
+- Baseline Plus 70d85c43 cumulative 38886078024: backend 1406 PASS /1 XFAIL; frontend 951 PASS /2 FAIL /28 TODO. Oráculo textual omitía agrupación válida de los denominadores (3) y (4); corregido solo test y añadidos testigos HTTP reales, sin alterar motor/conversor por una serialización equivalente.
+- Límites: Lite harness del handler Worker usa self/postMessage simulado; E2E sí usa MathLive + Worker real con asignación de LaTeX/evento input. No cada tecla física/virtual. C independiente de variable declarada, no certificación de todas las constantes paramétricas. TODO/XFAIL excluidos de PASS. H2/SG28 global OPEN y DIST-01..08 multinodo BLOCKED. Sin producción, despliegue, merge, release ni cambios de aislamiento.
+- Siguiente objetivo identificado desde JSONL: SY-R-10, cociente (x+1)/(x-1) elevado a 2, esperado (x+1)^2/(x-1)^2. Siguiente paso exacto: agregar tests/syntax309SyR10.audit.test.ts, frontend/src/__tests__/syntax309SyR10.audit.test.ts, backend/tests/test_syntax309_syr10_http.py y e2e/syntax309-syr10.spec.ts registrado en workflow científico. Verificar fuente original, equivalencia racional exacta, exclusión x=1 y reentrada de salida; no certificar solo por muestreo numérico ni perder dominio al transformar. Ejecutar gates del nuevo SHA. No tests/certificación R10 publicados aquí.
+
 ## 2026-10-16 — SY-R-08 PASS acotado; complejo binómico y unidad imaginaria
 - Rama canónica qa/syntax-audit-in625-a1 verificada desde README de main en ambos repositorios. PR Lite #48 y Plus #29 abiertos hacia main, sin merge. No cierre global IN625/Syntax309.
 - Fixture original SY-R-08: entrada y esperado 1+2i. JSONL/esperados intactos. Oráculos comparan componentes real/imaginaria exactas y reentrada; no Number del complejo completo ni aproximación real obligatoria. Sin cambios de producto en este objetivo.
@@ -544,7 +557,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-23, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente SY-M-01. Otros gaps históricos siguen abiertos |
 | SY-M Matrices/vectores | 20 | Secuencia alcanza M-20, PASS en Lite navegador y Plus parser/formulario/HTTP según alcance de cada caso. Pendiente flujo nativo integral Plus; no equivale a certificar todo el módulo |
 | SY-S Alias en español | 20 | Secuencia en S-01, PASS en Lite navegador y Plus conversor/HTTP; siguiente S-02. Resto pendiente de esta secuencia |
-| SY-R Reentrada | 14 | Secuencia hasta SY-R-08 con PASS acotado por caso; siguiente SY-R-09. Consultar canales/SHA/runs en CURRENT_STATE y EXECUTION_LOG; IN625 H1 es evidencia distinta |
+| SY-R Reentrada | 14 | Secuencia hasta SY-R-09 con PASS acotado por caso; siguiente SY-R-10. Consultar canales/SHA/runs en CURRENT_STATE y EXECUTION_LOG; IN625 H1 es evidencia distinta |
 | SY-X Estrés/hostiles | 22 | Pendiente de esta secuencia; ejecutar aislado |
 | Total | 309 | Certificación integral OPEN |
 
@@ -564,7 +577,7 @@ SY-V-12 prueba presencia de C y derivada respecto a y igual a x en entrada/salid
 El baseline de CURRENT_STATE documenta Oracle Audit 74/74 shards, 2132/2132 casos planificados, 4026 casos canónicos y Product Certification Wave 2 22/22 PASS. Son dimensiones y campañas distintas; no sumar entre sí ni tratarlas como certificación vigente de todas las funciones.
 
 ## Hoja de ruta y actualización
-1. Continuidad matemática: consultar fixture oficial y continuar SY-S-02 (alias español tg, esperado 1), tras resolver cualquier regresión. No volver a U-04.
+1. Continuidad matemática: resolver el siguiente paso exacto de CURRENT_STATE tras verificar HEAD, Actions y cualquier regresión; consultar el fixture oficial sin reconstruir el estado desde hitos históricos.
 2. Completar trazabilidad por requisito de los módulos: localizar fuentes originales y enlazar caso → test → canal → SHA → run → resultado. Priorizar inventario de Geometría y reconciliación visual para llenar ND.
 3. Mantener orden autorizado: Syntax309 → Álgebra114 → Álgebra229 → Trigonometría → Log/Exp/Radicales → Matrices/Vectores → EDO/Complejos → Gráficas → paridad final.
 4. Agrupar casos independientes del mismo bloque en lotes revisables cuando compartan preparación; cada caso conserva su ID y oráculo. No sacrificar diagnóstico ni alterar el orden canónico.
