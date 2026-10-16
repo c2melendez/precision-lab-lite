@@ -1,3 +1,4 @@
+import {isNamedVectorDotSource} from "./matrixIntent";
 // Fase 1 (fusión de modos, plan de 3 fases — spec UX estilo ClassCalc):
 // detecta si el LaTeX del campo único de BasicScientificMode contiene un
 // entorno \begin{cases}...\end{cases} — el que inserta el ícono de
@@ -66,6 +67,7 @@ function splitTopLevelComma(text: string): string[] | null {
 }
 
 export function splitFreeSystemLatex(latex: string): string[] | null {
+  if (isNamedVectorDotSource(latex)) return null;
   const text = latex.trim();
   if (!text) return null;
 

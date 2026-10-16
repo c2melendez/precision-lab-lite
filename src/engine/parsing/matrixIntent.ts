@@ -83,7 +83,35 @@ function parseSingleMatrix(text: string): { env: string; matrix: string[][]; res
   return { env: m[1], matrix: splitMatrixBody(m[2]), rest: text.trim().slice(m[0].length) };
 }
 
+function localVectorText(latex:string):string {
+  return latex.trim().replace(/\\[, ]|\s/g, "").replace(/\\left(?=\()|\\right(?=\))/g, "");
+}
+export function isNamedVectorDotSource(latex:string):boolean {
+  return /^\\vec\{[A-Za-z]\}\\cdot\\vec\{[A-Za-z]\}\\text\{con\}/.test(localVectorText(latex));
+}
+
 export function detectMatrixIntent(latex: string): MatrixIntent | null {
+  // SY-M-14: definitions are local data, never assignments in a CAS/session.
+  if (isNamedVectorDotSource(latex)) {
+    const source = localVectorText(latex);
+    if (source.length > 512) throw new Error("Declaración de vectores demasiado larga.");
+    const match = /^\\vec\{([A-Za-z])\}\\cdot\\vec\{([A-Za-z])\}\\text\{con\}\\vec\{([A-Za-z])\}=\(([^()]*)\),\\vec\{([A-Za-z])\}=\(([^()]*)\)$/.exec(source);
+    if (!match) throw new Error("Declara dos vectores con componentes numéricas entre paréntesis.");
+    const [,leftName,rightName,firstName,firstBody,secondName,secondBody] = match;
+    if (firstName === secondName) throw new Error("Las declaraciones de vectores deben tener nombres distintos.");
+    const values = new Map<string,string[]>();
+    for (const [name,body] of [[firstName,firstBody],[secondName,secondBody]]) {
+      const cells = body.split(",");
+      if (!cells.length || cells.length > 6 || !cells.every(cell => /^[+-]?\d+(?:\.\d+)?(?:\/[+-]?\d+)?$/.test(cell))) {
+        throw new Error("Cada vector requiere de una a seis componentes numéricas completas.");
+      }
+      values.set(name,cells);
+    }
+    const left = values.get(leftName), right = values.get(rightName);
+    if (!left || !right) throw new Error("Faltan declaraciones para los vectores del producto escalar.");
+    if (left.length !== right.length) throw new Error("El producto escalar requiere vectores de la misma longitud.");
+    return {kind:"dot",left:[left],right:[right]};
+  }
   // SY-M-13: bounded integer combinations of explicit bold basis symbols.
   const basisText = latex.trim().replace(/\\[, ]|\s/g, "");
   if (/^[+-]?\d*\\mathbf\{[ijk]\}/.test(basisText)) {
