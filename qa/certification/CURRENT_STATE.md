@@ -1,5 +1,13 @@
 # Current Certification State
 
+## 2026-10-15 — SY-S-07 browser PASS; SY-S-08 Worker oracle correction pending CI
+
+- SY-S-07 oficial `\\operatorname{arcctg}1` → `\\frac{\\pi}{4}`: Plus acumulativo 38853224631 SUCCESS, H1d 38853224635 SUCCESS en `5c07bdb4`. Lite acumulativo 38853276094 SUCCESS y E2E desktop/tablet/mobile [38853276191](https://github.com/c2melendez/precision-lab-lite/actions/runs/38853276191) SUCCESS en `4d70930e`. Mantener alcance declarado: no E2E integral Plus.
+- SY-S-08 oficial `\\operatorname{senh}1` → `1.175201194`: pruebas publicadas en Plus, último SHA técnico `fedf1dc6`; acumulativo [38853649672](https://github.com/c2melendez/precision-lab-plus/actions/runs/38853649672) y H1d [38853649751](https://github.com/c2melendez/precision-lab-plus/actions/runs/38853649751), pendientes de verificar.
+- Lite SHA `af6ff2c9`, acumulativo [38853652319](https://github.com/c2melendez/precision-lab-lite/actions/runs/38853652319) FAIL por nueva prueba `syntax309SyS08.audit.test.ts`: `Number(evaluate(...))` no devolvió finito al intentar tratar resultado simbólico como número. Corregida capa de oráculo para invocar Worker real y usar aproximación numérica del resultado, sin modificar el motor; SHA `f4cce56f`, [acumulativo 38853850039](https://github.com/c2melendez/precision-lab-lite/actions/runs/38853850039) iniciado. El fallo inicial es de harness/alcance de evaluación directa; aún no consta PASS del Worker ni se descarta fallo de producto.
+- Siguiente paso exacto: verificar ambos gates sobre SHA final; diagnosticar cualquier fallo, corregir sin debilitar tolerancia `5e-10`, agregar E2E específico de SY-S-08 solo cuando pase el cálculo nativo. Luego SY-S-09. IN625/H2/SG28 OPEN; DIST-01..08 BLOCKED. Sin merge ni despliegue.
+
+
 ## 2026-10-15 — SY-S-07 parcialmente verificado; SY-S-08 pruebas publicadas
 
 - SY-S-07 `\\operatorname{arcctg}1` → `\\frac{\\pi}{4}`: Plus acumulativo [38853224631](https://github.com/c2melendez/precision-lab-plus/actions/runs/38853224631) SUCCESS y H1d [38853224635](https://github.com/c2melendez/precision-lab-plus/actions/runs/38853224635) SUCCESS sobre `5c07bdb4`. Lite acumulativo [38853276094](https://github.com/c2melendez/precision-lab-lite/actions/runs/38853276094) SUCCESS sobre `4d70930e`; E2E [38853276191](https://github.com/c2melendez/precision-lab-lite/actions/runs/38853276191) seguía IN_PROGRESS en última consulta, no declarar cierre E2E hasta su conclusión.
