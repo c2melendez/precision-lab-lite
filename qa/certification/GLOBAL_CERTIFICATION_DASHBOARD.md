@@ -4,6 +4,18 @@ Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisi
 
 
 
+
+## 2026-10-16 — SY-R-07 PASS acotado; número pequeño y reentrada preservados
+- Rama canónica qa/syntax-audit-in625-a1 verificada desde README de main en ambos repositorios. PR Lite #48 y Plus #29 abiertos hacia main, sin merge. No cierre global IN625/Syntax309.
+- Fixture original SY-R-07: `1.5\times10^{-7}`, esperado 0.00000015. JSONL/esperados intactos. Tolerancia estrictamente relativa 1e-9*abs(esperado), equivalente a 1.5e-16 para el oficial; no max(1,...) ni aceptación de cero. Trabajo de tests/certificación, sin cambios de producto.
+- Lite SHA técnico bb891f4873203f2a9a403bcb573fa903bcf8c6d6: [cumulative 38882040021](https://github.com/c2melendez/precision-lab-lite/actions/runs/38882040021) SUCCESS, job 116910833371: 1535 PASS /30 TODO, 168 archivos. Tres tests R07: fixture original y controles 2.5 por 10^-6 / -1.5 por 10^-7, respuesta Worker y reentrada conservando valor finito no cero. Original resultLatex fracción exacta 3/20000000, fraction.decimal 0.00000015, decimalApprox 1.500000000e-7, confidence SYMBOLIC. Typecheck/build, build 38882040003 y H1d 38882040027 SUCCESS.
+- [Lite científica 38882039950](https://github.com/c2melendez/precision-lab-lite/actions/runs/38882039950) SUCCESS en ese mismo SHA, job 116910833255: 360/360 E2E. Tres SY-R-07 desktop/tablet/mobile nombrados PASS: fuente original MathLive, valor decimal visible y nuevo cálculo del LaTeX de salida con data-result-request-id distinto.
+- Plus SHA técnico 565a4a983202351df029ffe2d02691bacf6ba465: [cumulative 38882043936](https://github.com/c2melendez/precision-lab-plus/actions/runs/38882043936) SUCCESS; frontend job 116910845810: 947 PASS /28 TODO, 128 archivos, typecheck/build SUCCESS. Backend job 116910846226: 1397 PASS /1 XFAIL. H1d 38882043894 SUCCESS.
+- Plus conversor real emite 1.5 * 10^(-7); tres tests verifican fuente/esperado original y estructura completa de coeficiente, signo, multiplicación y potencia negativa. Cuatro HTTP testigos (original convertido, variantes de coeficiente/signo y racional 3/20000000) exigen MathResponse escalar, texto real finito sin variables, valor y aproximación no cero con tolerancia relativa, y reentrada del result_text; control racional exige valor exacto sin Float. No se exige forma simbólica exacta a una entrada decimal fuera de su contrato.
+- Alcance: Lite parser/handler Worker y navegador MathLive + Worker real con asignación de fuente/evento input; no botón Reusar ni cada tecla física/virtual. Plus conversor y HTTP testigos separados; sin UI MathLive integral Plus ni LaTeX original raw HTTP acreditados. No inferir soporte de todo rango de exponentes/subnormales. TODO/XFAIL excluidos de PASS.
+- H2/SG28 global OPEN y DIST-01..08 multinodo BLOCKED. Sin producción, despliegue, merge, release ni cambio de aislamiento por defecto.
+- Siguiente objetivo identificado desde JSONL: SY-R-08, entrada y esperado 1+2i (complejo binómico). Siguiente paso exacto: agregar tests/syntax309SyR08.audit.test.ts, frontend/src/__tests__/syntax309SyR08.audit.test.ts, backend/tests/test_syntax309_syr08_http.py y e2e/syntax309-syr08.spec.ts registrado en workflow científico. Verificar unidad imaginaria, partes real/imaginaria y reentrada de salida, sin aplicar Number al complejo completo ni exigir aproximación real; controles con otro coeficiente/signo y gates del nuevo SHA. No tests/certificación R08 publicados aquí.
+
 ## 2026-10-16 — SY-R-06 PASS acotado; log natural y reentrada preservados
 - Rama canónica qa/syntax-audit-in625-a1 verificada desde README de main en ambos repositorios. PR Lite #48 y Plus #29 abiertos hacia main, sin merge. IN625/Syntax309 no cerrados globalmente.
 - Fixture original SY-R-06: fuente LaTeX `\ln\left(2\right)`, esperado 0.6931471806. JSONL/esperados intactos; tolerancia estrictamente relativa 1e-9*abs(esperado). Trabajo de regresión/certificación, sin correcciones al código de producto en este objetivo.
@@ -518,7 +530,7 @@ Los números anteriores son subconjuntos identificados por archivo en los logs a
 | SY-Q Ecuaciones/sistemas | 23 | Secuencia en Q-23, PASS en Lite navegador y Plus conversor/HTTP bajo alcance descrito; siguiente SY-M-01. Otros gaps históricos siguen abiertos |
 | SY-M Matrices/vectores | 20 | Secuencia alcanza M-20, PASS en Lite navegador y Plus parser/formulario/HTTP según alcance de cada caso. Pendiente flujo nativo integral Plus; no equivale a certificar todo el módulo |
 | SY-S Alias en español | 20 | Secuencia en S-01, PASS en Lite navegador y Plus conversor/HTTP; siguiente S-02. Resto pendiente de esta secuencia |
-| SY-R Reentrada | 14 | Pendiente de esta secuencia; IN625 H1 es evidencia distinta |
+| SY-R Reentrada | 14 | Secuencia hasta SY-R-07 con PASS acotado por caso; siguiente SY-R-08. Consultar canales/SHA/runs en CURRENT_STATE y EXECUTION_LOG; IN625 H1 es evidencia distinta |
 | SY-X Estrés/hostiles | 22 | Pendiente de esta secuencia; ejecutar aislado |
 | Total | 309 | Certificación integral OPEN |
 
