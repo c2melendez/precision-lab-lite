@@ -181,3 +181,8 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - Lite SHA 07da1be79dbe2f0ffd82134ae6bc530f5c913cb2, científica 38952417593 SUCCESS (381/381): valor absoluto y control |x|+x negativo, resultados 4 y 0 con reentrada en Chromium desktop/tablet/mobile. MathLive y Worker reales mediante asignación de LaTeX/evento input; no cada tecla física/virtual ni cada SO.
 - Plus SHA d132c5ce1a95c520cbf18c88e493a6549893f1c6, cumulative 38952224765 SUCCESS: conversor y HTTP original/testigo/substitutions/reentrada exacta; UI nativa Plus R14 pendiente. Conversión backend de barras con sizing acotada a una variable de una letra, sin acreditar todas las expresiones entre barras.
 - TODO/XFAIL no son PASS; H2/SG28 OPEN y DIST-01..08 multinodo BLOCKED.
+
+## 2026-10-16 — SY-X-01 alcance acotado
+- Lite SHA 238442fdd742f3c194ced2d689c35a8efb0dac2c, científica 38954833821 SUCCESS (384/384): campo realmente vacío, Calcular deshabilitado, conservación del resultado al borrar y recuperación 5 en Chromium desktop/tablet/mobile, sin pageerrors. MathLive/Worker reales con asignación de valor y evento input; no prueba cada tecla/SO ni envío por Enter vacío.
+- Plus SHA b139dd22ff0fc969e3bceed68fee88d10d88e5b3, cumulative 38954842181 SUCCESS: conversor y API TestClient real, dos rechazos 422 VALIDATION_ERROR alternados con recuperación 5; UI nativa Plus X01 pendiente. No se deduce UI del HTTP.
+- Espacios puros o LaTeX escapados se evalúan en SY-X-02; no se acreditan por probar el string vacío. H2/SG28 OPEN; DIST-01..08 multinodo BLOCKED. TODO/XFAIL no son PASS.
