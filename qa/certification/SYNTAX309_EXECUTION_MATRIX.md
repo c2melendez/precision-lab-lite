@@ -3,7 +3,7 @@
 Estado: **PREPARACIÓN / NO CERTIFICADO**. Fecha: 2026-10-11. Repositorios: Lite + Plus. Rama canónica: `qa/syntax-audit-in625-a1`.
 
 ## Fuente y fidelidad
-Matriz de estrés **`matriz_sintaxis_entrada.md`**, 309 ejercicios oficiales: N1 104; N2 183; N3 22. El contenido completo existe en biblioteca del proyecto; aún no hay un fixture JSONL canónico versionado y verificado en ambos repositorios. **No inferir ni inventar entradas/esperados** a partir de este índice. El `matrices_ejecutables.jsonl` mencionado en la matriz no se ha verificado en GitHub.
+Matriz de estrés **`matriz_sintaxis_entrada.md`**, 309 ejercicios oficiales. Fixture canónico `qa/certification/syntax309_cases.jsonl` leído y comparado en ambos repositorios el 2026-10-16: contenido idéntico, 309 filas, N1=104/N2=183/N3=22. El fixture versionado es la fuente de entradas/esperados; no inferirlos desde este índice.
 
 ## Inventario de bloques (309 filas)
 | Orden | Sección | Casos |
@@ -43,7 +43,7 @@ Matriz de estrés **`matriz_sintaxis_entrada.md`**, 309 ejercicios oficiales: N1
 IN625 H2/SG28 permanece OPEN por DIST-01..08 BLOCKED en topología multinodo autorizada; trabajo independiente de preparación Syntax 309 permitido, pero **no declarar cierre de IN625 ni certificación integral de Syntax 309** antes de resolver dependencias contractuales. No activar Render ni `SG28_EVALUATE_ISOLATION`.
 
 ## Próximo paso ejecutable
-Materializar el JSONL original completo y publicar su hash/conteo; construir gate de integridad y lote SY-P sobre los 33 casos originales en ambos repositorios; ejecutar CI y registrar por ID y SHA. Si no está disponible el JSONL, extraer fielmente de la matriz Markdown sin completar expectativas con suposiciones.
+Consultar CURRENT_STATE.md y los últimos runs del SHA técnico para el caso activo. La incorporación inicial del fixture ya está superada; el historial de alcances, fallos y evidencia vive en EXECUTION_LOG.md. Mantener abiertos los gaps por canal y la reconciliación global.
 
 
 ## SY-P-23 — Decisión de convención propuesta para revisión bilateral (2026-10-12)
