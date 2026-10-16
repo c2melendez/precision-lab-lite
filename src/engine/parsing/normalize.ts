@@ -719,7 +719,7 @@ function validateInputStructureG3(input: string): void {
  * Keep explicit log(x, base), ln(x), and generated CAS log calls separate.
  */
 function normalizePlainCommonLog(source: string): string {
-  return source.replace(/(^|[^A-Za-z0-9_\\])log\s*\(/g, (match, prefix: string, offset: number) => {
+  return source.replace(/(?<![A-Za-z0-9_\\])log\s*\(/g, (match, offset: number) => {
     const open = offset + match.length - 1;
     let depth = 1;
     let hasComma = false;
@@ -727,7 +727,7 @@ function normalizePlainCommonLog(source: string): string {
       if (source[i] === "(" || source[i] === "{") depth++;
       else if (source[i] === ")" || source[i] === "}") {
         depth--;
-        if (depth === 0) return hasComma ? match : prefix + "log10(";
+        if (depth === 0) return hasComma ? match : "log10(";
       } else if (source[i] === "," && depth === 1) hasComma = true;
     }
     return match; // Let the existing parser diagnose incomplete arguments.

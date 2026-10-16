@@ -70,6 +70,23 @@ export function evaluate(expressionLatex: string): string {
     }
     // Algebrite trabaja con su propia sintaxis de entrada; la conversión
     // LaTeX -> sintaxis Algebrite vive en engine/parsing (Módulo 2).
+    // Exact change-of-base results for positive integer powers. Preserve
+    // parser structure/echo; reduce only after entering the CAS adapter.
+    // Repeated integer division proves the exponent without float rounding.
+    expressionLatex = expressionLatex.replace(
+      /\blog\((\d+)\)\/log\((\d+)\)/g,
+      (whole, argument: string, baseText: string) => {
+        const base = BigInt(baseText);
+        let value = BigInt(argument);
+        if (base <= 1n || value < 1n) return whole;
+        let exponent = 0;
+        while (value > 1n && value % base === 0n) {
+          value /= base;
+          exponent++;
+        }
+        return value === 1n ? String(exponent) : whole;
+      },
+    );
     let result: string = Algebrite.run(expressionLatex);
     if (typeof result !== "string" || result.length === 0) {
       throw toAppError(ErrorCode.PARSE_ERROR, "Algebrite no devolvió resultado.");
