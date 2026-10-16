@@ -1,5 +1,12 @@
 # Certification Execution Log
 
+## 2026-10-16 — SY-R-12 E2E browser FAIL, diagnóstico publicado
+- SY-R-11 cerrado acotado; SY-R-12 Lite cumulative 38894721459 SUCCESS, build 38894721481 SUCCESS, H1d 38894721436 SUCCESS; Plus cumulative 38891951302 SUCCESS.
+- Lite científica 38894721463 FAILURE (372 passed, tres fallos nuevos SY-R-12 desktop/tablet/mobile); error real: interfaz no encuentra el mensaje esperado `Entrada no matemática: escribe una expresión válida.`. Esto significa que las unitarias no prueban todavía el recorrido MathLive → entrada serializada → parseExpression → aviso UI. No declarar SY-R-12 PASS browser.
+- Nuevo commit diagnóstico bfe7921ed2a816e65286e521298e8910fcd6f6de en `e2e/syntax309-syr12.spec.ts`: captura el valor LaTeX realmente serializado por MathLive y texto del `[role=alert]` para separar cambio de serialización de fallo al renderizar; mantiene oráculo de error y recuperación tras `2+3`.
+- Siguiente objetivo imprescindible: inspeccionar el E2E de este SHA, identificar entrada serializada real, corregir rechazo de texto ambiguo conservando variables matemáticas válidas, verificar E2E con 3 dispositivos y acumulativos de Lite/Plus. H2/SG28 OPEN, DIST bloqueado. No merge/release.
+
+
 ## 2026-10-16 — SY-R-12 acumulativos PASS, E2E nativo nuevo pendiente
 - Lite cumulative 38891942863 SUCCESS, scientific 38891942824 SUCCESS, build 38891942793 SUCCESS sobre SHA técnico 6da308fe. Plus cumulative 38891951302 SUCCESS y H1d 38891951340 SUCCESS sobre SHA técnico 94d8f73f. La corrección de replaceAll a replace saneó el typecheck.
 - SY-R-12 unitarias Lite `tests/syntax309SyR12.audit.test.ts` y Plus `frontend/src/__tests__/syntax309SyR12.audit.test.ts` pasan sus acumulativos (entrada normativa `\\text{no existe}` / operacion:error / rechazo). Se mantiene la distinción entre prueba de normalización y prueba E2E.
