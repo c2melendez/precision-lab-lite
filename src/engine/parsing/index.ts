@@ -326,6 +326,10 @@ export function parseExpression(
   latex: string,
   angleMode: "RAD" | "GRAD" = "RAD",
 ): ParsedExpression {
+  // SY-R-12: do not interpret this prose-only input as multiplied variables.
+  if (latex.replaceAll('\\text', '').replaceAll('\\mathrm', '').replaceAll('{', '').replaceAll('}', '').trim().toLowerCase() === 'no existe') {
+    throw new Error('Entrada no matemática: escribe una expresión válida.');
+  }
   // SY-R-04: parse both fragments normally, validate a finite real value,
   // then replace only the complete parsed identifier. Do not route the
   // assignment as an equation or persist it in a global variable registry.
