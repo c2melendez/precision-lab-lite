@@ -16,6 +16,11 @@ test("SY-R-11 native MathLive Worker matrix result and reentry retain exact inve
   await page.locator("button:visible").filter({hasText:/^Calcular$/}).first().click();
   await expect(result.locator("math-field[read-only]").first()).toBeVisible();
   if(prior)await expect(result).not.toHaveAttribute("data-result-request-id",prior);
+  await expect.poll(async()=>{
+   const latex=await result.locator("math-field[read-only]").first().evaluate(node=>(node as HTMLElement & {value:string}).value);
+   const intent=detectMatrixIntent(latex);
+   return intent?.kind==="literal" ? intent.matrix : {unparsedLatex:latex};
+  }).toEqual([["-2","1"],["3/2","-1/2"]]);
   const displayed=await result.locator("math-field[read-only]").first().evaluate(node=>(node as HTMLElement & {value:string}).value);
   const intent=detectMatrixIntent(displayed);
   expect(intent?.kind).toBe("literal");
