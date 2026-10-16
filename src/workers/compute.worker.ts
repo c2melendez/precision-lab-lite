@@ -106,7 +106,7 @@ export type ComputeRequest =
   | {
       type: "matrixOp";
       requestId: string;
-      op: "add" | "subtract" | "multiply" | "transpose" | "determinant" | "inverse" | "power" | "ref" | "rref" | "kron" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank";
+      op: "literal" | "add" | "subtract" | "multiply" | "transpose" | "determinant" | "inverse" | "power" | "ref" | "rref" | "kron" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank";
       a: (string | number)[][];
       b?: (string | number)[][];
       exponent?: number;
@@ -1086,6 +1086,11 @@ function handleMatrixOp(
     let confidence: ResultConfidence = "SYMBOLIC";
 
     switch (msg.op) {
+      case "literal": {
+        resultLatex = a.map(row => row.map(value => value.toFraction(true)).join(", ")).join(" | ");
+        steps = [];
+        break;
+      }
       case "add": {
         const { result, steps: s } = addMatrices(a, b!);
         resultLatex = result.map((row) => row.map((v) => v.toFraction(true)).join(", ")).join(" | ");

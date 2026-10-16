@@ -318,7 +318,9 @@ export function BasicScientificMode() {
             ? {...e.data,resultLatex:"\\left("+e.data.resultLatex+"\\right)",resultViewLabel:"Vector en base canónica"}
             : e.data);
 
-      if (matrixIntent.kind === "inverse") {
+      if (matrixIntent.kind === "basis") {
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "literal", a: matrixIntent.matrix });
+      } else if (matrixIntent.kind === "inverse") {
         dispatchWorker(worker, { type: "matrixOp", requestId, op: "inverse", a: matrixIntent.matrix });
       } else if (matrixIntent.kind === "power") {
         dispatchWorker(worker, { type: "matrixOp", requestId, op: "power", a: matrixIntent.matrix, exponent: matrixIntent.exponent });

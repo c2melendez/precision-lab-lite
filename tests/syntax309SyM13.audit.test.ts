@@ -14,7 +14,7 @@ describe("SY-M-13 explicit canonical basis",()=>{
   expect(intent).toEqual({kind:"basis",matrix:[["1","2","-1"]]});
   if(!intent||intent.kind!=="basis")throw Error("missing basis");
   scope.postMessage.mockClear();
-  scope.onmessage!({data:{type:"matrixOp",op:"power",a:intent.matrix,exponent:1,requestId:"sym13"}});
+  scope.onmessage!({data:{type:"matrixOp",op:"literal",a:intent.matrix,requestId:"sym13"}});
   const reply=scope.postMessage.mock.calls.at(-1)![0];
   expect(reply.success,JSON.stringify(reply)).toBe(true);
   expect(reply.resultLatex.replace(/\s/g,"")).toBe("1,2,-1");
