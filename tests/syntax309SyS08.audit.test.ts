@@ -14,7 +14,7 @@ describe("SY-S-08 senh numeric oracle",()=>{
   const reply=scope.postMessage.mock.calls.at(-1)![0];
   expect(reply.success,JSON.stringify(reply)).toBe(true);
   expect(reply.requestId).toBe("sys08");
-  const value=Number(reply.fraction?.decimal ?? reply.result);
+  const value=Number(reply.fraction?.decimal ?? reply.decimalApprox ?? reply.result);
   expect(Number.isFinite(value),JSON.stringify(reply)).toBe(true);
   expect(Math.abs(value-Number(row.esperado))).toBeLessThan(5e-10);
  });
