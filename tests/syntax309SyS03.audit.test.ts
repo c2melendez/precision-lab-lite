@@ -6,7 +6,7 @@ const scope={postMessage:vi.fn(),onmessage:undefined as any};
 beforeAll(async()=>{vi.stubGlobal("self",scope);await import("../src/workers/compute.worker");});
 afterAll(()=>vi.unstubAllGlobals());
 const row=source.trim().split("\n").map(s=>JSON.parse(s)).find(r=>r.id==="SY-S-03");
-describe("SY-S-03 Spanish tangent alias",()=>{
+describe("SY-S-03 Spanish cotangent alias",()=>{
  it("binds the whole official argument and evaluates exactly",()=>{
   expect(row.entrada).toBe(String.raw`\operatorname{ctg}\frac{\pi}{4}`);
   expect(row.esperado).toBe("1");
