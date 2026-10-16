@@ -1,5 +1,13 @@
 # Current Certification State
 
+## 2026-10-15 — SY-S-03 gates PASS; SY-S-04 implementado, CI pendiente
+
+- SY-S-03 oficial `\\operatorname{ctg}\\frac{\\pi}{4}` → 1: Plus acumulativo [38847939932](https://github.com/c2melendez/precision-lab-plus/actions/runs/38847939932) SUCCESS y H1d [38847939962](https://github.com/c2melendez/precision-lab-plus/actions/runs/38847939962) SUCCESS en SHA `ccac2acc`; Lite acumulativo [38848004920](https://github.com/c2melendez/precision-lab-lite/actions/runs/38848004920) SUCCESS (1480 PASS, 30 TODO) y navegador [38848004905](https://github.com/c2melendez/precision-lab-lite/actions/runs/38848004905) SUCCESS sobre `2225b888`. Sigue pendiente E2E nativo end-to-end Plus, separado de conversor/HTTP.
+- SY-S-04 oficial `\\operatorname{cosec}\\frac{\\pi}{6}` → 2: Plus preserva fracción completa como argumento de `\\csc`; añadidas pruebas frontend con conversor real y HTTP MathResponse, resultado exacto y reentrada, último SHA técnico `cbb139b4`. Plus gate [38848312931](https://github.com/c2melendez/precision-lab-plus/actions/runs/38848312931) y H1d [38848313211](https://github.com/c2melendez/precision-lab-plus/actions/runs/38848313211) iniciados.
+- Lite: pruebas de parser/Worker exacto, reentrada y navegador desktop/tablet/mobile para alias oficial y variante agrupada. YAML científico ampliado; último SHA técnico `62f706c4`. Acumulado [38848342517](https://github.com/c2melendez/precision-lab-lite/actions/runs/38848342517) y E2E [38848342516](https://github.com/c2melendez/precision-lab-lite/actions/runs/38848342516) iniciados.
+- No marcar SY-S-04 PASS antes de concluir gates en SHA técnicos respectivos y diagnosticar fallos; TODO/XFAIL no suman PASS. IN625/H2/SG28 OPEN, DIST-01..08 BLOCKED; sin merge ni despliegue. Siguiente paso: comprobar resultados y logs de SY-S-04 y, al cerrar, avanzar SY-S-05 según el fixture canónico.
+
+
 ## 2026-10-15 — SY-S-03 IMPLEMENTADO / CI EN CURSO (sin PASS contractual)
 
 - Fixture oficial: `\\operatorname{ctg}\\frac{\\pi}{4}` → `1`. SY-S-02 había pasado gate acumulativo en Plus 38846847337 SHA 27c1d55 y Lite 38846843845 SHA 592e6d6.
