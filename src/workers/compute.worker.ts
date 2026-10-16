@@ -106,10 +106,11 @@ export type ComputeRequest =
   | {
       type: "matrixOp";
       requestId: string;
-      op: "literal" | "add" | "subtract" | "multiply" | "transpose" | "determinant" | "inverse" | "power" | "ref" | "rref" | "kron" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank";
+      op: "scale" | "literal" | "add" | "subtract" | "multiply" | "transpose" | "determinant" | "inverse" | "power" | "ref" | "rref" | "kron" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank";
       a: (string | number)[][];
       b?: (string | number)[][];
       exponent?: number;
+      scalar?: string;
     }
   | {
       type: "matrixExpression";
@@ -1086,6 +1087,17 @@ function handleMatrixOp(
     let confidence: ResultConfidence = "SYMBOLIC";
 
     switch (msg.op) {
+      case "scale": {
+        const factor = toFractionMatrix([[msg.scalar ?? "1"]])[0][0];
+        const result = a.map(row=>row.map(value=>value.mul(factor)));
+        const cellLatex = (value: typeof result[number][number]): string => {
+          const [numerator,denominator] = value.toFraction().split("/");
+          return denominator ? "\\frac{"+numerator+"}{"+denominator+"}" : numerator;
+        };
+        resultLatex = "\\begin{pmatrix}"+result.map(row=>row.map(cellLatex).join(" & ")).join(" \\\\ ")+"\\end{pmatrix}";
+        steps = [];
+        break;
+      }
       case "literal": {
         resultLatex = a.map(row => row.map(value => value.toFraction(true)).join(", ")).join(" | ");
         steps = [];

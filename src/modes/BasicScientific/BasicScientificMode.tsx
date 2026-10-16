@@ -321,6 +321,8 @@ export function BasicScientificMode() {
       if (matrixIntent.kind === "absolute") {
         const scalar = parseExpression(matrixIntent.scalar, angleMode);
         dispatchWorker(worker, {type:"evaluate",requestId,expressionAlgebrite:"abs("+scalar.algebrite+")"});
+      } else if (matrixIntent.kind === "scale") {
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "scale", a: matrixIntent.matrix, scalar: matrixIntent.scalar });
       } else if (matrixIntent.kind === "basis") {
         dispatchWorker(worker, { type: "matrixOp", requestId, op: "literal", a: matrixIntent.matrix });
       } else if (matrixIntent.kind === "inverse") {

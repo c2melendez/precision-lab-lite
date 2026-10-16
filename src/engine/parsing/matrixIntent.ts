@@ -1,4 +1,5 @@
 export type MatrixIntent =
+  | { kind: "scale"; scalar: string; matrix: string[][] }
   | { kind: "absolute"; scalar: string }
   | { kind: "basis"; matrix: string[][] }
   | { kind: "literal"; matrix: string[][] }
@@ -92,6 +93,23 @@ export function isNamedVectorDotSource(latex:string):boolean {
 }
 
 export function detectMatrixIntent(latex: string): MatrixIntent | null {
+  // SY-M-20: a bounded numeric scalar followed by one complete matrix.
+  const scaleSource = latex.trim();
+  const scalePrefix = /^([+-]?(?:\d+(?:\.\d+)?(?:\/[+-]?\d+)?|\\(?:frac|dfrac|tfrac)\s*\{\s*[+-]?\d+\s*\}\s*\{\s*[+-]?\d+\s*\}))\s*(?=\\begin|\\left\[)/.exec(scaleSource);
+  if (scalePrefix) {
+    const parsed = parseSingleMatrix(scaleSource.slice(scalePrefix[0].length));
+    if (parsed && parsed.env !== "v" && !parsed.rest.trim()) {
+      const raw = scalePrefix[1];
+      if (raw.length > 128) throw new Error("Escalar demasiado largo.");
+      const fraction = /^([+-]?)\\(?:frac|dfrac|tfrac)\s*\{\s*([+-]?\d+)\s*\}\s*\{\s*([+-]?\d+)\s*\}$/.exec(raw);
+      const scalar = fraction ? ((fraction[1] === "-") !== fraction[2].startsWith("-") ? "-" : "")+fraction[2].replace(/^[+-]/,"")+"/"+fraction[3] : raw;
+      // Keep exact numeric strings; only use Number to reject nonfinite/zero denominators.
+      const normalized = scalar;
+      const [numerator,denominator="1"] = normalized.split("/");
+      if (!Number.isFinite(Number(numerator)/Number(denominator))) throw new Error("El escalar debe ser real y finito.");
+      return {kind:"scale",scalar:normalized,matrix:parsed.matrix};
+    }
+  }
   // SY-M-16: a local declaration supplies the type; an unbound name has no inferred type.
   const barsText = latex.trim().replace(/\\left(?=\\lvert|\|)|\\right(?=\\rvert|\|)/g, "")
     .replace(/\\lvert/g, "|").replace(/\\rvert/g, "|").replace(/\\[, ]|\s/g, "");
