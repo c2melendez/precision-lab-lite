@@ -34,6 +34,7 @@ describe("Syntax309 SY-R-08 complex binomial and result reentry", () => {
   ["1+2i", 1, 2],
   ["3-4i", 3, -4],
   ["-2+3i", -2, 3],
+  ["(1+2i)^2", -3, 4],
  ])("preserves real and imaginary components of %s", (source, re, im) => {
   if (source === "1+2i") {
    const row = rows.find(row => row.id === "SY-R-08");
