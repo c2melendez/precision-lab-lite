@@ -2,6 +2,14 @@
 Fecha de corte: 2026-10-16 (America/Tegucigalpa). Rama: `qa/syntax-audit-in625-a1`.
 Estado global: **ABIERTO**. Porcentaje global: **ND**, falta reconciliar requisitos únicos por módulo y canal.
 
+## 2026-10-16 — Regresión cruzada diagnosticada; verificación final SY-S-13..18
+- Plus SHA 7361816bd4a35890e81cfdd3ae445d1fe0e57702: cumulative 38868729743 y H1d 38868729643 SUCCESS. Backend job 116867515400: 1369 passed, 1 XFAIL, tests sys15/sys16/sys17/sys18 nombrados PASS; frontend job 116867515337: 928 passed, 28 TODO, cuatro conversores nuevos PASS. Mantener límite: conversor y HTTP separados; no UI nativo integral Plus.
+- Lite UI 38868504449 FAILURE en seis comprobaciones SY-S-13/14. Causa harness confirmada en ResultPanel.tsx: vista dec usa span para números; el test esperaba math-field readonly inexistente. Se selecciona botón sqrt para vista exacta antes de leer math-field. Oráculos 0 y 1 sin cambios; misma corrección aplicada a SY-S-15..18.
+- Lite cumulative 38868916158 FAIL: CAS dejó log(100)/log(10) simbólico. Intento 1a775c65 redujo potencias de diez dentro del parser, pero cumulative 38869090703 FAIL por regresión de eco estructural EN-FP-20 y EN-AL-26; además log(8,2) seguía sin reducción numérica. No se debilitaron tests previos.
+- Corrección final Lite 02aa00c95fe4684901358247b1079e98c1b2cae6: conserva rewriteCommonLog original y mueve reducción demostrable de cocientes log(entero)/log(base entera) al adaptador algebriteClient.ts. Divisiones BigInt prueban potencia exacta, sin redondeo. Normalización de unary log plano base10 permanece en entrada; ln y log con base explícita se preservan, incluidos anidados.
+- Gates Lite del SHA final: cumulative 38869279897, build 38869279924, H1d 38869279899 y científica UI 38869279824 IN_PROGRESS al registrar. No certificar SY-S-13..18 bilateralmente hasta esos resultados y logs específicos.
+- Siguiente paso exacto: verificar esos cuatro runs y test syntax309SyS16.audit.test.ts junto a EN-FP-20/EN-AL-26; verificar seis specs sys13..sys18 en desktop/tablet/mobile, luego continuar SY-S-19/20 con símbolo de grados. SY-S-12 conserva PASS acotado ya registrado. H2/SG28 OPEN, DIST multinodo BLOCKED; sin merge o producción.
+
 ## 2026-10-16 — SY-S-13/14 HTTP y motor PASS; SY-S-15..18 y corrección log en CI
 - SY-S-13/14 Lite SHA 1a4694a4a96415ebdb889929f6531a42b040554e: cumulative 38868505125 SUCCESS, 1492 passed / 30 TODO; tests nuevos nombrados ambos PASS; build 38868504575 y H1d 38868504569 SUCCESS. UI 38868504449 pendiente de conclusión al observar.
 - Plus SHA 94d2ff779172b3fbde9b3b6cb1ac391553fca7ba cumulative 38868507204 y H1d 38868507203 SUCCESS: backend 1365 passed / 1 XFAIL, tests sys13/sys14 exactos y reentrada PASS; frontend 924 passed / 28 TODO. Pendiente E2E UI nativo integral Plus; conversor y HTTP son capas separadas.
