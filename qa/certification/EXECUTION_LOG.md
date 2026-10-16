@@ -1,3 +1,8 @@
+## 2026-10-16 — SY-X-04 Plus: conversión de 500 términos espaciados
+- Commit técnico Plus `a2fbdece01c08e1ce5eae90a6a285c293cae9783` añade un test al archivo `frontend/src/components/syntax309-syx04.test.ts`: 500 sumandos `x + x + ...`, verifica que el conversor conserva los 500 términos al normalizar whitespace, sin truncar ni presimplificar.
+- Alcance ORÁCULO/REGRESIÓN de frontend. No modifica el contrato HTTP de 500 caracteres ni el motor; la expresión espaciada tampoco acredita capacidad de la API para admitirla. CI aún pendiente, no PASS.
+- Bloqueo de evidencia por SHA sigue en Lite issue #50; próximo paso sin duplicar Actions es recuperar runs existentes y sus logs. SY-R-12 permanece OPEN; SG28/H2 OPEN y DIST BLOCKED.
+
 ## 2026-10-16 — SY-X-04: propuesta de resolución contractual, no aprobada
 - Documento de decisión bilateral `qa/certification/SY_X_04_LENGTH_DECISION.md` (Plus `dc11c29aad94fba662c1a101ef22de841eb5b4da`; Lite `cb7d0ce4af9d7ab19b8f07a85d3ebbbce2540748`). Evalúa conservar max_length=500 con capability parcial, ampliar expresamente a >=999 caracteres tras autorización y pruebas de límites de recursos, o introducir API versionada. No se modificó contrato ni motor.
 - Preferencia de diseño sujeta a aprobación: ampliar acotadamente EvaluateRequest a un valor documentado (p.ej. 1024), solo tras analizar parser, límites AST, SG28, seguridad, clientes y gates de regresión, con entrada literal intacta; mientras tanto no declarar SY-X-04 Plus HTTP PASS. Corridas pendientes bajo issue Lite #50.
