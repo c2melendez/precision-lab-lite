@@ -14,8 +14,10 @@ test("SY-R-08 official complex value and native result reentry", async ({ page }
   await expect(result).toBeVisible();
   console.log("SY-R-08 native source", await input.evaluate(node => (node as HTMLElement & { value: string }).value));
   if (previous) await expect(result).not.toHaveAttribute("data-result-request-id", previous);
+  const display = result.locator("math-field[read-only]").first();
+  await expect(display).toBeVisible();
   await expect.poll(async () => {
-   const text = await result.locator(".a11y-scale-result-3xl").first().innerText();
+   const text = await display.evaluate(node => (node as HTMLElement & { value: string }).value);
    return text.replace(/\s/g, "").replace(/−/g, "-");
   }).toMatch(/^(?:1\+2[⋅·*]?i|2[⋅·*]?i\+1)$/);
   source = (await result.getAttribute("data-result-reentry-latex")) ?? "";
