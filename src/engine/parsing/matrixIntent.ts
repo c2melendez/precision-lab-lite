@@ -91,6 +91,11 @@ export function isNamedVectorDotSource(latex:string):boolean {
 }
 
 export function detectMatrixIntent(latex: string): MatrixIntent | null {
+  // SY-M-15: explicit named vectors select cross-product semantics, never scalar multiplication.
+  const crossText = latex.trim().replace(/\\[, ]|\s/g, "");
+  if (/^\\vec\{[A-Za-z]\}\\times\\vec\{[A-Za-z]\}$/.test(crossText)) {
+    throw new Error("× entre vectores representa el producto cruz de vectores 3D. Faltan sus componentes; introdúcelas en la operación de producto cruz del módulo Matrices.");
+  }
   // SY-M-14: definitions are local data, never assignments in a CAS/session.
   if (isNamedVectorDotSource(latex)) {
     const source = localVectorText(latex);
