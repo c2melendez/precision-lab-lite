@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 28,
+  "revision": 29,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "378510f0092d4c50c321fc59ce1abb87e732aa72",
@@ -114,19 +114,19 @@
     }
   },
   "next_action": {
-    "id": "SY-X-12-BILATERAL",
+    "id": "SY-X-13-BILATERAL",
     "status": "READY",
     "repository": "c2melendez/precision-lab-lite",
     "paired_repository": "c2melendez/precision-lab-plus",
     "files": [
       "qa/certification/syntax309_cases.jsonl"
     ],
-    "action": "Preserve exact original integral of sin(x^x), verify non-elementary primitive behavior in existing parser/CAS routes without inventing an antiderivative. Investigate Lite Worker and Plus HTTP before adding scoped native UI assertions. Require clear notice or properly unevaluated symbolic integral, not false success.",
+    "action": "Inspect exact original derivative of x^(x^x) and canonical oracle; verify precedence and variable-base-variable-exponent chain rules in Lite Algebrite Worker and Plus SymPy backend before adding native MathLive tests. Preserve mathematically equivalent forms, avoid false symbolic confidence, verify finite recovery.",
     "exit_criteria": [
-      "Preserve canonical SY-X-12 fixture/oracle",
-      "Real math engine never fabricates elementary antiderivative",
-      "Native MathLive/Worker/HTTP desktop/tablet/mobile with recovery/reentry",
-      "Scoped CI evidence by commit SHA, no redundant dispatch, bilateral records"
+      "Pin original source and expected derivative unchanged",
+      "Compare symbolic derivative by mathematical equivalence and correct nesting, not fragile string equality",
+      "Verify Lite Worker and Plus HTTP with actual CAS, desktop/tablet/mobile and finite recovery/reentry",
+      "Inspect scoped CI results by exact SHA; record bilateral evidence without redundant dispatch"
     ]
   },
   "blockers": [
@@ -189,13 +189,12 @@
     }
   ],
   "work_in_progress": {
-    "id": "SY-X-11-BILATERAL",
+    "id": "SY-X-12-BILATERAL",
     "status": "VERIFIED_SCOPED",
-    "technical_sha": "3aa46aef85935f441d37dd640b924e18a4341ef4",
-    "paired_technical_sha": "5474735d5a3b8f03f406ddfe4798ba4a2716637a",
-    "native_run": 39002459569,
-    "cumulative_run": 39002459587,
-    "h1d_run": 39002459571
+    "technical_sha": "9394705e46872df451336a73f21bb69488fe8903",
+    "native_run": 39005797302,
+    "cumulative_run": 39005797371,
+    "h1d_run": 39005797303
   },
   "cases": {
     "SY-X-03": {
@@ -399,6 +398,28 @@
         "request IDs"
       ],
       "limitations": "Scoped native Chromium MathLive/Worker/HTTP, not every OS/keyboard or global suite"
+    },
+    "SY-X-12": {
+      "status": "PASS_SCOPED",
+      "original_source": "\\int\\sin\\left(x^{x}\\right)dx",
+      "original_expected": "sin forma elemental: aviso claro; no una antiderivada inventada",
+      "lite_native_run": 39005797302,
+      "plus_native_run": 39008936707,
+      "lite_cumulative_run": 39005797371,
+      "plus_cumulative_run": 39008936713,
+      "lite_h1d_run": 39005797303,
+      "plus_h1d_run": 39008936711,
+      "profiles": [
+        "desktop-chromium",
+        "tablet-chromium",
+        "mobile-chromium"
+      ],
+      "controls": [
+        "no fabricated primitive",
+        "clear unresolved-integral notice",
+        "finite recovery and reentry"
+      ],
+      "limitations": "Only scoped MathLive/Worker/HTTP in 3 Chromium profiles; global certification remains OPEN"
     }
   },
   "verification_proofs": {
