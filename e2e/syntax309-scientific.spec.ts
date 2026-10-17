@@ -58,7 +58,7 @@ test("SY-X-20 native Unicode invalid character rejection and recovered reentry",
   for(const input of ["2+3","5"]){
     await setSource(input);
     const status=result.locator('[role="status"][data-result-request-id]').first();
-    const previousId=await status.getAttribute("data-result-request-id").catch(()=>null);
+    const previousId=(await status.count()) ? await status.getAttribute("data-result-request-id") : null;
     await page.evaluate(()=>window.mathVirtualKeyboard?.hide());
     const calculate=page.getByRole("region",{name:"Entrada"}).getByRole("button",{name:"Calcular",exact:true});
     await expect(calculate).toBeEnabled();
