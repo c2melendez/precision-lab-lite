@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 38,
+  "revision": 39,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "82a83c430a779eaa344be5be7644c9a38bfedc26",
@@ -224,7 +224,7 @@
     "id": "SY-X-17-BILATERAL",
     "status": "WAIT_CI",
     "technical_sha": "82a83c430a779eaa344be5be7644c9a38bfedc26",
-    "paired_technical_sha": "67b9ca8eb32edf282608e73fcf225ebdd06fda4b",
+    "paired_technical_sha": "02a8f689aac5d4583a35edaa722851d344b27419",
     "runs": [
       {
         "id": 39017068701,
@@ -238,8 +238,8 @@
       {
         "id": 39017068699,
         "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "in_progress",
-        "conclusion": null,
+        "status": "completed",
+        "conclusion": "success",
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39017068699",
         "logs_reviewed": false,
         "evidence_executed": false
@@ -247,13 +247,22 @@
       {
         "id": 39017068708,
         "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "in_progress",
-        "conclusion": null,
+        "status": "completed",
+        "conclusion": "success",
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39017068708",
         "logs_reviewed": false,
         "evidence_executed": false
       }
-    ]
+    ],
+    "diagnosis": {
+      "classification": "PRODUCT_CONVERSION",
+      "failed_run": 39017066935,
+      "failed_job": 117351282488,
+      "failed_sha": "67b9ca8eb32edf282608e73fcf225ebdd06fda4b",
+      "observed": "MathLive ASCII conversion erases TeX write macro, yields 18l s and false algebraic result; no command execution proven",
+      "correction_sha": "02a8f689aac5d4583a35edaa722851d344b27419",
+      "regression": "Frontend converter rejects write command before ASCII conversion; new test reproduced red then passes. Native requires explicit local rejection and no invalid HTTP POST."
+    }
   },
   "cases": {
     "SY-X-03": {

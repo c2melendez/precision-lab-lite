@@ -1,7 +1,7 @@
-# Estado vigente — SY-X-17 WAIT_CI
+# Estado vigente — SY-X-17 WAIT_CI tras corrección
 
-## 2026-10-17 UTC — SY-X-17 bilateral WAIT_CI
-Comando original write18{ls}, sin ejecución. SHA Plus 67b9ca8eb32edf282608e73fcf225ebdd06fda4b; Lite 82a83c430a779eaa344be5be7644c9a38bfedc26. Nuevos tests locales: Lite2PASS; Plus8PASS, incluidos7controles sys.audit sintéticos sin procesos reales. Parser Lite rechaza carácter no reconocido, Worker real rechaza y recupera; HTTP Plus rechaza bajo guarda de eventos de lanzamiento y recupera. Nativo pendiente en3perfiles. Solo tests/workflow, sin motor ni dependencias. Runs existentes: plus:39017066925,39017066935,39017066929; lite:39017068701,39017068699,39017068708. Esperar esos runs; no duplicar. Global OPEN y bloqueos conservados.
+## 2026-10-17 UTC — SY-X-17 diagnóstico y corrección Plus; WAIT_CI
+Run nativo Plus39017066935/job117351282488 falló20PASS/1FAILdesktop; tablet/mobile no ejecutados. Artefacto12094727679 y reproducción directa: convertLatexToAsciiMath borra write y produce18l s, evaluado como producto. Fallo de conversión del producto, no ejecución de shell demostrada. Regresión frontend primero falla; corrección rechaza el comando antes de convertir.10pruebas locales pertinentes ytypecheckPASS. Nuevo SHA Plus 02a8f689aac5d4583a35edaa722851d344b27419; Lite mantiene 82a83c430a779eaa344be5be7644c9a38bfedc26. Fuente/oráculo intactos, sin relajar prueba. Nueva corrida justificada por cambio técnico. Gate adicional de preflight/campaña selecciona solo componentes afectados; no atribuir PASS a SKIP o initial run. Runs actuales: plus:39017316970,39017316999,39017316988,39017316967,39017317053; lite:39017068701,39017068699,39017068708. Esperar/inspeccionar; no duplicar. GlobalOPEN, bloqueos conservados.
 
 ## Bloqueos conservados
 
