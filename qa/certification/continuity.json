@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 24,
+  "revision": 25,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "378510f0092d4c50c321fc59ce1abb87e732aa72",
@@ -366,7 +366,20 @@
     "mechanism_tests": 34,
     "doc_only_checkpoints_triggered_actions": 0,
     "real_input_fingerprint_reuse": "Lite cumulative38983494314 across documentary HEAD",
-    "stale_next_action_protection": "Plus technical HEAD changed => RECONCILE,next_action=null"
+    "stale_next_action_protection": "Plus technical HEAD changed => RECONCILE,next_action=null",
+    "x08_handoff": {
+      "state_status": "CURRENT",
+      "next_action": "SY-X-09-BILATERAL",
+      "reused_gates": [
+        "cumulative",
+        "scientific",
+        "h1d"
+      ],
+      "source_sha": "378510f0092d4c50c321fc59ce1abb87e732aa72",
+      "doc_only_actions": 0,
+      "observed_at": "2026-10-17T02:47:47.918Z",
+      "scope": "Fresh exact-SHA run/job/log observations; conservative missing gates are not a dispatch authorization, apply blockers and component router."
+    }
   },
   "historical_mutation_reference": {
     "run_id": 38983505232,
@@ -528,8 +541,8 @@
         {
           "id": 117288029927,
           "name": "mutation / plus-backend-mutmut",
-          "status": "in_progress",
-          "conclusion": null
+          "status": "completed",
+          "conclusion": "success"
         },
         {
           "id": 117288030760,
@@ -538,7 +551,7 @@
           "conclusion": "skipped"
         }
       ],
-      "instruction": "Inspect existing mutation jobs117288029860/117288029927 only; backend securityPASS reviewed24tests. No duplicate run; unrelated npm/Lite pin skipped, not PASS. E2E-only correction did not trigger another campaign."
+      "instruction": "Backend mutmut117288029927 SUCCESS: actual mutations and logs reviewed; no global score inferred. Inspect only existing frontend117288029860 still running. BackendsecurityPASS; unrelated npm/Litepin SKIPPED not PASS."
     }
   ],
   "campaign_evidence_reviews": [
@@ -587,6 +600,17 @@
       "source_repository": "c2melendez/precision-lab-plus",
       "source_sha": "cc89d7ccd36dfdfe15b14e72215920c62508ab00",
       "scope": "Actual mutmut execution under existing job acceptance only; no global S19 score inferred"
+    },
+    {
+      "profile": "mutation_backend",
+      "run_id": 38995800990,
+      "job_id": 117288029927,
+      "input_fingerprint": "99cf314df1db6cb0602b5a2db0029b6d664ff3115817a8937684911cfd7c3151",
+      "logs_reviewed": true,
+      "mutations_executed": true,
+      "source_repository": "c2melendez/precision-lab-plus",
+      "source_sha": "122711fc0161468d8cb619b6ad2aa9a88295b5eb",
+      "scope": "Actual mutmut execution with survivors under existing job acceptance, not full S19 score or closure"
     }
   ]
 }
