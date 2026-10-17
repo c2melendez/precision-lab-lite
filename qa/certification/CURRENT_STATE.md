@@ -1,5 +1,11 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## 2026-10-17 — SY-X-22 native E2E submitted
+Lite prior SHA 4405bc6cd74bfcec2520d3efb8638fe21620c9ff: cumulative 39067482969 SUCCESS (1626 PASS,30 TODO; includes X22 parser+Worker-boundary tests), native 39067482997 SUCCESS (453 PASS previous scope), H1d 39067483007 SUCCESS (21 PASS).
+Plus native X22 SHA 50bd683135de67134c48edd2eea56aad529987e2: native 39068704322; cumulative 39068704268; H1d 39068704250. Lite native X22 SHA 1d8839048b6adfa1a123bd5af8e4e7729fce9c3d: native 39068724679; cumulative 39068724683; H1d 39068724701. At capture runs QUEUED; results not yet accredited. Both E2E tests use MathLive, 10000-digit source, exact/rejection policy, and recovery.
+Next objective: review these exact-SHA jobs/logs on both repos; fix only demonstrated failures, then reconcile X22 acceptance and preserve global OPEN.
+
+
 ## 2026-10-17 — SY-X-22: evidencia nueva y Worker
 Lite SHA 60680a573db8164dc17fd275f01666b040dcd4c4: cumulative 39066850403 SUCCESS (1625 PASS/30 TODO, incluido test SY-X-22), native 39066850464 SUCCESS (453 PASS; no caso X22 nativo aún), H1d 39066850417 SUCCESS (21 PASS). Plus SHA 04da8cc6b55e9be0764bdf9a594c51b4008db07c: cumulative 39066547036 SUCCESS, test X22 HTTP ejecutado (1495 backend PASS/3 XFAIL), H1d 39066547016 SUCCESS. Lite nuevo test Worker/parsing `tests/syntax309SyX22.worker.test.ts` commit 4405bc6cd74bfcec2520d3efb8638fe21620c9ff: cubre validación de 10000 dígitos y recuperación/reentrada real del Worker. El caso grande solo llega al Worker si el parser permite la entrada; no confundir esa rama condicional con evidencia de Worker grande ejecutada. Corridas nuevas cumulative 39067482969, native 39067482997, H1d 39067483007 IN_PROGRESS al registrar. Siguiente: inspeccionar logs de esas corridas y completar E2E nativo X22 en desktop/tablet/mobile y evidencia canal extremo. No cerrar caso; global OPEN.
 
