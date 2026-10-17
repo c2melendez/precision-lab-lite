@@ -16,7 +16,7 @@ Fecha: 2026-10-17 UTC. Certificación global **OPEN**; porcentaje reconciliado *
 | SY-Q | 23 | Recorrido hasta Q-23 con alcances diferenciados. |
 | SY-M | 20 | Recorrido hasta M-20; no certifica todo el módulo Matrices. |
 | SY-S | 20 | Recorrido hasta S-20 registrado. |
-| SY-R | 14 | Recorrido hasta R-14; R12 nativo Plus PASS acotado, R13/R14 UI pendientes. |
+| SY-R | 14 | Recorrido hasta R-14; R12/R13 nativo Plus PASS acotado; R14 UI pendiente. |
 | SY-X | 22 | X01–03 PASS acotado con Plus nativo9/9; X04 Lite nativo/Worker PASS acotado y Plus BLOCKED; X05–22 pendientes. |
 | Total | 309 | Fixture común intacto; certificación integral OPEN. |
 
@@ -30,7 +30,7 @@ Las cifras son filas de la matriz, no totales de PASS. Consultar evidencia vigen
 | H2/SG28/DIST | OPEN/BLOCKED | Contrato de vigencia/fencing, integración HTTP y luego aceptación multihost. |
 | Seguridad npm/S25 | BLOCKED | Parche compatible o migración validada; mantener gate estricto. |
 | Mutación S19 | PENDIENTE de evidencia actual | Gate focalizado del lote técnico, no reejecuciones sin diagnóstico. |
-| UI Plus | PARCIAL | X01–03 y R12 nativo12/12 PASS; otros casos R y módulos pendientes. |
+| UI Plus | PARCIAL | X01–03,R12,R13 nativo15/15 PASS; R14 y otros módulos pendientes. |
 | Gráficas/Matrices/Estadística/Unidades | PARCIAL; requisitos ND | Vincular operaciones y flujos a requisitos únicos. |
 | Geometría | PENDIENTE de inventario reconciliado | Localizar contrato, implementación y pruebas. |
 | Visual/responsive/accesibilidad | PARCIAL | Reconciliar matriz S26 y capturas/SHA; perfiles Chromium no prueban todos los motores/SO. |
@@ -41,10 +41,10 @@ Las cifras son filas de la matriz, no totales de PASS. Consultar evidencia vigen
 
 ## Último corte verificado
 
-## 2026-10-17 UTC — SY-R-12 nativo Plus verificado
-SHA técnico `f4f909ed373f10e631d2ccb575268017ba983b07`. [Nativo38985749703](https://github.com/c2melendez/precision-lab-plus/actions/runs/38985749703) SUCCESS:12/12, X01–03 y R12 × desktop/tablet/mobile Chromium, sin SKIP. Fixture original \text{no existe} preservado en MathLive; aviso explícito «Entrada no matemática», rechazo local sin POST, dos ciclos de recuperación 5/9 y reentrada HTTP200 con request_id distinto, resultado visible y cero pageerrors. No acredita cada tecla/SO ni botón Reusar.
-[Acumulativo38985749751](https://github.com/c2melendez/precision-lab-plus/actions/runs/38985749751) SUCCESS:frontend984 PASS/28 TODO,141archivos,typecheck/build; backend1455 PASS/2 XFAIL,cobertura87.98%; mecanismo34tests PASS. [H1d38985749714](https://github.com/c2melendez/precision-lab-plus/actions/runs/38985749714) SUCCESS:38 PASS. Jobs/pasos/logs revisados: ejecución real, no REUSE. Sin cambios de producto en este lote.
-Lite mantiene sus runs aprobados sin reejecución. Los checkpoints documentales intermedios no generaron Actions. Campaña histórica38983505232/job117249561875 ya finalizó SUCCESS:Lite referencia6cbec7645b73ad18875d4472182c704eb35228b0,score10.32%,223killed/1548survived/390noCoverage,umbral10.3. No acredita Lite HEAD ni cierra S19 integral; Plus frontend de aquella campaña falló y el posterior initialrun no ejecutó mutaciones.
-S25,SY-P-23,SY-X-04Plus,H2/SG28/DIST conservan bloqueos; globalOPEN. Próximo objetivo único: PLUS-NATIVE-SY-R-13 desde fixture original y binding, sin repetir Lite ni campañas bloqueadas equivalentes.
+## 2026-10-17 UTC — SY-R-13 nativo Plus verificado
+SHA técnico `b90f15e11d6b48a953aa37319afda711dcf58e2e`. [Nativo38986979759](https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979759) SUCCESS:15/15 (X01–03,R12,R13 × desktop/tablet/mobile Chromium),sin SKIP. Fuente canónica raíz cúbica con x=27 conservada en MathLive→conversor→POST /evaluate,resultado exacto visible3; controles x=8→2,y=64→4, reentradaHTTP200 con request_ids nuevos y recuperación2+3→5,sin pageerrors. No cada tecla/SO ni botón Reusar.
+Defecto reproducido antes de corregir:clasificador de relación toma «con» como variables y no envíaHTTP. Se comparte reconocimiento inline entre conversor yBasicMode y se distingue binding deecuación; regresiones conservan /solve y /inequality ordinarios. No modificación al motor ni fixture.
+[Acumulativo38986979606](https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979606) SUCCESS:frontend988 PASS/28 TODO,142archivos,typecheck/build;backend1455 PASS/2 XFAIL,cobertura88.00%;mecanismo34tests PASS. [H1d38986979566](https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979566) SUCCESS:38 PASS. [SG28UI38986979683](https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979683) SUCCESS:21 PASS,regresión UI,no DIST. [S19 initial38986979633](https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979633) SUCCESS:759tests iniciales,NO mutaciones ejecutadas,no score ni cierreS19.
+Jobs/pasos/logs revisados:ejecución real,no REUSE. Lite conserva sus runs anteriores sin reejecución; checkpoints documentales observados sinActions. S25,SY-P-23,SY-X-04Plus,H2/SG28/DIST permanecen abiertos;globalOPEN. Siguiente único:PLUS-NATIVE-SY-R-14,valor absolutooriginal y control negativo,inspeccionar evidencia antes deprobar.
 
 Consultar next_action de continuity.json; el historial no dicta la siguiente tarea.

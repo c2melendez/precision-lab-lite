@@ -203,3 +203,6 @@ Las notas previas de UI Plus X01–03 pendiente quedan superadas por SHA6d594187
 
 ## 2026-10-17 UTC — cierre acotado SY-R-12 nativo Plus
 La nota previa de UI Plus R12 pendiente queda superada por SHAf4f909ed373f10e631d2ccb575268017ba983b07,run38985749703:12/12 X01–03/R12 en desktop/tablet/mobile Chromium. R12 conserva fuente original, rechazo local explícito sin POST, dos ciclos recuperación y reentrada HTTP real, sin pageerrors. MathLive setValue/evento input; no cada tecla física/virtual, cada SO, otros motores ni botón Reusar. R13/R14 nativos Plus pendientes. Lite no se reejecutó; bloqueos globales sin cierre.
+
+## 2026-10-17 UTC — cierre acotado SY-R-13 nativo Plus
+La nota previa deUI PlusR13pendiente queda superada porSHAb90f15e11d6b48a953aa37319afda711dcf58e2e,run38986979759:15/15 X01–03/R12/R13 en3perfilesChromium. Originalraíz cúbica conx27→3,controlesx8→2/y64→4,HTTP real yreentrada,recuperación5,sinpageerrors. Corregido intentUI que interpretaba«con»como relación. MathLive setValue/input,no cada tecla/SO/otro motor ni botónReusar. R14nativoPluspendiente;Lite sin nuevaejecución;bloqueos globales abiertos.

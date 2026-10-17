@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 8,
+  "revision": 9,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "fa974e49feb135290b5bdac63c49114f227c7239",
@@ -96,10 +96,20 @@
     }
   },
   "next_action": {
-    "id": "PLUS-NATIVE-SY-R-13",
-    "status": "WAIT",
+    "id": "PLUS-NATIVE-SY-R-14",
+    "status": "READY",
     "repository": "c2melendez/precision-lab-plus",
-    "action": "Inspect recorded automatic runs at b90f15e11d6b48a953aa37319afda711dcf58e2e; do not redispatch. Review native 15 tests and pertinent regression logs."
+    "files": [
+      "frontend/e2e/in625-syntax-native.spec.ts",
+      "qa/certification/syntax309_cases.jsonl"
+    ],
+    "action": "Cover original absolute-value fixture with x=-4 in actual Plus MathLive/UI, exact result4 and HTTP output reentry. Inspect prior converter/HTTP evidence and absolute-value intent path first; add |x|+x negative control expecting0. Reuse approved Lite evidence and unchanged blockers.",
+    "exit_criteria": [
+      "Preserve original fixture and inline negative binding; no pre-evaluated replacement",
+      "Actual UI to HTTP semantics, visible exact result4, negative control0, result reentry with fresh request IDs and recovery",
+      "Desktop focused diagnosis then tablet/mobile Chromium; no mocks or silent skips",
+      "Review relevant cumulative/native regression logs; synchronize both ledgers and one next objective"
+    ]
   },
   "blockers": [
     {
@@ -146,44 +156,54 @@
   ],
   "work_in_progress": {
     "id": "PLUS-NATIVE-SY-R-13",
-    "status": "WAIT_CI",
+    "status": "VERIFIED_SCOPED",
     "repository": "c2melendez/precision-lab-plus",
     "technical_sha": "b90f15e11d6b48a953aa37319afda711dcf58e2e",
     "runs": [
       {
-        "id": 38986979606,
-        "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979606"
+        "id": 38986979683,
+        "workflow": ".github/workflows/in625-sg28-plus-ui-cancel.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979683",
+        "logs_reviewed": true,
+        "evidence_executed": true
       },
       {
         "id": 38986979633,
         "workflow": ".github/workflows/s19-plus-frontend-preflight.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979633"
-      },
-      {
-        "id": 38986979566,
-        "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979566"
-      },
-      {
-        "id": 38986979683,
-        "workflow": ".github/workflows/in625-sg28-plus-ui-cancel.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979683"
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979633",
+        "logs_reviewed": true,
+        "evidence_executed": true
       },
       {
         "id": 38986979759,
         "workflow": ".github/workflows/in625-syntax-native.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979759"
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979759",
+        "logs_reviewed": true,
+        "evidence_executed": true
+      },
+      {
+        "id": 38986979566,
+        "workflow": ".github/workflows/in625-h1d-reentry.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979566",
+        "logs_reviewed": true,
+        "evidence_executed": true
+      },
+      {
+        "id": 38986979606,
+        "workflow": ".github/workflows/in625-cumulative-certification.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979606",
+        "logs_reviewed": true,
+        "evidence_executed": true
       }
     ]
   },
@@ -209,6 +229,25 @@
         "desktop-chromium",
         "tablet-chromium",
         "mobile-chromium"
+      ],
+      "limitations": "MathLive setValue/input; not every key/OS or Reuse button"
+    },
+    "SY-R-13": {
+      "status": "PASS_SCOPED",
+      "native_plus": "PASS_SCOPED",
+      "native_plus_run": 38986979759,
+      "technical_sha": "b90f15e11d6b48a953aa37319afda711dcf58e2e",
+      "profiles": [
+        "desktop-chromium",
+        "tablet-chromium",
+        "mobile-chromium"
+      ],
+      "controls": [
+        "x=27 =>3",
+        "x=8 =>2",
+        "y=64 =>4",
+        "HTTP output reentry",
+        "2+3 recovery"
       ],
       "limitations": "MathLive setValue/input; not every key/OS or Reuse button"
     }
