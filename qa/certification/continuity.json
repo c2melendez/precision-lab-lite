@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 27,
+  "revision": 28,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "378510f0092d4c50c321fc59ce1abb87e732aa72",
@@ -114,20 +114,19 @@
     }
   },
   "next_action": {
-    "id": "SY-X-11-BILATERAL",
+    "id": "SY-X-12-BILATERAL",
     "status": "READY",
     "repository": "c2melendez/precision-lab-lite",
     "paired_repository": "c2melendez/precision-lab-plus",
     "files": [
       "qa/certification/syntax309_cases.jsonl"
     ],
-    "action": "Preserve exact original 9^{9^{9}} with oracle: ídem (el número tiene unos 369 millones de dígitos). Implement bounded nested-exponent budget without computing the number or regressing small powers. Validate real Lite Worker and Plus HTTP, then MathLive in 3 Chromium profiles, finite recovery, distinct request IDs, and inspect scoped CI by SHA.",
+    "action": "Preserve exact original integral of sin(x^x), verify non-elementary primitive behavior in existing parser/CAS routes without inventing an antiderivative. Investigate Lite Worker and Plus HTTP before adding scoped native UI assertions. Require clear notice or properly unevaluated symbolic integral, not false success.",
     "exit_criteria": [
-      "Canonical 9^{9^{9}} and expected preserved unchanged",
-      "Avoid huge integer evaluation/serialization; clear resource-limit notice or symbolic compact response",
-      "Preserve finite nested powers such as 2^{3^{2}}=512",
-      "Real Worker/HTTP and native desktop/tablet/mobile evidence plus recovery/reentry",
-      "No duplicated CI; update bilateral records only after verifying results"
+      "Preserve canonical SY-X-12 fixture/oracle",
+      "Real math engine never fabricates elementary antiderivative",
+      "Native MathLive/Worker/HTTP desktop/tablet/mobile with recovery/reentry",
+      "Scoped CI evidence by commit SHA, no redundant dispatch, bilateral records"
     ]
   },
   "blockers": [
@@ -190,13 +189,13 @@
     }
   ],
   "work_in_progress": {
-    "id": "SY-X-10-BILATERAL",
+    "id": "SY-X-11-BILATERAL",
     "status": "VERIFIED_SCOPED",
-    "technical_sha": "0906bf79c9f94f95becb2a19410d52428c1269e3",
-    "paired_technical_sha": "f307707928058aa1a53669b0e0103510556e8c57",
-    "native_run": 39001412909,
-    "cumulative_run": 39001412889,
-    "h1d_run": 39001412896
+    "technical_sha": "3aa46aef85935f441d37dd640b924e18a4341ef4",
+    "paired_technical_sha": "5474735d5a3b8f03f406ddfe4798ba4a2716637a",
+    "native_run": 39002459569,
+    "cumulative_run": 39002459587,
+    "h1d_run": 39002459571
   },
   "cases": {
     "SY-X-03": {
@@ -377,6 +376,29 @@
         "finite reentry and distinct request IDs"
       ],
       "limitations": "Scoped MathLive in three Chromium profiles with actual Lite Worker / Plus HTTP; no certification of all input methods/OS or global suite"
+    },
+    "SY-X-11": {
+      "status": "PASS_SCOPED",
+      "original_source": "9^{9^{9}}",
+      "original_expected": "ídem (el número tiene unos 369 millones de dígitos)",
+      "lite_native_run": 39002459569,
+      "plus_native_run": 39002465628,
+      "lite_cumulative_run": 39002459587,
+      "plus_cumulative_run": 39002465579,
+      "lite_h1d_run": 39002459571,
+      "plus_h1d_run": 39002465586,
+      "profiles": [
+        "desktop-chromium",
+        "tablet-chromium",
+        "mobile-chromium"
+      ],
+      "controls": [
+        "readable size limit",
+        "no expanded astronomical integer",
+        "finite recovery and reentry",
+        "request IDs"
+      ],
+      "limitations": "Scoped native Chromium MathLive/Worker/HTTP, not every OS/keyboard or global suite"
     }
   },
   "verification_proofs": {
