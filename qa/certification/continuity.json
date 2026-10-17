@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 45,
+  "revision": 46,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,19 +134,19 @@
     }
   },
   "next_action": {
-    "id": "SY-X-21-BILATERAL",
+    "id": "SY-X-22-BILATERAL",
     "status": "IN_PROGRESS",
     "repository": "c2melendez/precision-lab-lite",
     "paired_repository": "c2melendez/precision-lab-plus",
     "files": [
       "qa/certification/syntax309_cases.jsonl"
     ],
-    "action": "Complete exact original U+200B zero-width source native MathLive ingestion, actual parse/Worker/HTTP oracle (exact 3 or clear error), no false result, and real recovery with distinct IDs on desktop/tablet/mobile Chromium. Review exact technical SHAs and runs; synchronize bilateral logs and advance only once accepted.",
+    "action": "Test canonical 10,000-digit integer + 1 source in parser, actual Worker/HTTP and native MathLive for Lite and Plus. Accept only exact integer or a clear size notice, never floating-point approximation; prove reentry/recovery in three Chromium profiles and inspect exact-SHA CI evidence.",
     "exit_criteria": [
-      "Preserve exact U+200B original fixture and official 3-or-error oracle",
-      "Document parser/Worker/HTTP output under real tests, preserving honest channel differences",
-      "Native desktop/tablet/mobile input and recovery with finite distinct real IDs",
-      "Check exact-SHA runs and logs; TODO/XFAIL not PASS; global certification OPEN"
+      "Preserve original 10,000-digit input contractual length and no float conversion",
+      "Exact integer result or explicit size rejection with bounded behavior",
+      "Native desktop/tablet/mobile plus real Worker/HTTP recovery and traceable distinct requests",
+      "Review real executed jobs/logs and record bilateral evidence; global certification remains OPEN"
     ]
   },
   "blockers": [
@@ -845,6 +845,22 @@
       "technical_sha": "121a64f539f03c3034674a897c34db563b6752e6",
       "product_changes": 0,
       "new_campaigns": 0
+    },
+    "SY-X-21-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "lite": {
+        "technical_sha": "526f1150173a166eb280b75f257bb0165015a8a1",
+        "native_run": 39062504109,
+        "cumulative_run": 39062504182
+      },
+      "plus": {
+        "technical_sha": "a81b2487e0e41fa1ec099bce26673aff1e7f9d0e",
+        "native_run": 39066027440,
+        "cumulative_run": 39066027444,
+        "h1d_run": 39066027416
+      },
+      "evidence_executed": true,
+      "notes": "Lite 453 native PASS 3 Chromium profiles; Plus native 25 desktop and 50 tablet/mobile PASS, backend 1494 PASS 3 XFAIL, frontend 1006 PASS 28 TODO; global OPEN."
     }
   },
   "historical_mutation_reference": {
