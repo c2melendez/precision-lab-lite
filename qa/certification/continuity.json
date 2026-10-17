@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 33,
+  "revision": 34,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "7decaedce18874cb8d81c7137761f69b860cca22",
-  "baseline_case": "SY-X-14",
-  "baseline_status": "VERIFIED_WITH_BLOCKERS",
+  "technical_baseline_sha": "102bc45292f449854dc30bbdedaaac88d1cb64cc",
+  "baseline_case": "SY-X-15",
+  "baseline_status": "WAIT_CI",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -119,13 +119,13 @@
   },
   "next_action": {
     "id": "SY-X-15-BILATERAL",
-    "status": "READY",
+    "status": "WAIT_CI",
     "repository": "c2melendez/precision-lab-lite",
     "paired_repository": "c2melendez/precision-lab-plus",
     "files": [
       "qa/certification/syntax309_cases.jsonl"
     ],
-    "action": "Verify exact script-in-text fixture is inert text or a clear error through MathLive and real Worker/HTTP. Inspect rendering/sanitization first; instrument dialogs and DOM/script evidence without masking execution. Recover and reenter finite output in3Chromium profiles. Do not rerun blocked X14 until both AST budgets/acceptance change.",
+    "action": "Inspect existing exact-SHA X15 native/cumulative/H1d runs; no duplicate dispatch. Native product case must show inert text or error, no dialog/pageerror/payload-script node, real finite recovery. Positive detector control is separate harness evidence, not payload execution in product.",
     "exit_criteria": [
       "Pin original text/script source and oracle unchanged; never execute or insert it as active HTML",
       "Inspect actual output/error/render paths; original source ingestion must remain identifiable",
@@ -208,37 +208,37 @@
     }
   ],
   "work_in_progress": {
-    "id": "SY-X-14-BILATERAL",
-    "status": "VERIFIED_PARTIAL_BLOCKED",
-    "technical_sha": "7decaedce18874cb8d81c7137761f69b860cca22",
-    "paired_technical_sha": "a66dac769c3212cb8e3dfe9951030eec0bd4711d",
+    "id": "SY-X-15-BILATERAL",
+    "status": "WAIT_CI",
+    "technical_sha": "102bc45292f449854dc30bbdedaaac88d1cb64cc",
+    "paired_technical_sha": "298a3c48a9cc140142852242aa88a481d4dcc311",
     "runs": [
       {
-        "id": 39014331621,
+        "id": 39015627360,
         "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331621",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39015627360",
+        "logs_reviewed": false,
+        "evidence_executed": false
       },
       {
-        "id": 39014331642,
+        "id": 39015627425,
         "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331642",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39015627425",
+        "logs_reviewed": false,
+        "evidence_executed": false
       },
       {
-        "id": 39014331682,
+        "id": 39015627406,
         "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331682",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39015627406",
+        "logs_reviewed": false,
+        "evidence_executed": false
       }
     ]
   },
@@ -510,6 +510,13 @@
         "mobile-chromium"
       ],
       "limitations": "Original-domain metadata and visible restriction verified in Lite. Reentering x alone starts a new expression and does not prove restriction metadata persistence. Plus mathematical50-layer oracle is not certified by rejection tests."
+    },
+    "SY-X-15": {
+      "status": "WAIT_CI",
+      "original_source": "\\text{<script>alert(1)</script>}",
+      "oracle": "inert text or clear error; no script execution or active HTML insertion",
+      "local_evidence": "Lite parser and actual Worker handler reject; Plus HTTP rejects as JSON error, no result; finite recovery/reentry pass",
+      "native_scope": "Document and MathLive shadow roots observed, real dialogs recorded/dismissed then asserted absent. Separate positive control inserts application/json script in closed ShadowRoot and requires detection without execution."
     }
   },
   "verification_proofs": {

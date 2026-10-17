@@ -1,5 +1,19 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+**SY-X-15-BILATERAL — WAIT_CI.** Revisar los IDs del índice, sin relanzar. Global OPEN; porcentaje ND.
+
+## SY-X-15 — pruebas nativas publicadas, WAIT_CI (2026-10-17 UTC)
+Lite SHA 102bc45292f449854dc30bbdedaaac88d1cb64cc; Plus 298a3c48a9cc140142852242aa88a481d4dcc311. Fixture original text/script intacto. Local: Lite parser+Workerhandler rechazan y recuperan; Plus HTTP real respondeJSONerror sin resultado y recupera5/reentrada. No cambio de motor ni renderizador.
+Nativos nuevos: MathLive original, texto inerte o error claro, sin diálogo ni pageerror ni nodo script del payload en documento/ShadowDOM; observación no bloquea HTML ni reemplaza alert. Diálogos se registran y causan fallo aunque se cierren para no colgar el test. Control separado: script application/json inerte en ShadowDOMcerrado debe ser detectado, sin ejecución. Es evidencia del detector, no del resultado de producto.
+- [IN625 Cumulative Certification Gate 39015627360](https://github.com/c2melendez/precision-lab-lite/actions/runs/39015627360) — inspeccionar existente.
+- [IN625 H1d Reentry Diagnostic 39015627425](https://github.com/c2melendez/precision-lab-lite/actions/runs/39015627425) — inspeccionar existente.
+- [Syntax309 SY-N-31 Scientific UI E2E 39015627406](https://github.com/c2melendez/precision-lab-lite/actions/runs/39015627406) — inspeccionar existente.
+Esperar jobs/logs antes de PASS. Helper incluido en filtros de workflow. Sin nuevas campañas de dependencias/mutación ni dispatch manual; X14Plus sigueBLOCKED y su XFAIL no es PASS. GlobalOPEN.
+
+## Evidencia anterior de origen (X14)
+
+# Estado vigente de certificación — Precision Lab Lite / Plus
+
 Corte:2026-10-17 UTC/Honduras. Global **OPEN**; porcentaje reconciliado **ND**.
 
 **Siguiente tarea única: SY-X-15-BILATERAL — READY.** X14 queda parcial: Lite PASS acotado; matemática Plus BLOCKED. No repetir el rechazo de50niveles mientras no cambie la precondición contractual. Verificar HEAD/Actions e índice antes de actuar.
