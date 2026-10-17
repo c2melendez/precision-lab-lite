@@ -520,7 +520,17 @@ test("SY-P-23 Lite: entrada ambigua no se despacha al Worker y recupera", async 
     expect((await trace()).filter(m=>m.type==="evaluate").length,source).toBe(initial);
   }
   await setInput(page,"2+3");
-  const recovered=await submit(page);
+  await page.evaluate(()=>window.mathVirtualKeyboard?.hide());
+  const region=page.locator('section[aria-label="Resultado"]').first();
+  const status=region.locator('[role="status"][data-result-request-id]').first();
+  const previous=await status.count()?await status.getAttribute("data-result-request-id"):null;
+  await page.getByRole("region",{name:"Entrada"}).getByRole("button",{name:"Calcular",exact:true}).click();
+  await expect.poll(async()=>{
+    const id=await status.getAttribute("data-result-request-id").catch(()=>null);
+    return Boolean(id?.trim()) && id!==previous;
+  },{timeout:15000,message:"SY-P-23 must recover with a new real request ID"}).toBe(true);
+  await expect(status).toBeVisible();
+  const recovered=await readOutcome(page);
   expect(recovered.kind).toBe("result");
   expect(canonical(recovered.value)).toMatch(/^5(?:\.0+)?$/);
   const messages=(await trace()).filter(m=>m.type==="evaluate");
