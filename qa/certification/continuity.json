@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 43,
+  "revision": 44,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "121a64f539f03c3034674a897c34db563b6752e6",
   "baseline_case": "SY-X-19",
-  "baseline_status": "WAIT_CI",
+  "baseline_status": "VERIFIED_WITH_BLOCKERS",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -73,24 +73,24 @@
   },
   "evidence_by_channel": {
     "unit_worker": {
-      "run_id": 39047968609,
-      "job_id": 117440432579,
-      "technical_sha": "b2d11c62ca7c2c1305ccbbdfe7a603fcc285f9d4",
+      "run_id": 39051773589,
+      "job_id": 117451658098,
+      "technical_sha": "121a64f539f03c3034674a897c34db563b6752e6",
       "status": "PASS_SCOPED",
       "counts": {
-        "pass": 1620,
+        "pass": 1622,
         "todo": 30
       },
       "logs_reviewed": true,
       "evidence_executed": true
     },
     "native_ui": {
-      "run_id": 39047968619,
-      "job_id": 117440432581,
-      "technical_sha": "b2d11c62ca7c2c1305ccbbdfe7a603fcc285f9d4",
+      "run_id": 39051773497,
+      "job_id": 117451657994,
+      "technical_sha": "121a64f539f03c3034674a897c34db563b6752e6",
       "status": "PASS_SCOPED",
       "counts": {
-        "pass": 444,
+        "pass": 447,
         "skip": 0
       },
       "profiles": [
@@ -100,13 +100,14 @@
       ],
       "logs_reviewed": true,
       "evidence_executed": true,
-      "acceptance_revision": "2026-10-17-scientific-through-X18-python-source-v1",
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
       "case_scopes": {
         "SY-X-14": "50-layer parity,original domain,49-layer control,zero rejection,recovery; reentered x without metadata is a new expression",
         "SY-X-15": "Original script-in-text inert/error; zero recorded payload-script nodes/dialogs/pageerrors; actual recovery/reentry. Separate positive detector control in closed ShadowRoot, not a general XSS audit.",
         "SY-X-16": "Original input command rejection and recovery; zero target requests/dialogs/downloads/filechooser/pageerrors. Target requests would be blocked and fail, not counted as absent. Separate synthetic sentinel control.",
         "SY-X-17": "Original shell escape rejected; no mathematical result; zero unexpected browser side effects and real recovery/reentry. Plus local guard blocks conversion and invalid HTTP POST; raw HTTP audit process guard proved separately. Not a universal OS execution audit.",
-        "SY-X-18": "Original Python-like input passed to MathLive; all source letters retained in order despite subscript/prime formatting. Visible rejection, no result, no unexpected browser side effects, actual recovery/reentry. Raw original HTTP audit guard and zero parse_expr calls proved separately; no invented invalid UI HTTP/Worker invocation."
+        "SY-X-18": "Original Python-like input passed to MathLive; all source letters retained in order despite subscript/prime formatting. Visible rejection, no result, no unexpected browser side effects, actual recovery/reentry. Raw original HTTP audit guard and zero parse_expr calls proved separately; no invented invalid UI HTTP/Worker invocation.",
+        "SY-X-19": "Original file-read source ingested by MathLive, source letters retained in order despite formatting. Visible rejection/no result; zero target network requests/dialogs/downloads/filechooser/pageerrors, real recovery/reentry. Endpoint original separately proved zero target-open/process audit attempts and zero parse_expr calls; no claim of universal filesystem audit or invalid UI HTTP/Worker invocation."
       },
       "probe_controls_by_case": {
         "SY-X-15": {
@@ -121,9 +122,9 @@
       }
     },
     "h1d": {
-      "run_id": 39047968611,
-      "job_id": 117440432798,
-      "technical_sha": "b2d11c62ca7c2c1305ccbbdfe7a603fcc285f9d4",
+      "run_id": 39051773331,
+      "job_id": 117451657406,
+      "technical_sha": "121a64f539f03c3034674a897c34db563b6752e6",
       "status": "PASS_SCOPED",
       "counts": {
         "pass": 21
@@ -133,20 +134,20 @@
     }
   },
   "next_action": {
-    "id": "SY-X-19-BILATERAL",
-    "status": "WAIT_CI",
+    "id": "SY-X-20-BILATERAL",
+    "status": "READY",
     "repository": "c2melendez/precision-lab-plus",
     "paired_repository": "c2melendez/precision-lab-lite",
     "files": [
       "qa/certification/syntax309_cases.jsonl"
     ],
-    "action": "Inspect existing exact-SHA X19 runs/jobs/logs; do not dispatch duplicates or mark PASS before required native/cumulative/H1d evidence completes.",
+    "action": "Verify exact original 😀+1 fixture gives a clear invalid-character error, preserving Unicode codepoint/source through MathLive and applicable parser/Worker/HTTP paths. Require visible rejection without false result and finite real recovery/reentry with distinct IDs on3Chromium profiles. Distinguish programmatic insertion from physical keyboard/IME/OS coverage; reuse reviewed equivalent evidence, preserve blockers and do not repeat S19/S25 campaigns without changed preconditions.",
     "exit_criteria": [
-      "Original source and syntax-error/no-execution oracle unchanged",
-      "Zero observed target-access/process-launch attempts; controls only synthetic, never open/read real file or execute command",
-      "Raw parser/Worker/HTTP rejection and native3profile source/recovery/reentry with distinct IDs, no false mathematical result",
-      "Review exact-SHA jobs/logs and synchronize bilateral ledger; preserve all blockers and S19 CANCELLED without score",
-      "No duplicate campaigns or unchanged-blocker retry; global certification remains OPEN"
+      "Original source and invalid-character oracle unchanged, Unicode codepoint pinned",
+      "Applicable raw parser/Worker/HTTP rejection, no false mathematical result, recovery/reentry and distinct IDs",
+      "MathLive source ingestion and clear native rejection on desktop/tablet/mobile Chromium; document channel differences honestly",
+      "Review exact-SHA jobs/logs and synchronize bilateral state; TODO/XFAIL/SKIP not PASS",
+      "No duplicate campaigns or unchanged-blocker retries; global certification remains OPEN"
     ]
   },
   "blockers": [
@@ -224,36 +225,36 @@
   ],
   "work_in_progress": {
     "id": "SY-X-19-BILATERAL",
-    "status": "WAIT_CI",
+    "status": "VERIFIED_SCOPED",
     "technical_sha": "121a64f539f03c3034674a897c34db563b6752e6",
     "paired_technical_sha": "4ee6a9db00dbd49790f661715ca53d5ed3995071",
     "runs": [
       {
+        "id": 39051773589,
+        "workflow": ".github/workflows/in625-cumulative-certification.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39051773589",
+        "logs_reviewed": true,
+        "evidence_executed": true
+      },
+      {
         "id": 39051773331,
         "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "in_progress",
-        "conclusion": null,
+        "status": "completed",
+        "conclusion": "success",
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39051773331",
-        "logs_reviewed": false,
-        "evidence_executed": false
+        "logs_reviewed": true,
+        "evidence_executed": true
       },
       {
         "id": 39051773497,
         "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-        "status": "in_progress",
-        "conclusion": null,
+        "status": "completed",
+        "conclusion": "success",
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39051773497",
-        "logs_reviewed": false,
-        "evidence_executed": false
-      },
-      {
-        "id": 39051773589,
-        "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39051773589",
-        "logs_reviewed": false,
-        "evidence_executed": false
+        "logs_reviewed": true,
+        "evidence_executed": true
       }
     ]
   },
@@ -674,6 +675,45 @@
         "command_never_invoked_by_controls": true
       },
       "limitations": "Canonical fixture and tested default routes only; process audit events and named SymPy boundary are not a universal kernel/C-extension/other-evaluator audit. Native formatting can change invalid-source spelling; raw original proved separately. No all commands/OS/engines/keys/Reuse-button coverage."
+    },
+    "SY-X-19": {
+      "status": "PASS_SCOPED",
+      "original_source": "open('/etc/passwd').read()",
+      "oracle": "error de sintaxis sin ejecutar nada",
+      "technical_sha": "121a64f539f03c3034674a897c34db563b6752e6",
+      "paired_technical_sha": "4ee6a9db00dbd49790f661715ca53d5ed3995071",
+      "native_run": 39051773497,
+      "cumulative_run": 39051773589,
+      "h1d_run": 39051773331,
+      "profiles": [
+        "desktop-chromium",
+        "tablet-chromium",
+        "mobile-chromium"
+      ],
+      "local_evidence": "Lite parser and actual Worker handler with simulated transport reject original. Plus endpoint via TestClient rejects under shared target-open/process audit guards and parse_expr tripwire; unpatched evaluator recovers.",
+      "native_assertions": {
+        "source_letters_retained_in_order": true,
+        "clear_rejection_no_math_result": true,
+        "target_requests": 0,
+        "dialogs": 0,
+        "downloads": 0,
+        "filechoosers": 0,
+        "pageerrors": 0,
+        "recovery_distinct_success_ids": 2
+      },
+      "backend_assertions": {
+        "repository": "c2melendez/precision-lab-plus",
+        "job_id": 117451648615,
+        "target_open_audit_attempts": 0,
+        "process_launch_audit_attempts": 0,
+        "original_parse_expr_calls": 0,
+        "target_open_control_reused_from": "SY-X-16",
+        "launch_controls_reused_from": "SY-X-17",
+        "synthetic_controls": 8,
+        "controls_not_duplicated_for_x19": true,
+        "target_never_opened_or_read_by_controls": true
+      },
+      "limitations": "Canonical fixture and default tested routes only. Audit open/process events and named SymPy boundary are not universal kernel/C-extension/fd/alias/other-evaluator coverage. Native formatting may change invalid-source spelling; exact raw original proved separately. No all OS/engines/keys/Reuse-button or SG28 isolated opt-in claim."
     }
   },
   "verification_proofs": {
@@ -776,6 +816,21 @@
         "logs_reviewed": true,
         "score": null
       }
+    },
+    "x19_scope": {
+      "canonical_fixture_preserved": true,
+      "native_profiles": 3,
+      "shared_target_open_control": 1,
+      "shared_launch_controls": 7,
+      "controls_duplicated": false,
+      "target_open_audit_attempts": 0,
+      "process_launch_attempts": 0,
+      "original_parse_expr_calls": 0,
+      "real_target_never_opened_or_read_by_test": true,
+      "logs_reviewed": true,
+      "technical_sha": "121a64f539f03c3034674a897c34db563b6752e6",
+      "product_changes": 0,
+      "new_campaigns": 0
     }
   },
   "historical_mutation_reference": {

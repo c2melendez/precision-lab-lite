@@ -148,3 +148,7 @@ X14: reutilizar evidencia de rechazo Plus revisada hasta cambiar profundidad30 y
 
 ## Reconciliación SY-X-18 — 2026-10-17
 Índice revisión42: baselineX18, siguienteX19. Tresgatespertinentes revisados porSHA; comparar huellas y observaciones frescas antes deREUSE. Helperdeprocesos compartido conserva7controlesX17 sin duplicarlos;X18comprueba cero llamadas aparse_expr para el original y recupera con evaluador restaurado. Campaña39017317053/job117352038619reconciliadaCANCELLEDconWorkerexit1instrumentado,sininforme/score. No seguir esperando ese run ni relanzarinputsidénticos; S19OPENyrequiere diagnóstico. Sin nuevascampañas; los cambiosdocumentales no requierenCI.
+
+
+## Reconciliación SY-X-19 — 2026-10-17
+Índice revisión44: baselineX19, siguienteX20. Tresgatespertinentes porSHA revisados; comparar huellas y observaciones frescas antes deREUSE. Helperopencompartido conserva1controlX16;helperprocesos7controlesX17sin duplicarlos. X19cero intentos auditadosdeopen/procesosycero llamadasdeloriginalaparse_expr; evaluadorrestauradopararecuperación. Nuncaseabre/leeelobjetivoparaprobarlo. S19cancelado ybloqueosanteriores permanecenOPEN;sin nuevascampañas. Prosa no requiereCI.
