@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 47,
+  "revision": 48,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,20 +134,19 @@
     }
   },
   "next_action": {
-    "id": "SYNTAX309-RECONCILE-GAPS",
+    "id": "SY-P-23-CONVENTION-REVIEW",
     "status": "IN_PROGRESS",
     "repository": "c2melendez/precision-lab-lite",
     "paired_repository": "c2melendez/precision-lab-plus",
     "files": [
-      "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md",
-      "qa/certification/MANUAL_CAPABILITY_GAPS.md",
-      "qa/certification/syntax309_cases.jsonl"
+      "qa/certification/syntax309_cases.jsonl",
+      "qa/certification/MANUAL_CAPABILITY_GAPS.md"
     ],
-    "action": "Reconcile the completed SY-X-22 scoped bilateral evidence, inventory Syntax309 outstanding mathematical and channel gaps (including X04/X14 Plus and SY-P-23), and select a concrete independently actionable gap without rerunning unchanged blocked gates. Then proceed to Algebra114 preparation only within canonical dependency policy.",
+    "action": "Inspect official SY-P-23 fixture and parser conventions in Lite/Plus; propose one explicit contractual interpretation of a/bc or clearly document ambiguity, with no invented PASS. Preserve X04/X14 blocked; add regressions only after mathematical oracle is explicit.",
     "exit_criteria": [
-      "Record Lite and Plus exact SHAs and executed run/job logs for X22",
-      "Review Syntax309 gaps by case and channel without inventing X23",
-      "Keep known blockers and global certification OPEN; select next executable gap"
+      "Read exact SY-P-23 source and expected contract",
+      "Compare existing two implementations and their native/HTTP/Worker behavior",
+      "Record an explicit consistent decision or an unresolved decision dependency before running additional gates"
     ]
   },
   "blockers": [
