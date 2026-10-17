@@ -1,5 +1,8 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## SY-X-22 progreso técnico — 2026-10-17
+Plus HTTP test nuevo `backend/tests/test_syntax309_syx22_http.py` commit `04da8cc6b55e9be0764bdf9a594c51b4008db07c`. Fuente generada: 10000 cifras 9 seguidas de +1; exige respuesta entera exacta de 10001 cifras o rechazo validado, seguido de recuperación 2+3. CI automática Plus [acumulativo 39066547036](https://github.com/c2melendez/precision-lab-plus/actions/runs/39066547036), [H1d 39066547016](https://github.com/c2melendez/precision-lab-plus/actions/runs/39066547016) IN_PROGRESS en última consulta; NO atribuir PASS. Próxima acción: revisar esos logs por SHA, corregir si es necesario y completar Worker Lite y native Chromium bilateral. SY-X-21 PASS acotado, global OPEN.
+
 ## 2026-10-17: SY-X-21 PASS bilateral, SY-X-22 IN_PROGRESS
 Lite: native 39062504109, cumulative 39062504182 SUCCESS. Plus: native 39066027440 SUCCESS (75 tests), cumulative 39066027444 SUCCESS (1494 backend PASS/3 XFAIL; 1006 frontend PASS/28 TODO), H1d 39066027416 SUCCESS. SY-X-22 official: 10000-digit number + 1, exact sum or clear size notice, never float approximation. Global OPEN.
 
