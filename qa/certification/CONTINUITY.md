@@ -136,3 +136,7 @@ X14: reutilizar evidencia de rechazo Plus revisada hasta cambiar profundidad30 y
 
 ## Reconciliación SY-X-15 — 2026-10-17
 Índice revisión35: baseline técnico X15 y siguiente único X16. Conservar los runs del índice y comprobar huellas antes de REUSE. El control positivo del detector es un test separado: no atribuir su nodo script inerte al resultado de producto ni convertir este fixture en auditoría XSS universal. No nueva campaña de dependencias/mutaciones; S25/S19 siguen abiertos y X14Plus no pierde su XFAIL. La actualización documental no requiere CI nueva.
+
+
+## Reconciliación SY-X-16 — 2026-10-17
+Índice revisión37: baseline técnico X16, siguiente único X17. Guardar y comparar las huellas de los runs del índice; los controles sintéticos son pruebas separadas, no accesos reales al host. Un intento bloqueado haría fallar el caso; cero intentos no se infiere de bloquearlos. Sin lectura del objetivo ni campaña de dependencias/mutaciones. Mantener S25/S19 y X04Plus/X14Plus abiertos; prosa no requiere nuevaCI.

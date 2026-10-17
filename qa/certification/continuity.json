@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 36,
+  "revision": 37,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "b12aecc02f06086f1d4d8da91a26bd7b3bc3ae4f",
   "baseline_case": "SY-X-16",
-  "baseline_status": "WAIT_CI",
+  "baseline_status": "VERIFIED_WITH_BLOCKERS",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -61,7 +61,7 @@
       "inputs": [
         "*"
       ],
-      "acceptance_revision": "2026-10-17-scientific-through-X15-inert-text-v1"
+      "acceptance_revision": "2026-10-17-scientific-through-X16-file-command-v1"
     },
     "sg28_cancel": {
       "workflow": ".github/workflows/in625-sg28-scientific-cancel.yml",
@@ -73,24 +73,24 @@
   },
   "evidence_by_channel": {
     "unit_worker": {
-      "run_id": 39015627360,
-      "job_id": 117347047831,
-      "technical_sha": "102bc45292f449854dc30bbdedaaac88d1cb64cc",
+      "run_id": 39016377044,
+      "job_id": 117349228065,
+      "technical_sha": "b12aecc02f06086f1d4d8da91a26bd7b3bc3ae4f",
       "status": "PASS_SCOPED",
       "counts": {
-        "pass": 1614,
+        "pass": 1616,
         "todo": 30
       },
       "logs_reviewed": true,
       "evidence_executed": true
     },
     "native_ui": {
-      "run_id": 39015627406,
-      "job_id": 117347047951,
-      "technical_sha": "102bc45292f449854dc30bbdedaaac88d1cb64cc",
+      "run_id": 39016377039,
+      "job_id": 117349228215,
+      "technical_sha": "b12aecc02f06086f1d4d8da91a26bd7b3bc3ae4f",
       "status": "PASS_SCOPED",
       "counts": {
-        "pass": 432,
+        "pass": 438,
         "skip": 0
       },
       "profiles": [
@@ -100,21 +100,28 @@
       ],
       "logs_reviewed": true,
       "evidence_executed": true,
-      "acceptance_revision": "2026-10-17-scientific-through-X15-inert-text-v1",
+      "acceptance_revision": "2026-10-17-scientific-through-X16-file-command-v1",
       "case_scopes": {
         "SY-X-14": "50-layer parity,original domain,49-layer control,zero rejection,recovery; reentered x without metadata is a new expression",
-        "SY-X-15": "Original script-in-text inert/error; zero recorded payload-script nodes/dialogs/pageerrors; actual recovery/reentry. Separate positive detector control in closed ShadowRoot, not a general XSS audit."
+        "SY-X-15": "Original script-in-text inert/error; zero recorded payload-script nodes/dialogs/pageerrors; actual recovery/reentry. Separate positive detector control in closed ShadowRoot, not a general XSS audit.",
+        "SY-X-16": "Original input command rejection and recovery; zero target requests/dialogs/downloads/filechooser/pageerrors. Target requests would be blocked and fail, not counted as absent. Separate synthetic sentinel control."
       },
-      "probe_controls": {
-        "case": "SY-X-15",
-        "tests": 3,
-        "scope": "Harness must detect intentionally inserted application/json script node without execution, one per profile; included in test totals"
+      "probe_controls_by_case": {
+        "SY-X-15": {
+          "case": "SY-X-15",
+          "tests": 3,
+          "scope": "Harness must detect intentionally inserted application/json script node without execution, one per profile; included in test totals"
+        },
+        "SY-X-16": {
+          "tests": 3,
+          "scope": "Synthetic nonexistent URL must be intercepted; no request to real target. Harness evidence, included in test totals."
+        }
       }
     },
     "h1d": {
-      "run_id": 39015627425,
-      "job_id": 117347047937,
-      "technical_sha": "102bc45292f449854dc30bbdedaaac88d1cb64cc",
+      "run_id": 39016377064,
+      "job_id": 117349228284,
+      "technical_sha": "b12aecc02f06086f1d4d8da91a26bd7b3bc3ae4f",
       "status": "PASS_SCOPED",
       "counts": {
         "pass": 21
@@ -124,20 +131,20 @@
     }
   },
   "next_action": {
-    "id": "SY-X-16-BILATERAL",
-    "status": "WAIT_CI",
+    "id": "SY-X-17-BILATERAL",
+    "status": "READY",
     "repository": "c2melendez/precision-lab-lite",
     "paired_repository": "c2melendez/precision-lab-plus",
     "files": [
       "qa/certification/syntax309_cases.jsonl"
     ],
-    "action": "Inspect existing exact-SHA X16 native/cumulative/H1d runs; no duplicate dispatch. Require original command rejection, zero observed target requests/file-open attempts and actual finite recovery. Synthetic positive controls must be distinguished from product behavior.",
+    "action": "Verify exact original write18{ls} command is ignored/rejected with no execution. Inspect math/parser/render routes and process-launch capabilities before testing. Use guarded detection and synthetic controls, never invoke the actual command to prove safety. Confirm original MathLive source, applicable Worker/HTTP behavior, finite recovery/reentry and3Chromium profiles; reuse only verified equivalent evidence.",
     "exit_criteria": [
-      "Pin exact original source and no-file-read oracle unchanged",
-      "No host-file contents read or displayed; detect any attempted access using controlled spies/synthetic sentinels without exposing actual files",
-      "Clear ignored-command/rejection behavior through actual parser/Worker/HTTP and relevant rendering paths",
-      "Native desktop/tablet/mobile ingestion and finite recovery/reentry, new request IDs, no unexpected network/dialog side effects",
-      "Review exact-SHA logs and synchronize bilateral ledger; no redundant dispatch or X14 retry before preconditions change"
+      "Pin exact original source and no-execution oracle unchanged",
+      "Detect would-be subprocess/shell launches with safe instrumentation; synthetic detector controls must not execute real commands",
+      "Clear ignored-command/rejection outcome without a false mathematical result and no unexpected native side effects",
+      "Actual tested parser/Worker/HTTP routes and MathLive desktop/tablet/mobile recovery/reentry, distinct IDs",
+      "Review exact-SHA jobs/logs; synchronize bilateral ledger, preserve existing blockers and avoid redundant Actions/campaigns"
     ]
   },
   "blockers": [
@@ -215,36 +222,36 @@
   ],
   "work_in_progress": {
     "id": "SY-X-16-BILATERAL",
-    "status": "WAIT_CI",
+    "status": "VERIFIED_SCOPED",
     "technical_sha": "b12aecc02f06086f1d4d8da91a26bd7b3bc3ae4f",
     "paired_technical_sha": "7bca63077a2225103c515c53d94a6002293835d6",
     "runs": [
       {
-        "id": 39016377039,
-        "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39016377039",
-        "logs_reviewed": false,
-        "evidence_executed": false
+        "id": 39016377044,
+        "workflow": ".github/workflows/in625-cumulative-certification.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39016377044",
+        "logs_reviewed": true,
+        "evidence_executed": true
       },
       {
         "id": 39016377064,
         "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "in_progress",
-        "conclusion": null,
+        "status": "completed",
+        "conclusion": "success",
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39016377064",
-        "logs_reviewed": false,
-        "evidence_executed": false
+        "logs_reviewed": true,
+        "evidence_executed": true
       },
       {
-        "id": 39016377044,
-        "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39016377044",
-        "logs_reviewed": false,
-        "evidence_executed": false
+        "id": 39016377039,
+        "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39016377039",
+        "logs_reviewed": true,
+        "evidence_executed": true
       }
     ]
   },
@@ -546,11 +553,38 @@
       "limitations": "One canonical fixture and tested UI/error/result/recovery paths only; no universal XSS audit or all keys/OS/engines/Reuse-button claim. Raw HTTP/Worker rejection is separate from native local rejection; detector control is not payload execution in product."
     },
     "SY-X-16": {
-      "status": "WAIT_CI",
+      "status": "PASS_SCOPED",
       "original_source": "\\input{/etc/passwd}",
       "oracle": "ignored or rejected; no file reading",
       "local_evidence": "Lite parser and raw actual Worker handler reject; Plus HTTP rejects under Python open audit guard with zero target attempts and finite recovery",
-      "guard_scope": "Python open audit events and browser target requests. Native guard blocks any target request, records it and fails product test if observed; positive control uses only nonexistent synthetic path. No real target file is opened/read by tests."
+      "guard_scope": "Python open audit events and browser target requests. Native guard blocks any target request, records it and fails product test if observed; positive control uses only nonexistent synthetic path. No real target file is opened/read by tests.",
+      "technical_sha": "b12aecc02f06086f1d4d8da91a26bd7b3bc3ae4f",
+      "paired_technical_sha": "7bca63077a2225103c515c53d94a6002293835d6",
+      "native_run": 39016377039,
+      "cumulative_run": 39016377044,
+      "h1d_run": 39016377064,
+      "profiles": [
+        "desktop-chromium",
+        "tablet-chromium",
+        "mobile-chromium"
+      ],
+      "native_assertions": {
+        "original_command_and_target_identifiable": true,
+        "clear_rejection_no_math_result": true,
+        "target_requests": 0,
+        "dialogs": 0,
+        "downloads": 0,
+        "filechoosers": 0,
+        "pageerrors": 0,
+        "synthetic_request_detector_control_pass": true,
+        "recovery_distinct_success_ids": 2
+      },
+      "backend_assertions": {
+        "target_open_attempts": 0,
+        "synthetic_audit_event_control_pass": true,
+        "real_target_file_never_opened_by_test": true
+      },
+      "limitations": "Canonical fixture and tested paths only; browser target requests and Python open audit events, not all filesystem/kernel APIs or OS/engines/keys/Reuse button. Native local rejection does not claim an invalid HTTP/Worker call; raw handler/endpoint proved separately. Synthetic controls do not fetch/read actual target."
     }
   },
   "verification_proofs": {
@@ -601,6 +635,18 @@
       "payload_nodes_dialogs_pageerrors_zero": true,
       "logs_reviewed": true,
       "technical_sha": "102bc45292f449854dc30bbdedaaac88d1cb64cc",
+      "new_dependency_mutation_campaigns": 0,
+      "product_engine_renderer_changes": 0
+    },
+    "x16_scope": {
+      "canonical_fixture_preserved": true,
+      "native_profiles": 3,
+      "synthetic_browser_controls": 3,
+      "synthetic_backend_audit_control": true,
+      "target_access_attempts_zero": true,
+      "real_target_not_read_by_tests": true,
+      "logs_reviewed": true,
+      "technical_sha": "b12aecc02f06086f1d4d8da91a26bd7b3bc3ae4f",
       "new_dependency_mutation_campaigns": 0,
       "product_engine_renderer_changes": 0
     }
