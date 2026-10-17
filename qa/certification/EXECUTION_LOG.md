@@ -300,3 +300,6 @@ Located Library `Matriz de estrés — Álgebra simbólica.md` and verified its 
 
 ## Algebra114 fixture checkpoint 2026-10-17
 Source SHA b30ca7fcec641334ce8128ca25bec542a9d04e79 matches both projects, 114 unique AS-* rows. Added check_algebra114_fixture.py but no executed CI for it yet. AS-SIM-01: 3x+2y-x+5y equals 2x+7y, no dedicated test identified in searched algebra files. Next ALGEBRA114-AS-SIM-01; global OPEN.
+
+## Algebra114 AS-SIM-01 targeted gates — 2026-10-17
+Published Lite numerical original-source regression technical SHA dfd70d0d11db8ff43ac358f15032fb8f3184c243 and Plus HTTP symbolic regression SHA 05fe1fa2c26f124ca14551a3938d1a1e120d4e8f. Initial Lite SHA 31c0373c cumulative 39079343609 FAILED on test variable substitution NaN (test fixture code issue), superseded by targeted test correction. Follow-up Lite cumulative 39079358282 and Plus cumulative 39079345667 were IN_PROGRESS at observation; no PASS credited. Fixture validator script committed both but execution not proven. Next ALGEBRA114-AS-SIM-01-CI-REVIEW, ledger revision 54. Global OPEN.
