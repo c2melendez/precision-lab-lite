@@ -48,6 +48,12 @@ export function evaluate(expressionLatex: string): string {
     if (/^0\/0$/.test(expressionLatex.replace(/[\s()]/g, ""))) {
       throw toAppError(ErrorCode.DOMAIN_ERROR, "Forma indeterminada: 0/0 no está definida.");
     }
+    // SY-X-10: an integer power used as the exponent of another integer
+    // power must never reach the CAS; its expansion could be astronomical.
+    // Check only the source syntax, without evaluating either exponent.
+    if (/\^\s*[\({]\s*\d+\s*\^\s*(?:[\({]\s*)?\d+/.test(expressionLatex)) {
+      throw toAppError(ErrorCode.COMPLEXITY_LIMIT, "Potencia anidada demasiado grande: límite de tamaño antes del cálculo.");
+    }
     // SY-X-09: reject oversized literal integer powers before invoking Algebrite.
     // Compare decimal strings, not Number/BigInt powers; never compute the value.
     // The CAS adapter is a final safeguard for all callers, including Worker.
