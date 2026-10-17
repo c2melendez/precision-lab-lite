@@ -1,5 +1,16 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## 2026-10-17 — SY-X-21: diagnóstico del nativo Plus y corrección en verificación
+
+La evidencia nativa Lite del SHA `526f1150173a166eb280b75f257bb0165015a8a1` está ejecutada: [39062504109](https://github.com/c2melendez/precision-lab-lite/actions/runs/39062504109), 453 PASS incluyendo SY-X-21 en desktop/tablet/mobile. Su [acumulativo 39062504182](https://github.com/c2melendez/precision-lab-lite/actions/runs/39062504182) finalizó SUCCESS.
+
+En Plus, el SHA `ae603dd1ccea3dd581a0b45bb704bc337b2087f6` pasó [acumulativo 39062487616](https://github.com/c2melendez/precision-lab-plus/actions/runs/39062487616), pero falló [nativo 39062487564](https://github.com/c2melendez/precision-lab-plus/actions/runs/39062487564), job 117483128305: 24 PASS, 1 FAIL desktop; tablet/mobile quedaron SKIPPED. El error fue el oráculo de visualización: `result.innerText()` produjo `3\n3`, mientras la aserción comparaba el contenedor entero contra un solo `3`. No se atribuye un defecto matemático al producto.
+
+Corrección focalizada de test en Plus commit `d7f9b0d0a5cfcd2be0709f1aea4c7dea747f055a`, `frontend/e2e/in625-syntax-native.spec.ts`: validar que cada token numérico visualizado cumple el oráculo exacto `3` (o decimal .0...), sin admitir valores divergentes. No cambia motores ni el contrato de aceptación. CI disparado por push automáticamente: [nativo 39064924216](https://github.com/c2melendez/precision-lab-plus/actions/runs/39064924216), [acumulativo 39064924194](https://github.com/c2melendez/precision-lab-plus/actions/runs/39064924194), [H1d 39064924244](https://github.com/c2melendez/precision-lab-plus/actions/runs/39064924244); **IN_PROGRESS en la última consulta**, todavía NO son PASS acreditados.
+
+**Siguiente acción única:** revisar conclusión, jobs, pasos y logs de estos tres runs Plus para el SHA `d7f9b0d0...`; si todos los gates obligatorios terminan SUCCESS con tests realmente ejecutados, registrar X21 bilateral PASS acotado, actualizar ledger y log de ambos repositorios y seleccionar el siguiente caso canónico. Ante fallo, diagnosticar y corregir sin reejecutar inputs equivalentes. Global OPEN; se preservan TODO/XFAIL y bloqueos S19/S25, SG28/DIST, X04/X14 Plus y SY-P-23.
+
+
 Corte:2026-10-17 UTC/Honduras. Global **OPEN**; porcentaje reconciliado **ND**.
 
 **Siguiente tarea única: SY-X-21-BILATERAL — IN_PROGRESS.** X19PASSacotado: rechazo sin aperturas/lanzamientos auditados y recuperación. S19cancelado sigueOPENsin score; demásbloqueos conservados.
