@@ -10,8 +10,8 @@ describe("Algebra114 AS-SIM-01 exact symbolic witness", () => {
     const oracle = parseExpression("2x+7y").algebrite;
     for (const [x, y] of [[2, 3], [-5, 7], [0, -4], [11, 0]]) {
       const substitute = (source: string) => source
-        .replace(/\\bx\\b/g, `(${x})`)
-        .replace(/\\by\\b/g, `(${y})`);
+        .replace(/x/g, `(${x})`)
+        .replace(/y/g, `(${y})`);
       expect(Number(evaluate(substitute(actual)))).toBeCloseTo(Number(evaluate(substitute(oracle))), 9);
     }
   });
