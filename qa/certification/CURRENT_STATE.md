@@ -3,7 +3,7 @@
 Corte: 2026-10-17 UTC (2026-10-16 Honduras). Certificación global **OPEN**, porcentaje reconciliado **ND**.
 
 ## Reanudación única
-**Siguiente tarea: PLUS-NATIVE-SY-R-14 — READY.** Probar el valor absoluto del fixture original con x=-4,resultado4,control |x|+x→0 y reentrada HTTP real desde MathLive Plus. Inspeccionar antes conversor/HTTP e intent de valor absoluto; reutilizar Lite aprobado.
+**Siguiente tarea: PLUS-NATIVE-SY-R-14 — WAIT_CI.** SHA `f4b4f68203d8154ae4de9d5ca275589707cad654`:inspeccionar los runs existentes del ledger, no redispatch. Prueba nativa del original y controles de signo publicada; esperar cierre verificado.
 
 Leer [continuity.json](continuity.json) y [CONTINUITY.md](CONTINUITY.md). Si HEAD técnico cambió sin reconciliar el índice, el planificador suprime la tarea obsoleta y devuelve RECONCILE. El prompt externo es bootstrap; el estado reside aquí y en GitHub.
 
