@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 54,
+  "revision": 55,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,18 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-SIM-01-CI-REVIEW",
-    "status": "PENDING_CI",
+    "id": "ALGEBRA114-FIXTURE-CI-WIRING",
+    "status": "READY",
     "files": [
       "qa/certification/check_algebra114_fixture.py",
-      "qa/certification/algebra114_source.md",
-      "tests/algebra114AsSim01.audit.test.ts"
+      ".github/workflows/in625-cumulative-certification.yml"
     ],
-    "action": "Inspect latest exact-SHA cumulative CI for AS-SIM-01; investigate failure before claiming mathematical PASS. Read-only fixture validator exists but has no confirmed execution in CI; integrate/verify separately only if necessary. Keep global certification OPEN.",
+    "action": "Make the existing read-only Algebra114 fixture validator execute in appropriate cumulative gates in Lite/Plus, then verify exact-SHA logs; avoid unrelated CI or case reruns. Preserve AS-SIM-01 PASS_SCOPED_BILATERAL and global OPEN.",
     "exit_criteria": [
-      "Evidence of execution for case AS-SIM-01 in both engines",
-      "Bilateral source 114 IDs verified by validator execution, not only static inspection",
-      "Record exact CI run/SHA and scope"
+      "Both cumulative CI logs show fixture validator executed and 114 rows verified",
+      "No unrelated CI reruns",
+      "Only then choose next original AS-* case"
     ]
   },
   "blockers": [
@@ -886,6 +885,22 @@
       "cumulative_run": 39076124624,
       "assertion": "Actual Lite Worker.postMessage receives no evaluate request for a/bc, LaTex fraction or 1+a/bc; 2+3 recovery uses fresh request id",
       "global": "OPEN"
+    },
+    "ALGEBRA114-AS-SIM-01-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "case": "AS-SIM-01",
+      "source": "qa/certification/algebra114_source.md",
+      "lite": {
+        "sha": "dfd70d0d11db8ff43ac358f15032fb8f3184c243",
+        "run": 39079358282,
+        "scope": "parser/evaluation plus multiple numeric substitution witnesses"
+      },
+      "plus": {
+        "sha": "05fe1fa2c26f124ca14551a3938d1a1e120d4e8f",
+        "run": 39079345667,
+        "scope": "HTTP simplify, exact symbolic equivalence"
+      },
+      "exclusions": "No bilateral E2E or coverage of 113 remaining Algebra114 IDs; structural validator not yet executed under CI"
     }
   },
   "historical_mutation_reference": {
