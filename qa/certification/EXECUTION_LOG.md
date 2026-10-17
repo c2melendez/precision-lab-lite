@@ -284,3 +284,7 @@ SY-X-21 es el siguiente objetivo en curso. La fuente oficial `1\u200b+\u200b2` c
 
 ## 2026-10-17 — Syntax309 gap reconciliation after SY-X-22
 Reviewed current bilateral continuity and canonical contracts. X22 PASS scoped: Lite native run 39071672864, cumulative 39071672809, H1d 39071672827, SG28 39071672856, technical SHA 827508f6d99abe83aff41d1d5a9f608154ce8358; Plus native 39068704322, cumulative 39068704268, H1d 39068704250, technical SHA 50bd683135de67134c48edd2eea56aad529987e2. Corrected stale dashboard X20–22 pending label; matrix ends X22 (309 cases). X04 Plus blocked by length 500 and AST budget, X14 Plus blocked by AST depth/nodes, P23 ambiguous a/bc unresolved. No product gates re-dispatched. Next SY-P-23-CONVENTION-REVIEW, global OPEN.
+
+
+## 2026-10-17 SY-P-23 E2E inventory
+The original `a/bc` has no universal convention in the fixture. Existing Lite and Plus H1d native tests already cover the ambiguity warning, exact MathLive preservation, explicit grouping, and compound context; Plus additionally covers no HTTP POST when bc is undefined and named-bc binding when defined, while Lite verifies local rejection and recovery. No redundant tests or CI triggered. Preserve Plus strict XFAIL for separate b/c interpretation, SY-P-23 OPEN, global OPEN. Next evidence task: inspect exact-SHA existing H1d native logs before adding any missing frontend-to-Worker guard coverage.
