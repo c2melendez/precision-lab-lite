@@ -11,4 +11,5 @@ it("SY-X-10 rejects nested powers before CAS and recovers with a finite value", 
   expect(parsed).toContain("10");
   expect(() => evaluate(parsed)).toThrow(/Potencia anidada demasiado grande/);
   expect(evaluate(parseExpression("2+3", "RAD").algebrite)).toBe("5");
+  expect(evaluate(parseExpression("2^{3^{2}}", "RAD").algebrite)).toBe("512");
 });
