@@ -48,11 +48,14 @@ export function evaluate(expressionLatex: string): string {
     if (/^0\/0$/.test(expressionLatex.replace(/[\s()]/g, ""))) {
       throw toAppError(ErrorCode.DOMAIN_ERROR, "Forma indeterminada: 0/0 no está definida.");
     }
-    // SY-X-10: an integer power used as the exponent of another integer
-    // power must never reach the CAS; its expansion could be astronomical.
-    // Check only the source syntax, without evaluating either exponent.
-    if (/\^\s*[\({]\s*\d+\s*\^\s*(?:[\({]\s*)?\d+/.test(expressionLatex)) {
-      throw toAppError(ErrorCode.COMPLEXITY_LIMIT, "Potencia anidada demasiado grande: límite de tamaño antes del cálculo.");
+    // SY-X-10: reject astronomical integer-power exponents, but preserve
+    // small nested powers (e.g. 2^(3^2)=512). Never compute the large power.
+    for (const match of expressionLatex.matchAll(/\^\s*[\({]\s*(\d+)\s*\^\s*(?:[\({]\s*)?(\d+)/g)) {
+      const innerBase = Number(match[1]);
+      const innerExponent = Number(match[2]);
+      if (innerBase >= 10 && innerExponent >= 10) {
+        throw toAppError(ErrorCode.COMPLEXITY_LIMIT, "Potencia anidada demasiado grande: límite de tamaño antes del cálculo.");
+      }
     }
     // SY-X-09: reject oversized literal integer powers before invoking Algebrite.
     // Compare decimal strings, not Number/BigInt powers; never compute the value.
