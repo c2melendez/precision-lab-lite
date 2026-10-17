@@ -53,8 +53,16 @@ export function evaluate(expressionLatex: string): string {
     for (const match of expressionLatex.matchAll(/\^\s*[\({]\s*(\d+)\s*\^\s*(?:[\({]\s*)?(\d+)/g)) {
       const innerBase = Number(match[1]);
       const innerExponent = Number(match[2]);
-      if (innerBase >= 10 && innerExponent >= 10) {
-        throw toAppError(ErrorCode.COMPLEXITY_LIMIT, "Potencia anidada demasiado grande: límite de tamaño antes del cálculo.");
+      // Multiply at most 14 times and stop above 10000. This is a
+      // bounded magnitude check, not evaluation of the full nested power.
+      if (innerBase >= 2 && innerExponent >= 1) {
+        let bounded = 1;
+        for (let i = 0; i < Math.min(innerExponent, 14); i++) {
+          bounded *= innerBase;
+          if (bounded > 10000) {
+            throw toAppError(ErrorCode.COMPLEXITY_LIMIT, "Potencia anidada demasiado grande: límite de tamaño antes del cálculo.");
+          }
+        }
       }
     }
     // SY-X-09: reject oversized literal integer powers before invoking Algebrite.
