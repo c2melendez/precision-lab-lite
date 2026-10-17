@@ -144,3 +144,7 @@ X14: reutilizar evidencia de rechazo Plus revisada hasta cambiar profundidad30 y
 
 ## Reconciliación SY-X-17 — 2026-10-17
 Índice revisión40: baselineX17, siguienteX18. Reutilizar los tres gates pertinentes solo tras observaciones frescas y huellas equivalentes. Fallo nativoPlus39017066935 diagnosticado PRODUCT_CONVERSION; corrección02a8f689 y nativo39017316988verificados. La nueva corrida tuvo un cambio técnico, no fue reintento idéntico. Campaña39017317053/job117352038619 en curso al corte: inspeccionar esa ejecución, no relanzarla. Preflight760tests/2627instrumentados no ejecutó mutaciones ni mide score. S19globalOPEN. Preservar todos los bloqueos. Cambios de prosa no requieren CI.
+
+
+## Reconciliación SY-X-18 — 2026-10-17
+Índice revisión42: baselineX18, siguienteX19. Tresgatespertinentes revisados porSHA; comparar huellas y observaciones frescas antes deREUSE. Helperdeprocesos compartido conserva7controlesX17 sin duplicarlos;X18comprueba cero llamadas aparse_expr para el original y recupera con evaluador restaurado. Campaña39017317053/job117352038619reconciliadaCANCELLEDconWorkerexit1instrumentado,sininforme/score. No seguir esperando ese run ni relanzarinputsidénticos; S19OPENyrequiere diagnóstico. Sin nuevascampañas; los cambiosdocumentales no requierenCI.
