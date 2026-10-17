@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 7,
+  "revision": 8,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "fa974e49feb135290b5bdac63c49114f227c7239",
@@ -97,19 +97,9 @@
   },
   "next_action": {
     "id": "PLUS-NATIVE-SY-R-13",
-    "status": "READY",
+    "status": "WAIT",
     "repository": "c2melendez/precision-lab-plus",
-    "files": [
-      "frontend/e2e/in625-syntax-native.spec.ts",
-      "qa/certification/syntax309_cases.jsonl"
-    ],
-    "action": "Cover original indexed cube-root fixture with its x=27 binding through actual Plus MathLive/UI, result 3 and output reentry. Inspect existing converter/HTTP evidence and real UI binding path first; diagnose correct layer if it fails. Reuse unaffected Lite evidence.",
-    "exit_criteria": [
-      "Preserve original canonical source and binding; no pre-evaluated replacement",
-      "Verify actual UI to HTTP request semantics, visible exact result 3 and reentry with fresh request ID",
-      "Desktop focused diagnosis then tablet/mobile Chromium; no mock or silent skip",
-      "Review pertinent CI logs and synchronize both ledgers without rerunning unchanged blockers"
-    ]
+    "action": "Inspect recorded automatic runs at b90f15e11d6b48a953aa37319afda711dcf58e2e; do not redispatch. Review native 15 tests and pertinent regression logs."
   },
   "blockers": [
     {
@@ -155,37 +145,45 @@
     }
   ],
   "work_in_progress": {
-    "id": "PLUS-NATIVE-SY-R-12",
-    "status": "VERIFIED_SCOPED",
+    "id": "PLUS-NATIVE-SY-R-13",
+    "status": "WAIT_CI",
     "repository": "c2melendez/precision-lab-plus",
-    "technical_sha": "f4f909ed373f10e631d2ccb575268017ba983b07",
+    "technical_sha": "b90f15e11d6b48a953aa37319afda711dcf58e2e",
     "runs": [
       {
-        "id": 38985749714,
-        "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38985749714",
-        "logs_reviewed": true,
-        "evidence_executed": true
-      },
-      {
-        "id": 38985749703,
-        "workflow": ".github/workflows/in625-syntax-native.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38985749703",
-        "logs_reviewed": true,
-        "evidence_executed": true
-      },
-      {
-        "id": 38985749751,
+        "id": 38986979606,
         "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38985749751",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979606"
+      },
+      {
+        "id": 38986979633,
+        "workflow": ".github/workflows/s19-plus-frontend-preflight.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979633"
+      },
+      {
+        "id": 38986979566,
+        "workflow": ".github/workflows/in625-h1d-reentry.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979566"
+      },
+      {
+        "id": 38986979683,
+        "workflow": ".github/workflows/in625-sg28-plus-ui-cancel.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979683"
+      },
+      {
+        "id": 38986979759,
+        "workflow": ".github/workflows/in625-syntax-native.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979759"
       }
     ]
   },

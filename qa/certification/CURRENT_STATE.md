@@ -3,7 +3,7 @@
 Corte: 2026-10-17 UTC (2026-10-16 Honduras). Certificación global **OPEN**, porcentaje reconciliado **ND**.
 
 ## Reanudación única
-**Siguiente tarea: PLUS-NATIVE-SY-R-13 — READY.** Probar la raíz cúbica del fixture original con binding x=27 en UI MathLive Plus, resultado3 y reentrada HTTP real. Revisar primero la evidencia conversor/HTTP existente y el recorrido de binding de UI; no relanzar Lite ni bloqueos sin cambios.
+**Siguiente tarea: PLUS-NATIVE-SY-R-13 — WAIT_CI.** SHA `b90f15e11d6b48a953aa37319afda711dcf58e2e`: inspeccionar runs existentes del ledger; no redispatch. Corregida clasificación de binding como relación; esperar evidencia nativa y regresiones antes de cerrar.
 
 Leer [continuity.json](continuity.json) y [CONTINUITY.md](CONTINUITY.md). Si HEAD técnico cambió sin reconciliar el índice, el planificador suprime la tarea obsoleta y devuelve RECONCILE. El prompt externo es bootstrap; el estado reside aquí y en GitHub.
 
