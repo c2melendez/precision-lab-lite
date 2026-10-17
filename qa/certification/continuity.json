@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 53,
+  "revision": 54,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,19 +134,18 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-SIM-01",
-    "status": "IN_PROGRESS",
-    "repository": "c2melendez/precision-lab-lite",
-    "paired_repository": "c2melendez/precision-lab-plus",
+    "id": "ALGEBRA114-AS-SIM-01-CI-REVIEW",
+    "status": "PENDING_CI",
     "files": [
+      "qa/certification/check_algebra114_fixture.py",
       "qa/certification/algebra114_source.md",
-      "qa/certification/check_algebra114_fixture.py"
+      "tests/algebra114AsSim01.audit.test.ts"
     ],
-    "action": "Verify source fixture validator execution on both repos and implement minimal independent regression for AS-SIM-01: 3x+2y-x+5y equals 2x+7y (with scope-specific parser/Worker/HTTP/native evidence); check actual exact SHA gates before any PASS.",
+    "action": "Inspect latest exact-SHA cumulative CI for AS-SIM-01; investigate failure before claiming mathematical PASS. Read-only fixture validator exists but has no confirmed execution in CI; integrate/verify separately only if necessary. Keep global certification OPEN.",
     "exit_criteria": [
-      "Validator execution confirms 114 unique rows and 13 full groups",
-      "Bilateral AS-SIM-01 exact symbolic oracle with original LaTeX source and scoped transport coverage",
-      "Executed CI jobs inspected by SHA; global OPEN"
+      "Evidence of execution for case AS-SIM-01 in both engines",
+      "Bilateral source 114 IDs verified by validator execution, not only static inspection",
+      "Record exact CI run/SHA and scope"
     ]
   },
   "blockers": [
