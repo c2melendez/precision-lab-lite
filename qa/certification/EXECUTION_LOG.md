@@ -297,3 +297,6 @@ Inspected complete canonical GitHub trees Lite 567 entries and Plus 648 entries,
 
 ## 2026-10-17 — Original Algebra114 source recovered
 Located Library `Matriz de estrés — Álgebra simbólica.md` and verified its two extra Library copies are identical in extracted text. 114 table rows, all distinct original AS-* IDs; section counts SIM10 EXP10 FAC12 PF8 RAT10 DIV8 PAR10 AVS10 RAD10 DOM6 MUL6 CONV8 LIM6. Preserved complete original source in `qa/certification/algebra114_source.md` on both Lite/Plus, without rewriting mathematical oracles. Historical SOURCE_NOT_LOCATED superseded by SOURCE_VALIDATED. New next action ALGEBRA114-FIXTURE-VALIDATION, revision 52. No Algebra114 tests certified yet; no CI dispatched on documentary source changes. SY-P23, X04/X14 Plus and other independent blockers remain; global OPEN.
+
+## Algebra114 fixture checkpoint 2026-10-17
+Source SHA b30ca7fcec641334ce8128ca25bec542a9d04e79 matches both projects, 114 unique AS-* rows. Added check_algebra114_fixture.py but no executed CI for it yet. AS-SIM-01: 3x+2y-x+5y equals 2x+7y, no dedicated test identified in searched algebra files. Next ALGEBRA114-AS-SIM-01; global OPEN.
