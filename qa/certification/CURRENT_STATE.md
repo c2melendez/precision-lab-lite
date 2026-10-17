@@ -4,7 +4,7 @@ Corte: 2026-10-17 UTC (2026-10-16 Honduras). Certificación global **OPEN**; por
 
 ## Reanudación única
 
-**Siguiente tarea: SY-X-06-BILATERAL — READY.** Probar una expansión determinista de exactamente 10 000 caracteres desde el fixture descriptivo. El oráculo permite procesamiento sin bloqueo o rechazo claro por longitud. Revisar primero presupuestos de ingesta/seguridad y evidencia; no acortar la entrada ni cambiar límites para fabricar PASS. Comprobar recuperación y reentrada.
+**Siguiente tarea: SY-X-06-BILATERAL — WAIT_CI.** Fuente real10000caracteres publicada;inspeccionar runs existentes deambosproductos,no redispatch. Lite procesa5010;Plus debe mostrar rechazo porlongitud conlímite500 intacto. Esperarlogs antes dePASS.
 
 Leer [continuity.json](continuity.json), [CONTINUITY.md](CONTINUITY.md) y el protocolo. Verificar HEAD y Actions antes de actuar; reconciliar cambios técnicos no registrados. El prompt externo es solo bootstrap.
 

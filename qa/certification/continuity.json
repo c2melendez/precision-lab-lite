@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 14,
+  "revision": 15,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "cdcaefb8d317e2303b4b89da92afb7a7a994f698",
-  "baseline_case": "SY-X-05",
-  "baseline_status": "VERIFIED_WITH_BLOCKERS",
+  "technical_baseline_sha": "227ad7513a199dee984b0b1e48fb7550b98d5c8d",
+  "baseline_case": "SY-X-06",
+  "baseline_status": "WAIT_CI",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -60,7 +60,7 @@
       "inputs": [
         "*"
       ],
-      "acceptance_revision": "2026-10-17-scientific-X05-v1"
+      "acceptance_revision": "2026-10-17-scientific-X05-X06-v1"
     },
     "sg28_cancel": {
       "workflow": ".github/workflows/in625-sg28-scientific-cancel.yml",
@@ -115,19 +115,8 @@
   },
   "next_action": {
     "id": "SY-X-06-BILATERAL",
-    "status": "READY",
-    "repository": "c2melendez/precision-lab-plus",
-    "paired_repository": "c2melendez/precision-lab-lite",
-    "files": [
-      "qa/certification/syntax309_cases.jsonl"
-    ],
-    "action": "Cover canonical SY-X-06 descriptive10000-character input in both products. Inspect declared length/security budgets and existing evidence first; document deterministic exact-length expansion and real ingestion. Accept processing without blocking OR explicit readable length rejection per original oracle; preserve recovery/reentry and do not loosen limits to manufacture PASS.",
-    "exit_criteria": [
-      "Pin original fixture/oracle; document actual10000-character expanded source and ingestion boundary, with no shortened stand-in",
-      "Bounded responsive UI with real execution or explicit readable length rejection; verify recovery and reentry through actual applicable path",
-      "Distinguish local ingestion/converter validation, Worker and rawHTTP behavior; no backend evidence invented for local rejection",
-      "Focused diagnosis then pertinent CI, logs reviewed; bilateral ledger and one next task updated; do not repeat unchanged X04/S25/SG28 blockers"
-    ]
+    "status": "WAIT",
+    "action": "Inspect recorded automatic runs at both technical SHAs. No redispatch. Verify real10000-character ingestion, Lite processing/Plus readable rejection and recovery; inspect the already-started dependency campaign independently."
   },
   "blockers": [
     {
@@ -173,37 +162,31 @@
     }
   ],
   "work_in_progress": {
-    "id": "SY-X-05-BILATERAL",
-    "status": "VERIFIED_SCOPED",
-    "technical_sha": "cdcaefb8d317e2303b4b89da92afb7a7a994f698",
-    "paired_technical_sha": "9e054de4e68621cf06c2a72236e585e6c9a5387c",
+    "id": "SY-X-06-BILATERAL",
+    "status": "WAIT_CI",
+    "technical_sha": "227ad7513a199dee984b0b1e48fb7550b98d5c8d",
+    "paired_technical_sha": "db29648ac2ab2607021a32089c5555d3cbb9b2b0",
     "runs": [
       {
-        "id": 38990035666,
-        "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035666",
-        "logs_reviewed": true,
-        "evidence_executed": true
-      },
-      {
-        "id": 38990035545,
-        "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035545",
-        "logs_reviewed": true,
-        "evidence_executed": true
-      },
-      {
-        "id": 38990035597,
+        "id": 38990826311,
         "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035597",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "status": "queued",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826311"
+      },
+      {
+        "id": 38990826322,
+        "workflow": ".github/workflows/in625-h1d-reentry.yml",
+        "status": "queued",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826322"
+      },
+      {
+        "id": 38990826368,
+        "workflow": ".github/workflows/in625-cumulative-certification.yml",
+        "status": "queued",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826368"
       }
     ]
   },
