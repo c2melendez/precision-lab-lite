@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 15,
+  "revision": 16,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "227ad7513a199dee984b0b1e48fb7550b98d5c8d",
@@ -165,7 +165,7 @@
     "id": "SY-X-06-BILATERAL",
     "status": "WAIT_CI",
     "technical_sha": "227ad7513a199dee984b0b1e48fb7550b98d5c8d",
-    "paired_technical_sha": "db29648ac2ab2607021a32089c5555d3cbb9b2b0",
+    "paired_technical_sha": "2d6434b7b7216efa6aaf2ca30d1a277960398c2e",
     "runs": [
       {
         "id": 38990826311,
@@ -288,5 +288,14 @@
     "no_coverage": 390,
     "threshold": 10.3,
     "scope": "Not current Lite HEAD; not full S19 closure"
-  }
+  },
+  "pending_legacy_runs": [
+    {
+      "id": 38990822464,
+      "repository": "c2melendez/precision-lab-plus",
+      "technical_sha": "db29648ac2ab2607021a32089c5555d3cbb9b2b0",
+      "status": "CAMPAIGN_IN_PROGRESS_FRONTEND_SECURITY_FAILED",
+      "instruction": "Inspect existing jobs only; no duplicate campaign. S25 frontend5high/2moderate; backendsecurityPASS24tests; mutation jobs pending."
+    }
+  ]
 }
