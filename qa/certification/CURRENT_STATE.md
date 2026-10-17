@@ -1,62 +1,19 @@
-
-
-## SY-X-08 — corrección de oráculo, WAIT_CI
-Plus inicial38995800956:9PASS/1FAIL desktop; raíz i y reentrada correctas, control i²→−1 falló solo por comparar signo KaTeX U+2212 contra ASCII. Corregida normalización del signo visible sin cambiar valor ni motor. SHA Plus vigente 948d6dbb501e79b9e4fca13548586ca7a88d9a80; Lite 378510f0092d4c50c321fc59ce1abb87e732aa72.
-- [IN625 Cumulative Certification Gate 38995803426](https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803426) — inspeccionar, no relanzar.
-- [IN625 H1d Reentry Diagnostic 38995803385](https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803385) — inspeccionar, no relanzar.
-- [Syntax309 SY-N-31 Scientific UI E2E 38995803418](https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803418) — inspeccionar, no relanzar.
-Lite acumulativo38995803426:1601PASS/30TODO,183archivos,typecheck/build; H1d38995803385:21PASS. Nativos aún pendientes. La corrección e2e-only no activó otra campaña de mutaciones/seguridad. Campaña inicial X08 38995800990 tiene insumos de pruebas nuevos; inspeccionar sus jobs existentes, sin repetir pinLite/npmajenos.
-# SY-X-08 — WAIT_CI
-
-Inspeccionar las corridas exactas registradas en continuity.json. No ejecutar de nuevo.
-
-
-## 2026-10-17 UTC — SY-X-08 publicado, WAIT_CI
-SHA 378510f0092d4c50c321fc59ce1abb87e732aa72; par 122711fc0161468d8cb619b6ad2aa9a88295b5eb. Contrato previo complejo principal (SY-E-17/18, SY-R-08): evaluadores generales admiten i; no se inventa un selector real. Fixture original sqrt(-1), exactitud i, reentrada, i^2=-1, control sqrt(-4)=2i y recuperación 2+3=5 pasan localmente (Worker-handler Lite/conversor Plus/HTTP Plus). Sin cambio de motor. Ingesta MathLive/Worker real/HTTP y 3 perfiles aún pendientes de CI.
-- [.github/workflows/in625-h1d-reentry.yml](https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803385) — inspeccionar run existente, no relanzar.
-- [.github/workflows/in625-cumulative-certification.yml](https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803426) — inspeccionar run existente, no relanzar.
-- [.github/workflows/syntax309-scientific-e2e.yml](https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803418) — inspeccionar run existente, no relanzar.
-Campaña38992878940 reconciliada: backendmutmutSUCCESS con mutaciones reales; frontend117278929718CANCELLED tras Worker exit1 en BasicModeConversionError.test.tsx, sin informe final. No inferir score ni causa de cancelación. S19 integralOPEN.
-
-## Fotografía anterior (evidencia histórica)
-
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
-Corte: 2026-10-17 UTC (2026-10-16 Honduras). Certificación global **OPEN**; porcentaje reconciliado **ND**.
+Corte:2026-10-17 UTC (2026-10-16 Honduras). Global **OPEN**; porcentaje reconciliado **ND**.
 
-## Reanudación única
+**Siguiente tarea única: SY-X-09-BILATERAL — READY.** Leer continuity.json y protocolo; verificar HEAD/Actions. Potencia extrema original, límites de recursos explícitos y recuperación. No ejecutar sin acotar recursos.
 
-**Siguiente tarea: SY-X-08-BILATERAL — READY.** Probar el fixture original raíz de -1 según el contrato real/complejo existente de cada canal. Leer convenciones y evidencia previa antes de actuar. En canales reales, rechazo claro; donde se admiten complejos, resultado exacto i y reentrada aplicable. No cambiar silenciosamente el dominio ni aceptar NaN como resultado real.
-
-Leer [continuity.json](continuity.json), [CONTINUITY.md](CONTINUITY.md) y el protocolo. Verificar HEAD y Actions; reconciliar cambios técnicos no registrados. El prompt externo es solo bootstrap.
-
-## Evidencia vigente
-
-| Producto/canal | SHA técnico de origen | Evidencia revisada |
-|---|---|---|
-| Lite acumulativo | f0d3106d351aebc49b6a5715efd92690c44ec843 | [38992883904](https://github.com/c2melendez/precision-lab-lite/actions/runs/38992883904):1600 PASS/30 TODO;182archivos;typecheck/build |
-| Lite nativo | mismo SHA Lite | [38992883919](https://github.com/c2melendez/precision-lab-lite/actions/runs/38992883919):405/405,tres perfiles Chromium,sin reintentos |
-| Lite H1d | mismo SHA Lite | [38992883884](https://github.com/c2melendez/precision-lab-lite/actions/runs/38992883884):21PASS |
-| Plus acumulativo | cc89d7ccd36dfdfe15b14e72215920c62508ab00 | [38992878873](https://github.com/c2melendez/precision-lab-plus/actions/runs/38992878873):frontend1004PASS/28TODO;backend1467PASS/2XFAIL;cobertura88,04%;typecheck/build |
-| Plus nativo X01–03/R12–14/X05–07 | mismo SHA Plus | [38992878912](https://github.com/c2melendez/precision-lab-plus/actions/runs/38992878912):27/27,tres perfiles y recuperación/reentrada real |
-| Plus H1d | mismo SHA Plus | [38992878877](https://github.com/c2melendez/precision-lab-plus/actions/runs/38992878877):38PASS |
-| Plus aislamiento regresión | mismo SHA Plus | [38992878918](https://github.com/c2melendez/precision-lab-plus/actions/runs/38992878918):69PASS,no evidencia DIST |
-| S19 frontend initial run | mismo SHA Plus | [38992878879](https://github.com/c2melendez/precision-lab-plus/actions/runs/38992878879):759tests,sin mutaciones ni score |
-| Campaña por componente | mismo SHA Plus | [38992878940](https://github.com/c2melendez/precision-lab-plus/actions/runs/38992878940):backendsecurityPASS24tests;mutacionesPlusen curso;Litepin yfrontendnpm omitidos por alcance |
-
-TODO/XFAIL/SKIP no son PASS. Los snapshots documentales conservan SHA de evidencia de origen. Chromium desktop/tablet/mobile no acredita cada tecla/SO/otro motor/botón Reusar.
-
-## Último cierre
-
-SY-X-07 PASS acotado bilateral. Lite devolvía falsamente0 para oo-oo;ahora parser/CAS rechazan la indeterminación antes de perder su procedencia. Plus explica la indeterminación en conversor y servicio HTTP. La guardia se limita a restas literales de infinitos con agrupación balanceada, no a todo cálculo con infinito. Las restas finitas3-3→0 y3-2→1 permanecen válidas.
-
-La ingesta nativa conserva el fixture original. Rechazo local en ambos editores, sin inventar una llamada HTTP/Worker para ese rechazo. La recuperación y reentrada sí recorren HTTP Plus/Worker Lite reales. El rechazo rawHTTP Plus y el handlerWorker Lite se prueban por separado. Nuevos IDs y cero pageerrors en los perfiles acreditados.
-
-## Continuidad y campañas
-
-Selectorporjob verificado:en38992878940 se ejecuta seguridadbackend y se seleccionan mutacionesPlus afectadas;no se repiten Litepin ni npmfrontend. 56tests del mecanismoPlus/34Lite aprobados. El verde de un initialrun o unSKIP no certifica mutaciones. Seguridadseleccionada fresca;PR/main ymanualcompleto conmotivo preservados.
-
-La campaña anterior38990822464 terminó Litepin10,32% sobre6cbec764 ybackendmutmutSUCCESS;frontendnpmFAIL5high yPlusfrontendCANCELLED sin scorefinal. No reabrirla. En38992878940 los jobsPlus117278929669/117278929718 siguenencurso;inspeccionar esosIDs y no duplicar. S19integral OPEN.
+## 2026-10-17 UTC — SY-X-08 bilateral verificado
+Lite SHA `378510f0092d4c50c321fc59ce1abb87e732aa72`; Plus SHA `948d6dbb501e79b9e4fca13548586ca7a88d9a80` (solo corrección de oráculo nativo sobre `122711fc0161468d8cb619b6ad2aa9a88295b5eb`).
+Fixture original `\sqrt{-1}`, esperado «en ℝ: error claro; en ℂ: i». Los canales generales ensayados ya son complejos principales: antecedentes SY-E-17/18 y SY-R-08, Algebrite Lite y servicio evaluate Plus. No existe un selector ℝ aplicado a estos flujos; no se cambió el dominio ni se inventó un rechazo real. Otros canales restringidos a reales conservan su contrato y no reciben PASS de esta evidencia.
+Ingesta exacta MathLive de la fuente original; salida exacta i visible y reentrada del resultado real; control i²=-1 y recuperación 2+3=5 con reentrada, cinco IDs distintos y cero pageerrors por perfil. Lite usa Worker real en navegador; Plus HTTP real y resultado MathResponse, aproximación real nula para i. Pruebas locales independientes añaden sqrt(-4)=2i y ausencia de símbolos libres/Float en HTTP.
+- Lite [acumulativo38995803426](https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803426):1601 PASS/30 TODO,183 archivos,typecheck/build,34 pruebas del mecanismo. [Nativo38995803418](https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803418):408/408 PASS,desktop/tablet/mobile Chromium,sin reintentos. [H1d38995803385](https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803385):21 PASS.
+- Plus [acumulativo38995949507](https://github.com/c2melendez/precision-lab-plus/actions/runs/38995949507):frontend1005 PASS/28 TODO,146 archivos,typecheck/build;backend1468 PASS/2 XFAIL,cobertura88.00%;56 pruebas del mecanismo. [Nativo38995949534](https://github.com/c2melendez/precision-lab-plus/actions/runs/38995949534):30/30 PASS (10desktop+20tablet/mobile),sin reintentos. [H1d38995949509](https://github.com/c2melendez/precision-lab-plus/actions/runs/38995949509):38 PASS.
+El primer nativo Plus38995800956 falló9PASS/1FAIL porque KaTeX mostró U+2212 frente a menos ASCII en el control -1, después de aprobar i y reentrada. Clasificado harness; se normaliza únicamente el signo visible, sin cambiar motor, respuesta ni oráculo matemático.
+Campaña previa38992878940 ya completada: backendmutmut117278929669SUCCESS con mutaciones ejecutadas y logs revisados; frontend117278929718CANCELLED, logs contienen Vitest Worker exit1 en BasicModeConversionError.test.tsx y cancelación posterior, sin informe final. No se infiere score ni causa última de la cancelación. Misma huella cancelada requiere DIAGNOSE, no retry automático.
+Campaña X08 [38995800990](https://github.com/c2melendez/precision-lab-plus/actions/runs/38995800990):nuevos insumos de pruebas en frontend/backend; audit56PASS, seguridadbackend117288027634PASS (pip-audit sin vulnerabilidades conocidas,Bandit sin incidencias,24tests); mutaciones117288029860/117288029927 en curso al corte. Frontendnpm yLitepin SKIPPED por alcance, no PASS. La corrección posterior e2e-only no activó otra campaña. Conservar los IDs e inspeccionar sus resultados, sin dispatch duplicado.
+Gaps: MathLive asignación/input en tres perfiles Chromium, no cada tecla/SO/otro motor/botónReusar. Ningún TODO/XFAIL/SKIP es PASS. S25 (5high), S19 integral, SY-P23, SY-X04 Plus, H2/SG28/DIST y certificación global continúan abiertos. Próximo único SY-X-09-BILATERAL: potencia99999999999^{99999999999}, límites anunciados y recuperación; no ejecutar la potencia sin límites de recursos.
 
 ## Bloqueos conservados
 
@@ -69,7 +26,5 @@ La campaña anterior38990822464 terminó Litepin10,32% sobre6cbec764 ybackendmut
 | H2/SG28/DIST | OPEN/BLOCKED: contrato de vigencia/fencing, integración HTTP y luego topología autorizada. [Criterios](SG28_INTEGRATION_EXIT_CRITERIA.md). No repetir preflights equivalentes. |
 | Otros canales/módulos | PARCIAL/ND: R12–14 y X01–03 nativos Plus ya acreditados; otros casos conservan sus gaps. |
 
-El [log](EXECUTION_LOG.md) y sus archivos preservan la historia; las fotografías anteriores no dictan el siguiente paso. Sin producción, deploy, merge, release ni activación remota de flags.
 
-CI-CAMPAIGN-OVERSCOPE RESOLVED_SCOPED:selector validado sin nuevas campañas;aplicar su revisión porjob.
-
+El log conserva la historia; next_action es la única continuación vigente. Sin producción, deploy, merge, release ni flags remotos.

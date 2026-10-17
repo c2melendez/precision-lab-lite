@@ -114,3 +114,7 @@ python -m unittest discover -s scripts/certification -p 'test_*.py'
 ```
 
 El JSON de paths debe proceder del diff real; sin credenciales, la inspección offline de un perfil afectado no podrá reutilizar evidencia y devolverá RUN conservador. Para inspección pura de reglas puede llamarse `select(paths,event,reason)`. El Job Summary conserva decisión y enlace al run de origen. No despachar una campaña solo porque aparezca REVIEW: completar la revisión o cambiar la precondición documentada.
+
+
+## Última reconciliación — SY-X-08
+Baselines Plus 948d6dbb501e79b9e4fca13548586ca7a88d9a80 y Lite 378510f0092d4c50c321fc59ce1abb87e732aa72. Usar next_action SY-X-09 y las corridas X08 del índice. Campaña38995800990 ya existe; inspeccionar jobs117288029860/117288029927, no relanzar. Campaña38992878940 finalizada:backendmutmutPASS,frontendCANCELLED con Worker exit1/sin informe;DIAGNOSE para misma huella. Commit e2e-only posterior no activó otra campaña. Prosa no dispara CI;reutilizar evidencia técnica tras comparar huellas.
