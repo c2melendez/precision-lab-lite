@@ -1,5 +1,8 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## 2026-10-17: SY-X-21 PASS bilateral, SY-X-22 IN_PROGRESS
+Lite: native 39062504109, cumulative 39062504182 SUCCESS. Plus: native 39066027440 SUCCESS (75 tests), cumulative 39066027444 SUCCESS (1494 backend PASS/3 XFAIL; 1006 frontend PASS/28 TODO), H1d 39066027416 SUCCESS. SY-X-22 official: 10000-digit number + 1, exact sum or clear size notice, never float approximation. Global OPEN.
+
 ## 2026-10-17 — SY-X-21: corrección de sintaxis publicada, verificación pendiente
 
 Plus: corregidos los caracteres literales `\\n` que rompían TypeScript en el test nativo, commit técnico [`a81b2487`](https://github.com/c2melendez/precision-lab-plus/commit/a81b2487e0e41fa1ec099bce26673aff1e7f9d0e). GitHub generó automáticamente nativo [39066027440](https://github.com/c2melendez/precision-lab-plus/actions/runs/39066027440), H1d [39066027416](https://github.com/c2melendez/precision-lab-plus/actions/runs/39066027416), acumulativo [39066027444](https://github.com/c2melendez/precision-lab-plus/actions/runs/39066027444). En consulta inicial estaban QUEUED; no acreditarlos como PASS ni relanzarlos. Lite mantiene nativo exitoso 39062504109, 453 PASS tres perfiles. Siguiente acción única: verificar conclusión/jobs/logs de estos runs Plus exactamente en SHA `a81b2487e0e41fa1ec099bce26673aff1e7f9d0e`, reconciliar continuidad y cerrar X21 bilateral solo si el criterio se demuestra; de otro modo diagnosticar. Global OPEN y bloqueos heredados intactos.
