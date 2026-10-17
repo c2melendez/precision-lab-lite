@@ -169,7 +169,7 @@ function normalizeUnicodePaste(input: string): string {
   const bad = out.match(/[\p{Extended_Pictographic}\p{Script=Han}]/u);
   if (bad) {
     const cp = bad[0].codePointAt(0)?.toString(16).toUpperCase().padStart(4, "0");
-    throw new Error(`Carácter inesperado "${bad[0]}" (U+${cp}).`);
+    throw parseError(`Carácter inesperado "${bad[0]}" (U+${cp}).`);
   }
 
   return out;
