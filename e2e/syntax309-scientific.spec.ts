@@ -128,3 +128,61 @@ test("SY-X-21 native zero-width fixture is exact 3 or clear rejection with recov
     contentType:"application/json"
   });
 });
+
+
+test("SY-X-22 native 10000-digit input is exact or rejected and recovers",async({page},testInfo)=>{
+  test.setTimeout(120000);
+  const pageErrors:string[]=[];page.on("pageerror",e=>pageErrors.push(e.message));
+  await page.goto("./");
+  const field=page.locator("math-field[aria-label='Entrada matemática']").first();
+  await expect(field).toBeVisible();
+  async function enter(input:string){
+    await field.evaluate((node,value)=>{
+      const mf=node as HTMLElement & {setValue?:(v:string,options?:{silenceNotifications?:boolean})=>void;value?:string};
+      if(mf.setValue)mf.setValue(value,{silenceNotifications:true});else mf.value=value;
+    },input);
+    await field.dispatchEvent("input",{bubbles:true,inputType:"insertReplacementText",data:input});
+  }
+  const source="9".repeat(10000)+"+1";
+  expect(source.length).toBe(10002);
+  await enter(source);
+  const serialized=await field.evaluate(node=>(node as HTMLElement & {value:string}).value);
+  await page.evaluate(()=>window.mathVirtualKeyboard?.hide());
+  const calculate=page.getByRole("region",{name:"Entrada"}).getByRole("button",{name:"Calcular",exact:true});
+  await expect(calculate).toBeEnabled();
+  await calculate.click();
+  const region=page.locator('section[aria-label="Resultado"]').first();
+  const alert=region.locator('[role="alert"]').first();
+  const status=region.locator('[role="status"][data-result-request-id]').first();
+  await expect.poll(async()=>{
+    if(await alert.isVisible().catch(()=>false))return "error";
+    if(await status.isVisible().catch(()=>false))return "value";
+    return "pending";
+  },{timeout:30000}).not.toBe("pending");
+  const rejected=await alert.isVisible().catch(()=>false);
+  const notice=rejected?(await alert.innerText()).trim():"";
+  if(rejected){
+    expect(notice).toMatch(/longitud|tamañ|l[ií]mit|demasiad|car[aá]cter|inv[aá]lid|expresi[oó]n|sintaxis/i);
+    await expect(status).toHaveCount(0);
+  }else{
+    expect(serialized.replace(/\s/g,"")).toContain("9".repeat(10000));
+    const exact="1"+"0".repeat(10000);
+    const rendered=await status.innerText();
+    expect(rendered.replace(/\s/g,"")).toContain(exact);
+    expect(rendered).not.toMatch(/Infinity|NaN/i);
+  }
+  const ids:string[]=[];
+  for(const input of ["2+3","5"]){
+    await enter(input);await page.evaluate(()=>window.mathVirtualKeyboard?.hide());
+    const previous=await status.count()?await status.getAttribute("data-result-request-id"):null;
+    await expect(calculate).toBeEnabled();await calculate.click();
+    await expect.poll(()=>status.getAttribute("data-result-request-id"),{timeout:15000}).not.toBe(previous);
+    await expect(status).toContainText("5");
+    ids.push((await status.getAttribute("data-result-request-id"))!);
+  }
+  expect(new Set(ids).size).toBe(2);expect(pageErrors).toEqual([]);
+  await testInfo.attach("SY-X-22-lite-native-evidence",{
+    body:JSON.stringify({sourceLength:source.length,serializedLength:serialized.length,rejected,notice,ids,project:testInfo.project.name,pageErrors},null,2),
+    contentType:"application/json"
+  });
+});
