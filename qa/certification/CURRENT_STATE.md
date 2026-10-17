@@ -1,3 +1,11 @@
+
+
+## SY-X-08 — corrección de oráculo, WAIT_CI
+Plus inicial38995800956:9PASS/1FAIL desktop; raíz i y reentrada correctas, control i²→−1 falló solo por comparar signo KaTeX U+2212 contra ASCII. Corregida normalización del signo visible sin cambiar valor ni motor. SHA Plus vigente 948d6dbb501e79b9e4fca13548586ca7a88d9a80; Lite 378510f0092d4c50c321fc59ce1abb87e732aa72.
+- [IN625 Cumulative Certification Gate 38995803426](https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803426) — inspeccionar, no relanzar.
+- [IN625 H1d Reentry Diagnostic 38995803385](https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803385) — inspeccionar, no relanzar.
+- [Syntax309 SY-N-31 Scientific UI E2E 38995803418](https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803418) — inspeccionar, no relanzar.
+Lite acumulativo38995803426:1601PASS/30TODO,183archivos,typecheck/build; H1d38995803385:21PASS. Nativos aún pendientes. La corrección e2e-only no activó otra campaña de mutaciones/seguridad. Campaña inicial X08 38995800990 tiene insumos de pruebas nuevos; inspeccionar sus jobs existentes, sin repetir pinLite/npmajenos.
 # SY-X-08 — WAIT_CI
 
 Inspeccionar las corridas exactas registradas en continuity.json. No ejecutar de nuevo.
