@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 50,
+  "revision": 51,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,19 +134,16 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-SOURCE-INVENTORY",
-    "status": "PREPARATORY",
-    "repository": "c2melendez/precision-lab-lite",
-    "paired_repository": "c2melendez/precision-lab-plus",
+    "id": "ALGEBRA114-SOURCE-PROVENANCE",
+    "status": "BLOCKED_ON_SOURCE",
     "files": [
-      "qa/certification/ALGEBRA114_PREPARATION.md",
-      "qa/certification/EXECUTION_PROTOCOL.md"
+      "qa/certification/ALGEBRA114_PREPARATION.md"
     ],
-    "action": "Locate authoritative 114-case Algebra requirements source, verify IDs and oracle count, then map coverage across Lite and Plus; do not certify or run CI until contract is sourced. Independently retain SY-P-23 contract blocker.",
+    "action": "Locate original authoritative Algebra114 114-case normative source (historical issue, archived attachment, commit or separate suite); verify all case IDs and oracles before coverage scoring or dispatch. Continue separately with independently testable work when source cannot be retrieved.",
     "exit_criteria": [
-      "Identify an authoritative versioned source for 114 individual test cases",
-      "Build case-to-channel coverage map with verified provenance",
-      "Select first independently testable case and avoid rerunning existing gates"
+      "Versioned evidence of original 114 requirements with identifiers and expected results",
+      "Map each source ID to Lite/Plus implementations and existing test evidence without implying equivalence",
+      "Select first missing case for targeted test only after oracle is sourced"
     ]
   },
   "blockers": [
