@@ -1,5 +1,8 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## SY-X-22 new regression
+Plus HTTP run 39066547036 SUCCESS; Lite parser commit 60680a573db8164dc17fd275f01666b040dcd4c4. Lite CI runs 39066850403, 39066850464 and 39066850417 are pending verification. Native and Worker scope not closed. Global OPEN.
+
 ## SY-X-22 progreso técnico — 2026-10-17
 Plus HTTP test nuevo `backend/tests/test_syntax309_syx22_http.py` commit `04da8cc6b55e9be0764bdf9a594c51b4008db07c`. Fuente generada: 10000 cifras 9 seguidas de +1; exige respuesta entera exacta de 10001 cifras o rechazo validado, seguido de recuperación 2+3. CI automática Plus [acumulativo 39066547036](https://github.com/c2melendez/precision-lab-plus/actions/runs/39066547036), [H1d 39066547016](https://github.com/c2melendez/precision-lab-plus/actions/runs/39066547016) IN_PROGRESS en última consulta; NO atribuir PASS. Próxima acción: revisar esos logs por SHA, corregir si es necesario y completar Worker Lite y native Chromium bilateral. SY-X-21 PASS acotado, global OPEN.
 
