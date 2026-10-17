@@ -27,3 +27,6 @@ Runs pertinentes: [38983494311](https://github.com/c2melendez/precision-lab-lite
 - SY-X-04Plus sigueBLOCKED porlongitud500enHTTPyparser ypresupuestoAST200. Se preservaoráculo500x enXFAILestricto; noPASSdelresultado. SY-P-23XFAILestricto,H2/SG28OPEN,DISTBLOCKED,globalOPEN.
 - Siguiente tarea independiente única: PLUS-NATIVE-SY-R-12, rechazo/reentrada nativa Plus desdefixtureoriginal. Inspeccionar evidencia existente antesdeprobar; no repetirgatesLiteaprobados ni preflightsSG28.
 
+
+## 2026-10-17 UTC — SY-R-12 nativo Plus publicado, esperar CI
+SHA técnico `f4f909ed373f10e631d2ccb575268017ba983b07`: fixture original `\text{no existe}`, rechazo explícito local sin POST, dos recuperaciones y reentrada HTTP reales por perfil. Comprobación local focalizada:6tests PASS; Playwright enumera12tests, no acredita navegador local. Runs automáticos existentes: [nativo38985749703](https://github.com/c2melendez/precision-lab-plus/actions/runs/38985749703), [acumulativo38985749751](https://github.com/c2melendez/precision-lab-plus/actions/runs/38985749751), [H1d38985749714](https://github.com/c2melendez/precision-lab-plus/actions/runs/38985749714). WAIT_CI, no PASS anticipado. Lite conserva evidencia previa sin reejecución; no campaña S25/S19 ni SG28 equivalente.

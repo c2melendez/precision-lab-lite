@@ -3,7 +3,7 @@
 Corte: 2026-10-16 (Honduras). Certificación global **OPEN**, porcentaje reconciliado **ND**.
 
 ## Reanudación única
-**Siguiente tarea: PLUS-NATIVE-SY-R-12 — READY.** Extender la prueba nativa Plus con el fixture original de texto no matemático y recuperación/reentrada mediante MathLive y HTTP reales. Consultar primero los runs existentes; empezar con diagnóstico focalizado desktop y después los perfiles restantes. No relanzar las suites Lite aprobadas para iniciar otra sesión.
+**Siguiente tarea: PLUS-NATIVE-SY-R-12 — WAIT_CI.** Cambio técnico publicado: `f4f909ed373f10e631d2ccb575268017ba983b07`. Inspeccionar los runs existentes 38985749703 (nativo),38985749751 (acumulativo),38985749714 (H1d); no volver a despachar ni repetir Lite. El cierre requiere logs revisados.
 
 Leer [continuity.json](continuity.json) y [CONTINUITY.md](CONTINUITY.md). Si HEAD técnico cambió sin reconciliar el índice, el planificador suprime la tarea obsoleta y devuelve RECONCILE. El prompt externo es bootstrap; el estado reside aquí y en GitHub.
 

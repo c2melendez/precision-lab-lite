@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 5,
+  "revision": 6,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "fa974e49feb135290b5bdac63c49114f227c7239",
@@ -97,19 +97,9 @@
   },
   "next_action": {
     "id": "PLUS-NATIVE-SY-R-12",
-    "status": "READY",
+    "status": "WAIT",
     "repository": "c2melendez/precision-lab-plus",
-    "files": [
-      "frontend/e2e/in625-syntax-native.spec.ts",
-      "qa/certification/syntax309_cases.jsonl"
-    ],
-    "action": "Cover original SY-R-12 nonmathematical text through actual Plus MathLive/UI and recovery/reentry; inspect prior evidence first. Reuse unaffected evidence and do not repeat approved Lite suites or unchanged SG28/security blockers.",
-    "exit_criteria": [
-      "Original fixture and explicit readable rejection, no invented HTTP on local rejection",
-      "Real HTTP recovery and output reentry with fresh request IDs",
-      "Desktop focused diagnosis then remaining required profiles",
-      "Pertinent same-input evidence reviewed, ledger updated"
-    ]
+    "action": "Inspect existing runs for f4f909ed373f10e631d2ccb575268017ba983b07; do not redispatch. Verify native 12 cases/profiles, cumulative and H1d logs before closing."
   },
   "blockers": [
     {
@@ -155,37 +145,34 @@
     }
   ],
   "work_in_progress": {
-    "id": "AUDIT-REMEDIATION-20261016",
-    "status": "VERIFIED_WITH_BLOCKERS",
-    "technical_sha": "fa974e49feb135290b5bdac63c49114f227c7239",
+    "id": "PLUS-NATIVE-SY-R-12",
+    "status": "WAIT_CI",
+    "repository": "c2melendez/precision-lab-plus",
+    "technical_sha": "f4f909ed373f10e631d2ccb575268017ba983b07",
     "runs": [
       {
-        "id": 38983494311,
-        "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494311"
+        "id": 38985749751,
+        "name": "IN625 Cumulative Certification Gate",
+        "path": ".github/workflows/in625-cumulative-certification.yml",
+        "sha": "f4f909ed373f10e631d2ccb575268017ba983b07",
+        "status": "queued",
+        "conclusion": null
       },
       {
-        "id": 38983494649,
-        "workflow": ".github/workflows/certification-dependency-gates.yml",
-        "status": "completed",
-        "conclusion": "failure",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494649"
+        "id": 38985749703,
+        "name": "IN625 Plus Native Syntax and Recovery",
+        "path": ".github/workflows/in625-syntax-native.yml",
+        "sha": "f4f909ed373f10e631d2ccb575268017ba983b07",
+        "status": "in_progress",
+        "conclusion": null
       },
       {
-        "id": 38983494314,
-        "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494314"
-      },
-      {
-        "id": 38983494355,
-        "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494355"
+        "id": 38985749714,
+        "name": "IN625 H1d Reentry Diagnostic",
+        "path": ".github/workflows/in625-h1d-reentry.yml",
+        "sha": "f4f909ed373f10e631d2ccb575268017ba983b07",
+        "status": "in_progress",
+        "conclusion": null
       }
     ]
   },
