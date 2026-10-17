@@ -4,7 +4,7 @@ Corte: 2026-10-17 UTC (2026-10-16 Honduras). Certificación global **OPEN**; por
 
 ## Reanudación única
 
-**Siguiente tarea: SY-X-05-BILATERAL — READY.** Expandir fielmente el fixture descriptivo a 30 niveles de paréntesis alrededor de 1 y verificar ambos productos. Inspeccionar primero evidencia y límites de ingesta/parser/AST. No simplificar la entrada a 1 antes de probarla ni reabrir SY-X-04 Plus sin cambiar sus precondiciones.
+**Siguiente tarea: SY-X-05-BILATERAL — WAIT_CI.** Expansión exacta de30niveles publicada;inspeccionar runs existentes del ledger y su par. No redispatch ni PASS anticipado.
 
 Leer [continuity.json](continuity.json), [CONTINUITY.md](CONTINUITY.md) y el protocolo. Verificar HEAD y Actions antes de actuar. Si el HEAD técnico no coincide con el ledger, reconciliar; no heredar una tarea obsoleta. El prompt externo es solo bootstrap.
 
