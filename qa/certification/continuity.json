@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 48,
+  "revision": 49,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,19 +134,17 @@
     }
   },
   "next_action": {
-    "id": "SY-P-23-CONVENTION-REVIEW",
-    "status": "IN_PROGRESS",
-    "repository": "c2melendez/precision-lab-lite",
-    "paired_repository": "c2melendez/precision-lab-plus",
+    "id": "SY-P-23-CONVENTION-DECISION",
+    "status": "BLOCKED_ON_CONTRACT",
+    "action": "Formalize a declared mathematical convention for bare a/bc or explicit user selection that preserves named bc in Plus and single-letter b*c in Lite. Prioritize another independent actionable certification objective without rerunning unchanged SY-P-23 evidence.",
     "files": [
-      "qa/certification/syntax309_cases.jsonl",
-      "qa/certification/MANUAL_CAPABILITY_GAPS.md"
+      "qa/certification/SY_P_23_CONVENTION.md",
+      "qa/certification/syntax309_cases.jsonl"
     ],
-    "action": "Inspect official SY-P-23 fixture and parser conventions in Lite/Plus; propose one explicit contractual interpretation of a/bc or clearly document ambiguity, with no invented PASS. Preserve X04/X14 blocked; add regressions only after mathematical oracle is explicit.",
     "exit_criteria": [
-      "Read exact SY-P-23 source and expected contract",
-      "Compare existing two implementations and their native/HTTP/Worker behavior",
-      "Record an explicit consistent decision or an unresolved decision dependency before running additional gates"
+      "An accepted cross-product decision on ambiguity and compound identifiers",
+      "Exact-source UI/parser/Worker/HTTP regression evidence for that decision",
+      "Preserve existing strict XFAIL and global OPEN until these criteria are met"
     ]
   },
   "blockers": [
@@ -879,6 +877,14 @@
       },
       "evidence_executed": true,
       "scope": "10000-digit input: exact result or explicit size notice; native 3 Chromium profiles and recovery, parser/HTTP/Worker boundary; does not close unrelated gaps"
+    },
+    "SY-P-23-worker-guard-20261017": {
+      "status": "PASS_SCOPED_LITE",
+      "technical_sha": "58218c6241574113f9008592f0f363910f23c934",
+      "h1d_run": 39076124599,
+      "cumulative_run": 39076124624,
+      "assertion": "Actual Lite Worker.postMessage receives no evaluate request for a/bc, LaTex fraction or 1+a/bc; 2+3 recovery uses fresh request id",
+      "global": "OPEN"
     }
   },
   "historical_mutation_reference": {
