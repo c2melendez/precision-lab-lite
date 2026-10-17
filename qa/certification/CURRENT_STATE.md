@@ -1,5 +1,8 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## SY-P-23 2026-10-17 Worker-boundary regression checkpoint
+Lite technical SHA ae9e2e0eff40beba8af4d23a38141fe12189e4d2: cumulative 39075843202 SUCCESS (1626 PASS/30 TODO), H1d 39075843244 FAILURE (21 existing tests PASS; new Worker-boundary test failed after blocking input, during 2+3 recovery because helper observed stale error instead of fresh result). Test correction only: SHA 58218c6241574113f9008592f0f363910f23c934 explicitly waits for new result request_id before reading recovery; automatically triggered H1d 39076124599 and cumulative 39076124624 (QUEUED at checkpoint). No attribution of PASS yet. Plus existing SY-P-23 H1d 39068704250 has 31 PASS, no new Plus CI. Contractual a/bc interpretation OPEN; do not close global certification.
+
 ## SY-P-23 Worker dispatch boundary — 2026-10-17
 Reviewed executed H1d logs: Lite run 39071672827 14 SY-P-23 Playwright cases PASS, Plus run 39068704250 31 SY-P-23 Playwright cases PASS, technical SHAs 827508f6d99abe83aff41d1d5a9f608154ce8358 / 50bd683135de67134c48edd2eea56aad529987e2. No duplicates needed. New Lite E2E trace of actual Worker.postMessage for bare/LaTeX/compound ambiguity and 2+3 recovery committed ae9e2e0eff40beba8af4d23a38141fe12189e4d2. Automatically triggered cumulative 39075843202 and H1d 39075843244 QUEUED at observation; inspect exact-SHA logs before PASS. SY-P-23 convention parity and Plus named bc vs Lite split b*c remain OPEN; global OPEN.
 
