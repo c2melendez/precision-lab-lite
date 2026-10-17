@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 46,
+  "revision": 47,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,19 +134,20 @@
     }
   },
   "next_action": {
-    "id": "SY-X-22-BILATERAL",
+    "id": "SYNTAX309-RECONCILE-GAPS",
     "status": "IN_PROGRESS",
     "repository": "c2melendez/precision-lab-lite",
     "paired_repository": "c2melendez/precision-lab-plus",
     "files": [
+      "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md",
+      "qa/certification/MANUAL_CAPABILITY_GAPS.md",
       "qa/certification/syntax309_cases.jsonl"
     ],
-    "action": "Test canonical 10,000-digit integer + 1 source in parser, actual Worker/HTTP and native MathLive for Lite and Plus. Accept only exact integer or a clear size notice, never floating-point approximation; prove reentry/recovery in three Chromium profiles and inspect exact-SHA CI evidence.",
+    "action": "Reconcile the completed SY-X-22 scoped bilateral evidence, inventory Syntax309 outstanding mathematical and channel gaps (including X04/X14 Plus and SY-P-23), and select a concrete independently actionable gap without rerunning unchanged blocked gates. Then proceed to Algebra114 preparation only within canonical dependency policy.",
     "exit_criteria": [
-      "Preserve original 10,000-digit input contractual length and no float conversion",
-      "Exact integer result or explicit size rejection with bounded behavior",
-      "Native desktop/tablet/mobile plus real Worker/HTTP recovery and traceable distinct requests",
-      "Review real executed jobs/logs and record bilateral evidence; global certification remains OPEN"
+      "Record Lite and Plus exact SHAs and executed run/job logs for X22",
+      "Review Syntax309 gaps by case and channel without inventing X23",
+      "Keep known blockers and global certification OPEN; select next executable gap"
     ]
   },
   "blockers": [
@@ -861,6 +862,24 @@
       },
       "evidence_executed": true,
       "notes": "Lite 453 native PASS 3 Chromium profiles; Plus native 25 desktop and 50 tablet/mobile PASS, backend 1494 PASS 3 XFAIL, frontend 1006 PASS 28 TODO; global OPEN."
+    },
+    "SY-X-22-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "lite": {
+        "technical_sha": "827508f6d99abe83aff41d1d5a9f608154ce8358",
+        "native_run": 39071672864,
+        "cumulative_run": 39071672809,
+        "h1d_run": 39071672827,
+        "sg28_run": 39071672856
+      },
+      "plus": {
+        "technical_sha": "50bd683135de67134c48edd2eea56aad529987e2",
+        "native_run": 39068704322,
+        "cumulative_run": 39068704268,
+        "h1d_run": 39068704250
+      },
+      "evidence_executed": true,
+      "scope": "10000-digit input: exact result or explicit size notice; native 3 Chromium profiles and recovery, parser/HTTP/Worker boundary; does not close unrelated gaps"
     }
   },
   "historical_mutation_reference": {
