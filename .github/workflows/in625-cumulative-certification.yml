@@ -48,6 +48,10 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           REVALIDATION_REASON: ${{ inputs.reason }}
         run: python3 scripts/certification/ci_guard.py --profile lite-cumulative
+      - name: Validate original Algebra114 fixture integrity
+        if: steps.certification_guard.outputs.skip != 'true'
+        working-directory: .
+        run: python3 qa/certification/check_algebra114_fixture.py
       - name: Certification continuity and CI guard regressions
         if: steps.certification_guard.outputs.skip != 'true'
         working-directory: .
