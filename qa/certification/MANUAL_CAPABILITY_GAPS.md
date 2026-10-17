@@ -200,3 +200,6 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 
 ## 2026-10-16 — actualización de gaps X01–03 nativo Plus
 Las notas previas de UI Plus X01–03 pendiente quedan superadas por SHA6d594187e241d6a2491590e13582999ac0b9fd3c, run38983949600,9/9 en desktop/tablet/mobile Chromium. MathLive yHTTP reales, rechazo local, recuperación y reentrada. No cierra cada tecla/SO ni otros casos R. SY-X-04 Plus permanece BLOCKED porlongitudHTTP/parser500 yAST200; se conserva oráculo500x enXFAILestricto,noPASS. S25 conserva5highcadauno yS19initialrun noequivale amutation score. H2/SG28/DISTsin cierre.
+
+## 2026-10-17 UTC — cierre acotado SY-R-12 nativo Plus
+La nota previa de UI Plus R12 pendiente queda superada por SHAf4f909ed373f10e631d2ccb575268017ba983b07,run38985749703:12/12 X01–03/R12 en desktop/tablet/mobile Chromium. R12 conserva fuente original, rechazo local explícito sin POST, dos ciclos recuperación y reentrada HTTP real, sin pageerrors. MathLive setValue/evento input; no cada tecla física/virtual, cada SO, otros motores ni botón Reusar. R13/R14 nativos Plus pendientes. Lite no se reejecutó; bloqueos globales sin cierre.

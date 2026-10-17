@@ -1,9 +1,9 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
-Corte: 2026-10-16 (Honduras). Certificación global **OPEN**, porcentaje reconciliado **ND**.
+Corte: 2026-10-17 UTC (2026-10-16 Honduras). Certificación global **OPEN**, porcentaje reconciliado **ND**.
 
 ## Reanudación única
-**Siguiente tarea: PLUS-NATIVE-SY-R-12 — WAIT_CI.** Cambio técnico publicado: `f4f909ed373f10e631d2ccb575268017ba983b07`. Inspeccionar los runs existentes 38985749703 (nativo),38985749751 (acumulativo),38985749714 (H1d); no volver a despachar ni repetir Lite. El cierre requiere logs revisados.
+**Siguiente tarea: PLUS-NATIVE-SY-R-13 — READY.** Probar la raíz cúbica del fixture original con binding x=27 en UI MathLive Plus, resultado3 y reentrada HTTP real. Revisar primero la evidencia conversor/HTTP existente y el recorrido de binding de UI; no relanzar Lite ni bloqueos sin cambios.
 
 Leer [continuity.json](continuity.json) y [CONTINUITY.md](CONTINUITY.md). Si HEAD técnico cambió sin reconciliar el índice, el planificador suprime la tarea obsoleta y devuelve RECONCILE. El prompt externo es bootstrap; el estado reside aquí y en GitHub.
 
@@ -13,10 +13,10 @@ Leer [continuity.json](continuity.json) y [CONTINUITY.md](CONTINUITY.md). Si HEA
 | Lite acumulativo | fa974e49feb135290b5bdac63c49114f227c7239 | [38983494314](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494314):1586 PASS/30 TODO; typecheck/build PASS |
 | Lite nativo | mismo SHA | [38983494311](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494311):396/396; SY-X-04 conserva500 términos,500x,reentrada y recuperación en3perfiles Chromium |
 | Lite H1d | mismo SHA | [38983494355](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494355):SUCCESS |
-| Plus acumulativo | 6d594187e241d6a2491590e13582999ac0b9fd3c | [38983949345](https://github.com/c2melendez/precision-lab-plus/actions/runs/38983949345):frontend984 PASS/28 TODO; backend1455 PASS/2 XFAIL; cobertura87.87%; typecheck/build PASS |
-| Plus nativo X01–03 | mismo SHA | [38983949600](https://github.com/c2melendez/precision-lab-plus/actions/runs/38983949600):9/9,MathLive/API reales,3perfiles,rechazo local sinHTTP inventado y reentrada real |
-| Plus H1d | mismo SHA | [38983949508](https://github.com/c2melendez/precision-lab-plus/actions/runs/38983949508):SUCCESS |
-| S19 frontend initial run | mismo SHA Plus | [38983949570](https://github.com/c2melendez/precision-lab-plus/actions/runs/38983949570):SUCCESS,759tests iniciales; **sin mutaciones ejecutadas**,no mutation score |
+| Plus acumulativo | f4f909ed373f10e631d2ccb575268017ba983b07 | [38985749751](https://github.com/c2melendez/precision-lab-plus/actions/runs/38985749751):frontend984 PASS/28 TODO; backend1455 PASS/2 XFAIL; cobertura87.98%; typecheck/build PASS |
+| Plus nativo X01–03/R12 | mismo SHA | [38985749703](https://github.com/c2melendez/precision-lab-plus/actions/runs/38985749703):12/12,MathLive/API reales,3perfiles,rechazo local sinHTTP inventado y reentrada real |
+| Plus H1d | mismo SHA | [38985749714](https://github.com/c2melendez/precision-lab-plus/actions/runs/38985749714):SUCCESS |
+| S19 frontend initial run | 6d594187e241d6a2491590e13582999ac0b9fd3c (histórico) | [38983949570](https://github.com/c2melendez/precision-lab-plus/actions/runs/38983949570):SUCCESS,759tests iniciales; **sin mutaciones ejecutadas**,no mutation score |
 
 Los SHA de commits documentales posteriores son distintos; no atribuirles ejecuciones nuevas. TODO/XFAIL/SKIP no se contabilizan como PASS. Tres perfiles Chromium no acreditan otros motores,teclados físicos o cadaSO.
 
@@ -37,6 +37,8 @@ Los SHA de commits documentales posteriores son distintos; no atribuirles ejecuc
 | SY-X-04 Plus | BLOCKED:999caracteres frente a500enHTTP yparser; AST200 adicional. [Contrato](SY_X_04_LENGTH_CONTRACT.md),[propuesta](SY_X_04_LENGTH_DECISION.md). No modificar límites ni sustituir por500*x para fabricarPASS. |
 | SY-P-23 | OPEN: convencióna/bc; XFAILestricto. |
 | H2/SG28/DIST | OPEN/BLOCKED: contrato de vigencia/fencing e integraciónHTTP,después topologíaautorizada. [Salida](SG28_INTEGRATION_EXIT_CRITERIA.md). No repetir preflights equivalentes. |
-| Canales anteriores/visuales/manuales | PARCIAL/ND: X01–03Plus nativo ya acreditado; otrosR y módulos conservan susgaps. |
+| Canales anteriores/visuales/manuales | PARCIAL/ND: X01–03/R12 Plus nativo ya acreditado; otrosR y módulos conservan susgaps. |
 
 Historial completo preservado en los [archivos del log](EXECUTION_LOG.md); fotografías anteriores no dictan el próximo paso. No producción,deploy,merge,release ni activación remota de flags.
+
+SY-R-12 queda PASS acotado nativo Plus (run38985749703):fuente original, rechazo explícito sin POST y recuperación/reentrada real; no cada tecla/SO ni botón Reusar. H1d38 PASS. S19 Lite referencia antigua ya finalizó score10.32%; no acredita HEAD ni cierre integral. La evidencia conserva SHA de origen; los snapshots documentales no son nuevas ejecuciones.

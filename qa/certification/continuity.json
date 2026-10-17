@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 6,
+  "revision": 7,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "fa974e49feb135290b5bdac63c49114f227c7239",
@@ -96,10 +96,20 @@
     }
   },
   "next_action": {
-    "id": "PLUS-NATIVE-SY-R-12",
-    "status": "WAIT",
+    "id": "PLUS-NATIVE-SY-R-13",
+    "status": "READY",
     "repository": "c2melendez/precision-lab-plus",
-    "action": "Inspect existing runs for f4f909ed373f10e631d2ccb575268017ba983b07; do not redispatch. Verify native 12 cases/profiles, cumulative and H1d logs before closing."
+    "files": [
+      "frontend/e2e/in625-syntax-native.spec.ts",
+      "qa/certification/syntax309_cases.jsonl"
+    ],
+    "action": "Cover original indexed cube-root fixture with its x=27 binding through actual Plus MathLive/UI, result 3 and output reentry. Inspect existing converter/HTTP evidence and real UI binding path first; diagnose correct layer if it fails. Reuse unaffected Lite evidence.",
+    "exit_criteria": [
+      "Preserve original canonical source and binding; no pre-evaluated replacement",
+      "Verify actual UI to HTTP request semantics, visible exact result 3 and reentry with fresh request ID",
+      "Desktop focused diagnosis then tablet/mobile Chromium; no mock or silent skip",
+      "Review pertinent CI logs and synchronize both ledgers without rerunning unchanged blockers"
+    ]
   },
   "blockers": [
     {
@@ -146,33 +156,36 @@
   ],
   "work_in_progress": {
     "id": "PLUS-NATIVE-SY-R-12",
-    "status": "WAIT_CI",
+    "status": "VERIFIED_SCOPED",
     "repository": "c2melendez/precision-lab-plus",
     "technical_sha": "f4f909ed373f10e631d2ccb575268017ba983b07",
     "runs": [
       {
-        "id": 38985749751,
-        "name": "IN625 Cumulative Certification Gate",
-        "path": ".github/workflows/in625-cumulative-certification.yml",
-        "sha": "f4f909ed373f10e631d2ccb575268017ba983b07",
-        "status": "queued",
-        "conclusion": null
+        "id": 38985749714,
+        "workflow": ".github/workflows/in625-h1d-reentry.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38985749714",
+        "logs_reviewed": true,
+        "evidence_executed": true
       },
       {
         "id": 38985749703,
-        "name": "IN625 Plus Native Syntax and Recovery",
-        "path": ".github/workflows/in625-syntax-native.yml",
-        "sha": "f4f909ed373f10e631d2ccb575268017ba983b07",
-        "status": "in_progress",
-        "conclusion": null
+        "workflow": ".github/workflows/in625-syntax-native.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38985749703",
+        "logs_reviewed": true,
+        "evidence_executed": true
       },
       {
-        "id": 38985749714,
-        "name": "IN625 H1d Reentry Diagnostic",
-        "path": ".github/workflows/in625-h1d-reentry.yml",
-        "sha": "f4f909ed373f10e631d2ccb575268017ba983b07",
-        "status": "in_progress",
-        "conclusion": null
+        "id": 38985749751,
+        "workflow": ".github/workflows/in625-cumulative-certification.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38985749751",
+        "logs_reviewed": true,
+        "evidence_executed": true
       }
     ]
   },
@@ -188,6 +201,18 @@
       "plus_http": "BLOCKED_LENGTH_PARSER_AND_AST",
       "plus_math_oracle": "STRICT_XFAIL_NOT_PASS",
       "official_expected": "500x"
+    },
+    "SY-R-12": {
+      "status": "PASS_SCOPED",
+      "native_plus": "PASS_SCOPED",
+      "native_plus_run": 38985749703,
+      "technical_sha": "f4f909ed373f10e631d2ccb575268017ba983b07",
+      "profiles": [
+        "desktop-chromium",
+        "tablet-chromium",
+        "mobile-chromium"
+      ],
+      "limitations": "MathLive setValue/input; not every key/OS or Reuse button"
     }
   },
   "verification_proofs": {
@@ -195,5 +220,18 @@
     "doc_only_checkpoints_triggered_actions": 0,
     "real_input_fingerprint_reuse": "Lite cumulative38983494314 across documentary HEAD",
     "stale_next_action_protection": "Plus technical HEAD changed => RECONCILE,next_action=null"
+  },
+  "historical_mutation_reference": {
+    "run_id": 38983505232,
+    "job_id": 117249561875,
+    "status": "SUCCESS_HISTORICAL_REFERENCE",
+    "repository": "c2melendez/precision-lab-lite",
+    "technical_sha": "6cbec7645b73ad18875d4472182c704eb35228b0",
+    "score": 10.32,
+    "killed": 223,
+    "survived": 1548,
+    "no_coverage": 390,
+    "threshold": 10.3,
+    "scope": "Not current Lite HEAD; not full S19 closure"
   }
 }
