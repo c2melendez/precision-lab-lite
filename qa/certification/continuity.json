@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 13,
+  "revision": 14,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "cdcaefb8d317e2303b4b89da92afb7a7a994f698",
   "baseline_case": "SY-X-05",
-  "baseline_status": "WAIT_CI",
+  "baseline_status": "VERIFIED_WITH_BLOCKERS",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -72,33 +72,62 @@
   },
   "evidence_by_channel": {
     "unit_worker": {
-      "run_id": 38983494314,
-      "technical_sha": "fa974e49feb135290b5bdac63c49114f227c7239",
+      "run_id": 38990035666,
+      "job_id": 117270164604,
+      "technical_sha": "cdcaefb8d317e2303b4b89da92afb7a7a994f698",
       "status": "PASS_SCOPED",
       "counts": {
-        "pass": 1586,
+        "pass": 1590,
         "todo": 30
-      }
+      },
+      "logs_reviewed": true,
+      "evidence_executed": true
     },
     "native_ui": {
-      "run_id": 38983494311,
-      "technical_sha": "fa974e49feb135290b5bdac63c49114f227c7239",
+      "run_id": 38990035597,
+      "job_id": 117270164886,
+      "technical_sha": "cdcaefb8d317e2303b4b89da92afb7a7a994f698",
       "status": "PASS_SCOPED",
       "counts": {
-        "pass": 396,
+        "pass": 399,
         "skip": 0
       },
       "profiles": [
         "desktop-chromium",
         "tablet-chromium",
         "mobile-chromium"
-      ]
+      ],
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "acceptance_revision": "2026-10-17-scientific-X05-v1"
+    },
+    "h1d": {
+      "run_id": 38990035545,
+      "job_id": 117270164225,
+      "technical_sha": "cdcaefb8d317e2303b4b89da92afb7a7a994f698",
+      "status": "PASS_SCOPED",
+      "counts": {
+        "pass": 21
+      },
+      "logs_reviewed": true,
+      "evidence_executed": true
     }
   },
   "next_action": {
-    "id": "SY-X-05-BILATERAL",
-    "status": "WAIT",
-    "action": "Inspect recorded Lite and Plus automatic runs; do not redispatch. Verify native depth30 ingestion, HTTP/Worker evidence and pertinent cumulative/H1d logs."
+    "id": "SY-X-06-BILATERAL",
+    "status": "READY",
+    "repository": "c2melendez/precision-lab-plus",
+    "paired_repository": "c2melendez/precision-lab-lite",
+    "files": [
+      "qa/certification/syntax309_cases.jsonl"
+    ],
+    "action": "Cover canonical SY-X-06 descriptive10000-character input in both products. Inspect declared length/security budgets and existing evidence first; document deterministic exact-length expansion and real ingestion. Accept processing without blocking OR explicit readable length rejection per original oracle; preserve recovery/reentry and do not loosen limits to manufacture PASS.",
+    "exit_criteria": [
+      "Pin original fixture/oracle; document actual10000-character expanded source and ingestion boundary, with no shortened stand-in",
+      "Bounded responsive UI with real execution or explicit readable length rejection; verify recovery and reentry through actual applicable path",
+      "Distinguish local ingestion/converter validation, Worker and rawHTTP behavior; no backend evidence invented for local rejection",
+      "Focused diagnosis then pertinent CI, logs reviewed; bilateral ledger and one next task updated; do not repeat unchanged X04/S25/SG28 blockers"
+    ]
   },
   "blockers": [
     {
@@ -145,30 +174,36 @@
   ],
   "work_in_progress": {
     "id": "SY-X-05-BILATERAL",
-    "status": "WAIT_CI",
+    "status": "VERIFIED_SCOPED",
     "technical_sha": "cdcaefb8d317e2303b4b89da92afb7a7a994f698",
     "paired_technical_sha": "9e054de4e68621cf06c2a72236e585e6c9a5387c",
     "runs": [
       {
-        "id": 38990035545,
-        "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035545"
-      },
-      {
         "id": 38990035666,
         "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035666"
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035666",
+        "logs_reviewed": true,
+        "evidence_executed": true
+      },
+      {
+        "id": 38990035545,
+        "workflow": ".github/workflows/in625-h1d-reentry.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035545",
+        "logs_reviewed": true,
+        "evidence_executed": true
       },
       {
         "id": 38990035597,
         "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035597"
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035597",
+        "logs_reviewed": true,
+        "evidence_executed": true
       }
     ]
   },
@@ -235,6 +270,21 @@
         "2+3 recovery"
       ],
       "limitations": "MathLive setValue/input; typed scalar declaration resolves to abs(-4) before HTTP; not every key/OS or Reuse button"
+    },
+    "SY-X-05": {
+      "status": "PASS_SCOPED",
+      "expanded_grouping_depth": 30,
+      "expanded_source_length": 61,
+      "official_expected": "1",
+      "lite_native_run": 38990035597,
+      "plus_native_run": 38990031387,
+      "controls": [
+        "depth30 around7 =>7",
+        "depth30 around2+3 =>5",
+        "output reentry",
+        "2+3 recovery"
+      ],
+      "limitations": "MathLive assignment/input; native Chromium3profiles only; grouping depth is not AST depth"
     }
   },
   "verification_proofs": {

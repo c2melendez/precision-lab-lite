@@ -4,32 +4,32 @@ Corte: 2026-10-17 UTC (2026-10-16 Honduras). Certificación global **OPEN**; por
 
 ## Reanudación única
 
-**Siguiente tarea: SY-X-05-BILATERAL — WAIT_CI.** Expansión exacta de30niveles publicada;inspeccionar runs existentes del ledger y su par. No redispatch ni PASS anticipado.
+**Siguiente tarea: SY-X-06-BILATERAL — READY.** Probar una expansión determinista de exactamente 10 000 caracteres desde el fixture descriptivo. El oráculo permite procesamiento sin bloqueo o rechazo claro por longitud. Revisar primero presupuestos de ingesta/seguridad y evidencia; no acortar la entrada ni cambiar límites para fabricar PASS. Comprobar recuperación y reentrada.
 
-Leer [continuity.json](continuity.json), [CONTINUITY.md](CONTINUITY.md) y el protocolo. Verificar HEAD y Actions antes de actuar. Si el HEAD técnico no coincide con el ledger, reconciliar; no heredar una tarea obsoleta. El prompt externo es solo bootstrap.
+Leer [continuity.json](continuity.json), [CONTINUITY.md](CONTINUITY.md) y el protocolo. Verificar HEAD y Actions antes de actuar; reconciliar cambios técnicos no registrados. El prompt externo es solo bootstrap.
 
 ## Evidencia vigente
 
 | Producto/canal | SHA técnico de origen | Evidencia revisada |
 |---|---|---|
-| Lite acumulativo | fa974e49feb135290b5bdac63c49114f227c7239 | [38983494314](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494314): 1586 PASS / 30 TODO; typecheck/build PASS |
-| Lite nativo | mismo SHA Lite | [38983494311](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494311): 396/396; incluye SY-X-04 original de 500 sumandos, resultado 500x y reentrada |
-| Lite H1d | mismo SHA Lite | [38983494355](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494355): SUCCESS |
-| Plus acumulativo | f4b4f68203d8154ae4de9d5ca275589707cad654 | [38989356854](https://github.com/c2melendez/precision-lab-plus/actions/runs/38989356854): frontend 992 PASS / 28 TODO; backend 1455 PASS / 2 XFAIL; cobertura 87,94 %; typecheck/build PASS |
-| Plus nativo X01–03/R12–14 | mismo SHA Plus | [38989356810](https://github.com/c2melendez/precision-lab-plus/actions/runs/38989356810): 18/18, MathLive/API reales, tres perfiles Chromium y reentrada |
-| Plus H1d | mismo SHA Plus | [38989356927](https://github.com/c2melendez/precision-lab-plus/actions/runs/38989356927): 38 PASS |
+| Lite acumulativo | cdcaefb8d317e2303b4b89da92afb7a7a994f698 | [38990035666](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035666): 1590 PASS / 30 TODO; 180 archivos; typecheck/build PASS |
+| Lite nativo | mismo SHA Lite | [38990035597](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035597): 399/399, tres perfiles Chromium; incluye X05 y regresiones previas |
+| Lite H1d | mismo SHA Lite | [38990035545](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035545): 21 PASS |
+| Plus acumulativo | 9e054de4e68621cf06c2a72236e585e6c9a5387c | [38990031487](https://github.com/c2melendez/precision-lab-plus/actions/runs/38990031487): frontend 996 PASS / 28 TODO; backend 1459 PASS / 2 XFAIL; cobertura 87,98 %; typecheck/build PASS |
+| Plus nativo X01–03/R12–14/X05 | mismo SHA Plus | [38990031387](https://github.com/c2melendez/precision-lab-plus/actions/runs/38990031387): 21/21, tres perfiles Chromium y reentrada real |
+| Plus H1d | mismo SHA Plus | [38990031422](https://github.com/c2melendez/precision-lab-plus/actions/runs/38990031422): 38 PASS |
 | Plus cancelación UI | b90f15e11d6b48a953aa37319afda711dcf58e2e (histórico) | [38986979683](https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979683): 21 PASS; no evidencia DIST |
 | S19 frontend initial run | b90f15e11d6b48a953aa37319afda711dcf58e2e (histórico) | [38986979633](https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979633): 759 tests iniciales; sin mutaciones ejecutadas ni mutation score |
 
-Los SHA documentales posteriores conservan evidencia de origen; no son nuevas ejecuciones. TODO/XFAIL/SKIP no son PASS. Tres perfiles Chromium no acreditan otros motores, cada tecla física/virtual, cada SO o el botón Reusar.
+TODO/XFAIL/SKIP no son PASS. Los commits documentales conservan el SHA de evidencia de origen. Chromium desktop/tablet/mobile no acredita otros motores, cada tecla/SO o el botón Reusar.
 
 ## Último cierre
 
-SY-R-14 nativo Plus PASS acotado: fixture original con x=-4 → 4; controles |x|+x negativo → 0, positivo → 8 y variable y=-7 → 7; reentrada HTTP real con nuevos request_ids y recuperación 5. La UI existente interpreta la declaración escalar y envía abs(-4), sin sustituir el fixture del editor por un resultado. El control compuesto conserva su binding. Solo pruebas nuevas; sin cambios de producto.
+SY-X-05 PASS acotado bilateral. El fixture describe 30 niveles: se expanden a 30 pares reales alrededor de 1, longitud61. La fuente completa queda comprobada en la ingesta de ambos editores; Plus la conserva también en el POST HTTP. Resultado1, controles7/5, reentrada de salida y recuperación5 con nuevos IDs. HTTP crudo Plus y parser/handler Worker Lite tienen regresiones adicionales. El transporte Worker se simula únicamente en el test unitario, no en el E2E. No se cambió producto, fixture ni presupuestos de seguridad.
 
 ## Continuidad y no repetición
 
-El ledger guarda evidencia, alcance, bloqueos y una próxima tarea. El planificador compara huellas y observaciones frescas; el guard CI exige ejecución real del mismo checkout/workflow. Un REUSE enlaza al origen y no acredita pruebas nuevas. Snapshots y logs documentales no disparan CI; fixtures, verificadores y contratos sí son insumos técnicos. 34 pruebas del mecanismo aprobadas en CI. Lite no se reejecutó para cerrar R12–14 Plus.
+El ledger conserva alcance, evidencia, bloqueos y una próxima tarea. El planificador compara huellas y observaciones frescas; el guard CI exige ejecución real del mismo checkout/workflow. REUSE enlaza al origen y no acredita pruebas nuevas. Los nuevos casos X05 modifican insumos en ambos productos y requieren sus gates pertinentes; los snapshots documentales no disparan CI. 34 pruebas del mecanismo aprobadas. No redispatch ni repetición de campañas bloqueadas sin cambiar precondiciones.
 
 ## Bloqueos conservados
 
