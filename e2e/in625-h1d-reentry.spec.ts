@@ -494,3 +494,36 @@ test("SY-P-24/25: los casos originales exigen productos de variables", async () 
     expect(matches[0].esperado).toBe(expected);
   }
 });
+
+
+test("SY-P-23 Lite: entrada ambigua no se despacha al Worker y recupera", async ({ page }) => {
+  await page.addInitScript(() => {
+    const nativePost = Worker.prototype.postMessage;
+    const trace: Array<{type:string;requestId:string}> = [];
+    (window as typeof window & {__syP23WorkerTrace?: typeof trace}).__syP23WorkerTrace = trace;
+    Worker.prototype.postMessage = function(message: unknown, transfer?: Transferable[]) {
+      const payload = message as {type?:string;requestId?:string} | null;
+      if(payload && typeof payload.type === "string") {
+        trace.push({type:payload.type,requestId:String(payload.requestId ?? "")});
+      }
+      return nativePost.call(this,message,transfer ?? []);
+    };
+  });
+  await page.goto("./");
+  const trace=()=>page.evaluate(()=>(window as typeof window & {__syP23WorkerTrace?: Array<{type:string;requestId:string}>}).__syP23WorkerTrace ?? []);
+  const initial=(await trace()).filter(m=>m.type==="evaluate").length;
+  for(const source of ["a/bc",String.raw`\frac{a}{bc}`,"1+a/bc"]){
+    await setInput(page,source);
+    const outcome=await submit(page);
+    expect(outcome.kind,source).toBe("error");
+    expect(outcome.value,source).toContain("SY-P-23");
+    expect((await trace()).filter(m=>m.type==="evaluate").length,source).toBe(initial);
+  }
+  await setInput(page,"2+3");
+  const recovered=await submit(page);
+  expect(recovered.kind).toBe("result");
+  expect(canonical(recovered.value)).toMatch(/^5(?:\.0+)?$/);
+  const messages=(await trace()).filter(m=>m.type==="evaluate");
+  expect(messages.length).toBeGreaterThan(initial);
+  expect(messages.at(-1)?.requestId).toBeTruthy();
+});
