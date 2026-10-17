@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 21,
+  "revision": 22,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "f0d3106d351aebc49b6a5715efd92690c44ec843",
-  "baseline_case": "SY-X-07",
-  "baseline_status": "VERIFIED_WITH_BLOCKERS",
+  "technical_baseline_sha": "378510f0092d4c50c321fc59ce1abb87e732aa72",
+  "baseline_case": "SY-X-08",
+  "baseline_status": "WAIT_CI",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -115,13 +115,13 @@
   },
   "next_action": {
     "id": "SY-X-08-BILATERAL",
-    "status": "READY",
+    "status": "WAIT_CI",
     "repository": "c2melendez/precision-lab-plus",
     "paired_repository": "c2melendez/precision-lab-lite",
     "files": [
       "qa/certification/syntax309_cases.jsonl"
     ],
-    "action": "Continue original sqrt(-1) fixture in both products. Read existing real/complex conventions and declared UI/channel domain first. Verify clear rejection in real-only channels and exact i in complex-capable channels as applicable; do not silently invent or change the domain. Inspect prior complex evidence, then native recovery/reentry and relevant scoped gates.",
+    "action": "Inspect existing exact-SHA runs in work_in_progress. No redispatch; original complex-capable evaluator already returns exact i locally. Close only after native and cumulative logs review.",
     "exit_criteria": [
       "Pin original fixture/oracle; document each tested channel's existing real/complex contract and capabilities",
       "No accidental NaN/false real success; verify exact i and applicable reentry where complex is supported, or explicit real-domain rejection",
@@ -183,43 +183,43 @@
     {
       "id": "MUTATION-S19",
       "status": "OPEN",
-      "evidence": "Old Plusfrontend117272639609 CANCELLED,no finalscore; current affected jobs117278929669/117278929718in progress;759testinitialrun is not mutation",
-      "next_action": "Inspect existing38992878940, do not duplicate. No full S19PASS before actual outcomes reviewed.",
+      "evidence": "38992878940 backend mutmut SUCCESS; frontend117278929718 CANCELLED after Vitest Worker exit1 in BasicModeConversionError.test.tsx, no mutation report.",
+      "next_action": "Diagnose frontend worker failure before repeating identical input. New X08 campaign has distinct added tests; inspect existing run only.",
       "responsible_role": "certification maintainer"
     }
   ],
   "work_in_progress": {
-    "id": "SY-X-07-BILATERAL",
-    "status": "VERIFIED_SCOPED",
-    "technical_sha": "f0d3106d351aebc49b6a5715efd92690c44ec843",
-    "paired_technical_sha": "cc89d7ccd36dfdfe15b14e72215920c62508ab00",
+    "id": "SY-X-08-BILATERAL",
+    "status": "WAIT_CI",
+    "technical_sha": "378510f0092d4c50c321fc59ce1abb87e732aa72",
+    "paired_technical_sha": "122711fc0161468d8cb619b6ad2aa9a88295b5eb",
     "runs": [
       {
-        "id": 38992883904,
-        "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38992883904",
-        "logs_reviewed": true,
-        "evidence_executed": true
-      },
-      {
-        "id": 38992883884,
+        "id": 38995803385,
         "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38992883884",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "status": "queued",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803385",
+        "logs_reviewed": false,
+        "evidence_executed": false
       },
       {
-        "id": 38992883919,
+        "id": 38995803426,
+        "workflow": ".github/workflows/in625-cumulative-certification.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803426",
+        "logs_reviewed": false,
+        "evidence_executed": false
+      },
+      {
+        "id": 38995803418,
         "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38992883919",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803418",
+        "logs_reviewed": false,
+        "evidence_executed": false
       }
     ]
   },
@@ -402,7 +402,7 @@
       "id": 38992878940,
       "repository": "c2melendez/precision-lab-plus",
       "technical_sha": "cc89d7ccd36dfdfe15b14e72215920c62508ab00",
-      "status": "SCOPED_MUTATIONS_RUNNING",
+      "status": "COMPLETED_WITH_FRONTEND_CANCEL",
       "jobs": [
         {
           "id": 117278879510,
@@ -431,14 +431,14 @@
         {
           "id": 117278929669,
           "name": "mutation / plus-backend-mutmut",
-          "status": "in_progress",
-          "conclusion": null
+          "status": "completed",
+          "conclusion": "success"
         },
         {
           "id": 117278929718,
           "name": "mutation / plus-frontend-stryker",
-          "status": "in_progress",
-          "conclusion": null
+          "status": "completed",
+          "conclusion": "cancelled"
         },
         {
           "id": 117278930410,
@@ -453,7 +453,7 @@
           "conclusion": "skipped"
         }
       ],
-      "instruction": "Inspect existing affected Plusmutationjobs, no newdispatch. BackendsecurityPASS; unrelated pin/npm SKIPPED not PASS."
+      "instruction": "Backend mutmut SUCCESS logs reviewed; frontend CANCELLED with Vitest worker exit1 and no report. Diagnose, do not repeat identical inputs."
     }
   ],
   "campaign_evidence_reviews": [
