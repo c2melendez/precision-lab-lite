@@ -48,6 +48,16 @@ export function evaluate(expressionLatex: string): string {
     if (/^0\/0$/.test(expressionLatex.replace(/[\s()]/g, ""))) {
       throw toAppError(ErrorCode.DOMAIN_ERROR, "Forma indeterminada: 0/0 no está definida.");
     }
+    // SY-X-09: reject oversized literal integer powers before invoking Algebrite.
+    // Compare decimal strings, not Number/BigInt powers; never compute the value.
+    // The CAS adapter is a final safeguard for all callers, including Worker.
+    const integerPowers = expressionLatex.matchAll(/\^\s*\{?\s*\(?\s*([+-]?)\s*(\d+)\s*\)?\s*\}?/g);
+    for (const match of integerPowers) {
+      const magnitude = match[2].replace(/^0+/, "") || "0";
+      if (magnitude.length > 5 || (magnitude.length === 5 && magnitude > "10000")) {
+        throw toAppError(ErrorCode.COMPLEXITY_LIMIT, "Exponente entero fuera de rango (máximo absoluto 10000).");
+      }
+    }
     // SY-N-22: Algebrite can leave factorial(-1) symbolic and report a false success.
     // Reject only a factorial applied to an explicit negative integer; do not
     // reject -(1!) or change symbolic factorial conventions.
