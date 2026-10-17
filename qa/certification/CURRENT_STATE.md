@@ -1,13 +1,19 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
-Siguiente único: **SY-X-13-BILATERAL — WAIT_CI**. Leer continuity.json, verificar HEAD/Actions e inspeccionar los runs ya creados. Global OPEN; porcentaje reconciliado ND.
+Corte:2026-10-17 UTC (2026-10-17 Honduras). Global **OPEN**; porcentaje reconciliado **ND**.
 
-## 2026-10-17 UTC — SY-X-13 nativo bilateral publicado, WAIT_CI
-SHA Lite 76edee1a40df93d3945acb1b426d0bc190a67e2c; Plus acd55e4b3cadf37b4c2e81dd044a5a95ad08d3c7. Fuente y oráculo originales intactos. Local: Worker handler real Lite verifica simplificación exacta de derivada y salida reintroducida frente al oráculo, además de recuperación5; HTTP Plus confirma derivada exacta, traducción explícita log interno→ln para texto y recuperación. El texto SymPy log(...) no es reentrada literal válida en el contrato log10 de la calculadora; UI usa LaTeX ln. No se acredita ese texto interno como reentrada pública. Nativos nuevos verificarán salida LaTeX real sin traducciones de prueba, MathLive/Worker/HTTP y tres perfiles. Scope x>0,no ramas complejas. Sin cambios del motor. 
-- [IN625 Cumulative Certification Gate 39013568346](https://github.com/c2melendez/precision-lab-lite/actions/runs/39013568346) — inspeccionar existente.
-- [IN625 H1d Reentry Diagnostic 39013568238](https://github.com/c2melendez/precision-lab-lite/actions/runs/39013568238) — inspeccionar existente.
-- [Syntax309 SY-N-31 Scientific UI E2E 39013568233](https://github.com/c2melendez/precision-lab-lite/actions/runs/39013568233) — inspeccionar existente.
-No volver a X09: X09..12 ya PASS_SCOPED en ledger. El snapshot anterior tenía encabezado X09 obsoleto; archivado, el índice es autoridad. GlobalOPEN; S25,S19,SY-P23,X04Plus,H2/SG28/DIST conservan sus límites.
+**Siguiente tarea única: SY-X-14-BILATERAL — READY.** Verificar HEAD/Actions y continuity.json. Leer presupuestos antes de expandir50recíprocos; mantener x≠0 y no presimplificar el original para evitar límites.
+
+## 2026-10-17 UTC — SY-X-13 bilateral verificado
+Fuente original `\frac{d}{dx}x^{x^{x}}` y oráculo `x^{x^{x}}\left(x^{x}(\ln x+1)\ln x+x^{x-1}\right)` intactos.
+Alcance matemático **x>0**: derivada de la potencia anidada, no (x^x)^x ni ramas complejas. Sin cambios al motor en este lote.
+MathLive ingiere la fuente original; las normalizaciones de espacios/llaves se admiten solo tras verificar contenido matemático. Lite usa Worker real, compara el LaTeX visible y su salida reintroducida por simplificación exacta frente al oráculo y controles numéricos en1.25,1.5,2. Plus usa POST/derivative real y POST/evaluate con el LaTeX real devuelto; verifica cada resultado con equivalencia SymPy exacta y la precedencia del payload original. Ambos recuperan2+3=5 y reintroducen5; cuatro IDs distintos y cero pageerrors por perfil.
+- Lite SHA `76edee1a40df93d3945acb1b426d0bc190a67e2c`: [acumulativo39013568346](https://github.com/c2melendez/precision-lab-lite/actions/runs/39013568346)1607PASS/30TODO,188archivos,typecheck/build,34pruebas del mecanismo; [H1d39013568238](https://github.com/c2melendez/precision-lab-lite/actions/runs/39013568238)21PASS; [nativo39013568233](https://github.com/c2melendez/precision-lab-lite/actions/runs/39013568233)423/423PASS, incluidos X13 desktop/tablet/mobile,sin reintentos observados.
+- Plus SHA `acd55e4b3cadf37b4c2e81dd044a5a95ad08d3c7`: [acumulativo39013565024](https://github.com/c2melendez/precision-lab-plus/actions/runs/39013565024)frontend1005PASS/28TODO,146archivos,typecheck/build;backend1478PASS/2XFAIL,cobertura88.11%;56pruebas del mecanismo. [Nativo39013565049](https://github.com/c2melendez/precision-lab-plus/actions/runs/39013565049)45/45PASS (15desktop+30tablet/mobile),sin reintentos. [H1d39013564974](https://github.com/c2melendez/precision-lab-plus/actions/runs/39013564974)38PASS.
+La prueba HTTP separada traduce explícitamente el texto interno SymPy log→ln: **no** acredita reentrada literal de result_text(log), pues la gramática pública reserva log para base10. La reentrada nativa sí usa el result_latex(ln) real, sin traducciones del test. El Worker handler real Lite, con transporte simulado, se acredita aparte del navegador real.
+No se repitieron X09–12 ni campañas de dependencias/mutación. Los encabezados obsoletos de CURRENT_STATE(X09) fueron archivados; el ledger y la nueva fotografía acuerdan X13 y el siguiente paso.
+Campaña38995800990 reconciliada: frontend117288029860CANCELLED, initialrun693testsSUCCESS y cancelación posterior, sin informe final. No se infiere score ni causa no verificada. Backendmutmut117288029927SUCCESS ya revisado. Campaña39001980867: backendmutmut yseguridadSUCCESS según jobs; componentes ajenosSKIPPED. S19integral sigueOPEN; misma huella cancelada requiere diagnóstico y ninguna omisión equivale aPASS.
+Limitaciones: asignación/input MathLive en desktop/tablet/mobile Chromium, no cada tecla/SO/otro motor/botónReusar; no identidad global en ramas complejas. TODO/XFAIL/SKIP no son PASS. GlobalOPEN; porcentaje reconciliadoND. S25, S19, SY-P23, SY-X04Plus y H2/SG28/DIST abiertos. Siguiente único: **SY-X-14-BILATERAL**,50recíprocos anidados, paridad y dominiox≠0 sin presimplificar; revisar presupuestos de longitud/AST antes de ejecutar.
 
 ## Bloqueos conservados
 
@@ -21,3 +27,5 @@ No volver a X09: X09..12 ya PASS_SCOPED en ledger. El snapshot anterior tenía e
 | Otros canales/módulos | PARCIAL/ND: R12–14 y X01–03 nativos Plus ya acreditados; otros casos conservan sus gaps. |
 
 
+
+El log y history/2026-10-17_pre_X13_CURRENT_STATE.md conservan la historia. La siguiente tarea proviene solo del índice reconciliado. Sin producción,deploy,merge,release ni flags remotos.

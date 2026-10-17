@@ -118,3 +118,7 @@ El JSON de paths debe proceder del diff real; sin credenciales, la inspección o
 
 ## Última reconciliación — SY-X-08
 Baselines Plus 948d6dbb501e79b9e4fca13548586ca7a88d9a80 y Lite 378510f0092d4c50c321fc59ce1abb87e732aa72. Usar next_action SY-X-09 y las corridas X08 del índice. Campaña38995800990 ya existe; backendmutmut117288029927 ya SUCCESS con logs revisados; inspeccionar solo frontend117288029860 en curso, no relanzar. Campaña38992878940 finalizada:backendmutmutPASS,frontendCANCELLED con Worker exit1/sin informe;DIAGNOSE para misma huella. Commit e2e-only posterior no activó otra campaña. Prosa no dispara CI;reutilizar evidencia técnica tras comparar huellas.
+
+
+## Reconciliación SY-X-13 — 2026-10-17
+El índice revisión31 tiene baseline técnico X13 y siguiente único X14. CURRENT_STATE obsoleto con encabezado X09 fue archivado como prosa excluida, sin perder casosX09..12. Usar los runs X13 del índice, comparar huellas y revisar logs antes de REUSE. X13 no activó nuevas campañas;38995800990frontend ya CANCELLED/sin informe, no en curso. No relanzar equivalentes para actualizar documentación. Reentrada nativa X13 usa LaTeX ln real; el texto SymPy log no es la gramática pública log10.
