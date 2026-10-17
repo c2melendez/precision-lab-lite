@@ -1,5 +1,19 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+**SY-X-16-BILATERAL — WAIT_CI.** Revisar runs del índice, sin relanzar. Global OPEN; porcentaje ND.
+
+## SY-X-16 — pruebas de no acceso publicadas, WAIT_CI (2026-10-17 UTC)
+Lite SHA b12aecc02f06086f1d4d8da91a26bd7b3bc3ae4f; Plus 7bca63077a2225103c515c53d94a6002293835d6. Original input{/etc/passwd} intacto. Local Lite2PASS:parser desconoce comando, rawWorker rechaza y recupera. Plus2PASS:HTTP real bajo auditguard Python open; cero intentos de abrir objetivo, resultados nulos, recuperación5/reentrada. Control del auditguard emite sys.audit(open,objetivo), no invoca open ni lee el archivo. Hooks inactivos tras cada contexto.
+Nativo pendiente: fuente MathLive, rechazo claro, cero solicitudes al objetivo/diálogos/downloads/filechooser/pageerrors y recuperación con Worker/HTTP reales. La ruta al objetivo se bloquea como protección, pero cualquier intento haría fallar el test; no se cuenta bloqueo como ausencia de intento. Control positivo separado usa ruta sintética inexistente, nunca archivo real. Guardas no son cambios al producto ni auditoría de todos los syscalls.
+- [Syntax309 SY-N-31 Scientific UI E2E 39016377039](https://github.com/c2melendez/precision-lab-lite/actions/runs/39016377039) — inspeccionar existente.
+- [IN625 H1d Reentry Diagnostic 39016377064](https://github.com/c2melendez/precision-lab-lite/actions/runs/39016377064) — inspeccionar existente.
+- [IN625 Cumulative Certification Gate 39016377044](https://github.com/c2melendez/precision-lab-lite/actions/runs/39016377044) — inspeccionar existente.
+Helper nuevo incluido en filtros nativos. Sin nueva campaña de dependencias/mutación ni dispatch duplicado. Mantener globalOPEN y bloqueos previos; noPASS antes de jobs/logs.
+
+## Evidencia anterior de origen (X15)
+
+# Estado vigente de certificación — Precision Lab Lite / Plus
+
 Corte:2026-10-17 UTC/Honduras. Certificación global **OPEN**; porcentaje reconciliado **ND**.
 
 **Siguiente tarea única: SY-X-16-BILATERAL — READY.** X15 PASS acotado: fixture script inerte/error, sin inserción ni ejecución del payload. Leer índice y contratos; verificar HEAD/Actions antes de actuar. X04Plus/X14Plus siguen bloqueados.
