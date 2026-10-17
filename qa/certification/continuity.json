@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 4,
+  "revision": 5,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "fa974e49feb135290b5bdac63c49114f227c7239",
   "baseline_case": "SY-X-04",
-  "baseline_status": "PASS_SCOPED",
+  "baseline_status": "VERIFIED_WITH_BLOCKERS",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -96,12 +96,19 @@
     }
   },
   "next_action": {
-    "id": "VERIFY-PLUS-NATIVE-FOLLOWUP",
-    "status": "WAIT",
-    "action": "Inspect the existing Plus follow-up runs recorded in its continuity.json. Do not rerun approved Lite mathematical/native gates. Security remains BLOCKED; use the precondition-change rule.",
+    "id": "PLUS-NATIVE-SY-R-12",
+    "status": "READY",
+    "repository": "c2melendez/precision-lab-plus",
+    "files": [
+      "frontend/e2e/in625-syntax-native.spec.ts",
+      "qa/certification/syntax309_cases.jsonl"
+    ],
+    "action": "Cover original SY-R-12 nonmathematical text through actual Plus MathLive/UI and recovery/reentry; inspect prior evidence first. Reuse unaffected evidence and do not repeat approved Lite suites or unchanged SG28/security blockers.",
     "exit_criteria": [
-      "Plus native X01-X03 follow-up and S19 initial-run logs reviewed",
-      "States reconciled without new Lite tests"
+      "Original fixture and explicit readable rejection, no invented HTTP on local rejection",
+      "Real HTTP recovery and output reentry with fresh request IDs",
+      "Desktop focused diagnosis then remaining required profiles",
+      "Pertinent same-input evidence reviewed, ledger updated"
     ]
   },
   "blockers": [
@@ -185,13 +192,21 @@
   "cases": {
     "SY-X-03": {
       "status": "PASS_SCOPED",
-      "native_plus": "CI_PENDING"
+      "native_plus": "PASS_SCOPED_X01_X03",
+      "native_plus_run": 38983949600
     },
     "SY-X-04": {
       "status": "PARTIAL_BLOCKED",
       "lite": "PASS_SCOPED_NATIVE_AND_WORKER",
-      "plus_http": "BLOCKED_LENGTH_AND_AST",
+      "plus_http": "BLOCKED_LENGTH_PARSER_AND_AST",
+      "plus_math_oracle": "STRICT_XFAIL_NOT_PASS",
       "official_expected": "500x"
     }
+  },
+  "verification_proofs": {
+    "mechanism_tests": 34,
+    "doc_only_checkpoints_triggered_actions": 0,
+    "real_input_fingerprint_reuse": "Lite cumulative38983494314 across documentary HEAD",
+    "stale_next_action_protection": "Plus technical HEAD changed => RECONCILE,next_action=null"
   }
 }

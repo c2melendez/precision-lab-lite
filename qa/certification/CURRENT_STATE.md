@@ -1,41 +1,42 @@
-# Estado vigente de certificación
+# Estado vigente de certificación — Precision Lab Lite / Plus
 
-Corte: 2026-10-16. Rama canónica: `qa/syntax-audit-in625-a1` en Lite y Plus. Certificación integral: **OPEN**.
+Corte: 2026-10-16 (Honduras). Certificación global **OPEN**, porcentaje reconciliado **ND**.
 
-## Autoridad y punto de reanudación
+## Reanudación única
+**Siguiente tarea: PLUS-NATIVE-SY-R-12 — READY.** Extender la prueba nativa Plus con el fixture original de texto no matemático y recuperación/reentrada mediante MathLive y HTTP reales. Consultar primero los runs existentes; empezar con diagnóstico focalizado desktop y después los perfiles restantes. No relanzar las suites Lite aprobadas para iniciar otra sesión.
 
-Leer [continuity.json](continuity.json) y [CONTINUITY.md](CONTINUITY.md). El índice contiene el SHA técnico de referencia, evidencia por canal, trabajo en curso, bloqueos y **una sola siguiente acción**. Verificar HEAD y Actions reales antes de decidir. Si la huella técnica cambió sin reconciliar el índice, el planificador devuelve RECONCILE y suprime la tarea obsoleta.
+Leer [continuity.json](continuity.json) y [CONTINUITY.md](CONTINUITY.md). Si HEAD técnico cambió sin reconciliar el índice, el planificador suprime la tarea obsoleta y devuelve RECONCILE. El prompt externo es bootstrap; el estado reside aquí y en GitHub.
 
-No interpretar el historial como instrucciones vigentes. Las fotografías anteriores se conservan en [archivo histórico de estado](history/2026-10-16_pre_continuity_CURRENT_STATE.md); los runs allí citados no se reejecutan por cambiar de LLM.
-
-## Lote actual — verificación pendiente
-
-- Continuidad estructurada, huellas conservadoras y protección contra snapshots obsoletos; 34 pruebas locales del planificador/guard aprobadas.
-- Guard de Actions: solo reutiliza mismo checkout SHA/workflow con jobs y pasos reales aprobados; un fallo posterior invalida un verde antiguo. No acepta un run que solo omitió pruebas. Fallo de consulta ejecuta el gate. Revalidación manual exige motivo.
-- Build independiente Lite pasa a diagnóstico manual porque el acumulativo ya construye. Se preservan gates requeridos y se recupera ejecución focalizada S25/S19 para dependencias/harness.
-- Ambos locks actualizan exclusivamente source-map-js 1.2.1 a 1.2.2. Auditoría local queda en Lite 5 high/2 moderate/1 low, Plus 5 high/2 moderate; S25 sigue abierto.
-- Plus contiene errores de conversión dentro del handler UI: la regresión previa reproducía un rechazo no controlado; corrección con 32 pruebas focalizadas aprobadas. Nuevo E2E nativo X01–03, API real y reentrada; navegador local no disponible por descarga truncada, pendiente CI real.
-- SY-X-04: Lite prueba la suma original expandida de 500 términos y reentrada exacta; 3 tests focalizados aprobados. Plus prueba rechazo/recuperación y fronteras de longitud/AST; 5 tests focalizados aprobados. Esto no certifica el resultado 500x de Plus.
-
-Estas son validaciones locales del lote preparado; las conclusiones CI y SHA de origen se reconcilian después del push, sin atribuirles PASS anticipado.
-
-## Bloqueos vigentes y ruta
-
-| Bloque | Estado | Referencia/condición de salida |
+## Evidencia vigente
+| Producto/canal | SHA técnico de origen | Evidencia verificada |
 |---|---|---|
-| H2/SG28 y DIST-01..08 | OPEN/BLOCKED | [Vigencia/fencing e integración](SG28_INTEGRATION_EXIT_CRITERIA.md); después topología multinodo autorizada. No repetir preflights equivalentes. |
-| S25 npm | BLOCKED | [Remediación](SECURITY_REMEDIATION.md): falta parche compatible de braces o migración Tailwind probada; sin supresiones. |
-| S19 Plus | PENDIENTE de gate actual | Inspeccionar workflow de dependencias del lote; no inferir mutación desde acumulativo. |
-| SY-P-23 | OPEN | Convención a/bc y XFAIL estricto conservados. |
-| SY-X-04 Plus | BLOCKED contractual | 999 caracteres frente a max_length=500; también límite AST200. [Análisis](SY_X_04_LENGTH_CONTRACT.md). No sustituir por 500*x. |
-| Cobertura nativa Plus anterior | PARCIAL | X01–03 en verificación; no cerrar por ello todos los casos R/X previos. |
-| Manuales/visual/historial y cobertura global | PARCIAL/ND | [Gaps](MANUAL_CAPABILITY_GAPS.md) y tablero; reconciliar requisito/canal antes de calcular porcentajes. |
+| Lite acumulativo | fa974e49feb135290b5bdac63c49114f227c7239 | [38983494314](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494314):1586 PASS/30 TODO; typecheck/build PASS |
+| Lite nativo | mismo SHA | [38983494311](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494311):396/396; SY-X-04 conserva500 términos,500x,reentrada y recuperación en3perfiles Chromium |
+| Lite H1d | mismo SHA | [38983494355](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494355):SUCCESS |
+| Plus acumulativo | 6d594187e241d6a2491590e13582999ac0b9fd3c | [38983949345](https://github.com/c2melendez/precision-lab-plus/actions/runs/38983949345):frontend984 PASS/28 TODO; backend1455 PASS/2 XFAIL; cobertura87.87%; typecheck/build PASS |
+| Plus nativo X01–03 | mismo SHA | [38983949600](https://github.com/c2melendez/precision-lab-plus/actions/runs/38983949600):9/9,MathLive/API reales,3perfiles,rechazo local sinHTTP inventado y reentrada real |
+| Plus H1d | mismo SHA | [38983949508](https://github.com/c2melendez/precision-lab-plus/actions/runs/38983949508):SUCCESS |
+| S19 frontend initial run | mismo SHA Plus | [38983949570](https://github.com/c2melendez/precision-lab-plus/actions/runs/38983949570):SUCCESS,759tests iniciales; **sin mutaciones ejecutadas**,no mutation score |
 
-Política de dos frentes vigente: los bloqueos anteriores no detienen trabajo matemático independiente, pero impiden el cierre global correspondiente. No producción, deploy, merge, release ni activación remota de flags.
+Los SHA de commits documentales posteriores son distintos; no atribuirles ejecuciones nuevas. TODO/XFAIL/SKIP no se contabilizan como PASS. Tres perfiles Chromium no acreditan otros motores,teclados físicos o cadaSO.
 
-## 2026-10-16 — checkpoint publicado, CI en curso
-SHA técnico lite: `fa974e49feb135290b5bdac63c49114f227c7239`. Runs automáticos observados: [IN625 Cumulative Certification Gate 38983494314](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494314); [IN625 H1d Reentry Diagnostic 38983494355](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494355); [Syntax309 SY-N-31 Scientific UI E2E 38983494311](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494311); [Certification dependency and security gates 38983494649](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494649). Estado observado: en curso/cola, no PASS anticipado. El siguiente LLM debe consultar esos IDs y no volver a despacharlos. El guard y ledger distinguen evidencia ejecutada de REUSE.
+## Cambios y mecanismo
+- continuity.json guarda evidencia por canal, bloqueos, condiciones de salida y una próxima tarea.
+- El planificador compara huellas de insumos, revisión de aceptación y observaciones frescas; devuelve RUN/WAIT/REUSE/DIAGNOSE/REVIEW/REFRESH y estado CURRENT/RECONCILE.
+- El guard de Actions exige mismo checkoutSHA/workflow y jobs/pasos realmente ejecutados; un rojo posterior invalida un verde antiguo. Un run REUSE enlaza al origen y no es nueva evidencia.
+- Cambios solo de snapshot/log/prompt no disparan CI. Fixtures, verificadores y contratos explícitos siguen siendo insumos. Build Lite independiente es diagnóstico manual con motivo.
+-34 pruebas del mecanismo aprobadas enCI. Observaciones reales demostraron REUSE tras cambio documental y detección de un HEAD técnico no reconciliado.
+- Plus: se contienen errores de conversión y se sincroniza el vaciado del editor tras resultados; pruebas nativas descubrieron y verificaron ambos recorridos.
+- source-map-js1.2.1→1.2.2 en ambos locks; se eliminó una alerta alta porproducto.
 
-## 2026-10-16 — checkpoint de reconciliación 4
-SHA técnico lite: `fa974e49feb135290b5bdac63c49114f227c7239`. Cumulative 38983494314 SUCCESS (1586 PASS/30 TODO), científica 38983494311 SUCCESS (396/396), H1d38983494355 SUCCESS. S25 38983494649 FAILURE conserva 5 high; sin rerun por cambio de sesión.
-Runs pertinentes: [38983494311](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494311) Syntax309 SY-N-31 Scientific UI E2E: success; [38983494649](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494649) Certification dependency and security gates: failure; [38983494314](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494314) IN625 Cumulative Certification Gate: success; [38983494355](https://github.com/c2melendez/precision-lab-lite/actions/runs/38983494355) IN625 H1d Reentry Diagnostic: success.
+## Bloqueos conservados
+| Bloque | Estado/condición de salida |
+|---|---|
+| S25 dependencias | BLOCKED:5highcadauno. [Remediación](SECURITY_REMEDIATION.md). Revisar parche compatible de braces o migraciónTailwind probada; no repetir sin cambio. |
+| S19 integral | OPEN: initialrun corregido no mide mutaciones. Conservar campaña38983505232 y revisar jobs/alcance antes de programar una nueva campaña pertinente. |
+| SY-X-04 Plus | BLOCKED:999caracteres frente a500enHTTP yparser; AST200 adicional. [Contrato](SY_X_04_LENGTH_CONTRACT.md),[propuesta](SY_X_04_LENGTH_DECISION.md). No modificar límites ni sustituir por500*x para fabricarPASS. |
+| SY-P-23 | OPEN: convencióna/bc; XFAILestricto. |
+| H2/SG28/DIST | OPEN/BLOCKED: contrato de vigencia/fencing e integraciónHTTP,después topologíaautorizada. [Salida](SG28_INTEGRATION_EXIT_CRITERIA.md). No repetir preflights equivalentes. |
+| Canales anteriores/visuales/manuales | PARCIAL/ND: X01–03Plus nativo ya acreditado; otrosR y módulos conservan susgaps. |
+
+Historial completo preservado en los [archivos del log](EXECUTION_LOG.md); fotografías anteriores no dictan el próximo paso. No producción,deploy,merge,release ni activación remota de flags.

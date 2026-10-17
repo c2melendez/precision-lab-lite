@@ -33,3 +33,6 @@ Para braces: actualizar solamente cuando se publique una versión corregida comp
 Luego ejecutar una sola vez el gate S25 sobre el SHA técnico consolidado (y gates generales correspondientes a ese lote), registrar run ID y estado. La parte backend de S25 no se volvió a ejecutar: este lote no modifica Python ni sus dependencias; su estado debe determinarse con la evidencia del gate backend existente o una ejecución necesaria del lote.
 
 Archivos de evidencia locales: `lite-audit-before.json`, `lite-audit-after.json`, `plus-audit-before.json`, `plus-audit-after.json`, `lite-security-focused.log`, `lite-security.patch`, `plus-security.patch`. Builds: `/tmp/security-lite-build.log`, `/tmp/security-plus-build.log`.
+
+## Ratificación CI del lote
+Lite38983494649 yPlus38983505232 confirman bloqueo frontend tras source-map-js1.2.2:5highcadauno. BackendsecurityPlusPASS. Los acumulativos y builds actuales aprobaron; S25 no se declara cerrado. La validación frontend de mutación tuvo una corrección de oráculo específica; initialrun38983949570 PASS no es mutation score.

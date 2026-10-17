@@ -196,3 +196,7 @@ Estos puntos NO deben marcarse automáticamente como fallo del producto mientras
 - Lite SHA b86ae0ff98f4b9e6c36986b069a9a9cf13584f03, científica 38964686825 SUCCESS (393/393, sin SKIP): MathLive conserva las dos barras originales, Calcular habilitado, rechazo claro PARSE_ERROR de sintaxis y dos recuperaciones 5 por perfil Chromium desktop/tablet/mobile, sin pageerrors. No hay límite de ingesta observado para este fixture en la corrida; la rama condicional de CAPABILITY no se activó.
 - Plus SHA f3d43319ca7c46c951ceed36b67bd665399939de, cumulative 38964550443 SUCCESS: conversor rechaza antes de borrar el separador en ASCII; backend HTTP real rechaza las tres fuentes y recupera 5. UI nativa Plus X03 pendiente; no inferida del conversor/API.
 - Lite E2E usa asignación de LaTeX/evento input y Worker real, no cada tecla/SO. TODO/XFAIL/SKIP no son PASS; H2/SG28 OPEN, DIST-01..08 multinodo BLOCKED.
+
+
+## 2026-10-16 — actualización de gaps X01–03 nativo Plus
+Las notas previas de UI Plus X01–03 pendiente quedan superadas por SHA6d594187e241d6a2491590e13582999ac0b9fd3c, run38983949600,9/9 en desktop/tablet/mobile Chromium. MathLive yHTTP reales, rechazo local, recuperación y reentrada. No cierra cada tecla/SO ni otros casos R. SY-X-04 Plus permanece BLOCKED porlongitudHTTP/parser500 yAST200; se conserva oráculo500x enXFAILestricto,noPASS. S25 conserva5highcadauno yS19initialrun noequivale amutation score. H2/SG28/DISTsin cierre.
