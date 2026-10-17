@@ -51,4 +51,3 @@ El [log](EXECUTION_LOG.md) y sus archivos preservan la historia; las fotografía
 
 CI-CAMPAIGN-OVERSCOPE RESOLVED_SCOPED:selector validado sin nuevas campañas;aplicar su revisión porjob.
 
-Último cierre:selección de campañas porcomponente;56tests yactionlint limpios. Plus acumulativo997/1460(+28TODO/2XFAIL),nativo24/24,H1d38PASS enSHAff647a581a4a6d9b5423231ded44c3bc5fbb3088. Lite1592/402/21 conserva origen227ad751. SiguienteSY-X07;bloqueos matemáticos/seguridad/distribuidos sin cierre.
