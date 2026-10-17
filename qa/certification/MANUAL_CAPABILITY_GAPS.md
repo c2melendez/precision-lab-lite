@@ -206,3 +206,6 @@ La nota previa de UI Plus R12 pendiente queda superada por SHAf4f909ed373f10e631
 
 ## 2026-10-17 UTC — cierre acotado SY-R-13 nativo Plus
 La nota previa deUI PlusR13pendiente queda superada porSHAb90f15e11d6b48a953aa37319afda711dcf58e2e,run38986979759:15/15 X01–03/R12/R13 en3perfilesChromium. Originalraíz cúbica conx27→3,controlesx8→2/y64→4,HTTP real yreentrada,recuperación5,sinpageerrors. Corregido intentUI que interpretaba«con»como relación. MathLive setValue/input,no cada tecla/SO/otro motor ni botónReusar. R14nativoPluspendiente;Lite sin nuevaejecución;bloqueos globales abiertos.
+
+## 2026-10-17 UTC — cierre acotado SY-R-14 nativo Plus
+La nota previa de UI Plus R14 pendiente queda superada por SHA f4b4f68203d8154ae4de9d5ca275589707cad654,run38989356810:18/18 X01–03/R12–14 en tres perfiles Chromium. Fuente original íntegra en editor, ruta escalar existente abs(-4)→4; controles compuestos negativo0/positivo8 y variabley=-7→7;HTTP real,reentrada yrecuperación5,sinpageerrors. No se acredita backend recibiendo el LaTeX original en la ruta escalar simple. MathLive setValue/input,no cada tecla/SO/otro motor ni botón Reusar. Lite conserva evidencia previa sin reejecución; bloqueos globales abiertos. Próximo SY-X-05 bilateral independiente.

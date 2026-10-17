@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 11,
+  "revision": 12,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "fa974e49feb135290b5bdac63c49114f227c7239",
@@ -96,10 +96,20 @@
     }
   },
   "next_action": {
-    "id": "PLUS-NATIVE-SY-R-14",
-    "status": "WAIT",
+    "id": "SY-X-05-BILATERAL",
+    "status": "READY",
     "repository": "c2melendez/precision-lab-plus",
-    "action": "Inspect existing runs at f4b4f68203d8154ae4de9d5ca275589707cad654; do not redispatch. Review native18tests, cumulative and H1d logs before closure."
+    "paired_repository": "c2melendez/precision-lab-lite",
+    "files": [
+      "qa/certification/syntax309_cases.jsonl"
+    ],
+    "action": "Advance independent SY-X-05 in both products. Read canonical descriptive fixture and expand exactly30 balanced parenthesis levels around1, preserving actual depth at ingestion. Inspect existing evidence and parser/AST/UI limits first; diagnose correct layer without changing oracle or pre-simplifying to1. SY-X-04 Plus remains blocked separately.",
+    "exit_criteria": [
+      "Document deterministic expansion from canonical30-level fixture, actual source length/depth and expected1",
+      "Real applicable native Lite/Plus input path, exact visible result1, output reentry and recovery; distinguish converter normalization from parser raw-source coverage",
+      "Focused diagnosis before changes; maintain existing security budgets and classify any conflict explicitly",
+      "Review only pertinent newly changed suites; reuse unaffected evidence, record SHA/run/logs in both ledgers and one next task"
+    ]
   },
   "blockers": [
     {
@@ -146,30 +156,36 @@
   ],
   "work_in_progress": {
     "id": "PLUS-NATIVE-SY-R-14",
-    "status": "WAIT_CI",
+    "status": "VERIFIED_SCOPED",
     "repository": "c2melendez/precision-lab-plus",
     "technical_sha": "f4b4f68203d8154ae4de9d5ca275589707cad654",
     "runs": [
       {
         "id": 38989356810,
         "workflow": ".github/workflows/in625-syntax-native.yml",
-        "status": "queued",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38989356810"
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38989356810",
+        "logs_reviewed": true,
+        "evidence_executed": true
       },
       {
         "id": 38989356927,
         "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "queued",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38989356927"
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38989356927",
+        "logs_reviewed": true,
+        "evidence_executed": true
       },
       {
         "id": 38989356854,
         "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "queued",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38989356854"
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38989356854",
+        "logs_reviewed": true,
+        "evidence_executed": true
       }
     ]
   },
@@ -216,6 +232,26 @@
         "2+3 recovery"
       ],
       "limitations": "MathLive setValue/input; not every key/OS or Reuse button"
+    },
+    "SY-R-14": {
+      "status": "PASS_SCOPED",
+      "native_plus": "PASS_SCOPED",
+      "native_plus_run": 38989356810,
+      "technical_sha": "f4b4f68203d8154ae4de9d5ca275589707cad654",
+      "profiles": [
+        "desktop-chromium",
+        "tablet-chromium",
+        "mobile-chromium"
+      ],
+      "controls": [
+        "original x=-4 =>4",
+        "|x|+x with x=-4 =>0",
+        "|x|+x with x=4 =>8",
+        "y=-7 =>7",
+        "HTTP output reentry",
+        "2+3 recovery"
+      ],
+      "limitations": "MathLive setValue/input; typed scalar declaration resolves to abs(-4) before HTTP; not every key/OS or Reuse button"
     }
   },
   "verification_proofs": {
