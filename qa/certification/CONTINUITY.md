@@ -132,3 +132,7 @@ El índice revisión31 tiene baseline técnico X13 y siguiente único X14. CURRE
 5. El puntero en README predeterminado puede corregirse mediante un cambio documental acotado; mientras falte, la recuperación por Actions + índices bilaterales verificados mantiene la continuidad. Esta regla es genérica, no un snapshot de un caso o SHA.
 
 X14: reutilizar evidencia de rechazo Plus revisada hasta cambiar profundidad30 y nodos200; XFAIL no es PASS. Siguiente caso independiente X15.
+
+
+## Reconciliación SY-X-15 — 2026-10-17
+Índice revisión35: baseline técnico X15 y siguiente único X16. Conservar los runs del índice y comprobar huellas antes de REUSE. El control positivo del detector es un test separado: no atribuir su nodo script inerte al resultado de producto ni convertir este fixture en auditoría XSS universal. No nueva campaña de dependencias/mutaciones; S25/S19 siguen abiertos y X14Plus no pierde su XFAIL. La actualización documental no requiere CI nueva.
