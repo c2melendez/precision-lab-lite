@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 17,
+  "revision": 18,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "227ad7513a199dee984b0b1e48fb7550b98d5c8d",
@@ -115,23 +115,9 @@
   },
   "next_action": {
     "id": "CI-SPLIT-SECURITY-MUTATION-SCOPE",
-    "status": "READY",
+    "status": "WAIT",
     "repository": "c2melendez/precision-lab-plus",
-    "paired_repository": "c2melendez/precision-lab-lite",
-    "files": [
-      ".github/workflows/certification-dependency-gates.yml",
-      ".github/workflows/s19-mutation.yml",
-      ".github/workflows/s25-security.yml",
-      "scripts/certification/ci_guard.py"
-    ],
-    "action": "Resolve observed campaign overscope before SY-X-07. A backend validation-message change automatically started frontend mutation and unchanged pinned Lite mutation. Inspect existing campaign38990822464 and job-specific real inputs; design separate backend/frontend/pinned-reference selection and evidence reuse without weakening required gates. Do not launch another mutation campaign to validate routing.",
-    "exit_criteria": [
-      "Map per-job source SHA, mutation scope, selected tests, tool/dependency/harness inputs and acceptance revision, including pinned Lite6cbec764",
-      "Backend-only validation changes must not automatically repeat unchanged frontend/pinned-Lite campaigns; affected security checks still execute",
-      "Preserve full explicit revalidation with reason, dynamic security review, newer-failure precedence, ongoing equivalent WAIT and no fake PASS for skipped jobs",
-      "Test routing/reuse with deterministic fixtures and existing evidence; preserve PR/main acceptance contracts, synchronize bilateral state",
-      "After verified scope repair continue SY-X-07-BILATERAL (infinity minus infinity), without rerunning unchanged X04/S25/SG28 blockers"
-    ]
+    "action": "Inspect existing routing/cumulative/native/H1d runs at ff647a581a4a6d9b5423231ded44c3bc5fbb3088; no mutation dispatch. Confirm actual scope decisions and all pertinent logs, then resume SY-X-07."
   },
   "blockers": [
     {
@@ -185,37 +171,38 @@
     }
   ],
   "work_in_progress": {
-    "id": "SY-X-06-BILATERAL",
-    "status": "VERIFIED_SCOPED",
-    "technical_sha": "227ad7513a199dee984b0b1e48fb7550b98d5c8d",
-    "paired_technical_sha": "2d6434b7b7216efa6aaf2ca30d1a277960398c2e",
+    "id": "CI-SPLIT-SECURITY-MUTATION-SCOPE",
+    "status": "WAIT_CI",
+    "repository": "c2melendez/precision-lab-plus",
+    "technical_sha": "ff647a581a4a6d9b5423231ded44c3bc5fbb3088",
     "runs": [
       {
-        "id": 38990826368,
+        "id": 38991931537,
+        "workflow": ".github/workflows/in625-syntax-native.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931537"
+      },
+      {
+        "id": 38991931463,
+        "workflow": ".github/workflows/certification-dependency-gates.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931463"
+      },
+      {
+        "id": 38991931540,
         "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826368",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931540"
       },
       {
-        "id": 38990826322,
+        "id": 38991931544,
         "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826322",
-        "logs_reviewed": true,
-        "evidence_executed": true
-      },
-      {
-        "id": 38990826311,
-        "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826311",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931544"
       }
     ]
   },

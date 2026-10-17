@@ -4,7 +4,7 @@ Corte: 2026-10-17 UTC (2026-10-16 Honduras). Certificación global **OPEN**; por
 
 ## Reanudación única
 
-**Siguiente tarea: CI-SPLIT-SECURITY-MUTATION-SCOPE — READY.** Separar la selección de campañas por insumos reales de backend, frontend y referencia Lite fija. El cambio del mensaje de validación reactivó automáticamente incluso la mutación sobre Lite histórico sin cambiar esa fuente. Inspeccionar primero la campaña38990822464 ya en curso; no iniciar otra para probar el enrutamiento. Mantener gates obligatorios, revisión dinámica de seguridad y revalidación explícita con motivo. Después continuar SY-X-07 bilateral.
+**Siguiente tarea: CI-SPLIT-SECURITY-MUTATION-SCOPE — WAIT_CI.** Selector porjob publicado enPlus SHA `ff647a581a4a6d9b5423231ded44c3bc5fbb3088`;inspeccionar runs existentes del ledger,no despachar mutaciones. Confirmar plan sincampañas para este cambio deorquestación yregresiones pertinentes antes de cerrar.
 
 Leer [continuity.json](continuity.json), [CONTINUITY.md](CONTINUITY.md) y el protocolo. Verificar HEAD y Actions; reconciliar cambios técnicos no registrados. El prompt externo es solo bootstrap.
 
