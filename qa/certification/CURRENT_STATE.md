@@ -4,32 +4,36 @@ Corte: 2026-10-17 UTC (2026-10-16 Honduras). Certificación global **OPEN**; por
 
 ## Reanudación única
 
-**Siguiente tarea: SY-X-06-BILATERAL — WAIT_CI.** Fuente real10000caracteres publicada;inspeccionar runs existentes deambosproductos,no redispatch. Lite procesa5010;Plus debe mostrar rechazo porlongitud conlímite500 intacto. Esperarlogs antes dePASS.
+**Siguiente tarea: CI-SPLIT-SECURITY-MUTATION-SCOPE — READY.** Separar la selección de campañas por insumos reales de backend, frontend y referencia Lite fija. El cambio del mensaje de validación reactivó automáticamente incluso la mutación sobre Lite histórico sin cambiar esa fuente. Inspeccionar primero la campaña38990822464 ya en curso; no iniciar otra para probar el enrutamiento. Mantener gates obligatorios, revisión dinámica de seguridad y revalidación explícita con motivo. Después continuar SY-X-07 bilateral.
 
-Leer [continuity.json](continuity.json), [CONTINUITY.md](CONTINUITY.md) y el protocolo. Verificar HEAD y Actions antes de actuar; reconciliar cambios técnicos no registrados. El prompt externo es solo bootstrap.
+Leer [continuity.json](continuity.json), [CONTINUITY.md](CONTINUITY.md) y el protocolo. Verificar HEAD y Actions; reconciliar cambios técnicos no registrados. El prompt externo es solo bootstrap.
 
 ## Evidencia vigente
 
 | Producto/canal | SHA técnico de origen | Evidencia revisada |
 |---|---|---|
-| Lite acumulativo | cdcaefb8d317e2303b4b89da92afb7a7a994f698 | [38990035666](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035666): 1590 PASS / 30 TODO; 180 archivos; typecheck/build PASS |
-| Lite nativo | mismo SHA Lite | [38990035597](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035597): 399/399, tres perfiles Chromium; incluye X05 y regresiones previas |
-| Lite H1d | mismo SHA Lite | [38990035545](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035545): 21 PASS |
-| Plus acumulativo | 9e054de4e68621cf06c2a72236e585e6c9a5387c | [38990031487](https://github.com/c2melendez/precision-lab-plus/actions/runs/38990031487): frontend 996 PASS / 28 TODO; backend 1459 PASS / 2 XFAIL; cobertura 87,98 %; typecheck/build PASS |
-| Plus nativo X01–03/R12–14/X05 | mismo SHA Plus | [38990031387](https://github.com/c2melendez/precision-lab-plus/actions/runs/38990031387): 21/21, tres perfiles Chromium y reentrada real |
-| Plus H1d | mismo SHA Plus | [38990031422](https://github.com/c2melendez/precision-lab-plus/actions/runs/38990031422): 38 PASS |
-| Plus cancelación UI | b90f15e11d6b48a953aa37319afda711dcf58e2e (histórico) | [38986979683](https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979683): 21 PASS; no evidencia DIST |
-| S19 frontend initial run | b90f15e11d6b48a953aa37319afda711dcf58e2e (histórico) | [38986979633](https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979633): 759 tests iniciales; sin mutaciones ejecutadas ni mutation score |
+| Lite acumulativo | 227ad7513a199dee984b0b1e48fb7550b98d5c8d | [38990826368](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826368):1592 PASS /30 TODO;181archivos;typecheck/build PASS |
+| Lite nativo | mismo SHA Lite | [38990826311](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826311):402/402;X06 completo yregresiones,tres perfiles Chromium |
+| Lite H1d | mismo SHA Lite | [38990826322](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826322):21PASS |
+| Plus acumulativo | 2d6434b7b7216efa6aaf2ca30d1a277960398c2e | [38991052743](https://github.com/c2melendez/precision-lab-plus/actions/runs/38991052743):frontend997 PASS/28 TODO;backend1460 PASS/2 XFAIL;cobertura88,02%;typecheck/build PASS |
+| Plus nativo X01–03/R12–14/X05–06 | mismo SHA Plus | [38991052824](https://github.com/c2melendez/precision-lab-plus/actions/runs/38991052824):24/24,tres perfiles yHTTP real |
+| Plus H1d | mismo SHA Plus | [38991052808](https://github.com/c2melendez/precision-lab-plus/actions/runs/38991052808):38PASS |
+| S25 actual | db29648ac2ab2607021a32089c5555d3cbb9b2b0 | [38990822464](https://github.com/c2melendez/precision-lab-plus/actions/runs/38990822464):backendsecurityPASS24tests,pip-audit/Bandit;frontendFAIL5high/2moderate;mutaciones aún en curso |
+| S19 initial run anterior | b90f15e11d6b48a953aa37319afda711dcf58e2e | [38986979633](https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979633):759tests,sin mutaciones ni score;histórico |
 
-TODO/XFAIL/SKIP no son PASS. Los commits documentales conservan el SHA de evidencia de origen. Chromium desktop/tablet/mobile no acredita otros motores, cada tecla/SO o el botón Reusar.
+TODO/XFAIL/SKIP no son PASS. Los commits documentales conservan SHA de evidencia de origen. Tres perfiles Chromium no acreditan cada tecla/SO/otro motor/botón Reusar.
 
 ## Último cierre
 
-SY-X-05 PASS acotado bilateral. El fixture describe 30 niveles: se expanden a 30 pares reales alrededor de 1, longitud61. La fuente completa queda comprobada en la ingesta de ambos editores; Plus la conserva también en el POST HTTP. Resultado1, controles7/5, reentrada de salida y recuperación5 con nuevos IDs. HTTP crudo Plus y parser/handler Worker Lite tienen regresiones adicionales. El transporte Worker se simula únicamente en el test unitario, no en el E2E. No se cambió producto, fixture ni presupuestos de seguridad.
+SY-X-06 PASS acotado bilateral, con las dos alternativas permitidas por el oráculo. Fuente común de exactamente10000caracteres: '1+' repetido4999veces y '11' al final. Lite procesa5010 y reingresa5010;Plus recibe la fuente íntegra y responde422 con aviso claro de máximo500caracteres. Ambos recuperan5 yreingresan la salida mediante su ruta real. No se aumentaron límites ni se acortó la fuente.
+
+Se corrigió el mensaje genérico de validación backend Plus y el volcado de input en sus logs. La primera prueba nativa falló por selector ambiguo entre aviso global y resultado;el selector corregido verifica el resultado local y conserva el criterio. No hay PASS atribuido al run fallido. Los tiempos6,7–10,4s corresponden al test Lite completo, no a latencia aislada de cálculo ni a unSLA.
 
 ## Continuidad y no repetición
 
-El ledger conserva alcance, evidencia, bloqueos y una próxima tarea. El planificador compara huellas y observaciones frescas; el guard CI exige ejecución real del mismo checkout/workflow. REUSE enlaza al origen y no acredita pruebas nuevas. Los nuevos casos X05 modifican insumos en ambos productos y requieren sus gates pertinentes; los snapshots documentales no disparan CI. 34 pruebas del mecanismo aprobadas. No redispatch ni repetición de campañas bloqueadas sin cambiar precondiciones.
+El ledger guarda alcance, evidencia, bloqueos y una tarea. El guard compara mismo checkout/workflow;el planificador compara huellas y observaciones frescas. Un REUSE enlaza al origen, nunca es ejecución nueva. 34 pruebas del mecanismo aprobadas. Las actualizaciones documentales no disparan CI.
+
+La selección conservadora actual aún activa campañas ajenas por cambios de backendcore. La campaña38990822464 ya existe:conservar IDs y esperar/revisar sus jobs, sin duplicarla. Resolver su alcance es el objetivo siguiente;no se ha declarado resuelto este punto.
 
 ## Bloqueos conservados
 
@@ -43,3 +47,5 @@ El ledger conserva alcance, evidencia, bloqueos y una próxima tarea. El planifi
 | Otros canales/módulos | PARCIAL/ND: R12–14 y X01–03 nativos Plus ya acreditados; otros casos conservan sus gaps. |
 
 El [log](EXECUTION_LOG.md) y sus archivos preservan la historia; las fotografías anteriores no dictan el siguiente paso. Sin producción, deploy, merge, release ni activación remota de flags.
+
+CI-CAMPAIGN-OVERSCOPE OPEN:corregir selecciónporjob,siguiente objetivo indicadoarriba.

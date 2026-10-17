@@ -17,7 +17,7 @@ Fecha: 2026-10-17 UTC. Certificación global **OPEN**; porcentaje reconciliado *
 | SY-M | 20 | Recorrido hasta M-20; no certifica todo el módulo Matrices. |
 | SY-S | 20 | Recorrido hasta S-20 registrado. |
 | SY-R | 14 | Recorrido hasta R-14; R12–14 nativo Plus PASS acotado; otros canales pendientes. |
-| SY-X | 22 | X01–03 y X05 PASS acotado bilateral; X04 Lite PASS acotado y Plus BLOCKED; X06–22 pendientes. |
+| SY-X | 22 | X01–03,X05 yX06 PASS acotado bilateral;X04Plus BLOCKED;X07–22pendientes. |
 | Total | 309 | Fixture común intacto; certificación integral OPEN. |
 
 Las cifras son filas de la matriz, no totales de PASS. Consultar evidencia vigente de cada canal en el índice y el log. TODO/XFAIL/SKIP y pruebas manuales no se suman a PASS. IN625, Syntax309 y campañas anteriores no son denominadores sumables sin deduplicar requisitos.
@@ -30,7 +30,7 @@ Las cifras son filas de la matriz, no totales de PASS. Consultar evidencia vigen
 | H2/SG28/DIST | OPEN/BLOCKED | Contrato de vigencia/fencing, integración HTTP y luego aceptación multihost. |
 | Seguridad npm/S25 | BLOCKED | Parche compatible o migración validada; mantener gate estricto. |
 | Mutación S19 | PENDIENTE de evidencia actual | Gate focalizado del lote técnico, no reejecuciones sin diagnóstico. |
-| UI Plus | PARCIAL | X01–03,R12–14 y X05 nativo21/21 PASS; otros canales y módulos pendientes. |
+| UI Plus | PARCIAL | X01–03,R12–14,X05–06 nativo24/24 PASS;otroscanales pendientes. |
 | Gráficas/Matrices/Estadística/Unidades | PARCIAL; requisitos ND | Vincular operaciones y flujos a requisitos únicos. |
 | Geometría | PENDIENTE de inventario reconciliado | Localizar contrato, implementación y pruebas. |
 | Visual/responsive/accesibilidad | PARCIAL | Reconciliar matriz S26 y capturas/SHA; perfiles Chromium no prueban todos los motores/SO. |
@@ -41,11 +41,12 @@ Las cifras son filas de la matriz, no totales de PASS. Consultar evidencia vigen
 
 ## Último corte verificado
 
-## 2026-10-17 UTC — SY-X-05 bilateral verificado
-SHA Lite `cdcaefb8d317e2303b4b89da92afb7a7a994f698`; Plus `9e054de4e68621cf06c2a72236e585e6c9a5387c`. Fixture descriptivo original intacto: expansión '('×30+'1'+')'×30,61caracteres y profundidad de agrupación30. Controles de igual profundidad alrededor de7 y2+3 dan7y5. No confundir agrupación con profundidad del AST ni reemplazar la entrada por1.
-- Lite: [acumulativo38990035666](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035666) SUCCESS,1590 PASS/30 TODO,180archivos,typecheck/build y34tests del mecanismo. [Nativo38990035597](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035597) SUCCESS,399/399;X05 en desktop/tablet/mobile Chromium,fuente íntegra enMathLive,Worker real,resultado visible1/7/5,reentrada yrecuperación5,nuevosrequestIds,sinpageerrors. [H1d38990035545](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990035545):21 PASS.
-- Plus: [acumulativo38990031487](https://github.com/c2melendez/precision-lab-plus/actions/runs/38990031487) SUCCESS,frontend996 PASS/28 TODO,143archivos,typecheck/build;backend1459 PASS/2 XFAIL,cobertura87.98%;34tests del mecanismo. [Nativo38990031387](https://github.com/c2melendez/precision-lab-plus/actions/runs/38990031387) SUCCESS,21/21,X05 yregresiones en3perfiles. Verifica fuente completa tanto enMathLive como enPOST /evaluate,resultado visible1/7/5,reentradaHTTP200 conIDs distintos yrecuperación5,sinpageerrors. HTTPTestClient adicional acredita la misma fuente cruda con30niveles. [H1d38990031422](https://github.com/c2melendez/precision-lab-plus/actions/runs/38990031422):38 PASS.
-Jobs/pasos/logs revisados:ejecuciones reales,no REUSE niSKIP. UnidadLite usa handlerreal contransporteself/postMessage simulado;ese límite no se atribuye alE2E. MathLive se alimenta por asignación/eventoinput;no cada tecla/SO/otrosmotores/botónReusar. Solo pruebas yalta despecLite enworkflow existente,sin cambios de producto,fixture,límites uoráculos.
-Los nuevos insumos en ambos productos justifican estaCI;no hubo redispatch ni campañasS25/S19/SG28 repetidas. X04Plus,SY-P23,S25,S19integral,H2/SG28/DIST siguen abiertos;globalOPEN. Siguiente único:SY-X-06-BILATERAL,10000caracteres conprocesamiento o rechazoexplícito segúnoráculo yrecuperación.
+## 2026-10-17 UTC — SY-X-06 bilateral verificado; reducir alcance de campañas es el próximo objetivo
+SHA Lite `227ad7513a199dee984b0b1e48fb7550b98d5c8d`; Plus `2d6434b7b7216efa6aaf2ca30d1a277960398c2e`. Expansión determinista '1+'×4999+'11':10000caracteres reales,5000sumandos,resultado5010 si se procesa. Fixture/oráculo intactos:procesamiento sinbloqueo o rechazo explícito porlongitud.
+- Lite: [acumulativo38990826368](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826368) SUCCESS,1592 PASS/30 TODO,181archivos,typecheck/build,34tests mecanismo. [Nativo38990826311](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826311) SUCCESS,402/402,sinreintentos:ingesta exacta10000,resultado5010, reentrada5010 yrecuperación5 conreentrada,nuevosIDs,cero pageerrors en3perfilesChromium. El testX06 completo duró10.4/8.9/6.7s, no es una medición aislada deltiempo decálculo ni unSLA. [H1d38990826322](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826322):21PASS.
+- Plus: [acumulativo38991052743](https://github.com/c2melendez/precision-lab-plus/actions/runs/38991052743) SUCCESS,frontend997 PASS/28 TODO,144archivos,typecheck/build;backend1460 PASS/2 XFAIL,cobertura88.02%;34tests mecanismo. [Nativo38991052824](https://github.com/c2melendez/precision-lab-plus/actions/runs/38991052824) SUCCESS,24/24:MathLive yPOST conservan10000caracteres;HTTP422VALIDATION_ERROR, aviso explícito máximo500;recuperación5 yreentradaHTTP200,IDs nuevos,cero pageerrors. [H1d38991052808](https://github.com/c2melendez/precision-lab-plus/actions/runs/38991052808):38PASS.
+Defecto producto corregido:handler backend ocultaba la causa detrás de mensaje genérico deesquema;ahora comunica longitud yconservaHTTP422/código/límite500. También deja de volcar input crudo enlogs devalidación conforme alcontratoexistente. Primer nativo38990822461 falló por selector ambiguo entre2alertas;se corrigió selector deResultPanel, sin relajar mensaje/ingesta/oráculo. Los runs antiguos siguen siendo historia,no evidencia final.
+Campaña automática [38990822464](https://github.com/c2melendez/precision-lab-plus/actions/runs/38990822464),SHA producto previo `db29648ac2ab2607021a32089c5555d3cbb9b2b0`:frontendS25job117272639603 FAILURE,5high/2moderate;backendsecurity117272639703 SUCCESS,pip-audit/Bandit y24tests. Jobs mutación117272639562(Litepin),117272639609(Plusfront),117272639638(backend) siguen en curso segúnúltima consulta;no score anticipado ni cierreS19. Inspeccionar esosIDs,no iniciar otra campaña.
+La ruta backend/app/core/** reactivó incluso Litepinneado sin cambiar sufuente:deudaCI-CAMPAIGN-OVERSCOPE OPEN. Próxima tareaúnica CI-SPLIT-SECURITY-MUTATION-SCOPE para seleccionarinsumos porjob,preservar gates yrazón manual;después SY-X-07bilateral. No confundir estePASS de alternativaadmitidaX06 con cierreglobal:S25/S19/X04Plus/SY-P23/H2/SG28/DIST siguen abiertos.
 
-Consultar next_action de continuity.json; el historial no dicta la siguiente tarea.
+Consultar next_action decontinuity.json;elhistorial no dicta elsiguientepaso.

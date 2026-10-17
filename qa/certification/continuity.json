@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 16,
+  "revision": 17,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "227ad7513a199dee984b0b1e48fb7550b98d5c8d",
   "baseline_case": "SY-X-06",
-  "baseline_status": "WAIT_CI",
+  "baseline_status": "VERIFIED_WITH_BLOCKERS",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -72,24 +72,24 @@
   },
   "evidence_by_channel": {
     "unit_worker": {
-      "run_id": 38990035666,
-      "job_id": 117270164604,
-      "technical_sha": "cdcaefb8d317e2303b4b89da92afb7a7a994f698",
+      "run_id": 38990826368,
+      "job_id": 117272634822,
+      "technical_sha": "227ad7513a199dee984b0b1e48fb7550b98d5c8d",
       "status": "PASS_SCOPED",
       "counts": {
-        "pass": 1590,
+        "pass": 1592,
         "todo": 30
       },
       "logs_reviewed": true,
       "evidence_executed": true
     },
     "native_ui": {
-      "run_id": 38990035597,
-      "job_id": 117270164886,
-      "technical_sha": "cdcaefb8d317e2303b4b89da92afb7a7a994f698",
+      "run_id": 38990826311,
+      "job_id": 117272634453,
+      "technical_sha": "227ad7513a199dee984b0b1e48fb7550b98d5c8d",
       "status": "PASS_SCOPED",
       "counts": {
-        "pass": 399,
+        "pass": 402,
         "skip": 0
       },
       "profiles": [
@@ -99,12 +99,12 @@
       ],
       "logs_reviewed": true,
       "evidence_executed": true,
-      "acceptance_revision": "2026-10-17-scientific-X05-v1"
+      "acceptance_revision": "2026-10-17-scientific-X05-X06-v1"
     },
     "h1d": {
-      "run_id": 38990035545,
-      "job_id": 117270164225,
-      "technical_sha": "cdcaefb8d317e2303b4b89da92afb7a7a994f698",
+      "run_id": 38990826322,
+      "job_id": 117272634531,
+      "technical_sha": "227ad7513a199dee984b0b1e48fb7550b98d5c8d",
       "status": "PASS_SCOPED",
       "counts": {
         "pass": 21
@@ -114,9 +114,24 @@
     }
   },
   "next_action": {
-    "id": "SY-X-06-BILATERAL",
-    "status": "WAIT",
-    "action": "Inspect recorded automatic runs at both technical SHAs. No redispatch. Verify real10000-character ingestion, Lite processing/Plus readable rejection and recovery; inspect the already-started dependency campaign independently."
+    "id": "CI-SPLIT-SECURITY-MUTATION-SCOPE",
+    "status": "READY",
+    "repository": "c2melendez/precision-lab-plus",
+    "paired_repository": "c2melendez/precision-lab-lite",
+    "files": [
+      ".github/workflows/certification-dependency-gates.yml",
+      ".github/workflows/s19-mutation.yml",
+      ".github/workflows/s25-security.yml",
+      "scripts/certification/ci_guard.py"
+    ],
+    "action": "Resolve observed campaign overscope before SY-X-07. A backend validation-message change automatically started frontend mutation and unchanged pinned Lite mutation. Inspect existing campaign38990822464 and job-specific real inputs; design separate backend/frontend/pinned-reference selection and evidence reuse without weakening required gates. Do not launch another mutation campaign to validate routing.",
+    "exit_criteria": [
+      "Map per-job source SHA, mutation scope, selected tests, tool/dependency/harness inputs and acceptance revision, including pinned Lite6cbec764",
+      "Backend-only validation changes must not automatically repeat unchanged frontend/pinned-Lite campaigns; affected security checks still execute",
+      "Preserve full explicit revalidation with reason, dynamic security review, newer-failure precedence, ongoing equivalent WAIT and no fake PASS for skipped jobs",
+      "Test routing/reuse with deterministic fixtures and existing evidence; preserve PR/main acceptance contracts, synchronize bilateral state",
+      "After verified scope repair continue SY-X-07-BILATERAL (infinity minus infinity), without rerunning unchanged X04/S25/SG28 blockers"
+    ]
   },
   "blockers": [
     {
@@ -159,34 +174,48 @@
       "exit_criteria": "Explicit reconciliation of 999-character input with max_length=500 AND AST max200 without pre-simplifying the source",
       "next_action": "Read SY_X_04_LENGTH_CONTRACT.md; do not rerun identical rejection tests until limits/acceptance change",
       "responsible_role": "certification maintainer"
+    },
+    {
+      "id": "CI-CAMPAIGN-OVERSCOPE",
+      "status": "OPEN",
+      "evidence": "Backendcore validation-message change automatically activated unchanged pinned-Lite mutation in38990822464",
+      "exit_criteria": "Per-job input/acceptance selection with routing tests and evidence reuse; preserve dynamic security and full explicit revalidation, no fakePASS for skips",
+      "next_action": "CI-SPLIT-SECURITY-MUTATION-SCOPE",
+      "responsible_role": "certification maintainer"
     }
   ],
   "work_in_progress": {
     "id": "SY-X-06-BILATERAL",
-    "status": "WAIT_CI",
+    "status": "VERIFIED_SCOPED",
     "technical_sha": "227ad7513a199dee984b0b1e48fb7550b98d5c8d",
     "paired_technical_sha": "2d6434b7b7216efa6aaf2ca30d1a277960398c2e",
     "runs": [
       {
-        "id": 38990826311,
-        "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-        "status": "queued",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826311"
+        "id": 38990826368,
+        "workflow": ".github/workflows/in625-cumulative-certification.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826368",
+        "logs_reviewed": true,
+        "evidence_executed": true
       },
       {
         "id": 38990826322,
         "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "queued",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826322"
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826322",
+        "logs_reviewed": true,
+        "evidence_executed": true
       },
       {
-        "id": 38990826368,
-        "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "queued",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826368"
+        "id": 38990826311,
+        "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826311",
+        "logs_reviewed": true,
+        "evidence_executed": true
       }
     ]
   },
@@ -268,6 +297,21 @@
         "2+3 recovery"
       ],
       "limitations": "MathLive assignment/input; native Chromium3profiles only; grouping depth is not AST depth"
+    },
+    "SY-X-06": {
+      "status": "PASS_SCOPED",
+      "source_length": 10000,
+      "expansion": "'1+' repeated4999 times, then '11'",
+      "lite": "PROCESSED_5010_REENTRY_AND_RECOVERY",
+      "plus": "HTTP422_READABLE_LENGTH500_REJECTION_AND_RECOVERY",
+      "lite_native_run": 38990826311,
+      "plus_native_run": 38991052824,
+      "profiles": [
+        "desktop-chromium",
+        "tablet-chromium",
+        "mobile-chromium"
+      ],
+      "limitations": "MathLive assignment/input; not every key/OS/other engine or Reuse button; no calculation-only latency SLA"
     }
   },
   "verification_proofs": {
@@ -294,8 +338,50 @@
       "id": 38990822464,
       "repository": "c2melendez/precision-lab-plus",
       "technical_sha": "db29648ac2ab2607021a32089c5555d3cbb9b2b0",
-      "status": "CAMPAIGN_IN_PROGRESS_FRONTEND_SECURITY_FAILED",
-      "instruction": "Inspect existing jobs only; no duplicate campaign. S25 frontend5high/2moderate; backendsecurityPASS24tests; mutation jobs pending."
+      "status": "RUNNING_WITH_FRONTEND_SECURITY_FAILURE",
+      "jobs": [
+        {
+          "id": 117272623017,
+          "name": "audit-request",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117272639562,
+          "name": "mutation / lite-frontend-stryker",
+          "status": "in_progress",
+          "conclusion": null
+        },
+        {
+          "id": 117272639603,
+          "name": "security / frontend-audit",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "id": 117272639609,
+          "name": "mutation / plus-frontend-stryker",
+          "status": "in_progress",
+          "conclusion": null
+        },
+        {
+          "id": 117272639638,
+          "name": "mutation / plus-backend-mutmut",
+          "status": "in_progress",
+          "conclusion": null
+        },
+        {
+          "id": 117272639703,
+          "name": "security / backend-security",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "reviewed_security_jobs": [
+        117272639603,
+        117272639703
+      ],
+      "instruction": "Inspect existing mutation jobs; do not dispatch another campaign. Frontend5high/2moderate,backendsecurityPASS24tests; no mutation score inferred."
     }
   ]
 }
