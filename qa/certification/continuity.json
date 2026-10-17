@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 51,
+  "revision": 52,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,16 +134,19 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-SOURCE-PROVENANCE",
-    "status": "BLOCKED_ON_SOURCE",
+    "id": "ALGEBRA114-FIXTURE-VALIDATION",
+    "status": "IN_PROGRESS",
+    "repository": "c2melendez/precision-lab-lite",
+    "paired_repository": "c2melendez/precision-lab-plus",
     "files": [
+      "qa/certification/algebra114_source.md",
       "qa/certification/ALGEBRA114_PREPARATION.md"
     ],
-    "action": "Locate original authoritative Algebra114 114-case normative source (historical issue, archived attachment, commit or separate suite); verify all case IDs and oracles before coverage scoring or dispatch. Continue separately with independently testable work when source cannot be retrieved.",
+    "action": "Build deterministic validator for 114 unique AS-* original rows, expected result and level columns; map AS-SIM-01 to genuine Lite/Plus parser, Worker/HTTP and UI coverage with explicit symbolic oracle before targeting CI.",
     "exit_criteria": [
-      "Versioned evidence of original 114 requirements with identifiers and expected results",
-      "Map each source ID to Lite/Plus implementations and existing test evidence without implying equivalence",
-      "Select first missing case for targeted test only after oracle is sourced"
+      "Read-only validator proves 114 rows/unique IDs and original section counts",
+      "AS-SIM-01 mapped to both engines with scope and gaps labeled",
+      "Targeted regression only if missing evidence; global OPEN"
     ]
   },
   "blockers": [
