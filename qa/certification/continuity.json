@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 40,
+  "revision": 41,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "82a83c430a779eaa344be5be7644c9a38bfedc26",
-  "baseline_case": "SY-X-17",
-  "baseline_status": "VERIFIED_WITH_BLOCKERS",
+  "technical_baseline_sha": "b2d11c62ca7c2c1305ccbbdfe7a603fcc285f9d4",
+  "baseline_case": "SY-X-18",
+  "baseline_status": "WAIT_CI",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -61,7 +61,7 @@
       "inputs": [
         "*"
       ],
-      "acceptance_revision": "2026-10-17-scientific-through-X17-shell-command-v1"
+      "acceptance_revision": "2026-10-17-scientific-through-X18-python-source-v1"
     },
     "sg28_cancel": {
       "workflow": ".github/workflows/in625-sg28-scientific-cancel.yml",
@@ -133,13 +133,13 @@
   },
   "next_action": {
     "id": "SY-X-18-BILATERAL",
-    "status": "READY",
+    "status": "WAIT_CI",
     "repository": "c2melendez/precision-lab-plus",
     "paired_repository": "c2melendez/precision-lab-lite",
     "files": [
       "qa/certification/syntax309_cases.jsonl"
     ],
-    "action": "First reconcile existing Plus campaign39017317053/job117352038619 without duplicate dispatch. Then verify exact original __import__('os').system('ls') syntax-error fixture safely in independent bilateral case; inspect parsing/evaluation routes, detect and prevent would-be process launches with synthetic controls. Never invoke ls or evaluate untrusted Python code as a control. Confirm raw Worker/HTTP rejection and native MathLive source/recovery/reentry on3Chromium profiles. Preserve blockers.",
+    "action": "Inspect existing exact-SHA X18 runs/jobs/logs; wait without duplicate dispatch. Previous pending S19 campaign reconciled CANCELLED, not PASS.",
     "exit_criteria": [
       "Original fixture and syntax-error/no-execution oracle unchanged",
       "Safe detection with synthetic positive controls, zero product launch attempts; no actual command executed by tests",
@@ -202,8 +202,8 @@
     {
       "id": "MUTATION-S19",
       "status": "OPEN",
-      "evidence": "Latest recorded frontend38995800990/job117288029860 CANCELLED after693test initialrunSUCCESS, no final report; logs reviewed. Earlier38992878940 had Worker exit1 before cancellation. No global mutation score.",
-      "next_action": "Diagnose existing frontend campaign cause and resource/progress evidence before repeating equivalent inputs; do not rerun historical Lite pin/npm. New X13 tests did not trigger a campaign.",
+      "evidence": "Campaña Plus39017317053/job117352038619 COMPLETED/CANCELLED; logs revisados: initialrun693PASS, fallos repetidos de workers exit1/ChildProcessCrashedError en BasicModeConversionError.test.tsx y cancelación; sin informe final ni artefactos de mutación. No puntuación, no cierreS19. Preflight39017316967/760tests solo harness. No se atribuye causa definitiva de cancelación; diagnosticar el fallo instrumentado/recursos antes de reintentar inputs equivalentes.",
+      "next_action": "Diagnose instrumented BasicModeConversionError worker exits/resource evidence before repeating equivalent frontend campaign. No new X18 campaign; do not rerun pinned Lite/backend/npm components.",
       "responsible_role": "certification maintainer"
     },
     {
@@ -222,48 +222,39 @@
     }
   ],
   "work_in_progress": {
-    "id": "SY-X-17-BILATERAL",
-    "status": "VERIFIED_SCOPED",
-    "technical_sha": "82a83c430a779eaa344be5be7644c9a38bfedc26",
-    "paired_technical_sha": "02a8f689aac5d4583a35edaa722851d344b27419",
+    "id": "SY-X-18-BILATERAL",
+    "status": "WAIT_CI",
+    "technical_sha": "b2d11c62ca7c2c1305ccbbdfe7a603fcc285f9d4",
+    "paired_technical_sha": "6cf267b479c290905c2c1188fc8e11d818ccc861",
     "runs": [
       {
-        "id": 39017068699,
+        "id": 39047968609,
         "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39017068699",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39047968609",
+        "logs_reviewed": false,
+        "evidence_executed": false
       },
       {
-        "id": 39017068708,
-        "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39017068708",
-        "logs_reviewed": true,
-        "evidence_executed": true
-      },
-      {
-        "id": 39017068701,
+        "id": 39047968619,
         "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39017068701",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39047968619",
+        "logs_reviewed": false,
+        "evidence_executed": false
+      },
+      {
+        "id": 39047968611,
+        "workflow": ".github/workflows/in625-h1d-reentry.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39047968611",
+        "logs_reviewed": false,
+        "evidence_executed": false
       }
-    ],
-    "diagnosis": {
-      "classification": "PRODUCT_CONVERSION",
-      "failed_run": 39017066935,
-      "failed_job": 117351282488,
-      "failed_sha": "67b9ca8eb32edf282608e73fcf225ebdd06fda4b",
-      "observed": "MathLive ASCII conversion erases TeX write macro, yields 18l s and false algebraic result; no command execution proven",
-      "correction_sha": "02a8f689aac5d4583a35edaa722851d344b27419",
-      "regression": "Frontend converter rejects write command before ASCII conversion; new test reproduced red then passes. Native requires explicit local rejection and no invalid HTTP POST."
-    }
+    ]
   },
   "cases": {
     "SY-X-03": {
@@ -901,6 +892,53 @@
         }
       ],
       "instruction": "Frontend117288029860 CANCELLED; initial693tests passed but no final mutation report. Logs reviewed, no inferred score/cause. Backend mutation already reviewedSUCCESS; no identical retry."
+    },
+    {
+      "id": 39017317053,
+      "repository": "c2melendez/precision-lab-plus",
+      "technical_sha": "02a8f689aac5d4583a35edaa722851d344b27419",
+      "status": "COMPLETED_WITH_FRONTEND_CANCEL",
+      "jobs": [
+        {
+          "id": 117351993121,
+          "name": "audit-request",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117352025141,
+          "name": "mutation / validate-request",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117352025935,
+          "name": "security",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 117352038619,
+          "name": "mutation / plus-frontend-stryker",
+          "status": "completed",
+          "conclusion": "cancelled"
+        },
+        {
+          "id": 117352039457,
+          "name": "mutation / plus-backend-mutmut",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 117352039714,
+          "name": "mutation / lite-frontend-stryker",
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      ],
+      "logs_reviewed": true,
+      "mutation_score": null,
+      "instruction": "Campaña Plus39017317053/job117352038619 COMPLETED/CANCELLED; logs revisados: initialrun693PASS, fallos repetidos de workers exit1/ChildProcessCrashedError en BasicModeConversionError.test.tsx y cancelación; sin informe final ni artefactos de mutación. No puntuación, no cierreS19. Preflight39017316967/760tests solo harness. No se atribuye causa definitiva de cancelación; diagnosticar el fallo instrumentado/recursos antes de reintentar inputs equivalentes."
     }
   ],
   "campaign_evidence_reviews": [
@@ -969,20 +1007,5 @@
     "evidence": "Current exact-SHA Actions head_branch plus mutually matching canonical_branch in paired ledgers",
     "fallback_documented": true
   },
-  "pending_campaigns": [
-    {
-      "repository": "c2melendez/precision-lab-plus",
-      "run_id": 39017317053,
-      "job_id": 117352038619,
-      "technical_sha": "02a8f689aac5d4583a35edaa722851d344b27419",
-      "profile": "mutation_frontend",
-      "status": "in_progress",
-      "conclusion": null,
-      "input_fingerprint": "82373a097f9762093ad1fa9620f3b3c9695f55c361ab2156d134a518b5a78d73",
-      "observed_at": "2026-10-17T08:31:08.557Z",
-      "logs_reviewed": false,
-      "mutation_score": null,
-      "instruction": "Refresh existing run/jobs/logs before other work; WAIT while active, diagnose non-success, review actual final report if completed. Do not dispatch equivalent campaign. X17 scoped acceptance is separate from integral S19."
-    }
-  ]
+  "pending_campaigns": []
 }
