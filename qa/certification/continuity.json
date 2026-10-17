@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 18,
+  "revision": 19,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "227ad7513a199dee984b0b1e48fb7550b98d5c8d",
@@ -114,10 +114,20 @@
     }
   },
   "next_action": {
-    "id": "CI-SPLIT-SECURITY-MUTATION-SCOPE",
-    "status": "WAIT",
+    "id": "SY-X-07-BILATERAL",
+    "status": "READY",
     "repository": "c2melendez/precision-lab-plus",
-    "action": "Inspect existing routing/cumulative/native/H1d runs at ff647a581a4a6d9b5423231ded44c3bc5fbb3088; no mutation dispatch. Confirm actual scope decisions and all pertinent logs, then resume SY-X-07."
+    "paired_repository": "c2melendez/precision-lab-lite",
+    "files": [
+      "qa/certification/syntax309_cases.jsonl"
+    ],
+    "action": "Continue independent Syntax309 with original infinity-minus-infinity fixture in both products. Inspect converter/parser/UI and existing evidence first; require explicit indeterminate rejection, no accidental NaN/Infinity success, then real recovery and output reentry. Use repaired component routing; inspect existing mutation campaign rather than repeat it.",
+    "exit_criteria": [
+      "Pin original SY-X-07 source/oracle and preserve source at native ingestion; no finite-value substitution",
+      "Explicit readable indeterminate error with correct layer classification; no success with NaN/Infinity or invented HTTP for local rejection",
+      "Real recovery and output reentry in applicable native paths and3Chromium profiles; distinct request IDs and no pageerrors",
+      "Relevant scoped cumulative/native evidence reviewed; bilateral ledger and next task updated; existing S25/S19/SG28/X04 blockers retained"
+    ]
   },
   "blockers": [
     {
@@ -163,46 +173,59 @@
     },
     {
       "id": "CI-CAMPAIGN-OVERSCOPE",
-      "status": "OPEN",
+      "status": "RESOLVED_SCOPED",
       "evidence": "Backendcore validation-message change automatically activated unchanged pinned-Lite mutation in38990822464",
       "exit_criteria": "Per-job input/acceptance selection with routing tests and evidence reuse; preserve dynamic security and full explicit revalidation, no fakePASS for skips",
-      "next_action": "CI-SPLIT-SECURITY-MUTATION-SCOPE",
-      "responsible_role": "certification maintainer"
+      "next_action": "Use per-job router; do not infer full S19/S25 PASS from skipped components",
+      "responsible_role": "certification maintainer",
+      "verification_run": 38991931463
     }
   ],
   "work_in_progress": {
     "id": "CI-SPLIT-SECURITY-MUTATION-SCOPE",
-    "status": "WAIT_CI",
+    "status": "VERIFIED_SCOPED",
     "repository": "c2melendez/precision-lab-plus",
     "technical_sha": "ff647a581a4a6d9b5423231ded44c3bc5fbb3088",
     "runs": [
       {
-        "id": 38991931537,
-        "workflow": ".github/workflows/in625-syntax-native.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931537"
-      },
-      {
         "id": 38991931463,
         "workflow": ".github/workflows/certification-dependency-gates.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931463"
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931463",
+        "logs_reviewed": true,
+        "evidence_executed": false,
+        "harness_only": true
       },
       {
-        "id": 38991931540,
-        "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931540"
+        "id": 38991931537,
+        "workflow": ".github/workflows/in625-syntax-native.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931537",
+        "logs_reviewed": true,
+        "evidence_executed": true,
+        "harness_only": false
       },
       {
         "id": 38991931544,
         "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931544"
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931544",
+        "logs_reviewed": true,
+        "evidence_executed": true,
+        "harness_only": false
+      },
+      {
+        "id": 38991931540,
+        "workflow": ".github/workflows/in625-cumulative-certification.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931540",
+        "logs_reviewed": true,
+        "evidence_executed": true,
+        "harness_only": false
       }
     ]
   },
@@ -354,8 +377,8 @@
         {
           "id": 117272639638,
           "name": "mutation / plus-backend-mutmut",
-          "status": "in_progress",
-          "conclusion": null
+          "status": "completed",
+          "conclusion": "success"
         },
         {
           "id": 117272639703,
@@ -364,11 +387,32 @@
           "conclusion": "success"
         }
       ],
-      "reviewed_security_jobs": [
-        117272639603,
-        117272639703
-      ],
-      "instruction": "Inspect existing mutation jobs; do not dispatch another campaign. Frontend5high/2moderate,backendsecurityPASS24tests; no mutation score inferred."
+      "instruction": "Inspect existing frontend mutation jobs; no duplicate campaign. Backend mutation reviewed independently; S25frontend remains5high."
+    }
+  ],
+  "campaign_evidence_reviews": [
+    {
+      "profile": "mutation_backend",
+      "run_id": 38990822464,
+      "job_id": 117272639638,
+      "input_fingerprint": "0f3d20dcbd4066b404acd72e04db6cca188c793447c7da339d6af3d6a7773d27",
+      "logs_reviewed": true,
+      "mutations_executed": true,
+      "source_repository": "c2melendez/precision-lab-plus",
+      "source_sha": "db29648ac2ab2607021a32089c5555d3cbb9b2b0",
+      "scope": "Execution of existing mutmut acceptance only; no inferred full S19 mutation score"
+    },
+    {
+      "profile": "mutation_lite",
+      "run_id": 38983505232,
+      "job_id": 117249561875,
+      "input_fingerprint": "8628807dcbecbb91b34eac25ec9101e7ccb4f60150df618dcbaa9fd58fb266a2",
+      "logs_reviewed": true,
+      "mutations_executed": true,
+      "source_repository": "c2melendez/precision-lab-lite",
+      "source_sha": "6cbec7645b73ad18875d4472182c704eb35228b0",
+      "score": 10.32,
+      "scope": "Historical pinned Lite reference, not current Lite HEAD; newer equivalent execution supersedes this review"
     }
   ]
 }

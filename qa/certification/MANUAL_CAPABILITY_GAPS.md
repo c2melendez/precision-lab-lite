@@ -215,3 +215,6 @@ Expansión determinista fiel del fixture descriptivo:30pares deparéntesis,61car
 
 ## 2026-10-17 UTC — SY-X-06 bilateral: alternativas admitidas
 LiteSHA227ad7513a199dee984b0b1e48fb7550b98d5c8d,nativo38990826311:402/402;PlusSHA2d6434b7b7216efa6aaf2ca30d1a277960398c2e,nativo38991052824:24/24. Fuente real10000 ('1+'×4999+'11') comprobada enambosMathLive yPOSTPlus. Liteprocesa5010;Plusrechaza422conaviso500;ambosrecuperan5yreingresan salidaconIDs nuevos,sinpageerrors. Límite500intacto,mensaje corregidoylogs sininputcrudo. Nocada tecla/SO/otromotor/botónReusar niSLAdecálculo. Campaña38990822464:S25frontend5high,backendseguridadPASS,mutaciónpendiente;selección sobreLitepinneadosincambios esdeudaCIabierta. Siguiente:separardisparadoresantesdeX07;nodeclararS19/SG28/globalcerrados.
+
+## 2026-10-17 UTC — selección de campañas validada
+CI-CAMPAIGN-OVERSCOPE RESOLVED_SCOPED:run38991931463 ejecutóselector y56tests,sin campañas nuevas;ningúnSKIP esPASSdeS19/S25. Evidencia porjob requierehuella+pasos+reviewdelogs,Litepin6cbec764esdistinto deHEADLite. Actualcampaña38990822464confrontendsencurso yS25frontendfallido conservaIDs;no scoreintegralanticipado. PR/main ymanualcompleto conservados;seguridadseleccionada fresca. No cambios de motor/fixtures/criterios matemáticos;SYX07siguiente.

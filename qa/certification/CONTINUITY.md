@@ -87,3 +87,30 @@ Los bloqueos del índice mantienen condición de salida y siguiente acción. Sol
 
 ## Contratos Markdown y filtros CI
 Los contratos EXECUTION_PROTOCOL, SG28_DISTRIBUTED_ACCEPTANCE, SY_P_23_CONVENTION, SY_X_04_LENGTH_CONTRACT, SY_X_04_LENGTH_DECISION y SG28_INTEGRATION_EXIT_CRITERIA se incluyen explícitamente en filtros como excepciones técnicas al Markdown. Los snapshots/logs/tablero/prompts y archivos históricos son prosa de cierre; no despiertan CI. Al añadir un contrato ejecutable, actualizar los filtros y acceptance_revision.
+
+## Selección por componente de campañas QA — 2026-10-17
+
+En Plus, `scripts/certification/campaign_scope.py` controla exclusivamente la selección automática del wrapper QA de dependencias. Los eventos PR y main de los workflows llamados conservan su selección completa. El despacho manual exige un motivo no vacío y revalida todo; no reutiliza automáticamente seguridad.
+
+| Perfil | Insumos de origen | Ejecución |
+|---|---|---|
+| security_frontend | package.json/lock y .npmrc de frontend | npm audit fresco cuando se selecciona |
+| security_backend | backend completo y contrato ejecutable del job | pip-audit, Bandit y regresiones frescos |
+| mutation_frontend | frontend conservador y fixtures JSONL; E2E solo no selecciona campaña | Stryker del checkout Plus |
+| mutation_backend | backend conservador y fixtures JSONL | mutmut y pruebas de sus superficies críticas |
+| mutation_lite | config stryker-lite y contrato del job, que fija repo/ref/tooling | Lite histórico6cbec764; no HEAD Lite actual |
+
+La huella SHA-256 incluye perfil, patrones, versión de política, pasos obligatorios, modo/tipo/OID de archivos y contrato del job. Del contrato se excluyen únicamente las líneas superiores de selección `if` y dependencia `needs`; se conservan comandos, versiones, variables, timeouts y checkout/ref. Cambiar el pin, las herramientas o pasos cambia el contrato y vuelve a seleccionar el job afectado. Cambiar solo orquestación ejecuta sus pruebas de enrutamiento, sin lanzar campañas completas para probar el selector.
+
+Para mutación seleccionada, se consulta historia reciente paginada y jobs del intento correcto. Un equivalente en curso produce WAIT; un fallo/cancelación posterior produce DIAGNOSE. Un verde sin revisión explícita produce REVIEW. REUSE exige job y pasos ejecutados realmente, huella idéntica y registro `campaign_evidence_reviews` con revisión de logs y mutaciones ejecutadas. La revisión histórica no prevalece sobre una ejecución equivalente más reciente aún abierta. Una falla de seguridad de otro componente no borra la evidencia independiente de un job aprobado, pero el workflow padre continúa sin acreditar cierre integral.
+
+Ante diff o consulta incompletos se ejecutan los checks afectados de forma conservadora. NOT_SELECTED/WAIT/REVIEW/DIAGNOSE y jobs omitidos no son PASS. REUSE no es ejecución nueva ni mutation score nuevo. Los criterios de certificación global no se reducen por el color verde de un wrapper de selección.
+
+Ejemplo offline (no despacha ni cancela):
+```sh
+python scripts/certification/campaign_scope.py --paths /tmp/changed-paths.json --event push
+python scripts/certification/campaign_scope.py --fingerprint mutation_lite --sha SHA_VERIFICADO
+python -m unittest discover -s scripts/certification -p 'test_*.py'
+```
+
+El JSON de paths debe proceder del diff real; sin credenciales, la inspección offline de un perfil afectado no podrá reutilizar evidencia y devolverá RUN conservador. Para inspección pura de reglas puede llamarse `select(paths,event,reason)`. El Job Summary conserva decisión y enlace al run de origen. No despachar una campaña solo porque aparezca REVIEW: completar la revisión o cambiar la precondición documentada.
