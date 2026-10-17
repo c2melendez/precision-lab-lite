@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 42,
+  "revision": 43,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "b2d11c62ca7c2c1305ccbbdfe7a603fcc285f9d4",
-  "baseline_case": "SY-X-18",
-  "baseline_status": "VERIFIED_WITH_BLOCKERS",
+  "technical_baseline_sha": "121a64f539f03c3034674a897c34db563b6752e6",
+  "baseline_case": "SY-X-19",
+  "baseline_status": "WAIT_CI",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -61,7 +61,7 @@
       "inputs": [
         "*"
       ],
-      "acceptance_revision": "2026-10-17-scientific-through-X18-python-source-v1"
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
     },
     "sg28_cancel": {
       "workflow": ".github/workflows/in625-sg28-scientific-cancel.yml",
@@ -134,13 +134,13 @@
   },
   "next_action": {
     "id": "SY-X-19-BILATERAL",
-    "status": "READY",
+    "status": "WAIT_CI",
     "repository": "c2melendez/precision-lab-plus",
     "paired_repository": "c2melendez/precision-lab-lite",
     "files": [
       "qa/certification/syntax309_cases.jsonl"
     ],
-    "action": "Verify exact original open('/etc/passwd').read() syntax-error/no-execution fixture as data. Inspect parser/evaluator routes; detect and prevent target open/read and process launch attempts with safe guards and synthetic controls that never access actual target or invoke a command. Check original rejection before evaluators, MathLive source retention, applicable real Worker/HTTP and finite recovery/reentry on3Chromium profiles. Reuse reviewed equivalent evidence; diagnose cancelled S19 separately without identical rerun.",
+    "action": "Inspect existing exact-SHA X19 runs/jobs/logs; do not dispatch duplicates or mark PASS before required native/cumulative/H1d evidence completes.",
     "exit_criteria": [
       "Original source and syntax-error/no-execution oracle unchanged",
       "Zero observed target-access/process-launch attempts; controls only synthetic, never open/read real file or execute command",
@@ -223,37 +223,37 @@
     }
   ],
   "work_in_progress": {
-    "id": "SY-X-18-BILATERAL",
-    "status": "VERIFIED_SCOPED",
-    "technical_sha": "b2d11c62ca7c2c1305ccbbdfe7a603fcc285f9d4",
-    "paired_technical_sha": "6cf267b479c290905c2c1188fc8e11d818ccc861",
+    "id": "SY-X-19-BILATERAL",
+    "status": "WAIT_CI",
+    "technical_sha": "121a64f539f03c3034674a897c34db563b6752e6",
+    "paired_technical_sha": "4ee6a9db00dbd49790f661715ca53d5ed3995071",
     "runs": [
       {
-        "id": 39047968609,
-        "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39047968609",
-        "logs_reviewed": true,
-        "evidence_executed": true
-      },
-      {
-        "id": 39047968611,
+        "id": 39051773331,
         "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39047968611",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39051773331",
+        "logs_reviewed": false,
+        "evidence_executed": false
       },
       {
-        "id": 39047968619,
+        "id": 39051773497,
         "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39047968619",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39051773497",
+        "logs_reviewed": false,
+        "evidence_executed": false
+      },
+      {
+        "id": 39051773589,
+        "workflow": ".github/workflows/in625-cumulative-certification.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39051773589",
+        "logs_reviewed": false,
+        "evidence_executed": false
       }
     ]
   },
