@@ -28,3 +28,6 @@ Gaps: MathLive asignación/input en tres perfiles Chromium, no cada tecla/SO/otr
 
 
 El log conserva la historia; next_action es la única continuación vigente. Sin producción, deploy, merge, release ni flags remotos.
+
+## 2026-10-17 UTC — SY-X-09 preflight iniciado (sin cierre bilateral)
+Plus commit técnico `1165ac4b76139595eff7e6bbff25ecb282cdf604`: `backend/tests/test_syntax309_syx09_preflight.py` verifica que la potencia original `99999999999^{99999999999}` produce un AST sin evaluar y excede `MAX_ABS_INTEGER_EXPONENT=10000`; incluye control finito. Esto es evidencia de diseño del guard, NO ejecución de la potencia ni PASS del endpoint. Push CI Plus cumulative [38996853869](https://github.com/c2melendez/precision-lab-plus/actions/runs/38996853869) y H1d [38996853805](https://github.com/c2melendez/precision-lab-plus/actions/runs/38996853805), inicialmente queued; verificar jobs/logs antes de acreditar. Próximo paso sigue siendo **SY-X-09-BILATERAL**: completar rechazo real acotado/HTTP, Lite Worker y E2E tres perfiles, recuperación y gates por SHA. No ejecutar cargas gigantes sin aislamiento ni presupuestos; no repetir gates en cola.
