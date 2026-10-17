@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 26,
+  "revision": 27,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "378510f0092d4c50c321fc59ce1abb87e732aa72",
@@ -114,19 +114,20 @@
     }
   },
   "next_action": {
-    "id": "SY-X-10-BILATERAL",
+    "id": "SY-X-11-BILATERAL",
     "status": "READY",
     "repository": "c2melendez/precision-lab-lite",
     "paired_repository": "c2melendez/precision-lab-plus",
     "files": [
       "qa/certification/syntax309_cases.jsonl"
     ],
-    "action": "Inspect unchanged original 10^{10^{10}} fixture, expected symbolic output or size notice; verify no attempt to print 10^10 digits. Analyze parser and CAS/Worker/API preflight for nested exponents, safely reject enormous result before evaluation or serialization. Test bounded native MathLive/real Worker and HTTP in desktop/tablet/mobile with finite recovery and reentry.",
+    "action": "Preserve exact original 9^{9^{9}} with oracle: ídem (el número tiene unos 369 millones de dígitos). Implement bounded nested-exponent budget without computing the number or regressing small powers. Validate real Lite Worker and Plus HTTP, then MathLive in 3 Chromium profiles, finite recovery, distinct request IDs, and inspect scoped CI by SHA.",
     "exit_criteria": [
-      "Retain canonical source and oracle unchanged",
-      "No computation or materialization of astronomical integer; finite execution and readable limits or symbolic compact result",
-      "Actual MathLive ingestion, Worker/HTTP behavior in desktop/tablet/mobile; recovery and reentry",
-      "Inspect scoped native/cumulative/H1d CI results by SHA; update bilateral records without duplicated runs"
+      "Canonical 9^{9^{9}} and expected preserved unchanged",
+      "Avoid huge integer evaluation/serialization; clear resource-limit notice or symbolic compact response",
+      "Preserve finite nested powers such as 2^{3^{2}}=512",
+      "Real Worker/HTTP and native desktop/tablet/mobile evidence plus recovery/reentry",
+      "No duplicated CI; update bilateral records only after verifying results"
     ]
   },
   "blockers": [
@@ -189,30 +190,13 @@
     }
   ],
   "work_in_progress": {
-    "id": "SY-X-09-BILATERAL",
+    "id": "SY-X-10-BILATERAL",
     "status": "VERIFIED_SCOPED",
-    "technical_sha": "fbe4a833fe89d84a161bb4579bba582c5334445b",
-    "paired_technical_sha": "bc79d8af9d964e12a184e9d71a9319b9b66c2bb9",
-    "runs": [
-      {
-        "id": 38998529196,
-        "kind": "native",
-        "status": "completed",
-        "conclusion": "success"
-      },
-      {
-        "id": 38998529193,
-        "kind": "cumulative",
-        "status": "completed",
-        "conclusion": "success"
-      },
-      {
-        "id": 38998529206,
-        "kind": "h1d",
-        "status": "completed",
-        "conclusion": "success"
-      }
-    ]
+    "technical_sha": "0906bf79c9f94f95becb2a19410d52428c1269e3",
+    "paired_technical_sha": "f307707928058aa1a53669b0e0103510556e8c57",
+    "native_run": 39001412909,
+    "cumulative_run": 39001412889,
+    "h1d_run": 39001412896
   },
   "cases": {
     "SY-X-03": {
@@ -370,6 +354,29 @@
         "distinct request IDs"
       ],
       "limitations": "MathLive assignment/input three Chromium profiles; neither every keyboard/OS nor all engine operations; global certification remains OPEN"
+    },
+    "SY-X-10": {
+      "status": "PASS_SCOPED",
+      "original_source": "10^{10^{10}}",
+      "original_expected": "resultado simbólico o aviso de tamaño; sin intentar imprimir 10^10 dígitos",
+      "lite_native_run": 39001412909,
+      "plus_native_run": 39001422127,
+      "lite_cumulative_run": 39001412889,
+      "plus_cumulative_run": 39001422150,
+      "lite_h1d_run": 39001412896,
+      "plus_h1d_run": 39001422094,
+      "profiles": [
+        "desktop-chromium",
+        "tablet-chromium",
+        "mobile-chromium"
+      ],
+      "controls": [
+        "readable size error rather than materialized integer",
+        "no false numeric result",
+        "finite 2+3 recovery",
+        "finite reentry and distinct request IDs"
+      ],
+      "limitations": "Scoped MathLive in three Chromium profiles with actual Lite Worker / Plus HTTP; no certification of all input methods/OS or global suite"
     }
   },
   "verification_proofs": {
