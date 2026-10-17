@@ -25,3 +25,49 @@ test("SY-N-31: scientific UI and exact reentry across viewport sizes", async ({ 
     .toMatch(/frac|3000000/);
   await expect(result).toHaveAttribute("data-result-reentry-latex", /frac|3000000/);
 });
+
+
+test("SY-X-20 native Unicode invalid character rejection and recovered reentry", async ({ page }, testInfo) => {
+  const pageErrors:string[]=[];
+  page.on("pageerror",e=>pageErrors.push(e.message));
+  await page.goto("./");
+  const field=page.locator("math-field[aria-label='Entrada matemática']").first();
+  await expect(field).toBeVisible();
+  const source="😀+1";
+  expect([...source].map(c=>c.codePointAt(0))).toEqual([0x1f600,43,49]);
+  async function setSource(value:string){
+    await field.evaluate((node,text)=>{
+      const mf=node as HTMLElement & {setValue?:(v:string,opts?:{silenceNotifications?:boolean})=>void;value?:string};
+      if(mf.setValue)mf.setValue(text,{silenceNotifications:true});
+      else mf.value=text;
+    },value);
+    await field.dispatchEvent("input",{bubbles:true,inputType:"insertReplacementText",data:value});
+  }
+  await setSource(source);
+  const serialized=await field.evaluate(node=>(node as HTMLElement & {value:string}).value);
+  expect(serialized).toContain("😀");
+  await page.getByRole("region",{name:"Entrada"}).getByRole("button",{name:"Calcular",exact:true}).click();
+  const result=page.locator('section[aria-label="Resultado"]').first();
+  const alert=result.locator('[role="alert"]').first();
+  await expect(alert).toBeVisible();
+  await expect(alert).toContainText(/car[aá]cter|inv[aá]lid|permitid|reconocid|sintaxis/i);
+  const notice=(await alert.innerText()).trim();
+  await expect(result.locator("[data-result-request-id]")).toHaveCount(0);
+  const ids:string[]=[];
+  for(const input of ["2+3","5"]){
+    await setSource(input);
+    await page.getByRole("region",{name:"Entrada"}).getByRole("button",{name:"Calcular",exact:true}).click();
+    const status=result.locator('[role="status"][data-result-request-id]').first();
+    await expect(status).toBeVisible();
+    await expect(status).toContainText("5");
+    const id=await status.getAttribute("data-result-request-id");
+    expect(id).toBeTruthy();
+    ids.push(id!);
+  }
+  expect(new Set(ids).size).toBe(2);
+  expect(pageErrors).toEqual([]);
+  await testInfo.attach("SY-X-20-lite-native-evidence",{
+    body:JSON.stringify({source,serialized,notice,ids,project:testInfo.project.name,pageErrors},null,2),
+    contentType:"application/json"
+  });
+});
