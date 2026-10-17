@@ -56,9 +56,13 @@ test("SY-X-20 native Unicode invalid character rejection and recovered reentry",
   const ids:string[]=[];
   for(const input of ["2+3","5"]){
     await setSource(input);
-    await page.getByRole("region",{name:"Entrada"}).getByRole("button",{name:"Calcular",exact:true}).click();
     const status=result.locator('[role="status"][data-result-request-id]').first();
-    await expect(status).toBeVisible();
+    const previousId=await status.getAttribute("data-result-request-id").catch(()=>null);
+    await page.getByRole("region",{name:"Entrada"}).getByRole("button",{name:"Calcular",exact:true}).click();
+    await expect.poll(async()=>status.getAttribute("data-result-request-id"),{
+      message:"La nueva evaluación debe generar una respuesta con ID distinto",
+      timeout:15000
+    }).not.toBe(previousId);
     await expect(status).toContainText("5");
     const id=await status.getAttribute("data-result-request-id");
     expect(id).toBeTruthy();
