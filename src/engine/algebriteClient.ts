@@ -20,6 +20,7 @@
 // @ts-ignore -- 'algebrite' no tiene declaración de tipos, ver nota arriba
 import Algebrite from "algebrite";
 import { ErrorCode, type AppError } from "../types";
+import { isIndeterminateInfinityDifference } from "./infinityDifference";
 import { compileNumeric } from "./numericFallback";
 
 function toAppError(code: ErrorCode, message: string): AppError {
@@ -39,6 +40,9 @@ const MAY_NEED_FLOAT = /\b(sinh|cosh|tanh|asinh|acosh|atanh|sign)\(/;
 /** Evalúa/simplifica una expresión. Lanza AppError normalizado en caso de fallo. */
 export function evaluate(expressionLatex: string): string {
   try {
+    if (isIndeterminateInfinityDifference(expressionLatex)) {
+      throw toAppError(ErrorCode.DOMAIN_ERROR, "Forma indeterminada: infinito menos infinito no está definido.");
+    }
     // SY-E-29: preserve the original 0/0 indeterminate form before CAS evaluation
     // loses its provenance. Grouping parentheses do not change literal zero.
     if (/^0\/0$/.test(expressionLatex.replace(/[\s()]/g, ""))) {

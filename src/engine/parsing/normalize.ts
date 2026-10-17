@@ -3,6 +3,7 @@
 // los caracteres Unicode que el usuario pudiera pegar directamente.
 
 import { ErrorCode, type AppError } from "../../types";
+import { isIndeterminateInfinityDifference } from "../infinityDifference";
 
 function parseError(message: string): AppError {
   return { code: ErrorCode.PARSE_ERROR, message };
@@ -604,6 +605,9 @@ function normalizeDelimiterSyntax(input: string): string {
 function validateInputStructureG3(input: string): void {
   // H2 EN-SG-22: evitar procesar entradas desproporcionadas en el CAS.
   if (input.length > 65536) throw parseError("Entrada demasiado larga (máximo 65536 caracteres).");
+  if (isIndeterminateInfinityDifference(input)) {
+    throw { code: ErrorCode.DOMAIN_ERROR, message: "Forma indeterminada: infinito menos infinito no está definido." } as AppError;
+  }
   // SY-X-02: inspect original spacing before trim can leave a lone backslash.
   // Only layout commands disappear; mathematical content is never discarded.
   if (!input.replace(/\\(?:[,;!: ]|qquad\b|quad\b)/g, "").trim()) {
