@@ -218,3 +218,6 @@ LiteSHA227ad7513a199dee984b0b1e48fb7550b98d5c8d,nativo38990826311:402/402;PlusSH
 
 ## 2026-10-17 UTC — selección de campañas validada
 CI-CAMPAIGN-OVERSCOPE RESOLVED_SCOPED:run38991931463 ejecutóselector y56tests,sin campañas nuevas;ningúnSKIP esPASSdeS19/S25. Evidencia porjob requierehuella+pasos+reviewdelogs,Litepin6cbec764esdistinto deHEADLite. Actualcampaña38990822464confrontendsencurso yS25frontendfallido conservaIDs;no scoreintegralanticipado. PR/main ymanualcompleto conservados;seguridadseleccionada fresca. No cambios de motor/fixtures/criterios matemáticos;SYX07siguiente.
+
+## 2026-10-17 UTC — SY-X-07 bilateral: alcance verificado
+LiteSHAf0d3106d351aebc49b6a5715efd92690c44ec843,nativo38992883919:405/405;PlusSHAcc89d7ccd36dfdfe15b14e72215920c62508ab00,nativo38992878912:27/27. Original∞−∞ conservado;rechazo explícitolocal enUI,controlfinito0,recuperación5yreentradareal,IDs nuevos,cero pageerrors. RawHTTPPlusyhandlerWorkerLiteindependientes,nocanalesinventadospararechazolocal. DefectoLiteCASoo-oo→0corregido medianteguardliteral;no theoremgeneraldeindeterminaciones. MathLiveasignación/input,no cadatecla/SO/otromotor/botónReusar. Sourcefixtureyseguridadintactos;S25/S19/X04Plus/SG28/globalabiertos.SiguienteX08segúncontrato real/complejo.

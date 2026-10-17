@@ -4,7 +4,7 @@ Corte: 2026-10-17 UTC (2026-10-16 Honduras). Certificación global **OPEN**; por
 
 ## Reanudación única
 
-**Siguiente tarea: SY-X-07-BILATERAL — WAIT_CI.** Fuenteoriginal infinito menos infinito ycorrección publicadas;consultar runs existentes deambosrepos,no redispatch. Validar rechazo explícito,control finito0,recuperación5 yreentrada antes decierre.
+**Siguiente tarea: SY-X-08-BILATERAL — READY.** Probar el fixture original raíz de -1 según el contrato real/complejo existente de cada canal. Leer convenciones y evidencia previa antes de actuar. En canales reales, rechazo claro; donde se admiten complejos, resultado exacto i y reentrada aplicable. No cambiar silenciosamente el dominio ni aceptar NaN como resultado real.
 
 Leer [continuity.json](continuity.json), [CONTINUITY.md](CONTINUITY.md) y el protocolo. Verificar HEAD y Actions; reconciliar cambios técnicos no registrados. El prompt externo es solo bootstrap.
 
@@ -12,28 +12,29 @@ Leer [continuity.json](continuity.json), [CONTINUITY.md](CONTINUITY.md) y el pro
 
 | Producto/canal | SHA técnico de origen | Evidencia revisada |
 |---|---|---|
-| Lite acumulativo | 227ad7513a199dee984b0b1e48fb7550b98d5c8d | [38990826368](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826368):1592 PASS /30 TODO;181archivos;typecheck/build PASS |
-| Lite nativo | mismo SHA Lite | [38990826311](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826311):402/402;X06 completo yregresiones,tres perfiles Chromium |
-| Lite H1d | mismo SHA Lite | [38990826322](https://github.com/c2melendez/precision-lab-lite/actions/runs/38990826322):21PASS |
-| Plus acumulativo | ff647a581a4a6d9b5423231ded44c3bc5fbb3088 | [38991931540](https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931540):frontend997 PASS/28 TODO;backend1460 PASS/2 XFAIL;cobertura88,00%;typecheck/build PASS |
-| Plus nativo X01–03/R12–14/X05–06 | mismo SHA Plus | [38991931537](https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931537):24/24,tres perfiles yHTTP real |
-| Plus H1d | mismo SHA Plus | [38991931544](https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931544):38PASS |
-| S25 actual | db29648ac2ab2607021a32089c5555d3cbb9b2b0 | [38990822464](https://github.com/c2melendez/precision-lab-plus/actions/runs/38990822464):backendsecurityPASS24tests,pip-audit/Bandit;frontendFAIL5high/2moderate;mutaciones aún en curso |
-| S19 initial run anterior | b90f15e11d6b48a953aa37319afda711dcf58e2e | [38986979633](https://github.com/c2melendez/precision-lab-plus/actions/runs/38986979633):759tests,sin mutaciones ni score;histórico |
+| Lite acumulativo | f0d3106d351aebc49b6a5715efd92690c44ec843 | [38992883904](https://github.com/c2melendez/precision-lab-lite/actions/runs/38992883904):1600 PASS/30 TODO;182archivos;typecheck/build |
+| Lite nativo | mismo SHA Lite | [38992883919](https://github.com/c2melendez/precision-lab-lite/actions/runs/38992883919):405/405,tres perfiles Chromium,sin reintentos |
+| Lite H1d | mismo SHA Lite | [38992883884](https://github.com/c2melendez/precision-lab-lite/actions/runs/38992883884):21PASS |
+| Plus acumulativo | cc89d7ccd36dfdfe15b14e72215920c62508ab00 | [38992878873](https://github.com/c2melendez/precision-lab-plus/actions/runs/38992878873):frontend1004PASS/28TODO;backend1467PASS/2XFAIL;cobertura88,04%;typecheck/build |
+| Plus nativo X01–03/R12–14/X05–07 | mismo SHA Plus | [38992878912](https://github.com/c2melendez/precision-lab-plus/actions/runs/38992878912):27/27,tres perfiles y recuperación/reentrada real |
+| Plus H1d | mismo SHA Plus | [38992878877](https://github.com/c2melendez/precision-lab-plus/actions/runs/38992878877):38PASS |
+| Plus aislamiento regresión | mismo SHA Plus | [38992878918](https://github.com/c2melendez/precision-lab-plus/actions/runs/38992878918):69PASS,no evidencia DIST |
+| S19 frontend initial run | mismo SHA Plus | [38992878879](https://github.com/c2melendez/precision-lab-plus/actions/runs/38992878879):759tests,sin mutaciones ni score |
+| Campaña por componente | mismo SHA Plus | [38992878940](https://github.com/c2melendez/precision-lab-plus/actions/runs/38992878940):backendsecurityPASS24tests;mutacionesPlusen curso;Litepin yfrontendnpm omitidos por alcance |
 
-TODO/XFAIL/SKIP no son PASS. Los commits documentales conservan SHA de evidencia de origen. Tres perfiles Chromium no acreditan cada tecla/SO/otro motor/botón Reusar.
+TODO/XFAIL/SKIP no son PASS. Los snapshots documentales conservan SHA de evidencia de origen. Chromium desktop/tablet/mobile no acredita cada tecla/SO/otro motor/botón Reusar.
 
 ## Último cierre
 
-SY-X-06 PASS acotado bilateral, con las dos alternativas permitidas por el oráculo. Fuente común de exactamente10000caracteres: '1+' repetido4999veces y '11' al final. Lite procesa5010 y reingresa5010;Plus recibe la fuente íntegra y responde422 con aviso claro de máximo500caracteres. Ambos recuperan5 yreingresan la salida mediante su ruta real. No se aumentaron límites ni se acortó la fuente.
+SY-X-07 PASS acotado bilateral. Lite devolvía falsamente0 para oo-oo;ahora parser/CAS rechazan la indeterminación antes de perder su procedencia. Plus explica la indeterminación en conversor y servicio HTTP. La guardia se limita a restas literales de infinitos con agrupación balanceada, no a todo cálculo con infinito. Las restas finitas3-3→0 y3-2→1 permanecen válidas.
 
-Se corrigió el mensaje genérico de validación backend Plus y el volcado de input en sus logs. La primera prueba nativa falló por selector ambiguo entre aviso global y resultado;el selector corregido verifica el resultado local y conserva el criterio. No hay PASS atribuido al run fallido. Los tiempos6,7–10,4s corresponden al test Lite completo, no a latencia aislada de cálculo ni a unSLA.
+La ingesta nativa conserva el fixture original. Rechazo local en ambos editores, sin inventar una llamada HTTP/Worker para ese rechazo. La recuperación y reentrada sí recorren HTTP Plus/Worker Lite reales. El rechazo rawHTTP Plus y el handlerWorker Lite se prueban por separado. Nuevos IDs y cero pageerrors en los perfiles acreditados.
 
-## Continuidad y no repetición
+## Continuidad y campañas
 
-Selector porjob ya verificado enrun38991931463:56tests PASS,5NOT_SELECTED yninguna campaña nueva. Elwrapper verde no acreditaS19/S25 cuando susjobs se omiten. Seguridad seleccionada siempre fresca;manual completo conmotivo;PR/main conservan cobertura. Huellas porcomponente ycontrato real deljob,reviewexplícito de logs,WAIT paraequivalente encurso yDIAGNOSE parafalloposterior. Ver CONTINUITY.md.
+Selectorporjob verificado:en38992878940 se ejecuta seguridadbackend y se seleccionan mutacionesPlus afectadas;no se repiten Litepin ni npmfrontend. 56tests del mecanismoPlus/34Lite aprobados. El verde de un initialrun o unSKIP no certifica mutaciones. Seguridadseleccionada fresca;PR/main ymanualcompleto conmotivo preservados.
 
-Campaña38990822464 sigueabierta para frontends;no relanzar. Backendmutmut aprobado independientemente,frontendS25rojo5high;globalOPEN. CI-CAMPAIGN-OVERSCOPE RESOLVED_SCOPED; no seha declaradocierre integralde mutación.
+La campaña anterior38990822464 terminó Litepin10,32% sobre6cbec764 ybackendmutmutSUCCESS;frontendnpmFAIL5high yPlusfrontendCANCELLED sin scorefinal. No reabrirla. En38992878940 los jobsPlus117278929669/117278929718 siguenencurso;inspeccionar esosIDs y no duplicar. S19integral OPEN.
 
 ## Bloqueos conservados
 
