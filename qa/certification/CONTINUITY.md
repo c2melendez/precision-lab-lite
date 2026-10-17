@@ -122,3 +122,13 @@ Baselines Plus 948d6dbb501e79b9e4fca13548586ca7a88d9a80 y Lite 378510f0092d4c50c
 
 ## Reconciliación SY-X-13 — 2026-10-17
 El índice revisión31 tiene baseline técnico X13 y siguiente único X14. CURRENT_STATE obsoleto con encabezado X09 fue archivado como prosa excluida, sin perder casosX09..12. Usar los runs X13 del índice, comparar huellas y revisar logs antes de REUSE. X13 no activó nuevas campañas;38995800990frontend ya CANCELLED/sin informe, no en curso. No relanzar equivalentes para actualizar documentación. Reentrada nativa X13 usa LaTeX ln real; el texto SymPy log no es la gramática pública log10.
+
+
+## Si README de la rama predeterminada no contiene el puntero canónico
+1. Consultar metadatos del repositorio y del run de Actions aportado por el usuario: obtener default_branch y head_branch reales, sin asumir que main es la rama de certificación.
+2. Leer qa/certification/continuity.json en la rama candidata del run y en el producto pareado. Exigir que canonical_branch coincida con la candidata en ambos y verificar HEAD, runs recientes, protocolo y siguiente tarea. Los IDs antiguos solo permiten descubrir la rama; no acreditan el estado actual.
+3. Si no hay run de referencia, enumerar ramas y buscar el índice y README de certificación. Elegir solo con evidencia bilateral consistente y vigente. Si hay varios candidatos incompatibles, continuar la inspección y aclarar la ambigüedad antes de publicar; no escoger por memoria del chat o número de revisión aislado.
+4. No reiniciar desde el estado S26 histórico de main ni repetir pruebas por ausencia del puntero. No cambiar default_branch, mover referencias ni lanzar CI para descubrir dónde estamos.
+5. El puntero en README predeterminado puede corregirse mediante un cambio documental acotado; mientras falte, la recuperación por Actions + índices bilaterales verificados mantiene la continuidad. Esta regla es genérica, no un snapshot de un caso o SHA.
+
+X14: reutilizar evidencia de rechazo Plus revisada hasta cambiar profundidad30 y nodos200; XFAIL no es PASS. Siguiente caso independiente X15.

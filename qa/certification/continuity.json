@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 32,
+  "revision": 33,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "7decaedce18874cb8d81c7137761f69b860cca22",
   "baseline_case": "SY-X-14",
-  "baseline_status": "WAIT_CI",
+  "baseline_status": "VERIFIED_WITH_BLOCKERS",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -61,7 +61,7 @@
       "inputs": [
         "*"
       ],
-      "acceptance_revision": "2026-10-17-scientific-through-X13-v1"
+      "acceptance_revision": "2026-10-17-scientific-through-X14-v1"
     },
     "sg28_cancel": {
       "workflow": ".github/workflows/in625-sg28-scientific-cancel.yml",
@@ -73,24 +73,24 @@
   },
   "evidence_by_channel": {
     "unit_worker": {
-      "run_id": 39013568346,
-      "job_id": 117340948538,
-      "technical_sha": "76edee1a40df93d3945acb1b426d0bc190a67e2c",
+      "run_id": 39014331621,
+      "job_id": 117343186862,
+      "technical_sha": "7decaedce18874cb8d81c7137761f69b860cca22",
       "status": "PASS_SCOPED",
       "counts": {
-        "pass": 1607,
+        "pass": 1612,
         "todo": 30
       },
       "logs_reviewed": true,
       "evidence_executed": true
     },
     "native_ui": {
-      "run_id": 39013568233,
-      "job_id": 117340947940,
-      "technical_sha": "76edee1a40df93d3945acb1b426d0bc190a67e2c",
+      "run_id": 39014331682,
+      "job_id": 117343187124,
+      "technical_sha": "7decaedce18874cb8d81c7137761f69b860cca22",
       "status": "PASS_SCOPED",
       "counts": {
-        "pass": 423,
+        "pass": 426,
         "skip": 0
       },
       "profiles": [
@@ -100,12 +100,15 @@
       ],
       "logs_reviewed": true,
       "evidence_executed": true,
-      "acceptance_revision": "2026-10-17-scientific-through-X13-v1"
+      "acceptance_revision": "2026-10-17-scientific-through-X14-v1",
+      "case_scopes": {
+        "SY-X-14": "50-layer parity,original domain,49-layer control,zero rejection,recovery; reentered x without metadata is a new expression"
+      }
     },
     "h1d": {
-      "run_id": 39013568238,
-      "job_id": 117340947978,
-      "technical_sha": "76edee1a40df93d3945acb1b426d0bc190a67e2c",
+      "run_id": 39014331642,
+      "job_id": 117343187243,
+      "technical_sha": "7decaedce18874cb8d81c7137761f69b860cca22",
       "status": "PASS_SCOPED",
       "counts": {
         "pass": 21
@@ -115,20 +118,20 @@
     }
   },
   "next_action": {
-    "id": "SY-X-14-BILATERAL",
-    "status": "WAIT_CI",
+    "id": "SY-X-15-BILATERAL",
+    "status": "READY",
     "repository": "c2melendez/precision-lab-lite",
     "paired_repository": "c2melendez/precision-lab-plus",
     "files": [
       "qa/certification/syntax309_cases.jsonl"
     ],
-    "action": "Inspect existing exact-SHA X14 native/cumulative/H1d runs. Lite parity/domain and Plus rejection/recovery are distinct scopes. Plus50-layer mathematical oracle remains blocked by depth30 and nodes200; no duplicate dispatch or relaxed limits.",
+    "action": "Verify exact script-in-text fixture is inert text or a clear error through MathLive and real Worker/HTTP. Inspect rendering/sanitization first; instrument dialogs and DOM/script evidence without masking execution. Recover and reenter finite output in3Chromium profiles. Do not rerun blocked X14 until both AST budgets/acceptance change.",
     "exit_criteria": [
-      "Pin descriptive canonical fixture and document exact operational expansion with50 reciprocal layers",
-      "Read Plus length500/AST200/depth30 and Lite declared budgets before bounded execution",
-      "Verify parity and original x!=0 restriction, no false extension atzero or hidden pre-simplification",
-      "Actual applicable MathLive and Worker/HTTP channels, recovery/reentry in three Chromium profiles",
-      "If original fixture cannot pass channel budgets, keep explicit scoped blocker; synchronize exact-SHA evidence and next actionable step without rerunning unchanged rejection"
+      "Pin original text/script source and oracle unchanged; never execute or insert it as active HTML",
+      "Inspect actual output/error/render paths; original source ingestion must remain identifiable",
+      "Prove no payload dialog/script execution or active HTML insertion; text or explicit error are acceptable outcomes",
+      "Actual Worker/HTTP and native desktop/tablet/mobile, finite recovery/reentry and distinct request IDs",
+      "Review exact-SHA scoped CI and update bilateral index; no duplicate dispatch, unrelated dependency/mutation campaign or X14 retry"
     ]
   },
   "blockers": [
@@ -195,40 +198,47 @@
       "evidence": "Original50 reciprocals,201-character ASCII,201unevaluatedASTnodes/depth101. Existingmaxnodes200/depth30; HTTP200successfalseCOMPLEXITY_LIMIT depth30, no result. Mathematical oracle preserved in strictXFAIL.",
       "exit_criteria": "Explicit bounded reconciliation of BOTH depth and node budgets while preserving original source and x!=0; no pre-simplification or silently relaxed limits",
       "next_action": "Read SY_X_14_DEPTH_CONTRACT.md; reuse reviewed rejection after CI, do not repeat until preconditions change; advance independent Syntaxcase"
+    },
+    {
+      "id": "CONTINUITY-MAIN-POINTER",
+      "status": "OPEN",
+      "evidence": "Both repositories default_branch=main; README lacks certification canonical-branch pointer. Existing Actions head_branch and paired ledger canonical_branch agree on qa/syntax-audit-in625-a1.",
+      "mitigation": "Generic documented fallback in certification README, CONTINUATION_PROMPT and CONTINUITY: resolve candidate from supplied Actions metadata, validate paired ledgers/HEAD/current runs; enumerate branches only if needed, clarify incompatible candidates. No reliance on chat memory alone.",
+      "next_action": "Use fallback while root pointer absent; add a separately scoped default-README pointer when updating entrypoint. Do not change default_branch, restart historical S26 or dispatch CI to discover state."
     }
   ],
   "work_in_progress": {
     "id": "SY-X-14-BILATERAL",
-    "status": "WAIT_CI",
+    "status": "VERIFIED_PARTIAL_BLOCKED",
     "technical_sha": "7decaedce18874cb8d81c7137761f69b860cca22",
     "paired_technical_sha": "a66dac769c3212cb8e3dfe9951030eec0bd4711d",
     "runs": [
       {
         "id": 39014331621,
         "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "in_progress",
-        "conclusion": null,
+        "status": "completed",
+        "conclusion": "success",
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331621",
-        "logs_reviewed": false,
-        "evidence_executed": false
-      },
-      {
-        "id": 39014331682,
-        "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-        "status": "in_progress",
-        "conclusion": null,
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331682",
-        "logs_reviewed": false,
-        "evidence_executed": false
+        "logs_reviewed": true,
+        "evidence_executed": true
       },
       {
         "id": 39014331642,
         "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "in_progress",
-        "conclusion": null,
+        "status": "completed",
+        "conclusion": "success",
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331642",
-        "logs_reviewed": false,
-        "evidence_executed": false
+        "logs_reviewed": true,
+        "evidence_executed": true
+      },
+      {
+        "id": 39014331682,
+        "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331682",
+        "logs_reviewed": true,
+        "evidence_executed": true
       }
     ]
   },
@@ -477,9 +487,9 @@
       "limitations": "MathLive assignment/input in desktop/tablet/mobile Chromium; no all-keys/OS/other engines or Reuse-button claim. Raw SymPy result_text(log) is not calculator reentry grammar; native reentry uses actual ln LaTeX."
     },
     "SY-X-14": {
-      "status": "PENDING_NATIVE_WITH_PLUS_BLOCKER",
-      "lite": "LOCAL_PARITY_DOMAIN_WORKER_PASS_NATIVE_PENDING",
-      "plus": "BLOCKED_AST_DEPTH_AND_NODES",
+      "status": "PARTIAL_BLOCKED",
+      "lite": "PASS_SCOPED_NATIVE_PARITY_ORIGINAL_DOMAIN",
+      "plus": "BLOCKED_AST_DEPTH_AND_NODES_STRICT_XFAIL_NOT_PASS",
       "original_expansion": {
         "layers": 50,
         "latex_length": 501,
@@ -488,7 +498,18 @@
         "unevaluated_ast_depth": 101
       },
       "oracle": "x with x!=0 for50;1/x for odd49/51",
-      "contract": "qa/certification/SY_X_14_DEPTH_CONTRACT.md"
+      "contract": "qa/certification/SY_X_14_DEPTH_CONTRACT.md",
+      "plus_rejection_recovery": "PASS_SCOPED_NATIVE_HTTP",
+      "lite_technical_sha": "7decaedce18874cb8d81c7137761f69b860cca22",
+      "plus_technical_sha": "a66dac769c3212cb8e3dfe9951030eec0bd4711d",
+      "lite_native_run": 39014331682,
+      "plus_native_run": 39014327763,
+      "profiles": [
+        "desktop-chromium",
+        "tablet-chromium",
+        "mobile-chromium"
+      ],
+      "limitations": "Original-domain metadata and visible restriction verified in Lite. Reentering x alone starts a new expression and does not prove restriction metadata persistence. Plus mathematical50-layer oracle is not certified by rejection tests."
     }
   },
   "verification_proofs": {
@@ -521,6 +542,16 @@
       "technical_sha": "76edee1a40df93d3945acb1b426d0bc190a67e2c",
       "new_mutation_campaigns": 0,
       "baseline_note": "Reconciled from obsolete X08 baseline to current X13; prior X09..12 records retained."
+    },
+    "x14_scope": {
+      "original_50_layers_preserved": true,
+      "lite_original_domain_visible": true,
+      "plus_ast_blocker_not_counted_as_pass": true,
+      "plus_strict_xfail": 1,
+      "native_profiles": 3,
+      "logs_reviewed": true,
+      "technical_sha": "7decaedce18874cb8d81c7137761f69b860cca22",
+      "new_mutation_campaigns": 0
     }
   },
   "historical_mutation_reference": {
@@ -754,5 +785,12 @@
       "source_sha": "122711fc0161468d8cb619b6ad2aa9a88295b5eb",
       "scope": "Actual mutmut execution with survivors under existing job acceptance, not full S19 score or closure"
     }
-  ]
+  ],
+  "canonical_discovery": {
+    "default_branch": "main",
+    "default_readme_has_pointer": false,
+    "verified_branch": "qa/syntax-audit-in625-a1",
+    "evidence": "Current exact-SHA Actions head_branch plus mutually matching canonical_branch in paired ledgers",
+    "fallback_documented": true
+  }
 }

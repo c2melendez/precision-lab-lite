@@ -56,3 +56,11 @@ Este es un procedimiento permanente, NO un snapshot: verificar siempre los detal
 
 ## Continuidad obligatoria antes de ejecutar
 Resolver README de main y luego `continuity.json` + `CONTINUITY.md`. Verificar HEAD y Actions (push y PR), huellas, jobs/pasos realmente ejecutados y logs. Aplicar RUN/WAIT/REUSE/DIAGNOSE/REVIEW/REFRESH; si state_status=RECONCILE, resolver el estado antes de heredar próximo objetivo. No despachar un gate equivalente en curso, ni repetir un verde vigente o fallo inalterado por cambiar de sesión. Conservar run/SHA de origen cuando se reutilice. Actualizar el índice con SHA técnico conocido mediante un commit documental posterior, sin autorreferencia. Los bloqueos solo se reensayan si cambian sus precondiciones.
+
+
+## Si README de la rama predeterminada no contiene el puntero canónico
+1. Consultar metadatos del repositorio y del run de Actions aportado por el usuario: obtener default_branch y head_branch reales, sin asumir que main es la rama de certificación.
+2. Leer qa/certification/continuity.json en la rama candidata del run y en el producto pareado. Exigir que canonical_branch coincida con la candidata en ambos y verificar HEAD, runs recientes, protocolo y siguiente tarea. Los IDs antiguos solo permiten descubrir la rama; no acreditan el estado actual.
+3. Si no hay run de referencia, enumerar ramas y buscar el índice y README de certificación. Elegir solo con evidencia bilateral consistente y vigente. Si hay varios candidatos incompatibles, continuar la inspección y aclarar la ambigüedad antes de publicar; no escoger por memoria del chat o número de revisión aislado.
+4. No reiniciar desde el estado S26 histórico de main ni repetir pruebas por ausencia del puntero. No cambiar default_branch, mover referencias ni lanzar CI para descubrir dónde estamos.
+5. El puntero en README predeterminado puede corregirse mediante un cambio documental acotado; mientras falte, la recuperación por Actions + índices bilaterales verificados mantiene la continuidad. Esta regla es genérica, no un snapshot de un caso o SHA.

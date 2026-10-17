@@ -1,33 +1,18 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
-**SY-X-14-BILATERAL — WAIT_CI.** Inspeccionar los IDs del índice. Global OPEN; porcentaje reconciliado ND.
+Corte:2026-10-17 UTC/Honduras. Global **OPEN**; porcentaje reconciliado **ND**.
 
-## SY-X-14 — implementación de evidencia, WAIT_CI (2026-10-17 UTC)
-Lite SHA 7decaedce18874cb8d81c7137761f69b860cca22; Plus a66dac769c3212cb8e3dfe9951030eec0bd4711d. Expansión50literalfrac:501caracteres, sin presimplificar. TestigoHTTP50divisiones:201caracteres, AST201nodos/profundidad101. Pluslímites200nodos/30profundidad:COMPLEXITY_LIMIT por profundidad; también nodos impiden resolver si solo se aumenta profundidad. Oráculox,x≠0 preservado enXFAILestricto; rechazo/recuperación no equivalen a resolución. Contrato SY_X_14_DEPTH_CONTRACT.md versionado en ambos.
-Lite5tests localesPASS:paridad49/50/51,dominiooriginal,cerorechazado,Workerrecuperación/reentrada. PlusHTTP1PASS+1XFAILestricto;conversión completa conserva50divisiones. Nuevos nativos pendientes:Liteparidad/dominiovisible yrechazocero,PlusavisoHTTPprofundidad yrecuperación en3perfiles. PegarsoloLaTeXxcreanuevaexpresión;no atribuirle automáticamente dominiooriginal sinmetadatos. Sin cambios al motor/límites. No campaña de mutación/npm nueva.
-- [IN625 Cumulative Certification Gate 39014331621](https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331621) — inspeccionar existente, no redispatch.
-- [Syntax309 SY-N-31 Scientific UI E2E 39014331682](https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331682) — inspeccionar existente, no redispatch.
-- [IN625 H1d Reentry Diagnostic 39014331642](https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331642) — inspeccionar existente, no redispatch.
-GlobalOPEN; siguiente aúnX14hasta revisarCI, después caso independienteX15 siPluscontinúabloqueado.
+**Siguiente tarea única: SY-X-15-BILATERAL — READY.** X14 queda parcial: Lite PASS acotado; matemática Plus BLOCKED. No repetir el rechazo de50niveles mientras no cambie la precondición contractual. Verificar HEAD/Actions e índice antes de actuar.
 
-## Evidencia previa de origen (X13)
-
-# Estado vigente de certificación — Precision Lab Lite / Plus
-
-Corte:2026-10-17 UTC (2026-10-17 Honduras). Global **OPEN**; porcentaje reconciliado **ND**.
-
-**Siguiente tarea única: SY-X-14-BILATERAL — READY.** Verificar HEAD/Actions y continuity.json. Leer presupuestos antes de expandir50recíprocos; mantener x≠0 y no presimplificar el original para evitar límites.
-
-## 2026-10-17 UTC — SY-X-13 bilateral verificado
-Fuente original `\frac{d}{dx}x^{x^{x}}` y oráculo `x^{x^{x}}\left(x^{x}(\ln x+1)\ln x+x^{x-1}\right)` intactos.
-Alcance matemático **x>0**: derivada de la potencia anidada, no (x^x)^x ni ramas complejas. Sin cambios al motor en este lote.
-MathLive ingiere la fuente original; las normalizaciones de espacios/llaves se admiten solo tras verificar contenido matemático. Lite usa Worker real, compara el LaTeX visible y su salida reintroducida por simplificación exacta frente al oráculo y controles numéricos en1.25,1.5,2. Plus usa POST/derivative real y POST/evaluate con el LaTeX real devuelto; verifica cada resultado con equivalencia SymPy exacta y la precedencia del payload original. Ambos recuperan2+3=5 y reintroducen5; cuatro IDs distintos y cero pageerrors por perfil.
-- Lite SHA `76edee1a40df93d3945acb1b426d0bc190a67e2c`: [acumulativo39013568346](https://github.com/c2melendez/precision-lab-lite/actions/runs/39013568346)1607PASS/30TODO,188archivos,typecheck/build,34pruebas del mecanismo; [H1d39013568238](https://github.com/c2melendez/precision-lab-lite/actions/runs/39013568238)21PASS; [nativo39013568233](https://github.com/c2melendez/precision-lab-lite/actions/runs/39013568233)423/423PASS, incluidos X13 desktop/tablet/mobile,sin reintentos observados.
-- Plus SHA `acd55e4b3cadf37b4c2e81dd044a5a95ad08d3c7`: [acumulativo39013565024](https://github.com/c2melendez/precision-lab-plus/actions/runs/39013565024)frontend1005PASS/28TODO,146archivos,typecheck/build;backend1478PASS/2XFAIL,cobertura88.11%;56pruebas del mecanismo. [Nativo39013565049](https://github.com/c2melendez/precision-lab-plus/actions/runs/39013565049)45/45PASS (15desktop+30tablet/mobile),sin reintentos. [H1d39013564974](https://github.com/c2melendez/precision-lab-plus/actions/runs/39013564974)38PASS.
-La prueba HTTP separada traduce explícitamente el texto interno SymPy log→ln: **no** acredita reentrada literal de result_text(log), pues la gramática pública reserva log para base10. La reentrada nativa sí usa el result_latex(ln) real, sin traducciones del test. El Worker handler real Lite, con transporte simulado, se acredita aparte del navegador real.
-No se repitieron X09–12 ni campañas de dependencias/mutación. Los encabezados obsoletos de CURRENT_STATE(X09) fueron archivados; el ledger y la nueva fotografía acuerdan X13 y el siguiente paso.
-Campaña38995800990 reconciliada: frontend117288029860CANCELLED, initialrun693testsSUCCESS y cancelación posterior, sin informe final. No se infiere score ni causa no verificada. Backendmutmut117288029927SUCCESS ya revisado. Campaña39001980867: backendmutmut yseguridadSUCCESS según jobs; componentes ajenosSKIPPED. S19integral sigueOPEN; misma huella cancelada requiere diagnóstico y ninguna omisión equivale aPASS.
-Limitaciones: asignación/input MathLive en desktop/tablet/mobile Chromium, no cada tecla/SO/otro motor/botónReusar; no identidad global en ramas complejas. TODO/XFAIL/SKIP no son PASS. GlobalOPEN; porcentaje reconciliadoND. S25, S19, SY-P23, SY-X04Plus y H2/SG28/DIST abiertos. Siguiente único: **SY-X-14-BILATERAL**,50recíprocos anidados, paridad y dominiox≠0 sin presimplificar; revisar presupuestos de longitud/AST antes de ejecutar.
+## 2026-10-17 UTC — SY-X-14: Lite validado, matemática Plus bloqueada
+El fixture descriptivo se conserva intacto. Su expansión operativa usa 50 fracciones recíprocas reales: 501 caracteres LaTeX. El testigo HTTP de 50 divisiones mide 201 caracteres; el árbol SymPy sin evaluar tiene 201 nodos y profundidad 101. No se sustituyó la fuente por x antes de validar.
+**Lite:** paridad 49/50/51 comprobada con Algebrite y el handler Worker real; 50 devuelve x y los vecinos impares1/x. La restricción original x≠0 se verifica en los metadatos. El navegador prueba MathLive con 50 niveles y control49, salida exacta visible, restricción x≠0 visible, rechazo de cero anidado, recuperación5 y reentrada; cinco IDs exitosos distintos y cero pageerrors. Pegar solo el LaTeX x inicia una expresión nueva: no se acredita persistencia automática de restricciones sin sus metadatos ni el botónReusar.
+**Plus:** el original traducido conserva las50divisiones y cabe en la longitud HTTP500. El AST excede profundidad30 y también nodos200. HTTP y MathLive muestran COMPLEXITY_LIMIT por profundidad, sin resultado ficticio, y se recuperan con5 y reentrada en tres perfiles. **Esto no resuelve el caso matemático:** el oráculo x con x≠0 queda BLOCKED y XFAIL estricto. Elevar solo profundidad tampoco solventaría nodos. [Contrato](SY_X_14_DEPTH_CONTRACT.md). No se cambian motor ni límites.
+- Lite SHA `7decaedce18874cb8d81c7137761f69b860cca22`: [acumulativo39014331621](https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331621)1612PASS/30TODO,189archivos,typecheck/build,34pruebas del mecanismo; [nativo39014331682](https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331682)426/426PASS,incluidos X14 y49niveles en3perfiles,sin reintentos observados; [H1d39014331642](https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331642)21PASS.
+- Plus SHA `a66dac769c3212cb8e3dfe9951030eec0bd4711d`: [acumulativo39014327670](https://github.com/c2melendez/precision-lab-plus/actions/runs/39014327670)frontend1005PASS/28TODO,146archivos,typecheck/build; backend1479PASS/3XFAIL,cobertura88.07%;56pruebas del mecanismo. [Nativo39014327763](https://github.com/c2melendez/precision-lab-plus/actions/runs/39014327763)48/48PASS (16desktop+32tablet/mobile),incluye rechazo/recuperación deX14,no resolución. [H1d39014327685](https://github.com/c2melendez/precision-lab-plus/actions/runs/39014327685)38PASS.
+Pruebas locales nuevas: Lite5PASS; Plus HTTP1PASS+1XFAILestricto. No campañas nuevas de mutación/dependencias, no dispatch manual ni repetición de gates equivalentes. Los commits documentales no acreditan nueva ejecución.
+Continuidad: default_branch=main en ambos; sus README no contienen el puntero canónico. La rama qa/syntax-audit-in625-a1 se verificó mediante head_branch de las corridas reales y canonical_branch de los índices bilaterales. Se documenta recuperación genérica por esos metadatos y, si hace falta, búsqueda de ramas con índice, sin regresar al S26 histórico ni cambiar default_branch. El puntero raíz sigue ausente; la guía alternativa no lo convierte en existente.
+Chromium desktop/tablet/mobile y asignación/input MathLive no certifican todas las teclas/SO/motores ni persistencia universal del dominio. TODO/XFAIL/SKIP no son PASS. Global OPEN, porcentaje ND. S25,S19,SY-P23,SY-X04Plus y H2/SG28/DIST permanecen abiertos. X14Plus es un bloqueo adicional explícito; no volver a ejecutar el mismo rechazo hasta cambiar la precondición contractual. **Siguiente único: SY-X-15-BILATERAL**, texto con script tratado como texto o error, nunca HTML ejecutable, con recuperación y evidencia por canal.
 
 ## Bloqueos conservados
 
@@ -39,7 +24,7 @@ Limitaciones: asignación/input MathLive en desktop/tablet/mobile Chromium, no c
 | SY-P-23 | OPEN: convención a/bc pendiente, XFAIL estricto. |
 | H2/SG28/DIST | OPEN/BLOCKED: contrato de vigencia/fencing, integración HTTP y luego topología autorizada. [Criterios](SG28_INTEGRATION_EXIT_CRITERIA.md). No repetir preflights equivalentes. |
 | Otros canales/módulos | PARCIAL/ND: R12–14 y X01–03 nativos Plus ya acreditados; otros casos conservan sus gaps. |
+| SY-X-14 Plus | BLOCKED: AST201nodos/profundidad101 frente a200/30. Rechazo y recuperación PASS; matemática no acreditada. [Contrato](SY_X_14_DEPTH_CONTRACT.md). No repetir sin cambiar precondición. |
+| Puntero en main | OPEN con guía alternativa: resolver rama mediante Actions e índices bilaterales. El README raíz aún no tiene puntero. |
 
-
-
-El log y history/2026-10-17_pre_X13_CURRENT_STATE.md conservan la historia. La siguiente tarea proviene solo del índice reconciliado. Sin producción,deploy,merge,release ni flags remotos.
+El log conserva la historia. El índice es autoridad del siguiente paso. Sin producción,deploy,merge,release ni flags remotos.
