@@ -140,3 +140,7 @@ X14: reutilizar evidencia de rechazo Plus revisada hasta cambiar profundidad30 y
 
 ## Reconciliación SY-X-16 — 2026-10-17
 Índice revisión37: baseline técnico X16, siguiente único X17. Guardar y comparar las huellas de los runs del índice; los controles sintéticos son pruebas separadas, no accesos reales al host. Un intento bloqueado haría fallar el caso; cero intentos no se infiere de bloquearlos. Sin lectura del objetivo ni campaña de dependencias/mutaciones. Mantener S25/S19 y X04Plus/X14Plus abiertos; prosa no requiere nuevaCI.
+
+
+## Reconciliación SY-X-17 — 2026-10-17
+Índice revisión40: baselineX17, siguienteX18. Reutilizar los tres gates pertinentes solo tras observaciones frescas y huellas equivalentes. Fallo nativoPlus39017066935 diagnosticado PRODUCT_CONVERSION; corrección02a8f689 y nativo39017316988verificados. La nueva corrida tuvo un cambio técnico, no fue reintento idéntico. Campaña39017317053/job117352038619 en curso al corte: inspeccionar esa ejecución, no relanzarla. Preflight760tests/2627instrumentados no ejecutó mutaciones ni mide score. S19globalOPEN. Preservar todos los bloqueos. Cambios de prosa no requieren CI.
