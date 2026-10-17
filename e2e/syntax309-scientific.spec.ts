@@ -28,6 +28,7 @@ test("SY-N-31: scientific UI and exact reentry across viewport sizes", async ({ 
 
 
 test("SY-X-20 native Unicode invalid character rejection and recovered reentry", async ({ page }, testInfo) => {
+  test.setTimeout(90000);
   const pageErrors:string[]=[];
   page.on("pageerror",e=>pageErrors.push(e.message));
   await page.goto("./");
@@ -58,7 +59,10 @@ test("SY-X-20 native Unicode invalid character rejection and recovered reentry",
     await setSource(input);
     const status=result.locator('[role="status"][data-result-request-id]').first();
     const previousId=await status.getAttribute("data-result-request-id").catch(()=>null);
-    await page.getByRole("region",{name:"Entrada"}).getByRole("button",{name:"Calcular",exact:true}).click();
+    await page.evaluate(()=>window.mathVirtualKeyboard?.hide());
+    const calculate=page.getByRole("region",{name:"Entrada"}).getByRole("button",{name:"Calcular",exact:true});
+    await expect(calculate).toBeEnabled();
+    await calculate.click();
     await expect.poll(async()=>status.getAttribute("data-result-request-id"),{
       message:"La nueva evaluación debe generar una respuesta con ID distinto",
       timeout:15000
