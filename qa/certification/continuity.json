@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 25,
+  "revision": 26,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "378510f0092d4c50c321fc59ce1abb87e732aa72",
@@ -114,20 +114,19 @@
     }
   },
   "next_action": {
-    "id": "SY-X-09-BILATERAL",
+    "id": "SY-X-10-BILATERAL",
     "status": "READY",
     "repository": "c2melendez/precision-lab-lite",
     "paired_repository": "c2melendez/precision-lab-plus",
     "files": [
       "qa/certification/syntax309_cases.jsonl"
     ],
-    "action": "Inspect original 99999999999^{99999999999} fixture and existing magnitude/time/memory limits before execution. Use bounded subprocess/browser CI and verify readable resource-limit response, no false result or stuck UI, finite recovery/reentry. Review existing X08 mutation jobs by ID; no duplicate dispatch.",
+    "action": "Inspect unchanged original 10^{10^{10}} fixture, expected symbolic output or size notice; verify no attempt to print 10^10 digits. Analyze parser and CAS/Worker/API preflight for nested exponents, safely reject enormous result before evaluation or serialization. Test bounded native MathLive/real Worker and HTTP in desktop/tablet/mobile with finite recovery and reentry.",
     "exit_criteria": [
-      "Pin unchanged original source/oracle and declared resource budgets for both channels",
-      "Reproduce only under bounded execution; classify product versus harness before correcting",
-      "Actual MathLive original-source ingestion and real Worker/HTTP behavior in three Chromium profiles, no false finite answer",
-      "Finite recovery and result reentry with distinct request IDs, relevant scoped cumulative/native/H1d gates and bilateral records",
-      "Use existing campaign IDs and component router; diagnose cancelled/failed equivalent inputs, do not repeat historical Lite pin/npm audits"
+      "Retain canonical source and oracle unchanged",
+      "No computation or materialization of astronomical integer; finite execution and readable limits or symbolic compact result",
+      "Actual MathLive ingestion, Worker/HTTP behavior in desktop/tablet/mobile; recovery and reentry",
+      "Inspect scoped native/cumulative/H1d CI results by SHA; update bilateral records without duplicated runs"
     ]
   },
   "blockers": [
@@ -190,45 +189,30 @@
     }
   ],
   "work_in_progress": {
-    "id": "SY-X-08-BILATERAL",
+    "id": "SY-X-09-BILATERAL",
     "status": "VERIFIED_SCOPED",
-    "technical_sha": "378510f0092d4c50c321fc59ce1abb87e732aa72",
-    "paired_technical_sha": "948d6dbb501e79b9e4fca13548586ca7a88d9a80",
+    "technical_sha": "fbe4a833fe89d84a161bb4579bba582c5334445b",
+    "paired_technical_sha": "bc79d8af9d964e12a184e9d71a9319b9b66c2bb9",
     "runs": [
       {
-        "id": 38995803426,
-        "workflow": ".github/workflows/in625-cumulative-certification.yml",
+        "id": 38998529196,
+        "kind": "native",
         "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803426",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "conclusion": "success"
       },
       {
-        "id": 38995803418,
-        "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
+        "id": 38998529193,
+        "kind": "cumulative",
         "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803418",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "conclusion": "success"
       },
       {
-        "id": 38995803385,
-        "workflow": ".github/workflows/in625-h1d-reentry.yml",
+        "id": 38998529206,
+        "kind": "h1d",
         "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38995803385",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "conclusion": "success"
       }
-    ],
-    "harness_diagnosis": {
-      "run": 38995800956,
-      "status": "CORRECTED_ORACLE_PENDING_CI",
-      "detail": "i and actual output reentry passed; i^2 control returned exact -1 but KaTeX displayed U+2212. Normalize minus only in visible-number oracle; no product change.",
-      "corrected_sha": "948d6dbb501e79b9e4fca13548586ca7a88d9a80"
-    }
+    ]
   },
   "cases": {
     "SY-X-03": {
@@ -360,6 +344,32 @@
         "separate local sqrt(-4)=2i"
       ],
       "limitations": "MathLive assignment/input; not all keys/OS/other engines or Reuse button"
+    },
+    "SY-X-09": {
+      "status": "PASS_SCOPED",
+      "original_source": "99999999999^{99999999999}",
+      "original_expected": "límite de tiempo o memoria anunciado; nunca bloqueo ni valor falso",
+      "lite_technical_sha": "fbe4a833fe89d84a161bb4579bba582c5334445b",
+      "plus_technical_sha": "bc79d8af9d964e12a184e9d71a9319b9b66c2bb9",
+      "lite_native_run": 38998529196,
+      "plus_native_run": 38999819680,
+      "lite_cumulative_run": 38998529193,
+      "plus_cumulative_run": 38999819692,
+      "lite_h1d_run": 38998529206,
+      "plus_h1d_run": 38999819699,
+      "profiles": [
+        "desktop-chromium",
+        "tablet-chromium",
+        "mobile-chromium"
+      ],
+      "controls": [
+        "no false numeric result",
+        "readable oversized exponent rejection",
+        "finite 2+3=5",
+        "finite result reentry",
+        "distinct request IDs"
+      ],
+      "limitations": "MathLive assignment/input three Chromium profiles; neither every keyboard/OS nor all engine operations; global certification remains OPEN"
     }
   },
   "verification_proofs": {
