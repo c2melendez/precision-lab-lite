@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 49,
+  "revision": 50,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,19 @@
     }
   },
   "next_action": {
-    "id": "SY-P-23-CONVENTION-DECISION",
-    "status": "BLOCKED_ON_CONTRACT",
-    "action": "Formalize a declared mathematical convention for bare a/bc or explicit user selection that preserves named bc in Plus and single-letter b*c in Lite. Prioritize another independent actionable certification objective without rerunning unchanged SY-P-23 evidence.",
+    "id": "ALGEBRA114-SOURCE-INVENTORY",
+    "status": "PREPARATORY",
+    "repository": "c2melendez/precision-lab-lite",
+    "paired_repository": "c2melendez/precision-lab-plus",
     "files": [
-      "qa/certification/SY_P_23_CONVENTION.md",
-      "qa/certification/syntax309_cases.jsonl"
+      "qa/certification/ALGEBRA114_PREPARATION.md",
+      "qa/certification/EXECUTION_PROTOCOL.md"
     ],
+    "action": "Locate authoritative 114-case Algebra requirements source, verify IDs and oracle count, then map coverage across Lite and Plus; do not certify or run CI until contract is sourced. Independently retain SY-P-23 contract blocker.",
     "exit_criteria": [
-      "An accepted cross-product decision on ambiguity and compound identifiers",
-      "Exact-source UI/parser/Worker/HTTP regression evidence for that decision",
-      "Preserve existing strict XFAIL and global OPEN until these criteria are met"
+      "Identify an authoritative versioned source for 114 individual test cases",
+      "Build case-to-channel coverage map with verified provenance",
+      "Select first independently testable case and avoid rerunning existing gates"
     ]
   },
   "blockers": [
