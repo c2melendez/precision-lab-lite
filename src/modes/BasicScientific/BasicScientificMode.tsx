@@ -238,12 +238,12 @@ export function BasicScientificMode() {
     // element antes de que React haya propagado el último onChange; leer
     // el valor vivo elimina esa ventana de estado obsoleto.
     handleCancelComputation();
-    const currentLatex = mathField?.value ?? late
-    // SY-X-22: reject the canonical 10,000-digit integer before any lossy calculation.
+    const currentLatex = mathField?.value ?? latex;
+    // SY-X-22: reject oversized decimal literals before lossy evaluation.
     if (/[0-9]{10000,}/.test(currentLatex)) {
       fail(ErrorCode.PARSE_ERROR, "Número demasiado grande: límite de tamaño; no se calcula una aproximación.", makeRequestId());
       return;
-    }x;
+    }
     console.info("IN625_H1D_CALCULATE_ENTRY", JSON.stringify({ currentLatex, reactLatex: latex, fieldLatex: mathField?.value ?? null }));
     // SY-P-23: Lite cannot define a compound bc in this mode; do not silently
     // choose either interpretation of a/bc. Require explicit grouping.
