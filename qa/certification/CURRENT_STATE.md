@@ -4,7 +4,7 @@ Corte: 2026-10-17 UTC (2026-10-16 Honduras). Certificación global **OPEN**; por
 
 ## Reanudación única
 
-**Siguiente tarea: SY-X-07-BILATERAL — READY.** Probar el fixture original infinito menos infinito en ambos productos, rechazo explícito de indeterminación, recuperación y reentrada reales. Inspeccionar evidencia y usar selector porcomponente. No repetir la campaña38990822464 existente.
+**Siguiente tarea: SY-X-07-BILATERAL — WAIT_CI.** Fuenteoriginal infinito menos infinito ycorrección publicadas;consultar runs existentes deambosrepos,no redispatch. Validar rechazo explícito,control finito0,recuperación5 yreentrada antes decierre.
 
 Leer [continuity.json](continuity.json), [CONTINUITY.md](CONTINUITY.md) y el protocolo. Verificar HEAD y Actions; reconciliar cambios técnicos no registrados. El prompt externo es solo bootstrap.
 

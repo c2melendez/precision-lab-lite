@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 19,
+  "revision": 20,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "227ad7513a199dee984b0b1e48fb7550b98d5c8d",
-  "baseline_case": "SY-X-06",
-  "baseline_status": "VERIFIED_WITH_BLOCKERS",
+  "technical_baseline_sha": "f0d3106d351aebc49b6a5715efd92690c44ec843",
+  "baseline_case": "SY-X-07",
+  "baseline_status": "WAIT_CI",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -60,7 +60,7 @@
       "inputs": [
         "*"
       ],
-      "acceptance_revision": "2026-10-17-scientific-X05-X06-v1"
+      "acceptance_revision": "2026-10-17-scientific-X05-X07-v1"
     },
     "sg28_cancel": {
       "workflow": ".github/workflows/in625-sg28-scientific-cancel.yml",
@@ -115,19 +115,8 @@
   },
   "next_action": {
     "id": "SY-X-07-BILATERAL",
-    "status": "READY",
-    "repository": "c2melendez/precision-lab-plus",
-    "paired_repository": "c2melendez/precision-lab-lite",
-    "files": [
-      "qa/certification/syntax309_cases.jsonl"
-    ],
-    "action": "Continue independent Syntax309 with original infinity-minus-infinity fixture in both products. Inspect converter/parser/UI and existing evidence first; require explicit indeterminate rejection, no accidental NaN/Infinity success, then real recovery and output reentry. Use repaired component routing; inspect existing mutation campaign rather than repeat it.",
-    "exit_criteria": [
-      "Pin original SY-X-07 source/oracle and preserve source at native ingestion; no finite-value substitution",
-      "Explicit readable indeterminate error with correct layer classification; no success with NaN/Infinity or invented HTTP for local rejection",
-      "Real recovery and output reentry in applicable native paths and3Chromium profiles; distinct request IDs and no pageerrors",
-      "Relevant scoped cumulative/native evidence reviewed; bilateral ledger and next task updated; existing S25/S19/SG28/X04 blockers retained"
-    ]
+    "status": "WAIT",
+    "action": "Inspect existing recorded Lite/Plus runs; no redispatch. Verify original infinity-minus-infinity rejection, finite controls and native recovery/reentry. Review scoped campaign separately, no fake PASS from skips."
   },
   "blockers": [
     {
@@ -182,50 +171,31 @@
     }
   ],
   "work_in_progress": {
-    "id": "CI-SPLIT-SECURITY-MUTATION-SCOPE",
-    "status": "VERIFIED_SCOPED",
-    "repository": "c2melendez/precision-lab-plus",
-    "technical_sha": "ff647a581a4a6d9b5423231ded44c3bc5fbb3088",
+    "id": "SY-X-07-BILATERAL",
+    "status": "WAIT_CI",
+    "technical_sha": "f0d3106d351aebc49b6a5715efd92690c44ec843",
+    "paired_technical_sha": "cc89d7ccd36dfdfe15b14e72215920c62508ab00",
     "runs": [
       {
-        "id": 38991931463,
-        "workflow": ".github/workflows/certification-dependency-gates.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931463",
-        "logs_reviewed": true,
-        "evidence_executed": false,
-        "harness_only": true
+        "id": 38992883919,
+        "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38992883919"
       },
       {
-        "id": 38991931537,
-        "workflow": ".github/workflows/in625-syntax-native.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931537",
-        "logs_reviewed": true,
-        "evidence_executed": true,
-        "harness_only": false
-      },
-      {
-        "id": 38991931544,
+        "id": 38992883884,
         "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931544",
-        "logs_reviewed": true,
-        "evidence_executed": true,
-        "harness_only": false
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38992883884"
       },
       {
-        "id": 38991931540,
+        "id": 38992883904,
         "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/38991931540",
-        "logs_reviewed": true,
-        "evidence_executed": true,
-        "harness_only": false
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/38992883904"
       }
     ]
   },
@@ -413,6 +383,18 @@
       "source_sha": "6cbec7645b73ad18875d4472182c704eb35228b0",
       "score": 10.32,
       "scope": "Historical pinned Lite reference, not current Lite HEAD; newer equivalent execution supersedes this review"
+    },
+    {
+      "profile": "mutation_lite",
+      "run_id": 38990822464,
+      "job_id": 117272639562,
+      "input_fingerprint": "8628807dcbecbb91b34eac25ec9101e7ccb4f60150df618dcbaa9fd58fb266a2",
+      "logs_reviewed": true,
+      "mutations_executed": true,
+      "source_repository": "c2melendez/precision-lab-lite",
+      "source_sha": "6cbec7645b73ad18875d4472182c704eb35228b0",
+      "score": 10.32,
+      "scope": "Latest completed pinned reference; not current Lite HEAD, not full S19 closure"
     }
   ]
 }
