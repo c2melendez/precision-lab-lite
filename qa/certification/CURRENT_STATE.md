@@ -1,5 +1,19 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+**SY-X-14-BILATERAL — WAIT_CI.** Inspeccionar los IDs del índice. Global OPEN; porcentaje reconciliado ND.
+
+## SY-X-14 — implementación de evidencia, WAIT_CI (2026-10-17 UTC)
+Lite SHA 7decaedce18874cb8d81c7137761f69b860cca22; Plus a66dac769c3212cb8e3dfe9951030eec0bd4711d. Expansión50literalfrac:501caracteres, sin presimplificar. TestigoHTTP50divisiones:201caracteres, AST201nodos/profundidad101. Pluslímites200nodos/30profundidad:COMPLEXITY_LIMIT por profundidad; también nodos impiden resolver si solo se aumenta profundidad. Oráculox,x≠0 preservado enXFAILestricto; rechazo/recuperación no equivalen a resolución. Contrato SY_X_14_DEPTH_CONTRACT.md versionado en ambos.
+Lite5tests localesPASS:paridad49/50/51,dominiooriginal,cerorechazado,Workerrecuperación/reentrada. PlusHTTP1PASS+1XFAILestricto;conversión completa conserva50divisiones. Nuevos nativos pendientes:Liteparidad/dominiovisible yrechazocero,PlusavisoHTTPprofundidad yrecuperación en3perfiles. PegarsoloLaTeXxcreanuevaexpresión;no atribuirle automáticamente dominiooriginal sinmetadatos. Sin cambios al motor/límites. No campaña de mutación/npm nueva.
+- [IN625 Cumulative Certification Gate 39014331621](https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331621) — inspeccionar existente, no redispatch.
+- [Syntax309 SY-N-31 Scientific UI E2E 39014331682](https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331682) — inspeccionar existente, no redispatch.
+- [IN625 H1d Reentry Diagnostic 39014331642](https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331642) — inspeccionar existente, no redispatch.
+GlobalOPEN; siguiente aúnX14hasta revisarCI, después caso independienteX15 siPluscontinúabloqueado.
+
+## Evidencia previa de origen (X13)
+
+# Estado vigente de certificación — Precision Lab Lite / Plus
+
 Corte:2026-10-17 UTC (2026-10-17 Honduras). Global **OPEN**; porcentaje reconciliado **ND**.
 
 **Siguiente tarea única: SY-X-14-BILATERAL — READY.** Verificar HEAD/Actions y continuity.json. Leer presupuestos antes de expandir50recíprocos; mantener x≠0 y no presimplificar el original para evitar límites.

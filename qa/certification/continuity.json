@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 31,
+  "revision": 32,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "76edee1a40df93d3945acb1b426d0bc190a67e2c",
-  "baseline_case": "SY-X-13",
-  "baseline_status": "VERIFIED_WITH_BLOCKERS",
+  "technical_baseline_sha": "7decaedce18874cb8d81c7137761f69b860cca22",
+  "baseline_case": "SY-X-14",
+  "baseline_status": "WAIT_CI",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -116,13 +116,13 @@
   },
   "next_action": {
     "id": "SY-X-14-BILATERAL",
-    "status": "READY",
+    "status": "WAIT_CI",
     "repository": "c2melendez/precision-lab-lite",
     "paired_repository": "c2melendez/precision-lab-plus",
     "files": [
       "qa/certification/syntax309_cases.jsonl"
     ],
-    "action": "Read exact50-level nested reciprocal fixture/oracle. Construct the literal50 layers without pre-simplifying; inspect existing input/AST budgets first. Verify parity50=>x preserving original x!=0 and controls for odd depth as applicable. If channel limits block original source, record precise blocker without loosening limits or claiming PASS. Review existing scoped evidence and avoid redundant Actions.",
+    "action": "Inspect existing exact-SHA X14 native/cumulative/H1d runs. Lite parity/domain and Plus rejection/recovery are distinct scopes. Plus50-layer mathematical oracle remains blocked by depth30 and nodes200; no duplicate dispatch or relaxed limits.",
     "exit_criteria": [
       "Pin descriptive canonical fixture and document exact operational expansion with50 reciprocal layers",
       "Read Plus length500/AST200/depth30 and Lite declared budgets before bounded execution",
@@ -188,40 +188,47 @@
       "evidence": "Latest recorded frontend38995800990/job117288029860 CANCELLED after693test initialrunSUCCESS, no final report; logs reviewed. Earlier38992878940 had Worker exit1 before cancellation. No global mutation score.",
       "next_action": "Diagnose existing frontend campaign cause and resource/progress evidence before repeating equivalent inputs; do not rerun historical Lite pin/npm. New X13 tests did not trigger a campaign.",
       "responsible_role": "certification maintainer"
+    },
+    {
+      "id": "SY-X-14-PLUS-AST",
+      "status": "BLOCKED",
+      "evidence": "Original50 reciprocals,201-character ASCII,201unevaluatedASTnodes/depth101. Existingmaxnodes200/depth30; HTTP200successfalseCOMPLEXITY_LIMIT depth30, no result. Mathematical oracle preserved in strictXFAIL.",
+      "exit_criteria": "Explicit bounded reconciliation of BOTH depth and node budgets while preserving original source and x!=0; no pre-simplification or silently relaxed limits",
+      "next_action": "Read SY_X_14_DEPTH_CONTRACT.md; reuse reviewed rejection after CI, do not repeat until preconditions change; advance independent Syntaxcase"
     }
   ],
   "work_in_progress": {
-    "id": "SY-X-13-BILATERAL",
-    "status": "VERIFIED_SCOPED",
-    "technical_sha": "76edee1a40df93d3945acb1b426d0bc190a67e2c",
-    "paired_technical_sha": "acd55e4b3cadf37b4c2e81dd044a5a95ad08d3c7",
+    "id": "SY-X-14-BILATERAL",
+    "status": "WAIT_CI",
+    "technical_sha": "7decaedce18874cb8d81c7137761f69b860cca22",
+    "paired_technical_sha": "a66dac769c3212cb8e3dfe9951030eec0bd4711d",
     "runs": [
       {
-        "id": 39013568346,
+        "id": 39014331621,
         "workflow": ".github/workflows/in625-cumulative-certification.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39013568346",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331621",
+        "logs_reviewed": false,
+        "evidence_executed": false
       },
       {
-        "id": 39013568238,
-        "workflow": ".github/workflows/in625-h1d-reentry.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39013568238",
-        "logs_reviewed": true,
-        "evidence_executed": true
-      },
-      {
-        "id": 39013568233,
+        "id": 39014331682,
         "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39013568233",
-        "logs_reviewed": true,
-        "evidence_executed": true
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331682",
+        "logs_reviewed": false,
+        "evidence_executed": false
+      },
+      {
+        "id": 39014331642,
+        "workflow": ".github/workflows/in625-h1d-reentry.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39014331642",
+        "logs_reviewed": false,
+        "evidence_executed": false
       }
     ]
   },
@@ -468,6 +475,20 @@
         "four distinct request IDs, zero pageerrors"
       ],
       "limitations": "MathLive assignment/input in desktop/tablet/mobile Chromium; no all-keys/OS/other engines or Reuse-button claim. Raw SymPy result_text(log) is not calculator reentry grammar; native reentry uses actual ln LaTeX."
+    },
+    "SY-X-14": {
+      "status": "PENDING_NATIVE_WITH_PLUS_BLOCKER",
+      "lite": "LOCAL_PARITY_DOMAIN_WORKER_PASS_NATIVE_PENDING",
+      "plus": "BLOCKED_AST_DEPTH_AND_NODES",
+      "original_expansion": {
+        "layers": 50,
+        "latex_length": 501,
+        "ascii_length": 201,
+        "unevaluated_ast_nodes": 201,
+        "unevaluated_ast_depth": 101
+      },
+      "oracle": "x with x!=0 for50;1/x for odd49/51",
+      "contract": "qa/certification/SY_X_14_DEPTH_CONTRACT.md"
     }
   },
   "verification_proofs": {
