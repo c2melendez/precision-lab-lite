@@ -17,7 +17,7 @@ Fecha: 2026-10-17 UTC. Certificación global **OPEN**; porcentaje reconciliado *
 | SY-M | 20 | Recorrido hasta M-20; no certifica todo el módulo Matrices. |
 | SY-S | 20 | Recorrido hasta S-20 registrado. |
 | SY-R | 14 | Recorrido hasta R-14; R12–14 nativo Plus PASS acotado; otros canales pendientes. |
-| SY-X |22|X01–03,X05–13,X15–19 PASS acotado bilateral;X04Plus BLOCKED;X14 Lite PASS/Plus BLOCKED AST;X20–22 pendientes.|
+| SY-X |22|X01–03,X05–13,X15–19 PASS acotado bilateral;X04Plus BLOCKED;X14 Lite PASS/Plus BLOCKED AST;X20–22 PASS acotado bilateral según evidencia de canal; X04 y X14 Plus BLOCKED; no cierre global.|
 | Total | 309 | Fixture común intacto; certificación integral OPEN. |
 
 Las cifras son filas de la matriz, no totales de PASS. Consultar evidencia vigente de cada canal en el índice y el log. TODO/XFAIL/SKIP y pruebas manuales no se suman a PASS. IN625, Syntax309 y campañas anteriores no son denominadores sumables sin deduplicar requisitos.
