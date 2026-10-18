@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 85,
+  "revision": 86,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,19 +134,19 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-FAC-10-CI-REVIEW",
+    "id": "ALGEBRA114-AS-FAC-11-CI-REVIEW",
     "status": "PENDING_CI",
-    "technical_sha": "2268756536bda5a782c8b6c7fb4e0b179093e251",
-    "run_id": 39105496119,
+    "technical_sha": "19595e91a4b45cc1d445ba207378f6e909852c78",
+    "run_id": 39106164638,
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsFac10.audit.test.ts"
+      "tests/algebra114AsFac11.audit.test.ts"
     ],
-    "action": "Review exact SHA cumulative and companion gates for original AS-FAC-10 two-variable sum of cubes; only after actual bilateral PASS proceed AS-FAC-11. Diagnose any failure without rerunning unchanged inputs.",
+    "action": "Inspect exact SHA cumulative and companion gates for AS-FAC-11 grouping factorization; diagnose failure if any and continue AS-FAC-12 only with bilateral verified PASS.",
     "exit_criteria": [
-      "AS-FAC-10 original two-variable polynomial factorization executed and verified",
-      "Both exact-SHA cumulative logs reviewed",
-      "Bilateral scoped PASS documented before advancing AS-FAC-11"
+      "AS-FAC-11 original regression actually executed and passed in both engines",
+      "Jobs/logs and exact technical SHAs recorded",
+      "Next AS-FAC-12 only after closure"
     ]
   },
   "blockers": [
