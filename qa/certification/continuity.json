@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 92,
+  "revision": 93,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,15 +134,15 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-PF-01-PLUS-UI-CI-REVIEW",
+    "id": "ALGEBRA114-AS-PF-01-LITE-UI-CI-REVIEW",
     "status": "PENDING_CI",
-    "technical_sha": "ed9c2591ad0d77237c46b997427ed85373f92f8e",
-    "run_id": 39108799997,
-    "action": "Review Plus exact-SHA scientific UI AS-PF-01 regression and cumulative logs; fix if failed. Lite AS-PF-01 scoped engine PASS, but frontend path/general partial fractions unverified. Avoid duplicate runs.",
+    "technical_sha": "b38fa0cf9643fc822539cab558ff12b891a57e09",
+    "run_id": 39152403627,
+    "action": "Review exact-SHA Lite scientific UI AS-PF-01 dispatch and cumulative/native logs; correct any compilation/behavior failure. Plus UI unit and HTTP coverage PASS; browser E2E not yet verified. Do not rerun unchanged gates.",
     "exit_criteria": [
-      "Plus UI sends /partial-fractions for selected original expression",
-      "Plus frontend and backend cumulative PASS",
-      "Remaining Lite UI/parity limitations recorded"
+      "Lite exact SHA UI path CI PASS",
+      "No regression of original engine oracle",
+      "Remaining generic capability/browser E2E gaps identified before moving AS-PF-02"
     ]
   },
   "blockers": [
