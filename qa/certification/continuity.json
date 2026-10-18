@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 65,
+  "revision": 66,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-SIM-09-CI-REVIEW",
+    "id": "ALGEBRA114-AS-SIM-10-CI-REVIEW",
     "status": "PENDING_CI",
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsSim09.audit.test.ts"
+      "tests/algebra114AsSim10.audit.test.ts"
     ],
-    "action": "Review exact-SHA automatic cumulative gates for AS-SIM-09 (x-1)/(1-x)=-1 with x != 1. Credit scoped PASS only when the original case test and required domain exclusion pass in both engines. No redundant manual dispatch; global OPEN.",
+    "action": "Inspect exact-SHA automatic cumulative gates for AS-SIM-10 nested rational quotient, symbolic -1/(xy), and all three source-domain exclusions x!=0,y!=0,x!=y. Do not claim PASS until both green; avoid redundant manual dispatch.",
     "exit_criteria": [
-      "Lite and Plus specific AS-SIM-09 CI evidence verified",
-      "x != 1 preserved",
-      "Proceed to next original AS-* case only after bilateral outcome"
+      "Both AS-SIM-10 scope regressions PASS in CI",
+      "All 3 domain exclusions verified",
+      "Global remains OPEN"
     ]
   },
   "blockers": [
@@ -1018,6 +1018,19 @@
         "run": 39086951116,
         "scope": "HTTP identity and even_root domain"
       },
+      "global": "OPEN"
+    },
+    "ALGEBRA114-AS-SIM-09-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "lite": {
+        "sha": "d59eff5062f92084c372c3088e5dbc821eef1ef2",
+        "run": 39087392919
+      },
+      "plus": {
+        "sha": "d1e31ebc5e2fd15fcd51d322e67205e20fbe663c",
+        "run": 39087395888
+      },
+      "scope": "(x-1)/(1-x)=-1, preserving x != 1",
       "global": "OPEN"
     }
   },
