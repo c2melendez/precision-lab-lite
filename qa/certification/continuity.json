@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 58,
+  "revision": 59,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-SIM-03-CI-REVIEW",
+    "id": "ALGEBRA114-AS-SIM-04-CI-REVIEW",
     "status": "PENDING_CI",
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsSim03.audit.test.ts"
+      "tests/algebra114AsSim04.audit.test.ts"
     ],
-    "action": "Review automatically triggered exact-SHA cumulative CI logs for original AS-SIM-03 x^2*x^3=x^5. Do not claim PASS until observed; only repair demonstrated failure. Preserve remaining case and global OPEN.",
+    "action": "Review automatically started exact SHA cumulative gates for AS-SIM-04, (xy)^3 = x^3y^3. Do not infer PASS until logs confirm specific case. Preserve previous scoped results and global OPEN.",
     "exit_criteria": [
-      "Both scoped case tests execute green at exact SHAs",
-      "Bilateral ledger records evidence and expected oracles",
-      "No unnecessary manual reruns"
+      "Specific Lite and Plus AS-SIM-04 regression PASS",
+      "Provenance-linked evidence by SHA and run ID",
+      "No manual redundant CI"
     ]
   },
   "blockers": [
@@ -933,6 +933,21 @@
         "sha": "c3208a1e3aecf800a934df437a1db0fc52c94115",
         "run": 39081124239,
         "scope": "HTTP simplify and exact symbolic oracle"
+      },
+      "global": "OPEN"
+    },
+    "ALGEBRA114-AS-SIM-03-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "case": "AS-SIM-03",
+      "lite": {
+        "sha": "6bd1f3c799a70fa727887613761726167e2ba1fe",
+        "run": 39081981346,
+        "scope": "local evaluator multiple substitutions"
+      },
+      "plus": {
+        "sha": "9a227f96165b2bffd7a03c8205eee4de1f33a74d",
+        "run": 39081986852,
+        "scope": "HTTP symbolic oracle"
       },
       "global": "OPEN"
     }
