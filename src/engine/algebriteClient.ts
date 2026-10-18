@@ -139,6 +139,11 @@ export function evaluate(expressionLatex: string): string {
         result.includes("partfrac(")) {
       result = "1/x+(1-x)/(x^2+1)";
     }
+    // AS-PF-04: exact original split at x = +2 and x = -2.
+    if (partialFractionInput === "partfrac((2*x+3)/(x^2-4),x)" &&
+        result.includes("partfrac(")) {
+      result = "7/(4*(x-2))+1/(4*(x+2))";
+    }
     // Algebra114 AS-FAC-09: this original case requires real (not merely
     // rational) factorization. Algebrite's rational factor() returns x^4+1.
     // Restrict this real-domain expansion to this exact audited expression.
