@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 75,
+  "revision": 76,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-EXP-09-CI-REVIEW",
+    "id": "ALGEBRA114-AS-EXP-10-CI-REVIEW",
     "status": "PENDING_CI",
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsExp09.audit.test.ts"
+      "tests/algebra114AsExp10.audit.test.ts"
     ],
-    "action": "Check exact-SHA cumulative CI for AS-EXP-09 (a+b+c)^2 = a^2+b^2+c^2+2ab+2ac+2bc, verifying original multi-variable oracle. Record PASS only after both case-specific tests green. No redundant manual dispatch. Global OPEN.",
+    "action": "Check exact-SHA automatic cumulative CI for AS-EXP-10 -(x-1)(x+2)=-x^2-x+2; ensure signed product expansion checked in both engines. Confirm case-specific test logs before granting scoped PASS and completing AS-EXP family. Avoid redundant manual dispatch; global OPEN.",
     "exit_criteria": [
-      "AS-EXP-09 specific test PASS in Lite and Plus matching tested SHA",
-      "Record run IDs and SHA evidence",
-      "Proceed AS-EXP-10 only on bilateral PASS"
+      "AS-EXP-10 tests PASS in both Lite and Plus at exact commits",
+      "Record evidence with run ID and SHA",
+      "Proceed to next original Algebra114 family only after bilateral PASS"
     ]
   },
   "blockers": [
@@ -1152,6 +1152,19 @@
         "run": 39093787859
       },
       "scope": "original triple product expansion, local engine and HTTP",
+      "global": "OPEN"
+    },
+    "ALGEBRA114-AS-EXP-09-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "lite": {
+        "sha": "8ad70e9a449c22c9135c35d11514f1e440263ab3",
+        "run": 39094466250
+      },
+      "plus": {
+        "sha": "997b2909ba837049149bde83c435c228679212ac",
+        "run": 39094470257
+      },
+      "scope": "original three-variable trinomial square expansion, Lite local and Plus HTTP",
       "global": "OPEN"
     }
   },
