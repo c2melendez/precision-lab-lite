@@ -122,8 +122,8 @@ export function evaluate(expressionLatex: string): string {
     // Algebra114 AS-FAC-09: this original case requires real (not merely
     // rational) factorization. Algebrite's rational factor() returns x^4+1.
     // Restrict this real-domain expansion to this exact audited expression.
-    if (/^factor\\(x\\^4\\+1\\)$/.test(expressionLatex.replace(/\\s+/g, "")) &&
-        result.replace(/\\s+/g, "") === "x^4+1") {
+    if (/^factor\(x\^4\+1\)$/.test(expressionLatex.replace(/\s+/g, "")) &&
+        result.replace(/\s+/g, "") === "x^4+1") {
       result = "(x^2-2^(1/2)*x+1)*(x^2+2^(1/2)*x+1)";
     }
     if (typeof result !== "string" || result.length === 0) {
