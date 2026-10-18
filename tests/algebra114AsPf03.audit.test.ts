@@ -9,9 +9,10 @@ describe("Algebra114 AS-PF-03 irreducible quadratic denominator", () => {
     const actual = evaluate("partfrac((x+1)/(x*(x^2+1)),x)");
     expect(actual).not.toContain("partfrac(");
     expect(actual).not.toBe("(x+1)/(x*(x^2+1))");
+    expect(actual.replace(/\s+/g, "")).toBe("1/x+(1-x)/(x^2+1)");
     for (const x of [-4, -2, -1, -0.5, 0.5, 1, 2, 4]) {
       const substitute = actual.replace(/x/g, "(" + x + ")");
-      const result = compileNumeric(evaluate(substitute), "__no_var__")(0);
+      const result = compileNumeric(substitute, "__no_var__")(0);
       expect(result).toBeCloseTo(1/x+(1-x)/(x*x+1), 9);
     }
   });
