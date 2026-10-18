@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { parseExpression } from "../src/engine/parsing";
 import { evaluate } from "../src/engine/algebriteClient";
+import { compileNumeric } from "../src/engine/numericFallback";
 import { extractDomainConditions } from "../src/engine/domainConditions";
 import source from "../qa/certification/algebra114_source.md?raw";
 
@@ -11,7 +12,7 @@ describe("Algebra114 AS-SIM-06 rational cancellation and domain", () => {
     const conditions = extractDomainConditions(input);
     expect(conditions.some(c => c.kind === "denominator" && c.operator === "!=" && c.variable === "x")).toBe(true);
     for (const x of [-3, 0, 1, 3, 7]) {
-      const value = Number(evaluate(input.replace(/x/g, "(" + x + ")")));
+      const value = compileNumeric(evaluate(input.replace(/x/g, "(" + x + ")")), "__no_var__")(0);
       expect(value).toBeCloseTo((x + 2) / (x - 2), 9);
     }
     expect((2 * 2 - 4 * 2 + 4)).toBe(0);
