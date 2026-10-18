@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 78,
+  "revision": 79,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-FAC-02-CI-REVIEW",
+    "id": "ALGEBRA114-AS-FAC-03-CI-REVIEW",
     "status": "PENDING_CI",
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsFac02.audit.test.ts"
+      "tests/algebra114AsFac03.audit.test.ts"
     ],
-    "action": "Review auto cumulative CI exact SHA for AS-FAC-02 x^2+5x+6=(x+2)(x+3); verify factorization and case-specific logs in Lite and Plus. Do not manually dispatch redundant workflows; global remains OPEN.",
+    "action": "Review automatic exact-SHA cumulative gates for AS-FAC-03 nonmonic trinomial 6x^2-11x+3=(3x-1)(2x-3); inspect case-specific test logs; record bilateral PASS only after both green. No manual redundant dispatch. Global OPEN.",
     "exit_criteria": [
-      "Both AS-FAC-02 tests green on matching tested SHAs",
-      "Record exact run IDs and SHAs",
-      "Proceed AS-FAC-03 only on bilateral PASS"
+      "Both original AS-FAC-03 tests green on matching SHA",
+      "Record exact run IDs and SHA",
+      "Proceed AS-FAC-04 only on bilateral PASS"
     ]
   },
   "blockers": [
@@ -1191,6 +1191,19 @@
         "run": 39095360828
       },
       "scope": "source-anchored difference of squares factoring",
+      "global": "OPEN"
+    },
+    "ALGEBRA114-AS-FAC-02-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "lite": {
+        "sha": "23beb99609a6bdf2df1c5980e6c9ec3ab32508b3",
+        "run": 39095934620
+      },
+      "plus": {
+        "sha": "05d42dbf8a16520e87c243a7bbc834898d02524c",
+        "run": 39095938353
+      },
+      "scope": "original x^2+5x+6=(x+2)(x+3) factoring, engine and HTTP",
       "global": "OPEN"
     }
   },
