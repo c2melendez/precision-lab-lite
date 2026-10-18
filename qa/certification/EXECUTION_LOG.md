@@ -306,3 +306,7 @@ Published Lite numerical original-source regression technical SHA dfd70d0d11db8f
 
 ## 2026-10-17 — Algebra114 AS-SIM-01 scoped bilateral PASS
 Lite SHA dfd70d0d11db8ff43ac358f15032fb8f3184c243 cumulative 39079358282 SUCCESS, 1627 PASS / 30 TODO; original AS-SIM-01 witness ran green via parser and substitutions. Plus SHA 05fe1fa2c26f124ca14551a3938d1a1e120d4e8f cumulative 39079345667 SUCCESS, backend 1496 PASS / 3 known XFAIL, frontend 1006 PASS / 28 TODO; original AS-SIM-01 symbolic HTTP oracle ran green. Scope limited: no bilateral E2E, no assertion on remaining 113 algebra cases. Existing structural validator is committed but absent from cumulative CI; next ALGEBRA114-FIXTURE-CI-WIRING. Continuity revision 55, global OPEN. No manual CI dispatch.
+
+
+## 2026-10-17 — AS-FAC-06 verified and AS-FAC-07 execution
+AS-FAC-06 original passed on executed cumulative gates: Plus 39099647688 at c2b14947dc59efe005282b5d7dd582567ffcc582 (backend 1521 PASS/3 XFAIL; frontend success), Lite 39099647642 at 4cd9dbf4e2042d9c94b3b3ac47f5ea7c7e1c6bea (1652 PASS/30 TODO). Both original cases tested, scoped bilateral PASS, global OPEN. AS-FAC-07 regression technical commits Plus f97b594cb852dbcfb9c51a71c84d8b1b26011d27; Lite 525a057fe592dafb8e77ad6ad9ad542327d17983. Automatic runs Plus cumulative 39101974173 H1d 39101974233; Lite cumulative 39101976607 H1d 39101976676 native 39101976660 were IN_PROGRESS on inspection. No redundant dispatch; next inspect executed AS-FAC-07 evidence, fix only demonstrated failure, then AS-FAC-08. Existing blockers preserved.
