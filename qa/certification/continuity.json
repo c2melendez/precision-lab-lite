@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 59,
+  "revision": 60,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-SIM-04-CI-REVIEW",
+    "id": "ALGEBRA114-AS-SIM-05-CI-REVIEW",
     "status": "PENDING_CI",
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsSim04.audit.test.ts"
+      "tests/domainConditions.test.ts"
     ],
-    "action": "Review automatically started exact SHA cumulative gates for AS-SIM-04, (xy)^3 = x^3y^3. Do not infer PASS until logs confirm specific case. Preserve previous scoped results and global OPEN.",
+    "action": "Review exact-SHA CI for AS-SIM-05 rational cancellation (x^2-1)/(x-1)=x+1 with x!=1 restriction. In Lite existing domain extractor and new source identity unit witness; Plus HTTP domain_conditions required. Do not grant PASS without observed runs; global OPEN.",
     "exit_criteria": [
-      "Specific Lite and Plus AS-SIM-04 regression PASS",
-      "Provenance-linked evidence by SHA and run ID",
-      "No manual redundant CI"
+      "Lite verifies exclusion and correct restricted numeric identity",
+      "Plus verifies symbolic result and x != 1 API domain condition",
+      "Both CI exact-SHA gates green; no unrelated reruns"
     ]
   },
   "blockers": [
@@ -949,6 +949,19 @@
         "run": 39081986852,
         "scope": "HTTP symbolic oracle"
       },
+      "global": "OPEN"
+    },
+    "ALGEBRA114-AS-SIM-04-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "lite": {
+        "sha": "49fd2f37c48961952e5df9939eb8a0702ea4edfc",
+        "run": 39082372818
+      },
+      "plus": {
+        "sha": "bfdfa8a5dd40076b101453431a89195753edd9cd",
+        "run": 39082386700
+      },
+      "scope": "Lite local numeric and Plus HTTP symbolic original AS-SIM-04",
       "global": "OPEN"
     }
   },
