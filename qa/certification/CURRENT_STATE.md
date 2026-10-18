@@ -1,5 +1,11 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## 2026-10-17 — Algebra114 AS-FAC-05, ejecución técnica publicada
+AS-FAC-04 completó gates: Plus acumulativo [39097127130](https://github.com/c2melendez/precision-lab-plus/actions/runs/39097127130) SUCCESS (backend 1519 PASS/3 XFAIL); Lite H1d [39097123013](https://github.com/c2melendez/precision-lab-lite/actions/runs/39097123013) SUCCESS (22 Playwright PASS). No repetir esas entradas.
+Siguiente AS-FAC-05 del contrato `algebra114_source.md`: `x^3+1 = (x+1)(x^2-x+1)`. Pruebas técnicas publicadas: Plus `a4657060433454ff8cec531f8244c73638ea4f11` en `backend/tests/test_algebra114_as_fac05.py`; Lite `01aa5f63f339dfce730663115811f6d4f228adc8` en `tests/algebra114AsFac05.audit.test.ts`. CI automática detectada: Plus acumulativo 39097643297 y H1d 39097643355; Lite acumulativo 39097645507, H1d 39097645489, nativo 39097645487. Todos IN_PROGRESS/QUEUED en consulta; NO atribuir PASS todavía.
+**Próxima acción única:** verificar conclusión/jobs/logs de esos cinco runs exactamente en SHA técnico, comprobar específicamente AS-FAC-05 y regresiones. Si PASS efectivo, reconciliar evidencia bilateral y avanzar AS-FAC-06; si FAIL, diagnosticar y corregir sin relanzamiento equivalente. Global OPEN, bloqueos S19/S25/SG28-DIST y XFAIL/TODO preservados. Commits solo documentales no requieren repetir CI.
+
+
 ## SY-P-23 2026-10-17 Worker-boundary regression checkpoint
 Lite technical SHA ae9e2e0eff40beba8af4d23a38141fe12189e4d2: cumulative 39075843202 SUCCESS (1626 PASS/30 TODO), H1d 39075843244 FAILURE (21 existing tests PASS; new Worker-boundary test failed after blocking input, during 2+3 recovery because helper observed stale error instead of fresh result). Test correction only: SHA 58218c6241574113f9008592f0f363910f23c934 explicitly waits for new result request_id before reading recovery; automatically triggered H1d 39076124599 and cumulative 39076124624 (QUEUED at checkpoint). No attribution of PASS yet. Plus existing SY-P-23 H1d 39068704250 has 31 PASS, no new Plus CI. Contractual a/bc interpretation OPEN; do not close global certification.
 
