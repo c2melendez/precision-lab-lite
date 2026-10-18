@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 60,
+  "revision": 61,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-SIM-05-CI-REVIEW",
+    "id": "ALGEBRA114-AS-SIM-06-CI-REVIEW",
     "status": "PENDING_CI",
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/domainConditions.test.ts"
+      "tests/algebra114AsSim06.audit.test.ts"
     ],
-    "action": "Review exact-SHA CI for AS-SIM-05 rational cancellation (x^2-1)/(x-1)=x+1 with x!=1 restriction. In Lite existing domain extractor and new source identity unit witness; Plus HTTP domain_conditions required. Do not grant PASS without observed runs; global OPEN.",
+    "action": "Review actual auto-triggered cumulative gate for AS-SIM-06, cancellation (x^2-4)/(x^2-4*x+4) = (x+2)/(x-2), x != 2; fix test or product only with CI evidence; maintain global OPEN.",
     "exit_criteria": [
-      "Lite verifies exclusion and correct restricted numeric identity",
-      "Plus verifies symbolic result and x != 1 API domain condition",
-      "Both CI exact-SHA gates green; no unrelated reruns"
+      "Both exact-SHA case tests green and domain x != 2 backed by evidence",
+      "Reconcile any failure without redundant manual Actions",
+      "Then select next original case"
     ]
   },
   "blockers": [
@@ -962,6 +962,20 @@
         "run": 39082386700
       },
       "scope": "Lite local numeric and Plus HTTP symbolic original AS-SIM-04",
+      "global": "OPEN"
+    },
+    "ALGEBRA114-AS-SIM-05-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "lite": {
+        "technical_sha": "5e149d55093e68948d0aeef9b90e735c149ffb48",
+        "run": 39083046382,
+        "scope": "original rational-domain exclusion and valid numeric identity"
+      },
+      "plus": {
+        "technical_sha": "6d9e52ba20ae97c3fb6f7647891d0a4dfcdd91fb",
+        "run": 39083014761,
+        "scope": "HTTP symbolic cancellation and explicit exclusion x != 1"
+      },
       "global": "OPEN"
     }
   },
