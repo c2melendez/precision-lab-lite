@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 76,
+  "revision": 77,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-EXP-10-CI-REVIEW",
+    "id": "ALGEBRA114-AS-FAC-01-CI-REVIEW",
     "status": "PENDING_CI",
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsExp10.audit.test.ts"
+      "tests/algebra114AsFac01.audit.test.ts"
     ],
-    "action": "Check exact-SHA automatic cumulative CI for AS-EXP-10 -(x-1)(x+2)=-x^2-x+2; ensure signed product expansion checked in both engines. Confirm case-specific test logs before granting scoped PASS and completing AS-EXP family. Avoid redundant manual dispatch; global OPEN.",
+    "action": "Check exact-SHA automatic cumulative CI for AS-FAC-01 x^2-9=(x-3)(x+3), with actual factoring not mere expansion, and confirm both test logs. Correct any discovered failure without weakening source oracle; no redundant manual dispatch. Global OPEN.",
     "exit_criteria": [
-      "AS-EXP-10 tests PASS in both Lite and Plus at exact commits",
-      "Record evidence with run ID and SHA",
-      "Proceed to next original Algebra114 family only after bilateral PASS"
+      "AS-FAC-01 case tests success on exact SHA Lite and Plus",
+      "Record run IDs and proven SHA",
+      "Advance AS-FAC-02 only after bilateral PASS"
     ]
   },
   "blockers": [
@@ -1165,6 +1165,19 @@
         "run": 39094470257
       },
       "scope": "original three-variable trinomial square expansion, Lite local and Plus HTTP",
+      "global": "OPEN"
+    },
+    "ALGEBRA114-AS-EXP-10-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "lite": {
+        "sha": "048217b5420f409010257e0c442f4a0054a2a125",
+        "run": 39094881301
+      },
+      "plus": {
+        "sha": "1080d4fc21960b67c57c8b8e3c938869a48a3fb1",
+        "run": 39094885924
+      },
+      "scope": "signed expansion original, completion of AS-EXP 10/10 scoped",
       "global": "OPEN"
     }
   },
