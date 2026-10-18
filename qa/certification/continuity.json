@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 61,
+  "revision": 62,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-SIM-06-CI-REVIEW",
+    "id": "ALGEBRA114-AS-SIM-06-LITE-RETRY-REVIEW",
     "status": "PENDING_CI",
     "files": [
-      "qa/certification/algebra114_source.md",
-      "tests/algebra114AsSim06.audit.test.ts"
+      "tests/algebra114AsSim06.audit.test.ts",
+      "backend/tests/test_algebra114_as_sim06.py"
     ],
-    "action": "Review actual auto-triggered cumulative gate for AS-SIM-06, cancellation (x^2-4)/(x^2-4*x+4) = (x+2)/(x-2), x != 2; fix test or product only with CI evidence; maintain global OPEN.",
+    "action": "Inspect cumulative Lite run 39084082168 for exact SHA b32c9b0 and original AS-SIM-06 test. Plus run 39083417070 is already PASS; do not dispatch again. Preserve x!=2 mathematical restriction and global OPEN.",
     "exit_criteria": [
-      "Both exact-SHA case tests green and domain x != 2 backed by evidence",
-      "Reconcile any failure without redundant manual Actions",
-      "Then select next original case"
+      "Lite revised AS-SIM-06 test passes with actual CI evidence",
+      "Both scoped outcomes recorded; no redundancy",
+      "Only then proceed to AS-SIM-07"
     ]
   },
   "blockers": [
@@ -975,6 +975,23 @@
         "technical_sha": "6d9e52ba20ae97c3fb6f7647891d0a4dfcdd91fb",
         "run": 39083014761,
         "scope": "HTTP symbolic cancellation and explicit exclusion x != 1"
+      },
+      "global": "OPEN"
+    },
+    "ALGEBRA114-AS-SIM-06-20261017": {
+      "status": "PARTIAL_PLUS_PASS_LITE_RETRY_PENDING",
+      "plus": {
+        "sha": "647a19bfe15cd82270647d81ef1e99f10fe33e34",
+        "run": 39083417070,
+        "conclusion": "success"
+      },
+      "lite": {
+        "failed_sha": "f6e3be121be5b251d556081325cf79da15ae34a3",
+        "failed_run": 39083434416,
+        "diagnosis": "Number(evaluate(rational)) yielded NaN; changed test-only numeric conversion to compileNumeric",
+        "revised_sha": "b32c9b037eb7f98eecfcff6743b5f36fb563607e",
+        "retry_run": 39084082168,
+        "status": "queued"
       },
       "global": "OPEN"
     }
