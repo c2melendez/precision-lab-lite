@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 68,
+  "revision": 69,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-EXP-02-CI-REVIEW",
+    "id": "ALGEBRA114-AS-EXP-03-CI-REVIEW",
     "status": "PENDING_CI",
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsExp02.audit.test.ts"
+      "tests/algebra114AsExp03.audit.test.ts"
     ],
-    "action": "Review exact-SHA automatic cumulative gates for AS-EXP-02 (x+2)^2=x^2+4x+4. Verify both specific tests, only then record PASS. Avoid manual re-dispatch; global OPEN.",
+    "action": "Inspect exact-SHA auto cumulative CI for AS-EXP-03 (2x-1)(3x+4)=6x^2+5x-4; verify specific new tests before asserting PASS; avoid redundant manual dispatch; retain global OPEN.",
     "exit_criteria": [
-      "Lite original expansion and Plus HTTP expansion verified PASS",
-      "Record exact run ID and tested SHA",
-      "Proceed to AS-EXP-03 only on bilateral PASS"
+      "Lite and Plus original AS-EXP-03 regressions PASS with exact-SHA logs",
+      "Record run IDs on success",
+      "Proceed AS-EXP-04 only after bilateral proof"
     ]
   },
   "blockers": [
@@ -1057,6 +1057,20 @@
         "sha": "e9c8f138f5a858a5de37db01abbea552b0b99571",
         "run": 39088495784,
         "scope": "HTTP expand and symbolic equivalence"
+      },
+      "global": "OPEN"
+    },
+    "ALGEBRA114-AS-EXP-02-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "lite": {
+        "sha": "f904234a4e6e59f90877d6bee15714b01ba6a70f",
+        "run": 39090770513,
+        "scope": "local expand and signed values"
+      },
+      "plus": {
+        "sha": "79bb74dd635f9cd3ad09841ad0ce11f606c6bd3b",
+        "run": 39090776024,
+        "scope": "HTTP expand, symbolic equality"
       },
       "global": "OPEN"
     }
