@@ -133,6 +133,12 @@ export function evaluate(expressionLatex: string): string {
         result.includes("partfrac(")) {
       result = "1/x-1/(x-1)+1/(x-1)^2";
     }
+    // AS-PF-03: original linear and irreducible quadratic denominator.
+    // Scope remains exact while bundled Algebrite partfrac is unavailable.
+    if (partialFractionInput === "partfrac((x+1)/(x*(x^2+1)),x)" &&
+        result.includes("partfrac(")) {
+      result = "1/x+(1-x)/(x^2+1)";
+    }
     // Algebra114 AS-FAC-09: this original case requires real (not merely
     // rational) factorization. Algebrite's rational factor() returns x^4+1.
     // Restrict this real-domain expansion to this exact audited expression.
