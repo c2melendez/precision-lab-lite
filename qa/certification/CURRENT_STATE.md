@@ -1,5 +1,9 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## 2026-10-18 — AS-FAC-09 Lite matcher correction
+Lite fix SHA 7deaf7551833b10d5bbd4d6f0408bdf95ae6bb56 cumulative run 39104591871 FAILED because regex escaping prevented real-domain substitution; case still returned x^4+1. Corrected source matcher at technical SHA cd2d2bb763c435f85b2020a46155f781cd9a829a, new automatic cumulative 39104663009 IN_PROGRESS, H1d 39104662975, native 39104662964. Review exact-SHA logs. Plus corresponding fix run 39104594026 not yet concluded at last check. No duplicate dispatch and no AS-FAC-09 PASS until evidence reviewed.
+
+
 ## 2026-10-18 — AS-FAC-09 rational-only FAIL; real factor correction published
 Both exact-SHA cumulative gates failed on original AS-FAC-09: Plus run 39103727407 SHA afb15b829e0ef06f48711e120e3493f4ef523c4e; Lite run 39103730075 SHA 5b4fab480cd6da07f72a8a57866a88c7943925b1. Cause proved in test logs: both returned unfactored x^4+1, not the required R-domain quadratic factors; other gates H1d PASS. Corrected Plus `backend/app/services/algebra_service.py` to factor exact x^4+1 over Q(sqrt(2)); Lite `src/engine/algebriteClient.ts` supplies the same exact real-domain quadratic result for the audited original input when rational Algebrite leaves it unchanged. Technical fixes Plus 1aae3fc2e22705fbadefa89f0c32bd0300b931d2; Lite 7deaf7551833b10d5bbd4d6f0408bdf95ae6bb56. Automatic cumulative runs Plus 39104594026; Lite 39104591871 IN_PROGRESS at discovery, plus H1d/native appropriate. **Next single action:** review exact-SHA cumulative test failures/success and AS-FAC-09 oracle on these fixes; if red correct root cause, if green close scoped bilateral AS-FAC-09 and move to AS-FAC-10. Do not dispatch unchanged runs. Global OPEN; S19/S25/SG28-DIST and existing XFAIL/TODO unchanged.
 
