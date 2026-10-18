@@ -42,3 +42,17 @@ describe("domainConditions", () => {
 });
 
 // Algebra114 AS-SIM-05: source-domain witness for cancellable rational expression.
+
+describe("Algebra114 AS-SIM-05 original cancellation oracle", () => {
+  it("retains excluded x=1 and verifies identity at valid sample points", () => {
+    const source = "(x^2-1)/(x-1)";
+    const restrictions = extractDomainConditions(source);
+    expect(restrictions).toEqual(expect.arrayContaining([
+      expect.objectContaining({ kind: "denominator", expressionAlgebrite: "x-1", operator: "!=", variable: "x" })
+    ]));
+    for (const x of [-3, 0, 2, 7]) {
+      const left = (x * x - 1) / (x - 1);
+      expect(left).toBeCloseTo(x + 1, 9);
+    }
+  });
+});
