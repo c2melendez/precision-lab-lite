@@ -10,7 +10,7 @@ describe("Algebra114 AS-SIM-08 real radical cube", () => {
     expect(source).toContain("AS-SIM-08 | N2");
     const parsed = parseExpression("sqrt(x^3)").algebrite;
     const restrictions = extractDomainConditions(parsed);
-    expect(restrictions.some(c => c.kind === "sqrt" || c.kind === "root")).toBe(true);
+    expect(restrictions.some(c => c.kind === "even_root")).toBe(true);
     for (const x of [0, 1, 2, 9, 16]) {
       const raw = evaluate(parsed.replace(/x/g, "(" + x + ")"));
       const value = compileNumeric(raw, "__no_var__")(0);
