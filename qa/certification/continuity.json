@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 81,
+  "revision": 82,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,19 +134,19 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-FAC-07-CI-REVIEW",
+    "id": "ALGEBRA114-AS-FAC-08-CI-REVIEW",
     "status": "PENDING_CI",
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsFac07.audit.test.ts"
+      "tests/algebra114AsFac08.audit.test.ts"
     ],
-    "action": "Review exact SHA automatic cumulative and relevant H1d/native gates for original AS-FAC-07. Verify execution and four-factor oracle in both engines; if green record bilateral scoped PASS then advance AS-FAC-08. Do not dispatch redundant runs.",
-    "technical_sha": "525a057fe592dafb8e77ad6ad9ad542327d17983",
-    "run_id": 39101976607,
+    "technical_sha": "89a12b3efee3537da3059a8c43009b57b3ab928f",
+    "run_id": 39102602458,
+    "action": "Inspect exact-SHA cumulative/H1d and native runs for AS-FAC-08; verify original Sophie Germain factorization executed and correct, diagnose any real failure. When bilateral PASS, proceed to AS-FAC-09; no redundant dispatch.",
     "exit_criteria": [
-      "Executed AS-FAC-07 regression PASS on both technical SHAs",
-      "Logs and run/job IDs reviewed",
-      "Advance AS-FAC-08 only after bilateral verification"
+      "AS-FAC-08 regression executed and passes both gates",
+      "Reviewed jobs/logs and recorded evidence",
+      "Next AS-FAC-09 only after bilateral PASS"
     ]
   },
   "blockers": [
