@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 94,
+  "revision": 95,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,19 +134,19 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-PF-02-CI-REVIEW",
+    "id": "ALGEBRA114-AS-PF-03-CI-REVIEW",
     "status": "PENDING_CI",
-    "technical_sha": "517dbcd7b0822c79f7913123453b9df92210dd31",
-    "run_id": 39152845023,
+    "technical_sha": "bce35b30b4367f3836e640353307b7af61c10252",
+    "run_id": 39159651073,
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsPf02.audit.test.ts"
+      "tests/algebra114AsPf03.audit.test.ts"
     ],
-    "action": "Inspect exact technical-SHA original AS-PF-02 repeated-pole gate and logs for Plus and Lite. Correct if failure; track Lite UI and general CAS separately; do not duplicate unchanged runs.",
+    "action": "Review exact-SHA automatic cumulative AS-PF-03 test/logs. Diagnose failure without weakening original two-term partial-fraction oracle. Advance AS-PF-04 only after scope-limited bilateral PASS.",
     "exit_criteria": [
-      "Original repeated-pole decomposition executed correctly",
-      "Both exact-SHA cumulative statuses documented",
-      "UI and generic decomposition limitations preserved"
+      "Original AS-PF-03 executed with correct irreducible quadratic partial term",
+      "Both cumulative results and exact SHA recorded",
+      "UI and general CAS gaps separately maintained"
     ]
   },
   "blockers": [
