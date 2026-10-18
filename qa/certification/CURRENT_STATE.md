@@ -1,5 +1,9 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## 2026-10-18 — AS-FAC-09 PASS bilateral; AS-FAC-10 submitted
+AS-FAC-09 corrected and executed original tests PASS: Plus cumulative 39104594026 technical 1aae3fc2e22705fbadefa89f0c32bd0300b931d2 backend 1524 PASS/3 XFAIL, frontend SUCCESS; Lite cumulative 39104663009 technical cd2d2bb763c435f85b2020a46155f781cd9a829a 1655 PASS/30 TODO. Both log-backed original factorization cases PASS; AS-FAC-09 scoped closure, global OPEN. Next AS-FAC-10 original sum of cubes x^3+y^3=(x+y)(x^2-xy+y^2): Plus technical 1f462fb04b4d3477b7858020760b2409fdcb72df backend/tests/test_algebra114_as_fac10.py; Lite technical 2268756536bda5a782c8b6c7fb4e0b179093e251 tests/algebra114AsFac10.audit.test.ts. Automatic gates discovered Plus cumulative 39105494123/H1d 39105494167; Lite cumulative 39105496119/H1d 39105496125/native 39105496111; queued/in_progress, NOT PASS yet. Next unique action: inspect exact-SHA AS-FAC-10 logs and any failure, document bilateral closure only after verified execution, then AS-FAC-11. No duplicate dispatch. Historic S19/S25/SG28-DIST and XFAIL/TODO remain OPEN/BLOCKED.
+
+
 ## 2026-10-18 — AS-FAC-09 Lite matcher correction
 Lite fix SHA 7deaf7551833b10d5bbd4d6f0408bdf95ae6bb56 cumulative run 39104591871 FAILED because regex escaping prevented real-domain substitution; case still returned x^4+1. Corrected source matcher at technical SHA cd2d2bb763c435f85b2020a46155f781cd9a829a, new automatic cumulative 39104663009 IN_PROGRESS, H1d 39104662975, native 39104662964. Review exact-SHA logs. Plus corresponding fix run 39104594026 not yet concluded at last check. No duplicate dispatch and no AS-FAC-09 PASS until evidence reviewed.
 
