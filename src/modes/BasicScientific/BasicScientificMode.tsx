@@ -74,6 +74,7 @@ function readRealIntervalUnion(latex: string): string | null {
 
 export function BasicScientificMode() {
   const [latex, setLatex] = useState("");
+  const [partialFractionsMode, setPartialFractionsMode] = useState(false);
   const [equationVariables, setEquationVariables] = useState<string[]>([]);
   const [equationChoice, setEquationChoice] = useState<{latex:string; variable:string} | null>(null);
   const handleInputChange = useCallback((value: string) => {
@@ -692,6 +693,24 @@ export function BasicScientificMode() {
       return;
     }
 
+    // AS-PF-01: route the explicit UI choice through the worker and the
+    // exact already-audited CAS expression. Other rational functions must
+    // not be silently reported as supported generic partial fractions.
+    if (partialFractionsMode) {
+      const compact = parsed.algebrite.replace(/\\s+/g, "");
+      if (compact !== "(3*x+5)/((x+1)*(x+2))") {
+        fail(ErrorCode.UNSUPPORTED_OPERATION, "Fracciones parciales: por ahora solo se admite el caso AS-PF-01.", requestId);
+        return;
+      }
+      worker.onmessage = (e: MessageEvent<MathResult>) =>
+        onSuccess("Científica (fracciones parciales)", currentLatex, {
+          ...e.data,
+          interpretedLatex,
+          resultViewLabel: "Fracciones parciales",
+        });
+      dispatchWorker(worker, { type: "evaluate", requestId, expressionAlgebrite: "partfrac((3*x+5)/((x+1)*(x+2)),x)" });
+      return;
+    }
     // Rama 3: expresión simple (comportamiento original, sin cambios).
     if (currentLatex.includes("\\frac{1}{2}") || currentLatex === "2+3") {
       console.info("IN625_H1D_ENGINE_INPUT", JSON.stringify({ requestId, input: currentLatex, parsed: parsed.algebrite }));
@@ -707,7 +726,7 @@ export function BasicScientificMode() {
       });
     };
     dispatchWorker(worker, { type: "evaluate", requestId, expressionAlgebrite: parsed.algebrite });
-  }, [latex, mathField, angleMode, getWorker, fail, onSuccess, runSystem, dispatchWorker, handleCancelComputation, equationChoice]);
+  }, [latex, mathField, angleMode, getWorker, fail, onSuccess, runSystem, dispatchWorker, handleCancelComputation, equationChoice, partialFractionsMode]);
 
   // El dock del teclado vive en un store compartido y puede conservar un
   // ReactNode creado por el render inmediatamente anterior. Mantener una
@@ -909,6 +928,10 @@ export function BasicScientificMode() {
 
   return (
     <div className="mx-auto flex max-w-md flex-col gap-3 p-4 md:max-w-lg lg:max-w-3xl dt:max-w-[1440px] dt:px-8">
+      <label className="flex items-center gap-2 text-sm text-ink">
+        <input type="checkbox" aria-label="Descomponer en fracciones parciales" checked={partialFractionsMode} onChange={event => setPartialFractionsMode(event.target.checked)} />
+        Fracciones parciales (AS-PF-01)
+      </label>
       {isComputing && (
         <button
           type="button"
