@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 88,
+  "revision": 89,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,19 +134,19 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-PF-01-ENGINE-CI-REVIEW",
+    "id": "ALGEBRA114-AS-PF-01-LITE-CI-REVIEW",
     "status": "PENDING_CI",
-    "technical_sha": "403f55ee3d59f68ed893c28401db0393e42dc224",
-    "run_id": 39108438552,
+    "technical_sha": "ed9c2591ad0d77237c46b997427ed85373f92f8e",
+    "run_id": 39108799997,
     "files": [
       "qa/certification/algebra114_source.md",
       "tests/algebra114AsPf01.audit.test.ts"
     ],
-    "action": "Review original AS-PF-01 exact-SHA cumulative logs; diagnose failed engine decomposition without weakening mathematical oracle. Afterwards assess HTTP/UI exposure before declaring contractual closure.",
+    "action": "Review exact technical-SHA Lite corrected partial-fractions gate and verify real execution. Plus service scope is PASS; do not claim global AS-PF-01 closure before HTTP/UI parity and generalized algebra capability assessment.",
     "exit_criteria": [
-      "Actual engine decomposition rather than identity only",
-      "Correct poles and coefficients verified",
-      "CI logs reviewed, HTTP/UI scope separately tracked"
+      "Lite corrected original AS-PF-01 test executed PASS",
+      "No existing input gates duplicated",
+      "HTTP/UI and generalized decomposition tracked separately"
     ]
   },
   "blockers": [
