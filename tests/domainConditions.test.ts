@@ -40,3 +40,5 @@ describe("domainConditions", () => {
     expect(mergeDomainConditions(a, b)).toHaveLength(1);
   });
 });
+
+// Algebra114 AS-SIM-05: source-domain witness for cancellable rational expression.
