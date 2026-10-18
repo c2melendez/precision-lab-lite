@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 83,
+  "revision": 84,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,19 +134,19 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-FAC-09-CI-REVIEW",
+    "id": "ALGEBRA114-AS-FAC-09-REAL-FACTOR-CI-REVIEW",
     "status": "PENDING_CI",
-    "technical_sha": "5b4fab480cd6da07f72a8a57866a88c7943925b1",
-    "run_id": 39103730075,
+    "technical_sha": "7deaf7551833b10d5bbd4d6f0408bdf95ae6bb56",
+    "run_id": 39104591871,
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsFac09.audit.test.ts"
+      "src/engine/algebriteClient.ts"
     ],
-    "action": "Review exact-SHA AS-FAC-09 gates and diagnose real irrational-coefficient factorization; if failure correct product, do not weaken factor structural oracle; then review new runs and proceed AS-FAC-10 only after bilateral PASS.",
+    "action": "Review exact SHA automatic cumulative run verifying real irrational-coefficient quadratic factors for AS-FAC-09; diagnose and fix if failed, and then proceed to AS-FAC-10 only after bilateral verified PASS.",
     "exit_criteria": [
-      "True real-domain quadratic factorization demonstrated by actual engine",
-      "Bilateral exact-SHA CI executed and logs reviewed",
-      "Record results and move to AS-FAC-10 after PASS"
+      "AS-FAC-09 original R factors valid and correctly executed in both engines",
+      "Cumulative and applicable companion gates reviewed",
+      "Record bilateral evidence before AS-FAC-10"
     ]
   },
   "blockers": [
