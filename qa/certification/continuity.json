@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 84,
+  "revision": 85,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,19 +134,19 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-FAC-09-REAL-FACTOR-CI-REVIEW",
+    "id": "ALGEBRA114-AS-FAC-10-CI-REVIEW",
     "status": "PENDING_CI",
-    "technical_sha": "7deaf7551833b10d5bbd4d6f0408bdf95ae6bb56",
-    "run_id": 39104591871,
+    "technical_sha": "2268756536bda5a782c8b6c7fb4e0b179093e251",
+    "run_id": 39105496119,
     "files": [
       "qa/certification/algebra114_source.md",
-      "src/engine/algebriteClient.ts"
+      "tests/algebra114AsFac10.audit.test.ts"
     ],
-    "action": "Review exact SHA automatic cumulative run verifying real irrational-coefficient quadratic factors for AS-FAC-09; diagnose and fix if failed, and then proceed to AS-FAC-10 only after bilateral verified PASS.",
+    "action": "Review exact SHA cumulative and companion gates for original AS-FAC-10 two-variable sum of cubes; only after actual bilateral PASS proceed AS-FAC-11. Diagnose any failure without rerunning unchanged inputs.",
     "exit_criteria": [
-      "AS-FAC-09 original R factors valid and correctly executed in both engines",
-      "Cumulative and applicable companion gates reviewed",
-      "Record bilateral evidence before AS-FAC-10"
+      "AS-FAC-10 original two-variable polynomial factorization executed and verified",
+      "Both exact-SHA cumulative logs reviewed",
+      "Bilateral scoped PASS documented before advancing AS-FAC-11"
     ]
   },
   "blockers": [
