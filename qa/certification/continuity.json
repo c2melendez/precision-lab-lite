@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 87,
+  "revision": 88,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,19 +134,19 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-FAC-12-CI-REVIEW",
+    "id": "ALGEBRA114-AS-PF-01-ENGINE-CI-REVIEW",
     "status": "PENDING_CI",
-    "technical_sha": "e5b13d515b4770b0a8384b0aa1bf1e886f3ef12d",
-    "run_id": 39106338402,
+    "technical_sha": "403f55ee3d59f68ed893c28401db0393e42dc224",
+    "run_id": 39108438552,
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsFac12.audit.test.ts"
+      "tests/algebra114AsPf01.audit.test.ts"
     ],
-    "action": "Review exact SHA AS-FAC-12 cumulative jobs/logs; confirm three-variable alternating polynomial factorization and sign. Diagnose any failure, then advance to the next contractual case only after bilateral PASS.",
+    "action": "Review original AS-PF-01 exact-SHA cumulative logs; diagnose failed engine decomposition without weakening mathematical oracle. Afterwards assess HTTP/UI exposure before declaring contractual closure.",
     "exit_criteria": [
-      "AS-FAC-12 execution verified for Lite and Plus",
-      "Correct sign and structural factoring",
-      "Both CI results and any blockers persisted"
+      "Actual engine decomposition rather than identity only",
+      "Correct poles and coefficients verified",
+      "CI logs reviewed, HTTP/UI scope separately tracked"
     ]
   },
   "blockers": [
