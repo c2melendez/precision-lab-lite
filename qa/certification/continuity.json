@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 63,
+  "revision": 64,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-SIM-07-CI-REVIEW",
+    "id": "ALGEBRA114-AS-SIM-08-CI-REVIEW",
     "status": "PENDING_CI",
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsSim07.audit.test.ts"
+      "tests/algebra114AsSim08.audit.test.ts"
     ],
-    "action": "Review exact-SHA automatic cumulative gates for AS-SIM-07 sqrt(x^2)=Abs(x) real, especially negative inputs. Do not dispatch redundant workflows. Record failures and repair only with evidence.",
+    "action": "Review exact-SHA auto CI for AS-SIM-08 sqrt(x^3)=x sqrt(x), with real x>=0; retain even_root domain checks and no manual redundant dispatch; repair any evidenced test/product issue.",
     "exit_criteria": [
-      "Both regression cases run green on current technical SHAs",
-      "Original absolute-value oracle verified on negative numbers",
-      "Global certification remains OPEN"
+      "Lite and Plus exact-SHA AS-SIM-08 checks PASS",
+      "Domain x>=0 verified alongside positive-point identity",
+      "Global OPEN"
     ]
   },
   "blockers": [
@@ -989,6 +989,20 @@
         "sha": "647a19bfe15cd82270647d81ef1e99f10fe33e34",
         "run": 39083417070,
         "scope": "HTTP symbolic result and x != 2 exclusion"
+      },
+      "global": "OPEN"
+    },
+    "ALGEBRA114-AS-SIM-07-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "lite": {
+        "sha": "0568f5d11cea26cbed548921a0c339e453514e47",
+        "run": 39085844130,
+        "scope": "local real sqrt(x^2)=abs(x) including negative values"
+      },
+      "plus": {
+        "sha": "7daaa556230c8c92ce67bc10579795295177125e",
+        "run": 39085835325,
+        "scope": "HTTP real absolute-value oracle including negative values"
       },
       "global": "OPEN"
     }
