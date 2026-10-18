@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 62,
+  "revision": 63,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-SIM-06-LITE-RETRY-REVIEW",
+    "id": "ALGEBRA114-AS-SIM-07-CI-REVIEW",
     "status": "PENDING_CI",
     "files": [
-      "tests/algebra114AsSim06.audit.test.ts",
-      "backend/tests/test_algebra114_as_sim06.py"
+      "qa/certification/algebra114_source.md",
+      "tests/algebra114AsSim07.audit.test.ts"
     ],
-    "action": "Inspect cumulative Lite run 39084082168 for exact SHA b32c9b0 and original AS-SIM-06 test. Plus run 39083417070 is already PASS; do not dispatch again. Preserve x!=2 mathematical restriction and global OPEN.",
+    "action": "Review exact-SHA automatic cumulative gates for AS-SIM-07 sqrt(x^2)=Abs(x) real, especially negative inputs. Do not dispatch redundant workflows. Record failures and repair only with evidence.",
     "exit_criteria": [
-      "Lite revised AS-SIM-06 test passes with actual CI evidence",
-      "Both scoped outcomes recorded; no redundancy",
-      "Only then proceed to AS-SIM-07"
+      "Both regression cases run green on current technical SHAs",
+      "Original absolute-value oracle verified on negative numbers",
+      "Global certification remains OPEN"
     ]
   },
   "blockers": [
@@ -979,19 +979,16 @@
       "global": "OPEN"
     },
     "ALGEBRA114-AS-SIM-06-20261017": {
-      "status": "PARTIAL_PLUS_PASS_LITE_RETRY_PENDING",
+      "status": "PASS_SCOPED_BILATERAL",
+      "lite": {
+        "sha": "b32c9b037eb7f98eecfcff6743b5f36fb563607e",
+        "run": 39084082168,
+        "scope": "rational identity and denominator exclusion from original parser"
+      },
       "plus": {
         "sha": "647a19bfe15cd82270647d81ef1e99f10fe33e34",
         "run": 39083417070,
-        "conclusion": "success"
-      },
-      "lite": {
-        "failed_sha": "f6e3be121be5b251d556081325cf79da15ae34a3",
-        "failed_run": 39083434416,
-        "diagnosis": "Number(evaluate(rational)) yielded NaN; changed test-only numeric conversion to compileNumeric",
-        "revised_sha": "b32c9b037eb7f98eecfcff6743b5f36fb563607e",
-        "retry_run": 39084082168,
-        "status": "queued"
+        "scope": "HTTP symbolic result and x != 2 exclusion"
       },
       "global": "OPEN"
     }
