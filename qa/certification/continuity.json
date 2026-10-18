@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 67,
+  "revision": 68,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-EXP-01-CI-REVIEW",
+    "id": "ALGEBRA114-AS-EXP-02-CI-REVIEW",
     "status": "PENDING_CI",
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsExp01.audit.test.ts"
+      "tests/algebra114AsExp02.audit.test.ts"
     ],
-    "action": "Review automatically triggered exact-SHA cumulative gates for first expansion case AS-EXP-01 (x+1)(x-1)=x^2-1. Confirm case test in both engines before PASS. Avoid manual redundant runs; global OPEN.",
+    "action": "Review exact-SHA automatic cumulative gates for AS-EXP-02 (x+2)^2=x^2+4x+4. Verify both specific tests, only then record PASS. Avoid manual re-dispatch; global OPEN.",
     "exit_criteria": [
-      "Scoped Lite expansion and Plus HTTP expansion tests green",
-      "Record exact SHA/run and advance only then",
-      "Do not claim remaining 103 cases certified"
+      "Lite original expansion and Plus HTTP expansion verified PASS",
+      "Record exact run ID and tested SHA",
+      "Proceed to AS-EXP-03 only on bilateral PASS"
     ]
   },
   "blockers": [
@@ -1044,6 +1044,20 @@
         "run": 39087895322
       },
       "scope": "source rational identity and three source-domain exclusions",
+      "global": "OPEN"
+    },
+    "ALGEBRA114-AS-EXP-01-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "lite": {
+        "sha": "326c96ab78b56a36a96cf9a13db8bb8d96150254",
+        "run": 39088489200,
+        "scope": "local engine expand and signed samples"
+      },
+      "plus": {
+        "sha": "e9c8f138f5a858a5de37db01abbea552b0b99571",
+        "run": 39088495784,
+        "scope": "HTTP expand and symbolic equivalence"
+      },
       "global": "OPEN"
     }
   },
