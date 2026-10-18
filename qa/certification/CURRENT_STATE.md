@@ -1,5 +1,11 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## 2026-10-17 — AS-FAC-05 PASS bilateral; AS-FAC-06 publicado, CI pendiente
+Se revisaron runs exactos del AS-FAC-05: Plus acumulativo 39097643297 (1520 PASS, 3 XFAIL, AS-FAC-05 HTTP ejecutado PASS) y H1d 39097643355 SUCCESS; Lite acumulativo 39097645507 (1651 PASS, 30 TODO), H1d 39097645489 y nativo 39097645487 SUCCESS. Gates ejecutados, no REUSE. AS-FAC-05 PASS limitado al contrato algebraico; global OPEN.
+AS-FAC-06 original del contrato `algebra114_source.md`: `x^3-6x^2+11x-6=(x-1)(x-2)(x-3)`. Publicados tests técnicos Plus SHA `c2b14947dc59efe005282b5d7dd582567ffcc582` ruta `backend/tests/test_algebra114_as_fac06.py` y Lite SHA `4cd9dbf4e2042d9c94b3b3ac47f5ea7c7e1c6bea` ruta `tests/algebra114AsFac06.audit.test.ts`. Runs automáticos identificados: Plus H1d 39099645340; Lite acumulativo 39099647642, H1d 39099647389 y nativo 39099647359. En observación estaban in_progress/queued. Buscar además Plus acumulativo por rama/SHA: no inferir ausencia de CI a partir de una lista parcial.
+**Siguiente acción única:** revisar estado/jobs/logs en ambos SHAs técnicos, incluido el gate acumulativo Plus. Validar que la prueba AS-FAC-06 realmente se ejecutó. Si éxito, registrar cierre bilateral y seleccionar AS-FAC-07; si fallo, corregir la capa concreta. No hacer dispatch redundante. Bloqueos S19/S25/H2-SG28-DIST y XFAIL/TODO permanecen OPEN/BLOCKED; no producción ni deploy.
+
+
 ## 2026-10-17 — Algebra114 AS-FAC-05, ejecución técnica publicada
 AS-FAC-04 completó gates: Plus acumulativo [39097127130](https://github.com/c2melendez/precision-lab-plus/actions/runs/39097127130) SUCCESS (backend 1519 PASS/3 XFAIL); Lite H1d [39097123013](https://github.com/c2melendez/precision-lab-lite/actions/runs/39097123013) SUCCESS (22 Playwright PASS). No repetir esas entradas.
 Siguiente AS-FAC-05 del contrato `algebra114_source.md`: `x^3+1 = (x+1)(x^2-x+1)`. Pruebas técnicas publicadas: Plus `a4657060433454ff8cec531f8244c73638ea4f11` en `backend/tests/test_algebra114_as_fac05.py`; Lite `01aa5f63f339dfce730663115811f6d4f228adc8` en `tests/algebra114AsFac05.audit.test.ts`. CI automática detectada: Plus acumulativo 39097643297 y H1d 39097643355; Lite acumulativo 39097645507, H1d 39097645489, nativo 39097645487. Todos IN_PROGRESS/QUEUED en consulta; NO atribuir PASS todavía.
