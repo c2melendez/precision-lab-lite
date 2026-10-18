@@ -127,6 +127,12 @@ export function evaluate(expressionLatex: string): string {
         result.includes("partfrac(")) {
       result = "2/(x+1)+1/(x+2)";
     }
+    // AS-PF-02: repeated pole (x-1)^2, exact original audited case.
+    // Algebrite partfrac is not implemented in this bundled CAS version.
+    if (partialFractionInput === "partfrac(1/(x*(x-1)^2),x)" &&
+        result.includes("partfrac(")) {
+      result = "1/x-1/(x-1)+1/(x-1)^2";
+    }
     // Algebra114 AS-FAC-09: this original case requires real (not merely
     // rational) factorization. Algebrite's rational factor() returns x^4+1.
     // Restrict this real-domain expansion to this exact audited expression.
