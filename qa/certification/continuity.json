@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 64,
+  "revision": 65,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-SIM-08-CI-REVIEW",
+    "id": "ALGEBRA114-AS-SIM-09-CI-REVIEW",
     "status": "PENDING_CI",
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsSim08.audit.test.ts"
+      "tests/algebra114AsSim09.audit.test.ts"
     ],
-    "action": "Review exact-SHA auto CI for AS-SIM-08 sqrt(x^3)=x sqrt(x), with real x>=0; retain even_root domain checks and no manual redundant dispatch; repair any evidenced test/product issue.",
+    "action": "Review exact-SHA automatic cumulative gates for AS-SIM-09 (x-1)/(1-x)=-1 with x != 1. Credit scoped PASS only when the original case test and required domain exclusion pass in both engines. No redundant manual dispatch; global OPEN.",
     "exit_criteria": [
-      "Lite and Plus exact-SHA AS-SIM-08 checks PASS",
-      "Domain x>=0 verified alongside positive-point identity",
-      "Global OPEN"
+      "Lite and Plus specific AS-SIM-09 CI evidence verified",
+      "x != 1 preserved",
+      "Proceed to next original AS-* case only after bilateral outcome"
     ]
   },
   "blockers": [
@@ -1003,6 +1003,20 @@
         "sha": "7daaa556230c8c92ce67bc10579795295177125e",
         "run": 39085835325,
         "scope": "HTTP real absolute-value oracle including negative values"
+      },
+      "global": "OPEN"
+    },
+    "ALGEBRA114-AS-SIM-08-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "lite": {
+        "sha": "5c41071e7240826afd380ff98c41638875c6f1ad",
+        "run": 39086947288,
+        "scope": "real radical identity and even_root domain"
+      },
+      "plus": {
+        "sha": "9685e4cd257e662bf16c74ad2c63f8f582470eb8",
+        "run": 39086951116,
+        "scope": "HTTP identity and even_root domain"
       },
       "global": "OPEN"
     }
