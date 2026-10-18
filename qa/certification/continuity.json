@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 77,
+  "revision": 78,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-FAC-01-CI-REVIEW",
+    "id": "ALGEBRA114-AS-FAC-02-CI-REVIEW",
     "status": "PENDING_CI",
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsFac01.audit.test.ts"
+      "tests/algebra114AsFac02.audit.test.ts"
     ],
-    "action": "Check exact-SHA automatic cumulative CI for AS-FAC-01 x^2-9=(x-3)(x+3), with actual factoring not mere expansion, and confirm both test logs. Correct any discovered failure without weakening source oracle; no redundant manual dispatch. Global OPEN.",
+    "action": "Review auto cumulative CI exact SHA for AS-FAC-02 x^2+5x+6=(x+2)(x+3); verify factorization and case-specific logs in Lite and Plus. Do not manually dispatch redundant workflows; global remains OPEN.",
     "exit_criteria": [
-      "AS-FAC-01 case tests success on exact SHA Lite and Plus",
-      "Record run IDs and proven SHA",
-      "Advance AS-FAC-02 only after bilateral PASS"
+      "Both AS-FAC-02 tests green on matching tested SHAs",
+      "Record exact run IDs and SHAs",
+      "Proceed AS-FAC-03 only on bilateral PASS"
     ]
   },
   "blockers": [
@@ -1178,6 +1178,19 @@
         "run": 39094885924
       },
       "scope": "signed expansion original, completion of AS-EXP 10/10 scoped",
+      "global": "OPEN"
+    },
+    "ALGEBRA114-AS-FAC-01-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "lite": {
+        "sha": "2f6e2901730aecdfbb8f42930f9fed76c9bada73",
+        "run": 39095371440
+      },
+      "plus": {
+        "sha": "0eed47e6e0769fcb6152a340ea7e5642e3c5d3dc",
+        "run": 39095360828
+      },
+      "scope": "source-anchored difference of squares factoring",
       "global": "OPEN"
     }
   },
