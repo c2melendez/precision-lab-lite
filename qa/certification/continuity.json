@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 95,
+  "revision": 96,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,19 +134,15 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-PF-03-CI-REVIEW",
+    "id": "ALGEBRA114-AS-PF-03-LITE-RETEST",
     "status": "PENDING_CI",
-    "technical_sha": "bce35b30b4367f3836e640353307b7af61c10252",
-    "run_id": 39159651073,
-    "files": [
-      "qa/certification/algebra114_source.md",
-      "tests/algebra114AsPf03.audit.test.ts"
-    ],
-    "action": "Review exact-SHA automatic cumulative AS-PF-03 test/logs. Diagnose failure without weakening original two-term partial-fraction oracle. Advance AS-PF-04 only after scope-limited bilateral PASS.",
+    "technical_sha": "5686581ca063ed494c03b6a1499ea8c6fbc427b1",
+    "run_id": 39160987767,
+    "action": "Check exact-SHA Lite cumulative AS-PF-03 after numeric oracle correction. Plus original service+HTTP PASS already verified. Proceed to AS-PF-04 only after Lite original decomposition test PASS. Avoid redundant Actions.",
     "exit_criteria": [
-      "Original AS-PF-03 executed with correct irreducible quadratic partial term",
-      "Both cumulative results and exact SHA recorded",
-      "UI and general CAS gaps separately maintained"
+      "Lite AS-PF-03 exact decomposition and numeric substitution PASS",
+      "Both exact SHA and CI logs documented",
+      "Uncertified generic CAS and UI gaps retained"
     ]
   },
   "blockers": [
