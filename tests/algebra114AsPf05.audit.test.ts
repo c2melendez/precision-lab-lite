@@ -12,7 +12,7 @@ describe("Algebra114 AS-PF-05 improper rational and exclusions", () => {
     expect(domain(1)).toBe(false);
     const actual = evaluate("partfrac(" + original + ",x)");
     expect(actual).not.toContain("partfrac(");
-    expect(actual.replace(/\\s+/g, "")).toBe("x+1/(x-1)");
+    expect(actual.replace(/\s+/g, "")).toBe("x+1/(x-1)");
     for (const x of [-4,-2,0,2,3,5]) {
       expect(domain(x)).toBe(true);
       const value = compileNumeric(actual.replace(/x/g, "(" + x + ")"), "__no_var__")(0);
