@@ -1,5 +1,9 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## 2026-10-18 — AS-PF-03 bilateral PASS; AS-PF-04 CI pending
+Original AS-PF-03 decomposition verified executed PASS Plus cumulative 39159648671 technical SHA dd63bdd211264864ab8af1b564f1954f053e6fed (1531 PASS/3 XFAIL) and Lite cumulative 39160987767 technical SHA 5686581ca063ed494c03b6a1499ea8c6fbc427b1 (1661 PASS/30 TODO). Scope Plus service+HTTP, Lite original engine. Next AS-PF-04 original (2x+3)/(x^2-4) = 7/(4(x-2))+1/(4(x+2)). Lite narrow exact CAS fallback commit 5923297312aab60eb63d197c7e0a8845c98e506e and regression technical SHA 78415c19d3f8e9a33a816866273970a5e56c0de8, automatic cumulative 39163654121 queued. Plus service+HTTP regression technical SHA 1c295333f4db7a02a0ba9475c86c0c39cfa61fcd, cumulative 39163650520 in progress. No manual rerun; AS-PF-04 PASS not yet confirmed. Lite generic partial fractions and Lite UI for later cases remain uncertified; global OPEN with S19/S25/SG28-DIST.
+
+
 ## 2026-10-18 — AS-PF-03 Plus PASS, Lite numeric oracle repair awaiting CI
 Plus cumulative 39159648671 exact SHA dd63bdd211264864ab8af1b564f1954f053e6fed SUCCESS, original AS-PF-03 service+HTTP test PASSED, 1531 passed/3 xfailed. Lite cumulative 39159651073 SHA bce35b30b4367f3836e640353307b7af61c10252 FAILED in tests/algebra114AsPf03.audit.test.ts due to numeric parser "Expresión numérica con caracteres sobrantes al final." The audited exact CAS decomposition implementation SHA bccb5f014125c028b7ce7dc8580c8feaa89ec6be was not disproved. Lite test correction SHA 5686581ca063ed494c03b6a1499ea8c6fbc427b1 requires exact factor-decomposition string, verifies numeric points by direct numeric parser on substitution without reprocessing through Algebrite. Automatic cumulative 39160987767 and H1d/native launched, awaiting results. No AS-PF-03 bilateral PASS yet; do not start AS-PF-04 until exact-SHA Lite PASS. UI/general partial-fraction scope and global S19/S25/SG28-DIST remain open.
 
