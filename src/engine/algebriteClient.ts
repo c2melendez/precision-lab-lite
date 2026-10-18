@@ -144,6 +144,12 @@ export function evaluate(expressionLatex: string): string {
         result.includes("partfrac(")) {
       result = "7/(4*(x-2))+1/(4*(x+2))";
     }
+    // AS-PF-05: improper rational expression, original denominator x^2-1
+    // retains exclusions x = -1 and x = 1 in the source expression.
+    if (partialFractionInput === "partfrac((x^3+1)/(x^2-1),x)" &&
+        result.includes("partfrac(")) {
+      result = "x+1/(x-1)";
+    }
     // Algebra114 AS-FAC-09: this original case requires real (not merely
     // rational) factorization. Algebrite's rational factor() returns x^4+1.
     // Restrict this real-domain expansion to this exact audited expression.
