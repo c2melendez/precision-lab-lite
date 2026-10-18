@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 72,
+  "revision": 73,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-EXP-06-CI-REVIEW",
+    "id": "ALGEBRA114-AS-EXP-07-CI-REVIEW",
     "status": "PENDING_CI",
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsExp06.audit.test.ts"
+      "tests/algebra114AsExp07.audit.test.ts"
     ],
-    "action": "Review automatic exact-SHA cumulative CI for AS-EXP-06 (x+y)^3=x^3+3x^2y+3xy^2+y^3, two-symbol cases. Confirm specific scoped test execution before PASS; no manual re-dispatch. Global OPEN.",
+    "action": "Check exact-SHA cumulative CI for original AS-EXP-07 (2x-3)^3=8x^3-36x^2+54x-27; verify specific case tests and only grant scoped PASS on both green. Do not launch redundant manual CI; global OPEN.",
     "exit_criteria": [
-      "Lite and Plus AS-EXP-06 pass at exact tested SHAs",
-      "Record case-specific logs, run IDs and SHA",
-      "Only then proceed AS-EXP-07"
+      "Scoped AS-EXP-07 tests green on exact SHAs for both repos",
+      "Record matching CI IDs and SHA proof",
+      "Proceed AS-EXP-08 only after bilateral PASS"
     ]
   },
   "blockers": [
@@ -1113,6 +1113,19 @@
         "run": 39092284425
       },
       "scope": "original (x-1)(x^2+x+1)=x^3-1, local and HTTP expand",
+      "global": "OPEN"
+    },
+    "ALGEBRA114-AS-EXP-06-20261017": {
+      "status": "PASS_SCOPED_BILATERAL",
+      "lite": {
+        "sha": "1be961af9da42a93127830a53ca9172cd1c522db",
+        "run": 39092708564
+      },
+      "plus": {
+        "sha": "f34b5aa8692931a0287d838d02dd21215c3ec505",
+        "run": 39092698235
+      },
+      "scope": "original two-variable cubic identity local and HTTP",
       "global": "OPEN"
     }
   },
