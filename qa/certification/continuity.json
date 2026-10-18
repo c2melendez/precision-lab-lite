@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 82,
+  "revision": 83,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,19 +134,19 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-FAC-08-CI-REVIEW",
+    "id": "ALGEBRA114-AS-FAC-09-CI-REVIEW",
     "status": "PENDING_CI",
+    "technical_sha": "5b4fab480cd6da07f72a8a57866a88c7943925b1",
+    "run_id": 39103730075,
     "files": [
       "qa/certification/algebra114_source.md",
-      "tests/algebra114AsFac08.audit.test.ts"
+      "tests/algebra114AsFac09.audit.test.ts"
     ],
-    "technical_sha": "89a12b3efee3537da3059a8c43009b57b3ab928f",
-    "run_id": 39102602458,
-    "action": "Inspect exact-SHA cumulative/H1d and native runs for AS-FAC-08; verify original Sophie Germain factorization executed and correct, diagnose any real failure. When bilateral PASS, proceed to AS-FAC-09; no redundant dispatch.",
+    "action": "Review exact-SHA AS-FAC-09 gates and diagnose real irrational-coefficient factorization; if failure correct product, do not weaken factor structural oracle; then review new runs and proceed AS-FAC-10 only after bilateral PASS.",
     "exit_criteria": [
-      "AS-FAC-08 regression executed and passes both gates",
-      "Reviewed jobs/logs and recorded evidence",
-      "Next AS-FAC-09 only after bilateral PASS"
+      "True real-domain quadratic factorization demonstrated by actual engine",
+      "Bilateral exact-SHA CI executed and logs reviewed",
+      "Record results and move to AS-FAC-10 after PASS"
     ]
   },
   "blockers": [
