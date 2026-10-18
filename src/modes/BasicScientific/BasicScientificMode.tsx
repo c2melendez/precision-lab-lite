@@ -697,7 +697,7 @@ export function BasicScientificMode() {
     // exact already-audited CAS expression. Other rational functions must
     // not be silently reported as supported generic partial fractions.
     if (partialFractionsMode) {
-      const compact = parsed.algebrite.replace(/\\s+/g, "");
+      const compact = currentLatex.replace(/\s+/g, "");
       if (compact !== "(3*x+5)/((x+1)*(x+2))") {
         fail(ErrorCode.UNSUPPORTED_OPERATION, "Fracciones parciales: por ahora solo se admite el caso AS-PF-01.", requestId);
         return;
