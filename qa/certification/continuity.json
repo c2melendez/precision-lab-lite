@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 90,
+  "revision": 91,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,15 +134,15 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-PF-01-HTTP-CI-REVIEW",
+    "id": "ALGEBRA114-AS-PF-01-FRONTEND-API-CI-REVIEW",
     "status": "PENDING_CI",
     "technical_sha": "ed9c2591ad0d77237c46b997427ed85373f92f8e",
     "run_id": 39108799997,
-    "action": "Inspect Plus new HTTP AS-PF-01 exact technical SHA gate and check original test; if passing, inspect frontend/UI parity and capability coverage before contractual closure. Do not rerun any unchanged gate.",
+    "action": "Inspect new exact-SHA Plus frontend API contract CI and verify partial-fractions endpoint whitelist/type compatibility. Determine user-facing UI integration; do not declare AS-PF-01 full product PASS without UI evidence.",
     "exit_criteria": [
-      "Plus AS-PF-01 HTTP response and math verified",
-      "Lite engine scoped original regression verified",
-      "UI and general fractions capability gaps explicitly tracked"
+      "Plus HTTP test PASS retained",
+      "Client endpoint whitelist and operation mapping compile and tests PASS",
+      "UI parity and broader Lite capability separately evaluated"
     ]
   },
   "blockers": [
