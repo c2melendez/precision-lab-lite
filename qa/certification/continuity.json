@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 99,
+  "revision": 100,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,15 +134,18 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-PF-05-PLUS-RETEST",
+    "id": "ALGEBRA114-AS-PF-06-CI-REVIEW",
     "status": "PENDING_CI",
-    "technical_sha": "b1724b41e684ee4694d9d10bc3e61157a6dee2f0",
-    "run_id": 39167688127,
-    "action": "Review exact SHA Plus AS-PF-05 repaired original-domain regression cumulative 39172881523 and logs, Lite AS-PF-05 already PASS run 39167688127. Advance to AS-PF-06 only if Plus executed PASS; do not redispatch unchanged CI.",
+    "technical_sha": "c012b05291fc6e2faf75d75471d08e5f032ca247",
+    "run_id": 39174622983,
+    "files": [
+      "tests/algebra114AsPf06.audit.test.ts"
+    ],
+    "action": "Review exact technical SHA original AS-PF-06 cumulative and actual case logs, rectify verified failures. Advance AS-PF-07 only if bilateral PASS. Never redispatch unchanged CI.",
     "exit_criteria": [
-      "Plus AS-PF-05 original rational result and exclusions PASS",
-      "Both exact technical SHA logs documented",
-      "No redundant workflow dispatch"
+      "AS-PF-06 exact decomposition and numeric equivalence verified",
+      "Bilateral CI job-level evidence documented",
+      "Known UI/general CAS gaps preserved"
     ]
   },
   "blockers": [
