@@ -1,5 +1,9 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## 2026-10-18 — AS-PF-04 verified PASS, AS-PF-05 pending exact-SHA CI
+AS-PF-04 bilateral executed PASS: Plus run 39163650520 SHA 1c295333f4db7a02a0ba9475c86c0c39cfa61fcd 1532 PASS/3 XFAIL; Lite run 39163654121 SHA 78415c19d3f8e9a33a816866273970a5e56c0de8 1662 PASS/30 TODO. Next original AS-PF-05 improper rational (x^3+1)/(x^2-1) = x+1/(x-1), with original exclusions x != -1,+1. Plus service and HTTP test SHA 2926eed73d943764a8d3c180661d4cc72877a07f cumulative 39167663956 IN_PROGRESS. Lite exact-expression scoped engine correction SHA 7b6d85a3f1187acaf75b11938407ab833691d638, test technical SHA b1724b41e684ee4694d9d10bc3e61157a6dee2f0 cumulative 39167688127 QUEUED. Do not claim AS-PF-05 PASS without exact technical CI logs. Domain exclusions must refer to original rational function, not only simplified form. Lite UI/general partial fractions and global certification blockers still OPEN. Avoid redundant CI dispatch.
+
+
 ## 2026-10-18 — AS-PF-03 bilateral PASS; AS-PF-04 CI pending
 Original AS-PF-03 decomposition verified executed PASS Plus cumulative 39159648671 technical SHA dd63bdd211264864ab8af1b564f1954f053e6fed (1531 PASS/3 XFAIL) and Lite cumulative 39160987767 technical SHA 5686581ca063ed494c03b6a1499ea8c6fbc427b1 (1661 PASS/30 TODO). Scope Plus service+HTTP, Lite original engine. Next AS-PF-04 original (2x+3)/(x^2-4) = 7/(4(x-2))+1/(4(x+2)). Lite narrow exact CAS fallback commit 5923297312aab60eb63d197c7e0a8845c98e506e and regression technical SHA 78415c19d3f8e9a33a816866273970a5e56c0de8, automatic cumulative 39163654121 queued. Plus service+HTTP regression technical SHA 1c295333f4db7a02a0ba9475c86c0c39cfa61fcd, cumulative 39163650520 in progress. No manual rerun; AS-PF-04 PASS not yet confirmed. Lite generic partial fractions and Lite UI for later cases remain uncertified; global OPEN with S19/S25/SG28-DIST.
 
