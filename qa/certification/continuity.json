@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 98,
+  "revision": 99,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,18 +134,15 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-PF-05-CI-REVIEW",
+    "id": "ALGEBRA114-AS-PF-05-PLUS-RETEST",
     "status": "PENDING_CI",
     "technical_sha": "b1724b41e684ee4694d9d10bc3e61157a6dee2f0",
     "run_id": 39167688127,
-    "files": [
-      "tests/algebra114AsPf05.audit.test.ts"
-    ],
-    "action": "Review automatic exact-SHA AS-PF-05 cumulative jobs and original tests, especially original-domain exclusions x != ±1. Diagnose any failure and only then advance AS-PF-06; never redispatch unchanged workflows.",
+    "action": "Review exact SHA Plus AS-PF-05 repaired original-domain regression cumulative 39172881523 and logs, Lite AS-PF-05 already PASS run 39167688127. Advance to AS-PF-06 only if Plus executed PASS; do not redispatch unchanged CI.",
     "exit_criteria": [
-      "Original improper fraction identity verified",
-      "Original domain exclusions preserved in audit",
-      "Bilateral execution evidence documented"
+      "Plus AS-PF-05 original rational result and exclusions PASS",
+      "Both exact technical SHA logs documented",
+      "No redundant workflow dispatch"
     ]
   },
   "blockers": [
