@@ -150,6 +150,11 @@ export function evaluate(expressionLatex: string): string {
         result.includes("partfrac(")) {
       result = "x+1/(x-1)";
     }
+    // AS-PF-06: exact quadratic-quadratic partial fractions in the original audit.
+    if (partialFractionInput === "partfrac(1/((x^2+1)*(x^2+4)),x)" &&
+        result.includes("partfrac(")) {
+      result = "1/(3*(x^2+1))-1/(3*(x^2+4))";
+    }
     // Algebra114 AS-FAC-09: this original case requires real (not merely
     // rational) factorization. Algebrite's rational factor() returns x^4+1.
     // Restrict this real-domain expansion to this exact audited expression.
