@@ -499,3 +499,10 @@ AS-DIV-06 original añadido. Lite `36225e2cf1af6571e0ef6b4c2e757acd1b34005a`, Pl
 ### AS-DIV-06 — actualización de resultados parciales (2026-10-19)
 
 Lite `36225e2cf1af6571e0ef6b4c2e757acd1b34005a`: acumulativo 39218286674 SUCCESS; test original PASS, 1717 PASS/30 TODO; H1d 39218286532 SUCCESS, 22 PASS. Plus `0a9730447b578524d9e9ea78d3c5cf7a4c1e1b23`: acumulativo 39218292207 SUCCESS; test original service+HTTP PASS, 1568 PASS/3 XFAIL, frontend SUCCESS; H1d 39218292309 SUCCESS, 38 PASS. Solo Lite scientific UI 39218286544 sigue IN_PROGRESS. El caso permanece abierto hasta que termine; no repetir runs.
+
+
+## 2026-10-19 — AS-DIV-06 verificado bilateralmente; AS-DIV-07 iniciado
+
+AS-DIV-06: Lite `36225e2cf1af6571e0ef6b4c2e757acd1b34005a`, acumulativo 39218286674 SUCCESS (test original PASS, 1717 PASS/30 TODO), H1d 39218286532 SUCCESS (22 PASS), científico 39218286544 SUCCESS (456 PASS). Plus `0a9730447b578524d9e9ea78d3c5cf7a4c1e1b23`, acumulativo 39218292207 SUCCESS (test original service+HTTP PASS, 1568 PASS/3 XFAIL), H1d 39218292309 SUCCESS (38 PASS). Caso cerrado solo en alcance; cociente x+1, resto 0.
+
+AS-DIV-07 original añadido en ambos repos. Fuente `(x^5-1)/(x-1)`, cociente x^4+x^3+x^2+x+1, resto 0; x≠1 para la entrada racional original. Lite SHA `8db3456be0324aecefd5d63ba8b68ab474399e56`: cumulative 39219361555, H1d 39219361565, científico 39219361663. Plus SHA `0fcdc9bb77c2e9dc5e3ae5cb399e10b9ef3d139c`: cumulative 39219370525, H1d 39219370577. Todos IN_PROGRESS al corte; inspeccionar logs y no redispatch idéntico. Global OPEN.
