@@ -1,10 +1,12 @@
 # Registro de ejecución — índice vigente
 
-## 2026-10-19 UTC — AS-PAR-05: regresiones publicadas; gates exact-SHA en curso
+## 2026-10-19 UTC — AS-PAR-05: Lite nativo pendiente; resto de gates verdes
 
-Tests originales añadidos en Lite SHA 6a311517071b5dbee998f1a4a377f291d9a0ca54 (tests/algebra114AsPar05.audit.test.ts) y Plus SHA 367b3976436812ff4252bee0a1f2cec7656e0a21 (backend/tests/test_algebra114_as_par05.py). Lite acumulativo [39230810192](https://github.com/c2melendez/precision-lab-lite/actions/runs/39230810192) SUCCESS: archivo AS-PAR-05, 6 tests PASS; suite 1729 PASS/30 TODO, typecheck/build PASS. Lite H1d [39230810242](https://github.com/c2melendez/precision-lab-lite/actions/runs/39230810242) SUCCESS, 22 PASS. Lite científico [39230810926](https://github.com/c2melendez/precision-lab-lite/actions/runs/39230810926) permanece IN_PROGRESS al escribir este checkpoint. Plus acumulativo [39230889556](https://github.com/c2melendez/precision-lab-plus/actions/runs/39230889556) y H1d [39230889577](https://github.com/c2melendez/precision-lab-plus/actions/runs/39230889577) permanecen IN_PROGRESS; pendiente verificar la ejecución del test de backend mediante sus logs. No se despacharon corridas manuales ni se reutilizó evidencia anterior como prueba del nuevo SHA.
+Tests originales añadidos en Lite SHA 6a311517071b5dbee998f1a4a377f291d9a0ca54 (tests/algebra114AsPar05.audit.test.ts) y Plus SHA 367b3976436812ff4252bee0a1f2cec7656e0a21 (backend/tests/test_algebra114_as_par05.py). Lite acumulativo [39230810192](https://github.com/c2melendez/precision-lab-lite/actions/runs/39230810192) SUCCESS: caso original 6 tests PASS; suite 1729 PASS/30 TODO, typecheck/build PASS. Lite H1d [39230810242](https://github.com/c2melendez/precision-lab-lite/actions/runs/39230810242) SUCCESS, 22 PASS. Lite científico [39230810926](https://github.com/c2melendez/precision-lab-lite/actions/runs/39230810926) seguía IN_PROGRESS en la última consulta (job 117988030000); logs de cierre todavía no están disponibles.
 
-El caso prueba la ecuación oficial x²+mx+1=0 en los tres rangos del discriminante, comprobación por sustitución y clasificación de raíces complejas frente al dominio real. AS-PAR-05 sigue PENDING_EXACT_SHA_GATES hasta que todos los gates obligatorios concluyan y se revisen. Global OPEN; S19 score null; SG28/DIST y otros bloqueos no alterados.
+Plus acumulativo [39230889556](https://github.com/c2melendez/precision-lab-plus/actions/runs/39230889556) SUCCESS; el log confirma test original service+HTTP PASSED, 1575 PASS/3 XFAIL backend y 1008 PASS/28 TODO frontend. Plus H1d [39230889577](https://github.com/c2melendez/precision-lab-plus/actions/runs/39230889577) SUCCESS, 38 PASS. Jobs y logs revisados; TODO/XFAIL mantienen su clasificación y no se contabilizan como PASS adicionales.
+
+AS-PAR-05 permanece PENDING_EXACT_SHA_GATES solo por el gate científico de Lite. Global OPEN; S19 score null; SG28/DIST y otros bloqueos no alterados.
 
 ## 2026-10-19 UTC — AS-PAR-04 VERIFIED_BILATERAL_SCOPED
 

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 138,
+  "revision": 139,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "6a311517071b5dbee998f1a4a377f291d9a0ca54",
@@ -151,13 +151,13 @@
         39230889577
       ]
     },
-    "action": "Inspect the remaining AS-PAR-05 exact-SHA runs and logs. Lite cumulative/H1d are SUCCESS with six original tests PASS and 22 H1d PASS; Lite scientific is IN_PROGRESS. Plus cumulative and H1d are IN_PROGRESS; confirm the original service+HTTP test result before closing. Diagnose confirmed failures and preserve unrelated blockers.",
+    "action": "Lite cumulative and H1d, and Plus cumulative and H1d are verified green on the exact technical SHAs. Plus original service+HTTP test passed. Only Lite scientific run 39230810926/job 117988030000 remains in progress; inspect its exact-SHA result and logs, don't duplicate green gates.",
     "exit_criteria": [
-      "Lite original AS-PAR-05 regression passes on the technical SHA and cumulative/H1d/scientific required gates finish SUCCESS with logs reviewed",
-      "Plus original AS-PAR-05 service and HTTP regression executes and passes on its technical SHA; cumulative and H1d finish SUCCESS with jobs/logs reviewed",
-      "Retain real-domain oracle: |m|>2 two exact real roots, |m|=2 one double root, |m|<2 no real roots; general-solver complex roots correctly marked complex",
-      "Do not count reuse-only or skipped steps, TODO, XFAIL or manual capabilities as new PASS",
-      "Global certification stays OPEN, S19 score stays null, SG28/DIST and independent blockers remain unchanged"
+      "Lite native scientific gate 39230810926 completes SUCCESS on exact SHA with logs reviewed across all profiles",
+      "Lite original AS-PAR-05 test passes; cumulative and H1d remain SUCCESS on exact SHA",
+      "Plus original AS-PAR-05 service+HTTP test passes; cumulative and H1d SUCCESS and logs reviewed",
+      "Correct confirmed failures only; don't count TODO/XFAIL/SKIP as PASS",
+      "Global certification stays OPEN; S19 score null; preserve SG28/DIST and unrelated blockers"
     ]
   },
   "blockers": [
@@ -1993,7 +1993,7 @@
     "algebra114_as_par_04": {
       "status": "VERIFIED_BILATERAL_SCOPED",
       "equation": "x^2 - 2*m*x + m^2 - 1 = 0",
-      "mathematical_oracle": "roots m-1 and m+1; both roots satisfy the polynomial identically and differ by 2",
+      "mathematical_oracle": "roots m-1 and m+1; both satisfy the polynomial identically and differ by 2",
       "evidence_by_repo": {
         "c2melendez/precision-lab-lite": {
           "technical_sha": "567090173e0347747166084d6a8a7d54471e6682",
@@ -2076,7 +2076,7 @@
       "oracle": [
         "|m|>2: two distinct real roots (-m ± sqrt(m^2-4))/2",
         "|m|=2: one distinct double root x=-m/2",
-        "|m|<2: no real roots; any roots returned by a general complex solver must be explicitly classified as complex"
+        "|m|<2: no real roots; general solver complex roots must be explicitly classified as complex"
       ],
       "evidence_by_repo": {
         "c2melendez/precision-lab-lite": {
@@ -2124,30 +2124,32 @@
           "test_file": "backend/tests/test_algebra114_as_par05.py",
           "cumulative": {
             "run_id": 39230889556,
-            "jobs": [
-              {
-                "job_id": 117988279372,
-                "name": "backend",
-                "status": "IN_PROGRESS"
-              },
-              {
-                "job_id": 117988279782,
-                "name": "frontend",
-                "status": "IN_PROGRESS",
-                "typecheck": "SUCCESS",
-                "unit_regression": "SUCCESS",
-                "build": "IN_PROGRESS"
-              }
-            ],
-            "logs_reviewed": false,
-            "evidence_executed": false
+            "backend_job_id": 117988279372,
+            "frontend_job_id": 117988279782,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "backend_counts": {
+              "pass": 1575,
+              "xfail": 3
+            },
+            "frontend_counts": {
+              "pass": 1008,
+              "todo": 28
+            },
+            "original_service_http_test_pass": true,
+            "typecheck": "SUCCESS",
+            "build": "SUCCESS"
           },
           "h1d": {
             "run_id": 39230889577,
             "job_id": 117988279921,
-            "status": "IN_PROGRESS",
-            "logs_reviewed": false,
-            "evidence_executed": false
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "counts": {
+              "pass": 38
+            }
           }
         }
       },
