@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 132,
+  "revision": 133,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -135,17 +135,17 @@
   },
   "next_action": {
     "id": "ALGEBRA114-AS-PAR-02-EXACT-SHA-GATES",
-    "status": "PENDING_CURRENT_SHA_GATES",
-    "lite_technical_sha": "e4846f49b6e759361be216389d1bacae404f0126",
+    "status": "PENDING_LITE_H1D_NATIVE",
+    "lite_technical_sha": "661d0d6ff55e03c30a973c74b97636bc342996ec",
     "plus_technical_sha": "15ca40e4d6f8def75f4c24354c7e66dd7f829e0d",
-    "action": "AS-PAR-01 is VERIFIED_BILATERAL_SCOPED. AS-PAR-02 tests have been added; inspect current exact-SHA cumulative/H1d/native runs and logs. Keep global OPEN. Separately inspect dependency/mutation run 39224085023 when complete; do not infer S19 score.",
+    "action": "AS-PAR-01 verified bilaterally. AS-PAR-02 Lite cumulative now passes after the linear fast path; wait for H1d 39225719782 and native 39225719780 on current exact SHA and inspect logs. Plus cumulative/H1d pass; native code gate passed on 62cc13c. Keep global OPEN and do not infer S19 mutation score.",
     "exit_criteria": [
-      "Lite AS-PAR-02 original test executed PASS in cumulative 39224718326",
-      "Lite H1d 39224718161 SUCCESS",
-      "Lite native scientific E2E 39224718339 SUCCESS and logs reviewed",
-      "Plus AS-PAR-02 original service+HTTP test executed PASS in cumulative 39224727845",
+      "Lite original AS-PAR-02 test PASS in cumulative 39225719823",
+      "Lite H1d 39225719782 SUCCESS on exact SHA 661d0d6ff55e03c30a973c74b97636bc342996ec",
+      "Lite native scientific E2E 39225719780 SUCCESS on exact SHA 661d0d6ff55e03c30a973c74b97636bc342996ec and logs reviewed",
+      "Plus original AS-PAR-02 service+HTTP test PASS in cumulative 39224727845",
       "Plus H1d 39224727941 SUCCESS",
-      "Preserve the unrelated dependency/mutation campaign status; do not infer mutation score or S19 closure",
+      "Keep mutation score null and S19 open unless a complete valid denominator is evidenced",
       "Global certification remains OPEN and unrelated blockers unchanged"
     ]
   },
@@ -443,47 +443,53 @@
       "status": "VERIFIED_BILATERAL_SCOPED",
       "lite_test_sha": "eec03372aea2422352296eecf0e1511a8d3c5c42",
       "lite_cumulative_run": 39223433907,
-      "lite_cumulative_result": "SUCCESS; original AS-PAR-01 test executed; 1720 passed/30 todo",
+      "lite_cumulative_result": "SUCCESS; original test executed; 1720 passed/30 todo",
       "lite_h1d_run": 39223434024,
       "lite_h1d_result": "SUCCESS; 22 passed",
       "lite_native_run": 39223433904,
       "lite_native_result": "SUCCESS; 456 passed",
-      "plus_initial_test_sha": "2301c27f81a4d201d61d16e5b745d07689e360b7",
+      "plus_initial_sha": "2301c27f81a4d201d61d16e5b745d07689e360b7",
       "plus_initial_cumulative_run": 39223443553,
-      "plus_initial_result": "FAILURE; original test exposed misclassification of 0*x=0 as contradiction",
-      "plus_corrected_technical_sha": "62cc13cff4c2ac147398b9b7cbe73af7c85623ca",
+      "plus_initial_result": "FAILURE; test exposed 0*x=0 misclassified as contradiction",
+      "plus_corrected_sha": "62cc13cff4c2ac147398b9b7cbe73af7c85623ca",
       "plus_cumulative_run": 39224084976,
-      "plus_cumulative_result": "SUCCESS; original AS-PAR-01 service+HTTP test PASSED; 1571 passed/3 xfailed; frontend SUCCESS",
+      "plus_cumulative_result": "SUCCESS; original service+HTTP PASS; 1571 passed/3 xfailed; frontend SUCCESS",
       "plus_h1d_run": 39224084915,
       "plus_h1d_result": "SUCCESS; 38 passed",
       "plus_native_run": 39224084933,
-      "plus_native_result": "SUCCESS; desktop/tablet/mobile syntax and HTTP recovery passed",
+      "plus_native_result": "SUCCESS; desktop/tablet/mobile syntax+HTTP recovery passed",
       "fix_commit": "62cc13cff4c2ac147398b9b7cbe73af7c85623ca",
-      "cases": [
-        "a != 0 => x=b/a",
-        "a=0 and b=0 => identity / every real x",
-        "a=0 and b!=0 => contradiction / no solution"
-      ],
-      "note": "AS-PAR-01 verified bilaterally after fixing parser/service degenerate equation classification. Global certification remains OPEN."
+      "note": "AS-PAR-01 verified bilaterally after correcting equation identity/contradiction classification. Global certification OPEN."
     },
     "as_par02_checkpoint": {
-      "status": "PENDING_EXACT_SHA_GATES",
-      "lite_test_sha": "e4846f49b6e759361be216389d1bacae404f0126",
-      "lite_cumulative_run": 39224718326,
-      "lite_cumulative_result": "IN_PROGRESS at checkpoint",
-      "lite_h1d_run": 39224718161,
-      "lite_h1d_result": "IN_PROGRESS at checkpoint",
-      "lite_native_run": 39224718339,
-      "lite_native_result": "IN_PROGRESS at checkpoint",
+      "status": "LITE_H1D_NATIVE_PENDING",
+      "lite_superseded_sha": "e4846f49b6e759361be216389d1bacae404f0126",
+      "lite_superseded_cumulative_run": 39224718326,
+      "lite_superseded_cumulative_result": "FAILURE; original symbolic solve test exceeded 5000 ms",
+      "lite_superseded_h1d_run": 39224718161,
+      "lite_superseded_h1d_result": "SUCCESS; 22 passed",
+      "lite_superseded_native_run": 39224718339,
+      "lite_superseded_native_result": "SUCCESS; 456 passed",
+      "lite_current_sha": "661d0d6ff55e03c30a973c74b97636bc342996ec",
+      "lite_current_cumulative_run": 39225719823,
+      "lite_current_cumulative_result": "SUCCESS; original AS-PAR-02 test PASS in 522 ms; 1721 passed/30 todo",
+      "lite_current_h1d_run": 39225719782,
+      "lite_current_h1d_result": "IN_PROGRESS at checkpoint",
+      "lite_current_native_run": 39225719780,
+      "lite_current_native_result": "IN_PROGRESS at checkpoint",
       "plus_test_sha": "15ca40e4d6f8def75f4c24354c7e66dd7f829e0d",
       "plus_cumulative_run": 39224727845,
-      "plus_cumulative_result": "QUEUED at checkpoint",
+      "plus_cumulative_result": "SUCCESS; original service+HTTP test PASS; 1572 passed/3 xfailed",
       "plus_h1d_run": 39224727941,
-      "plus_h1d_result": "QUEUED at checkpoint",
+      "plus_h1d_result": "SUCCESS; 38 passed",
+      "plus_native_code_sha": "62cc13cff4c2ac147398b9b7cbe73af7c85623ca",
+      "plus_native_code_run": 39224084933,
+      "plus_native_code_result": "SUCCESS; desktop/tablet/mobile syntax+HTTP recovery",
       "source": "(a-1)*x=a+1",
-      "expected_solution": "x=(a+1)/(a-1) when a != 1",
-      "degenerate_case": "a=1 => 0*x=2, contradiction; no solution",
-      "note": "Do not close or advance to AS-PAR-03 until exact-SHA original tests, cumulative/H1d gates, and Lite native scientific E2E have passed and logs are reviewed."
+      "expected_solution": "x=(a+1)/(a-1) for a != 1",
+      "degenerate_case": "a=1 => 0*x=2, contradiction/no solution",
+      "fix_commit": "661d0d6ff55e03c30a973c74b97636bc342996ec",
+      "note": "Do not close AS-PAR-02 or advance to AS-PAR-03 until Lite H1d and native runs on current exact SHA 661d0d6... finish SUCCESS and logs are reviewed."
     }
   },
   "cases": {
@@ -1563,42 +1569,47 @@
         "native": "SUCCESS; 456 passed"
       },
       "plus": {
-        "initial_test_sha": "2301c27f81a4d201d61d16e5b745d07689e360b7",
+        "initial_sha": "2301c27f81a4d201d61d16e5b745d07689e360b7",
         "initial_cumulative_run": 39223443553,
-        "initial_outcome": "FAILURE due to 0*x=0 misclassified as contradiction",
+        "initial_outcome": "FAILURE due to 0*x=0 misclassification",
         "corrected_sha": "62cc13cff4c2ac147398b9b7cbe73af7c85623ca",
         "cumulative_run": 39224084976,
         "h1d_run": 39224084915,
         "native_run": 39224084933,
-        "cumulative": "SUCCESS; original service+HTTP test PASS; 1571 passed/3 xfailed; frontend SUCCESS",
+        "cumulative": "SUCCESS; original service+HTTP PASS; 1571 passed/3 xfailed",
         "h1d": "SUCCESS; 38 passed",
-        "native": "SUCCESS; desktop/tablet/mobile syntax+HTTP recovery passed",
-        "code_fix": "Parser preserves equation sides with evaluate=False; solve service classifies zero and constant simplified differences before solving."
+        "native": "SUCCESS; desktop/tablet/mobile syntax+HTTP recovery",
+        "code_fix": "Preserve equation sides with evaluate=False; classify simplified zero/constant differences before solving."
       },
-      "scope": "AS-PAR-01 ax=b: generic x=b/a for a!=0; identity if a=b=0; contradiction if a=0,b!=0",
-      "pending_global_campaign": {
-        "run_id": 39224085023,
-        "status": "IN_PROGRESS",
-        "backend_security": "SUCCESS",
-        "plus_backend_mutation": "IN_PROGRESS",
-        "score": null
-      },
+      "scope": "ax=b: x=b/a for a!=0; identity when a=b=0; contradiction when a=0,b!=0",
       "global": "OPEN"
     },
     "ALGEBRA114-AS-PAR-02-20261019": {
-      "status": "PENDING_EXACT_SHA_GATES",
+      "status": "LITE_H1D_NATIVE_PENDING",
       "lite": {
-        "sha": "e4846f49b6e759361be216389d1bacae404f0126",
-        "cumulative_run": 39224718326,
-        "h1d_run": 39224718161,
-        "native_run": 39224718339
+        "superseded_sha": "e4846f49b6e759361be216389d1bacae404f0126",
+        "superseded_cumulative_run": 39224718326,
+        "superseded_outcome": "FAILURE due to 5000ms timeout in generic symbolic solve test",
+        "current_sha": "661d0d6ff55e03c30a973c74b97636bc342996ec",
+        "cumulative_run": 39225719823,
+        "h1d_run": 39225719782,
+        "native_run": 39225719780,
+        "cumulative": "SUCCESS; original AS-PAR-02 test PASS; 1721 passed/30 todo",
+        "h1d": "IN_PROGRESS",
+        "native": "IN_PROGRESS",
+        "fix": "Linear fast path uses derivative and exact substitution to solve symbolic linear coefficients; regression now completes in 522 ms."
       },
       "plus": {
         "sha": "15ca40e4d6f8def75f4c24354c7e66dd7f829e0d",
         "cumulative_run": 39224727845,
-        "h1d_run": 39224727941
+        "h1d_run": 39224727941,
+        "cumulative": "SUCCESS; original service+HTTP PASS; 1572 passed/3 xfailed",
+        "h1d": "SUCCESS; 38 passed",
+        "native_code_sha": "62cc13cff4c2ac147398b9b7cbe73af7c85623ca",
+        "native_code_run": 39224084933,
+        "native_code": "SUCCESS; desktop/tablet/mobile syntax+HTTP recovery"
       },
-      "scope": "(a-1)x=a+1; x=(a+1)/(a-1) for a!=1; no solution for a=1",
+      "scope": "(a-1)x=a+1; x=(a+1)/(a-1) when a!=1; no solution when a=1",
       "global": "OPEN"
     }
   },
@@ -1879,6 +1890,25 @@
       "source_repository": "c2melendez/precision-lab-plus",
       "source_sha": "122711fc0161468d8cb619b6ad2aa9a88295b5eb",
       "scope": "Actual mutmut execution with survivors under existing job acceptance, not full S19 score or closure"
+    },
+    {
+      "profile": "mutation_backend",
+      "run_id": 39224085023,
+      "job_id": 117966118126,
+      "logs_reviewed": true,
+      "mutations_executed": true,
+      "source_repository": "c2melendez/precision-lab-plus",
+      "source_sha": "62cc13cff4c2ac147398b9b7cbe73af7c85623ca",
+      "artifact_id": 12173791713,
+      "artifact_name": "s19-plus-backend-mutmut",
+      "exit_code": 0,
+      "report_counts": {
+        "survived": 1158,
+        "no_tests": 90,
+        "timeout": 11
+      },
+      "mutation_score": null,
+      "scope": "Mutmut artifact and logs reviewed after AS-PAR-01 solver correction. Report output lists survivors/no-tests/timeouts but not a complete killed-mutant denominator; no score inferred and no full S19 closure."
     }
   ],
   "canonical_discovery": {
@@ -1888,25 +1918,5 @@
     "evidence": "Current exact-SHA Actions head_branch plus mutually matching canonical_branch in paired ledgers",
     "fallback_documented": true
   },
-  "pending_campaigns": [
-    {
-      "id": "PLUS-DEPENDENCY-GATES-20261019-AS-PAR-01-FIX",
-      "run_id": 39224085023,
-      "technical_sha": "62cc13cff4c2ac147398b9b7cbe73af7c85623ca",
-      "status": "IN_PROGRESS",
-      "jobs": {
-        "audit_request": "SUCCESS",
-        "mutation_validate_request": "SUCCESS",
-        "security_validate_request": "SUCCESS",
-        "security_backend": "SUCCESS",
-        "mutation_plus_backend_mutmut": "IN_PROGRESS",
-        "security_frontend_audit": "SKIPPED",
-        "mutation_plus_frontend_stryker": "SKIPPED",
-        "mutation_lite_frontend_stryker": "SKIPPED"
-      },
-      "mutation_score": null,
-      "logs_reviewed": false,
-      "instruction": "Do not infer mutation score or S19 closure. Inspect this exact run when complete; no identical manual rerun."
-    }
-  ]
+  "pending_campaigns": []
 }
