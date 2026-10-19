@@ -558,3 +558,10 @@ AS-PAR-02: `(a-1)x=a+1`, solución genérica `x=(a+1)/(a-1)` para `a!=1`, y sin 
 - Plus test-only SHA `15ca40e4d6f8def75f4c24354c7e66dd7f829e0d`: acumulativo [39224727845](https://github.com/c2melendez/precision-lab-plus/actions/runs/39224727845) SUCCESS, original AS-PAR-02 service+HTTP PASS, 1572 PASS/3 XFAIL; H1d [39224727941](https://github.com/c2melendez/precision-lab-plus/actions/runs/39224727941) SUCCESS, 38 PASS. El nativo Plus [39224084933](https://github.com/c2melendez/precision-lab-plus/actions/runs/39224084933) pasó en el SHA de código `62cc13c`; el cambio AS-PAR-02 en Plus fue solo de pruebas.
 
 No cerrar AS-PAR-02 ni avanzar a AS-PAR-03 hasta H1d/nativo Lite exact-SHA SUCCESS y revisión de logs. Certificación global OPEN; S19 y los demás bloqueos globales no se consideran cerrados.
+
+
+## 2026-10-19 UTC — AS-PAR-02 cierre bilateral; AS-PAR-03 exact-SHA gates pendientes
+
+AS-PAR-02 cerró con todas las compuertas requeridas y logs revisados. Lite cumulative/H1d/native runs 39225719823/39225719782/39225719780 SUCCESS (1721 PASS/30 TODO; 22 PASS; 456 PASS). Plus cumulative/H1d 39224727845/39224727941 SUCCESS (original service+HTTP PASS, 1572 PASS/3 XFAIL; 38 PASS); native syntax+HTTP gate passed on code SHA 62cc13c. Global OPEN.
+
+AS-PAR-03 source `x^2=a) over R; original tests committed Lite `18af0da5a7b54092fcb2371490ed0240afe2c04f` and Plus `3a6af47b5dc2142d4ca42b1928dde41c59013a53`. Lite cumulative 39228003898 SUCCESS with original test PASS (1722 PASS/30 TODO). Lite H1d 39228004023, Lite native 39228003618, Plus cumulative 39228015321, Plus H1d 39228014298 are in progress at this checkpoint. Do not close or advance until exact-SHA logs and required gates are verified. Preserve complex-root capability; Plus flags roots of x^2=-1 as complex, while canonical algebra statement is over R. S19 remains open and mutation score null.
