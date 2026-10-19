@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 113,
+  "revision": 114,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,15 +134,14 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-RAT-08-LITE-RETEST",
-    "status": "PENDING_CI",
-    "technical_sha": "d7fbf2a4e99ae7e17ae182d4aabd69a66866fa0a",
-    "run_id": 39207865640,
-    "action": "Check Lite exact-SHA cumulative 39207865640 and AS-RAT-08 original denesting regression; Plus PASS 39205346692 confirmed. Advance AS-RAT-09 only after Lite exact original test PASS. Avoid unchanged CI redispatch.",
+    "id": "ALGEBRA114-AS-RAT-09-VERIFY",
+    "status": "PENDING_CI_EVIDENCE",
+    "technical_sha": "5fbcca00fbff8e55a15389439d3d057b76cf7e1c",
+    "action": "Retrieve push-triggered cumulative CI for AS-RAT-09 commits in Lite and Plus; fetch exact job logs and check original symbolic/numeric and Plus HTTP tests; diagnose any actual failure before product changes. PR-only empty workflow lookup is not evidence of missing CI. Do not redispatch unchanged gates.",
     "exit_criteria": [
-      "Lite returns sqrt(3)+sqrt(2) exact form",
-      "Original numeric equivalence PASS",
-      "Technical SHA and cumulative success confirmed"
+      "Both exact-SHA cumulative runs found and relevant test actually executed",
+      "AS-RAT-09 domain x,y>=0,x!=y and numeric equivalence verified",
+      "Any failure classified and corrected without relaxing oracle; bilateral PASS only on reviewed CI"
     ]
   },
   "blockers": [
@@ -266,6 +265,20 @@
       "cumulative_run_id": 39060225578,
       "h1d_run_id": 39060225597,
       "notes": "Parser regression checked by cumulative; native three-profile and Worker-specific coverage remain pending."
+    },
+    "as_rat08_checkpoint": {
+      "status": "VERIFIED_BILATERAL_SCOPED",
+      "lite_technical_sha": "d7fbf2a4e99ae7e17ae182d4aabd69a66866fa0a",
+      "lite_cumulative_run_id": 39207865640,
+      "lite_original_test": "tests/algebra114AsRat08.audit.test.ts PASS executed; 1709 PASS/30 TODO",
+      "plus_technical_sha": "4dcb55eabe87806a3dd123411827550f1bb6a260",
+      "plus_cumulative_run_id": 39205346692
+    },
+    "as_rat09_checkpoint": {
+      "status": "TESTS_PUBLISHED_AWAITING_CI_VERIFICATION",
+      "lite_commit": "5fbcca00fbff8e55a15389439d3d057b76cf7e1c",
+      "plus_commit": "3366229455dbfcfc7d6a8cbdea06bd67fc131d7a",
+      "note": "No confirmed push workflow run ID yet; empty fetch_commit_workflow_runs searches PR only. No PASS claim."
     }
   },
   "cases": {
