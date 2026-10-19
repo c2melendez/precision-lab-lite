@@ -18,6 +18,34 @@ export interface AlgebraSolveResult {
   truth?: "identity" | "contradiction";
 }
 
+function isPrincipalSqrtOfVariable(expression: string, variable: string): boolean {
+  const compact = expression.replace(/\s+/g, "");
+  return compact === "sqrt(" + variable + ")" ||
+    compact === variable + "^(1/2)" ||
+    compact === "(" + variable + ")^(1/2)";
+}
+
+function realNumericSign(expression: string): -1 | 0 | 1 | null {
+  try {
+    const normalized = evaluate("simplify(" + expression + ")").replace(/\s+/g, "");
+    if (/^[+-]?\d+(?:\.\d+)?(?:e[+-]?\d+)?$/i.test(normalized)) {
+      const value = Number(normalized);
+      if (Number.isFinite(value)) return value < 0 ? -1 : value > 0 ? 1 : 0;
+    }
+    const fraction = normalized.match(/^([+-]?\d+)\/([+-]?\d+)$/);
+    if (fraction) {
+      const numerator = BigInt(fraction[1]);
+      const denominator = BigInt(fraction[2]);
+      if (denominator === 0n) return null;
+      if (numerator === 0n) return 0;
+      return (numerator < 0n) !== (denominator < 0n) ? -1 : 1;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 export function solveAlgebra(
   leftAlgebrite: string,
   rightAlgebrite: string,
@@ -42,6 +70,52 @@ export function solveAlgebra(
     latex: `${standardForm} = 0`,
     explanation: "Se agrupan todos los términos en un solo lado (forma estándar).",
   });
+
+  // Algebra114 AS-PAR-06: roots() handles polynomials, not the principal
+  // square-root equation directly. Handle this exact contract before asking
+  // the generic solver, and never accept an extraneous root from squaring.
+  const rootEquationVariablePattern = new RegExp("\\b" + variable + "\\b");
+  let squareRootParameter: string | null = null;
+  if (isPrincipalSqrtOfVariable(leftAlgebrite, variable)) {
+    squareRootParameter = rightAlgebrite;
+  } else if (isPrincipalSqrtOfVariable(rightAlgebrite, variable)) {
+    squareRootParameter = leftAlgebrite;
+  }
+
+  if (squareRootParameter !== null && !rootEquationVariablePattern.test(squareRootParameter)) {
+    const parameterSign = realNumericSign(squareRootParameter);
+    if (parameterSign === -1) {
+      steps.push({
+        id: "square-root-domain",
+        latex: leftAlgebrite + " = " + rightAlgebrite,
+        explanation: "La raíz cuadrada real principal nunca es negativa; el lado derecho es negativo, por lo que no existe solución real.",
+      });
+      steps.push({
+        id: "solutions",
+        latex: "∅",
+        explanation: "La ecuación no tiene solución real.",
+      });
+      return { steps, solutionsAlgebrite: [], truth: "contradiction" };
+    }
+
+    const squareRootSolution = evaluate("simplify((" + squareRootParameter + ")^2)");
+    const domainExplanation = parameterSign === null
+      ? "La raíz cuadrada real principal es no negativa: x = (" + squareRootParameter + ")^2 solo es válida si " + squareRootParameter + " ≥ 0; si " + squareRootParameter + " < 0, no existe solución real."
+      : "El lado derecho es no negativo; x = (" + squareRootParameter + ")^2 satisface la ecuación original.";
+    steps.push({
+      id: "square-root-domain",
+      latex: variable + " = (" + squareRootParameter + ")^2",
+      explanation: domainExplanation,
+    });
+    steps.push({
+      id: "solutions",
+      latex: variable + " = " + squareRootSolution,
+      explanation: parameterSign === null
+        ? "Solución simbólica condicionada al dominio real indicado."
+        : "Raíz real verificada en la ecuación original.",
+    });
+    return { steps, solutionsAlgebrite: [squareRootSolution] };
+  }
 
   let solutions: string[];
   const hasVariable = new RegExp(`\\b${variable}\\b`).test(standardForm);

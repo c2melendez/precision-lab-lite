@@ -28,7 +28,18 @@ describe("Algebra114 AS-PAR-06 original square-root equation sqrt(x) = a over R"
     expect(evaluate(`simplify(sqrt(${root})-(${a}))`)).toBe("0");
   });
 
+  it("states the nonnegative condition for a symbolic parameter", () => {
+    const result = solve("sqrt(x)=a");
+    expect(result.solutionsAlgebrite).toHaveLength(1);
+    expect(evaluate("simplify((" + result.solutionsAlgebrite[0] + ")-a^2)")).toBe("0");
+    const domainStep = result.steps.find((step) => step.id === "square-root-domain");
+    expect(domainStep?.explanation).toContain("a ≥ 0");
+    expect(domainStep?.explanation).toContain("a < 0");
+  });
+
   it.each(["-1", "-2"])("does not invent a real root when a=%s is negative", (a) => {
-    expect(() => solve(`sqrt(x)=(${a})`)).toThrow();
+    const result = solve("sqrt(x)=(" + a + ")");
+    expect(result.solutionsAlgebrite).toHaveLength(0);
+    expect(result.truth).toBe("contradiction");
   });
 });
