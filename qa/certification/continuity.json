@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 119,
+  "revision": 120,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,15 +134,15 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-DIV-01-CI",
+    "id": "ALGEBRA114-AS-DIV-02-CI",
     "status": "PENDING_CI",
-    "technical_sha": "50f4c2f599b1b1d5e5721990209e14abe24d8245",
-    "run_id": 39212512205,
-    "action": "Review AS-DIV-01 original quotient/remainder and restricted rational domain x!=2. Lite cumulative 39212512205, H1d 39212512196, native 39212512207; Plus cumulative 39212516004 and H1d 39212516061. Check exact SHA logs before PASS or any correction. AS-RAT-10 cumulative and remaining gates previously verified SUCCESS; no reruns.",
+    "technical_sha": "4a7d81403fd0aae230dd2ace9146f355f97f7011",
+    "run_id": 39213376244,
+    "action": "Inspect original AS-DIV-02 exact-SHA cumulative runs Lite 39213376244 and Plus 39213379570; also Lite H1d 39213376069/native 39213376078 and Plus H1d 39213379626. Review actual test logs and diagnose any failure. Do not manually rerun unchanged jobs; advance AS-DIV-03 only on bilateral scoped PASS.",
     "exit_criteria": [
-      "AS-DIV-01 original domain and quotient/remainder test PASS both engines",
-      "Both cumulative exact technical SHAs and original tests reviewed",
-      "H1d/native relevant outcomes checked; no regression"
+      "AS-DIV-02 original cubic quotient and zero remainder proved in both engines",
+      "Domain x != 2 retained and both original tests executed PASS",
+      "Both exact-SHA cumulative and relevant complementary gates reviewed"
     ]
   },
   "blockers": [
@@ -310,11 +310,21 @@
       "plus_h1d_status": "SUCCESS"
     },
     "as_div01_checkpoint": {
-      "status": "CI_IN_PROGRESS",
+      "status": "VERIFIED_BILATERAL_SCOPED",
+      "lite_cumulative_run": 39212512205,
       "lite_sha": "50f4c2f599b1b1d5e5721990209e14abe24d8245",
-      "lite_run": 39212512205,
+      "plus_cumulative_run": 39212516004,
       "plus_sha": "9b6d697d565b422fd498762fc097d28383a155c5",
-      "plus_run": 39212516004
+      "lite_original": "AS-DIV-01 test executed PASS; 1712 pass/30 todo",
+      "plus_original": "AS-DIV-01 test executed PASS; 1563 pass/3 xfail",
+      "complementary": "Lite H1d 39212512196/native 39212512207 and Plus H1d 39212516061 SUCCESS"
+    },
+    "as_div02_checkpoint": {
+      "status": "CI_IN_PROGRESS",
+      "lite_sha": "4a7d81403fd0aae230dd2ace9146f355f97f7011",
+      "lite_run": 39213376244,
+      "plus_sha": "2b8b9ea2d0a2c39f2c2cb9dfb8d290dcecfcc719",
+      "plus_run": 39213379570
     }
   },
   "cases": {
