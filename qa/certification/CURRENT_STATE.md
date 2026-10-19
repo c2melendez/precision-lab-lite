@@ -1,3 +1,11 @@
+## 2026-10-19 UTC — AS-PAR-02 verificado; AS-PAR-03 en gates exact-SHA
+
+AS-PAR-02 `(a-1)x=a+1` queda VERIFIED_BILATERAL_SCOPED. Lite SHA `661d0d6ff55e03c30a973c74b97636bc342996ec`: [acumulativo 39225719823](https://github.com/c2melendez/precision-lab-lite/actions/runs/39225719823) SUCCESS (1721 PASS/30 TODO; test original PASS), [H1d 39225719782](https://github.com/c2melendez/precision-lab-lite/actions/runs/39225719782) SUCCESS (22 PASS), [científico nativo 39225719780](https://github.com/c2melendez/precision-lab-lite/actions/runs/39225719780) SUCCESS (456 PASS). Plus SHA `15ca40e4d6f8def75f4c24354c7e66dd7f829e0d`: [acumulativo 39224727845](https://github.com/c2melendez/precision-lab-plus/actions/runs/39224727845) SUCCESS (test service+HTTP PASS; 1572 PASS/3 XFAIL), [H1d 39224727941](https://github.com/c2melendez/precision-lab-plus/actions/runs/39224727941) SUCCESS (38 PASS); native syntax+HTTP recovery already passed on code SHA `62cc13c`. La solución genérica es `x=(a+1)/(a-1)` para `a!=1`; cuando `a=1), `0*x=2) es contradicción.
+
+AS-PAR-03 `x^2=a) sobre los reales: `a>0 => x=±sqrt(a)`; `a=0 => x=0`; `a<0 => no hay solución real`. Tests originales añadidos en Lite SHA `18af0da5a7b54092fcb2371490ed0240afe2c04f` y Plus SHA `3a6af47b5dc2142d4ca42b1928dde41c59013a53`. Lite [acumulativo 39228003898](https://github.com/c2melendez/precision-lab-lite/actions/runs/39228003898) SUCCESS; test original PASS, 1722 PASS/30 TODO. H1d [39228004023](https://github.com/c2melendez/precision-lab-lite/actions/runs/39228004023), nativo [39228003618](https://github.com/c2melendez/precision-lab-lite/actions/runs/39228003618), Plus acumulativo [39228015321](https://github.com/c2melendez/precision-lab-plus/actions/runs/39228015321) y H1d [39228014298](https://github.com/c2melendez/precision-lab-plus/actions/runs/39228014298) seguían IN_PROGRESS en este checkpoint. Revisar logs por SHA exacto; no cerrar ni avanzar antes de todos los gates. El endpoint Plus general etiqueta explícitamente como complejas las raíces de `x^2=-1`; no atribuirle un modo real-only que no está definido.
+
+Certificación global **OPEN**; no inferir puntuación S19 ni cerrar bloqueos heredados.
+
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
 ## 2026-10-19 UTC — AS-PAR-01 verificado; AS-PAR-02 tiene un gate acumulativo verde y espera H1d/nativo Lite
