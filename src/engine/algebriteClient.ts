@@ -22,6 +22,7 @@ import Algebrite from "algebrite";
 import { ErrorCode, type AppError } from "../types";
 import { isIndeterminateInfinityDifference } from "./infinityDifference";
 import { compileNumeric } from "./numericFallback";
+import { denestConstantRadicals } from "./radicalDenesting";
 
 function toAppError(code: ErrorCode, message: string): AppError {
   return { code, message };
@@ -119,6 +120,9 @@ export function evaluate(expressionLatex: string): string {
       },
     );
     let result: string = Algebrite.run(expressionLatex);
+    // Denestado general de raíces cuadradas anidadas con coeficientes racionales
+    // (AS-RAT-07 y familia). Solo reescribe casos con forma exacta conocida.
+    result = denestConstantRadicals(result);
     // AS-RAT-01: require the rationalized original form, not the equivalent
     // Algebrite echo 1/2^(1/2). Keep this deliberately exact-case scoped.
     if (expressionLatex.replace(/\s+/g, "") === "1/sqrt(2)" &&
@@ -149,11 +153,6 @@ export function evaluate(expressionLatex: string): string {
     if (expressionLatex.replace(/\s+/g, "") === "(sqrt(x+h)-sqrt(x))/h" &&
         result.replace(/\s+/g, "") === "-x^(1/2)/h+(x+h)^(1/2)/h") {
       result = "1/(sqrt(x+h)+sqrt(x))";
-    }
-    // AS-RAT-07: denest the exact audited nested radical.
-    // The bundled Algebrite build echoes (2+sqrt(3))^(1/2) unchanged.
-    if (expressionLatex.replace(/\s+/g, "") === "sqrt(2+sqrt(3))") {
-      result = "(sqrt(6)+sqrt(2))/2";
     }
     // AS-PF-01: the bundled Algebrite build leaves partfrac(...) unevaluated.
     // Use an exact decomposition for the original audited rational function.
