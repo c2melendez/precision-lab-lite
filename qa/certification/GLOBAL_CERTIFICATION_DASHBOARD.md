@@ -1,3 +1,7 @@
+## Actualización operativa 2026-10-19 — AS-PAR-04
+
+AS-PAR-03 VERIFIED_BILATERAL_SCOPED. AS-PAR-04 `x^2-2mx+m^2-1=0) está en gates exact-SHA: Lite acumulativo 39229109222, H1d 39229109183, nativo 39229109187; Plus acumulativo 39229117949 y H1d 39229117954. En el último corte Lite estaba IN_PROGRESS y Plus QUEUED. Índice estructurado: [continuity.json](continuity.json), revisión 136. Certificación global OPEN, porcentaje reconciliado ND; S19 permanece abierto.
+
 ## Actualización operativa 2026-10-19 — AS-PAR-03
 
 AS-PAR-02 VERIFIED_BILATERAL_SCOPED. AS-PAR-03 exact-SHA gates: Lite cumulative 39228003898 SUCCESS (1722 PASS/30 TODO), Lite H1d 39228004023 SUCCESS (22 PASS); Plus cumulative 39228015321 SUCCESS (1573 PASS/3 XFAIL, frontend SUCCESS), Plus H1d 39228014298 SUCCESS (38 PASS). Solo queda Lite scientific native 39228003618, aún IN_PROGRESS. Consultar [continuity.json](continuity.json), revisión 135. Certificación global **OPEN**, porcentaje reconciliado ND; S19 permanece abierto.
