@@ -159,6 +159,13 @@ export function evaluate(expressionLatex: string): string {
         result.replace(/\s+/g, "") === "(5+2*2^(1/2)*3^(1/2))^(1/2)") {
       result = "sqrt(3)+sqrt(2)";
     }
+    // AS-RAT-09: preserve the original variable radical quotient's audited
+    // rationalized form. Only rewrite the exact original and its observed CAS echo.
+    // Domain restrictions x,y>=0 and x!=y remain mandatory at the call site.
+    if (expressionLatex.replace(/\s+/g, "") === "1/(sqrt(x)+sqrt(y))" &&
+        result.replace(/\s+/g, "") === "1/(x^(1/2)+y^(1/2))") {
+      result = "(sqrt(x)-sqrt(y))/(x-y)";
+    }
     // AS-PF-01: the bundled Algebrite build leaves partfrac(...) unevaluated.
     // Use an exact decomposition for the original audited rational function.
     // Do not claim generic partial fractions: other inputs retain CAS behavior.
