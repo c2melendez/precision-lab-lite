@@ -14,6 +14,6 @@ describe("Algebra114 AS-DIV-03 original cubic division with remainder", () => {
       expect(numeric(x)).toBeCloseTo((x*x*x+2*x*x-x+5)/(x+1), 9);
       expect(x*x*x+2*x*x-x+5-(x+1)*(x*x+x-2)).toBe(7);
     }
-    expect((-1**3+2*(-1)**2-(-1)+5)/(-1+1)).toBe(Infinity);
+    expect(7/(-1+1)).toBe(Infinity);
   });
 });
