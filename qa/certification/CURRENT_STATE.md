@@ -1,12 +1,14 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
-## 2026-10-19 UTC — AS-DIV-07 verificado bilateralmente; AS-DIV-08 pendiente de nativo Lite
+## 2026-10-19 UTC — AS-DIV-08 verificado bilateralmente; siguiente objetivo AS-PAR-01
 
-AS-DIV-07 queda VERIFIED_BILATERAL_SCOPED con Lite acumulativo 39219361555, H1d 39219361565 y nativo 39219361663 SUCCESS (456/456); Plus acumulativo 39219370525 y H1d 39219370577 SUCCESS. Global OPEN.
+AS-DIV-07 y AS-DIV-08 quedan VERIFIED_BILATERAL_SCOPED; no se cierra la certificación global. AS-DIV-08: (x^3+a*x^2+b*x+c)/(x-1), cociente x^2+(a+1)*x+(a+b+1), resto a+b+c+1 y dominio de la expresión original x!=1.
 
-AS-DIV-08: (x^3+a*x^2+b*x+c)/(x-1), cociente x^2+(a+1)*x+(a+b+1), resto a+b+c+1, dominio original x!=1. Lite SHA a6633a7a5c46ac8cdf24de295beacdbf7b78e446: acumulativo 39221747187 SUCCESS (test original PASS; 1719 PASS/30 TODO), H1d 39221747171 SUCCESS (22 PASS); nativo 39221747194 aún IN_PROGRESS. Plus SHA 95d9d4fd8613576101697fc3dac41e4cfec23f3c: acumulativo 39221590032 SUCCESS (test original servicio+HTTP PASS; 1570 PASS/3 XFAIL; frontend SUCCESS), H1d 39221590136 SUCCESS (38 PASS). No cerrar AS-DIV-08 ni comenzar AS-PAR-01 hasta revisar el nativo Lite exact-SHA y confirmar 456 PASS en logs.
+Lite SHA técnico a6633a7a5c46ac8cdf24de295beacdbf7b78e446: acumulativo [39221747187](https://github.com/c2melendez/precision-lab-lite/actions/runs/39221747187) SUCCESS, prueba original PASS, 1719 PASS/30 TODO; H1d [39221747171](https://github.com/c2melendez/precision-lab-lite/actions/runs/39221747171) SUCCESS, 22 PASS; nativo [39221747194](https://github.com/c2melendez/precision-lab-lite/actions/runs/39221747194) SUCCESS, 456/456 PASS. Plus SHA técnico 95d9d4fd8613576101697fc3dac41e4cfec23f3c: acumulativo [39221590032](https://github.com/c2melendez/precision-lab-plus/actions/runs/39221590032) SUCCESS, prueba original de servicio+HTTP PASSED, 1570 PASS/3 XFAIL y frontend SUCCESS; H1d [39221590136](https://github.com/c2melendez/precision-lab-plus/actions/runs/39221590136) SUCCESS, 38 PASS. Jobs, pasos y logs revisados.
 
-Diagnóstico preservado: Lite acumulativo 39221561998 falló en SHA supersedido 94dcdad por sintaxis Algebrite `x^3+-2*x^2`; el coeficiente negativo se corrigió en a6633a7a5c46ac8cdf24de295beacdbf7b78e446. La evidencia vigente es la del SHA corregido; no lanzar un rerun manual mientras 39221747194 siga activo.
+El primer acumulativo Lite [39221561998](https://github.com/c2melendez/precision-lab-lite/actions/runs/39221561998) falló en el SHA supersedido 94dcdad por sintaxis Algebrite `x^3+-2*x^2`. Se corrigió el formato del coeficiente negativo en a6633a7a5c46ac8cdf24de295beacdbf7b78e446; la evidencia autoritativa es la de ese SHA corregido. No se usa la ejecución nativa anterior del SHA supersedido como evidencia de cierre.
+
+Siguiente fila canónica de `algebra114_source.md`: AS-PAR-01, `ax=b`. Debe cubrir los tres casos: a!=0 => x=b/a; a=0 y b=0 => toda x real; a=0 y b!=0 => sin solución. Antes de implementar, validar HEAD y Actions actuales de ambos repos; no repetir gates verdes sin cambio técnico. Certificación global OPEN y bloqueos existentes sin cambios.
 
 ## 2026-10-19 — AS-DIV-02 bilateral scoped PASS; AS-DIV-03 original CI initiated
 AS-DIV-02 exact-SHA cumulative gates passed: Lite run 39213376244 SHA 4a7d81403fd0aae230dd2ace9146f355f97f7011 original algebra114AsDiv02.audit.test.ts executed PASS (1713 pass/30 TODO); Plus run 39213379570 SHA 2b8b9ea2d0a2c39f2c2cb9dfb8d290dcecfcc719 original service+HTTP test passed (1564 pass/3 XFAIL). Lite H1d 39213376069 and scientific UI 39213376078 SUCCESS; Plus H1d 39213379626 SUCCESS. AS-DIV-02 VERIFIED_BILATERAL_SCOPED, global OPEN.
