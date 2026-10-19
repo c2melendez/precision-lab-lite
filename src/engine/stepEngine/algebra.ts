@@ -11,6 +11,7 @@
 
 import { derivative, evaluate, solveEquation, substituteExact, ErrorCode } from "../algebriteClient";
 import type { Step, AppError } from "../../types";
+import { solveRealAbsoluteCases } from "../absPiecewise";
 
 export interface AlgebraSolveResult {
   steps: Step[];
@@ -299,6 +300,25 @@ export function solveAlgebra(
       explanation: "Soluciones por las dos ramas del valor absoluto.",
     });
     return { steps, solutionsAlgebrite: [plusRoot, minusRoot] };
+  }
+
+  const absoluteCases = solveRealAbsoluteCases(leftAlgebrite, rightAlgebrite, variable);
+  if (absoluteCases !== null) {
+    steps.push({
+      id: "absolute-value-cases",
+      latex: leftAlgebrite + " = " + rightAlgebrite,
+      explanation: absoluteCases.notes.join(" "),
+    });
+    if (absoluteCases.solutions.length === 0) {
+      steps.push({ id: "solutions", latex: "∅", explanation: "La ecuación no tiene solución real." });
+      return { steps, solutionsAlgebrite: [], truth: "contradiction" };
+    }
+    steps.push({
+      id: "solutions",
+      latex: absoluteCases.solutions.map((s) => `${variable} = ${s}`).join(",\\quad "),
+      explanation: "Raíces de los tramos verificadas en la ecuación original.",
+    });
+    return { steps, solutionsAlgebrite: absoluteCases.solutions };
   }
 
   let solutions: string[];
