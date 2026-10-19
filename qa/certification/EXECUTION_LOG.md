@@ -487,3 +487,10 @@ AS-DIV-05 original añadido, sin cambios de producto: Lite `e36416db9a48bcffd79c
 ### AS-DIV-05 — actualización de resultados parciales (2026-10-19)
 
 Lite `e36416db9a48bcffd79cad53b6bcac80e776ed89`: acumulativo 39217613984 SUCCESS; test original PASS, 1716 PASS/30 TODO; H1d 39217614035 SUCCESS, 22 PASS. Plus `8ff6831e9586974d2adce418199c6e2effa68735`: acumulativo 39217618569 SUCCESS; test original service+HTTP PASS, 1567 PASS/3 XFAIL, frontend SUCCESS; H1d 39217618064 SUCCESS, 38 PASS. Solo Lite scientific UI 39217614042 sigue IN_PROGRESS. El caso no se cierra hasta confirmar ese gate; no repetir runs.
+
+
+## 2026-10-19 — AS-DIV-05 verificado bilateralmente; AS-DIV-06 iniciado
+
+AS-DIV-05: Lite `e36416db9a48bcffd79cad53b6bcac80e776ed89`, acumulativo 39217613984 SUCCESS (test original PASS, 1716 PASS/30 TODO), H1d 39217614035 SUCCESS (22 PASS), científico 39217614042 SUCCESS (456 PASS). Plus `8ff6831e9586974d2adce418199c6e2effa68735`, acumulativo 39217618569 SUCCESS (test original service+HTTP PASS, 1567 PASS/3 XFAIL), H1d 39217618064 SUCCESS (38 PASS). Caso cerrado solo en alcance; cociente 2x²−x+4, resto −3, x≠1.
+
+AS-DIV-06 original añadido. Lite `36225e2cf1af6571e0ef6b4c2e757acd1b34005a`, Plus `0a9730447b578524d9e9ea78d3c5cf7a4c1e1b23`. Fuente `(x³+1)/(x²−x+1)`, cociente x+1, resto 0. Runs Lite cumulative 39218286674, H1d 39218286532, científico 39218286544; Plus cumulative 39218292207, H1d 39218292309. Pendientes al corte; inspeccionar los logs exactos y no redispatch equivalente. Global OPEN.
