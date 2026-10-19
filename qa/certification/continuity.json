@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 101,
+  "revision": 102,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,18 +134,18 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-PF-07-CI-REVIEW",
+    "id": "ALGEBRA114-AS-PF-08-CI-REVIEW",
     "status": "PENDING_CI",
-    "technical_sha": "a866913ea81a9015440e1f2ee6c629908ede94ee",
-    "run_id": 39180976806,
+    "technical_sha": "e98f102e8bce91a40bc7bf33bdc605d87331c98b",
+    "run_id": 39181547324,
     "files": [
-      "tests/algebra114AsPf07.audit.test.ts"
+      "tests/algebra114AsPf08.audit.test.ts"
     ],
-    "action": "Inspect exact-SHA AS-PF-07 automatic cumulative results and individual test logs, remedy only demonstrated failures, advance to AS-PF-08 only after bilateral PASS. Avoid unchanged workflow reruns.",
+    "action": "Review exact technical SHA AS-PF-08 cumulative and original-case logs. Fix any demonstrated failure; once bilateral scoped PASS, inventory the next algebra114 contract section and unresolved product-level coverage; do not claim global closure or redispatch unchanged CI.",
     "exit_criteria": [
-      "AS-PF-07 original 2-term decomposition and numerical equivalence verified",
-      "Both technical SHA and job evidence documented",
-      "Existing UI/general CAS limitations retained"
+      "Exact improper decomposition, polynomial quotient and numeric identity correct",
+      "Original x=±1 restrictions covered",
+      "Both test and cumulative CI PASS verified"
     ]
   },
   "blockers": [
