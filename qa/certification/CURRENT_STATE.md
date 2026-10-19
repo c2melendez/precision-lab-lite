@@ -1,5 +1,9 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## 2026-10-18 — AS-PF-06 bilateral PASS and AS-PF-07 automatic CI pending
+AS-PF-06 original two irreducible quadratics executed PASS: Plus run 39174618151 SHA ee405c0ea4ab287fa3ceb939886ee71cc01f3ad0, 1534 passed/3 xfailed, frontend success; Lite run 39174622983 SHA c012b05291fc6e2faf75d75471d08e5f032ca247, 1664 passed/30 todo. AS-PF-07 original x/((x^2+1)(x^2+4)) = x/(3(x^2+1))-x/(3(x^2+4)). Plus service/HTTP test SHA db9de93c61a10a0f76e1d5d03953c89797410e85 cumulative 39180973693 IN_PROGRESS. Lite narrow exact CAS fallback SHA 552fa3056304a1b41d7037542c972c1b09e97e5c, test SHA a866913ea81a9015440e1f2ee6c629908ede94ee cumulative 39180976806 IN_PROGRESS. Do not declare AS-PF-07 PASS before inspecting individual case and cumulative logs. Do not dispatch duplicate runs. Lite generic partial fractions and UI for later cases not certified; global certification remains OPEN with S19/S25/SG28-DIST etc.
+
+
 ## 2026-10-18 — AS-PF-05 bilateral PASS; AS-PF-06 CI pending
 AS-PF-05 original improper rational and original denominator roots x = -1, +1 executed PASS: Plus run 39172881523 technical SHA 398b6e7bc9bb956340721ee1e2a010f3acc5427d backend 1533 passed/3 xfailed and frontend success; Lite run 39167688127 technical SHA b1724b41e684ee4694d9d10bc3e61157a6dee2f0 1663 passed/30 todo. AS-PF-06 original 1/((x^2+1)(x^2+4)) = 1/(3(x^2+1))-1/(3(x^2+4)). Plus service+HTTP test technical SHA ee405c0ea4ab287fa3ceb939886ee71cc01f3ad0 cumulative 39174618151 IN_PROGRESS on discovery; Lite original exact scoped CAS implementation cf0f59307cce3a3ec5035dc7e11551741f0a49b5, test technical SHA c012b05291fc6e2faf75d75471d08e5f032ca247 cumulative 39174622983 QUEUED. Do not claim AS-PF-06 PASS until exact test logs. Lite UI and generalized decomposition remain unverified; global certification OPEN with S19/S25/SG28-DIST, TODO/XFAIL. Avoid duplicate unchanged CI dispatch.
 
