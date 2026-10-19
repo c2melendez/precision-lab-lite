@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 140,
+  "revision": 141,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "5a7e80ea9e6cb4fb8d668d73f23a1a7a63cbe983",
+  "technical_baseline_sha": "d7618037089d54e1ee7691bb8da5bc326b96f9ca",
   "baseline_case": "AS-PAR-06",
-  "baseline_status": "PENDING_EXACT_SHA_GATES",
+  "baseline_status": "DIAGNOSE_RETRY_PENDING",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -137,27 +137,27 @@
     "id": "ALGEBRA114-AS-PAR-06-EXACT-SHA-GATES",
     "status": "PENDING_EXACT_SHA_GATES",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "5a7e80ea9e6cb4fb8d668d73f23a1a7a63cbe983",
+      "c2melendez/precision-lab-lite": "d7618037089d54e1ee7691bb8da5bc326b96f9ca",
       "c2melendez/precision-lab-plus": "cbd0c1bf654b7000f60615ab3ddbd33613d9dd9b"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39231972852,
-        39231972908,
-        39231972919
+        39232687285,
+        39232687204,
+        39232687282
       ],
       "c2melendez/precision-lab-plus": [
         39232029600,
         39232029607
       ]
     },
-    "action": "AS-PAR-05 is VERIFIED_BILATERAL_SCOPED with exact-SHA logs reviewed. AS-PAR-06 original regression tests are committed. Inspect Lite cumulative/H1d/scientific runs and Plus cumulative/H1d runs on exact technical SHAs. Diagnose confirmed failures and do not dispatch duplicate runs.",
+    "action": "Diagnosed and fixed a Lite product gap on d7618037089d54e1ee7691bb8da5bc326b96f9ca. Verify its cumulative, H1d and scientific retry gates on the exact SHA. Plus AS-PAR-06 cumulative/H1d are SUCCESS on cbd0c1bf654b7000f60615ab3ddbd33613d9dd9b and the original service+HTTP case passed.",
     "exit_criteria": [
-      "Lite AS-PAR-06 original test passes and cumulative, H1d, scientific gates complete SUCCESS on exact SHA with logs reviewed",
-      "Plus AS-PAR-06 original test passes through service and HTTP and cumulative/H1d gates complete SUCCESS on exact SHA with logs reviewed",
-      "For a>=0, demonstrate unique solution x=a^2 and substitution into the original square-root equation",
-      "For a<0, prove no real solution and reject any extraneous result introduced by squaring",
-      "Global certification remains OPEN; S19 score null; preserve SG28/DIST and unrelated blockers"
+      "New Lite cumulative passes AS-PAR-06 original regression including a=0,2,3 and a=-1,-2, with the symbolic condition explained",
+      "Lite cumulative, H1d and native scientific retry gates finish SUCCESS on exact SHA and logs are reviewed",
+      "Plus AS-PAR-06 original service/API test, cumulative, and H1d remain SUCCESS with logs reviewed",
+      "Do not count old-SHA gates as evidence for the new Lite code SHA",
+      "Global certification remains OPEN; S19 score null; keep SG28/DIST blockers unchanged"
     ]
   },
   "blockers": [
@@ -2158,25 +2158,53 @@
       ],
       "evidence_by_repo": {
         "c2melendez/precision-lab-lite": {
-          "technical_sha": "5a7e80ea9e6cb4fb8d668d73f23a1a7a63cbe983",
+          "technical_sha": "d7618037089d54e1ee7691bb8da5bc326b96f9ca",
           "test_file": "tests/algebra114AsPar06.audit.test.ts",
           "cumulative": {
-            "run_id": 39231972852,
+            "run_id": 39232687285,
             "status": "IN_PROGRESS",
             "logs_reviewed": false,
             "evidence_executed": false
           },
           "h1d": {
-            "run_id": 39231972908,
+            "run_id": 39232687204,
             "status": "IN_PROGRESS",
             "logs_reviewed": false,
             "evidence_executed": false
           },
           "scientific_native": {
-            "run_id": 39231972919,
+            "run_id": 39232687282,
             "status": "IN_PROGRESS",
             "logs_reviewed": false,
             "evidence_executed": false
+          },
+          "prior_attempt": {
+            "technical_sha": "5a7e80ea9e6cb4fb8d668d73f23a1a7a63cbe983",
+            "cumulative": {
+              "run_id": 39231972852,
+              "job_id": 117991836557,
+              "status": "FAILURE",
+              "logs_reviewed": true,
+              "evidence_executed": true,
+              "failures": 3,
+              "passed": 1732,
+              "todo": 30,
+              "failure_summary": "a=0,2,3 could not be solved; roots() does not handle the principal square-root equation. Negative RHS tests passed."
+            },
+            "h1d": {
+              "run_id": 39231972908,
+              "status": "SUCCESS",
+              "counts": {
+                "pass": 22
+              }
+            },
+            "scientific_native": {
+              "run_id": 39231972919,
+              "status": "SUCCESS",
+              "counts": {
+                "pass": 456
+              }
+            }
           }
         },
         "c2melendez/precision-lab-plus": {
@@ -2184,15 +2212,30 @@
           "test_file": "backend/tests/test_algebra114_as_par06.py",
           "cumulative": {
             "run_id": 39232029600,
-            "status": "QUEUED",
-            "logs_reviewed": false,
-            "evidence_executed": false
+            "backend_job_id": 117992022264,
+            "frontend_job_id": 117992022279,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "backend_counts": {
+              "pass": 1576,
+              "xfail": 3
+            },
+            "frontend_counts": {
+              "pass": 1008,
+              "todo": 28
+            },
+            "original_service_http_test_pass": true
           },
           "h1d": {
             "run_id": 39232029607,
-            "status": "QUEUED",
-            "logs_reviewed": false,
-            "evidence_executed": false
+            "job_id": 117992022919,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "counts": {
+              "pass": 38
+            }
           }
         }
       },
