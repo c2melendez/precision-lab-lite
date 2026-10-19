@@ -56,7 +56,7 @@ import { computeEigenvalues } from "../engine/eigenOps";
 import { evaluateMatrixExpression, matrixExpressionValueToLatex } from "../engine/matrixExpression";
 import { solveODE } from "../engine/stepEngine/ode";
 import { ErrorCode, makeRequestId, type MathResult, type AppError, type ResultConfidence } from "../types";
-import { extractDomainConditions, mergeDomainConditions } from "../engine/domainConditions";
+import { extractDomainConditions, mergeDomainConditions, withRealDomainSummary } from "../engine/domainConditions";
 
 export type ComputeRequest =
   | { type: "evaluate"; requestId: string; expressionAlgebrite: string }
@@ -631,6 +631,39 @@ function tryNumericFallback(expr: string): string | null {
   }
 }
 
+// Algebra114 AS-DOM-01/02: cancel common factors of a univariate polynomial
+// quotient (x^2-1)/(x-1) -> x+1. The original domain is kept separately by
+// extractDomainConditions(expr), which reads the uncancelled input.
+function cancelRationalFunction(expr: string, raw: string): string {
+  const names = new Set(expr.match(/[A-Za-z_]\w*/g) ?? []);
+  if (names.size !== 1 || !expr.includes("/")) return raw;
+  const variable = [...names][0];
+  try {
+    const rational = evaluate(`rationalize(${raw})`);
+    const denominator = evaluate(`denominator(${rational})`);
+    if (!new RegExp(`\\b${variable}\\b`).test(denominator)) return raw;
+    const numerator = evaluate(`numerator(${rational})`);
+    const common = evaluate(`gcd(${numerator},${denominator})`);
+    if (!new RegExp(`\\b${variable}\\b`).test(common)) return raw;
+    const reduced = evaluate(`(${evaluate(`quotient(${numerator},${common},${variable})`)})/(${evaluate(`quotient(${denominator},${common},${variable})`)})`);
+    return evaluate(`numerator(rationalize((${reduced})-(${raw})))`) === "0" ? reduced : raw;
+  } catch {
+    return raw;
+  }
+}
+
+// Algebra114 AS-DOM-04: |v|/v equals 1 where v>0 and -1 where v<0 (v != 0).
+function absoluteRatioSignSteps(raw: string): MathResult["steps"] {
+  const match = /^abs\((.+)\)\/\(?(.+?)\)?$/.exec(raw.replace(/\s+/g, ""));
+  if (!match || match[1] !== match[2]) return [];
+  const v = match[1];
+  return [{
+    id: "absolute-ratio-sign",
+    latex: `\\begin{cases}1 & ${toLatex(v)}>0\\\\-1 & ${toLatex(v)}<0\\end{cases}`,
+    explanation: `Con ${v} ≠ 0: vale 1 si ${v} > 0 y -1 si ${v} < 0.`,
+  }];
+}
+
 function handleEvaluate(expr: string, requestId: string): MathResult {
   try {
     // S16 REG-005: un entero literal puede exceder Number.MAX_SAFE_INTEGER.
@@ -881,6 +914,7 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
         confidence = "NUMERIC_FALLBACK";
       }
     }
+    raw = cancelRationalFunction(expr, raw);
     const isNumeric = /^-?\d+(\.\d+)?$/.test(raw) || /^-?\d+\/\d+$/.test(raw);
     const fraction = isNumeric ? toFractionResult(raw) : undefined;
 
@@ -915,10 +949,10 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       resultLatex,
       fraction,
       decimalApprox,
-      steps: [],
+      steps: absoluteRatioSignSteps(raw),
       hasDetailedSteps: false,
       confidence,
-      domainConditions: extractDomainConditions(expr),
+      domainConditions: withRealDomainSummary(extractDomainConditions(expr)),
       requestId,
     };
   } catch (err) {

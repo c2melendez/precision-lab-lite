@@ -359,6 +359,38 @@ export function solveAlgebra(
   if (!hasVariable) {
     return { steps, solutionsAlgebrite: [], truth: "contradiction" };
   }
+  // Algebra114 AS-DOM-03: roots of the uncancelled numerator that annul an
+  // original denominator are named and discarded.
+  if (domainExclusions.length > 0) {
+    try {
+      const numeratorPoly = evaluate("numerator(rationalize((" + leftAlgebrite + ")-(" + rightAlgebrite + ")))");
+      const candidates = new RegExp("\\b" + variable + "\\b").test(numeratorPoly)
+        ? solveEquation(numeratorPoly, variable).map((r) => r.trim())
+        : [];
+      const excluded = candidates.filter((c) => domainExclusions.some((e) => evaluate("simplify((" + c + ")-(" + e + "))") === "0"));
+      if (excluded.length > 0 && candidates.every((c) => !/\bi\b|sqrt\(-/.test(c))) {
+        const valid = candidates.filter((c) => !excluded.includes(c));
+        steps.push(domainRestrictionStep(
+          variable,
+          domainExclusions,
+          excluded.map((c) => variable + " = " + c + " anula el numerador pero no pertenece al dominio; se descarta.").join(" "),
+        ));
+        if (valid.length === 0) {
+          steps.push({ id: "solutions", latex: "∅", explanation: "La ecuación no tiene solución real." });
+          return { steps, solutionsAlgebrite: [], truth: "contradiction" };
+        }
+        steps.push({
+          id: "solutions",
+          latex: valid.map((c) => variable + " = " + c).join(",\\quad "),
+          explanation: "Raíces del numerador que pertenecen al dominio original.",
+        });
+        return { steps, solutionsAlgebrite: valid };
+      }
+    } catch {
+      // fall through to the general solver
+    }
+  }
+
   // Algebra114 AS-PAR-10: lhs-rhs = N/D with N a non-zero constant never
   // vanishes, so the rational equation has no solution (D != 0 is kept).
   if (domainExclusions.length > 0) {
