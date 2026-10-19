@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 118,
+  "revision": 119,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,15 +134,15 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-RAT-10-LITE-RETEST",
+    "id": "ALGEBRA114-AS-DIV-01-CI",
     "status": "PENDING_CI",
-    "technical_sha": "9283559b3175bc90b04dd63cca1e125408f9d9e2",
-    "run_id": 39211517856,
-    "action": "Read original AS-RAT-10 Plus cumulative 39211388604 and Lite corrected exact-SHA 39211517856; check original case logs, H1d/native and status. Lite first run 39211385026 failed exact form and was corrected commit 9283559. No redispatch unchanged gates; advance only after bilateral PASS.",
+    "technical_sha": "50f4c2f599b1b1d5e5721990209e14abe24d8245",
+    "run_id": 39212512205,
+    "action": "Review AS-DIV-01 original quotient/remainder and restricted rational domain x!=2. Lite cumulative 39212512205, H1d 39212512196, native 39212512207; Plus cumulative 39212516004 and H1d 39212516061. Check exact SHA logs before PASS or any correction. AS-RAT-10 cumulative and remaining gates previously verified SUCCESS; no reruns.",
     "exit_criteria": [
-      "AS-RAT-10 Lite exact original form and numeric equality PASS",
-      "AS-RAT-10 Plus service HTTP original PASS",
-      "Both exact-SHA cumulative runs executed and reviewed, outstanding UI gates checked"
+      "AS-DIV-01 original domain and quotient/remainder test PASS both engines",
+      "Both cumulative exact technical SHAs and original tests reviewed",
+      "H1d/native relevant outcomes checked; no regression"
     ]
   },
   "blockers": [
@@ -293,7 +293,7 @@
       "lite_native_status": "SUCCESS"
     },
     "as_rat10_checkpoint": {
-      "status": "LITE_FIX_RETEST_IN_PROGRESS",
+      "status": "VERIFIED_BILATERAL_SCOPED",
       "lite_test_sha": "55baa3a405cd9a57f7ef771a66a81655e4af7f4d",
       "lite_cumulative_run_id": 39211517856,
       "lite_h1d_run_id": 39211517813,
@@ -304,7 +304,17 @@
       "lite_failed_run_id": 39211385026,
       "lite_failed_sha": "55baa3a405cd9a57f7ef771a66a81655e4af7f4d",
       "lite_failure": "CAS echoed 3^(1/2)/(2^(1/2)+3^(1/2)), original expects 3-sqrt(6)",
-      "lite_fix_sha": "9283559b3175bc90b04dd63cca1e125408f9d9e2"
+      "lite_fix_sha": "9283559b3175bc90b04dd63cca1e125408f9d9e2",
+      "lite_h1d_status": "SUCCESS",
+      "lite_native_status": "SUCCESS",
+      "plus_h1d_status": "SUCCESS"
+    },
+    "as_div01_checkpoint": {
+      "status": "CI_IN_PROGRESS",
+      "lite_sha": "50f4c2f599b1b1d5e5721990209e14abe24d8245",
+      "lite_run": 39212512205,
+      "plus_sha": "9b6d697d565b422fd498762fc097d28383a155c5",
+      "plus_run": 39212516004
     }
   },
   "cases": {
