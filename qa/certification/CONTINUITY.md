@@ -152,3 +152,8 @@ X14: reutilizar evidencia de rechazo Plus revisada hasta cambiar profundidad30 y
 
 ## Reconciliación SY-X-19 — 2026-10-17
 Índice revisión44: baselineX19, siguienteX20. Tresgatespertinentes porSHA revisados; comparar huellas y observaciones frescas antes deREUSE. Helperopencompartido conserva1controlX16;helperprocesos7controlesX17sin duplicarlos. X19cero intentos auditadosdeopen/procesosycero llamadasdeloriginalaparse_expr; evaluadorrestauradopararecuperación. Nuncaseabre/leeelobjetivoparaprobarlo. S19cancelado ybloqueosanteriores permanecenOPEN;sin nuevascampañas. Prosa no requiereCI.
+
+
+## Índice de continuidad — revisión 124 (2026-10-19)
+
+AS-DIV-03 y AS-DIV-04 cerrados bilateralmente en alcance acotado, con logs y SHA registrados en continuity.json y EXECUTION_LOG.md. Siguiente único: AS-DIV-05, fuente original `(2x^3-3x^2+5x-7)/(x-1)`, cociente `2x^2-x+4`, resto `-3`, x≠1. Tests ya publicados en ambos repos; comprobar runs Lite 39217613984/39217614035/39217614042 y Plus 39217618569/39217618064 antes de cerrar. No redispatch idéntico; global OPEN.
