@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 121,
+  "revision": 122,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -135,14 +135,14 @@
   },
   "next_action": {
     "id": "ALGEBRA114-AS-DIV-03-CI",
-    "status": "PENDING_CI",
+    "status": "PENDING_GATE_COMPLETION",
     "technical_sha": "f2100f05a292eb6a72e22a6b503086b11b13e383",
     "run_id": 39215732141,
-    "action": "Inspect AS-DIV-03 original quotient/remainder case on exact current SHA. Lite syntax-corrected cumulative 39215732141 and H1d 39215732229; original pre-correction cumulative 39215713330/H1d 39215713350/native 39215713341 may fail because of a transient syntax typo in the test, corrected in f2100f0. Plus cumulative 39215717712 and H1d 39215717716. Verify actual original test and current SHA, do not mark PASS until all relevant gates succeed. No duplicate dispatch.",
+    "action": "Lite cumulative current-SHA 39215732141 SUCCESS and original AS-DIV-03 test executed (1714 pass/30 todo). Await Lite H1d 39215732229 and native scientific UI 39215732400; await Plus cumulative 39215717712 and H1d 39215717716. Inspect exact logs after completion. Do not proceed to AS-DIV-04 until Plus original service/HTTP test and all required gates pass.",
     "exit_criteria": [
       "AS-DIV-03 original quotient x^2+x-2 and remainder 7 confirmed by both engines",
-      "Original expression is algebraically equivalent to quotient plus 7/(x+1) for x != -1",
-      "Exact current-SHA cumulative original tests pass and relevant H1d/native gates reviewed"
+      "Lite exact corrected SHA cumulative, H1d and scientific UI all SUCCESS",
+      "Plus exact-SHA cumulative frontend/backend and H1d all SUCCESS"
     ]
   },
   "blockers": [
@@ -332,7 +332,7 @@
       "plus_h1d": 39213379626
     },
     "as_div03_checkpoint": {
-      "status": "CI_IN_PROGRESS",
+      "status": "LITE_CUMULATIVE_PASS_OTHER_GATES_PENDING",
       "lite_initial_test_sha": "aeabc3ebc08ee153853eaea0f627f812b0fd2188",
       "lite_corrected_test_sha": "f2100f05a292eb6a72e22a6b503086b11b13e383",
       "lite_corrected_cumulative_run": 39215732141,
@@ -342,7 +342,11 @@
       "lite_initial_native_run": 39215713341,
       "plus_test_sha": "d0b1946d812696ee8003dea08d3db1343c3b02b0",
       "plus_cumulative_run": 39215717712,
-      "plus_h1d_run": 39215717716
+      "plus_h1d_run": 39215717716,
+      "lite_cumulative_run": 39215732141,
+      "lite_cumulative_result": "SUCCESS; original test executed; 1714 pass/30 todo",
+      "lite_h1d_run": 39215732229,
+      "lite_native_run": 39215732400
     }
   },
   "cases": {
