@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 136,
+  "revision": 137,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
-  "baseline_case": "SY-X-20",
-  "baseline_status": "VERIFIED_WITH_BLOCKERS",
+  "technical_baseline_sha": "567090173e0347747166084d6a8a7d54471e6682",
+  "baseline_case": "AS-PAR-04",
+  "baseline_status": "VERIFIED_BILATERAL_SCOPED",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -134,19 +134,31 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-PAR-04-EXACT-SHA-GATES",
-    "status": "PENDING_EXACT_SHA_GATES",
-    "lite_technical_sha": "567090173e0347747166084d6a8a7d54471e6682",
-    "plus_technical_sha": "a5cd05dd8e53fbc8c482d18a44a7e177b9f028d6",
-    "action": "AS-PAR-03 verified bilaterally, including Lite native 456 passed. AS-PAR-04 original tests committed; inspect Lite cumulative 39229109222, H1d 39229109183, native 39229109187 and Plus cumulative 39229117949/H1d 39229117954 on exact SHAs. No duplicate dispatch; global OPEN, S19 score null.",
+    "id": "ALGEBRA114-AS-PAR-05-EXACT-SHA-GATES",
+    "status": "READY_TO_IMPLEMENT",
+    "case": "AS-PAR-05",
+    "contract": "qa/certification/algebra114_source.md",
+    "equation": "x^2 + m*x + 1 = 0 over R",
+    "action": "Add original-case permanent regressions bilaterally. Cover |m|>2 (two real roots), |m|=2 (one distinct double root), |m|<2 (no real roots), verify exact roots by substitution and explicitly distinguish complex solutions of the general solver from real-domain solutions. Inspect all matching source/backend/frontend/native gates before selecting which to run. Do not loosen the oracle or count TODO/XFAIL as PASS.",
+    "required_gates": {
+      "lite": [
+        "cumulative",
+        "h1d",
+        "scientific"
+      ],
+      "plus": [
+        "cumulative",
+        "h1d"
+      ]
+    },
     "exit_criteria": [
-      "Lite original AS-PAR-04 test PASS in cumulative 39229109222 on exact SHA 567090173e0347747166084d6a8a7d54471e6682",
-      "Lite H1d 39229109183 SUCCESS on exact SHA and logs reviewed",
-      "Lite scientific native E2E 39229109187 SUCCESS on exact SHA and logs reviewed",
-      "Plus original AS-PAR-04 service+HTTP test PASS in cumulative 39229117949 on exact SHA a5cd05dd8e53fbc8c482d18a44a7e177b9f028d6",
-      "Plus H1d 39229117954 SUCCESS on exact SHA and logs reviewed",
-      "Keep mutation score null and S19 open unless a complete valid denominator is evidenced",
-      "Global certification remains OPEN and unrelated blockers unchanged"
+      "Lite original AS-PAR-05 regression executes and passes in relevant gates on its exact technical SHA",
+      "Plus original AS-PAR-05 service and HTTP regression executes and passes in relevant gates on its exact technical SHA",
+      "Verify m=3 and m=-3 real roots and substitution into x^2+m*x+1",
+      "Verify m=2 and m=-2 double roots x=-m/2",
+      "Verify |m|<2 has no real roots using an independent real-domain oracle and accurately classify any complex results returned by the general solver",
+      "Review jobs/logs and record actual execution, TODO/XFAIL/SKIP classifications",
+      "Global certification remains OPEN; keep S19 score null and preserve unrelated blockers"
     ]
   },
   "blockers": [
@@ -1977,5 +1989,54 @@
     "evidence": "Current exact-SHA Actions head_branch plus mutually matching canonical_branch in paired ledgers",
     "fallback_documented": true
   },
-  "pending_campaigns": []
+  "pending_campaigns": [],
+  "case_evidence": {
+    "algebra114_as_par_04": {
+      "status": "VERIFIED_BILATERAL_SCOPED",
+      "equation": "x^2 - 2*m*x + m^2 - 1 = 0",
+      "mathematical_oracle": "roots m-1 and m+1; both satisfy the original polynomial identically and differ by 2",
+      "evidence_by_repo": {
+        "c2melendez/precision-lab-lite": {
+          "cumulative": {
+            "run_id": 39229109222,
+            "job_id": 117982489951,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "counts": {
+              "pass": 1723,
+              "todo": 30
+            },
+            "case_test": "tests/algebra114AsPar04.audit.test.ts"
+          },
+          "h1d": {
+            "run_id": 39229109183,
+            "job_id": 117982489373,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "counts": {
+              "pass": 22
+            }
+          },
+          "scientific_native": {
+            "run_id": 39229109187,
+            "job_id": 117982489751,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "counts": {
+              "pass": 456
+            },
+            "profiles": [
+              "desktop-chromium",
+              "tablet-chromium",
+              "mobile-chromium"
+            ]
+          }
+        }
+      },
+      "no_global_inference": true
+    }
+  }
 }

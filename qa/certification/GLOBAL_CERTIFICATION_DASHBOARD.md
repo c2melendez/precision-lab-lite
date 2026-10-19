@@ -1,6 +1,13 @@
-## Actualización operativa 2026-10-19 — AS-PAR-04
+## 2026-10-19 UTC — AS-PAR-04 verificado bilateralmente; AS-PAR-05 listo para implementación
 
-AS-PAR-03 VERIFIED_BILATERAL_SCOPED. AS-PAR-04 `x^2-2mx+m^2-1=0) está en gates exact-SHA: Lite acumulativo 39229109222, H1d 39229109183, nativo 39229109187; Plus acumulativo 39229117949 y H1d 39229117954. En el último corte Lite estaba IN_PROGRESS y Plus QUEUED. Índice estructurado: [continuity.json](continuity.json), revisión 136. Certificación global OPEN, porcentaje reconciliado ND; S19 permanece abierto.
+AS-PAR-04, ecuación x² - 2mx + m² - 1 = 0 con raíces m-1 y m+1, queda **VERIFIED_BILATERAL_SCOPED** tras revisar el caso original, los jobs y los logs de los gates exact-SHA.
+
+- **Lite**, código SHA 567090173e0347747166084d6a8a7d54471e6682: [acumulativo 39229109222](https://github.com/c2melendez/precision-lab-lite/actions/runs/39229109222) SUCCESS; test original tests/algebra114AsPar04.audit.test.ts PASS; 1723 PASS/30 TODO, además typecheck y build PASS. [H1d 39229109183](https://github.com/c2melendez/precision-lab-lite/actions/runs/39229109183) SUCCESS, 22 PASS. [Científico nativo 39229109187](https://github.com/c2melendez/precision-lab-lite/actions/runs/39229109187) SUCCESS, 456 PASS entre desktop/tablet/mobile Chromium; job 117982489751 y log revisados.
+- **Plus**, código SHA a5cd05dd8e53fbc8c482d18a44a7e177b9f028d6: [acumulativo 39229117949](https://github.com/c2melendez/precision-lab-plus/actions/runs/39229117949) SUCCESS; test original backend/tests/test_algebra114_as_par04.py::test_as_par_04_original_parameter_quadratic_service_and_http PASSED en service y HTTP. Backend: 1574 PASS/3 XFAIL; frontend: 1008 PASS/28 TODO, con typecheck/build PASS. [H1d 39229117954](https://github.com/c2melendez/precision-lab-plus/actions/runs/39229117954) SUCCESS, 38 PASS; jobs y logs revisados.
+- La ejecución se corroboró en los logs, incluidos el caso original y los pasos de prueba; los pasos de «reuse verified evidence» no se tomaron aisladamente como ejecución. Los TODO/XFAIL conservan su clasificación y no se convierten en PASS.
+- La certificación global sigue **OPEN**. S19 permanece abierto y su puntuación es null/no calculada; SG28/DIST y los bloqueos independientes no cambian de estado.
+
+**Siguiente acción única:** ALGEBRA114-AS-PAR-05-EXACT-SHA-GATES. Implementar pruebas originales bilaterales para x² + mx + 1 = 0 en R, cubriendo |m|>2, |m|=2 y |m|<2, raíces exactas, sustitución en la ecuación y clasificación explícita de las raíces complejas del solver general. Después, ejecutar los gates de Lite (acumulativo, H1d y científico) y Plus (acumulativo y H1d) para los SHA técnicos nuevos; no declarar PASS antes de revisar sus logs.
 
 ## Actualización operativa 2026-10-19 — AS-PAR-03
 

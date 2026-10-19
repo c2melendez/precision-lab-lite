@@ -1,5 +1,14 @@
 # Registro de ejecución — índice vigente
 
+## 2026-10-19 UTC — AS-PAR-04 VERIFIED_BILATERAL_SCOPED
+
+Pruebas originales y gates exact-SHA reconciliados para x² - 2mx + m² - 1 = 0, raíces m±1. Lite SHA 567090173e0347747166084d6a8a7d54471e6682: acumulativo [39229109222](https://github.com/c2melendez/precision-lab-lite/actions/runs/39229109222) SUCCESS, test original PASS, 1723 PASS/30 TODO; H1d [39229109183](https://github.com/c2melendez/precision-lab-lite/actions/runs/39229109183) SUCCESS, 22 PASS; científico nativo [39229109187](https://github.com/c2melendez/precision-lab-lite/actions/runs/39229109187) SUCCESS, 456 PASS sin SKIP en desktop/tablet/mobile Chromium. Logs revisados, ejecución real acreditada.
+
+Plus SHA a5cd05dd8e53fbc8c482d18a44a7e177b9f028d6: acumulativo [39229117949](https://github.com/c2melendez/precision-lab-plus/actions/runs/39229117949) SUCCESS, test original service+HTTP PASS, backend 1574 PASS/3 XFAIL y frontend 1008 PASS/28 TODO; H1d [39229117954](https://github.com/c2melendez/precision-lab-plus/actions/runs/39229117954) SUCCESS, 38 PASS. Jobs/logs inspeccionados; no confundir pasos REUSE con pruebas omitidas ni contar TODO/XFAIL como PASS.
+
+Decisión: cerrar AS-PAR-04 como VERIFIED_BILATERAL_SCOPED. Global OPEN; S19 sigue abierto y su score permanece null; se conservan los bloqueos SG28/DIST y de seguridad. Siguiente paso único: ALGEBRA114-AS-PAR-05-EXACT-SHA-GATES, ecuación original x²+mx+1=0 en reales, ramas por discriminante y pruebas permanentes de servicio/UI según los contratos.
+
+
 El historial acumulado anterior se conserva íntegro en [archivo hasta SY-X-03](history/2026-10-16_pre_continuity_EXECUTION_LOG.md). Su contenido es histórico; no contiene el siguiente paso vigente. No reescribir ni vaciar ese archivo al recuperar contenido mayor de 1 MB mediante API; usar el blob Git completo.
 
 ## 2026-10-16 — remediación de auditoría y continuidad
