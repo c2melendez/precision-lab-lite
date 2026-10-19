@@ -1,5 +1,9 @@
 ## Actualización operativa 2026-10-19 — AS-PAR-03
 
+AS-PAR-02 VERIFIED_BILATERAL_SCOPED. AS-PAR-03 exact-SHA gates: Lite cumulative 39228003898 SUCCESS (1722 PASS/30 TODO), Lite H1d 39228004023 SUCCESS (22 PASS); Plus cumulative 39228015321 SUCCESS (1573 PASS/3 XFAIL, frontend SUCCESS), Plus H1d 39228014298 SUCCESS (38 PASS). Solo queda Lite scientific native 39228003618, aún IN_PROGRESS. Consultar [continuity.json](continuity.json), revisión 135. Certificación global **OPEN**, porcentaje reconciliado ND; S19 permanece abierto.
+
+## Actualización operativa 2026-10-19 — AS-PAR-03
+
 AS-PAR-02 VERIFIED_BILATERAL_SCOPED. AS-PAR-03 `x^2=a) está en verificación exact-SHA: Lite cumulative 39228003898 SUCCESS (1722 PASS/30 TODO); Lite H1d 39228004023 y native 39228003618, Plus cumulative 39228015321 y H1d 39228014298 pendientes en el último corte. Índice estructurado autoritativo: [continuity.json](continuity.json), revisión 134. Certificación global **OPEN**, porcentaje reconciliado ND; S19 no se cierra ni se calcula score por esta actividad.
 
 # Tablero vigente de certificación — Precision Lab Lite y Plus
