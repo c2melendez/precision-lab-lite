@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 116,
+  "revision": 117,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,15 +134,15 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-RAT-09-COMPLETE-GATES",
-    "status": "PENDING_H1D_NATIVE_COMPLETION",
-    "technical_sha": "82d1b51a8fbd963ec1bb3f27969ed335cc1cfffe",
-    "run_id": 39210511772,
-    "action": "Lite AS-RAT-09 original and cumulative PASS run 39210511772; Plus original and cumulative PASS 39208899512. Check outstanding Lite H1d 39210511865 and scientific UI 39210512315 until completed, inspect failures before bilateral milestone closure; then begin AS-RAT-10 original. No rerun of cumulative.",
+    "id": "ALGEBRA114-AS-RAT-10-CI",
+    "status": "PENDING_CI",
+    "technical_sha": "55baa3a405cd9a57f7ef771a66a81655e4af7f4d",
+    "run_id": 39211385026,
+    "action": "Inspect AS-RAT-10 automatic exact-SHA cumulative runs Lite 39211385026 and Plus 39211388604 and H1d/native workflows. Verify original specific test executed; diagnose failures before scoped correction, avoid unchanged redispatch. Do not declare AS-RAT-10 bilateral PASS until both cumulative original tests pass.",
     "exit_criteria": [
-      "Lite H1d and scientific UI latest actual outcomes verified",
-      "AS-RAT-09 bilateral cumulative original tests PASS already reviewed",
-      "No new regression in remaining mandatory gates; proceed AS-RAT-10"
+      "Lite original exact-shape 3-sqrt(6) and numerical equivalence executed PASS",
+      "Plus original service and HTTP equality PASS",
+      "Relevant exact-SHA cumulative runs and job logs reviewed and no new blockers"
     ]
   },
   "blockers": [
@@ -276,7 +276,7 @@
       "plus_cumulative_run_id": 39205346692
     },
     "as_rat09_checkpoint": {
-      "status": "BILATERAL_CUMULATIVE_PASS_PENDING_ADDITIONAL_LITE_GATES",
+      "status": "VERIFIED_BILATERAL_SCOPED",
       "plus_technical_sha": "3366229455dbfcfc7d6a8cbdea06bd67fc131d7a",
       "plus_run_id": 39208899512,
       "plus_test": "backend/tests/test_algebra114_as_rat09.py PASSED, 1561 pass/3 xfail",
@@ -289,8 +289,18 @@
       "lite_native_run_id": 39210512315,
       "lite_original_test": "algebra114AsRat09.audit.test.ts PASS executed; 1710 pass/30 todo; guard skip=false",
       "plus_original_test": "test_algebra114_as_rat09.py PASSED executed; 1561 pass/3 xfail",
-      "lite_h1d_status": "IN_PROGRESS_AT_OBSERVATION",
-      "lite_native_status": "IN_PROGRESS_AT_OBSERVATION"
+      "lite_h1d_status": "SUCCESS",
+      "lite_native_status": "SUCCESS"
+    },
+    "as_rat10_checkpoint": {
+      "status": "CI_IN_PROGRESS",
+      "lite_test_sha": "55baa3a405cd9a57f7ef771a66a81655e4af7f4d",
+      "lite_cumulative_run_id": 39211385026,
+      "lite_h1d_run_id": 39211385043,
+      "lite_native_run_id": 39211384891,
+      "plus_test_sha": "6a1da80f9f83fab60b0007e3c66565502c7fc6c5",
+      "plus_cumulative_run_id": 39211388604,
+      "plus_h1d_run_id": 39211388619
     }
   },
   "cases": {
