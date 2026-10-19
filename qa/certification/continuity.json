@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 143,
+  "revision": 145,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "25e78178ba859727f6268721c183b13191368245",
-  "baseline_case": "AS-PAR-07",
+  "technical_baseline_sha": "68f5c41774eb063d755081b914f417d78c9b7f81",
+  "baseline_case": "AS-PAR-09",
   "baseline_status": "PENDING_EXACT_SHA_GATES",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -134,29 +134,30 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-PAR-07-EXACT-SHA-GATES",
+    "id": "ALGEBRA114-AS-PAR-09-EXACT-SHA-GATES",
     "status": "PENDING_EXACT_SHA_GATES",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "18a0bb717c4e9dcddb6e3bb92f338d7f4038531c",
-      "c2melendez/precision-lab-plus": "85e9c61562751eb05a2abda2c46757677b806388"
+      "c2melendez/precision-lab-lite": "68f5c41774eb063d755081b914f417d78c9b7f81",
+      "c2melendez/precision-lab-plus": "68f5c41774eb063d755081b914f417d78c9b7f81"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39233655616,
-        39233655445,
-        39233655466
+        39274327835,
+        39274327831,
+        39274327855
       ],
       "c2melendez/precision-lab-plus": [
-        39233661000,
-        39233660936
+        39274327835,
+        39274327831,
+        39274327855
       ]
     },
-    "action": "AS-PAR-07 cumulative and H1d gates pass on both exact SHAs; Plus service+HTTP test passed. Wait for Lite native run 39233655466/job 117997399569, review completed logs, then close the block. AS-PAR-08 is running as independent work; do not weaken its absolute-value oracle.",
+    "action": "AS-PAR-08 is verified bilateral with original tests and all applicable gates green. AS-PAR-09 code and tests are committed; inspect the exact-SHA cumulative/H1d and Lite native logs. For distinct centers require the unique midpoint; for equal centers require identity/all real x.",
     "exit_criteria": [
-      "Lite AS-PAR-07 original test passes; cumulative/H1d SUCCESS and native scientific E2E completes SUCCESS on exact SHA with logs reviewed",
-      "Plus AS-PAR-07 original service+HTTP test passes; cumulative/H1d success and logs reviewed",
-      "For b>=0 verify x=a+b^2 by substitution into sqrt(x-a)=b",
-      "For b<0 return no real solution and reject extraneous roots",
+      "Lite original AS-PAR-09 tests pass and cumulative/H1d/native gates SUCCESS on exact SHA with logs reviewed",
+      "Plus original AS-PAR-09 service/API tests pass and cumulative/H1d gates SUCCESS on exact SHA with logs reviewed",
+      "For a!=b, verify x=(a+b)/2 by substitution into |x-a|=|x-b|; for a=b, classify as identity/all real x",
+      "Do not count TODO, XFAIL, skips, previous-SHA gates or reused evidence as PASS",
       "Global certification remains OPEN; S19 score null; preserve SG28/DIST and unrelated blockers"
     ]
   },
@@ -2342,55 +2343,117 @@
       "no_global_inference": true
     },
     "algebra114_as_par_08": {
-      "status": "PENDING_EXACT_SHA_GATES",
-      "equation": "|x-a|=b over R",
-      "contract": "qa/certification/algebra114_source.md",
+      "status": "VERIFIED_BILATERAL_SCOPED",
+      "contract": "|x-a|=b over R",
       "oracle": [
         "b<0: no real solution",
-        "b=0: one root x=a",
-        "b>0: two distinct roots x=a+b and x=a-b"
+        "b=0: x=a",
+        "b>0: x=a±b"
       ],
       "evidence_by_repo": {
         "c2melendez/precision-lab-lite": {
           "technical_sha": "25e78178ba859727f6268721c183b13191368245",
-          "test_file": "tests/algebra114AsPar08.audit.test.ts",
           "cumulative": {
             "run_id": 39234352125,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "original_case_tests_passed": 7,
+            "suite_counts": {
+              "pass": 1750,
+              "todo": 30
+            }
+          },
+          "h1d": {
+            "run_id": 39234351958,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true
+          },
+          "scientific_native": {
+            "run_id": 39234351986,
+            "job_id": 117999701835,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "counts": {
+              "pass": 456,
+              "skip": 0
+            }
+          }
+        },
+        "c2melendez/precision-lab-plus": {
+          "technical_sha": "20f7cc8a9961113a3446c2299f053fb2e0179645",
+          "cumulative": {
+            "run_id": 39235089515,
+            "backend_job_id": 118002113144,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "original_case_test": "test_algebra114_as_par08.py::test_as_par_08_original_absolute_value_equation_service_and_http",
+            "backend_counts": {
+              "pass": 1578,
+              "xfail": 3
+            }
+          },
+          "h1d": {
+            "run_id": 39235089451,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true
+          },
+          "syntax_recovery": {
+            "run_id": 39235089439,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true
+          }
+        }
+      },
+      "no_global_inference": true
+    },
+    "algebra114_as_par_09": {
+      "status": "PENDING_EXACT_SHA_GATES",
+      "contract": "|x-a|=|x-b| over R",
+      "oracle": [
+        "a!=b: unique root x=(a+b)/2",
+        "a=b: identity; every real x is a solution"
+      ],
+      "evidence_by_repo": {
+        "c2melendez/precision-lab-lite": {
+          "technical_sha": "68f5c41774eb063d755081b914f417d78c9b7f81",
+          "tests": "tests/algebra114AsPar08.audit.test.ts (AS-PAR-09 cases)",
+          "cumulative": {
+            "run_id": 39274327835,
             "status": "IN_PROGRESS",
-            "job_id": 117999702787,
             "logs_reviewed": false,
             "evidence_executed": false
           },
           "h1d": {
-            "run_id": 39234351958,
+            "run_id": 39274327831,
             "status": "IN_PROGRESS",
-            "job_id": 117999701607,
             "logs_reviewed": false,
             "evidence_executed": false
           },
           "scientific_native": {
-            "run_id": 39234351986,
+            "run_id": 39274327855,
             "status": "IN_PROGRESS",
-            "job_id": 117999701835,
             "logs_reviewed": false,
             "evidence_executed": false
           }
         },
         "c2melendez/precision-lab-plus": {
-          "technical_sha": "3fe7c03d56bb539019ea1d6ef95820287124fe60",
-          "test_file": "backend/tests/test_algebra114_as_par08.py",
+          "technical_sha": "68f5c41774eb063d755081b914f417d78c9b7f81",
+          "tests": "backend/tests/test_algebra114_as_par08.py (AS-PAR-09 service+HTTP cases)",
           "cumulative": {
-            "run_id": 39234359666,
-            "status": "IN_PROGRESS",
-            "backend_job_id": 117999726515,
-            "frontend_job_id": 117999727279,
+            "run_id": 39274327835,
+            "status": "QUEUED_OR_IN_PROGRESS",
             "logs_reviewed": false,
             "evidence_executed": false
           },
           "h1d": {
-            "run_id": 39234359644,
-            "status": "IN_PROGRESS",
-            "job_id": 117999726577,
+            "run_id": 39274327831,
+            "status": "QUEUED_OR_IN_PROGRESS",
             "logs_reviewed": false,
             "evidence_executed": false
           }
