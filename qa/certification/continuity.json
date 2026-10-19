@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 111,
+  "revision": 112,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,15 +134,15 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-RAT-06-LITE-RETEST",
+    "id": "ALGEBRA114-AS-RAT-08-CI-REVIEW",
     "status": "PENDING_CI",
-    "technical_sha": "198b44a65578fbd2b84739e6665ff25db7c91f49",
-    "run_id": 39199530041,
-    "action": "Inspect Lite exact-SHA AS-RAT-06 cumulative 39199530041 and original variable-conjugate test. Plus PASS 39191767769 already evidenced. If bilateral PASS advance AS-RAT-07; do not duplicate unchanged CI.",
+    "technical_sha": "3e343860a3e9f28bbb126f178540209fe9356a16",
+    "run_id": 39205352532,
+    "action": "Inspect automatic exact-SHA AS-RAT-08 nested radical original test and cumulative logs; correct demonstrated failures, only then advance AS-RAT-09. AS-RAT-06 and AS-RAT-07 are already PASS bilateral; do not reimplement or redispatch.",
     "exit_criteria": [
-      "Lite returns exact rationalized original form",
-      "Original x>0, h>-x, h!=0 numeric sample checks PASS",
-      "Exact SHA cumulative and case test PASS evidence saved"
+      "AS-RAT-08 expected radical denesting and numeric equality verified",
+      "Plus HTTP and Lite CAS specific tests executed PASS",
+      "Both cumulative technical SHA results documented"
     ]
   },
   "blockers": [
