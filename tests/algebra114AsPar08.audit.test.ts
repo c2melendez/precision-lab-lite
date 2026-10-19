@@ -53,3 +53,33 @@ describe("Algebra114 AS-PAR-08 absolute-value equation |x-a| = b over R", () => 
     expect(result.truth).toBe("contradiction");
   });
 });
+
+
+describe("Algebra114 AS-PAR-09 equal-distance absolute-value equation", () => {
+  it("matches the official conditional contract", () => {
+    expect(source).toContain("| AS-PAR-09 | N3 |");
+    expect(source).toContain("Si \\(a\\neq b\\), \\(x=\\frac{a+b}{2}\\); si \\(a=b\\), toda \\(x\\)");
+  });
+
+  it("returns the midpoint for distinct numeric centers", () => {
+    const result = solve("abs(x-2)=abs(x-6)");
+    expect(result.solutionsAlgebrite).toHaveLength(1);
+    expect(evaluate("simplify(" + result.solutionsAlgebrite[0] + "-4)")).toBe("0");
+    expect(evaluate("simplify(abs(4-2)-abs(4-6))")).toBe("0");
+  });
+
+  it("classifies equal centers as an identity", () => {
+    const result = solve("abs(x-3)=abs(x-3)");
+    expect(result.truth).toBe("identity");
+    expect(result.solutionsAlgebrite).toHaveLength(0);
+  });
+
+  it("states both branches for symbolic centers", () => {
+    const result = solve("abs(x-a)=abs(x-b)");
+    expect(result.solutionsAlgebrite).toHaveLength(1);
+    expect(evaluate("simplify(2*(" + result.solutionsAlgebrite[0] + ")-(a+b))")).toBe("0");
+    const step = result.steps.find((item) => item.id === "absolute-value-equidistance");
+    expect(step?.explanation).toContain("a = b");
+    expect(step?.explanation).toContain("a ≠ b");
+  });
+});

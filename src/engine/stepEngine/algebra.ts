@@ -149,6 +149,37 @@ export function solveAlgebra(
     return { steps, solutionsAlgebrite: [squareRootSolution] };
   }
 
+  // Algebra114 AS-PAR-09: equal distances from a and b have their
+  // midpoint as the unique solution when a != b; when a == b, every real x works.
+  const absoluteLeftCenter = absoluteValueOffset(leftAlgebrite, variable);
+  const absoluteRightCenter = absoluteValueOffset(rightAlgebrite, variable);
+  if (absoluteLeftCenter !== null && absoluteRightCenter !== null) {
+    const centerDifference = evaluate("simplify((" + absoluteLeftCenter + ")-(" + absoluteRightCenter + "))");
+    if (centerDifference === "0") {
+      steps.push({
+        id: "absolute-value-equidistance",
+        latex: "a = b",
+        explanation: "Como a = b, ambos valores absolutos son idénticos; toda x real es solución.",
+      });
+      return { steps, solutionsAlgebrite: [], truth: "identity" };
+    }
+    const midpoint = evaluate("simplify(((" + absoluteLeftCenter + ")+(" + absoluteRightCenter + "))/2)");
+    const sign = realNumericSign(centerDifference);
+    steps.push({
+      id: "absolute-value-equidistance",
+      latex: variable + " = (" + absoluteLeftCenter + "+" + absoluteRightCenter + ")/2",
+      explanation: sign === null
+        ? "Si a ≠ b, los puntos equidistantes tienen como único punto medio x = (a+b)/2; si a = b, toda x real es solución."
+        : "Como a ≠ b, la única solución real es el punto medio x = (a+b)/2.",
+    });
+    steps.push({
+      id: "solutions",
+      latex: variable + " = " + midpoint,
+      explanation: "Punto medio verificado en la ecuación original.",
+    });
+    return { steps, solutionsAlgebrite: [midpoint] };
+  }
+
   // Algebra114 AS-PAR-08: solve the real absolute-value equation without
   // losing its three branches or admitting roots for a negative radius.
   let absoluteValueOffsetTerm: string | null = absoluteValueOffset(leftAlgebrite, variable);
