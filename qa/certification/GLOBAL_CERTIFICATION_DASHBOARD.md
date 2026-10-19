@@ -110,3 +110,8 @@ AS-DIV-07: todas las compuertas requeridas pasan bilateralmente; Lite nativo 456
 ## Corte verificado 2026-10-19 — AS-DIV-08 cerrado en alcance acotado; AS-PAR-01 sigue
 
 AS-DIV-07 y AS-DIV-08 pasan las compuertas requeridas en Lite y Plus. AS-DIV-08: acumulativo/H1d en ambos productos y Lite nativo 456/456, con logs revisados. La matriz global no se declara completa: certificación OPEN; bloqueos H2/SG28/DIST, S25, S19 y otros continúan sin cambios. Próximo objetivo único: AS-PAR-01 (ax=b) con los tres casos de parámetros; consultar HEAD/Actions antes de escribir pruebas y evitar reruns de evidencia verde sin cambio técnico.
+
+
+## Corte 2026-10-19 — AS-PAR-01 verificado; AS-PAR-02 en CI
+
+AS-PAR-01 pasa bilateralmente en los canales requeridos después de corregir la clasificación de ecuaciones degeneradas en Plus. AS-PAR-02 está pendiente de gates exact-SHA (Lite acumulativo/H1d/nativo; Plus acumulativo/H1d). La campaña de dependencia/mutación Plus 39224085023 permanece en curso: backend-security SUCCESS, plus-backend-mutmut aún activo, sin score inferido. Certificación global OPEN; no declarar S19 cerrado.
