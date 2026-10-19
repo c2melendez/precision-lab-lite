@@ -71,3 +71,8 @@ Alcance: fixture canónico,rutas predeterminadas y3perfilesChromium,eventos audi
 - AS-DIV-05: **IN_PROGRESS** — cociente 2x²−x+4, resto −3, x≠1. Runs exact-SHA pendientes: Lite 39217613984/39217614035/39217614042; Plus 39217618569/39217618064. Consultar CURRENT_STATE y continuity.json para el siguiente paso; no contar estos runs como PASS hasta inspeccionar sus conclusiones/logs.
 
 La certificación global sigue **OPEN**. Los cierres de casos son acotados y no eliminan los bloqueos S19/S25, SY-P-23, X04/X14 Plus ni SG28/DIST.
+
+
+### Estado actualizado AS-DIV-05 — 2026-10-19
+
+Los gates acumulativos y H1d pasan en ambos productos; las regresiones originales se ejecutaron y aprobaron. Solo Lite scientific UI 39217614042 permanece IN_PROGRESS. Mantener AS-DIV-05 abierto hasta SUCCESS de ese run. Global OPEN.
