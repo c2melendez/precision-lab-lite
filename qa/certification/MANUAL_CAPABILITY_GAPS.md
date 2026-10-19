@@ -325,3 +325,7 @@ Alcance: fixture canónico,rutas predeterminadas y3perfilesChromium,eventos audi
 ## 2026-10-19 UTC — AS-PAR-10: parámetro simbólico libre no implementado
 
 `x/(x-a)=1` con `a` sin valor numérico no tiene análisis por casos: Plus devuelve `equation_solutions []` (lista vacía sin explicación de dominio) y Lite lanza unsupported-operation. El contrato oficial (a≠0 sin solución; a=0 toda x≠0) solo está acreditado para las instancias a=3 y a=0. No contar como PASS; requiere extender la clasificación racional a numeradores con parámetros (condicionales en a) en ambos productos antes de reclasificar. Los gates de CI no leen logs crudos en esta sesión por política de egreso; ver CURRENT_STATE.
+
+## 2026-10-19 UTC — AS-AVS-01: reescritura real de |u|^2 acotada en Plus
+
+Plus solo reescribe la entrada original exacta `Abs(x)**2` (símbolo `x`) a `x**2`, tras confirmar con `refine` bajo `Q.real(x)`; SymPy no asume variables reales, por lo que `|y|^2`, `|x+1|^2` u otras subexpresiones siguen devolviendo `Abs(...)**2`. No se afirma una política general «variables reales» en el simplificador. Lite (Algebrite) reduce `|x|^2` nativamente. Condición de salida: decisión de producto sobre el dominio real por defecto del simplificador Plus y pruebas originales que la cubran.

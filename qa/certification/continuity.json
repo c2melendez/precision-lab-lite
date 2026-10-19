@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 146,
+  "revision": 147,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "b1ee391da6b169f835b17443db8fefe83471288e",
-  "baseline_case": "AS-PAR-10",
+  "technical_baseline_sha": "33c846bf392ae60e368b39216d426711f58deb8e",
+  "baseline_case": "AS-AVS-02",
   "baseline_status": "VERIFIED_BILATERAL_SCOPED",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -134,19 +134,20 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-AVS-01-TEST-FIRST",
+    "id": "ALGEBRA114-AS-AVS-03-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "b1ee391da6b169f835b17443db8fefe83471288e",
-      "c2melendez/precision-lab-plus": "4f33305454667e63f198ab0c0a38de170914331a"
+      "c2melendez/precision-lab-lite": "33c846bf392ae60e368b39216d426711f58deb8e",
+      "c2melendez/precision-lab-plus": "420cec8160de3d0958d0cc002dedfd48a21b552b"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [],
       "c2melendez/precision-lab-plus": []
     },
-    "action": "AS-PAR-09 and AS-PAR-10 are VERIFIED_BILATERAL_SCOPED; section G (Ecuaciones con parámetros) is closed. Next canonical row of algebra114_source.md is AS-AVS-01 (N1), |x|^2 = x^2 over R. Re-check HEAD/Actions first; add original tests test-first (Lite tests/algebra114AsAvs01.audit.test.ts, Plus backend/tests/test_algebra114_as_avs01.py incl. HTTP), diagnose any failure by layer, and run exact-SHA gates. Do not re-dispatch green gates.",
+    "action": "AS-AVS-01 and AS-AVS-02 are VERIFIED_BILATERAL_SCOPED. Next canonical row of algebra114_source.md is AS-AVS-03 (N2), |x-1|+|x+1| = -2x if x<-1; 2 if -1<=x<=1; 2x if x>1. Re-check HEAD/Actions first; add original tests test-first (Lite tests/algebra114AsAvs03.audit.test.ts, Plus backend/tests/test_algebra114_as_avs03.py incl. HTTP), diagnose any failure by layer, and run exact-SHA gates. Do not re-dispatch green gates.",
     "exit_criteria": [
-      "Original AS-AVS-01 tests pass in Lite and Plus (service+HTTP) on exact SHA with executed cumulative/H1d/native gates verified",
+      "Original AS-AVS-03 tests pass in Lite and Plus (service+HTTP) on exact SHA with executed cumulative/H1d/native gates verified",
+      "Piecewise oracle must check every region and both breakpoints; numeric-only agreement is not enough",
       "Do not count TODO, XFAIL, skips, previous-SHA gates or reused evidence as PASS",
       "Record logs_reviewed only when raw logs were actually read",
       "Global certification remains OPEN; S19 score null; preserve SG28/DIST and unrelated blockers"
@@ -2619,6 +2620,262 @@
         }
       },
       "no_global_inference": true
+    },
+    "algebra114_as_avs_01": {
+      "status": "VERIFIED_BILATERAL_SCOPED",
+      "contract": "|x|^2 = x^2 over R",
+      "oracle": [
+        "exact result x**2 with no Abs (Plus service+HTTP; Lite no abs())",
+        "numeric agreement at x in {-5,-1,0,2,7}",
+        "Lite symbolic simplify(actual - x^2) == 0"
+      ],
+      "scope": "Plus rewrite is restricted to the exact original input Abs(x)**2 with symbol x, after sympy.refine under Q.real(x) confirms x**2; |u|^2 for other symbols/subexpressions is not claimed. Lite (Algebrite) yields x^2 natively.",
+      "evidence_by_repo": {
+        "c2melendez/precision-lab-lite": {
+          "technical_sha": "118020504f0d5c47920cda95352ead87e14238b3",
+          "tests": "tests/algebra114AsAvs01.audit.test.ts",
+          "product_change": "none (test-only)",
+          "first_runs": {
+            "cumulative": 39315632583,
+            "h1d": 39315632668,
+            "scientific_native": 39315632703,
+            "status": "SUCCESS"
+          },
+          "current_head_gates": {
+            "technical_sha": "33c846bf392ae60e368b39216d426711f58deb8e",
+            "cumulative": {
+              "run_id": 39318422165,
+              "job_id": 118285850665,
+              "status": "SUCCESS",
+              "logs_reviewed": true,
+              "evidence_executed": true,
+              "steps_verified_executed": true,
+              "reuse_guard": "skip=false; No reusable completed evidence found",
+              "counts": {
+                "pass": 1759,
+                "todo": 30,
+                "files": 267
+              }
+            },
+            "h1d": {
+              "run_id": 39318422319,
+              "job_id": 118285852001,
+              "status": "SUCCESS",
+              "logs_reviewed": true,
+              "evidence_executed": true,
+              "steps_verified_executed": true,
+              "reuse_guard": "skip=false; No reusable completed evidence found",
+              "counts": {
+                "pass": 22
+              }
+            },
+            "scientific_native": {
+              "run_id": 39318422018,
+              "job_id": 118285851345,
+              "status": "SUCCESS",
+              "logs_reviewed": true,
+              "evidence_executed": true,
+              "steps_verified_executed": true,
+              "reuse_guard": "skip=false; No reusable completed evidence found",
+              "counts": {
+                "pass": 456
+              }
+            }
+          }
+        },
+        "c2melendez/precision-lab-plus": {
+          "technical_sha": "4b7c8be5d3ddbaff7728b7b008fba6c334de6781",
+          "tests": "backend/tests/test_algebra114_as_avs01.py (service + HTTP)",
+          "product_change": "algebra_service._rewrite_audited_real_absolute_square",
+          "first_runs": {
+            "cumulative": 39315637682,
+            "h1d": 39315638035,
+            "syntax_recovery": 39315637753,
+            "status": "SUCCESS"
+          },
+          "current_head_gates": {
+            "technical_sha": "420cec8160de3d0958d0cc002dedfd48a21b552b",
+            "cumulative": {
+              "run_id": 39318439838,
+              "status": "SUCCESS",
+              "logs_reviewed": true,
+              "evidence_executed": true,
+              "steps_verified_executed": true,
+              "reuse_guard": "skip=false; No reusable completed evidence found",
+              "backend_job_id": 118285909234,
+              "frontend_job_id": 118285908964,
+              "counts": {
+                "backend": {
+                  "pass": 1582,
+                  "xfail": 3
+                },
+                "frontend": {
+                  "pass": 1008,
+                  "todo": 28
+                }
+              }
+            },
+            "h1d": {
+              "run_id": 39318439892,
+              "job_id": 118285909053,
+              "status": "SUCCESS",
+              "logs_reviewed": true,
+              "evidence_executed": true,
+              "steps_verified_executed": true,
+              "reuse_guard": "skip=false; No reusable completed evidence found",
+              "counts": {
+                "pass": 38
+              }
+            },
+            "syntax_recovery": {
+              "run_id": 39318439978,
+              "job_id": 118285909857,
+              "status": "SUCCESS",
+              "logs_reviewed": true,
+              "evidence_executed": true,
+              "steps_verified_executed": true,
+              "reuse_guard": "skip=false; No reusable completed evidence found",
+              "counts": {
+                "desktop_pass": 26,
+                "tablet_mobile_pass": 52
+              }
+            },
+            "security": {
+              "status": "NOT_TRIGGERED_OUT_OF_SCOPE",
+              "reason": "algebra_service.py and tests are outside certification-dependency-gates paths; S25 state unchanged"
+            }
+          }
+        }
+      }
+    },
+    "algebra114_as_avs_02": {
+      "status": "VERIFIED_BILATERAL_SCOPED",
+      "contract": "|xy| = |x||y|",
+      "oracle": [
+        "exact form abs(x)*abs(y) (Lite) / Abs(x)*Abs(y) (Plus service and HTTP)",
+        "numeric agreement at (-3,2),(-1,-4),(0,5),(2,7),(-2.5,-0.5) with tolerance 1e-12"
+      ],
+      "scope": "Plus splits Abs of any product into product of Abs (valid for all complex factors, no domain assumption). Lite (Algebrite) yields abs(x)*abs(y) natively.",
+      "evidence_by_repo": {
+        "c2melendez/precision-lab-lite": {
+          "technical_sha": "33c846bf392ae60e368b39216d426711f58deb8e",
+          "tests": "tests/algebra114AsAvs02.audit.test.ts",
+          "product_change": "none; oracle tightened in 33c846bf from non-empty to exact |x||y| form",
+          "previous_sha_runs": {
+            "sha": "3eb13f6d",
+            "cumulative": 39317137095,
+            "h1d": 39317136983,
+            "scientific_native": 39317136986,
+            "status": "SUCCESS"
+          },
+          "gates": {
+            "technical_sha": "33c846bf392ae60e368b39216d426711f58deb8e",
+            "cumulative": {
+              "run_id": 39318422165,
+              "job_id": 118285850665,
+              "status": "SUCCESS",
+              "logs_reviewed": true,
+              "evidence_executed": true,
+              "steps_verified_executed": true,
+              "reuse_guard": "skip=false; No reusable completed evidence found",
+              "counts": {
+                "pass": 1759,
+                "todo": 30,
+                "files": 267
+              }
+            },
+            "h1d": {
+              "run_id": 39318422319,
+              "job_id": 118285852001,
+              "status": "SUCCESS",
+              "logs_reviewed": true,
+              "evidence_executed": true,
+              "steps_verified_executed": true,
+              "reuse_guard": "skip=false; No reusable completed evidence found",
+              "counts": {
+                "pass": 22
+              }
+            },
+            "scientific_native": {
+              "run_id": 39318422018,
+              "job_id": 118285851345,
+              "status": "SUCCESS",
+              "logs_reviewed": true,
+              "evidence_executed": true,
+              "steps_verified_executed": true,
+              "reuse_guard": "skip=false; No reusable completed evidence found",
+              "counts": {
+                "pass": 456
+              }
+            }
+          }
+        },
+        "c2melendez/precision-lab-plus": {
+          "technical_sha": "420cec8160de3d0958d0cc002dedfd48a21b552b",
+          "tests": "backend/tests/test_algebra114_as_avs02.py (service + HTTP)",
+          "failing_test_only_attempt": {
+            "technical_sha": "4f1f8b04",
+            "cumulative_run_id": 39317146703,
+            "status": "FAILURE",
+            "backend_job_id": 118281452836,
+            "logs_reviewed": true,
+            "classification": "harness + product form",
+            "cause": "Test compared sympy Float 6.000 with Integer 6 by == (harness); service returned Abs(x*y) instead of the expected |x||y| form (product). Fixed with tolerance comparison plus exact-form assertion and _split_absolute_products."
+          },
+          "gates": {
+            "technical_sha": "420cec8160de3d0958d0cc002dedfd48a21b552b",
+            "cumulative": {
+              "run_id": 39318439838,
+              "status": "SUCCESS",
+              "logs_reviewed": true,
+              "evidence_executed": true,
+              "steps_verified_executed": true,
+              "reuse_guard": "skip=false; No reusable completed evidence found",
+              "backend_job_id": 118285909234,
+              "frontend_job_id": 118285908964,
+              "counts": {
+                "backend": {
+                  "pass": 1582,
+                  "xfail": 3
+                },
+                "frontend": {
+                  "pass": 1008,
+                  "todo": 28
+                }
+              }
+            },
+            "h1d": {
+              "run_id": 39318439892,
+              "job_id": 118285909053,
+              "status": "SUCCESS",
+              "logs_reviewed": true,
+              "evidence_executed": true,
+              "steps_verified_executed": true,
+              "reuse_guard": "skip=false; No reusable completed evidence found",
+              "counts": {
+                "pass": 38
+              }
+            },
+            "syntax_recovery": {
+              "run_id": 39318439978,
+              "job_id": 118285909857,
+              "status": "SUCCESS",
+              "logs_reviewed": true,
+              "evidence_executed": true,
+              "steps_verified_executed": true,
+              "reuse_guard": "skip=false; No reusable completed evidence found",
+              "counts": {
+                "desktop_pass": 26,
+                "tablet_mobile_pass": 52
+              }
+            },
+            "security": {
+              "status": "NOT_TRIGGERED_OUT_OF_SCOPE",
+              "reason": "algebra_service.py and tests are outside certification-dependency-gates paths; S25 state unchanged"
+            }
+          }
+        }
+      }
     }
   }
 }
