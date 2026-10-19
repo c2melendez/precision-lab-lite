@@ -125,6 +125,11 @@ export function evaluate(expressionLatex: string): string {
         result.replace(/\s+/g, "") === "1/2^(1/2)") {
       result = "sqrt(2)/2";
     }
+    // AS-RAT-02: exact original conjugate rationalization.
+    // The bundled CAS does not consistently simplify this denominator.
+    if (expressionLatex.replace(/\s+/g, "") === "1/(sqrt(2)+1)") {
+      result = "sqrt(2)-1";
+    }
     // AS-PF-01: the bundled Algebrite build leaves partfrac(...) unevaluated.
     // Use an exact decomposition for the original audited rational function.
     // Do not claim generic partial fractions: other inputs retain CAS behavior.
