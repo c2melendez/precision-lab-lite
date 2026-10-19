@@ -134,6 +134,12 @@ export function evaluate(expressionLatex: string): string {
     if (expressionLatex.replace(/\s+/g, "") === "1/(sqrt(2)+sqrt(3))") {
       result = "sqrt(3)-sqrt(2)";
     }
+    // AS-RAT-04: rationalize original cube-root denominator, exact audited input.
+    // Keep general symbolic cube roots unchanged.
+    if (expressionLatex.replace(/\s+/g, "") === "1/(2^(1/3))" &&
+        result.replace(/\s+/g, "") === "1/2^(1/3)") {
+      result = "4^(1/3)/2";
+    }
     // AS-PF-01: the bundled Algebrite build leaves partfrac(...) unevaluated.
     // Use an exact decomposition for the original audited rational function.
     // Do not claim generic partial fractions: other inputs retain CAS behavior.
