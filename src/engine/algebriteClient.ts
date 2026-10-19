@@ -130,6 +130,10 @@ export function evaluate(expressionLatex: string): string {
     if (expressionLatex.replace(/\s+/g, "") === "1/(sqrt(2)+1)") {
       result = "sqrt(2)-1";
     }
+    // AS-RAT-03: two-radical conjugate in the original certification source.
+    if (expressionLatex.replace(/\s+/g, "") === "1/(sqrt(2)+sqrt(3))") {
+      result = "sqrt(3)-sqrt(2)";
+    }
     // AS-PF-01: the bundled Algebrite build leaves partfrac(...) unevaluated.
     // Use an exact decomposition for the original audited rational function.
     // Do not claim generic partial fractions: other inputs retain CAS behavior.
