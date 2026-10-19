@@ -506,3 +506,8 @@ Lite `36225e2cf1af6571e0ef6b4c2e757acd1b34005a`: acumulativo 39218286674 SUCCESS
 AS-DIV-06: Lite `36225e2cf1af6571e0ef6b4c2e757acd1b34005a`, acumulativo 39218286674 SUCCESS (test original PASS, 1717 PASS/30 TODO), H1d 39218286532 SUCCESS (22 PASS), científico 39218286544 SUCCESS (456 PASS). Plus `0a9730447b578524d9e9ea78d3c5cf7a4c1e1b23`, acumulativo 39218292207 SUCCESS (test original service+HTTP PASS, 1568 PASS/3 XFAIL), H1d 39218292309 SUCCESS (38 PASS). Caso cerrado solo en alcance; cociente x+1, resto 0.
 
 AS-DIV-07 original añadido en ambos repos. Fuente `(x^5-1)/(x-1)`, cociente x^4+x^3+x^2+x+1, resto 0; x≠1 para la entrada racional original. Lite SHA `8db3456be0324aecefd5d63ba8b68ab474399e56`: cumulative 39219361555, H1d 39219361565, científico 39219361663. Plus SHA `0fcdc9bb77c2e9dc5e3ae5cb399e10b9ef3d139c`: cumulative 39219370525, H1d 39219370577. Todos IN_PROGRESS al corte; inspeccionar logs y no redispatch idéntico. Global OPEN.
+
+
+### AS-DIV-07 — resultados parciales (2026-10-19)
+
+Lite `8db3456be0324aecefd5d63ba8b68ab474399e56`: cumulative 39219361555 SUCCESS (test original PASS, 1718 PASS/30 TODO), H1d 39219361565 SUCCESS (22 PASS). Plus `0fcdc9bb77c2e9dc5e3ae5cb399e10b9ef3d139c`: cumulative 39219370525 SUCCESS (test original service+HTTP PASS, 1569 PASS/3 XFAIL, frontend SUCCESS), H1d 39219370577 SUCCESS (38 PASS). Único pendiente: Lite científico 39219361663 IN_PROGRESS. No cerrar el caso hasta SUCCESS; no repetir runs.
