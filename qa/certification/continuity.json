@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "revision": 142,
+  "revision": 143,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "18a0bb717c4e9dcddb6e3bb92f338d7f4038531c",
+  "technical_baseline_sha": "25e78178ba859727f6268721c183b13191368245",
   "baseline_case": "AS-PAR-07",
   "baseline_status": "PENDING_EXACT_SHA_GATES",
   "global_certification": "OPEN",
@@ -151,13 +151,13 @@
         39233660936
       ]
     },
-    "action": "AS-PAR-06 is VERIFIED_BILATERAL_SCOPED after correcting and testing Lite's principal square-root solver. AS-PAR-07 regression tests are published. Inspect all five exact-SHA runs/jobs/logs; diagnose any confirmed failure and don't count skipped/reused evidence as PASS.",
+    "action": "AS-PAR-07 cumulative and H1d gates pass on both exact SHAs; Plus service+HTTP test passed. Wait for Lite native run 39233655466/job 117997399569, review completed logs, then close the block. AS-PAR-08 is running as independent work; do not weaken its absolute-value oracle.",
     "exit_criteria": [
-      "Lite original AS-PAR-07 regression passes; cumulative, H1d, and scientific native gates finish SUCCESS on exact SHA with logs reviewed",
-      "Plus original AS-PAR-07 service+HTTP regression passes; cumulative and H1d gates finish SUCCESS on exact SHA with logs reviewed",
+      "Lite AS-PAR-07 original test passes; cumulative/H1d SUCCESS and native scientific E2E completes SUCCESS on exact SHA with logs reviewed",
+      "Plus AS-PAR-07 original service+HTTP test passes; cumulative/H1d success and logs reviewed",
       "For b>=0 verify x=a+b^2 by substitution into sqrt(x-a)=b",
-      "For b<0 return no real solution and reject extraneous squared solutions",
-      "Global certification remains OPEN; S19 score null; SG28/DIST and independent blockers remain unchanged"
+      "For b<0 return no real solution and reject extraneous roots",
+      "Global certification remains OPEN; S19 score null; preserve SG28/DIST and unrelated blockers"
     ]
   },
   "blockers": [
@@ -2277,18 +2277,31 @@
           "test_file": "tests/algebra114AsPar07.audit.test.ts",
           "cumulative": {
             "run_id": 39233655616,
-            "status": "IN_PROGRESS",
-            "logs_reviewed": false,
-            "evidence_executed": false
+            "job_id": 117997399787,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "original_case_tests_passed": 7,
+            "suite_counts": {
+              "pass": 1743,
+              "todo": 30
+            },
+            "typecheck": "SUCCESS",
+            "build": "SUCCESS"
           },
           "h1d": {
             "run_id": 39233655445,
-            "status": "IN_PROGRESS",
-            "logs_reviewed": false,
-            "evidence_executed": false
+            "job_id": 117997398965,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "counts": {
+              "pass": 22
+            }
           },
           "scientific_native": {
             "run_id": 39233655466,
+            "job_id": 117997399569,
             "status": "IN_PROGRESS",
             "logs_reviewed": false,
             "evidence_executed": false
@@ -2299,13 +2312,85 @@
           "test_file": "backend/tests/test_algebra114_as_par07.py",
           "cumulative": {
             "run_id": 39233661000,
+            "backend_job_id": 117997417659,
+            "frontend_job_id": 117997417222,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "backend_counts": {
+              "pass": 1577,
+              "xfail": 3
+            },
+            "frontend_counts": {
+              "pass": 1008,
+              "todo": 28
+            },
+            "original_service_http_test_pass": true
+          },
+          "h1d": {
+            "run_id": 39233660936,
+            "job_id": 117997417293,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "counts": {
+              "pass": 38
+            }
+          }
+        }
+      },
+      "no_global_inference": true
+    },
+    "algebra114_as_par_08": {
+      "status": "PENDING_EXACT_SHA_GATES",
+      "equation": "|x-a|=b over R",
+      "contract": "qa/certification/algebra114_source.md",
+      "oracle": [
+        "b<0: no real solution",
+        "b=0: one root x=a",
+        "b>0: two distinct roots x=a+b and x=a-b"
+      ],
+      "evidence_by_repo": {
+        "c2melendez/precision-lab-lite": {
+          "technical_sha": "25e78178ba859727f6268721c183b13191368245",
+          "test_file": "tests/algebra114AsPar08.audit.test.ts",
+          "cumulative": {
+            "run_id": 39234352125,
             "status": "IN_PROGRESS",
+            "job_id": 117999702787,
             "logs_reviewed": false,
             "evidence_executed": false
           },
           "h1d": {
-            "run_id": 39233660936,
+            "run_id": 39234351958,
             "status": "IN_PROGRESS",
+            "job_id": 117999701607,
+            "logs_reviewed": false,
+            "evidence_executed": false
+          },
+          "scientific_native": {
+            "run_id": 39234351986,
+            "status": "IN_PROGRESS",
+            "job_id": 117999701835,
+            "logs_reviewed": false,
+            "evidence_executed": false
+          }
+        },
+        "c2melendez/precision-lab-plus": {
+          "technical_sha": "3fe7c03d56bb539019ea1d6ef95820287124fe60",
+          "test_file": "backend/tests/test_algebra114_as_par08.py",
+          "cumulative": {
+            "run_id": 39234359666,
+            "status": "IN_PROGRESS",
+            "backend_job_id": 117999726515,
+            "frontend_job_id": 117999727279,
+            "logs_reviewed": false,
+            "evidence_executed": false
+          },
+          "h1d": {
+            "run_id": 39234359644,
+            "status": "IN_PROGRESS",
+            "job_id": 117999726577,
             "logs_reviewed": false,
             "evidence_executed": false
           }
