@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 141,
+  "revision": 142,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "d7618037089d54e1ee7691bb8da5bc326b96f9ca",
-  "baseline_case": "AS-PAR-06",
-  "baseline_status": "DIAGNOSE_RETRY_PENDING",
+  "technical_baseline_sha": "18a0bb717c4e9dcddb6e3bb92f338d7f4038531c",
+  "baseline_case": "AS-PAR-07",
+  "baseline_status": "PENDING_EXACT_SHA_GATES",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -134,30 +134,30 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-PAR-06-EXACT-SHA-GATES",
+    "id": "ALGEBRA114-AS-PAR-07-EXACT-SHA-GATES",
     "status": "PENDING_EXACT_SHA_GATES",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "d7618037089d54e1ee7691bb8da5bc326b96f9ca",
-      "c2melendez/precision-lab-plus": "cbd0c1bf654b7000f60615ab3ddbd33613d9dd9b"
+      "c2melendez/precision-lab-lite": "18a0bb717c4e9dcddb6e3bb92f338d7f4038531c",
+      "c2melendez/precision-lab-plus": "85e9c61562751eb05a2abda2c46757677b806388"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39232687285,
-        39232687204,
-        39232687282
+        39233655616,
+        39233655445,
+        39233655466
       ],
       "c2melendez/precision-lab-plus": [
-        39232029600,
-        39232029607
+        39233661000,
+        39233660936
       ]
     },
-    "action": "Diagnosed and fixed a Lite product gap on d7618037089d54e1ee7691bb8da5bc326b96f9ca. Verify its cumulative, H1d and scientific retry gates on the exact SHA. Plus AS-PAR-06 cumulative/H1d are SUCCESS on cbd0c1bf654b7000f60615ab3ddbd33613d9dd9b and the original service+HTTP case passed.",
+    "action": "AS-PAR-06 is VERIFIED_BILATERAL_SCOPED after correcting and testing Lite's principal square-root solver. AS-PAR-07 regression tests are published. Inspect all five exact-SHA runs/jobs/logs; diagnose any confirmed failure and don't count skipped/reused evidence as PASS.",
     "exit_criteria": [
-      "New Lite cumulative passes AS-PAR-06 original regression including a=0,2,3 and a=-1,-2, with the symbolic condition explained",
-      "Lite cumulative, H1d and native scientific retry gates finish SUCCESS on exact SHA and logs are reviewed",
-      "Plus AS-PAR-06 original service/API test, cumulative, and H1d remain SUCCESS with logs reviewed",
-      "Do not count old-SHA gates as evidence for the new Lite code SHA",
-      "Global certification remains OPEN; S19 score null; keep SG28/DIST blockers unchanged"
+      "Lite original AS-PAR-07 regression passes; cumulative, H1d, and scientific native gates finish SUCCESS on exact SHA with logs reviewed",
+      "Plus original AS-PAR-07 service+HTTP regression passes; cumulative and H1d gates finish SUCCESS on exact SHA with logs reviewed",
+      "For b>=0 verify x=a+b^2 by substitution into sqrt(x-a)=b",
+      "For b<0 return no real solution and reject extraneous squared solutions",
+      "Global certification remains OPEN; S19 score null; SG28/DIST and independent blockers remain unchanged"
     ]
   },
   "blockers": [
@@ -2149,7 +2149,7 @@
       }
     },
     "algebra114_as_par_06": {
-      "status": "PENDING_EXACT_SHA_GATES",
+      "status": "VERIFIED_BILATERAL_SCOPED",
       "equation": "sqrt(x) = a over R",
       "contract": "qa/certification/algebra114_source.md",
       "oracle": [
@@ -2162,21 +2162,43 @@
           "test_file": "tests/algebra114AsPar06.audit.test.ts",
           "cumulative": {
             "run_id": 39232687285,
-            "status": "IN_PROGRESS",
-            "logs_reviewed": false,
-            "evidence_executed": false
+            "job_id": 117994195249,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "original_case_tests_passed": 7,
+            "suite_counts": {
+              "pass": 1736,
+              "todo": 30
+            },
+            "typecheck": "SUCCESS",
+            "build": "SUCCESS"
           },
           "h1d": {
             "run_id": 39232687204,
-            "status": "IN_PROGRESS",
-            "logs_reviewed": false,
-            "evidence_executed": false
+            "job_id": 117994194793,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "counts": {
+              "pass": 22
+            }
           },
           "scientific_native": {
             "run_id": 39232687282,
-            "status": "IN_PROGRESS",
-            "logs_reviewed": false,
-            "evidence_executed": false
+            "job_id": 117994194940,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "counts": {
+              "pass": 456,
+              "skip": 0
+            },
+            "profiles": [
+              "desktop-chromium",
+              "tablet-chromium",
+              "mobile-chromium"
+            ]
           },
           "prior_attempt": {
             "technical_sha": "5a7e80ea9e6cb4fb8d668d73f23a1a7a63cbe983",
@@ -2236,6 +2258,56 @@
             "counts": {
               "pass": 38
             }
+          }
+        }
+      },
+      "no_global_inference": true
+    },
+    "algebra114_as_par_07": {
+      "status": "PENDING_EXACT_SHA_GATES",
+      "equation": "sqrt(x-a) = b over R",
+      "contract": "qa/certification/algebra114_source.md",
+      "oracle": [
+        "b >= 0: one real solution x = a + b^2, verified in the original unsquared equation",
+        "b < 0: no real solution; reject any extraneous root introduced by squaring"
+      ],
+      "evidence_by_repo": {
+        "c2melendez/precision-lab-lite": {
+          "technical_sha": "18a0bb717c4e9dcddb6e3bb92f338d7f4038531c",
+          "test_file": "tests/algebra114AsPar07.audit.test.ts",
+          "cumulative": {
+            "run_id": 39233655616,
+            "status": "IN_PROGRESS",
+            "logs_reviewed": false,
+            "evidence_executed": false
+          },
+          "h1d": {
+            "run_id": 39233655445,
+            "status": "IN_PROGRESS",
+            "logs_reviewed": false,
+            "evidence_executed": false
+          },
+          "scientific_native": {
+            "run_id": 39233655466,
+            "status": "IN_PROGRESS",
+            "logs_reviewed": false,
+            "evidence_executed": false
+          }
+        },
+        "c2melendez/precision-lab-plus": {
+          "technical_sha": "85e9c61562751eb05a2abda2c46757677b806388",
+          "test_file": "backend/tests/test_algebra114_as_par07.py",
+          "cumulative": {
+            "run_id": 39233661000,
+            "status": "IN_PROGRESS",
+            "logs_reviewed": false,
+            "evidence_executed": false
+          },
+          "h1d": {
+            "run_id": 39233660936,
+            "status": "IN_PROGRESS",
+            "logs_reviewed": false,
+            "evidence_executed": false
           }
         }
       },
