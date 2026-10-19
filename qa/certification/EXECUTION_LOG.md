@@ -1,5 +1,11 @@
 # Registro de ejecución — índice vigente
 
+## 2026-10-19 UTC — AS-PAR-05: regresiones publicadas; gates exact-SHA en curso
+
+Tests originales añadidos en Lite SHA 6a311517071b5dbee998f1a4a377f291d9a0ca54 (tests/algebra114AsPar05.audit.test.ts) y Plus SHA 367b3976436812ff4252bee0a1f2cec7656e0a21 (backend/tests/test_algebra114_as_par05.py). Lite acumulativo [39230810192](https://github.com/c2melendez/precision-lab-lite/actions/runs/39230810192) SUCCESS: archivo AS-PAR-05, 6 tests PASS; suite 1729 PASS/30 TODO, typecheck/build PASS. Lite H1d [39230810242](https://github.com/c2melendez/precision-lab-lite/actions/runs/39230810242) SUCCESS, 22 PASS. Lite científico [39230810926](https://github.com/c2melendez/precision-lab-lite/actions/runs/39230810926) permanece IN_PROGRESS al escribir este checkpoint. Plus acumulativo [39230889556](https://github.com/c2melendez/precision-lab-plus/actions/runs/39230889556) y H1d [39230889577](https://github.com/c2melendez/precision-lab-plus/actions/runs/39230889577) permanecen IN_PROGRESS; pendiente verificar la ejecución del test de backend mediante sus logs. No se despacharon corridas manuales ni se reutilizó evidencia anterior como prueba del nuevo SHA.
+
+El caso prueba la ecuación oficial x²+mx+1=0 en los tres rangos del discriminante, comprobación por sustitución y clasificación de raíces complejas frente al dominio real. AS-PAR-05 sigue PENDING_EXACT_SHA_GATES hasta que todos los gates obligatorios concluyan y se revisen. Global OPEN; S19 score null; SG28/DIST y otros bloqueos no alterados.
+
 ## 2026-10-19 UTC — AS-PAR-04 VERIFIED_BILATERAL_SCOPED
 
 Pruebas originales y gates exact-SHA reconciliados para x² - 2mx + m² - 1 = 0, raíces m±1. Lite SHA 567090173e0347747166084d6a8a7d54471e6682: acumulativo [39229109222](https://github.com/c2melendez/precision-lab-lite/actions/runs/39229109222) SUCCESS, test original PASS, 1723 PASS/30 TODO; H1d [39229109183](https://github.com/c2melendez/precision-lab-lite/actions/runs/39229109183) SUCCESS, 22 PASS; científico nativo [39229109187](https://github.com/c2melendez/precision-lab-lite/actions/runs/39229109187) SUCCESS, 456 PASS sin SKIP en desktop/tablet/mobile Chromium. Logs revisados, ejecución real acreditada.

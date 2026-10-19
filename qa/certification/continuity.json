@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 137,
+  "revision": 138,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "567090173e0347747166084d6a8a7d54471e6682",
-  "baseline_case": "AS-PAR-04",
-  "baseline_status": "VERIFIED_BILATERAL_SCOPED",
+  "technical_baseline_sha": "6a311517071b5dbee998f1a4a377f291d9a0ca54",
+  "baseline_case": "AS-PAR-05",
+  "baseline_status": "PENDING_EXACT_SHA_GATES",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -135,30 +135,29 @@
   },
   "next_action": {
     "id": "ALGEBRA114-AS-PAR-05-EXACT-SHA-GATES",
-    "status": "READY_TO_IMPLEMENT",
-    "case": "AS-PAR-05",
-    "contract": "qa/certification/algebra114_source.md",
-    "equation": "x^2 + m*x + 1 = 0 over R",
-    "action": "Add original-case permanent regressions bilaterally. Cover |m|>2 (two real roots), |m|=2 (one distinct double root), |m|<2 (no real roots), verify exact roots by substitution and explicitly distinguish complex solutions of the general solver from real-domain solutions. Inspect all matching source/backend/frontend/native gates before selecting which to run. Do not loosen the oracle or count TODO/XFAIL as PASS.",
-    "required_gates": {
-      "lite": [
-        "cumulative",
-        "h1d",
-        "scientific"
+    "status": "PENDING_EXACT_SHA_GATES",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "6a311517071b5dbee998f1a4a377f291d9a0ca54",
+      "c2melendez/precision-lab-plus": "367b3976436812ff4252bee0a1f2cec7656e0a21"
+    },
+    "run_ids_by_repo": {
+      "c2melendez/precision-lab-lite": [
+        39230810192,
+        39230810242,
+        39230810926
       ],
-      "plus": [
-        "cumulative",
-        "h1d"
+      "c2melendez/precision-lab-plus": [
+        39230889556,
+        39230889577
       ]
     },
+    "action": "Inspect the remaining AS-PAR-05 exact-SHA runs and logs. Lite cumulative/H1d are SUCCESS with six original tests PASS and 22 H1d PASS; Lite scientific is IN_PROGRESS. Plus cumulative and H1d are IN_PROGRESS; confirm the original service+HTTP test result before closing. Diagnose confirmed failures and preserve unrelated blockers.",
     "exit_criteria": [
-      "Lite original AS-PAR-05 regression executes and passes in relevant gates on its exact technical SHA",
-      "Plus original AS-PAR-05 service and HTTP regression executes and passes in relevant gates on its exact technical SHA",
-      "Verify m=3 and m=-3 real roots and substitution into x^2+m*x+1",
-      "Verify m=2 and m=-2 double roots x=-m/2",
-      "Verify |m|<2 has no real roots using an independent real-domain oracle and accurately classify any complex results returned by the general solver",
-      "Review jobs/logs and record actual execution, TODO/XFAIL/SKIP classifications",
-      "Global certification remains OPEN; keep S19 score null and preserve unrelated blockers"
+      "Lite original AS-PAR-05 regression passes on the technical SHA and cumulative/H1d/scientific required gates finish SUCCESS with logs reviewed",
+      "Plus original AS-PAR-05 service and HTTP regression executes and passes on its technical SHA; cumulative and H1d finish SUCCESS with jobs/logs reviewed",
+      "Retain real-domain oracle: |m|>2 two exact real roots, |m|=2 one double root, |m|<2 no real roots; general-solver complex roots correctly marked complex",
+      "Do not count reuse-only or skipped steps, TODO, XFAIL or manual capabilities as new PASS",
+      "Global certification stays OPEN, S19 score stays null, SG28/DIST and independent blockers remain unchanged"
     ]
   },
   "blockers": [
@@ -1994,9 +1993,10 @@
     "algebra114_as_par_04": {
       "status": "VERIFIED_BILATERAL_SCOPED",
       "equation": "x^2 - 2*m*x + m^2 - 1 = 0",
-      "mathematical_oracle": "roots m-1 and m+1; both satisfy the original polynomial identically and differ by 2",
+      "mathematical_oracle": "roots m-1 and m+1; both roots satisfy the polynomial identically and differ by 2",
       "evidence_by_repo": {
         "c2melendez/precision-lab-lite": {
+          "technical_sha": "567090173e0347747166084d6a8a7d54471e6682",
           "cumulative": {
             "run_id": 39229109222,
             "job_id": 117982489951,
@@ -2007,7 +2007,7 @@
               "pass": 1723,
               "todo": 30
             },
-            "case_test": "tests/algebra114AsPar04.audit.test.ts"
+            "original_test_pass": true
           },
           "h1d": {
             "run_id": 39229109183,
@@ -2026,13 +2026,128 @@
             "logs_reviewed": true,
             "evidence_executed": true,
             "counts": {
-              "pass": 456
+              "pass": 456,
+              "skip": 0
             },
             "profiles": [
               "desktop-chromium",
               "tablet-chromium",
               "mobile-chromium"
             ]
+          }
+        },
+        "c2melendez/precision-lab-plus": {
+          "technical_sha": "a5cd05dd8e53fbc8c482d18a44a7e177b9f028d6",
+          "cumulative": {
+            "run_id": 39229117949,
+            "backend_job_id": 117982518228,
+            "frontend_job_id": 117982518538,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "backend_counts": {
+              "pass": 1574,
+              "xfail": 3
+            },
+            "frontend_counts": {
+              "pass": 1008,
+              "todo": 28
+            },
+            "original_service_http_test_pass": true
+          },
+          "h1d": {
+            "run_id": 39229117954,
+            "job_id": 117982518762,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "counts": {
+              "pass": 38
+            }
+          }
+        }
+      },
+      "no_global_inference": true
+    },
+    "algebra114_as_par_05": {
+      "status": "PENDING_EXACT_SHA_GATES",
+      "equation": "x^2 + m*x + 1 = 0 over R",
+      "contract": "qa/certification/algebra114_source.md",
+      "oracle": [
+        "|m|>2: two distinct real roots (-m ± sqrt(m^2-4))/2",
+        "|m|=2: one distinct double root x=-m/2",
+        "|m|<2: no real roots; any roots returned by a general complex solver must be explicitly classified as complex"
+      ],
+      "evidence_by_repo": {
+        "c2melendez/precision-lab-lite": {
+          "technical_sha": "6a311517071b5dbee998f1a4a377f291d9a0ca54",
+          "test_file": "tests/algebra114AsPar05.audit.test.ts",
+          "cumulative": {
+            "run_id": 39230810192,
+            "job_id": 117988025650,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "original_case_tests_passed": 6,
+            "suite_counts": {
+              "pass": 1729,
+              "todo": 30
+            },
+            "typecheck": "SUCCESS",
+            "build": "SUCCESS"
+          },
+          "h1d": {
+            "run_id": 39230810242,
+            "job_id": 117988025382,
+            "status": "SUCCESS",
+            "logs_reviewed": true,
+            "evidence_executed": true,
+            "counts": {
+              "pass": 22
+            }
+          },
+          "scientific_native": {
+            "run_id": 39230810926,
+            "job_id": 117988030000,
+            "status": "IN_PROGRESS",
+            "logs_reviewed": false,
+            "evidence_executed": false,
+            "profiles": [
+              "desktop-chromium",
+              "tablet-chromium",
+              "mobile-chromium"
+            ]
+          }
+        },
+        "c2melendez/precision-lab-plus": {
+          "technical_sha": "367b3976436812ff4252bee0a1f2cec7656e0a21",
+          "test_file": "backend/tests/test_algebra114_as_par05.py",
+          "cumulative": {
+            "run_id": 39230889556,
+            "jobs": [
+              {
+                "job_id": 117988279372,
+                "name": "backend",
+                "status": "IN_PROGRESS"
+              },
+              {
+                "job_id": 117988279782,
+                "name": "frontend",
+                "status": "IN_PROGRESS",
+                "typecheck": "SUCCESS",
+                "unit_regression": "SUCCESS",
+                "build": "IN_PROGRESS"
+              }
+            ],
+            "logs_reviewed": false,
+            "evidence_executed": false
+          },
+          "h1d": {
+            "run_id": 39230889577,
+            "job_id": 117988279921,
+            "status": "IN_PROGRESS",
+            "logs_reviewed": false,
+            "evidence_executed": false
           }
         }
       },
