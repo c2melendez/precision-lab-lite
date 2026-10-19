@@ -56,7 +56,7 @@ export function solveAlgebra(
   // coefficient is symbolic (for example, (a-1)*x-(a+1)).
   let linearSolution: string | null = null;
   try {
-    const variablePattern = new RegExp(`\\\\b${variable}\\\\b`);
+    const variablePattern = new RegExp(`\\b${variable}\\b`);
     const coefficient = derivative(standardForm, variable);
     if (coefficient.trim() !== "0" && !variablePattern.test(coefficient)) {
       const constant = substituteExact(standardForm, variable, "0");
