@@ -58,6 +58,19 @@ function realNumericSign(expression: string): -1 | 0 | 1 | null {
   }
 }
 
+function absoluteValueOffset(expression: string, variable: string): string | null {
+  const compact = expression.replace(/\s+/g, "");
+  const prefix = "abs(";
+  if (!compact.startsWith(prefix) || !compact.endsWith(")")) return null;
+  const inner = compact.slice(prefix.length, -1);
+  if (inner === variable) return "0";
+  const offsetPrefix = variable + "-";
+  if (!inner.startsWith(offsetPrefix)) return null;
+  const offset = inner.slice(offsetPrefix.length);
+  if (!offset || new RegExp("\\b" + variable + "\\b").test(offset)) return null;
+  return offset;
+}
+
 export function solveAlgebra(
   leftAlgebrite: string,
   rightAlgebrite: string,
@@ -134,6 +147,65 @@ export function solveAlgebra(
         : "Raíz real verificada en la ecuación original.",
     });
     return { steps, solutionsAlgebrite: [squareRootSolution] };
+  }
+
+  // Algebra114 AS-PAR-08: solve the real absolute-value equation without
+  // losing its three branches or admitting roots for a negative radius.
+  let absoluteValueOffsetTerm: string | null = absoluteValueOffset(leftAlgebrite, variable);
+  let absoluteValueParameter: string | null = absoluteValueOffsetTerm === null ? null : rightAlgebrite;
+  if (absoluteValueOffsetTerm === null) {
+    absoluteValueOffsetTerm = absoluteValueOffset(rightAlgebrite, variable);
+    if (absoluteValueOffsetTerm !== null) absoluteValueParameter = leftAlgebrite;
+  }
+
+  if (absoluteValueOffsetTerm !== null && absoluteValueParameter !== null &&
+      !rootEquationVariablePattern.test(absoluteValueParameter)) {
+    const radiusSign = realNumericSign(absoluteValueParameter);
+    if (radiusSign === -1) {
+      steps.push({
+        id: "absolute-value-domain",
+        latex: leftAlgebrite + " = " + rightAlgebrite,
+        explanation: "El valor absoluto nunca es negativo; si b < 0, la ecuación no tiene solución real.",
+      });
+      steps.push({
+        id: "solutions",
+        latex: "∅",
+        explanation: "La ecuación no tiene solución real.",
+      });
+      return { steps, solutionsAlgebrite: [], truth: "contradiction" };
+    }
+
+    const center = evaluate("simplify(" + absoluteValueOffsetTerm + ")");
+    if (radiusSign === 0) {
+      steps.push({
+        id: "absolute-value-domain",
+        latex: variable + " = " + center,
+        explanation: "Si b = 0, el valor absoluto es cero solo en x = a.",
+      });
+      steps.push({
+        id: "solutions",
+        latex: variable + " = " + center,
+        explanation: "Raíz real verificada en la ecuación original.",
+      });
+      return { steps, solutionsAlgebrite: [center] };
+    }
+
+    const plusRoot = evaluate("simplify((" + absoluteValueOffsetTerm + ")+(" + absoluteValueParameter + "))");
+    const minusRoot = evaluate("simplify((" + absoluteValueOffsetTerm + ")-(" + absoluteValueParameter + "))");
+    const domainExplanation = radiusSign === null
+      ? "Para |x-a| = b: si b < 0 no hay solución; si b = 0, x = a; si b > 0, x = a ± b. Las ramas mostradas son condicionales a b > 0."
+      : "Como b es positivo, las dos raíces x = a ± b satisfacen la ecuación original.";
+    steps.push({
+      id: "absolute-value-domain",
+      latex: variable + " = " + absoluteValueOffsetTerm + " ± " + absoluteValueParameter,
+      explanation: domainExplanation,
+    });
+    steps.push({
+      id: "solutions",
+      latex: variable + " = " + plusRoot + ",\\quad " + variable + " = " + minusRoot,
+      explanation: "Soluciones por las dos ramas del valor absoluto.",
+    });
+    return { steps, solutionsAlgebrite: [plusRoot, minusRoot] };
   }
 
   let solutions: string[];
