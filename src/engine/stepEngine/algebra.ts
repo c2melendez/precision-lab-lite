@@ -12,6 +12,7 @@
 import { derivative, evaluate, solveEquation, substituteExact, ErrorCode } from "../algebriteClient";
 import type { Step, AppError } from "../../types";
 import { solveRealAbsoluteCases } from "../absPiecewise";
+import { solveRealRadicalEquation } from "../radicalCases";
 
 export interface AlgebraSolveResult {
   steps: Step[];
@@ -177,7 +178,9 @@ export function solveAlgebra(
       steps.push({
         id: "square-root-domain",
         latex: leftAlgebrite + " = " + rightAlgebrite,
-        explanation: "La raíz cuadrada real principal nunca es negativa; el lado derecho es negativo, por lo que no existe solución real.",
+        explanation: "La raíz cuadrada real principal nunca es negativa; el lado derecho es negativo, por lo que no existe solución real. "
+          + "Candidato " + variable + " = " + evaluate("simplify((" + squareRootOffset + ")+(" + squareRootParameter + ")^2)")
+          + ": la raíz par principal no puede ser negativa; se descarta (raíz extraña).",
       });
       steps.push({
         id: "solutions",
@@ -319,6 +322,25 @@ export function solveAlgebra(
       explanation: "Raíces de los tramos verificadas en la ecuación original.",
     });
     return { steps, solutionsAlgebrite: absoluteCases.solutions };
+  }
+
+  const radicalCases = solveRealRadicalEquation(leftAlgebrite, rightAlgebrite, variable);
+  if (radicalCases !== null) {
+    steps.push({
+      id: "radical-candidates",
+      latex: leftAlgebrite + " = " + rightAlgebrite,
+      explanation: radicalCases.notes.join(" "),
+    });
+    if (radicalCases.solutions.length === 0) {
+      steps.push({ id: "solutions", latex: "∅", explanation: "La ecuación no tiene solución real." });
+      return { steps, solutionsAlgebrite: [], truth: "contradiction" };
+    }
+    steps.push({
+      id: "solutions",
+      latex: radicalCases.solutions.map((s) => `${variable} = ${s}`).join(",\\quad "),
+      explanation: "Candidatos verificados en la ecuación original.",
+    });
+    return { steps, solutionsAlgebrite: radicalCases.solutions };
   }
 
   let solutions: string[];
