@@ -157,3 +157,8 @@ X14: reutilizar evidencia de rechazo Plus revisada hasta cambiar profundidad30 y
 ## Índice de continuidad — revisión 124 (2026-10-19)
 
 AS-DIV-03 y AS-DIV-04 cerrados bilateralmente en alcance acotado, con logs y SHA registrados en continuity.json y EXECUTION_LOG.md. Siguiente único: AS-DIV-05, fuente original `(2x^3-3x^2+5x-7)/(x-1)`, cociente `2x^2-x+4`, resto `-3`, x≠1. Tests ya publicados en ambos repos; comprobar runs Lite 39217613984/39217614035/39217614042 y Plus 39217618569/39217618064 antes de cerrar. No redispatch idéntico; global OPEN.
+
+
+## Revisión 125 — resultados parciales AS-DIV-05 (2026-10-19)
+
+Los acumulativos/H1d y pruebas originales de AS-DIV-05 ya están PASS en ambos repositorios. Único gate pendiente: Lite scientific UI 39217614042. Verificar su conclusión/logs antes de cerrar AS-DIV-05 o avanzar a AS-DIV-06. No repetir CI idéntica; global OPEN.
