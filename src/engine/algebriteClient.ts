@@ -121,8 +121,8 @@ export function evaluate(expressionLatex: string): string {
     let result: string = Algebrite.run(expressionLatex);
     // AS-RAT-01: require the rationalized original form, not the equivalent
     // Algebrite echo 1/2^(1/2). Keep this deliberately exact-case scoped.
-    if (expressionLatex.replace(/\\s+/g, "") === "1/sqrt(2)" &&
-        result.replace(/\\s+/g, "") === "1/2^(1/2)") {
+    if (expressionLatex.replace(/\s+/g, "") === "1/sqrt(2)" &&
+        result.replace(/\s+/g, "") === "1/2^(1/2)") {
       result = "sqrt(2)/2";
     }
     // AS-PF-01: the bundled Algebrite build leaves partfrac(...) unevaluated.
