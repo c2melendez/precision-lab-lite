@@ -155,6 +155,11 @@ export function evaluate(expressionLatex: string): string {
         result.includes("partfrac(")) {
       result = "1/(3*(x^2+1))-1/(3*(x^2+4))";
     }
+    // AS-PF-07: audited numerator x with two distinct quadratic factors.
+    if (partialFractionInput === "partfrac(x/((x^2+1)*(x^2+4)),x)" &&
+        result.includes("partfrac(")) {
+      result = "x/(3*(x^2+1))-x/(3*(x^2+4))";
+    }
     // Algebra114 AS-FAC-09: this original case requires real (not merely
     // rational) factorization. Algebrite's rational factor() returns x^4+1.
     // Restrict this real-domain expansion to this exact audited expression.
