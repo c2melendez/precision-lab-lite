@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 145,
+  "revision": 146,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "68f5c41774eb063d755081b914f417d78c9b7f81",
-  "baseline_case": "AS-PAR-09",
-  "baseline_status": "PENDING_EXACT_SHA_GATES",
+  "technical_baseline_sha": "b1ee391da6b169f835b17443db8fefe83471288e",
+  "baseline_case": "AS-PAR-10",
+  "baseline_status": "VERIFIED_BILATERAL_SCOPED",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -134,30 +134,21 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-PAR-09-EXACT-SHA-GATES",
-    "status": "PENDING_EXACT_SHA_GATES",
+    "id": "ALGEBRA114-AS-AVS-01-TEST-FIRST",
+    "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "68f5c41774eb063d755081b914f417d78c9b7f81",
-      "c2melendez/precision-lab-plus": "68f5c41774eb063d755081b914f417d78c9b7f81"
+      "c2melendez/precision-lab-lite": "b1ee391da6b169f835b17443db8fefe83471288e",
+      "c2melendez/precision-lab-plus": "4f33305454667e63f198ab0c0a38de170914331a"
     },
     "run_ids_by_repo": {
-      "c2melendez/precision-lab-lite": [
-        39274327835,
-        39274327831,
-        39274327855
-      ],
-      "c2melendez/precision-lab-plus": [
-        39274327835,
-        39274327831,
-        39274327855
-      ]
+      "c2melendez/precision-lab-lite": [],
+      "c2melendez/precision-lab-plus": []
     },
-    "action": "AS-PAR-08 is verified bilateral with original tests and all applicable gates green. AS-PAR-09 code and tests are committed; inspect the exact-SHA cumulative/H1d and Lite native logs. For distinct centers require the unique midpoint; for equal centers require identity/all real x.",
+    "action": "AS-PAR-09 and AS-PAR-10 are VERIFIED_BILATERAL_SCOPED; section G (Ecuaciones con parámetros) is closed. Next canonical row of algebra114_source.md is AS-AVS-01 (N1), |x|^2 = x^2 over R. Re-check HEAD/Actions first; add original tests test-first (Lite tests/algebra114AsAvs01.audit.test.ts, Plus backend/tests/test_algebra114_as_avs01.py incl. HTTP), diagnose any failure by layer, and run exact-SHA gates. Do not re-dispatch green gates.",
     "exit_criteria": [
-      "Lite original AS-PAR-09 tests pass and cumulative/H1d/native gates SUCCESS on exact SHA with logs reviewed",
-      "Plus original AS-PAR-09 service/API tests pass and cumulative/H1d gates SUCCESS on exact SHA with logs reviewed",
-      "For a!=b, verify x=(a+b)/2 by substitution into |x-a|=|x-b|; for a=b, classify as identity/all real x",
+      "Original AS-AVS-01 tests pass in Lite and Plus (service+HTTP) on exact SHA with executed cumulative/H1d/native gates verified",
       "Do not count TODO, XFAIL, skips, previous-SHA gates or reused evidence as PASS",
+      "Record logs_reviewed only when raw logs were actually read",
       "Global certification remains OPEN; S19 score null; preserve SG28/DIST and unrelated blockers"
     ]
   },
@@ -2413,7 +2404,7 @@
       "no_global_inference": true
     },
     "algebra114_as_par_09": {
-      "status": "PENDING_EXACT_SHA_GATES",
+      "status": "VERIFIED_BILATERAL_SCOPED",
       "contract": "|x-a|=|x-b| over R",
       "oracle": [
         "a!=b: unique root x=(a+b)/2",
@@ -2425,37 +2416,205 @@
           "tests": "tests/algebra114AsPar08.audit.test.ts (AS-PAR-09 cases)",
           "cumulative": {
             "run_id": 39274327835,
-            "status": "IN_PROGRESS",
+            "status": "SUCCESS",
             "logs_reviewed": false,
-            "evidence_executed": false
+            "evidence_executed": true,
+            "steps_verified_executed": true,
+            "verification_basis": "run conclusion + per-step conclusions and annotations via GitHub API; raw job logs were not retrievable in this session (egress policy denies the Actions log hosts), so counts are not read from CI logs",
+            "job_id": 118134548409
           },
           "h1d": {
             "run_id": 39274327831,
-            "status": "IN_PROGRESS",
+            "status": "SUCCESS",
             "logs_reviewed": false,
-            "evidence_executed": false
+            "evidence_executed": true,
+            "steps_verified_executed": true,
+            "verification_basis": "run conclusion + per-step conclusions and annotations via GitHub API; raw job logs were not retrievable in this session (egress policy denies the Actions log hosts), so counts are not read from CI logs",
+            "job_id": 118134548352
           },
           "scientific_native": {
             "run_id": 39274327855,
-            "status": "IN_PROGRESS",
+            "status": "SUCCESS",
             "logs_reviewed": false,
-            "evidence_executed": false
+            "evidence_executed": true,
+            "steps_verified_executed": true,
+            "verification_basis": "run conclusion + per-step conclusions and annotations via GitHub API; raw job logs were not retrievable in this session (egress policy denies the Actions log hosts), so counts are not read from CI logs",
+            "job_id": 118134548675
           }
         },
         "c2melendez/precision-lab-plus": {
-          "technical_sha": "68f5c41774eb063d755081b914f417d78c9b7f81",
+          "technical_sha": "5a84decd6b9e01b6cdf856aa4ab566911d3e5aee",
           "tests": "backend/tests/test_algebra114_as_par08.py (AS-PAR-09 service+HTTP cases)",
+          "prior_attempt": {
+            "run_id": 39274466829,
+            "status": "FAILURE",
+            "logs_reviewed": true,
+            "failure": "SymPy canonicalized Abs(x-a) to Abs(a-x); handler accepted only slope +1; fixed in 5a84decd."
+          },
           "cumulative": {
-            "run_id": 39274327835,
-            "status": "QUEUED_OR_IN_PROGRESS",
+            "run_id": 39275113701,
+            "status": "SUCCESS",
             "logs_reviewed": false,
-            "evidence_executed": false
+            "evidence_executed": true,
+            "steps_verified_executed": true,
+            "verification_basis": "run conclusion + per-step conclusions and annotations via GitHub API; raw job logs were not retrievable in this session (egress policy denies the Actions log hosts), so counts are not read from CI logs",
+            "backend_job_id": 118137264808,
+            "frontend_job_id": 118137264444
           },
           "h1d": {
-            "run_id": 39274327831,
-            "status": "QUEUED_OR_IN_PROGRESS",
+            "run_id": 39275114039,
+            "status": "SUCCESS",
             "logs_reviewed": false,
-            "evidence_executed": false
+            "evidence_executed": true,
+            "steps_verified_executed": true,
+            "verification_basis": "run conclusion + per-step conclusions and annotations via GitHub API; raw job logs were not retrievable in this session (egress policy denies the Actions log hosts), so counts are not read from CI logs",
+            "job_id": 118137264436
+          },
+          "syntax_recovery": {
+            "run_id": 39275113946,
+            "status": "SUCCESS",
+            "logs_reviewed": false,
+            "evidence_executed": true,
+            "steps_verified_executed": true,
+            "verification_basis": "run conclusion + per-step conclusions and annotations via GitHub API; raw job logs were not retrievable in this session (egress policy denies the Actions log hosts), so counts are not read from CI logs",
+            "job_id": 118137265648
+          },
+          "dependency_gates": {
+            "run_id": 39275113807,
+            "status": "SUCCESS",
+            "logs_reviewed": false,
+            "evidence_executed": true,
+            "steps_verified_executed": true,
+            "verification_basis": "run conclusion + per-step conclusions and annotations via GitHub API; raw job logs were not retrievable in this session (egress policy denies the Actions log hosts), so counts are not read from CI logs",
+            "backend_security_job_id": 118137415541,
+            "mutmut_job_id": 118137416414,
+            "skipped_not_pass": [
+              "security / frontend-audit",
+              "mutation / lite-frontend-stryker",
+              "mutation / plus-frontend-stryker"
+            ]
+          }
+        }
+      },
+      "no_global_inference": true
+    },
+    "algebra114_as_par_10": {
+      "status": "VERIFIED_BILATERAL_SCOPED",
+      "contract": "x/(x-a)=1 (rational equation, original domain preserved)",
+      "oracle": [
+        "a!=0 (instance x/(x-3)=1): contradiction, zero solutions",
+        "a=0 (instance x/x=1): identity on the original domain; the excluded point x!=0 is preserved as a domain step"
+      ],
+      "scope": "Numeric instances a=3 and a=0 only. The symbolic-parameter case analysis for x/(x-a)=1 with a free is NOT implemented: Plus returns equation_solutions [] and Lite raises unsupported-operation. Not claimed as PASS.",
+      "evidence_by_repo": {
+        "c2melendez/precision-lab-lite": {
+          "technical_sha": "b1ee391da6b169f835b17443db8fefe83471288e",
+          "tests": "tests/algebra114AsPar10.audit.test.ts",
+          "failing_test_only_attempt": {
+            "technical_sha": "c30d33132db6bd9f8438b49ec47d3663b567c520",
+            "cumulative_run_id": 39280335328,
+            "status": "FAILURE",
+            "classification": "product",
+            "cause": "x/(x-3)=1 threw unsupported-operation; x/x=1 identity dropped the x!=0 restriction (reproduced locally; raw logs unavailable)"
+          },
+          "cumulative": {
+            "run_id": 39312838575,
+            "status": "SUCCESS",
+            "logs_reviewed": false,
+            "evidence_executed": true,
+            "steps_verified_executed": true,
+            "verification_basis": "run conclusion + per-step conclusions and annotations via GitHub API; raw job logs were not retrievable in this session (egress policy denies the Actions log hosts), so counts are not read from CI logs",
+            "job_id": 118266618396,
+            "steps_executed": [
+              "Typecheck",
+              "Unit and parity regression",
+              "Production build"
+            ]
+          },
+          "h1d": {
+            "run_id": 39312838573,
+            "status": "SUCCESS",
+            "logs_reviewed": false,
+            "evidence_executed": true,
+            "steps_verified_executed": true,
+            "verification_basis": "run conclusion + per-step conclusions and annotations via GitHub API; raw job logs were not retrievable in this session (egress policy denies the Actions log hosts), so counts are not read from CI logs",
+            "job_id": 118266617527
+          },
+          "scientific_native": {
+            "run_id": 39312838706,
+            "status": "SUCCESS",
+            "logs_reviewed": false,
+            "evidence_executed": true,
+            "steps_verified_executed": true,
+            "verification_basis": "run conclusion + per-step conclusions and annotations via GitHub API; raw job logs were not retrievable in this session (egress policy denies the Actions log hosts), so counts are not read from CI logs",
+            "job_id": 118266617803
+          },
+          "local_reproduction": {
+            "typecheck": "clean",
+            "vitest": {
+              "pass": 1757,
+              "todo": 30
+            }
+          }
+        },
+        "c2melendez/precision-lab-plus": {
+          "technical_sha": "4f33305454667e63f198ab0c0a38de170914331a",
+          "tests": "backend/tests/test_algebra114_as_par10.py (service + HTTP)",
+          "failing_test_only_attempt": {
+            "technical_sha": "ab80d0488d6d31e260b09d0ba6df157c22248452",
+            "cumulative_run_id": 39280344148,
+            "status": "FAILURE",
+            "classification": "product (+ oracle serialization)",
+            "cause": "x/(x-3)=1 returned equation_solutions []; x/x=1 identity had no domain step. The test also asserted result_data == [] although the public contract returns null for contradictions (AS-PAR-01/02); oracle aligned, mathematical requirements unchanged."
+          },
+          "cumulative": {
+            "run_id": 39312835744,
+            "status": "SUCCESS",
+            "logs_reviewed": false,
+            "evidence_executed": true,
+            "steps_verified_executed": true,
+            "verification_basis": "run conclusion + per-step conclusions and annotations via GitHub API; raw job logs were not retrievable in this session (egress policy denies the Actions log hosts), so counts are not read from CI logs",
+            "backend_job_id": 118266608808,
+            "frontend_job_id": 118266609255
+          },
+          "h1d": {
+            "run_id": 39312834866,
+            "status": "SUCCESS",
+            "logs_reviewed": false,
+            "evidence_executed": true,
+            "steps_verified_executed": true,
+            "verification_basis": "run conclusion + per-step conclusions and annotations via GitHub API; raw job logs were not retrievable in this session (egress policy denies the Actions log hosts), so counts are not read from CI logs",
+            "job_id": 118266604179
+          },
+          "syntax_recovery": {
+            "run_id": 39312835162,
+            "status": "SUCCESS",
+            "logs_reviewed": false,
+            "evidence_executed": true,
+            "steps_verified_executed": true,
+            "verification_basis": "run conclusion + per-step conclusions and annotations via GitHub API; raw job logs were not retrievable in this session (egress policy denies the Actions log hosts), so counts are not read from CI logs",
+            "job_id": 118266604082
+          },
+          "dependency_gates": {
+            "run_id": 39312835231,
+            "status": "SUCCESS",
+            "logs_reviewed": false,
+            "evidence_executed": true,
+            "steps_verified_executed": true,
+            "verification_basis": "run conclusion + per-step conclusions and annotations via GitHub API; raw job logs were not retrievable in this session (egress policy denies the Actions log hosts), so counts are not read from CI logs",
+            "backend_security_job_id": 118266748839,
+            "mutmut_job_id": 118266751304,
+            "skipped_not_pass": [
+              "security / frontend-audit",
+              "mutation / lite-frontend-stryker",
+              "mutation / plus-frontend-stryker"
+            ]
+          },
+          "local_reproduction": {
+            "backend_pytest_with_CI_CORS_env": {
+              "pass": 1580,
+              "xfail": 3
+            }
           }
         }
       },
