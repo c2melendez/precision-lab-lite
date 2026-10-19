@@ -482,3 +482,8 @@ AS-DIV-03: Lite `f2100f05a292eb6a72e22a6b503086b11b13e383`, acumulativo 39215732
 AS-DIV-04: Lite `11c8df007bc0f5a5d48e74ee3621495b20ee5150`, acumulativo 39216970733 SUCCESS (1715 PASS/30 TODO; prueba AS-DIV-04 ejecutada PASS), H1d 39216971117 SUCCESS (22 PASS), científico 39216971147 SUCCESS (456 PASS). Plus `98f3e6be6bbef774db6ec490e190dd457d2af71c`, acumulativo 39216974352 SUCCESS (prueba original service+HTTP PASS; 1566 PASS/3 XFAIL, frontend SUCCESS), H1d 39216974633 SUCCESS (38 PASS). Cociente x²+x, resto 1. Cierre solo del caso; global OPEN.
 
 AS-DIV-05 original añadido, sin cambios de producto: Lite `e36416db9a48bcffd79cad53b6bcac80e776ed89`, Plus `8ff6831e9586974d2adce418199c6e2effa68735`. Fixture `(2x³−3x²+5x−7)/(x−1)`, cociente `2x²−x+4`, resto `−3`, x≠1. Runs automáticos Lite acumulativo 39217613984, H1d 39217614035, científico 39217614042; Plus acumulativo 39217618569, H1d 39217618064. Todos seguían en curso al registrar este checkpoint. Revisar logs por SHA; no redispatch idéntico y no atribuir PASS antes de los resultados.
+
+
+### AS-DIV-05 — actualización de resultados parciales (2026-10-19)
+
+Lite `e36416db9a48bcffd79cad53b6bcac80e776ed89`: acumulativo 39217613984 SUCCESS; test original PASS, 1716 PASS/30 TODO; H1d 39217614035 SUCCESS, 22 PASS. Plus `8ff6831e9586974d2adce418199c6e2effa68735`: acumulativo 39217618569 SUCCESS; test original service+HTTP PASS, 1567 PASS/3 XFAIL, frontend SUCCESS; H1d 39217618064 SUCCESS, 38 PASS. Solo Lite scientific UI 39217614042 sigue IN_PROGRESS. El caso no se cierra hasta confirmar ese gate; no repetir runs.
