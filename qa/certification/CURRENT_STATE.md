@@ -1,5 +1,9 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## 2026-10-19 — AS-RAT-10 Lite original exact form failed; scoped adapter fix awaiting CI
+AS-RAT-09 bilateral scoped closure confirmed after Lite H1d 39210511865 and native 39210512315 SUCCESS. AS-RAT-10 original tests published Lite 55baa3a405cd9a57f7ef771a66a81655e4af7f4d and Plus 6a1da80f9f83fab60b0007e3c66565502c7fc6c5. Lite initial cumulative 39211385026 FAILED original test: returned 3^(1/2)/(2^(1/2)+3^(1/2)), expected 3-sqrt(6); 1710 pass,1 fail,30 TODO. Preserved original test and added exact-input+observed-echo scoped correction in src/engine/algebriteClient.ts technical commit 9283559b3175bc90b04dd63cca1e125408f9d9e2. Automatic Lite cumulative 39211517856, H1d 39211517813 and scientific UI 39211517848 initiated, pending evidence. Plus cumulative 39211388604 and H1d 39211388619 pending on last observation. No manual reruns, AS-RAT-10 not bilateral PASS; global certification OPEN S19/S25/SG28-DIST.
+
+
 ## 2026-10-19 — AS-RAT-09 gates complete; AS-RAT-10 original tests submitted
 AS-RAT-09 bilateral scoped verification: Plus original service/HTTP test and cumulative 39208899512 SUCCESS SHA 3366229455dbfcfc7d6a8cbdea06bd67fc131d7a; Lite cumulative 39210511772 SUCCESS original audited test executed 1710 pass/30 TODO SHA 82d1b51a8fbd963ec1bb3f27969ed335cc1cfffe; outstanding Lite H1d 39210511865 and native scientific UI 39210512315 both COMPLETED/SUCCESS. No repeat dispatch. Next original AS-RAT-10 sqrt(3)/(sqrt(2)+sqrt(3)) = 3-sqrt(6): Lite exact-form and numeric test published SHA 55baa3a405cd9a57f7ef771a66a81655e4af7f4d, automatic cumulative 39211385026/H1d 39211385043/native 39211384891. Plus service/HTTP math test SHA 6a1da80f9f83fab60b0007e3c66565502c7fc6c5, cumulative 39211388604 and H1d 39211388619. All pending at first observation, do not claim AS-RAT-10 PASS until actual logs. Global OPEN S19/S25/SG28-DIST and existing gaps.
 
