@@ -95,3 +95,8 @@ Los gates acumulativos/H1d y las pruebas originales pasan en ambos productos. So
 - AS-DIV-03, AS-DIV-04, AS-DIV-05 y AS-DIV-06: **VERIFIED_BILATERAL_SCOPED**, evidencia exact-SHA registrada en continuity.json/EXECUTION_LOG.md.
 - AS-DIV-07: **IN_PROGRESS** — cociente x^4+x^3+x^2+x+1, resto 0; entrada original indefinida en x=1. Runs pendientes: Lite 39219361555/39219361565/39219361663; Plus 39219370525/39219370577. Confirmar prueba original y todos los gates antes del cierre.
 - Global certification: **OPEN**; los cierres acotados no eliminan S19/S25, SY-P-23, X04/X14 Plus ni SG28/DIST.
+
+
+### AS-DIV-07 — resultados parciales (2026-10-19)
+
+Los gates acumulativos/H1d y las pruebas originales pasan en ambos productos. Solo Lite científico nativo 39219361663 permanece IN_PROGRESS. Mantener AS-DIV-07 abierto hasta SUCCESS de ese run. Global OPEN.
