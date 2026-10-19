@@ -1,5 +1,10 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## 2026-10-19 — AS-DIV-02 bilateral scoped PASS; AS-DIV-03 original CI initiated
+AS-DIV-02 exact-SHA cumulative gates passed: Lite run 39213376244 SHA 4a7d81403fd0aae230dd2ace9146f355f97f7011 original algebra114AsDiv02.audit.test.ts executed PASS (1713 pass/30 TODO); Plus run 39213379570 SHA 2b8b9ea2d0a2c39f2c2cb9dfb8d290dcecfcc719 original service+HTTP test passed (1564 pass/3 XFAIL). Lite H1d 39213376069 and scientific UI 39213376078 SUCCESS; Plus H1d 39213379626 SUCCESS. AS-DIV-02 VERIFIED_BILATERAL_SCOPED, global OPEN.
+Next canonical case AS-DIV-03: (x^3+2x^2-x+5)/(x+1), quotient x^2+x-2 and remainder 7; denominator excludes x=-1. Lite test initial commit aeabc3ebc08ee153853eaea0f627f812b0fd2188 had a syntax typo in one domain assertion; immediately corrected in commit f2100f05a292eb6a72e22a6b503086b11b13e383. Current corrected Lite cumulative 39215732141 and H1d 39215732229 queued; pre-fix runs 39215713330/39215713350/native 39215713341 are not authoritative for current test. Plus test SHA d0b1946d812696ee8003dea08d3db1343c3b02b0, cumulative 39215717712 and H1d 39215717716 in progress. Check exact current SHA logs before marking case complete; no redundant dispatch.
+
+
 ## 2026-10-19 — AS-DIV-01 bilateral scoped PASS; AS-DIV-02 original CI started
 AS-DIV-01 original test truly executed and PASS both: Lite cumulative 39212512205 technical SHA 50f4c2f599b1b1d5e5721990209e14abe24d8245, 1712 pass/30 TODO, Plus cumulative 39212516004 SHA 9b6d697d565b422fd498762fc097d28383a155c5, 1563 pass/3 XFAIL; Lite H1d 39212512196/native 39212512207 and Plus H1d 39212516061 all SUCCESS. Scoped case verified, global OPEN. AS-DIV-02 canonical cubic (x^3-8)/(x-2), quotient x^2+2x+4 remainder zero, x!=2. Original tests introduced Lite SHA 4a7d81403fd0aae230dd2ace9146f355f97f7011 with cumulative 39213376244/H1d 39213376069/native 39213376078; Plus SHA 2b8b9ea2d0a2c39f2c2cb9dfb8d290dcecfcc719 with cumulative 39213379570/H1d 39213379626. Automatic runs in progress or queued at observation. Next check actual exact-SHA original logs before any PASS/correction, no redundant dispatch.
 
