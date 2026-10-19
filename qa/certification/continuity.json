@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 109,
+  "revision": 110,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,15 +134,15 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-RAT-05-CI-REVIEW",
+    "id": "ALGEBRA114-AS-RAT-06-CI-REVIEW",
     "status": "PENDING_CI",
-    "technical_sha": "8f83785fa134e35bc58340f96e86399de6cb85bb",
-    "run_id": 39189885202,
-    "action": "Inspect exact-SHA AS-RAT-05 cumulative and original test logs, diagnose proven failures, then advance AS-RAT-06 only after bilateral PASS. Preserve no-duplicate-action continuity.",
+    "technical_sha": "24313368c9679a02a9308124945b1d34064e5069",
+    "run_id": 39191749012,
+    "action": "Check exact SHA AS-RAT-06 original variable radical conjugate tests and automatic cumulative logs. Retain original domain x>0,h>-x,h!=0 and correct demonstrated failure. Advance AS-RAT-07 only after bilateral PASS; no unchanged CI rerun.",
     "exit_criteria": [
-      "Original cube-root conjugate expression exact canonical form",
-      "Plus HTTP and Lite numeric identity verified",
-      "Both cumulative CI results and technical SHAs recorded"
+      "Original variable-radical rationalized form or equivalent product implementation with exact contract verified",
+      "Original restrictions and numeric comparisons correct",
+      "Bilateral technical SHA and individual logs confirm PASS"
     ]
   },
   "blockers": [
