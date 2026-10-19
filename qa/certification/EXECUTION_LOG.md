@@ -570,3 +570,8 @@ AS-PAR-03 source `x^2=a) over R; original tests committed Lite `18af0da5a7b54092
 ## 2026-10-19 UTC — AS-PAR-03 exact-SHA update: Lite native pending
 
 Lite cumulative 39228003898 SUCCESS (original test PASS, 1722 passed/30 TODO); H1d 39228004023 SUCCESS (22 passed). Plus cumulative 39228015321 SUCCESS (original service+HTTP test PASS, 1573 passed/3 xfailed; frontend SUCCESS); H1d 39228014298 SUCCESS (38 passed). Only remaining gate is Lite native scientific E2E 39228003618, still in progress at checkpoint. Do not dispatch duplicate runs; inspect native logs before closure. The Plus general solver marks roots of x^2=-1 as complex; do not claim an API real-only mode. Global certification OPEN; S19 score remains null.
+
+
+## 2026-10-19 UTC — AS-PAR-03 cierre bilateral; AS-PAR-04 gates iniciados
+
+AS-PAR-03 exact-SHA gates SUCCESS: Lite cumulative/H1d/native 39228003898/39228004023/39228003618 (original PASS, 1722 PASS/30 TODO; 22 PASS; 456 PASS). Plus cumulative/H1d 39228015321/39228014298 SUCCESS (original service+HTTP PASS, 1573 PASS/3 XFAIL; 38 PASS). Scope x^2=a over R; Plus general solver labels x^2=-1 roots as complex, and no real-only API mode is claimed. AS-PAR-04 original tests committed Lite 567090173e0347747166084d6a8a7d54471e6682 and Plus a5cd05dd8e53fbc8c482d18a44a7e177b9f028d6. Runs Lite cumulative 39229109222/H1d 39229109183/native 39229109187 and Plus cumulative 39229117949/H1d 39229117954 were in progress or queued at checkpoint. Inspect exact-SHA logs before closure; no duplicate dispatch. Global OPEN; S19 score null.
