@@ -71,6 +71,68 @@ function absoluteValueOffset(expression: string, variable: string): string | nul
   return offset;
 }
 
+// Algebra114 AS-PAR-10: denominators must be read from the equation AS WRITTEN.
+// Algebrite folds x/x to 1 when simplifying, which would silently drop the
+// excluded point x=0 from an identity.
+function denominatorOperands(expression: string): string[] {
+  const text = expression.replace(/\s+/g, "");
+  const operands: string[] = [];
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] !== "/") continue;
+    let j = i + 1;
+    if (text[j] === "(") {
+      let depth = 0;
+      let k = j;
+      for (; k < text.length; k++) {
+        if (text[k] === "(") depth++;
+        else if (text[k] === ")") {
+          depth--;
+          if (depth === 0) break;
+        }
+      }
+      if (depth !== 0) continue;
+      operands.push(text.slice(j + 1, k));
+    } else {
+      let k = j;
+      while (k < text.length && /[A-Za-z0-9_.]/.test(text[k])) k++;
+      if (k > j) operands.push(text.slice(j, k));
+    }
+  }
+  return operands;
+}
+
+function denominatorExclusions(left: string, right: string, variable: string): string[] {
+  const variablePattern = new RegExp("\\b" + variable + "\\b");
+  const exclusions: string[] = [];
+  for (const operand of [...denominatorOperands(left), ...denominatorOperands(right)]) {
+    if (!variablePattern.test(operand)) continue;
+    let roots: string[] = [];
+    try {
+      roots = solveEquation(operand, variable);
+    } catch {
+      continue;
+    }
+    for (const root of roots) {
+      const normalized = root.trim();
+      // The calculator works on the real domain: skip imaginary-only roots,
+      // and anything that still depends on the variable.
+      if (/\bi\b|sqrt\(-/.test(normalized) || variablePattern.test(normalized)) continue;
+      if (!exclusions.includes(normalized)) exclusions.push(normalized);
+    }
+  }
+  return exclusions;
+}
+
+function domainRestrictionStep(variable: string, exclusions: string[], detail: string): Step {
+  const plain = exclusions.map((point) => variable + "≠" + point).join(", ");
+  const latex = exclusions.map((point) => variable + " \\neq " + point).join(",\\ ");
+  return {
+    id: "domain-restriction",
+    latex,
+    explanation: "Restricción de dominio original: " + plain + ". " + detail,
+  };
+}
+
 export function solveAlgebra(
   leftAlgebrite: string,
   rightAlgebrite: string,
@@ -241,12 +303,40 @@ export function solveAlgebra(
 
   let solutions: string[];
   const hasVariable = new RegExp(`\\b${variable}\\b`).test(standardForm);
+  const domainExclusions = denominatorExclusions(leftAlgebrite, rightAlgebrite, variable);
   if (standardForm.trim() === "0") {
+    if (domainExclusions.length > 0) {
+      steps.push(domainRestrictionStep(
+        variable,
+        domainExclusions,
+        "La ecuación se cumple para toda x del dominio; el punto excluido no pertenece al conjunto solución.",
+      ));
+    }
     return { steps, solutionsAlgebrite: [], truth: "identity" };
   }
   if (!hasVariable) {
     return { steps, solutionsAlgebrite: [], truth: "contradiction" };
   }
+  // Algebra114 AS-PAR-10: lhs-rhs = N/D with N a non-zero constant never
+  // vanishes, so the rational equation has no solution (D != 0 is kept).
+  if (domainExclusions.length > 0) {
+    try {
+      const rational = evaluate("rationalize(" + standardForm + ")");
+      const numeratorTerm = evaluate("numerator(" + rational + ")");
+      if (!new RegExp("\\b" + variable + "\\b").test(numeratorTerm) && realNumericSign(numeratorTerm) !== null &&
+          realNumericSign(numeratorTerm) !== 0) {
+        steps.push(domainRestrictionStep(
+          variable,
+          domainExclusions,
+          "Al llevar todo a un denominador común el numerador es la constante no nula " + numeratorTerm + "; no existe solución.",
+        ));
+        return { steps, solutionsAlgebrite: [], truth: "contradiction" };
+      }
+    } catch {
+      // Not a clean rational form: keep the established solver path.
+    }
+  }
+
   // Fast path for equations linear in the requested variable. The generic
   // roots() routine can be disproportionately slow when the linear
   // coefficient is symbolic (for example, (a-1)*x-(a+1)).
