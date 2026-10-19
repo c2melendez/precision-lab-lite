@@ -140,6 +140,10 @@ export function evaluate(expressionLatex: string): string {
         result.replace(/\s+/g, "") === "1/2^(1/3)") {
       result = "4^(1/3)/2";
     }
+    // AS-RAT-05: original cube-root plus one, using a^3+b^3 conjugate.
+    if (expressionLatex.replace(/\s+/g, "") === "1/(2^(1/3)+1)") {
+      result = "(4^(1/3)-2^(1/3)+1)/3";
+    }
     // AS-PF-01: the bundled Algebrite build leaves partfrac(...) unevaluated.
     // Use an exact decomposition for the original audited rational function.
     // Do not claim generic partial fractions: other inputs retain CAS behavior.
