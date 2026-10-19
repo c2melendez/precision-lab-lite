@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 104,
+  "revision": 105,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,15 +134,15 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-RAT-01-LITE-RETEST",
+    "id": "ALGEBRA114-AS-RAT-02-CI-REVIEW",
     "status": "PENDING_CI",
-    "technical_sha": "78cf5c2043af21a96668f53384e04a5fafda01ea",
-    "run_id": 39185151196,
-    "action": "Check Lite exact-SHA cumulative 39185151196 execution of AS-RAT-01 rationalized output after scoped engine fix; Plus already PASS run 39183605721. Proceed to AS-RAT-02 only with bilateral PASS. Do not dispatch unchanged Actions.",
+    "technical_sha": "cb5b6cf8970266ddf2c5c6c80668a140e2f7aa47",
+    "run_id": 39185720892,
+    "action": "Inspect exact-SHA automatic AS-RAT-02 cumulative and original test logs. If PASS bilateral, advance original AS-RAT-03. Do not redispatch unchanged CI.",
     "exit_criteria": [
-      "AS-RAT-01 Lite output has rationalized denominator",
-      "Original numeric equivalence remains verified",
-      "Exact CI job logs prove PASS"
+      "AS-RAT-02 exact rationalized expression and numeric identity verified",
+      "Plus HTTP and Lite CAS original test PASS",
+      "Both CI job results and technical SHA documented"
     ]
   },
   "blockers": [
