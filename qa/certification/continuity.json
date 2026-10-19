@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 114,
+  "revision": 115,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,14 +134,16 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-RAT-09-VERIFY",
-    "status": "PENDING_CI_EVIDENCE",
-    "technical_sha": "5fbcca00fbff8e55a15389439d3d057b76cf7e1c",
-    "action": "Retrieve push-triggered cumulative CI for AS-RAT-09 commits in Lite and Plus; fetch exact job logs and check original symbolic/numeric and Plus HTTP tests; diagnose any actual failure before product changes. PR-only empty workflow lookup is not evidence of missing CI. Do not redispatch unchanged gates.",
+    "id": "ALGEBRA114-AS-RAT-09-LITE-RETEST",
+    "status": "PENDING_CI",
+    "technical_sha": "82d1b51a8fbd963ec1bb3f27969ed335cc1cfffe",
+    "run_id": 39210511772,
+    "action": "Check Lite automatic cumulative 39210511772 on SHA 82d1b51 plus H1d 39210511865 and scientific UI 39210512315; inspect original AS-RAT-09 audit and logs. Plus original test executed PASS run 39208899512. Only after Lite exact-SHA PASS close AS-RAT-09 bilateral and move to AS-RAT-10.",
     "exit_criteria": [
-      "Both exact-SHA cumulative runs found and relevant test actually executed",
-      "AS-RAT-09 domain x,y>=0,x!=y and numeric equivalence verified",
-      "Any failure classified and corrected without relaxing oracle; bilateral PASS only on reviewed CI"
+      "Lite exact original rationalized form and numeric domain samples PASS",
+      "Lite cumulative exact-SHA success and original test truly executed",
+      "Plus exact-SHA AS-RAT-09 service HTTP PASSED, no regression",
+      "No unresolved new blocker; record bilateral evidence before AS-RAT-10"
     ]
   },
   "blockers": [
@@ -275,10 +277,17 @@
       "plus_cumulative_run_id": 39205346692
     },
     "as_rat09_checkpoint": {
-      "status": "TESTS_PUBLISHED_AWAITING_CI_VERIFICATION",
-      "lite_commit": "5fbcca00fbff8e55a15389439d3d057b76cf7e1c",
-      "plus_commit": "3366229455dbfcfc7d6a8cbdea06bd67fc131d7a",
-      "note": "No confirmed push workflow run ID yet; empty fetch_commit_workflow_runs searches PR only. No PASS claim."
+      "status": "LITE_SCOPED_FIX_CI_IN_PROGRESS",
+      "plus_technical_sha": "3366229455dbfcfc7d6a8cbdea06bd67fc131d7a",
+      "plus_run_id": 39208899512,
+      "plus_test": "backend/tests/test_algebra114_as_rat09.py PASSED, 1561 pass/3 xfail",
+      "lite_failed_sha": "5fbcca00fbff8e55a15389439d3d057b76cf7e1c",
+      "lite_failed_run_id": 39208895679,
+      "lite_failure": "CAS echoed 1/(x^(1/2)+y^(1/2)) instead of required conjugate",
+      "lite_fix_sha": "82d1b51a8fbd963ec1bb3f27969ed335cc1cfffe",
+      "lite_cumulative_run_id": 39210511772,
+      "lite_h1d_run_id": 39210511865,
+      "lite_native_run_id": 39210512315
     }
   },
   "cases": {
