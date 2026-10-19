@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 130,
+  "revision": 131,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-DIV-08-LITE-NATIVE-COMPLETION",
-    "status": "PENDING_LITE_SCIENTIFIC_UI",
+    "id": "ALGEBRA114-AS-PAR-01-ORIGINAL-TESTS",
+    "status": "PENDING_ORIGINAL_TESTS",
     "technical_sha": "a6633a7a5c46ac8cdf24de295beacdbf7b78e446",
     "paired_technical_sha": "95d9d4fd8613576101697fc3dac41e4cfec23f3c",
-    "run_id": 39221747194,
-    "action": "AS-DIV-07 is verified bilaterally. AS-DIV-08 original tests and cumulative/H1d gates pass on both products; only Lite scientific UI E2E 39221747194 remains in progress on the current corrected SHA. Verify final conclusion and inspect logs before closing AS-DIV-08 or advancing to AS-PAR-01. Do not rerun this exact-SHA gate while it is in progress.",
+    "action": "AS-DIV-08 is VERIFIED_BILATERAL_SCOPED. Next canonical row AS-PAR-01 is ax=b. Implement original tests for all three parameter cases in Lite and Plus after checking current HEAD and Actions; do not rerun unchanged green gates. Preserve global certification OPEN.",
     "exit_criteria": [
-      "Lite scientific UI 39221747194 completed SUCCESS with 456 native scientific E2E tests executed and logs reviewed",
-      "Lite original AS-DIV-08 test PASS; cumulative 39221747187 and H1d 39221747171 SUCCESS on current SHA",
-      "Plus original AS-DIV-08 service+HTTP test PASS; cumulative 39221590032 and H1d 39221590136 SUCCESS on current SHA",
-      "Preserve global certification OPEN and existing blockers unchanged"
+      "Original AS-PAR-01 tests cover a != 0, a = 0 and b = 0, and a = 0 and b != 0",
+      "Exact-SHA cumulative gates in Lite and Plus execute the original tests and pass",
+      "H1d gates pass on the exact technical SHAs",
+      "Lite native scientific E2E passes and logs are reviewed",
+      "Global certification remains OPEN and unrelated blockers remain unchanged"
     ]
   },
   "blockers": [
@@ -415,14 +415,14 @@
       "note": "All scoped gates passed bilaterally, including Lite native 456/456. AS-DIV-07 VERIFIED_BILATERAL_SCOPED; global certification remains OPEN."
     },
     "as_div08_checkpoint": {
-      "status": "LITE_NATIVE_PENDING",
+      "status": "VERIFIED_BILATERAL_SCOPED",
       "lite_test_sha": "a6633a7a5c46ac8cdf24de295beacdbf7b78e446",
       "lite_cumulative_run": 39221747187,
       "lite_cumulative_result": "SUCCESS; original AS-DIV-08 test PASS; 1719 passed/30 todo",
       "lite_h1d_run": 39221747171,
       "lite_h1d_result": "SUCCESS; 22 passed",
       "lite_native_run": 39221747194,
-      "lite_native_result": "IN_PROGRESS at latest inspection; final logs not yet available",
+      "lite_native_result": "SUCCESS; 456 passed",
       "plus_test_sha": "95d9d4fd8613576101697fc3dac41e4cfec23f3c",
       "plus_cumulative_run": 39221590032,
       "plus_cumulative_result": "SUCCESS; original service+HTTP test PASSED; 1570 passed/3 xfailed; frontend SUCCESS",
@@ -435,7 +435,18 @@
       "superseded_initial_lite_sha": "94dcdad850b229b78def44229935daed63329714",
       "superseded_initial_lite_cumulative_run": 39221561998,
       "superseded_initial_lite_failure": "Invalid Algebrite syntax x^3+-2*x^2 for a negative coefficient; corrected signed coefficient rendering in the current Lite SHA.",
-      "note": "Do not close or advance to AS-PAR-01 until Lite native run 39221747194 is completed SUCCESS and its logs confirm 456 passed; no manual rerun while this exact-SHA gate is in progress."
+      "note": "All scoped gates passed bilaterally; original test executed in each product; Lite native SUCCESS with 456 passed. AS-DIV-08 VERIFIED_BILATERAL_SCOPED; global certification remains OPEN."
+    },
+    "as_par01_checkpoint": {
+      "status": "READY_FOR_ORIGINAL_TESTS",
+      "source": "ax=b",
+      "expected_cases": [
+        "a != 0 => x = b/a",
+        "a = 0 and b = 0 => every real x is a solution",
+        "a = 0 and b != 0 => no solution"
+      ],
+      "next_action": "Inspect exact current HEAD and Actions in both repositories, then add original AS-PAR-01 tests; verify executed original tests and exact-SHA cumulative/H1d/native evidence before closing.",
+      "global": "OPEN"
     }
   },
   "cases": {
@@ -1478,7 +1489,7 @@
       "global": "OPEN"
     },
     "ALGEBRA114-AS-DIV-08-20261019": {
-      "status": "PENDING_LITE_NATIVE",
+      "status": "VERIFIED_BILATERAL_SCOPED",
       "lite": {
         "sha": "a6633a7a5c46ac8cdf24de295beacdbf7b78e446",
         "cumulative_run": 39221747187,
@@ -1486,7 +1497,7 @@
         "native_run": 39221747194,
         "cumulative": "SUCCESS; original test PASS, 1719 passed/30 todo",
         "h1d": "SUCCESS; 22 passed",
-        "native": "IN_PROGRESS; await final conclusion and inspect logs"
+        "native": "SUCCESS; 456 passed"
       },
       "plus": {
         "sha": "95d9d4fd8613576101697fc3dac41e4cfec23f3c",
@@ -1496,6 +1507,11 @@
         "h1d": "SUCCESS; 38 passed"
       },
       "scope": "Original symbolic-parameter cubic division: quotient x^2+(a+1)*x+(a+b+1), remainder a+b+c+1, original denominator x-1 excludes x=1",
+      "superseded_attempt": {
+        "lite_sha": "94dcdad850b229b78def44229935daed63329714",
+        "lite_cumulative_run": 39221561998,
+        "outcome": "FAILURE due to malformed negative-coefficient input x^3+-2*x^2; corrected in current Lite SHA and superseded by successful exact-SHA evidence"
+      },
       "global": "OPEN"
     }
   },
