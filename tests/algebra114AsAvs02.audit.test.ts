@@ -9,7 +9,7 @@ describe("Algebra114 AS-AVS-02 real absolute-value product", () => {
     const parsed = parseExpression("|xy|");
     expect(parsed.isEquation).toBe(false);
     const actual = evaluate(parsed.algebrite).replace(/\s+/g, "");
-    expect(actual).not.toBe("");
+    expect(actual).toBe("abs(x)*abs(y)");
     for (const [x, y] of [[-3, 2], [-1, -4], [0, 5], [2, 7], [-2.5, -0.5]]) {
       const numeric = evaluate(
         actual.replace(/x/g, `(${x})`).replace(/y/g, `(${y})`),
