@@ -1,5 +1,9 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## 2026-10-19 — AS-DIV-01 bilateral scoped PASS; AS-DIV-02 original CI started
+AS-DIV-01 original test truly executed and PASS both: Lite cumulative 39212512205 technical SHA 50f4c2f599b1b1d5e5721990209e14abe24d8245, 1712 pass/30 TODO, Plus cumulative 39212516004 SHA 9b6d697d565b422fd498762fc097d28383a155c5, 1563 pass/3 XFAIL; Lite H1d 39212512196/native 39212512207 and Plus H1d 39212516061 all SUCCESS. Scoped case verified, global OPEN. AS-DIV-02 canonical cubic (x^3-8)/(x-2), quotient x^2+2x+4 remainder zero, x!=2. Original tests introduced Lite SHA 4a7d81403fd0aae230dd2ace9146f355f97f7011 with cumulative 39213376244/H1d 39213376069/native 39213376078; Plus SHA 2b8b9ea2d0a2c39f2c2cb9dfb8d290dcecfcc719 with cumulative 39213379570/H1d 39213379626. Automatic runs in progress or queued at observation. Next check actual exact-SHA original logs before any PASS/correction, no redundant dispatch.
+
+
 ## 2026-10-19 — AS-RAT-10 bilateral scoped PASS; AS-DIV-01 original CI started
 AS-RAT-10 exact original PASS: Lite cumulative 39211517856 (SHA 9283559b3175bc90b04dd63cca1e125408f9d9e2) 1711 PASS/30 TODO, original test executed; H1d 39211517813 and native 39211517848 SUCCESS. Plus cumulative 39211388604 (SHA 6a1da80f9f83fab60b0007e3c66565502c7fc6c5) frontend/backend SUCCESS, original test_as_rat_10 PASSED, 1562 PASS/3 XFAIL; H1d 39211388619 SUCCESS. AS-RAT-10 VERIFIED_BILATERAL_SCOPED only; global OPEN. Next canonical group AS-DIV-01 original (x^2-4)/(x-2), quotient x+2 remainder 0 and x!=2 original rational hole. Lite test SHA 50f4c2f599b1b1d5e5721990209e14abe24d8245, auto cumulative 39212512205/H1d 39212512196/native 39212512207; Plus test SHA 9b6d697d565b422fd498762fc097d28383a155c5, auto cumulative 39212516004/H1d 39212516061. New tests and CI pending; inspect logs before claim or correction; no duplicate dispatch.
 
