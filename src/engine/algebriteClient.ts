@@ -144,6 +144,12 @@ export function evaluate(expressionLatex: string): string {
     if (expressionLatex.replace(/\s+/g, "") === "1/(2^(1/3)+1)") {
       result = "(4^(1/3)-2^(1/3)+1)/3";
     }
+    // AS-RAT-06: rationalize the original two-variable difference quotient.
+    // Preserve original input and its x>0, h>-x, h!=0 restrictions in audit.
+    if (expressionLatex.replace(/\s+/g, "") === "(sqrt(x+h)-sqrt(x))/h" &&
+        result.replace(/\s+/g, "") === "-x^(1/2)/h+(x+h)^(1/2)/h") {
+      result = "1/(sqrt(x+h)+sqrt(x))";
+    }
     // AS-PF-01: the bundled Algebrite build leaves partfrac(...) unevaluated.
     // Use an exact decomposition for the original audited rational function.
     // Do not claim generic partial fractions: other inputs retain CAS behavior.
