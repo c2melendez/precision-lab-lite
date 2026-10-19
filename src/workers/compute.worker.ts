@@ -7,6 +7,7 @@
 
 import { constantDeterminant } from "../engine/constantDeterminant";
 import { evaluate, toLatex, toDecimalApprox, ErrorCode as ClientErrorCode } from "../engine/algebriteClient";
+import { realAbsolutePiecewise } from "../engine/absPiecewise";
 import { toFractionResult, fractionToLatex } from "../engine/fractions";
 import { reciprocalPoleLimit, reciprocalLimitAtInfinity } from "../engine/reciprocalLimit";
 import { compileNumeric, numericLimit, numericLimitAtInfinity } from "../engine/numericFallback";
@@ -854,6 +855,14 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
           confidence: "NUMERIC_FALLBACK", requestId,
         };
       }
+    }
+
+    const absPiecewise = realAbsolutePiecewise(expr);
+    if (absPiecewise !== null) {
+      return {
+        success: true, resultLatex: absPiecewise.latex, resultViewLabel: "Por tramos en ℝ",
+        steps: [], hasDetailedSteps: false, confidence: "SYMBOLIC", requestId,
+      };
     }
 
     let raw = evaluate(expr);
