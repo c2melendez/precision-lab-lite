@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 124,
+  "revision": 125,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,16 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-DIV-05-BILATERAL",
-    "status": "IN_PROGRESS_BILATERAL_GATES",
+    "id": "ALGEBRA114-AS-DIV-05-LITE-NATIVE-COMPLETION",
+    "status": "PENDING_LITE_SCIENTIFIC_UI",
     "technical_sha": "e36416db9a48bcffd79cad53b6bcac80e776ed89",
     "paired_technical_sha": "8ff6831e9586974d2adce418199c6e2effa68735",
-    "run_id": 39217613984,
-    "action": "AS-DIV-03 and AS-DIV-04 are VERIFIED_BILATERAL_SCOPED. AS-DIV-05 original tests are published on both products; verify the exact-SHA cumulative, H1d, and Lite scientific UI runs, including original-test execution, before closure.",
+    "run_id": 39217614042,
+    "action": "AS-DIV-05 original tests and cumulative/H1d gates passed on both products. Only Lite scientific UI E2E 39217614042 remains in progress; verify its final conclusion and logs before closing AS-DIV-05 and advancing to AS-DIV-06.",
     "exit_criteria": [
-      "Lite cumulative 39217613984 completed SUCCESS with original AS-DIV-05 test executed PASS",
-      "Lite H1d 39217614035 and scientific UI 39217614042 completed SUCCESS",
-      "Plus cumulative 39217618569 completed SUCCESS with original AS-DIV-05 service+HTTP test executed PASS",
-      "Plus H1d 39217618064 completed SUCCESS",
+      "Lite scientific UI 39217614042 completed SUCCESS with 456 native scientific E2E tests executed",
+      "Lite original AS-DIV-05 test PASS on SHA e36416db9a48bcffd79cad53b6bcac80e776ed89; cumulative 39217613984 and H1d 39217614035 SUCCESS",
+      "Plus original AS-DIV-05 service+HTTP test PASS on SHA 8ff6831e9586974d2adce418199c6e2effa68735; cumulative 39217618569 and H1d 39217618064 SUCCESS",
       "No new blocker; preserve global certification OPEN"
     ]
   },
@@ -364,19 +363,24 @@
       "scope": "Original quartic division: quotient x^2+x, remainder 1"
     },
     "as_div05_checkpoint": {
-      "status": "IN_PROGRESS_BILATERAL_GATES",
+      "status": "LITE_NATIVE_PENDING",
       "lite_test_sha": "e36416db9a48bcffd79cad53b6bcac80e776ed89",
-      "plus_test_sha": "8ff6831e9586974d2adce418199c6e2effa68735",
       "lite_cumulative_run": 39217613984,
+      "lite_cumulative_result": "SUCCESS; original test PASS; 1716 passed/30 todo",
       "lite_h1d_run": 39217614035,
+      "lite_h1d_result": "SUCCESS; 22 passed",
       "lite_native_run": 39217614042,
+      "lite_native_result": "IN_PROGRESS at latest inspection",
+      "plus_test_sha": "8ff6831e9586974d2adce418199c6e2effa68735",
       "plus_cumulative_run": 39217618569,
+      "plus_cumulative_result": "SUCCESS; original service+HTTP test PASS; 1567 passed/3 xfailed; frontend SUCCESS",
       "plus_h1d_run": 39217618064,
+      "plus_h1d_result": "SUCCESS; 38 passed",
       "source": "(2*x^3-3*x^2+5*x-7)/(x-1)",
       "expected_quotient": "2*x^2-x+4",
       "expected_remainder": -3,
       "original_domain": "x != 1",
-      "note": "Runs were IN_PROGRESS when this checkpoint was recorded; inspect exact-SHA logs, do not infer PASS or redispatch."
+      "note": "Only Lite scientific UI remains pending. Do not close or advance until run 39217614042 concludes SUCCESS."
     }
   },
   "cases": {
@@ -1361,19 +1365,24 @@
       "global": "OPEN"
     },
     "ALGEBRA114-AS-DIV-05-20261019": {
-      "status": "IN_PROGRESS",
+      "status": "PENDING_LITE_NATIVE",
       "lite": {
         "sha": "e36416db9a48bcffd79cad53b6bcac80e776ed89",
         "cumulative_run": 39217613984,
         "h1d_run": 39217614035,
-        "native_run": 39217614042
+        "native_run": 39217614042,
+        "cumulative": "SUCCESS; original test PASS, 1716 passed/30 todo",
+        "h1d": "SUCCESS; 22 passed",
+        "native": "IN_PROGRESS"
       },
       "plus": {
         "sha": "8ff6831e9586974d2adce418199c6e2effa68735",
         "cumulative_run": 39217618569,
-        "h1d_run": 39217618064
+        "h1d_run": 39217618064,
+        "cumulative": "SUCCESS; original service+HTTP PASS, 1567 passed/3 xfailed",
+        "h1d": "SUCCESS; 38 passed"
       },
-      "scope": "Original cubic division, quotient 2*x^2-x+4, remainder -3, x!=1; all runs pending at checkpoint",
+      "scope": "Original cubic division: quotient 2*x^2-x+4, remainder -3, x!=1",
       "global": "OPEN"
     }
   },
