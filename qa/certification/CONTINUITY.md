@@ -162,3 +162,8 @@ AS-DIV-03 y AS-DIV-04 cerrados bilateralmente en alcance acotado, con logs y SHA
 ## Revisión 125 — resultados parciales AS-DIV-05 (2026-10-19)
 
 Los acumulativos/H1d y pruebas originales de AS-DIV-05 ya están PASS en ambos repositorios. Único gate pendiente: Lite scientific UI 39217614042. Verificar su conclusión/logs antes de cerrar AS-DIV-05 o avanzar a AS-DIV-06. No repetir CI idéntica; global OPEN.
+
+
+## Revisión 126 — AS-DIV-05 cerrado; AS-DIV-06 abierto (2026-10-19)
+
+AS-DIV-05 está PASS bilateralmente en el alcance contratado; evidencia exact-SHA en continuity.json y EXECUTION_LOG. Siguiente único: AS-DIV-06, `(x^3+1)/(x^2-x+1)`, cociente x+1, resto 0. Revisar Lite 39218286674/39218286532/39218286544 y Plus 39218292207/39218292309 antes de cerrar. Global OPEN; no repetir CI idéntica.
