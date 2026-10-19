@@ -105,3 +105,8 @@ Los gates acumulativos/H1d y las pruebas originales pasan en ambos productos. So
 ## Corte operativo 2026-10-19 — AS-DIV-07 verificado; AS-DIV-08 en espera de nativo Lite
 
 AS-DIV-07: todas las compuertas requeridas pasan bilateralmente; Lite nativo 456/456. AS-DIV-08: las pruebas originales, acumulativo y H1d pasan en Lite y Plus, pero el nativo Lite 39221747194 permanece IN_PROGRESS. No inferir cierre ni porcentaje global a partir de estos casos; certificación global OPEN y bloqueos SG28/S25/S19 y otros conservados. Próximo paso único: inspeccionar run 39221747194 y sus logs; después, si SUCCESS con 456 PASS, cerrar AS-DIV-08 y preparar AS-PAR-01.
+
+
+## Corte verificado 2026-10-19 — AS-DIV-08 cerrado en alcance acotado; AS-PAR-01 sigue
+
+AS-DIV-07 y AS-DIV-08 pasan las compuertas requeridas en Lite y Plus. AS-DIV-08: acumulativo/H1d en ambos productos y Lite nativo 456/456, con logs revisados. La matriz global no se declara completa: certificación OPEN; bloqueos H2/SG28/DIST, S25, S19 y otros continúan sin cambios. Próximo objetivo único: AS-PAR-01 (ax=b) con los tres casos de parámetros; consultar HEAD/Actions antes de escribir pruebas y evitar reruns de evidencia verde sin cambio técnico.
