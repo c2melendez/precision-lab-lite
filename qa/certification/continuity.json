@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 102,
+  "revision": 103,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,18 +134,18 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-PF-08-CI-REVIEW",
+    "id": "ALGEBRA114-AS-RAT-01-CI-REVIEW",
     "status": "PENDING_CI",
-    "technical_sha": "e98f102e8bce91a40bc7bf33bdc605d87331c98b",
-    "run_id": 39181547324,
+    "technical_sha": "1e0fc816f67686faf79dec42e70633fc0fab3451",
+    "run_id": 39183609015,
     "files": [
-      "tests/algebra114AsPf08.audit.test.ts"
+      "tests/algebra114AsRat01.audit.test.ts"
     ],
-    "action": "Review exact technical SHA AS-PF-08 cumulative and original-case logs. Fix any demonstrated failure; once bilateral scoped PASS, inventory the next algebra114 contract section and unresolved product-level coverage; do not claim global closure or redispatch unchanged CI.",
+    "action": "Inspect automatic exact-SHA cumulative AS-RAT-01 logs and mathematical output. Correct evidenced failures, then advance to AS-RAT-02. Preserve the closure of all eight original AS-PF cases without asserting generic UI/CAS coverage.",
     "exit_criteria": [
-      "Exact improper decomposition, polynomial quotient and numeric identity correct",
-      "Original x=±1 restrictions covered",
-      "Both test and cumulative CI PASS verified"
+      "AS-RAT-01 original radical rationalized form verified",
+      "Plus HTTP and Lite engine original tests PASS",
+      "Both SHA and cumulative evidence documented"
     ]
   },
   "blockers": [
