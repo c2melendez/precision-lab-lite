@@ -206,3 +206,16 @@ El primer acumulativo Lite [39221561998](https://github.com/c2melendez/precision
 Siguiente fila canónica de `algebra114_source.md`: AS-PAR-01, `ax=b`. Debe cubrir los tres casos: a!=0 => x=b/a; a=0 y b=0 => toda x real; a=0 y b!=0 => sin solución. Antes de implementar, validar HEAD y Actions actuales de ambos repos; no repetir gates verdes sin cambio técnico. Certificación global OPEN y bloqueos existentes sin cambios.
 
 Continuidad: la compuerta nativa vigente de AS-DIV-08 terminó SUCCESS con 456 pruebas aprobadas. El checkpoint de revisión 131 cierra AS-DIV-08 y apunta a AS-PAR-01; al retomar, verificar HEAD/Actions y ejecutar solo pruebas nuevas del siguiente objetivo. No repetir las corridas exitosas de AS-DIV-08 sin cambio de insumos.
+
+
+## 2026-10-19 UTC — AS-PAR-01 verificado bilateralmente; AS-PAR-02 en CI
+
+AS-PAR-01 `ax=b` queda VERIFIED_BILATERAL_SCOPED.
+- Lite SHA `eec03372aea2422352296eecf0e1511a8d3c5c42`: acumulativo [39223433907](https://github.com/c2melendez/precision-lab-lite/actions/runs/39223433907) SUCCESS, original `algebra114AsPar01.audit.test.ts` ejecutado, 1720 PASS/30 TODO; H1d [39223434024](https://github.com/c2melendez/precision-lab-lite/actions/runs/39223434024) SUCCESS, 22 PASS; nativo [39223433904](https://github.com/c2melendez/precision-lab-lite/actions/runs/39223433904) SUCCESS, 456 PASS.
+- Plus código corregido SHA `62cc13cff4c2ac147398b9b7cbe73af7c85623ca`: acumulativo [39224084976](https://github.com/c2melendez/precision-lab-plus/actions/runs/39224084976) SUCCESS, original `test_algebra114_as_par01.py` PASSED, 1571 PASS/3 XFAIL y frontend SUCCESS; H1d [39224084915](https://github.com/c2melendez/precision-lab-plus/actions/runs/39224084915) SUCCESS, 38 PASS; nativo [39224084933](https://github.com/c2melendez/precision-lab-plus/actions/runs/39224084933) SUCCESS, desktop/tablet/mobile syntax+HTTP recovery passed.
+- La primera ejecución Plus [39223443553](https://github.com/c2melendez/precision-lab-plus/actions/runs/39223443553), SHA supersedido `2301c27f81a4d201d61d16e5b745d07689e360b7`, detectó que `0*x=0` se clasificaba como contradicción. Se corrigió el parser para preservar ambos lados con `evaluate=False` y el servicio para clasificar diferencia simplificada cero/constante: [commit de corrección](https://github.com/c2melendez/precision-lab-plus/commit/62cc13cff4c2ac147398b9b7cbe73af7c85623ca). La evidencia autoritativa es la del SHA corregido.
+- Campaña de dependencia/mutación disparada por la corrección: [39224085023](https://github.com/c2melendez/precision-lab-plus/actions/runs/39224085023) sigue IN_PROGRESS al checkpoint; backend-security SUCCESS, mutation `plus-backend-mutmut` pendiente. No inferir score ni cierre S19.
+
+Siguiente objetivo canónico AS-PAR-02: `(a-1)x=a+1`; si `a!=1`, `x=(a+1)/(a-1)`; si `a=1`, sin solución. Pruebas originales ya añadidas; los gates exact-SHA están pendientes. Certificación global OPEN.
+
+Regla de reentrada: AS-PAR-02 ya tiene pruebas originales. Revisar runs 39224718326, 39224718161, 39224718339, 39224727845 y 39224727941; no crear pruebas duplicadas ni lanzar reruns manuales mientras los gates exact-SHA estén activos. El campaign 39224085023 es una compuerta distinta disparada por la corrección de Plus; registrar su resultado final sin inferir score ni cierre S19.
