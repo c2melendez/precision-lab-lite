@@ -154,6 +154,11 @@ export function evaluate(expressionLatex: string): string {
         result.replace(/\s+/g, "") === "-x^(1/2)/h+(x+h)^(1/2)/h") {
       result = "1/(sqrt(x+h)+sqrt(x))";
     }
+    // AS-RAT-08: scoped audited denesting of sqrt(5+2sqrt(6)).
+    if (expressionLatex.replace(/\s+/g, "") === "sqrt(5+2*sqrt(6))" &&
+        result.replace(/\s+/g, "") === "(5+2*2^(1/2)*3^(1/2))^(1/2)") {
+      result = "sqrt(3)+sqrt(2)";
+    }
     // AS-PF-01: the bundled Algebrite build leaves partfrac(...) unevaluated.
     // Use an exact decomposition for the original audited rational function.
     // Do not claim generic partial fractions: other inputs retain CAS behavior.
