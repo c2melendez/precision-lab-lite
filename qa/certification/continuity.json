@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 115,
+  "revision": 116,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,16 +134,15 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-RAT-09-LITE-RETEST",
-    "status": "PENDING_CI",
+    "id": "ALGEBRA114-AS-RAT-09-COMPLETE-GATES",
+    "status": "PENDING_H1D_NATIVE_COMPLETION",
     "technical_sha": "82d1b51a8fbd963ec1bb3f27969ed335cc1cfffe",
     "run_id": 39210511772,
-    "action": "Check Lite automatic cumulative 39210511772 on SHA 82d1b51 plus H1d 39210511865 and scientific UI 39210512315; inspect original AS-RAT-09 audit and logs. Plus original test executed PASS run 39208899512. Only after Lite exact-SHA PASS close AS-RAT-09 bilateral and move to AS-RAT-10.",
+    "action": "Lite AS-RAT-09 original and cumulative PASS run 39210511772; Plus original and cumulative PASS 39208899512. Check outstanding Lite H1d 39210511865 and scientific UI 39210512315 until completed, inspect failures before bilateral milestone closure; then begin AS-RAT-10 original. No rerun of cumulative.",
     "exit_criteria": [
-      "Lite exact original rationalized form and numeric domain samples PASS",
-      "Lite cumulative exact-SHA success and original test truly executed",
-      "Plus exact-SHA AS-RAT-09 service HTTP PASSED, no regression",
-      "No unresolved new blocker; record bilateral evidence before AS-RAT-10"
+      "Lite H1d and scientific UI latest actual outcomes verified",
+      "AS-RAT-09 bilateral cumulative original tests PASS already reviewed",
+      "No new regression in remaining mandatory gates; proceed AS-RAT-10"
     ]
   },
   "blockers": [
@@ -277,7 +276,7 @@
       "plus_cumulative_run_id": 39205346692
     },
     "as_rat09_checkpoint": {
-      "status": "LITE_SCOPED_FIX_CI_IN_PROGRESS",
+      "status": "BILATERAL_CUMULATIVE_PASS_PENDING_ADDITIONAL_LITE_GATES",
       "plus_technical_sha": "3366229455dbfcfc7d6a8cbdea06bd67fc131d7a",
       "plus_run_id": 39208899512,
       "plus_test": "backend/tests/test_algebra114_as_rat09.py PASSED, 1561 pass/3 xfail",
@@ -287,7 +286,11 @@
       "lite_fix_sha": "82d1b51a8fbd963ec1bb3f27969ed335cc1cfffe",
       "lite_cumulative_run_id": 39210511772,
       "lite_h1d_run_id": 39210511865,
-      "lite_native_run_id": 39210512315
+      "lite_native_run_id": 39210512315,
+      "lite_original_test": "algebra114AsRat09.audit.test.ts PASS executed; 1710 pass/30 todo; guard skip=false",
+      "plus_original_test": "test_algebra114_as_rat09.py PASSED executed; 1561 pass/3 xfail",
+      "lite_h1d_status": "IN_PROGRESS_AT_OBSERVATION",
+      "lite_native_status": "IN_PROGRESS_AT_OBSERVATION"
     }
   },
   "cases": {
