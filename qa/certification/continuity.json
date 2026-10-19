@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 148,
+  "revision": 149,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "4eb7df37aa5f4b47be49cd8da6e2b8de0fd4ab6e",
-  "baseline_case": "AS-RAD-10",
+  "technical_baseline_sha": "9b96156430811a5a92cbb05a5aed0978c88d32e5",
+  "baseline_case": "AS-DOM-06",
   "baseline_status": "VERIFIED_BILATERAL_SCOPED",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -134,23 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-DOM-01-TEST-FIRST",
+    "id": "ALGEBRA114-AS-MUL-01-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "4eb7df37aa5f4b47be49cd8da6e2b8de0fd4ab6e",
-      "c2melendez/precision-lab-plus": "5b59dc6e985879a42d96780c5b5461252ee0adff"
+      "c2melendez/precision-lab-lite": "9b96156430811a5a92cbb05a5aed0978c88d32e5",
+      "c2melendez/precision-lab-plus": "70b6592b3b93ef1a7052a8573bacaa48f6514d34"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [],
       "c2melendez/precision-lab-plus": []
     },
-    "action": "AS-AVS-03..09 and AS-RAD-01..10 VERIFIED_BILATERAL_SCOPED; AS-AVS-10 PARTIAL_BILATERAL (c=4 interval, symbolic c). Next canonical block of algebra114_source.md is AS-DOM (6 rows). Re-check HEAD/Actions first; add original tests test-first in both repos (Plus service+HTTP), diagnose failures by layer, run exact-SHA gates. Do not re-dispatch green gates.",
-    "exit_criteria": [
-      "Original AS-DOM tests pass in Lite and Plus on exact SHA with executed cumulative/H1d/native gates verified",
-      "Do not count TODO, XFAIL, skips, previous-SHA gates or reused evidence as PASS",
-      "Record logs_reviewed only when raw logs were actually read",
-      "Global certification remains OPEN; S19 score null; preserve SG28/DIST and unrelated blockers"
-    ]
+    "action": "AS-DOM-01..06 VERIFIED_BILATERAL_SCOPED. Next canonical block of algebra114_source.md is K. AS-MUL (6 rows). Re-check HEAD/Actions first; add original tests test-first in both repos; exact-SHA gates; keep global OPEN."
   },
   "blockers": [
     {
@@ -3006,6 +3000,34 @@
             "h1d": 39326932941,
             "native": 39326932882,
             "dependency_security": 39326933020
+          },
+          "skip": "false",
+          "logs_reviewed": true
+        }
+      }
+    },
+    "algebra114_as_dom_01_06": {
+      "status": "VERIFIED_BILATERAL_SCOPED",
+      "contract": "AS-DOM-01..06: simplified/solved results keep the ORIGINAL real domain; combined domain condition kind=domain (x!=1; x!=-1 and x!=1; x!=0; x>1; x<=0 or x>1); sqrt(x^2)/x -> |x|/x with sign cases; (x^2-1)/(x-1)=0 -> x=-1 with x=1 named as outside the domain",
+      "test_first": "7/7 AS-DOM tests failed before the fix in each repo",
+      "evidence_by_repo": {
+        "c2melendez/precision-lab-lite": {
+          "technical_sha": "9b96156430811a5a92cbb05a5aed0978c88d32e5",
+          "runs": {
+            "cumulative": 39332124380,
+            "h1d": 39332124435,
+            "scientific_native": 39332124389
+          },
+          "skip": "false",
+          "logs_reviewed": true
+        },
+        "c2melendez/precision-lab-plus": {
+          "technical_sha": "70b6592b3b93ef1a7052a8573bacaa48f6514d34",
+          "runs": {
+            "cumulative": 39332119115,
+            "h1d": 39332119118,
+            "native": 39332119134,
+            "security": 39332119129
           },
           "skip": "false",
           "logs_reviewed": true
