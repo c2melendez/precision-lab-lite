@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 108,
+  "revision": 109,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,15 +134,15 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-RAT-04-LITE-RETEST",
+    "id": "ALGEBRA114-AS-RAT-05-CI-REVIEW",
     "status": "PENDING_CI",
-    "technical_sha": "6b28622c728a90e99cb2f5c429b0e5e569717c3c",
-    "run_id": 39189337196,
-    "action": "Verify exact SHA Lite AS-RAT-04 cube-root rationalization correction, specific test and cumulative gate 39189337196; Plus PASS already documented at 39187550315. Proceed to AS-RAT-05 only after bilateral PASS; do not redispatch unchanged Actions.",
+    "technical_sha": "8f83785fa134e35bc58340f96e86399de6cb85bb",
+    "run_id": 39189885202,
+    "action": "Inspect exact-SHA AS-RAT-05 cumulative and original test logs, diagnose proven failures, then advance AS-RAT-06 only after bilateral PASS. Preserve no-duplicate-action continuity.",
     "exit_criteria": [
-      "Lite returns exact 4^(1/3)/2 original rationalized form",
-      "Lite numeric identity and cumulative test PASS",
-      "Exact commit/run evidence persisted"
+      "Original cube-root conjugate expression exact canonical form",
+      "Plus HTTP and Lite numeric identity verified",
+      "Both cumulative CI results and technical SHAs recorded"
     ]
   },
   "blockers": [
