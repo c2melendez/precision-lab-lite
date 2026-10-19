@@ -177,3 +177,8 @@ Acumulativos y H1d pasan bilateralmente y las pruebas originales AS-DIV-06 se ej
 ## Revisión 128 — AS-DIV-06 cerrado; AS-DIV-07 abierto (2026-10-19)
 
 AS-DIV-06 pasó bilateralmente con todos los gates requeridos, incluido Lite científico nativo (456 PASS). Siguiente único: AS-DIV-07, `(x^5-1)/(x-1)`, cociente x^4+x^3+x^2+x+1, resto 0, x≠1 en la entrada original. Revisar Lite 39219361555/39219361565/39219361663 y Plus 39219370525/39219370577. No duplicar CI; global OPEN.
+
+
+## Revisión 129 — resultados parciales AS-DIV-07 (2026-10-19)
+
+AS-DIV-07 original y gates acumulativos/H1d pasan bilateralmente. Único gate pendiente: Lite scientific UI 39219361663. Confirmar su conclusión y logs antes de cerrar AS-DIV-07 o avanzar a AS-DIV-08. Global OPEN; no duplicar CI.
