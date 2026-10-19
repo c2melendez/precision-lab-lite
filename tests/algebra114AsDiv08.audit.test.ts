@@ -16,7 +16,9 @@ describe("Algebra114 AS-DIV-08 original cubic division with symbolic coefficient
 
     // Exercise the real calculator path with several parameter assignments.
     for (const [a, b, c] of [[2, -3, 4], [-2, 5, 0], [0, 0, 0]] as const) {
-      const expression = `(x^3+${a}*x^2+(${b})*x+(${c}))/(x-1)`;
+      const signedTerm = (coefficient: number, suffix: string) =>
+        `${coefficient < 0 ? "-" : "+"}${Math.abs(coefficient)}${suffix}`;
+      const expression = `(x^3${signedTerm(a, "*x^2")}${signedTerm(b, "*x")}${signedTerm(c, "")})/(x-1)`;
       const numeric = compileNumeric(evaluate(expression), "x");
       const remainder = a + b + c + 1;
 
