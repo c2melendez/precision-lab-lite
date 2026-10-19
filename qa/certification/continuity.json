@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 133,
+  "revision": 134,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-PAR-02-EXACT-SHA-GATES",
-    "status": "PENDING_LITE_H1D_NATIVE",
-    "lite_technical_sha": "661d0d6ff55e03c30a973c74b97636bc342996ec",
-    "plus_technical_sha": "15ca40e4d6f8def75f4c24354c7e66dd7f829e0d",
-    "action": "AS-PAR-01 verified bilaterally. AS-PAR-02 Lite cumulative now passes after the linear fast path; wait for H1d 39225719782 and native 39225719780 on current exact SHA and inspect logs. Plus cumulative/H1d pass; native code gate passed on 62cc13c. Keep global OPEN and do not infer S19 mutation score.",
+    "id": "ALGEBRA114-AS-PAR-03-EXACT-SHA-GATES",
+    "status": "PENDING_EXACT_SHA_GATES",
+    "lite_technical_sha": "18af0da5a7b54092fcb2371490ed0240afe2c04f",
+    "plus_technical_sha": "3a6af47b5dc2142d4ca42b1928dde41c59013a53",
+    "action": "AS-PAR-02 verified bilaterally. AS-PAR-03 original tests are committed; Lite cumulative 39228003898 passed and H1d 39228004023/native 39228003618 remain in progress. Plus cumulative 39228015321 and H1d 39228014298 remain in progress. Inspect exact-SHA test evidence and all required gates before closure. Keep global OPEN and S19 score null.",
     "exit_criteria": [
-      "Lite original AS-PAR-02 test PASS in cumulative 39225719823",
-      "Lite H1d 39225719782 SUCCESS on exact SHA 661d0d6ff55e03c30a973c74b97636bc342996ec",
-      "Lite native scientific E2E 39225719780 SUCCESS on exact SHA 661d0d6ff55e03c30a973c74b97636bc342996ec and logs reviewed",
-      "Plus original AS-PAR-02 service+HTTP test PASS in cumulative 39224727845",
-      "Plus H1d 39224727941 SUCCESS",
+      "Lite original AS-PAR-03 test PASS in cumulative 39228003898 on SHA 18af0da5a7b54092fcb2371490ed0240afe2c04f",
+      "Lite H1d 39228004023 SUCCESS on exact SHA and logs reviewed",
+      "Lite scientific native E2E 39228003618 SUCCESS on exact SHA and logs reviewed",
+      "Plus original AS-PAR-03 service+HTTP test PASS in cumulative 39228015321 on SHA 3a6af47b5dc2142d4ca42b1928dde41c59013a53",
+      "Plus H1d 39228014298 SUCCESS on exact SHA",
       "Keep mutation score null and S19 open unless a complete valid denominator is evidenced",
       "Global certification remains OPEN and unrelated blockers unchanged"
     ]
@@ -462,7 +462,7 @@
       "note": "AS-PAR-01 verified bilaterally after correcting equation identity/contradiction classification. Global certification OPEN."
     },
     "as_par02_checkpoint": {
-      "status": "LITE_H1D_NATIVE_PENDING",
+      "status": "VERIFIED_BILATERAL_SCOPED",
       "lite_superseded_sha": "e4846f49b6e759361be216389d1bacae404f0126",
       "lite_superseded_cumulative_run": 39224718326,
       "lite_superseded_cumulative_result": "FAILURE; original symbolic solve test exceeded 5000 ms",
@@ -474,14 +474,14 @@
       "lite_current_cumulative_run": 39225719823,
       "lite_current_cumulative_result": "SUCCESS; original AS-PAR-02 test PASS in 522 ms; 1721 passed/30 todo",
       "lite_current_h1d_run": 39225719782,
-      "lite_current_h1d_result": "IN_PROGRESS at checkpoint",
+      "lite_current_h1d_result": "SUCCESS; 22 passed; logs reviewed",
       "lite_current_native_run": 39225719780,
-      "lite_current_native_result": "IN_PROGRESS at checkpoint",
+      "lite_current_native_result": "SUCCESS; 456 passed; logs reviewed",
       "plus_test_sha": "15ca40e4d6f8def75f4c24354c7e66dd7f829e0d",
       "plus_cumulative_run": 39224727845,
-      "plus_cumulative_result": "SUCCESS; original service+HTTP test PASS; 1572 passed/3 xfailed",
+      "plus_cumulative_result": "SUCCESS; original service+HTTP test PASS; 1572 passed/3 xfailed; frontend SUCCESS",
       "plus_h1d_run": 39224727941,
-      "plus_h1d_result": "SUCCESS; 38 passed",
+      "plus_h1d_result": "SUCCESS; 38 passed; logs reviewed",
       "plus_native_code_sha": "62cc13cff4c2ac147398b9b7cbe73af7c85623ca",
       "plus_native_code_run": 39224084933,
       "plus_native_code_result": "SUCCESS; desktop/tablet/mobile syntax+HTTP recovery",
@@ -489,7 +489,25 @@
       "expected_solution": "x=(a+1)/(a-1) for a != 1",
       "degenerate_case": "a=1 => 0*x=2, contradiction/no solution",
       "fix_commit": "661d0d6ff55e03c30a973c74b97636bc342996ec",
-      "note": "Do not close AS-PAR-02 or advance to AS-PAR-03 until Lite H1d and native runs on current exact SHA 661d0d6... finish SUCCESS and logs are reviewed."
+      "note": "AS-PAR-02 fully verified within scope. Exact-SHA Lite cumulative/H1d/native all SUCCESS; Plus cumulative and H1d SUCCESS, original service+HTTP test PASS. Plus native syntax+HTTP recovery passed on code SHA 62cc13c; AS-PAR-02 change was test-only. Global certification remains OPEN."
+    },
+    "as_par03_checkpoint": {
+      "status": "PENDING_EXACT_SHA_GATES",
+      "lite_test_sha": "18af0da5a7b54092fcb2371490ed0240afe2c04f",
+      "lite_cumulative_run": 39228003898,
+      "lite_cumulative_result": "SUCCESS; original AS-PAR-03 test PASS; 1722 passed/30 todo",
+      "lite_h1d_run": 39228004023,
+      "lite_h1d_result": "IN_PROGRESS at checkpoint",
+      "lite_native_run": 39228003618,
+      "lite_native_result": "IN_PROGRESS at checkpoint",
+      "plus_test_sha": "3a6af47b5dc2142d4ca42b1928dde41c59013a53",
+      "plus_cumulative_run": 39228015321,
+      "plus_cumulative_result": "IN_PROGRESS at checkpoint",
+      "plus_h1d_run": 39228014298,
+      "plus_h1d_result": "IN_PROGRESS at checkpoint",
+      "source": "x^2=a over R",
+      "expected": "If a>0, x=±sqrt(a); if a=0, x=0; if a<0, no real solution",
+      "note": "Inspect all exact-SHA gates and logs before closing. Plus general solver marks negative-case complex roots explicitly; canonical statement is over the real domain. Do not infer a real-only API mode that is not present."
     }
   },
   "cases": {
@@ -1585,7 +1603,7 @@
       "global": "OPEN"
     },
     "ALGEBRA114-AS-PAR-02-20261019": {
-      "status": "LITE_H1D_NATIVE_PENDING",
+      "status": "VERIFIED_BILATERAL_SCOPED",
       "lite": {
         "superseded_sha": "e4846f49b6e759361be216389d1bacae404f0126",
         "superseded_cumulative_run": 39224718326,
@@ -1594,16 +1612,16 @@
         "cumulative_run": 39225719823,
         "h1d_run": 39225719782,
         "native_run": 39225719780,
-        "cumulative": "SUCCESS; original AS-PAR-02 test PASS; 1721 passed/30 todo",
-        "h1d": "IN_PROGRESS",
-        "native": "IN_PROGRESS",
+        "cumulative": "SUCCESS; original AS-PAR-02 test PASS in 522 ms; 1721 passed/30 todo",
+        "h1d": "SUCCESS; 22 passed",
+        "native": "SUCCESS; 456 passed",
         "fix": "Linear fast path uses derivative and exact substitution to solve symbolic linear coefficients; regression now completes in 522 ms."
       },
       "plus": {
         "sha": "15ca40e4d6f8def75f4c24354c7e66dd7f829e0d",
         "cumulative_run": 39224727845,
         "h1d_run": 39224727941,
-        "cumulative": "SUCCESS; original service+HTTP PASS; 1572 passed/3 xfailed",
+        "cumulative": "SUCCESS; original service+HTTP test PASS; 1572 passed/3 xfailed; frontend SUCCESS",
         "h1d": "SUCCESS; 38 passed",
         "native_code_sha": "62cc13cff4c2ac147398b9b7cbe73af7c85623ca",
         "native_code_run": 39224084933,
