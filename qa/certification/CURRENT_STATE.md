@@ -1,5 +1,9 @@
 # Estado vigente de certificación — Precision Lab Lite / Plus
 
+## 2026-10-19 — AS-RAT-09 bilateral cumulative PASS; Lite H1d/native still pending
+Plus AS-RAT-09 original test PASSED cumulative 39208899512 exact SHA 3366229455dbfcfc7d6a8cbdea06bd67fc131d7a, backend 1561 pass/3 xfail. Lite initial original failed cumulative 39208895679, fixed exact observed CAS echo by technical commit 82d1b51a8fbd963ec1bb3f27969ed335cc1cfffe. Lite cumulative 39210511772 SUCCESS with guard skip=false, original tests/algebra114AsRat09.audit.test.ts executed PASS, 1710 pass/30 TODO. Lite H1d 39210511865 and native 39210512315 remained IN_PROGRESS at last query; do not declare fully closed across all gates until these finish. No extra CI dispatch. Next: check those two exact-SHA runs and only then start AS-RAT-10 original. Global OPEN existing S19/S25/SG28-DIST blockers.
+
+
 ## 2026-10-19 — AS-RAT-09 Plus PASS; Lite original CAS echo corrected, retest pending
 User supplied H1d runs Plus 39208899548 and Lite 39208895699: both SUCCESS on exact AS-RAT-09 test commits. Found cumulative push runs Plus 39208899512 SUCCESS SHA 3366229455dbfcfc7d6a8cbdea06bd67fc131d7a; backend actual test_as_rat_09_variable_radical_denominator_service_http PASSED, 1561 pass/3 xfail. Lite cumulative 39208895679 FAILED SHA 5fbcca00fbff8e55a15389439d3d057b76cf7e1c, original algebra114AsRat09.audit.test.ts failed expected (sqrt(x)-sqrt(y))/(x-y), received 1/(x^(1/2)+y^(1/2)); 1709 pass/1 fail/30 todo. Fixed only exact original+observed CAS echo in src/engine/algebriteClient.ts commit 82d1b51a8fbd963ec1bb3f27969ed335cc1cfffe, with test unchanged. Automatic exact-SHA Lite cumulative 39210511772, H1d 39210511865, native 39210512315 IN_PROGRESS at observation. No extra dispatch. AS-RAT-09 NOT yet bilateral PASS; check executed original + full logs before AS-RAT-10. Global OPEN existing blockers unchanged.
 
