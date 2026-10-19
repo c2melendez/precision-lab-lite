@@ -18,11 +18,23 @@ export interface AlgebraSolveResult {
   truth?: "identity" | "contradiction";
 }
 
-function isPrincipalSqrtOfVariable(expression: string, variable: string): boolean {
+function principalSquareRootOffset(expression: string, variable: string): string | null {
   const compact = expression.replace(/\s+/g, "");
-  return compact === "sqrt(" + variable + ")" ||
-    compact === variable + "^(1/2)" ||
-    compact === "(" + variable + ")^(1/2)";
+  if (compact === "sqrt(" + variable + ")" ||
+      compact === variable + "^(1/2)" ||
+      compact === "(" + variable + ")^(1/2)") {
+    return "0";
+  }
+
+  const prefix = "sqrt(";
+  if (!compact.startsWith(prefix) || !compact.endsWith(")")) return null;
+  const radicand = compact.slice(prefix.length, -1);
+  const offsetPrefix = variable + "-";
+  if (!radicand.startsWith(offsetPrefix)) return null;
+
+  const offset = radicand.slice(offsetPrefix.length);
+  if (!offset || new RegExp("\\b" + variable + "\\b").test(offset)) return null;
+  return offset;
 }
 
 function realNumericSign(expression: string): -1 | 0 | 1 | null {
@@ -75,14 +87,15 @@ export function solveAlgebra(
   // square-root equation directly. Handle this exact contract before asking
   // the generic solver, and never accept an extraneous root from squaring.
   const rootEquationVariablePattern = new RegExp("\\b" + variable + "\\b");
-  let squareRootParameter: string | null = null;
-  if (isPrincipalSqrtOfVariable(leftAlgebrite, variable)) {
-    squareRootParameter = rightAlgebrite;
-  } else if (isPrincipalSqrtOfVariable(rightAlgebrite, variable)) {
-    squareRootParameter = leftAlgebrite;
+  let squareRootOffset: string | null = principalSquareRootOffset(leftAlgebrite, variable);
+  let squareRootParameter: string | null = squareRootOffset === null ? null : rightAlgebrite;
+  if (squareRootOffset === null) {
+    squareRootOffset = principalSquareRootOffset(rightAlgebrite, variable);
+    if (squareRootOffset !== null) squareRootParameter = leftAlgebrite;
   }
 
-  if (squareRootParameter !== null && !rootEquationVariablePattern.test(squareRootParameter)) {
+  if (squareRootOffset !== null && squareRootParameter !== null &&
+      !rootEquationVariablePattern.test(squareRootParameter)) {
     const parameterSign = realNumericSign(squareRootParameter);
     if (parameterSign === -1) {
       steps.push({
@@ -98,13 +111,19 @@ export function solveAlgebra(
       return { steps, solutionsAlgebrite: [], truth: "contradiction" };
     }
 
-    const squareRootSolution = evaluate("simplify((" + squareRootParameter + ")^2)");
+    const squareRootPower = evaluate("simplify((" + squareRootParameter + ")^2)");
+    const squareRootSolution = squareRootOffset === "0"
+      ? squareRootPower
+      : evaluate("simplify((" + squareRootOffset + ")+(" + squareRootPower + "))");
+    const candidateLatex = squareRootOffset === "0"
+      ? "(" + squareRootParameter + ")^2"
+      : squareRootOffset + "+(" + squareRootParameter + ")^2";
     const domainExplanation = parameterSign === null
-      ? "La raíz cuadrada real principal es no negativa: x = (" + squareRootParameter + ")^2 solo es válida si " + squareRootParameter + " ≥ 0; si " + squareRootParameter + " < 0, no existe solución real."
-      : "El lado derecho es no negativo; x = (" + squareRootParameter + ")^2 satisface la ecuación original.";
+      ? "La raíz cuadrada real principal es no negativa: x = " + squareRootOffset + "+(" + squareRootParameter + ")^2 solo es válida si " + squareRootParameter + " ≥ 0; si " + squareRootParameter + " < 0, no existe solución real."
+      : "El lado derecho es no negativo; la sustitución de x en la ecuación original verifica la raíz.";
     steps.push({
       id: "square-root-domain",
-      latex: variable + " = (" + squareRootParameter + ")^2",
+      latex: variable + " = " + candidateLatex,
       explanation: domainExplanation,
     });
     steps.push({
