@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 122,
+  "revision": 123,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,15 +134,15 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-DIV-03-CI",
-    "status": "PENDING_GATE_COMPLETION",
+    "id": "ALGEBRA114-AS-DIV-03-LITE-NATIVE-COMPLETION",
+    "status": "PENDING_LITE_SCIENTIFIC_UI",
     "technical_sha": "f2100f05a292eb6a72e22a6b503086b11b13e383",
-    "run_id": 39215732141,
-    "action": "Lite cumulative current-SHA 39215732141 SUCCESS and original AS-DIV-03 test executed (1714 pass/30 todo). Await Lite H1d 39215732229 and native scientific UI 39215732400; await Plus cumulative 39215717712 and H1d 39215717716. Inspect exact logs after completion. Do not proceed to AS-DIV-04 until Plus original service/HTTP test and all required gates pass.",
+    "run_id": 39215732400,
+    "action": "AS-DIV-03 original test PASS on both engines: Lite cumulative 39215732141 (1714 pass/30 todo), Plus cumulative 39215717712 (backend original test PASS; 1565 pass/3 xfail, frontend SUCCESS); Lite H1d 39215732229 and Plus H1d 39215717716 SUCCESS. Only Lite scientific UI E2E 39215732400 remains in progress; verify final outcome and then close AS-DIV-03 bilaterally. Do not start AS-DIV-04 until this required gate is confirmed.",
     "exit_criteria": [
-      "AS-DIV-03 original quotient x^2+x-2 and remainder 7 confirmed by both engines",
-      "Lite exact corrected SHA cumulative, H1d and scientific UI all SUCCESS",
-      "Plus exact-SHA cumulative frontend/backend and H1d all SUCCESS"
+      "Lite scientific UI E2E 39215732400 completed successfully",
+      "Both exact-SHA original AS-DIV-03 tests and cumulative gates passed",
+      "H1d gates passed and no new blocker; then proceed to AS-DIV-04"
     ]
   },
   "blockers": [
@@ -332,7 +332,7 @@
       "plus_h1d": 39213379626
     },
     "as_div03_checkpoint": {
-      "status": "LITE_CUMULATIVE_PASS_OTHER_GATES_PENDING",
+      "status": "BILATERAL_CUMULATIVE_AND_H1D_PASS_LITE_NATIVE_PENDING",
       "lite_initial_test_sha": "aeabc3ebc08ee153853eaea0f627f812b0fd2188",
       "lite_corrected_test_sha": "f2100f05a292eb6a72e22a6b503086b11b13e383",
       "lite_corrected_cumulative_run": 39215732141,
@@ -344,9 +344,14 @@
       "plus_cumulative_run": 39215717712,
       "plus_h1d_run": 39215717716,
       "lite_cumulative_run": 39215732141,
-      "lite_cumulative_result": "SUCCESS; original test executed; 1714 pass/30 todo",
+      "lite_cumulative_result": "SUCCESS; original test PASS; 1714 passed/30 todo",
       "lite_h1d_run": 39215732229,
-      "lite_native_run": 39215732400
+      "lite_native_run": 39215732400,
+      "lite_h1d_result": "SUCCESS",
+      "lite_native_result": "IN_PROGRESS",
+      "plus_cumulative_result": "SUCCESS; original test_as_div_03_original_cubic_division_remainder_service_http PASSED; 1565 passed/3 xfailed",
+      "plus_frontend_result": "SUCCESS",
+      "plus_h1d_result": "SUCCESS"
     }
   },
   "cases": {
