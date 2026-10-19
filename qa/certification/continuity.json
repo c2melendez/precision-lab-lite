@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 103,
+  "revision": 104,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,18 +134,15 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-RAT-01-CI-REVIEW",
+    "id": "ALGEBRA114-AS-RAT-01-LITE-RETEST",
     "status": "PENDING_CI",
-    "technical_sha": "1e0fc816f67686faf79dec42e70633fc0fab3451",
-    "run_id": 39183609015,
-    "files": [
-      "tests/algebra114AsRat01.audit.test.ts"
-    ],
-    "action": "Inspect automatic exact-SHA cumulative AS-RAT-01 logs and mathematical output. Correct evidenced failures, then advance to AS-RAT-02. Preserve the closure of all eight original AS-PF cases without asserting generic UI/CAS coverage.",
+    "technical_sha": "78cf5c2043af21a96668f53384e04a5fafda01ea",
+    "run_id": 39185151196,
+    "action": "Check Lite exact-SHA cumulative 39185151196 execution of AS-RAT-01 rationalized output after scoped engine fix; Plus already PASS run 39183605721. Proceed to AS-RAT-02 only with bilateral PASS. Do not dispatch unchanged Actions.",
     "exit_criteria": [
-      "AS-RAT-01 original radical rationalized form verified",
-      "Plus HTTP and Lite engine original tests PASS",
-      "Both SHA and cumulative evidence documented"
+      "AS-RAT-01 Lite output has rationalized denominator",
+      "Original numeric equivalence remains verified",
+      "Exact CI job logs prove PASS"
     ]
   },
   "blockers": [
