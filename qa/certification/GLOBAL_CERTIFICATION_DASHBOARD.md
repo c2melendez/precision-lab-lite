@@ -76,3 +76,10 @@ La certificación global sigue **OPEN**. Los cierres de casos son acotados y no 
 ### Estado actualizado AS-DIV-05 — 2026-10-19
 
 Los gates acumulativos y H1d pasan en ambos productos; las regresiones originales se ejecutaron y aprobaron. Solo Lite scientific UI 39217614042 permanece IN_PROGRESS. Mantener AS-DIV-05 abierto hasta SUCCESS de ese run. Global OPEN.
+
+
+### Álgebra 114 — estado vigente 2026-10-19
+
+- AS-DIV-03, AS-DIV-04 y AS-DIV-05: **VERIFIED_BILATERAL_SCOPED**, con evidencia exact-SHA en continuity.json/EXECUTION_LOG.md.
+- AS-DIV-06: **IN_PROGRESS** — cociente x+1, resto 0. Runs pendientes: Lite 39218286674/39218286532/39218286544; Plus 39218292207/39218292309. Verificar prueba original y todos los gates antes de cierre.
+- Global certification: **OPEN**. Los cierres acotados no eliminan S19/S25, SY-P-23, X04/X14 Plus ni SG28/DIST.
