@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 126,
+  "revision": 127,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,17 +134,16 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-DIV-06-BILATERAL",
-    "status": "IN_PROGRESS_BILATERAL_GATES",
+    "id": "ALGEBRA114-AS-DIV-06-LITE-NATIVE-COMPLETION",
+    "status": "PENDING_LITE_SCIENTIFIC_UI",
     "technical_sha": "36225e2cf1af6571e0ef6b4c2e757acd1b34005a",
     "paired_technical_sha": "0a9730447b578524d9e9ea78d3c5cf7a4c1e1b23",
-    "run_id": 39218286674,
-    "action": "AS-DIV-05 is VERIFIED_BILATERAL_SCOPED. AS-DIV-06 original tests are published; verify exact-SHA cumulative, H1d, and Lite scientific UI runs, including original-test execution, before closure.",
+    "run_id": 39218286544,
+    "action": "AS-DIV-06 original tests and cumulative/H1d gates passed on both products. Only Lite scientific UI E2E 39218286544 remains in progress; verify final conclusion and logs before closing AS-DIV-06 and advancing to AS-DIV-07.",
     "exit_criteria": [
-      "Lite cumulative 39218286674 completed SUCCESS with original AS-DIV-06 test PASS",
-      "Lite H1d 39218286532 and scientific UI 39218286544 completed SUCCESS",
-      "Plus cumulative 39218292207 completed SUCCESS with original AS-DIV-06 service+HTTP test PASS",
-      "Plus H1d 39218292309 completed SUCCESS",
+      "Lite scientific UI 39218286544 completed SUCCESS with 456 native scientific E2E tests executed",
+      "Lite original AS-DIV-06 test PASS; cumulative 39218286674 and H1d 39218286532 SUCCESS",
+      "Plus original AS-DIV-06 service+HTTP test PASS; cumulative 39218292207 and H1d 39218292309 SUCCESS",
       "No new blocker; preserve global certification OPEN"
     ]
   },
@@ -380,18 +379,23 @@
       "scope": "Original cubic division, quotient 2*x^2-x+4, remainder -3, x!=1"
     },
     "as_div06_checkpoint": {
-      "status": "IN_PROGRESS_BILATERAL_GATES",
+      "status": "LITE_NATIVE_PENDING",
       "lite_test_sha": "36225e2cf1af6571e0ef6b4c2e757acd1b34005a",
-      "plus_test_sha": "0a9730447b578524d9e9ea78d3c5cf7a4c1e1b23",
       "lite_cumulative_run": 39218286674,
+      "lite_cumulative_result": "SUCCESS; original test PASS; 1717 passed/30 todo",
       "lite_h1d_run": 39218286532,
+      "lite_h1d_result": "SUCCESS; 22 passed",
       "lite_native_run": 39218286544,
+      "lite_native_result": "IN_PROGRESS at latest inspection",
+      "plus_test_sha": "0a9730447b578524d9e9ea78d3c5cf7a4c1e1b23",
       "plus_cumulative_run": 39218292207,
+      "plus_cumulative_result": "SUCCESS; original service+HTTP test PASS; 1568 passed/3 xfailed; frontend SUCCESS",
       "plus_h1d_run": 39218292309,
+      "plus_h1d_result": "SUCCESS; 38 passed",
       "source": "(x^3+1)/(x^2-x+1)",
       "expected_quotient": "x+1",
       "expected_remainder": 0,
-      "note": "Runs were IN_PROGRESS or QUEUED at checkpoint; inspect exact-SHA logs and do not infer PASS."
+      "note": "Only Lite scientific UI remains pending. Do not close or advance until run 39218286544 concludes SUCCESS."
     }
   },
   "cases": {
@@ -1392,17 +1396,22 @@
       "global": "OPEN"
     },
     "ALGEBRA114-AS-DIV-06-20261019": {
-      "status": "IN_PROGRESS",
+      "status": "PENDING_LITE_NATIVE",
       "lite": {
         "sha": "36225e2cf1af6571e0ef6b4c2e757acd1b34005a",
         "cumulative_run": 39218286674,
         "h1d_run": 39218286532,
-        "native_run": 39218286544
+        "native_run": 39218286544,
+        "cumulative": "SUCCESS; original test PASS, 1717 passed/30 todo",
+        "h1d": "SUCCESS; 22 passed",
+        "native": "IN_PROGRESS"
       },
       "plus": {
         "sha": "0a9730447b578524d9e9ea78d3c5cf7a4c1e1b23",
         "cumulative_run": 39218292207,
-        "h1d_run": 39218292309
+        "h1d_run": 39218292309,
+        "cumulative": "SUCCESS; original service+HTTP PASS, 1568 passed/3 xfailed",
+        "h1d": "SUCCESS; 38 passed"
       },
       "scope": "Original cubic division: quotient x+1, remainder 0",
       "global": "OPEN"
