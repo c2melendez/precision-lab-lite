@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 120,
+  "revision": 121,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c5bf7e9b51962d5153f4bf1d1284f14589fcc2f",
@@ -134,15 +134,15 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-DIV-02-CI",
+    "id": "ALGEBRA114-AS-DIV-03-CI",
     "status": "PENDING_CI",
-    "technical_sha": "4a7d81403fd0aae230dd2ace9146f355f97f7011",
-    "run_id": 39213376244,
-    "action": "Inspect original AS-DIV-02 exact-SHA cumulative runs Lite 39213376244 and Plus 39213379570; also Lite H1d 39213376069/native 39213376078 and Plus H1d 39213379626. Review actual test logs and diagnose any failure. Do not manually rerun unchanged jobs; advance AS-DIV-03 only on bilateral scoped PASS.",
+    "technical_sha": "f2100f05a292eb6a72e22a6b503086b11b13e383",
+    "run_id": 39215732141,
+    "action": "Inspect AS-DIV-03 original quotient/remainder case on exact current SHA. Lite syntax-corrected cumulative 39215732141 and H1d 39215732229; original pre-correction cumulative 39215713330/H1d 39215713350/native 39215713341 may fail because of a transient syntax typo in the test, corrected in f2100f0. Plus cumulative 39215717712 and H1d 39215717716. Verify actual original test and current SHA, do not mark PASS until all relevant gates succeed. No duplicate dispatch.",
     "exit_criteria": [
-      "AS-DIV-02 original cubic quotient and zero remainder proved in both engines",
-      "Domain x != 2 retained and both original tests executed PASS",
-      "Both exact-SHA cumulative and relevant complementary gates reviewed"
+      "AS-DIV-03 original quotient x^2+x-2 and remainder 7 confirmed by both engines",
+      "Original expression is algebraically equivalent to quotient plus 7/(x+1) for x != -1",
+      "Exact current-SHA cumulative original tests pass and relevant H1d/native gates reviewed"
     ]
   },
   "blockers": [
@@ -320,11 +320,29 @@
       "complementary": "Lite H1d 39212512196/native 39212512207 and Plus H1d 39212516061 SUCCESS"
     },
     "as_div02_checkpoint": {
-      "status": "CI_IN_PROGRESS",
+      "status": "VERIFIED_BILATERAL_SCOPED",
       "lite_sha": "4a7d81403fd0aae230dd2ace9146f355f97f7011",
-      "lite_run": 39213376244,
+      "lite_cumulative_run": 39213376244,
       "plus_sha": "2b8b9ea2d0a2c39f2c2cb9dfb8d290dcecfcc719",
-      "plus_run": 39213379570
+      "plus_cumulative_run": 39213379570,
+      "lite_original": "AS-DIV-02 original test executed PASS; 1713 passed/30 todo",
+      "plus_original": "AS-DIV-02 original service+HTTP test executed PASS; 1564 passed/3 xfailed",
+      "lite_h1d": 39213376069,
+      "lite_native": 39213376078,
+      "plus_h1d": 39213379626
+    },
+    "as_div03_checkpoint": {
+      "status": "CI_IN_PROGRESS",
+      "lite_initial_test_sha": "aeabc3ebc08ee153853eaea0f627f812b0fd2188",
+      "lite_corrected_test_sha": "f2100f05a292eb6a72e22a6b503086b11b13e383",
+      "lite_corrected_cumulative_run": 39215732141,
+      "lite_corrected_h1d_run": 39215732229,
+      "lite_initial_cumulative_run": 39215713330,
+      "lite_initial_h1d_run": 39215713350,
+      "lite_initial_native_run": 39215713341,
+      "plus_test_sha": "d0b1946d812696ee8003dea08d3db1343c3b02b0",
+      "plus_cumulative_run": 39215717712,
+      "plus_h1d_run": 39215717716
     }
   },
   "cases": {
