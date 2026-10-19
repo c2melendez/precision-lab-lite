@@ -9,7 +9,7 @@
 // spec v10 §4 (`MathResult.hasDetailedSteps`). Mejorar esto a pasos
 // término-a-término queda como TODO explícito para un módulo posterior.
 
-import { evaluate, solveEquation, ErrorCode } from "../algebriteClient";
+import { derivative, evaluate, solveEquation, substituteExact, ErrorCode } from "../algebriteClient";
 import type { Step, AppError } from "../../types";
 
 export interface AlgebraSolveResult {
@@ -51,8 +51,27 @@ export function solveAlgebra(
   if (!hasVariable) {
     return { steps, solutionsAlgebrite: [], truth: "contradiction" };
   }
+  // Fast path for equations linear in the requested variable. The generic
+  // roots() routine can be disproportionately slow when the linear
+  // coefficient is symbolic (for example, (a-1)*x-(a+1)).
+  let linearSolution: string | null = null;
   try {
-    solutions = solveEquation(standardForm, variable);
+    const variablePattern = new RegExp(`\\\\b${variable}\\\\b`);
+    const coefficient = derivative(standardForm, variable);
+    if (coefficient.trim() !== "0" && !variablePattern.test(coefficient)) {
+      const constant = substituteExact(standardForm, variable, "0");
+      if (!variablePattern.test(constant)) {
+        const candidate = evaluate(`simplify(-(${constant})/(${coefficient}))`);
+        if (!variablePattern.test(candidate)) linearSolution = candidate;
+      }
+    }
+  } catch {
+    // Preserve the established roots() fallback if the linear fast path
+    // cannot safely derive a candidate.
+  }
+
+  try {
+    solutions = linearSolution === null ? solveEquation(standardForm, variable) : [linearSolution];
   } catch {
     throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: `No se encontró una solución algebraica para "${variable}".` } as AppError;
   }
