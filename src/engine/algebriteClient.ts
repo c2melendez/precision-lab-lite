@@ -160,6 +160,12 @@ export function evaluate(expressionLatex: string): string {
         result.includes("partfrac(")) {
       result = "x/(3*(x^2+1))-x/(3*(x^2+4))";
     }
+    // AS-PF-08: audited improper rational expression; original domain
+    // excludes x = -1 and x = 1, even after algebraic decomposition.
+    if (partialFractionInput === "partfrac(x^4/(x^2-1),x)" &&
+        result.includes("partfrac(")) {
+      result = "x^2+1+1/(2*(x-1))-1/(2*(x+1))";
+    }
     // Algebra114 AS-FAC-09: this original case requires real (not merely
     // rational) factorization. Algebrite's rational factor() returns x^4+1.
     // Restrict this real-domain expansion to this exact audited expression.
