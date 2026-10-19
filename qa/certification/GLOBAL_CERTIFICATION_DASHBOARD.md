@@ -115,3 +115,8 @@ AS-DIV-07 y AS-DIV-08 pasan las compuertas requeridas en Lite y Plus. AS-DIV-08:
 ## Corte 2026-10-19 — AS-PAR-01 verificado; AS-PAR-02 en CI
 
 AS-PAR-01 pasa bilateralmente en los canales requeridos después de corregir la clasificación de ecuaciones degeneradas en Plus. AS-PAR-02 está pendiente de gates exact-SHA (Lite acumulativo/H1d/nativo; Plus acumulativo/H1d). La campaña de dependencia/mutación Plus 39224085023 permanece en curso: backend-security SUCCESS, plus-backend-mutmut aún activo, sin score inferido. Certificación global OPEN; no declarar S19 cerrado.
+
+
+## Corte revisión 133 — AS-PAR-01 verificado; AS-PAR-02 Lite acumulativo corregido
+
+AS-PAR-01 verificado bilateralmente. AS-PAR-02: Lite acumulativo 39225719823 SUCCESS (1721 PASS/30 TODO) con vía rápida lineal; H1d 39225719782 y nativo 39225719780 aún en curso. Plus acumulativo 39224727845 y H1d 39224727941 SUCCESS. La campaña de mutación 39224085023 terminó SUCCESS y artefacto revisado; no se infiere score ni cierre S19. Certificación global OPEN.
