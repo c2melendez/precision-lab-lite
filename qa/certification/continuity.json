@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 147,
+  "revision": 148,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "33c846bf392ae60e368b39216d426711f58deb8e",
-  "baseline_case": "AS-AVS-02",
+  "technical_baseline_sha": "4eb7df37aa5f4b47be49cd8da6e2b8de0fd4ab6e",
+  "baseline_case": "AS-RAD-10",
   "baseline_status": "VERIFIED_BILATERAL_SCOPED",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -134,20 +134,19 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-AVS-03-TEST-FIRST",
+    "id": "ALGEBRA114-AS-DOM-01-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "33c846bf392ae60e368b39216d426711f58deb8e",
-      "c2melendez/precision-lab-plus": "420cec8160de3d0958d0cc002dedfd48a21b552b"
+      "c2melendez/precision-lab-lite": "4eb7df37aa5f4b47be49cd8da6e2b8de0fd4ab6e",
+      "c2melendez/precision-lab-plus": "5b59dc6e985879a42d96780c5b5461252ee0adff"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [],
       "c2melendez/precision-lab-plus": []
     },
-    "action": "AS-AVS-01 and AS-AVS-02 are VERIFIED_BILATERAL_SCOPED. Next canonical row of algebra114_source.md is AS-AVS-03 (N2), |x-1|+|x+1| = -2x if x<-1; 2 if -1<=x<=1; 2x if x>1. Re-check HEAD/Actions first; add original tests test-first (Lite tests/algebra114AsAvs03.audit.test.ts, Plus backend/tests/test_algebra114_as_avs03.py incl. HTTP), diagnose any failure by layer, and run exact-SHA gates. Do not re-dispatch green gates.",
+    "action": "AS-AVS-03..09 and AS-RAD-01..10 VERIFIED_BILATERAL_SCOPED; AS-AVS-10 PARTIAL_BILATERAL (c=4 interval, symbolic c). Next canonical block of algebra114_source.md is AS-DOM (6 rows). Re-check HEAD/Actions first; add original tests test-first in both repos (Plus service+HTTP), diagnose failures by layer, run exact-SHA gates. Do not re-dispatch green gates.",
     "exit_criteria": [
-      "Original AS-AVS-03 tests pass in Lite and Plus (service+HTTP) on exact SHA with executed cumulative/H1d/native gates verified",
-      "Piecewise oracle must check every region and both breakpoints; numeric-only agreement is not enough",
+      "Original AS-DOM tests pass in Lite and Plus on exact SHA with executed cumulative/H1d/native gates verified",
       "Do not count TODO, XFAIL, skips, previous-SHA gates or reused evidence as PASS",
       "Record logs_reviewed only when raw logs were actually read",
       "Global certification remains OPEN; S19 score null; preserve SG28/DIST and unrelated blockers"
@@ -2874,6 +2873,142 @@
               "reason": "algebra_service.py and tests are outside certification-dependency-gates paths; S25 state unchanged"
             }
           }
+        }
+      }
+    },
+    "algebra114_as_avs_03": {
+      "status": "VERIFIED_BILATERAL_SCOPED",
+      "contract": "|x-1|+|x+1| = -2x (x<-1); 2 (-1<=x<=1); 2x (x>1)",
+      "evidence_by_repo": {
+        "c2melendez/precision-lab-lite": {
+          "technical_sha": "65fdef99666c0c49cd90ac7b70aa9e29bb66d605",
+          "runs": {
+            "cumulative": 39323128473,
+            "h1d": 39323128538,
+            "scientific_native": 39323128546
+          },
+          "skip": "false",
+          "logs_reviewed": true
+        },
+        "c2melendez/precision-lab-plus": {
+          "technical_sha": "fda97f87c8cd4df3b5872b1b084a4d8002b14062",
+          "runs": {
+            "cumulative": 39323133891,
+            "h1d": 39323133895,
+            "native": 39323133679
+          },
+          "skip": "false",
+          "logs_reviewed": true
+        }
+      }
+    },
+    "algebra114_as_avs_04_06": {
+      "status": "VERIFIED_BILATERAL_SCOPED",
+      "contract": "|2x-3|; |x|+x; |x|-x by left-closed regions, every region and breakpoint checked",
+      "evidence_by_repo": {
+        "c2melendez/precision-lab-lite": {
+          "technical_sha": "c1fed7a9213267c6579695d5b014f1061d2867c4",
+          "runs": {
+            "cumulative": 39325230512,
+            "h1d": 39325230679,
+            "scientific_native": 39325230294
+          },
+          "skip": "false",
+          "logs_reviewed": true
+        },
+        "c2melendez/precision-lab-plus": {
+          "technical_sha": "23a4c23932cdde369544d3e009d66224e6a0f177",
+          "runs": {
+            "cumulative": 39325227692,
+            "h1d": 39325227695,
+            "native": "not triggered (tests-only); product verified by native 39323133679 on fda97f87"
+          },
+          "skip": "false",
+          "logs_reviewed": true
+        }
+      }
+    },
+    "algebra114_as_avs_07_09": {
+      "status": "VERIFIED_BILATERAL_SCOPED",
+      "contract": "|x|=x-1 no real solution (x=1/2 extraneous); |x-1|=x+1 -> x=0; |x|+|x-1|=2 -> x=-1/2, 3/2",
+      "evidence_by_repo": {
+        "c2melendez/precision-lab-lite": {
+          "technical_sha": "d1a061e88f21b3088e16d5d27e0acb741ff065cc",
+          "runs": {
+            "cumulative": 39325943420,
+            "h1d": 39325943502,
+            "scientific_native": 39325943426
+          },
+          "skip": "false",
+          "logs_reviewed": true
+        },
+        "c2melendez/precision-lab-plus": {
+          "technical_sha": "d6750ab18eaf6283c71b6f054a930d048439fda4",
+          "runs": {
+            "cumulative": 39325951348,
+            "h1d": 39325951559,
+            "native": 39325951821,
+            "dependency_security": 39325951395
+          },
+          "skip": "false",
+          "logs_reviewed": true
+        }
+      }
+    },
+    "algebra114_as_avs_10": {
+      "status": "PARTIAL_BILATERAL",
+      "contract": "|x-1|+|x-5|=c: c<4 none; c=4 x in [1,5]; c>4 x=3±c/2. Verified only for numeric c != 4; c=4 interval and symbolic c stay UNSUPPORTED_OPERATION (gap)",
+      "evidence_by_repo": {
+        "c2melendez/precision-lab-lite": {
+          "technical_sha": "fedaefad54602a88b977f957a91767a54e0d975a",
+          "runs": {
+            "cumulative": 39326187126,
+            "h1d": 39326187191,
+            "scientific_native": 39326187244
+          },
+          "skip": "false",
+          "logs_reviewed": true
+        },
+        "c2melendez/precision-lab-plus": {
+          "technical_sha": "bdc21040a860c26ec1f4995a504d0b5a2cfbe10a",
+          "runs": {
+            "cumulative": 39326062940,
+            "h1d": 39326063153,
+            "native": "not triggered (tests-only); product verified by native 39325951821 on d6750ab1"
+          },
+          "skip": "false",
+          "logs_reviewed": true
+        }
+      }
+    },
+    "algebra114_as_rad_01_10": {
+      "status": "VERIFIED_BILATERAL_SCOPED",
+      "contract": "AS-RAD-01..10 radical equations over R: official roots returned, every extraneous candidate named and discarded, real semantics (principal even root, real odd root)",
+      "evidence_by_repo": {
+        "c2melendez/precision-lab-lite": {
+          "technical_sha": "4eb7df37aa5f4b47be49cd8da6e2b8de0fd4ab6e",
+          "runs": {
+            "cumulative": 39326906203,
+            "h1d": 39326906386,
+            "scientific_native": 39326906497
+          },
+          "skip": "false",
+          "logs_reviewed": true
+        },
+        "c2melendez/precision-lab-plus": {
+          "technical_sha": "5b59dc6e985879a42d96780c5b5461252ee0adff",
+          "runs": {
+            "cumulative": {
+              "run_id": 39326932950,
+              "attempt_1": "failure job 118315090602: infrastructure (SG28 test_cpu_budget_exhaustion_reaps_child_and_recovers hit 6s wall limit before 1s CPU budget on contended runner; unrelated to solve_service)",
+              "attempt_2": "success job 118319187389, 1632 passed/3 xfailed"
+            },
+            "h1d": 39326932941,
+            "native": 39326932882,
+            "dependency_security": 39326933020
+          },
+          "skip": "false",
+          "logs_reviewed": true
         }
       }
     }

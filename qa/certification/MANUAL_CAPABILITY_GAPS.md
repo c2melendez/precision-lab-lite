@@ -329,3 +329,11 @@ Alcance: fixture canónico,rutas predeterminadas y3perfilesChromium,eventos audi
 ## 2026-10-19 UTC — AS-AVS-01: reescritura real de |u|^2 acotada en Plus
 
 Plus solo reescribe la entrada original exacta `Abs(x)**2` (símbolo `x`) a `x**2`, tras confirmar con `refine` bajo `Q.real(x)`; SymPy no asume variables reales, por lo que `|y|^2`, `|x+1|^2` u otras subexpresiones siguen devolviendo `Abs(...)**2`. No se afirma una política general «variables reales» en el simplificador. Lite (Algebrite) reduce `|x|^2` nativamente. Condición de salida: decisión de producto sobre el dominio real por defecto del simplificador Plus y pruebas originales que la cubran.
+
+## 2026-10-19 UTC — AS-AVS-10: soluciones en intervalo y parámetro `c` simbólico no implementados
+
+`|x-1|+|x-5|=4` tiene solución `x∈[1,5]`; ambos motores devuelven `UNSUPPORTED_OPERATION` en lugar de inventar raíces finitas. `c` simbólico tampoco está soportado. AS-AVS-10 queda PARTIAL_BILATERAL.
+
+## 2026-10-19 UTC — AS-RAD: alcance acotado del solver de radicales
+
+Soportado: una variable, radicandos polinómicos de coeficientes racionales, índices 2..4, hasta 2 radicales distintos (Lite) / 3 (Plus), sin anidamiento. En Plus `cbrt(...)` se parsea como `Piecewise` y no entra en el solver; AS-RAD-07 se certifica con `root(x-1,3)` y `(x-1)**(1/3)`.
