@@ -49,7 +49,7 @@
   },
   "next_action": {
     "id": "ALGEBRA229-AS-B-22-TEST-FIRST",
-    "status": "READY",
+    "status": "ON_HOLD",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-lite": "3a6c8ac53bbfea656ff74e248a52e828d93c8b88",
       "c2melendez/precision-lab-plus": "f55e470a72b2d503981a4e583ac97838990e531c"
@@ -66,7 +66,7 @@
       ]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..21 + D17/D18 safeguard",
+      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..21 + D17/D18/D19 safeguard",
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand/factor + source-row; not matrix-wide"
     },

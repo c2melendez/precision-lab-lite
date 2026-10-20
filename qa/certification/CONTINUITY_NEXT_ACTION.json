@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "revision": 160,
-  "note": "AS-A-12 PASS_SCOPED bilateral; next AS-A-13",
+  "note": "HISTÓRICO, no es fuente de estado. Último estado registrado: revisión 160, AS-A-12 PASS_SCOPED. El estado vigente está en qa/certification/continuity.json (revisión 191), CURRENT_STATE.md y EXECUTION_LOG.md. Este archivo no se actualiza.",
   "next_action": {
     "id": "ALGEBRA229-AS-A-13-TEST-FIRST",
     "status": "READY",

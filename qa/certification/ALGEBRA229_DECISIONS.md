@@ -34,11 +34,13 @@ Este archivo recoge las decisiones tomadas durante la certificación ALGEBRA229 
 
 ## Decisiones pendientes (no implementar sin nueva decisión)
 
-- **P1.** Enfoque para AS-B-19 a AS-B-21 (factor común, agrupación y diferencia de cuadrados multivariables). Primero se escriben las pruebas y se observa qué falla. No se añade un factorizador multivariable general. AS-B-19 pasó sin cambios; AS-B-20 se resolvió con la regla acotada D15.
+- **P1.** Enfoque para AS-B-19 a AS-B-21 (factor común, agrupación y diferencia de cuadrados multivariables). Primero se escriben las pruebas y se observa qué falla. No se añade un factorizador multivariable general. AS-B-19 pasó sin cambios; AS-B-20 se resolvió con la regla acotada D15. AS-B-21 se resolvió con D16–D18.
 - **P2.** Familia de factorización de enteros (AS-B-26 a AS-B-29). Propuesta: familia propia, sin decidir todavía.
 - **P3.** Generalización de `a^n ± b^n` más allá de cubos. Sin decidir.
 
-## Alcance AS-B-21 (opciones; pendiente de decisión, no implementar aún)
+## Alcance AS-B-21 (histórico; resuelto por D16–D18)
+
+**Estado (2026-10-20, revisión 191).** Cerrado. D16 eligió «A y luego B». AS-B-21 pasó test-first sin cambio de producto (Lite `4636c99`). El respaldo B no se activó. La salvaguarda de diferencia de cuadrados se añadió como D17 (`bda4c99`), y la forma canónica `(x-1)^2*(x+1)^2` como D18 (`e2c0e58`, `620cd49`). Lo que sigue es el registro de la decisión, no pendientes.
 
 **Caso.** AS-B-21 `(x²+1)² − 4x²` → `(x−1)²(x+1)²` (fila N3). Es una diferencia de cuadrados, A² − B² con A = x²+1 y B = 2x, y (x²+1−2x)(x²+1+2x) = (x−1)²(x+1)². Expandido es el polinomio univariado entero `x⁴ − 2x² + 1`.
 
