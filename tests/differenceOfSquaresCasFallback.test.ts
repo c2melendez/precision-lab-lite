@@ -88,17 +88,14 @@ describe("AS-B-21 CAS inconclusive results keep the two-quadratic candidate", ()
     expect(() => differenceOfSquaresFactored(INNER, run)).toThrow("CAS no disponible");
   });
 
-  // Known gap (AS-B-21): verifyFactorResult wraps the factored step in one try
-  // block, so an exception there skips the independent candidate check and
-  // returns the original result. Expected behaviour is the verified candidate.
-  // it.fails documents the gap without turning the suite red; switch to `it`
-  // once the catch block is fixed.
-  it.fails("known gap: a CAS exception in the factored check still keeps the verified candidate", () => {
+  // AS-B-21: a CAS exception in the factored step does not skip the independent
+  // candidate check, so the verified candidate is still kept.
+  it("a CAS exception in the factored check still keeps the verified candidate", () => {
     const run = casWith([{ match: isFactoredCheck, failure: "throw" }]);
     expect(verifyFactorResult(INPUT, ORIGINAL, run)).toBe(CANDIDATE);
   });
 
-  it.fails("known gap: a CAS exception while sampling a factor still keeps the verified candidate", () => {
+  it("a CAS exception while sampling a factor still keeps the verified candidate", () => {
     const run = casWith([{ match: isLeftSampling, failure: "throw" }]);
     expect(verifyFactorResult(INPUT, ORIGINAL, run)).toBe(CANDIDATE);
   });

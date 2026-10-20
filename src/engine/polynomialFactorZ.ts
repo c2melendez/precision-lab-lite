@@ -385,9 +385,16 @@ export function verifyFactorResult(input: string, result: string, run: (s: strin
   // Replaces an unfactored Algebrite result only when the CAS confirms equivalence.
   const squares = differenceOfSquaresCandidate(inner);
   if (squares !== null && !result.includes("(")) {
+    // AS-B-21: an exception or inconclusive answer in the factored step must not
+    // skip the independent candidate check below.
+    let factored: string | null = null;
     try {
-      const factored = differenceOfSquaresFactored(inner, run);
-      if (factored !== null) return factored;
+      factored = differenceOfSquaresFactored(inner, run);
+    } catch {
+      factored = null;
+    }
+    if (factored !== null) return factored;
+    try {
       if (run(`(${squares})-(${inner})`).replace(/\s+/g, "") === "0") return squares;
     } catch {
       return result;
