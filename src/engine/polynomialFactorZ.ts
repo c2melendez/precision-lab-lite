@@ -265,6 +265,25 @@ export function cubeBinomialCandidate(inner: string): string | null {
 }
 
 /**
+ * AS-B-20: identidad a^4 + a^2 b^2 + b^4 = (a^2 - a b + b^2)(a^2 + a b + b^2).
+ * Acotada a esta forma exacta: tres términos, dos variables distintas de una
+ * letra y coeficientes 1. No es un factorizador multivariable general.
+ */
+export function quarticBiquadraticCandidate(inner: string): string | null {
+  const terms = inner.replace(/\s+/g, "").split("+");
+  if (terms.length !== 3) return null;
+  const t1 = terms[0].match(/^([a-z])\^4$/);
+  const t3 = terms[2].match(/^([a-z])\^4$/);
+  const t2 = terms[1].match(/^([a-z])\^2\*?([a-z])\^2$/);
+  if (!t1 || !t3 || !t2) return null;
+  const a = t1[1];
+  const b = t3[1];
+  if (a === b) return null;
+  if (!((t2[1] === a && t2[2] === b) || (t2[1] === b && t2[2] === a))) return null;
+  return `(${a}^2-${a}*${b}+${b}^2)*(${a}^2+${a}*${b}+${b}^2)`;
+}
+
+/**
  * Verifica que el resultado de factor(...) sea equivalente a su entrada.
  * Si Algebrite devuelve algo no equivalente, usa la factorización univariada
  * entera cuando esta sí es verificable. Si no, conserva el resultado original.
@@ -278,6 +297,16 @@ export function verifyFactorResult(input: string, result: string, run: (s: strin
   if (cube !== null && !/[()*]/.test(result)) {
     try {
       if (run(`(${cube})-(${inner})`).replace(/\s+/g, "") === "0") return cube;
+    } catch {
+      return result;
+    }
+  }
+  // AS-B-20: bounded rule for a^4 + a^2 b^2 + b^4 (see quarticBiquadraticCandidate).
+  // Replaces an unfactored Algebrite result only when the CAS confirms equivalence.
+  const quartic = quarticBiquadraticCandidate(inner);
+  if (quartic !== null && !result.includes("(")) {
+    try {
+      if (run(`(${quartic})-(${inner})`).replace(/\s+/g, "") === "0") return quartic;
     } catch {
       return result;
     }
