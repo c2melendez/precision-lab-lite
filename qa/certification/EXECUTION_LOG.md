@@ -38,6 +38,12 @@ Commit técnico Lite `3120dc5` (test-first AS-A-13 `(x+h)^3-x^3`, vitest 2 passe
 
 ---
 
+## 2026-10-20 UTC — AS-A-14 PASS_SCOPED bilateral (continuity r162)
+
+Commit técnico Lite `655ab02` (test-first AS-A-14, vitest 2 passed) / Plus `45435c0` (pytest AS-A-14 HTTP 2 passed). Runs sobre el SHA exacto — Lite: cumulative 39418368131, scientific-ui 39418368033, h1d 39418368058; Plus: cumulative 39418372218, h1d 39418372114. Todos SUCCESS (push). Global OPEN. Siguiente: AS-A-15.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.
