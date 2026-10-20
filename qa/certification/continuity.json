@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 152,
+  "revision": 153,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -40,22 +40,22 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-A-06-TEST-FIRST",
+    "id": "ALGEBRA229-AS-A-07-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "f41649e1213dc9a22fb1e79520e8c436b832b96f",
-      "c2melendez/precision-lab-plus": "496ed16ecbe71c35ac16ad5dc49e7c56e744c382"
+      "c2melendez/precision-lab-lite": "0c4f8830400a99dfbb7fd6ee4d89bd2da4d421a9",
+      "c2melendez/precision-lab-plus": "fe1cb3e7510f1ade1e2c2091dd0043ce7e7808f2"
     },
     "run_ids_by_repo": {
-      "c2melendez/precision-lab-lite": [39397703380],
-      "c2melendez/precision-lab-plus": [39397716265]
+      "c2melendez/precision-lab-lite": [39405658373],
+      "c2melendez/precision-lab-plus": [39405670267]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..05",
+      "id": "ALGEBRA229-AS-A-01..06",
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand + source-row; not matrix-wide"
     },
-    "action": "AS-A-01..05 PASS_SCOPED bilateral. Next AS-A-06 expand (x+y+z)^2. Do not re-run fixture promote. Global OPEN."
+    "action": "AS-A-06 PASS_SCOPED bilateral (trinomial square). Next AS-A-07 expand (2x-3)^4. Global OPEN."
   },
   "blockers": [
     {"id": "H2-SG28-DIST-01..08", "status": "BLOCKED"},
@@ -63,5 +63,5 @@
     {"id": "SY-P-23", "status": "OPEN"},
     {"id": "SY-X-04-PLUS-HTTP", "status": "BLOCKED"}
   ],
-  "ledger_note": "r152 reconciled 2026-10-20. next_action AS-A-06. H1d Chromium fail 39400163336 superseded by SUCCESS 39402434939; cumulative 39402434954 SUCCESS. Pre-r152 full ledger blob 6d9585f612b540bc9e96b522d0d473ba7a446733 in git history."
+  "ledger_note": "r153 2026-10-20: AS-A-06 PASS_SCOPED; next AS-A-07. Cumulative 39405658373 / 39405670267 SUCCESS."
 }
