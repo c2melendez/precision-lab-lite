@@ -102,9 +102,9 @@ function denominatorOperands(expression: string): string[] {
   }
   // The parser may serialize division as multiplication by a reciprocal,
   // e.g. x*(x-3)^(-1). Preserve these original denominator restrictions too.
-  const inversePower = /\\(([^()]+)\\)\\^\\(?-1\\)?/g;
+  const inversePower = /\(([^()]+)\)\^\(?-1\)?/g;
   for (const match of text.matchAll(inversePower)) operands.push(match[1]);
-  const atomicInversePower = /\\b([A-Za-z][A-Za-z0-9_]*)\\^\\(?-1\\)?/g;
+  const atomicInversePower = /\b([A-Za-z][A-Za-z0-9_]*)\^\(?-1\)?/g;
   for (const match of text.matchAll(atomicInversePower)) operands.push(match[1]);
   return [...new Set(operands)];
 }
