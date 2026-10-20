@@ -38,7 +38,7 @@ No busques las fuentes con el prefijo histórico `MATRICES/` dentro de este paqu
 
 Los nueve archivos fuente originales coinciden por SHA-256 con sus fuentes congeladas. Los conjuntos raw y promovidos representan los 3.451 IDs de origen; AS114 conserva 114 en raw y 111 casos canónicos propios, con tres alias trazados hacia AS229. No reconstruyas las matrices ni dupliques esos alias.
 
-La referencia `REFERENCE/identidades_trigonometricas_completo.pdf` no está en `Matrices.zip` ni en el handoff activo inspeccionado. Trátala como recurso externo no disponible, no como una dependencia presente ni como un bloqueo para usar TR324.
+El PDF `identidades_trigonometricas_completo.pdf` no forma parte de los nueve Markdown de `Matrices.zip`. Se recuperó byte por byte del ZIP histórico anidado `99_HISTORICAL_ARCHIVE/Precision_Lab_HANDOFF_COMPLETO_2026-10-02(2).zip` (ruta interna `Precision_Lab_HANDOFF_COMPLETO_2026-10-02/matrices/identidades_trigonometricas_completo.pdf`) y se restauró en el handoff corregido como `REFERENCE/identidades_trigonometricas_completo.pdf`, SHA-256 `a14bf8dff13eeae993947a57e47257413f96073393030afd7acdd24910caaba2`. Esa ruta es relativa al ZIP corregido, no a la raíz del repositorio Lite/Plus.
 
 No hardcodees soluciones por ID de prueba. Cada hallazgo debe convertirse en regla general + regression test.
 
