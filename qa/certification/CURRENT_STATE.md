@@ -1,12 +1,14 @@
-## 2026-10-20 UTC — AS-A-10 PASS_SCOPED bilateral
+## 2026-10-20 UTC — AS-A-12 PASS_SCOPED bilateral (continuity r160)
 
-**ALGEBRA229-AS-A-10** — expand `(x^2+x+1)^3` → `x^6+3x^5+6x^4+7x^3+6x^2+3x+1`.
+**ALGEBRA229-AS-A-12** — expand `(x^2-1)^2` → `x^4 - 2x^2 + 1` (fila fuente verificada N2 en la matriz congelada Section A).
 
-| Repo | Technical SHA | Cumulative | H1d | Conclusion |
-|------|---------------|------------|-----|------------|
-| Lite | `373702e6df852a32ebccb79639c4271c556933cf` | [39410230278](https://github.com/c2melendez/precision-lab-lite/actions/runs/39410230278) | [39410230284](https://github.com/c2melendez/precision-lab-lite/actions/runs/39410230284) | SUCCESS |
-| Plus | `a82daab7ad0d8eeca2b511cb07707ec1a3d5413a` | [39410227638](https://github.com/c2melendez/precision-lab-plus/actions/runs/39410227638) | [39410227610](https://github.com/c2melendez/precision-lab-plus/actions/runs/39410227610) | SUCCESS |
+| Repo | Technical SHA | Gates (todos SUCCESS sobre el SHA exacto, evento push) | Conclusion |
+|------|---------------|--------------------------------------------------------|------------|
+| Lite | `aacb5c3bfc125b1f4a426c3732758d909e756e46` | cumulative [39414422310](https://github.com/c2melendez/precision-lab-lite/actions/runs/39414422310), scientific-ui [39414422330](https://github.com/c2melendez/precision-lab-lite/actions/runs/39414422330), h1d [39414422305](https://github.com/c2melendez/precision-lab-lite/actions/runs/39414422305) | SUCCESS |
+| Plus | `663c9f8e52b0d0a527b2b9f6b9bb5b445aa64f4b` | cumulative backend+frontend [39414425350](https://github.com/c2melendez/precision-lab-plus/actions/runs/39414425350), h1d [39414425369](https://github.com/c2melendez/precision-lab-plus/actions/runs/39414425369) | SUCCESS |
 
-Local: Lite vitest 2 passed (source-row + numeric samples); Plus pytest 2 passed. AS-A-01…10 PASS_SCOPED. Global **OPEN**.
+Evidencia ejecutada (no reutilizada): en cada job los pasos typecheck / `npm test` / build (Lite, frontend Plus) y `pytest` (backend Plus) figuran `success`, ninguno `skipped`; los gates corren el directorio completo de tests, que incluye `tests/algebra229AsA12.audit.test.ts` y `backend/tests/test_algebra229_as_a12.py`. Los logs crudos no fueron descargables desde el entorno (403 del proxy a `results-receiver`); la verificación se hizo por estado de jobs/pasos vía API y por el comando del workflow.
 
-**Siguiente único:** `ALGEBRA229-AS-A-11-TEST-FIRST` — expand `(a+b+c)^3` bilateral (fila fuente: multinomio cúbico, 10 términos).
+Local previo al push: Lite vitest AS-A-12 = 2 passed; Plus pytest AS-A-12 = 2 passed. AS-A-01…12 PASS_SCOPED. Global **OPEN**. Bloqueos sin cambio: H2-SG28-DIST-01..08, SECURITY-S25, SY-P-23, SY-X-04-PLUS-HTTP.
+
+**Siguiente único:** `ALGEBRA229-AS-A-13-TEST-FIRST` — expand `(x+h)^3-x^3` → `h^3 + 3h^2x + 3hx^2` según la matriz congelada Section A (`qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz`).

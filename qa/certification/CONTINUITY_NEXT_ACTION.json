@@ -1,23 +1,30 @@
 {
   "schema_version": 1,
-  "revision": 156,
-  "note": "AS-A-09 PASS_SCOPED bilateral; next AS-A-10",
+  "revision": 160,
+  "note": "AS-A-12 PASS_SCOPED bilateral; next AS-A-13",
   "next_action": {
-    "id": "ALGEBRA229-AS-A-10-TEST-FIRST",
+    "id": "ALGEBRA229-AS-A-13-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "0e9614d58424c4f10557bccfa2debe881e805215",
-      "c2melendez/precision-lab-plus": "c52db6cfb461d6e9fa51d404e5e600eb13530928"
+      "c2melendez/precision-lab-lite": "aacb5c3bfc125b1f4a426c3732758d909e756e46",
+      "c2melendez/precision-lab-plus": "663c9f8e52b0d0a527b2b9f6b9bb5b445aa64f4b"
     },
     "run_ids_by_repo": {
-      "c2melendez/precision-lab-lite": [39409011583],
-      "c2melendez/precision-lab-plus": [39409024923]
+      "c2melendez/precision-lab-lite": [
+        39414422310,
+        39414422330,
+        39414422305
+      ],
+      "c2melendez/precision-lab-plus": [
+        39414425350,
+        39414425369
+      ]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..09",
+      "id": "ALGEBRA229-AS-A-01..12",
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand + source-row; not matrix-wide"
     },
-    "action": "AS-A-09 PASS_SCOPED bilateral. Next: AS-A-10 expand (x^2+x+1)^3. Global OPEN."
+    "action": "AS-A-12 PASS_SCOPED bilateral (Lite cumulative+scientific-ui+h1d SUCCESS on aacb5c3; Plus cumulative+h1d SUCCESS on 663c9f8). Next AS-A-13 expand (x+h)^3-x^3 per frozen matriz Section A. Global OPEN."
   }
 }

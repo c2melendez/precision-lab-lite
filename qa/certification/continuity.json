@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 157,
+  "revision": 160,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -48,28 +48,29 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-A-11-TEST-FIRST",
+    "id": "ALGEBRA229-AS-A-13-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "373702e6df852a32ebccb79639c4271c556933cf",
-      "c2melendez/precision-lab-plus": "a82daab7ad0d8eeca2b511cb07707ec1a3d5413a"
+      "c2melendez/precision-lab-lite": "aacb5c3bfc125b1f4a426c3732758d909e756e46",
+      "c2melendez/precision-lab-plus": "663c9f8e52b0d0a527b2b9f6b9bb5b445aa64f4b"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39410230278,
-        39410230284
+        39414422310,
+        39414422330,
+        39414422305
       ],
       "c2melendez/precision-lab-plus": [
-        39410227638,
-        39410227610
+        39414425350,
+        39414425369
       ]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..10",
+      "id": "ALGEBRA229-AS-A-01..12",
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand + source-row; not matrix-wide"
     },
-    "action": "AS-A-10 PASS_SCOPED bilateral (Cumulative+H1d SUCCESS). Next AS-A-11 expand (a+b+c)^3. Global OPEN."
+    "action": "AS-A-12 PASS_SCOPED bilateral (Lite cumulative+scientific-ui+h1d SUCCESS on aacb5c3; Plus cumulative+h1d SUCCESS on 663c9f8). Next AS-A-13 expand (x+h)^3-x^3 per frozen matriz Section A. Global OPEN."
   },
   "blockers": [
     {
@@ -89,5 +90,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r156 2026-10-20: AS-A-09 PASS_SCOPED; next AS-A-10. Cumulative 39409011583 / 39409024923 SUCCESS."
+  "ledger_note": "r160 2026-10-20: AS-A-12 PASS_SCOPED bilateral; next AS-A-13. Lite 39414422310/39414422330/39414422305; Plus 39414425350/39414425369 SUCCESS."
 }

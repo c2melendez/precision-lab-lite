@@ -19,5 +19,9 @@ Global **OPEN**. **Siguiente:** AS-A-07 expand `(2x-3)^4`.
 |------|--------------------|-----------------|--------------------|-----------------|
 | AS-A-09 | `0e9614d58424c4f10557bccfa2debe881e805215` | [39409011583](https://github.com/c2melendez/precision-lab-lite/actions/runs/39409011583) SUCCESS | `c52db6cfb461d6e9fa51d404e5e600eb13530928` | [39409024923](https://github.com/c2melendez/precision-lab-plus/actions/runs/39409024923) SUCCESS |
 | AS-A-10 | `373702e6df852a32ebccb79639c4271c556933cf` | [39410230278](https://github.com/c2melendez/precision-lab-lite/actions/runs/39410230278) SUCCESS + H1d 39410230284 | `a82daab7ad0d8eeca2b511cb07707ec1a3d5413a` | [39410227638](https://github.com/c2melendez/precision-lab-plus/actions/runs/39410227638) SUCCESS + H1d 39410227610 |
+| AS-A-11 | `4fab5b1a37bccf690a587248bf75573f24c7edda` | [39412487217](https://github.com/c2melendez/precision-lab-lite/actions/runs/39412487217) SUCCESS + scientific-ui 39412487075 + H1d 39412487020 | `82059fa1d177ce191f24cedbc3a84003f84cde7f` | [39412482980](https://github.com/c2melendez/precision-lab-plus/actions/runs/39412482980) SUCCESS + H1d 39412482960 + security 39412483056 |
+| AS-A-12 | `aacb5c3bfc125b1f4a426c3732758d909e756e46` | [39414422310](https://github.com/c2melendez/precision-lab-lite/actions/runs/39414422310) SUCCESS + scientific-ui 39414422330 + H1d 39414422305 | `663c9f8e52b0d0a527b2b9f6b9bb5b445aa64f4b` | [39414425350](https://github.com/c2melendez/precision-lab-plus/actions/runs/39414425350) SUCCESS + H1d 39414425369 |
 
 AS-A-10: `(x^2+x+1)^3` → `x^6+3x^5+6x^4+7x^3+6x^2+3x+1`. Local Lite vitest 2 passed; Plus pytest 2 passed. CI bilateral verde sobre SHA técnico exacto. Global **OPEN**. Siguiente: **AS-A-11** `(a+b+c)^3`.
+
+AS-A-12: `(x^2-1)^2` → `x^4-2x^2+1`. Local Lite vitest 2 passed; Plus pytest 2 passed. CI bilateral verde sobre SHA técnico exacto. Global **OPEN**. Siguiente: **AS-A-13** `(x+h)^3-x^3`.
