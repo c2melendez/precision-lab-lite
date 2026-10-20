@@ -188,6 +188,12 @@ Test-first Lite `a9cb5a9` falló cumulative 39475280948 (Algebrite sin factoriza
 
 ---
 
+## 2026-10-20 UTC — AS-B-20 PASS_SCOPED bilateral (continuity r187)
+
+Commit técnico Lite `a0b5718` (test restaurado) sobre producto `24e89b6` (regla acotada D15, no factorizador general). Runs sobre el SHA exacto: cumulative [39477553098](https://github.com/c2melendez/precision-lab-lite/actions/runs/39477553098), h1d [39477553321](https://github.com/c2melendez/precision-lab-lite/actions/runs/39477553321), scientific-ui [39477553104](https://github.com/c2melendez/precision-lab-lite/actions/runs/39477553104). Todos SUCCESS (push). Global OPEN. Siguiente: AS-B-21.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.
