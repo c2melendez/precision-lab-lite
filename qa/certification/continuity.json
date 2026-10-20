@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 168,
+  "revision": 169,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -48,29 +48,29 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-04-TEST-FIRST",
+    "id": "ALGEBRA229-AS-B-05-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "5be7b0126d5c39b9c389e44fddf0a2e7605a42f8",
-      "c2melendez/precision-lab-plus": "ab3ead044362f585f3af676a441de83ae2f29bdd"
+      "c2melendez/precision-lab-lite": "56ec7ea20fcdce9e85b3c49c82d24143b9573cab",
+      "c2melendez/precision-lab-plus": "82cc071f89122edecd19dd2033ac7df1e4d285e5"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39425818360,
-        39425818757,
-        39425818572
+        39426977672,
+        39426977392,
+        39426977717
       ],
       "c2melendez/precision-lab-plus": [
-        39425828486,
-        39425828468
+        39426990236,
+        39426990101
       ]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..03",
+      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..04",
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand/factor + source-row; not matrix-wide"
     },
-    "action": "AS-B-03 PASS_SCOPED bilateral (Lite cumulative+scientific-ui+h1d SUCCESS on 5be7b01; Plus cumulative+h1d SUCCESS on ab3ead0). Next AS-B-04 factorizar x^3+27 per frozen matriz Section B. Global OPEN."
+    "action": "AS-B-04 PASS_SCOPED bilateral (Lite cumulative+scientific-ui+h1d SUCCESS on 56ec7ea; Plus cumulative+h1d SUCCESS on 82cc071). Next AS-B-05 factorizar x^4-1 per frozen matriz Section B. Global OPEN."
   },
   "blockers": [
     {
@@ -90,5 +90,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r168 2026-10-20: AS-B-03 PASS_SCOPED bilateral; next AS-B-04. Lite 39425818360/39425818757/39425818572; Plus 39425828486/39425828468 SUCCESS."
+  "ledger_note": "r169 2026-10-20: AS-B-04 PASS_SCOPED bilateral; next AS-B-05. Lite 39426977672/39426977392/39426977717; Plus 39426990236/39426990101 SUCCESS."
 }
