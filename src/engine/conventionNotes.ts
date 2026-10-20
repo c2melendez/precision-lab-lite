@@ -65,15 +65,13 @@ export function conventionDeclarations(expr: string): DomainCondition[] {
       const mag = Number(negNum[1] ?? negNum[2]);
       const exact = Number.isInteger(mag) ? integerNthRoot(mag, n) : null;
       if (exact !== null) {
-        // AS-CONV-06: raíz impar EXACTA de constante negativa → rama real -k.
+        // AS-CONV-01: raíz impar EXACTA de constante negativa → rama real -k.
         out.push(make(compact,
-          `Convención ${TAG.perfectOddRoot}: root(${radicand},${n}) = ${-exact} en ℝ (raíz impar perfecta, rama real elegida sobre la rama principal de ℂ).`,
+          `Convención ${TAG.cbrtReal}: root(${radicand},${n}) = ${-exact} en ℝ (raíz impar perfecta, rama real elegida sobre la rama principal de ℂ).`,
           `\\sqrt[${n}]{a}=${-exact}\\in\\mathbb{R}`));
       } else {
-        // AS-CONV-01: raíz impar no perfecta → rama principal ℂ declarada.
-        out.push(make(compact,
-          `Convención ${TAG.cbrtReal}: root(${radicand},${n}) sin raíz entera exacta se resuelve en la rama principal de ℂ; la convención real (−∛|a|) daría un valor distinto.`,
-          `\\sqrt[${n}]{${radicand}}\\in\\mathbb{C}\\text{ (rama principal)}`));
+        // Raíz impar no perfecta: el motor no la resuelve aquí (no se declara
+        // una convención que no se calculó).
       }
     } else if (negNum && n % 2 === 0) {
       out.push(make(compact,
@@ -103,29 +101,6 @@ export function conventionDeclarations(expr: string): DomainCondition[] {
     out.push(make(compact,
       `Convención ${TAG.sqrtNegativeComplex}: raíz de un número negativo se evalúa en ℂ (rama principal); no tiene valor en ℝ.`,
       "\\sqrt{-x}\\in\\mathbb{C}"));
-  }
-
-  // AS-CONV-05: root(x^n, n) con n par → |x| bajo supuesto de variable real.
-  const evenRootPower = /^root\(x\^(\d+),(\d+)\)$/.exec(compact);
-  if (evenRootPower && Number(evenRootPower[1]) === Number(evenRootPower[2]) && Number(evenRootPower[2]) % 2 === 0) {
-    out.push(make(compact,
-      `Convención ${TAG.evenRootAbs}: root(x^${evenRootPower[1]},${evenRootPower[2]}) = |x| asumiendo x ∈ ℝ (rama principal ℂ del CAS); en ℂ no existe esta identidad.`,
-      "\\sqrt[n]{x^n}=|x|\\;(x\\in\\mathbb{R})"));
-  }
-
-  // AS-CONV-07: sqrt(trinomio cuadrado perfecto) → |binomio| bajo supuesto real.
-  // Nota de sondeo: el parser normaliza `2*x` a `2x`, por eso el regex admite
-  // opcionalmente el operador explícito.
-  const tri = /^sqrt\((x\^2)([+-])(\d+)(?:\*)?x(\+)(\d+)\)$/.exec(compact);
-  if (tri) {
-    const b = Number(tri[3]);
-    const c = Number(tri[5]);
-    const isPerfectSquare = tri[2] === "-" && c === (b / 2) * (b / 2) && b % 2 === 0;
-    if (isPerfectSquare) {
-      out.push(make(compact,
-        `Convención ${TAG.trinomialAbs}: sqrt(x²−${b}x+${c}) = |x−${b / 2}| asumiendo x ∈ ℝ; el CAS deja la forma radical sin resolver porque √(u²)=|u| exige el supuesto de realidad.`,
-        "\\sqrt{x^2-2ax+a^2}=|x-a|\\;(x\\in\\mathbb{R})"));
-    }
   }
 
   return out;
