@@ -1,3 +1,5 @@
+> Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
+
 ## 2026-10-20 UTC — AS-B-18 PASS_SCOPED bilateral (continuity r184)
 
 **ALGEBRA229-AS-B-18** — factorizar `x^{8}-1` → `\left(x - 1\right) \left(x + 1\right) \left(x^{2} + 1\right) \left(x^{4} + 1\right)` (fila fuente N2 en la matriz congelada Section B).
