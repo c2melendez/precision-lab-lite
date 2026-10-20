@@ -236,6 +236,16 @@ Estado: AS-B-22 en `ON_HOLD`, a la espera de instrucción. Plus sin cambios. Glo
 
 ---
 
+## 2026-10-20 UTC — Verificación de gates del cierre r192 (continuity r193)
+
+Commit de cierre `3ffcca9` (continuity r192): sin runs de gates en su SHA. Sus cambios son solo `.md` y `qa/certification/continuity.json`, rutas excluidas de cumulative y h1d; no hay workflow de scientific-ui que se dispare con esas rutas.
+
+Código: desde `3a6c8ac` solo cambian documentos bajo `qa/certification/` (comparación verificada), así que el código vigente es el gated en `3a6c8ac` (cumulative 39496986843, h1d 39496986689, scientific-ui 39496986778, todos SUCCESS) y en `88b3249` (cumulative 39499113815, h1d 39499113808, SUCCESS).
+
+Observación de proceso: un commit solo documental no genera gates propios. No se reclaman gates sobre el SHA de cierre; se referencia el último SHA gated del código. Estado: AS-B-22 en `ON_HOLD`. Global OPEN.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.

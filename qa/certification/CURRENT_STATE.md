@@ -1,5 +1,18 @@
 > Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
 
+## 2026-10-20 UTC — Verificación de gates del cierre r192 (continuity r193)
+
+El commit `3ffcca9` no disparó runs de gates: sus cambios son solo `.md` y `qa/certification/continuity.json`, rutas excluidas de los workflows cumulative y h1d. Desde `3a6c8ac` solo cambiaron documentos bajo `qa/certification/`, así que el código es idéntico al de `3a6c8ac`.
+
+| SHA | Código | Gates (SUCCESS) |
+|-----|--------|------------------|
+| `3a6c8ac` | sí | cumulative [39496986843](https://github.com/c2melendez/precision-lab-lite/actions/runs/39496986843), h1d [39496986689](https://github.com/c2melendez/precision-lab-lite/actions/runs/39496986689), scientific-ui [39496986778](https://github.com/c2melendez/precision-lab-lite/actions/runs/39496986778) |
+| `88b3249` (docs) | no | cumulative [39499113815](https://github.com/c2melendez/precision-lab-lite/actions/runs/39499113815), h1d [39499113808](https://github.com/c2melendez/precision-lab-lite/actions/runs/39499113808). Disparados por `CONTINUITY_NEXT_ACTION.json`, que no está excluido. |
+
+Estado: AS-B-22 en `ON_HOLD`. Plus sin cambios. Global OPEN.
+
+---
+
 ## 2026-10-20 UTC — Correcciones documentales y cierre (continuity r192)
 
 Commit solo documental `88b32498845c249f853ee117dd541c081cfa8c8c` sobre `b31fa61`, sin código ni AS-B-22. Corrige: AS-B-21 marcado como histórico resuelto por D16–D18 en `ALGEBRA229_DECISIONS.md`; `continuity.json` con `next_action` en `ON_HOLD` y `completed_scoped` que incluye D19; `CONTINUITY_NEXT_ACTION.json` marcado como histórico (revisión 160).
