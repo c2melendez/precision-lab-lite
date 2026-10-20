@@ -264,6 +264,22 @@ Estado: AS-B-22 en `ON_HOLD`. Plus sin cambios. Global OPEN.
 
 ---
 
+## 2026-10-20 UTC — Gates de 4e251ef: timeout de AS-B-20 a 120 s (continuity r196)
+
+Commit `4e251ef` (`tests/algebra229AsB20.audit.test.ts`, +1 −1): timeout de 120 s en el test de equivalencia de `factor(x^4+x^2y^2+y^4)`. Corrige el fallo de cumulative en `57a1b80` (run 39504852620), causado por el timeout por defecto de 5 s en ese mismo test (5058 ms).
+
+Gates de `4e251ef`, disparados con `workflow_dispatch` (D20). Los tres runs tienen `head_sha` igual a `4e251ef`:
+
+| SHA | cumulative | h1d | scientific-ui |
+|-----|------------|-----|---------------|
+| `4e251ef` | [39509068763](https://github.com/c2melendez/precision-lab-lite/actions/runs/39509068763) SUCCESS | [39509071376](https://github.com/c2melendez/precision-lab-lite/actions/runs/39509071376) SUCCESS | [39509074292](https://github.com/c2melendez/precision-lab-lite/actions/runs/39509074292) SUCCESS |
+
+Los runs automáticos por push sobre el mismo SHA también terminaron en success: [39508234813](https://github.com/c2melendez/precision-lab-lite/actions/runs/39508234813), [39508234894](https://github.com/c2melendez/precision-lab-lite/actions/runs/39508234894), [39508234793](https://github.com/c2melendez/precision-lab-lite/actions/runs/39508234793).
+
+Estado: AS-B-22 en `ON_HOLD`. Plus sin cambios. Global OPEN. Según D20, el commit de este registro (r196) se gatea en su propio SHA.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 195,
+  "revision": 196,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -51,14 +51,14 @@
     "id": "ALGEBRA229-AS-B-22-TEST-FIRST",
     "status": "ON_HOLD",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "3a6c8ac53bbfea656ff74e248a52e828d93c8b88",
+      "c2melendez/precision-lab-lite": "4e251ef8b8a3a46aca0e8bc3a55a8a8493837540",
       "c2melendez/precision-lab-plus": "f55e470a72b2d503981a4e583ac97838990e531c"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39496986843,
-        39496986689,
-        39496986778
+        39509068763,
+        39509071376,
+        39509074292
       ],
       "c2melendez/precision-lab-plus": [
         39479963827,
@@ -70,7 +70,7 @@
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand/factor + source-row; not matrix-wide"
     },
-    "action": "Gates de 0e32096 registrados en r195 (D20). AS-B-22 en espera de instrucción del usuario. Global OPEN."
+    "action": "Gates de 4e251ef (timeout AS-B-20 a 120 s) registrados en r196 (D20). AS-B-22 en espera de instrucción del usuario. Global OPEN."
   },
   "blockers": [
     {
@@ -90,5 +90,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r195 2026-10-20: registro de gates D20 de 0e32096 (cumulative, h1d, scientific-ui SUCCESS, head_sha verificado). AS-B-22 en ON_HOLD. Global OPEN."
+  "ledger_note": "r196 2026-10-20: gates D20 de 4e251ef (timeout AS-B-20 a 120 s): cumulative, h1d y scientific-ui SUCCESS, head_sha verificado. AS-B-22 en ON_HOLD. Global OPEN."
 }
