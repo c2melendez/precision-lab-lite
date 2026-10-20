@@ -1,5 +1,22 @@
 > Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
 
+## 2026-10-20 UTC — AS-B-20 BLOQUEADO en Lite, pendiente de decisión (continuity r186)
+
+**ALGEBRA229-AS-B-20** — factorizar `x^{4}+x^{2}y^{2}+y^{4}` → `\left(x^{2} - x y + y^{2}\right) \left(x^{2} + x y + y^{2}\right)` (fila fuente N3, factorización multivariable).
+
+| Repo | SHA | Resultado |
+|------|-----|-----------|
+| Plus | `f8ec1733c356f48fce1f6f2a1719d8ab559d229c` | Test-first `backend/tests/test_algebra229_as_b20.py` pasa sin cambios de producto. Gates cumulative [39475284739](https://github.com/c2melendez/precision-lab-plus/actions/runs/39475284739), h1d [39475284787](https://github.com/c2melendez/precision-lab-plus/actions/runs/39475284787) SUCCESS. |
+| Lite | `a9cb5a99246deeaba5fa428d5845ab2a52e1dae8` | Test-first `tests/algebra229AsB20.audit.test.ts` FALLA en cumulative [39475280948](https://github.com/c2melendez/precision-lab-lite/actions/runs/39475280948): Algebrite devuelve `x^4+y^4+x^2*y^2` sin factorizar. La equivalencia pasa; la forma no. |
+
+Lite: la prueba roja se retiró del branch con un commit de revert para mantener el gate verde; queda en el historial de `a9cb5a9`. Caso no cerrado. Global OPEN.
+
+**Decisión pendiente (P1, D8):** ¿regla acotada para la forma `a^4+a^2b^2+b^4` verificada por CAS, como en AS-B-16, o un camino multivariable más general? Las decisiones vigentes no autorizan un factorizador multivariable general.
+
+**Siguiente único:** esperar decisión para `ALGEBRA229-AS-B-20` (no avanzar a B-21 hasta cerrarlo).
+
+---
+
 ## 2026-10-20 UTC — AS-B-19 PASS_SCOPED bilateral (continuity r185)
 
 **ALGEBRA229-AS-B-19** — factorizar `x^{2}y-xy^{2}` → `x y \left(x - y\right)` (fila fuente N2 en la matriz congelada Section B, factor común multivariable).
