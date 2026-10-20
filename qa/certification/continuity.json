@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 190,
+  "revision": 191,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -51,14 +51,14 @@
     "id": "ALGEBRA229-AS-B-22-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "620cd4985c682188c6524a575fa66cf39a9ce0cc",
+      "c2melendez/precision-lab-lite": "3a6c8ac53bbfea656ff74e248a52e828d93c8b88",
       "c2melendez/precision-lab-plus": "f55e470a72b2d503981a4e583ac97838990e531c"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39491056857,
-        39491056842,
-        39491056775
+        39496986843,
+        39496986689,
+        39496986778
       ],
       "c2melendez/precision-lab-plus": [
         39479963827,
@@ -70,7 +70,7 @@
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand/factor + source-row; not matrix-wide"
     },
-    "action": "D18 cerrada en Lite: diferencia de cuadrados produce (x-1)^2*(x+1)^2 por CAS. AS-B-22 en espera de instrucción del usuario. Global OPEN."
+    "action": "D19 cerrada en Lite: las excepciones del CAS en la diferencia de cuadrados conservan el candidato verificado (3a6c8ac). AS-B-22 en espera de instrucción del usuario. Global OPEN."
   },
   "blockers": [
     {
@@ -90,5 +90,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r190 2026-10-20: D18 forma canónica diferencia de cuadrados (Lite e2c0e58 código, 620cd49 regresiones; gates SUCCESS). AS-B-22 en espera."
+  "ledger_note": "r191 2026-10-20: D19 excepciones del CAS en diferencia de cuadrados (Lite 3a6c8ac, gates SUCCESS). AS-B-22 en espera."
 }

@@ -211,6 +211,18 @@ Commit técnico Lite `a0b5718` (test restaurado) sobre producto `24e89b6` (regla
 - Lite `620cd4985c682188c6524a575fa66cf39a9ce0cc`: regresiones; gates cumulative 39491056857, h1d 39491056842, scientific-ui 39491056775 (SUCCESS).
 - D18 en `ALGEBRA229_DECISIONS.md`. Plus sin cambios.
 
+## 2026-10-20 UTC — Excepciones del CAS en diferencia de cuadrados (continuity r191)
+
+Lite `3a6c8ac53bbfea656ff74e248a52e828d93c8b88` (código y pruebas en un solo commit). Antes, `b1c40b6de7e7ae1476883bc9e65606826ec1c5f1` añadió `tests/differenceOfSquaresCasFallback.test.ts` con dos casos de brecha conocida marcados `it.fails`. El cambio en `verifyFactorResult` aísla el paso factorizado en su propio `try`: si falla o no concluye, la verificación del candidato se ejecuta igual y se devuelve solo si el CAS confirma equivalencia.
+
+| Repo | Technical SHA | Gates (SUCCESS sobre el SHA exacto, evento push) |
+|------|---------------|--------------------------------------------------|
+| Lite | `3a6c8ac53bbfea656ff74e248a52e828d93c8b88` | cumulative [39496986843](https://github.com/c2melendez/precision-lab-lite/actions/runs/39496986843), h1d [39496986689](https://github.com/c2melendez/precision-lab-lite/actions/runs/39496986689), scientific-ui [39496986778](https://github.com/c2melendez/precision-lab-lite/actions/runs/39496986778) |
+
+Evidencia local: 27 pruebas en verde (`differenceOfSquaresRule`, `polynomialFactorZ`, `differenceOfSquaresCasFallback`). Observación: `tests/algebra229AsB20.audit.test.ts` expira a los 5 s también con el código previo al cambio y pasa con 120 s; es lentitud del sandbox y no afecta al bloque modificado. Solo Lite; Plus no cambió. Global OPEN.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.

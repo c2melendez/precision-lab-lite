@@ -1,5 +1,17 @@
 > Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
 
+## 2026-10-20 UTC — Excepciones del CAS en diferencia de cuadrados (D19, continuity r191)
+
+`verifyFactorResult` en `src/engine/polynomialFactorZ.ts`: una excepción o respuesta no concluyente del CAS en el paso factorizado ya no omite la verificación independiente del candidato de dos cuadráticos. El candidato se devuelve solo si el CAS confirma equivalencia; si no, se conserva el resultado original. Pruebas previas en `b1c40b6de7e7ae1476883bc9e65606826ec1c5f1`, con dos casos de brecha conocida (`it.fails`) que ahora son pruebas normales.
+
+| Repo | Technical SHA | Gates (SUCCESS sobre el SHA exacto) |
+|------|---------------|--------------------------------------|
+| Lite | `3a6c8ac53bbfea656ff74e248a52e828d93c8b88` | cumulative [39496986843](https://github.com/c2melendez/precision-lab-lite/actions/runs/39496986843), h1d [39496986689](https://github.com/c2melendez/precision-lab-lite/actions/runs/39496986689), scientific-ui [39496986778](https://github.com/c2melendez/precision-lab-lite/actions/runs/39496986778) |
+
+Evidencia: `tests/differenceOfSquaresCasFallback.test.ts` (11 pruebas) junto con `tests/differenceOfSquaresRule.test.ts` y `tests/polynomialFactorZ.test.ts`: 27 pruebas en verde en local. Plus sin cambios; Plus no tiene regla propia de diferencia de cuadrados (SymPy). Global OPEN.
+
+---
+
 ## 2026-10-20 UTC — Forma canónica diferencia de cuadrados (D18, continuity r190)
 
 Lite `e2c0e584d18ce37b5f309933fc72e09ec5a0a78e` (código y pruebas) y `620cd4985c682188c6524a575fa66cf39a9ce0cc` (regresiones). `differenceOfSquaresFactored` en `src/engine/polynomialFactorZ.ts` factoriza P−Q y P+Q con Kronecker, agrupa potencias y verifica con CAS. AS-B-21 produce `(x-1)^2*(x+1)^2`.

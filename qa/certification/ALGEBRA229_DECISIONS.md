@@ -30,6 +30,8 @@ Este archivo recoge las decisiones tomadas durante la certificación ALGEBRA229 
 
 - **D18. Forma canónica de la salvaguarda de diferencia de cuadrados (Lite, decidida por el usuario):** la salida de `(P)² − K·v²` se factoriza con Kronecker sobre P−Q y P+Q, agrupa potencias y se verifica con CAS. Para AS-B-21 la salida es `(x-1)^2*(x+1)^2`. Si algún factor no es decidible, o si el CAS no confirma, se conserva la salida de dos cuadráticos. Multivariable no entra en la factorización. Plus no cambia. Commits Lite `e2c0e58` (código y pruebas) y `620cd49` (regresiones).
 
+- **D19. Excepciones y resultados no concluyentes del CAS en la diferencia de cuadrados (Lite, decidida por el usuario):** un fallo del CAS en el paso factorizado (excepción o respuesta no concluyente, incluido el muestreo de factores) no omite la verificación del candidato de dos cuadráticos. El candidato se devuelve solo si el CAS confirma `(candidato)-(entrada)` igual a `0`. Si esa verificación no concluye o lanza una excepción, se devuelve el resultado original; nunca un candidato sin verificar. Commit Lite `3a6c8ac53bbfea656ff74e248a52e828d93c8b88` (código y pruebas). Plus no cambia.
+
 ## Decisiones pendientes (no implementar sin nueva decisión)
 
 - **P1.** Enfoque para AS-B-19 a AS-B-21 (factor común, agrupación y diferencia de cuadrados multivariables). Primero se escriben las pruebas y se observa qué falla. No se añade un factorizador multivariable general. AS-B-19 pasó sin cambios; AS-B-20 se resolvió con la regla acotada D15.
