@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 187,
+  "revision": 188,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -48,29 +48,29 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-21-TEST-FIRST",
+    "id": "ALGEBRA229-AS-B-22-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "a0b5718ca271e6ee79817368c3ac360d7848c708",
-      "c2melendez/precision-lab-plus": "f8ec1733c356f48fce1f6f2a1719d8ab559d229c"
+      "c2melendez/precision-lab-lite": "4636c9924e7afe71f16ad275701cff33ebd7ce7c",
+      "c2melendez/precision-lab-plus": "f55e470a72b2d503981a4e583ac97838990e531c"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39477553098,
-        39477553321,
-        39477553104
+        39479961317,
+        39479961560,
+        39479961091
       ],
       "c2melendez/precision-lab-plus": [
-        39475284739,
-        39475284787
+        39479963827,
+        39479963755
       ]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..20",
+      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..21",
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand/factor + source-row; not matrix-wide"
     },
-    "action": "AS-B-20 PASS_SCOPED bilateral. Lite: regla acotada D15 (quarticBiquadraticCandidate, no factorizador general), gates SUCCESS on a0b5718. Plus: test-first sin cambios, gates SUCCESS on f8ec173. Next AS-B-21 per frozen matriz Section B. Scope decision r183 (B-24/B-25 with explicit field suffix) still pending implementation. Global OPEN."
+    "action": "AS-B-21 PASS sin cambio de producto bilateral. Regla de diferencia de cuadrados no implementada (no requerida). Next AS-B-22 (x^2+1 debe quedar igual) solo con instrucción del usuario. Global OPEN."
   },
   "blockers": [
     {
@@ -90,5 +90,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r187 2026-10-20: AS-B-20 PASS_SCOPED bilateral (Lite regla acotada D15 sobre 24e89b6; Plus sin cambios). Next AS-B-21."
+  "ledger_note": "r188 2026-10-20: AS-B-21 PASS sin cambio de producto bilateral (Lite {LITE_SHA[:7]}, Plus {PLUS_SHA[:7]}). Regla de diferencia de cuadrados no implementada: no requerida. Next AS-B-22 (irreducible, debe quedar igual)."
 }
