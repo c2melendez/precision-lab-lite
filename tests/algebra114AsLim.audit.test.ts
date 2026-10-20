@@ -68,8 +68,9 @@ describe("Algebra114 AS-LIM section M (exactness and limit cases)", () => {
     expect(String(r.resultApprox ?? "")).not.toMatch(/5\.656|2\.828/);
   });
 
-  // Finishes but returns incorrect factors including (x^2+1) instead of (x^2-x+1).
-  it.fails("AS-LIM-05 GAP: x^6-1 factors as (x-1)(x+1)(x^2+x+1)(x^2-x+1)", () => {
+  // Closed by the verified univariate factorization fallback (AS-B-07): Algebrite's
+  // incorrect (x^2+1) factor is replaced by the equivalent (x^2-x+1).
+  it("AS-LIM-05: x^6-1 factors as (x-1)(x+1)(x^2+x+1)(x^2-x+1)", () => {
     const text = compact(evaluate("factor(x^6-1)"));
     expect(text).toMatch(/x-1/);
     expect(text).toMatch(/x\+1/);

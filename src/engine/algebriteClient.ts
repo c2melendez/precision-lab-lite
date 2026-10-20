@@ -1,3 +1,4 @@
+import { verifyFactorResult } from "./polynomialFactorZ";
 // Único punto de contacto con Algebrite en todo el proyecto (regla de capa
 // dura, spec v10 §3). Ningún componente de /modes o /components debe hacer
 // `import Algebrite from "algebrite"` directamente.
@@ -123,6 +124,9 @@ export function evaluate(expressionLatex: string): string {
     // Denestado general de raíces cuadradas anidadas con coeficientes racionales
     // (AS-RAT-07 y familia). Solo reescribe casos con forma exacta conocida.
     result = denestConstantRadicals(result);
+    // AS-B-07: verify factor(...) against its input. Use a verified univariate
+    // integer fallback only when Algebrite returns a non-equivalent factorization.
+    result = verifyFactorResult(expressionLatex, result, (s) => Algebrite.run(s));
     // AS-RAT-01: require the rationalized original form, not the equivalent
     // Algebrite echo 1/2^(1/2). Keep this deliberately exact-case scoped.
     if (expressionLatex.replace(/\s+/g, "") === "1/sqrt(2)" &&
