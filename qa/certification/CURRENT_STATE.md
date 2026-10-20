@@ -1,3 +1,17 @@
+## 2026-10-20 UTC — AS-B-10 PASS_SCOPED bilateral (continuity r176)
+
+**ALGEBRA229-AS-B-10** — factorizar `x^{3}+3x^{2}+3x+1` → `\left(x + 1\right)^{3}` (fila fuente N2 en la matriz congelada Section B).
+
+| Repo | Technical SHA | Gates (SUCCESS sobre el SHA exacto, evento push) |
+|------|---------------|--------------------------------------------------|
+| Lite | `c6db6a48f03283656668dafc8583aad78770223e` | cumulative [39449549075](https://github.com/c2melendez/precision-lab-lite/actions/runs/39449549075), h1d [39449549079](https://github.com/c2melendez/precision-lab-lite/actions/runs/39449549079), scientific-ui [39449549069](https://github.com/c2melendez/precision-lab-lite/actions/runs/39449549069) |
+
+Test-first sin cambios de producto: el motor ya devolvía una factorización equivalente al original en ambos repos. Evidencia: `tests/algebra229AsB10.audit.test.ts` (fila fuente, diferencia exacta cero y forma de potencia) y `backend/tests/test_algebra229_as_b10.py` (`/api/v1/factor` por HTTP, potencia cúbica). Global OPEN.
+
+**Siguiente único:** `ALGEBRA229-AS-B-11-TEST-FIRST` — `ax+ay+bx+by` → `\left(a + b\right) \left(x + y\right)` (fila N2, agrupación de términos).
+
+---
+
 ## 2026-10-20 UTC — AS-B-09 PASS_SCOPED bilateral (continuity r175)
 
 **ALGEBRA229-AS-B-09** — factorizar `6x^{2}+5x-4` → `\left(2 x - 1\right) \left(3 x + 4\right)` (fila fuente N2 en la matriz congelada Section B).
