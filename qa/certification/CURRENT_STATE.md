@@ -1,14 +1,12 @@
-## 2026-10-20 UTC — AS-A-09 PASS_SCOPED bilateral
+## 2026-10-20 UTC — AS-A-10 PASS_SCOPED bilateral
 
-**ALGEBRA229-AS-A-09** — expand `(x+1)(x+2)(x+3)(x+4)` → `x^4+10x^3+35x^2+50x+24`.
+**ALGEBRA229-AS-A-10** — expand `(x^2+x+1)^3` → `x^6+3x^5+6x^4+7x^3+6x^2+3x+1`.
 
-| Repo | Technical SHA | Cumulative | Conclusion |
-|------|---------------|------------|------------|
-| Lite | `0e9614d58424c4f10557bccfa2debe881e805215` | [39409011583](https://github.com/c2melendez/precision-lab-lite/actions/runs/39409011583) | SUCCESS |
-| Plus | `c52db6cfb461d6e9fa51d404e5e600eb13530928` | [39409024923](https://github.com/c2melendez/precision-lab-plus/actions/runs/39409024923) | SUCCESS |
+| Repo | Technical SHA | Cumulative | H1d | Conclusion |
+|------|---------------|------------|-----|------------|
+| Lite | `373702e6df852a32ebccb79639c4271c556933cf` | [39410230278](https://github.com/c2melendez/precision-lab-lite/actions/runs/39410230278) | [39410230284](https://github.com/c2melendez/precision-lab-lite/actions/runs/39410230284) | SUCCESS |
+| Plus | `a82daab7ad0d8eeca2b511cb07707ec1a3d5413a` | [39410227638](https://github.com/c2melendez/precision-lab-plus/actions/runs/39410227638) | [39410227610](https://github.com/c2melendez/precision-lab-plus/actions/runs/39410227610) | SUCCESS |
 
-H1d: Lite [39409011721](https://github.com/c2melendez/precision-lab-lite/actions/runs/39409011721) SUCCESS; Plus [39409024822](https://github.com/c2melendez/precision-lab-plus/actions/runs/39409024822) SUCCESS.
+Local: Lite vitest 2 passed (source-row + numeric samples); Plus pytest 2 passed. AS-A-01…10 PASS_SCOPED. Global **OPEN**.
 
-AS-A-01…09 PASS_SCOPED (unit/HTTP). Global **OPEN**.
-
-**Siguiente único:** `ALGEBRA229-AS-A-10-TEST-FIRST` — expand `(x^2+x+1)^3` → `x^6+3x^5+6x^4+7x^3+6x^2+3x+1` bilateral.
+**Siguiente único:** `ALGEBRA229-AS-A-11-TEST-FIRST` — expand `(a+b+c)^3` bilateral (fila fuente: multinomio cúbico, 10 términos).

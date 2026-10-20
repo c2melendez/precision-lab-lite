@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 156,
+  "revision": 157,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -19,49 +19,75 @@
   "gates": {
     "cumulative": {
       "workflow": ".github/workflows/in625-cumulative-certification.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-16-continuity-v1"
     },
     "h1d": {
       "workflow": ".github/workflows/in625-h1d-reentry.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-16-continuity-v1"
     },
     "security": {
       "workflow": ".github/workflows/certification-dependency-gates.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-16-continuity-v1",
       "allow_reuse": false
     },
     "scientific": {
       "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-A-10-TEST-FIRST",
+    "id": "ALGEBRA229-AS-A-11-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "0e9614d58424c4f10557bccfa2debe881e805215",
-      "c2melendez/precision-lab-plus": "c52db6cfb461d6e9fa51d404e5e600eb13530928"
+      "c2melendez/precision-lab-lite": "373702e6df852a32ebccb79639c4271c556933cf",
+      "c2melendez/precision-lab-plus": "a82daab7ad0d8eeca2b511cb07707ec1a3d5413a"
     },
     "run_ids_by_repo": {
-      "c2melendez/precision-lab-lite": [39409011583],
-      "c2melendez/precision-lab-plus": [39409024923]
+      "c2melendez/precision-lab-lite": [
+        39410230278,
+        39410230284
+      ],
+      "c2melendez/precision-lab-plus": [
+        39410227638,
+        39410227610
+      ]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..09",
+      "id": "ALGEBRA229-AS-A-01..10",
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand + source-row; not matrix-wide"
     },
-    "action": "AS-A-09 PASS_SCOPED bilateral. Next AS-A-10 expand (x^2+x+1)^3. Global OPEN."
+    "action": "AS-A-10 PASS_SCOPED bilateral (Cumulative+H1d SUCCESS). Next AS-A-11 expand (a+b+c)^3. Global OPEN."
   },
   "blockers": [
-    {"id": "H2-SG28-DIST-01..08", "status": "BLOCKED"},
-    {"id": "SECURITY-S25", "status": "BLOCKED"},
-    {"id": "SY-P-23", "status": "OPEN"},
-    {"id": "SY-X-04-PLUS-HTTP", "status": "BLOCKED"}
+    {
+      "id": "H2-SG28-DIST-01..08",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "SECURITY-S25",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "SY-P-23",
+      "status": "OPEN"
+    },
+    {
+      "id": "SY-X-04-PLUS-HTTP",
+      "status": "BLOCKED"
+    }
   ],
   "ledger_note": "r156 2026-10-20: AS-A-09 PASS_SCOPED; next AS-A-10. Cumulative 39409011583 / 39409024923 SUCCESS."
 }

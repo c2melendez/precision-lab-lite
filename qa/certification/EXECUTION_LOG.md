@@ -20,6 +20,12 @@ Global **OPEN**. **Siguiente:** AS-A-06 expand `(x+y+z)^2`.
 
 ---
 
+## 2026-10-20 UTC — AS-A-10 PASS_SCOPED bilateral (continuity r157)
+
+Commit técnico Lite `373702e` / Plus `a82daab` (test-first fila AS-A-10 `(x^2+x+1)^3`). Runs Cumulative Lite 39410230278, H1d 39410230284; Plus 39410227638, H1d 39410227610 — todos SUCCESS sobre el SHA exacto. Evidencia ampliada en `EXECUTION_LOG_AS229_SECTION_A.md`. Siguiente único: ALGEBRA229-AS-A-11-TEST-FIRST `(a+b+c)^3`.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.
