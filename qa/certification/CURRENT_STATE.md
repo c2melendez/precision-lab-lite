@@ -1,5 +1,17 @@
 > Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
 
+## 2026-10-20 UTC — AS-B-21 PASS sin cambio de producto (continuity r188)
+
+**ALGEBRA229-AS-B-21** — factorizar `\left(x^{2}+1\right)^{2}-4x^{2}` → `\left(x - 1\right)^{2} \left(x + 1\right)^{2}` (fila N3 en la matriz congelada Section B, diferencia de cuadrados).
+
+| Repo | Technical SHA | Gates (SUCCESS sobre el SHA exacto) |
+|------|---------------|--------------------------------------|
+| Lite | `4636c9924e7afe71f16ad275701cff33ebd7ce7c` | cumulative [39479961317](https://github.com/c2melendez/precision-lab-lite/actions/runs/39479961317), h1d [39479961560](https://github.com/c2melendez/precision-lab-lite/actions/runs/39479961560), scientific-ui [39479961091](https://github.com/c2melendez/precision-lab-lite/actions/runs/39479961091) |
+
+Test-first sin cambios de producto: Algebrite devuelve una factorización equivalente a `(x-1)^2*(x+1)^2` y la prueba pasó en `npm test` dentro del gate cumulative. Evidencia: `tests/algebra229AsB21.audit.test.ts`. La regla acotada de diferencia de cuadrados (opción C de D16) no se implementó porque no era necesaria; requiere nueva decisión del usuario. El respaldo B no se activó. Global OPEN.
+
+---
+
 ## 2026-10-20 UTC — AS-B-20 PASS_SCOPED bilateral (continuity r187)
 
 **ALGEBRA229-AS-B-20** — factorizar `x^{4}+x^{2}y^{2}+y^{4}` → `\left(x^{2} - x y + y^{2}\right) \left(x^{2} + x y + y^{2}\right)` (fila fuente N3 en la matriz congelada Section B).
