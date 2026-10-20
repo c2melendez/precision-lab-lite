@@ -1,23 +1,23 @@
 {
   "schema_version": 1,
-  "revision": 153,
-  "note": "AS-A-06 PASS_SCOPED bilateral; next AS-A-07",
+  "revision": 154,
+  "note": "AS-A-07 PASS_SCOPED bilateral; next AS-A-08",
   "next_action": {
-    "id": "ALGEBRA229-AS-A-07-TEST-FIRST",
+    "id": "ALGEBRA229-AS-A-08-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "0c4f8830400a99dfbb7fd6ee4d89bd2da4d421a9",
-      "c2melendez/precision-lab-plus": "fe1cb3e7510f1ade1e2c2091dd0043ce7e7808f2"
+      "c2melendez/precision-lab-lite": "eae3f297c08384e450908a0371f958af18b289b6",
+      "c2melendez/precision-lab-plus": "636b978e6af8abcd3d88abef006fb164c0068206"
     },
     "run_ids_by_repo": {
-      "c2melendez/precision-lab-lite": [39405658373],
-      "c2melendez/precision-lab-plus": [39405670267]
+      "c2melendez/precision-lab-lite": [39406707381],
+      "c2melendez/precision-lab-plus": [39406719758]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..06",
+      "id": "ALGEBRA229-AS-A-01..07",
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand + source-row; not matrix-wide"
     },
-    "action": "AS-A-06 PASS_SCOPED bilateral. Next: AS-A-07 expand (2x-3)^4. Global OPEN."
+    "action": "AS-A-07 PASS_SCOPED bilateral. Next: AS-A-08 expand (x-1)^5. Global OPEN."
   }
 }
