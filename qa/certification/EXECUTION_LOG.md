@@ -98,6 +98,12 @@ Commit técnico Lite `8339acf` (test-first AS-B-06 `factor x^4+4`) / Plus `63dec
 
 ---
 
+## 2026-10-20 UTC — AS-B-07: Plus PASS, Lite FAIL_PRODUCT (continuity r172)
+
+Commit técnico Lite `6bafda3` (test-first AS-B-07 `factor x^6-1`) / Plus `da361ae` (pytest AS-B-07 HTTP). Lite: cumulative 39433167930 **failure** (producto: Algebrite `factor(x^6-1)` incorrecto), scientific-ui 39433167821 success, h1d 39433168379 success. Plus: cumulative 39433181526 success, h1d 39433181543 success. Global OPEN. Siguiente: decisión sobre corrección de factorización verificada en Lite (ALGEBRA229-AS-B-07-LITE-FACTOR).
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.

@@ -1,17 +1,15 @@
-## 2026-10-20 UTC — AS-B-06 PASS_SCOPED bilateral (continuity r171)
+## 2026-10-20 UTC — AS-B-07: Plus PASS, Lite FAIL_PRODUCT (continuity r172)
 
-**ALGEBRA229-AS-B-06** — factorizar `x^{4}+4` → `\left(x^{2} - 2 x + 2\right) \left(x^{2} + 2 x + 2\right)` (fila fuente N3 en la matriz congelada Section B; identidad de Sophie Germain).
+**ALGEBRA229-AS-B-07** — factorizar `x^{6}-1` → `\left(x - 1\right) \left(x + 1\right) \left(x^{2} - x + 1\right) \left(x^{2} + x + 1\right)` (fila fuente N2 en la matriz congelada Section B).
 
-| Repo | Technical SHA | Gates (todos SUCCESS sobre el SHA exacto, evento push) | Conclusion |
-|------|---------------|--------------------------------------------------------|------------|
-| Lite | `8339acffbaf6374e14c2911d7d4d7cb0823c9b4a` | cumulative [39429477924](https://github.com/c2melendez/precision-lab-lite/actions/runs/39429477924), scientific-ui [39429477795](https://github.com/c2melendez/precision-lab-lite/actions/runs/39429477795), h1d [39429477800](https://github.com/c2melendez/precision-lab-lite/actions/runs/39429477800) | SUCCESS |
-| Plus | `63dec80564497844e8d3cb15d5a63bddc3f61fec` | cumulative [39431271219](https://github.com/c2melendez/precision-lab-plus/actions/runs/39431271219), SG28 backend isolation [39431271237](https://github.com/c2melendez/precision-lab-plus/actions/runs/39431271237), h1d [39431271249](https://github.com/c2melendez/precision-lab-plus/actions/runs/39431271249) | SUCCESS |
+| Repo | Technical SHA | Gates | Conclusion |
+|------|---------------|-------|------------|
+| Lite | `6bafda356a53aba542cd37a0bc1547397c424a2d` | cumulative [39433167930](https://github.com/c2melendez/precision-lab-lite/actions/runs/39433167930) **failure**; scientific-ui [39433167821](https://github.com/c2melendez/precision-lab-lite/actions/runs/39433167821) success; h1d [39433168379](https://github.com/c2melendez/precision-lab-lite/actions/runs/39433168379) success | FAIL_PRODUCT |
+| Plus | `da361aee09728e0e0525e43615b6418b4ec9fb14` | cumulative [39433181526](https://github.com/c2melendez/precision-lab-plus/actions/runs/39433181526) success; h1d [39433181543](https://github.com/c2melendez/precision-lab-plus/actions/runs/39433181543) success | SUCCESS |
 
-**Incidente de harness en Plus (resuelto):** el primer push de AS-B-06 en Plus (`2cf4209`) dejó el gate acumulado en rojo por `test_cpu_budget_exhaustion_reaps_child_and_recovers` (SG28), no por AS-B-06. El test esperaba el mensaje de límite de CPU, pero el límite de tiempo de pared (`timeout_seconds=6`) disparó antes en el runner cargado y devolvió "Computation exceeded isolated time limit". Clasificación: harness de temporización. Corrección: `f9d4fce` subió el límite a 12 s, que falló por el tope de 10 s de `run_bounded` (`ValueError`); `63dec80` lo fijó en 10 s con cota de 9.5 s, manteniendo el mismo margen de 0.5 s. El producto no cambió; la ruta de CPU y la excepción `ComputationTimedOut` se verifican igual. Lite no tuvo incidente.
+**Clasificación (producto, Lite):** `factor(x^6-1)` en el motor Algebrite devuelve `(x-1)*(x+1)*(x^2+x+1)*(x^2+1)`. No es equivalente al original: `expand(factor) = x^6+x^5+x^4-x^2-x-1`, y la diferencia con `x^6-1` es `x^5+x^4-x^2-x`. El factor correcto es `x^2-x+1`. La prueba `tests/algebra229AsB07.audit.test.ts` falla en la segunda aserción, la de igualdad con el original; la fila fuente y la forma factorizada pasan. Es una factorización incorrecta devuelta como éxito. Plus no tiene el problema porque usa SymPy.
 
-Evidencia AS-B-06: `tests/algebra229AsB06.audit.test.ts` (fila fuente; `factor(x^4+4)` produce un producto igual al original con diferencia exacta cero, forma factorizada y coincidencia con `(x^2-2x+2)(x^2+2x+2)`) y `backend/tests/test_algebra229_as_b06.py` (`/api/v1/factor` por HTTP, resultado `Mul` de dos factores equivalente a `x^4+4`). Verificado por conclusión de runs vía API.
-
-**Siguiente único:** `ALGEBRA229-AS-B-07-TEST-FIRST` — factorizar `x^{6}-1` → `\left(x - 1\right) \left(x + 1\right) \left(x^{2} - x + 1\right) \left(x^{2} + x + 1\right)` (N2) según la matriz congelada Section B (`qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz`).
+**Estado:** la corrección requiere un cambio de algoritmo en el motor de Lite (verificación de la factorización con un método de respaldo general). Pendiente de decisión antes de implementar. No se cambió producto en esta pasada.
 
 Bloqueos sin cambio: H2-SG28-DIST-01..08, SECURITY-S25, SY-P-23, SY-X-04-PLUS-HTTP. Global **OPEN**.
 

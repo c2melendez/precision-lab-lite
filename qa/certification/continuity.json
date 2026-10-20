@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 171,
+  "revision": 172,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -48,22 +48,21 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-07-TEST-FIRST",
-    "status": "READY",
+    "id": "ALGEBRA229-AS-B-07-LITE-FACTOR",
+    "status": "BLOCKED",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "8339acffbaf6374e14c2911d7d4d7cb0823c9b4a",
-      "c2melendez/precision-lab-plus": "63dec80564497844e8d3cb15d5a63bddc3f61fec"
+      "c2melendez/precision-lab-lite": "6bafda356a53aba542cd37a0bc1547397c424a2d",
+      "c2melendez/precision-lab-plus": "da361aee09728e0e0525e43615b6418b4ec9fb14"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39429477924,
-        39429477795,
-        39429477800
+        39433167930,
+        39433167821,
+        39433168379
       ],
       "c2melendez/precision-lab-plus": [
-        39431271219,
-        39431271249,
-        39431271237
+        39433181526,
+        39433181543
       ]
     },
     "completed_scoped": {
@@ -71,7 +70,7 @@
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand/factor + source-row; not matrix-wide"
     },
-    "action": "AS-B-06 PASS_SCOPED bilateral (Lite cumulative+scientific-ui+h1d SUCCESS on 8339acf; Plus cumulative+h1d+sg28 SUCCESS on 63dec80). Plus 2cf4209 cumulative red by SG28 CPU-race timing test (harness); fixed in f9d4fce/63dec80. Next AS-B-07 factorizar x^6-1 per frozen matriz Section B. Global OPEN."
+    "action": "AS-B-07 Plus PASS (cumulative+h1d SUCCESS on da361ae). Lite FAIL_PRODUCT on 6bafda3: Algebrite factor(x^6-1) returns (x-1)(x+1)(x^2+x+1)(x^2+1), incorrect; diff x^5+x^4-x^2-x. Decision pending: general verified factorization fallback in Lite engine. Global OPEN."
   },
   "blockers": [
     {
@@ -91,5 +90,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r171 2026-10-20: AS-B-06 PASS_SCOPED bilateral (harness fix SG28 CPU-race timing); next AS-B-07. Lite 39429477924/39429477795/39429477800; Plus 39431271219/39431271249/39431271237 SUCCESS."
+  "ledger_note": "r172 2026-10-20: AS-B-07 Plus PASS; Lite FAIL_PRODUCT (Algebrite factor(x^6-1) wrong). Lite 39433167930 failure, 39433167821/39433168379 success; Plus 39433181526/39433181543 SUCCESS."
 }
