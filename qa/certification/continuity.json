@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 150,
+  "revision": 151,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -134,17 +134,21 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-CONV-01-TEST-FIRST",
+    "id": "ALGEBRA229-FIXTURE-PROMOTE-VALIDATE",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "f093e0c75204707a0b81a8497575f54cda96e5bb",
-      "c2melendez/precision-lab-plus": "9c0126613aacb7b0cd8fca148a6cf7eb1785d14c"
+      "c2melendez/precision-lab-lite": "db7fd2c9f1b23c4fbf9e966463541a8576157fd1",
+      "c2melendez/precision-lab-plus": "1f2c09580847a142b9a6a3435a68c3c02e449a94"
     },
     "run_ids_by_repo": {
-      "c2melendez/precision-lab-lite": [],
-      "c2melendez/precision-lab-plus": []
+      "c2melendez/precision-lab-lite": [
+        39381807307
+      ],
+      "c2melendez/precision-lab-plus": [
+        39381871764
+      ]
     },
-    "action": "AS-MUL reconciled (fabricated Lite rewrites reverted; 01 VERIFIED_BILATERAL_SCOPED, 02-04 PARTIAL_BILATERAL, 05-06 CAPABILITY_GAP). Next canonical block L. AS-CONV-01..08: re-check HEAD/Actions; add original tests test-first in both repos; general fixes only (no exact-input rewrites); exact-SHA gates; keep global OPEN."
+    "action": "Álgebra 229 source integrity PASSED in both repos (229 exact rows, 229 unique IDs, frozen SHA-256 verified). Next compare the candidate promoted JSONL against the recovered Markdown row-by-row: ID, operation/section, input, expected oracle and comparison type. Only then publish the canonical fixture and add its schema validator. Preserve exact original mathematical oracles; do not infer cases or declare the matrix executed. Keep global certification OPEN."
   },
   "blockers": [
     {
