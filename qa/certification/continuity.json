@@ -90,6 +90,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r176 2026-10-20: AS-B-10 PASS_SCOPED bilateral (test-first sin cambios de producto); next AS-B-11. Lite 39449549075/39449549079/39449549069; Plus 39449552737/39449552940 SUCCESS.",
-  "technical_sha_by_repo": {}
+  "ledger_note": "r176 2026-10-20: AS-B-10 PASS_SCOPED bilateral (test-first sin cambios de producto); next AS-B-11. Lite 39449549075/39449549079/39449549069; Plus 39449552737/39449552940 SUCCESS."
 }
