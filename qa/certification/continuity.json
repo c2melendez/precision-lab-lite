@@ -55,7 +55,7 @@
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand + source-row; not matrix-wide"
     },
-    "action": "AS-A-01..05 PASS_SCOPED bilateral. Next AS-A-06 expand (x+y+z)^2. Do not re-run fixture promote. Global OPEN. Full pre-r152 ledger blob 6d9585f6… in git history."
+    "action": "AS-A-01..05 PASS_SCOPED bilateral. Next AS-A-06 expand (x+y+z)^2. Do not re-run fixture promote. Global OPEN."
   },
   "blockers": [
     {"id": "H2-SG28-DIST-01..08", "status": "BLOCKED"},
@@ -63,5 +63,5 @@
     {"id": "SY-P-23", "status": "OPEN"},
     {"id": "SY-X-04-PLUS-HTTP", "status": "BLOCKED"}
   ],
-  "ledger_note": "r152 reconciled 2026-10-20. Detailed evidence_by_channel/case_evidence archived in git blob 6d9585f612b540bc9e96b522d0d473ba7a446733. CONTINUITY_NEXT_ACTION.json mirrors next_action."
+  "ledger_note": "r152 reconciled 2026-10-20. next_action AS-A-06. H1d Chromium fail 39400163336 superseded by SUCCESS 39402434939; cumulative 39402434954 SUCCESS. Pre-r152 full ledger blob 6d9585f612b540bc9e96b522d0d473ba7a446733 in git history."
 }
