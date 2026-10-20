@@ -12,3 +12,5 @@ Evidencia ejecutada (no reutilizada): en cada job los pasos typecheck / `npm tes
 Local previo al push: Lite vitest AS-A-12 = 2 passed; Plus pytest AS-A-12 = 2 passed. AS-A-01…12 PASS_SCOPED. Global **OPEN**. Bloqueos sin cambio: H2-SG28-DIST-01..08, SECURITY-S25, SY-P-23, SY-X-04-PLUS-HTTP.
 
 **Siguiente único:** `ALGEBRA229-AS-A-13-TEST-FIRST` — expand `(x+h)^3-x^3` → `h^3 + 3h^2x + 3hx^2` según la matriz congelada Section A (`qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz`).
+
+**Nota de proceso (r160):** los filtros `paths` de push/PR de los gates acumulativo y H1d excluyen `**/*.md` y `qa/certification/continuity.json`, pero **no** `qa/certification/CONTINUITY_NEXT_ACTION.json`. Un commit documental que lo modifique dispara cumulative+h1d (Lite: 39415477273/39415477189 → SUCCESS; Plus: 39415481113/39415481029 → SUCCESS, redundantes sobre el HEAD documental). En commits solo documentales, actualizar únicamente `continuity.json` y los `.md`; `CONTINUITY_NEXT_ACTION.json` queda como espejo no vinculante (ya sincronizado a r160). No se modificaron filtros YAML por no ser el insumo contractual de la tarea.
