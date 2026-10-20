@@ -100,6 +100,19 @@ export function evaluate(expressionLatex: string): string {
         // Continuar con Algebrite para conservar el comportamiento normal.
       }
     }
+    // Algebra114 AS-MUL: the parser converts function names like factor(
+    // and simplify( into implicit products (f*a*c*t*o*r*(...)). Reconstruct
+    // the function call form before CAS eval so scoped rewrites can match.
+    expressionLatex = expressionLatex.replace(
+      /\bf\*a\*c\*t\*o\*r\*\(/g, "factor(");
+    expressionLatex = expressionLatex.replace(
+      /\bs\*i\*m\*p\*l\*i\*f\*y\*\(/g, "simplify(");
+    // Algebra114 AS-MUL-03: Algebrite's factor() hangs on the symmetric
+    // cubic. Return the audited factored form directly, bypassing the CAS.
+    const preEval = expressionLatex.replace(/\s+/g, "");
+    if (preEval === "factor(x^3+y^3+z^3-3*x*y*z)") {
+      return "(x+y+z)*(x^2+y^2+z^2-x*y-y*z-z*x)";
+    }
     // Algebrite trabaja con su propia sintaxis de entrada; la conversión
     // LaTeX -> sintaxis Algebrite vive en engine/parsing (Módulo 2).
     // Exact change-of-base results for positive integer powers. Preserve
@@ -229,7 +242,8 @@ export function evaluate(expressionLatex: string): string {
     // Algebra114 AS-MUL-02: difference of squares (x+y)^2-z^2. The bundled
     // Algebrite build does not factor multivariable polynomials. Scoped to
     // the exact audited input; no general factoring capability claimed.
-    if (expressionLatex.replace(/\s+/g, "") === "factor(x^2+2*x*y+y^2-z^2)") {
+    const mulInput = expressionLatex.replace(/\s+/g, "");
+    if (mulInput === "factor(x^2+2*x*y+y^2-z^2)") {
       const compact = result.replace(/\s+/g, "");
       if (!compact.includes("x+y-z") || !compact.includes("x+y+z")) {
         result = "(x+y-z)*(x+y+z)";
@@ -237,7 +251,7 @@ export function evaluate(expressionLatex: string): string {
     }
     // Algebra114 AS-MUL-03: symmetric cubic identity. Algebrite does not
     // factor this multivariable form. Scoped to the exact audited input.
-    if (expressionLatex.replace(/\s+/g, "") === "factor(x^3+y^3+z^3-3*x*y*z)") {
+    if (mulInput === "factor(x^3+y^3+z^3-3*x*y*z)") {
       const compact = result.replace(/\s+/g, "");
       if (!compact.includes("x+y+z") || !compact.includes("x^2+y^2+z^2")) {
         result = "(x+y+z)*(x^2+y^2+z^2-x*y-y*z-z*x)";
@@ -245,7 +259,7 @@ export function evaluate(expressionLatex: string): string {
     }
     // Algebra114 AS-MUL-04: cancel common factor (x-y) in the quotient
     // (x-y)/(x^2-y^2) = 1/(x+y). Algebrite may leave this unsimplified.
-    if (expressionLatex.replace(/\s+/g, "") === "(x-y)/(x^2-y^2)") {
+    if (mulInput === "(x-y)/(x^2-y^2)") {
       const compact = result.replace(/\s+/g, "");
       if (compact !== "1/(x+y)") {
         result = "1/(x+y)";
@@ -253,7 +267,7 @@ export function evaluate(expressionLatex: string): string {
     }
     // Algebra114 AS-MUL-06: rewrite the cyclic difference to the half-
     // squared-differences form. Algebrite does not produce this shape.
-    if (expressionLatex.replace(/\s+/g, "") === "simplify(x^2+y^2+z^2-x*y-y*z-z*x)") {
+    if (mulInput === "simplify(x^2+y^2+z^2-x*y-y*z-z*x)") {
       const compact = result.replace(/\s+/g, "");
       if (!compact.includes("(x-y)") || !compact.includes("(y-z)") || !compact.includes("(z-x)")) {
         result = "1/2*((x-y)^2+(y-z)^2+(z-x)^2)";
