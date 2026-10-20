@@ -28,4 +28,22 @@ describe("AS-B-21 bounded difference-of-squares safeguard", () => {
     expect(out).toBe("(x-1)^2*(x+1)^2");
     expect(evaluate(`(${out})-((x^2+1)^2-4*x^2)`).trim()).toBe("0");
   });
+
+  it("keeps irreducible quadratic pieces as a canonical product", () => {
+    const out = verifyFactorResult("factor((x^2+2)^2-4*x^2)", "x^4+4", run);
+    expect(out).toBe("(x^2-2*x+2)*(x^2+2*x+2)");
+    expect(evaluate(`(${out})-((x^2+2)^2-4*x^2)`).trim()).toBe("0");
+  });
+
+  it("multivariable input falls back to the two-quadratic candidate", () => {
+    const inner = "(x^2+y^2)^2-4*x^2";
+    const out = verifyFactorResult(`factor(${inner})`, "x^4+2*x^2*y^2+y^4-4*x^2", run);
+    expect(out).toBe("(x^2+y^2-2*x)*(x^2+y^2+2*x)");
+    expect(evaluate(`(${out})-(${inner})`).trim()).toBe("0");
+  });
+
+  it("regression: verifyFactorResult keeps x^2+1 and x^2-2 unchanged", () => {
+    expect(verifyFactorResult("factor(x^2+1)", "x^2+1", run)).toBe("x^2+1");
+    expect(verifyFactorResult("factor(x^2-2)", "x^2-2", run)).toBe("x^2-2");
+  });
 });
