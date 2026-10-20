@@ -182,6 +182,12 @@ Commit técnico Lite `bf11ee2` (test-first AS-B-19 `factor x^2y-xy^2`, sin cambi
 
 ---
 
+## 2026-10-20 UTC — AS-B-20 BLOQUEADO en Lite (continuity r186)
+
+Test-first Lite `a9cb5a9` falló cumulative 39475280948 (Algebrite sin factorizar). Test-first Plus `f8ec173` pasó (cumulative 39475284739, h1d 39475284787). Revert Lite retira la prueba roja para mantener el branch verde. Decisión pendiente: regla acotada CAS vs camino multivariable general. Global OPEN.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.
