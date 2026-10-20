@@ -1,3 +1,17 @@
+## 2026-10-20 UTC — AS-B-13 PASS_SCOPED bilateral (continuity r179)
+
+**ALGEBRA229-AS-B-13** — factorizar `2x^{3}-x^{2}-13x-6` → `\left(x - 3\right) \left(x + 2\right) \left(2 x + 1\right)` (fila fuente N3 en la matriz congelada Section B).
+
+| Repo | Technical SHA | Gates (SUCCESS sobre el SHA exacto, evento push) |
+|------|---------------|--------------------------------------------------|
+| Lite | `b344fb9e86cad8985c35fc80b149e9c3e9a5870f` | cumulative [39453853229](https://github.com/c2melendez/precision-lab-lite/actions/runs/39453853229), h1d [39453853159](https://github.com/c2melendez/precision-lab-lite/actions/runs/39453853159), scientific-ui [39453853301](https://github.com/c2melendez/precision-lab-lite/actions/runs/39453853301) |
+
+Test-first sin cambios de producto: el motor ya devolvía una factorización equivalente al original en ambos repos, con tres factores lineales. Evidencia: `tests/algebra229AsB13.audit.test.ts` (fila fuente, diferencia exacta cero y forma `(x-3)*(x+2)*(2*x+1)`) y `backend/tests/test_algebra229_as_b13.py` (`/api/v1/factor` por HTTP, producto de tres factores). Global OPEN.
+
+**Siguiente único:** `ALGEBRA229-AS-B-14-TEST-FIRST` — `x^{4}+x^{2}+1` → `\left(x^{2} - x + 1\right) \left(x^{2} + x + 1\right)` (fila N3; diferencia de cuadrados en ℚ).
+
+---
+
 ## 2026-10-20 UTC — AS-B-12 PASS_SCOPED bilateral (continuity r178)
 
 **ALGEBRA229-AS-B-12** — factorizar `x^{5}-x` → `x \left(x - 1\right) \left(x + 1\right) \left(x^{2} + 1\right)` (fila fuente N2 en la matriz congelada Section B).

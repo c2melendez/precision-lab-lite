@@ -140,6 +140,12 @@ Commit técnico Lite `b3dae78` (test-first AS-B-12 `factor x^5-x`, sin cambios d
 
 ---
 
+## 2026-10-20 UTC — AS-B-13 PASS_SCOPED bilateral (continuity r179)
+
+Commit técnico Lite `b344fb9` (test-first AS-B-13 `factor 2x^3-x^2-13x-6`, sin cambios de producto). Runs sobre el SHA exacto: cumulative [39453853229](https://github.com/c2melendez/precision-lab-lite/actions/runs/39453853229), h1d [39453853159](https://github.com/c2melendez/precision-lab-lite/actions/runs/39453853159), scientific-ui [39453853301](https://github.com/c2melendez/precision-lab-lite/actions/runs/39453853301). Todos SUCCESS (push). Global OPEN. Siguiente: AS-B-14.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.
