@@ -251,6 +251,20 @@ function unwrapFactorCall(input: string): string | null {
 }
 
 /**
+ * AS-B-16: identidades de suma/diferencia de cubos para un binomio a^3 ± b^3
+ * con variables de una letra. Devuelve null si la entrada no tiene esa forma.
+ */
+export function cubeBinomialCandidate(inner: string): string | null {
+  const m = inner.trim().match(/^([a-z])\^3\s*([+-])\s*([a-z])\^3$/);
+  if (!m) return null;
+  const [, a, op, b] = m;
+  if (a === b) return null;
+  return op === "-"
+    ? `(${a}-${b})*(${a}^2+${a}*${b}+${b}^2)`
+    : `(${a}+${b})*(${a}^2-${a}*${b}+${b}^2)`;
+}
+
+/**
  * Verifica que el resultado de factor(...) sea equivalente a su entrada.
  * Si Algebrite devuelve algo no equivalente, usa la factorización univariada
  * entera cuando esta sí es verificable. Si no, conserva el resultado original.
@@ -258,6 +272,16 @@ function unwrapFactorCall(input: string): string | null {
 export function verifyFactorResult(input: string, result: string, run: (s: string) => string): string {
   const inner = unwrapFactorCall(input);
   if (inner === null) return result;
+  // AS-B-16: Algebrite can return a difference/sum of cubes unchanged. Replace it
+  // only with the standard identity when the identity is verified equivalent.
+  const cube = cubeBinomialCandidate(inner);
+  if (cube !== null && !/[()*]/.test(result)) {
+    try {
+      if (run(`(${cube})-(${inner})`).replace(/\s+/g, "") === "0") return cube;
+    } catch {
+      return result;
+    }
+  }
   // Only integer-polynomial results are candidates for replacement. Results with
   // radicals, fractions or complex parts (e.g. real factors of x^4+1) are kept.
   if (!/^[0-9x+\-*^() ]+$/.test(result.trim())) return result;
