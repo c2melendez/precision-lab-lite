@@ -1,8 +1,7 @@
 {
   "schema_version": 1,
-  "parent_continuity_revision_expected": 151,
   "revision": 152,
-  "note": "Merge into continuity.json next_action; supersedes stale ALGEBRA229-FIXTURE-PROMOTE-VALIDATE",
+  "note": "Mirror of continuity.json next_action after r152 reconciliation",
   "next_action": {
     "id": "ALGEBRA229-AS-A-06-TEST-FIRST",
     "status": "READY",
@@ -16,9 +15,7 @@
     },
     "completed_scoped": {
       "id": "ALGEBRA229-AS-A-01..05",
-      "status": "PASS_SCOPED",
-      "scope": "unit/HTTP expand + source-row; not matrix-wide"
-    },
-    "action": "AS-A-01..05 PASS_SCOPED bilateral. Next: AS-A-06 expand (x+y+z)^2. Do not re-run fixture promote. Global OPEN."
+      "status": "PASS_SCOPED"
+    }
   }
 }
