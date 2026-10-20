@@ -92,6 +92,12 @@ Commit técnico Lite `72b00bd` (test-first AS-B-05 `factor x^4-1`) / Plus `21672
 
 ---
 
+## 2026-10-20 UTC — AS-B-06 PASS_SCOPED bilateral (continuity r171)
+
+Commit técnico Lite `8339acf` (test-first AS-B-06 `factor x^4+4`) / Plus `63dec80` (pytest AS-B-06 HTTP + corrección de temporización SG28 tras fallo de `2cf4209`, ver CURRENT_STATE). Runs sobre el SHA exacto — Lite: cumulative 39429477924, scientific-ui 39429477795, h1d 39429477800; Plus: cumulative 39431271219, SG28 backend isolation 39431271237, h1d 39431271249. Runs rojos previos en Plus: 39429492475 (cumulative, SG28 timing) y 39430648591/39430648632 (cumulative/SG28, `ValueError` del tope de 10 s en `f9d4fce`); Todos los SUCCESS citados son push. Global OPEN. Siguiente: AS-B-07.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.
