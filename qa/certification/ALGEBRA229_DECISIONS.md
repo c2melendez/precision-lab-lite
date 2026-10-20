@@ -24,6 +24,8 @@ Este archivo recoge las decisiones tomadas durante la certificación ALGEBRA229 
 
 - **D15. Regla acotada AS-B-20 (Lite):** `quarticBiquadraticCandidate` reconoce solo `a^4 + a^2 b^2 + b^4` (tres términos, dos variables distintas de una letra, coeficientes 1). Se acepta solo si el CAS confirma equivalencia y Algebrite devolvió el resultado sin factorizar. **No es un factorizador multivariable general** y no se generaliza a otras formas sin nueva decisión. Plus no tiene regla propia (SymPy).
 
+- **D16. Alcance AS-B-21 (decidido por el usuario):** primero prueba test-first sin cambio de producto (opción A). Si falla en Lite, se amplía el respaldo Kronecker a resultados equivalentes sin factorizar (opción B), solo para polinomios univariados enteros, con al menos dos factores y sin tocar AS-B-22 ni AS-B-23. La opción C (regla acotada de diferencia de cuadrados) queda descartada salvo nueva decisión. Plus no cambia (SymPy).
+
 ## Decisiones pendientes (no implementar sin nueva decisión)
 
 - **P1.** Enfoque para AS-B-19 a AS-B-21 (factor común, agrupación y diferencia de cuadrados multivariables). Primero se escriben las pruebas y se observa qué falla. No se añade un factorizador multivariable general. AS-B-19 pasó sin cambios; AS-B-20 se resolvió con la regla acotada D15.
