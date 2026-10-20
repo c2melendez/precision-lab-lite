@@ -1,5 +1,19 @@
 > Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
 
+## 2026-10-20 UTC — AS-B-19 PASS_SCOPED bilateral (continuity r185)
+
+**ALGEBRA229-AS-B-19** — factorizar `x^{2}y-xy^{2}` → `x y \left(x - y\right)` (fila fuente N2 en la matriz congelada Section B, factor común multivariable).
+
+| Repo | Technical SHA | Gates (SUCCESS sobre el SHA exacto, evento push) |
+|------|---------------|--------------------------------------------------|
+| Lite | `bf11ee2af55879c10dbbb173420196cb2c47747b` | cumulative [39471800824](https://github.com/c2melendez/precision-lab-lite/actions/runs/39471800824), h1d [39471800800](https://github.com/c2melendez/precision-lab-lite/actions/runs/39471800800), scientific-ui [39471800799](https://github.com/c2melendez/precision-lab-lite/actions/runs/39471800799) |
+
+Test-first sin cambios de producto: el motor de Lite ya devolvía una factorización equivalente al original, con la forma `x*y*(x-y)`. Evidencia: `tests/algebra229AsB19.audit.test.ts` (fila fuente N2, diferencia exacta cero y forma con paréntesis). Global OPEN.
+
+**Siguiente único:** `ALGEBRA229-AS-B-20-TEST-FIRST` — `x^{4}+x^{2}y^{2}+y^{4}` → `\left(x^{2} - x y + y^{2}\right) \left(x^{2} + x y + y^{2}\right)` (fila N3, primera fila multivariable con dos factores cuadráticos).
+
+---
+
 ## 2026-10-20 UTC — AS-B-18 PASS_SCOPED bilateral (continuity r184)
 
 **ALGEBRA229-AS-B-18** — factorizar `x^{8}-1` → `\left(x - 1\right) \left(x + 1\right) \left(x^{2} + 1\right) \left(x^{4} + 1\right)` (fila fuente N2 en la matriz congelada Section B).
