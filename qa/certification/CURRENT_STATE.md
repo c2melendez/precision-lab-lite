@@ -1,3 +1,17 @@
+## 2026-10-20 UTC — AS-B-18 PASS_SCOPED bilateral (continuity r184)
+
+**ALGEBRA229-AS-B-18** — factorizar `x^{8}-1` → `\left(x - 1\right) \left(x + 1\right) \left(x^{2} + 1\right) \left(x^{4} + 1\right)` (fila fuente N2 en la matriz congelada Section B).
+
+| Repo | Technical SHA | Gates (SUCCESS sobre el SHA exacto, evento push) |
+|------|---------------|--------------------------------------------------|
+| Lite | `ea5a76d18143c4f5a5a889ca279726a37c4d4896` | cumulative [39462375918](https://github.com/c2melendez/precision-lab-lite/actions/runs/39462375918), h1d [39462375646](https://github.com/c2melendez/precision-lab-lite/actions/runs/39462375646), scientific-ui [39462375444](https://github.com/c2melendez/precision-lab-lite/actions/runs/39462375444) |
+
+Test-first sin cambios de producto: el motor ya devolvía una factorización equivalente con cuatro factores en ambos repos. Evidencia: `tests/algebra229AsB18.audit.test.ts` (fila fuente N2, diferencia exacta cero y producto de cuatro factores). Global OPEN.
+
+**Siguiente único:** `ALGEBRA229-AS-B-19-TEST-FIRST` — `x^{2}y-xy^{2}` → `x y \left(x - y\right)` (fila N2 de la matriz congelada, factor común multivariable).
+
+---
+
 ## 2026-10-20 UTC — AS-B-17 PASS_SCOPED bilateral (continuity r183)
 
 **ALGEBRA229-AS-B-17** — factorizar `a^{3}+b^{3}` → `\left(a + b\right) \left(a^{2} - a b + b^{2}\right)` (fila fuente N2 en la matriz congelada Section B).
