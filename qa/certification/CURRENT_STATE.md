@@ -1,5 +1,21 @@
 > Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
 
+## 2026-10-20 UTC — AS-B-20 PASS_SCOPED bilateral (continuity r187)
+
+**ALGEBRA229-AS-B-20** — factorizar `x^{4}+x^{2}y^{2}+y^{4}` → `\left(x^{2} - x y + y^{2}\right) \left(x^{2} + x y + y^{2}\right)` (fila fuente N3 en la matriz congelada Section B).
+
+| Repo | Technical SHA | Gates (SUCCESS sobre el SHA exacto, evento push) |
+|------|---------------|--------------------------------------------------|
+| Lite | `a0b5718ca271e6ee79817368c3ac360d7848c708` | cumulative [39477553098](https://github.com/c2melendez/precision-lab-lite/actions/runs/39477553098), h1d [39477553321](https://github.com/c2melendez/precision-lab-lite/actions/runs/39477553321), scientific-ui [39477553104](https://github.com/c2melendez/precision-lab-lite/actions/runs/39477553104) |
+
+Cambio de producto en Lite (`24e89b6`): regla acotada `quarticBiquadraticCandidate` en `src/engine/polynomialFactorZ.ts`. Reconoce solo `a^4 + a^2 b^2 + b^4` (tres términos, dos variables distintas de una letra, coeficientes 1) y se acepta solo si Algebrite devuelve el resultado sin paréntesis y el CAS confirma `(candidato)-(original) = 0`. **No es un factorizador multivariable general.** Evidencia: `tests/algebra229AsB20.audit.test.ts` (fila fuente N3, equivalencia, forma con paréntesis y regresión con `x^4+x^2*y^2+y^5`). Historia: la prueba roja de `a9cb5a9` se retiró en `33d68a5` y se restauró en `a0b5718`. Decisión D15 en `ALGEBRA229_DECISIONS.md`.
+
+Plus (sin cambios de producto): SymPy en `/api/v1/factor` ya devolvía la factorización. Evidencia: `backend/tests/test_algebra229_as_b20.py`. Gates sobre `f8ec173`: cumulative [39475284739](https://github.com/c2melendez/precision-lab-plus/actions/runs/39475284739), h1d [39475284787](https://github.com/c2melendez/precision-lab-plus/actions/runs/39475284787) SUCCESS. Global OPEN.
+
+**Siguiente único:** `ALGEBRA229-AS-B-21-TEST-FIRST` — `\left(x^{2}+1\right)^{2}-4x^{2}` → `\left(x - 1\right)^{2} \left(x + 1\right)^{2}` (fila N3).
+
+---
+
 ## 2026-10-20 UTC — AS-B-20 BLOQUEADO en Lite, pendiente de decisión (continuity r186)
 
 **ALGEBRA229-AS-B-20** — factorizar `x^{4}+x^{2}y^{2}+y^{4}` → `\left(x^{2} - x y + y^{2}\right) \left(x^{2} + x y + y^{2}\right)` (fila fuente N3, factorización multivariable).
