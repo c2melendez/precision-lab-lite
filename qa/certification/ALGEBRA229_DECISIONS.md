@@ -26,6 +26,8 @@ Este archivo recoge las decisiones tomadas durante la certificación ALGEBRA229 
 
 - **D16. Alcance AS-B-21 (decidido por el usuario):** primero prueba test-first sin cambio de producto (opción A). Si falla en Lite, se amplía el respaldo Kronecker a resultados equivalentes sin factorizar (opción B), solo para polinomios univariados enteros, con al menos dos factores y sin tocar AS-B-22 ni AS-B-23. La opción C (regla acotada de diferencia de cuadrados) queda descartada salvo nueva decisión. Plus no cambia (SymPy).
 
+- **D17. Salvaguarda de diferencia de cuadrados (Lite, decidida por el usuario):** regla acotada `differenceOfSquaresCandidate` para `(P)^2 - K·v^2` con K cuadrado perfecto. Solo reemplaza un resultado de Algebrite sin paréntesis y solo si el CAS confirma equivalencia. Regresiones: `x^2+1` y `x^2-2` no coinciden con la regla. No es un factorizador general. Plus no cambia (SymPy). Commits Lite `bda4c99` (regla) y `d7cf042` (pruebas).
+
 ## Decisiones pendientes (no implementar sin nueva decisión)
 
 - **P1.** Enfoque para AS-B-19 a AS-B-21 (factor común, agrupación y diferencia de cuadrados multivariables). Primero se escriben las pruebas y se observa qué falla. No se añade un factorizador multivariable general. AS-B-19 pasó sin cambios; AS-B-20 se resolvió con la regla acotada D15.
