@@ -1,17 +1,25 @@
-## 2026-10-20 UTC — Algebra 229 fixture canonico promovido; siguiente AS-A-01 test-first
+## 2026-10-20 UTC — 9/9 matrices congeladas como md.gz en producto
 
-**ALGEBRA229-FIXTURE-PROMOTE-VALIDATE — COMPLETADO (fixture, no ejecucion de casos).**
+**LEGACY_SOURCES — COMMIT BILATERAL.**
 
-- Fuente congelada: `qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz` SHA-256 `8cd36ff08343f98f92abd83e2b162d565e0cbe5c59dc73f26b1c018f77d663c7` (coincide byte a byte con Matrices.zip).
-- Fixture: regenerado siempre desde el MD por `build_algebra229_fixture.py` (**229** filas, IDs A–L).
-- Validadores: `check_algebra229_source.py` + `check_algebra229_fixture.py`.
-- Workflow: `.github/workflows/algebra229-source-integrity.yml`.
-- Tipos de comparison: taxonomia del documento original + operacion (expected = fuente).
+Las 9 fuentes de `Matrices.zip` estan en `qa/certification/legacy_sources/*.md.gz` (Lite y Plus), verificadas con `check_legacy_sources.py` / MANIFEST.
 
-**No se declara ningun caso AS-A…L ejecutado.** Global **OPEN**.
+| Key | Canonical |
+|-----|-----------|
+| AS229 | matriz_algebra_simbolica.md.gz |
+| AS114 | matriz_algebra_simbolica_estres_114.md.gz |
+| IN309 | matriz_sintaxis_entrada_309.md.gz |
+| IN625 | matriz_entrada_sintaxis_625.md.gz |
+| TR324 | ejercicios_trigonometria.md.gz |
+| LER | matriz_log_exp_radicales.md.gz |
+| MV153 | matriz_matrices_vectores.md.gz |
+| EDCX | matriz_edo_variable_compleja.md.gz |
+| GR519 | matriz_graficacion.md.gz |
 
-**Siguiente unico:** `ALGEBRA229-AS-A-01-TEST-FIRST` — expandir `(x+1)^2` → `x^2 + 2x + 1` (`equivalencia_simbolica`) bilateral; test original; gates exact-SHA.
+**No se ejecutan casos** de TR/LER/MV/EDCX/GR. Global **OPEN**.
+
+**Siguiente unico de producto:** `ALGEBRA229-AS-A-01-TEST-FIRST` — expand `(x+1)^2` → `x^2+2x+1` bilateral.
 
 ## Contexto
 
-AS-CONV + AS-LIM PARTIAL_BILATERAL. Algebra114 recorrido parcial. `MATRIX_SOURCE_INVENTORY.md` lista las 9 fuentes del ZIP. Bloqueos SG28/S25/S19/SY-P-23/X04/X14 sin cambios.
+AS229 fixture builder + integrity gate previos. Algebra114 AS-CONV/AS-LIM PARTIAL_BILATERAL.
