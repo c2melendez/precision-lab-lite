@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 163,
+  "revision": 164,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -48,29 +48,29 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-A-16-TEST-FIRST",
+    "id": "ALGEBRA229-AS-A-17-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "7be68cb8f9eb8b1deed4bdefb6e1808e2017b2b3",
-      "c2melendez/precision-lab-plus": "dbf6cf689b00a81f9e6122f31728383c2f0a943d"
+      "c2melendez/precision-lab-lite": "a08db76a0570d34cf826dc603c2ec13c4bf7db66",
+      "c2melendez/precision-lab-plus": "c26e2cfab2a3506864e1cdb2717ad04c008e12fe"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39419446051,
-        39419445961,
-        39419445944
+        39420901531,
+        39420901831,
+        39420901417
       ],
       "c2melendez/precision-lab-plus": [
-        39419450009,
-        39419449888
+        39420913944,
+        39420913777
       ]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..15",
+      "id": "ALGEBRA229-AS-A-01..16",
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand + source-row; not matrix-wide"
     },
-    "action": "AS-A-15 PASS_SCOPED bilateral (Lite cumulative+scientific-ui+h1d SUCCESS on 7be68cb; Plus cumulative+h1d SUCCESS on dbf6cf6). Next AS-A-16 (1+i)^4 per frozen matriz Section A. Global OPEN."
+    "action": "AS-A-16 PASS_SCOPED bilateral (Lite cumulative+scientific-ui+h1d SUCCESS on a08db76; Plus cumulative+h1d SUCCESS on c26e2cf). Next AS-A-17 (2x-y)^5 per frozen matriz Section A. Global OPEN."
   },
   "blockers": [
     {
@@ -90,5 +90,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r163 2026-10-20: AS-A-15 PASS_SCOPED bilateral; next AS-A-16. Lite 39419446051/39419445961/39419445944; Plus 39419450009/39419449888 SUCCESS."
+  "ledger_note": "r164 2026-10-20: AS-A-16 PASS_SCOPED bilateral; next AS-A-17. Lite 39420901531/39420901831/39420901417; Plus 39420913944/39420913777 SUCCESS."
 }

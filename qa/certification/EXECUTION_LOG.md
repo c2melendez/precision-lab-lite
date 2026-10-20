@@ -50,6 +50,12 @@ Commit técnico Lite `7be68cb` (test-first AS-A-15 `(x+1/x)^3`) / Plus `dbf6cf6`
 
 ---
 
+## 2026-10-20 UTC — AS-A-16 PASS_SCOPED bilateral (continuity r164)
+
+Commit técnico Lite `a08db76` (test-first AS-A-16 `(1+i)^4`) / Plus `c26e2cf` (pytest AS-A-16 HTTP). Runs sobre el SHA exacto — Lite: cumulative 39420901531, scientific-ui 39420901831, h1d 39420901417; Plus: cumulative 39420913944, h1d 39420913777. Todos SUCCESS (push). Global OPEN. Siguiente: AS-A-17.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.
