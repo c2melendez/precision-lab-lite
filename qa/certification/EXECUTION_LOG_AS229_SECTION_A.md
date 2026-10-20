@@ -9,7 +9,6 @@
 | AS-A-03 | `fe6c8deace10c5a6159797432de5d545c51852b7` | [39395561487](https://github.com/c2melendez/precision-lab-lite/actions/runs/39395561487) SUCCESS | `022b6e498670ba0822e495a0f0ceda18370bbdd0` | [39395572574](https://github.com/c2melendez/precision-lab-plus/actions/runs/39395572574) SUCCESS |
 | AS-A-04 | `8fcaa80aac8e1bb88bb9b58a3f0f9ce3150fa82b` | [39396680764](https://github.com/c2melendez/precision-lab-lite/actions/runs/39396680764) SUCCESS | `0f1927e2a985d47490db9b257cf5b598fd456183` | [39396699584](https://github.com/c2melendez/precision-lab-plus/actions/runs/39396699584) SUCCESS |
 | AS-A-05 | `f41649e1213dc9a22fb1e79520e8c436b832b96f` | [39397703380](https://github.com/c2melendez/precision-lab-lite/actions/runs/39397703380) SUCCESS | `496ed16ecbe71c35ac16ad5dc49e7c56e744c382` | [39397716265](https://github.com/c2melendez/precision-lab-plus/actions/runs/39397716265) SUCCESS |
+| AS-A-06 | `0c4f8830400a99dfbb7fd6ee4d89bd2da4d421a9` | [39405658373](https://github.com/c2melendez/precision-lab-lite/actions/runs/39405658373) SUCCESS | `fe1cb3e7510f1ade1e2c2091dd0043ce7e7808f2` | [39405670267](https://github.com/c2melendez/precision-lab-plus/actions/runs/39405670267) SUCCESS |
 
-Jobs cumulative: Unit/Backend regression ejecutados. Global **OPEN**. Siguiente: **AS-A-06**.
-
-Este archivo complementa `EXECUTION_LOG.md` (histórico AS-PAR/Syntax); el ledger `CONTINUITY_NEXT_ACTION.json` apunta a AS-A-06 hasta integrar en `continuity.json`.
+Global **OPEN**. **Siguiente:** AS-A-07 expand `(2x-3)^4`.
