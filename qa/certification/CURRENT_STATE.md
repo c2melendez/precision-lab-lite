@@ -1,5 +1,17 @@
 > Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
 
+## 2026-10-20 UTC — Salvaguarda diferencia de cuadrados (D17, continuity r189)
+
+Regla acotada `differenceOfSquaresCandidate` en `src/engine/polynomialFactorZ.ts` (Lite `bda4c99055530b972716f1de719fb0fd273046cf`), solo para `(P)^2 - K·v^2` con K cuadrado perfecto. Se acepta solo si el CAS confirma equivalencia y Algebrite devuelve un resultado sin paréntesis.
+
+| Repo | Technical SHA | Gates (SUCCESS) |
+|------|---------------|-----------------|
+| Lite | `d7cf042dfb3652bf44e9d4fa17270e2920618dcd` | cumulative [39481757500](https://github.com/c2melendez/precision-lab-lite/actions/runs/39481757500), h1d [39481757734](https://github.com/c2melendez/precision-lab-lite/actions/runs/39481757734), scientific-ui [39481757683](https://github.com/c2melendez/precision-lab-lite/actions/runs/39481757683) |
+
+Regresiones: `x^2+1` y `x^2-2` no coinciden con la regla y siguen con un solo factor. Evidencia: `tests/differenceOfSquaresRule.test.ts`. Plus sin cambios. Global OPEN.
+
+---
+
 ## 2026-10-20 UTC — AS-B-21 PASS sin cambio de producto (continuity r188)
 
 **ALGEBRA229-AS-B-21** — factorizar `\left(x^{2}+1\right)^{2}-4x^{2}` → `\left(x - 1\right)^{2} \left(x + 1\right)^{2}` (fila N3 en la matriz congelada Section B, diferencia de cuadrados).
