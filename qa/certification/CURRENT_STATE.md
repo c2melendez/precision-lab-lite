@@ -1,5 +1,18 @@
 > Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
 
+## 2026-10-20 UTC — Forma canónica diferencia de cuadrados (D18, continuity r190)
+
+Lite `e2c0e584d18ce37b5f309933fc72e09ec5a0a78e` (código y pruebas) y `620cd4985c682188c6524a575fa66cf39a9ce0cc` (regresiones). `differenceOfSquaresFactored` en `src/engine/polynomialFactorZ.ts` factoriza P−Q y P+Q con Kronecker, agrupa potencias y verifica con CAS. AS-B-21 produce `(x-1)^2*(x+1)^2`.
+
+| Repo | Technical SHA | Gates (SUCCESS) |
+|------|---------------|-----------------|
+| Lite | `e2c0e584d18ce37b5f309933fc72e09ec5a0a78e` | cumulative [39490173826](https://github.com/c2melendez/precision-lab-lite/actions/runs/39490173826), h1d [39490174255](https://github.com/c2melendez/precision-lab-lite/actions/runs/39490174255), scientific-ui [39490174122](https://github.com/c2melendez/precision-lab-lite/actions/runs/39490174122) |
+| Lite | `620cd4985c682188c6524a575fa66cf39a9ce0cc` | cumulative [39491056857](https://github.com/c2melendez/precision-lab-lite/actions/runs/39491056857), h1d [39491056842](https://github.com/c2melendez/precision-lab-lite/actions/runs/39491056842), scientific-ui [39491056775](https://github.com/c2melendez/precision-lab-lite/actions/runs/39491056775) |
+
+Evidencia: `tests/differenceOfSquaresRule.test.ts` (forma canónica, pieza irreducible, multivariable y regresiones x^2+1 y x^2-2). Plus sin cambios. Global OPEN.
+
+---
+
 ## 2026-10-20 UTC — Salvaguarda diferencia de cuadrados (D17, continuity r189)
 
 Regla acotada `differenceOfSquaresCandidate` en `src/engine/polynomialFactorZ.ts` (Lite `bda4c99055530b972716f1de719fb0fd273046cf`), solo para `(P)^2 - K·v^2` con K cuadrado perfecto. Se acepta solo si el CAS confirma equivalencia y Algebrite devuelve un resultado sin paréntesis.
