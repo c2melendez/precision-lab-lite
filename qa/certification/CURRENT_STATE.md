@@ -1,5 +1,17 @@
 > Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
 
+## 2026-10-20 UTC — Registro de gates D20 de 0e32096 (continuity r195)
+
+Gates de `0e32096` (commit D20 y registro r194), disparados con `workflow_dispatch`. Los tres runs tienen `head_sha` igual a `0e32096`:
+
+| SHA | Gates (SUCCESS) |
+|-----|------------------|
+| `0e32096` (docs) | cumulative [39503721079](https://github.com/c2melendez/precision-lab-lite/actions/runs/39503721079), h1d [39503724693](https://github.com/c2melendez/precision-lab-lite/actions/runs/39503724693), scientific-ui [39503727866](https://github.com/c2melendez/precision-lab-lite/actions/runs/39503727866) |
+
+Estado: AS-B-22 en `ON_HOLD`. Plus sin cambios. Global OPEN.
+
+---
+
 ## 2026-10-20 UTC — Gates en commit documental (D20, continuity r194)
 
 Convención D20: los commits documentales también se gatean con `workflow_dispatch` (`reason` con el SHA). Resultados para `8934f10` (docs de r193), todos SUCCESS:

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 194,
+  "revision": 195,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -70,7 +70,7 @@
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand/factor + source-row; not matrix-wide"
     },
-    "action": "D20 aplicada: gates en commits documentales. 8934f10 verificado (SUCCESS). AS-B-22 en espera de instrucción del usuario. Global OPEN."
+    "action": "Gates de 0e32096 registrados en r195 (D20). AS-B-22 en espera de instrucción del usuario. Global OPEN."
   },
   "blockers": [
     {
@@ -90,5 +90,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r194 2026-10-20: D20 gates en commits documentales. 8934f10 gated por workflow_dispatch (cumulative, h1d, scientific-ui SUCCESS). AS-B-22 en ON_HOLD. Global OPEN."
+  "ledger_note": "r195 2026-10-20: registro de gates D20 de 0e32096 (cumulative, h1d, scientific-ui SUCCESS, head_sha verificado). AS-B-22 en ON_HOLD. Global OPEN."
 }

@@ -256,6 +256,14 @@ Estado: AS-B-22 en `ON_HOLD`. Plus sin cambios. Global OPEN.
 
 ---
 
+## 2026-10-20 UTC — Registro de gates D20 de 0e32096 (continuity r195)
+
+Lite `0e32096` (D20 y registro r194): cumulative [39503721079](https://github.com/c2melendez/precision-lab-lite/actions/runs/39503721079), h1d [39503724693](https://github.com/c2melendez/precision-lab-lite/actions/runs/39503724693), scientific-ui [39503727866](https://github.com/c2melendez/precision-lab-lite/actions/runs/39503727866), todos SUCCESS con `head_sha` igual a `0e32096`. Según D20, el gate del commit de este registro se documenta en el siguiente commit documental.
+
+Estado: AS-B-22 en `ON_HOLD`. Plus sin cambios. Global OPEN.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.
