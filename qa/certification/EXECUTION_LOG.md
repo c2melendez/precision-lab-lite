@@ -194,6 +194,12 @@ Commit técnico Lite `a0b5718` (test restaurado) sobre producto `24e89b6` (regla
 
 ---
 
+## 2026-10-20 UTC — AS-B-21 PASS sin cambio de producto (continuity r188)
+
+- Lite `4636c9924e7afe71f16ad275701cff33ebd7ce7c`: test-first `tests/algebra229AsB21.audit.test.ts` pasa en cumulative 39479961317, h1d 39479961560, scientific-ui 39479961091 (SUCCESS).
+- Sin cambio de producto. Regla de diferencia de cuadrados no implementada (opción C de D16 no necesaria). Respaldo B no activado.
+- Commit de decisión D16 y alcance: `59d49dd`.
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.
