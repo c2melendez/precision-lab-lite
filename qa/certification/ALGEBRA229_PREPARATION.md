@@ -1,6 +1,6 @@
 # Algebra 229 — preparacion de matriz y trazabilidad
 
-Estado: **FIXTURE_PROMOTED / NOT_EXECUTED** (2026-10-20). Certificacion global **OPEN**.
+Estado: **FIXTURE_PROMOTED**; sección A **AS-A-01..05 PASS_SCOPED** (unit/HTTP); matriz **NOT_EXECUTED** en bloque (2026-10-20). Certificacion global **OPEN**.
 
 ## Fuente y fixture
 
@@ -15,6 +15,10 @@ Estado: **FIXTURE_PROMOTED / NOT_EXECUTED** (2026-10-20). Certificacion global *
 
 Coincide byte a byte con `Matrices.zip`. El JSONL del handoff v0.3 es historico; el producto regenera el fixture desde el MD.
 
+## Avance seccion A (expandir)
+
+AS-A-01..05 cerrados PASS_SCOPED bilateral con runs cumulative SUCCESS (ver `CURRENT_STATE.md` / `EXECUTION_LOG.md` / `continuity.json`).
+
 ## Siguiente
 
-`ALGEBRA229-AS-A-01-TEST-FIRST` — expand `(x+1)^2` → `x^2+2x+1` bilateral. Global OPEN.
+`ALGEBRA229-AS-A-06-TEST-FIRST` — expand `(x+y+z)^2` → `x^2+2xy+2xz+y^2+2yz+z^2` bilateral. Global OPEN.
