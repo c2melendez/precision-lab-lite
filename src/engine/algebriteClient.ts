@@ -100,19 +100,6 @@ export function evaluate(expressionLatex: string): string {
         // Continuar con Algebrite para conservar el comportamiento normal.
       }
     }
-    // Algebra114 AS-MUL: the parser converts function names like factor(
-    // and simplify( into implicit products (f*a*c*t*o*r*(...)). Reconstruct
-    // the function call form before CAS eval so scoped rewrites can match.
-    expressionLatex = expressionLatex.replace(
-      /\bf\*a\*c\*t\*o\*r\*\(/g, "factor(");
-    expressionLatex = expressionLatex.replace(
-      /\bs\*i\*m\*p\*l\*i\*f\*y\*\(/g, "simplify(");
-    // Algebra114 AS-MUL-03: Algebrite's factor() hangs on the symmetric
-    // cubic. Return the audited factored form directly, bypassing the CAS.
-    const preEval = expressionLatex.replace(/\s+/g, "");
-    if (preEval === "factor(x^3+y^3+z^3-3*x*y*z)") {
-      return "(x+y+z)*(x^2+y^2+z^2-x*y-y*z-z*x)";
-    }
     // Algebrite trabaja con su propia sintaxis de entrada; la conversión
     // LaTeX -> sintaxis Algebrite vive en engine/parsing (Módulo 2).
     // Exact change-of-base results for positive integer powers. Preserve
@@ -239,40 +226,6 @@ export function evaluate(expressionLatex: string): string {
         result.replace(/\s+/g, "") === "x^4+1") {
       result = "(x^2-2^(1/2)*x+1)*(x^2+2^(1/2)*x+1)";
     }
-    // Algebra114 AS-MUL-02: difference of squares (x+y)^2-z^2. The bundled
-    // Algebrite build does not factor multivariable polynomials. Scoped to
-    // the exact audited input; no general factoring capability claimed.
-    const mulInput = expressionLatex.replace(/\s+/g, "");
-    if (mulInput === "factor(x^2+2*x*y+y^2-z^2)") {
-      const compact = result.replace(/\s+/g, "");
-      if (!compact.includes("x+y-z") || !compact.includes("x+y+z")) {
-        result = "(x+y-z)*(x+y+z)";
-      }
-    }
-    // Algebra114 AS-MUL-03: symmetric cubic identity. Algebrite does not
-    // factor this multivariable form. Scoped to the exact audited input.
-    if (mulInput === "factor(x^3+y^3+z^3-3*x*y*z)") {
-      const compact = result.replace(/\s+/g, "");
-      if (!compact.includes("x+y+z") || !compact.includes("x^2+y^2+z^2")) {
-        result = "(x+y+z)*(x^2+y^2+z^2-x*y-y*z-z*x)";
-      }
-    }
-    // Algebra114 AS-MUL-04: cancel common factor (x-y) in the quotient
-    // (x-y)/(x^2-y^2) = 1/(x+y). Algebrite may leave this unsimplified.
-    if (mulInput === "(x-y)/(x^2-y^2)") {
-      const compact = result.replace(/\s+/g, "");
-      if (compact !== "1/(x+y)") {
-        result = "1/(x+y)";
-      }
-    }
-    // Algebra114 AS-MUL-06: rewrite the cyclic difference to the half-
-    // squared-differences form. Algebrite does not produce this shape.
-    if (mulInput === "simplify(x^2+y^2+z^2-x*y-y*z-z*x)") {
-      const compact = result.replace(/\s+/g, "");
-      if (!compact.includes("(x-y)") || !compact.includes("(y-z)") || !compact.includes("(z-x)")) {
-        result = "1/2*((x-y)^2+(y-z)^2+(z-x)^2)";
-      }
-    }
     if (typeof result !== "string" || result.length === 0) {
       throw toAppError(ErrorCode.PARSE_ERROR, "Algebrite no devolvió resultado.");
     }
@@ -296,7 +249,7 @@ export function evaluate(expressionLatex: string): string {
     // Only replace a non-finite hyperbolic result when our independent numeric
     // parser can evaluate the entire expression to a finite real number.
     // Preserve symbolic expressions and reject truly undefined results.
-    if (/^(?:NaN|Infinity|-Infinity)(?:\.\\.\.)?$/.test(result.trim()) &&
+    if (/^(?:NaN|Infinity|-Infinity)(?:\.\.\.)?$/.test(result.trim()) &&
         /\b(?:sinh|cosh|tanh)\(/.test(expressionLatex)) {
       try {
         const numeric = compileNumeric(expressionLatex, "__unused__")(0);
@@ -321,11 +274,11 @@ export function evaluate(expressionLatex: string): string {
 
 /**
  * Deriva una expresión respecto a una variable, orden N (spec v10 §7,
- * Fase 3: paridad con la pantalla única — normalize.ts ya acepta cualquier
- * N en \frac{d^N}{dx^N} escrito a mano, este formulario no debería quedar
- * más limitado). Guarda de sensatez en 20: un loop de `d()` de cientos de
- * vueltas no tiene utilidad matemática real y sí puede colgar el worker
- * con expresiones grandes.
+ * Fase 3: paridad con la pantalla única — normalize.ts ya acepta
+ * cualquier N en \frac{d^N}{dx^N} escrito a mano, este formulario no
+ * debería quedar más limitado). Guarda de sensatez en 20: un loop de
+ * `d()` de cientos de vueltas no tiene utilidad matemática real y sí
+ * puede colgar el worker con expresiones grandes.
  */
 export function derivative(expressionAlgebrite: string, variable: string, order: number = 1): string {
   if (!Number.isInteger(order) || order < 1 || order > 20) {
@@ -385,7 +338,7 @@ export function symbolicLimit(expressionAlgebrite: string, variable: string, poi
     return result;
   } catch (err) {
     if ((err as AppError).code) throw err;
-    throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, `Fallo al calcular límite: ${String(err)}`);
+    throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, `Fallo al calcular límite simbólico: ${String(err)}`);
   }
 }
 
