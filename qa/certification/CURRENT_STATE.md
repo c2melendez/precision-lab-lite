@@ -1,5 +1,17 @@
 > Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
 
+## 2026-10-20 UTC — Gates en commit documental (D20, continuity r194)
+
+Convención D20: los commits documentales también se gatean con `workflow_dispatch` (`reason` con el SHA). Resultados para `8934f10` (docs de r193), todos SUCCESS:
+
+| SHA | Gates (SUCCESS, workflow_dispatch) |
+|-----|------------------------------------|
+| `8934f10` (docs) | cumulative [39502865873](https://github.com/c2melendez/precision-lab-lite/actions/runs/39502865873), h1d [39502869612](https://github.com/c2melendez/precision-lab-lite/actions/runs/39502869612), scientific-ui [39502872863](https://github.com/c2melendez/precision-lab-lite/actions/runs/39502872863) |
+
+Estado: AS-B-22 en `ON_HOLD`. Plus sin cambios. Global OPEN.
+
+---
+
 ## 2026-10-20 UTC — Verificación de gates del cierre r192 (continuity r193)
 
 El commit `3ffcca9` no disparó runs de gates: sus cambios son solo `.md` y `qa/certification/continuity.json`, rutas excluidas de los workflows cumulative y h1d. Desde `3a6c8ac` solo cambiaron documentos bajo `qa/certification/`, así que el código es idéntico al de `3a6c8ac`.

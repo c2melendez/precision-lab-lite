@@ -32,6 +32,8 @@ Este archivo recoge las decisiones tomadas durante la certificación ALGEBRA229 
 
 - **D19. Excepciones y resultados no concluyentes del CAS en la diferencia de cuadrados (Lite, decidida por el usuario):** un fallo del CAS en el paso factorizado (excepción o respuesta no concluyente, incluido el muestreo de factores) no omite la verificación del candidato de dos cuadráticos. El candidato se devuelve solo si el CAS confirma `(candidato)-(entrada)` igual a `0`. Si esa verificación no concluye o lanza una excepción, se devuelve el resultado original; nunca un candidato sin verificar. Commit Lite `3a6c8ac53bbfea656ff74e248a52e828d93c8b88` (código y pruebas). Plus no cambia.
 
+- **D20. Gates en cada commit documental (decidida por el usuario, 2026-10-20).** Cada commit que cambie solo documentación se valida con los tres gates (cumulative, h1d y scientific-ui) mediante `workflow_dispatch` sobre la rama, con un `reason` que cite el SHA. Los workflows excluyen `.md` y `qa/certification/continuity.json`, así que no se disparan solos. Un commit documental no reclama gates hasta tener runs con `head_sha` igual a su SHA. El registro de resultados de un commit gated se escribe en el commit documental siguiente, que también se gatea. Los gates de código siguen disparándose por push. Supera la observación de process de r193.
+
 ## Decisiones pendientes (no implementar sin nueva decisión)
 
 - **P1.** Enfoque para AS-B-19 a AS-B-21 (factor común, agrupación y diferencia de cuadrados multivariables). Primero se escriben las pruebas y se observa qué falla. No se añade un factorizador multivariable general. AS-B-19 pasó sin cambios; AS-B-20 se resolvió con la regla acotada D15. AS-B-21 se resolvió con D16–D18.

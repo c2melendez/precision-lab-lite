@@ -246,6 +246,16 @@ Observación de proceso: un commit solo documental no genera gates propios. No s
 
 ---
 
+## 2026-10-20 UTC — Gates en commit documental (D20, continuity r194)
+
+Decisión D20 en `ALGEBRA229_DECISIONS.md`: cada commit documental se gatea con los tres workflows mediante `workflow_dispatch` (entrada `reason` obligatoria). Los workflows no lo hacen solos porque excluyen `.md` y `continuity.json`.
+
+Lite `8934f10` (docs de r193): cumulative [39502865873](https://github.com/c2melendez/precision-lab-lite/actions/runs/39502865873), h1d [39502869612](https://github.com/c2melendez/precision-lab-lite/actions/runs/39502869612), scientific-ui [39502872863](https://github.com/c2melendez/precision-lab-lite/actions/runs/39502872863), todos SUCCESS con `head_sha` igual a `8934f10`.
+
+Estado: AS-B-22 en `ON_HOLD`. Plus sin cambios. Global OPEN.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.
