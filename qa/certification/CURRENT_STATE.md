@@ -1,3 +1,19 @@
+## 2026-10-20 UTC — AS-B-17 PASS_SCOPED bilateral (continuity r183)
+
+**ALGEBRA229-AS-B-17** — factorizar `a^{3}+b^{3}` → `\left(a + b\right) \left(a^{2} - a b + b^{2}\right)` (fila fuente N2 en la matriz congelada Section B).
+
+| Repo | Technical SHA | Gates (SUCCESS sobre el SHA exacto, evento push) |
+|------|---------------|--------------------------------------------------|
+| Lite | `672360f94527e3981091eb64a212a8b4428ae2be` | cumulative [39461130911](https://github.com/c2melendez/precision-lab-lite/actions/runs/39461130911), h1d [39461130713](https://github.com/c2melendez/precision-lab-lite/actions/runs/39461130713), scientific-ui [39461131049](https://github.com/c2melendez/precision-lab-lite/actions/runs/39461131049) |
+
+Test-first sin cambios de producto: la regla de cubos de Lite (r182) ya cubría la suma de cubos, y SymPy la factorizaba en Plus. Evidencia: `tests/algebra229AsB17.audit.test.ts` (fila fuente N2, diferencia exacta cero y forma `(a+b)*(a^2-a*b+b^2)`). Global OPEN.
+
+**Decisión de alcance (2026-10-20):** AS-B-24 (`x²-2` sobre ℝ) y AS-B-25 (`x²+1` sobre ℂ) quedan incluidas en la matriz de factorización. El cuerpo se indica con el sufijo explícito «sobre ℝ» o «sobre ℂ» en la entrada. Su implementación sigue el orden de la matriz, después de B-18 a B-23.
+
+**Siguiente único:** `ALGEBRA229-AS-B-18-TEST-FIRST` — `x^{8}-1` → `\left(x - 1\right) \left(x + 1\right) \left(x^{2} + 1\right) \left(x^{4} + 1\right)`.
+
+---
+
 ## 2026-10-20 UTC — AS-B-16 PASS_SCOPED bilateral (continuity r182)
 
 **ALGEBRA229-AS-B-16** — factorizar `a^{3}-b^{3}` → `\left(a - b\right) \left(a^{2} + a b + b^{2}\right)` (fila fuente N2 en la matriz congelada Section B).
