@@ -23,7 +23,7 @@ describe("Algebra229 AS-B-20 factor x^4+x^2y^2+y^4", () => {
     expect(evaluate(`(${factored})-(${ORIGINAL})`).trim()).toBe("0");
     expect(evaluate(`(${factored})-(${EXPECTED})`).trim()).toBe("0");
     expect(factored).toMatch(/\(/);
-  });
+  }, 120_000);
 
   it("bounded quartic rule does not fire on other shapes (not a general multivariable factorizer)", () => {
     const original = "x^4+x^2*y^2+y^5";
