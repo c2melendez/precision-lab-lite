@@ -217,20 +217,80 @@ function formatFactor(a: Coeffs): string {
 }
 
 /**
- * Factorización univariada sobre ℤ de un texto en sintaxis Algebrite con solo
- * x, enteros y operadores + - * ^ ( ). Devuelve null si el texto no es un
- * polinomio entero de grado <= 10 o si la factorización no puede decidirse.
+ * Factores enteros primitivos de un texto Algebrite univariado con solo x, enteros
+ * y operadores + - * ^ ( ). Devuelve null si no es un polinomio entero de
+ * grado <= 10 o si la factorización no puede decidirse.
  */
-export function factorUnivariateIntegerText(text: string, run: (s: string) => string): string | null {
+function integerFactorsOfText(text: string, run: (s: string) => string): Coeffs[] | null {
   const t = text.trim();
   if (!/^[0-9x+\-*^() ]+$/.test(t) || !t.includes("x")) return null;
   const vals = sampleValues(t, run);
   if (!vals) return null;
   const poly = integerPolynomialFromSamples(vals);
   if (!poly) return null;
-  const factors = factorPrimitive(poly);
+  return factorPrimitive(poly);
+}
+
+/**
+ * Factorización univariada sobre ℤ de un texto en sintaxis Algebrite con solo
+ * x, enteros y operadores + - * ^ ( ). Devuelve null si el texto no es un
+ * polinomio entero de grado <= 10 o si la factorización no puede decidirse.
+ */
+export function factorUnivariateIntegerText(text: string, run: (s: string) => string): string | null {
+  const factors = integerFactorsOfText(text, run);
   if (!factors) return null;
   return factors.map((f) => `(${formatFactor(f)})`).join("*");
+}
+
+/** Orden lexicográfico por grado y luego por coeficientes de menor a mayor grado. */
+function compareCoeffs(a: Coeffs, b: Coeffs): number {
+  if (a.length !== b.length) return a.length - b.length;
+  for (let k = 0; k < a.length; k++) {
+    if (a[k] !== b[k]) return a[k] < b[k] ? -1 : 1;
+  }
+  return 0;
+}
+
+/**
+ * Une factores enteros en forma canónica: factores ordenados y exponentes
+ * agrupados, p. ej. (x-1)^2*(x+1)^2.
+ */
+function collapseFactorList(factors: Coeffs[]): string {
+  const sorted = [...factors].sort(compareCoeffs);
+  const groups: { f: Coeffs; n: number }[] = [];
+  for (const f of sorted) {
+    const last = groups[groups.length - 1];
+    if (last && compareCoeffs(last.f, f) === 0) last.n++;
+    else groups.push({ f, n: 1 });
+  }
+  return groups.map(({ f, n }) => `(${formatFactor(f)})${n > 1 ? `^${n}` : ""}`).join("*");
+}
+
+/** AS-B-21: partes P-Q y P+Q de (P)^2 - K·v^2 con K cuadrado perfecto, o null. */
+function parseDifferenceOfSquares(inner: string): { left: string; right: string } | null {
+  const m = inner.replace(/\s+/g, "").match(/^\((.+)\)\^2-(\d+)\*?([a-z])\^2$/);
+  if (!m) return null;
+  const [, p, kText, v] = m;
+  const k = Number(kText);
+  const r = Math.round(Math.sqrt(k));
+  if (k === 0 || r * r !== k) return null;
+  const q = `${r}*${v}`;
+  return { left: `${p}-${q}`, right: `${p}+${q}` };
+}
+
+/**
+ * AS-B-21: como differenceOfSquaresCandidate, pero factoriza P-Q y P+Q por
+ * Kronecker y devuelve potencias agrupadas (p. ej. (x-1)^2*(x+1)^2). Devuelve
+ * null si algún factor no es decidible o si el CAS no confirma la identidad.
+ */
+export function differenceOfSquaresFactored(inner: string, run: (s: string) => string): string | null {
+  const parts = parseDifferenceOfSquares(inner);
+  if (parts === null) return null;
+  const left = integerFactorsOfText(parts.left, run);
+  const right = integerFactorsOfText(parts.right, run);
+  if (left === null || right === null) return null;
+  const factored = collapseFactorList([...left, ...right]);
+  return run(`(${factored})-(${inner})`).replace(/\s+/g, "") === "0" ? factored : null;
 }
 
 /** Devuelve el contenido de factor(...) si la entrada es exactamente una llamada. */
@@ -289,14 +349,8 @@ export function quarticBiquadraticCandidate(inner: string): string | null {
  * forma sintáctica; quien llame debe verificar la equivalencia con el CAS.
  */
 export function differenceOfSquaresCandidate(inner: string): string | null {
-  const m = inner.replace(/\s+/g, "").match(/^\((.+)\)\^2-(\d+)\*?([a-z])\^2$/);
-  if (!m) return null;
-  const [, p, kText, v] = m;
-  const k = Number(kText);
-  const r = Math.round(Math.sqrt(k));
-  if (k === 0 || r * r !== k) return null;
-  const q = `${r}*${v}`;
-  return `(${p}-${q})*(${p}+${q})`;
+  const parts = parseDifferenceOfSquares(inner);
+  return parts === null ? null : `(${parts.left})*(${parts.right})`;
 }
 
 /**
@@ -332,6 +386,8 @@ export function verifyFactorResult(input: string, result: string, run: (s: strin
   const squares = differenceOfSquaresCandidate(inner);
   if (squares !== null && !result.includes("(")) {
     try {
+      const factored = differenceOfSquaresFactored(inner, run);
+      if (factored !== null) return factored;
       if (run(`(${squares})-(${inner})`).replace(/\s+/g, "") === "0") return squares;
     } catch {
       return result;
