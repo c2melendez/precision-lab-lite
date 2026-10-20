@@ -1,3 +1,17 @@
+## 2026-10-20 UTC — AS-B-16 PASS_SCOPED bilateral (continuity r182)
+
+**ALGEBRA229-AS-B-16** — factorizar `a^{3}-b^{3}` → `\left(a - b\right) \left(a^{2} + a b + b^{2}\right)` (fila fuente N2 en la matriz congelada Section B).
+
+| Repo | Technical SHA | Gates (SUCCESS sobre el SHA exacto, evento push) |
+|------|---------------|--------------------------------------------------|
+| Lite | `4c822947f8cab04b420772cef72d4f6deada32e8` | cumulative [39459168172](https://github.com/c2melendez/precision-lab-lite/actions/runs/39459168172), h1d [39459168011](https://github.com/c2melendez/precision-lab-lite/actions/runs/39459168011), scientific-ui [39459168124](https://github.com/c2melendez/precision-lab-lite/actions/runs/39459168124) |
+
+Test-first `252d337` falló el gate cumulativo: Algebrite devolvía `a^{3}-b^{3}` sin factorizar, así que la prueba de forma no pasaba. Cambio de producto en `src/engine/polynomialFactorZ.ts`: `verifyFactorResult` sustituye un resultado sin factorizar por `(a-b)(a²+ab+b²)` (o `(a+b)(a²-ab+b²)`) solo si la identidad es equivalente al original por CAS; alcance acotado a binomios de cubos con variables de una letra. Evidencia: `tests/algebra229AsB16.audit.test.ts` (fila fuente N2 en la matriz congelada, diferencia exacta cero y forma `(a-b)*(a^2+a*b+b^2)`). Global OPEN.
+
+**Siguiente único:** `ALGEBRA229-AS-B-17-TEST-FIRST` — `a^{3}+b^{3}` (fila N2 de la matriz congelada; ver fila completa en Section B).
+
+---
+
 ## 2026-10-20 UTC — AS-B-15 PASS_SCOPED bilateral (continuity r181)
 
 **ALGEBRA229-AS-B-15** — factorizar `x^{3}-x^{2}-x+1` → `\left(x - 1\right)^{2} \left(x + 1\right)` (fila fuente N2 en la matriz congelada Section B).
