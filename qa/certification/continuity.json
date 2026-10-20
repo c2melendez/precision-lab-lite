@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 183,
+  "revision": 184,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -48,17 +48,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-18-TEST-FIRST",
+    "id": "ALGEBRA229-AS-B-19-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "672360f94527e3981091eb64a212a8b4428ae2be",
+      "c2melendez/precision-lab-lite": "ea5a76d18143c4f5a5a889ca279726a37c4d4896",
       "c2melendez/precision-lab-plus": "6114033fa7ac0ac7b8439777c898b65691b6bc7b"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39461130911,
-        39461130713,
-        39461131049
+        39462375918,
+        39462375646,
+        39462375444
       ],
       "c2melendez/precision-lab-plus": [
         39453858654,
@@ -66,11 +66,11 @@
       ]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..17",
+      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..18",
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand/factor + source-row; not matrix-wide"
     },
-    "action": "AS-B-17 PASS_SCOPED bilateral (test-first sin cambios de producto; Lite gates SUCCESS on 672360f). Scope decision: B-24/B-25 included with explicit «sobre ℝ»/«sobre ℂ» suffix, implemented in matrix order. Next AS-B-18. Global OPEN."
+    "action": "AS-B-18 PASS_SCOPED bilateral (test-first sin cambios de producto; Lite gates SUCCESS on ea5a76d). Next AS-B-19 per frozen matriz Section B. Scope decision r183 (B-24/B-25 with explicit field suffix) still pending implementation. Global OPEN."
   },
   "blockers": [
     {
@@ -90,5 +90,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r183 2026-10-20: AS-B-17 PASS_SCOPED bilateral (test-first sin cambios de producto); next AS-B-18. Scope: B-24/B-25 with explicit field suffix. Lite 39461130911/39461130713/39461131049 SUCCESS."
+  "ledger_note": "r184 2026-10-20: AS-B-18 PASS_SCOPED bilateral (test-first sin cambios de producto); next AS-B-19. Lite 39462375918/39462375646/39462375444 SUCCESS."
 }
