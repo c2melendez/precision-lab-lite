@@ -57,6 +57,7 @@ import { evaluateMatrixExpression, matrixExpressionValueToLatex } from "../engin
 import { solveODE } from "../engine/stepEngine/ode";
 import { ErrorCode, makeRequestId, type MathResult, type AppError, type ResultConfidence } from "../types";
 import { extractDomainConditions, mergeDomainConditions, withRealDomainSummary } from "../engine/domainConditions";
+import { conventionDeclarations, realOddRootValue } from "../engine/conventionNotes";
 
 export type ComputeRequest =
   | { type: "evaluate"; requestId: string; expressionAlgebrite: string }
@@ -732,6 +733,27 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       };
     }
 
+    // AS-CONV (sección L, paridad con Plus): raíz impar EXACTA de constante
+    // negativa se resuelve en ℝ antes que la rama principal ℂ de
+    // tryComplexFunction — root(-8,3) = -2. Solo cuando existe raíz entera
+    // exacta; cualquier otro root(z,n) sigue el flujo normal (ℂ declarado).
+    const oddRootReal = realOddRootValue(expr);
+    if (oddRootReal !== null) {
+      return {
+        success: true,
+        resultLatex: toLatex(oddRootReal),
+        fraction: toFractionResult(oddRootReal),
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        domainConditions: mergeDomainConditions(
+          withRealDomainSummary(extractDomainConditions(expr)),
+          conventionDeclarations(expr),
+        ),
+        requestId,
+      };
+    }
+
     // P4 (spec v2 §5.1): re/im/arg/conj/topolar — mismo motivo y mismo
     // patrón que las funciones de estadística arriba (no nativas de
     // Algebrite, ver cabecera de complexFunctions.ts sobre por qué se
@@ -745,6 +767,11 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
         steps: [],
         hasDetailedSteps: false,
         confidence: "NUMERIC_FALLBACK",
+        // AS-CONV: declaraciones de convención también en rutas fallback.
+        domainConditions: mergeDomainConditions(
+          withRealDomainSummary(extractDomainConditions(expr)),
+          conventionDeclarations(expr),
+        ),
         requestId,
       };
     }
@@ -952,7 +979,14 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       steps: absoluteRatioSignSteps(raw),
       hasDetailedSteps: false,
       confidence,
-      domainConditions: withRealDomainSummary(extractDomainConditions(expr)),
+      // AS-CONV (sección L): declaraciones de convención ℝ/ℂ adjuntas al
+      // canal contractual de contexto (DomainCondition kind "domain").
+      // Nunca alteran el valor del CAS; solo lo acompañan. Ver
+      // engine/conventionNotes.ts para la correspondencia con Plus.
+      domainConditions: mergeDomainConditions(
+        withRealDomainSummary(extractDomainConditions(expr)),
+        conventionDeclarations(expr),
+      ),
       requestId,
     };
   } catch (err) {

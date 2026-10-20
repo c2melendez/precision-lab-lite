@@ -141,6 +141,14 @@ export function tryComplexFunction(expr: string): string | null {
     if (nPart === null) {
       throw new Error('root(z,n) requiere 2 argumentos: la expresión y el índice "n".');
     }
+    // AS-CONV (sección L): parseComplex solo interpreta formas NUMÉRICAS
+    // A+B*i. Si el radicando contiene variables (ej. root(x^4,4)), Algebrite
+    // devuelve "root(x^4,4)" sin evaluar y parseComplex lanza un PARSE_ERROR
+    // genérico ("Invalid argument", hallazgo verificado por sondeo). Se
+    // retorna null para que la expresión siga el flujo normal del CAS en vez
+    // de fallar — paridad con Plus, donde sympy resuelve symbolicamente.
+    const radicalProbe = exprPart.trim();
+    if (/[a-zA-Z]/.test(radicalProbe.replace(/\bi\b/g, ""))) return null;
     const { re, im } = parseComplex(evaluate(exprPart.trim()));
     const n = Number(evaluate(nPart.trim()));
     if (!Number.isFinite(n) || n === 0) {
