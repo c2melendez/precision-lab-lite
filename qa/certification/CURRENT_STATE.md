@@ -1,5 +1,17 @@
 > Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
 
+## 2026-10-20 UTC — Correcciones documentales y cierre (continuity r192)
+
+Commit solo documental `88b32498845c249f853ee117dd541c081cfa8c8c` sobre `b31fa61`, sin código ni AS-B-22. Corrige: AS-B-21 marcado como histórico resuelto por D16–D18 en `ALGEBRA229_DECISIONS.md`; `continuity.json` con `next_action` en `ON_HOLD` y `completed_scoped` que incluye D19; `CONTINUITY_NEXT_ACTION.json` marcado como histórico (revisión 160).
+
+| Repo | Technical SHA | Gates (SUCCESS sobre el SHA exacto) |
+|------|---------------|--------------------------------------|
+| Lite | `88b32498845c249f853ee117dd541c081cfa8c8c` (docs) | cumulative [39499113815](https://github.com/c2melendez/precision-lab-lite/actions/runs/39499113815), h1d [39499113808](https://github.com/c2melendez/precision-lab-lite/actions/runs/39499113808). scientific-ui no se disparó en este SHA. |
+
+Estado: AS-B-22 en `ON_HOLD`, a la espera de instrucción. Plus sin cambios. Global OPEN.
+
+---
+
 ## 2026-10-20 UTC — Excepciones del CAS en diferencia de cuadrados (D19, continuity r191)
 
 `verifyFactorResult` en `src/engine/polynomialFactorZ.ts`: una excepción o respuesta no concluyente del CAS en el paso factorizado ya no omite la verificación independiente del candidato de dos cuadráticos. El candidato se devuelve solo si el CAS confirma equivalencia; si no, se conserva el resultado original. Pruebas previas en `b1c40b6de7e7ae1476883bc9e65606826ec1c5f1`, con dos casos de brecha conocida (`it.fails`) que ahora son pruebas normales.

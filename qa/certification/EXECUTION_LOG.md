@@ -223,6 +223,19 @@ Evidencia local: 27 pruebas en verde (`differenceOfSquaresRule`, `polynomialFact
 
 ---
 
+## 2026-10-20 UTC — Correcciones documentales y cierre (continuity r192)
+
+Lite `88b32498845c249f853ee117dd541c081cfa8c8c` (solo documentación, sin código ni AS-B-22), sobre `b31fa61`:
+- `ALGEBRA229_DECISIONS.md`: sección AS-B-21 marcada como histórico resuelto por D16–D18; nota P1 actualizada.
+- `continuity.json`: `next_action.status` de `READY` a `ON_HOLD`; `completed_scoped` incluye D19.
+- `CONTINUITY_NEXT_ACTION.json`: nota de histórico; la fuente vigente es `continuity.json`.
+
+Gates sobre `88b32498845c249f853ee117dd541c081cfa8c8c` (disparados por el push): cumulative [39499113815](https://github.com/c2melendez/precision-lab-lite/actions/runs/39499113815) y h1d [39499113808](https://github.com/c2melendez/precision-lab-lite/actions/runs/39499113808), SUCCESS. scientific-ui no se disparó en este SHA. No hay código nuevo que certificar.
+
+Estado: AS-B-22 en `ON_HOLD`, a la espera de instrucción. Plus sin cambios. Global OPEN.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.

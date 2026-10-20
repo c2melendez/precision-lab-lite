@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 191,
+  "revision": 192,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -70,7 +70,7 @@
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand/factor + source-row; not matrix-wide"
     },
-    "action": "D19 cerrada en Lite: las excepciones del CAS en la diferencia de cuadrados conservan el candidato verificado (3a6c8ac). AS-B-22 en espera de instrucción del usuario. Global OPEN."
+    "action": "Correcciones documentales en Lite 88b3249 registradas en r192. AS-B-22 en espera de instrucción del usuario. Global OPEN."
   },
   "blockers": [
     {
@@ -90,5 +90,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r191 2026-10-20: D19 excepciones del CAS en diferencia de cuadrados (Lite 3a6c8ac, gates SUCCESS). AS-B-22 en espera."
+  "ledger_note": "r192 2026-10-20: correcciones documentales (Lite 88b3249, gates cumulative/h1d SUCCESS). AS-B-22 en ON_HOLD, a la espera de instrucción. Global OPEN."
 }
