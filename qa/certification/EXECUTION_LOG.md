@@ -110,6 +110,12 @@ Lite: test-first `6bafda3` (acumulativo 39433167930 **failure**: Algebrite `fact
 
 ---
 
+## 2026-10-20 UTC — AS-B-08 PASS_SCOPED bilateral (continuity r174)
+
+Commit técnico Lite `2becdde` (test-first AS-B-08 `factor x^4-5x^2+4`, sin cambios de producto). Runs sobre el SHA exacto: cumulative [39443972473](https://github.com/c2melendez/precision-lab-lite/actions/runs/39443972473), scientific-ui [39443973517](https://github.com/c2melendez/precision-lab-lite/actions/runs/39443973517), h1d [39443971788](https://github.com/c2melendez/precision-lab-lite/actions/runs/39443971788). Todos SUCCESS (push). Global OPEN. Siguiente: AS-B-09.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.
