@@ -205,6 +205,12 @@ Commit técnico Lite `a0b5718` (test restaurado) sobre producto `24e89b6` (regla
 - Lite `bda4c99055530b972716f1de719fb0fd273046cf`: regla acotada D17 en `verifyFactorResult`, verificada por CAS.
 - Lite `d7cf042dfb3652bf44e9d4fa17270e2920618dcd`: pruebas `tests/differenceOfSquaresRule.test.ts` (regresiones x^2+1, x^2-2) con gates cumulative 39481757500, h1d 39481757734, scientific-ui 39481757683 (SUCCESS).
 
+## 2026-10-20 UTC — Forma canónica diferencia de cuadrados (continuity r190)
+
+- Lite `e2c0e584d18ce37b5f309933fc72e09ec5a0a78e`: código y pruebas; gates cumulative 39490173826, h1d 39490174255, scientific-ui 39490174122 (SUCCESS).
+- Lite `620cd4985c682188c6524a575fa66cf39a9ce0cc`: regresiones; gates cumulative 39491056857, h1d 39491056842, scientific-ui 39491056775 (SUCCESS).
+- D18 en `ALGEBRA229_DECISIONS.md`. Plus sin cambios.
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.
