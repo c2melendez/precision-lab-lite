@@ -6,7 +6,7 @@
 
 **Algebra 114 matriz (114 filas A–M) — recorrido completo, certificación parcial bilateral.** No se declara Algebra114 global PASS. Gaps registrados en tests (`it.fails`/`it.todo`/`xfail`) y MANUAL_CAPABILITY_GAPS.
 
-**Siguiente único (protocolo Frente B):** `ALGEBRA229-SOURCE-LOCATE` — localizar la fuente normativa de Algebra 229 (ruta, versión, conteo, ID y oráculo por caso). No inferir 229 filas de Module 2 ni de Algebra114. Si SOURCE_NOT_LOCATED, documentar inventario y no fabricar matriz. Global **OPEN**; S19 null; SG28/DIST/H2, S25, SY-P-23, X04/X14 Plus sin cambios.
+**Álgebra 229 — fuente normativa localizada; gate de integridad pendiente.** Fuente original congelada en `qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz`; el verificador `qa/certification/check_algebra229_source.py` comprueba SHA-256 `8cd36ff08343f98f92abd83e2b162d565e0cbe5c59dc73f26b1c018f77d663c7`, 229 filas, 229 IDs, secciones A–L y niveles N1/N2/N3. Para recuperar la fuente Markdown exacta en un checkout: `python3 qa/certification/check_algebra229_source.py --restore`. Próximo paso único: `ALGEBRA229-SOURCE-INTEGRITY` hasta que el workflow específico pase; después `ALGEBRA229-FIXTURE-PROMOTE-VALIDATE` para validar/publicar el JSONL canónico sin alterar ningún oráculo. No inferir casos desde Module 2 ni Algebra114. Global **OPEN**; S19 null; SG28/DIST/H2, S25, SY-P-23, X04/X14 Plus sin cambios.
 
 ## 2026-10-20 UTC — Reconciliación AS-MUL-01..06: rewrites fabricados revertidos; bloque K PARTIAL_BILATERAL; siguiente AS-CONV-01
 
