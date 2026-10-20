@@ -1,5 +1,22 @@
 > Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
 
+## 2026-10-20 UTC — AS-B-22 PASS sin cambio de producto (continuity r197)
+
+**ALGEBRA229-AS-B-22** — factorizar `x^{2}+1` → `x^{2} + 1` (fila N1; irreducible sobre ℚ y ℝ, debe quedar igual).
+
+| Repo | Technical SHA | Gates (SUCCESS sobre el SHA exacto) |
+|------|---------------|--------------------------------------|
+| Lite | `67d8fd4` | cumulative [39514134073](https://github.com/c2melendez/precision-lab-lite/actions/runs/39514134073), h1d [39514138803](https://github.com/c2melendez/precision-lab-lite/actions/runs/39514138803), scientific-ui [39514141867](https://github.com/c2melendez/precision-lab-lite/actions/runs/39514141867) |
+| Plus | `1884ece` | cumulative [39514144381](https://github.com/c2melendez/precision-lab-plus/actions/runs/39514144381), h1d [39514147092](https://github.com/c2melendez/precision-lab-plus/actions/runs/39514147092) |
+
+Test-first sin cambios de producto. Evidencia: `tests/algebra229AsB22.audit.test.ts` (Lite) y `backend/tests/test_algebra229_as_b22.py` (Plus). El test exige fila N1 en la matriz, resultado equivalente a `x^2+1` y ausencia de producto, sin fijar el orden textual. Plus comprueba además que el resultado es una suma (`sp.Add`).
+
+Registro pendiente de D20 cerrado: gates de `6861492` (r196 docs), cumulative [39510010869](https://github.com/c2melendez/precision-lab-lite/actions/runs/39510010869), h1d [39510014408](https://github.com/c2melendez/precision-lab-lite/actions/runs/39510014408), scientific-ui [39510017565](https://github.com/c2melendez/precision-lab-lite/actions/runs/39510017565), todos SUCCESS con `head_sha` igual a `6861492`.
+
+Estado: AS-B-23 (`x^2-2`) queda en `ON_HOLD`, pendiente de instrucción. Global OPEN.
+
+---
+
 ## 2026-10-20 UTC — Gates de 4e251ef: timeout de AS-B-20 a 120 s (continuity r196)
 
 Commit `4e251ef` (`tests/algebra229AsB20.audit.test.ts`, +1 −1): timeout de 120 s en el test de equivalencia de `factor(x^4+x^2y^2+y^4)`. Corrige el fallo de cumulative en `57a1b80` (run 39504852620), causado por el timeout por defecto de 5 s en ese mismo test (5058 ms).

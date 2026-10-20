@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 196,
+  "revision": 197,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -48,29 +48,29 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-22-TEST-FIRST",
+    "id": "ALGEBRA229-AS-B-23-TEST-FIRST",
     "status": "ON_HOLD",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "4e251ef8b8a3a46aca0e8bc3a55a8a8493837540",
-      "c2melendez/precision-lab-plus": "f55e470a72b2d503981a4e583ac97838990e531c"
+      "c2melendez/precision-lab-lite": "67d8fd4639509d026b97ba43936b97ba6cafc5c0",
+      "c2melendez/precision-lab-plus": "1884ece3507c2a7abb17c0b30afb3424f6f9eeb8"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39509068763,
-        39509071376,
-        39509074292
+        39514134073,
+        39514138803,
+        39514141867
       ],
       "c2melendez/precision-lab-plus": [
-        39479963827,
-        39479963755
+        39514144381,
+        39514147092
       ]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..21 + D17/D18/D19 safeguard",
+      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..22 + D17/D18/D19 safeguard",
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand/factor + source-row; not matrix-wide"
     },
-    "action": "Gates de 4e251ef (timeout AS-B-20 a 120 s) registrados en r196 (D20). AS-B-22 en espera de instrucción del usuario. Global OPEN."
+    "action": "AS-B-22 PASS sin cambio de producto bilateral (r197). Siguiente AS-B-23 (x^2-2, irreducible sobre ℚ) en espera de instrucción del usuario. Global OPEN."
   },
   "blockers": [
     {
@@ -90,5 +90,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r196 2026-10-20: gates D20 de 4e251ef (timeout AS-B-20 a 120 s): cumulative, h1d y scientific-ui SUCCESS, head_sha verificado. AS-B-22 en ON_HOLD. Global OPEN."
+  "ledger_note": "r197 2026-10-20: AS-B-22 PASS sin cambio de producto bilateral (Lite 67d8fd4, Plus 1884ece), gates SUCCESS. Registra gates D20 de 6861492 (r196). AS-B-23 en ON_HOLD. Global OPEN."
 }
