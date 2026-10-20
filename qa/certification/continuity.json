@@ -1,1 +1,67 @@
-PLACEHOLDER
+{
+  "schema_version": 1,
+  "revision": 152,
+  "repository": "c2melendez/precision-lab-lite",
+  "canonical_branch": "qa/syntax-audit-in625-a1",
+  "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
+  "baseline_case": "AS-MUL-01..06",
+  "baseline_status": "PARTIAL_BILATERAL",
+  "global_certification": "OPEN",
+  "prose_only_paths": [
+    "README.md",
+    "qa/certification/README.md",
+    "qa/certification/CURRENT_STATE.md",
+    "qa/certification/EXECUTION_LOG.md",
+    "qa/certification/CONTINUITY_NEXT_ACTION.json",
+    "qa/certification/EXECUTION_LOG_AS229_SECTION_A.md",
+    "qa/certification/ALGEBRA229_PREPARATION.md"
+  ],
+  "gates": {
+    "cumulative": {
+      "workflow": ".github/workflows/in625-cumulative-certification.yml",
+      "inputs": ["*"],
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    "h1d": {
+      "workflow": ".github/workflows/in625-h1d-reentry.yml",
+      "inputs": ["*"],
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    "security": {
+      "workflow": ".github/workflows/certification-dependency-gates.yml",
+      "inputs": ["*"],
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "allow_reuse": false
+    },
+    "scientific": {
+      "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
+      "inputs": ["*"],
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
+    }
+  },
+  "next_action": {
+    "id": "ALGEBRA229-AS-A-06-TEST-FIRST",
+    "status": "READY",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "f41649e1213dc9a22fb1e79520e8c436b832b96f",
+      "c2melendez/precision-lab-plus": "496ed16ecbe71c35ac16ad5dc49e7c56e744c382"
+    },
+    "run_ids_by_repo": {
+      "c2melendez/precision-lab-lite": [39397703380],
+      "c2melendez/precision-lab-plus": [39397716265]
+    },
+    "completed_scoped": {
+      "id": "ALGEBRA229-AS-A-01..05",
+      "status": "PASS_SCOPED",
+      "scope": "unit/HTTP expand + source-row; not matrix-wide"
+    },
+    "action": "AS-A-01..05 PASS_SCOPED bilateral. Next AS-A-06 expand (x+y+z)^2. Do not re-run fixture promote. Global OPEN. Full pre-r152 ledger blob 6d9585f6… in git history."
+  },
+  "blockers": [
+    {"id": "H2-SG28-DIST-01..08", "status": "BLOCKED"},
+    {"id": "SECURITY-S25", "status": "BLOCKED"},
+    {"id": "SY-P-23", "status": "OPEN"},
+    {"id": "SY-X-04-PLUS-HTTP", "status": "BLOCKED"}
+  ],
+  "ledger_note": "r152 reconciled 2026-10-20. Detailed evidence_by_channel/case_evidence archived in git blob 6d9585f612b540bc9e96b522d0d473ba7a446733. CONTINUITY_NEXT_ACTION.json mirrors next_action."
+}
