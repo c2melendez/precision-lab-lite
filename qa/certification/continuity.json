@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 188,
+  "revision": 189,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -51,14 +51,14 @@
     "id": "ALGEBRA229-AS-B-22-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "4636c9924e7afe71f16ad275701cff33ebd7ce7c",
+      "c2melendez/precision-lab-lite": "d7cf042dfb3652bf44e9d4fa17270e2920618dcd",
       "c2melendez/precision-lab-plus": "f55e470a72b2d503981a4e583ac97838990e531c"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39479961317,
-        39479961560,
-        39479961091
+        39481757500,
+        39481757734,
+        39481757683
       ],
       "c2melendez/precision-lab-plus": [
         39479963827,
@@ -66,11 +66,11 @@
       ]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..21",
+      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..21 + D17 safeguard",
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand/factor + source-row; not matrix-wide"
     },
-    "action": "AS-B-21 PASS sin cambio de producto bilateral. Regla de diferencia de cuadrados no implementada (no requerida). Next AS-B-22 (x^2+1 debe quedar igual) solo con instrucción del usuario. Global OPEN."
+    "action": "Salvaguarda D17 (diferencia de cuadrados, CAS-verified) cerrada en Lite. Next AS-B-22 (x^2+1 debe quedar igual) pendiente de go-ahead. Global OPEN."
   },
   "blockers": [
     {
@@ -90,5 +90,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r188 2026-10-20: AS-B-21 PASS sin cambio de producto bilateral (Lite {LITE_SHA[:7]}, Plus {PLUS_SHA[:7]}). Regla de diferencia de cuadrados no implementada: no requerida. Next AS-B-22 (irreducible, debe quedar igual)."
+  "ledger_note": "r189 2026-10-20: salvaguarda D17 diferencia de cuadrados (Lite bda4c99 regla, d7cf042 pruebas; gates SUCCESS). Next AS-B-22."
 }
