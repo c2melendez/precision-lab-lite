@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 184,
+  "revision": 185,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -48,29 +48,29 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-19-TEST-FIRST",
+    "id": "ALGEBRA229-AS-B-20-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "ea5a76d18143c4f5a5a889ca279726a37c4d4896",
-      "c2melendez/precision-lab-plus": "6114033fa7ac0ac7b8439777c898b65691b6bc7b"
+      "c2melendez/precision-lab-lite": "bf11ee2af55879c10dbbb173420196cb2c47747b",
+      "c2melendez/precision-lab-plus": "80903249daf4e67a613aed17d9ef1d1ed5c39ae4"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39462375918,
-        39462375646,
-        39462375444
+        39471800824,
+        39471800800,
+        39471800799
       ],
       "c2melendez/precision-lab-plus": [
-        39453858654,
-        39453858516
+        39471803861,
+        39471803916
       ]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..18",
+      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..19",
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand/factor + source-row; not matrix-wide"
     },
-    "action": "AS-B-18 PASS_SCOPED bilateral (test-first sin cambios de producto; Lite gates SUCCESS on ea5a76d). Next AS-B-19 per frozen matriz Section B. Scope decision r183 (B-24/B-25 with explicit field suffix) still pending implementation. Global OPEN."
+    "action": "AS-B-19 PASS_SCOPED bilateral (test-first sin cambios de producto; Lite gates SUCCESS on bf11ee2). Next AS-B-20 per frozen matriz Section B (N3, multivariable). Scope decision r183 (B-24/B-25 with explicit field suffix) still pending implementation. Global OPEN."
   },
   "blockers": [
     {
@@ -90,5 +90,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r184 2026-10-20: AS-B-18 PASS_SCOPED bilateral (test-first sin cambios de producto); next AS-B-19. Lite 39462375918/39462375646/39462375444 SUCCESS."
+  "ledger_note": "r185 2026-10-20: AS-B-19 PASS_SCOPED bilateral (test-first sin cambios de producto); next AS-B-20. Lite 39471800824 39471800800 39471800799 SUCCESS."
 }
