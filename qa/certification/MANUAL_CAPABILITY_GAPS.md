@@ -337,3 +337,9 @@ Plus solo reescribe la entrada original exacta `Abs(x)**2` (símbolo `x`) a `x**
 ## 2026-10-19 UTC — AS-RAD: alcance acotado del solver de radicales
 
 Soportado: una variable, radicandos polinómicos de coeficientes racionales, índices 2..4, hasta 2 radicales distintos (Lite) / 3 (Plus), sin anidamiento. En Plus `cbrt(...)` se parsea como `Piecewise` y no entra en el solver; AS-RAD-07 se certifica con `root(x-1,3)` y `(x-1)**(1/3)`.
+
+## 2026-10-20 UTC — AS-MUL: factorización multivariable, supuestos y suma de cuadrados
+
+- **Lite (Algebrite 1.4):** `factor` no factoriza polinomios multivariables (AS-MUL-02 devuelve la forma expandida; AS-MUL-03 no termina en tiempo acotado) y `gcd` multivariable devuelve 1, por lo que `(x-y)/(x^2-y^2)` no se reduce a `1/(x+y)` (AS-MUL-04; el dominio `x^2-y^2≠0` sí se conserva). Registrados como `it.fails`/`it.todo`. Las reescrituras por cadena exacta introducidas en `a564285e`/`08b81dec` se revirtieron: no son capacidad.
+- **Ambos motores:** ninguna operación acepta supuestos del usuario (AS-MUL-05 `x+y+z=0 ⇒ 3xyz`); los tests solo comprueban que no se afirma `3xyz` incondicionalmente. No existe reescritura a `½((x−y)²+(y−z)²+(z−x)²)` (AS-MUL-06); Plus la registra como `xfail(strict)`.
+- Salida: capacidad general (no por entrada exacta) con test original verde y gates exact-SHA.

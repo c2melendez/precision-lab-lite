@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 149,
+  "revision": 150,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "9b96156430811a5a92cbb05a5aed0978c88d32e5",
-  "baseline_case": "AS-DOM-06",
-  "baseline_status": "VERIFIED_BILATERAL_SCOPED",
+  "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
+  "baseline_case": "AS-MUL-01..06",
+  "baseline_status": "PARTIAL_BILATERAL",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -134,17 +134,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-MUL-01-TEST-FIRST",
+    "id": "ALGEBRA114-AS-CONV-01-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "9b96156430811a5a92cbb05a5aed0978c88d32e5",
-      "c2melendez/precision-lab-plus": "70b6592b3b93ef1a7052a8573bacaa48f6514d34"
+      "c2melendez/precision-lab-lite": "f093e0c75204707a0b81a8497575f54cda96e5bb",
+      "c2melendez/precision-lab-plus": "9c0126613aacb7b0cd8fca148a6cf7eb1785d14c"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [],
       "c2melendez/precision-lab-plus": []
     },
-    "action": "AS-DOM-01..06 VERIFIED_BILATERAL_SCOPED. Next canonical block of algebra114_source.md is K. AS-MUL (6 rows). Re-check HEAD/Actions first; add original tests test-first in both repos; exact-SHA gates; keep global OPEN."
+    "action": "AS-MUL reconciled (fabricated Lite rewrites reverted; 01 VERIFIED_BILATERAL_SCOPED, 02-04 PARTIAL_BILATERAL, 05-06 CAPABILITY_GAP). Next canonical block L. AS-CONV-01..08: re-check HEAD/Actions; add original tests test-first in both repos; general fixes only (no exact-input rewrites); exact-SHA gates; keep global OPEN."
   },
   "blockers": [
     {
@@ -3031,6 +3031,52 @@
           },
           "skip": "false",
           "logs_reviewed": true
+        }
+      }
+    },
+    "algebra114_as_mul_01_06": {
+      "status": "PARTIAL_BILATERAL",
+      "contract": "AS-MUL-01..06 block K; contract form is the oracle, numeric agreement only proves no wrong value",
+      "per_case": {
+        "AS-MUL-01": "VERIFIED_BILATERAL_SCOPED",
+        "AS-MUL-02": "PASS_PLUS/CAPABILITY_GAP_LITE",
+        "AS-MUL-03": "PASS_PLUS/CAPABILITY_GAP_LITE",
+        "AS-MUL-04": "PASS_PLUS/CAPABILITY_GAP_LITE (domain kept in both)",
+        "AS-MUL-05": "CAPABILITY_GAP_BILATERAL",
+        "AS-MUL-06": "CAPABILITY_GAP_BILATERAL"
+      },
+      "invalidated": {
+        "lite_commits": [
+          "a564285e",
+          "66c1fb97",
+          "08b81dec",
+          "57f53f01"
+        ],
+        "reason": "exact-input hardcoded answers, relaxed assertions, regex corruption; doc claim outside canonical index"
+      },
+      "evidence_by_repo": {
+        "c2melendez/precision-lab-lite": {
+          "technical_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
+          "runs": {
+            "cumulative": 39351817499,
+            "h1d": 39351818342,
+            "scientific_native": 39351817572
+          },
+          "skip": "false",
+          "logs_reviewed": true,
+          "evidence_executed": true
+        },
+        "c2melendez/precision-lab-plus": {
+          "technical_sha": "9c0126613aacb7b0cd8fca148a6cf7eb1785d14c",
+          "runs": {
+            "cumulative": 39351818955,
+            "h1d": 39351818876,
+            "native": "not triggered (tests-only)",
+            "security": "not triggered (tests-only)"
+          },
+          "skip": "false",
+          "logs_reviewed": true,
+          "evidence_executed": true
         }
       }
     }
