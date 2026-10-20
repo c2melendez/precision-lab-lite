@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 172,
+  "revision": 173,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -48,17 +48,17 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-07-LITE-FACTOR",
-    "status": "BLOCKED",
+    "id": "ALGEBRA229-AS-B-08-TEST-FIRST",
+    "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "6bafda356a53aba542cd37a0bc1547397c424a2d",
+      "c2melendez/precision-lab-lite": "89b7055fdf65dd1f239fc426eb33ee66fa282cd6",
       "c2melendez/precision-lab-plus": "da361aee09728e0e0525e43615b6418b4ec9fb14"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39433167930,
-        39433167821,
-        39433168379
+        39434995883,
+        39434995961,
+        39434995969
       ],
       "c2melendez/precision-lab-plus": [
         39433181526,
@@ -66,11 +66,11 @@
       ]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..06",
+      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..07",
       "status": "PASS_SCOPED",
       "scope": "unit/HTTP expand/factor + source-row; not matrix-wide"
     },
-    "action": "AS-B-07 Plus PASS (cumulative+h1d SUCCESS on da361ae). Lite FAIL_PRODUCT on 6bafda3: Algebrite factor(x^6-1) returns (x-1)(x+1)(x^2+x+1)(x^2+1), incorrect; diff x^5+x^4-x^2-x. Decision pending: general verified factorization fallback in Lite engine. Global OPEN."
+    "action": "AS-B-07 PASS_SCOPED bilateral (Lite cumulative+scientific-ui+h1d SUCCESS on 89b7055 with verified univariate factor fallback; Plus cumulative+h1d SUCCESS on da361ae). Next AS-B-08 per frozen matriz Section B. Global OPEN."
   },
   "blockers": [
     {
@@ -90,5 +90,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r172 2026-10-20: AS-B-07 Plus PASS; Lite FAIL_PRODUCT (Algebrite factor(x^6-1) wrong). Lite 39433167930 failure, 39433167821/39433168379 success; Plus 39433181526/39433181543 SUCCESS."
+  "ledger_note": "r173 2026-10-20: AS-B-07 PASS_SCOPED bilateral (Lite fallback for factor(...)); next AS-B-08. Lite 39434995883/39434995961/39434995969; Plus 39433181526/39433181543 SUCCESS."
 }

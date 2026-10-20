@@ -104,6 +104,12 @@ Commit técnico Lite `6bafda3` (test-first AS-B-07 `factor x^6-1`) / Plus `da361
 
 ---
 
+## 2026-10-20 UTC — AS-B-07 PASS_SCOPED bilateral (continuity r173)
+
+Lite: test-first `6bafda3` (acumulativo 39433167930 **failure**: Algebrite `factor(x^6-1)` incorrecto), corrección `89b7055` (factor verificado + respaldo univariado; cumulative 39434995883, scientific-ui 39434995961, h1d 39434995969 SUCCESS). Plus: test-first `da361ae` (cumulative 39433181526, h1d 39433181543 SUCCESS). AS-LIM-05 pasa de GAP (`it.fails`) a `it`. Global OPEN. Siguiente: AS-B-08.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.
