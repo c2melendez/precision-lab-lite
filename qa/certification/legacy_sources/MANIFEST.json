@@ -1,0 +1,83 @@
+[
+  {
+    "key": "AS229",
+    "canonical_gz": "matriz_algebra_simbolica.md.gz",
+    "original_name": "matriz_algebra_simbolica.md",
+    "sha256_raw": "8cd36ff08343f98f92abd83e2b162d565e0cbe5c59dc73f26b1c018f77d663c7",
+    "bytes_raw": 29940,
+    "bytes_gz": 8464,
+    "in_product_before": true
+  },
+  {
+    "key": "AS114",
+    "canonical_gz": "matriz_algebra_simbolica_estres_114.md.gz",
+    "original_name": "Matriz de estres Algebra simbolica.md",
+    "sha256_raw": "0d7ce9e02e6f381be5ef3b6006db75a4b26371ad13fbbc1d564217d2b0eb8b98",
+    "bytes_raw": 14319,
+    "bytes_gz": 4182,
+    "in_product_before": false
+  },
+  {
+    "key": "IN309",
+    "canonical_gz": "matriz_sintaxis_entrada_309.md.gz",
+    "original_name": "matriz_sintaxis_entrada.md",
+    "sha256_raw": "d037b562bc82c2f47b25c205cb8912c9c8b1346c0a477376c2cca287d3c7fcdb",
+    "bytes_raw": 32287,
+    "bytes_gz": 9576,
+    "in_product_before": false
+  },
+  {
+    "key": "IN625",
+    "canonical_gz": "matriz_entrada_sintaxis_625.md.gz",
+    "original_name": "matriz_entrada_sintaxis_calculadora.md",
+    "sha256_raw": "58fbc0ed04aef158148981fc28074d470e45ec07a67604f89b3847b55c625528",
+    "bytes_raw": 63691,
+    "bytes_gz": 21666,
+    "in_product_before": false
+  },
+  {
+    "key": "TR324",
+    "canonical_gz": "ejercicios_trigonometria.md.gz",
+    "original_name": "ejercicios_trigonometria_calculadora.md",
+    "sha256_raw": "8d3904fd1c53f8af694caf66171b99caf821ca5d94dfbef8677d73b7a76054f7",
+    "bytes_raw": 27939,
+    "bytes_gz": 5718,
+    "in_product_before": false
+  },
+  {
+    "key": "LER",
+    "canonical_gz": "matriz_log_exp_radicales.md.gz",
+    "original_name": "matriz_log_exp_radicales_calculadora.md",
+    "sha256_raw": "bb7030e28f11b2bfb61b6c7d64e3d4e1c758702cc15d2d0cffc0304433fd4912",
+    "bytes_raw": 47710,
+    "bytes_gz": 11330,
+    "in_product_before": false
+  },
+  {
+    "key": "MV153",
+    "canonical_gz": "matriz_matrices_vectores.md.gz",
+    "original_name": "matriz_matrices_vectores.md",
+    "sha256_raw": "55ae614d03d22d1ef30212ccd3bf0a3f7aea21f10228856fdaed31b40c43e18b",
+    "bytes_raw": 32489,
+    "bytes_gz": 7946,
+    "in_product_before": false
+  },
+  {
+    "key": "EDCX",
+    "canonical_gz": "matriz_edo_variable_compleja.md.gz",
+    "original_name": "matriz_edo_variable_compleja_calculadora.md",
+    "sha256_raw": "09793d3f97052cc292e9773fef19c0d51208a85a395f311756dad27af73e40a5",
+    "bytes_raw": 66534,
+    "bytes_gz": 17760,
+    "in_product_before": false
+  },
+  {
+    "key": "GR519",
+    "canonical_gz": "matriz_graficacion.md.gz",
+    "original_name": "matriz_graficacion_calculadora.md",
+    "sha256_raw": "e59905160bb261fb43f80d42ea51a9f814cd176edb436f2f032f6f8c8ac3ee15",
+    "bytes_raw": 70814,
+    "bytes_gz": 21785,
+    "in_product_before": false
+  }
+]
