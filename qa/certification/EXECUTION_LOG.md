@@ -200,6 +200,11 @@ Commit técnico Lite `a0b5718` (test restaurado) sobre producto `24e89b6` (regla
 - Sin cambio de producto. Regla de diferencia de cuadrados no implementada (opción C de D16 no necesaria). Respaldo B no activado.
 - Commit de decisión D16 y alcance: `59d49dd`.
 
+## 2026-10-20 UTC — Salvaguarda diferencia de cuadrados (continuity r189)
+
+- Lite `bda4c99055530b972716f1de719fb0fd273046cf`: regla acotada D17 en `verifyFactorResult`, verificada por CAS.
+- Lite `d7cf042dfb3652bf44e9d4fa17270e2920618dcd`: pruebas `tests/differenceOfSquaresRule.test.ts` (regresiones x^2+1, x^2-2) con gates cumulative 39481757500, h1d 39481757734, scientific-ui 39481757683 (SUCCESS).
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.
