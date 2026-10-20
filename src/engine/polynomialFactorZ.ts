@@ -284,6 +284,22 @@ export function quarticBiquadraticCandidate(inner: string): string | null {
 }
 
 /**
+ * AS-B-21 safeguard: diferencia de cuadrados acotada (P)^2 - K·v^2 con K cuadrado
+ * perfecto, p. ej. (x^2+1)^2-4*x^2 -> (x^2+1-2*x)*(x^2+1+2*x). Solo reconoce esa
+ * forma sintáctica; quien llame debe verificar la equivalencia con el CAS.
+ */
+export function differenceOfSquaresCandidate(inner: string): string | null {
+  const m = inner.replace(/\s+/g, "").match(/^\((.+)\)\^2-(\d+)\*?([a-z])\^2$/);
+  if (!m) return null;
+  const [, p, kText, v] = m;
+  const k = Number(kText);
+  const r = Math.round(Math.sqrt(k));
+  if (k === 0 || r * r !== k) return null;
+  const q = `${r}*${v}`;
+  return `(${p}-${q})*(${p}+${q})`;
+}
+
+/**
  * Verifica que el resultado de factor(...) sea equivalente a su entrada.
  * Si Algebrite devuelve algo no equivalente, usa la factorización univariada
  * entera cuando esta sí es verificable. Si no, conserva el resultado original.
@@ -307,6 +323,16 @@ export function verifyFactorResult(input: string, result: string, run: (s: strin
   if (quartic !== null && !result.includes("(")) {
     try {
       if (run(`(${quartic})-(${inner})`).replace(/\s+/g, "") === "0") return quartic;
+    } catch {
+      return result;
+    }
+  }
+  // AS-B-21 safeguard: bounded difference of squares (see differenceOfSquaresCandidate).
+  // Replaces an unfactored Algebrite result only when the CAS confirms equivalence.
+  const squares = differenceOfSquaresCandidate(inner);
+  if (squares !== null && !result.includes("(")) {
+    try {
+      if (run(`(${squares})-(${inner})`).replace(/\s+/g, "") === "0") return squares;
     } catch {
       return result;
     }
