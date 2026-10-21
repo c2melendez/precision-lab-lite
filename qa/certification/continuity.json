@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 204,
+  "revision": 205,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -19,50 +19,80 @@
   "gates": {
     "cumulative": {
       "workflow": ".github/workflows/in625-cumulative-certification.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-16-continuity-v1"
     },
     "h1d": {
       "workflow": ".github/workflows/in625-h1d-reentry.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-16-continuity-v1"
     },
     "security": {
       "workflow": ".github/workflows/certification-dependency-gates.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-16-continuity-v1",
       "allow_reuse": false
     },
     "scientific": {
       "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
     }
   },
   "next_action": {
-    "id": "TRIG-EV-D-02-TEST-FIRST",
+    "id": "TRIG-EV-D-03-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
-      "c2melendez/precision-lab-plus": "4e625d1b667d426d6d93d52e9e0b5d4acc193293"
+      "c2melendez/precision-lab-lite": "0601287b90129a6529bfd133d1242c8937c6a0ba",
+      "c2melendez/precision-lab-plus": "c15349a10ef4a605c4a7ce638ec5883c069494e8"
     },
     "run_ids_by_repo": {
-      "c2melendez/precision-lab-lite": [39545169322, 39545169419, 39545169496],
-      "c2melendez/precision-lab-plus": [39545579931, 39545579919]
+      "c2melendez/precision-lab-lite": [
+        39547288506,
+        39547288469,
+        39547288515
+      ],
+      "c2melendez/precision-lab-plus": [
+        39547294497,
+        39547294494
+      ]
     },
     "completed_scoped": {
-      "id": "TRIG-EV-D-01; ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..28",
+      "id": "TRIG-EV-D-01..02; ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..28",
       "status": "PASS_SCOPED",
-      "scope": "EV-D-01 sin(pi/6)=1/2 unit/HTTP; Plus HTTP ASCII only"
+      "scope": "EV-D-01 sin(pi/6)=1/2 y EV-D-02 cos(pi/3)=1/2 unit/HTTP; Plus HTTP ASCII only"
     },
-    "action": "EV-D-01 PASS_SCOPED bilateral (r204). Siguiente EV-D-02 cos(pi/3)=1/2. AS-B-29 ON_HOLD. Global OPEN."
+    "action": "EV-D-02 PASS_SCOPED bilateral (r205). Siguiente EV-D-03 tan(pi/4)=1 READY. AS-B-29 ON_HOLD. Global OPEN."
   },
   "blockers": [
-    {"id": "H2-SG28-DIST-01..08", "status": "BLOCKED"},
-    {"id": "SECURITY-S25", "status": "BLOCKED"},
-    {"id": "SY-P-23", "status": "OPEN"},
-    {"id": "SY-X-04-PLUS-HTTP", "status": "BLOCKED"},
-    {"id": "ALGEBRA229-AS-B-29", "status": "ON_HOLD"}
+    {
+      "id": "H2-SG28-DIST-01..08",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "SECURITY-S25",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "SY-P-23",
+      "status": "OPEN"
+    },
+    {
+      "id": "SY-X-04-PLUS-HTTP",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "ALGEBRA229-AS-B-29",
+      "status": "ON_HOLD"
+    }
   ],
-  "ledger_note": "r204 2026-10-21: EV-D-01 PASS_SCOPED bilateral (Lite 13bdc7c, Plus 4e625d1 ASCII HTTP); no product change. Next EV-D-02. Global OPEN."
+  "ledger_note": "r205 2026-10-21: EV-D-02 PASS_SCOPED bilateral (Lite 0601287, Plus c15349a), sin cambio de producto, gates SUCCESS; excepción D20 de r204 registrada. EV-D-03 READY. Global OPEN."
 }
