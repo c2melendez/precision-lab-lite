@@ -21,7 +21,8 @@ describe("Trigonometry EV-D-04 csc(pi/6)", () => {
   });
 
   it("evaluates ASCII csc(pi/6) to exact 2 through Algebrite", () => {
-    const got = evaluate(INPUT_ASCII).replace(/\s+/g, "");
+    const parsed = parseExpression(INPUT_ASCII, "RAD");
+    const got = evaluate(parsed.algebrite).replace(/\s+/g, "");
     expect(got).toBe(EXPECTED);
     expect(evaluate("(" + got + ")-2").trim()).toBe("0");
   });
