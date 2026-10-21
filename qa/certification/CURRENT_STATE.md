@@ -1,3 +1,17 @@
+## 2026-10-21 UTC — EV-D-08 cierre r220: PASS_SCOPED_BILATERAL
+
+**EV-D-08 — `sin(1) ≈ 0.841470985`: PASS_SCOPED_BILATERAL.** Se verificó la fila congelada `| EV-D-08 | \`\sin(1)\` | \`\approx 0.841470985\` |` y se documentó la convención de oráculo para filas `\approx` en `EXECUTION_PROTOCOL.md`. No se modificó código de producto.
+
+- cumulative: [39561366616](https://github.com/c2melendez/precision-lab-lite/actions/runs/39561366616) — SUCCESS; SHA técnico `d605a23bac884d99b5eee38a5a1f4197c4172c57` exacto.
+- h1d: [39561366691](https://github.com/c2melendez/precision-lab-lite/actions/runs/39561366691) — SUCCESS; mismo SHA.
+- scientific-ui: [39561366624](https://github.com/c2melendez/precision-lab-lite/actions/runs/39561366624) — SUCCESS; mismo SHA.
+- Prueba EV-D-08: 4/4 en `tests/trigonometryEvD08.audit.test.ts`; suite Vitest 336 archivos, 1982 passed, 8 expected fail, 34 TODO; typecheck y production build SUCCESS.
+- El motor conserva la forma exacta `sin(1)`; el oráculo comprueba que `0.841470985` es el redondeo correcto a 9 decimales y que el canal `float` (6 decimales) coincide con tolerancia 1e-6. Una salida solo decimal no certifica.
+- Certificación global continúa OPEN por bloqueos independientes; este cierre solo certifica EV-D-08.
+- Siguiente objetivo en ejecución: TRIG-EV-D-09-TEST-FIRST (`cos(2) ≈ -0.416146837`), tests publicados en el SHA técnico `7e6d29ae4c391805154ebae8029436792ee010fb`.
+
+---
+
 ## 2026-10-21 UTC — EV-D-07 cierre r219: PASS_SCOPED_BILATERAL
 
 **EV-D-07 — `sin(5π/4) = -√2/2`: PASS_SCOPED_BILATERAL.** Se verificó la fila congelada `| EV-D-07 | \`\sin\left(\frac{5\pi}{4}\right)\` | \`-\frac{\sqrt{2}}{2}\` |`. Los tres gates requeridos terminaron SUCCESS con `head_sha` exacto; no se modificó código de producto.

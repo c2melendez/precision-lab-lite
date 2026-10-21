@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 219,
+  "revision": 220,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -48,10 +48,13 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EV-D-08-TEST-FIRST",
-    "status": "READY_SOURCE_ROW_VERIFICATION",
-    "action": "EV-D-07 closed PASS_SCOPED_BILATERAL (runs 39560031960/39560031969/39560031973 on 1275c249). Next: verify the exact EV-D-08 row (sin(1) approx 0.841470985) in the frozen trigonometry matrix and document the approx-row oracle convention (tolerance and documented digits) before authoring bilateral tests; do not weaken exact-row oracles.",
-    "technical_sha_by_repo": {},
+    "id": "TRIG-EV-D-09-TEST-FIRST",
+    "status": "IN_PROGRESS",
+    "action": "EV-D-08 closed PASS_SCOPED_BILATERAL (runs 39561366616/39561366691/39561366624 on d605a23b). EV-D-09 tests (cos(2) approx -0.416146837) are published on Lite 7e6d29ae / Plus efeba0ca and their gates are running; review jobs/logs, then close or diagnose without changing product.",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "7e6d29ae4c391805154ebae8029436792ee010fb",
+      "c2melendez/precision-lab-plus": "efeba0caecfae5ce824c481d02b3b7bb21d05d76"
+    },
     "product_changed": false
   },
   "blockers": [
@@ -76,7 +79,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r219: EV-D-07 sin(5*pi/4)=-sqrt(2)/2 PASS_SCOPED_BILATERAL; all required gates SUCCESS on exact technical SHAs (Lite 1275c249, Plus 1717a160); product unchanged; global certification OPEN. Next: verify exact frozen EV-D-08 source row and define the approx-row oracle before tests.",
+  "ledger_note": "r220: EV-D-08 sin(1)~0.841470985 PASS_SCOPED_BILATERAL with the new approx-row oracle convention; all required Lite gates SUCCESS on d605a23b; product unchanged. EV-D-09 (cos(2)) tests published and gates running.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -402,5 +405,49 @@
     "global_certification": "OPEN",
     "next_objective": "TRIG-EV-D-08-TEST-FIRST",
     "next_status": "READY_SOURCE_ROW_VERIFICATION"
+  },
+  "ev_d_08_closure_r220": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "sin(1) approx 0.841470985; Lite official parser ASCII+LaTeX keeps exact sin(1); Plus HTTP ASCII keeps exact sin(1); approx-oracle convention documented in EXECUTION_PROTOCOL.md",
+    "product_changed": false,
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "d605a23bac884d99b5eee38a5a1f4197c4172c57",
+      "c2melendez/precision-lab-plus": "e532b9e20054580b0d2f8d2d6ea702d7b173a55d"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39561366616,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39561366616",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "d605a23bac884d99b5eee38a5a1f4197c4172c57",
+        "head_sha_matches": true,
+        "tests": "336 files; 1982 passed; 8 expected fail; 34 TODO; EV-D-08 file 4/4 passed"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39561366691,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39561366691",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "d605a23bac884d99b5eee38a5a1f4197c4172c57",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39561366624,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39561366624",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "d605a23bac884d99b5eee38a5a1f4197c4172c57",
+        "head_sha_matches": true
+      }
+    ],
+    "oracle_convention": "EV-D-08 is the first documented approximation row: exact symbolic form mandatory, documented value is the 9-decimal rounding, tolerance 5e-10 for high-precision engines and 1e-6 for Lite's 6-decimal float channel.",
+    "diagnostic": "No diagnostic needed: local pre-push run passed in both engines on the first attempt.",
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-D-09-TEST-FIRST",
+    "next_status": "IN_PROGRESS"
   }
 }
