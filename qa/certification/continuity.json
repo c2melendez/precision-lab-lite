@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 229,
+  "revision": 230,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "bd9c207c1b091bfd017fb8f3ca7ff8f21e06415b",
-  "baseline_case": "TRIG-EV-I-09-I-10",
+  "technical_baseline_sha": "16e5ca750f103782d790acc6a579ec1999716a12",
+  "baseline_case": "LOG-EXP-EV-E-01-14",
   "baseline_status": "PASS_SCOPED_BILATERAL",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -48,12 +48,12 @@
     }
   },
   "next_action": {
-    "id": "EXP-EV-E-EVALUATION",
+    "id": "EXP-EV-R-EVALUATION",
     "status": "IN_PROGRESS",
-    "action": "EV-L-01..14 and EV-I-09/I-10 are closed PASS_SCOPED_BILATERAL on their exact technical SHAs (see ev_l_closure_r229 / ev_i09_i10_closure_r229). Next objective: EV-E-01..14 (exponentials) of matriz_log_exp_radicales. Verified probe on both engines: EV-E-01..09, EV-E-11 and EV-E-13 are already correct; EV-E-10 e^(ln 2+ln 3) returns 6 in Plus but stays symbolic exp(log(2)+log(3)) in Lite (Lite product defect: exact sum-of-logs simplification); EV-E-12 (1+1/1000)^1000 returns a ~3600-digit exact fraction as result_text in BOTH engines while result_approx is correct (bilateral presentation/complexity defect: prefer the documented approximation or a bounded exact form); EV-E-14 0^0 returns 1 in both engines, which the row admits only under a declared convention (declare it in MANUAL_CAPABILITY_GAPS). Add bilateral EV-E-01..14 tests, fix Lite EV-E-10, decide EV-E-12 presentation, then run the cumulative gates on the new technical SHA. Keep the independent blockers unchanged.",
+    "action": "EV-E-01..14 are closed PASS_SCOPED_BILATERAL on their exact technical SHAs (see ev_e_closure_r230). Next objective: EV-R-01..14 (radicals) of matriz_log_exp_radicales. Verified Lite probe: EV-R-01..07, 09, 10, 11 and 12 already return the matrix form; EV-R-08 1/(sqrt(2)+1) returns 1/(1+2^(1/2)) instead of sqrt(2)-1 (exact rationalization defect); EV-R-13 sqrt(-4) returns 2i, which the row admits only as a declared complex branch; EV-R-14 (-8)^(1/3) returns the principal form 2*(-1)^(1/3), so the real-vs-principal convention must be declared. Verify Plus parity for all 14 rows, fix EV-R-08 bilaterally if the defect is confirmed, declare both conventions in MANUAL_CAPABILITY_GAPS, add bilateral EV-R tests and run the cumulative gates on the new technical SHA. Keep the independent blockers unchanged.",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "bd9c207c1b091bfd017fb8f3ca7ff8f21e06415b",
-      "c2melendez/precision-lab-plus": "996ed03026c95ced15443a579c35115f25d5e3c3"
+      "c2melendez/precision-lab-lite": "16e5ca750f103782d790acc6a579ec1999716a12",
+      "c2melendez/precision-lab-plus": "9a06ae8da282e2525240a2cde1a63d625832f9b9"
     },
     "product_changed": true
   },
@@ -79,7 +79,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r228: EV-I-07 arccot principal range fixed bilaterally and closed (Lite 76e89a9b 2028 passed; Plus f8bdd40a 1801 passed). Next: EV-L logarithms (Lite lacks log-ratio simplification, ln(10^50) reduction, invalid-base error, and cdot+subscript parsing). EV-I-09/I-10 remain Lite defects. Global certification OPEN.",
+  "ledger_note": "r230: EV-E-01..14 exponentials closed PASS_SCOPED_BILATERAL (Lite 16e5ca75 2049 passed; Plus 9a06ae8d 1818 passed, 6 xfailed). Lite fixed EV-E-10 with an exact sum-of-logs module; EV-E-14 certified under the declared 0^0 = 1 convention; EV-E-12 certified on its numeric oracle with the exact-rational presentation limitation declared. Next: EV-R-01..14 radicals (EV-R-08 rationalization defect, EV-R-13/R-14 branch conventions to declare). Global certification OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -938,5 +938,76 @@
       }
     ],
     "global_certification": "OPEN"
+  },
+  "ev_e_closure_r230": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "EV-E-01..14 exponentials (matriz_log_exp_radicales)",
+    "product_changed": true,
+    "product_fix": "Lite only: engine/expLogSimplify.ts applies the exact identity exp(+-log r1 +- log r2 ...) = product/quotient of literal positive rationals using safe integers and gcd reduction, wired after simplifyLogResult; unsupported forms are returned untouched. e^(ln 2+ln 3) now returns 6 instead of exp(log(2)+log(3)).",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "16e5ca750f103782d790acc6a579ec1999716a12",
+      "c2melendez/precision-lab-plus": "9a06ae8da282e2525240a2cde1a63d625832f9b9"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39681554692,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39681554692",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16e5ca750f103782d790acc6a579ec1999716a12",
+        "head_sha_matches": true,
+        "tests": "348 files; 2049 passed, 8 expected fail, 34 todo; tests/logExpEvE01to14.audit.test.ts 6/6",
+        "evidence_guard": {
+          "skip": "false",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39681554639,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39681554639",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16e5ca750f103782d790acc6a579ec1999716a12",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific",
+        "run_id": 39681554580,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39681554580",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16e5ca750f103782d790acc6a579ec1999716a12",
+        "head_sha_matches": true
+      }
+    ],
+    "oracles": {
+      "exact": [
+        "EV-E-01",
+        "EV-E-03",
+        "EV-E-04",
+        "EV-E-05",
+        "EV-E-06",
+        "EV-E-10",
+        "EV-E-13"
+      ],
+      "nine_decimal_reference": [
+        "EV-E-02",
+        "EV-E-07",
+        "EV-E-08",
+        "EV-E-09",
+        "EV-E-11 (relative)",
+        "EV-E-12"
+      ]
+    },
+    "declared_conventions": [
+      "EV-E-14: 0^0 = 1 by declared convention (recorded in MANUAL_CAPABILITY_GAPS).",
+      "EV-E-12: certified on the numeric oracle (2.716923932); the exact ~3600-digit fraction is kept as result_text in both engines and declared as a presentation limitation.",
+      "EV-E-13: -1 on the complex branch documented by the row."
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "EV-R-01..14 radicals",
+    "next_status": "IN_PROGRESS"
   }
 }

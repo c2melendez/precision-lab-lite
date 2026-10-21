@@ -1,3 +1,20 @@
+## 2026-10-21 UTC — r230: EV-E-01..14 cerrado bilateralmente; EV-R diagnosticado
+
+**EV-E-01..14 (exponenciales) — PASS_SCOPED_BILATERAL.**
+
+- Lite `16e5ca750f10…`: cumulative [39681554692] — **SUCCESS**, 348 archivos, **2049 passed**, 8 expected fail, 34 todo; `tests/logExpEvE01to14.audit.test.ts` **6/6**; guard `skip=false` («No reusable completed evidence found»). h1d [39681554639] y scientific-ui [39681554580] — SUCCESS.
+- Plus `9a06ae8da282…`: cumulative [39681592267] — **SUCCESS**, **1818 passed**, 6 xfailed, cobertura 88.06%; `tests/test_log_exp_matrix_ev_e01_l14.py` **6/6 PASSED**; guard `skip=false`. h1d [39681592361] — SUCCESS.
+- Producto (solo Lite): `engine/expLogSimplify.ts` aplica únicamente la identidad exacta `exp(±log r1 ± log r2 …) = producto/cociente` de racionales literales, con enteros seguros y reducción por mcd; se engancha tras `simplifyLogResult`. `e^{ln 2+ln 3}` pasa de `exp(log(2)+log(3))` a **`6`**. Las formas no soportadas (términos no logarítmicos, argumentos simbólicos, magnitudes fuera del rango entero seguro) se devuelven intactas: sin aproximación ni heurística.
+- Oráculos por fila: exactos EV-E-01/03/04/05/06/10/13; EV-E-02/07/08/09/11/12 contra las referencias de nueve decimales (EV-E-11 en relativo); EV-E-13 `-1` (la fila lo documenta en ℂ); EV-E-14 `1` bajo la convención declarada.
+- Decisiones declaradas en `MANUAL_CAPABILITY_GAPS.md`: (a) `0^0 = 1` para EV-E-14; (b) EV-E-12 conserva como `result_text` la fracción exacta de ~3600 dígitos en **ambos** motores mientras el canal aproximado da `2.716923932` — limitación de presentación/complejidad, no matemática; el oráculo numérico de la fila se cumple.
+
+**Siguiente objetivo — EV-R-01..14 (radicales).** Sondeo local verificado en Lite: EV-R-01..07, 09, 10, 11 y 12 ya devuelven la forma pedida. Defectos y convenciones a resolver antes de certificar:
+
+- **EV-R-08** `1/(√2+1)`: Lite devuelve `1/(1+2^(1/2))` (valor correcto, forma sin racionalizar); la fila exige `√2−1`.
+- **EV-R-13** `√−4`: Lite devuelve `2i`; la fila admite la rama compleja **solo si se declara** (en ℝ exige error claro).
+- **EV-R-14** `(−8)^{1/3}`: Lite devuelve la forma principal `2*(-1)^(1/3)` (≈1+1.732i); la fila exige declarar real `−2` o principal.
+- Falta verificar la paridad Plus de las 14 filas y fijar ambas convenciones antes de emitir PASS.
+
 ## 2026-10-21 UTC — r229: EV-L cerrado, EV-I-09/I-10 cerrados bilateralmente; EV-E diagnosticado
 
 **Reconciliación previa:** el índice estaba en r228 (EV-I-07) mientras HEAD ya había avanzado con la implementación EV-L (Lite `86cd568b`, `47988786`; Plus `fd9158ff`…`6edbb54d`). Se verificó la evidencia real de esos SHA antes de heredar objetivo: guard `skip=false` ("No reusable completed evidence found") y pruebas EV-L ejecutadas y aprobadas, no omitidas.

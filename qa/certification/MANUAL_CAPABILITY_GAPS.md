@@ -356,8 +356,8 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
 - Los argumentos simbólicos (`arcsin(sin x)`) no se tocan: la identidad depende del rango y no se asume.
 - El canal LaTeX contractual (`\arcsin`, `\arccos`, `\arctan`, `\arcsec`, `\arccsc`, `\arccot` y las inversas hiperbólicas) ya se acepta en G3; antes abortaba con «Comando desconocido» y las filas EV-I solo eran certificables por el canal ASCII.
 
-## 2026-10-21 UTC — LOG/EXP EV-E: diagnóstico de exponenciales (sin PASS)
+## 2026-10-21 UTC — LOG/EXP EV-E: diagnóstico r229 y decisiones r230
 
 - **EV-E-14 `0^{0}`:** ambos motores devuelven `1`. Se **declara** la convención `0^0 = 1`, que la fila admite explícitamente («o `1` por convención declarada»). No es un fallo: queda registrada como decisión, revisable si el contrato cambia.
-- **EV-E-12 `(1+1/1000)^{1000}`:** ambos motores devuelven como `result_text` una fracción exacta de ~3600 dígitos, mientras `result_approx` sí es `2.716923932`. Defecto **bilateral** de presentación/complejidad, no matemático: pendiente decidir la representación (forma acotada frente a aproximación declarada) antes de certificar la fila.
-- **EV-E-10 `e^{\ln 2+\ln 3}`:** Plus devuelve `6`; Lite conserva `exp(log(2)+log(3))`. Defecto de producto exclusivo de Lite, pendiente de simplificación exacta de la suma de logaritmos en el exponente.
+- **EV-E-12 `(1+1/1000)^{1000}`:** ambos motores devuelven como `result_text` una fracción exacta de ~3600 dígitos, mientras `result_approx` sí es `2.716923932`. Defecto **bilateral** de presentación/complejidad, no matemático. **Decisión declarada en r230:** la fila se certifica por su oráculo numérico (`result_approx = 2.716923932`) y se conserva la forma exacta como `result_text`; la explosión textual queda registrada como limitación de presentación, revisable si el contrato exige una forma acotada.
+- **EV-E-10 `e^{\ln 2+\ln 3}`:** Plus devolvía `6`; Lite conservaba `exp(log(2)+log(3))`. **Corregido en r230** (Lite `16e5ca75`): `engine/expLogSimplify.ts` aplica la identidad exacta `exp(±log r1 ± log r2 …) = producto/cociente` de racionales literales con enteros seguros; las formas no soportadas quedan intactas. Fila cerrada.
