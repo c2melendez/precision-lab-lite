@@ -1,5 +1,16 @@
 # Registro de ejecución — índice vigente
 
+## 2026-10-21 UTC — Gates D20 de r206 registrados (continuity r207)
+
+Gates documentales de r206 (`workflow_dispatch` sobre `de987a4`, `head_sha` exacto, todos SUCCESS):
+- Lite `de987a4`: cumulative [39549979912](https://github.com/c2melendez/precision-lab-lite/actions/runs/39549979912), h1d [39549982104](https://github.com/c2melendez/precision-lab-lite/actions/runs/39549982104), scientific-ui [39549984347](https://github.com/c2melendez/precision-lab-lite/actions/runs/39549984347).
+
+Gates documentales de r207 (commit de este cierre): se disparan con `workflow_dispatch` sobre el SHA documental (D20); sus resultados se registran en r208.
+
+Siguiente sin cambios: EV-D-04 `\\csc(\\frac{{\\pi}}{{6}}) → 2`, `READY`; no iniciado. Global OPEN.
+
+---
+
 ## 2026-10-21 UTC — Trigonometría EV-D-03 PASS_SCOPED bilateral (continuity r206)
 
 **EV-D-03** — `\tan(\frac{\pi}{4}) → 1` (fila oficial de `ejercicios_trigonometria.md.gz`).

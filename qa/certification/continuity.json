@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 206,
+  "revision": 207,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -70,7 +70,7 @@
       "status": "PASS_SCOPED",
       "scope": "EV-D-01 sin(pi/6)=1/2; EV-D-02 cos(pi/3)=1/2; EV-D-03 tan(pi/4)=1; unit/HTTP; Plus HTTP ASCII only"
     },
-    "action": "EV-D-03 PASS_SCOPED bilateral (r206). Siguiente EV-D-04 csc(pi/6)=2 READY. AS-B-29 ON_HOLD. Global OPEN."
+    "action": "EV-D-03 PASS_SCOPED bilateral (r206; gates D20 registrados en r207). Siguiente EV-D-04 csc(pi/6)=2 READY sin iniciar. AS-B-29 ON_HOLD. Global OPEN."
   },
   "blockers": [
     {
@@ -94,5 +94,5 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r206 2026-10-21: EV-D-03 PASS_SCOPED bilateral (Lite f07afe1, Plus fce235b), sin cambio de producto, gates SUCCESS; gates documentales de r205 registrados. EV-D-04 READY. Global OPEN."
+  "ledger_note": "r207 2026-10-21: gates D20 de r206 registrados (Lite de987a4, Plus dcd7e21; todos SUCCESS, head_sha exacto). EV-D-03 PASS_SCOPED sin cambios. EV-D-04 READY sin iniciar. Global OPEN."
 }
