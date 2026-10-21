@@ -54,22 +54,34 @@ describe("Log/Exp matrix EV-E-01..14 (exponentials)", () => {
   });
 
   it("matches the nine-decimal references on the approximation channel", () => {
-    const expected: Array<[string, number]> = [
-      ["e^{-1}", 0.367879441],
-      ["2^{\\sqrt{2}}", 2.665144143],
-      ["\\pi^{e}", 22.459157718],
-      ["e^{\\pi}-\\pi", 19.999099979],
-      ["\\left(1+\\frac{1}{1000}\\right)^{1000}", 2.716923932],
+    // [id, entrada, referencia congelada, valor] — el oráculo del test debe
+    // aparecer literalmente en la fila congelada de la matriz.
+    const expected: Array<[string, string, string, number]> = [
+      ["EV-E-02", "e^{-1}", "0.367879441", 0.367879441],
+      ["EV-E-07", "2^{\\sqrt{2}}", "2.665144143", 2.665144143],
+      ["EV-E-08", "\\pi^{e}", "22.459157718", 22.459157718],
+      ["EV-E-09", "e^{\\pi}-\\pi", "19.999099979", 19.999099979],
+      ["EV-E-12", "\\left(1+\\frac{1}{1000}\\right)^{1000}", "2.716923932", 2.716923932],
     ];
-    for (const [input, reference] of expected) {
+    for (const [id, input, frozen, reference] of expected) {
+      expect(rowOf(id), `${id} frozen reference`).toContain(frozen);
+      const text = run(input);
+      // Protocolo, regla 2: una salida que solo imprima el decimal no
+      // certifica la fila; la forma exacta debe conservarse.
+      expect(text, `${id} must keep an exact form`).not.toMatch(
+        /^-?\d+(\.\d+)?([eE][+-]?\d+)?$/,
+      );
       expect(Math.abs(approx(input) - reference), `${input} approx`).toBeLessThanOrEqual(1e-6);
     }
     // EV-E-11 conserva la forma exacta exp(100); la referencia es relativa.
+    expect(rowOf("EV-E-11")).toContain("2.688117142");
+    expect(run("e^{100}")).toContain("exp(");
     const big = approx("e^{100}");
     expect(Math.abs(big / 1e43 - 2.688117142)).toBeLessThanOrEqual(1e-9);
   });
 
   it("EV-E-10 evaluates the sum of logarithms exactly (regression)", () => {
+    expect(rowOf("EV-E-10")).toContain("`6`");
     expect(run("e^{\\ln 2+\\ln 3}")).toBe("6");
     expect(run("e^{\\ln 2}")).toBe("2");
     expect(equivalent(run("e^{\\ln 2+\\ln 3+\\ln 5}"), "30")).toBe(true);
