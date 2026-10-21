@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 227,
+  "revision": 228,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -48,14 +48,14 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EV-I-07-BRANCH",
-    "status": "READY_DECISION",
-    "action": "EV-H-01..12 closed PASS_SCOPED on Lite 54f81f21 (gates 39596870367/39596869965/39596870180, 2025 passed) and Plus e7107279 (39596875855/39596875727, 1798 passed); EV-I group A also closed bilaterally. Next: resolve EV-I-07 arccot branch (matrix requires arccot(-1)=3pi/4, principal range (0,pi); both engines return -pi/4 via arctan(1/x)/SymPy acot) by rewriting arccot(a)=pi/2-arctan(a) in both engines, updating oracles, and re-running gates. Then Lite-only EV-I-09 (arcsin(sin 2) returns 2 instead of pi-2) and EV-I-10 (sin(arccos(3/5)) unevaluated).",
+    "id": "LOG-EV-L-REWRITE",
+    "status": "IN_PROGRESS",
+    "action": "EV-I-07 closed PASS_SCOPED_BILATERAL: arccot now uses the principal range (0, pi) in both engines (Lite 76e89a9b gates SUCCESS 2028 passed; Plus f8bdd40a 1801 passed). Next objective EV-L (logarithms): Lite does not simplify log ratios (log(8)/log(2), log(8)/log(4), log(2)/log(8), log(27)/log(3), log(1000)/log(10)) while Plus returns exact values; \\ln(10^50) must reduce to 50*ln(10); \\log_1(5) must raise a clear invalid-base error; and \\log_{2}(3)\\cdot\\log_{3}(4) currently fails with a raw '_' parse error. Implement the Lite log simplifications/guards, add bilateral EV-L-01..14 tests, and keep EV-I-09/I-10 as documented Lite defects.",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "54f81f21806fbe02ebf4c40ed237ed244a667de4",
-      "c2melendez/precision-lab-plus": "e7107279a0309e9c31114b3b725b51103cffbef7"
+      "c2melendez/precision-lab-lite": "76e89a9b3546ad73b4be61fea4cd48de5905195f",
+      "c2melendez/precision-lab-plus": "f8bdd40a2bbd6016f412019a246e4dbce23835f1"
     },
-    "product_changed": false
+    "product_changed": true
   },
   "blockers": [
     {
@@ -79,7 +79,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r227: EV-H-01..12 PASS_SCOPED (numeric channel) on 54f81f21/e7107279 with all gates SUCCESS; EV-I group A closed bilaterally. Next: EV-I-07 arccot principal range, then Lite-only EV-I-09/I-10. Global certification OPEN.",
+  "ledger_note": "r228: EV-I-07 arccot principal range fixed bilaterally and closed (Lite 76e89a9b 2028 passed; Plus f8bdd40a 1801 passed). Next: EV-L logarithms (Lite lacks log-ratio simplification, ln(10^50) reduction, invalid-base error, and cdot+subscript parsing). EV-I-09/I-10 remain Lite defects. Global certification OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -761,5 +761,48 @@
     "global_certification": "OPEN",
     "next_objective": "TRIG-EV-I-07-BRANCH",
     "next_status": "READY_DECISION"
+  },
+  "ev_i07_closure_r228": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "arccot principal range (0, pi): arccot(-1)=3pi/4, arccot(0)=pi/2, arccot(1)=pi/4 in both engines",
+    "product_changed": true,
+    "product_fix": "Lite parser rewrites arccot(a) as pi/2-arctan(a) (also the \\cot^{-1} path in normalize.ts); Plus evaluate_service rewrites acot nodes as pi/2-atan(x) before evaluation",
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "76e89a9b3546ad73b4be61fea4cd48de5905195f",
+      "c2melendez/precision-lab-plus": "f8bdd40a2bbd6016f412019a246e4dbce23835f1"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39648569475,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39648569475",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "76e89a9b3546ad73b4be61fea4cd48de5905195f",
+        "head_sha_matches": true,
+        "tests": "2028 passed; 8 expected fail; 34 TODO; EV-I-07 file 3/3"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39648569239,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39648569239",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "76e89a9b3546ad73b4be61fea4cd48de5905195f",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39648569417,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39648569417",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "76e89a9b3546ad73b4be61fea4cd48de5905195f",
+        "head_sha_matches": true
+      }
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "LOG-EV-L-REWRITE",
+    "next_status": "IN_PROGRESS"
   }
 }

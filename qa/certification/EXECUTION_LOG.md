@@ -1,3 +1,28 @@
+## 2026-10-21 UTC — EV-I-07 cierre r228 y arranque de EV-L (logarítmicas)
+
+**EV-I-07 — `arccot(-1) = 3π/4`: PASS_SCOPED_BILATERAL.** La matriz congelada exige el rango principal `(0, π)`; los motores usaban la rama `arctan(1/x)` / `acot` de SymPy (`-π/4`).
+
+- Cambio de producto: `arccot(a) = π/2 − arctan(a)` en el parser de Lite (incluye la ruta `\cot^{-1}`) y reescritura de `acot` en `evaluate_service` de Plus (solo cuando la expresión contiene `acot`).
+- Lite `76e89a9b3546ad73b4be61fea4cd48de5905195f`: cumulative [39648569475](https://github.com/c2melendez/precision-lab-lite/actions/runs/39648569475) — SUCCESS, 2028 passed, 8 expected fail, 34 TODO; h1d [39648569239](https://github.com/c2melendez/precision-lab-lite/actions/runs/39648569239) y scientific-ui [39648569417](https://github.com/c2melendez/precision-lab-lite/actions/runs/39648569417) — SUCCESS.
+- Plus `f8bdd40a2bbd6016f412019a246e4dbce23835f1`: cumulative [39648580772](https://github.com/c2melendez/precision-lab-plus/actions/runs/39648580772) — SUCCESS, 1801 passed; h1d [39648579685](https://github.com/c2melendez/precision-lab-plus/actions/runs/39648579685) — SUCCESS.
+- Resultado: `arccot(-1)=3π/4`, `arccot(0)=π/2`, `arccot(1)=π/4` en ambos motores; oráculos de parser y alias actualizados.
+
+**Defectos EV-I aún abiertos (solo Lite; Plus ya los resuelve):**
+
+- **EV-I-09** `arcsin(sin 2)`: Lite devuelve `2` (Algebrite simplifica sin respetar la rama principal); correcto `π−2 ≈ 1.141592654`. Plus devuelve `-2 + pi`.
+- **EV-I-10** `sin(arccos(3/5))`: Lite deja la expresión sin evaluar; correcto `4/5`. Plus devuelve `4/5`.
+
+**EV-L (logarítmicas) — primeros hallazgos de sondeo (sin cambios de producto todavía):**
+
+- LaTeX correcto: `\log_{2}(8)` → `3`; `\log_{10}(0.001)` → `-log(1000)/log(10)` (sin simplificar a `-3`); `\log_{4}(8)` → `log(8)/log(4)` (sin simplificar a `3/2`); `\log_{8}(2)` → `log(2)/log(8)` (sin simplificar a `1/3`); `\ln(0)` → `DOMAIN_ERROR`; `\ln(-1)` → `i*pi`.
+- `\ln(10^{50})` → `log(1000…0)` sin aplicar `n·ln 10` (esperado `50 ln 10 ≈ 115.129254650`).
+- `\log_{1}(5)` → error de división entre cero (esperado error claro de base inválida).
+- `\log_{2}(3)\cdot\log_{3}(4)` → **error de parseo** (`Carácter no reconocido: "_"`); la segunda base no se normaliza tras `\cdot`.
+- La forma ASCII `log_2(8)` se parsea como producto de variables (`log*S*U*B*T*W*O*(8)`): no es el canal contractual (la matriz usa LaTeX), pero es un riesgo de entrada.
+- Plus resuelve exactamente `log(8)/log(2)`, `log(8)/log(4)`, `log(2)/log(8)`, `log(1000)/log(10)` y `ln(10^50)=50*ln(10)`.
+
+---
+
 ## 2026-10-21 UTC — EV-H cierre r227: PASS_SCOPED (canal numérico)
 
 **EV-H-01..12 — PASS_SCOPED.** Gates SUCCESS sobre el SHA técnico `54f81f21806fbe02ebf4c40ed237ed244a667de4`:
