@@ -754,6 +754,16 @@ function validateInputStructureG3(input: string): void {
   if (unknownCommand) {
     const known = new Set([
       "frac","sqrt","sin","cos","tan","csc","sec","cot","ln","log","exp",
+      // EV-I-09/EV-I-10: la matriz congelada escribe las inversas con macro
+      // LaTeX (\arcsin, \arccos, \arctan, \arcsec, \arccsc, \arccot). El
+      // motor ya las computa; solo faltaba reconocerlas en esta validación,
+      // que rechazaba la fila oficial con "Comando desconocido" y dejaba
+      // EV-I certificable únicamente por el canal ASCII.
+      "arcsin","arccos","arctan","arcsec","arccsc","arccot",
+      // Hiperbólicas e inversas hiperbólicas: mismo criterio (la matriz EV-H
+      // usa \sinh/\cosh/\tanh y \asinh/\acosh/\atanh en LaTeX canónico).
+      "sinh","cosh","tanh","asinh","acosh","atanh",
+      "csch","sech","coth","acsch","asech","acoth",
       "left","right","pi","infty","theta","alpha","beta","gamma","lambda",
       "zeta","Delta","Lambda","Phi","gcd","min","max","pm","le","ge","leq",
       "geq","neq","ne","lt","gt","operatorname","mathrm","text","placeholder",
@@ -1510,6 +1520,25 @@ export function preprocessLatex(latex: string): string {
     .replace(/csch\^\{-1\}/g, "acsch")
     .replace(/sech\^\{-1\}/g, "asech")
     .replace(/coth\^\{-1\}/g, "acoth")
+    // EV-I-09/EV-I-10: inversas en macro LaTeX (\arcsin, \arccos, \arctan y
+    // las recíprocas). Antes solo se despojaba el backslash de sin/cos/tan,
+    // así que la fila oficial `\arcsin(\sin 2)` moría en el tokenizador con
+    // "Comando desconocido". Van antes que las reglas cortas por el mismo
+    // motivo de substring que arcsec/arccsc/arccot en index.ts.
+    .replace(/\\arcsin/g, "arcsin")
+    .replace(/\\arccos/g, "arccos")
+    .replace(/\\arctan/g, "arctan")
+    .replace(/\\arcsec/g, "arcsec")
+    .replace(/\\arccsc/g, "arccsc")
+    .replace(/\\arccot/g, "arccot")
+    // Inversas hiperbólicas: "\asinh" no lo cubre la regla de "\sin" porque
+    // el backslash no precede directamente a "sin" (precede a "asinh").
+    .replace(/\\asinh/g, "asinh")
+    .replace(/\\acosh/g, "acosh")
+    .replace(/\\atanh/g, "atanh")
+    .replace(/\\asech/g, "asech")
+    .replace(/\\acsch/g, "acsch")
+    .replace(/\\acoth/g, "acoth")
     .replace(/\\sin/g, "sin")
     .replace(/\\cos/g, "cos")
     .replace(/\\tan/g, "tan")
