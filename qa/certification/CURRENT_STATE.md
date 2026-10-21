@@ -1,3 +1,13 @@
+## 2026-10-21 UTC — EV-D-05 diagnóstico y gates pendientes
+
+- Lite: commit de pruebas `24871267ec1ee9f64bbd2d34fd449b41ee74f99c`; cumulative [39555164790](https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164790), H1d [39555164686](https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164686) y Scientific UI [39555164730](https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164730) terminaron SUCCESS sobre el SHA esperado.
+- Plus: commit inicial `7be68dcfbcd9ed64b4f4ae98399276d01ede0034`; cumulative [39555174858](https://github.com/c2melendez/precision-lab-plus/actions/runs/39555174858) falló durante colección por `ModuleNotFoundError: No module named 'backend'` en el test nuevo. Esto es un fallo del harness/test import, no evidencia de fallo matemático. H1d [39555174838](https://github.com/c2melendez/precision-lab-plus/actions/runs/39555174838) SUCCESS.
+- Corrección exclusiva del test en commit `8885a3b47dc6509c52a08312bbc87d5f1651c6da`: import `app.main`, aserción sobre `MathResponse.success/result_text` y comprobación de fila fuente congelada. Producto sin cambios.
+- Validación de la corrección: Plus cumulative [39556359520](https://github.com/c2melendez/precision-lab-plus/actions/runs/39556359520) y H1d [39556359572](https://github.com/c2melendez/precision-lab-plus/actions/runs/39556359572), activadas por push con SHA exacto; ambas estaban IN_PROGRESS al redactar este registro.
+- Estado: EV-D-05 sigue IN_PROGRESS. No declarar PASS hasta revisar conclusión, jobs/logs y fila fuente. Certificación global OPEN.
+
+---
+
 ## 2026-10-21 UTC — r211: cierre EV-D-04 y arranque test-first EV-D-05
 
 **EV-D-04 PASS_SCOPED bilateral** — `csc(pi/6)=2`. Cinco gates SUCCESS y SHA exactos:

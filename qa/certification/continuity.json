@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 211,
+  "revision": 212,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -52,7 +52,7 @@
     "status": "IN_PROGRESS",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-lite": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c",
-      "c2melendez/precision-lab-plus": "7be68dcfbcd9ed64b4f4ae98399276d01ede0034"
+      "c2melendez/precision-lab-plus": "8885a3b47dc6509c52a08312bbc87d5f1651c6da"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
@@ -61,8 +61,8 @@
         39555164730
       ],
       "c2melendez/precision-lab-plus": [
-        39555174858,
-        39555174838
+        39556359520,
+        39556359572
       ]
     },
     "completed_scoped": {
@@ -94,7 +94,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r211: EV-D-04 PASS_SCOPED bilateral con 5/5 gates SUCCESS y head_sha exactos. EV-D-05 test-first iniciado (sec(pi/3)=2); 5 gates en curso, código de producto sin cambios. Certificación global OPEN.",
+  "ledger_note": "r212: EV-D-05 diagnostic recorded. Lite gates SUCCESS on test SHA; Plus test import fixed, product unchanged; corrected cumulative/H1d still running. Global certification OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -245,32 +245,26 @@
   },
   "ev_d_05_execution_r211": {
     "status": "IN_PROGRESS",
-    "test_commit_sha": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c",
+    "test_commit_sha": "8885a3b47dc6509c52a08312bbc87d5f1651c6da",
     "runs": [
       {
         "gate": "cumulative",
-        "run_id": 39555164790,
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164790",
+        "run_id": 39556359520,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39556359520",
         "status": "in_progress",
-        "expected_head_sha": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c"
+        "expected_head_sha": "8885a3b47dc6509c52a08312bbc87d5f1651c6da"
       },
       {
         "gate": "h1d",
-        "run_id": 39555164686,
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164686",
+        "run_id": 39556359572,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39556359572",
         "status": "in_progress",
-        "expected_head_sha": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c"
-      },
-      {
-        "gate": "scientific-ui",
-        "run_id": 39555164730,
-        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164730",
-        "status": "in_progress",
-        "expected_head_sha": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c"
+        "expected_head_sha": "8885a3b47dc6509c52a08312bbc87d5f1651c6da"
       }
     ],
     "product_changed": false,
     "global_certification": "OPEN",
-    "source_row_verification": "PENDING_ACTIONS"
+    "source_row_verification": "PENDING_ACTIONS",
+    "diagnostic": "Plus cumulative run 39555174858 failed during collection because test_trigonometry_ev_d05.py imported backend.main (ModuleNotFoundError). Corrected to app.main and aligned oracle to MathResponse.success/result_text. Product unchanged; corrected commit 8885a3b47dc6509c52a08312bbc87d5f1651c6da. New cumulative/H1d pending."
   }
 }
