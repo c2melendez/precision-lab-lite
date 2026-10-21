@@ -1,3 +1,19 @@
+## 2026-10-21 UTC — EV-I grupo A r226: gates parciales; EV-H en ejecución
+
+**EV-I-01..06, EV-I-08 y EV-I-11 — cobertura publicada en `11d0192582c337e38ec3718940f5f620644e44f0`.** Resultados:
+
+- cumulative: [39596378248](https://github.com/c2melendez/precision-lab-lite/actions/runs/39596378248) — SUCCESS; 2016 passed, 8 expected fail, 34 TODO.
+- h1d: [39596378313](https://github.com/c2melendez/precision-lab-lite/actions/runs/39596378313) — SUCCESS.
+- scientific-ui: [39596378121](https://github.com/c2melendez/precision-lab-lite/actions/runs/39596378121) — **en ejecución prolongada** (paso Native desktop/tablet/mobile >25 min al redactar); no se declara cierre hasta su conclusión.
+- Plus: cumulative [39596384431](https://github.com/c2melendez/precision-lab-plus/actions/runs/39596384431) — SUCCESS, 1794 passed, 6 xfailed; h1d [39596384432](https://github.com/c2melendez/precision-lab-plus/actions/runs/39596384432) — SUCCESS.
+
+**EV-H-01..12 (hiperbólicas) test-first publicado** — Lite `54f81f21806fbe02ebf4c40ed237ed244a667de4` / Plus `e7107279a0309e9c31114b3b725b51103cffbef7`; gates en ejecución.
+
+- Alcance previsto: EV-H-01..03 exactos (`0`,`1`,`0`); EV-H-04..09 certificables por canal numérico (ningún motor simplifica `sinh(ln 2)` a `3/4`: Lite muestra `0.75`/`0.6`/`1.333333...`, Plus deja la forma simbólica y expone `result_approx`); EV-H-10/11 aproximaciones a 9 decimales; EV-H-12 identidad exacta `1`.
+- Limitación a registrar: la forma racional exacta de EV-H-04..09 no se muestra en `result_text` en ninguno de los dos motores.
+
+---
+
 ## 2026-10-21 UTC — AUD-SING cierre r225 y EV-I grupo A en ejecución
 
 **AUD-SING-01/02 — PASS_SCOPED (correcciones reales de producto).** Gates SUCCESS sobre el SHA técnico `7d83a9ac14c73dc70fb52d8902e01dc9313d1924`:
