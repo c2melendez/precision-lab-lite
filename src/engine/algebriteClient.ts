@@ -1,4 +1,5 @@
 import { verifyFactorResult } from "./polynomialFactorZ";
+import { simplifyLogResult } from "./logSimplify";
 // Único punto de contacto con Algebrite en todo el proyecto (regla de capa
 // dura, spec v10 §3). Ningún componente de /modes o /components debe hacer
 // `import Algebrite from "algebrite"` directamente.
@@ -54,6 +55,18 @@ export function evaluate(expressionLatex: string): string {
     }
     if (isIndeterminateInfinityDifference(expressionLatex)) {
       throw toAppError(ErrorCode.DOMAIN_ERROR, "Forma indeterminada: infinito menos infinito no está definido.");
+    }
+    // EV-L-14: la base de un logaritmo debe ser > 0 y distinta de 1. La
+    // reescritura log_b(a) = log(a)/log(b) convertiría log_1(5) en una
+    // división entre cero genérica; se reporta el error de base antes de
+    // evaluar.
+    const compactLogBase = expressionLatex.replace(/\s+/g, "");
+    const invalidBase = /\/log\((0|-?\d+)(?:\.0*)?\)/.exec(compactLogBase);
+    if (invalidBase && Number(invalidBase[1]) <= 1) {
+      throw toAppError(
+        ErrorCode.DOMAIN_ERROR,
+        "Base de logaritmo inválida: debe ser mayor que 0 y distinta de 1.",
+      );
     }
     // SY-E-29: preserve the original 0/0 indeterminate form before CAS evaluation
     // loses its provenance. Grouping parentheses do not change literal zero.
@@ -301,6 +314,9 @@ export function evaluate(expressionLatex: string): string {
         );
       }
     }
+    // EV-L: identidades exactas de logaritmos que Algebrite no aplica
+    // (log(a)/log(b) = k cuando a = b^k, y log(b^k) = k*log(b)).
+    result = simplifyLogResult(result);
     if (MAY_NEED_FLOAT.test(result)) {
       const retried: string = Algebrite.run(`float(${expressionLatex})`);
       if (typeof retried === "string" && retried.length > 0 && !/stop|Stop/.test(retried)) {
