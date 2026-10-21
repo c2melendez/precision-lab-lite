@@ -253,6 +253,35 @@ export function evaluate(expressionLatex: string): string {
       }
       throw toAppError(ErrorCode.PARSE_ERROR, `Algebrite reportó un error: ${result}`);
     }
+    // EV-D-12: tan(pi/2 + k*pi) no está definida, pero Algebrite devuelve la
+    // forma sin evaluar "tan(1/2*pi)" (o "tan(3/2*pi)") en vez de reportar el
+    // polo. Se detecta el polo con el coseno exacto del propio motor y se
+    // emite un error de dominio claro. Solo se guarda el resultado que es
+    // exactamente tan(...): tan(x) simbólica y formas compuestas no se tocan.
+    const tanOnly = /^\s*tan\((.*)\)\s*$/.exec(result);
+    if (tanOnly) {
+      let cosArg = "";
+      try {
+        cosArg = String(Algebrite.run(`cos(${tanOnly[1]})`)).trim();
+      } catch {
+        cosArg = "";
+      }
+      if (cosArg === "0") {
+        throw toAppError(
+          ErrorCode.DOMAIN_ERROR,
+          "Tangente no definida: el coseno del ángulo es 0 (π/2 + kπ).",
+        );
+      }
+    }
+    // EV-D-12: log(0) y ln(0) no están definidos; Algebrite los deja como
+    // "log(0)/log(10)" en vez de señalar el dominio. Plus ya devuelve
+    // DOMAIN_ERROR para ambos: se iguala el contrato bilateral.
+    if (/(?:^|[^\w])log\(0(?:\.0*)?\)/.test(result)) {
+      throw toAppError(
+        ErrorCode.DOMAIN_ERROR,
+        "Logaritmo no definido: el argumento debe ser mayor que 0.",
+      );
+    }
     if (MAY_NEED_FLOAT.test(result)) {
       const retried: string = Algebrite.run(`float(${expressionLatex})`);
       if (typeof retried === "string" && retried.length > 0 && !/stop|Stop/.test(retried)) {

@@ -51,7 +51,11 @@ describe("IN625 Parte C / C3 Alias en español y otros nombres",()=>{
     expectFn("\\operatorname{arctg}1",/arctan|atan/);
   });
   it("EN-AL-16",()=>{
-    for(const s of ["arcctg(0)","arccotg(0)"]) expectFn(s,/arccot|acot|arctan\(1\//);
+    // AUD-SING-01: arccot(0) resolves to its exact value pi/2 instead of an
+    // avoidable arctan(1/0) singularity; non-zero aliases still exercise the
+    // canonical arctan(1/x) rewrite.
+    for(const s of ["arcctg(0)","arccotg(0)"]) expectFn(s,/arccot|acot|arctan\(1\/|pi\/2/);
+    for(const s of ["arcctg(1)","arccotg(1)"]) expectFn(s,/arccot|acot|arctan\(1\//);
   });
   it("EN-AL-17",()=>{
     for(const s of ["arccosec(2)","arccsc(2)"]) expectFn(s,/arccsc|acsc|arcsin\(1\//);
