@@ -18,7 +18,7 @@ describe("Trigonometry EV-D-06 cot(pi/4)", () => {
     const row = text.split("\n").find((line) => /\|\s*EV-D-06\s*\|/.test(line)) ?? "";
     expect(row).not.toBe("");
     expect(row).toContain(INPUT_LATEX);
-    expect(row).toMatch(/\|\s*1\s*\|/);
+    expect(row).toMatch(/\|\s*`?1`?\s*\|/);
   });
 
   it("evaluates ASCII cot(pi/4) to exact 1 through official parser pipeline", () => {
