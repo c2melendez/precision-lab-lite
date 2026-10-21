@@ -1,3 +1,13 @@
+## 2026-10-21 UTC — EV-D-06 checkpoint r216: gates parciales verificados
+
+- **Lite cumulative PASS** [39557479991](https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479991), SHA técnico `00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8`: suite EV-D-06 3/3; 334/334 archivos Vitest, 1975 passed, 8 expected fail, 34 TODO; typecheck y production build SUCCESS.
+- **Lite H1d PASS** [39557479974](https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479974), mismo SHA. **Lite Scientific UI** [39557480008](https://github.com/c2melendez/precision-lab-lite/actions/runs/39557480008) continúa en el paso Native desktop/tablet/mobile scientific result verification.
+- **Plus H1d PASS** [39557484518](https://github.com/c2melendez/precision-lab-plus/actions/runs/39557484518), SHA técnico `6369a617e59f2f23fe73ac4e464683de310a688a). **Plus cumulative** [39557484508](https://github.com/c2melendez/precision-lab-plus/actions/runs/39557484508): frontend SUCCESS; backend regression sigue IN_PROGRESS.
+- La fila fuente está confirmada como `| EV-D-06 | `\\cot\\left(\\frac{\\pi}{4}\\right)` | `1` |`. Fallo inicial de Lite fue solo el regex que no aceptaba backticks; corregido. No se cambió producto.
+- EV-D-06 permanece **IN_PROGRESS** hasta que terminen Lite Scientific UI y Plus cumulative y se revisen logs y SHA. Certificación global OPEN.
+
+---
+
 ## 2026-10-21 UTC — EV-D-06 test-first checkpoint; gates pending
 
 **Fuente congelada verificada:** la fila EV-D-06 es `cot(pi/4)=1`, representada como `\\cot\\left(\\frac{\\pi}{4}\\right)` con el resultado en backticks. Se agregó cobertura test-first en ambos motores; no se modificó código de producto.

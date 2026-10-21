@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 215,
+  "revision": 216,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -65,7 +65,7 @@
         39557484518
       ]
     },
-    "action": "Review exact-SHA cumulative/H1d/Scientific UI gates for EV-D-06; inspect logs and close bilateral only after all required gates succeed. Product code unchanged."
+    "action": "Wait for Lite Scientific UI and Plus cumulative to complete, inspect logs, then close EV-D-06 bilaterally if every required gate succeeds."
   },
   "blockers": [
     {
@@ -89,7 +89,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r215: EV-D-06 source row verified as cot(pi/4)=1; test-first added bilateral, no product changes. Initial Lite run found test-format mismatch (backticks), corrected. Final exact-SHA gates pending; global OPEN.",
+  "ledger_note": "r216: EV-D-06 cot(pi/4)=1. Lite cumulative+H1d PASS; Lite Scientific UI pending. Plus H1d PASS; Plus cumulative frontend PASS/backend pending. Product unchanged; global certification OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -311,25 +311,30 @@
         "gate": "cumulative",
         "run_id": 39557479991,
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479991",
-        "status": "in_progress",
-        "expected_head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8"
+        "status": "completed",
+        "conclusion": "success",
+        "expected_head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+        "head_sha_matches": true
       },
       {
         "gate": "h1d",
         "run_id": 39557479974,
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479974",
-        "status": "in_progress",
-        "expected_head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8"
+        "status": "completed",
+        "conclusion": "success",
+        "expected_head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+        "head_sha_matches": true
       },
       {
         "gate": "scientific-ui",
         "run_id": 39557480008,
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39557480008",
         "status": "in_progress",
-        "expected_head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8"
+        "expected_head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+        "head_sha_matches": true
       }
     ],
-    "diagnostic": "Lite first cumulative run failed only the frozen-row result regex because source formats result as `1`; ASCII and LaTeX evaluation tests passed. Regex corrected to accept backticks. Plus source assertion similarly corrected. Final exact-SHA gates pending.",
+    "diagnostic": "Lite initial cumulative failed only because source result `1` is backtick-delimited; corrected assertion. Final Lite cumulative/H1d passed; Scientific UI in progress. Plus H1d passed; cumulative frontend passed and backend regression in progress.",
     "global_certification": "OPEN"
   }
 }
