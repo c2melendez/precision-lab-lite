@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 212,
+  "revision": 213,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -94,7 +94,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r212: EV-D-05 diagnostic recorded. Lite gates SUCCESS on test SHA; Plus test import fixed, product unchanged; corrected cumulative/H1d still running. Global certification OPEN.",
+  "ledger_note": "r213: EV-D-05 Plus H1d SUCCESS en SHA 8885a3b; Plus cumulative backend aún IN_PROGRESS y frontend SUCCESS; global OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -252,13 +252,16 @@
         "run_id": 39556359520,
         "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39556359520",
         "status": "in_progress",
-        "expected_head_sha": "8885a3b47dc6509c52a08312bbc87d5f1651c6da"
+        "expected_head_sha": "8885a3b47dc6509c52a08312bbc87d5f1651c6da",
+        "frontend": "success",
+        "backend": "in_progress"
       },
       {
         "gate": "h1d",
         "run_id": 39556359572,
         "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39556359572",
-        "status": "in_progress",
+        "status": "completed",
+        "conclusion": "success",
         "expected_head_sha": "8885a3b47dc6509c52a08312bbc87d5f1651c6da"
       }
     ],

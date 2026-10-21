@@ -1,3 +1,11 @@
+## 2026-10-21 UTC — EV-D-05 actualización r213: H1d Plus PASS, acumulativo pendiente
+
+- Plus H1d [39556359572](https://github.com/c2melendez/precision-lab-plus/actions/runs/39556359572) terminó SUCCESS sobre el SHA técnico `8885a3b47dc6509c52a08312bbc87d5f1651c6da`; se revisaron los pasos, incluido `Run IN625 H1d reentry`, ejecutado y aprobado.
+- Plus cumulative [39556359520](https://github.com/c2melendez/precision-lab-plus/actions/runs/39556359520) continúa IN_PROGRESS en su job backend `Backend regression`; frontend finalizó SUCCESS (typecheck, unit/parity y production build). No declarar EV-D-05 cerrado hasta concluir backend, revisar logs y verificar que los tests nuevos pasaron.
+- El cierre documental bilateral r212 ya está publicado; esta entrada refresca la evidencia dinámica sin provocar un nuevo gate técnico.
+
+---
+
 ## 2026-10-21 UTC — EV-D-05 diagnóstico y gates pendientes
 
 - Lite: commit de pruebas `24871267ec1ee9f64bbd2d34fd449b41ee74f99c`; cumulative [39555164790](https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164790), H1d [39555164686](https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164686) y Scientific UI [39555164730](https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164730) terminaron SUCCESS sobre el SHA esperado.
