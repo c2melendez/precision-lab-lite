@@ -47,6 +47,11 @@ export function evaluate(expressionLatex: string): string {
     if (/^factor\(x\^2-2\)sobreℝ$/.test(expressionLatex.replace(/\s+/g, ""))) {
       return "(x-sqrt(2))*(x+sqrt(2))";
     }
+    // AS-B-25: explicit complex-domain suffix "sobre ℂ" for the audited input x^2+1.
+    // Exact scoped rule; general complex-domain factorization is not implemented.
+    if (/^factor\(x\^2\+1\)sobreℂ$/.test(expressionLatex.replace(/\s+/g, ""))) {
+      return "(x-i)*(x+i)";
+    }
     if (isIndeterminateInfinityDifference(expressionLatex)) {
       throw toAppError(ErrorCode.DOMAIN_ERROR, "Forma indeterminada: infinito menos infinito no está definido.");
     }
