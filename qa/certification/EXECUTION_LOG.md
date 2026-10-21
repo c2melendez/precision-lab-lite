@@ -1,3 +1,13 @@
+## 2026-10-21 UTC — EV-D-06 actualización r217: Plus acumulativo PASS
+
+- **Plus cumulative PASS** [39557484508](https://github.com/c2melendez/precision-lab-plus/actions/runs/39557484508), SHA técnico `6369a617e59f2f23fe73ac4e464683de310a688a`: backend 1766 passed, 6 xfailed, cobertura 88.05%; `test_ev_d06_source_row_present_and_frozen` y `test_ev_d06_cot_pi_over_4_http_ascii` PASSED. Frontend typecheck, regresión y production build SUCCESS.
+- **Plus H1d PASS** [39557484518](https://github.com/c2melendez/precision-lab-plus/actions/runs/39557484518), mismo SHA.
+- **Lite cumulative PASS** [39557479991](https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479991): EV-D-06 3/3, 1975 passed, 8 expected fail, 34 TODO; typecheck/build SUCCESS. **Lite H1d PASS** [39557479974](https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479974).
+- Único gate pendiente para el cierre del objetivo: **Lite Scientific UI** [39557480008](https://github.com/c2melendez/precision-lab-lite/actions/runs/39557480008), todavía ejecutando Native desktop/tablet/mobile scientific result verification. EV-D-06 permanece IN_PROGRESS hasta que este gate termine; no se declara PASS bilateral todavía.
+- Producto sin cambios. Certificación global OPEN.
+
+---
+
 ## 2026-10-21 UTC — EV-D-06 checkpoint r216: gates parciales verificados
 
 - **Lite cumulative PASS** [39557479991](https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479991), SHA técnico `00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8`: suite EV-D-06 3/3; 334/334 archivos Vitest, 1975 passed, 8 expected fail, 34 TODO; typecheck y production build SUCCESS.
