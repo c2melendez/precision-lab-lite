@@ -1,3 +1,26 @@
+## 2026-10-21 UTC — r229: EV-L cerrado, EV-I-09/I-10 cerrados bilateralmente; EV-E diagnosticado
+
+**Reconciliación previa:** el índice estaba en r228 (EV-I-07) mientras HEAD ya había avanzado con la implementación EV-L (Lite `86cd568b`, `47988786`; Plus `fd9158ff`…`6edbb54d`). Se verificó la evidencia real de esos SHA antes de heredar objetivo: guard `skip=false` ("No reusable completed evidence found") y pruebas EV-L ejecutadas y aprobadas, no omitidas.
+
+**EV-L-01..14 (logarítmicas) — PASS_SCOPED_BILATERAL.**
+
+- Lite `47988786a6340d434db67a7a627ff525ae697864`: cumulative [39651672489](https://github.com/c2melendez/precision-lab-lite/actions/runs/39651672489) — SUCCESS, 346 archivos, 2034 passed, 8 expected fail, 34 todo; `tests/trigonometryEvL01to14.audit.test.ts` 6/6. h1d [39651672506](https://github.com/c2melendez/precision-lab-lite/actions/runs/39651672506) y scientific-ui [39651672303](https://github.com/c2melendez/precision-lab-lite/actions/runs/39651672303) — SUCCESS.
+- Plus `6edbb54d2b13e897e98c83f3a6872eefae869765`: cumulative [39661568080](https://github.com/c2melendez/precision-lab-plus/actions/runs/39661568080) — SUCCESS, backend 1806 passed, 6 xfailed, cobertura 88.08%; `tests/test_log_matrix_ev_l01_l14.py` 5/5 PASSED. h1d [39661568110](https://github.com/c2melendez/precision-lab-plus/actions/runs/39661568110), native-syntax [39661568063](https://github.com/c2melendez/precision-lab-plus/actions/runs/39661568063) y SG28 [39661568064](https://github.com/c2melendez/precision-lab-plus/actions/runs/39661568064) — SUCCESS.
+- Alcance: EV-L-01/02/03/04/06/07/10 exactos; EV-L-05/08/11 con forma exacta y referencia redondeada a 9 decimales; EV-L-09 producto de logs en ASCII y LaTeX; EV-L-12 `DOMAIN_ERROR`; EV-L-13 `i*pi` (rama compleja que documenta la fila); EV-L-14 base inválida con error claro.
+
+**EV-I-09 / EV-I-10 — PASS_SCOPED_BILATERAL.** Eran los dos defectos abiertos exclusivos de Lite.
+
+- Producto (Lite): nuevo `engine/inverseTrigComposition.ts` conectado en `evaluate`. `arcsin(sin 2)` devuelve `-2+pi` (antes `2`, rama incorrecta) y `sin(arccos 3/5)` devuelve `4/5` (antes sin evaluar). Se cubren además las ramas principales de `arccos(cos t)` y `arctan(tan t)` (antes `2` en ambos) y las identidades pitagóricas `cos(arcsin u)`, `tan(arcsin u)`, `tan(arccos u)`. Solo actúa sobre una composición completa con argumento numérico; lo simbólico queda intacto.
+- Hallazgo adicional: la validación G3 rechazaba los macros LaTeX contractuales (`\arcsin`, `\arccos`, `\arctan`, `\arcsec`, `\arccsc`, `\arccot` y las inversas hiperbólicas) con «Comando desconocido», de modo que las filas oficiales EV-I solo eran certificables por el canal ASCII. Corregido en `parsing/normalize.ts`.
+- Lite `bd9c207c1b091bfd017fb8f3ca7ff8f21e06415b`: cumulative [39679799460](https://github.com/c2melendez/precision-lab-lite/actions/runs/39679799460) — SUCCESS, 347 archivos, 2043 passed, 8 expected fail, 34 todo; `tests/trigonometryEvI09I10.audit.test.ts` 9/9; h1d [39679798743](https://github.com/c2melendez/precision-lab-lite/actions/runs/39679798743) y scientific-ui [39679798735](https://github.com/c2melendez/precision-lab-lite/actions/runs/39679798735) — SUCCESS.
+- Plus `996ed03026c95ced15443a579c35115f25d5e3c3`: cumulative [39679906072](https://github.com/c2melendez/precision-lab-plus/actions/runs/39679906072) — SUCCESS, backend 1812 passed, 6 xfailed, cobertura 88.08%; `tests/test_trigonometry_ev_i09_i10.py` 6/6 PASSED; h1d [39679906136](https://github.com/c2melendez/precision-lab-plus/actions/runs/39679906136) — SUCCESS. Sin cambio de producto: Plus ya devolvía `-2+pi` y `4/5`.
+
+**Siguiente objetivo — EV-E-01..14 (exponenciales) de `matriz_log_exp_radicales`.** Sondeo local verificado en ambos motores: EV-E-01..09, EV-E-11 y EV-E-13 ya son correctos; **EV-E-10** `e^{ln 2+ln 3}` devuelve `6` en Plus pero queda simbólico `exp(log(2)+log(3))` en Lite (defecto de producto Lite); **EV-E-12** `(1+1/1000)^{1000}` devuelve una fracción exacta de ~3600 dígitos como `result_text` en **ambos** motores, mientras `result_approx` sí es `2.716923932` (defecto bilateral de presentación/complejidad); **EV-E-14** `0^{0}` devuelve `1` en ambos, valor que la fila admite solo bajo convención declarada (declarar en `MANUAL_CAPABILITY_GAPS.md`). No se declara ningún PASS de EV-E.
+
+Certificación global continúa **OPEN** por los bloqueos independientes registrados (SG28/DIST, S25, SY-P-23, SY-X-04 Plus HTTP, Algebra229-AS-B-29).
+
+---
+
 ## 2026-10-21 UTC — EV-I-07 cierre r228 y arranque de EV-L (logarítmicas)
 
 **EV-I-07 — `arccot(-1) = 3π/4`: PASS_SCOPED_BILATERAL.** La matriz congelada exige el rango principal `(0, π)`; los motores usaban la rama `arctan(1/x)` / `acot` de SymPy (`-π/4`).

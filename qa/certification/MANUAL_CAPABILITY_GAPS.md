@@ -347,3 +347,17 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
 ## 2026-10-21 UTC — TRIG EV-D-11: identidad pitagórica no colapsada en el canal primario (Lite)
 
 `evaluate()` de Lite conserva la forma exacta `cos(1/8*pi)^2+sin(1/8*pi)^2` para `sin²(π/8)+cos²(π/8)`; `simplify(...)` sí devuelve `1`. EV-D-11 se certifica como PASS_SCOPED_EQUIVALENT (equivalencia exacta + valor numérico, regla G2), no como igualdad textual. Plus devuelve `1` literal. Condición de salida: decisión de producto sobre simplificación automática de identidades pitagóricas en `evaluate()` y pruebas que la cubran.
+
+## 2026-10-21 UTC — TRIG EV-I-09/EV-I-10: alcance declarado de la reescritura de composiciones
+
+`engine/inverseTrigComposition.ts` (Lite) reescribe **solo** una composición completa inversa↔directa cuyo argumento es numérico: `arcsin(sin t)`, `arccos(cos t)`, `arctan(tan t)`, `sin(arccos u)`, `cos(arcsin u)`, `tan(arcsin u)`, `tan(arccos u)`.
+
+- Una composición **anidada dentro de una expresión mayor** (por ejemplo `arcsin(sin 2)+1` o `2*sin(arccos 3/5)`) no se reescribe y conserva el comportamiento previo del motor (Algebrite colapsa la rama). Condición de salida: generalizar la reescritura a subexpresiones con pruebas de no regresión.
+- Los argumentos simbólicos (`arcsin(sin x)`) no se tocan: la identidad depende del rango y no se asume.
+- El canal LaTeX contractual (`\arcsin`, `\arccos`, `\arctan`, `\arcsec`, `\arccsc`, `\arccot` y las inversas hiperbólicas) ya se acepta en G3; antes abortaba con «Comando desconocido» y las filas EV-I solo eran certificables por el canal ASCII.
+
+## 2026-10-21 UTC — LOG/EXP EV-E: diagnóstico de exponenciales (sin PASS)
+
+- **EV-E-14 `0^{0}`:** ambos motores devuelven `1`. Se **declara** la convención `0^0 = 1`, que la fila admite explícitamente («o `1` por convención declarada»). No es un fallo: queda registrada como decisión, revisable si el contrato cambia.
+- **EV-E-12 `(1+1/1000)^{1000}`:** ambos motores devuelven como `result_text` una fracción exacta de ~3600 dígitos, mientras `result_approx` sí es `2.716923932`. Defecto **bilateral** de presentación/complejidad, no matemático: pendiente decidir la representación (forma acotada frente a aproximación declarada) antes de certificar la fila.
+- **EV-E-10 `e^{\ln 2+\ln 3}`:** Plus devuelve `6`; Lite conserva `exp(log(2)+log(3))`. Defecto de producto exclusivo de Lite, pendiente de simplificación exacta de la suma de logaritmos en el exponente.
