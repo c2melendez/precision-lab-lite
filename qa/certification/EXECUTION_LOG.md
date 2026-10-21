@@ -1,3 +1,21 @@
+## 2026-10-21 UTC — AUD-SING cierre r225 y EV-I grupo A en ejecución
+
+**AUD-SING-01/02 — PASS_SCOPED (correcciones reales de producto).** Gates SUCCESS sobre el SHA técnico `7d83a9ac14c73dc70fb52d8902e01dc9313d1924`:
+
+- cumulative: [39595606769](https://github.com/c2melendez/precision-lab-lite/actions/runs/39595606769) — SUCCESS; 2008 passed, 8 expected fail, 34 TODO; typecheck/build SUCCESS.
+- h1d: [39595606725](https://github.com/c2melendez/precision-lab-lite/actions/runs/39595606725) — SUCCESS; scientific-ui: [39595606686](https://github.com/c2melendez/precision-lab-lite/actions/runs/39595606686) — SUCCESS.
+- `arccot(0) = π/2` (ya no error de división entre cero); `arcsinh/arccosh/arctanh/arccoth/arccsch/arcsech` se resuelven como funciones (antes `arcsinh(1)` = `arcsin*h*1` = **0**); en GRAD `sec/csc/cot` convierten ángulo (`sec(90)`→`DOMAIN_ERROR`, `cot(45)`→1, `csc(30)`→2); `arcsin(2)`/`arccos(2)`→`DOMAIN_ERROR`.
+- Plus alineado: gates SUCCESS en `587aecc1f978e03bb976212f3c32fc632b76d0b0` — cumulative [39595617829](https://github.com/c2melendez/precision-lab-plus/actions/runs/39595617829) (1791 passed, 6 xfailed), h1d [39595617779](https://github.com/c2melendez/precision-lab-plus/actions/runs/39595617779), native syntax [39595617887](https://github.com/c2melendez/precision-lab-plus/actions/runs/39595617887), SG28 prototype [39595617826](https://github.com/c2melendez/precision-lab-plus/actions/runs/39595617826).
+
+**EV-I grupo A en ejecución** — Lite `11d0192582c337e38ec3718940f5f620644e44f0` / Plus `43738a0fd6387e99a71bdf0124e15fb5c698c877`: EV-I-01..06 (`arcsin(1/2)`, `arccos(-1/2)`, `arctan(1)`, `arctan(√3)`, `arccsc(2)`, `arcsec(2)`), EV-I-08 (`arccot(0)=π/2`) y EV-I-11 (`cos(arctan 2)=√5/5`), con fila congelada verificada.
+
+**Pendientes EV-I con defecto demostrado (no certificados):**
+- **EV-I-07** `arccot(-1)`: la matriz exige `3π/4`; ambos motores devuelven `-π/4` (rama `arctan(1/x)` / convención SymPy). Requiere decisión de contrato y corrección bilateral a rango principal (0, π).
+- **EV-I-09** `arcsin(sin 2)`: el motor devuelve `2` (simplificación que ignora la rama principal; el valor correcto es `π-2 ≈ 1.141592654`). Defecto de producto pendiente.
+- **EV-I-10** `sin(arccos(3/5))`: el motor deja la expresión sin evaluar (`4/5` esperado). Capacidad pendiente.
+
+---
+
 ## 2026-10-21 UTC — EV-D-12 cierre r224 y auditoría de singularidades evitables (AUD-SING)
 
 **EV-D-12 — `tan(π/2)` indefinida (error claro): PASS_SCOPED.** Fila congelada verificada; los tres gates Lite terminaron SUCCESS con `head_sha` exacto.

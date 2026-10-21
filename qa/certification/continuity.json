@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 224,
+  "revision": 225,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -48,14 +48,14 @@
     }
   },
   "next_action": {
-    "id": "TRIG-AUD-SING-02",
+    "id": "TRIG-EV-I-GROUP-A",
     "status": "IN_PROGRESS",
-    "action": "EV-D-12 closed PASS_SCOPED (tan pi/2 and log 0 now DOMAIN_ERROR; Lite 7cc7bf8a gates SUCCESS, Plus 95601e5b SUCCESS). AUD-SING batch on Lite 7d83a9ac / Plus 587aecc1: arccot(0)=pi/2, hyperbolic aliases (arcsinh/arccosh/arctanh/arccoth) resolved instead of implicit products, GRAD-mode sec/csc/cot conversion, and EV-I-12 arcsin/acos out-of-domain DOMAIN_ERROR. Gates running; review logs, then close and start EV-I-01..06.",
+    "action": "AUD-SING closed PASS_SCOPED on Lite 7d83a9ac (gates 39595606769/39595606725/39595606686) and Plus 587aecc1 (39595617829/39595617779/39595617887). EV-I group A tests (EV-I-01..06, EV-I-08, EV-I-11) are published on Lite 11d01925 / Plus 43738a0f; gates running. Remaining EV-I defects: I-07 arccot(-1) branch conflict (matrix 3pi/4 vs engines -pi/4), I-09 arcsin(sin 2)=2 wrong, I-10 sin(arccos(3/5)) unevaluated.",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "7d83a9ac14c73dc70fb52d8902e01dc9313d1924",
-      "c2melendez/precision-lab-plus": "587aecc1f978e03bb976212f3c32fc632b76d0b0"
+      "c2melendez/precision-lab-lite": "11d0192582c337e38ec3718940f5f620644e44f0",
+      "c2melendez/precision-lab-plus": "43738a0fd6387e99a71bdf0124e15fb5c698c877"
     },
-    "product_changed": true
+    "product_changed": false
   },
   "blockers": [
     {
@@ -79,7 +79,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r224: EV-D-12 tan(pi/2) undefined PASS_SCOPED with clear DOMAIN_ERROR in both engines; AUD-SING batch (arccot(0), hyperbolic aliases, GRAD sec/csc/cot, EV-I-12 arcsin domain) on Lite 7d83a9ac / Plus 587aecc1, gates running. Global certification OPEN.",
+  "ledger_note": "r225: AUD-SING closed PASS_SCOPED (arccot(0), hyperbolic aliases, GRAD sec/csc/cot, arcsin domain) on 7d83a9ac/587aecc1. EV-I group A published (11d01925/43738a0f), gates running; EV-I-07/09/10 remain as documented defects. Global certification OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -632,6 +632,50 @@
     "diagnostic": "tan(pi/2) returned the unevaluated 'tan(1/2*pi)' instead of a domain error: guard added only for whole-result tan(...) using the engine's exact cosine; composite forms untouched to avoid diverging from Plus on 1/tan(pi/2).",
     "global_certification": "OPEN",
     "next_objective": "TRIG-AUD-SING-02",
+    "next_status": "IN_PROGRESS"
+  },
+  "aud_sing_closure_r225": {
+    "status": "PASS_SCOPED",
+    "scope": "avoidable singularities and silent wrong values: arccot(0), hyperbolic aliases, GRAD sec/csc/cot, arcsin/acos domain",
+    "product_changed": true,
+    "product_fixes": [
+      "arccot(x): exact zero -> pi/2 instead of arctan(1/0)",
+      "aliases arcsinh/arccosh/arctanh/arccoth/arccsch/arcsech resolved to real functions (previously implicit products, e.g. arcsinh(1)=0)",
+      "GRAD mode converts sec/csc/cot arguments (previously degrees interpreted as radians)",
+      "arcsin/arccos numeric arguments outside [-1, 1] -> DOMAIN_ERROR"
+    ],
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39595606769,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39595606769",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7d83a9ac14c73dc70fb52d8902e01dc9313d1924",
+        "head_sha_matches": true,
+        "tests": "2008 passed; 8 expected fail; 34 TODO"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39595606725,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39595606725",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7d83a9ac14c73dc70fb52d8902e01dc9313d1924",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39595606686,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39595606686",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7d83a9ac14c73dc70fb52d8902e01dc9313d1924",
+        "head_sha_matches": true
+      }
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-I-GROUP-A",
     "next_status": "IN_PROGRESS"
   }
 }
