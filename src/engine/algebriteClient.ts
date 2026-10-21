@@ -1,4 +1,5 @@
 import { verifyFactorResult } from "./polynomialFactorZ";
+import { simplifyExpLogResult } from "./expLogSimplify";
 import { rewriteInverseTrigComposition } from "./inverseTrigComposition";
 import { simplifyLogResult } from "./logSimplify";
 // Único punto de contacto con Algebrite en todo el proyecto (regla de capa
@@ -324,6 +325,8 @@ export function evaluate(expressionLatex: string): string {
     // EV-L: identidades exactas de logaritmos que Algebrite no aplica
     // (log(a)/log(b) = k cuando a = b^k, y log(b^k) = k*log(b)).
     result = simplifyLogResult(result);
+    // EV-E-10: exp(log a + log b) = a*b con racionales literales exactos.
+    result = simplifyExpLogResult(result);
     if (MAY_NEED_FLOAT.test(result)) {
       const retried: string = Algebrite.run(`float(${expressionLatex})`);
       if (typeof retried === "string" && retried.length > 0 && !/stop|Stop/.test(retried)) {
