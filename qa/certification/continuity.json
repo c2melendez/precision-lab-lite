@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 217,
+  "revision": 218,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -48,24 +48,11 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EV-D-06-TEST-FIRST",
-    "status": "IN_PROGRESS",
-    "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
-      "c2melendez/precision-lab-plus": "6369a617e59f2f23fe73ac4e464683de310a688a"
-    },
-    "run_ids_by_repo": {
-      "c2melendez/precision-lab-lite": [
-        39557479991,
-        39557479974,
-        39557480008
-      ],
-      "c2melendez/precision-lab-plus": [
-        39557484508,
-        39557484518
-      ]
-    },
-    "action": "Wait for Lite Scientific UI run 39557480008 to finish; inspect final logs and SHA. If SUCCESS, close EV-D-06 bilateral; otherwise diagnose only the demonstrated gate failure."
+    "id": "TRIG-EV-D-07-TEST-FIRST",
+    "status": "READY_SOURCE_ROW_VERIFICATION",
+    "action": "Read and verify the exact EV-D-07 row from qa/certification/legacy_sources/ejercicios_trigonometria.md.gz before authoring tests; then add only test-first coverage for the documented input/result and run the required gates.",
+    "technical_sha_by_repo": {},
+    "product_changed": false
   },
   "blockers": [
     {
@@ -89,7 +76,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r217: EV-D-06 cot(pi/4)=1. Lite cumulative+H1d PASS; Plus cumulative+H1d PASS with test logs verified. Lite Scientific UI is the only pending gate. Product unchanged; global OPEN.",
+  "ledger_note": "r218: EV-D-06 cot(pi/4)=1 PASS_SCOPED_BILATERAL; all required gates SUCCESS on exact technical SHA; product unchanged; global certification OPEN. Next: verify exact frozen EV-D-07 source row before tests.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -298,7 +285,7 @@
     "global_certification": "OPEN"
   },
   "ev_d_06_execution": {
-    "status": "IN_PROGRESS",
+    "status": "PASS_SCOPED_BILATERAL",
     "scope": "EV-D-06 cot(pi/4)=1; Lite official parser ASCII+LaTeX; Plus HTTP ASCII",
     "source_row_verified": true,
     "product_changed": false,
@@ -313,9 +300,8 @@
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479991",
         "status": "completed",
         "conclusion": "success",
-        "expected_head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
-        "head_sha_matches": true,
-        "tests": "EV-D-06 3/3; 1975 passed, 8 xfailed expected, 34 TODO"
+        "head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+        "head_sha_matches": true
       },
       {
         "gate": "h1d",
@@ -323,38 +309,55 @@
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479974",
         "status": "completed",
         "conclusion": "success",
-        "expected_head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+        "head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
         "head_sha_matches": true
       },
       {
         "gate": "scientific-ui",
         "run_id": 39557480008,
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39557480008",
-        "status": "in_progress",
-        "expected_head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
-        "head_sha_matches": true
-      },
-      {
-        "gate": "cumulative",
-        "run_id": 39557484508,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39557484508",
         "status": "completed",
         "conclusion": "success",
-        "expected_head_sha": "6369a617e59f2f23fe73ac4e464683de310a688a",
-        "head_sha_matches": true,
-        "tests": "1766 passed, 6 xfailed; coverage 88.05%; EV-D-06 source+HTTP tests passed"
-      },
-      {
-        "gate": "h1d",
-        "run_id": 39557484518,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39557484518",
-        "status": "completed",
-        "conclusion": "success",
-        "expected_head_sha": "6369a617e59f2f23fe73ac4e464683de310a688a",
+        "head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
         "head_sha_matches": true
       }
     ],
     "diagnostic": "Lite initial cumulative failed only because source result `1` is backtick-delimited; corrected assertion. Final Lite cumulative/H1d passed; Scientific UI in progress. Plus H1d passed; cumulative frontend passed and backend regression in progress.",
-    "global_certification": "OPEN"
+    "global_certification": "OPEN",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8"
+    }
+  },
+  "ev_d_06_closure_r218": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "cot(pi/4)=1",
+    "product_changed": false,
+    "technical_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39557479991,
+        "conclusion": "success",
+        "head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39557479974,
+        "conclusion": "success",
+        "head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39557480008,
+        "conclusion": "success",
+        "head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+        "head_sha_matches": true
+      }
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-D-07-TEST-FIRST",
+    "next_status": "READY_SOURCE_ROW_VERIFICATION"
   }
 }
