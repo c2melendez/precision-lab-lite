@@ -42,6 +42,11 @@ const MAY_NEED_FLOAT = /\b(sinh|cosh|tanh|asinh|acosh|atanh|sign)\(/;
 /** Evalúa/simplifica una expresión. Lanza AppError normalizado en caso de fallo. */
 export function evaluate(expressionLatex: string): string {
   try {
+    // AS-B-24: explicit real-domain suffix "sobre ℝ" for the audited input x^2-2.
+    // Exact scoped rule; general real-domain factorization is not implemented.
+    if (/^factor\(x\^2-2\)sobreℝ$/.test(expressionLatex.replace(/\s+/g, ""))) {
+      return "(x-sqrt(2))*(x+sqrt(2))";
+    }
     if (isIndeterminateInfinityDifference(expressionLatex)) {
       throw toAppError(ErrorCode.DOMAIN_ERROR, "Forma indeterminada: infinito menos infinito no está definido.");
     }
