@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 209,
+  "revision": 210,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -51,18 +51,18 @@
     "id": "TRIG-EV-D-04-TEST-FIRST",
     "status": "IN_PROGRESS",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "f07afe1ec462a8f5fde284d561adcd882871f148",
-      "c2melendez/precision-lab-plus": "fce235b9b6fee14520bd361351fc77172401259d"
+      "c2melendez/precision-lab-lite": "0467aa89c470abf6607d1b67e9c40191642d8df4",
+      "c2melendez/precision-lab-plus": "f6756dc37bdf193a01de05a4bb9208b65cf47867"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39549185561,
-        39549185671,
-        39549185567
+        39554410696,
+        39554410679,
+        39554410715
       ],
       "c2melendez/precision-lab-plus": [
-        39549187134,
-        39549187120
+        39552906521,
+        39552906515
       ]
     },
     "completed_scoped": {
@@ -70,7 +70,7 @@
       "status": "PASS_SCOPED",
       "scope": "EV-D-01 sin(pi/6)=1/2; EV-D-02 cos(pi/3)=1/2; EV-D-03 tan(pi/4)=1; unit/HTTP; Plus HTTP ASCII only"
     },
-    "action": "EV-D-04 test-first añadido en Lite y Plus; esperar las corridas automáticas y verificar sus resultados antes de cualquier cambio de producto. EV-D-04 no se declara PASS hasta concluir gates."
+    "action": "EV-D-04: se corrigió el test de Lite para pasar por parseExpression antes de evaluate; la primera corrida acumulativa demostró que llamar directamente a Algebrite omite la reescritura de csc. Verificar las nuevas corridas de Lite y los SHA; no modificar producto salvo evidencia adicional. No declarar PASS hasta concluir gates."
   },
   "blockers": [
     {
@@ -94,7 +94,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r209 checkpoint: EV-D-04 test-first en curso; pruebas añadidas en Lite y Plus, workflows automáticos aún in_progress al momento de consulta. Sin cambios de producto y sin declarar PASS. Global OPEN.",
+  "ledger_note": "r210 checkpoint: EV-D-04 sigue IN_PROGRESS. Test de Lite corregido para usar el pipeline oficial parseExpression→evaluate tras fallo por bypass del parser; no hay cambio de producto. Plus tests y gates previos SUCCESS; nuevas corridas Lite en curso. Global OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -156,6 +156,36 @@
       }
     ],
     "product_changed": false,
+    "global_certification": "OPEN"
+  },
+  "ev_d_04_execution_r210": {
+    "status": "IN_PROGRESS",
+    "diagnostic": "Lite r209 cumulative failed only because test called evaluate('csc(pi/6)') directly; Algebrite returned csc(1/6*pi). Official pipeline rewrites csc to 1/sin before evaluate. Test now uses parseExpression(INPUT_ASCII,'RAD').algebrite.",
+    "product_changed": false,
+    "test_commit_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4",
+    "runs": [
+      {
+        "gate": "scientific-ui",
+        "run_id": 39554410696,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39554410696",
+        "status": "in_progress",
+        "expected_head_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4"
+      },
+      {
+        "gate": "cumulative",
+        "run_id": 39554410679,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39554410679",
+        "status": "in_progress",
+        "expected_head_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39554410715,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39554410715",
+        "status": "in_progress",
+        "expected_head_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4"
+      }
+    ],
     "global_certification": "OPEN"
   }
 }
