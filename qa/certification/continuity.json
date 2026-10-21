@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 223,
+  "revision": 224,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -48,11 +48,14 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EV-D-12-TEST-FIRST",
-    "status": "READY_SOURCE_ROW_AND_ERROR_CONTRACT",
-    "action": "EV-D-11 closed PASS_SCOPED_EQUIVALENT (Lite 52f50ea4: exact form cos^2+sin^2 certified by simplify/equivalence, not textual 1; Plus 2f37ee2f returns literal 1). Next: verify the exact EV-D-12 row (tan(pi/2) undefined, 'error claro') and the current error contract for undefined trig values before authoring bilateral tests; distinguish product error from numeric fallback.",
-    "technical_sha_by_repo": {},
-    "product_changed": false
+    "id": "TRIG-AUD-SING-02",
+    "status": "IN_PROGRESS",
+    "action": "EV-D-12 closed PASS_SCOPED (tan pi/2 and log 0 now DOMAIN_ERROR; Lite 7cc7bf8a gates SUCCESS, Plus 95601e5b SUCCESS). AUD-SING batch on Lite 7d83a9ac / Plus 587aecc1: arccot(0)=pi/2, hyperbolic aliases (arcsinh/arccosh/arctanh/arccoth) resolved instead of implicit products, GRAD-mode sec/csc/cot conversion, and EV-I-12 arcsin/acos out-of-domain DOMAIN_ERROR. Gates running; review logs, then close and start EV-I-01..06.",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "7d83a9ac14c73dc70fb52d8902e01dc9313d1924",
+      "c2melendez/precision-lab-plus": "587aecc1f978e03bb976212f3c32fc632b76d0b0"
+    },
+    "product_changed": true
   },
   "blockers": [
     {
@@ -76,7 +79,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r223: EV-D-11 sin^2+cos^2=1 PASS_SCOPED_EQUIVALENT on Lite 52f50ea4 (exact equivalence via simplify) and Plus 2f37ee2f (literal 1); all gates SUCCESS. Next: EV-D-12 tan(pi/2) undefined error contract. Global certification OPEN.",
+  "ledger_note": "r224: EV-D-12 tan(pi/2) undefined PASS_SCOPED with clear DOMAIN_ERROR in both engines; AUD-SING batch (arccot(0), hyperbolic aliases, GRAD sec/csc/cot, EV-I-12 arcsin domain) on Lite 7d83a9ac / Plus 587aecc1, gates running. Global certification OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -582,5 +585,53 @@
     "global_certification": "OPEN",
     "next_objective": "TRIG-EV-D-12-TEST-FIRST",
     "next_status": "READY_SOURCE_ROW_AND_ERROR_CONTRACT"
+  },
+  "ev_d_12_closure_r224": {
+    "status": "PASS_SCOPED",
+    "scope": "tan(pi/2) undefined must raise a clear DOMAIN_ERROR in both engines; log(0) aligned with Plus",
+    "product_changed": true,
+    "product_fix": {
+      "repo": "c2melendez/precision-lab-lite",
+      "files": ["src/engine/algebriteClient.ts", "src/engine/parsing/index.ts"],
+      "change": "tan-only pole detection via exact cos(arg)=0 -> DOMAIN_ERROR; log(0)/ln(0) -> DOMAIN_ERROR; arccot(0) -> pi/2 (AUD-SING-01)"
+    },
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "7cc7bf8a458d37c182adbfd898a1626e665aba76",
+      "c2melendez/precision-lab-plus": "95601e5b13131af26f94b56028542b4feda56ec5"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39593868026,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39593868026",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7cc7bf8a458d37c182adbfd898a1626e665aba76",
+        "head_sha_matches": true,
+        "tests": "1999 passed; 8 expected fail; 34 TODO; EV-D-12 file 7/7 passed"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39593867990,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39593867990",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7cc7bf8a458d37c182adbfd898a1626e665aba76",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39593867986,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39593867986",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7cc7bf8a458d37c182adbfd898a1626e665aba76",
+        "head_sha_matches": true
+      }
+    ],
+    "diagnostic": "tan(pi/2) returned the unevaluated 'tan(1/2*pi)' instead of a domain error: guard added only for whole-result tan(...) using the engine's exact cosine; composite forms untouched to avoid diverging from Plus on 1/tan(pi/2).",
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-AUD-SING-02",
+    "next_status": "IN_PROGRESS"
   }
 }

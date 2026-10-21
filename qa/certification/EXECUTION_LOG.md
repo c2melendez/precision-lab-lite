@@ -1,3 +1,22 @@
+## 2026-10-21 UTC — EV-D-12 cierre r224 y auditoría de singularidades evitables (AUD-SING)
+
+**EV-D-12 — `tan(π/2)` indefinida (error claro): PASS_SCOPED.** Fila congelada verificada; los tres gates Lite terminaron SUCCESS con `head_sha` exacto.
+
+- cumulative: [39593868026](https://github.com/c2melendez/precision-lab-lite/actions/runs/39593868026) — SUCCESS; EV-D-12 7/7; 1999 passed, 8 expected fail, 34 TODO; SHA `7cc7bf8a458d37c182adbfd898a1626e665aba76`.
+- h1d: [39593867990](https://github.com/c2melendez/precision-lab-lite/actions/runs/39593867990) — SUCCESS; scientific-ui: [39593867986](https://github.com/c2melendez/precision-lab-lite/actions/runs/39593867986) — SUCCESS.
+- Corrección de producto: `tan(π/2+kπ)` devolvía la forma sin evaluar `tan(1/2*pi)`; ahora se detecta el polo con el coseno exacto del motor y se emite `DOMAIN_ERROR` ("Tangente no definida"), solo para el resultado que es exactamente `tan(...)`. `log(0)`/`ln(0)` también emiten `DOMAIN_ERROR` (paridad con Plus).
+- Plus ya cumplía (`DOMAIN_ERROR` en `tan(pi/2)` y `log(0)`): [39593883422](https://github.com/c2melendez/precision-lab-plus/actions/runs/39593883422) — SUCCESS, 1783 passed, 6 xfailed, cobertura 88.05%; h1d [39593883403](https://github.com/c2melendez/precision-lab-plus/actions/runs/39593883403) — SUCCESS.
+
+**Auditoría de decisiones previas que creaban singularidades/valores silenciosos (AUD-SING), en ejecución sobre Lite `7d83a9ac` / Plus `587aecc1`:**
+
+- **AUD-SING-01 — `arccot(0)`:** era un error de división entre cero por la reescritura `arctan(1/0)`, pese a que `arccot(0)=π/2`. Corregido en el parser (caso exacto 0 → `pi/2`), conservando `arctan(1/x)` para `x≠0` (rama compatible con Plus).
+- **AUD-SING-02 — alias hiperbólicos:** `arcsinh/arccosh/arctanh/arccoth` no estaban en el mapa de alias y se partían como producto implícito (`arcsinh(1)` → `arcsin*h*1` → **0**). Añadidos al mapa y a los dos pasadas de reescritura; `arccoth → acoth`, `arccsch → acsch`, `arcsech → asech` en forma canónica.
+- **AUD-SING-02 — modo grados:** `sec/csc/cot` no convertían ángulo en GRAD porque solo `sin/cos/tan` estaban en la lista de conversión; `sec(90)` daba `-2.2318`, `cot(45)` `0.6174`, `csc(30)` `-1.0121`. Ahora las tres convierten y coinciden con Plus (`DOMAIN_ERROR`/`1`/`2`).
+- **EV-I-12 (adelanto):** `arcsin(2)`/`arccos(2)` devolvían la llamada sin evaluar; ahora `DOMAIN_ERROR` claro en ambos motores (Plus corregido en `evaluate_service.py`).
+- Gates de este lote en ejecución; no se declara PASS hasta revisar conclusión y logs.
+
+---
+
 ## 2026-10-21 UTC — EV-D-11 cierre r223: PASS_SCOPED_EQUIVALENT
 
 **EV-D-11 — `sin²(π/8) + cos²(π/8) = 1`: PASS_SCOPED_EQUIVALENT.** Fila congelada verificada; los tres gates Lite terminaron SUCCESS con `head_sha` exacto.
