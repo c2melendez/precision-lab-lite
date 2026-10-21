@@ -297,6 +297,25 @@ Estado: AS-B-23 (`x^2-2`) queda en `ON_HOLD`, pendiente de instrucción. Global 
 
 ---
 
+## 2026-10-20 UTC — AS-B-23 PASS sin cambio de producto (continuity r198)
+
+**ALGEBRA229-AS-B-23** — factorizar `x^{2}-2` → `x^{2} - 2` (fila N2; irreducible sobre ℚ, debe quedar igual).
+
+| Repo | Technical SHA | Gates (SUCCESS sobre el SHA exacto) |
+|------|---------------|--------------------------------------|
+| Lite | `628e686` | cumulative [39519175598](https://github.com/c2melendez/precision-lab-lite/actions/runs/39519175598), h1d [39519178036](https://github.com/c2melendez/precision-lab-lite/actions/runs/39519178036), scientific-ui [39519180927](https://github.com/c2melendez/precision-lab-lite/actions/runs/39519180927) |
+| Plus | `9e7d57b` | cumulative [39519184230](https://github.com/c2melendez/precision-lab-plus/actions/runs/39519184230), h1d [39519186881](https://github.com/c2melendez/precision-lab-plus/actions/runs/39519186881) |
+
+Test-first sin cambios de producto. Evidencia: `tests/algebra229AsB23.audit.test.ts` (Lite) y `backend/tests/test_algebra229_as_b23.py` (Plus). Exige fila N2 en la matriz, resultado equivalente a `x^2-2` y ausencia de producto; Plus además exige suma (`sp.Add`) por HTTP.
+
+Registro D20 pendiente de los commits documentales anteriores:
+- Lite `6808096` (docs r197): cumulative [39515140782](https://github.com/c2melendez/precision-lab-lite/actions/runs/39515140782), h1d [39515143215](https://github.com/c2melendez/precision-lab-lite/actions/runs/39515143215), scientific-ui [39515145949](https://github.com/c2melendez/precision-lab-lite/actions/runs/39515145949), SUCCESS. Hubo además una ejecución duplicada de cumulative, [39515128617](https://github.com/c2melendez/precision-lab-lite/actions/runs/39515128617), también SUCCESS.
+- Plus `2a6e3ce` (docs r197): cumulative [39515148327](https://github.com/c2melendez/precision-lab-plus/actions/runs/39515148327), h1d [39515150925](https://github.com/c2melendez/precision-lab-plus/actions/runs/39515150925), SUCCESS.
+
+Estado: AS-B-24 (`x^2-2` sobre ℝ) queda en `ON_HOLD`. Pendiente de decisión: la sintaxis del sufijo «sobre ℝ» y del resultado (D11), que aún no está implementada. Global OPEN.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.
