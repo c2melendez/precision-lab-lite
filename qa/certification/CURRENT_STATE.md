@@ -1,5 +1,21 @@
 > Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
 
+## 2026-10-21 UTC — AS-B-26 PASS_SCOPED bilateral (continuity r201)
+
+**ALGEBRA229-AS-B-26** — factorizar el entero 360 → `2^3*3^2*5` (fila N2; `2^{3}\cdot 3^{2}\cdot 5`). Sintaxis en D23: entrada `factor(360)`, salida ASCII exacta. La elegí siguiendo la convención de D21 y D22; queda pendiente de confirmación del usuario.
+
+Evidencia (test-first → producto → gates sobre SHA exacto):
+- **Lite:** test-first `4b94e0a` (`tests/algebra229AsB26.audit.test.ts`) ya pasaba sin cambio de producto (D2). Gates SUCCESS sobre `4b94e0a`: cumulative [39534124007](https://github.com/c2melendez/precision-lab-lite/actions/runs/39534124007), h1d [39534123950](https://github.com/c2melendez/precision-lab-lite/actions/runs/39534123950), scientific-ui [39534123899](https://github.com/c2melendez/precision-lab-lite/actions/runs/39534123899).
+- **Plus:** test-first `1283d88` (`backend/tests/test_algebra229_as_b26.py`); rojo en cumulative [39534130604](https://github.com/c2melendez/precision-lab-plus/actions/runs/39534130604), porque `factor(360)` no tenía regla. Producto `e6d8b4c` (regla acotada en `factor_expression`, LaTeX como producto de potencias) y ajuste `6b68f96` (exponente 1 sin `^{1}`). Gates SUCCESS sobre `6b68f96`: cumulative [39534433663](https://github.com/c2melendez/precision-lab-plus/actions/runs/39534433663), h1d [39534433638](https://github.com/c2melendez/precision-lab-plus/actions/runs/39534433638), Native Syntax [39534433666](https://github.com/c2melendez/precision-lab-plus/actions/runs/39534433666). El cumulative intermedio de `e6d8b4c` [39534418253](https://github.com/c2melendez/precision-lab-plus/actions/runs/39534418253) no se usa como evidencia.
+
+Cierre D20 de r200: gates de `b2ca78e` (Lite) y `b5e8e4c` (Plus), SUCCESS. Lite cumulative [39533979678](https://github.com/c2melendez/precision-lab-lite/actions/runs/39533979678) (hay un duplicado [39533968075](https://github.com/c2melendez/precision-lab-lite/actions/runs/39533968075)), h1d [39533981928](https://github.com/c2melendez/precision-lab-lite/actions/runs/39533981928), scientific-ui [39533983891](https://github.com/c2melendez/precision-lab-lite/actions/runs/39533983891). Plus cumulative [39533986041](https://github.com/c2melendez/precision-lab-plus/actions/runs/39533986041), h1d [39533988288](https://github.com/c2melendez/precision-lab-plus/actions/runs/39533988288), Native Syntax [39533990490](https://github.com/c2melendez/precision-lab-plus/actions/runs/39533990490).
+
+Alcance: solo la entrada exacta `factor(360)`; no es factorización de enteros general.
+
+Gates documentales de r201 (commit de este cierre): se disparan con `workflow_dispatch` sobre el SHA documental (D20); sus resultados se registran en r202.
+
+Estado: AS-B-27 (`factorizar el entero 1001` → `7·11·13`) queda `ON_HOLD`, pendiente de indicación. Global OPEN.
+
 ## 2026-10-21 UTC — AS-B-25 PASS_SCOPED bilateral (continuity r200)
 
 **ALGEBRA229-AS-B-25** — factorizar `x^{2}+1` sobre ℂ → `(x-i)*(x+i)` (fila N3; «Sobre ℂ se descompone»). Sintaxis fijada en D22: entrada `factor(x^2+1) sobre ℂ`, salida ASCII exacta.
