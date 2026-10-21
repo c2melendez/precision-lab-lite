@@ -176,7 +176,12 @@ export function rewriteReciprocalFunctions(expr: string): string {
   result = rewriteUnaryFunction(result, "acoth", (a) => `(atanh(1/(${a})))`);
   result = rewriteUnaryFunction(result, "sec", (a) => `(1/cos(${a}))`);
   result = rewriteUnaryFunction(result, "csc", (a) => `(1/sin(${a}))`);
-  result = rewriteUnaryFunction(result, "cot", (a) => `(1/tan(${a}))`);
+  // EV-D-10 (cot(pi/2) = 0, matriz trigonométrica congelada): la identidad
+  // (1/tan(a)) es correcta salvo en los ceros de tan, donde 1/tan(pi/2)
+  // deja una singularidad evitable y el motor devolvía "1/(tan(1/2*pi))"
+  // en lugar de 0. cos/sin conserva la identidad y resuelve el caso exacto:
+  // cos(pi/2)/sin(pi/2) = 0/1 = 0, y mantiene cot(0) indefinida (1/0).
+  result = rewriteUnaryFunction(result, "cot", (a) => `(cos(${a})/sin(${a}))`);
   result = rewriteUnaryFunction(result, "sech", (a) => `(1/cosh(${a}))`);
   result = rewriteUnaryFunction(result, "csch", (a) => `(1/sinh(${a}))`);
   result = rewriteUnaryFunction(result, "coth", (a) => `(1/tanh(${a}))`);

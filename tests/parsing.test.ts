@@ -230,7 +230,7 @@ describe("cierre de la suite de paridad de teclado v1.0", () => {
   it("\\csc\\left(x\\right)/\\sec\\left(x\\right)/\\cot\\left(x\\right) básicos (sin inversa) parsean (antes tronaban: solo sin/cos/tan tenían regla de despojo de backslash)", () => {
     expect(parseExpression("\\csc\\left(1\\right)").algebrite).toBe("(1/sin(1))");
     expect(parseExpression("\\sec\\left(1\\right)").algebrite).toBe("(1/cos(1))");
-    expect(parseExpression("\\cot\\left(1\\right)").algebrite).toBe("(1/tan(1))");
+    expect(parseExpression("\\cot\\left(1\\right)").algebrite).toBe("(cos(1)/sin(1))");
   });
 
   it("\\csc^{-1}/\\sec^{-1}/\\cot^{-1} (inversas de las recíprocas) parsean y reescriben a la identidad equivalente", () => {
