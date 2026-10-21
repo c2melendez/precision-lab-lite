@@ -2,6 +2,7 @@ import { verifyFactorResult } from "./polynomialFactorZ";
 import { simplifyExpLogResult } from "./expLogSimplify";
 import { rewriteInverseTrigComposition } from "./inverseTrigComposition";
 import { simplifyLogResult } from "./logSimplify";
+import { rationalizeUnitConjugate } from "./radicalRationalize";
 // Único punto de contacto con Algebrite en todo el proyecto (regla de capa
 // dura, spec v10 §3). Ningún componente de /modes o /components debe hacer
 // `import Algebrite from "algebrite"` directamente.
@@ -327,6 +328,8 @@ export function evaluate(expressionLatex: string): string {
     result = simplifyLogResult(result);
     // EV-E-10: exp(log a + log b) = a*b con racionales literales exactos.
     result = simplifyExpLogResult(result);
+    // EV-R-08: 1/(a ± √b) racionalizado cuando |b - a²| = 1.
+    result = rationalizeUnitConjugate(result);
     if (MAY_NEED_FLOAT.test(result)) {
       const retried: string = Algebrite.run(`float(${expressionLatex})`);
       if (typeof retried === "string" && retried.length > 0 && !/stop|Stop/.test(retried)) {
