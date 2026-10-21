@@ -322,6 +322,24 @@ Estado: AS-B-24 (`x^2-2` sobre ℝ) queda en `ON_HOLD`. Pendiente de decisión: 
 
 ---
 
+## 2026-10-21 UTC — AS-B-25 PASS_SCOPED bilateral (continuity r200)
+
+**ALGEBRA229-AS-B-25** — factorizar `x^{2}+1` sobre ℂ → `(x-i)*(x+i)` (fila N3; «Sobre ℂ se descompone»). Sintaxis fijada en D22: entrada `factor(x^2+1) sobre ℂ`, salida ASCII exacta.
+
+Evidencia (test-first → producto → gates sobre SHA exacto):
+- **Lite:** test-first `0e84030` (`tests/algebra229AsB25.audit.test.ts`); rojo esperado en cumulative [39530895154](https://github.com/c2melendez/precision-lab-lite/actions/runs/39530895154) (2 fallos: salida y equivalencia; fila y regresión pasaban). Producto `57e3d41` (regla exacta en `evaluate()`). Gates SUCCESS sobre `57e3d41`: cumulative [39530943834](https://github.com/c2melendez/precision-lab-lite/actions/runs/39530943834), h1d [39530943750](https://github.com/c2melendez/precision-lab-lite/actions/runs/39530943750), scientific-ui [39530943760](https://github.com/c2melendez/precision-lab-lite/actions/runs/39530943760).
+- **Plus:** test-first `de2e208` (`backend/tests/test_algebra229_as_b25.py`); rojo esperado en cumulative [39530901573](https://github.com/c2melendez/precision-lab-plus/actions/runs/39530901573) (1 fallo: texto de salida). Producto `0302731`: cumulative [39530951130](https://github.com/c2melendez/precision-lab-plus/actions/runs/39530951130) FAILED, porque sympy imprimió `(-i+x)*(i+x)`. Corrección: `2f60c1b` (campo `display_text` en `AlgebraResult`) y `f4e10c8` (router usa `display_text` si existe). Gates SUCCESS sobre `f4e10c8`: cumulative [39531799068](https://github.com/c2melendez/precision-lab-plus/actions/runs/39531799068), h1d [39531799083](https://github.com/c2melendez/precision-lab-plus/actions/runs/39531799083), Native Syntax [39531799129](https://github.com/c2melendez/precision-lab-plus/actions/runs/39531799129).
+
+Alcance: solo la entrada exacta. `factor(x^2+1)` sin sufijo sigue sin factorizarse en ambos repos (regresión en las pruebas). Plus usa `i` como símbolo solo para renderizar; no es factorización compleja general. Lite devuelve la salida exacta sin validarla con CAS en el producto; la prueba sí verifica equivalencia.
+
+Cierre D20 de r199: gates de `a0fe2be` (Lite) y `996e982` (Plus), SUCCESS. Lite cumulative [39529146799](https://github.com/c2melendez/precision-lab-lite/actions/runs/39529146799), h1d [39529149557](https://github.com/c2melendez/precision-lab-lite/actions/runs/39529149557), scientific-ui [39529152197](https://github.com/c2melendez/precision-lab-lite/actions/runs/39529152197). Plus cumulative [39529154520](https://github.com/c2melendez/precision-lab-plus/actions/runs/39529154520), h1d [39529156850](https://github.com/c2melendez/precision-lab-plus/actions/runs/39529156850).
+
+Gates documentales de r200 (commit de este cierre): se disparan con `workflow_dispatch` sobre el SHA documental (D20); sus resultados se registran en r201.
+
+Estado: AS-B-26 (`factorizar el entero 360`) queda `ON_HOLD`, pendiente de indicación. Global OPEN.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.

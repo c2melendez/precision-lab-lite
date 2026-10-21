@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 199,
+  "revision": 200,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -48,30 +48,30 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-25-TEST-FIRST",
+    "id": "ALGEBRA229-AS-B-26-TEST-FIRST",
     "status": "ON_HOLD",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "efa7ada4008101d284817626af85095274540c85",
-      "c2melendez/precision-lab-plus": "0280d5f778f44b503c4b63a1228f137302ce8a17"
+      "c2melendez/precision-lab-lite": "57e3d415e6b376662ace627b70566e5762e8850f",
+      "c2melendez/precision-lab-plus": "f4e10c8851bc874b3d71412f04427e94c9bd127b"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39527634222,
-        39527634276,
-        39527634249
+        39530943834,
+        39530943750,
+        39530943760
       ],
       "c2melendez/precision-lab-plus": [
-        39527640340,
-        39527640292,
-        39527640271
+        39531799068,
+        39531799083,
+        39531799129
       ]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..24 + D17/D18/D19/D21 safeguard",
+      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..25 + D17/D18/D19/D21/D22 safeguard",
       "status": "PASS_SCOPED",
-      "scope": "unit/HTTP expand/factor + source-row; not matrix-wide; AS-B-24 solo input exacto x^2-2 sobre ℝ"
+      "scope": "unit/HTTP expand/factor + source-row; not matrix-wide; AS-B-24 solo input exacto x^2-2 sobre ℝ; AS-B-25 solo input exacto x^2+1 sobre ℂ"
     },
-    "action": "AS-B-24 PASS_SCOPED bilateral (r199) con sintaxis sobre ℝ (D21). Siguiente AS-B-25 (x^2+1 sobre ℂ) en ON_HOLD: falta decidir sintaxis de sobre ℂ y resultado (D11). Global OPEN."
+    "action": "AS-B-25 PASS_SCOPED bilateral (r200) con sintaxis sobre ℂ (D22). Siguiente AS-B-26 (factorizar el entero 360) en ON_HOLD: pendiente de indicación. Global OPEN."
   },
   "blockers": [
     {
@@ -91,5 +91,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r199 2026-10-21: AS-B-24 PASS_SCOPED bilateral (Lite efa7ada, Plus 0280d5f), gates SUCCESS; registra gates D20 de 2b9c2e8 y b61786d (r198). AS-B-25 en ON_HOLD. Global OPEN."
+  "ledger_note": "r200 2026-10-21: AS-B-25 PASS_SCOPED bilateral (Lite 57e3d41, Plus f4e10c8), gates SUCCESS; registra gates D20 de a0fe2be y 996e982 (r199). AS-B-26 en ON_HOLD. Global OPEN."
 }
