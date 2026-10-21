@@ -1,30 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 160,
-  "note": "HISTÓRICO, no es fuente de estado. Último estado registrado: revisión 160, AS-A-12 PASS_SCOPED. El estado vigente está en qa/certification/continuity.json (revisión 191), CURRENT_STATE.md y EXECUTION_LOG.md. Este archivo no se actualiza.",
+  "status": "HISTORICAL_POINTER",
+  "superseded_by": "qa/certification/continuity.json",
+  "superseded_revision": 232,
   "next_action": {
-    "id": "ALGEBRA229-AS-A-13-TEST-FIRST",
-    "status": "READY",
-    "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "aacb5c3bfc125b1f4a426c3732758d909e756e46",
-      "c2melendez/precision-lab-plus": "663c9f8e52b0d0a527b2b9f6b9bb5b445aa64f4b"
-    },
-    "run_ids_by_repo": {
-      "c2melendez/precision-lab-lite": [
-        39414422310,
-        39414422330,
-        39414422305
-      ],
-      "c2melendez/precision-lab-plus": [
-        39414425350,
-        39414425369
-      ]
-    },
-    "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..12",
-      "status": "PASS_SCOPED",
-      "scope": "unit/HTTP expand + source-row; not matrix-wide"
-    },
-    "action": "AS-A-12 PASS_SCOPED bilateral (Lite cumulative+scientific-ui+h1d SUCCESS on aacb5c3; Plus cumulative+h1d SUCCESS on 663c9f8). Next AS-A-13 expand (x+h)^3-x^3 per frozen matriz Section A. Global OPEN."
-  }
+    "id": "EXP-EV-M-EVALUATION",
+    "status": "IN_PROGRESS"
+  },
+  "note": "No es fuente de estado. El estado vigente está en continuity.json (revisión 232), el corte superior de CURRENT_STATE.md y EXECUTION_LOG.md. Se conserva solo como puntero histórico; no se actualiza."
 }

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 231,
+  "revision": 232,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "c7875936249eabc5e3e1d146b6f4d965d3447920",
@@ -50,12 +50,13 @@
   "next_action": {
     "id": "EXP-EV-M-EVALUATION",
     "status": "IN_PROGRESS",
-    "action": "EV-R-01..14 are closed PASS_SCOPED_BILATERAL on their exact technical SHAs (see ev_r_closure_r231). Next objective: EV-M-01..13 (mixed log/exp/radical/polynomial) of matriz_log_exp_radicales. Verified Lite probe: EV-M-01, 03, 05, 06, 07, 08, 09, 10, 11 and 12 already return the requested form or value. Remaining defects: EV-M-02 e^(2*ln 3) returns exp(2*log(3)) (exact exp(k*log r) = r^k identity missing); EV-M-04 f(x)=ln(x^2+1); f(sqrt(e-1)) fails to parse with 'Caracter no reconocido: ;' when the definition uses \\left(...\\right); EV-M-13 log(2-sqrt(3))+log(2+sqrt(3)) stays symbolic (log a + log b = log(a*b) identity missing). Verify Plus parity for all 13 rows, fix the three Lite defects with exact rules, add bilateral EV-M tests and run the cumulative gates on the new technical SHA. Keep the independent blockers unchanged.",
+    "action": "EV-R-01..14 are closed PASS_SCOPED_BILATERAL on their exact technical SHAs (see ev_r_closure_r231). Next objective: EV-M-01..13 (mixed log/exp/radical/polynomial) of matriz_log_exp_radicales. Verified Lite probe: EV-M-01, 03, 05, 06, 07, 08, 09, 10, 11 and 12 already return the requested form or value. Remaining defects: EV-M-02 e^(2*ln 3) returns exp(2*log(3)) (exact exp(k*log r) = r^k identity missing); EV-M-04 f(x)=ln(x^2+1); f(sqrt(e-1)) fails to parse with 'Caracter no reconocido: ;' when the definition uses \\left(...\\right); EV-M-13 log(2-sqrt(3))+log(2+sqrt(3)) stays symbolic (log a + log b = log(a*b) identity missing). Verify Plus parity for all 13 rows, fix the three Lite defects with exact rules, add bilateral EV-M tests and run the cumulative gates on the new technical SHA. Keep the independent blockers unchanged. Precondicion EV-T: corregir la fuga de dominio semantica de Plus (zoo) y exigir DOMAIN_ERROR en EV-T-11 antes de certificar EV-T.",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-lite": "c7875936249eabc5e3e1d146b6f4d965d3447920",
       "c2melendez/precision-lab-plus": "870766b99a025807caa84cfacfa9ad2928a8f4e7"
     },
-    "product_changed": true
+    "product_changed": true,
+    "audit": "logic audit r232: mathematics CORRECT, no singularity approved; see qa/certification/LOGIC_AUDIT_2026-10-21.md"
   },
   "blockers": [
     {
@@ -1063,5 +1064,115 @@
     "global_certification": "OPEN",
     "next_objective": "EV-M-01..13 mixed",
     "next_status": "IN_PROGRESS"
+  },
+  "logic_audit_r232": {
+    "date_utc": "2026-10-21",
+    "scope": "logical audit of the certification process: EV-L/I/E/R closures, EV singular rows, EV-M probe, frozen-source traceability, protocol parity",
+    "report": "qa/certification/LOGIC_AUDIT_2026-10-21.md",
+    "verdict": {
+      "mathematics": "CORRECT: no singularity approved as a finite result; declared conventions are admitted by the frozen matrix",
+      "process": "EVIDENCE_CHAIN_INTACT_IN_CERTIFIED_BLOCKS; documentary and traceability gaps corrected in r232",
+      "global_certification": "OPEN"
+    },
+    "decisions_reviewed": [
+      "G2 equivalent forms (EV-D-11 PASS_SCOPED_EQUIVALENT)",
+      "arccot principal range (EV-I-07)",
+      "composition rewrite scope (EV-I-09/10)",
+      "log ratio / perfect power (EV-L)",
+      "exp(log a + log b) exact identity (EV-E-10)",
+      "numeric oracle with exact form preserved (EV-E-12)",
+      "0^0 = 1 declared convention (EV-E-14)",
+      "odd radical = real root; fractional power = principal branch (EV-R-03/05/14)",
+      "sqrt(-4) = 2i complex branch (EV-R-13)",
+      "bounded rationalization and denesting scopes (EV-R-08/11/12)"
+    ],
+    "findings": [
+      {
+        "id": "DOC-STATE-DRIFT",
+        "severity": "HIGH",
+        "status": "FIXED",
+        "detail": "CONTINUITY_NEXT_ACTION.json rev 160, CONTINUITY.md ending at AS-PAR-02, dashboard last cut 2026-10-19, all contradicting continuity.json rev 231."
+      },
+      {
+        "id": "PLUS-EVT11-SEMANTIC-LOG-DOMAIN",
+        "severity": "HIGH",
+        "scope": "PRODUCT_NOT_CERTIFIED",
+        "status": "OPEN",
+        "repro": [
+          "ln(1-1)",
+          "ln(cos(pi/2))"
+        ],
+        "observed": "success=true, result_text=zoo",
+        "expected": "DOMAIN_ERROR (EV-T-11)",
+        "required_action": "semantic domain guard for log(0) after evaluation; EV-T-11 test must assert DOMAIN_ERROR"
+      },
+      {
+        "id": "TEST-ORACLE-TRACEABILITY",
+        "severity": "MEDIUM",
+        "status": "FIXED",
+        "detail": "EV-E approx rows anchor the frozen reference inside the row and reject a bare-decimal result_text (protocol rule 2); EV-R exact rows anchored.",
+        "commits": {
+          "lite": "c4a49a515a27d05e096bf0480629fcb68fac6ffb",
+          "plus": "89bf0e26efcaa5a0688c955844a01e0b9571c3d6"
+        }
+      },
+      {
+        "id": "LEGACY-MANIFEST-NOT-IN-CI",
+        "severity": "MEDIUM",
+        "status": "OPEN",
+        "detail": "check_legacy_sources.py verifies the frozen matrix SHA-256 (LER bb7030e2..., 47710 bytes; local PASS both repos) but no workflow runs it."
+      },
+      {
+        "id": "PLUS-PROTOCOL-PARITY",
+        "severity": "MEDIUM",
+        "status": "FIXED",
+        "detail": "Plus protocol lacked global-certification, independent-blocker and syntax-leak recertification guardrails."
+      },
+      {
+        "id": "CURRENT-STATE-APPEND-ONLY",
+        "severity": "LOW",
+        "status": "OPEN",
+        "detail": "CURRENT_STATE.md has 13 stacked cuts instead of a single snapshot; top cut is current. Recommend moving old cuts to EXECUTION_LOG at next maintenance."
+      }
+    ],
+    "gates": {
+      "lite": {
+        "sha": "c4a49a515a27d05e096bf0480629fcb68fac6ffb",
+        "cumulative": {
+          "id": 39686329058,
+          "conclusion": "success",
+          "files": 349,
+          "passed": 2056,
+          "expected_fail": 8,
+          "todo": 34,
+          "guard": "skip=false"
+        },
+        "h1d": {
+          "id": 39686328895,
+          "conclusion": "success"
+        },
+        "scientific_ui": {
+          "id": 39686328765,
+          "conclusion": "success"
+        }
+      },
+      "plus": {
+        "sha": "89bf0e26efcaa5a0688c955844a01e0b9571c3d6",
+        "cumulative": {
+          "id": 39686337173,
+          "conclusion": "success",
+          "passed": 1825,
+          "xfailed": 6,
+          "coverage": "88.04%",
+          "guard": "skip=false"
+        },
+        "h1d": {
+          "id": 39686337053,
+          "conclusion": "success"
+        }
+      }
+    },
+    "ev_t_precondition": "Fix the Plus semantic log-domain leak (zoo) and assert DOMAIN_ERROR in EV-T-11 before certifying EV-T.",
+    "next_action_unchanged": "EXP-EV-M-EVALUATION"
   }
 }

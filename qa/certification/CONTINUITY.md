@@ -1,5 +1,8 @@
 # Continuidad verificable y prevención de ejecuciones redundantes
 
+> **Vigencia (r232, 2026-10-21).** Las secciones de procedimiento de este documento siguen siendo referencia. El **estado** y la "Reentrada exacta" del final son historicos (AS-PAR-02), no vigentes. El estado canonico esta en `continuity.json` (revision 232; siguiente objetivo `EXP-EV-M-EVALUATION`) y en el corte superior de `CURRENT_STATE.md`.
+
+
 `continuity.json` es el índice estructurado vigente. No sustituye contratos, logs ni GitHub Actions. `CURRENT_STATE.md` presenta este índice a personas; `EXECUTION_LOG.md` conserva historia. Si difieren, reconciliar evidencia real antes de programar pruebas. El prompt externo es únicamente bootstrap.
 
 ## Arranque de cada sesión

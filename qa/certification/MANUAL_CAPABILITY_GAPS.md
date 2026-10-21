@@ -369,3 +369,10 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
 - **`\sqrt{-4} = 2i` (rama compleja)** (EV-R-13). La fila admite la rama compleja en ℂ solo si se declara; se declara. No se emite error de dominio porque el motor es complejo por contrato y la variante de error claro corresponde al dominio real.
 - **Alcance de la racionalización EV-R-08.** Solo resultados completos `1/(a±√b)` con enteros literales y `|b−a²| = 1`; no se reescriben denominadores con coeficiente en el radical (`1/(3+2√2)`), sumas mayores ni subexpresiones anidadas.
 - **Alcance del denesting EV-R-11/EV-R-12.** Solo una raíz cuadrada completa cuyo radicando ya contiene otra raíz cuadrada; no se generaliza a raíces de índice superior ni a subexpresiones.
+
+## 2026-10-21 UTC - Auditoría lógica r232: alcance de convenciones y defectos abiertos
+
+- **`0^0 = 1` (EV-E-14) - alcance.** La convención se limita a la evaluación escalar directa y a la fila que la admite. No se aplica a límites ni a formas indeterminadas (bloque 4.M): esas filas deben calcular el límite por su propia vía y no reutilizar la sustitución `0^0 = 1`.
+- **EV-T-11 - fuga de dominio semántica en Plus (ABIERTA).** `ln(1-1)` y `ln(cos(pi/2))` devuelven `success=true` con `result_text="zoo"`; `ln(0)`, `ln(0+0)`, `ln(sin(0))` y `log(0,10)` sí devuelven `DOMAIN_ERROR`. La guarda es sintáctica/parcial. Lite devuelve `DOMAIN_ERROR` en ambos casos. Corrección obligatoria antes de certificar EV-T; la prueba de EV-T-11 debe exigir `DOMAIN_ERROR`, no solo `success`.
+- **Manifiesto de fuentes no cableado en CI (ABIERTA).** `check_legacy_sources.py` verifica el SHA-256 del manifiesto y da PASS local en ambos repos (`LER sha256_raw=bb7030e2...`, 47710 bytes), pero ningún workflow lo ejecuta. Pendiente incorporarlo al gate acumulativo.
+- **Oráculos anclados (r232).** Las filas `\approx` de EV-E anclan la referencia congelada presente en la fila y prohíben una salida solo decimal (regla 2); EV-E-10/11 y EV-R-03/05/06/07/08/09/10/11/12 anclan sus oráculos. Sin cambio de producto.

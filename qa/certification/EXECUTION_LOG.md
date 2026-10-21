@@ -1,3 +1,15 @@
+## 2026-10-21 UTC - r232: auditoría lógica de la certificación; correcciones documentales
+
+**Auditoría lógica (informe: `qa/certification/LOGIC_AUDIT_2026-10-21.md`).** Revisadas las decisiones tomadas para ejecutar la matriz y la cadena de evidencia de EV-L/I/E/R, más las filas singulares del bloque EV. Veredicto: las decisiones matemáticas son correctas y ninguna convirtió una singularidad en un valor finito; `0^0=1` es la convención que la fila admite y queda acotada a evaluación directa (no a límites 4.M); las ramas complejas y la raíz real impar están declaradas y son coherentes entre EV-L-13, EV-R-13, EV-E-13 y EV-T-12. La cadena de evidencia (SHA exacto, guard `skip=false`, suite ejecutada, conteos) se mantiene en los bloques certificados.
+
+**Brechas corregidas.** (a) `CONTINUITY_NEXT_ACTION.json` estaba en revisión 160 (y el aviso de Lite citaba la 191): reemplazado por puntero a `continuity.json` rev 232. (b) `CONTINUITY.md` terminaba en AS-PAR-02 con "Reentrada exacta" obsoleta: banner de vigencia. (c) `GLOBAL_CERTIFICATION_DASHBOARD.md` no tenía corte posterior al 2026-10-19: corte r232. (d) `EXECUTION_PROTOCOL.md` de Plus carecía de tres guardarraíles de Lite (no certificación global por pruebas estructurales; no bloquear por deuda independiente salvo regresión; recertificar subbloque ante fuga de sintaxis): sincronizado. (e) Oráculos EV-E/EV-R anclados a la fila congelada y forma exacta obligatoria en filas `\approx` (Lite `c4a49a51`, Plus `89bf0e26`).
+
+**Defecto abierto no certificado - Plus `zoo`.** `ln(1-1)` y `ln(cos(pi/2))` devuelven `success=true` con `result_text="zoo"`; `ln(0)`, `ln(0+0)`, `ln(sin(0))` y `log(0,10)` sí dan `DOMAIN_ERROR`. Lite da `DOMAIN_ERROR` en los dos casos. EV-T-11 exige error claro, de modo que Plus falla hoy esa fila; queda registrado como precondición obligatoria de EV-T (la prueba debe exigir `DOMAIN_ERROR`, no solo `success`). No afecta a bloques ya cerrados.
+
+**Gates r232 (SHA exacto).** Lite `c4a49a51`: cumulative [39686329058] SUCCESS, 349 archivos, **2056 passed**, 8 expected fail, 34 todo, guard `skip=false`; h1d [39686328895] SUCCESS; scientific-ui [39686328765] SUCCESS. Plus `89bf0e26`: cumulative [39686337173] SUCCESS, **1825 passed**, 6 xfailed, cobertura 88.04%, guard `skip=false`; h1d [39686337053] SUCCESS.
+
+**Sin cambio de producto.** Siguiente objetivo sin cambio: **EV-M-01..13**; precondición añadida para EV-T-11. Global **OPEN**; bloqueos sin cambio.
+
 ## 2026-10-21 UTC — r231: EV-R-01..14 cerrado bilateralmente; EV-M diagnosticado
 
 **EV-R-01..14 (radicales) — PASS_SCOPED_BILATERAL.**

@@ -1,3 +1,7 @@
+## 2026-10-21 UTC - Auditoría lógica r232; siguiente EV-M
+
+Auditoría lógica completa de lo certificado (EV-L/I/E/R) y de las filas singulares: informe en [LOGIC_AUDIT_2026-10-21.md](LOGIC_AUDIT_2026-10-21.md). Decisiones matemáticas correctas; ninguna singularidad aprobada. Corregidos índices obsoletos (`CONTINUITY_NEXT_ACTION.json`, `CONTINUITY.md`), paridad de protocolo Plus y anclaje de oráculos a la fila congelada (Lite `c4a49a51`, Plus `89bf0e26`). Defecto abierto no certificado: Plus devuelve `zoo` con `success=true` en `ln(1-1)`/`ln(cos(pi/2))`; EV-T-11 exige error claro y queda como precondición de EV-T. Global **OPEN**; bloqueos sin cambio.
+
 ## 2026-10-19 UTC — AS-AVS-01 y AS-AVS-02 cerrados; siguiente AS-AVS-03
 
 AS-AVS-01 (`|x|^2=x^2`) y AS-AVS-02 (`|xy|=|x||y|`) quedan **VERIFIED_BILATERAL_SCOPED** con gates exact-SHA Lite `33c846bf` y Plus `420cec81` y logs crudos revisados. Global OPEN; S19 null. Siguiente: AS-AVS-03.
