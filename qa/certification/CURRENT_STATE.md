@@ -6,7 +6,7 @@
 
 **Defecto abierto no certificado - Plus `zoo`.** `ln(1-1)` y `ln(cos(pi/2))` devuelven `success=true` con `result_text="zoo"`; `ln(0)`, `ln(0+0)`, `ln(sin(0))` y `log(0,10)` sí dan `DOMAIN_ERROR`. Lite da `DOMAIN_ERROR` en los dos casos. EV-T-11 exige error claro, de modo que Plus falla hoy esa fila; queda registrado como precondición obligatoria de EV-T (la prueba debe exigir `DOMAIN_ERROR`, no solo `success`). No afecta a bloques ya cerrados.
 
-**Gates r232 (SHA exacto).** Lite `c4a49a51`: cumulative [39686329058] SUCCESS, 349 archivos, **2056 passed**, 8 expected fail, 34 todo, guard `skip=false`; h1d [39686328895] SUCCESS; scientific-ui [39686328765] SUCCESS. Plus `89bf0e26`: cumulative [39686337173] SUCCESS, **1825 passed**, 6 xfailed, cobertura 88.04%, guard `skip=false`; h1d [39686337053] SUCCESS.
+**Gates r232 (SHA exacto).** Lite `c4a49a51`: cumulative [39686329058] SUCCESS, 349 archivos, **2056 passed**, 8 expected fail, 34 todo, guard `skip=false`; h1d [39686328895] SUCCESS; scientific-ui [39686328765] SUCCESS. Plus `89bf0e26`: cumulative [39686337173] SUCCESS, **1825 passed**, 6 xfailed, cobertura 88.04%, guard `skip=false`; h1d [39686337053] SUCCESS. Docs r232 `574ca8bf`: el filtro de rutas re-ejecuto cumulative+h1d (39687537314/39687537328), ambos SUCCESS; no fue un relanzamiento deliberado. El filtro no excluye `CONTINUITY_NEXT_ACTION.json`.
 
 **Sin cambio de producto.** Siguiente objetivo sin cambio: **EV-M-01..13**; precondición añadida para EV-T-11. Global **OPEN**; bloqueos sin cambio.
 

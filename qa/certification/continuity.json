@@ -3,8 +3,8 @@
   "revision": 232,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "c7875936249eabc5e3e1d146b6f4d965d3447920",
-  "baseline_case": "LOG-EXP-RAD-EV-R-01-14",
+  "technical_baseline_sha": "c4a49a515a27d05e096bf0480629fcb68fac6ffb",
+  "baseline_case": "LOG-EXP-RAD-LOGIC-AUDIT-R232",
   "baseline_status": "PASS_SCOPED_BILATERAL",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -80,7 +80,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r231: EV-R-01..14 radicals closed PASS_SCOPED_BILATERAL (Lite c7875936 2055 passed; Plus 870766b9 1824 passed, 6 xfailed). Lite gained exact conjugate rationalization; Plus gained real odd roots for radical notation and scoped nested-radical denesting. The R-13 complex branch and R-14 principal convention were declared before certifying. Next: EV-M-01..13 (Lite EV-M-02 exp(k*log r), EV-M-04 function-definition parsing, EV-M-13 log-sum identity). Global certification OPEN.",
+  "ledger_note": "r232: auditoria logica del proceso de certificacion (EV-L/I/E/R + filas singulares EV). Matematica CORRECTA, ninguna singularidad aprobada; 0^0=1 acotado a evaluacion directa. Corregida la deriva documental (puntero CONTINUITY_NEXT_ACTION, banner CONTINUITY, corte del tablero), paridad de protocolo Plus y anclaje de oraculos (Lite c4a49a51 2056 passed; Plus 89bf0e26 1825 passed). Defecto de producto abierto no certificado: Plus ln(1-1)/ln(cos(pi/2)) -> zoo; precondicion de EV-T-11. Docs 574ca8bf/a5009a79: el filtro de rutas re-ejecuto cumulative+h1d, ambos SUCCESS (39687537314/39687537328 y 39687547538/39687547667); no fue un relanzamiento deliberado.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -1170,6 +1170,18 @@
           "id": 39686337053,
           "conclusion": "success"
         }
+      },
+      "docs": {
+        "sha": "574ca8bf8522bee50831cf69216abd01bc4a23a5",
+        "cumulative": {
+          "id": 39687537314,
+          "conclusion": "success"
+        },
+        "h1d": {
+          "id": 39687537328,
+          "conclusion": "success"
+        },
+        "trigger": "path filter: CONTINUITY_NEXT_ACTION.json (lite) / EXECUTION_PROTOCOL.md (plus); not a deliberate re-run"
       }
     },
     "ev_t_precondition": "Fix the Plus semantic log-domain leak (zoo) and assert DOMAIN_ERROR in EV-T-11 before certifying EV-T.",
