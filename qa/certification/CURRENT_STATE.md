@@ -1,3 +1,18 @@
+## 2026-10-21 UTC — EV-D-06 cierre r218: PASS_SCOPED_BILATERAL
+
+**EV-D-06 — `cot(pi/4)=1`: PASS_SCOPED_BILATERAL.** Se verificó la fila de la matriz trigonométrica congelada. Todos los gates requeridos terminaron SUCCESS y sus `head_sha` coinciden con el SHA técnico indicado. No se modificó código de producto.
+
+- cumulative: [39557479991](https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479991) — SUCCESS; SHA técnico `00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8` exacto.
+- h1d: [39557479974](https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479974) — SUCCESS; SHA técnico `00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8` exacto.
+- scientific-ui: [39557480008](https://github.com/c2melendez/precision-lab-lite/actions/runs/39557480008) — SUCCESS; SHA técnico `00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8` exacto.
+
+- Prueba específica EV-D-06: 3/3; suite Vitest 1975 passed, 8 expected fail, 34 TODO; typecheck y production build SUCCESS. Scientific UI: 456/456 passed.
+- Diagnóstico del primer intento Lite: la aserción no admitía el resultado `1` entre backticks como aparece en la matriz. Se corrigió únicamente el test. Producto sin cambios.
+- Certificación global continúa OPEN por bloqueos independientes registrados; este cierre solo certifica EV-D-06.
+- Siguiente objetivo pendiente de ejecución: TRIG-EV-D-07-TEST-FIRST. Antes de escribir pruebas, confirmar la fila EV-D-07 en la fuente congelada; no asumir expresión ni resultado.
+
+---
+
 ## 2026-10-21 UTC — EV-D-06 actualización r217: Plus acumulativo PASS
 
 - **Plus cumulative PASS** [39557484508](https://github.com/c2melendez/precision-lab-plus/actions/runs/39557484508), SHA técnico `6369a617e59f2f23fe73ac4e464683de310a688a`: backend 1766 passed, 6 xfailed, cobertura 88.05%; `test_ev_d06_source_row_present_and_frozen` y `test_ev_d06_cot_pi_over_4_http_ascii` PASSED. Frontend typecheck, regresión y production build SUCCESS.
