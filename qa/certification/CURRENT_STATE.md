@@ -1,5 +1,24 @@
 > Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
 
+## 2026-10-21 UTC — AS-B-24 PASS_SCOPED bilateral (continuity r199)
+
+**ALGEBRA229-AS-B-24** — factorizar `x^{2}-2` sobre ℝ → `(x-sqrt(2))*(x+sqrt(2))` (fila N3; con raíces permitidas). Sintaxis fijada en D21: entrada `factor(x^2-2) sobre ℝ`, salida ASCII exacta.
+
+| Repo | Technical SHA | Gates (SUCCESS sobre el SHA exacto) |
+|------|---------------|--------------------------------------|
+| Lite | `efa7ada` | cumulative [39527634222](https://github.com/c2melendez/precision-lab-lite/actions/runs/39527634222), h1d [39527634276](https://github.com/c2melendez/precision-lab-lite/actions/runs/39527634276), scientific-ui [39527634249](https://github.com/c2melendez/precision-lab-lite/actions/runs/39527634249) |
+| Plus | `0280d5f` | cumulative [39527640340](https://github.com/c2melendez/precision-lab-plus/actions/runs/39527640340), h1d [39527640292](https://github.com/c2melendez/precision-lab-plus/actions/runs/39527640292), Plus Native Syntax [39527640271](https://github.com/c2melendez/precision-lab-plus/actions/runs/39527640271) |
+
+Test-first: Lite `16027bf` (`tests/algebra229AsB24.audit.test.ts`) y Plus `863cc25` (`backend/tests/test_algebra229_as_b24.py`). Las corridas rojas esperadas fueron Lite cumulative [39525218940](https://github.com/c2melendez/precision-lab-lite/actions/runs/39525218940) («Unit and parity regression») y Plus cumulative [39525223366](https://github.com/c2melendez/precision-lab-plus/actions/runs/39525223366) («Backend regression»); h1d de Plus [39525223377](https://github.com/c2melendez/precision-lab-plus/actions/runs/39525223377) pasó.
+
+Producto: Lite `efa7ada` añade el caso exacto en `evaluate()` (`src/engine/algebriteClient.ts`) antes del CAS. Plus añade en `backend/app/services/algebra_service.py` el patrón `_AS_B24_REAL_SUFFIX` y su rama en `factor_expression`, con `sympy.factor(x**2-2, extension=sympy.sqrt(2))`; `a88b201` solo añade el import `re`. Alcance: solo el input exacto `x^2-2`; no es soporte general de «sobre ℝ». La rama de Lite no pasa por el CAS.
+
+Registro D20 de los commits documentales de AS-B-23 (r198): Lite `2b9c2e8` cumulative [39520130133](https://github.com/c2melendez/precision-lab-lite/actions/runs/39520130133), h1d [39520133009](https://github.com/c2melendez/precision-lab-lite/actions/runs/39520133009), scientific-ui [39520135830](https://github.com/c2melendez/precision-lab-lite/actions/runs/39520135830); Plus `b61786d` cumulative [39520138321](https://github.com/c2melendez/precision-lab-plus/actions/runs/39520138321), h1d [39520140431](https://github.com/c2melendez/precision-lab-plus/actions/runs/39520140431). Todos SUCCESS.
+
+Estado: AS-B-25 (`x^2+1` sobre ℂ) queda en `ON_HOLD`: falta decidir la sintaxis de «sobre ℂ» y su resultado (D11). Global OPEN.
+
+---
+
 ## 2026-10-20 UTC — AS-B-23 PASS sin cambio de producto (continuity r198)
 
 **ALGEBRA229-AS-B-23** — factorizar `x^{2}-2` → `x^{2} - 2` (fila N2; irreducible sobre ℚ, debe quedar igual).

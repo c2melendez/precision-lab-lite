@@ -316,6 +316,12 @@ Estado: AS-B-24 (`x^2-2` sobre ℝ) queda en `ON_HOLD`. Pendiente de decisión: 
 
 ---
 
+## 2026-10-21 UTC — AS-B-24 PASS_SCOPED bilateral (continuity r199)
+
+**ALGEBRA229-AS-B-24** — factorizar `x^{2}-2` sobre ℝ → `(x-sqrt(2))*(x+sqrt(2))`. Test-first `16027bf`; producto `efa7ada` (regla exacta en `evaluate()`, D21). Gates SUCCESS sobre `efa7ada`: cumulative [39527634222](https://github.com/c2melendez/precision-lab-lite/actions/runs/39527634222), h1d [39527634276](https://github.com/c2melendez/precision-lab-lite/actions/runs/39527634276), scientific-ui [39527634249](https://github.com/c2melendez/precision-lab-lite/actions/runs/39527634249). Plus `0280d5f`: cumulative [39527640340](https://github.com/c2melendez/precision-lab-plus/actions/runs/39527640340), h1d [39527640292](https://github.com/c2melendez/precision-lab-plus/actions/runs/39527640292), Native Syntax [39527640271](https://github.com/c2melendez/precision-lab-plus/actions/runs/39527640271). Registro D20 de r198: Lite `2b9c2e8` y Plus `b61786d`, SUCCESS. Estado: AS-B-25 `ON_HOLD` (sintaxis «sobre ℂ» pendiente). Global OPEN.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.

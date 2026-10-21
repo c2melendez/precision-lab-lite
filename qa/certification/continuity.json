@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 198,
+  "revision": 199,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -48,29 +48,30 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-24-TEST-FIRST",
+    "id": "ALGEBRA229-AS-B-25-TEST-FIRST",
     "status": "ON_HOLD",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "628e6862eaacb7e7da1fd7828580cec88142afb0",
-      "c2melendez/precision-lab-plus": "9e7d57bbc2613a56c9392a59995462605e467cd5"
+      "c2melendez/precision-lab-lite": "efa7ada4008101d284817626af85095274540c85",
+      "c2melendez/precision-lab-plus": "0280d5f778f44b503c4b63a1228f137302ce8a17"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39519175598,
-        39519178036,
-        39519180927
+        39527634222,
+        39527634276,
+        39527634249
       ],
       "c2melendez/precision-lab-plus": [
-        39519184230,
-        39519186881
+        39527640340,
+        39527640292,
+        39527640271
       ]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..23 + D17/D18/D19 safeguard",
+      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..24 + D17/D18/D19/D21 safeguard",
       "status": "PASS_SCOPED",
-      "scope": "unit/HTTP expand/factor + source-row; not matrix-wide"
+      "scope": "unit/HTTP expand/factor + source-row; not matrix-wide; AS-B-24 solo input exacto x^2-2 sobre ℝ"
     },
-    "action": "AS-B-23 PASS sin cambio de producto bilateral (r198). Siguiente AS-B-24 (x^2-2 sobre ℝ) en espera: falta decidir sintaxis del sufijo y del resultado (D11). Global OPEN."
+    "action": "AS-B-24 PASS_SCOPED bilateral (r199) con sintaxis sobre ℝ (D21). Siguiente AS-B-25 (x^2+1 sobre ℂ) en ON_HOLD: falta decidir sintaxis de sobre ℂ y resultado (D11). Global OPEN."
   },
   "blockers": [
     {
@@ -90,5 +91,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r198 2026-10-20: AS-B-23 PASS sin cambio de producto bilateral (Lite 628e686, Plus 9e7d57b), gates SUCCESS. Registra gates D20 de 6808096 (r197). AS-B-24 en ON_HOLD. Global OPEN."
+  "ledger_note": "r199 2026-10-21: AS-B-24 PASS_SCOPED bilateral (Lite efa7ada, Plus 0280d5f), gates SUCCESS; registra gates D20 de 2b9c2e8 y b61786d (r198). AS-B-25 en ON_HOLD. Global OPEN."
 }
