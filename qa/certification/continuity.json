@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 207,
+  "revision": 208,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -94,5 +94,39 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r207 2026-10-21: gates D20 de r206 registrados (Lite de987a4, Plus dcd7e21; todos SUCCESS, head_sha exacto). EV-D-03 PASS_SCOPED sin cambios. EV-D-04 READY sin iniciar. Global OPEN."
+  "ledger_note": "r208 2026-10-21: seis gates D20 del cierre documental r207 verificados; todos completed/success y head_sha exacto por repositorio. Escapado de csc(pi/6) corregido solo en documentación. EV-D-04 READY sin iniciar. Global OPEN.",
+  "documentary_closure_r207": {
+    "status": "VERIFIED",
+    "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
+    "gates": [
+      {
+        "gate": "cumulative",
+        "run_id": 39551266478,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39551266478",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39551268683,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39551268683",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39551270883,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39551270883",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
+        "head_sha_matches": true
+      }
+    ],
+    "ev_d_04": "READY_NOT_STARTED"
+  }
 }
