@@ -1286,6 +1286,49 @@
       }
     ],
     "verdict": "CONSISTENT: documentary history matches GitHub Actions; no fabricated runs, no false SUCCESS, no hidden gate failures; traceability gap of 12 citations fixed",
-    "next_action_unchanged": "EXP-EV-M-EVALUATION"
+    "next_action_unchanged": "EXP-EV-M-EVALUATION",
+    "r233_docs_commit_runs": {
+      "lite": {
+        "sha": "895a09efc478fd67e4a0ee57878822ca80888f71",
+        "runs": [
+          {
+            "id": 39691427912,
+            "workflow": "cumulative",
+            "conclusion": "success"
+          },
+          {
+            "id": 39691427979,
+            "workflow": "h1d",
+            "conclusion": "success"
+          },
+          {
+            "id": 39691427890,
+            "workflow": "scientific_ui",
+            "conclusion": "success"
+          }
+        ]
+      },
+      "plus": {
+        "sha": "5e412582523c36b983b3fac10228a270a255861e",
+        "runs": [
+          {
+            "id": 39691435132,
+            "workflow": "cumulative",
+            "conclusion": "success"
+          },
+          {
+            "id": 39691435191,
+            "workflow": "h1d",
+            "conclusion": "success"
+          }
+        ]
+      },
+      "trigger": "path filter re-includes qa/certification/SY_P_23_CONVENTION.md, touched by a SHA annotation",
+      "all_success_attempt_1": true,
+      "counts": {
+        "lite": "349 files, 2056 passed, 8 expected fail, 34 todo",
+        "plus": "1825 passed, 6 xfailed, 88.06%"
+      }
+    }
   }
 }

@@ -64,10 +64,16 @@ presentados como éxito.
 | `6eab838d` | Plus | 0 |
 | `574ca8bf` | Lite | 2 (cumulative + h1d, ambos SUCCESS) |
 | `a5009a79` | Plus | 2 (cumulative + h1d, ambos SUCCESS) |
+| `895a09ef` | Lite | 3 (cumulative, h1d, scientific), todos SUCCESS |
+| `5e412582` | Plus | 2 (cumulative, h1d), ambos SUCCESS |
 
-Los dos últimos no fueron un relanzamiento deliberado: el filtro de rutas incluye
+`574ca8bf`/`a5009a79` no fueron un relanzamiento deliberado: el filtro de rutas incluye
 `CONTINUITY_NEXT_ACTION.json` (Lite) y re-incluye `EXECUTION_PROTOCOL.md` (Plus).
-Quedó documentado en r232.
+Quedó documentado en r232. El propio commit r233 (`895a09ef`/`5e412582`) disparó 3 y 2
+corridas porque la anotación de SHA tocó `SY_P_23_CONVENTION.md`, que está re-incluido
+en el filtro de rutas. No fue un relanzamiento deliberado; las cinco corridas terminaron
+`SUCCESS` en `attempt=1` (Lite 349 archivos, 2056 passed, 8 expected fail, 34 todo;
+Plus 1825 passed, 6 xfailed, cobertura 88.06%).
 
 ## 5. Brecha encontrada y corregida: runs sin SHA
 
