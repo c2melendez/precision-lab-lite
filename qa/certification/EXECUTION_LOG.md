@@ -1,3 +1,21 @@
+## 2026-10-21 UTC — r231: EV-R-01..14 cerrado bilateralmente; EV-M diagnosticado
+
+**EV-R-01..14 (radicales) — PASS_SCOPED_BILATERAL.**
+
+- Lite `c7875936249e…`: cumulative [39683361872] — **SUCCESS**, 349 archivos, **2055 passed**, 8 expected fail, 34 todo; `tests/radicalsEvR01to14.audit.test.ts` **6/6**; guard `skip=false` («No reusable completed evidence found»). h1d [39683361229] y scientific-ui [39683361538] — SUCCESS.
+- Plus `870766b99a02…`: cumulative [39683393101] — **SUCCESS**, **1824 passed**, 6 xfailed, cobertura 88.00%; `tests/test_radical_matrix_ev_r01_l14.py` **6/6 PASSED**; guard `skip=false`. h1d [39683393214], native-syntax [39683393055] y SG28 [39683393053]/[39683393210] — SUCCESS. El job `security/backend-security` del gate de seguridad también terminó SUCCESS; `mutation/plus-backend-mutmut` seguía en curso al cierre y es un gate independiente, ajeno a la evidencia EV-R.
+- Producto Lite (`radicalRationalize.ts`): reescribe solo un resultado completo `1/(a±√b)` con enteros literales y `|b−a²| = 1` mediante la identidad conjugada exacta; `1/(√2+1)` pasa de `1/(1+2^(1/2))` a **`2^(1/2)-1`**. El resto de formas queda intacto.
+- Producto Plus: (a) `parsing.py` convierte la notación radical de índice impar con radicando literal negativo a la **raíz real** (EV-R-03/05: `\sqrt[3]{-8} = -2`, `\sqrt[5]{-32} = -2`), sin tocar el resto de la sintaxis de potencia; (b) `routers/evaluate.py` aplica `sqrtdenest` solo a una raíz cuadrada completa cuyo radicando ya contiene otra raíz cuadrada, con lo que EV-R-11/12 devuelven `1+sqrt(2)` y `sqrt(2)+sqrt(3)`.
+- Convenciones **declaradas antes de certificar** en `MANUAL_CAPABILITY_GAPS.md`: notación radical de índice impar = raíz real; potencia con exponente fraccionario = rama principal (`2(-1)^{1/3} = 1+\sqrt{3}i`, EV-R-14); `\sqrt{-4} = 2i` en la rama compleja declarada (EV-R-13); alcances acotados de la racionalización y del denesting.
+- Sin regresiones locales: Lite 2050 passed con las 5 fallas patológicas ya conocidas (`algebra114AsFac08/09`, `algebra229AsB06/B18/B20`); CI es el oráculo y quedó verde.
+
+**Siguiente objetivo — EV-M-01..13 (mixtas).** Sondeo local verificado en Lite: EV-M-01, 03, 05, 06, 07, 08, 09, 10, 11 y 12 ya devuelven la forma o el valor pedidos. Defectos detectados antes de certificar:
+
+- **EV-M-02** `e^{2\ln 3}`: Lite devuelve `exp(2*log(3))`; falta la identidad exacta `exp(k·log r) = r^k` (el módulo EV-E solo cubre sumas de logaritmos sin coeficiente).
+- **EV-M-04** `f(x)=\ln(x^{2}+1);\ f(\sqrt{e-1})`: error de parseo por `Carácter no reconocido: ";"` en la forma con `\left(...\right)` dentro de la definición (EV-M-05/06/07/08/12 sí resuelven la sustitución).
+- **EV-M-13**: Lite devuelve `log(2-3^(1/2))+log(2+3^(1/2))`; falta la identidad `log a + log b = log(a·b)` para concluir `0`.
+- Falta verificar la paridad Plus de las 13 filas.
+
 ## 2026-10-21 UTC — r230: EV-E-01..14 cerrado bilateralmente; EV-R diagnosticado
 
 **EV-E-01..14 (exponenciales) — PASS_SCOPED_BILATERAL.**
