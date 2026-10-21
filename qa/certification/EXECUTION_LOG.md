@@ -1,5 +1,23 @@
 # Registro de ejecución — índice vigente
 
+## 2026-10-21 UTC — Trigonometría EV-D-03 PASS_SCOPED bilateral (continuity r206)
+
+**EV-D-03** — `\tan(\frac{\pi}{4}) → 1` (fila oficial de `ejercicios_trigonometria.md.gz`).
+
+Evidencia (test-first, sin cambio de producto):
+- **Lite** `f07afe1` (`tests/trigonometryEvD03.audit.test.ts`): cumulative [39549185561](https://github.com/c2melendez/precision-lab-lite/actions/runs/39549185561), h1d [39549185671](https://github.com/c2melendez/precision-lab-lite/actions/runs/39549185671), scientific-ui [39549185567](https://github.com/c2melendez/precision-lab-lite/actions/runs/39549185567); SUCCESS. Canales: ASCII `tan(pi/4)` y LaTeX oficial vía `parseExpression` + Algebrite.
+- **Plus** `fce235b` (`backend/tests/test_trigonometry_ev_d03.py`, HTTP ASCII `tan(pi/4)`): cumulative [39549187134](https://github.com/c2melendez/precision-lab-plus/actions/runs/39549187134), h1d [39549187120](https://github.com/c2melendez/precision-lab-plus/actions/runs/39549187120); SUCCESS.
+
+Alcance: evaluación exacta de tan(π/4)=1. Plus solo en ASCII, igual que EV-D-01 y EV-D-02. No cierra el módulo trig completo. Global OPEN.
+
+Gates documentales de r205 (D20, sobre `60865c8`): todos SUCCESS con `head_sha` exacto. Cumulative [39548181168](https://github.com/c2melendez/precision-lab-lite/actions/runs/39548181168), h1d [39548183229](https://github.com/c2melendez/precision-lab-lite/actions/runs/39548183229), scientific-ui [39548185228](https://github.com/c2melendez/precision-lab-lite/actions/runs/39548185228).
+
+Gates documentales de r206 (commit de este cierre): se disparan con `workflow_dispatch` sobre el SHA documental (D20); sus resultados se registran en r207.
+
+Siguiente: EV-D-04 `\csc(\frac{\pi}{6}) → 2`, `READY`; se ejecuta al recibir la siguiente instrucción. Global OPEN.
+
+---
+
 ## 2026-10-21 UTC — Trigonometría EV-D-02 PASS_SCOPED bilateral (continuity r205)
 
 **EV-D-02** — `\\cos(\\pi/3) → 1/2` (fila oficial de `ejercicios_trigonometria.md.gz`).

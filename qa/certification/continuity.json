@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 205,
+  "revision": 206,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -48,29 +48,29 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EV-D-03-TEST-FIRST",
+    "id": "TRIG-EV-D-04-TEST-FIRST",
     "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "0601287b90129a6529bfd133d1242c8937c6a0ba",
-      "c2melendez/precision-lab-plus": "c15349a10ef4a605c4a7ce638ec5883c069494e8"
+      "c2melendez/precision-lab-lite": "f07afe1ec462a8f5fde284d561adcd882871f148",
+      "c2melendez/precision-lab-plus": "fce235b9b6fee14520bd361351fc77172401259d"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39547288506,
-        39547288469,
-        39547288515
+        39549185561,
+        39549185671,
+        39549185567
       ],
       "c2melendez/precision-lab-plus": [
-        39547294497,
-        39547294494
+        39549187134,
+        39549187120
       ]
     },
     "completed_scoped": {
-      "id": "TRIG-EV-D-01..02; ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..28",
+      "id": "TRIG-EV-D-01..03; ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..28",
       "status": "PASS_SCOPED",
-      "scope": "EV-D-01 sin(pi/6)=1/2 y EV-D-02 cos(pi/3)=1/2 unit/HTTP; Plus HTTP ASCII only"
+      "scope": "EV-D-01 sin(pi/6)=1/2; EV-D-02 cos(pi/3)=1/2; EV-D-03 tan(pi/4)=1; unit/HTTP; Plus HTTP ASCII only"
     },
-    "action": "EV-D-02 PASS_SCOPED bilateral (r205). Siguiente EV-D-03 tan(pi/4)=1 READY. AS-B-29 ON_HOLD. Global OPEN."
+    "action": "EV-D-03 PASS_SCOPED bilateral (r206). Siguiente EV-D-04 csc(pi/6)=2 READY. AS-B-29 ON_HOLD. Global OPEN."
   },
   "blockers": [
     {
@@ -94,5 +94,5 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r205 2026-10-21: EV-D-02 PASS_SCOPED bilateral (Lite 0601287, Plus c15349a), sin cambio de producto, gates SUCCESS; excepción D20 de r204 registrada. EV-D-03 READY. Global OPEN."
+  "ledger_note": "r206 2026-10-21: EV-D-03 PASS_SCOPED bilateral (Lite f07afe1, Plus fce235b), sin cambio de producto, gates SUCCESS; gates documentales de r205 registrados. EV-D-04 READY. Global OPEN."
 }
