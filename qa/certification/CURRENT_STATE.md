@@ -1,3 +1,20 @@
+## 2026-10-21 UTC — r211: cierre EV-D-04 y arranque test-first EV-D-05
+
+**EV-D-04 PASS_SCOPED bilateral** — `csc(pi/6)=2`. Cinco gates SUCCESS y SHA exactos:
+- Lite cumulative [39554410679](https://github.com/c2melendez/precision-lab-lite/actions/runs/39554410679), H1d [39554410715](https://github.com/c2melendez/precision-lab-lite/actions/runs/39554410715), Scientific UI [39554410696](https://github.com/c2melendez/precision-lab-lite/actions/runs/39554410696), todos `head_sha=0467aa89c470abf6607d1b67e9c40191642d8df4`.
+- Plus cumulative [39552906521](https://github.com/c2melendez/precision-lab-plus/actions/runs/39552906521) y H1d [39552906515](https://github.com/c2melendez/precision-lab-plus/actions/runs/39552906515), ambos `head_sha=f6756dc37bdf193a01de05a4bb9208b65cf47867`.
+- No se modificó código de producto; el test Lite usa el parser oficial antes de evaluar.
+
+**EV-D-05 test-first iniciado** — hipótesis a validar: `sec(pi/3)=2`. Añadidas pruebas en Lite `tests/trigonometryEvD05.audit.test.ts` (commit `24871267ec1ee9f64bbd2d34fd449b41ee74f99c`) y Plus `backend/tests/test_trigonometry_ev_d05.py` (commit `7be68dcfbcd9ed64b4f4ae98399276d01ede0034`). Las pruebas verifican también que la fila EV-D-05 y su resultado estén en la matriz congelada. No se cambió producto.
+
+Corridas EV-D-05 actualmente en curso:
+- Lite cumulative [39555164790](https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164790), H1d [39555164686](https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164686), Scientific UI [39555164730](https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164730), SHA esperado `24871267ec1ee9f64bbd2d34fd449b41ee74f99c`.
+- Plus cumulative [39555174858](https://github.com/c2melendez/precision-lab-plus/actions/runs/39555174858) y H1d [39555174838](https://github.com/c2melendez/precision-lab-plus/actions/runs/39555174838), SHA esperado `7be68dcfbcd9ed64b4f4ae98399276d01ede0034`.
+
+EV-D-05 permanece `IN_PROGRESS`; no declarar PASS hasta verificar fila fuente, resultados y SHA exactos de los cinco gates. Certificación global: `OPEN`.
+
+---
+
 ## 2026-10-21 UTC — r210: EV-D-04 diagnóstico y test corregido; cierre pendiente
 
 La corrida acumulativa inicial de Lite [39552903560](https://github.com/c2melendez/precision-lab-lite/actions/runs/39552903560) falló solo en el nuevo test: este llamaba a `evaluate("csc(pi/6)")` directamente, evitando el pipeline oficial del parser. La salida observada fue `csc(1/6*pi)`, no `2`. El parser ya contiene la reescritura de `csc` a `1/sin`; el test debe pasar por `parseExpression` antes de `evaluate`.
