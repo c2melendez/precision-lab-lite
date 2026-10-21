@@ -465,8 +465,14 @@ function normalizePoweredFunctions(input: string): string {
     if (exponent === "-1" && (fn === "csc" || fn === "sec" || fn === "cot")) {
       // La inversa funcional de csc/sec/cot no es la potencia recíproca
       // de csc/sec/cot: arccsc(x)=arcsin(1/x), etc.
-      const inverse = fn === "csc" ? "arcsin" : fn === "sec" ? "arccos" : "arctan";
-      out += `(${inverse}(1/(${arg})))`;
+      // EV-I-07: arccot usa el rango principal (0, π); la identidad
+      // arctan(1/x) daba la rama (−π/2, π/2) y rompía en x=0.
+      if (fn === "cot") {
+        out += `(pi/2-arctan(${arg}))`;
+      } else {
+        const inverse = fn === "csc" ? "arcsin" : "arccos";
+        out += `(${inverse}(1/(${arg})))`;
+      }
     } else if (exponent === "-1" && (fn === "sin" || fn === "cos" || fn === "tan")) {
       const inverse = fn === "sin" ? "arcsin" : fn === "cos" ? "arccos" : "arctan";
       out += `${inverse}(${arg})`;

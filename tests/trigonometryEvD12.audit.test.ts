@@ -73,8 +73,8 @@ describe("AUD-SING-01 arccot(0) avoidable singularity", () => {
     expect(run("\\operatorname{arccot}(0)")).toBe("1/2*pi");
   });
 
-  it("keeps the arctan(1/x) branch for non-zero arguments (parity with Plus)", () => {
+  it("uses the principal range (0, pi): arccot(1)=pi/4, arccot(-1)=3pi/4", () => {
     expect(run("arccot(1)")).toBe("1/4*pi");
-    expect(run("arccot(-1)")).toBe("-1/4*pi");
+    expect(run("arccot(-1)")).toBe("3/4*pi");
   });
 });

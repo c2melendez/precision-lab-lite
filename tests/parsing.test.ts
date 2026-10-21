@@ -236,7 +236,7 @@ describe("cierre de la suite de paridad de teclado v1.0", () => {
   it("\\csc^{-1}/\\sec^{-1}/\\cot^{-1} (inversas de las recíprocas) parsean y reescriben a la identidad equivalente", () => {
     expect(parseExpression("\\csc^{-1}\\left(2\\right)").algebrite).toBe("(arcsin(1/(2)))");
     expect(parseExpression("\\sec^{-1}\\left(2\\right)").algebrite).toBe("(arccos(1/(2)))");
-    expect(parseExpression("\\cot^{-1}\\left(1\\right)").algebrite).toBe("(arctan(1/(1)))");
+    expect(parseExpression("\\cot^{-1}\\left(1\\right)").algebrite).toBe("(pi/2-arctan(1))");
   });
 
   it("csch/sech/coth (hiperbólicas recíprocas) parsean y reescriben a la identidad equivalente", () => {

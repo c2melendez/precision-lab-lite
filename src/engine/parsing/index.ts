@@ -164,13 +164,12 @@ export function rewriteReciprocalFunctions(expr: string): string {
   // texto reemplazado ya no contiene "sec(" suelto y no hay colisión.
   result = rewriteUnaryFunction(result, "arcsec", (a) => `(arccos(1/(${a})))`);
   result = rewriteUnaryFunction(result, "arccsc", (a) => `(arcsin(1/(${a})))`);
-  // AUD-SING-01 (revisión de singularidades evitables): arccot(0) = π/2,
-  // pero arctan(1/0) es indefinido y convertía el valor exacto en un error.
-  // Se conserva arctan(1/x) para x≠0 (misma rama que Plus: acot(-1) = -π/4).
-  result = rewriteUnaryFunction(result, "arccot", (a) => {
-    const inner = a.trim().replace(/^\((.*)\)$/, "$1").trim();
-    return inner === "0" ? "(pi/2)" : `(arctan(1/(${a})))`;
-  });
+  // EV-I-07: la matriz congelada exige el rango principal (0, π):
+  // arccot(-1) = 3π/4, arccot(0) = π/2, arccot(1) = π/4. La identidad
+  // arctan(1/x) daba la rama (−π/2, π/2) y además rompía en x=0; se usa
+  // arccot(x) = π/2 − arctan(x), válida para todo x real y coherente con
+  // la fila EV-I-08.
+  result = rewriteUnaryFunction(result, "arccot", (a) => `(pi/2-arctan(${a}))`);
   // Módulo A (spec §2): mismo problema de substring que arcsec/arccsc/
   // arccot de arriba — "asech" contiene "sech", "acsch" contiene "csch",
   // "acoth" contiene "coth" — se reescriben ANTES que sus versiones
