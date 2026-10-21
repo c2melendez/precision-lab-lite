@@ -1,3 +1,13 @@
+## 2026-10-21 UTC - r233: reconciliación documentación ↔ GitHub Actions
+
+**Alcance.** Contraste de las 477 citas de runs (URL o `[id]`) y de los 197 SHA completos documentados contra la API de Actions, en ambos repos y en toda la historia de certificación. Se consultó además el conjunto completo de runs por SHA (no solo los citados) y se descargaron los logs acumulativos de r229–r232.
+
+**Resultado.** 0 runs inexistentes; 0 casos de SUCCESS documentado sobre un run fallido; 0 fallos ocultos en los cierres r229–r232 (todos los gates `SUCCESS`, `attempt=1`); conjunto de workflows por SHA idéntico a lo declarado; conteos de r229, r230, r231 y r232 idénticos a los logs; 297 citas resuelven en el repo par (documentación bilateral esperada). Los seis commits documentales verificados (`6287463d`, `b7bd70a3`, `29d08a47`, `4ec07aed`, `8ec414bb`, `6eab838d`) tienen 0 corridas; `574ca8bf` y `a5009a79` dispararon 2 cada uno por filtro de rutas, ya documentado en r232.
+
+**Brecha corregida.** 12 citas (6 SHA) identificaban el run pero no el commit. Se añadió el SHA en el punto de cita: `8db3456b` y `0fcdc9bb` (AS-DIV-07, `CONTINUITY.md`), `482d81d5` (run fallido inicial, `CURRENT_STATE.md`), `0690d475` y `19daac09` (`SY_P_23_CONVENTION.md`), `9f17dc51` (primer run AS-PAR-09, dashboard Plus). Con ello toda cita permite reconstruir run → SHA.
+
+**Informe:** `qa/certification/RUN_RECONCILIATION_2026-10-21.md`. Veredicto: historia documental consistente con Actions; sin runs inventados. Siguiente sin cambios: `EXP-EV-M-EVALUATION`, con la precondición EV-T del defecto Plus `zoo`.
+
 ## 2026-10-21 UTC - r232: auditoría lógica de la certificación; correcciones documentales
 
 **Auditoría lógica (informe: `qa/certification/LOGIC_AUDIT_2026-10-21.md`).** Revisadas las decisiones tomadas para ejecutar la matriz y la cadena de evidencia de EV-L/I/E/R, más las filas singulares del bloque EV. Veredicto: las decisiones matemáticas son correctas y ninguna convirtió una singularidad en un valor finito; `0^0=1` es la convención que la fila admite y queda acotada a evaluación directa (no a límites 4.M); las ramas complejas y la raíz real impar están declaradas y son coherentes entre EV-L-13, EV-R-13, EV-E-13 y EV-T-12. La cadena de evidencia (SHA exacto, guard `skip=false`, suite ejecutada, conteos) se mantiene en los bloques certificados.

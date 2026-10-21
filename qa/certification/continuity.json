@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 232,
+  "revision": 233,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "c4a49a515a27d05e096bf0480629fcb68fac6ffb",
@@ -1185,6 +1185,107 @@
       }
     },
     "ev_t_precondition": "Fix the Plus semantic log-domain leak (zoo) and assert DOMAIN_ERROR in EV-T-11 before certifying EV-T.",
+    "next_action_unchanged": "EXP-EV-M-EVALUATION"
+  },
+  "run_reconciliation_r233": {
+    "date_utc": "2026-10-21",
+    "scope": "reconcile documentary history against GitHub Actions for both repositories",
+    "report": "qa/certification/RUN_RECONCILIATION_2026-10-21.md",
+    "method": {
+      "strong_citations_checked": 477,
+      "full_shas_checked": 197,
+      "cross_repo_citations_resolved": 297,
+      "logs_rechecked": [
+        "r229",
+        "r230",
+        "r231",
+        "r232"
+      ],
+      "doc_only_commits_checked": [
+        "6287463d",
+        "b7bd70a3",
+        "29d08a47",
+        "4ec07aed",
+        "8ec414bb",
+        "6eab838d"
+      ]
+    },
+    "result": {
+      "nonexistent_runs": 0,
+      "shas_without_runs": 0,
+      "false_success": 0,
+      "hidden_failures_r229_r232": 0,
+      "all_gates_attempt_1": true,
+      "counts_match_logs": true,
+      "doc_only_commits_zero_runs": true
+    },
+    "path_filter_docs_runs": {
+      "lite_574ca8bf": [
+        39687537314,
+        39687537328
+      ],
+      "plus_a5009a79": [
+        39687547538,
+        39687547667
+      ]
+    },
+    "missing_sha_citations_fixed": [
+      {
+        "sha": "8db3456be0324aecefd5d63ba8b68ab474399e56",
+        "repo": "lite",
+        "runs": [
+          39219361555,
+          39219361565,
+          39219361663
+        ],
+        "where": "CONTINUITY.md (AS-DIV-07)"
+      },
+      {
+        "sha": "0fcdc9bb77c2e9dc5e3ae5cb399e10b9ef3d139c",
+        "repo": "plus",
+        "runs": [
+          39219370525,
+          39219370577
+        ],
+        "where": "CONTINUITY.md (AS-DIV-07)"
+      },
+      {
+        "sha": "482d81d5f42a249fd0a03af898a231cf012fe45a",
+        "repo": "lite",
+        "runs": [
+          39557278838
+        ],
+        "where": "CURRENT_STATE.md (failed initial run, superseded)"
+      },
+      {
+        "sha": "0690d47592b063e0542a38b2f80d2ce6b1de0cdc",
+        "repo": "lite",
+        "runs": [
+          38207655164,
+          38207655170,
+          38207655199
+        ],
+        "where": "SY_P_23_CONVENTION.md"
+      },
+      {
+        "sha": "19daac09e6f98d4429ceeca904bcfdd5b7efd46b",
+        "repo": "plus",
+        "runs": [
+          38207857516,
+          38207857573
+        ],
+        "where": "SY_P_23_CONVENTION.md"
+      },
+      {
+        "sha": "9f17dc516af64cd276154dc11dfb4f66add79241",
+        "repo": "plus",
+        "runs": [
+          39274466829
+        ],
+        "where": "GLOBAL_CERTIFICATION_DASHBOARD.md (AS-PAR-09)"
+      }
+    ],
+    "verdict": "CONSISTENT: documentary history matches GitHub Actions; no fabricated runs, no false SUCCESS, no hidden gate failures; traceability gap of 12 citations fixed",
     "next_action_unchanged": "EXP-EV-M-EVALUATION"
   }
 }
