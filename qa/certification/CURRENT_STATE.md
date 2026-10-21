@@ -1,3 +1,18 @@
+## 2026-10-21 UTC — r210: EV-D-04 diagnóstico y test corregido; cierre pendiente
+
+La corrida acumulativa inicial de Lite [39552903560](https://github.com/c2melendez/precision-lab-lite/actions/runs/39552903560) falló solo en el nuevo test: este llamaba a `evaluate("csc(pi/6)")` directamente, evitando el pipeline oficial del parser. La salida observada fue `csc(1/6*pi)`, no `2`. El parser ya contiene la reescritura de `csc` a `1/sin`; el test debe pasar por `parseExpression` antes de `evaluate`.
+
+Se corrigió únicamente el test Lite en commit `0467aa89c470abf6607d1b67e9c40191642d8df4`; **no se modificó código de producto**. El test Plus ya había pasado en las corridas [39552906521](https://github.com/c2melendez/precision-lab-plus/actions/runs/39552906521) y [39552906515](https://github.com/c2melendez/precision-lab-plus/actions/runs/39552906515), ambas con `head_sha=f6756dc37bdf193a01de05a4bb9208b65cf47867`.
+
+Nuevas corridas de Lite para el SHA corregido `0467aa89c470abf6607d1b67e9c40191642d8df4`:
+- cumulative [39554410679](https://github.com/c2melendez/precision-lab-lite/actions/runs/39554410679) — `in_progress`.
+- h1d [39554410715](https://github.com/c2melendez/precision-lab-lite/actions/runs/39554410715) — `in_progress`.
+- scientific-ui [39554410696](https://github.com/c2melendez/precision-lab-lite/actions/runs/39554410696) — `in_progress`.
+
+No declarar EV-D-04 PASS hasta que terminen las tres corridas y se compruebe `head_sha`. Global certification: `OPEN`.
+
+---
+
 > Decisiones de alcance, de producto y de proceso: ver `qa/certification/ALGEBRA229_DECISIONS.md`.
 
 ## 2026-10-21 UTC — Cierre documental r208: gates D20 de r207 verificados
