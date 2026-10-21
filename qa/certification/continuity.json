@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 220,
+  "revision": 221,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -48,14 +48,14 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EV-D-09-TEST-FIRST",
-    "status": "IN_PROGRESS",
-    "action": "EV-D-08 closed PASS_SCOPED_BILATERAL (runs 39561366616/39561366691/39561366624 on d605a23b). EV-D-09 tests (cos(2) approx -0.416146837) are published on Lite 7e6d29ae / Plus efeba0ca and their gates are running; review jobs/logs, then close or diagnose without changing product.",
+    "id": "TRIG-EV-D-10-TEST-FIRST",
+    "status": "IN_PROGRESS_PRODUCT_FIX",
+    "action": "EV-D-09 closed PASS_SCOPED_BILATERAL (runs 39562383033/39562383038/39562383018 on 7e6d29ae). EV-D-10 cot(pi/2)=0 reproduced a product defect: cot was rewritten as 1/tan, yielding '1/(tan(1/2*pi))'. Product fix rewrites cot as cos/sin on Lite b5bd0fa3 (Plus b635db5f needs no product change). EV-D-10 gates are running; review jobs/logs and close or diagnose.",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "7e6d29ae4c391805154ebae8029436792ee010fb",
-      "c2melendez/precision-lab-plus": "efeba0caecfae5ce824c481d02b3b7bb21d05d76"
+      "c2melendez/precision-lab-lite": "b5bd0fa3b06da410d10b9a0fe2503756d7f6570a",
+      "c2melendez/precision-lab-plus": "b635db5fa6e00fab92a144d421398ff5d5df0763"
     },
-    "product_changed": false
+    "product_changed": true
   },
   "blockers": [
     {
@@ -79,7 +79,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r220: EV-D-08 sin(1)~0.841470985 PASS_SCOPED_BILATERAL with the new approx-row oracle convention; all required Lite gates SUCCESS on d605a23b; product unchanged. EV-D-09 (cos(2)) tests published and gates running.",
+  "ledger_note": "r221: EV-D-09 cos(2)~-0.416146837 PASS_SCOPED_BILATERAL (7e6d29ae). EV-D-10 cot(pi/2)=0 exposed a product defect (cot rewritten as 1/tan); fixed to cos/sin on Lite b5bd0fa3; gates running. Global certification OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -449,5 +449,48 @@
     "global_certification": "OPEN",
     "next_objective": "TRIG-EV-D-09-TEST-FIRST",
     "next_status": "IN_PROGRESS"
+  },
+  "ev_d_09_closure_r221": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "cos(2) approx -0.416146837; Lite official parser ASCII+LaTeX keeps exact cos(2); Plus HTTP ASCII keeps exact cos(2)",
+    "product_changed": false,
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "7e6d29ae4c391805154ebae8029436792ee010fb",
+      "c2melendez/precision-lab-plus": "efeba0caecfae5ce824c481d02b3b7bb21d05d76"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39562383033,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39562383033",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7e6d29ae4c391805154ebae8029436792ee010fb",
+        "head_sha_matches": true,
+        "tests": "337 files; 1986 passed; 8 expected fail; 34 TODO; EV-D-09 file 4/4 passed"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39562383038,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39562383038",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7e6d29ae4c391805154ebae8029436792ee010fb",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39562383018,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39562383018",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7e6d29ae4c391805154ebae8029436792ee010fb",
+        "head_sha_matches": true
+      }
+    ],
+    "diagnostic": "No diagnostic needed: approx-row oracle reused from EV-D-08 and passed first push in both engines.",
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-D-10-TEST-FIRST",
+    "next_status": "IN_PROGRESS_PRODUCT_FIX"
   }
 }

@@ -1,3 +1,22 @@
+## 2026-10-21 UTC — EV-D-09 cierre r221 y EV-D-10 con defecto de producto corregido
+
+**EV-D-09 — `cos(2) ≈ -0.416146837`: PASS_SCOPED_BILATERAL.** Fila congelada verificada; los tres gates Lite terminaron SUCCESS con `head_sha` exacto.
+
+- cumulative: [39562383033](https://github.com/c2melendez/precision-lab-lite/actions/runs/39562383033) — SUCCESS; SHA técnico `7e6d29ae4c391805154ebae8029436792ee010fb` exacto.
+- h1d: [39562383038](https://github.com/c2melendez/precision-lab-lite/actions/runs/39562383038) — SUCCESS; mismo SHA.
+- scientific-ui: [39562383018](https://github.com/c2melendez/precision-lab-lite/actions/runs/39562383018) — SUCCESS; mismo SHA.
+- Prueba EV-D-09: 4/4; suite Vitest 337 archivos, 1986 passed, 8 expected fail, 34 TODO; typecheck y production build SUCCESS.
+
+**EV-D-10 — `cot(π/2) = 0`: defecto de producto confirmado y corregido (gate en ejecución).** La prueba test-first reprodujo el fallo: el motor devolvía `1/(tan(1/2*pi))` en vez de `0` porque `cot(a)` se reescribía como `1/tan(a)`, con singularidad evitable en los ceros de `tan`.
+
+- Corrección de producto en `src/engine/parsing/index.ts`: `cot(a)` se reescribe como `cos(a)/sin(a)` (misma identidad, resuelve `cos(π/2)/sin(π/2) = 0/1 = 0` y mantiene `cot(0)` indefinida). Se actualizó la expectativa del contrato de parser en `tests/parsing.test.ts`.
+- Evidencia local previa al cambio: `expected '1/(tan(1/2*pi))' to be '0'` en las dos pruebas de `tests/trigonometryEvD10.audit.test.ts`; tras el cambio, 129 pruebas relacionadas (EV-D-06, EV-D-10, parsing, trigonometría exhaustiva, paridad de teclado) pasan.
+- SHA con la corrección: Lite `b5bd0fa3b06da410d10b9a0fe2503756d7f6570a`; Plus `b635db5fa6e00fab92a144d421398ff5d5df0763` (Plus no requirió cambio de producto: SymPy ya devuelve `0`).
+- Gates EV-D-10 en ejecución; no se declara PASS hasta revisar conclusión y logs.
+- Certificación global continúa OPEN por bloqueos independientes.
+
+---
+
 ## 2026-10-21 UTC — EV-D-08 cierre r220: PASS_SCOPED_BILATERAL
 
 **EV-D-08 — `sin(1) ≈ 0.841470985`: PASS_SCOPED_BILATERAL.** Se verificó la fila congelada `| EV-D-08 | \`\sin(1)\` | \`\approx 0.841470985\` |` y se documentó la convención de oráculo para filas `\approx` en `EXECUTION_PROTOCOL.md`. No se modificó código de producto.
