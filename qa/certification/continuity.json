@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 226,
+  "revision": 227,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -48,9 +48,9 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EV-H-01..12",
-    "status": "IN_PROGRESS",
-    "action": "EV-I group A: cumulative 39596378248 (2016 passed) and h1d 39596378313 SUCCESS on 11d01925; Lite scientific-ui 39596378121 still running (>25 min), so closure is pending that single gate. EV-H tests are published on Lite 54f81f21 / Plus e7107279; gates running. Next after gates: close EV-H with documented numeric-channel scope, then resolve EV-I-07 (arccot range) and the Lite-only EV-I-09/I-10 defects.",
+    "id": "TRIG-EV-I-07-BRANCH",
+    "status": "READY_DECISION",
+    "action": "EV-H-01..12 closed PASS_SCOPED on Lite 54f81f21 (gates 39596870367/39596869965/39596870180, 2025 passed) and Plus e7107279 (39596875855/39596875727, 1798 passed); EV-I group A also closed bilaterally. Next: resolve EV-I-07 arccot branch (matrix requires arccot(-1)=3pi/4, principal range (0,pi); both engines return -pi/4 via arctan(1/x)/SymPy acot) by rewriting arccot(a)=pi/2-arctan(a) in both engines, updating oracles, and re-running gates. Then Lite-only EV-I-09 (arcsin(sin 2) returns 2 instead of pi-2) and EV-I-10 (sin(arccos(3/5)) unevaluated).",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-lite": "54f81f21806fbe02ebf4c40ed237ed244a667de4",
       "c2melendez/precision-lab-plus": "e7107279a0309e9c31114b3b725b51103cffbef7"
@@ -79,7 +79,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r226: EV-I group A cumulative+h1d SUCCESS on 11d01925 (2016 passed); Lite scientific-ui still running. EV-H-01..12 tests published (54f81f21/e7107279), gates running. EV-I-07/09/10 remain documented defects. Global certification OPEN.",
+  "ledger_note": "r227: EV-H-01..12 PASS_SCOPED (numeric channel) on 54f81f21/e7107279 with all gates SUCCESS; EV-I group A closed bilaterally. Next: EV-I-07 arccot principal range, then Lite-only EV-I-09/I-10. Global certification OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -679,7 +679,7 @@
     "next_status": "IN_PROGRESS"
   },
   "ev_i_group_a_r226": {
-    "status": "IN_PROGRESS_SCIENTIFIC_UI",
+    "status": "PASS_SCOPED_BILATERAL",
     "scope": "EV-I-01..06, EV-I-08, EV-I-11 exact values with frozen source rows",
     "test_commit_sha_by_repo": {
       "c2melendez/precision-lab-lite": "11d0192582c337e38ec3718940f5f620644e44f0",
@@ -709,15 +709,57 @@
         "gate": "scientific-ui",
         "run_id": 39596378121,
         "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39596378121",
-        "status": "in_progress",
-        "conclusion": null,
+        "status": "completed",
+        "conclusion": "success",
         "head_sha": "11d0192582c337e38ec3718940f5f620644e44f0",
-        "head_sha_matches": true,
-        "note": "native desktop/tablet/mobile step exceeded 25 minutes at r226; closure waits for its conclusion"
+        "head_sha_matches": true
       }
     ],
     "global_certification": "OPEN",
     "next_objective": "TRIG-EV-H-01..12",
     "next_status": "IN_PROGRESS"
+  },
+  "ev_h_closure_r227": {
+    "status": "PASS_SCOPED",
+    "scope": "EV-H-01..12 hyperbolic values; exact for 01..03 and 12, numeric channel for 04..11",
+    "product_changed": false,
+    "limitation": "exact rational display (3/4, 5/4, 3/5, 4/3, 4/5, 5/3) is not produced by either engine; result_text stays symbolic in Plus and 6-decimal in Lite",
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "54f81f21806fbe02ebf4c40ed237ed244a667de4",
+      "c2melendez/precision-lab-plus": "e7107279a0309e9c31114b3b725b51103cffbef7"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39596870367,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39596870367",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "54f81f21806fbe02ebf4c40ed237ed244a667de4",
+        "head_sha_matches": true,
+        "tests": "2025 passed; 8 expected fail; 34 TODO; EV-H file 9/9"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39596869965,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39596869965",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "54f81f21806fbe02ebf4c40ed237ed244a667de4",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39596870180,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39596870180",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "54f81f21806fbe02ebf4c40ed237ed244a667de4",
+        "head_sha_matches": true
+      }
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-I-07-BRANCH",
+    "next_status": "READY_DECISION"
   }
 }
