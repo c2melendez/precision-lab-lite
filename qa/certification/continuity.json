@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 210,
+  "revision": 211,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -48,29 +48,29 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EV-D-04-TEST-FIRST",
+    "id": "TRIG-EV-D-05-TEST-FIRST",
     "status": "IN_PROGRESS",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "0467aa89c470abf6607d1b67e9c40191642d8df4",
-      "c2melendez/precision-lab-plus": "f6756dc37bdf193a01de05a4bb9208b65cf47867"
+      "c2melendez/precision-lab-lite": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c",
+      "c2melendez/precision-lab-plus": "7be68dcfbcd9ed64b4f4ae98399276d01ede0034"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39554410696,
-        39554410679,
-        39554410715
+        39555164790,
+        39555164686,
+        39555164730
       ],
       "c2melendez/precision-lab-plus": [
-        39552906521,
-        39552906515
+        39555174858,
+        39555174838
       ]
     },
     "completed_scoped": {
-      "id": "TRIG-EV-D-01..03; ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..28",
+      "id": "TRIG-EV-D-01..04; ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..28",
       "status": "PASS_SCOPED",
-      "scope": "EV-D-01 sin(pi/6)=1/2; EV-D-02 cos(pi/3)=1/2; EV-D-03 tan(pi/4)=1; unit/HTTP; Plus HTTP ASCII only"
+      "scope": "EV-D-01 sin(pi/6)=1/2; EV-D-02 cos(pi/3)=1/2; EV-D-03 tan(pi/4)=1; EV-D-04 csc(pi/6)=2; Lite ASCII+LaTeX parser pipeline; Plus HTTP ASCII only"
     },
-    "action": "EV-D-04: se corrigió el test de Lite para pasar por parseExpression antes de evaluate; la primera corrida acumulativa demostró que llamar directamente a Algebrite omite la reescritura de csc. Verificar las nuevas corridas de Lite y los SHA; no modificar producto salvo evidencia adicional. No declarar PASS hasta concluir gates."
+    "action": "EV-D-05 test-first: sec(pi/3)=2, tests added to Lite and Plus. Verify frozen source row and all 5 gates against exact test commits. No product changes unless tests and source confirm a defect. Do not declare PASS until all gates finish."
   },
   "blockers": [
     {
@@ -94,7 +94,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r210 checkpoint: EV-D-04 sigue IN_PROGRESS. Test de Lite corregido para usar el pipeline oficial parseExpression→evaluate tras fallo por bypass del parser; no hay cambio de producto. Plus tests y gates previos SUCCESS; nuevas corridas Lite en curso. Global OPEN.",
+  "ledger_note": "r211: EV-D-04 PASS_SCOPED bilateral con 5/5 gates SUCCESS y head_sha exactos. EV-D-05 test-first iniciado (sec(pi/3)=2); 5 gates en curso, código de producto sin cambios. Certificación global OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -187,5 +187,90 @@
       }
     ],
     "global_certification": "OPEN"
+  },
+  "ev_d_04_closure_r211": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "product_changed": false,
+    "lite_test_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4",
+    "plus_test_sha": "f6756dc37bdf193a01de05a4bb9208b65cf47867",
+    "runs": [
+      {
+        "repo": "c2melendez/precision-lab-lite",
+        "gate": "cumulative",
+        "run_id": 39554410679,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4",
+        "head_sha_matches": true
+      },
+      {
+        "repo": "c2melendez/precision-lab-lite",
+        "gate": "h1d",
+        "run_id": 39554410715,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4",
+        "head_sha_matches": true
+      },
+      {
+        "repo": "c2melendez/precision-lab-lite",
+        "gate": "scientific-ui",
+        "run_id": 39554410696,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4",
+        "head_sha_matches": true
+      },
+      {
+        "repo": "c2melendez/precision-lab-plus",
+        "gate": "cumulative",
+        "run_id": 39552906521,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "f6756dc37bdf193a01de05a4bb9208b65cf47867",
+        "head_sha_matches": true
+      },
+      {
+        "repo": "c2melendez/precision-lab-plus",
+        "gate": "h1d",
+        "run_id": 39552906515,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "f6756dc37bdf193a01de05a4bb9208b65cf47867",
+        "head_sha_matches": true
+      }
+    ],
+    "scope": "EV-D-04 csc(pi/6)=2; Lite ASCII+LaTeX via official parser; Plus HTTP ASCII only",
+    "global_certification": "OPEN"
+  },
+  "ev_d_05_execution_r211": {
+    "status": "IN_PROGRESS",
+    "test_commit_sha": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c",
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39555164790,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164790",
+        "status": "in_progress",
+        "expected_head_sha": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39555164686,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164686",
+        "status": "in_progress",
+        "expected_head_sha": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c"
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39555164730,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164730",
+        "status": "in_progress",
+        "expected_head_sha": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c"
+      }
+    ],
+    "product_changed": false,
+    "global_certification": "OPEN",
+    "source_row_verification": "PENDING_ACTIONS"
   }
 }
