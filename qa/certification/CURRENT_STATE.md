@@ -1,3 +1,14 @@
+## 2026-10-21 UTC — EV-D-06 test-first checkpoint; gates pending
+
+**Fuente congelada verificada:** la fila EV-D-06 es `cot(pi/4)=1`, representada como `\\cot\\left(\\frac{\\pi}{4}\\right)` con el resultado en backticks. Se agregó cobertura test-first en ambos motores; no se modificó código de producto.
+
+- **Lite**: commit de pruebas corregido `00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8`. La corrida acumulativa inicial [39557278838](https://github.com/c2melendez/precision-lab-lite/actions/runs/39557278838) falló únicamente porque la aserción del resultado no aceptaba los backticks del formato fuente. El log confirma que las pruebas ASCII y LaTeX sí pasaron; total previo a la corrección: 1974 passed, 1 failed (solo formato de la prueba), 8 expected fail, 34 TODO. Corregido para aceptar `1` y `1` con formato literal de matriz.
+- **Plus**: test `backend/tests/test_trigonometry_ev_d06.py`; commit corregido `6369a617e59f2f23fe73ac4e464683de310a688a`, con el mismo ajuste para que la aserción fuente acepte el resultado documentado con backticks. No se ha observado ni autorizado cambio de producto.
+- Gates del SHA final están en ejecución: Lite cumulative [39557479991](https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479991), H1d [39557479974](https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479974), Scientific UI [39557480008](https://github.com/c2melendez/precision-lab-lite/actions/runs/39557480008); Plus cumulative [39557484508](https://github.com/c2melendez/precision-lab-plus/actions/runs/39557484508), H1d [39557484518](https://github.com/c2melendez/precision-lab-plus/actions/runs/39557484518). Validar conclusión y SHA exacto antes de marcar PASS.
+- **Estado EV-D-06: IN_PROGRESS.** Próxima acción: revisar todos los gates finales y logs, resolver solo fallos demostrados, luego cerrar bilateralmente. Certificación global continúa OPEN por bloqueos previos.
+
+---
+
 ## 2026-10-21 UTC — r214: EV-D-05 PASS_SCOPED_BILATERAL; EV-D-06 preparado
 
 **EV-D-05 — `sec(pi/3)=2`: PASS_SCOPED_BILATERAL.** La fila fuente de la matriz congelada y el resultado esperado fueron verificados en las pruebas de ambos motores. No se modificó código de producto.

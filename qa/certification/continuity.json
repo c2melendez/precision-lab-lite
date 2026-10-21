@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 214,
+  "revision": 215,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -49,28 +49,23 @@
   },
   "next_action": {
     "id": "TRIG-EV-D-06-TEST-FIRST",
-    "status": "READY",
+    "status": "IN_PROGRESS",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c",
-      "c2melendez/precision-lab-plus": "8885a3b47dc6509c52a08312bbc87d5f1651c6da"
+      "c2melendez/precision-lab-lite": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+      "c2melendez/precision-lab-plus": "6369a617e59f2f23fe73ac4e464683de310a688a"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39555164790,
-        39555164686,
-        39555164730
+        39557479991,
+        39557479974,
+        39557480008
       ],
       "c2melendez/precision-lab-plus": [
-        39556359520,
-        39556359572
+        39557484508,
+        39557484518
       ]
     },
-    "completed_scoped": {
-      "id": "TRIG-EV-D-05",
-      "status": "PASS_SCOPED_BILATERAL",
-      "scope": "sec(pi/3)=2; Lite official parser ASCII+LaTeX; Plus HTTP ASCII; frozen source row verified"
-    },
-    "action": "EV-D-06 test-first: inspect and verify the exact EV-D-06 row/result in the frozen trigonometry source before writing tests. Then add bilateral acceptance tests (Lite ASCII+LaTeX official parser, Plus HTTP ASCII), no product change unless source and tests establish a defect; verify exact-SHA cumulative/H1d/Scientific UI gates as applicable."
+    "action": "Review exact-SHA cumulative/H1d/Scientific UI gates for EV-D-06; inspect logs and close bilateral only after all required gates succeed. Product code unchanged."
   },
   "blockers": [
     {
@@ -94,7 +89,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r214: EV-D-05 PASS_SCOPED_BILATERAL; 5/5 gates SUCCESS with exact test SHAs and test execution verified. Next TRIG-EV-D-06-TEST-FIRST READY; global certification remains OPEN.",
+  "ledger_note": "r215: EV-D-06 source row verified as cot(pi/4)=1; test-first added bilateral, no product changes. Initial Lite run found test-format mismatch (backticks), corrected. Final exact-SHA gates pending; global OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -300,6 +295,41 @@
       }
     ],
     "scope": "sec(pi/3)=2; Lite ASCII+LaTeX via official parser; Plus HTTP ASCII; frozen source row verified",
+    "global_certification": "OPEN"
+  },
+  "ev_d_06_execution": {
+    "status": "IN_PROGRESS",
+    "scope": "EV-D-06 cot(pi/4)=1; Lite official parser ASCII+LaTeX; Plus HTTP ASCII",
+    "source_row_verified": true,
+    "product_changed": false,
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+      "c2melendez/precision-lab-plus": "6369a617e59f2f23fe73ac4e464683de310a688a"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39557479991,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479991",
+        "status": "in_progress",
+        "expected_head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39557479974,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479974",
+        "status": "in_progress",
+        "expected_head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8"
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39557480008,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39557480008",
+        "status": "in_progress",
+        "expected_head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8"
+      }
+    ],
+    "diagnostic": "Lite first cumulative run failed only the frozen-row result regex because source formats result as `1`; ASCII and LaTeX evaluation tests passed. Regex corrected to accept backticks. Plus source assertion similarly corrected. Final exact-SHA gates pending.",
     "global_certification": "OPEN"
   }
 }
