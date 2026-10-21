@@ -244,6 +244,19 @@ const LOCALIZED_ALIAS_MAP: Record<string, string> = {
   argcosh: "\\acosh",
   argtgh: "\\atanh",
   arctgh: "\\atanh",
+  // AUD-SING-02: las grafías "arc" + hiperbólica (arcsinh/arccosh/arctanh y
+  // sus recíprocas) no estaban en el mapa: el parser las partía como
+  // producto implícito ("arcsin*h*(1)" → 0, "arccos*h*(2)" → basura).
+  // Se normalizan a la función real, igual que asinh/acosh/atanh.
+  arsinh: "\\asinh",
+  arcsinh: "\\asinh",
+  arcosh: "\\acosh",
+  arccosh: "\\acosh",
+  artanh: "\\atanh",
+  arctanh: "\\atanh",
+  arccsch: "acsch",
+  arcsech: "asech",
+  arccoth: "acoth",
   lg: "\\log",
   sgn: "sign",
   raiz: "sqrt",
@@ -267,12 +280,12 @@ function normalizeLocalizedAliases(input: string): string {
   );
 
   out = out.replace(
-    /\\(sen|tg|ctg|cotg|cosec|arcsen|arctg|arcctg|arccotg|arccosec|senh|tgh|ctgh|cotgh|cosech|argsenh|arcsenh|argcosh|argtgh|arctgh|raiz)(?![A-Za-z])/gi,
+    /\\(sen|tg|ctg|cotg|cosec|arcsen|arctg|arcctg|arccotg|arccosec|senh|tgh|ctgh|cotgh|cosech|argsenh|arcsenh|argcosh|argtgh|arctgh|arsinh|arcsinh|arcosh|arccosh|artanh|arctanh|arccsch|arcsech|arccoth|raiz)(?![A-Za-z])/gi,
     (_m, rawName) => LOCALIZED_ALIAS_MAP[String(rawName).toLowerCase()] ?? String(rawName),
   );
 
   out = out.replace(
-    /(?<![A-Za-zÁÉÍÓÚáéíóúÑñ])(arccosec|arccotg|arcctg|arcsenh|argsenh|argcosh|argtgh|arctgh|arcsen|arctg|cosech|cotgh|ctgh|senh|tgh|cotg|cosec|ctg|sen|tg|lg|raíz|raiz|mcd|mcm|máx|mín)(?![A-Za-zÁÉÍÓÚáéíóúÑñ])/gi,
+    /(?<![A-Za-zÁÉÍÓÚáéíóúÑñ])(arccosec|arccotg|arcctg|arcsenh|argsenh|argcosh|argtgh|arctgh|arsinh|arcsinh|arcosh|arccosh|artanh|arctanh|arccsch|arcsech|arccoth|arcsen|arctg|cosech|cotgh|ctgh|senh|tgh|cotg|cosec|ctg|sen|tg|lg|raíz|raiz|mcd|mcm|máx|mín)(?![A-Za-zÁÉÍÓÚáéíóúÑñ])/gi,
     (rawName) => LOCALIZED_ALIAS_MAP[String(rawName).toLowerCase()] ?? String(rawName),
   );
 

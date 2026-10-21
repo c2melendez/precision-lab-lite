@@ -229,7 +229,12 @@ function extractFreeVariables(tokens: Token[]): string[] {
 /** Convierte los argumentos de trig DIRECTAS (sin/cos/tan) de grados a radianes cuando angleMode === "GRAD" (spec v10 §5: alcance exacto de angle_unit). "GRAD" es una decisión deliberada del proyecto para significar grados sexagesimales, no gradianes — ver spec_calculadora_v10_sin_backend.md. */
 function applyAngleMode(algebrite: string, angleMode: "RAD" | "GRAD"): string {
   if (angleMode === "RAD") return algebrite;
-  const directTrig = ["sin", "cos", "tan"];
+  // AUD-SING-02: sec/csc/cot también reciben un ÁNGULO y se reescriben a
+  // 1/cos, 1/sin y cos/sin ANTES de evaluar; sin incluirlas aquí, en modo
+  // GRAD se interpretaban como radianes (sec(90) = -2.2318, cot(45) = 0.6174,
+  // csc(30) = -1.0121 en vez de indefinida/1/2). El conversor ya evita
+  // prefijos de letra (arcsec/arccsc/arccot no se tocan).
+  const directTrig = ["sin", "cos", "tan", "sec", "csc", "cot"];
   let result = algebrite;
   for (const fn of directTrig) {
     result = wrapFunctionArgsWithDegToRad(result, fn);

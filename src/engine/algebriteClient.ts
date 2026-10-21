@@ -282,6 +282,25 @@ export function evaluate(expressionLatex: string): string {
         "Logaritmo no definido: el argumento debe ser mayor que 0.",
       );
     }
+    // EV-I-12: arcsin/arccos tienen dominio real [-1, 1]; Algebrite devuelve
+    // "arcsin(2)" sin evaluar en vez de un error claro. Solo se guarda la
+    // forma pura arcsin(<constante>)/arccos(<constante>): los argumentos
+    // simbólicos y las composiciones (arcsin(sin(2))) no se tocan aquí.
+    const inverseOnly = /^\s*(arcsin|arccos)\((.*)\)\s*$/.exec(result);
+    if (inverseOnly) {
+      let argValue = Number.NaN;
+      try {
+        argValue = Number(compileNumeric(inverseOnly[2], "__none__")(0));
+      } catch {
+        argValue = Number.NaN;
+      }
+      if (Number.isFinite(argValue) && Math.abs(argValue) > 1) {
+        throw toAppError(
+          ErrorCode.DOMAIN_ERROR,
+          `${inverseOnly[1]} no está definida fuera del dominio real [-1, 1].`,
+        );
+      }
+    }
     if (MAY_NEED_FLOAT.test(result)) {
       const retried: string = Algebrite.run(`float(${expressionLatex})`);
       if (typeof retried === "string" && retried.length > 0 && !/stop|Stop/.test(retried)) {
