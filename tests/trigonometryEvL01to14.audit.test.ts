@@ -66,6 +66,11 @@ describe("EV-L-01..14 logarithms in the frozen matrix", () => {
     expect(approx("\\ln\\left(10^{50}\\right)")).toBeCloseTo(115.12925465, 6);
   });
 
+  it("product of two base-b logarithms (L09) is 2", () => {
+    expect(run("\\log_{2}(3)\\cdot\\log_{3}(4)")).toBe("2");
+    expect(run("\\log_{2}(3)\\cdot \\log_{3}(4)")).toBe("2");
+  });
+
   it("undefined and complex values (L12, L13)", () => {
     const zero = domainError("\\ln(0)");
     expect(zero.code).toBe(ErrorCode.DOMAIN_ERROR);

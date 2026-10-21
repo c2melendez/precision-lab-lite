@@ -488,6 +488,103 @@ function normalizePoweredFunctions(input: string): string {
   return out + input.slice(cursor);
 }
 
+/** Index of the matching close paren for the opener at `open` (exclusive scan). */
+function findMatchingParen(source: string, open: number): number {
+  let depth = 0;
+  for (let i = open; i < source.length; i += 1) {
+    if (source[i] === "(") depth += 1;
+    else if (source[i] === ")") {
+      depth -= 1;
+      if (depth === 0) return i;
+    }
+  }
+  return -1;
+}
+
+/**
+ * EV-L-09: convierte TODAS las apariciones de `\log_{b}(arg)` a `log(arg,b)`,
+ * no solo la que cierra la expresión. El bloque histórico de más abajo ancla
+ * sus patrones a `$`, así que en `\log_{2}(3)\cdot\log_{3}(4)` la segunda
+ * base sobrevivía como `_` y el parser fallaba.
+ */
+function normalizeAllLogBases(source: string): string {
+  const marker = "\\log";
+  let out = "";
+  let i = 0;
+  for (;;) {
+    const start = source.indexOf(marker, i);
+    if (start < 0) return out + source.slice(i);
+    out += source.slice(i, start);
+    // Punto al que se reanuda el escaneo si esta aparición no se puede
+    // convertir: se reemite el marcador y se deja intacto el resto.
+    const resume = start + marker.length;
+    let j = resume;
+    const head = /^\s*_\s*/.exec(source.slice(j));
+    if (!head) {
+      out += marker;
+      i = resume;
+      continue;
+    }
+    j += head[0].length;
+    let base = "";
+    if (source[j] === "{") {
+      const close = source.indexOf("}", j);
+      if (close < 0) {
+        out += marker;
+        i = resume;
+        continue;
+      }
+      base = source.slice(j + 1, close);
+      j = close + 1;
+    } else {
+      const single = /^[0-9A-Za-z]+/.exec(source.slice(j));
+      if (!single) {
+        out += marker;
+        i = resume;
+        continue;
+      }
+      base = single[0];
+      j += base.length;
+    }
+    const spaces = /^\s*/.exec(source.slice(j));
+    j += spaces ? spaces[0].length : 0;
+    let arg = "";
+    if (source.startsWith("\\left(", j)) {
+      const open = j + "\\left(".length;
+      const close = findMatchingParen(source, open - 1);
+      if (close < 0 || source.slice(close - "\\right".length, close) !== "\\right") {
+        out += marker;
+        i = resume;
+        continue;
+      }
+      arg = source.slice(open, close);
+      j = close + 1;
+    } else if (source[j] === "(") {
+      const close = findMatchingParen(source, j);
+      if (close < 0) {
+        out += marker;
+        i = resume;
+        continue;
+      }
+      arg = source.slice(j + 1, close);
+      j = close + 1;
+    } else {
+      out += marker;
+      i = resume;
+      continue;
+    }
+    // Los argumentos con LaTeX pendiente (\frac, \sqrt...) siguen la ruta
+    // histórica de abajo, que los resuelve en el orden correcto.
+    if (arg.includes("\\")) {
+      out += marker;
+      i = resume;
+      continue;
+    }
+    out += `log(${arg},${base})`;
+    i = j;
+  }
+}
+
 function replaceNthRootOnce(input: string): string {
   const start = input.indexOf("\\sqrt[");
   if (start === -1) return input;
@@ -1175,6 +1272,10 @@ export function preprocessLatex(latex: string): string {
   // S16 REG-004: MathLive puede serializar el subíndice de log con o sin
   // llaves y con \\left(...\\right) o paréntesis simples.
   {
+    // EV-L-09: convierte todas las apariciones con paréntesis balanceados,
+    // no solo la que cierra la expresión (el bloque de abajo queda como
+    // respaldo para argumentos sin paréntesis).
+    expr = normalizeAllLogBases(expr);
     // SY-F-18: the following top-level additive tail is outside the log.
     expr = expr.replace(
       /\\log\s*_\s*\{([^{}]+)\}\s*([A-Za-z])(?=\s*[+-])/g,
