@@ -61,3 +61,13 @@ G2 comprueba invariancia de canal: LaTeX, texto y teclado deben converger a la m
 
 ## Continuidad y no repetición — 2026-10-16
 Leer `continuity.json` y `CONTINUITY.md` al reanudar. Esta regla concreta la selección de gates: recuperar observaciones frescas, comparar huellas, reutilizar solo evidencia real revisada, esperar corridas equivalentes y diagnosticar fallos sin repetir inputs idénticos. Una actualización documental no requiere nueva CI. Si HEAD avanzó sin reconciliación, no heredar el siguiente objetivo del ledger obsoleto. Antes de publicar, refrescar HEAD y usar expected_sha; no sobrescribir otro trabajo. El índice/estado son fotografías; el log y su archivo conservan historia. Los contratos de aceptación y fixtures siguen siendo insumos técnicos, aunque residan en qa. Una decisión REUSE no acredita ejecución nueva ni convierte omisiones en PASS. Seguridad depende de advisories externos y requiere revisión fresca, no reutilización automática por igualdad de SHA.
+
+## Filas con valor aproximado (`\approx`) — 2026-10-21
+
+Las filas de matriz cuyo resultado se documenta con `\approx` (EV-D-08 en adelante) certifican una aproximación redondeada, no un valor exacto. Reglas:
+
+1. El valor de la matriz es la referencia redondeada a los dígitos que muestra la fila (EV-D-08: `0.841470985`, 9 decimales).
+2. El motor debe conservar una forma exacta de la expresión (p. ej. `sin(1)`); una salida que solo imprima el decimal no certifica la fila.
+3. La comprobación numérica exige que el valor exacto evaluado coincida con la referencia dentro de media unidad del último dígito documentado (5e-10 para 9 decimales).
+4. Si el canal solo expone flotantes de 6 decimales (Lite `float`), esa comprobación secundaria usa tolerancia 1e-6; la exactitud simbólica sigue siendo obligatoria.
+5. Una fila `\approx` nunca relaja el oráculo de una fila exacta ni autoriza sustituir formas exactas por decimales.
