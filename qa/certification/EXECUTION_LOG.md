@@ -1,5 +1,22 @@
 # Registro de ejecución — índice vigente
 
+## 2026-10-21 UTC — r209: EV-D-04 test-first iniciado; gates en ejecución
+
+Objetivo `TRIG-EV-D-04-TEST-FIRST`: `csc(pi/6)=2`. Se añadieron únicamente pruebas de aceptación, antes de modificar producto:
+- Lite: `tests/trigonometryEvD04.audit.test.ts`, commit `9623bfa02b50f4fde154fc2fdd96f894151e65e3`.
+- Plus: `backend/tests/test_trigonometry_ev_d04.py`, commit `9623bfa02b50f4fde154fc2fdd96f894151e65e3`.
+
+Estado de las corridas al registrar este checkpoint:
+- cumulative: [39552903560](https://github.com/c2melendez/precision-lab-lite/actions/runs/39552903560) — `in_progress`; esperado `head_sha=9623bfa02b50f4fde154fc2fdd96f894151e65e3`.
+- h1d: [39552903434](https://github.com/c2melendez/precision-lab-lite/actions/runs/39552903434) — `in_progress`; esperado `head_sha=9623bfa02b50f4fde154fc2fdd96f894151e65e3`.
+- scientific-ui: [39552903511](https://github.com/c2melendez/precision-lab-lite/actions/runs/39552903511) — `in_progress`; esperado `head_sha=9623bfa02b50f4fde154fc2fdd96f894151e65e3`.
+
+No se afirma PASS/FAIL todavía: las corridas siguen activas y el resultado de test-first está pendiente. No se cambió código de producto. Próxima acción: esperar conclusión de todos los gates, inspeccionar los resultados específicos de EV-D-04, corregir solo si las pruebas lo exigen y publicar el cierre final con SHA exactos. Global `OPEN`.
+
+---
+
+
+
 ## 2026-10-21 UTC — Cierre documental r208: gates D20 de r207 verificados
 
 Los seis gates D20 del commit documental r207 terminaron `completed/success`; se verificó la igualdad exacta entre el SHA de cada run y el SHA documental del repositorio:
