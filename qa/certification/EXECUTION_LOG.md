@@ -358,6 +358,24 @@ Estado: AS-B-27 (`factorizar el entero 1001` → `7·11·13`) queda `ON_HOLD`, p
 
 ---
 
+## 2026-10-21 UTC — AS-B-27 PASS_SCOPED bilateral (continuity r202)
+
+**ALGEBRA229-AS-B-27** — factorizar el entero 1001 → `7*11*13` (fila N2; `7\cdot 11\cdot 13`). Sintaxis en D24: entrada `factor(1001)`, salida ASCII exacta, siguiendo D23 (pendiente de confirmación del usuario).
+
+Evidencia (test-first → producto → gates sobre SHA exacto):
+- **Lite:** test-first `6474fa1` (`tests/algebra229AsB27.audit.test.ts`) ya pasaba sin cambio de producto (D2). Gates SUCCESS sobre `6474fa1`: cumulative [39536687669](https://github.com/c2melendez/precision-lab-lite/actions/runs/39536687669), h1d [39536687662](https://github.com/c2melendez/precision-lab-lite/actions/runs/39536687662), scientific-ui [39536687659](https://github.com/c2melendez/precision-lab-lite/actions/runs/39536687659).
+- **Plus:** test-first `738fc54` (`backend/tests/test_algebra229_as_b27.py`); rojo en cumulative [39536693231](https://github.com/c2melendez/precision-lab-plus/actions/runs/39536693231), porque `factor(1001)` no tenía regla. Producto `63d8c82` (regla acotada, misma forma que AS-B-26). Gates SUCCESS sobre `63d8c82`: cumulative [39536979712](https://github.com/c2melendez/precision-lab-plus/actions/runs/39536979712), h1d [39536979648](https://github.com/c2melendez/precision-lab-plus/actions/runs/39536979648), Native Syntax [39536979725](https://github.com/c2melendez/precision-lab-plus/actions/runs/39536979725).
+
+Cierre D20 de r201: gates de `550ef5b` (Lite) y `07fd7ed` (Plus), SUCCESS, todos con `head_sha` igual al SHA documental. Lite cumulative [39534888740](https://github.com/c2melendez/precision-lab-lite/actions/runs/39534888740), h1d [39534891013](https://github.com/c2melendez/precision-lab-lite/actions/runs/39534891013), scientific-ui [39534893428](https://github.com/c2melendez/precision-lab-lite/actions/runs/39534893428). Plus cumulative [39534895439](https://github.com/c2melendez/precision-lab-plus/actions/runs/39534895439), h1d [39534897657](https://github.com/c2melendez/precision-lab-plus/actions/runs/39534897657), Native Syntax [39534899504](https://github.com/c2melendez/precision-lab-plus/actions/runs/39534899504).
+
+Alcance: solo la entrada exacta `factor(1001)`; no es factorización de enteros general.
+
+Gates documentales de r202 (commit de este cierre): se disparan con `workflow_dispatch` sobre el SHA documental (D20); sus resultados se registran en r203.
+
+Estado: AS-B-28 (`factorizar el entero 4294967297` → `641·6700417`, N3) queda `ON_HOLD`, pendiente de indicación. Global OPEN.
+
+---
+
 ## Histórico AS-PAR / Syntax
 
 Blob previo Lite `245c517bee89f76b1fd2622eaf68b2524aa6319c` / commit `2f380654…`.

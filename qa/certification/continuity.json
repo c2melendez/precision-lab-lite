@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 201,
+  "revision": 202,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
@@ -48,30 +48,30 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-27-TEST-FIRST",
+    "id": "ALGEBRA229-AS-B-28-TEST-FIRST",
     "status": "ON_HOLD",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "4b94e0ab7ea46004a1dbe791f1b098b006578555",
-      "c2melendez/precision-lab-plus": "6b68f96bac52200c7b1555e7b02870f7b03325bf"
+      "c2melendez/precision-lab-lite": "6474fa124fd24ba3b4341a27ec9cceffb2e9c56c",
+      "c2melendez/precision-lab-plus": "63d8c82545bfeedf00574d4b37e8ddc557adc611"
     },
     "run_ids_by_repo": {
       "c2melendez/precision-lab-lite": [
-        39534124007,
-        39534123950,
-        39534123899
+        39536687669,
+        39536687662,
+        39536687659
       ],
       "c2melendez/precision-lab-plus": [
-        39534433663,
-        39534433638,
-        39534433666
+        39536979712,
+        39536979725,
+        39536979648
       ]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..26 + D17/D18/D19/D21/D22/D23 safeguard",
+      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..27 + D17/D18/D19/D21/D22/D23/D24 safeguard",
       "status": "PASS_SCOPED",
-      "scope": "unit/HTTP expand/factor + source-row; not matrix-wide; AS-B-24 solo x^2-2 sobre ℝ; AS-B-25 solo x^2+1 sobre ℂ; AS-B-26 solo factor(360)"
+      "scope": "unit/HTTP expand/factor + source-row; not matrix-wide; AS-B-24 solo x^2-2 sobre ℝ; AS-B-25 solo x^2+1 sobre ℂ; AS-B-26 solo factor(360); AS-B-27 solo factor(1001)"
     },
-    "action": "AS-B-26 PASS_SCOPED bilateral (r201) con sintaxis D23. Siguiente AS-B-27 (factorizar el entero 1001) en ON_HOLD: pendiente de indicación. Global OPEN."
+    "action": "AS-B-27 PASS_SCOPED bilateral (r202) con sintaxis D24; gates D20 de r201 registrados. Siguiente AS-B-28 (factorizar el entero 4294967297) en ON_HOLD: pendiente de indicación. Global OPEN."
   },
   "blockers": [
     {
@@ -91,5 +91,5 @@
       "status": "BLOCKED"
     }
   ],
-  "ledger_note": "r201 2026-10-21: AS-B-26 PASS_SCOPED bilateral (Lite 4b94e0a sin producto, Plus 6b68f96), gates SUCCESS; registra gates D20 de b2ca78e y b5e8e4c (r200). AS-B-27 en ON_HOLD. Global OPEN."
+  "ledger_note": "r202 2026-10-21: AS-B-27 PASS_SCOPED bilateral (Lite 6474fa1 sin producto, Plus 63d8c82), gates SUCCESS; registra gates D20 de 550ef5b y 07fd7ed (r201). AS-B-28 en ON_HOLD. Global OPEN."
 }
