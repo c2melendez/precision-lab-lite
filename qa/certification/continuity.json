@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 203,
+  "revision": 204,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "f093e0c75204707a0b81a8497575f54cda96e5bb",
-  "baseline_case": "AS-MUL-01..06",
-  "baseline_status": "PARTIAL_BILATERAL",
+  "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
+  "baseline_case": "TRIG-EV-D-01",
+  "baseline_status": "PASS_SCOPED_BILATERAL",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -40,28 +40,29 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-29-TEST-FIRST",
-    "status": "ON_HOLD",
+    "id": "TRIG-EV-D-02-TEST-FIRST",
+    "status": "READY",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "2f869fa3b27cec269184710e912784fa139d1fab",
-      "c2melendez/precision-lab-plus": "ae70b7cf66ccda27dea26730d03a3fb0c51c28fe"
+      "c2melendez/precision-lab-lite": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
+      "c2melendez/precision-lab-plus": "4e625d1b667d426d6d93d52e9e0b5d4acc193293"
     },
     "run_ids_by_repo": {
-      "c2melendez/precision-lab-lite": [39541626385, 39541626256, 39541626315],
-      "c2melendez/precision-lab-plus": [39542004229, 39542004162, 39542004282]
+      "c2melendez/precision-lab-lite": [39545169322, 39545169419, 39545169496],
+      "c2melendez/precision-lab-plus": [39545579931, 39545579919]
     },
     "completed_scoped": {
-      "id": "ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..28 + D17/D18/D19/D21/D22/D23/D24/D25",
+      "id": "TRIG-EV-D-01; ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..28",
       "status": "PASS_SCOPED",
-      "scope": "unit/HTTP expand/factor + source-row; AS-B-28 solo factor(4294967297)"
+      "scope": "EV-D-01 sin(pi/6)=1/2 unit/HTTP; Plus HTTP ASCII only"
     },
-    "action": "AS-B-28 PASS_SCOPED bilateral (r203) D25; gates D20 de r202 registrados. Siguiente AS-B-29 ON_HOLD. Global OPEN."
+    "action": "EV-D-01 PASS_SCOPED bilateral (r204). Siguiente EV-D-02 cos(pi/3)=1/2. AS-B-29 ON_HOLD. Global OPEN."
   },
   "blockers": [
     {"id": "H2-SG28-DIST-01..08", "status": "BLOCKED"},
     {"id": "SECURITY-S25", "status": "BLOCKED"},
     {"id": "SY-P-23", "status": "OPEN"},
-    {"id": "SY-X-04-PLUS-HTTP", "status": "BLOCKED"}
+    {"id": "SY-X-04-PLUS-HTTP", "status": "BLOCKED"},
+    {"id": "ALGEBRA229-AS-B-29", "status": "ON_HOLD"}
   ],
-  "ledger_note": "r203 2026-10-21: AS-B-28 PASS_SCOPED bilateral (Lite 2f869fa sin producto, Plus ae70b7c), gates SUCCESS; D20 de 038703f y a2a4968 (r202). AS-B-29 ON_HOLD. Global OPEN."
+  "ledger_note": "r204 2026-10-21: EV-D-01 PASS_SCOPED bilateral (Lite 13bdc7c, Plus 4e625d1 ASCII HTTP); no product change. Next EV-D-02. Global OPEN."
 }
