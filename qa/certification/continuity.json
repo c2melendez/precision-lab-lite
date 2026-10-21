@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 218,
+  "revision": 219,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -48,9 +48,9 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EV-D-07-TEST-FIRST",
+    "id": "TRIG-EV-D-08-TEST-FIRST",
     "status": "READY_SOURCE_ROW_VERIFICATION",
-    "action": "Read and verify the exact EV-D-07 row from qa/certification/legacy_sources/ejercicios_trigonometria.md.gz before authoring tests; then add only test-first coverage for the documented input/result and run the required gates.",
+    "action": "EV-D-07 closed PASS_SCOPED_BILATERAL (runs 39560031960/39560031969/39560031973 on 1275c249). Next: verify the exact EV-D-08 row (sin(1) approx 0.841470985) in the frozen trigonometry matrix and document the approx-row oracle convention (tolerance and documented digits) before authoring bilateral tests; do not weaken exact-row oracles.",
     "technical_sha_by_repo": {},
     "product_changed": false
   },
@@ -76,7 +76,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r218: EV-D-06 cot(pi/4)=1 PASS_SCOPED_BILATERAL; all required gates SUCCESS on exact technical SHA; product unchanged; global certification OPEN. Next: verify exact frozen EV-D-07 source row before tests.",
+  "ledger_note": "r219: EV-D-07 sin(5*pi/4)=-sqrt(2)/2 PASS_SCOPED_BILATERAL; all required gates SUCCESS on exact technical SHAs (Lite 1275c249, Plus 1717a160); product unchanged; global certification OPEN. Next: verify exact frozen EV-D-08 source row and define the approx-row oracle before tests.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -358,6 +358,49 @@
     ],
     "global_certification": "OPEN",
     "next_objective": "TRIG-EV-D-07-TEST-FIRST",
+    "next_status": "READY_SOURCE_ROW_VERIFICATION"
+  },
+  "ev_d_07_closure_r219": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "sin(5*pi/4) = -sqrt(2)/2; Lite official parser ASCII+LaTeX; Plus HTTP ASCII; frozen source row verified",
+    "product_changed": false,
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "1275c24933b2ca77a31bba6e1d2c01274e97795e",
+      "c2melendez/precision-lab-plus": "1717a160a5219a06d6542f26e87c94fe7de59fd5"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39560031960,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39560031960",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "1275c24933b2ca77a31bba6e1d2c01274e97795e",
+        "head_sha_matches": true,
+        "tests": "335 files; 1978 passed; 8 expected fail; 34 TODO; EV-D-07 file 3/3 passed"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39560031969,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39560031969",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "1275c24933b2ca77a31bba6e1d2c01274e97795e",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39560031973,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39560031973",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "1275c24933b2ca77a31bba6e1d2c01274e97795e",
+        "head_sha_matches": true
+      }
+    ],
+    "diagnostic": "No diagnostic needed: the local pre-push probe fixed the float-format assumption (Algebrite prints '-0.707107'); the test asserts algebraic equivalence plus numeric closeness and rejects decimal-only output. No product change.",
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-D-08-TEST-FIRST",
     "next_status": "READY_SOURCE_ROW_VERIFICATION"
   }
 }
