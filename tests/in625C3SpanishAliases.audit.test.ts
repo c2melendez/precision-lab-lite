@@ -36,7 +36,7 @@ describe("IN625 Parte C / C3 Alias en español y otros nombres",()=>{
     for(const s of ["tg x","\\operatorname{tg}x","\\tg x"]) expectFn(s,/tan\(/);
   });
   it("EN-AL-11",()=>{
-    for(const s of ["ctg x","cotg x","\\operatorname{cotg}x"]) expectFn(s,/cot\(|1\/tan\(/);
+    for(const s of ["ctg x","cotg x","\\operatorname{cotg}x"]) expectFn(s,/cot\(|1\/tan\(|cos\([^)]*\)\/sin\(/);
   });
   it("EN-AL-12",()=>{
     for(const s of ["cosec x","\\operatorname{cosec}x"]) expectFn(s,/csc\(|1\/sin\(/);
