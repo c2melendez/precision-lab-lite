@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 213,
+  "revision": 214,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -48,8 +48,8 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EV-D-05-TEST-FIRST",
-    "status": "IN_PROGRESS",
+    "id": "TRIG-EV-D-06-TEST-FIRST",
+    "status": "READY",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-lite": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c",
       "c2melendez/precision-lab-plus": "8885a3b47dc6509c52a08312bbc87d5f1651c6da"
@@ -66,11 +66,11 @@
       ]
     },
     "completed_scoped": {
-      "id": "TRIG-EV-D-01..04; ALGEBRA229-AS-A-01..17; ALGEBRA229-AS-B-01..28",
-      "status": "PASS_SCOPED",
-      "scope": "EV-D-01 sin(pi/6)=1/2; EV-D-02 cos(pi/3)=1/2; EV-D-03 tan(pi/4)=1; EV-D-04 csc(pi/6)=2; Lite ASCII+LaTeX parser pipeline; Plus HTTP ASCII only"
+      "id": "TRIG-EV-D-05",
+      "status": "PASS_SCOPED_BILATERAL",
+      "scope": "sec(pi/3)=2; Lite official parser ASCII+LaTeX; Plus HTTP ASCII; frozen source row verified"
     },
-    "action": "EV-D-05 test-first: sec(pi/3)=2, tests added to Lite and Plus. Verify frozen source row and all 5 gates against exact test commits. No product changes unless tests and source confirm a defect. Do not declare PASS until all gates finish."
+    "action": "EV-D-06 test-first: inspect and verify the exact EV-D-06 row/result in the frozen trigonometry source before writing tests. Then add bilateral acceptance tests (Lite ASCII+LaTeX official parser, Plus HTTP ASCII), no product change unless source and tests establish a defect; verify exact-SHA cumulative/H1d/Scientific UI gates as applicable."
   },
   "blockers": [
     {
@@ -94,7 +94,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r213: EV-D-05 Plus H1d SUCCESS en SHA 8885a3b; Plus cumulative backend aún IN_PROGRESS y frontend SUCCESS; global OPEN.",
+  "ledger_note": "r214: EV-D-05 PASS_SCOPED_BILATERAL; 5/5 gates SUCCESS with exact test SHAs and test execution verified. Next TRIG-EV-D-06-TEST-FIRST READY; global certification remains OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -244,30 +244,62 @@
     "global_certification": "OPEN"
   },
   "ev_d_05_execution_r211": {
-    "status": "IN_PROGRESS",
-    "test_commit_sha": "8885a3b47dc6509c52a08312bbc87d5f1651c6da",
+    "status": "PASS_SCOPED_BILATERAL",
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c",
+      "c2melendez/precision-lab-plus": "8885a3b47dc6509c52a08312bbc87d5f1651c6da"
+    },
+    "product_changed": false,
     "runs": [
       {
+        "repo": "c2melendez/precision-lab-lite",
         "gate": "cumulative",
-        "run_id": 39556359520,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39556359520",
-        "status": "in_progress",
-        "expected_head_sha": "8885a3b47dc6509c52a08312bbc87d5f1651c6da",
-        "frontend": "success",
-        "backend": "in_progress"
-      },
-      {
-        "gate": "h1d",
-        "run_id": 39556359572,
-        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39556359572",
+        "run_id": 39555164790,
         "status": "completed",
         "conclusion": "success",
-        "expected_head_sha": "8885a3b47dc6509c52a08312bbc87d5f1651c6da"
+        "head_sha": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c",
+        "head_sha_matches": true,
+        "tests": "1972 passed; 8 expected fail; 34 TODO; EV-D-05 file 3/3 passed"
+      },
+      {
+        "repo": "c2melendez/precision-lab-lite",
+        "gate": "h1d",
+        "run_id": 39555164686,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c",
+        "head_sha_matches": true
+      },
+      {
+        "repo": "c2melendez/precision-lab-lite",
+        "gate": "scientific-ui",
+        "run_id": 39555164730,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c",
+        "head_sha_matches": true
+      },
+      {
+        "repo": "c2melendez/precision-lab-plus",
+        "gate": "cumulative",
+        "run_id": 39556359520,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "8885a3b47dc6509c52a08312bbc87d5f1651c6da",
+        "head_sha_matches": true,
+        "tests": "1764 passed; 6 xfailed; coverage 88.07%; EV-D-05 source+HTTP tests passed"
+      },
+      {
+        "repo": "c2melendez/precision-lab-plus",
+        "gate": "h1d",
+        "run_id": 39556359572,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "8885a3b47dc6509c52a08312bbc87d5f1651c6da",
+        "head_sha_matches": true
       }
     ],
-    "product_changed": false,
-    "global_certification": "OPEN",
-    "source_row_verification": "PENDING_ACTIONS",
-    "diagnostic": "Plus cumulative run 39555174858 failed during collection because test_trigonometry_ev_d05.py imported backend.main (ModuleNotFoundError). Corrected to app.main and aligned oracle to MathResponse.success/result_text. Product unchanged; corrected commit 8885a3b47dc6509c52a08312bbc87d5f1651c6da. New cumulative/H1d pending."
+    "scope": "sec(pi/3)=2; Lite ASCII+LaTeX via official parser; Plus HTTP ASCII; frozen source row verified",
+    "global_certification": "OPEN"
   }
 }

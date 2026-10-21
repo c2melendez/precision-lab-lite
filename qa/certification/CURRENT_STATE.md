@@ -1,3 +1,16 @@
+## 2026-10-21 UTC — r214: EV-D-05 PASS_SCOPED_BILATERAL; EV-D-06 preparado
+
+**EV-D-05 — `sec(pi/3)=2`: PASS_SCOPED_BILATERAL.** La fila fuente de la matriz congelada y el resultado esperado fueron verificados en las pruebas de ambos motores. No se modificó código de producto.
+
+- **Lite**, test commit `24871267ec1ee9f64bbd2d34fd449b41ee74f99c`: cumulative [39555164790](https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164790), H1d [39555164686](https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164686), Scientific UI [39555164730](https://github.com/c2melendez/precision-lab-lite/actions/runs/39555164730): todos SUCCESS con SHA exacto. El log acumulativo confirma el archivo `tests/trigonometryEvD05.audit.test.ts` con 3/3 pruebas aprobadas; 1972 passed, 8 expected fail y 34 TODO en el total de Vitest.
+- **Plus**, test corregido commit `8885a3b47dc6509c52a08312bbc87d5f1651c6da`: cumulative [39556359520](https://github.com/c2melendez/precision-lab-plus/actions/runs/39556359520) y H1d [39556359572](https://github.com/c2melendez/precision-lab-plus/actions/runs/39556359572): ambos SUCCESS con SHA exacto. Backend: 1764 passed, 6 xfailed, cobertura 88.07%; tanto `test_ev_d05_source_row_present_and_frozen` como `test_ev_d05_sec_pi_over_3_http_ascii` PASSED. Frontend typecheck, regresión y build SUCCESS.
+- Diagnóstico del intento inicial Plus `7be68dcfbcd9ed64b4f4ae98399276d01ede0034`: import incorrecto `backend.main`, corregido en el test sin alterar el producto. El primer cumulative [39555174858](https://github.com/c2melendez/precision-lab-plus/actions/runs/39555174858) fue FAIL de harness/colección, no fallo matemático; la nueva evidencia válida es la de `8885a3b`.
+- Estado global de certificación permanece OPEN por bloqueos independientes registrados (SG28/DIST, S25, SY-P-23, SY-X-04 Plus HTTP y Algebra229-AS-B-29).
+
+**Siguiente objetivo único: `TRIG-EV-D-06-TEST-FIRST` — READY.** Primero leer/verificar la fila EV-D-06 de la matriz congelada; después añadir pruebas test-first bilaterales según los canales contractuales (Lite parser ASCII+LaTeX; Plus HTTP ASCII), activar gates por push y no cambiar producto salvo que la prueba y la fuente demuestren un defecto. No asumir el resultado ni la expresión de EV-D-06 antes de leer la fila oficial.
+
+---
+
 ## 2026-10-21 UTC — EV-D-05 actualización r213: H1d Plus PASS, acumulativo pendiente
 
 - Plus H1d [39556359572](https://github.com/c2melendez/precision-lab-plus/actions/runs/39556359572) terminó SUCCESS sobre el SHA técnico `8885a3b47dc6509c52a08312bbc87d5f1651c6da`; se revisaron los pasos, incluido `Run IN625 H1d reentry`, ejecutado y aprobado.
