@@ -1,3 +1,34 @@
+## 2026-10-21 UTC — EV-D-11 cierre r223: PASS_SCOPED_EQUIVALENT
+
+**EV-D-11 — `sin²(π/8) + cos²(π/8) = 1`: PASS_SCOPED_EQUIVALENT.** Fila congelada verificada; los tres gates Lite terminaron SUCCESS con `head_sha` exacto.
+
+- cumulative: [39583453889](https://github.com/c2melendez/precision-lab-lite/actions/runs/39583453889) — SUCCESS; EV-D-11 3/3; 339 archivos, 1992 passed, 8 expected fail, 34 TODO; typecheck/build SUCCESS.
+- h1d: [39583453775](https://github.com/c2melendez/precision-lab-lite/actions/runs/39583453775) — SUCCESS; mismo SHA `52f50ea44558343c88c2a926e438d61d0f03486d`.
+- scientific-ui: [39583453805](https://github.com/c2melendez/precision-lab-lite/actions/runs/39583453805) — SUCCESS; mismo SHA.
+- Alcance: `evaluate()` conserva la identidad en forma exacta `cos(1/8*pi)^2+sin(1/8*pi)^2`; el oráculo certifica equivalencia exacta (`simplify(...) = 1`, diferencia `= 0`) y valor numérico `≈ 1`, conforme a la regla G2 de no exigir igualdad textual cuando existen representaciones equivalentes. Limitación registrada: la identidad pitagórica no se colapsa automáticamente a `1` en el canal primario.
+- Plus sí devuelve `1` literal (`2f37ee2f10f8bac361eff592bbe3e0a5a3b654e9`).
+- Certificación global continúa OPEN por bloqueos independientes.
+- Siguiente objetivo: TRIG-EV-D-12-TEST-FIRST (`tan(π/2)` indefinida: contrato de error claro). Verificar antes la fila fuente y el contrato de error vigente.
+
+---
+
+## 2026-10-21 UTC — EV-D-10 cierre r222: PASS_SCOPED_BILATERAL (con corrección de producto)
+
+**EV-D-10 — `cot(π/2) = 0`: PASS_SCOPED_BILATERAL.** Fila congelada verificada. El caso destapó un defecto real de producto en Lite y se corrigió la capa correcta (parser), no el oráculo.
+
+- Diagnóstico: `cot(a)` se reescribía como `1/tan(a)`; en `a = π/2` eso deja una singularidad evitable y el motor devolvía `1/(tan(1/2*pi))` en vez de `0`.
+- Corrección: `cot(a)` se reescribe como `cos(a)/sin(a)` en `src/engine/parsing/index.ts`; `cos(π/2)/sin(π/2) = 0/1 = 0` y `cot(0)` sigue indefinida.
+- Primer gate acumulativo del SHA de la corrección `b5bd0fa3b06da410d10b9a0fe2503756d7f6570a` falló [39563431468](https://github.com/c2melendez/precision-lab-lite/actions/runs/39563431468) solo en el oráculo `EN-AL-11` de alias C3, que exigía `cot(` o `1/tan(`. Se amplió la expectativa a la codificación canónica `cos(...)/sin(...)` (commit de tests `4c92b797189cb41ffe70de93332938ba67d389b5`); producto sin cambios adicionales.
+- Evidencia final (SHA `4c92b797189cb41ffe70de93332938ba67d389b5`):
+  - cumulative: [39564052659](https://github.com/c2melendez/precision-lab-lite/actions/runs/39564052659) — SUCCESS; EV-D-10 3/3; 338 archivos, 1989 passed, 8 expected fail, 34 TODO; typecheck/build SUCCESS.
+  - h1d: [39564052660](https://github.com/c2melendez/precision-lab-lite/actions/runs/39564052660) — SUCCESS; mismo SHA.
+  - scientific-ui: [39564052665](https://github.com/c2melendez/precision-lab-lite/actions/runs/39564052665) — SUCCESS; mismo SHA.
+- Plus no requirió cambio de producto (SymPy ya devuelve `0`); su evidencia es `b635db5fa6e00fab92a144d421398ff5d5df0763`.
+- Siguiente objetivo en ejecución: TRIG-EV-D-11-TEST-FIRST (identidad pitagórica `sin²(π/8)+cos²(π/8)=1`), tests publicados en el SHA técnico `52f50ea44558343c88c2a926e438d61d0f03486d`.
+- Certificación global continúa OPEN por bloqueos independientes.
+
+---
+
 ## 2026-10-21 UTC — EV-D-09 cierre r221 y EV-D-10 con defecto de producto corregido
 
 **EV-D-09 — `cos(2) ≈ -0.416146837`: PASS_SCOPED_BILATERAL.** Fila congelada verificada; los tres gates Lite terminaron SUCCESS con `head_sha` exacto.

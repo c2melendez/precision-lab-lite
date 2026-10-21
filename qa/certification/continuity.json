@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 221,
+  "revision": 223,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "13bdc7c059c1ca5d428e8fabc55e78f3b9d6f633",
@@ -48,14 +48,11 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EV-D-10-TEST-FIRST",
-    "status": "IN_PROGRESS_PRODUCT_FIX",
-    "action": "EV-D-09 closed PASS_SCOPED_BILATERAL (runs 39562383033/39562383038/39562383018 on 7e6d29ae). EV-D-10 cot(pi/2)=0 reproduced a product defect: cot was rewritten as 1/tan, yielding '1/(tan(1/2*pi))'. Product fix rewrites cot as cos/sin on Lite b5bd0fa3 (Plus b635db5f needs no product change). EV-D-10 gates are running; review jobs/logs and close or diagnose.",
-    "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "b5bd0fa3b06da410d10b9a0fe2503756d7f6570a",
-      "c2melendez/precision-lab-plus": "b635db5fa6e00fab92a144d421398ff5d5df0763"
-    },
-    "product_changed": true
+    "id": "TRIG-EV-D-12-TEST-FIRST",
+    "status": "READY_SOURCE_ROW_AND_ERROR_CONTRACT",
+    "action": "EV-D-11 closed PASS_SCOPED_EQUIVALENT (Lite 52f50ea4: exact form cos^2+sin^2 certified by simplify/equivalence, not textual 1; Plus 2f37ee2f returns literal 1). Next: verify the exact EV-D-12 row (tan(pi/2) undefined, 'error claro') and the current error contract for undefined trig values before authoring bilateral tests; distinguish product error from numeric fallback.",
+    "technical_sha_by_repo": {},
+    "product_changed": false
   },
   "blockers": [
     {
@@ -79,7 +76,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r221: EV-D-09 cos(2)~-0.416146837 PASS_SCOPED_BILATERAL (7e6d29ae). EV-D-10 cot(pi/2)=0 exposed a product defect (cot rewritten as 1/tan); fixed to cos/sin on Lite b5bd0fa3; gates running. Global certification OPEN.",
+  "ledger_note": "r223: EV-D-11 sin^2+cos^2=1 PASS_SCOPED_EQUIVALENT on Lite 52f50ea4 (exact equivalence via simplify) and Plus 2f37ee2f (literal 1); all gates SUCCESS. Next: EV-D-12 tan(pi/2) undefined error contract. Global certification OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -492,5 +489,98 @@
     "global_certification": "OPEN",
     "next_objective": "TRIG-EV-D-10-TEST-FIRST",
     "next_status": "IN_PROGRESS_PRODUCT_FIX"
+  },
+  "ev_d_10_closure_r222": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "cot(pi/2)=0; product fix in Lite parser (cot -> cos/sin); Plus unchanged (SymPy already 0)",
+    "product_changed": true,
+    "product_fix": {
+      "repo": "c2melendez/precision-lab-lite",
+      "file": "src/engine/parsing/index.ts",
+      "change": "cot(a) rewritten as cos(a)/sin(a) instead of 1/tan(a); fixes removable singularity at pi/2 while keeping cot(0) undefined",
+      "fix_sha": "b5bd0fa3b06da410d10b9a0fe2503756d7f6570a"
+    },
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "4c92b797189cb41ffe70de93332938ba67d389b5",
+      "c2melendez/precision-lab-plus": "b635db5fa6e00fab92a144d421398ff5d5df0763"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39564052659,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39564052659",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "4c92b797189cb41ffe70de93332938ba67d389b5",
+        "head_sha_matches": true,
+        "tests": "338 files; 1989 passed; 8 expected fail; 34 TODO; EV-D-10 file 3/3 passed"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39564052660,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39564052660",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "4c92b797189cb41ffe70de93332938ba67d389b5",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39564052665,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39564052665",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "4c92b797189cb41ffe70de93332938ba67d389b5",
+        "head_sha_matches": true
+      }
+    ],
+    "diagnostic": "First cumulative run 39563431468 on the fix SHA failed only in oracle EN-AL-11 (expected cot/ or 1/tan/), a harness/oracle mismatch caused by the intentional encoding change; oracle updated to accept cos/sin. Product was not changed to satisfy the test.",
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-D-11-TEST-FIRST",
+    "next_status": "IN_PROGRESS"
+  },
+  "ev_d_11_closure_r223": {
+    "status": "PASS_SCOPED_EQUIVALENT",
+    "scope": "sin^2(pi/8)+cos^2(pi/8)=1; Lite keeps exact identity form and certifies exact equivalence via simplify; Plus returns literal 1",
+    "product_changed": false,
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "52f50ea44558343c88c2a926e438d61d0f03486d",
+      "c2melendez/precision-lab-plus": "2f37ee2f10f8bac361eff592bbe3e0a5a3b654e9"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39583453889,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39583453889",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "52f50ea44558343c88c2a926e438d61d0f03486d",
+        "head_sha_matches": true,
+        "tests": "339 files; 1992 passed; 8 expected fail; 34 TODO; EV-D-11 file 3/3 passed"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39583453775,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39583453775",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "52f50ea44558343c88c2a926e438d61d0f03486d",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39583453805,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39583453805",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "52f50ea44558343c88c2a926e438d61d0f03486d",
+        "head_sha_matches": true
+      }
+    ],
+    "limitation": "evaluate() does not collapse the Pythagorean identity to a bare 1; certification relies on exact equivalence (simplify difference = 0) per G2 rule, not on textual output.",
+    "diagnostic": "No diagnostic needed: first pushed SHA passed all gates in both engines.",
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-D-12-TEST-FIRST",
+    "next_status": "READY_SOURCE_ROW_AND_ERROR_CONTRACT"
   }
 }
