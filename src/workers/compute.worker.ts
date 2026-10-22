@@ -56,6 +56,9 @@ import {
   vectorNorm,
   trace,
   rank,
+  luDecomposition,
+  gramSchmidt,
+  parametricValueToLatex,
 } from "../engine/matrixOps";
 import { analyzeGraph, analyzeGraphPolar, analyzeGraphParametric, analyzeGraphSurface3D } from "../engine/stepEngine/graphing";
 import { computeEigenvalues } from "../engine/eigenOps";
@@ -114,7 +117,7 @@ export type ComputeRequest =
   | {
       type: "matrixOp";
       requestId: string;
-      op: "scale" | "literal" | "add" | "subtract" | "multiply" | "transpose" | "determinant" | "inverse" | "adjugate" | "cofactor" | "solveEquation" | "power" | "ref" | "rref" | "kron" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank";
+      op: "scale" | "literal" | "add" | "subtract" | "multiply" | "transpose" | "determinant" | "inverse" | "adjugate" | "cofactor" | "solveEquation" | "power" | "ref" | "rref" | "kron" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank" | "lu" | "gramSchmidt";
       a: (string | number)[][];
       b?: (string | number)[][];
       exponent?: number;
@@ -1055,19 +1058,69 @@ function handlePolynomialSystem(equations: string[], variables: string[], reques
   }
 }
 
+function systemTupleLatex(variables: string[], components: string[]): string {
+  return `\\left(${variables.join(",\\ ")}\\right)=\\left(${components.join(",\\ ")}\\right)`;
+}
+
+function systemCaseBodyLatex(caseSolution: NonNullable<ReturnType<typeof solveLinearSystem>["cases"]>[number], variables: string[]): string {
+  if (caseSolution.kind === "none") return "\\text{sin solución (sistema incompatible)}";
+  if (caseSolution.kind === "unique") {
+    const components = caseSolution.values
+      ? caseSolution.values.map((value) => fractionToLatex(value))
+      : (caseSolution.symbolicValues ?? []).map((value) => toLatex(value));
+    return systemTupleLatex(variables, components);
+  }
+  if (caseSolution.parametric) {
+    return "\\text{infinitas soluciones } " + systemTupleLatex(
+      variables,
+      caseSolution.parametric.values.map((value) => parametricValueToLatex(value)),
+    );
+  }
+  return "\\text{infinitas soluciones (sistema compatible indeterminado)}";
+}
+
 function handleLinearSystem(equationsAlgebrite: string[], variables: string[], requestId: string): MathResult {
   try {
     const solution = solveLinearSystem(equationsAlgebrite, variables);
-    if (solution.kind === "none") {
-      return errorResult(ErrorCode.UNSUPPORTED_OPERATION, "El sistema no tiene solución (es inconsistente).", requestId);
-    }
-    if (solution.kind === "infinite") {
+    if (solution.cases && solution.cases.length > 0) {
+      const resultLatex = solution.cases
+        .map((caseSolution) =>
+          `\\text{si } ${caseSolution.conditionLatex}:\\ ${systemCaseBodyLatex(caseSolution, variables)}`,
+        )
+        .join(";\\quad ");
       return {
         success: true,
-        resultLatex: "Infinitas soluciones (sistema compatible indeterminado).",
+        resultLatex,
         steps: solution.steps,
         hasDetailedSteps: true,
-        confidence: "PARTIAL", // no se calcula la parametrización explícita todavía — ver README
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
+    if (solution.kind === "none") {
+      return {
+        success: true,
+        resultLatex: "\\text{Sin solución (sistema incompatible).}",
+        steps: solution.steps,
+        hasDetailedSteps: true,
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
+    if (solution.kind === "infinite") {
+      const parametric = solution.parametric;
+      const resultLatex = parametric
+        ? `${systemTupleLatex(
+            variables,
+            parametric.values.map((value) => parametricValueToLatex(value)),
+          )},\\ ${parametric.parameters.map((parameter) => `${parameter}\\in\\mathbb{R}`).join(",\\ ")}`
+        : "Infinitas soluciones (sistema compatible indeterminado).";
+      return {
+        success: true,
+        resultLatex,
+        steps: solution.steps,
+        hasDetailedSteps: true,
+        confidence: "SYMBOLIC",
         requestId,
       };
     }
@@ -1321,7 +1374,19 @@ function handleMatrixOp(
       }
       case "rref": {
         const { result, steps: s } = rref(a);
-        resultLatex = result.map((row) => row.map((v) => v.toFraction(true)).join(", ")).join(" | ");
+        resultLatex = matrixToPmatrix(result);
+        steps = s;
+        break;
+      }
+      case "lu": {
+        const { l, u, steps: s } = luDecomposition(a);
+        resultLatex = `L = ${matrixToPmatrix(l)},\\quad U = ${matrixToPmatrix(u)}`;
+        steps = s;
+        break;
+      }
+      case "gramSchmidt": {
+        const { result, steps: s } = gramSchmidt(a);
+        resultLatex = matrixToPmatrix(result);
         steps = s;
         break;
       }

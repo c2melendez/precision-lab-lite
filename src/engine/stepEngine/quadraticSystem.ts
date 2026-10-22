@@ -92,6 +92,13 @@ function polynomial(source: string, variables: string[]): string[] {
 export function tryQuadraticSystem(equations: string[], variables: string[]): string[][] | null {
   if (equations.length !== 2 || variables.length !== 2) return null;
   if (new Set(variables).size !== 2 || variables.some(v => !/^[a-zA-Z]$/.test(v) || /[eEiI]/.test(v))) throw unsupported();
+  // Un coeficiente puede ser un parámetro externo (MV-D-13): si la ecuación
+  // sigue siendo lineal en las variables pedidas, no es un sistema
+  // cuadrático y debe pasar al solver lineal, que hace el análisis por casos.
+  const linearInVariables = equations.every(eq =>
+    variables.every(v => !new RegExp(`\\b${v}\\b`).test(derivative(eq, v))),
+  );
+  if (linearInVariables) return null;
   const coeffs = equations.map(eq => polynomial(eq, variables));
   const linear = coeffs.map(c => c.slice(3).every(v => v === "0"));
   if (linear.every(Boolean)) return null;

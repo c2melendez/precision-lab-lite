@@ -11,4 +11,9 @@ describe("M17 — paridad de matrices Plus/Lite", () => {
     expect(MATRIX_OPERATION_LABELS.cofactor).toBe("cof(A)");
     expect(MATRIX_OPERATION_LABELS.solveEquation).toBe("Ecuación matricial");
   });
+
+  it("expone LU y Gram-Schmidt (MV-D)", () => {
+    expect(MATRIX_OPERATION_LABELS.lu).toBe("LU(A)");
+    expect(MATRIX_OPERATION_LABELS.gramSchmidt).toBe("Gram-Schmidt (filas)");
+  });
 });

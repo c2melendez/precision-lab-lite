@@ -8,16 +8,106 @@
 
 import Fraction from "fraction.js";
 import { ErrorCode, type AppError, type Step } from "../types";
+import { fractionToLatex } from "./fractions";
 
 export type Matrix = Fraction[][];
 
 export type SystemSolutionKind = "unique" | "infinite" | "none";
 
+/** Un término `coeficiente · parámetro` de una solución paramétrica exacta. */
+export interface ParametricTerm {
+  parameter: string;
+  coefficient: Fraction;
+}
+
+/**
+ * Expresión lineal exacta de una variable en función de los parámetros
+ * libres. Se guarda estructurada (no como texto) para que el worker y los
+ * tests puedan comparar valores sin depender del formato de presentación.
+ */
+export interface ParametricValue {
+  constant: Fraction;
+  terms: ParametricTerm[];
+}
+
+export interface ParametricSolution {
+  parameters: string[];
+  /** Un valor por variable, en el mismo orden que `variables`. */
+  values: ParametricValue[];
+}
+
+export interface SystemCase {
+  /** Restricción sobre el parámetro, en sintaxis Algebrite (ej. `a!=1`). */
+  conditionAlgebrite: string;
+  /** La misma restricción en LaTeX (ej. `a \\neq 1`). */
+  conditionLatex: string;
+  kind: SystemSolutionKind;
+  /** Solo para kind === "unique" cuando la solución es numérica exacta. */
+  values?: Fraction[];
+  /** Solo para kind === "unique" cuando la solución es simbólica. */
+  symbolicValues?: string[];
+  /** Solo para kind === "infinite". */
+  parametric?: ParametricSolution;
+  explanation: string;
+}
+
 export interface SystemSolution {
   kind: SystemSolutionKind;
   /** Solo con sentido si kind === "unique": valor de cada variable en el mismo orden que se pasó `variables`. */
   values?: Fraction[];
+  /** Solo con sentido si kind === "infinite": parametrización exacta. */
+  parametric?: ParametricSolution;
+  /**
+   * Análisis por casos cuando el sistema depende de un parámetro externo
+   * (MV-D-13). `kind` describe el caso genérico y `cases` recorre todas las
+   * ramas, incluida la genérica.
+   */
+  cases?: SystemCase[];
   steps: Step[];
+}
+
+/** Formatea una expresión paramétrica exacta como LaTeX. */
+export function parametricValueToLatex(value: ParametricValue): string {
+  const parts: string[] = [];
+  if (!value.constant.equals(0) || value.terms.length === 0) {
+    parts.push(fractionToLatex(value.constant));
+  }
+  for (const term of value.terms) {
+    const coefficient = term.coefficient;
+    if (coefficient.equals(0)) continue;
+    const magnitude = coefficient.abs();
+    const coefficientLatex =
+      magnitude.equals(1) ? "" : `${fractionToLatex(magnitude)}`;
+    const body = `${coefficientLatex}${term.parameter}`;
+    if (parts.length === 0) {
+      parts.push(coefficient.s < 0 ? `-${body}` : body);
+    } else {
+      parts.push(coefficient.s < 0 ? `- ${body}` : `+ ${body}`);
+    }
+  }
+  if (parts.length === 0) return "0";
+  return parts.join(" ");
+}
+
+/** Formatea una expresión paramétrica exacta como texto Algebrite. */
+export function parametricValueToAlgebrite(value: ParametricValue): string {
+  const parts: string[] = [];
+  if (!value.constant.equals(0) || value.terms.length === 0) {
+    parts.push(value.constant.toFraction());
+  }
+  for (const term of value.terms) {
+    if (term.coefficient.equals(0)) continue;
+    const coefficient = term.coefficient.toFraction();
+    const body =
+      coefficient === "1"
+        ? term.parameter
+        : coefficient === "-1"
+          ? `-${term.parameter}`
+          : `(${coefficient})*${term.parameter}`;
+    if (parts.length === 0) parts.push(body);
+    else parts.push(coefficient.startsWith("-") ? body : `+${body}`);
+  }
+  return parts.length === 0 ? "0" : parts.join("");
 }
 
 function fmt(f: Fraction): string {
@@ -111,12 +201,47 @@ export function gaussJordan(augmented: Matrix, variables: string[]): SystemSolut
 
   const numVariables = cols - 1;
   if (rank < numVariables) {
+    // Las columnas sin pivote son las variables libres. Se nombran t, t1, t2…
+    // (con un solo grado de libertad, el oráculo MV-D usa exactamente `t`).
+    const freeCols = Array.from({ length: numVariables }, (_, col) => col).filter(
+      (col) => !pivotCols.includes(col),
+    );
+    const parameters = freeCols.map((_col, index) =>
+      freeCols.length === 1 ? "t" : `t${index + 1}`,
+    );
+    const parametricValues: ParametricValue[] = Array.from({ length: numVariables }, (_, col) => {
+      const pivotIndex = pivotCols.indexOf(col);
+      if (pivotIndex === -1) {
+        const freeIndex = freeCols.indexOf(col);
+        return {
+          constant: new Fraction(0),
+          terms: [{ parameter: parameters[freeIndex], coefficient: new Fraction(1) }],
+        };
+      }
+      const constant = new Fraction(m[pivotIndex][cols - 1]);
+      const terms: ParametricTerm[] = [];
+      for (let freeIndex = 0; freeIndex < freeCols.length; freeIndex++) {
+        const coefficient = m[pivotIndex][freeCols[freeIndex]].neg();
+        if (!coefficient.equals(0)) {
+          terms.push({ parameter: parameters[freeIndex], coefficient });
+        }
+      }
+      return { constant, terms };
+    });
+    const parametric: ParametricSolution = { parameters, values: parametricValues };
     steps.push({
       id: "infinite",
-      latex: matrixToLatex(m),
-      explanation: `El rango (${rank}) es menor que el número de variables (${numVariables}): el sistema es compatible indeterminado (infinitas soluciones).`,
+      latex: parameters
+        .map((parameter) => `${parameter} \\in \\mathbb{R}`)
+        .join(",\\ "),
+      explanation: `El rango (${rank}) es menor que el número de variables (${numVariables}): el sistema es compatible indeterminado.`,
     });
-    return { kind: "infinite", steps };
+    steps.push({
+      id: "parametric",
+      latex: `${variables.map((v, index) => `${v} = ${parametricValueToLatex(parametricValues[index])}`).join(",\\ ")}`,
+      explanation: "Parametrización exacta usando las variables libres de la forma reducida.",
+    });
+    return { kind: "infinite", parametric, steps };
   }
 
   const values = pivotCols.map((_col, r) => m[r][cols - 1]);
@@ -554,6 +679,171 @@ export function rank(a: Matrix): { value: number; steps: Step[] } {
     ],
   };
 }
+
+// ---------------------------------------------------------------------------
+// MV-D-16/17: descomposición LU sin pivoteo y Gram-Schmidt sin normalizar.
+// Ambas rutas son exactas (Fraction) y no comparten estado con las
+// operaciones anteriores.
+// ---------------------------------------------------------------------------
+
+export interface LUDecomposition {
+  l: Matrix;
+  u: Matrix;
+  steps: Step[];
+}
+
+function zeroMatrix(rows: number, cols: number): Matrix {
+  return Array.from({ length: rows }, () =>
+    Array.from({ length: cols }, () => new Fraction(0)),
+  );
+}
+
+function identityMatrix(size: number): Matrix {
+  return Array.from({ length: size }, (_, row) =>
+    Array.from({ length: size }, (_, col) => new Fraction(row === col ? 1 : 0)),
+  );
+}
+
+/**
+ * Descomposición A = L·U por eliminación de Doolittle **sin intercambio de
+ * filas**. Si aparece un pivote nulo, se informa explícitamente: no se
+ * simula pivoteo ni se devuelve una factorización parcial.
+ */
+export function luDecomposition(a: Matrix): LUDecomposition {
+  const rows = a.length;
+  const cols = a[0]?.length ?? 0;
+  if (rows === 0 || cols === 0) {
+    throw { code: ErrorCode.DIMENSION_MISMATCH, message: "La matriz no puede estar vacía." } as AppError;
+  }
+  const working = cloneMatrix(a);
+  const l = identityMatrix(rows);
+  const u = zeroMatrix(rows, cols);
+  const steps: Step[] = [
+    { id: "initial", latex: matrixToLatex(a), explanation: "Matriz original para la descomposición LU." },
+  ];
+  const limit = Math.min(rows, cols);
+
+  for (let k = 0; k < limit; k++) {
+    const pivot = working[k][k];
+    if (pivot.equals(0)) {
+      throw {
+        code: ErrorCode.DOMAIN_ERROR,
+        message:
+          `LU sin pivoteo no es posible: el pivote en la posición (${k + 1},${k + 1}) es 0. ` +
+          "Se requiere intercambio de filas (pivoteo), que esta operación no realiza.",
+      } as AppError;
+    }
+    for (let col = k; col < cols; col++) u[k][col] = new Fraction(working[k][col]);
+    for (let row = k + 1; row < rows; row++) {
+      const factor = working[row][k].div(pivot);
+      l[row][k] = factor;
+      if (factor.equals(0)) continue;
+      for (let col = k; col < cols; col++) {
+        working[row][col] = working[row][col].sub(factor.mul(working[k][col]));
+      }
+      steps.push({
+        id: `lu-${row}-${k}`,
+        latex: `F_{${row + 1}} \\leftarrow F_{${row + 1}} - (${fmt(factor)})F_{${k + 1}}`,
+        explanation: `Se guarda L[${row + 1},${k + 1}] = ${fmt(factor)} y se elimina la columna ${k + 1}.`,
+      });
+    }
+  }
+
+  const product = multiplyMatrices(l, u).result;
+  const verified = product.every((row, r) =>
+    row.every((value, c) => value.equals(a[r][c])),
+  );
+  if (!verified) {
+    throw {
+      code: ErrorCode.UNSUPPORTED_OPERATION,
+      message: "No se pudo verificar la descomposición LU de esta matriz.",
+    } as AppError;
+  }
+
+  steps.push({
+    id: "lu-result",
+    latex: `L = ${matrixToLatex(l)},\\quad U = ${matrixToLatex(u)}`,
+    explanation: "Factorización verificada exactamente: L es triangular inferior unitaria y U triangular superior.",
+  });
+  return { l, u, steps };
+}
+
+/**
+ * Ortonormalización de Gram-Schmidt **sin normalizar** (solo ortogonaliza).
+ * Cada fila de `vectors` es un vector de entrada; el resultado conserva el
+ * mismo orden y también usa filas.
+ */
+export function gramSchmidt(vectors: Matrix): { result: Matrix; steps: Step[] } {
+  const count = vectors.length;
+  const dimension = vectors[0]?.length ?? 0;
+  if (count === 0 || dimension === 0) {
+    throw { code: ErrorCode.DIMENSION_MISMATCH, message: "Se requiere al menos un vector no vacío." } as AppError;
+  }
+  if (vectors.some((row) => row.length !== dimension)) {
+    throw {
+      code: ErrorCode.DIMENSION_MISMATCH,
+      message: "Todos los vectores deben tener la misma dimensión.",
+    } as AppError;
+  }
+
+  const result: Matrix = [];
+  const steps: Step[] = [
+    {
+      id: "initial",
+      latex: matrixToLatex(vectors),
+      explanation: "Vectores de entrada (cada fila es un vector).",
+    },
+  ];
+
+  for (let index = 0; index < count; index++) {
+    const original = vectors[index].map((value) => new Fraction(value));
+    let current = original.map((value) => new Fraction(value));
+    for (let previous = 0; previous < result.length; previous++) {
+      const basis = result[previous];
+      let numerator = new Fraction(0);
+      let denominator = new Fraction(0);
+      for (let coordinate = 0; coordinate < dimension; coordinate++) {
+        numerator = numerator.add(original[coordinate].mul(basis[coordinate]));
+        denominator = denominator.add(basis[coordinate].mul(basis[coordinate]));
+      }
+      if (denominator.equals(0)) continue;
+      const factor = numerator.div(denominator);
+      if (factor.equals(0)) continue;
+      current = current.map((value, coordinate) =>
+        value.sub(factor.mul(basis[coordinate])),
+      );
+      steps.push({
+        id: `gs-${index}-${previous}`,
+        latex: `v_{${index + 1}} \\leftarrow v_{${index + 1}} - (${fmt(factor)})u_{${previous + 1}}`,
+        explanation: `Se resta la proyección sobre el vector ortogonal u_${previous + 1}.`,
+      });
+    }
+    result.push(current);
+  }
+
+  // Verificación exacta de ortogonalidad (el resultado no se publica si la
+  // aritmética exacta no la confirma).
+  for (let i = 0; i < result.length; i++) {
+    for (let j = i + 1; j < result.length; j++) {
+      let dot = new Fraction(0);
+      for (let k = 0; k < dimension; k++) dot = dot.add(result[i][k].mul(result[j][k]));
+      if (!dot.equals(0)) {
+        throw {
+          code: ErrorCode.UNSUPPORTED_OPERATION,
+          message: "No se pudo verificar la ortogonalidad del resultado de Gram-Schmidt.",
+        } as AppError;
+      }
+    }
+  }
+
+  steps.push({
+    id: "gs-result",
+    latex: matrixToLatex(result),
+    explanation: "Vectores mutuamente ortogonales (sin normalizar).",
+  });
+  return { result, steps };
+}
+
 
 /** Producto de Kronecker A⊗B. */
 export function kroneckerProduct(a: Matrix, b: Matrix): { result: Matrix; steps: Step[] } {

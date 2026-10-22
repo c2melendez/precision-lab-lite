@@ -15,7 +15,7 @@ import {
 // Las operaciones y el worker siguen recibiendo arrays ordinarios: la
 // persistencia/selección vive en UI/store y no altera el motor matemático.
 
-type Op = "add" | "subtract" | "multiply" | "kron" | "transpose" | "determinant" | "inverse" | "adjugate" | "cofactor" | "solveEquation" | "power" | "ref" | "rref" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank";
+type Op = "add" | "subtract" | "multiply" | "kron" | "transpose" | "determinant" | "inverse" | "adjugate" | "cofactor" | "solveEquation" | "power" | "ref" | "rref" | "lu" | "gramSchmidt" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank";
 
 const OP_LABELS: Record<Op, string> = {
   add: "A + B",
@@ -31,6 +31,8 @@ const OP_LABELS: Record<Op, string> = {
   power: "Aⁿ",
   ref: "ref(A)",
   rref: "rref(A)",
+  lu: "LU(A)",
+  gramSchmidt: "Gram-Schmidt (filas)",
   dot: "A · B",
   cross: "A ⨯ B",
   norm: "‖A‖",
@@ -58,6 +60,8 @@ function operationLabel(op: Op, primary: MatrixName, secondary: MatrixName): str
     case "power": return `${primary}ⁿ`;
     case "ref": return `ref(${primary})`;
     case "rref": return `rref(${primary})`;
+    case "lu": return `LU(${primary})`;
+    case "gramSchmidt": return `Gram-Schmidt (filas de ${primary})`;
     case "dot": return `${primary} · ${secondary}`;
     case "cross": return `${primary} ⨯ ${secondary}`;
     case "norm": return `‖${primary}‖`;
