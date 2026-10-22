@@ -27,7 +27,7 @@ function dimensionError(message: string): AppError {
   return { code: ErrorCode.DIMENSION_MISMATCH, message };
 }
 
-function parseCell(cell: string | number): string {
+export function parseSymbolicCell(cell: string | number): string {
   const source = String(cell ?? "").trim();
   // Misma convención que toFractionMatrix: una celda vacía es cero.
   if (!source) return "0";
@@ -86,7 +86,7 @@ export function symbolicDeterminantExpression(cells: (string | number)[][]): str
     } as AppError;
   }
 
-  const parsed = cells.map((row) => row.map(parseCell));
+  const parsed = cells.map((row) => row.map(parseSymbolicCell));
   return simplifyExpression(determinantExpression(parsed));
 }
 

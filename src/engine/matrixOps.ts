@@ -315,6 +315,100 @@ export function invertMatrix(a: Matrix): { result: Matrix; steps: Step[] } {
   return { result, steps };
 }
 
+/**
+ * Matriz de cofactores (MV-C-16). El menor (i,j) se calcula con el mismo
+ * `determinant` exacto que el resto del módulo y se le aplica el signo
+ * ajedrez. Para 1×1 el único cofactor es 1 por convención (el menor es la
+ * matriz vacía, que `determinant` no puede recibir).
+ */
+export function cofactorMatrix(a: Matrix): { result: Matrix; steps: Step[] } {
+  const { rows, cols } = dims(a);
+  if (rows !== cols) {
+    throw { code: ErrorCode.DIMENSION_MISMATCH, message: "La matriz de cofactores solo está definida para matrices cuadradas." } as AppError;
+  }
+  if (rows === 1) {
+    const result: Matrix = [[new Fraction(1)]];
+    return { result, steps: [{ id: "cofactor", latex: matrixToLatex(result), explanation: "Cofactor de una matriz 1×1: por convención es 1." }] };
+  }
+
+  const result = a.map((_, i) =>
+    a.map((_, j) => {
+      const minor = a
+        .filter((_row, r) => r !== i)
+        .map((row) => row.filter((_cell, c) => c !== j));
+      const value = determinant(minor).value;
+      return (i + j) % 2 === 0 ? value : value.neg();
+    }),
+  );
+  return {
+    result,
+    steps: [{
+      id: "cofactor",
+      latex: matrixToLatex(result),
+      explanation: "Cada cofactor es el determinante del menor con el signo (+/-) según su posición.",
+    }],
+  };
+}
+
+/** Adjunta: transpuesta de la matriz de cofactores (MV-C-14/15). */
+export function adjugateMatrix(a: Matrix): { result: Matrix; steps: Step[] } {
+  const cofactors = cofactorMatrix(a);
+  const result = transposeMatrix(cofactors.result).result;
+  return {
+    result,
+    steps: [{
+      id: "adjugate",
+      latex: matrixToLatex(result),
+      explanation: "La adjunta es la transpuesta de la matriz de cofactores.",
+    }],
+  };
+}
+
+/**
+ * Resuelve una ecuación matricial con A cuadrada e invertible:
+ *   - xOnLeft=true  -> X·A = B, por tanto X = B·A^{-1}
+ *   - xOnLeft=false -> A·X = B, por tanto X = A^{-1}·B
+ * El orden del producto es deliberado (MV-C-18/19): la inversa no conmuta.
+ */
+export function solveMatrixEquation(
+  a: Matrix,
+  b: Matrix,
+  xOnLeft: boolean,
+): { result: Matrix; steps: Step[] } {
+  const da = dims(a);
+  const db = dims(b);
+  if (da.rows !== da.cols) {
+    throw { code: ErrorCode.DIMENSION_MISMATCH, message: "La ecuación matricial requiere una matriz A cuadrada." } as AppError;
+  }
+
+  if (xOnLeft) {
+    if (db.cols !== da.rows) {
+      throw dimensionError(`B con ${da.rows} columnas (X·A = B)`, `B de ${db.rows}x${db.cols}`);
+    }
+  } else if (db.rows !== da.rows) {
+    throw dimensionError(`B con ${da.rows} filas (A·X = B)`, `B de ${db.rows}x${db.cols}`);
+  }
+
+  const inverse = invertMatrix(a);
+  const result = (xOnLeft
+    ? multiplyMatrices(b, inverse.result)
+    : multiplyMatrices(inverse.result, b)).result;
+
+  return {
+    result,
+    steps: [
+      ...inverse.steps,
+      {
+        id: "solve-matrix-equation",
+        latex: matrixToLatex(result),
+        explanation: xOnLeft
+          ? "X·A = B se despeja como X = B·A^{-1} (la inversa multiplica por la derecha)."
+          : "A·X = B se despeja como X = A^{-1}·B (la inversa multiplica por la izquierda).",
+      },
+    ],
+  };
+}
+
 /** Potencia entera (spec v10 §9): exponente negativo usa la inversa de A. */
 export function powerMatrix(a: Matrix, n: number): { result: Matrix; steps: Step[] } {
   const { rows, cols } = dims(a);

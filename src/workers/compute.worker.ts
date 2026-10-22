@@ -7,6 +7,7 @@
 
 import { constantDeterminant } from "../engine/constantDeterminant";
 import { symbolicDeterminant } from "../engine/symbolicDeterminant";
+import { symbolicAdjugate, symbolicCofactor, symbolicInverse } from "../engine/symbolicMatrix";
 import { evaluate, toLatex, toDecimalApprox, ErrorCode as ClientErrorCode } from "../engine/algebriteClient";
 import { realAbsolutePiecewise } from "../engine/absPiecewise";
 import { toFractionResult, fractionToLatex } from "../engine/fractions";
@@ -42,7 +43,11 @@ import {
   transposeMatrix,
   determinant,
   invertMatrix,
+  cofactorMatrix,
+  adjugateMatrix,
+  solveMatrixEquation,
   powerMatrix,
+  type Matrix,
   ref,
   rref,
   kroneckerProduct,
@@ -109,11 +114,13 @@ export type ComputeRequest =
   | {
       type: "matrixOp";
       requestId: string;
-      op: "scale" | "literal" | "add" | "subtract" | "multiply" | "transpose" | "determinant" | "inverse" | "power" | "ref" | "rref" | "kron" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank";
+      op: "scale" | "literal" | "add" | "subtract" | "multiply" | "transpose" | "determinant" | "inverse" | "adjugate" | "cofactor" | "solveEquation" | "power" | "ref" | "rref" | "kron" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank";
       a: (string | number)[][];
       b?: (string | number)[][];
       exponent?: number;
       scalar?: string;
+      /** true: X·A = B; false: A·X = B. Solo se usa con solveEquation. */
+      xOnLeft?: boolean;
     }
   | {
       type: "matrixExpression";
@@ -1161,34 +1168,51 @@ function handleMatrixExpression(
   }
 }
 
+function matrixToPmatrix(m: Matrix): string {
+  const cellLatex = (value: Matrix[number][number]): string => {
+    const [numerator, denominator] = value.toFraction().split("/");
+    return denominator ? `\\frac{${numerator}}{${denominator}}` : numerator;
+  };
+  return `\\begin{pmatrix} ${m.map((row) => row.map(cellLatex).join(" & ")).join(" \\\\ ")} \\end{pmatrix}`;
+}
+
 function handleMatrixOp(
   msg: Extract<ComputeRequest, { type: "matrixOp" }>,
   requestId: string,
 ): MathResult {
   try {
-    // Determinante: primero Fraction (exacto), luego constantes reales
-    // (sqrt/pi/e) y solo al final la expansión simbólica. El resto de
-    // operaciones conserva la ruta numérica estricta.
-    let determinantMatrix: ReturnType<typeof toFractionMatrix> | null = null;
-    if (msg.op === "determinant") {
+    // Determinante, inversa, adjunta y cofactores: primero Fraction
+    // (exacto); si alguna celda no es racional (variables, trigonométricas
+    // o `i`), se usa el fallback simbólico con Algebrite. El determinante
+    // conserva además la ruta de constantes reales (sqrt/pi/e). El resto de
+    // operaciones mantiene la ruta numérica estricta.
+    let numericMatrix: Matrix | null = null;
+    const supportsSymbolic = msg.op === "determinant" || msg.op === "inverse"
+      || msg.op === "adjugate" || msg.op === "cofactor";
+    if (supportsSymbolic) {
       try {
-        determinantMatrix = toFractionMatrix(msg.a);
+        numericMatrix = toFractionMatrix(msg.a);
       } catch (err) {
         const appErr = err as AppError;
         if (appErr.code !== ClientErrorCode.PARSE_ERROR) throw err;
       }
-      if (!determinantMatrix) {
-        try {
-          const constant = constantDeterminant(msg.a, requestId);
-          if (constant) return constant;
-        } catch (err) {
-          const appErr = err as AppError;
-          if (appErr.code !== ClientErrorCode.PARSE_ERROR) throw err;
+      if (!numericMatrix) {
+        if (msg.op === "determinant") {
+          try {
+            const constant = constantDeterminant(msg.a, requestId);
+            if (constant) return constant;
+          } catch (err) {
+            const appErr = err as AppError;
+            if (appErr.code !== ClientErrorCode.PARSE_ERROR) throw err;
+          }
+          return symbolicDeterminant(msg.a, requestId);
         }
-        return symbolicDeterminant(msg.a, requestId);
+        if (msg.op === "inverse") return symbolicInverse(msg.a, requestId);
+        if (msg.op === "adjugate") return symbolicAdjugate(msg.a, requestId);
+        return symbolicCofactor(msg.a, requestId);
       }
     }
-    const a = determinantMatrix ?? toFractionMatrix(msg.a);
+    const a = numericMatrix ?? toFractionMatrix(msg.a);
     const b = msg.b ? toFractionMatrix(msg.b) : undefined;
 
     let resultLatex: string;
@@ -1255,6 +1279,27 @@ function handleMatrixOp(
           return denominator ? "\\frac{"+numerator+"}{"+denominator+"}" : numerator;
         };
         resultLatex = "\\begin{pmatrix}"+result.map(row=>row.map(cellLatex).join(" & ")).join(" \\\\ ")+"\\end{pmatrix}";
+        steps = s;
+        break;
+      }
+      case "adjugate": {
+        const { result, steps: s } = adjugateMatrix(a);
+        resultLatex = matrixToPmatrix(result);
+        steps = s;
+        break;
+      }
+      case "cofactor": {
+        const { result, steps: s } = cofactorMatrix(a);
+        resultLatex = matrixToPmatrix(result);
+        steps = s;
+        break;
+      }
+      case "solveEquation": {
+        if (!b) {
+          throw { code: ErrorCode.DIMENSION_MISMATCH, message: "La ecuación matricial requiere la matriz B." } as AppError;
+        }
+        const { result, steps: s } = solveMatrixEquation(a, b, msg.xOnLeft ?? true);
+        resultLatex = matrixToPmatrix(result);
         steps = s;
         break;
       }
