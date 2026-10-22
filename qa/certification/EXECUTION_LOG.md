@@ -1,3 +1,12 @@
+## 2026-10-22 UTC — r243: handoff reconciliado para nueva sesión LLM
+
+- Se consultaron las ejecuciones Plus [39824318193](https://github.com/c2melendez/precision-lab-plus/actions/runs/39824318193) y [39824317892](https://github.com/c2melendez/precision-lab-plus/actions/runs/39824317892): ambas SUCCESS en SHA `d5911ff4be2b96d8ac789893541c873c03510187`. Alcance verificado: corrección Black/backend; no equivale a S25 completo porque el frontend audit se omitió.
+- Se registró la rama aislada de diagnóstico npm `qa/s25-npm-remediation-preview`, SHA `7b359fa379bb3bcd96b69afc27e2fb82ea7aab47`. Workflow [manual](https://github.com/c2melendez/precision-lab-plus/actions/workflows/s25-npm-remediation-preview.yml); no hay ejecución confirmada al corte y no hay artifact inspeccionado.
+- No se modificó el lockfile canónico ni se utilizó `npm audit fix --force`. S25 sigue BLOCKED. No se inició ninguna corrida como parte de esta actualización documental.
+- Próxima acción: correr el preview en la rama aislada; verificar artifacts y gates antes de promover cambios. Global OPEN; MV-D formal bilateral pendiente.
+
+---
+
 ## 2026-10-22 UTC — r240: evidencia de coordinación y próximo gate
 
 - Lite H1d 39754424829, acumulativo 39754424771 y Scientific UI 39754424596 SUCCESS sobre SHA técnico exacto c28091c0173f951a2571ffcbb6084f566ced0034. HEAD b3dcccf es solo el commit documental r239.
