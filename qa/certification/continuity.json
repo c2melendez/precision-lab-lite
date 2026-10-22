@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 233,
+  "revision": 234,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "c4a49a515a27d05e096bf0480629fcb68fac6ffb",
-  "baseline_case": "LOG-EXP-RAD-LOGIC-AUDIT-R232",
+  "technical_baseline_sha": "737a82d4eacf6bd6e4c22e719fa7f75df2de3410",
+  "baseline_case": "LOG-EXP-RAD-EV-M-CLOSURE-R234",
   "baseline_status": "PASS_SCOPED_BILATERAL",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -48,15 +48,15 @@
     }
   },
   "next_action": {
-    "id": "EXP-EV-M-EVALUATION",
+    "id": "EXP-EV-T-EVALUATION",
     "status": "IN_PROGRESS",
-    "action": "EV-R-01..14 are closed PASS_SCOPED_BILATERAL on their exact technical SHAs (see ev_r_closure_r231). Next objective: EV-M-01..13 (mixed log/exp/radical/polynomial) of matriz_log_exp_radicales. Verified Lite probe: EV-M-01, 03, 05, 06, 07, 08, 09, 10, 11 and 12 already return the requested form or value. Remaining defects: EV-M-02 e^(2*ln 3) returns exp(2*log(3)) (exact exp(k*log r) = r^k identity missing); EV-M-04 f(x)=ln(x^2+1); f(sqrt(e-1)) fails to parse with 'Caracter no reconocido: ;' when the definition uses \\left(...\\right); EV-M-13 log(2-sqrt(3))+log(2+sqrt(3)) stays symbolic (log a + log b = log(a*b) identity missing). Verify Plus parity for all 13 rows, fix the three Lite defects with exact rules, add bilateral EV-M tests and run the cumulative gates on the new technical SHA. Keep the independent blockers unchanged. Precondicion EV-T: corregir la fuga de dominio semantica de Plus (zoo) y exigir DOMAIN_ERROR en EV-T-11 antes de certificar EV-T.",
+    "action": "EV-M-01..13 are closed PASS_SCOPED_BILATERAL on their exact technical SHAs (see ev_m_closure_r234). Next objective: EV-T-01..12 (trigonometric, hyperbolic and inverse) of matriz_log_exp_radicales. Precondition before certifying EV-T: fix the Plus semantic domain leak where ln(1-1) and ln(cos(pi/2)) return success=true with result_text=\"zoo\"; EV-T-11 (\\ln(\\cos\\frac{\\pi}{2}), undefined) must require DOMAIN_ERROR. Verify rows EV-T-01..12, including argument reduction (\\sin(10^{22}), EV-T-07), i (e^{i\\pi/2}, EV-T-08), arsinh/artanh (EV-T-09/10) and the real/complex double branch of EV-T-12. Keep the independent blockers unchanged and run the cumulative gates on the new technical SHA.",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "c7875936249eabc5e3e1d146b6f4d965d3447920",
-      "c2melendez/precision-lab-plus": "870766b99a025807caa84cfacfa9ad2928a8f4e7"
+      "c2melendez/precision-lab-lite": "737a82d4eacf6bd6e4c22e719fa7f75df2de3410",
+      "c2melendez/precision-lab-plus": "16df9f6e5e1edc8303c2f66bc7154c93c54e67ef"
     },
     "product_changed": true,
-    "audit": "logic audit r232: mathematics CORRECT, no singularity approved; see qa/certification/LOGIC_AUDIT_2026-10-21.md"
+    "audit": "logic audit r232: mathematics CORRECT, no singularity approved; EV-M closure r234 supersedes the EV-M diagnosis; see qa/certification/LOGIC_AUDIT_2026-10-21.md"
   },
   "blockers": [
     {
@@ -1064,6 +1064,118 @@
     "global_certification": "OPEN",
     "next_objective": "EV-M-01..13 mixed",
     "next_status": "IN_PROGRESS"
+  },
+  "ev_m_closure_r234": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "EV-M-01..13 mixed log/exp/radical/polynomial (matriz_log_exp_radicales)",
+    "product_changed": true,
+    "product_fix": "Lite: engine/expLogSimplify.ts applies exp(k*log r) = r^k exactly for integer k (|k| <= 400) and positive rational r with a bounded BigInt product; engine/logSimplify.ts reduces log(a-sqrt(b))+log(a+sqrt(b)) to 0 exactly for conjugate radical pairs with a>0 and a^2-b = 1; engine/parsing/index.ts reads a local one-variable definition followed by its call, accepting \\left/\\right and balanced parentheses in the argument. Plus: services/evaluate_service.py reads the same definition-plus-call form with balanced delimiters and re-emits natural logarithms as ln(...) after the SymPy round-trip, so f(x)=ln(x^2+1); f(sqrt(e-1)) = 1 while log keeps base 10; services/parsing.py rejects only numeric scientific literals ((?<=\\d)[eE][+-]?\\d+), so the constant e in e-1 is accepted.",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "737a82d4eacf6bd6e4c22e719fa7f75df2de3410",
+      "c2melendez/precision-lab-plus": "16df9f6e5e1edc8303c2f66bc7154c93c54e67ef"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39697894520,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39697894520",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "737a82d4eacf6bd6e4c22e719fa7f75df2de3410",
+        "head_sha_matches": true,
+        "tests": "350 files; 2063 passed, 8 expected fail, 34 todo; tests/logExpEvM01to13.audit.test.ts 7/7",
+        "evidence_guard": {
+          "skip": "false",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39697894475,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39697894475",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "737a82d4eacf6bd6e4c22e719fa7f75df2de3410",
+        "head_sha_matches": true,
+        "tests": "22 passed"
+      },
+      {
+        "gate": "scientific",
+        "run_id": 39697894504,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39697894504",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "737a82d4eacf6bd6e4c22e719fa7f75df2de3410",
+        "head_sha_matches": true,
+        "tests": "456 passed"
+      },
+      {
+        "gate": "cumulative",
+        "run_id": 39697901542,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39697901542",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16df9f6e5e1edc8303c2f66bc7154c93c54e67ef",
+        "head_sha_matches": true,
+        "tests": "1831 passed, 6 xfailed, 1 warning; coverage 88.05%; frontend 149 files, 1008 passed; tests/test_log_exp_matrix_ev_m01_l13.py 6/6 PASSED",
+        "evidence_guard": {
+          "skip": "false",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39697901415,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39697901415",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16df9f6e5e1edc8303c2f66bc7154c93c54e67ef",
+        "head_sha_matches": true,
+        "tests": "38 passed"
+      },
+      {
+        "gate": "native-syntax",
+        "run_id": 39697901339,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39697901339",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16df9f6e5e1edc8303c2f66bc7154c93c54e67ef",
+        "head_sha_matches": true,
+        "tests": "26 passed; 52 passed"
+      },
+      {
+        "gate": "sg28-prototype",
+        "run_id": 39697901366,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39697901366",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16df9f6e5e1edc8303c2f66bc7154c93c54e67ef",
+        "head_sha_matches": true,
+        "tests": "69 passed, 1 warning"
+      },
+      {
+        "gate": "security",
+        "run_id": 39697901513,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39697901513",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16df9f6e5e1edc8303c2f66bc7154c93c54e67ef",
+        "head_sha_matches": true,
+        "tests": "No known vulnerabilities found; 24 passed; 121 passed"
+      }
+    ],
+    "declared_conventions": [
+      "exp(k*ln r) = r^k is exact only for integer k (|k| <= 400) and positive rational r, with a bounded product; other exponential/log shapes stay untouched.",
+      "log(a-sqrt(b)) + log(a+sqrt(b)) = 0 only for conjugate radical pairs with a>0 and a^2-b = 1; general log sums/products are not collapsed.",
+      "A one-variable definition plus call is an ephemeral per-request substitution; there is no persistent function registry.",
+      "Lite consumes the frozen LaTeX form with \\left/\\right; Plus consumes the documented plain translation and the test anchors the frozen LaTeX row.",
+      "Plus keeps calculator semantics across the substitution: log is base 10 and ln is natural.",
+      "Scientific notation is only a numeric literal digit+e/E (1e5, 2.5E-3); the constant e followed by a sign (e-1) is not rejected."
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "EV-T-01..12 trigonometric, hyperbolic and inverse",
+    "next_status": "IN_PROGRESS",
+    "next_precondition": "Fix the Plus semantic domain leak (ln(1-1) and ln(cos(pi/2)) return success=true with result_text=\"zoo\") and require DOMAIN_ERROR in EV-T-11 before certifying EV-T."
   },
   "logic_audit_r232": {
     "date_utc": "2026-10-21",
