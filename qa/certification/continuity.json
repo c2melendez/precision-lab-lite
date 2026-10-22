@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 236,
+  "revision": 237,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "c191bcc2cea091ac18342418ae8ed0369f6760c2",
-  "baseline_case": "MATRICES-MV-A-CLOSURE-R236",
+  "technical_baseline_sha": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+  "baseline_case": "MATRICES-MV-B-CLOSURE-R237",
   "baseline_status": "PASS_SCOPED_BILATERAL",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -50,13 +50,13 @@
   "next_action": {
     "id": "EXP-MATRICES-VECTORES-EVALUATION",
     "status": "IN_PROGRESS",
-    "action": "MV-A-01..25 are closed PASS_SCOPED_BILATERAL on their exact technical SHAs (see mv_a_closure_r236), with the derived 153-row qa/certification/matrices_ejecutables.jsonl. Next objective: MV-B (22 determinant rows) of legacy_sources/matriz_matrices_vectores.md.gz; extend the JSONL executor and the audit tests, anchoring every row to the frozen source before assuming any expression or result. Keep the independent blockers unchanged (H2-SG28-DIST-01..08, SECURITY-S25, SY-P-23, SY-X-04-PLUS-HTTP, ALGEBRA229-AS-B-29) and run the scoped gates on the new technical SHA.",
+    "action": "MV-A-01..25 and MV-B-01..22 are closed PASS_SCOPED_BILATERAL on their exact technical SHAs (see mv_a_closure_r236 and mv_b_closure_r237), with the derived 153-row qa/certification/matrices_ejecutables.jsonl. Next objective: MV-C (19 rows) of legacy_sources/matriz_matrices_vectores.md.gz; extend the JSONL executor and the audit tests, anchoring every row to the frozen source before assuming any expression or result. Keep the independent blockers unchanged (H2-SG28-DIST-01..08, SECURITY-S25, SY-P-23, SY-X-04-PLUS-HTTP, ALGEBRA229-AS-B-29) and run the scoped gates on the new technical SHA.",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "c191bcc2cea091ac18342418ae8ed0369f6760c2",
-      "c2melendez/precision-lab-plus": "dfdf7d1a87043901b10ff1e6926fafe835e65bca"
+      "c2melendez/precision-lab-lite": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+      "c2melendez/precision-lab-plus": "c31e54091302acd102945858cfbbce7d70e034ed"
     },
     "product_changed": true,
-    "audit": "r236: Lite powerMatrix negative exponents and matrixExpression numeric scalars are covered by tests/matricesMvA01to25.audit.test.ts and tests/exhaustive-module06-matrices.test.ts; Plus is unchanged (tests/test_matrices_mv_a01_l25.py). The security-gate failure is external (npm advisories, SECURITY-S25), not a mathematical regression."
+    "audit": "r237: Lite symbolicDeterminant (bounded 4x4 cofactor expansion, Algebrite simplify) is covered by tests/matricesMvB01to22.audit.test.ts; Plus symbolic determinant cells are covered by backend/tests/test_matrices_mv_b01_l22.py. The security/dependency gate was not triggered; SECURITY-S25 remains an independent blocker."
   },
   "blockers": [
     {
@@ -80,7 +80,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r236: MV-A-01..25 (operaciones basicas con matrices de matriz_matrices_vectores) cerrado PASS_SCOPED_BILATERAL. Se derivo qa/certification/matrices_ejecutables.jsonl de la tabla congelada MV153 (153 filas, A25/B22/C19/D17/E12/F17/G22/H12/J7, sha256 6C93E908..., identico en ambos repos) con generador reproducible. Lite c191bcc2: powerMatrix admite exponentes negativos invirtiendo primero (MV-A-12/13; singular sigue DOMAIN_ERROR); matrixExpression acepta escalares numericos y habilita (A+B)^2-(A^2+2AB+B^2) (MV-A-24); MatrixMode permite exponente negativo; test de modulo 6 actualizado. Plus dfdf7d1a sin cambio de producto: MV-A por /matrix/*, escalar x matriz por la ruta diagonal (k*I)xA de BasicMode.tsx y MV-A-24 compuesta con multiply/subtract. Gates de alcance por head_sha exacto, attempt=1: Lite cumulative 39714994068 (352 files, 2100 passed, MV-A 29/29), h1d 39714994065 (22), scientific 39714994064 (456); Plus cumulative 39715004689 (backend 1865 passed, 6 xfailed, cobertura 88.16%, MV-A 27/27; frontend 149 files/1008 passed), h1d 39715004680 (38). native/SG28 no se dispararon (sin rutas de producto en Plus). El gate security/dependency se disparo por qa/certification/*.jsonl: el run 39715004827 quedo cancelled porque Stryker excedio el limite de 35m (infraestructura); la revalidacion 39718717187 expuso 10 advisories npm pre-existentes (SECURITY-S25, lockfile identico a d1e38753) y se cancelo. 3 fallos de factorizacion reproducen en baseline fd779625. Blockers independientes sin cambios; certificacion global OPEN. Siguiente objetivo: MV-B (determinantes, 22 filas).",
+  "ledger_note": "r237: MV-B-01..22 (determinantes de matriz_matrices_vectores) cerrado PASS_SCOPED_BILATERAL. Lite 09ac205f: nuevo src/engine/symbolicDeterminant.ts con expansion por cofactores acotada a 4x4 y simplify de Algebrite; compute.worker.ts enruta determinante Fraction -> constantes -> simbolico; camino numerico exacto sin cambio. Plus c31e5409: parse_matrix(allow_symbolic=True) y _parse_matrix_cell permiten variables libres y sqrt/abs/sin/cos/tan solo en /matrix/determinant; determinant() usa trigsimp+simplify y factor para polinomios; el resto de /matrix/* conserva contrato numerico estricto y result_approx=None con variables libres. Gates de alcance por head_sha exacto, attempt=1: Lite cumulative 39725461570 (353 files, 2127 passed, MV-B 27/27), h1d 39725461610 (22), scientific 39725461481 (456); Plus cumulative 39725461036 (backend 1891 passed, 6 xfailed, cobertura 88.28%, MV-B 26/26; frontend 149 files/1008 passed), h1d 39725461033 (38), native-syntax 39725461074 (26+52). Guards skip=false. El gate security/dependency no se disparo (push fuera de su filtro); SECURITY-S25 sigue como blocker independiente. Fallos locales de factorizacion/SG28/S25/SY-X-16 son preexistentes de entorno; CI acumulativo verde. Blockers independientes sin cambios; certificacion global OPEN. Siguiente objetivo: MV-C (19 filas).",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -1676,5 +1676,152 @@
       "AS-FAC-08 and AS-B-06 appear only under parallel load."
     ],
     "next": "MV-B (22 determinant rows); extend the JSONL executor and audit tests, anchored to the frozen source."
+  },
+  "mv_b_closure_r237": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "MV-B-01..22 determinants (matriz_matrices_vectores)",
+    "product_changed": true,
+    "product_fix": "Lite: new src/engine/symbolicDeterminant.ts performs a bounded 4x4 cofactor expansion with Algebrite simplify; src/workers/compute.worker.ts routes determinant Fraction -> constants -> symbolic while the exact numeric path is unchanged. Plus: parse_matrix(..., allow_symbolic=True) and _parse_matrix_cell(..., allow_symbolic=True) accept free symbols and elementary sqrt/abs/sin/cos/tan only on /matrix/determinant; determinant() applies trigsimp+simplify and factor for polynomial results, and the rest of /matrix/* keeps the strict numeric contract.",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+      "c2melendez/precision-lab-plus": "c31e54091302acd102945858cfbbce7d70e034ed"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39725461570,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39725461570",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "353 files; 2127 passed, 8 expected fail, 34 todo; tests/matricesMvB01to22.audit.test.ts 27/27",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39725461610,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39725461610",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "22 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "scientific",
+        "run_id": 39725461481,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39725461481",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "456 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "cumulative",
+        "run_id": 39725461036,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39725461036",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c31e54091302acd102945858cfbbce7d70e034ed",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "backend 1891 passed, 6 xfailed, coverage 88.28%; frontend 149 files, 1008 passed, 28 todo; tests/test_matrices_mv_b01_l22.py 26/26 PASSED",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "c31e54091302acd102945858cfbbce7d70e034ed",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39725461033,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39725461033",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c31e54091302acd102945858cfbbce7d70e034ed",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "38 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "c31e54091302acd102945858cfbbce7d70e034ed",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "native-syntax",
+        "run_id": 39725461074,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39725461074",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c31e54091302acd102945858cfbbce7d70e034ed",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "desktop 26 passed; tablet/mobile 52 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "c31e54091302acd102945858cfbbce7d70e034ed",
+          "reason": "No reusable completed evidence found."
+        }
+      }
+    ],
+    "security_gate": {
+      "triggered": false,
+      "reason": "The technical push touched backend/app/services/matrix_service.py, backend/app/routers/matrices.py and backend/tests/test_matrices_mv_b01_l22.py only; none is in the certification-dependency-gates path filter, so no security/dependency run was scheduled.",
+      "blocker": "SECURITY-S25",
+      "used_as_mv_b_evidence": false
+    },
+    "artifacts": {
+      "jsonl": "qa/certification/matrices_ejecutables.jsonl",
+      "rows": 153,
+      "sections": {
+        "A": 25,
+        "B": 22,
+        "C": 19,
+        "D": 17,
+        "E": 12,
+        "F": 17,
+        "G": 22,
+        "H": 12,
+        "J": 7
+      },
+      "sha256": "6C93E9081E6A4727B538EBD84C2F578153A562F39ECCA8D333D1066B964B1B0F",
+      "generator": "qa/certification/derive_matrices_ejecutables.py",
+      "identical_in_both_repos": true,
+      "closure_rows": "MV-B-01..22"
+    },
+    "conventions": [
+      "Lite numeric LaTeX \\frac{a}{b} cells are translated to the ASCII a/b accepted by the Matrices grid; the calculator intent path normalizes the same form.",
+      "Plus symbolic a^{2} is translated to a^2 and \\cos\\theta to cos(theta); the API does not consume raw LaTeX.",
+      "MV-B-13 and MV-B-14 are composed with product operations (det(2A), det(AB)), not with a parallel oracle.",
+      "Symbolic results are accepted by exact algebraic equivalence; row 18 is additionally required to be a factored product.",
+      "Lite toLatex removes '*', so tests assert the exact symbolic expression rather than the LaTeX text.",
+      "Row 22 requires DIMENSION_MISMATCH with a non-empty message.",
+      "Plus symbolic support is scoped to /matrix/determinant; the rest of /matrix/* keeps the strict numeric contract, and result_approx is None when free symbols remain."
+    ],
+    "preexisting_failures": [
+      "Lite local full suite: five environment-dependent factorization timeouts (AS-FAC-08, AS-FAC-09, AS-B-06, AS-B-18, AS-B-20); the CI cumulative gate is green.",
+      "Plus local full suite: seven failures plus two errors in SG28 interruptible/cancellation, S25 CORS and SY-X-16, all pre-existing Windows/environment findings; the CI cumulative gate is green."
+    ],
+    "next": "MV-C (19 rows); extend the JSONL executor and audit tests, anchored to the frozen source."
   }
 }

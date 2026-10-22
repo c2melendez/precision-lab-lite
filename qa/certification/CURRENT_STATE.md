@@ -1,3 +1,19 @@
+## 2026-10-22 UTC — r237: MV-B-01..22 cerrado bilateralmente
+
+**MV-B-01..22 (determinantes) — PASS_SCOPED_BILATERAL.**
+
+- Lite `09ac205f7716…`: cumulative [39725461570] — **SUCCESS**, 353 archivos, **2127 passed**, 8 expected fail, 34 todo; `tests/matricesMvB01to22.audit.test.ts` **27/27**; guard `skip=false` («No reusable completed evidence found», `checkout_sha=09ac205f…`). h1d [39725461610] — SUCCESS, 22 passed; scientific-ui [39725461481] — SUCCESS, 456 passed.
+- Plus `c31e54091302…`: cumulative [39725461036] — **SUCCESS**, backend **1891 passed**, 6 xfailed, cobertura **88.28%**; `tests/test_matrices_mv_b01_l22.py` **26/26 PASSED**; frontend 149 archivos, 1008 passed, 28 todo; guard `skip=false` (`checkout_sha=c31e5409…`). h1d [39725461033] — SUCCESS, 38 passed; native-syntax [39725461074] — SUCCESS (26 desktop + 52 tablet/mobile).
+- Los 6 gates consultados por `head_sha` exacto (`09ac205f…`/`c31e5409…`), `attempt=1`, conclusión `success`.
+- Resultados (Lite / Plus): 01=`5`; 02=`-2`; 03=`6`; 04=`24`; 05=`0`; 06=`4`; 07=`19`; 08=`30`; 09=`1/6048000`; 10=`1/266716800000`; 11=`7`; 12=`0`; 13=`-8`; 14=`2`; 15=`-0.02`; 16=`a*d-b*c`/`a*d - b*c`; 17=`-x^2+1` (equivalente a `1-x^2`)/`-(x-1)*(x+1)` (factorizado, equivalente); 18 Lite forma expandida equivalente/Plus `-(a-b)*(a-c)*(b-c)`; 19 Lite forma expandida equivalente/Plus `(a-1)^2*(a+2)`; 20=`1`; 21=`0`; 22=`DIMENSION_MISMATCH` en ambos.
+- Producto Lite `09ac205f`: nuevo `src/engine/symbolicDeterminant.ts` con expansión por cofactores acotada a 4×4 y `simplify` de Algebrite; `compute.worker.ts` enruta determinante Fraction → constantes → simbólico. El camino numérico exacto no cambia.
+- Producto Plus `c31e5409`: `parse_matrix(..., allow_symbolic=True)` y `_parse_matrix_cell(..., allow_symbolic=True)` aceptan variables libres y trigonométricas elementales (`sqrt/abs/sin/cos/tan`) **solo** en `/matrix/determinant`; `determinant()` usa `trigsimp`+`simplify` y `factor` para polinomios. El resto de `/matrix/*` conserva el contrato numérico estricto. `result_approx` queda `None` cuando hay variables libres.
+- Traducciones de harness declaradas en `MANUAL_CAPABILITY_GAPS.md`: Lite numérico `\frac{a}{b}` → `a/b`; Plus simbólico `a^{2}` → `a^2` y `\cos\theta` → `cos(theta)`; MV-B-13/14 se componen con operaciones del producto (`det(2A)`, `det(AB)`); 18/19 se aceptan por equivalencia algebraica exacta y 18 además como producto factorizado. `toLatex` de Lite elimina `*`, por eso los tests comparan la expresión exacta, no el texto LaTeX.
+- Gate security/dependency de Plus: **no se disparó** (el push solo tocó `matrix_service.py`, `routers/matrices.py` y el test; ninguna ruta del filtro). **SECURITY-S25** sigue como blocker independiente y no se usa como evidencia de MV-B. Certificación global `OPEN`.
+- Sin regresiones atribuibles: regresión de matrices Lite 9 archivos/119 tests y Plus 10 archivos/127 tests; `npm run typecheck` y `npm run build` Lite limpios. En local persisten los timeouts de factorización ya conocidos (`AS-FAC-08/09`, `AS-B-06/18/20`) y los fallos de entorno de Plus (SG28 interruptible/cancelación, S25 CORS y SY-X-16); el CI acumulativo quedó verde.
+
+**Siguiente objetivo — MV-C (19 filas).** Extender `matrices_ejecutables.jsonl`/ejecutor y los tests de auditoría; MV-A y MV-B quedan cerradas y no se reabren salvo regresión. Blockers independientes sin cambios; certificación global `OPEN`.
+
 ## 2026-10-22 UTC — r236: MV-A-01..25 cerrado bilateralmente
 
 **MV-A-01..25 (operaciones básicas con matrices) — PASS_SCOPED_BILATERAL.**

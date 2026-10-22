@@ -1,3 +1,21 @@
+## 2026-10-22 UTC — r237: MV-B-01..22 cerrado bilateralmente
+
+**MV-B-01..22 (determinantes) — PASS_SCOPED_BILATERAL.**
+
+- Lite `09ac205f7716994a2a04a222c5d276f35cef78fa`: cumulative [39725461570] — **SUCCESS**, 353 archivos, **2127 passed**, 8 expected fail, 34 todo; `tests/matricesMvB01to22.audit.test.ts` **27/27** (22 filas + integridad del JSONL + anclaje + canales exactos); guard `skip=false` (`checkout_sha` exacto, «No reusable completed evidence found»). h1d [39725461610] — SUCCESS, 22 passed; scientific-ui [39725461481] — SUCCESS, 456 passed.
+- Plus `c31e54091302acd102945858cfbbce7d70e034ed`: cumulative [39725461036] — **SUCCESS**, backend **1891 passed**, 6 xfailed, cobertura **88.28%**; `tests/test_matrices_mv_b01_l22.py` **26/26 PASSED** (22 filas + 4 meta); frontend 149 archivos, 1008 passed, 28 todo; guards `skip=false`. h1d [39725461033] — SUCCESS, 38 passed; native-syntax [39725461074] — SUCCESS (26 desktop + 52 tablet/mobile).
+- Los 6 gates de alcance por `head_sha` exacto, `attempt=1` y `success`; los guards de los seis runs registran `skip=false` y `checkout_sha` exacto.
+- **Resultados numéricos (01–15).** 01=`5`, 02=`-2`, 03=`6`, 04=`24`, 05=`0`, 06=`4`, 07=`19`, 08=`30`, 09=`1/6048000`, 10=`1/266716800000`, 11=`7`, 12=`0`, 13=`-8`, 14=`2`, 15=`-0.02`; ambos motores coinciden con el oráculo congelado.
+- **Resultados simbólicos (16–21).** 16 Lite=`a*d-b*c`, Plus=`a*d - b*c`; 17 Lite=`-x^2+1` (equivalente a `1-x^2`), Plus=`-(x-1)*(x+1)` (factorizado, equivalente); 18 Lite forma expandida equivalente, Plus=`-(a-b)*(a-c)*(b-c)` (factorizado exacto); 19 Lite forma expandida equivalente, Plus=`(a-1)^2*(a+2)`; 20=`1`; 21=`0`. 22 devuelve `DIMENSION_MISMATCH` en ambos.
+- **Producto Lite `09ac205f`.** Nuevo `src/engine/symbolicDeterminant.ts`: expansión por cofactores hasta 4×4 y `simplify` de Algebrite; `src/workers/compute.worker.ts` enruta determinante Fraction → constantes → simbólico. El camino numérico exacto (`Fraction`) no cambia; una matriz mayor que 4×4 con variables sigue fuera de alcance y se rechaza.
+- **Producto Plus `c31e5409`.** `parse_matrix(..., allow_symbolic=True)` y `_parse_matrix_cell(..., allow_symbolic=True)` aceptan variables libres y trigonométricas elementales (`sqrt/abs/sin/cos/tan`); la rama simbólica de `determinant()` aplica `trigsimp`+`simplify` y `factor` si el resultado es polinómico. Solo `/matrix/determinant` activa `allow_symbolic=True`; el resto de `/matrix/*` conserva el contrato numérico estricto. `result_approx=None` cuando hay variables libres.
+- **Traducciones de harness.** Lite numérico: `\frac{a}{b}` → `a/b`. Plus simbólico: `a^{2}` → `a^2` y `\cos\theta` → `cos(theta)`. MV-B-13/14 se componen con operaciones del producto (`det(2A)`, `det(AB)`). 18/19 se aceptan por equivalencia algebraica exacta; 18 se verifica además como producto factorizado. `toLatex` de Lite elimina `*`, por eso los tests comparan la expresión exacta, no el texto LaTeX.
+- **Regresión permanente.** Lite `tests/matricesMvB01to22.audit.test.ts` (27/27) ancla cada fila al `.gz` y exige el resultado por el worker real; Plus `backend/tests/test_matrices_mv_b01_l22.py` (26/26) ancla las filas y exige los canales exactos del API. Regresión de matrices: Lite 9 archivos/119 tests, Plus 10 archivos/127 tests.
+- **Fallos pre-existentes (no atribuibles).** Lite local: 5 timeouts de factorización (`AS-FAC-08/09`, `AS-B-06/18/20`), de entorno; Plus local: SG28 interruptible/cancelación, S25 CORS y SY-X-16 (7 failed + 2 errors de entorno Windows). El CI acumulativo quedó verde en ambos repos.
+- **Gate security/dependency (independiente).** No se disparó: el push solo tocó `backend/app/services/matrix_service.py`, `backend/app/routers/matrices.py` y `backend/tests/test_matrices_mv_b01_l22.py`, fuera de su filtro. **SECURITY-S25** sigue como blocker independiente; no se usa como evidencia de MV-B. Global `OPEN`.
+
+**Siguiente objetivo — MV-C (19 filas).** Extender `matrices_ejecutables.jsonl`/ejecutor y los tests de auditoría; MV-A y MV-B quedan cerradas y no se reabren salvo regresión. Blockers independientes sin cambios; certificación global `OPEN`.
+
 ## 2026-10-22 UTC — r236: MV-A-01..25 cerrado bilateralmente
 
 **MV-A-01..25 (operaciones básicas con matrices) — PASS_SCOPED_BILATERAL.**
