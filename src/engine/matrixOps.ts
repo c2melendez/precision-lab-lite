@@ -315,22 +315,38 @@ export function invertMatrix(a: Matrix): { result: Matrix; steps: Step[] } {
   return { result, steps };
 }
 
-/** Potencia entera no negativa (spec v10 §9 — AMBIGUO: exponente negativo no soportado aún). */
+/** Potencia entera (spec v10 §9): exponente negativo usa la inversa de A. */
 export function powerMatrix(a: Matrix, n: number): { result: Matrix; steps: Step[] } {
   const { rows, cols } = dims(a);
   if (rows !== cols) {
     throw { code: ErrorCode.DIMENSION_MISMATCH, message: "La potencia de matrices solo está definida para matrices cuadradas." } as AppError;
   }
-  if (!Number.isInteger(n) || n < 0) {
-    throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "Solo se soportan exponentes enteros no negativos (A⁻¹ está disponible como inversa por separado)." } as AppError;
+  if (!Number.isInteger(n)) {
+    throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "El exponente matricial debe ser un entero." } as AppError;
   }
+  const steps: Step[] = [];
+  let base = a;
+  if (n < 0) {
+    const inverse = invertMatrix(a);
+    base = inverse.result;
+    steps.push(...inverse.steps);
+    steps.push({ id: "power-inverse", latex: `A^{-1} = ${matrixToLatex(base)}`, explanation: "Exponente negativo: se parte de la inversa de A." });
+  }
+  const exponent = Math.abs(n);
   let result: Matrix = Array.from({ length: rows }, (_, r) =>
     Array.from({ length: rows }, (_, c) => new Fraction(r === c ? 1 : 0)),
   );
-  for (let i = 0; i < n; i++) {
-    result = multiplyMatrices(result, a).result;
+  for (let i = 0; i < exponent; i++) {
+    result = multiplyMatrices(result, base).result;
   }
-  return { result, steps: [{ id: "power", latex: `A^{${n}} = ${matrixToLatex(result)}`, explanation: `Multiplicación repetida de A por sí misma ${n} veces.` }] };
+  steps.push({
+    id: "power",
+    latex: `A^{${n}} = ${matrixToLatex(result)}`,
+    explanation: n < 0
+      ? `Multiplicación repetida de A⁻¹ por sí misma ${exponent} veces.`
+      : `Multiplicación repetida de A por sí misma ${n} veces.`,
+  });
+  return { result, steps };
 }
 
 // ---------------------------------------------------------------------------

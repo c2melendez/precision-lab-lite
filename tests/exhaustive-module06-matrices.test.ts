@@ -47,8 +47,10 @@ describe("Suite exhaustiva original — Módulo 6: Matrices", () => {
     expect(asText(powerMatrix(A,2).result)).toEqual([["5","4"],["4","5"]]);
   });
 
-  it("potencia negativa se rechaza explícitamente en Lite", () => {
-    expect(() => powerMatrix(A,-1)).toThrow();
+  it("potencia negativa usa la inversa y rechaza la singular", () => {
+    expect(asText(powerMatrix(A,-1).result)).toEqual(asText(invertMatrix(A).result));
+    expect(asText(powerMatrix(A,-2).result)).toEqual(asText(powerMatrix(invertMatrix(A).result,2).result));
+    expect(() => powerMatrix(toFractionMatrix([[1,2],[2,4]]),-1)).toThrow();
   });
 
   it("eigen 2x2 conocido 1 y 3 con eigenvectores válidos", () => {

@@ -373,7 +373,7 @@ export function MatrixMode() {
             Exponente n:
             <input
               type="number"
-              min={0}
+              min={-10}
               value={exponent}
               onChange={(e) => setExponent(parseInt(e.target.value, 10) || 0)}
               className="w-16 rounded bg-paper-soft px-2 py-1 text-center text-ink"
