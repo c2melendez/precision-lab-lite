@@ -6,6 +6,7 @@
 // Los demás tipos de operación se añaden en módulos posteriores.
 
 import { constantDeterminant } from "../engine/constantDeterminant";
+import { symbolicDeterminant } from "../engine/symbolicDeterminant";
 import { evaluate, toLatex, toDecimalApprox, ErrorCode as ClientErrorCode } from "../engine/algebriteClient";
 import { realAbsolutePiecewise } from "../engine/absPiecewise";
 import { toFractionResult, fractionToLatex } from "../engine/fractions";
@@ -1165,11 +1166,29 @@ function handleMatrixOp(
   requestId: string,
 ): MathResult {
   try {
+    // Determinante: primero Fraction (exacto), luego constantes reales
+    // (sqrt/pi/e) y solo al final la expansión simbólica. El resto de
+    // operaciones conserva la ruta numérica estricta.
+    let determinantMatrix: ReturnType<typeof toFractionMatrix> | null = null;
     if (msg.op === "determinant") {
-      const constant = constantDeterminant(msg.a, requestId);
-      if (constant) return constant;
+      try {
+        determinantMatrix = toFractionMatrix(msg.a);
+      } catch (err) {
+        const appErr = err as AppError;
+        if (appErr.code !== ClientErrorCode.PARSE_ERROR) throw err;
+      }
+      if (!determinantMatrix) {
+        try {
+          const constant = constantDeterminant(msg.a, requestId);
+          if (constant) return constant;
+        } catch (err) {
+          const appErr = err as AppError;
+          if (appErr.code !== ClientErrorCode.PARSE_ERROR) throw err;
+        }
+        return symbolicDeterminant(msg.a, requestId);
+      }
     }
-    const a = toFractionMatrix(msg.a);
+    const a = determinantMatrix ?? toFractionMatrix(msg.a);
     const b = msg.b ? toFractionMatrix(msg.b) : undefined;
 
     let resultLatex: string;
