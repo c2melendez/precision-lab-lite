@@ -334,6 +334,40 @@ function rationalizeDecimalLiterals(expr: string): string {
 }
 
 /**
+ * EV-M-04: lee una definición local de una variable seguida de su llamada.
+ *
+ * La versión anterior exigía `f(` literal y un argumento sin paréntesis, así
+ * que `f\left(\sqrt{e-1}\right)` y `f(sqrt(e-1))` caían al parser de
+ * ecuaciones y fallaban con "Carácter no reconocido: ';'". La lectura aquí
+ * acepta los delimitadores `\left`/`\right` y equilibra los paréntesis del
+ * argumento; la sustitución sigue siendo efímera (no hay registro global).
+ */
+function readDefinitionCall(
+  source: string,
+): { variable: string; body: string; argument: string } | null {
+  const normalized = source.replace(/\\left\s*/g, "").replace(/\\right\s*/g, "");
+  const head = /^\s*([A-Za-z])\(([A-Za-z])\)\s*=\s*([\s\S]+?);\s*(?:\\\s*)?\1\s*\(/.exec(normalized);
+  if (!head) return null;
+  const variable = head[2];
+  const body = head[3];
+  const start = head[0].length;
+  let depth = 1;
+  let index = start;
+  for (; index < normalized.length; index += 1) {
+    const char = normalized[index];
+    if (char === "(") depth += 1;
+    else if (char === ")") {
+      depth -= 1;
+      if (depth === 0) break;
+    }
+  }
+  if (depth !== 0) return null;
+  const argument = normalized.slice(start, index);
+  if (normalized.slice(index + 1).trim() !== "") return null;
+  return { variable, body: body.trim(), argument: argument.trim() };
+}
+
+/**
  * Parser completo de sintaxis de entrada (Módulo 2). Lanza AppError con
  * ErrorCode.PARSE_ERROR ante cualquier violación de las reglas de la spec.
  */
@@ -383,9 +417,12 @@ export function parseExpression(
     return parseExpression(substituted, angleMode);
   }
   // SY-V-04: ephemeral named function call with no persistent registry.
-  const call = latex.match(/^\s*([A-Za-z])\(([A-Za-z])\)\s*=\s*([^;]+);\s*(?:\\\s*)?\1\(([^()]*)\)\s*$/);
+  // EV-M-04: accepts `\left(...\right)` and balanced parentheses in the
+  // argument, so `f\left(\sqrt{e-1}\right)` is a definition-plus-call rather
+  // than an equation with a stray semicolon.
+  const call = readDefinitionCall(latex);
   if (call) {
-    const variable = call[2], body = call[3], argument = call[4];
+    const { variable, body, argument } = call;
     const substituted = body.replace(new RegExp("\\b" + variable + "\\b", "g"), "(" + argument + ")");
     return parseExpression(substituted, angleMode);
   }

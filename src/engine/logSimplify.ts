@@ -88,12 +88,47 @@ function perfectPowerLog(digits: string): string | null {
   return null;
 }
 
+/** a ± sqrt(b) with integer a,b >= 0; null for any other shape. */
+function parseConjugateRadical(
+  text: string,
+): { a: number; b: number; sign: 1 | -1 } | null {
+  const match = /^(\d+)([+-])(?:(\d+)\*)?(?:sqrt\((\d+)\)|(\d+)\^\(1\/2\))$/.exec(text);
+  if (!match) return null;
+  if (match[3] !== undefined && match[3] !== "1") return null;
+  const a = Number(match[1]);
+  const radicand = Number(match[4] ?? match[5]);
+  if (!Number.isSafeInteger(a) || !Number.isSafeInteger(radicand)) return null;
+  return { a, b: radicand, sign: match[2] === "-" ? -1 : 1 };
+}
+
 /**
  * Simplifies a whole-result logarithm expression. Returns the original text
  * when no exact rule applies.
  */
 export function simplifyLogResult(result: string): string {
   const compact = result.replace(/\s+/g, "");
+
+  // EV-M-13: log(a-b)+log(a+b) = log(a^2-b^2) = 0 for a positive conjugate
+  // pair with a^2-b^2 = 1. Both arguments are positive because a^2 > b.
+  // The rule is exact and numeric; any other sum is returned untouched.
+  const conjugateSum = /^log\((.+)\)\+log\((.+)\)$/.exec(compact);
+  if (conjugateSum) {
+    const left = parseConjugateRadical(conjugateSum[1]);
+    const right = parseConjugateRadical(conjugateSum[2]);
+    if (
+      left !== null &&
+      right !== null &&
+      left.sign === -1 &&
+      right.sign === 1 &&
+      left.a === right.a &&
+      left.b === right.b &&
+      left.a > 0 &&
+      left.a * left.a > left.b &&
+      left.a * left.a - left.b === 1
+    ) {
+      return "0";
+    }
+  }
 
   // -log(a)/log(b) or log(a)/log(b), whole result.
   const ratio = /^(-?)log\((\d+)\)\/log\((\d+)\)$/.exec(compact);

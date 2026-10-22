@@ -68,6 +68,49 @@ function gcd(a: number, b: number): number {
   return x === 0 ? 1 : x;
 }
 
+/** (num/den)^exponent exacta y acotada; null si excede el límite seguro. */
+function exactRationalPower(num: number, den: number, exponent: number): string | null {
+  if (
+    !Number.isSafeInteger(num) ||
+    !Number.isSafeInteger(den) ||
+    num <= 0 ||
+    den <= 0 ||
+    !Number.isSafeInteger(exponent) ||
+    Math.abs(exponent) > 400
+  ) {
+    return null;
+  }
+  let numerator = 1n;
+  let denominator = 1n;
+  const limit = BigInt(MAX_SAFE_PRODUCT);
+  const steps = Math.abs(exponent);
+  for (let index = 0; index < steps; index += 1) {
+    if (exponent > 0) {
+      numerator *= BigInt(num);
+      denominator *= BigInt(den);
+    } else {
+      numerator *= BigInt(den);
+      denominator *= BigInt(num);
+    }
+    if (numerator > limit || denominator > limit) return null;
+  }
+  const divisor = bigGcd(numerator, denominator);
+  numerator /= divisor;
+  denominator /= divisor;
+  return denominator === 1n ? numerator.toString() : `${numerator}/${denominator}`;
+}
+
+function bigGcd(a: bigint, b: bigint): bigint {
+  let x = a < 0n ? -a : a;
+  let y = b < 0n ? -b : b;
+  while (y !== 0n) {
+    const rest = x % y;
+    x = y;
+    y = rest;
+  }
+  return x === 0n ? 1n : x;
+}
+
 /**
  * Simplifica `exp(<suma de logaritmos de racionales positivos>)` a su valor
  * exacto. Devuelve el resultado original si la forma no está soportada.
@@ -76,6 +119,29 @@ export function simplifyExpLogResult(result: string): string {
   const compact = result.replace(/\s+/g, "");
   const outer = /^exp\((.*)\)$/.exec(compact);
   if (!outer) return result;
+
+  // EV-M-02: exp(k*log(r)) = r^k, con k entero y r racional positivo.
+  // Algebrite deja `exp(2*log(3))` sin reducir; la fila congelada exige 9.
+  // Solo se aplica la identidad exacta sobre el resultado completo y acotado.
+  const inner = outer[1];
+  const scaled = /^(-?\d+)\*log\((\d+)(?:\/(\d+))?\)$/.exec(inner);
+  if (scaled) {
+    const powered = exactRationalPower(
+      Number(scaled[2]),
+      scaled[3] ? Number(scaled[3]) : 1,
+      Number(scaled[1]),
+    );
+    if (powered !== null) return powered;
+  }
+  const single = /^log\((\d+)(?:\/(\d+))?\)$/.exec(inner);
+  if (single) {
+    const powered = exactRationalPower(
+      Number(single[1]),
+      single[2] ? Number(single[2]) : 1,
+      1,
+    );
+    if (powered !== null) return powered;
+  }
 
   const terms = splitAdditive(outer[1]);
   if (!terms || terms.length < 2) return result;
