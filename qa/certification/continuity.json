@@ -1813,7 +1813,7 @@
       "Lite numeric LaTeX \\frac{a}{b} cells are translated to the ASCII a/b accepted by the Matrices grid; the calculator intent path normalizes the same form.",
       "Plus symbolic a^{2} is translated to a^2 and \\cos\\theta to cos(theta); the API does not consume raw LaTeX.",
       "MV-B-13 and MV-B-14 are composed with product operations (det(2A), det(AB)), not with a parallel oracle.",
-      "Symbolic results are accepted by exact algebraic equivalence; row 18 is additionally required to be a factored product.",
+      "Symbolic results are accepted by exact algebraic equivalence; rows 18 and 19 are additionally required to be factored products.",
       "Lite toLatex removes '*', so tests assert the exact symbolic expression rather than the LaTeX text.",
       "Row 22 requires DIMENSION_MISMATCH with a non-empty message.",
       "Plus symbolic support is scoped to /matrix/determinant; the rest of /matrix/* keeps the strict numeric contract, and result_approx is None when free symbols remain."
