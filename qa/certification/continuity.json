@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 234,
+  "revision": 235,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "737a82d4eacf6bd6e4c22e719fa7f75df2de3410",
-  "baseline_case": "LOG-EXP-RAD-EV-M-CLOSURE-R234",
+  "technical_baseline_sha": "e8b1def62e2ef1249ffccbde0dfbf09868ca5f0e",
+  "baseline_case": "LOG-EXP-TRIG-EV-T-CLOSURE-R235",
   "baseline_status": "PASS_SCOPED_BILATERAL",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -48,15 +48,15 @@
     }
   },
   "next_action": {
-    "id": "EXP-EV-T-EVALUATION",
+    "id": "EXP-MATRICES-VECTORES-EVALUATION",
     "status": "IN_PROGRESS",
-    "action": "EV-M-01..13 are closed PASS_SCOPED_BILATERAL on their exact technical SHAs (see ev_m_closure_r234). Next objective: EV-T-01..12 (trigonometric, hyperbolic and inverse) of matriz_log_exp_radicales. Precondition before certifying EV-T: fix the Plus semantic domain leak where ln(1-1) and ln(cos(pi/2)) return success=true with result_text=\"zoo\"; EV-T-11 (\\ln(\\cos\\frac{\\pi}{2}), undefined) must require DOMAIN_ERROR. Verify rows EV-T-01..12, including argument reduction (\\sin(10^{22}), EV-T-07), i (e^{i\\pi/2}, EV-T-08), arsinh/artanh (EV-T-09/10) and the real/complex double branch of EV-T-12. Keep the independent blockers unchanged and run the cumulative gates on the new technical SHA.",
+    "action": "EV-T-01..12 are closed PASS_SCOPED_BILATERAL on their exact technical SHAs (see ev_t_closure_r235). Next objective per the canonical order (after Log/Exp/Radicales): Matrices/Vectores of legacy_sources/matriz_matrices_vectores.md.gz. Precondition before assuming any expression/result: verify the frozen rows of matriz_matrices_vectores.md.gz. Keep the independent blockers unchanged (H2-SG28-DIST-01..08, SECURITY-S25, SY-P-23, SY-X-04-PLUS-HTTP, ALGEBRA229-AS-B-29) and run the cumulative gates on the new technical SHA.",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "737a82d4eacf6bd6e4c22e719fa7f75df2de3410",
-      "c2melendez/precision-lab-plus": "16df9f6e5e1edc8303c2f66bc7154c93c54e67ef"
+      "c2melendez/precision-lab-lite": "e8b1def62e2ef1249ffccbde0dfbf09868ca5f0e",
+      "c2melendez/precision-lab-plus": "d1e387536713bc057109e2fec1af2846a2c1b36b"
     },
     "product_changed": true,
-    "audit": "logic audit r232: mathematics CORRECT, no singularity approved; EV-M closure r234 supersedes the EV-M diagnosis; see qa/certification/LOGIC_AUDIT_2026-10-21.md"
+    "audit": "logic audit r232: mathematics CORRECT, no singularity approved; EV-T closure r235 supersedes the EV-T diagnosis; see qa/certification/LOGIC_AUDIT_2026-10-21.md"
   },
   "blockers": [
     {
@@ -80,7 +80,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r232: auditoria logica del proceso de certificacion (EV-L/I/E/R + filas singulares EV). Matematica CORRECTA, ninguna singularidad aprobada; 0^0=1 acotado a evaluacion directa. Corregida la deriva documental (puntero CONTINUITY_NEXT_ACTION, banner CONTINUITY, corte del tablero), paridad de protocolo Plus y anclaje de oraculos (Lite c4a49a51 2056 passed; Plus 89bf0e26 1825 passed). Defecto de producto abierto no certificado: Plus ln(1-1)/ln(cos(pi/2)) -> zoo; precondicion de EV-T-11. Docs 574ca8bf/a5009a79: el filtro de rutas re-ejecuto cumulative+h1d, ambos SUCCESS (39687537314/39687537328 y 39687547538/39687547667); no fue un relanzamiento deliberado.",
+  "ledger_note": "r235: EV-T-01..12 (trigonometricas, hiperbolicas e inversas de matriz_log_exp_radicales) cerrado PASS_SCOPED_BILATERAL. Lite e8b1def6: nuevo engine/inverseHyperbolicExact.ts (asinh(sinh 1)=1, EV-T-09; exp(atanh(1/2))=((1+1/2)/(1-1/2))^(1/2)=3^(1/2), EV-T-10) aplicado antes del reintento float(), que degradaba las formas exactas a decimales espurios. Plus d1e38753: guarda simbolica de singularidad logaritmica (EV-T-11) que exige DOMAIN_ERROR cuando un argumento de log no esta demostrado no nulo (ln(1-1), ln(0), ln(0+0), ln(cos(pi/2)), log(0,10)); ln(-1)=I*pi, ln(e)=1, log(100)=2 y sqrt(cos(pi))=I intactos; cierra la fuga abierta en r232/r234. Gates por head_sha exacto, attempt=1: Lite cumulative 39701580546 (351 files, 2071 passed, EV-T 8/8), h1d 39701580477 (22), scientific 39701580446 (456); Plus cumulative 39701587699 (backend 1838 passed, 6 xfailed, cobertura 88.05%, EV-T 7/7; frontend 149 files/1008 passed), h1d 39701587450 (38), native 39701587574 (26+52), sg28 39701587542 (69). El gate security/dependency no se disparo (evaluate_service.py queda fuera de su filtro de rutas); advisories sin cambio. Blockers independientes sin cambios; certificacion global OPEN. Siguiente objetivo: Matrices/Vectores (legacy_sources/matriz_matrices_vectores.md.gz).",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -1176,6 +1176,113 @@
     "next_objective": "EV-T-01..12 trigonometric, hyperbolic and inverse",
     "next_status": "IN_PROGRESS",
     "next_precondition": "Fix the Plus semantic domain leak (ln(1-1) and ln(cos(pi/2)) return success=true with result_text=\"zoo\") and require DOMAIN_ERROR in EV-T-11 before certifying EV-T."
+  },
+  "ev_t_closure_r235": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "EV-T-01..12 trigonometric, hyperbolic and inverse compositions (matriz_log_exp_radicales)",
+    "product_changed": true,
+    "product_fix": "Lite: new engine/inverseHyperbolicExact.ts restores the exact value of two compositions Algebrite leaves unsolved and that the float() retry degraded to spurious decimals: asinh((e-e^-1)/2) = asinh(sinh 1) = 1 (EV-T-09) and exp(atanh(1/2)) = ((1+1/2)/(1-1/2))^(1/2) = 3^(1/2) (EV-T-10); it runs before the float() retry and only over whole literal numeric forms. Plus: services/evaluate_service.py adds a symbolic logarithmic-singularity guard (EV-T-11) that simplifies expressions containing a log whose argument is not proven nonzero and raises DOMAIN_ERROR when the result is zoo/oo/-oo/nan; ln(1-1), ln(0), ln(0+0), ln(cos(pi/2)) and log(0,10) now give a clear error while ln(-1)=I*pi, ln(e)=1, log(100)=2 and sqrt(cos(pi))=I stay intact.",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "e8b1def62e2ef1249ffccbde0dfbf09868ca5f0e",
+      "c2melendez/precision-lab-plus": "d1e387536713bc057109e2fec1af2846a2c1b36b"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39701580546,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39701580546",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8b1def62e2ef1249ffccbde0dfbf09868ca5f0e",
+        "head_sha_matches": true,
+        "tests": "351 files; 2071 passed, 8 expected fail, 34 todo; tests/logExpEvT01to12.audit.test.ts 8/8",
+        "evidence_guard": {
+          "skip": "false",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39701580477,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39701580477",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8b1def62e2ef1249ffccbde0dfbf09868ca5f0e",
+        "head_sha_matches": true,
+        "tests": "22 passed"
+      },
+      {
+        "gate": "scientific",
+        "run_id": 39701580446,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39701580446",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8b1def62e2ef1249ffccbde0dfbf09868ca5f0e",
+        "head_sha_matches": true,
+        "tests": "456 passed"
+      },
+      {
+        "gate": "cumulative",
+        "run_id": 39701587699,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39701587699",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "d1e387536713bc057109e2fec1af2846a2c1b36b",
+        "head_sha_matches": true,
+        "tests": "1838 passed, 6 xfailed, 1 warning; coverage 88.05%; frontend 149 files, 1008 passed; tests/test_log_exp_matrix_ev_t01_l12.py 7/7 PASSED",
+        "evidence_guard": {
+          "skip": "false",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39701587450,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39701587450",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "d1e387536713bc057109e2fec1af2846a2c1b36b",
+        "head_sha_matches": true,
+        "tests": "38 passed"
+      },
+      {
+        "gate": "native-syntax",
+        "run_id": 39701587574,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39701587574",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "d1e387536713bc057109e2fec1af2846a2c1b36b",
+        "head_sha_matches": true,
+        "tests": "26 passed; 52 passed"
+      },
+      {
+        "gate": "sg28-prototype",
+        "run_id": 39701587542,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39701587542",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "d1e387536713bc057109e2fec1af2846a2c1b36b",
+        "head_sha_matches": true,
+        "tests": "69 passed, 1 warning"
+      }
+    ],
+    "security_gate": {
+      "triggered": false,
+      "reason": "The certification dependency/security gate is path-filtered; the EV-T change only touches backend/app/services/evaluate_service.py, which is outside its filter. Advisories unchanged; blocker SECURITY-S25 stays OPEN/BLOCKED."
+    },
+    "declared_conventions": [
+      "EV-T-05 (\\ln(\\cosh 1) approx 0.433780830) is certified on the numeric channel: Lite prints a 6-decimal float (0.433781, tolerance 1e-6), Plus keeps the exact form ln(cosh(1)) with result_approx; same limitation as EV-H-10/11.",
+      "Exact equivalent forms are admitted (G2): EV-T-02 is certified with exp(1/2) = sqrt(e) and EV-T-10 with 3^(1/2) = sqrt(3); no textual equality is required when an exact equivalent representation exists.",
+      "EV-T-07 (\\sin(10^{22})) keeps the exact argument-reduced form sin(10^22) (rule 2) and matches the reference approximation -0.852200850 on the numeric channel.",
+      "i (row input) is equivalent to I (SymPy output) in EV-T-08/EV-T-12; the frozen row declares the complex branch i and both engines follow the documented complex branch.",
+      "Lite hyperbolics: engine/inverseHyperbolicExact.ts only acts on a whole asinh/acosh/atanh(<numeric>) whose real value is exactly an integer, or on exp(atanh(a/b)) with integers 0<=a<b; any other shape is returned untouched.",
+      "Plus inverse-hyperbolic aliases: \\operatorname{arsinh}/\\operatorname{artanh} are evaluated through the documented plain translation asinh/atanh (the frontend maps arsinh -> \\operatorname{asinh}); Plus keeps its documented rejection of arcsinh/arccosh/arctanh (capability unchanged).",
+      "Plus logarithmic-singularity guard: a log whose argument is not proven nonzero must resolve to a clear DOMAIN_ERROR (zoo/oo/-oo/nan), not a spurious finite value."
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "Matrices/Vectores (legacy_sources/matriz_matrices_vectores.md.gz)",
+    "next_status": "IN_PROGRESS",
+    "next_precondition": "Verify the frozen rows of legacy_sources/matriz_matrices_vectores.md.gz before assuming any expression/result; canonical order after Log/Exp/Radicales."
   },
   "logic_audit_r232": {
     "date_utc": "2026-10-21",

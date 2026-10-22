@@ -1,3 +1,18 @@
+## 2026-10-21 UTC — r235: EV-T-01..12 cerrado bilateralmente; Matrices/Vectores siguiente
+
+**EV-T-01..12 (trigonométricas, hiperbólicas e inversas) — PASS_SCOPED_BILATERAL.**
+
+- Lite `e8b1def62e2e…`: cumulative [39701580546] — **SUCCESS**, 351 archivos, **2071 passed**, 8 expected fail, 34 todo; `tests/logExpEvT01to12.audit.test.ts` **8/8**; guard `skip=false` («No reusable completed evidence found», `checkout_sha=e8b1def6…`). h1d [39701580477] — SUCCESS, 22 passed. scientific-ui [39701580446] — SUCCESS, 456 passed.
+- Plus `d1e387536713…`: cumulative [39701587699] — **SUCCESS**, **1838 passed**, 6 xfailed, cobertura **88.05%**; `tests/test_log_exp_matrix_ev_t01_l12.py` **7/7 PASSED**; guard `skip=false` (`checkout_sha=d1e38753…`). Frontend 149 archivos, 1008 passed. h1d [39701587450] — SUCCESS, 38 passed; native-syntax [39701587574] — SUCCESS (26 + 52); SG28 [39701587542] — SUCCESS, 69 passed.
+- Los 7 gates consultados por `head_sha` exacto (`e8b1def6…`/`d1e38753…`), `attempt=1`, conclusión `success`. El gate security/dependency no se disparó porque el cambio no toca ninguna ruta de su filtro (`evaluate_service.py` está fuera); advisories sin cambio.
+- Resultados por fila (Lite / Plus): 01=`0`/`0`; 02=`exp(1/2)`(≡√e)/`exp(1/2)`; 03=`2`/`2`; 04=`0`/`0`; 05=`0.433781…` (canal 6 decimales)/`ln(cosh(1))`+`result_approx=0.433780830`; 06=`1/4*pi`/`pi/4`; 07=`sin(1000…0)`+`-0.852201…`/`sin(1000…0)`+`result_approx=-0.852200850`; 08=`i`/`I`; 09=`1`/`1`; 10=`3^(1/2)`/`sqrt(3)`; 11=`DOMAIN_ERROR`/`DOMAIN_ERROR`; 12=`i`/`I`.
+- Producto Lite `e8b1def6`: nuevo `engine/inverseHyperbolicExact.ts` restituye el valor exacto de dos composiciones que Algebrite deja sin resolver y que el reintento `float()` degradaba a decimales espurios: `asinh((e-e^{-1})/2)=asinh(sinh 1)=1` (EV-T-09) y `exp(atanh(1/2))=((1+1/2)/(1-1/2))^{1/2}=3^{1/2}` (EV-T-10). Se aplica **antes** del `float()` y solo sobre formas literales completas.
+- Producto Plus `d1e38753`: `services/evaluate_service.py` añade una guarda simbólica de singularidad logarítmica (EV-T-11): si un argumento de `log` no está demostrado distinto de cero, simplifica y emite `DOMAIN_ERROR` cuando el resultado es `zoo/oo/-oo/nan`. `ln(1-1)`, `ln(0)`, `ln(0+0)`, `ln(cos(pi/2))` y `log(0,10)` ahora dan error claro; `ln(-1)=I*pi`, `ln(e)=1`, `log(100)=2`, `sqrt(cos(pi))=I` intactos. Cierra la fuga abierta en r232/r234.
+- Convenciones declaradas en `MANUAL_CAPABILITY_GAPS.md`: canal numérico de EV-T-05 (misma regla que EV-H); equivalencia exacta admitida (EV-T-02 `exp(1/2)≡√e`, EV-T-10 `3^(1/2)≡√3`); `i`(fila)≡`I`(SymPy) en EV-T-08/12; rama compleja de EV-T-12; traducción plana `arsinh/artanh→asinh/atanh` en Plus (el frontend mapea `arsinh→\operatorname{asinh}`; Plus mantiene su rechazo documentado de `arcsinh/arccosh/arctanh`, capacidad sin cambio).
+- Sin regresiones atribuibles: Lite local 2069 passed + 34 todo con 3 timeouts de factorización por carga paralela (verdes en aislamiento); Plus local 1838 passed, 6 xfailed, con 2 fallos pre-existentes confirmados en baseline por `git stash` (SG28 interruptible, SY-X-16) y 3 de S25 que pasan aislados. CI acumulativo verde en ambos repos.
+
+**Siguiente objetivo — Matrices/Vectores (`legacy_sources/matriz_matrices_vectores.md.gz`), orden canónico posterior a Log/Exp/Radicales.** Precondición: verificar la fila congelada antes de asumir expresión/resultado. Blockers independientes sin cambios; certificación global `OPEN`.
+
 ## 2026-10-21 UTC — r234: EV-M-01..13 cerrado bilateralmente; EV-T diagnosticado
 
 **EV-M-01..13 (mixtas: logaritmos, exponenciales, radicales y polinomios) — PASS_SCOPED_BILATERAL.**
