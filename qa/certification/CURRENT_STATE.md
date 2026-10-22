@@ -1,3 +1,13 @@
+## 2026-10-22 UTC — r240: coordinación documental con Plus Stryker/S25 pendiente
+
+La corrida Lite H1d [39754424829](https://github.com/c2melendez/precision-lab-lite/actions/runs/39754424829) pasó sobre SHA c28091c0173f951a2571ffcbb6084f566ced0034; el acumulativo [39754424771](https://github.com/c2melendez/precision-lab-lite/actions/runs/39754424771) y Scientific UI [39754424596](https://github.com/c2melendez/precision-lab-lite/actions/runs/39754424596) también pasaron en ese SHA. El HEAD actual Lite b3dcccf es un commit documental r239 encima del SHA técnico verificado.
+
+El siguiente objetivo transversal sigue bloqueado por el gate S25 de Plus, no por evidencia de producto Lite. Plus SHA f3b3688544f1b6fd161f6cf763f68c5d0746e0c3: [corrida 39802197250](https://github.com/c2melendez/precision-lab-plus/actions/runs/39802197250) reportó 10 vulnerabilidades npm (4 moderadas, 6 altas) y canceló Stryker tras 60 min: 8 archivos, 2.627 mutantes; dry run 698 tests/78 s, sin reporte. No ejecutar npm audit fix --force por el cambio mayor Tailwind 4 propuesto.
+
+Plus publicó r242, SHA bae07b39dfc71eb01c0921524b6bbf162369166d, elevando solo el límite de Stryker a 120 min. Gates frescos exact-SHA pendientes: [dependencias/seguridad 39814332343](https://github.com/c2melendez/precision-lab-plus/actions/runs/39814332343), [acumulativo 39814332246](https://github.com/c2melendez/precision-lab-plus/actions/runs/39814332246), [H1d 39814332232](https://github.com/c2melendez/precision-lab-plus/actions/runs/39814332232). No cerrar MV-D documentalmente hasta que la condición de salida S25 quede satisfecha. Certificación global OPEN.
+
+---
+
 ## 2026-10-22 UTC — r239: reconciliación del índice con los HEADs técnicos MV-D (documental, 0 runs esperados)
 
 **Estado técnico vigente (sin cambios esta revisión):** Lite `c28091c0173f951a2571ffcbb6084f566ced0034` y Plus `91d7f7b499e1effaeef7c4a3bd9e04c0b3b6d6f5` (MV-D: sistemas lineales únicos/paramétricos/incompatibles con parámetro `a`, rref, LU y Gram-Schmidt sin normalizar). Gates consultados por `head_sha` exacto: Lite cumulative [39754424771], h1d [39754424829], scientific-ui [39754424596] — SUCCESS. Plus cumulative [39754425445], backend-isolation [39754425427], h1d [39754425636], native-syntax [39754425572], SG28 UI [39754425501] — SUCCESS. Dependency/security [39754425516] cancelled por el timeout estructural conocido de plus-frontend-mutmut (no relanzado; precedente mv_c_closure_r238); no es evidencia de producto.

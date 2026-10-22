@@ -1,3 +1,12 @@
+## 2026-10-22 UTC — r240: evidencia de coordinación y próximo gate
+
+- Lite H1d 39754424829, acumulativo 39754424771 y Scientific UI 39754424596 SUCCESS sobre SHA técnico exacto c28091c0173f951a2571ffcbb6084f566ced0034. HEAD b3dcccf es solo el commit documental r239.
+- Plus S25 [39802197250](https://github.com/c2melendez/precision-lab-plus/actions/runs/39802197250) FAILURE: frontend npm audit reportó 10 vulnerabilidades (4 moderadas, 6 altas), artifact 12435827934; Plus Stryker fue cancelado al llegar a 60 min tras instrumentar 2.627 mutantes en 8 archivos y completar dry run de 698 tests en 78 s sin generar informe.
+- Remediación publicada en Plus SHA bae07b39dfc71eb01c0921524b6bbf162369166d: timeout del job Plus Stryker 60→120 min, sin cambiar scope/pins/umbrales. Runs nuevos en cola al registrar esta nota: gate 39814332343, acumulativo 39814332246, H1d 39814332232.
+- Estado Lite no cambia; el cierre formal bilateral MV-D sigue pendiente hasta que el gate S25 cumpla los criterios documentados. SECURITY-S25 BLOCKED; global OPEN.
+
+---
+
 ## 2026-10-22 UTC — r239: verificación de gates MV-D y reconciliación del índice (técnico vs. documental)
 
 **Objetivo:** cerrar la brecha entre los HEADs técnicos publicados y el índice de continuidad, sin relanzar CI con cambios solo documentales.

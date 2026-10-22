@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 239,
+  "revision": 240,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "c28091c0173f951a2571ffcbb6084f566ced0034",
@@ -50,13 +50,13 @@
   "next_action": {
     "id": "EXP-MATRICES-VECTORES-EVALUATION",
     "status": "IN_PROGRESS",
-    "action": "MV-A-01..25, MV-B-01..22 and MV-C-01..19 are closed PASS_SCOPED_BILATERAL on their exact technical SHAs (see mv_a_closure_r236, mv_b_closure_r237 and mv_c_closure_r238), with the derived 153-row qa/certification/matrices_ejecutables.jsonl. Next objective: MV-D-01..17 of legacy_sources/matriz_matrices_vectores.md.gz; cover linear systems (unique, parametric and inconsistent, including parameter a), rref, LU decomposition and unnormalized Gram-Schmidt, anchoring every row to the frozen source before assuming any expression or result. Keep the independent blockers unchanged (H2-SG28-DIST-01..08, SECURITY-S25, SY-P-23, SY-X-04-PLUS-HTTP, ALGEBRA229-AS-B-29) and run the scoped gates on the new technical SHA.",
+    "action": "Lite product gates remain SUCCESS on exact technical SHA c28091c0173f951a2571ffcbb6084f566ced0034 (cumulative 39754424771, H1d 39754424829, Scientific UI 39754424596); current Lite HEAD b3dcccf is documentation-only. Wait for Plus S25 fresh gates on SHA bae07b39dfc71eb01c0921524b6bbf162369166d: dependency/security 39814332343, cumulative 39814332246, H1d 39814332232. Plus r242 raised only the Stryker job timeout to 120 minutes after 2,627 mutants did not finish within 60 minutes; the same run also exposed 10 npm vulnerabilities (4 moderate, 6 high). Do not use npm audit fix --force because it proposes a breaking Tailwind CSS 4 upgrade. Keep SECURITY-S25 BLOCKED until frontend audit and Stryker report both pass; then perform formal bilateral MV-D closure and continue to MV-E. Global certification OPEN.",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-lite": "c28091c0173f951a2571ffcbb6084f566ced0034",
-      "c2melendez/precision-lab-plus": "91d7f7b499e1effaeef7c4a3bd9e04c0b3b6d6f5"
+      "c2melendez/precision-lab-plus": "bae07b39dfc71eb01c0921524b6bbf162369166d"
     },
-    "product_changed": true,
-    "audit": "r238: Lite matrixOps/symbolicMatrix symbolic inverse, adjugate, cofactors and solveMatrixEquation are covered by tests/matricesMvC01to19.audit.test.ts (24/24) and tests/matrixModeParity.test.ts (2/2); Plus bounded symbolic inverse, numeric adjugate/cofactor and /matrix/solve-equation are covered by backend/tests/test_matrices_mv_c01_l19.py (25/25) and src/__tests__/MatrixMode.test.tsx (7/7). The security/dependency gate was triggered and its plus-frontend-stryker job hit the 35-minute hard timeout; it is not MV-C evidence. SECURITY-S25 remains an independent blocker."
+    "product_changed": false,
+    "audit": "r240 coordination: Lite MV-D product evidence remains green on exact SHA c28091c; Plus security/mutation gate remains unresolved. No Lite product code changed."
   },
   "blockers": [
     {
@@ -2051,5 +2051,15 @@
         "39754425501"
       ]
     }
+  },
+  "r240_plus_gate_coordination": {
+    "plus_sha": "bae07b39dfc71eb01c0921524b6bbf162369166d",
+    "runs": {
+      "dependency_security": 39814332343,
+      "cumulative": 39814332246,
+      "h1d": 39814332232
+    },
+    "status": "QUEUED_AT_DOCUMENTATION",
+    "note": "Plus S25 unresolved; no MV-D formal closure until frontend npm audit and Stryker are green."
   }
 }
