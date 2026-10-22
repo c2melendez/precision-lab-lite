@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 237,
+  "revision": 238,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "09ac205f7716994a2a04a222c5d276f35cef78fa",
-  "baseline_case": "MATRICES-MV-B-CLOSURE-R237",
+  "technical_baseline_sha": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+  "baseline_case": "MATRICES-MV-C-CLOSURE-R238",
   "baseline_status": "PASS_SCOPED_BILATERAL",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -50,13 +50,13 @@
   "next_action": {
     "id": "EXP-MATRICES-VECTORES-EVALUATION",
     "status": "IN_PROGRESS",
-    "action": "MV-A-01..25 and MV-B-01..22 are closed PASS_SCOPED_BILATERAL on their exact technical SHAs (see mv_a_closure_r236 and mv_b_closure_r237), with the derived 153-row qa/certification/matrices_ejecutables.jsonl. Next objective: MV-C (19 rows) of legacy_sources/matriz_matrices_vectores.md.gz; extend the JSONL executor and the audit tests, anchoring every row to the frozen source before assuming any expression or result. Keep the independent blockers unchanged (H2-SG28-DIST-01..08, SECURITY-S25, SY-P-23, SY-X-04-PLUS-HTTP, ALGEBRA229-AS-B-29) and run the scoped gates on the new technical SHA.",
+    "action": "MV-A-01..25, MV-B-01..22 and MV-C-01..19 are closed PASS_SCOPED_BILATERAL on their exact technical SHAs (see mv_a_closure_r236, mv_b_closure_r237 and mv_c_closure_r238), with the derived 153-row qa/certification/matrices_ejecutables.jsonl. Next objective: MV-D-01..17 of legacy_sources/matriz_matrices_vectores.md.gz; cover linear systems (unique, parametric and inconsistent, including parameter a), rref, LU decomposition and unnormalized Gram-Schmidt, anchoring every row to the frozen source before assuming any expression or result. Keep the independent blockers unchanged (H2-SG28-DIST-01..08, SECURITY-S25, SY-P-23, SY-X-04-PLUS-HTTP, ALGEBRA229-AS-B-29) and run the scoped gates on the new technical SHA.",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "09ac205f7716994a2a04a222c5d276f35cef78fa",
-      "c2melendez/precision-lab-plus": "c31e54091302acd102945858cfbbce7d70e034ed"
+      "c2melendez/precision-lab-lite": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+      "c2melendez/precision-lab-plus": "9083811b04609489fa26973cbec90e3aa2238769"
     },
     "product_changed": true,
-    "audit": "r237: Lite symbolicDeterminant (bounded 4x4 cofactor expansion, Algebrite simplify) is covered by tests/matricesMvB01to22.audit.test.ts; Plus symbolic determinant cells are covered by backend/tests/test_matrices_mv_b01_l22.py. The security/dependency gate was not triggered; SECURITY-S25 remains an independent blocker."
+    "audit": "r238: Lite matrixOps/symbolicMatrix symbolic inverse, adjugate, cofactors and solveMatrixEquation are covered by tests/matricesMvC01to19.audit.test.ts (24/24) and tests/matrixModeParity.test.ts (2/2); Plus bounded symbolic inverse, numeric adjugate/cofactor and /matrix/solve-equation are covered by backend/tests/test_matrices_mv_c01_l19.py (25/25) and src/__tests__/MatrixMode.test.tsx (7/7). The security/dependency gate was triggered and its plus-frontend-stryker job hit the 35-minute hard timeout; it is not MV-C evidence. SECURITY-S25 remains an independent blocker."
   },
   "blockers": [
     {
@@ -80,7 +80,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r237: MV-B-01..22 (determinantes de matriz_matrices_vectores) cerrado PASS_SCOPED_BILATERAL. Lite 09ac205f: nuevo src/engine/symbolicDeterminant.ts con expansion por cofactores acotada a 4x4 y simplify de Algebrite; compute.worker.ts enruta determinante Fraction -> constantes -> simbolico; camino numerico exacto sin cambio. Plus c31e5409: parse_matrix(allow_symbolic=True) y _parse_matrix_cell permiten variables libres y sqrt/abs/sin/cos/tan solo en /matrix/determinant; determinant() usa trigsimp+simplify y factor para polinomios; el resto de /matrix/* conserva contrato numerico estricto y result_approx=None con variables libres. Gates de alcance por head_sha exacto, attempt=1: Lite cumulative 39725461570 (353 files, 2127 passed, MV-B 27/27), h1d 39725461610 (22), scientific 39725461481 (456); Plus cumulative 39725461036 (backend 1891 passed, 6 xfailed, cobertura 88.28%, MV-B 26/26; frontend 149 files/1008 passed), h1d 39725461033 (38), native-syntax 39725461074 (26+52). Guards skip=false. El gate security/dependency no se disparo (push fuera de su filtro); SECURITY-S25 sigue como blocker independiente. Fallos locales de factorizacion/SG28/S25/SY-X-16 son preexistentes de entorno; CI acumulativo verde. Blockers independientes sin cambios; certificacion global OPEN. Siguiente objetivo: MV-C (19 filas).",
+  "ledger_note": "r238: MV-C-01..19 (inversa, adjunta, cofactores y ecuaciones matriciales de matriz_matrices_vectores) cerrado PASS_SCOPED_BILATERAL. Lite 3aec2c25: matrixOps incorpora inversa/adjunta/cofactores exactos y solveMatrixEquation con orden izquierdo/derecho; symbolicMatrix.ts anade inversa/adjunta/cofactores simbolicos y complejos acotados a 4x4 con Algebrite; compute.worker.ts usa Fraction y cae al simbolico solo con celdas no racionales; MatrixMode expone las tres operaciones. Plus 9083811b: /matrix/inverse acepta variables libres y trigonometricas elementales con SYMBOLIC_MATRIX_LIMIT=4 y UNSUPPORTED_OPERATION fuera del limite; /matrix/adjugate y /matrix/cofactor conservan contrato numerico estricto; nueva /matrix/solve-equation con x_side=left|right; la UI expone adjunta, cofactores y lado de la ecuacion. Gates de producto por head_sha exacto, attempt=1: Lite cumulative 39732103530 (354 files, 2152 passed, MV-C 24/24), h1d 39732103564 (22), scientific 39732103583 (456); Plus cumulative 39732103487 (backend 1915 passed, 6 xfailed, cobertura 88.08%, MV-C 25/25; frontend 149 files/1010 passed, MatrixMode 7/7), h1d 39732103479 (38), native-syntax 39732103484 (26+52), SG28 backend 39732103482 (69), SG28 UI 39732103492 (21). Guards skip=false. Las 19 filas coinciden con el oraculo congelado; 08/10/11 por equivalencia algebraica exacta. El gate security/dependency 39732103637 quedo cancelled: backend-security y plus-backend-mutmut pasaron, pero plus-frontend-stryker agoto el timeout duro de 35 min y no se relanzo el mismo input; no es evidencia de MV-C y SECURITY-S25 sigue como blocker independiente. Fallos locales de factorizacion/SG28/S25/SY-X-16 son preexistentes de entorno; CI acumulativo verde. Blockers independientes sin cambios; certificacion global OPEN. Siguiente objetivo: MV-D-01..17 (sistemas, rref, LU y Gram-Schmidt).",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -1834,6 +1834,205 @@
       ],
       "workflow_runs": 0,
       "verified_via": "GitHub Actions API query by head_sha; documentation paths are excluded by the workflow filters."
+    }
+  },
+  "mv_c_closure_r238": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "MV-C-01..19 inverse, adjugate, cofactors and matrix equations (matriz_matrices_vectores)",
+    "product_changed": true,
+    "product_fix": "Lite: matrixOps adds exact numeric inverse/adjugate/cofactor and solveMatrixEquation (left/right product order); symbolicMatrix.ts adds bounded 4x4 symbolic/complex inverse, adjugate and cofactor with Algebrite; compute.worker.ts routes those operations through Fraction and falls back to symbolic only for non-rational cells; MatrixMode exposes adjugate, cofactors and matrix equations. Plus: /matrix/inverse accepts free symbols and elementary trig with SYMBOLIC_MATRIX_LIMIT=4 and UNSUPPORTED_OPERATION outside the cap; /matrix/adjugate and /matrix/cofactor keep the strict numeric contract; new /matrix/solve-equation accepts x_side=left|right; frontend MatrixMode exposes adjugate, cofactors and equation side. frontend/src/types/api.ts only updates the hand-maintained OperationType union because the generated file is stale; the HTTP contract is unchanged.",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+      "c2melendez/precision-lab-plus": "9083811b04609489fa26973cbec90e3aa2238769"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "repo": "c2melendez/precision-lab-lite",
+        "run_id": 39732103530,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39732103530",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "354 files; 2152 passed, 8 expected fail, 34 todo; tests/matricesMvC01to19.audit.test.ts 24/24; tests/matrixModeParity.test.ts 2/2",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "repo": "c2melendez/precision-lab-lite",
+        "run_id": 39732103564,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39732103564",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "22 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "scientific",
+        "repo": "c2melendez/precision-lab-lite",
+        "run_id": 39732103583,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39732103583",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "456 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "cumulative",
+        "repo": "c2melendez/precision-lab-plus",
+        "run_id": 39732103487,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39732103487",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "backend 1915 passed, 6 xfailed, coverage 88.08%; frontend 149 files, 1010 passed, 28 todo; tests/test_matrices_mv_c01_l19.py 25/25 PASSED; src/__tests__/MatrixMode.test.tsx 7/7",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "repo": "c2melendez/precision-lab-plus",
+        "run_id": 39732103479,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39732103479",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "38 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "native-syntax",
+        "repo": "c2melendez/precision-lab-plus",
+        "run_id": 39732103484,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39732103484",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "desktop 26 passed; tablet/mobile 52 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "sg28-backend-isolation",
+        "repo": "c2melendez/precision-lab-plus",
+        "run_id": 39732103482,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39732103482",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "69 passed"
+      },
+      {
+        "gate": "sg28-ui-cancellation",
+        "repo": "c2melendez/precision-lab-plus",
+        "run_id": 39732103492,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39732103492",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "21 passed"
+      }
+    ],
+    "security_gate": {
+      "triggered": true,
+      "run_id": 39732103637,
+      "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39732103637",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "head_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+      "head_sha_matches": true,
+      "attempt": 1,
+      "timeout_minutes": 35,
+      "plus_frontend_job_id": 119669346495,
+      "jobs": {
+        "audit-request": "success",
+        "security/backend-security": "success",
+        "security/frontend-audit": "skipped",
+        "mutation/plus-backend-mutmut": "success",
+        "mutation/plus-frontend-stryker": "cancelled",
+        "mutation/lite-frontend-stryker": "skipped"
+      },
+      "reason": "mutation/plus-frontend-stryker hit the hard 35-minute job timeout after instrumenting 2627 mutants and running 696 initial tests; it uploaded no report. The run is attempt=1 and was not relaunched because the same full-profile dispatch under the same structural timeout would reproduce the cancellation.",
+      "used_as_mv_c_evidence": false,
+      "blocker": "SECURITY-S25"
+    },
+    "artifacts": {
+      "jsonl": "qa/certification/matrices_ejecutables.jsonl",
+      "rows": 153,
+      "sections": {
+        "A": 25,
+        "B": 22,
+        "C": 19,
+        "D": 17,
+        "E": 12,
+        "F": 17,
+        "G": 22,
+        "H": 12,
+        "J": 7
+      },
+      "sha256": "6C93E9081E6A4727B538EBD84C2F578153A562F39ECCA8D333D1066B964B1B0F",
+      "generator": "qa/certification/derive_matrices_ejecutables.py",
+      "identical_in_both_repos": true,
+      "closure_rows": "MV-C-01..19"
+    },
+    "conventions": [
+      "Lite numeric LaTeX \\frac{a}{b} cells are translated to the ASCII a/b accepted by the Matrices grid; the calculator intent path normalizes the same form.",
+      "Plus symbolic \\cos\\theta is translated to cos(theta) and a^{2} to a^2; the API does not consume raw LaTeX.",
+      "The row-level input i is mapped to SymPy I; MV-C-08 preserves the exact complex result.",
+      "Symbolic results are accepted by exact algebraic equivalence; MV-C-08/10/11 are checked against explicit SymPy matrices.",
+      "Lite symbolic inverse/adjugate/cofactor are bounded to 4x4; Plus symbolic inverse is bounded to 4x4, while Plus adjugate/cofactor remain strictly numeric.",
+      "Lite solveMatrixEquation and Plus /matrix/solve-equation are strictly numeric; MV-C-18 uses X*A=B (x_side=left) and MV-C-19 uses A*X=B (x_side=right).",
+      "Both UIs expose adjugate, cofactors and the matrix-equation side; this is no longer a UI capability gap.",
+      "MV-C-14/15/16 are checked as adjugate, adjugate and cofactor matrix respectively; cof(A)=adj(A)^T is not collapsed into adj(A)."
+    ],
+    "preexisting_failures": [
+      "Lite local full suite: environment-dependent factorization timeouts; the CI cumulative gate is green.",
+      "Plus local full suite: SG28/S25/SY-X-16 Windows/environment findings and one e2e timeout that passed in isolation; the CI cumulative gate is green."
+    ],
+    "next": "MV-D-01..17: linear systems (unique, parametric and inconsistent, including parameter a), rref, LU decomposition and unnormalized Gram-Schmidt, anchored to matriz_matrices_vectores.md.gz.",
+    "documentary_verification": {
+      "workflow_runs": 0,
+      "verified_via": "GitHub Actions API query by head_sha after the r238 documentary push; documentation paths are excluded by the workflow filters."
     }
   }
 }
