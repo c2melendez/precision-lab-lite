@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "revision": 238,
+  "revision": 239,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+  "technical_baseline_sha": "c28091c0173f951a2571ffcbb6084f566ced0034",
   "baseline_case": "MATRICES-MV-C-CLOSURE-R238",
   "baseline_status": "PASS_SCOPED_BILATERAL",
   "global_certification": "OPEN",
@@ -52,8 +52,8 @@
     "status": "IN_PROGRESS",
     "action": "MV-A-01..25, MV-B-01..22 and MV-C-01..19 are closed PASS_SCOPED_BILATERAL on their exact technical SHAs (see mv_a_closure_r236, mv_b_closure_r237 and mv_c_closure_r238), with the derived 153-row qa/certification/matrices_ejecutables.jsonl. Next objective: MV-D-01..17 of legacy_sources/matriz_matrices_vectores.md.gz; cover linear systems (unique, parametric and inconsistent, including parameter a), rref, LU decomposition and unnormalized Gram-Schmidt, anchoring every row to the frozen source before assuming any expression or result. Keep the independent blockers unchanged (H2-SG28-DIST-01..08, SECURITY-S25, SY-P-23, SY-X-04-PLUS-HTTP, ALGEBRA229-AS-B-29) and run the scoped gates on the new technical SHA.",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
-      "c2melendez/precision-lab-plus": "9083811b04609489fa26973cbec90e3aa2238769"
+      "c2melendez/precision-lab-lite": "c28091c0173f951a2571ffcbb6084f566ced0034",
+      "c2melendez/precision-lab-plus": "91d7f7b499e1effaeef7c4a3bd9e04c0b3b6d6f5"
     },
     "product_changed": true,
     "audit": "r238: Lite matrixOps/symbolicMatrix symbolic inverse, adjugate, cofactors and solveMatrixEquation are covered by tests/matricesMvC01to19.audit.test.ts (24/24) and tests/matrixModeParity.test.ts (2/2); Plus bounded symbolic inverse, numeric adjugate/cofactor and /matrix/solve-equation are covered by backend/tests/test_matrices_mv_c01_l19.py (25/25) and src/__tests__/MatrixMode.test.tsx (7/7). The security/dependency gate was triggered and its plus-frontend-stryker job hit the 35-minute hard timeout; it is not MV-C evidence. SECURITY-S25 remains an independent blocker."
@@ -2033,6 +2033,23 @@
     "documentary_verification": {
       "workflow_runs": 0,
       "verified_via": "GitHub Actions API query by head_sha after the r238 documentary push; documentation paths are excluded by the workflow filters."
+    }
+  },
+  "mv_d_gate_verification_r239": {
+    "note": "MV-D-01..17 technical pushes (Lite c28091c / Plus 91d7f7b) verified on exact SHA: Lite cumulative [39754424771] SUCCESS, h1d [39754424829] SUCCESS, scientific-ui [39754424596] SUCCESS; Plus cumulative [39754425445], backend-isolation [39754425427], h1d [39754425636], native-syntax [39754425572], SG28 UI [39754425501] all SUCCESS. Dependency/security gate [39754425516] cancelled reproduces the documented plus-frontend-mutmut 35-min structural timeout (same input, same limit); not relaunched, consistent with mv_c_closure_r238 precedent; SECURITY-S25 blocker unchanged.",
+    "gate_ids_by_repo": {
+      "c2melendez/precision-lab-lite": [
+        "39754424771",
+        "39754424829",
+        "39754424596"
+      ],
+      "c2melendez/precision-lab-plus": [
+        "39754425445",
+        "39754425427",
+        "39754425636",
+        "39754425572",
+        "39754425501"
+      ]
     }
   }
 }

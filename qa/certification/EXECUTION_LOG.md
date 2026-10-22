@@ -1,3 +1,17 @@
+## 2026-10-22 UTC — r239: verificación de gates MV-D y reconciliación del índice (técnico vs. documental)
+
+**Objetivo:** cerrar la brecha entre los HEADs técnicos publicados y el índice de continuidad, sin relanzar CI con cambios solo documentales.
+
+- **Deriva detectada y corregida:** `continuity.json` (r238) señalaba como baseline los SHAs de MV-C (Lite `3aec2c25`, Plus `9083811b`) mientras los pushes técnicos MV-D ya estaban publicados y certificados: Lite `c28091c0173f951a2571ffcbb6084f566ced0034` y Plus `91d7f7b499e1effaeef7c4a3bd9e04c0b3b6d6f5`. Se actualizan `technical_baseline_sha` y `next_action.technical_sha_by_repo` a esos valores, revisión 239 en ambos repositorios.
+- **Evidencia consultada por `head_sha` exacto (API Actions):**
+  - Lite `c28091c`: cumulative [39754424771] SUCCESS; h1d [39754424829] SUCCESS; scientific-ui [39754424596] SUCCESS.
+  - Plus `91d7f7b`: cumulative [39754425445] SUCCESS; backend-isolation [39754425427] SUCCESS; h1d [39754425636] SUCCESS; native-syntax [39754425572] SUCCESS; SG28 UI [39754425501] SUCCESS.
+  - Plus dependency/security [39754425516] **cancelled**: reproduce el timeout estructural documentado de plus-frontend-mutmut (35 min, mismo input, mismo límite). No se relanza (precedente mv_c_closure_r238). No es evidencia de MV-D; `SECURITY-S25` sigue blocker independiente; certificación global `OPEN`.
+- **Higiene local verificada:** working trees sincronizados con origin tras fast-forward; eliminado un duplicado huérfano de suite EV-M en Lite (`tests/logExpRadicalsEvM01to13.audit.test.ts`, superseded por `tests/logExpEvM01to13.audit.test.ts` publicada en r234); reejecución local de la suite canónica EV-M: 7 passed. Ningún cambio técnico nuevo en esta revisión.
+- **Siguiente paso ejecutable:** continuar MV-D-01..17 según `next_action` (ya implementado y verde en los SHA anteriores); evaluar cierre formal de MV-D con su propia entrada de ledger si el contrato lo exige, o transitar a la siguiente sección de `matriz_matrices_vectores.md.gz`.
+
+---
+
 ## 2026-10-22 UTC — r238: MV-C-01..19 cerrado bilateralmente
 
 **MV-C-01..19 (inversa, adjunta, cofactores y ecuaciones matriciales) — PASS_SCOPED_BILATERAL.**

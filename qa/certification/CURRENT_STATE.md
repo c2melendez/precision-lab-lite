@@ -1,3 +1,15 @@
+## 2026-10-22 UTC — r239: reconciliación del índice con los HEADs técnicos MV-D (documental, 0 runs esperados)
+
+**Estado técnico vigente (sin cambios esta revisión):** Lite `c28091c0173f951a2571ffcbb6084f566ced0034` y Plus `91d7f7b499e1effaeef7c4a3bd9e04c0b3b6d6f5` (MV-D: sistemas lineales únicos/paramétricos/incompatibles con parámetro `a`, rref, LU y Gram-Schmidt sin normalizar). Gates consultados por `head_sha` exacto: Lite cumulative [39754424771], h1d [39754424829], scientific-ui [39754424596] — SUCCESS. Plus cumulative [39754425445], backend-isolation [39754425427], h1d [39754425636], native-syntax [39754425572], SG28 UI [39754425501] — SUCCESS. Dependency/security [39754425516] cancelled por el timeout estructural conocido de plus-frontend-mutmut (no relanzado; precedente mv_c_closure_r238); no es evidencia de producto.
+
+**Corrección documental:** `continuity.json` traía `technical_baseline_sha` en los SHAs de MV-C pese a estar MV-D publicado y verde; se reconcilia a los HEADs actuales (r239). Se elimina además un duplicado huérfano de suite EV-M en el árbol local de Lite (`tests/logExpRadicalsEvM01to13.audit.test.ts`, superseded por la publicada en r234), verificado por diff antes de borrar.
+
+**Certificación global:** `OPEN`. Blockers independientes sin cambios: H2-SG28-DIST-01..08, SECURITY-S25, SY-P-23, SY-X-04-PLUS-HTTP, ALGEBRA229-AS-B-29.
+
+**Siguiente paso ejecutable:** registrar el cierre formal de MV-D-01..17 (entrada de ledger propia con resultados por fila anclados a `matriz_matrices_vectores.md.gz`) si el contrato lo exige tras revisar las filas restantes; de lo contrario transitar a la siguiente sección de la matriz de matrices/vectores según hoja de ruta. Este commit es solo documental y no debe generar runs nuevos.
+
+---
+
 ## 2026-10-22 UTC — r238: MV-C-01..19 cerrado bilateralmente
 
 **MV-C-01..19 (inversa, adjunta, cofactores y ecuaciones matriciales) — PASS_SCOPED_BILATERAL.**
