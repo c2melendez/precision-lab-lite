@@ -1822,6 +1822,18 @@
       "Lite local full suite: five environment-dependent factorization timeouts (AS-FAC-08, AS-FAC-09, AS-B-06, AS-B-18, AS-B-20); the CI cumulative gate is green.",
       "Plus local full suite: seven failures plus two errors in SG28 interruptible/cancellation, S25 CORS and SY-X-16, all pre-existing Windows/environment findings; the CI cumulative gate is green."
     ],
-    "next": "MV-C (19 rows); extend the JSONL executor and audit tests, anchored to the frozen source."
+    "next": "MV-C (19 rows); extend the JSONL executor and audit tests, anchored to the frozen source.",
+    "documentary_verification": {
+      "lite_commits": [
+        "34efd08f2596701fb43decc7210dd6a8f13c7871",
+        "55c59d03f7633271b3c40ecd472874fde3750ba0"
+      ],
+      "plus_commits": [
+        "3b7f18640aef1dc457fa04c82b213a29a59731a7",
+        "e3c4a907359b73bd19e23ac1b36748458fae361c"
+      ],
+      "workflow_runs": 0,
+      "verified_via": "GitHub Actions API query by head_sha; documentation paths are excluded by the workflow filters."
+    }
   }
 }

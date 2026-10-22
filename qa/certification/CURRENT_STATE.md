@@ -12,6 +12,8 @@
 - Gate security/dependency de Plus: **no se disparó** (el push solo tocó `matrix_service.py`, `routers/matrices.py` y el test; ninguna ruta del filtro). **SECURITY-S25** sigue como blocker independiente y no se usa como evidencia de MV-B. Certificación global `OPEN`.
 - Sin regresiones atribuibles: regresión de matrices Lite 9 archivos/119 tests y Plus 10 archivos/127 tests; `npm run typecheck` y `npm run build` Lite limpios. En local persisten los timeouts de factorización ya conocidos (`AS-FAC-08/09`, `AS-B-06/18/20`) y los fallos de entorno de Plus (SG28 interruptible/cancelación, S25 CORS y SY-X-16); el CI acumulativo quedó verde.
 
+- **Cierre documental.** Los commits r237 (`34efd08f` Lite, `3b7f1864` Plus) y su corrección (`55c59d03`/`e3c4a907`) tienen **0 workflow runs** consultados por `head_sha`; los filtros excluyen `**/*.md` y `qa/certification/continuity.json`. No se relanzó CI.
+
 **Siguiente objetivo — MV-C (19 filas).** Extender `matrices_ejecutables.jsonl`/ejecutor y los tests de auditoría; MV-A y MV-B quedan cerradas y no se reabren salvo regresión. Blockers independientes sin cambios; certificación global `OPEN`.
 
 ## 2026-10-22 UTC — r236: MV-A-01..25 cerrado bilateralmente
