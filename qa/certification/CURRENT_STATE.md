@@ -1,3 +1,18 @@
+## 2026-10-22 UTC — r243: handoff reconciliado para nueva sesión LLM
+
+**Corte verificado:** certificación global **OPEN**. Esta actualización es documental; no inicia Actions ni declara S25 resuelto.
+
+- **Plus / seguridad backend:** commit `d5911ff4be2b96d8ac789893541c873c03510187` actualiza Black de 26.5.1 a 26.10.1 según el hallazgo de pip-audit. Runs [39824318193](https://github.com/c2melendez/precision-lab-plus/actions/runs/39824318193) y [39824317892](https://github.com/c2melendez/precision-lab-plus/actions/runs/39824317892) SUCCESS sobre ese SHA. Esto verifica la corrección backend reportada; **no** verifica npm, porque el frontend audit fue omitido/skipped en esas ejecuciones.
+- **Plus / npm S25:** se creó la rama aislada `qa/s25-npm-remediation-preview`, commit `7b359fa379bb3bcd96b69afc27e2fb82ea7aab47`, con workflow manual [s25-npm-remediation-preview.yml](https://github.com/c2melendez/precision-lab-plus/blob/qa/s25-npm-remediation-preview/.github/workflows/s25-npm-remediation-preview.yml). A la hora de este corte **no se encontró una ejecución del workflow**; por tanto, no hay artifact ni evidencia de audit/test posterior y no se aplicó una actualización lockfile verificada a la rama canónica.
+- **No usar `npm audit fix --force`**: la evidencia previa indica que propone una actualización mayor a Tailwind CSS 4, incompatible con la intención de preservar Tailwind 3.
+- **Lite:** la evidencia de producto continúa anclada al SHA técnico `c28091c0173f951a2571ffcbb6084f566ced0034`; cumulative [39754424771](https://github.com/c2melendez/precision-lab-lite/actions/runs/39754424771), H1d [39754424829](https://github.com/c2melendez/precision-lab-lite/actions/runs/39754424829) y Scientific UI [39754424596](https://github.com/c2melendez/precision-lab-lite/actions/runs/39754424596) SUCCESS, según el registro previo. No se afirma una nueva verificación Lite en este corte.
+- **MV-D:** no cerrar formalmente bilateralmente hasta satisfacer el criterio de salida de campaña documentado. Tras resolver S25, revisar evidencia y luego seguir a MV-E.
+- **Bloqueos vigentes:** `SECURITY-S25` BLOCKED; `H2-SG28-DIST-01..08` BLOCKED; `SY-P-23` OPEN; `SY-X-04-PLUS-HTTP` BLOCKED; `ALGEBRA229-AS-B-29` ON_HOLD. Global OPEN.
+
+**Siguiente acción única:** ejecutar manualmente el workflow de preview npm en la rama `qa/s25-npm-remediation-preview` (o habilitar un mecanismo autorizado de dispatch desde la automatización), recuperar su artifact y revisar audit antes/después, diff del lockfile, `npm ci`, audit de severidad alta, typecheck, tests y build. Solo promover cambios verificados a `qa/syntax-audit-in625-a1`; evitar runs duplicados.
+
+---
+
 ## 2026-10-22 UTC — r240: coordinación documental con Plus Stryker/S25 pendiente
 
 La corrida Lite H1d [39754424829](https://github.com/c2melendez/precision-lab-lite/actions/runs/39754424829) pasó sobre SHA c28091c0173f951a2571ffcbb6084f566ced0034; el acumulativo [39754424771](https://github.com/c2melendez/precision-lab-lite/actions/runs/39754424771) y Scientific UI [39754424596](https://github.com/c2melendez/precision-lab-lite/actions/runs/39754424596) también pasaron en ese SHA. El HEAD actual Lite b3dcccf es un commit documental r239 encima del SHA técnico verificado.
