@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 240,
+  "revision": 243,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "c28091c0173f951a2571ffcbb6084f566ced0034",
@@ -48,15 +48,15 @@
     }
   },
   "next_action": {
-    "id": "EXP-MATRICES-VECTORES-EVALUATION",
-    "status": "IN_PROGRESS",
-    "action": "Lite product gates remain SUCCESS on exact technical SHA c28091c0173f951a2571ffcbb6084f566ced0034 (cumulative 39754424771, H1d 39754424829, Scientific UI 39754424596); current Lite HEAD b3dcccf is documentation-only. Wait for Plus S25 fresh gates on SHA bae07b39dfc71eb01c0921524b6bbf162369166d: dependency/security 39814332343, cumulative 39814332246, H1d 39814332232. Plus r242 raised only the Stryker job timeout to 120 minutes after 2,627 mutants did not finish within 60 minutes; the same run also exposed 10 npm vulnerabilities (4 moderate, 6 high). Do not use npm audit fix --force because it proposes a breaking Tailwind CSS 4 upgrade. Keep SECURITY-S25 BLOCKED until frontend audit and Stryker report both pass; then perform formal bilateral MV-D closure and continue to MV-E. Global certification OPEN.",
+    "id": "S25-NPM-REMEDIATION-PREVIEW",
+    "status": "BLOCKED",
+    "action": "Plus backend security fix Black 26.10.1 passed in runs 39824318193 and 39824317892 on SHA d5911ff4be2b96d8ac789893541c873c03510187, but frontend audit was skipped so S25 is not closed. Isolated preview workflow exists on branch qa/s25-npm-remediation-preview at SHA 7b359fa379bb3bcd96b69afc27e2fb82ea7aab47; no run/artifact verified as of 2026-10-22 UTC. Run that workflow manually or via an authorized dispatch mechanism, inspect before/after npm audit reports and lockfile diff, npm ci, audit --audit-level=high, typecheck, tests and build. Never use npm audit fix --force because the prior report indicated a breaking Tailwind CSS 4 upgrade. Only promote validated lockfile changes to qa/syntax-audit-in625-a1. Then re-run the relevant S25 gate once and review evidence; only after S25 clears may formal bilateral MV-D closure and MV-E proceed. No Actions run was started by this documentation update.",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-lite": "c28091c0173f951a2571ffcbb6084f566ced0034",
-      "c2melendez/precision-lab-plus": "bae07b39dfc71eb01c0921524b6bbf162369166d"
+      "c2melendez/precision-lab-plus": "d5911ff4be2b96d8ac789893541c873c03510187"
     },
     "product_changed": false,
-    "audit": "r240 coordination: Lite MV-D product evidence remains green on exact SHA c28091c; Plus security/mutation gate remains unresolved. No Lite product code changed."
+    "audit": "r243 handoff reconciliation: Plus backend security fix verified SUCCESS; frontend npm audit remains unverified because skipped in those runs. Isolated npm preview workflow exists but has no verified run/artifact. Lite existing product evidence unchanged. Global OPEN."
   },
   "blockers": [
     {
