@@ -1,3 +1,20 @@
+## 2026-10-22 UTC — r236: MV-A-01..25 cerrado bilateralmente
+
+**MV-A-01..25 (operaciones básicas con matrices) — PASS_SCOPED_BILATERAL.**
+
+- Lite `c191bcc2cea0…`: cumulative [39714994068] — **SUCCESS**, 352 archivos, **2100 passed**, 8 expected fail, 34 todo; `tests/matricesMvA01to25.audit.test.ts` **29/29**; guard `skip=false` («No reusable completed evidence found», `checkout_sha=c191bcc2…`). h1d [39714994065] — SUCCESS, 22 passed. scientific-ui [39714994064] — SUCCESS, 456 passed.
+- Plus `dfdf7d1a8704…`: cumulative [39715004689] — **SUCCESS**, backend **1865 passed**, 6 xfailed, cobertura **88.16%**; `tests/test_matrices_mv_a01_l25.py` **27/27 PASSED**; frontend 149 archivos, 1008 passed. h1d [39715004680] — SUCCESS, 38 passed. native-syntax y SG28 no se dispararon: el cambio Plus solo toca `backend/tests/` y `qa/certification/`, fuera de sus filtros de rutas.
+- Los 5 gates de alcance consultados por `head_sha` exacto (`c191bcc2…`/`dfdf7d1a…`), `attempt=1`, conclusión `success`.
+- `qa/certification/matrices_ejecutables.jsonl` derivado de la tabla congelada MV153: **153 filas** (A25/B22/C19/D17/E12/F17/G22/H12/J7), idéntico en ambos repos (sha256 `6C93E908…`), con generador reproducible `qa/certification/derive_matrices_ejecutables.py` y validación de conteos.
+- Resultados: las 25 filas coinciden exactamente con el oráculo congelado en ambos motores; las 4 filas de error (20–23) devuelven `DIMENSION_MISMATCH` con mensaje claro.
+- Producto Lite `c191bcc2`: `powerMatrix` admite exponentes negativos usando primero la inversa (MV-A-12/13; una matriz singular sigue rechazada con `DOMAIN_ERROR`); `matrixExpression` acepta escalares numéricos y habilita `(A+B)^2-(A^2+2AB+B^2)=BA-AB` (MV-A-24); `MatrixMode` permite exponente negativo. El test de módulo 6 que anclaba el rechazo se actualizó al nuevo contrato.
+- Producto Plus: sin cambio; MV-A se ejecuta por `/matrix/*`. El escalar×matriz usa la misma ruta diagonal `(k·I)×A` que `BasicMode.tsx`; MV-A-24 se compone con `multiply`/`subtract` del producto.
+- Traducciones de harness declaradas en `MANUAL_CAPABILITY_GAPS.md`: celdas LaTeX `\frac{a}{b}` → `a/b` para la grilla ASCII del módulo Matrices de Lite; la expresión con nombres A–F se compone con operaciones del producto.
+- Gate security/dependency de Plus: el push disparó [39715004827] por `qa/certification/*.jsonl`; quedó **cancelled** porque `mutation/plus-frontend-stryker` excedió el límite duro de 35 min (infraestructura). Un `workflow_dispatch` de revalidación (mismo SHA, `attempt=1`, [39718717187]) amplió el alcance y expuso **10 advisories npm pre-existentes** (4 moderate, 6 high) en `security/frontend-audit`; `frontend/package-lock.json` no cambió entre `d1e38753` y `dfdf7d1a`. Es el blocker independiente **SECURITY-S25**, no evidencia de MV-A; el dispatch se canceló tras el fallo. La certificación global sigue `OPEN`.
+- Sin regresiones atribuibles: los 3 fallos de factorización (`AS-FAC-09`, `AS-B-18`, `AS-B-20`) se reproducen en el baseline `fd779625` con `git stash`; bajo carga paralela aparecen 2 más (`AS-FAC-08`, `AS-B-06`), también de entorno.
+
+**Siguiente objetivo — MV-B (determinantes, 22 filas).** Ampliar `matrices_ejecutables.jsonl`/ejecutor y los tests de auditoría; las filas MV-A quedan cerradas y no se reabren salvo regresión. Blockers independientes sin cambios; certificación global `OPEN`.
+
 ## 2026-10-21 UTC — r235: EV-T-01..12 cerrado bilateralmente; Matrices/Vectores siguiente
 
 **EV-T-01..12 (trigonométricas, hiperbólicas e inversas) — PASS_SCOPED_BILATERAL.**

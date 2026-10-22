@@ -1,3 +1,20 @@
+## 2026-10-22 UTC — r236: MV-A-01..25 cerrado bilateralmente
+
+**MV-A-01..25 (operaciones básicas con matrices) — PASS_SCOPED_BILATERAL.**
+
+- Lite `c191bcc2cea091ac18342418ae8ed0369f6760c2`: cumulative [39714994068] — **SUCCESS**, 352 archivos, **2100 passed**, 8 expected fail, 34 todo; `tests/matricesMvA01to25.audit.test.ts` **29/29** (25 filas + integridad del JSONL + anclaje + canales exactos); `tests/exhaustive-module06-matrices.test.ts` 10/10; guard `skip=false` (`checkout_sha` exacto, «No reusable completed evidence found»). h1d [39714994065] — SUCCESS, 22 passed. scientific-ui [39714994064] — SUCCESS, 456 passed.
+- Plus `dfdf7d1a87043901b10ff1e6926fafe835e65bca`: cumulative [39715004689] — **SUCCESS**, backend **1865 passed**, 6 xfailed, cobertura **88.16%**; `tests/test_matrices_mv_a01_l25.py` **27/27 PASSED** (25 filas + 2 meta); frontend 149 archivos, 1008 passed, 28 todo. h1d [39715004680] — SUCCESS, 38 passed.
+- Los 5 gates de alcance por `head_sha` exacto, `attempt=1` y `success`. native-syntax y SG28 no se dispararon (sin rutas de producto modificadas en Plus); el gate security/dependency se trata abajo.
+- **JSONL.** `qa/certification/matrices_ejecutables.jsonl` se deriva de `legacy_sources/matriz_matrices_vectores.md.gz` con `qa/certification/derive_matrices_ejecutables.py`; 153 filas, conteos A25/B22/C19/D17/E12/F17/G22/H12/J7, sha256 `6C93E908…`, bytes idénticos en ambos repos. El generador falla si el total o los conteos por sección no coinciden; no calcula ni altera oráculos.
+- **Ejecución Lite.** Cada fila se envía al worker real (`matrixOp`/`matrixExpression`), no a una copia del motor. Traducción declarada: celda LaTeX `\frac{a}{b}` → `a/b` (la grilla del módulo Matrices es ASCII; el camino del calculador normaliza la misma forma). Las 25 filas coinciden con la matriz/valor esperado; 20–23 devuelven `DIMENSION_MISMATCH`.
+- **Ejecución Plus.** Cada fila se envía a `/api/v1/matrix/*`. El escalar×matriz (MV-A-03/04) usa la ruta diagonal `(k·I)×A` que ya usa `BasicMode.tsx`; MV-A-24 se compone con `multiply`/`subtract` del producto (`(A+B)^2-(A^2+2AB+B^2)=BA-AB`). Las 25 filas coinciden; 20–23 devuelven `DIMENSION_MISMATCH`.
+- **Producto Lite `c191bcc2`.** `engine/matrixOps.ts`: `powerMatrix` acepta enteros negativos invirtiendo primero (`A^{-2}=(A^{-1})^2`), conserva el rechazo de matrices singulares (`DOMAIN_ERROR`) y de exponentes no enteros. `engine/matrixExpression.ts`: un token numérico produce un escalar, habilitando `2*A*B` y por tanto MV-A-24. `modes/Matrices/MatrixMode.tsx`: el exponente admite negativos (mínimo −10). Sin cambio en Plus.
+- **Regresión permanente.** Lite `tests/matricesMvA01to25.audit.test.ts` ancla cada fila al `.gz` (entrada y esperado) y exige el resultado exacto por el worker; actualiza `tests/exhaustive-module06-matrices.test.ts` para el nuevo contrato de potencia negativa. Plus `backend/tests/test_matrices_mv_a01_l25.py` ancla las filas y exige los canales exactos del API.
+- **Fallos pre-existentes (no atribuibles).** `AS-FAC-09`, `AS-B-18` y `AS-B-20` fallan igual en el baseline `fd779625` con `git stash`; bajo carga paralela se suman `AS-FAC-08` y `AS-B-06`. Son de factorización y de entorno, ajenos a matrices.
+- **Gate security/dependency (independiente).** El push disparó [39715004827] por el filtro `qa/certification/*.jsonl`; `mutation/plus-frontend-stryker` excedió el límite duro de 35 min y el run quedó **cancelled**. La revalidación por `workflow_dispatch` (mismo SHA, `attempt=1`, [39718717187]) ejecutó además `security/frontend-audit`, que falló por **10 advisories npm** (4 moderate, 6 high); `frontend/package-lock.json` es idéntico entre `d1e38753` y `dfdf7d1a`, por lo que el hallazgo es externo y corresponde al blocker **SECURITY-S25**. No se usa como evidencia de MV-A; el dispatch se canceló tras el fallo. Global `OPEN`.
+
+**Siguiente objetivo — MV-B (determinantes, 22 filas).** Blockers independientes sin cambios.
+
 ## 2026-10-21 UTC — r235: EV-T-01..12 cerrado bilateralmente; Matrices/Vectores siguiente
 
 **EV-T-01..12 (trigonométricas, hiperbólicas e inversas) — PASS_SCOPED_BILATERAL.**
