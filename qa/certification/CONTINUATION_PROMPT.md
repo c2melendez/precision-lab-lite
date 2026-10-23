@@ -16,6 +16,7 @@ Continúa autónomamente el sistema de certificación de Precision Lab. GitHub e
 5. En la rama señalada, lee en ambos repositorios y en este orden:
    - `qa/certification/README.md`
    - `qa/certification/CURRENT_STATE.md`
+   - `qa/certification/ROADMAP_CONTINUITY.md` (reglas de reconciliación, decisión por gate y prioridades P1–P5)
    - `qa/certification/EXECUTION_PROTOCOL.md`
    - `qa/certification/MANUAL_CAPABILITY_GAPS.md`
    - `qa/certification/EXECUTION_LOG.md`
@@ -27,6 +28,9 @@ Continúa autónomamente el sistema de certificación de Precision Lab. GitHub e
 11. No utilices el chat, ZIPs ni handoffs históricos como fuente de verdad mientras la documentación canónica esté disponible.
 
 **Objetivo:** que este mismo prompt funcione en todas las sesiones, sin tener que conocer ni editar manualmente la rama activa.
+
+## Regla obligatoria de decisión y ahorro de Actions
+Antes de despachar, aplica `qa/certification/ROADMAP_CONTINUITY.md` en ambos repositorios. Reconcilia HEAD y Actions para eventos push y pull_request; comprueba SHA, jobs, pasos, logs, huellas y revisión de aceptación. Decide por gate: RUN / WAIT / REUSE / DIAGNOSE / REVIEW según las definiciones de la hoja. No despaches evidencia verde vigente ni una corrida equivalente en curso; no repitas un fallo idéntico sin cambiar una precondición relevante. S25 no permite reutilización automática. Mantén SG28/DIST y las capacidades no implementadas abiertas hasta que su contrato tenga evidencia suficiente. La siguiente tarea se toma siempre del `next_action` bilateral de `continuity.json`; la hoja no sustituye ese índice ni altera contratos, matrices u oráculos. Antes de publicar, vuelve a leer HEAD para no pisar cambios concurrentes.
 
 ## Política permanente de CI automática y ahorro de corridas
 1. Resolver SIEMPRE la rama canónica por los README de las ramas predeterminadas; nunca fijarla en este prompt. Inspeccionar en ambos repositorios los YAML de los workflows del bloque activo y gates acumulativos.
