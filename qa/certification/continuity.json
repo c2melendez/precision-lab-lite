@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 264,
+  "revision": 265,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -14,7 +14,9 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/CONTINUITY_NEXT_ACTION.json",
     "qa/certification/EXECUTION_LOG_AS229_SECTION_A.md",
-    "qa/certification/ALGEBRA229_PREPARATION.md"
+    "qa/certification/ALGEBRA229_PREPARATION.md",
+    "qa/certification/ROADMAP_CONTINUITY.md",
+    "qa/certification/CONTINUATION_PROMPT.md"
   ],
   "gates": {
     "cumulative": {
@@ -80,7 +82,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r264: gates r263 Lite en success: cumulative 40015124636, H1d 40015127464, scientific-ui 40015130309 sobre 61f438d2. Siguiente: EDCX-B5 READY.",
+  "ledger_note": "r265: hoja de ruta de continuidad integrada; gates y criterios de aceptación sin cambios; siguiente acción canónica preservada (EDCX-B5); global OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
