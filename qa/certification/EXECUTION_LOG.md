@@ -1,3 +1,11 @@
+## 2026-10-23 UTC — r264: registro gates r263 — Lite success
+
+- r264: gates r263 Lite en success: cumulative 40015124636, H1d 40015127464, scientific-ui 40015130309 sobre 61f438d2.
+- Plus/Lite B4 mantienen la clasificación de r263; no se toca producto.
+- Siguiente: EDCX-B5 READY, no iniciado.
+
+---
+
 ## 2026-10-23 UTC — r263: EDCX B4 mirror (Lite NO_EJECUTADO)
 
 - Lite sin cambios técnicos (baseline `7f5f69be`); no se ejecutó B4.
