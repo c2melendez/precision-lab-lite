@@ -35,6 +35,9 @@ Toda modificación sustantiva del estado de certificación debe reflejarse en am
 Consultar [GLOBAL_CERTIFICATION_DASHBOARD.md](GLOBAL_CERTIFICATION_DASHBOARD.md) para alcance por módulo, evidencia, bloqueos y pendientes. Actualizarlo con los cierres bilaterales; sus conteos de tests no son porcentajes de requisitos certificados.
 
 
+## Hoja de ruta obligatoria
+Leer [ROADMAP_CONTINUITY.md](ROADMAP_CONTINUITY.md) en cada sesión junto con continuity.json y CONTINUITY.md. La hoja coordina P1–P5 y RUN/WAIT/REUSE/DIAGNOSE/REVIEW; no reemplaza contratos ni cambia criterios de aceptación. El siguiente objetivo válido sigue siendo el de continuity.json.
+
 ## Continuidad entre sesiones
 Tras resolver la rama canónica, leer [continuity.json](continuity.json) y [CONTINUITY.md](CONTINUITY.md) antes de lanzar Actions. CURRENT_STATE y el tablero muestran solo el corte vigente; la historia anterior está archivada con enlaces en EXECUTION_LOG. No confundir un run REUSE con una ejecución de tests nueva.
 
