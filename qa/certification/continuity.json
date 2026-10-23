@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 273,
+  "revision": 274,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -16,7 +16,8 @@
     "qa/certification/EXECUTION_LOG_AS229_SECTION_A.md",
     "qa/certification/ALGEBRA229_PREPARATION.md",
     "qa/certification/ROADMAP_CONTINUITY.md",
-    "qa/certification/CONTINUATION_PROMPT.md"
+    "qa/certification/CONTINUATION_PROMPT.md",
+    "qa/certification/EDCX_B6_ADAPTER_ORACLE_PLAN.md"
   ],
   "gates": {
     "cumulative": {
@@ -52,12 +53,12 @@
   "next_action": {
     "id": "EDCX-B6",
     "status": "REVIEW",
-    "action": "Seguir el siguiente paso registrado en Plus: especificar adaptador y oráculo independiente para el primer grupo de casos escalares B6. La matriz de trazabilidad de Plus indica 0/53 filas con aceptación matemática completa en el harness actual; esto no autoriza inferir paridad en Lite. Mantener Lite NO_EJECUTADO y no despachar gates globales.",
+    "action": "Seguir en Plus la validación dirigida del adaptador de salida para VC-FE-01..03 y VC-FE-06..10 con oráculo independiente math/cmath. El plan estático no es evidencia de ejecución ni autoriza paridad. Lite permanece NO_EJECUTADO; no despachar gates globales.",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-plus": "bd25d58fac8e8333bd9e0aa90a1b9a54efa6aa69"
+      "c2melendez/precision-lab-plus": "ec1697d421d3170163e805ecf8b98b78328cbc58"
     },
     "product_changed": false,
-    "audit": "r273 espejo: Plus publicó EDCX_B6_TEST_TRACEABILITY.md; suite CI SUCCESS pero 0/53 filas B6 con aceptación matemática completa por el harness actual. Lite no ejecutó esas pruebas; no inferir paridad. Global OPEN."
+    "audit": "r274 espejo: Plus publicó el plan de adaptador/oráculo; todavía no hay tests nuevos ejecutados ni Actions. No inferir paridad de Lite. Global OPEN."
   },
   "blockers": [
     {
