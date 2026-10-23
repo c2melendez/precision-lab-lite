@@ -1,3 +1,11 @@
+## 2026-10-23 UTC — r263: EDCX B4 mirror (Lite NO_EJECUTADO)
+
+- Lite sin cambios técnicos (baseline `7f5f69be`); no se ejecutó B4.
+- Plus `7e501f5` (test-first) y `177955d` (cierre docs): B4 medido en 34 filas -> 14 PASS / 14 PASS_SCOPED / 4 FAIL / 2 BLOCKED.
+- Siguiente: EDCX-B5 READY, no iniciado.
+
+---
+
 ## 2026-10-23 UTC — r262: EDCX B3 mirror (Lite NO_EJECUTADO)
 
 - Lite sin cambios técnicos (baseline `40b000b8`); no se ejecutó B3.

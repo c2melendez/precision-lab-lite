@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 262,
+  "revision": 263,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -48,15 +48,15 @@
     }
   },
   "next_action": {
-    "id": "EDCX-B4-COMPLEX-EQUATIONS",
+    "id": "EDCX-B5",
     "status": "READY",
-    "action": "El bloque EDCX B4 (34 filas, ecuaciones en C, VC-EC-01..34) se certifica en Plus contra los canales reales de resolucion (raices exactas, multiplicidad, coeficientes complejos, grado superior). Lite no tiene motor complejo equivalente y permanece NO_EJECUTADO. No declarar paridad ni PASS de Lite sin ejecucion. Mantener el espejo documental y registrar los gaps en MANUAL_CAPABILITY_GAPS.md.",
+    "action": "Continuar EDCX Parte B con el bloque B5 (25 filas, prefijo VC-LG) en Plus; Lite sigue NO_EJECUTADO. Medir primero, clasificar con oraculo sympy independiente y no reutilizar evidencia de B4.",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
-      "c2melendez/precision-lab-plus": "ab2204258d21bddb9a5baf7664f62c7f96245182"
+      "c2melendez/precision-lab-lite": "7f5f69befd9f1277368acba5b4e7d0d971af766c",
+      "c2melendez/precision-lab-plus": "177955dcad78afb9de1ca504a6d2970e85b5f040"
     },
     "product_changed": false,
-    "audit": "r262 mirror: Lite queda en 40b000b8 como baseline tecnico; no hay cambios tecnicos de Lite en r262. EDCX B3 es Plus-scoped (7 PASS exactos + 10 PASS_SCOPED / 2 BLOCKED; acumulado 319/638, 188 PASS / 131 BLOCKED); Lite NO_EJECUTADO por alcance de motor. Global OPEN."
+    "audit": "r263 mirror: Plus B4 medido (14 PASS, 14 PASS_SCOPED, 4 FAIL, 2 BLOCKED); Lite NO_EJECUTADO. Global OPEN."
   },
   "blockers": [
     {
@@ -80,7 +80,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r256 (espejo Plus-scoped): EDCX A5 (10 filas, series y Frobenius) certificado en Plus (8 PASS / 2 BLOCKED; acumulado A1-A5 88 PASS / 65 BLOCKED). A5: ED-F-01..05 PASS exactos (trigonometrica/Airy/Bessel), ED-F-06..08 PASS_SCOPED (serie truncada y polinomios por eleccion de constantes), ED-F-09/10 BLOCKED (clasificacion de punto singular regular/irregular sin canal). Runs verdes: 50d9ca03 cumulative 39929466812 / H1d 39929467052 (2168 passed, cobertura 87.85%). Lite no ejecuta A5: stepEngine/ode.ts no implementa series ni Frobenius. Sin PASS/FAIL bilateral. Global OPEN.",
+  "ledger_note": "r263 mirror: EDCX B4 en Plus medido; Lite NO_EJECUTADO. Siguiente: EDCX-B5 READY.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -2516,5 +2516,22 @@
       }
     ],
     "global_certification": "OPEN"
+  },
+  "edcx_b4_closure_r263": {
+    "status": "NO_EJECUTADO",
+    "scope": "EDCX Parte B B4 (34 filas, ecuaciones en C) en Lite",
+    "lite": "NO_EJECUTADO",
+    "reason": "Lite no tiene motor complejo equivalente para ecuaciones en C; no se declara paridad sin ejecucion.",
+    "plus_reference": {
+      "test_first": "7e501f5bffdf7a1242f396f8a2c96ca3267b635f",
+      "closure_docs": "177955dcad78afb9de1ca504a6d2970e85b5f040",
+      "classification": {
+        "pass": 14,
+        "pass_scoped": 14,
+        "fail": 4,
+        "blocked": 2
+      }
+    },
+    "product_changed": false
   }
 }

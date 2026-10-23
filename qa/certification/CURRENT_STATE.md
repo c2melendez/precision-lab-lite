@@ -1,3 +1,13 @@
+## 2026-10-23 UTC — r263: EDCX B4 — Plus scoped; Lite NO_EJECUTADO
+
+**EDCX Parte B, B4 (34 filas, ecuaciones en C): medido en Plus; Lite NO_EJECUTADO.**
+Lite no tiene motor complejo equivalente para estas ecuaciones; no se declara paridad. Certificación global `OPEN`.
+
+- Plus: 14 PASS / 14 PASS_SCOPED / 4 FAIL (VC-EC-16..19, raíces faltantes) / 2 BLOCKED (VC-EC-20..21, `abs(z)`).
+- Siguiente: EDCX-B5 (25 filas, prefijo VC-LG), READY, no iniciado.
+
+---
+
 ## 2026-10-23 UTC — r262: EDCX B3 — Plus scoped; Lite NO_EJECUTADO
 
 **EDCX Parte B, B3 (19 filas, potencias y raíces de números complejos): 7 PASS exactos + 10 PASS_SCOPED + 2 BLOCKED en Plus.**
