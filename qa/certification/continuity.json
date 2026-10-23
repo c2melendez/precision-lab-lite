@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 259,
+  "revision": 260,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
-  "baseline_case": "EDCX-A8-MIRROR-R259",
+  "baseline_case": "EDCX-B1-MIRROR-R260",
   "baseline_status": "NO_EJECUTADO",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -48,15 +48,15 @@
     }
   },
   "next_action": {
-    "id": "EDCX-B1-FORMS",
+    "id": "EDCX-B2-OPERATIONS",
     "status": "READY",
-    "action": "El bloque EDCX B1 (49 filas, conversion de formas) se certifica en Plus contra los canales reales de variable compleja: binomica/polar/exponencial, modulo/argumento, conjugado y normalizacion de cuadrantes. Lite no tiene motor complejo equivalente y permanece NO_EJECUTADO. No declarar paridad ni PASS de Lite sin ejecucion. Mantener el espejo documental y registrar los gaps en MANUAL_CAPABILITY_GAPS.md.",
+    "action": "El bloque EDCX B2 (41 filas, operaciones) se certifica en Plus contra los canales reales de variable compleja (suma, resta, producto, cociente, conjugado, modulo, argumento, potencia y raiz). Lite no tiene motor complejo equivalente y permanece NO_EJECUTADO. No declarar paridad ni PASS de Lite sin ejecucion. Mantener el espejo documental y registrar los gaps en MANUAL_CAPABILITY_GAPS.md.",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-lite": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
-      "c2melendez/precision-lab-plus": "c3d389721a6ad5503508f5168f653105ee976fe4"
+      "c2melendez/precision-lab-plus": "a53449db2e4104f32e84bd6090a61acd0e90cb47"
     },
     "product_changed": false,
-    "audit": "r259 mirror: Lite queda en 40b000b8 (MV-J, cumulative 39914455096 SUCCESS) como baseline tecnico; no hay cambios tecnicos de Lite en r259. EDCX A8 es Plus-scoped (0 PASS / 6 BLOCKED) y la Parte A queda completa (210/638, 93 PASS / 117 BLOCKED); Lite NO_EJECUTADO por alcance de motor. Global OPEN."
+    "audit": "r260 mirror: Lite queda en 40b000b8 (MV-J, cumulative 39914455096 SUCCESS) como baseline tecnico; no hay cambios tecnicos de Lite en r260. EDCX B1 es Plus-scoped (45 PASS_SCOPED / 4 BLOCKED; acumulado 259/638, 138 PASS / 121 BLOCKED); Lite NO_EJECUTADO por alcance de motor. Global OPEN."
   },
   "blockers": [
     {
@@ -2333,6 +2333,57 @@
       }
     ],
     "registration": "Los runs pertenecen al repositorio Plus y al SHA c3d38972; no se reutilizan como evidencia de Lite. El espejo no dispara CI (paths documentales excluidos).",
+    "global_certification": "OPEN"
+  },
+  "edcx_b1_mirror_r260": {
+    "status": "NO_EJECUTADO",
+    "scope": "espejo documental de EDCX B1 (49 filas, conversion entre representaciones B/P/T/X) certificado en Plus",
+    "plus_status": "PASS_SCOPED",
+    "plus_rows_total": 49,
+    "plus_rows_pass": 45,
+    "plus_rows_pass_scoped": 45,
+    "plus_rows_blocked": 4,
+    "plus_blocked": {
+      "B-17": "arg(0)=0 sin aviso frente a topolar(0)=DOMAIN_ERROR; la fila exige argumento indefinido con aviso claro",
+      "T-09": "Abs/arg sin reducir; no entrega (2cos(theta/2))_{theta/2}",
+      "T-10": "Abs/arg sin reducir; no entrega 2sin(theta/2)_{(pi-theta)/2}",
+      "X-12": "exp(im(theta)) y arg sin reducir; no entrega 1_{-theta}"
+    },
+    "plus_channel": "Sin notacion polar de entrada (2_{pi/3} -> PARSE_ERROR; 2 angle pi/3 -> 2*pi*angle/3) ni de salida (topolar colapsa a binomica o raiz). La conversion se certifica con abs+arg y oraculo sympy que reconstruye B/T/X; las 10 filas P usan la traduccion r_theta -> r*(cos(theta)+i*sin(theta)).",
+    "plus_cumulative": {
+      "rows": 259,
+      "pass": 138,
+      "blocked": 121,
+      "source_rows": 638
+    },
+    "plus_parte_b": {
+      "rows": 428,
+      "measured": false,
+      "measured_blocks": [
+        "B1"
+      ],
+      "rows_measured": 49
+    },
+    "lite_reason": "No existe motor de variable compleja que cubra la conversion B/P/T/X ni las operaciones abs/arg/re/im/topolar con esa semantica",
+    "lite_rows_executed": 0,
+    "product_changed": false,
+    "plus_harness": "backend/tests/test_edcx_ed_b1_01_l49.py (61 passed local y CI)",
+    "plus_runs": [
+      {
+        "gate": "cumulative",
+        "sha": "a53449db2e4104f32e84bd6090a61acd0e90cb47",
+        "run_id": 39940618566,
+        "conclusion": "SUCCESS",
+        "tests": "2285 passed, 1 skipped, 6 xfailed; coverage 87.94%"
+      },
+      {
+        "gate": "h1d",
+        "sha": "a53449db2e4104f32e84bd6090a61acd0e90cb47",
+        "run_id": 39940618559,
+        "conclusion": "SUCCESS"
+      }
+    ],
+    "registration": "Los runs pertenecen al repositorio Plus y al SHA a53449db; no se reutilizan como evidencia de Lite. El espejo no dispara CI (paths documentales excluidos).",
     "global_certification": "OPEN"
   }
 }

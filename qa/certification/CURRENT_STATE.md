@@ -1,3 +1,30 @@
+## 2026-10-23 UTC — r260: EDCX B1 — Plus scoped; Lite NO_EJECUTADO
+
+**EDCX Parte B, B1 (49 filas, conversión entre representaciones): 45 PASS_SCOPED + 4 BLOCKED en Plus.**
+
+- Lite: **0 filas ejecutadas**. No existe motor de variable compleja que cubra
+  la conversión B/P/T/X (`abs`, `arg`, `re`, `im`, `topolar` no están
+  implementados con esa semántica). No se declara PASS ni FAIL de Lite: gap de
+  alcance.
+- Plus B1: 45 PASS_SCOPED / 4 BLOCKED. No hay notación polar de entrada
+  (`2_{pi/3}` -> `PARSE_ERROR`; `2 angle pi/3` -> `2*pi*angle/3`) ni de salida
+  (`topolar(3)=3`, `topolar(-2)=-2`, `topolar(1+i)=(-1)**(1/4)*sqrt(2)`). La
+  conversión se certifica con `abs`+`arg` y oráculo sympy que reconstruye las
+  formas B/T/X; las 10 filas P usan la traducción documentada
+  `r_theta -> r*(cos(theta)+i*sin(theta))`.
+- BLOCKED: `B-17` (`arg(0)=0` sin aviso frente a `topolar(0)=DOMAIN_ERROR`) y
+  `T-09/T-10/X-12` (formas semángulo simbólicas sin reducir).
+- Acumulado EDCX (A + B1): 259 / 638 filas, 138 PASS / 121 BLOCKED.
+- Evidencia CI Plus: `a53449db` cumulative [39940618566] / H1d [39940618559]
+  **SUCCESS** (2285 passed, 1 skipped, 6 xfailed, cobertura 87.94%).
+- Detalle completo en `CURRENT_STATE.md`, `EXECUTION_LOG.md` y
+  `MANUAL_CAPABILITY_GAPS.md` del repo Plus, r260.
+
+**Siguiente acción única:** EDCX Parte B, bloque B2 (operaciones, 41 filas) en
+Plus; Lite permanece sin motor complejo equivalente.
+
+---
+
 ## 2026-10-23 UTC — r259: EDCX A8 — Plus scoped; Lite NO_EJECUTADO
 
 **EDCX Parte A, A8 (6 filas, casos límite): 0 PASS / 6 BLOCKED en Plus. Parte A completa: 210 / 638 filas, 93 PASS / 117 BLOCKED.**

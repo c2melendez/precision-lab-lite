@@ -519,3 +519,23 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
 - Parte A completa en Plus: 210/638 filas, 93 PASS / 117 BLOCKED. EDCX Parte B
   (428 filas) queda pendiente.
 - No se declara paridad bilateral: la diferencia es de capacidad de motor.
+
+
+## 2026-10-23 — EDCX B1 (r260): alcance Lite y evidencia Plus
+
+- Lite **NO_EJECUTADO** para B1 y para toda la Parte B de EDCX. No existe motor
+  de variable compleja que cubra la conversión entre formas B/P/T/X, ni las
+  operaciones `abs`, `arg`, `re`, `im` o `topolar` con esa semántica.
+- Plus B1: 45 PASS_SCOPED / 4 BLOCKED de 49 filas. No hay notación polar de
+  entrada (`2_{pi/3}` -> `PARSE_ERROR`; `2 angle pi/3` -> `2*pi*angle/3`) ni de
+  salida (`topolar(3)=3`, `topolar(-2)=-2`,
+  `topolar(1+i)=(-1)**(1/4)*sqrt(2)`).
+- La conversión se certifica en Plus con `abs`+`arg` y un oráculo sympy que
+  reconstruye `r*exp(i*theta)=z`, `r*cos(theta)+i*r*sin(theta)=z` y
+  `re+i*im=z`; las 10 filas P requieren la traducción documentada
+  `r_theta -> r*(cos(theta)+i*sin(theta))`.
+- BLOCKED en Plus: `B-17` (`arg(0)=0` sin aviso frente a
+  `topolar(0)=DOMAIN_ERROR`) y `T-09/T-10/X-12` (formas semángulo simbólicas
+  sin reducir).
+- Acumulado EDCX en Plus (A + B1): 259/638 filas, 138 PASS / 121 BLOCKED.
+- No se declara paridad bilateral: la diferencia es de capacidad de motor.

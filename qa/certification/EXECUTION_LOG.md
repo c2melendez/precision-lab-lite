@@ -1,3 +1,18 @@
+## 2026-10-23 UTC — r260: EDCX B1 mirror (Lite NO_EJECUTADO)
+
+- Lite sin cambios técnicos (baseline `40b000b8`); no se ejecutó B1.
+- Plus `a53449db`: cumulative [39940618566] SUCCESS — 2285 passed, 1 skipped,
+  6 xfailed, cobertura 87.94%; H1d [39940618559] SUCCESS. Harness B1 61/61.
+- B1: 49 filas -> 45 PASS_SCOPED / 4 BLOCKED. Sin notación polar de entrada ni
+  de salida; la conversión se certifica con `abs`+`arg` y oráculo sympy. Las 10
+  filas P requieren la traducción `r_theta -> r*(cos+i*sin)`.
+- BLOCKED: `B-17` (`arg(0)=0` sin aviso frente a `topolar(0)=DOMAIN_ERROR`) y
+  `T-09/T-10/X-12` (formas semángulo simbólicas sin reducir).
+- Acumulado EDCX (A + B1): 259 / 638 filas, 138 PASS / 121 BLOCKED.
+- Siguiente: EDCX Parte B, bloque B2 (operaciones, 41 filas).
+
+---
+
 ## 2026-10-23 UTC — r259: EDCX A8 y cierre Parte A (Lite NO_EJECUTADO)
 
 - Lite sin cambios técnicos (baseline `40b000b8`); no se ejecutó A8.
