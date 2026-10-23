@@ -1,3 +1,11 @@
+## 2026-10-23 UTC — r273: espejo de trazabilidad B6
+
+- Plus publicó [EDCX_B6_TEST_TRACEABILITY.md](https://github.com/c2melendez/precision-lab-plus/blob/qa/syntax-audit-in625-a1/qa/certification/EDCX_B6_TEST_TRACEABILITY.md). El harness actual no demuestra aceptación matemática completa de ninguna de las 53 filas; `VC-FE-05` y `VC-FE-14` solo tienen cobertura parcial, y `VC-FE-11` requiere un contrato multivaluado.
+- La corrida de Plus terminó `SUCCESS`, pero esa evidencia no es de Lite. Lite permanece `NO_EJECUTADO`; no declarar paridad ni correr los gates globales.
+- Siguiente paso coordinado: definir adaptador de notación y oráculo independiente para el primer grupo escalar en Plus; luego revisar la necesidad de pruebas separadas. Certificación global `OPEN`.
+
+---
+
 ## 2026-10-23 UTC — r272: espejo de evidencia CI B6 (sin paridad)
 
 - En Plus, la corrida [40026869114](https://github.com/c2melendez/precision-lab-plus/actions/runs/40026869114) terminó `SUCCESS` en SHA técnico `bd25d58fac8e8333bd9e0aa90a1b9a54efa6aa69`; los cinco checks del harness B6 pasaron dentro de la suite backend (`2383 passed, 1 skipped, 10 xfailed`).
