@@ -487,3 +487,19 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
   parámetro sin condición agota el timeout del solver y no se usa como evidencia.
 - No se declara paridad bilateral: la diferencia es de capacidad de motor.
 
+
+
+## 2026-10-23 — EDCX A7 (r258): alcance Lite y evidencia Plus
+
+- Lite **NO_EJECUTADO** para A7. `src/engine/stepEngine/ode.ts` no implementa
+  equilibrios/estabilidad, trayectorias ortogonales, iteración de Picard, métodos
+  numéricos (Euler/Heun/RK4), recurrencias ni ecuaciones con retardo.
+- Plus A7: 2 PASS exactos (`ED-Q-23/24`) + 2 PASS_SCOPED (`ED-Q-05/06`) y
+  21 BLOCKED.
+- Los PASS_SCOPED devuelven la solución exacta, pero no el intervalo máximo; ese
+  intervalo se deriva con un oráculo sympy y no se atribuye al producto.
+- Los BLOCKED se miden por canal real: solución general sin equilibrios,
+  `steps=[]` en Picard, `PARSE_ERROR` al pasar `h`, `AMBIGUOUS_VARIABLE` en
+  recurrencias, expresión que no resuelve el retardo y `UNSUPPORTED_OPERATION`
+  en Riccati.
+- No se declara paridad bilateral: la diferencia es de capacidad de motor.

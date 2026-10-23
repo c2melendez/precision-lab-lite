@@ -1,3 +1,26 @@
+## 2026-10-23 UTC — r258: EDCX A7 — Plus scoped; Lite NO_EJECUTADO
+
+**EDCX Parte A, A7 (25 filas, cualitativo/numérico/retardo): 4 PASS (2 exactos + 2 con alcance) / 21 BLOCKED en Plus.**
+
+- Lite: **0 filas ejecutadas**. `src/engine/stepEngine/ode.ts` no implementa
+  análisis cualitativo, trayectorias ortogonales, iteración de Picard, métodos
+  numéricos, recurrencias ni ecuaciones con retardo. No se declara PASS ni FAIL
+  de Lite: gap de alcance.
+- Plus A7: 2 PASS exactos (`ED-Q-23/24`: `Si(x)` y `sqrt(pi)/2 erf(x)`) + 2
+  PASS_SCOPED (`ED-Q-05/06`: solución exacta, intervalo máximo solo derivado con
+  oráculo) + 21 BLOCKED (cualitativas, no unicidad, ortogonales, Picard,
+  Euler/Heun/RK4, recurrencias, retardo y Riccati).
+- Acumulado EDCX A1–A7 en Plus: **204 filas, 93 PASS / 111 BLOCKED**.
+- Evidencia CI Plus: `795a97ef` cumulative [39934588535] / H1d [39934588487]
+  **SUCCESS** (2217 passed, 1 skipped, 6 xfailed, cobertura 87.90%).
+- Detalle completo en `CURRENT_STATE.md`, `EXECUTION_LOG.md` y
+  `MANUAL_CAPABILITY_GAPS.md` del repo Plus, r258.
+
+**Siguiente acción única:** EDCX A8 (casos límite, 6 filas) en Plus; Lite permanece
+sin motor EDO equivalente.
+
+---
+
 ## 2026-10-23 UTC — r257: EDCX A6 — Plus scoped; Lite NO_EJECUTADO
 
 **EDCX Parte A, A6 (26 filas, EDP): 1 PASS_SCOPED / 25 BLOCKED en Plus.**

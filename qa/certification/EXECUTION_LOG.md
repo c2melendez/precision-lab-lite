@@ -1,3 +1,16 @@
+## 2026-10-23 UTC — r258: EDCX A7 mirror (Lite NO_EJECUTADO)
+
+- Lite sin cambios técnicos (baseline `40b000b8`); no se ejecutó A7.
+- Plus `795a97ef`: cumulative [39934588535] SUCCESS — 2217 passed, 1 skipped,
+  6 xfailed, cobertura 87.90%; H1d [39934588487] SUCCESS. Harness A7 19/19.
+- A7: 25 filas -> 2 PASS exactos (`ED-Q-23/24`) + 2 PASS_SCOPED (`ED-Q-05/06`:
+  intervalo máximo solo por oráculo) + 21 BLOCKED (sin canal cualitativo,
+  numérico, recurrencias ni retardo).
+- Acumulado EDCX A1–A7 en Plus: 204 filas, 93 PASS / 111 BLOCKED.
+- Siguiente: EDCX A8 (casos límite, 6 filas) en Plus.
+
+---
+
 ## 2026-10-23 UTC — r257: EDCX A6 (Plus scoped; Lite sin ejecución)
 
 - Lite `11d79a37`: sin cambios técnicos; espejo documental de r257.
