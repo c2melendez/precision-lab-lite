@@ -1,3 +1,10 @@
+## 2026-10-23 UTC — r271: espejo de continuidad B6 (test no ejecutado)
+
+- El harness `backend/tests/test_edcx_b6_contract.py` fue creado solo en Plus; todavía no se ejecutó. Lite no tiene implementación compleja equivalente y sigue `NO_EJECUTADO`.
+- No declarar paridad, no cambiar bloqueos y no despachar gates globales. Siguiente paso: obtener evidencia del test dirigido en Plus.
+
+---
+
 ## Continuidad operativa obligatoria — r265
 
 Antes de cualquier dispatch, reconciliar HEAD y Actions (push y pull_request) en Lite y Plus según [ROADMAP_CONTINUITY.md](ROADMAP_CONTINUITY.md). No cambiar la tarea viva aquí: la única siguiente acción es la definida por `continuity.json`; en este corte es **EDCX-B6 (VC-FE, 53 filas; REVIEW por canal vacío)**. Mantener SG28/DIST y S25 bloqueados, y SY-P-23, SY-X-04-PLUS-HTTP y ALGEBRA229-AS-B-29 en sus estados vigentes hasta verificar sus condiciones de salida. Aplicar RUN/WAIT/REUSE/DIAGNOSE/REVIEW y no repetir gates verdes vigentes.
