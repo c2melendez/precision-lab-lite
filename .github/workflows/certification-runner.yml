@@ -1,0 +1,36 @@
+name: Certification Runner
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pilot-l0:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Run canonical certification pilot
+        id: certification
+        continue-on-error: true
+        run: npx vitest run tests/certification/certificationRunnerPilot.test.ts
+      - name: Upload certification report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: certification-results-lite
+          path: artifacts/certification-results-lite.json
+          if-no-files-found: error
+          retention-days: 30
+      - name: Preserve certification outcome
+        if: steps.certification.outcome == 'failure'
+        run: exit 1
