@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 272,
+  "revision": 273,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -52,12 +52,12 @@
   "next_action": {
     "id": "EDCX-B6",
     "status": "REVIEW",
-    "action": "Espejar la evidencia nueva sin afirmar paridad: Plus ejecutó cinco checks del harness B6 en SHA bd25d58 y la suite backend terminó 2383 passed, 1 skipped, 10 xfailed; Lite no tiene motor complejo equivalente y sigue NO_EJECUTADO. No duplicar ejecución en Lite ni despachar gates globales. Esperar la matriz de trazabilidad de las 53 filas B6 y conservar bloqueos vigentes.",
+    "action": "Seguir el siguiente paso registrado en Plus: especificar adaptador y oráculo independiente para el primer grupo de casos escalares B6. La matriz de trazabilidad de Plus indica 0/53 filas con aceptación matemática completa en el harness actual; esto no autoriza inferir paridad en Lite. Mantener Lite NO_EJECUTADO y no despachar gates globales.",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-plus": "bd25d58fac8e8333bd9e0aa90a1b9a54efa6aa69"
     },
     "product_changed": false,
-    "audit": "r272 espejo: Plus workflow 40026869114 SUCCESS; los cinco tests del harness B6 PASSED en SHA bd25d58. Esto no certifica toda B6 ni establece paridad. Lite NO_EJECUTADO; global OPEN; sin Actions nuevas."
+    "audit": "r273 espejo: Plus publicó EDCX_B6_TEST_TRACEABILITY.md; suite CI SUCCESS pero 0/53 filas B6 con aceptación matemática completa por el harness actual. Lite no ejecutó esas pruebas; no inferir paridad. Global OPEN."
   },
   "blockers": [
     {
@@ -87,7 +87,7 @@
       "detail": "Lugares geométricos VC-LG-01..25: canal vacío y sin endpoint de producto."
     }
   ],
-  "ledger_note": "r272 espejo: registrar resultado CI de Plus sin inferir equivalencia matemática en Lite. Mantener NO_EJECUTADO y bloqueos; sin dispatch redundante.",
+  "ledger_note": "r273 espejo: seguir la acción de Plus sobre diseño de adaptador/oráculo, sin copiar resultado de ejecución. Lite sigue NO_EJECUTADO.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
