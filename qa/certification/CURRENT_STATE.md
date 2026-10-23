@@ -1,3 +1,13 @@
+## 2026-10-23 UTC — r276: comprobación exacta de PR/HEAD
+
+- HEAD de rama y head SHA de la PR #48: `1e8b625454179435dc85f9033984d10098def56c`; base SHA: `eb728e0ebb367f15b06aca491ca6236006834387`.
+- La consulta de workflows asociadas al SHA exacto no devolvió runs `pull_request`. Los últimos `push` visibles consultados siguen en SHA anterior `40b000b8f40fc8ac6c3e286b48c83554dac1e9e3`; no son evidencia de este HEAD.
+- PR #48 está abierta y GitHub reporta `mergeable=false`; API informa 3260 commits y 553 archivos cambiados. No mergear ni intentar arreglar conflictos automáticamente dentro de este objetivo.
+- La consulta es acotada y no demuestra ausencia absoluta de todos los checks en otros endpoints. No se despacharon workflows.
+- Siguiente acción: aclarar por qué no hay runs `pull_request` asociados al HEAD exacto y confirmar los checks requeridos antes de decidir cualquier CI. B6 permanece REVIEW; B5 BLOCKED en Plus; Lite NO_EJECUTADO; global OPEN; SG28/DIST y S25 bloqueados.
+
+---
+
 ## 2026-10-23 UTC — r275: reconciliación acotada de HEAD y Actions
 
 - HEAD actual de la rama: `c4decef6cc6792e776bbb6908530579e68694a37`. Últimos runs `push` visibles consultados usan SHA `40b000b8f40fc8ac6c3e286b48c83554dac1e9e3`, por lo que **no prueban el HEAD actual**.
