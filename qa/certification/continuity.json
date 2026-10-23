@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 276,
+  "revision": 277,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -53,12 +53,12 @@
   "next_action": {
     "id": "EDCX-B6",
     "status": "REVIEW",
-    "action": "Resolver la discrepancia de CI para el HEAD exacto de la PR: revisar por qué fetch_commit_workflow_runs no devuelve ejecuciones pull_request en este SHA y confirmar los checks requeridos para esta PR antes de cualquier dispatch. No mergear mientras mergeable=false. En paralelo, la validación del adaptador B6 debe permanecer estática hasta disponer de prueba dirigida ejecutable y salidas reales.",
+    "action": "Resolver la ausencia de checks en el HEAD exacto: revisar configuración de workflows/eventos, reglas de protección y por qué la PR no produjo check-runs/statuses para este SHA. No lanzar un workflow completo ni mergear mientras el estado siga pending/mergeable=false. La validación del adaptador B6 sigue pendiente de prueba dirigida ejecutable.",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-plus": "ec1697d421d3170163e805ecf8b98b78328cbc58"
     },
     "product_changed": false,
-    "audit": "r276: PR actual apunta al HEAD de la rama, pero no se encontraron runs pull_request para ese SHA; los últimos push visibles son de SHAs previos. PR mergeable=false y tamaño reportado muy grande (histórico acumulado). No se lanzaron workflows ni se modificó producto."
+    "audit": "r277: endpoints de checks y combined status consultados para el HEAD exacto: 0 check-runs, 0 commit statuses, combined status pending. Es falta de evidencia, no éxito. No se despachó workflow."
   },
   "blockers": [
     {
@@ -88,7 +88,7 @@
       "detail": "Lugares geométricos VC-LG-01..25: canal vacío y sin endpoint de producto."
     }
   ],
-  "ledger_note": "r276: prioridad operativa inmediata es esclarecer ausencia de runs pull_request para HEAD actual y estado mergeable=false. Mantener B6 REVIEW y no despachar workflows hasta confirmar checks necesarios; no usar resultados antiguos como evidencia del HEAD actual.",
+  "ledger_note": "r277: prioridad = diagnosticar ausencia de checks en el HEAD exacto de ambas PR; no confundir cero checks con green. Mantener gates y bloqueos.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -2569,6 +2569,10 @@
       39914455092
     ],
     "conclusion": "No PR-triggered workflow run was returned for the exact current HEAD by fetch_commit_workflow_runs. Latest visible push runs are on older SHAs. PR remains open and mergeable=false; do not merge or use old green runs as current-head evidence.",
-    "coverage_limit": "Exact-SHA PR workflow query and bounded first-page event queries only; not an exhaustive history. No workflow dispatched."
+    "coverage_limit": "Exact-SHA PR workflow query and bounded first-page event queries only; not an exhaustive history. No workflow dispatched.",
+    "exact_head_check_runs_count": 0,
+    "exact_head_commit_statuses_count": 0,
+    "exact_head_combined_status": "pending",
+    "exact_head_check": "GET /commits/{HEAD}/check-runs and /commits/{HEAD}/status both returned zero entries; do not interpret this as passing."
   }
 }
