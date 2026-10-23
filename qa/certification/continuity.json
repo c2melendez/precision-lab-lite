@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 266,
+  "revision": 268,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -52,13 +52,13 @@
   "next_action": {
     "id": "EDCX-B6",
     "status": "REVIEW",
-    "action": "EDCX-B5 registrado como brecha de capacidad (r266): lugares geométricos sin canal definido y sin endpoint en el producto. Siguiente bloque en orden: B6 (53 filas, prefijo VC-FE). Su campo canal está vacío en las 53 filas; decidir el canal antes de medir y no reutilizar evidencia de B4.",
+    "action": "EDCX-B6 (53 filas VC-FE): REVIEW, sin medición. Las 53 filas tienen canal vacío, pero el inventario completo tiene 589/638 filas vacías y los valores no vacíos describen transformaciones de representación, no rutas HTTP. No inferir endpoint ni rellenar canal. Definir contrato por fila (notación Log/log/ln, rama/signo, endpoint/payload, oráculo independiente, tolerancia y aceptación) antes del harness. Plus candidato /api/v1/evaluate solo para escalares compatibles; Lite NO_EJECUTADO por falta de motor equivalente.",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-lite": "7f5f69befd9f1277368acba5b4e7d0d971af766c",
       "c2melendez/precision-lab-plus": "177955dcad78afb9de1ca504a6d2970e85b5f040"
     },
     "product_changed": false,
-    "audit": "r266 mirror: B5 NO_EJECUTADO en Lite; BLOCKED por capacidad en Plus. Global OPEN."
+    "audit": "r268: corrección semántica del campo canal; 589/638 vacíos en JSONL, 49 poblados son rutas de representación. B6 REVIEW sin medición; B5 BLOCKED en Plus y NO_EJECUTADO en Lite; global OPEN."
   },
   "blockers": [
     {
@@ -88,7 +88,7 @@
       "detail": "Lugares geométricos VC-LG-01..25: canal vacío y sin endpoint de producto."
     }
   ],
-  "ledger_note": "r266: EDCX-B5 registrado como brecha de capacidad; siguiente EDCX-B6 en REVIEW por canal vacío; global OPEN.",
+  "ledger_note": "r268: EDCX-B6 en REVIEW. El campo canal es semántico/de representación y está vacío en 589/638 filas; no equivale a endpoint HTTP. No medir hasta contrato por fila. B5 continúa BLOCKED en Plus; Lite NO_EJECUTADO; global OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
