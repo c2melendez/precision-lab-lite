@@ -48,7 +48,49 @@ export interface DomainCondition {
   kind: "denominator" | "log" | "even_root" | "domain";
 }
 
+export type ResultKind =
+  | "numeric"
+  | "algebraic"
+  | "rational"
+  | "radical"
+  | "logarithmic"
+  | "exponential"
+  | "trigonometric"
+  | "complex"
+  | "equation"
+  | "inequality"
+  | "calculus"
+  | "matrix"
+  | "graph"
+  | "other";
+
+export type ResultViewKey =
+  | "original"
+  | "result"
+  | "simplified"
+  | "factored"
+  | "expanded"
+  | "identity"
+  | "solution"
+  | "complex_binomial"
+  | "complex_polar"
+  | "complex_trigonometric"
+  | "complex_exponential";
+
+export interface ResultView {
+  key: ResultViewKey;
+  label: string;
+  latex: string;
+  /** Familia que originó la vista; permite a Lite/Plus decidir botones sin
+   * inferir semántica a partir del texto LaTeX. */
+  kind: ResultKind;
+}
+
 export interface MathResult {
+  /** Clasificación funcional S26 de la entrada/resultado. */
+  resultKind?: ResultKind;
+  /** Vistas contextuales disponibles. La UI solo muestra las que el motor produjo. */
+  resultViews?: ResultView[];
   success: boolean;
   errorCode?: ErrorCode;
   errorMessage?: string;

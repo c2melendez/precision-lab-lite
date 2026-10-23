@@ -15,7 +15,7 @@ function parseError(message: string): AppError {
   return { code: ErrorCode.PARSE_ERROR, message };
 }
 
-export type InequalityOperator = "<" | ">" | "<=" | ">=";
+export type InequalityOperator = "<" | ">" | "<=" | ">=" | "!=";
 
 export interface InequalitySplit {
   left: string;
@@ -29,13 +29,13 @@ export interface InequalitySplit {
 export function splitInequality(expr: string): InequalitySplit | null {
   // Los de 2 caracteres van primero: si se buscara "<" antes que "<=", en
   // "x<=5" se partiría como left="x", right="=5" (con el "=" colgando).
-  const operators: InequalityOperator[] = ["<=", ">=", "<", ">"];
+  const operators: InequalityOperator[] = ["!=", "<=", ">=", "<", ">"];
   for (const op of operators) {
     const idx = expr.indexOf(op);
     if (idx === -1) continue;
     const left = expr.slice(0, idx);
     const right = expr.slice(idx + op.length);
-    if (right.includes("<") || right.includes(">") || left.includes("<") || left.includes(">")) {
+    if (right.includes("<") || right.includes(">") || right.includes("!=") || left.includes("<") || left.includes(">") || left.includes("!=")) {
       throw parseError("Solo se admite una desigualdad simple (una variable, un operador) — no cadenas como \"1 < x < 5\".");
     }
     return { left, right, operator: op };

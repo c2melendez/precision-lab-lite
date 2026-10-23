@@ -22,6 +22,23 @@ export function tryCbrtSign(expr: string): string | null {
     const result = Math.sign(inner) * Math.pow(Math.abs(inner), 1 / 3);
     return String(result);
   }
+  const doublefactorialMatch = expr.match(/^doublefactorial\((.*)\)$/s);
+  if (doublefactorialMatch) {
+    const inner = Number(evaluate(`float(${doublefactorialMatch[1]})`));
+    if (!Number.isInteger(inner) || inner < -1 || inner > 170) return null;
+    if (inner === -1 || inner === 0) return "1";
+    let product = 1;
+    for (let n = inner; n > 1; n -= 2) product *= n;
+    return String(product);
+  }
+
+  const ceilMatch = expr.match(/^ceil\((.*)\)$/s);
+  if (ceilMatch) {
+    const inner = Number(evaluate(`float(${ceilMatch[1]})`));
+    if (!Number.isFinite(inner)) return null;
+    return String(Math.ceil(inner));
+  }
+
   const signMatch = expr.match(/^sign\((.*)\)$/s);
   if (signMatch) {
     const inner = parseFloat(evaluate(`float(${signMatch[1]})`));

@@ -295,6 +295,68 @@ export function parseAlgebraicFragment(text: string, angleMode: "RAD" | "GRAD" =
   );
 }
 
+
+function normalizeS26A2Delimiters(input: string): string {
+  const bs = String.fromCharCode(92);
+  let out = input.split(bs + "mleft").join(bs + "left").split(bs + "mright").join(bs + "right");
+
+  const leftBrace = bs + "left" + bs + "{";
+  const rightBrace = bs + "right" + bs + "}";
+  while (out.includes(leftBrace) && out.includes(rightBrace)) {
+    const start = out.indexOf(leftBrace);
+    const finish = out.indexOf(rightBrace, start + leftBrace.length);
+    if (finish === -1) break;
+    const inner = out.slice(start + leftBrace.length, finish);
+    out = out.slice(0, start) + "(" + inner + ")" + out.slice(finish + rightBrace.length);
+  }
+
+  while (out.includes(bs + "left[") && out.includes(bs + "right]")) {
+    const start = out.indexOf(bs + "left[");
+    const finish = out.indexOf(bs + "right]", start + 6);
+    if (finish === -1) break;
+    const inner = out.slice(start + 6, finish);
+    out = out.slice(0, start) + "(" + inner + ")" + out.slice(finish + 7);
+  }
+
+  while (out.includes(bs + "lfloor") && out.includes(bs + "rfloor")) {
+    const start = out.indexOf(bs + "lfloor");
+    const finish = out.indexOf(bs + "rfloor", start + 7);
+    if (finish === -1) break;
+    const inner = out.slice(start + 7, finish).trim();
+    out = out.slice(0, start) + "floor(" + inner + ")" + out.slice(finish + 7);
+  }
+
+  const leftEscapedBar = bs + "left" + bs + "|";
+  const rightEscapedBar = bs + "right" + bs + "|";
+  while (out.includes(leftEscapedBar) && out.includes(rightEscapedBar)) {
+    const start = out.lastIndexOf(leftEscapedBar);
+    const finish = out.indexOf(rightEscapedBar, start + leftEscapedBar.length);
+    if (finish === -1) break;
+    const inner = out.slice(start + leftEscapedBar.length, finish);
+    out = out.slice(0, start) + "abs(" + inner + ")" + out.slice(finish + rightEscapedBar.length);
+  }
+
+  const bar = bs + "|";
+  for (let guard = 0; guard < 8; guard++) {
+    const positions: number[] = [];
+    let from = 0;
+    while (true) {
+      const p = out.indexOf(bar, from);
+      if (p === -1) break;
+      positions.push(p);
+      from = p + bar.length;
+    }
+    if (positions.length < 2 || positions.length % 2 !== 0) break;
+    const leftIndex = positions.length / 2 - 1;
+    const start = positions[leftIndex];
+    const finish = positions[leftIndex + 1];
+    const inner = out.slice(start + bar.length, finish);
+    out = out.slice(0, start) + "abs(" + inner + ")" + out.slice(finish + bar.length);
+  }
+
+  return out;
+}
+
 /**
  * Parser completo de sintaxis de entrada (Módulo 2). Lanza AppError con
  * ErrorCode.PARSE_ERROR ante cualquier violación de las reglas de la spec.
@@ -303,7 +365,7 @@ export function parseExpression(
   latex: string,
   angleMode: "RAD" | "GRAD" = "RAD",
 ): ParsedExpression {
-  const preprocessed = preprocessLatex(latex);
+  const preprocessed = preprocessLatex(normalizeS26A2Delimiters(latex));
   const unicodeNormalized = normalizeUnicode(preprocessed);
   validateDecimalPoints(unicodeNormalized);
 

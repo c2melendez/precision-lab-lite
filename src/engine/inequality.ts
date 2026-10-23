@@ -42,6 +42,8 @@ function satisfiesOperator(sign: number, operator: InequalityOperator): boolean 
       return sign <= 0;
     case ">=":
       return sign >= 0;
+    case "!=":
+      throw appError("El operador ≠ no pertenece al solver de desigualdades ordenadas.");
   }
 }
 

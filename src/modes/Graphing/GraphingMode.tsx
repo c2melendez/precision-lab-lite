@@ -145,7 +145,12 @@ export function GraphingMode() {
           }),
         );
         if (e.data.success) {
-          addHistoryEntry({ mode: "Graficación", input: "", resultSummary: e.data.resultLatex ?? "" });
+          addHistoryEntry({
+            mode: "Graficación",
+            input: "",
+            resultSummary: e.data.resultLatex ?? "",
+            domainConditions: e.data.domainConditions,
+          });
         }
       };
     }

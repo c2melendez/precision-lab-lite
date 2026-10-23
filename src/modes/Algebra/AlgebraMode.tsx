@@ -65,7 +65,12 @@ export function AlgebraMode() {
     worker.onmessage = (e: MessageEvent<MathResult>) => {
       setResult(e.data);
       if (e.data.success) {
-        addHistoryEntry({ mode: "Álgebra", input: latex, resultSummary: e.data.resultLatex ?? "" });
+        addHistoryEntry({
+          mode: "Álgebra",
+          input: latex,
+          resultSummary: e.data.resultLatex ?? "",
+          domainConditions: e.data.domainConditions,
+        });
       }
     };
     worker.postMessage({
