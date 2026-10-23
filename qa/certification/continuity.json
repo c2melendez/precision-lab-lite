@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 269,
+  "revision": 270,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -52,13 +52,13 @@
   "next_action": {
     "id": "EDCX-B6",
     "status": "REVIEW",
-    "action": "Revisar qa/certification/EDCX_B6_ROW_CONTRACT_DRAFT.md (Plus, 53 filas) y validar desde el código vigente endpoint/payload, alias de notación, rama/corte, oráculo independiente y aceptación por fila. El campo de matriz canal no es HTTP y no debe rellenarse por inferencia. No ejecutar B6 ni despachar CI hasta que el contrato sea verificable. Lite NO_EJECUTADO.",
+    "action": "Revisar qa/certification/EDCX_B6_HTTP_CONTRACT_FINDINGS.md (Plus) y convertir los hallazgos estáticos en tests de contrato locales, sin dispatch. El endpoint candidato POST /api/v1/evaluate acepta EvaluateRequest y devuelve MathResponse; result_approx es float solo para resultados reales, así que los complejos requieren validar result_text/result_latex y oráculo independiente. No aceptar B6-11 multivaluado con log principal. Confirmar el parseo de i/e/π y la forma de salida antes de ampliar el harness. Lite NO_EJECUTADO; no ejecutar gates globales.",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-lite": "7f5f69befd9f1277368acba5b4e7d0d971af766c",
       "c2melendez/precision-lab-plus": "177955dcad78afb9de1ca504a6d2970e85b5f040"
     },
     "product_changed": false,
-    "audit": "r269: inventario borrador de contrato por fila creado para VC-FE-01..53 en Plus; no modifica producto/JSONL ni demuestra soporte. B6 REVIEW sin medición; B5 BLOCKED Plus / NO_EJECUTADO Lite; global OPEN."
+    "audit": "r270: inspección estática de router, schemas, parsing, servicio y tests existentes. /evaluate es endpoint scalar; result_approx solo se asigna para valores reales; falta evidencia runtime B6. No se ejecutaron tests ni Actions. B6 REVIEW, B5 BLOCKED Plus, Lite NO_EJECUTADO, global OPEN."
   },
   "blockers": [
     {
@@ -88,7 +88,7 @@
       "detail": "Lugares geométricos VC-LG-01..25: canal vacío y sin endpoint de producto."
     }
   ],
-  "ledger_note": "r269: B6 sigue REVIEW. Existe borrador por fila para 53 casos; falta verificar contrato técnico/oráculo/ramas antes de medir. canal semántico, no endpoint. B5 BLOCKED Plus; Lite NO_EJECUTADO; global OPEN.",
+  "ledger_note": "r270: contrato HTTP documentado estáticamente. No se considera medición; aún validar parseo/serialización compleja con tests locales. Los casos multivaluados y sensibles a rama necesitan criterios separados. Sin CI nueva.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
