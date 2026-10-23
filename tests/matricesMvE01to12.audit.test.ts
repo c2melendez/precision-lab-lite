@@ -8,7 +8,8 @@ import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
 import Fraction from "fraction.js";
 import { describe, expect, it } from "vitest";
-import { columnspace, nullspace, rank, type Matrix } from "../src/engine/matrixOps";
+import { rank, type Matrix } from "../src/engine/matrixOps";
+import { columnspace, nullspace } from "../src/engine/matrixSpaces";
 
 type Row = {
   id: string;
