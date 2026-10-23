@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 270,
+  "revision": 271,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -52,13 +52,12 @@
   "next_action": {
     "id": "EDCX-B6",
     "status": "REVIEW",
-    "action": "Revisar qa/certification/EDCX_B6_HTTP_CONTRACT_FINDINGS.md (Plus) y convertir los hallazgos estáticos en tests de contrato locales, sin dispatch. El endpoint candidato POST /api/v1/evaluate acepta EvaluateRequest y devuelve MathResponse; result_approx es float solo para resultados reales, así que los complejos requieren validar result_text/result_latex y oráculo independiente. No aceptar B6-11 multivaluado con log principal. Confirmar el parseo de i/e/π y la forma de salida antes de ampliar el harness. Lite NO_EJECUTADO; no ejecutar gates globales.",
+    "action": "Seguir el espejo documental: el test-first de B6 se creó solo en Plus y aún no se ejecutó. No declarar paridad ni ejecutar B6 en Lite sin motor complejo equivalente. Esperar resultados del test dirigido Plus; mantener los bloqueos y no despachar gates globales.",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "7f5f69befd9f1277368acba5b4e7d0d971af766c",
-      "c2melendez/precision-lab-plus": "177955dcad78afb9de1ca504a6d2970e85b5f040"
+      "c2melendez/precision-lab-plus": "bd25d58fac8e8333bd9e0aa90a1b9a54efa6aa69"
     },
     "product_changed": false,
-    "audit": "r270: inspección estática de router, schemas, parsing, servicio y tests existentes. /evaluate es endpoint scalar; result_approx solo se asigna para valores reales; falta evidencia runtime B6. No se ejecutaron tests ni Actions. B6 REVIEW, B5 BLOCKED Plus, Lite NO_EJECUTADO, global OPEN."
+    "audit": "r271 espejo: test-first B6 existe solo en Plus y no está ejecutado. Lite sigue NO_EJECUTADO; sin evidencia de paridad ni CI nueva. B5 BLOCKED Plus, global OPEN."
   },
   "blockers": [
     {
@@ -88,7 +87,7 @@
       "detail": "Lugares geométricos VC-LG-01..25: canal vacío y sin endpoint de producto."
     }
   ],
-  "ledger_note": "r270: contrato HTTP documentado estáticamente. No se considera medición; aún validar parseo/serialización compleja con tests locales. Los casos multivaluados y sensibles a rama necesitan criterios separados. Sin CI nueva.",
+  "ledger_note": "r271 espejo: el harness mínimo B6 está creado en Plus pero no ejecutado. Lite permanece NO_EJECUTADO; no inferir paridad. Sin CI nueva.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
