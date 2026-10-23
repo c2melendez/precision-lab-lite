@@ -1,6 +1,6 @@
 # Inventario — 9/9 Matrices.zip versionadas en producto
 
-**Corte:** 2026-10-23 UTC · revisión **254**. Rama `qa/syntax-audit-in625-a1`.
+**Corte:** 2026-10-23 UTC - revisión **255**. Rama `qa/syntax-audit-in625-a1`.
 
 Todas las fuentes están como `qa/certification/legacy_sources/*.md.gz` + `MANIFEST.json`.
 Integridad: `python3 qa/certification/check_legacy_sources.py` → `PASS_LEGACY_SOURCES` 9/9.
@@ -35,7 +35,7 @@ El estado de **ejecución** se anota aparte y procede del ledger (`continuity.js
 | TR324 | `ejercicios_trigonometria.md.gz` | 324 | `PARCIAL`: solo sección 1 Evaluación (33/48 con cierre); secciones 2–9 pendientes |
 | LER | `matriz_log_exp_radicales.md.gz` | 540 | `PARCIAL`: sección 1 Evaluación `CERRADA` (67/67); secciones 2–9 pendientes |
 | MV153 | `matriz_matrices_vectores.md.gz` | 153 | `CERRADO` (r236–r253): catálogo A–H+J `PASS_SCOPED_BILATERAL` |
-| EDCX | `matriz_edo_variable_compleja.md.gz` | 638 | `PARCIAL`: A1+A2 (103/638) `PASS_SCOPED` en Plus; Lite sin motor equivalente |
+| EDCX | `matriz_edo_variable_compleja.md.gz` | 638 | `PARCIAL`: A1-A4 (143/638) `PASS_SCOPED` en Plus (80 PASS / 63 BLOCKED); Lite sin motor equivalente |
 | GR519 | `matriz_graficacion.md.gz` | 522 | `NO_EJECUTADO` |
 
 **Total de filas de las 9 fuentes: 3.454.**
@@ -111,7 +111,7 @@ El estado de **ejecución** se anota aparte y procede del ledger (`continuity.js
 
 - Parte A (ED, 210): A1 Primer orden (S/L/H/X/B/C) · A2 Segundo orden y superior (K/N/E/A) · A3 Sistemas y exponencial matricial · A4 Laplace · A5 Series/Frobenius · A6 EDP · A7 Cualitativo/numérico/retardo · A8 Casos límite.
 - Parte B (VC, 428): B1 Conversión de formas (17/10/10/12) · B2 Operaciones (11/9/9/12) · B3 Potencias y raíces · B4 Ecuaciones en ℂ · B5 Lugares geométricos · B6 Funciones multivaluadas · B7 Límites/series · B8 Cauchy–Riemann · B9 Contorno/residuos · B10 Taylor/Laurent · B11 Integrales reales · B12 Transformaciones conformes · B13 Teoremas globales · B14 EDO/Laplace/Fourier · B15 Robustez.
-- Estado: `PARCIAL`. A1 (53) + A2 (50) cerradas en Plus como `PASS_SCOPED` (75 PASS / 28 BLOCKED medidos, r254); A3–A8 y toda la Parte B pendientes. Lite: `NO_EJECUTADO` (motor `stepEngine/ode.ts` limitado a `y'=f(x)` y 2.º orden constante).
+- Estado: `PARCIAL`. A1 (53) + A2 (50) + A3 (16) + A4 (24) cerradas en Plus como `PASS_SCOPED` (80 PASS / 63 BLOCKED medidos, r255); A5-A8 y toda la Parte B pendientes. Lite: `NO_EJECUTADO` (motor `stepEngine/ode.ts` limitado a `y'=f(x)` y 2.º orden constante).
 
 ### GR519 — Graficación (522)
 
@@ -121,10 +121,11 @@ El estado de **ejecución** se anota aparte y procede del ledger (`continuity.js
 
 ## Historial de este documento
 
-- **2026-10-23 (r254)** — EDCX A1+A2 abiertas en Plus (`PASS_SCOPED`, 75/103); MV153 marcado `CERRADO` (catálogo A–H+J bilateral r236–r253); próximo bloque EDCX A3.
+- **2026-10-23 (r255)** - EDCX A3+A4 abiertas en Plus (`PASS_SCOPED`, 4 PASS / 36 BLOCKED); acumulado A1-A4 80/63. Defecto confirmado: la segunda condición inicial con `;` no está implementada. Próximo bloque EDCX A5.
+- **2026-10-23 (r254)** - EDCX A1+A2 abiertas en Plus (`PASS_SCOPED`, 76 PASS / 27 BLOCKED); MV153 marcado `CERRADO` (catálogo A-H+J bilateral r236-r253); próximo bloque EDCX A3.
 - **2026-10-21 (r235)** — Refresco: se separa "fuente congelada" de "ejecución"; se corrige `TR324`/`LER` (sección 1 ejecutada y cerrada); se añade estado por sección/bloque y pendientes; `next` = Matrices/Vectores.
 - **2026-10-20** — Corte anterior: tabla plana con `CONGELADO` y marcas "no ejecutado" agregadas, que quedaron obsoletas al cerrarse `EV-L/E/R/M/T` y `EV-D/H/I`.
 
 ## Siguiente caso de producto
 
-**EDCX A3** — certificar sistemas lineales y exponencial matricial (16 filas) en Plus; Lite sigue sin motor EDO equivalente.
+**EDCX A5** - certificar series / Frobenius (10 filas) en Plus; Lite sigue sin motor EDO equivalente.

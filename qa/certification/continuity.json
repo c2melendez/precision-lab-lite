@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 254,
+  "revision": 255,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
-  "baseline_case": "EDCX-A1-A2-CLOSURE-R254-PLUS-SCOPED",
-  "baseline_status": "PASS_SCOPED",
+  "baseline_case": "EDCX-A3-A4-MIRROR-R255",
+  "baseline_status": "NO_EJECUTADO",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -48,14 +48,15 @@
     }
   },
   "next_action": {
-    "id": "EDCX-A3-SYSTEMS-MATRIX-EXPONENTIAL",
+    "id": "EDCX-A5-SERIES-FROBENIUS",
     "status": "READY",
-    "action": "El bloque EDCX A3 se certifica en Plus (canal /api/v1/ode y exponencial matricial). Lite no tiene motor EDO equivalente: stepEngine/ode.ts solo cubre y'=f(x) y 2.o orden con coeficientes constantes. No declarar paridad ni PASS de Lite sin ejecucion. Mantener el espejo documental de r254 y registrar los gaps en MANUAL_CAPABILITY_GAPS.md.",
+    "action": "El bloque EDCX A5 (10 filas: series y Frobenius) se certifica en Plus contra el canal real, con oraculo de residuo en el dominio de la serie. Lite no tiene motor EDO equivalente y permanece NO_EJECUTADO. No declarar paridad ni PASS de Lite sin ejecucion. Mantener el espejo documental y registrar los gaps en MANUAL_CAPABILITY_GAPS.md.",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3"
+      "c2melendez/precision-lab-lite": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
+      "c2melendez/precision-lab-plus": "02e198ac2435e99fcd47ad6392660a88e490a87f"
     },
     "product_changed": false,
-    "audit": "r254 mirror: Lite queda en 40b000b8 (MV-J, cumulative 39914455096 SUCCESS) como baseline tecnico. EDCX A1+A2 son Plus-scoped (76 PASS / 27 BLOCKED); Lite NO_EJECUTADO por alcance de motor. continuity.json de Lite estaba en revision 243; se reconcilia a 254. Global OPEN."
+    "audit": "r255 mirror: Lite queda en 40b000b8 (MV-J, cumulative 39914455096 SUCCESS) como baseline tecnico; no hay cambios tecnicos de Lite en r255. EDCX A3+A4 son Plus-scoped (4 PASS / 36 BLOCKED) y Lite NO_EJECUTADO por alcance de motor. Global OPEN."
   },
   "blockers": [
     {
@@ -79,7 +80,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r254 (espejo Plus-scoped): EDCX A1 (53) + A2 (50) certificadas en Plus (76 PASS / 27 BLOCKED, SHA fdcf2d63, cumulative 39924322798 y H1d 39924322809 SUCCESS). Lite no ejecuta esos bloques: stepEngine/ode.ts solo cubre y'=f(x) y EDO lineales de 2.o orden con coeficientes constantes; no hay separables, lineales, Bernoulli, Riccati, Clairaut/Lagrange ni Wronskianos. Lite NO_EJECUTADO, sin PASS ni FAIL bilateral. Regresion Plus 86241e40 (mp.pool.Pool sin importar el submodulo) corregida en 5a76477a; los runs fallidos 39921705215/39921705206/39921705116 no son evidencia. Baseline tecnico Lite: 40b000b8 (MV-J, run 39914455096 SUCCESS). Blockers independientes sin cambios. Global OPEN. Siguiente: EDCX A3 en Plus.",
+  "ledger_note": "r255 (espejo Plus-scoped): EDCX A3 (16 filas) + A4 (24 filas) certificadas en Plus (4 PASS / 36 BLOCKED; acumulado A1-A4 80 PASS / 63 BLOCKED). A3: ED-M-11..13 PASS_SCOPED por autovalores exactos; 13 bloqueadas. A4: ED-T-17 PASS con renombrado t->x; 23 bloqueadas. Runs verdes: 6aef2571 cumulative 39926515965 / H1d 39926515979; 02e198ac cumulative 39927284848 / H1d 39927284862. Defecto confirmado en Plus: la segunda condicion inicial con ';' documentada en _parse_initial_condition no esta implementada. Lite no ejecuta A3/A4: stepEngine/ode.ts solo cubre y'=f(x) y 2.o orden constante. Sin PASS/FAIL bilateral. Global OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -2099,6 +2100,68 @@
       "reason": "src/engine/stepEngine/ode.ts solo cubre y'=f(x) y 2.o orden con coeficientes constantes",
       "evidence": "lectura de codigo del motor, sin ejecucion; no se declara PASS ni FAIL"
     },
+    "global_certification": "OPEN"
+  },
+  "edcx_a3_a4_mirror_r255": {
+    "status": "NO_EJECUTADO",
+    "scope": "Espejo documental de EDCX A3+A4; Plus PASS_SCOPED, Lite sin ejecución",
+    "lite": {
+      "rows_executed": 0,
+      "reason": "src/engine/stepEngine/ode.ts solo cubre y'=f(x) y segundo orden con coeficientes constantes; no hay sistemas, exponencial matricial, Laplace ni ecuaciones integrales",
+      "bilateral_verdict": null
+    },
+    "plus_evidence": {
+      "status": "PASS_SCOPED",
+      "rows_total": 40,
+      "rows_pass": 4,
+      "rows_blocked": 36,
+      "blocks": {
+        "A3": {
+          "rows": 16,
+          "pass": 3,
+          "blocked": 13
+        },
+        "A4": {
+          "rows": 24,
+          "pass": 1,
+          "blocked": 23
+        }
+      },
+      "cumulative_a1_a4": {
+        "rows": 143,
+        "pass": 80,
+        "blocked": 63
+      },
+      "runs": [
+        {
+          "gate": "cumulative",
+          "sha": "6aef25713a618798a06a96ad41dc50f6ac4f7163",
+          "run_id": 39926515965,
+          "conclusion": "SUCCESS",
+          "tests": "2130 passed, 1 skipped, 6 xfailed; coverage 87.92%"
+        },
+        {
+          "gate": "h1d",
+          "sha": "6aef25713a618798a06a96ad41dc50f6ac4f7163",
+          "run_id": 39926515979,
+          "conclusion": "SUCCESS"
+        },
+        {
+          "gate": "cumulative",
+          "sha": "02e198ac2435e99fcd47ad6392660a88e490a87f",
+          "run_id": 39927284848,
+          "conclusion": "SUCCESS",
+          "tests": "2157 passed, 1 skipped, 6 xfailed; coverage 87.85%"
+        },
+        {
+          "gate": "h1d",
+          "sha": "02e198ac2435e99fcd47ad6392660a88e490a87f",
+          "run_id": 39927284862,
+          "conclusion": "SUCCESS"
+        }
+      ]
+    },
+    "known_defect_confirmed_plus": "La segunda condicion inicial separada por ';' documentada en _parse_initial_condition no esta implementada: _split_equation_and_condition parte por coma y el valor '0; y'(0)=0' falla con PARSE_ERROR 'No se pudo interpretar la condicion inicial.' Reproduccion: y''-y=exp(x), y(0)=0; y'(0)=0. No corregido en r255.",
     "global_certification": "OPEN"
   }
 }

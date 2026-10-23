@@ -447,3 +447,17 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
 - **Paridad.** No se acredita paridad Lite/Plus en EDCX con evidencia no ejecutada;
   la fila de inventario EDCX queda `PARCIAL` y la certificación global `OPEN`.
 
+
+## 2026-10-23 — EDCX A3+A4 (r255): alcance Lite y evidencia Plus
+
+- Lite **NO_EJECUTADO** para A3 y A4. `src/engine/stepEngine/ode.ts` solo cubre
+  `y'=f(x)` y EDO lineales de 2.º orden con coeficientes constantes.
+- Sin motor de sistemas lineales, exponencial matricial (`expm`), transformada
+  de Laplace directa/inversa, ecuaciones integrales ni soluciones por series.
+- Plus A3: 3 PASS_SCOPED (autovalores exactos) + 13 BLOCKED.
+- Plus A4: 1 PASS con renombrado `t -> x` + 23 BLOCKED.
+- Defecto confirmado en Plus (no corregido): la segunda condición inicial con
+  `;` documentada en `_parse_initial_condition` no está implementada.
+- No se declara paridad bilateral: la diferencia es de capacidad de motor, no
+  de resultado de ejecución.
+

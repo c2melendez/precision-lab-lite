@@ -1,3 +1,30 @@
+## 2026-10-23 UTC — r255: EDCX A3+A4 — Plus scoped; Lite NO_EJECUTADO
+
+**EDCX Parte A, A3 (16 filas) + A4 (24 filas): 4 PASS / 36 BLOCKED en Plus.**
+
+- Lite: **0 filas ejecutadas**. `src/engine/stepEngine/ode.ts` solo cubre
+  `y'=f(x)` y EDO lineales de 2.º orden con coeficientes constantes; no hay
+  sistemas, exponencial matricial, Laplace, ecuaciones integrales ni series.
+  No se declara PASS ni FAIL de Lite: gap de alcance.
+- Plus A3: 3 PASS_SCOPED (`ED-M-11..13`, autovalores exactos por
+  `/matrix/eigen`) + 13 BLOCKED (sistemas, `expm`, no lineales/Lyapunov).
+- Plus A4: 1 PASS (`ED-T-17` con `t -> x`, residuo + condición inicial) +
+  23 BLOCKED (`laplace`/`ilaplace`, convolución, dos condiciones iniciales,
+  integrales, sistema).
+- Acumulado EDCX A1–A4 en Plus: **143 filas, 80 PASS / 63 BLOCKED**.
+- Defecto confirmado en Plus (no corregido): la segunda condición inicial con
+  `;` documentada en `_parse_initial_condition` no está implementada.
+- Evidencia CI Plus: `6aef2571` cumulative [39926515965] / H1d [39926515979]
+  **SUCCESS**; `02e198ac` cumulative [39927284848] / H1d [39927284862]
+  **SUCCESS** (2157 passed, 1 skipped, 6 xfailed, cobertura 87.85%).
+- Detalle completo en `CURRENT_STATE.md`, `EXECUTION_LOG.md` y
+  `MANUAL_CAPABILITY_GAPS.md` del repo Plus, r255.
+
+**Siguiente acción única:** EDCX A5 (series / Frobenius, 10 filas) en Plus;
+Lite permanece sin motor EDO equivalente.
+
+---
+
 ## 2026-10-23 UTC — r254: EDCX A1+A2 — PASS_SCOPED en Plus; Lite NO_EJECUTADO
 
 **EDCX Parte A, A1 (53 filas) + A2 (50 filas): 76 PASS / 27 BLOCKED en Plus.**
