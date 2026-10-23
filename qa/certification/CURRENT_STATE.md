@@ -1,6 +1,15 @@
 ## Continuidad operativa obligatoria — r265
 
-Antes de cualquier dispatch, reconciliar HEAD y Actions (push y pull_request) en Lite y Plus según [ROADMAP_CONTINUITY.md](ROADMAP_CONTINUITY.md). No cambiar la tarea viva aquí: la única siguiente acción es la definida por `continuity.json`; en este corte es **EDCX-B5 (VC-LG, 25 filas, Plus)**. Mantener SG28/DIST y S25 bloqueados, y SY-P-23, SY-X-04-PLUS-HTTP y ALGEBRA229-AS-B-29 en sus estados vigentes hasta verificar sus condiciones de salida. Aplicar RUN/WAIT/REUSE/DIAGNOSE/REVIEW y no repetir gates verdes vigentes.
+Antes de cualquier dispatch, reconciliar HEAD y Actions (push y pull_request) en Lite y Plus según [ROADMAP_CONTINUITY.md](ROADMAP_CONTINUITY.md). No cambiar la tarea viva aquí: la única siguiente acción es la definida por `continuity.json`; en este corte es **EDCX-B6 (VC-FE, 53 filas; REVIEW por canal vacío)**. Mantener SG28/DIST y S25 bloqueados, y SY-P-23, SY-X-04-PLUS-HTTP y ALGEBRA229-AS-B-29 en sus estados vigentes hasta verificar sus condiciones de salida. Aplicar RUN/WAIT/REUSE/DIAGNOSE/REVIEW y no repetir gates verdes vigentes.
+
+---
+
+## 2026-10-23 UTC — r266: EDCX-B5 registrado como brecha de capacidad (Lite)
+
+- **Medición:** Lite NO_EJECUTADO. Las 25 filas `VC-LG-01..25` describen lugares geométricos y su campo `canal` está vacío. Lite no tiene una implementación equivalente de esta capacidad.
+- **Plus (espejo):** B5 registrado como BLOCKED por capacidad (ver CURRENT_STATE de Plus, r266). No hay PASS ni FAIL en ninguno de los dos productos.
+- **Gates:** sin CI nueva. Cambio exclusivamente documental.
+- **Siguiente:** EDCX-B6 (53 filas, prefijo VC-FE), REVIEW. Su campo `canal` también está vacío; requiere la misma decisión antes de medir.
 
 ---
 

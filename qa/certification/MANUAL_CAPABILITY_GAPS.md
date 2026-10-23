@@ -580,3 +580,9 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
 - Acumulado EDCX en Plus (A + B1 + B2 + B3): 319/638 filas, 188 PASS / 131
   BLOCKED.
 - No se declara paridad bilateral: la diferencia es de capacidad de motor.
+
+## EDCX-B5 — lugares geométricos (VC-LG-01..25): brecha de capacidad (r266)
+
+- Estado: NO_EJECUTADO en Lite; BLOCKED por capacidad en Plus (espejo).
+- Causa: no existe canal definido para lugares geométricos y el campo `canal` de las 25 filas está vacío.
+- Reabrir solo cuando se defina canal y oráculo, o cuando la capacidad exista en ambos productos.

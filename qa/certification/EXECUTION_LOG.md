@@ -6,6 +6,13 @@
 
 ---
 
+## 2026-10-23 UTC — r266: EDCX-B5 brecha de capacidad (Lite)
+
+- Filas VC-LG-01..25 con `canal` vacío. Lite NO_EJECUTADO; Plus BLOCKED por capacidad (espejo).
+- Sin CI (solo documentación). Global OPEN.
+- Siguiente: EDCX-B6 (53 filas, VC-FE), REVIEW por canal vacío.
+
+
 ## 2026-10-23 UTC — r263: EDCX B4 mirror (Lite NO_EJECUTADO)
 
 - Lite sin cambios técnicos (baseline `7f5f69be`); no se ejecutó B4.
