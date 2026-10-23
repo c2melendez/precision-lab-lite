@@ -302,3 +302,12 @@ en Plus; Lite permanece sin motor EDO equivalente.
 ## 2026-10-23 UTC — r246: MV-D-01..17 PASS_SCOPED_BILATERAL
 
 SHA técnico Lite `c28091c`; gates cumulative/h1d/scientific-ui SUCCESS. Campaña S25/S19 CLEARED en Plus.
+
+
+---
+
+## 2026-10-23 UTC — r270: referencia a hallazgos de contrato HTTP B6
+
+- Plus documenta el contrato estático del endpoint candidato en [EDCX_B6_HTTP_CONTRACT_FINDINGS.md](https://github.com/c2melendez/precision-lab-plus/blob/qa/syntax-audit-in625-a1/qa/certification/EDCX_B6_HTTP_CONTRACT_FINDINGS.md).
+- No es evidencia runtime ni prueba de paridad. El endpoint de Plus devuelve `result_approx` solo para resultados reales; las respuestas complejas requieren validación independiente de texto/LaTeX y el caso multivaluado necesita un contrato distinto.
+- Lite permanece NO_EJECUTADO; B5 BLOCKED en Plus y certificación global OPEN. No se ejecutaron tests ni Actions.
