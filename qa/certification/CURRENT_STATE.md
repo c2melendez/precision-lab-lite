@@ -1,27 +1,24 @@
-## 2026-10-23 UTC — r246: MV-D-01..17 cerrado formalmente (PASS_SCOPED_BILATERAL)
+## 2026-10-23 UTC — r248: MV-E-01..12 PASS_SCOPED_BILATERAL
 
-**MV-D-01..17 — PASS_SCOPED_BILATERAL** tras desbloqueo de campaña S25/S19 en Plus.
+**MV-E-01..12 (rango, núcleo, Col, rango–nulidad) — PASS_SCOPED_BILATERAL.**
 
-### Evidencia Lite (producto)
+### Producto Lite
 
-- SHA técnico: `c28091c0173f951a2571ffcbb6084f566ced0034`
-- cumulative [39754424771](https://github.com/c2melendez/precision-lab-lite/actions/runs/39754424771) SUCCESS
-- h1d [39754424829](https://github.com/c2melendez/precision-lab-lite/actions/runs/39754424829) SUCCESS
-- scientific-ui [39754424596](https://github.com/c2melendez/precision-lab-lite/actions/runs/39754424596) SUCCESS
-- Suite: `tests/matricesMvD01to17.audit.test.ts` anclada a `matriz_matrices_vectores.md.gz`
+- `rank()` en `src/engine/matrixOps.ts`
+- `nullspace()` / `columnspace()` en `src/engine/matrixSpaces.ts` (rref exacto, Fraction)
+- Suite: `tests/matricesMvE01to12.audit.test.ts`
+- HEAD: `4f2abd932c3714318f8ffaef2aa6199d36c33de6`
+- cumulative [39905437848](https://github.com/c2melendez/precision-lab-lite/actions/runs/39905437848) **SUCCESS**
 
-### Evidencia Plus (campaña + producto)
+### Producto Plus (paridad)
 
-- Producto MV-D SHA `91d7f7b` gates SUCCESS (r239).
-- S25+S19: [39890525978](https://github.com/c2melendez/precision-lab-plus/actions/runs/39890525978) y [39899659414](https://github.com/c2melendez/precision-lab-plus/actions/runs/39899659414) SUCCESS; mutation score baseline **21.10 %**.
-- SECURITY-S25 CLEARED en continuidad Plus.
+- `/matrix/rank` (allow_symbolic), `/matrix/nullspace`, `/matrix/columnspace`
+- cumulative [39904542863](https://github.com/c2melendez/precision-lab-plus/actions/runs/39904542863) **SUCCESS** @ `544d8bd`
 
-**Global OPEN.** Blockers restantes: H2-SG28-DIST-01..08, SY-P-23, SY-X-04-PLUS-HTTP, ALGEBRA229-AS-B-29.
-
-**Siguiente acción única:** **MV-E** (siguiente sección de la matriz de matrices/vectores).
+**Siguiente acción única:** **MV-F** (siguiente sección de `matriz_matrices_vectores.md.gz`).
 
 ---
 
-## 2026-10-22 UTC — r243: handoff (S25 entonces BLOCKED; supersedido por r246)
+## 2026-10-23 UTC — r246: MV-D-01..17 PASS_SCOPED_BILATERAL
 
-Ver historial Plus r244–r246 para resolución S25/S19 y cierre MV-D formal.
+SHA técnico Lite `c28091c`; gates cumulative/h1d/scientific-ui SUCCESS. Campaña S25/S19 CLEARED en Plus.
