@@ -1,3 +1,11 @@
+## 2026-10-23 UTC — r274: espejo del plan de adaptador/oráculo EDCX-B6
+
+- Plus publicó [EDCX_B6_ADAPTER_ORACLE_PLAN.md](https://github.com/c2melendez/precision-lab-plus/blob/qa/syntax-audit-in625-a1/qa/certification/EDCX_B6_ADAPTER_ORACLE_PLAN.md), con entradas candidatas y oráculo independiente math/cmath; la decodificación de salida aún debe validarse.
+- No se ejecutaron tests B6 ni Actions nuevos. Lite sigue NO_EJECUTADO; no inferir paridad ni despachar gates globales.
+- Siguiente paso coordinado: validar en Plus el adaptador de salida con una prueba dirigida. Global OPEN; bloqueos sin cambios.
+
+---
+
 ## 2026-10-23 UTC — r273: espejo de trazabilidad B6
 
 - Plus publicó [EDCX_B6_TEST_TRACEABILITY.md](https://github.com/c2melendez/precision-lab-plus/blob/qa/syntax-audit-in625-a1/qa/certification/EDCX_B6_TEST_TRACEABILITY.md). El harness actual no demuestra aceptación matemática completa de ninguna de las 53 filas; `VC-FE-05` y `VC-FE-14` solo tienen cobertura parcial, y `VC-FE-11` requiere un contrato multivaluado.
