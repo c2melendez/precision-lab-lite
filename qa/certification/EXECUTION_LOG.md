@@ -1,3 +1,16 @@
+## 2026-10-23 UTC — r257: EDCX A6 (Plus scoped; Lite sin ejecución)
+
+- Lite `11d79a37`: sin cambios técnicos; espejo documental de r257.
+- Plus `9a828f3c` (A6): cumulative [39932526897] y H1d [39932526943] SUCCESS;
+  2198 passed, 1 skipped, 6 xfailed, cobertura 87.90%. Harness A6 30/30.
+- A6: 1 PASS_SCOPED (`ED-P-25`, laplaciano compuesto con derivadas parciales
+  reales y suma exacta 0) + 25 BLOCKED (sin motor de EDP).
+- Lite **NO_EJECUTADO**: el motor ODE no cubre EDP, clasificación,
+  características, Fourier ni núcleo del calor. Sin PASS/FAIL bilateral.
+- Siguiente: EDCX A7 (cualitativo/numérico/retardo, 25 filas) en Plus.
+
+---
+
 ## 2026-10-23 UTC — r256: EDCX A5 (Plus scoped; Lite sin ejecución)
 
 - Lite `2fc34002`: sin cambios técnicos; espejo documental de r256.

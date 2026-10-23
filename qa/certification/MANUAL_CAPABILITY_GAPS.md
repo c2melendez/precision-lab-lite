@@ -472,3 +472,18 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
   (`{0}`) y no distingue el tipo ODE.
 - No se declara paridad bilateral: la diferencia es de capacidad de motor.
 
+
+## 2026-10-23 — EDCX A6 (r257): alcance Lite y evidencia Plus
+
+- Lite **NO_EJECUTADO** para A6. `src/engine/stepEngine/ode.ts` no implementa
+  ecuaciones en derivadas parciales ni clasificación, características, series
+  de Fourier o núcleo del calor.
+- Plus A6: 1 PASS_SCOPED (`ED-P-25`, laplaciano de `e^x sin y` compuesto con dos
+  derivadas parciales reales de orden 2 y suma exacta 0) y 25 BLOCKED.
+- No hay endpoint de laplaciano ni motor de EDP en Plus; el PASS_SCOPED es una
+  composición documentada de `/api/v1/derivative/partial`, no un botón dedicado.
+- `ED-P-23/24` (autovalores con dos condiciones de frontera) se bloquean por el
+  rechazo determinista de más de una condición inicial; una ecuación con
+  parámetro sin condición agota el timeout del solver y no se usa como evidencia.
+- No se declara paridad bilateral: la diferencia es de capacidad de motor.
+

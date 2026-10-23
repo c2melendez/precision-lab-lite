@@ -1,3 +1,25 @@
+## 2026-10-23 UTC — r257: EDCX A6 — Plus scoped; Lite NO_EJECUTADO
+
+**EDCX Parte A, A6 (26 filas, EDP): 1 PASS_SCOPED / 25 BLOCKED en Plus.**
+
+- Lite: **0 filas ejecutadas**. `src/engine/stepEngine/ode.ts` no implementa EDP,
+  clasificación, características, series de Fourier ni núcleo del calor. No se
+  declara PASS ni FAIL de Lite: gap de alcance.
+- Plus A6: 1 PASS_SCOPED (`ED-P-25`: laplaciano de `e^x sin y` compuesto con dos
+  derivadas parciales reales de orden 2 y suma exacta 0) + 25 BLOCKED
+  (transporte, Burgers, d'Alembert, cuerda, calor, Laplace/Poisson, autovalores
+  con dos fronteras y núcleo del calor).
+- Acumulado EDCX A1–A6 en Plus: **179 filas, 89 PASS / 90 BLOCKED**.
+- Evidencia CI Plus: `9a828f3c` cumulative [39932526897] / H1d [39932526943]
+  **SUCCESS** (2198 passed, 1 skipped, 6 xfailed, cobertura 87.90%).
+- Detalle completo en `CURRENT_STATE.md`, `EXECUTION_LOG.md` y
+  `MANUAL_CAPABILITY_GAPS.md` del repo Plus, r257.
+
+**Siguiente acción única:** EDCX A7 (cualitativo/numérico/retardo, 25 filas) en
+Plus; Lite permanece sin motor EDO/EDP equivalente.
+
+---
+
 ## 2026-10-23 UTC — r256: EDCX A5 — Plus scoped; Lite NO_EJECUTADO
 
 **EDCX Parte A, A5 (10 filas, series y Frobenius): 8 PASS / 2 BLOCKED en Plus.**

@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 256,
+  "revision": 257,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
-  "baseline_case": "EDCX-A5-MIRROR-R256",
+  "baseline_case": "EDCX-A6-MIRROR-R257",
   "baseline_status": "NO_EJECUTADO",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -48,15 +48,15 @@
     }
   },
   "next_action": {
-    "id": "EDCX-A6-PDE",
+    "id": "EDCX-A7-QUALITATIVE",
     "status": "READY",
-    "action": "El bloque EDCX A6 (26 filas, EDP) se certifica en Plus contra los canales reales, midiendo primero si alguna fila es expresable (empezando por ED-P-25, Laplaciano de e^x*sin(y)). Lite no tiene motor EDO/EDP equivalente y permanece NO_EJECUTADO. No declarar paridad ni PASS de Lite sin ejecucion. Mantener el espejo documental y registrar los gaps en MANUAL_CAPABILITY_GAPS.md.",
+    "action": "El bloque EDCX A7 (25 filas, cualitativo/numerico/retardo) se certifica en Plus contra los canales reales, midiendo primero que filas son expresables (equilibrios, trayectorias ortogonales, Picard, Euler/Heun/RK4, recurrencias y retardo). Lite no tiene motor EDO/EDP equivalente y permanece NO_EJECUTADO. No declarar paridad ni PASS de Lite sin ejecucion. Mantener el espejo documental y registrar los gaps en MANUAL_CAPABILITY_GAPS.md.",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-lite": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
-      "c2melendez/precision-lab-plus": "50d9ca03393c71bcc8c07cce8c6186f7dd1abb4a"
+      "c2melendez/precision-lab-plus": "9a828f3c2f9d9483528eb94a51aed0f65a59ba88"
     },
     "product_changed": false,
-    "audit": "r256 mirror: Lite queda en 40b000b8 (MV-J, cumulative 39914455096 SUCCESS) como baseline tecnico; no hay cambios tecnicos de Lite en r256. EDCX A5 es Plus-scoped (8 PASS / 2 BLOCKED) y Lite NO_EJECUTADO por alcance de motor. Global OPEN."
+    "audit": "r257 mirror: Lite queda en 40b000b8 (MV-J, cumulative 39914455096 SUCCESS) como baseline tecnico; no hay cambios tecnicos de Lite en r257. EDCX A6 es Plus-scoped (1 PASS_SCOPED / 25 BLOCKED) y Lite NO_EJECUTADO por alcance de motor. Global OPEN."
   },
   "blockers": [
     {
@@ -2215,6 +2215,43 @@
         }
       ]
     },
+    "global_certification": "OPEN"
+  },
+  "edcx_a6_mirror_r257": {
+    "status": "NO_EJECUTADO",
+    "scope": "espejo documental de EDCX A6 (26 filas, EDP) certificado en Plus",
+    "plus_status": "PASS_SCOPED",
+    "plus_rows_total": 26,
+    "plus_rows_pass": 1,
+    "plus_rows_blocked": 25,
+    "plus_pass_scoped": [
+      "ED-P-25"
+    ],
+    "plus_cumulative_a1_a6": {
+      "rows": 179,
+      "pass": 89,
+      "blocked": 90
+    },
+    "lite_reason": "src/engine/stepEngine/ode.ts solo cubre y'=f(x) y segundo orden con coeficientes constantes; no hay EDP, clasificacion, caracteristicas, series de Fourier ni nucleo del calor",
+    "lite_rows_executed": 0,
+    "product_changed": false,
+    "plus_harness": "backend/tests/test_edcx_ed_a6_01_l26.py (30 passed local y CI)",
+    "plus_runs": [
+      {
+        "gate": "cumulative",
+        "sha": "9a828f3c2f9d9483528eb94a51aed0f65a59ba88",
+        "run_id": 39932526897,
+        "conclusion": "SUCCESS",
+        "tests": "2198 passed, 1 skipped, 6 xfailed; coverage 87.90%"
+      },
+      {
+        "gate": "h1d",
+        "sha": "9a828f3c2f9d9483528eb94a51aed0f65a59ba88",
+        "run_id": 39932526943,
+        "conclusion": "SUCCESS"
+      }
+    ],
+    "registration": "Los runs pertenecen al repositorio Plus y al SHA 9a828f3c; no se reutilizan como evidencia de Lite. El espejo no dispara CI (paths documentales excluidos).",
     "global_certification": "OPEN"
   }
 }
