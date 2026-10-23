@@ -1,3 +1,26 @@
+## 2026-10-23 UTC — r256: EDCX A5 — Plus scoped; Lite NO_EJECUTADO
+
+**EDCX Parte A, A5 (10 filas, series y Frobenius): 8 PASS / 2 BLOCKED en Plus.**
+
+- Lite: **0 filas ejecutadas**. `src/engine/stepEngine/ode.ts` solo cubre
+  `y'=f(x)` y EDO lineales de 2.º orden con coeficientes constantes; no hay
+  series, Frobenius ni clasificación de puntos singulares. No se declara PASS ni
+  FAIL de Lite: gap de alcance.
+- Plus A5: 5 PASS exactos (`ED-F-01..05`: trigonométrica, Airy, Bessel) +
+  3 PASS_SCOPED (`ED-F-06..08`: serie truncada de Legendre y polinomios de
+  Hermite/Chebyshev por elección de constantes) + 2 BLOCKED (`ED-F-09..10`:
+  clasificación de punto singular regular/irregular sin canal).
+- Acumulado EDCX A1–A5 en Plus: **153 filas, 88 PASS / 65 BLOCKED**.
+- Evidencia CI Plus: `50d9ca03` cumulative [39929466812] / H1d [39929467052]
+  **SUCCESS** (2168 passed, 1 skipped, 6 xfailed, cobertura 87.85%).
+- Detalle completo en `CURRENT_STATE.md`, `EXECUTION_LOG.md` y
+  `MANUAL_CAPABILITY_GAPS.md` del repo Plus, r256.
+
+**Siguiente acción única:** EDCX A6 (EDP, 26 filas) en Plus; Lite permanece sin
+motor EDO/EDP equivalente.
+
+---
+
 ## 2026-10-23 UTC — r255: EDCX A3+A4 — Plus scoped; Lite NO_EJECUTADO
 
 **EDCX Parte A, A3 (16 filas) + A4 (24 filas): 4 PASS / 36 BLOCKED en Plus.**

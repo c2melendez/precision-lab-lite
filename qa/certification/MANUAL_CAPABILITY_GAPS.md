@@ -461,3 +461,14 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
 - No se declara paridad bilateral: la diferencia es de capacidad de motor, no
   de resultado de ejecución.
 
+
+## 2026-10-23 — EDCX A5 (r256): alcance Lite y evidencia Plus
+
+- Lite **NO_EJECUTADO** para A5. `src/engine/stepEngine/ode.ts` no implementa
+  soluciones por series/Frobenius ni clasificación de puntos singulares.
+- Plus A5: 8 PASS (5 exactos + 3 PASS_SCOPED) y 2 BLOCKED.
+- Los dos BLOCKED piden clasificar `x=0` como punto singular regular/irregular;
+  el endpoint `/api/v1/complex/singularities` solo devuelve localizaciones
+  (`{0}`) y no distingue el tipo ODE.
+- No se declara paridad bilateral: la diferencia es de capacidad de motor.
+

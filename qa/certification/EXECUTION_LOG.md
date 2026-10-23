@@ -1,3 +1,15 @@
+## 2026-10-23 UTC — r256: EDCX A5 (Plus scoped; Lite sin ejecución)
+
+- Lite `2fc34002`: sin cambios técnicos; espejo documental de r256.
+- Plus `50d9ca03` (A5): cumulative [39929466812] y H1d [39929467052] SUCCESS;
+  2168 passed, 1 skipped, 6 xfailed, cobertura 87.85%. Harness A5 11/11.
+- A5: 5 PASS exactos + 3 PASS_SCOPED + 2 BLOCKED.
+- Lite **NO_EJECUTADO**: el motor ODE no cubre series, Frobenius ni clasificación
+  de puntos singulares. Sin PASS/FAIL bilateral.
+- Siguiente: EDCX A6 (EDP, 26 filas) en Plus.
+
+---
+
 ## 2026-10-23 UTC — r255: EDCX A3+A4 (Plus scoped; Lite sin ejecución)
 
 - Lite `36319b4a`: sin cambios técnicos; espejo documental de r255.
