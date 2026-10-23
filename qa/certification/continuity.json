@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 275,
+  "revision": 276,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -53,12 +53,12 @@
   "next_action": {
     "id": "EDCX-B6",
     "status": "REVIEW",
-    "action": "Validar en una prueba dirigida de servicio el adaptador de salida para VC-FE-01..03 y VC-FE-06..10 con oráculo math/cmath independiente. El plan es diseño estático; no afirmar aceptación hasta confirmar salida real y decodificación segura. Antes de CI, resolver/revisar los runs pull_request antiguos y confirmar checks para los HEAD actuales; no despachar gates globales redundantes.",
+    "action": "Resolver la discrepancia de CI para el HEAD exacto de la PR: revisar por qué fetch_commit_workflow_runs no devuelve ejecuciones pull_request en este SHA y confirmar los checks requeridos para esta PR antes de cualquier dispatch. No mergear mientras mergeable=false. En paralelo, la validación del adaptador B6 debe permanecer estática hasta disponer de prueba dirigida ejecutable y salidas reales.",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-plus": "ec1697d421d3170163e805ecf8b98b78328cbc58"
     },
     "product_changed": false,
-    "audit": "r275: HEAD actual no coincide con el SHA de los últimos runs push visibles en este corte; los runs pull_request visibles son del 2026-10-08 y registran fallos en gates indicados en CURRENT_STATE. Se actualiza la reconciliación documental, sin dispatch ni cierre de bloqueos."
+    "audit": "r276: PR actual apunta al HEAD de la rama, pero no se encontraron runs pull_request para ese SHA; los últimos push visibles son de SHAs previos. PR mergeable=false y tamaño reportado muy grande (histórico acumulado). No se lanzaron workflows ni se modificó producto."
   },
   "blockers": [
     {
@@ -88,7 +88,7 @@
       "detail": "Lugares geométricos VC-LG-01..25: canal vacío y sin endpoint de producto."
     }
   ],
-  "ledger_note": "r275: reconciliación de primera página de Actions en push y pull_request. Últimos runs visibles no prueban los HEAD actuales; PR visibles son antiguos y hay gates fallidos. Siguiente: validar adaptador B6 con prueba dirigida y resolver cobertura/checks PR exactos por HEAD antes de CI.",
+  "ledger_note": "r276: prioridad operativa inmediata es esclarecer ausencia de runs pull_request para HEAD actual y estado mergeable=false. Mantener B6 REVIEW y no despachar workflows hasta confirmar checks necesarios; no usar resultados antiguos como evidencia del HEAD actual.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -2554,17 +2554,21 @@
   "latest_reconciliation": {
     "checked_at": "2026-10-23",
     "branch": "qa/syntax-audit-in625-a1",
+    "current_head_sha": "1e8b625454179435dc85f9033984d10098def56c",
+    "open_pull_request": 48,
+    "pull_request_head_sha": "1e8b625454179435dc85f9033984d10098def56c",
+    "pull_request_base_sha": "eb728e0ebb367f15b06aca491ca6236006834387",
+    "pull_request_mergeable": false,
+    "pull_request_reported_commit_count": 3260,
+    "pull_request_reported_changed_files": 553,
+    "exact_head_pull_request_workflow_runs": [],
     "latest_visible_push_run_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
     "latest_visible_push_run_ids": [
       39914455096,
       39914455133,
       39914455092
     ],
-    "latest_visible_pull_request_run_sha": "3b4d42b7e63f97377d7d40f01f639627b107f632",
-    "latest_visible_pull_request_date": "2026-10-08",
-    "finding": "PR #48 visible page includes CI FAILURE, Playwright E2E FAILURE and S23 Accessibility Gate FAILURE; latest visible PR event is older than current HEAD.",
-    "coverage_limit": "Actions API listing was inspected with bounded first-page queries (15 latest branch runs and 10 pull_request runs); not a complete historical audit. No workflow was dispatched by this reconciliation.",
-    "branch_head_sha_at_reconciliation": "c4decef6cc6792e776bbb6908530579e68694a37",
-    "note": "Snapshot taken before r275 documentation commits; those documentation commits advanced the branch HEAD and did not alter product code or execute workflows."
+    "conclusion": "No PR-triggered workflow run was returned for the exact current HEAD by fetch_commit_workflow_runs. Latest visible push runs are on older SHAs. PR remains open and mergeable=false; do not merge or use old green runs as current-head evidence.",
+    "coverage_limit": "Exact-SHA PR workflow query and bounded first-page event queries only; not an exhaustive history. No workflow dispatched."
   }
 }
