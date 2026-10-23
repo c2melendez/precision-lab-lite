@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 274,
+  "revision": 275,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -53,12 +53,12 @@
   "next_action": {
     "id": "EDCX-B6",
     "status": "REVIEW",
-    "action": "Seguir en Plus la validación dirigida del adaptador de salida para VC-FE-01..03 y VC-FE-06..10 con oráculo independiente math/cmath. El plan estático no es evidencia de ejecución ni autoriza paridad. Lite permanece NO_EJECUTADO; no despachar gates globales.",
+    "action": "Validar en una prueba dirigida de servicio el adaptador de salida para VC-FE-01..03 y VC-FE-06..10 con oráculo math/cmath independiente. El plan es diseño estático; no afirmar aceptación hasta confirmar salida real y decodificación segura. Antes de CI, resolver/revisar los runs pull_request antiguos y confirmar checks para los HEAD actuales; no despachar gates globales redundantes.",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-plus": "ec1697d421d3170163e805ecf8b98b78328cbc58"
     },
     "product_changed": false,
-    "audit": "r274 espejo: Plus publicó el plan de adaptador/oráculo; todavía no hay tests nuevos ejecutados ni Actions. No inferir paridad de Lite. Global OPEN."
+    "audit": "r275: HEAD actual no coincide con el SHA de los últimos runs push visibles en este corte; los runs pull_request visibles son del 2026-10-08 y registran fallos en gates indicados en CURRENT_STATE. Se actualiza la reconciliación documental, sin dispatch ni cierre de bloqueos."
   },
   "blockers": [
     {
@@ -88,7 +88,7 @@
       "detail": "Lugares geométricos VC-LG-01..25: canal vacío y sin endpoint de producto."
     }
   ],
-  "ledger_note": "r273 espejo: seguir la acción de Plus sobre diseño de adaptador/oráculo, sin copiar resultado de ejecución. Lite sigue NO_EJECUTADO.",
+  "ledger_note": "r275: reconciliación de primera página de Actions en push y pull_request. Últimos runs visibles no prueban los HEAD actuales; PR visibles son antiguos y hay gates fallidos. Siguiente: validar adaptador B6 con prueba dirigida y resolver cobertura/checks PR exactos por HEAD antes de CI.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -2550,5 +2550,20 @@
       "h1d": "40015127464",
       "scientific": "40015130309"
     }
+  },
+  "latest_reconciliation": {
+    "checked_at": "2026-10-23",
+    "branch": "qa/syntax-audit-in625-a1",
+    "branch_head_sha": "c4decef6cc6792e776bbb6908530579e68694a37",
+    "latest_visible_push_run_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
+    "latest_visible_push_run_ids": [
+      39914455096,
+      39914455133,
+      39914455092
+    ],
+    "latest_visible_pull_request_run_sha": "3b4d42b7e63f97377d7d40f01f639627b107f632",
+    "latest_visible_pull_request_date": "2026-10-08",
+    "finding": "PR #48 visible page includes CI FAILURE, Playwright E2E FAILURE and S23 Accessibility Gate FAILURE; latest visible PR event is older than current HEAD.",
+    "coverage_limit": "Actions API listing was inspected with bounded first-page queries (15 latest branch runs and 10 pull_request runs); not a complete historical audit. No workflow was dispatched by this reconciliation."
   }
 }
