@@ -433,3 +433,17 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
 - **Traducciones de harness.** Lite convierte `\frac{a}{b}` → `a/b` para la grilla ASCII. Plus convierte `\cos\theta` → `cos(theta)` y `a^{2}` → `a^2`; el API no consume LaTeX crudo. Las filas simbólicas se aceptan por equivalencia algebraica exacta; 08/10/11 se contrastaron contra matrices SymPy explícitas. Las ecuaciones usan el contrato `x_side`/`xOnLeft` del producto.
 - **Evidencia bilateral.** Lite `tests/matricesMvC01to19.audit.test.ts` 24/24 y `tests/matrixModeParity.test.ts` 2/2; Plus `tests/test_matrices_mv_c01_l19.py` 25/25 PASSED y `src/__tests__/MatrixMode.test.tsx` 7/7. Ambos anclan la fila congelada de `legacy_sources/matriz_matrices_vectores.md.gz` y el JSONL derivado (153 filas).
 - **Gate de seguridad (independiente).** El push técnico disparó `39732103637`; `security/backend-security` y `mutation/plus-backend-mutmut` pasaron, pero `mutation/plus-frontend-stryker` agotó el timeout duro de 35 min y el run terminó `cancelled` sin informe. No se usó como evidencia de MV-C y no se relanzó el mismo input. **SECURITY-S25** sigue como blocker independiente; la certificación global permanece `OPEN`.
+
+## 2026-10-23 UTC — EDCX A1+A2 (r254): Lite NO_EJECUTADO
+
+- **Alcance real del motor Lite.** `src/engine/stepEngine/ode.ts` resuelve `y'=f(x)`
+  (RHS sin `y`) y EDO lineales de 2.º orden con coeficientes constantes. No cubre
+  separables, lineales de primer orden con factor integrante, Bernoulli, Riccati,
+  Clairaut/Lagrange, Wronskianos ni condiciones iniciales múltiples.
+- **A1 (53 filas) y A2 (50 filas): 0 ejecutadas en Lite.** No se declara PASS ni
+  FAIL: el bloque queda `NO_EJECUTADO` hasta ampliar el motor. La certificación
+  r254 es **Plus-scoped** (76 PASS / 27 BLOCKED); el detalle de límites y la
+  evidencia CI viven en el repo Plus (`MANUAL_CAPABILITY_GAPS.md`, r254).
+- **Paridad.** No se acredita paridad Lite/Plus en EDCX con evidencia no ejecutada;
+  la fila de inventario EDCX queda `PARCIAL` y la certificación global `OPEN`.
+

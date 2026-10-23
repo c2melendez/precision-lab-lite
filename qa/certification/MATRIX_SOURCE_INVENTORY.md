@@ -1,6 +1,6 @@
 # Inventario — 9/9 Matrices.zip versionadas en producto
 
-**Corte:** 2026-10-21 UTC · revisión **235**. Rama `qa/syntax-audit-in625-a1`.
+**Corte:** 2026-10-23 UTC · revisión **254**. Rama `qa/syntax-audit-in625-a1`.
 
 Todas las fuentes están como `qa/certification/legacy_sources/*.md.gz` + `MANIFEST.json`.
 Integridad: `python3 qa/certification/check_legacy_sources.py` → `PASS_LEGACY_SOURCES` 9/9.
@@ -34,8 +34,8 @@ El estado de **ejecución** se anota aparte y procede del ledger (`continuity.js
 | IN625 | `matriz_entrada_sintaxis_625.md.gz` | 625 | `PARCIAL`: H1 (`EN-RE-01..30`) vía H1a–H1d; **H2 no ejecutado**; `H2-SG28-DIST`, `SY-P-23`, `SY-X-04` abiertos |
 | TR324 | `ejercicios_trigonometria.md.gz` | 324 | `PARCIAL`: solo sección 1 Evaluación (33/48 con cierre); secciones 2–9 pendientes |
 | LER | `matriz_log_exp_radicales.md.gz` | 540 | `PARCIAL`: sección 1 Evaluación `CERRADA` (67/67); secciones 2–9 pendientes |
-| MV153 | `matriz_matrices_vectores.md.gz` | 153 | `NO_EJECUTADO` — próximo bloque del protocolo |
-| EDCX | `matriz_edo_variable_compleja.md.gz` | 638 | `NO_EJECUTADO` |
+| MV153 | `matriz_matrices_vectores.md.gz` | 153 | `CERRADO` (r236–r253): catálogo A–H+J `PASS_SCOPED_BILATERAL` |
+| EDCX | `matriz_edo_variable_compleja.md.gz` | 638 | `PARCIAL`: A1+A2 (103/638) `PASS_SCOPED` en Plus; Lite sin motor equivalente |
 | GR519 | `matriz_graficacion.md.gz` | 522 | `NO_EJECUTADO` |
 
 **Total de filas de las 9 fuentes: 3.454.**
@@ -104,14 +104,14 @@ El estado de **ejecución** se anota aparte y procede del ledger (`continuity.js
 ### MV153 — Matrices y vectores (153)
 
 - 9 secciones: A Operaciones básicas 25 · B Determinantes 22 · C Inversa/adjunta/singulares 19 · D Sistemas/escalonada/factorizaciones 17 · E Rango/núcleo/imagen/traza 12 · F Valores y vectores propios 17 · G Vectores 2D/3D 22 · H Formatos/tamaños/rendimiento 12 · J Transformaciones lineales 7.
-- Estado: `NO_EJECUTADO`. **Próximo bloque del protocolo.**
-- Dependencia: la fuente referencia `matrices_ejecutables.jsonl`, que **no existe** en ninguno de los dos repos; hay que derivarlo de la tabla antes de abrir filas.
+- Estado: `CERRADO` (r236–r253). **Catálogo completo**: 153 filas A–H+J en `PASS_SCOPED_BILATERAL`.
+- `matrices_ejecutables.jsonl` ya existe (derivado y validado) en ambos repos.
 
 ### EDCX — EDO y variable compleja (638)
 
 - Parte A (ED, 210): A1 Primer orden (S/L/H/X/B/C) · A2 Segundo orden y superior (K/N/E/A) · A3 Sistemas y exponencial matricial · A4 Laplace · A5 Series/Frobenius · A6 EDP · A7 Cualitativo/numérico/retardo · A8 Casos límite.
 - Parte B (VC, 428): B1 Conversión de formas (17/10/10/12) · B2 Operaciones (11/9/9/12) · B3 Potencias y raíces · B4 Ecuaciones en ℂ · B5 Lugares geométricos · B6 Funciones multivaluadas · B7 Límites/series · B8 Cauchy–Riemann · B9 Contorno/residuos · B10 Taylor/Laurent · B11 Integrales reales · B12 Transformaciones conformes · B13 Teoremas globales · B14 EDO/Laplace/Fourier · B15 Robustez.
-- Estado: `NO_EJECUTADO`.
+- Estado: `PARCIAL`. A1 (53) + A2 (50) cerradas en Plus como `PASS_SCOPED` (75 PASS / 28 BLOCKED medidos, r254); A3–A8 y toda la Parte B pendientes. Lite: `NO_EJECUTADO` (motor `stepEngine/ode.ts` limitado a `y'=f(x)` y 2.º orden constante).
 
 ### GR519 — Graficación (522)
 
@@ -121,9 +121,10 @@ El estado de **ejecución** se anota aparte y procede del ledger (`continuity.js
 
 ## Historial de este documento
 
+- **2026-10-23 (r254)** — EDCX A1+A2 abiertas en Plus (`PASS_SCOPED`, 75/103); MV153 marcado `CERRADO` (catálogo A–H+J bilateral r236–r253); próximo bloque EDCX A3.
 - **2026-10-21 (r235)** — Refresco: se separa "fuente congelada" de "ejecución"; se corrige `TR324`/`LER` (sección 1 ejecutada y cerrada); se añade estado por sección/bloque y pendientes; `next` = Matrices/Vectores.
 - **2026-10-20** — Corte anterior: tabla plana con `CONGELADO` y marcas "no ejecutado" agregadas, que quedaron obsoletas al cerrarse `EV-L/E/R/M/T` y `EV-D/H/I`.
 
 ## Siguiente caso de producto
 
-**MATRICES-VECTORES (MV153)** — derivar `matrices_ejecutables.jsonl` y abrir la sección MV-A contra ambos motores.
+**EDCX A3** — certificar sistemas lineales y exponencial matricial (16 filas) en Plus; Lite sigue sin motor EDO equivalente.

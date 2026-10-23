@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 243,
+  "revision": 254,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "c28091c0173f951a2571ffcbb6084f566ced0034",
-  "baseline_case": "MATRICES-MV-C-CLOSURE-R238",
-  "baseline_status": "PASS_SCOPED_BILATERAL",
+  "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
+  "baseline_case": "EDCX-A1-A2-CLOSURE-R254-PLUS-SCOPED",
+  "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "prose_only_paths": [
     "README.md",
@@ -48,15 +48,14 @@
     }
   },
   "next_action": {
-    "id": "S25-NPM-REMEDIATION-PREVIEW",
-    "status": "BLOCKED",
-    "action": "Plus backend security fix Black 26.10.1 passed in runs 39824318193 and 39824317892 on SHA d5911ff4be2b96d8ac789893541c873c03510187, but frontend audit was skipped so S25 is not closed. Isolated preview workflow exists on branch qa/s25-npm-remediation-preview at SHA 7b359fa379bb3bcd96b69afc27e2fb82ea7aab47; no run/artifact verified as of 2026-10-22 UTC. Run that workflow manually or via an authorized dispatch mechanism, inspect before/after npm audit reports and lockfile diff, npm ci, audit --audit-level=high, typecheck, tests and build. Never use npm audit fix --force because the prior report indicated a breaking Tailwind CSS 4 upgrade. Only promote validated lockfile changes to qa/syntax-audit-in625-a1. Then re-run the relevant S25 gate once and review evidence; only after S25 clears may formal bilateral MV-D closure and MV-E proceed. No Actions run was started by this documentation update.",
+    "id": "EDCX-A3-SYSTEMS-MATRIX-EXPONENTIAL",
+    "status": "READY",
+    "action": "El bloque EDCX A3 se certifica en Plus (canal /api/v1/ode y exponencial matricial). Lite no tiene motor EDO equivalente: stepEngine/ode.ts solo cubre y'=f(x) y 2.o orden con coeficientes constantes. No declarar paridad ni PASS de Lite sin ejecucion. Mantener el espejo documental de r254 y registrar los gaps en MANUAL_CAPABILITY_GAPS.md.",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-lite": "c28091c0173f951a2571ffcbb6084f566ced0034",
-      "c2melendez/precision-lab-plus": "d5911ff4be2b96d8ac789893541c873c03510187"
+      "c2melendez/precision-lab-lite": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3"
     },
     "product_changed": false,
-    "audit": "r243 handoff reconciliation: Plus backend security fix verified SUCCESS; frontend npm audit remains unverified because skipped in those runs. Isolated npm preview workflow exists but has no verified run/artifact. Lite existing product evidence unchanged. Global OPEN."
+    "audit": "r254 mirror: Lite queda en 40b000b8 (MV-J, cumulative 39914455096 SUCCESS) como baseline tecnico. EDCX A1+A2 son Plus-scoped (76 PASS / 27 BLOCKED); Lite NO_EJECUTADO por alcance de motor. continuity.json de Lite estaba en revision 243; se reconcilia a 254. Global OPEN."
   },
   "blockers": [
     {
@@ -80,7 +79,7 @@
       "status": "ON_HOLD"
     }
   ],
-  "ledger_note": "r238: MV-C-01..19 (inversa, adjunta, cofactores y ecuaciones matriciales de matriz_matrices_vectores) cerrado PASS_SCOPED_BILATERAL. Lite 3aec2c25: matrixOps incorpora inversa/adjunta/cofactores exactos y solveMatrixEquation con orden izquierdo/derecho; symbolicMatrix.ts anade inversa/adjunta/cofactores simbolicos y complejos acotados a 4x4 con Algebrite; compute.worker.ts usa Fraction y cae al simbolico solo con celdas no racionales; MatrixMode expone las tres operaciones. Plus 9083811b: /matrix/inverse acepta variables libres y trigonometricas elementales con SYMBOLIC_MATRIX_LIMIT=4 y UNSUPPORTED_OPERATION fuera del limite; /matrix/adjugate y /matrix/cofactor conservan contrato numerico estricto; nueva /matrix/solve-equation con x_side=left|right; la UI expone adjunta, cofactores y lado de la ecuacion. Gates de producto por head_sha exacto, attempt=1: Lite cumulative 39732103530 (354 files, 2152 passed, MV-C 24/24), h1d 39732103564 (22), scientific 39732103583 (456); Plus cumulative 39732103487 (backend 1915 passed, 6 xfailed, cobertura 88.08%, MV-C 25/25; frontend 149 files/1010 passed, MatrixMode 7/7), h1d 39732103479 (38), native-syntax 39732103484 (26+52), SG28 backend 39732103482 (69), SG28 UI 39732103492 (21). Guards skip=false. Las 19 filas coinciden con el oraculo congelado; 08/10/11 por equivalencia algebraica exacta. El gate security/dependency 39732103637 quedo cancelled: backend-security y plus-backend-mutmut pasaron, pero plus-frontend-stryker agoto el timeout duro de 35 min y no se relanzo el mismo input; no es evidencia de MV-C y SECURITY-S25 sigue como blocker independiente. Fallos locales de factorizacion/SG28/S25/SY-X-16 son preexistentes de entorno; CI acumulativo verde. Blockers independientes sin cambios; certificacion global OPEN. Siguiente objetivo: MV-D-01..17 (sistemas, rref, LU y Gram-Schmidt).",
+  "ledger_note": "r254 (espejo Plus-scoped): EDCX A1 (53) + A2 (50) certificadas en Plus (76 PASS / 27 BLOCKED, SHA fdcf2d63, cumulative 39924322798 y H1d 39924322809 SUCCESS). Lite no ejecuta esos bloques: stepEngine/ode.ts solo cubre y'=f(x) y EDO lineales de 2.o orden con coeficientes constantes; no hay separables, lineales, Bernoulli, Riccati, Clairaut/Lagrange ni Wronskianos. Lite NO_EJECUTADO, sin PASS ni FAIL bilateral. Regresion Plus 86241e40 (mp.pool.Pool sin importar el submodulo) corregida en 5a76477a; los runs fallidos 39921705215/39921705206/39921705116 no son evidencia. Baseline tecnico Lite: 40b000b8 (MV-J, run 39914455096 SUCCESS). Blockers independientes sin cambios. Global OPEN. Siguiente: EDCX A3 en Plus.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -2061,5 +2060,45 @@
     },
     "status": "QUEUED_AT_DOCUMENTATION",
     "note": "Plus S25 unresolved; no MV-D formal closure until frontend npm audit and Stryker are green."
+  },
+  "edcx_a1_a2_closure_r254": {
+    "status": "PASS_SCOPED",
+    "scope": "EDCX Parte A A1 (53) + A2 (50); certificacion ejecutada solo en Plus",
+    "plus": {
+      "technical_sha": "fdcf2d635517e97c20910b0f92d6eb9d3c245404",
+      "rows_total": 103,
+      "rows_pass": 76,
+      "rows_blocked": 27,
+      "a1_pass": 47,
+      "a1_blocked": 6,
+      "a2_pass": 29,
+      "a2_blocked": 21,
+      "runs": [
+        {
+          "gate": "cumulative",
+          "run_id": 39924322798,
+          "conclusion": "SUCCESS"
+        },
+        {
+          "gate": "h1d",
+          "run_id": 39924322809,
+          "conclusion": "SUCCESS"
+        },
+        {
+          "gate": "cumulative-fix",
+          "sha": "5a76477a7fc420638b0bf75d62c81dd5c7e8943b",
+          "run_id": 39922491068,
+          "conclusion": "SUCCESS"
+        }
+      ]
+    },
+    "lite": {
+      "status": "NO_EJECUTADO",
+      "rows_executed": 0,
+      "technical_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
+      "reason": "src/engine/stepEngine/ode.ts solo cubre y'=f(x) y 2.o orden con coeficientes constantes",
+      "evidence": "lectura de codigo del motor, sin ejecucion; no se declara PASS ni FAIL"
+    },
+    "global_certification": "OPEN"
   }
 }
