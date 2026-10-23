@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 277,
+  "revision": 278,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -53,12 +53,13 @@
   "next_action": {
     "id": "EDCX-B6",
     "status": "REVIEW",
-    "action": "Resolver la ausencia de checks en el HEAD exacto: revisar configuración de workflows/eventos, reglas de protección y por qué la PR no produjo check-runs/statuses para este SHA. No lanzar un workflow completo ni mergear mientras el estado siga pending/mergeable=false. La validación del adaptador B6 sigue pendiente de prueba dirigida ejecutable.",
+    "action": "Completar reconciliación de checks para las cabezas actuales de PR #29/#48. Las corridas aportadas fueron SUCCESS, pero pertenecen a SHA anteriores a las cabezas actuales. Se inspeccionaron los workflows y hay filtros paths que excluyen documentación general; falta verificar por qué no aparecen runs pull_request para las cabezas actuales y cuáles checks exige la protección de rama. No despachar gates globales ni mergear. Después continuar la prueba dirigida del adaptador/oráculo B6.",
     "technical_sha_by_repo": {
-      "c2melendez/precision-lab-plus": "ec1697d421d3170163e805ecf8b98b78328cbc58"
+      "c2melendez/precision-lab-plus": "2d57dcb6e025db3219b0cf423ec05ebff309a8e1",
+      "c2melendez/precision-lab-lite": "496b1ec10c210b0bdb7f27c8e8734b334b5759c9"
     },
     "product_changed": false,
-    "audit": "r277: endpoints de checks y combined status consultados para el HEAD exacto: 0 check-runs, 0 commit statuses, combined status pending. Es falta de evidencia, no éxito. No se despachó workflow."
+    "audit": "r278 (2026-10-23): Plus run 40026869114 SUCCESS sobre bd25d58fac8e8333bd9e0aa90a1b9a54efa6aa69; Lite run 40016849405 SUCCESS sobre 912e3f8afd1c3a54b1c665c8a91c76490ea4f912. Las cabezas actuales de PR #29/#48 son 2d57dcb6e025db3219b0cf423ec05ebff309a8e1 y 496b1ec10c210b0bdb7f27c8e8734b334b5759c9, respectivamente. Logs confirman Lite: 456/456 tests passed; Plus: backend/frontend success y harness B6 aprobado dentro de regresión. Ninguno valida la cabeza actual. Los workflows contienen filtros paths y eventos push/pull_request; todavía no se ha probado que sean la única causa de ausencia de checks actuales. PRs abiertas y mergeable=false; global OPEN; bloqueos conservados."
   },
   "blockers": [
     {
