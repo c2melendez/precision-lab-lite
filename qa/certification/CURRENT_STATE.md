@@ -4,6 +4,14 @@ Antes de cualquier dispatch, reconciliar HEAD y Actions (push y pull_request) en
 
 ---
 
+## 2026-10-23 UTC — r269: referencia al borrador contractual EDCX-B6
+
+- El borrador de 53 filas se creó en Plus: [EDCX_B6_ROW_CONTRACT_DRAFT.md](https://github.com/c2melendez/precision-lab-plus/blob/qa/syntax-audit-in625-a1/qa/certification/EDCX_B6_ROW_CONTRACT_DRAFT.md).
+- No implica ejecución ni paridad de Lite; permanece NO_EJECUTADO por falta de motor equivalente. B5 sigue BLOCKED en Plus y certificación global OPEN.
+- Próximo paso: revisar el contrato técnico por fila en Plus y no lanzar CI hasta que endpoints, ramas, oráculo y aceptación estén definidos.
+
+---
+
 ## 2026-10-23 UTC — r268: espejo documental de EDCX-B6
 
 - B6 sigue REVIEW y no se ejecuta en Lite: no hay motor de variable compleja equivalente.
