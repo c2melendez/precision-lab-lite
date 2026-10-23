@@ -1,3 +1,11 @@
+## 2026-10-23 UTC — r272: espejo de evidencia CI B6 (sin paridad)
+
+- En Plus, la corrida [40026869114](https://github.com/c2melendez/precision-lab-plus/actions/runs/40026869114) terminó `SUCCESS` en SHA técnico `bd25d58fac8e8333bd9e0aa90a1b9a54efa6aa69`; los cinco checks del harness B6 pasaron dentro de la suite backend (`2383 passed, 1 skipped, 10 xfailed`).
+- La evidencia es solo de Plus; no se ejecutó B6 en Lite y no se afirma paridad. Lite sigue `NO_EJECUTADO`; B6 `REVIEW`; B5 `BLOCKED`; certificación global `OPEN`.
+- No lanzar Actions redundantes. Siguiente paso: usar la matriz de trazabilidad de 53 filas de Plus para identificar qué evidencia falta, sin copiar un resultado de Plus como resultado de Lite.
+
+---
+
 ## 2026-10-23 UTC — r271: espejo de continuidad B6 (test no ejecutado)
 
 - El harness `backend/tests/test_edcx_b6_contract.py` fue creado solo en Plus; todavía no se ejecutó. Lite no tiene implementación compleja equivalente y sigue `NO_EJECUTADO`.
