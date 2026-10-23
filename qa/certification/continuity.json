@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 260,
+  "revision": 261,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
-  "baseline_case": "EDCX-B1-MIRROR-R260",
+  "baseline_case": "EDCX-B2-MIRROR-R261",
   "baseline_status": "NO_EJECUTADO",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -48,15 +48,15 @@
     }
   },
   "next_action": {
-    "id": "EDCX-B2-OPERATIONS",
+    "id": "EDCX-B3-POWERS-ROOTS",
     "status": "READY",
-    "action": "El bloque EDCX B2 (41 filas, operaciones) se certifica en Plus contra los canales reales de variable compleja (suma, resta, producto, cociente, conjugado, modulo, argumento, potencia y raiz). Lite no tiene motor complejo equivalente y permanece NO_EJECUTADO. No declarar paridad ni PASS de Lite sin ejecucion. Mantener el espejo documental y registrar los gaps en MANUAL_CAPABILITY_GAPS.md.",
+    "action": "El bloque EDCX B3 (19 filas, potencias y raices de complejos, VC-PR-01..19) se certifica en Plus contra los canales reales (potencia entera, raiz n-esima, rama principal, forma trigonometrica y exponencial). Lite no tiene motor complejo equivalente y permanece NO_EJECUTADO. No declarar paridad ni PASS de Lite sin ejecucion. Mantener el espejo documental y registrar los gaps en MANUAL_CAPABILITY_GAPS.md.",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-lite": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
-      "c2melendez/precision-lab-plus": "a53449db2e4104f32e84bd6090a61acd0e90cb47"
+      "c2melendez/precision-lab-plus": "7c87b95f00edfb3e983f270286ace6172d791d2c"
     },
     "product_changed": false,
-    "audit": "r260 mirror: Lite queda en 40b000b8 (MV-J, cumulative 39914455096 SUCCESS) como baseline tecnico; no hay cambios tecnicos de Lite en r260. EDCX B1 es Plus-scoped (45 PASS_SCOPED / 4 BLOCKED; acumulado 259/638, 138 PASS / 121 BLOCKED); Lite NO_EJECUTADO por alcance de motor. Global OPEN."
+    "audit": "r261 mirror: Lite queda en 40b000b8 como baseline tecnico; no hay cambios tecnicos de Lite en r261. EDCX B2 es Plus-scoped (20 PASS exactos + 13 PASS_SCOPED / 8 BLOCKED; acumulado 300/638, 171 PASS / 129 BLOCKED); Lite NO_EJECUTADO por alcance de motor. Global OPEN."
   },
   "blockers": [
     {
@@ -2384,6 +2384,70 @@
       }
     ],
     "registration": "Los runs pertenecen al repositorio Plus y al SHA a53449db; no se reutilizan como evidencia de Lite. El espejo no dispara CI (paths documentales excluidos).",
+    "global_certification": "OPEN"
+  },
+  "edcx_b2_mirror_r261": {
+    "status": "NO_EJECUTADO",
+    "scope": "espejo documental de EDCX B2 (41 filas, operaciones con numeros complejos B/P/T/X) certificado en Plus",
+    "plus_status": "PASS_SCOPED",
+    "plus_rows_total": 41,
+    "plus_rows_pass": 33,
+    "plus_rows_pass_exact": 20,
+    "plus_rows_pass_scoped": 13,
+    "plus_rows_blocked": 8,
+    "plus_pass_scoped": {
+      "P-01..P-09": "entrada r_theta traducida a r*(cos(theta)+i*sin(theta)); resultado exacto emitido en forma binomica o de raiz",
+      "T-05": "exp(I*(alpha+beta)), equivalente exacto por Euler de cos(alpha+beta)+i*sin(alpha+beta)",
+      "X-04": "potencia principal 32*(-1)**(5/6) = -16*sqrt(3)+16i, en forma de raiz",
+      "X-08": "3*exp(-I*conjugate(theta)) y exp(-I*conjugate(theta))*conjugate(r); exacto con theta y r reales",
+      "X-09": "exp(re(a)-im(b)); exacto con a,b reales, igual a exp(a)"
+    },
+    "plus_blocked": {
+      "T-04": "exp(I*theta)**n sin combinar; no produce exp(I*n*theta) ni cos(n*theta)+i*sin(n*theta)",
+      "T-06": "cos(3*theta) sin expandir; no produce 4cos^3(theta)-3cos(theta)",
+      "T-07": "sin(3*theta) sin expandir; no produce 3sin(theta)-4sin^3(theta)",
+      "T-08": "cos(theta)**4 sin linealizar; no produce (3+4cos(2theta)+cos(4theta))/8",
+      "T-09": "sum(...) y Sum(...) devuelven PARSE_ERROR; no hay nodo de sumatoria",
+      "X-10": "exp(I*theta)**n sin combinar en exp(I*n*theta)",
+      "X-11": "1/(1-exp(I*theta)) sin reescribir; no produce 1/2+i/2*cot(theta/2)",
+      "X-12": "Abs(exp(I*theta)+1) sin reducir; no produce 2*Abs(cos(theta/2))"
+    },
+    "plus_channel": "Forma binomica literal, incluida la multiplicacion implicita ((2+3i)(1-i)=5+i). Las nueve entradas r_{theta} devuelven PARSE_ERROR. cos3theta se interpreta como simbolo libre, no como cos(3*theta).",
+    "plus_cumulative": {
+      "rows": 300,
+      "pass": 171,
+      "blocked": 129,
+      "source_rows": 638
+    },
+    "plus_parte_b": {
+      "rows": 428,
+      "measured": false,
+      "measured_blocks": [
+        "B1",
+        "B2"
+      ],
+      "rows_measured": 90
+    },
+    "lite_reason": "No existe motor de operaciones con numeros complejos (unidad i, re, im, conj, abs, exp) con esa semantica; B2 no se ejecuta en Lite",
+    "lite_rows_executed": 0,
+    "product_changed": false,
+    "plus_harness": "backend/tests/test_edcx_ed_b2_01_l41.py (38 passed local y CI)",
+    "plus_runs": [
+      {
+        "gate": "cumulative",
+        "sha": "7c87b95f00edfb3e983f270286ace6172d791d2c",
+        "run_id": 39943293295,
+        "conclusion": "SUCCESS",
+        "tests": "2323 passed, 1 skipped, 6 xfailed; coverage 87.96%"
+      },
+      {
+        "gate": "h1d",
+        "sha": "7c87b95f00edfb3e983f270286ace6172d791d2c",
+        "run_id": 39943293116,
+        "conclusion": "SUCCESS"
+      }
+    ],
+    "registration": "Los runs pertenecen al repositorio Plus y al SHA 7c87b95f; no se reutilizan como evidencia de Lite. El espejo no dispara CI (paths documentales excluidos).",
     "global_certification": "OPEN"
   }
 }

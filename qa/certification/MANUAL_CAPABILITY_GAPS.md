@@ -539,3 +539,24 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
   sin reducir).
 - Acumulado EDCX en Plus (A + B1): 259/638 filas, 138 PASS / 121 BLOCKED.
 - No se declara paridad bilateral: la diferencia es de capacidad de motor.
+
+## 2026-10-23 — EDCX B2 (r261): alcance Lite y evidencia Plus
+
+- Lite **NO_EJECUTADO** para B2 y para toda la Parte B de EDCX. No existe motor
+  de operaciones con números complejos (unidad `i`, `re`, `im`, `conj`, `abs`,
+  `exp`) con esa semántica.
+- Plus B2: 20 PASS exactos + 13 PASS_SCOPED / 8 BLOCKED de 41 filas. La forma
+  binómica se evalúa literalmente, incluida la multiplicación implícita
+  (`(2+3i)(1-i)=5+i`); las nueve entradas `r_{theta}` devuelven
+  `PARSE_ERROR` y `cos3theta` se lee como símbolo libre.
+- PASS_SCOPED en Plus: `P-01..P-09` requieren la traducción documentada
+  `r_theta -> r*(cos(theta)+i*sin(theta))` y emiten forma binómica/raíz;
+  `T-05` devuelve `exp(I*(alpha+beta))`; `X-04` la potencia principal
+  `32*(-1)**(5/6)`; `X-08` conserva `conjugate(theta)` y `X-09` devuelve
+  `exp(re(a)-im(b))`, exactos con parámetros reales.
+- BLOCKED en Plus: `T-04/X-10` (potencia sin combinar), `T-06/T-07/T-08` (sin
+  expansión de ángulo múltiple ni linealización), `T-09` (sin nodo de
+  sumatoria) y `X-11/X-12` (sin reescritura de media ángulo ni serie
+  geométrica).
+- Acumulado EDCX en Plus (A + B1 + B2): 300/638 filas, 171 PASS / 129 BLOCKED.
+- No se declara paridad bilateral: la diferencia es de capacidad de motor.

@@ -1,3 +1,23 @@
+## 2026-10-23 UTC — r261: EDCX B2 mirror (Lite NO_EJECUTADO)
+
+- Lite sin cambios técnicos (baseline `40b000b8`); no se ejecutó B2.
+- Plus `7c87b95f`: cumulative [39943293295] SUCCESS — 2323 passed, 1 skipped,
+  6 xfailed, cobertura 87.96%; H1d [39943293116] SUCCESS. Harness B2 38/38.
+- B2: 41 filas -> 20 PASS exactos + 13 PASS_SCOPED / 8 BLOCKED. La forma
+  binómica se evalúa literalmente, incluida la multiplicación implícita; las
+  nueve entradas `r_{theta}` devuelven `PARSE_ERROR`.
+- PASS_SCOPED: `P-01..P-09` (traducción y salida binómica/raíz), `T-05` (Euler),
+  `X-04` (potencia principal en forma de raíz), `X-08` y `X-09` (equivalentes
+  exactos con parámetros reales).
+- BLOCKED: `T-04/X-10` (potencia sin combinar), `T-06/T-07/T-08` (sin expansión
+  de ángulo múltiple), `T-09` (sin sumatoria) y `X-11/X-12` (sin media ángulo ni
+  serie geométrica).
+- Hallazgo: `cos3theta` es un símbolo libre, no `cos(3*theta)`.
+- Acumulado EDCX (A + B1 + B2): 300 / 638 filas, 171 PASS / 129 BLOCKED.
+- Siguiente: EDCX Parte B, bloque B3 (potencias y raíces, 19 filas).
+
+---
+
 ## 2026-10-23 UTC — r260: EDCX B1 mirror (Lite NO_EJECUTADO)
 
 - Lite sin cambios técnicos (baseline `40b000b8`); no se ejecutó B1.

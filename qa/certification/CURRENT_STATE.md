@@ -1,3 +1,37 @@
+## 2026-10-23 UTC — r261: EDCX B2 — Plus scoped; Lite NO_EJECUTADO
+
+**EDCX Parte B, B2 (41 filas, operaciones con números complejos): 20 PASS exactos + 13 PASS_SCOPED + 8 BLOCKED en Plus.**
+
+- Lite: **0 filas ejecutadas**. No existe motor de operaciones con complejos
+  (`i` como unidad, `re`, `im`, `conj`, `abs`, `exp` con esa semántica). No se
+  declara PASS ni FAIL de Lite: gap de alcance.
+- Plus B2: 20 PASS exactos + 13 PASS_SCOPED / 8 BLOCKED. La forma binómica se
+  evalúa literalmente, incluida la multiplicación implícita
+  (`(2+3i)(1-i)=5+i`); las nueve entradas `r_{theta}` devuelven `PARSE_ERROR`.
+- PASS_SCOPED en Plus: `P-01..P-09` requieren la traducción documentada y
+  emiten forma binómica/raíz; `T-05` devuelve `exp(I*(alpha+beta))` (Euler
+  exacto); `X-04` devuelve la potencia principal
+  `32*(-1)**(5/6) = -16*sqrt(3)+16i`; `X-08` conserva
+  `conjugate(theta)` (exacto con `theta,r` reales); `X-09` devuelve
+  `exp(re(a)-im(b))` (exacto con `a,b` reales).
+- BLOCKED en Plus: `T-04/X-10` (potencia sin combinar), `T-06/T-07/T-08` (sin
+  expansión de ángulo múltiple ni linealización), `T-09` (sin nodo de
+  sumatoria; `sum`/`Sum` -> `PARSE_ERROR`), `X-11/X-12` (sin reescritura de
+  media ángulo ni serie geométrica).
+- Hallazgo: `cos3theta` se interpreta como símbolo libre, no como
+  `cos(3*theta)`.
+- Acumulado EDCX (A + B1 + B2): 300 / 638 filas, 171 PASS / 129 BLOCKED.
+- Evidencia CI Plus: `7c87b95f` cumulative [39943293295] / H1d
+  [39943293116] **SUCCESS** (2323 passed, 1 skipped, 6 xfailed, cobertura
+  87.96%).
+- Detalle completo en `CURRENT_STATE.md`, `EXECUTION_LOG.md` y
+  `MANUAL_CAPABILITY_GAPS.md` del repo Plus, r261.
+
+**Siguiente acción única:** EDCX Parte B, bloque B3 (potencias y raíces, 19
+filas, `VC-PR-01..19`) en Plus; Lite permanece sin motor complejo equivalente.
+
+---
+
 ## 2026-10-23 UTC — r260: EDCX B1 — Plus scoped; Lite NO_EJECUTADO
 
 **EDCX Parte B, B1 (49 filas, conversión entre representaciones): 45 PASS_SCOPED + 4 BLOCKED en Plus.**
