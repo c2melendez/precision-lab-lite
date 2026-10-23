@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 261,
+  "revision": 262,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
-  "baseline_case": "EDCX-B2-MIRROR-R261",
+  "baseline_case": "EDCX-B3-MIRROR-R262",
   "baseline_status": "NO_EJECUTADO",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -48,15 +48,15 @@
     }
   },
   "next_action": {
-    "id": "EDCX-B3-POWERS-ROOTS",
+    "id": "EDCX-B4-COMPLEX-EQUATIONS",
     "status": "READY",
-    "action": "El bloque EDCX B3 (19 filas, potencias y raices de complejos, VC-PR-01..19) se certifica en Plus contra los canales reales (potencia entera, raiz n-esima, rama principal, forma trigonometrica y exponencial). Lite no tiene motor complejo equivalente y permanece NO_EJECUTADO. No declarar paridad ni PASS de Lite sin ejecucion. Mantener el espejo documental y registrar los gaps en MANUAL_CAPABILITY_GAPS.md.",
+    "action": "El bloque EDCX B4 (34 filas, ecuaciones en C, VC-EC-01..34) se certifica en Plus contra los canales reales de resolucion (raices exactas, multiplicidad, coeficientes complejos, grado superior). Lite no tiene motor complejo equivalente y permanece NO_EJECUTADO. No declarar paridad ni PASS de Lite sin ejecucion. Mantener el espejo documental y registrar los gaps en MANUAL_CAPABILITY_GAPS.md.",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-lite": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
-      "c2melendez/precision-lab-plus": "7c87b95f00edfb3e983f270286ace6172d791d2c"
+      "c2melendez/precision-lab-plus": "ab2204258d21bddb9a5baf7664f62c7f96245182"
     },
     "product_changed": false,
-    "audit": "r261 mirror: Lite queda en 40b000b8 como baseline tecnico; no hay cambios tecnicos de Lite en r261. EDCX B2 es Plus-scoped (20 PASS exactos + 13 PASS_SCOPED / 8 BLOCKED; acumulado 300/638, 171 PASS / 129 BLOCKED); Lite NO_EJECUTADO por alcance de motor. Global OPEN."
+    "audit": "r262 mirror: Lite queda en 40b000b8 como baseline tecnico; no hay cambios tecnicos de Lite en r262. EDCX B3 es Plus-scoped (7 PASS exactos + 10 PASS_SCOPED / 2 BLOCKED; acumulado 319/638, 188 PASS / 131 BLOCKED); Lite NO_EJECUTADO por alcance de motor. Global OPEN."
   },
   "blockers": [
     {
@@ -2448,6 +2448,73 @@
       }
     ],
     "registration": "Los runs pertenecen al repositorio Plus y al SHA 7c87b95f; no se reutilizan como evidencia de Lite. El espejo no dispara CI (paths documentales excluidos).",
+    "global_certification": "OPEN"
+  },
+  "edcx_b3_mirror_r262": {
+    "status": "NO_EJECUTADO",
+    "scope": "espejo documental de EDCX B3 (19 filas, potencias y raices de complejos VC-PR-01..19) certificado en Plus",
+    "plus_status": "PASS_SCOPED",
+    "plus_rows_total": 19,
+    "plus_rows_pass": 17,
+    "plus_rows_pass_exact": 7,
+    "plus_rows_pass_scoped": 10,
+    "plus_rows_blocked": 2,
+    "plus_pass_exact": [
+      "VC-PR-01..06",
+      "VC-PR-19"
+    ],
+    "plus_pass_scoped": {
+      "VC-PR-07": "sqrt(i) devuelve sqrt(I); /solve z^2=i devuelve ±sqrt(I), equivalente exacto de ±(1+i)/sqrt(2)",
+      "VC-PR-08": "sqrt devuelve solo 1+2i; /solve z^2=-3+4i devuelve ±(1+2i)",
+      "VC-PR-09": "sqrt devuelve solo 3-2i; /solve z^2=5-12i devuelve ±(3-2i)",
+      "VC-PR-10": "/solve z^3=8 devuelve 2, -1±i*sqrt(3) exactos",
+      "VC-PR-11": "/solve z^3=-8 devuelve -2, 1±i*sqrt(3) exactos",
+      "VC-PR-12": "/solve z^3=i devuelve -i, ±sqrt(3)/2+i/2 exactos",
+      "VC-PR-13": "/solve z^4=-4 devuelve ±1±i exactos",
+      "VC-PR-14": "/solve z^4=1 devuelve 1, i, -1, -i exactos",
+      "VC-PR-15": "/solve z^6=1 devuelve seis raices como radicales cartesianos",
+      "VC-PR-16": "/solve z^3=1+i devuelve la raiz principal como radicales cartesianos"
+    },
+    "plus_blocked": {
+      "VC-PR-17": "sum(...) y Sum(...) devuelven PARSE_ERROR; no hay nodo de sumatoria",
+      "VC-PR-18": "no hay operacion de producto de raices"
+    },
+    "plus_channel": "evaluate resuelve potencias enteras y negativas exactas; sqrt/root devuelven solo la raiz principal; /api/v1/solve sobre z^n=w enumera todas las raices exactas.",
+    "plus_cumulative": {
+      "rows": 319,
+      "pass": 188,
+      "blocked": 131,
+      "source_rows": 638
+    },
+    "plus_parte_b": {
+      "rows": 428,
+      "measured": false,
+      "measured_blocks": [
+        "B1",
+        "B2",
+        "B3"
+      ],
+      "rows_measured": 109
+    },
+    "lite_reason": "No existe motor de variable compleja con potencias y raices (potencia entera, raiz n-esima, rama principal ni enumeracion de raices); B3 no se ejecuta en Lite",
+    "lite_rows_executed": 0,
+    "product_changed": false,
+    "plus_harness": "backend/tests/test_edcx_ed_b3_01_l19.py (22 passed local y CI)",
+    "plus_runs": [
+      {
+        "gate": "cumulative",
+        "sha": "ab2204258d21bddb9a5baf7664f62c7f96245182",
+        "run_id": 39945613218,
+        "conclusion": "SUCCESS",
+        "tests": "2345 passed, 1 skipped, 6 xfailed; cobertura 87.92%"
+      },
+      {
+        "gate": "h1d",
+        "sha": "ab2204258d21bddb9a5baf7664f62c7f96245182",
+        "run_id": 39945613228,
+        "conclusion": "SUCCESS"
+      }
+    ],
     "global_certification": "OPEN"
   }
 }

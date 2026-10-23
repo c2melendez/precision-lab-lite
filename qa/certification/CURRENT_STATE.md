@@ -1,3 +1,32 @@
+## 2026-10-23 UTC — r262: EDCX B3 — Plus scoped; Lite NO_EJECUTADO
+
+**EDCX Parte B, B3 (19 filas, potencias y raíces de números complejos): 7 PASS exactos + 10 PASS_SCOPED + 2 BLOCKED en Plus.**
+
+- Lite: **0 filas ejecutadas**. No existe motor de variable compleja con
+  potencias y raíces (potencia entera, raíz n-ésima, rama principal ni
+  enumeración de raíces). No se declara PASS ni FAIL de Lite: gap de alcance.
+- Plus B3: 7 PASS exactos + 10 PASS_SCOPED / 2 BLOCKED. `evaluate` resuelve
+  potencias enteras y negativas exactas; `sqrt`/`root` devuelven solo la raíz
+  principal; `/api/v1/solve` sobre `z^n=w` enumera todas las raíces exactas.
+- PASS_SCOPED en Plus: `VC-PR-07..16` usan `/solve` como ruta alternativa para
+  el conjunto completo de raíces (`z^4=-4 -> ±1±i`, `z^3=8 -> 2, -1±i√3`,
+  `z^6=1` en seis radicales cartesianos).
+- BLOCKED en Plus: `VC-PR-17` (sin nodo de sumatoria; `sum`/`Sum` ->
+  `PARSE_ERROR`) y `VC-PR-18` (sin operación de producto de raíces).
+- Hallazgos: `sqrt(i)` se devuelve sin simplificar como `sqrt(I)`;
+  `(-8)^(1/3)` devuelve `2*(-1)**(1/3)`, la raíz compleja principal, no `-2`.
+- Acumulado EDCX (A + B1 + B2 + B3): 319 / 638 filas, 188 PASS / 131 BLOCKED.
+- Evidencia CI Plus: `ab220425` cumulative [39945613218] / H1d
+  [39945613228] **SUCCESS** (2345 passed, 1 skipped, 6 xfailed, cobertura
+  87.92%). Harness B3 22/22.
+- Detalle completo en `CURRENT_STATE.md`, `EXECUTION_LOG.md` y
+  `MANUAL_CAPABILITY_GAPS.md` del repo Plus, r262.
+
+**Siguiente acción única:** EDCX Parte B, bloque B4 (ecuaciones en C, 34
+filas, `VC-EC-01..34`) en Plus; Lite permanece sin motor complejo equivalente.
+
+---
+
 ## 2026-10-23 UTC — r261: EDCX B2 — Plus scoped; Lite NO_EJECUTADO
 
 **EDCX Parte B, B2 (41 filas, operaciones con números complejos): 20 PASS exactos + 13 PASS_SCOPED + 8 BLOCKED en Plus.**

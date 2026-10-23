@@ -560,3 +560,23 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
   geométrica).
 - Acumulado EDCX en Plus (A + B1 + B2): 300/638 filas, 171 PASS / 129 BLOCKED.
 - No se declara paridad bilateral: la diferencia es de capacidad de motor.
+
+## 2026-10-23 — EDCX B3 (r262): alcance Lite y evidencia Plus
+
+- Lite **NO_EJECUTADO** para B3 y para toda la Parte B de EDCX. No existe motor
+  de variable compleja con potencias y raíces: potencia entera, raíz
+  n-ésima, rama principal ni enumeración completa de raíces.
+- Plus B3: 7 PASS exactos + 10 PASS_SCOPED / 2 BLOCKED de 19 filas. `evaluate`
+  resuelve potencias enteras y negativas exactas; `sqrt(z)` y `root(z,n)`
+  devuelven solo la raíz principal (`sqrt(-3+4i)=1+2i`, `8^(1/3)=2`,
+  `1^(1/4)=1`); `/api/v1/solve` sobre `z^n=w` enumera todas las raíces.
+- PASS_SCOPED en Plus: `VC-PR-07..16` usan `/solve` como ruta alternativa al
+  conjunto completo de raíces (`z^4=-4 -> ±1±i`, `z^3=8 -> 2, -1±i√3`,
+  `z^6=1` en seis radicales cartesianos).
+- BLOCKED en Plus: `VC-PR-17` (sin nodo de sumatoria; `sum`/`Sum` ->
+  `PARSE_ERROR`) y `VC-PR-18` (sin operación de producto de raíces).
+- Hallazgos: `sqrt(i)` se devuelve sin simplificar como `sqrt(I)`;
+  `(-8)^(1/3)` devuelve `2*(-1)**(1/3)`, la raíz compleja principal, no `-2`.
+- Acumulado EDCX en Plus (A + B1 + B2 + B3): 319/638 filas, 188 PASS / 131
+  BLOCKED.
+- No se declara paridad bilateral: la diferencia es de capacidad de motor.

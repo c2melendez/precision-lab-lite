@@ -1,3 +1,22 @@
+## 2026-10-23 UTC — r262: EDCX B3 mirror (Lite NO_EJECUTADO)
+
+- Lite sin cambios técnicos (baseline `40b000b8`); no se ejecutó B3.
+- Plus `ab220425`: cumulative [39945613218] SUCCESS — 2345 passed, 1 skipped,
+  6 xfailed, cobertura 87.92%; H1d [39945613228] SUCCESS. Harness B3 22/22.
+- B3: 19 filas -> 7 PASS exactos + 10 PASS_SCOPED / 2 BLOCKED. `evaluate`
+  resuelve potencias enteras y negativas exactas; `sqrt`/`root` devuelven solo
+  la raíz principal; `/solve` sobre `z^n=w` enumera todas las raíces.
+- PASS_SCOPED: `VC-PR-07..16` por la ruta `/solve` (`z^4=-4 -> ±1±i`,
+  `z^3=8 -> 2, -1±i√3`, `z^6=1` en seis radicales cartesianos).
+- BLOCKED: `VC-PR-17` (sin nodo de sumatoria) y `VC-PR-18` (sin producto de
+  raíces).
+- Hallazgos: `sqrt(i)` -> `sqrt(I)` sin simplificar; `(-8)^(1/3)` ->
+  `2*(-1)**(1/3)`, no `-2`.
+- Acumulado EDCX (A + B1 + B2 + B3): 319 / 638 filas, 188 PASS / 131 BLOCKED.
+- Siguiente: EDCX Parte B, bloque B4 (ecuaciones en C, 34 filas).
+
+---
+
 ## 2026-10-23 UTC — r261: EDCX B2 mirror (Lite NO_EJECUTADO)
 
 - Lite sin cambios técnicos (baseline `40b000b8`); no se ejecutó B2.
