@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 258,
+  "revision": 259,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
-  "baseline_case": "EDCX-A7-MIRROR-R258",
+  "baseline_case": "EDCX-A8-MIRROR-R259",
   "baseline_status": "NO_EJECUTADO",
   "global_certification": "OPEN",
   "prose_only_paths": [
@@ -48,15 +48,15 @@
     }
   },
   "next_action": {
-    "id": "EDCX-A8-LIMITS",
+    "id": "EDCX-B1-FORMS",
     "status": "READY",
-    "action": "El bloque EDCX A8 (6 filas, casos limite) se certifica en Plus contra los canales reales: no unicidad, ramas multiples, intervalo maximo antes de evaluar, rama singular, fronteras incompatibles y clasificacion. Lite no tiene motor EDO equivalente y permanece NO_EJECUTADO. No declarar paridad ni PASS de Lite sin ejecucion. Mantener el espejo documental y registrar los gaps en MANUAL_CAPABILITY_GAPS.md.",
+    "action": "El bloque EDCX B1 (49 filas, conversion de formas) se certifica en Plus contra los canales reales de variable compleja: binomica/polar/exponencial, modulo/argumento, conjugado y normalizacion de cuadrantes. Lite no tiene motor complejo equivalente y permanece NO_EJECUTADO. No declarar paridad ni PASS de Lite sin ejecucion. Mantener el espejo documental y registrar los gaps en MANUAL_CAPABILITY_GAPS.md.",
     "technical_sha_by_repo": {
       "c2melendez/precision-lab-lite": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
-      "c2melendez/precision-lab-plus": "795a97ef060ec5768618a5e91ce960be1656bea8"
+      "c2melendez/precision-lab-plus": "c3d389721a6ad5503508f5168f653105ee976fe4"
     },
     "product_changed": false,
-    "audit": "r258 mirror: Lite queda en 40b000b8 (MV-J, cumulative 39914455096 SUCCESS) como baseline tecnico; no hay cambios tecnicos de Lite en r258. EDCX A7 es Plus-scoped (2 PASS exactos + 2 PASS_SCOPED / 21 BLOCKED) y Lite NO_EJECUTADO por alcance de motor. Global OPEN."
+    "audit": "r259 mirror: Lite queda en 40b000b8 (MV-J, cumulative 39914455096 SUCCESS) como baseline tecnico; no hay cambios tecnicos de Lite en r259. EDCX A8 es Plus-scoped (0 PASS / 6 BLOCKED) y la Parte A queda completa (210/638, 93 PASS / 117 BLOCKED); Lite NO_EJECUTADO por alcance de motor. Global OPEN."
   },
   "blockers": [
     {
@@ -2294,6 +2294,45 @@
       }
     ],
     "registration": "Los runs pertenecen al repositorio Plus y al SHA 795a97ef; no se reutilizan como evidencia de Lite. El espejo no dispara CI (paths documentales excluidos).",
+    "global_certification": "OPEN"
+  },
+  "edcx_a8_mirror_r259": {
+    "status": "NO_EJECUTADO",
+    "scope": "espejo documental de EDCX A8 (6 filas, casos limite) y cierre de la Parte A certificado en Plus",
+    "plus_status": "BLOCKED",
+    "plus_rows_total": 6,
+    "plus_rows_pass": 0,
+    "plus_rows_blocked": 6,
+    "plus_parte_a_cumulative": {
+      "rows": 210,
+      "pass": 93,
+      "blocked": 117,
+      "source_rows": 638
+    },
+    "plus_parte_b": {
+      "rows": 428,
+      "measured": false
+    },
+    "lite_reason": "src/engine/stepEngine/ode.ts solo cubre y'=f(x) y segundo orden con coeficientes constantes; no hay existencia/unicidad, ramas multiples, intervalo maximo, fronteras ni variable compleja",
+    "lite_rows_executed": 0,
+    "product_changed": false,
+    "plus_harness": "backend/tests/test_edcx_ed_a8_01_l6.py (7 passed local y CI)",
+    "plus_runs": [
+      {
+        "gate": "cumulative",
+        "sha": "c3d389721a6ad5503508f5168f653105ee976fe4",
+        "run_id": 39935820474,
+        "conclusion": "SUCCESS",
+        "tests": "2224 passed, 1 skipped, 6 xfailed; coverage 87.94%"
+      },
+      {
+        "gate": "h1d",
+        "sha": "c3d389721a6ad5503508f5168f653105ee976fe4",
+        "run_id": 39935820754,
+        "conclusion": "SUCCESS"
+      }
+    ],
+    "registration": "Los runs pertenecen al repositorio Plus y al SHA c3d38972; no se reutilizan como evidencia de Lite. El espejo no dispara CI (paths documentales excluidos).",
     "global_certification": "OPEN"
   }
 }

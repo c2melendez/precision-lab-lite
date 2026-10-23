@@ -1,6 +1,6 @@
 # Inventario — 9/9 Matrices.zip versionadas en producto
 
-**Corte:** 2026-10-23 UTC - revisión **258**. Rama `qa/syntax-audit-in625-a1`.
+**Corte:** 2026-10-23 UTC - revisión **259**. Rama `qa/syntax-audit-in625-a1`.
 
 Todas las fuentes están como `qa/certification/legacy_sources/*.md.gz` + `MANIFEST.json`.
 Integridad: `python3 qa/certification/check_legacy_sources.py` → `PASS_LEGACY_SOURCES` 9/9.
@@ -35,7 +35,7 @@ El estado de **ejecución** se anota aparte y procede del ledger (`continuity.js
 | TR324 | `ejercicios_trigonometria.md.gz` | 324 | `PARCIAL`: solo sección 1 Evaluación (33/48 con cierre); secciones 2–9 pendientes |
 | LER | `matriz_log_exp_radicales.md.gz` | 540 | `PARCIAL`: sección 1 Evaluación `CERRADA` (67/67); secciones 2–9 pendientes |
 | MV153 | `matriz_matrices_vectores.md.gz` | 153 | `CERRADO` (r236–r253): catálogo A–H+J `PASS_SCOPED_BILATERAL` |
-| EDCX | `matriz_edo_variable_compleja.md.gz` | 638 | `PARCIAL`: A1-A7 (204/638) `PASS_SCOPED` en Plus (93 PASS / 111 BLOCKED); Lite sin motor equivalente |
+| EDCX | `matriz_edo_variable_compleja.md.gz` | 638 | `PARCIAL`: Parte A A1-A8 (210/638) `PASS_SCOPED` en Plus (93 PASS / 117 BLOCKED); Parte B pendiente; Lite sin motor equivalente |
 | GR519 | `matriz_graficacion.md.gz` | 522 | `NO_EJECUTADO` |
 
 **Total de filas de las 9 fuentes: 3.454.**
@@ -111,7 +111,7 @@ El estado de **ejecución** se anota aparte y procede del ledger (`continuity.js
 
 - Parte A (ED, 210): A1 Primer orden (S/L/H/X/B/C) · A2 Segundo orden y superior (K/N/E/A) · A3 Sistemas y exponencial matricial · A4 Laplace · A5 Series/Frobenius · A6 EDP · A7 Cualitativo/numérico/retardo · A8 Casos límite.
 - Parte B (VC, 428): B1 Conversión de formas (17/10/10/12) · B2 Operaciones (11/9/9/12) · B3 Potencias y raíces · B4 Ecuaciones en ℂ · B5 Lugares geométricos · B6 Funciones multivaluadas · B7 Límites/series · B8 Cauchy–Riemann · B9 Contorno/residuos · B10 Taylor/Laurent · B11 Integrales reales · B12 Transformaciones conformes · B13 Teoremas globales · B14 EDO/Laplace/Fourier · B15 Robustez.
-- Estado: `PARCIAL`. A1 (53) + A2 (50) + A3 (16) + A4 (24) + A5 (10) + A6 (26) + A7 (25) cerradas en Plus como `PASS_SCOPED` (93 PASS / 111 BLOCKED medidos, r258); A8 y toda la Parte B pendientes. Lite: `NO_EJECUTADO` (motor `stepEngine/ode.ts` limitado a `y'=f(x)` y 2.º orden constante).
+- Estado: `PARCIAL`. A1 (53) + A2 (50) + A3 (16) + A4 (24) + A5 (10) + A6 (26) + A7 (25) + A8 (6) cerradas en Plus como `PASS_SCOPED` (93 PASS / 117 BLOCKED medidos, r259); la Parte A queda completa (210/638) y toda la Parte B pendiente. Lite: `NO_EJECUTADO` (motor `stepEngine/ode.ts` limitado a `y'=f(x)` y 2.º orden constante).
 
 ### GR519 — Graficación (522)
 
@@ -121,6 +121,7 @@ El estado de **ejecución** se anota aparte y procede del ledger (`continuity.js
 
 ## Historial de este documento
 
+- **2026-10-23 (r259)** - EDCX Parte A cerrada en Plus (210/638; 93 PASS / 117 BLOCKED). A8 (6 filas) queda 0 PASS / 6 BLOCKED. Lite NO_EJECUTADO (sin existencia/unicidad, ramas, intervalo maximo ni fronteras). Proximo bloque EDCX B1 (conversion de formas).
 - **2026-10-23 (r258)** - EDCX A7 cerrada en Plus (`PASS_SCOPED`, 2 PASS exactos + 2 PASS_SCOPED / 21 BLOCKED); acumulado A1-A7 93/111. Lite NO_EJECUTADO (sin canal cualitativo, numerico, recurrencias ni retardo). Proximo bloque EDCX A8 (casos limite).
 - **2026-10-23 (r257)** - EDCX A6 cerrada en Plus (`PASS_SCOPED`, 1 PASS_SCOPED / 25 BLOCKED); acumulado A1-A6 89/90. Único caso ejecutable: `ED-P-25` (laplaciano compuesto con derivadas parciales reales). No hay motor de EDP. Próximo bloque EDCX A7 (cualitativo/numérico/retardo).
 - **2026-10-23 (r256)** - EDCX A5 cerrada en Plus (`PASS_SCOPED`, 8 PASS / 2 BLOCKED); acumulado A1-A5 88/65. Las clasificaciones de punto singular regular/irregular quedan BLOCKED. Próximo bloque EDCX A6 (EDP).
@@ -131,4 +132,4 @@ El estado de **ejecución** se anota aparte y procede del ledger (`continuity.js
 
 ## Siguiente caso de producto
 
-**EDCX A8** - certificar el bloque de casos límite (6 filas) en Plus y cerrar la Parte A: no unicidad, ramas múltiples, intervalo máximo, rama singular, frontera incompatible y clasificación; Lite sigue sin motor EDO equivalente.
+**EDCX B1** - iniciar la Parte B con la conversión de formas (49 filas: 17/10/10/12) en Plus, midiendo primero los canales de variable compleja disponibles; Lite sigue sin motor complejo equivalente.

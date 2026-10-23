@@ -1,3 +1,26 @@
+## 2026-10-23 UTC — r259: EDCX A8 — Plus scoped; Lite NO_EJECUTADO
+
+**EDCX Parte A, A8 (6 filas, casos límite): 0 PASS / 6 BLOCKED en Plus. Parte A completa: 210 / 638 filas, 93 PASS / 117 BLOCKED.**
+
+- Lite: **0 filas ejecutadas**. `src/engine/stepEngine/ode.ts` no implementa
+  análisis de existencia/unicidad, ramas múltiples, intervalo máximo ni
+  condiciones de frontera. No se declara PASS ni FAIL de Lite: gap de alcance.
+- Plus A8: 0 PASS / 6 BLOCKED. `CL-01/CL-02` comparten el mismo
+  `UNSUPPORTED_OPERATION`; `CL-03` devuelve una integral implícita sin ramas;
+  `CL-04` evalúa `1/(1-x)` en `x=2` como `-1` sin error de intervalo; `CL-05`
+  devuelve solo `-|x|`; `CL-06` se rechaza por el límite de una condición
+  inicial, no por incompatibilidad de frontera.
+- Parte A completa (A1–A8): 210 / 638 filas, 93 PASS / 117 BLOCKED.
+- Evidencia CI Plus: `c3d38972` cumulative [39935820474] / H1d [39935820754]
+  **SUCCESS** (2224 passed, 1 skipped, 6 xfailed, cobertura 87.94%).
+- Detalle completo en `CURRENT_STATE.md`, `EXECUTION_LOG.md` y
+  `MANUAL_CAPABILITY_GAPS.md` del repo Plus, r259.
+
+**Siguiente acción única:** EDCX Parte B, bloque B1 (conversión de formas, 49
+filas) en Plus; Lite permanece sin motor complejo equivalente.
+
+---
+
 ## 2026-10-23 UTC — r258: EDCX A7 — Plus scoped; Lite NO_EJECUTADO
 
 **EDCX Parte A, A7 (25 filas, cualitativo/numérico/retardo): 4 PASS (2 exactos + 2 con alcance) / 21 BLOCKED en Plus.**

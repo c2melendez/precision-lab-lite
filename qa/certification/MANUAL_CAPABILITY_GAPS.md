@@ -503,3 +503,19 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
   recurrencias, expresión que no resuelve el retardo y `UNSUPPORTED_OPERATION`
   en Riccati.
 - No se declara paridad bilateral: la diferencia es de capacidad de motor.
+
+
+## 2026-10-23 — EDCX A8 y cierre Parte A (r259): alcance Lite y evidencia Plus
+
+- Lite **NO_EJECUTADO** para A8 y para toda la Parte A de EDCX. El motor
+  `stepEngine/ode.ts` solo cubre `y'=f(x)` y segundo orden con coeficientes
+  constantes; no hay análisis de existencia/unicidad, ramas múltiples, intervalo
+  máximo, fronteras ni variable compleja.
+- Plus A8: 0 PASS / 6 BLOCKED. `CL-01/CL-02` comparten el mismo
+  `UNSUPPORTED_OPERATION` (el canal no distingue sin solución de infinitas);
+  `CL-03` devuelve una integral implícita sin ramas; `CL-04` evalúa `1/(1-x)` en
+  `x=2` como `-1` solo con `x != 1`; `CL-05` devuelve una sola rama `-|x|`;
+  `CL-06` se rechaza por el límite de una condición inicial.
+- Parte A completa en Plus: 210/638 filas, 93 PASS / 117 BLOCKED. EDCX Parte B
+  (428 filas) queda pendiente.
+- No se declara paridad bilateral: la diferencia es de capacidad de motor.

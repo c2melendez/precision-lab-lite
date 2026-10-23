@@ -1,3 +1,16 @@
+## 2026-10-23 UTC — r259: EDCX A8 y cierre Parte A (Lite NO_EJECUTADO)
+
+- Lite sin cambios técnicos (baseline `40b000b8`); no se ejecutó A8.
+- Plus `c3d38972`: cumulative [39935820474] SUCCESS — 2224 passed, 1 skipped,
+  6 xfailed, cobertura 87.94%; H1d [39935820754] SUCCESS. Harness A8 7/7.
+- A8: 6 filas -> 0 PASS / 6 BLOCKED (no unicidad indistinguible, integral
+  implícita sin ramas, intervalo máximo no aplicado, rama singular única y
+  frontera incompatible rechazada por el límite de una condición inicial).
+- Parte A completa en Plus (A1–A8): 210 / 638 filas, 93 PASS / 117 BLOCKED.
+- Siguiente: EDCX Parte B, bloque B1 (conversión de formas, 49 filas).
+
+---
+
 ## 2026-10-23 UTC — r258: EDCX A7 mirror (Lite NO_EJECUTADO)
 
 - Lite sin cambios técnicos (baseline `40b000b8`); no se ejecutó A7.
