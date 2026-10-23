@@ -1,3 +1,13 @@
+## 2026-10-23 UTC — r275: reconciliación acotada de HEAD y Actions
+
+- HEAD actual de la rama: `c4decef6cc6792e776bbb6908530579e68694a37`. Últimos runs `push` visibles consultados usan SHA `40b000b8f40fc8ac6c3e286b48c83554dac1e9e3`, por lo que **no prueban el HEAD actual**.
+- Último grupo `pull_request` visible en la primera página: fecha 2026-10-08, SHA de ejecución `3b4d42b7e63f97377d7d40f01f639627b107f632`. PR #48 visible page includes CI FAILURE, Playwright E2E FAILURE and S23 Accessibility Gate FAILURE; latest visible PR event is older than current HEAD.
+- La consulta fue acotada a primeras páginas de API; no se afirma que sea el historial exhaustivo. No se despachó ningún workflow en esta revisión.
+- Siguiente acción única: validar el adaptador B6 con prueba dirigida y, antes de cualquier CI nuevo, comprobar los checks `pull_request` que correspondan al HEAD actual. No repetir gates globales verdes ni interpretar los antiguos como evidencia de HEAD actual.
+- B6 REVIEW; B5 BLOCKED en Plus; Lite NO_EJECUTADO; certificación global OPEN. SG28/DIST y S25 conservan sus bloqueos.
+
+---
+
 ## 2026-10-23 UTC — r274: espejo del plan de adaptador/oráculo EDCX-B6
 
 - Plus publicó [EDCX_B6_ADAPTER_ORACLE_PLAN.md](https://github.com/c2melendez/precision-lab-plus/blob/qa/syntax-audit-in625-a1/qa/certification/EDCX_B6_ADAPTER_ORACLE_PLAN.md), con entradas candidatas y oráculo independiente math/cmath; la decodificación de salida aún debe validarse.
