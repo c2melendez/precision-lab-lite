@@ -4,6 +4,16 @@ Antes de cualquier dispatch, reconciliar HEAD y Actions (push y pull_request) en
 
 ---
 
+## 2026-10-23 UTC — r268: espejo documental de EDCX-B6
+
+- B6 sigue REVIEW y no se ejecuta en Lite: no hay motor de variable compleja equivalente.
+- Se corrige la interpretación del campo `canal`: en el JSONL de Plus hay 589/638 filas vacías y 49 con transformaciones entre representaciones; ese campo no representa rutas HTTP. No debe completarse con un endpoint por inferencia.
+- La tabla de contrato B6 debe definir por fila notación, rama/signo, endpoint/payload técnico, oráculo independiente, tolerancia y aceptación antes de cualquier medición en Plus.
+- B5 continúa BLOCKED en Plus y NO_EJECUTADO en Lite. Certificación global OPEN. No se despachó CI.
+- Auditoría de referencia: [EDCX_B6_CHANNEL_AUDIT.md](https://github.com/c2melendez/precision-lab-plus/blob/qa/syntax-audit-in625-a1/qa/certification/EDCX_B6_CHANNEL_AUDIT.md).
+
+---
+
 ## 2026-10-23 UTC — r266: EDCX-B5 registrado como brecha de capacidad (Lite)
 
 - **Medición:** Lite NO_EJECUTADO. Las 25 filas `VC-LG-01..25` describen lugares geométricos y su campo `canal` está vacío. Lite no tiene una implementación equivalente de esta capacidad.
