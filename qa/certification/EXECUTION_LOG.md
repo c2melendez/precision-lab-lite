@@ -1,3 +1,15 @@
+## 2026-10-24 UTC — r285: EN-RE-12 corregido y gates exactos conciliados
+
+- HEAD técnico: `5113fd28ee0ddf5233be930eb23c74772fcace97`; rama `qa/syntax-audit-in625-a1`; PR #48 no mergeado.
+- La salida `\text{x < -2 o x > 2}` ahora se reconoce solo mediante el adaptador acotado `readRenderedInequalityUnion` y se valida como unión real de intervalos. No se relajó `preprocessLatex` para aceptar texto general.
+- H1b [40069116272](https://github.com/c2melendez/precision-lab-lite/actions/runs/40069116272) SUCCESS: 8 passed; EN-RE-12 explícitamente passed. H1d [40069111537](https://github.com/c2melendez/precision-lab-lite/actions/runs/40069111537) SUCCESS: 22 passed. Cumulative [40069111608](https://github.com/c2melendez/precision-lab-lite/actions/runs/40069111608) SUCCESS: 360 archivos, 2232 passed, 8 expected fail y 34 TODO. G3 parser [40069116074] SUCCESS: 26 passed; syntax diagnostic [40069115987], Scientific UI [40069116227] y S25 [40069116120] también SUCCESS.
+- Se registra el fallo intermedio: commit `1014abe9a185d760eb531b953b24ace9aa31e4ae`, CI [40069062729](https://github.com/c2melendez/precision-lab-lite/actions/runs/40069062729) FAILURE por escape mal formado del adaptador; corregido en el HEAD actual `5113fd28`.
+- CI [40069116121](https://github.com/c2melendez/precision-lab-lite/actions/runs/40069116121) FAILURE por el hard gate de dependencias: 6 moderate + 2 low, 0 high. No se redujo el umbral ni se alteró el gate.
+- Playwright E2E [40069116223](https://github.com/c2melendez/precision-lab-lite/actions/runs/40069116223) seguía IN_PROGRESS al corte, mismo SHA. No relanzar; inspeccionar sus logs finales y resolver EN-RE-20/21 solo si fallan de nuevo con aserción concreta.
+- Global OPEN. SECURITY-S25, SG28/DIST y capacidad EDCX mantienen estados bloqueados documentados. PR #48 no mergeado.
+
+---
+
 ## 2026-10-24 UTC — r284: vite HIGH fuera de S25; EN-RE-12 sigue
 
 - HEAD `935366887f1bb670690db90061b75d708f3f9dd8`.

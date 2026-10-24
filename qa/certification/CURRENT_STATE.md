@@ -1,3 +1,27 @@
+## 2026-10-24 UTC — r285: EN-RE-12 corregido; Playwright E2E en WAIT
+
+**HEAD técnico verificado:** `5113fd28ee0ddf5233be930eb23c74772fcace97` en `qa/syntax-audit-in625-a1`. PR #48 sigue abierto; no se ha mergeado.
+
+### Corrección y evidencia exacta en el SHA actual
+- Se añadió un adaptador acotado en `src/engine/parsing/inequalitySolution.ts`: solo reconoce la salida textual generada de la inecuación de dos rayos y la convierte a una unión canónica que luego valida el lector estricto de intervalos. No acepta texto arbitrario como matemáticas.
+- `BasicScientificMode.tsx` pasa ese formato por el adaptador antes del validador de uniones; `tests/inequality.test.ts` cubre salidas estrictas, extremos inclusivos y rechazo de texto/no-disjunción.
+- H1b [40069116272](https://github.com/c2melendez/precision-lab-lite/actions/runs/40069116272): **SUCCESS**, 8 pasados; EN-RE-12 pasa en desktop.
+- H1d [40069111537](https://github.com/c2melendez/precision-lab-lite/actions/runs/40069111537): **SUCCESS**, 22/22 pasados.
+- Acumulativo [40069111608](https://github.com/c2melendez/precision-lab-lite/actions/runs/40069111608): **SUCCESS**; 360 archivos, 2.232 pasados, 8 expected fail, 34 TODO.
+- G3 parser [40069116074](https://github.com/c2melendez/precision-lab-lite/actions/runs/40069116074): **SUCCESS**, 26/26. Syntax diagnostic [40069115987](https://github.com/c2melendez/precision-lab-lite/actions/runs/40069115987), Scientific UI [40069116227](https://github.com/c2melendez/precision-lab-lite/actions/runs/40069116227) y S25 [40069116120](https://github.com/c2melendez/precision-lab-lite/actions/runs/40069116120): **SUCCESS**.
+- CI [40069116121](https://github.com/c2melendez/precision-lab-lite/actions/runs/40069116121): **FAILURE** en el hard gate `npm audit`: 6 moderate + 2 low, 0 high. No se baja el umbral ni se omite el gate.
+- Playwright E2E [40069116223](https://github.com/c2melendez/precision-lab-lite/actions/runs/40069116223): **IN_PROGRESS** sobre el mismo SHA. El corte anterior reportaba EN-RE-20 mobile y EN-RE-21 tablet/móvil además de EN-RE-12; aquí aún no hay logs finales que permitan reclasificarlos.
+
+### Clasificación y estados
+- EN-RE-12: **producto corregido**, H1b exacto-en-HEAD PASS; aceptación browser completa pendiente hasta que Playwright termine.
+- Fallo transitorio de CI del commit intermedio `1014abe9` (run 40069062729): escape mal formado del nuevo adaptador; corregido en `5113fd28`. La evidencia actual corresponde al HEAD corregido.
+- Global OPEN · H2-SG28-DIST-01..08 BLOCKED · SECURITY-S25 global BLOCKED · SY-P-23 OPEN · SY-X-04-PLUS-HTTP BLOCKED · ALGEBRA229-AS-B-29 ON_HOLD · EDCX-B5 BLOCKED por falta de canal/capacidad. No mergear PR #48.
+
+### Siguiente acción única
+**WAIT:** inspeccionar conclusión y logs de Playwright E2E run 40069116223 en SHA `5113fd28ee0ddf5233be930eb23c74772fcace97`. Si EN-RE-20/21 siguen rojos, diagnosticar sus aserciones antes de tocar producto o repetir cualquier gate. No repetir H1b, H1d ni acumulativo; no volver a ejecutar el hard gate idéntico mientras no cambie la dependencia o el advisory.
+
+---
+
 ## 2026-10-24 UTC — r284: el HIGH de vite ya no está; siguen EN-RE-12 y el hard gate por moderate
 
 **HEAD verificado:** `935366887f1bb670690db90061b75d708f3f9dd8` (bump vite 7.3.6 → 7.3.7, posterior al corte r283).

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 284,
+  "revision": 285,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -51,9 +51,9 @@
     }
   },
   "next_action": {
-    "id": "LITE-EN-RE-12",
-    "status": "OPEN",
-    "action": "Diagnosticar la regresion de producto EN-RE-12 en HEAD 935366887f1bb670690db90061b75d708f3f9dd8 antes de relanzar: reinyectar \\\\text{x < -2 o x > 2} devuelve PARSE_ERROR. Evidencia H1b run 40049504150 y Playwright 40049504117 (este tambien falla EN-RE-20 mobile y EN-RE-21 tablet/mobile, causa aun no leida). El bump de vite ya esta en este HEAD; S25 run 40049504130 SUCCESS. CI run 40049504154 sigue rojo por npm audit sin audit-level (6 moderate, 2 low, 0 high): no bajar el gate. No mergear PR #48."
+    "id": "LITE-WAIT-PLAYWRIGHT-ENRE12-R285",
+    "status": "WAIT",
+    "action": "Inspeccionar la conclusión y los logs de Playwright E2E run 40069116223 en SHA 5113fd28ee0ddf5233be930eb23c74772fcace97. No repetir H1b (40069116272), H1d (40069111537) ni cumulative (40069111608), ya SUCCESS en ese SHA. Si Playwright revela fallos EN-RE-20/EN-RE-21, leer las aserciones y corregir la causa real antes de volver a ejecutar; no suponer causa ni relanzar sin cambio. Mantener el hard gate npm audit: 6 moderate + 2 low; no bajar umbral. No mergear PR #48."
   },
   "blockers": [
     {
@@ -83,7 +83,7 @@
       "detail": "Lugares geométricos VC-LG-01..25: canal vacío y sin endpoint de producto."
     }
   ],
-  "ledger_note": "r284: HIGH vite fuera de S25 en 93536688. Siguiente accion real = EN-RE-12. CI hard gate aun rojo por moderate/low. S25 global sigue BLOCKED.",
+  "ledger_note": "r285: EN-RE-12 corregido y H1b SUCCESS en SHA 5113fd28 (run 40069116272, 8/8 incl. EN-RE-12); H1d 40069111537 SUCCESS 22/22; cumulative 40069111608 SUCCESS (360 archivos, 2232 passed, 8 expected fail, 34 TODO); G3 parser 40069116074 SUCCESS 26/26; S25 40069116120 SUCCESS; Scientific UI 40069116227 SUCCESS. CI 40069116121 FAILURE por hard gate npm audit (6 moderate, 2 low, 0 high). Playwright E2E 40069116223 sigue IN_PROGRESS en el mismo SHA. Global OPEN; PR #48 no mergeado.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
@@ -2549,41 +2549,112 @@
   "latest_reconciliation": {
     "checked_at": "2026-10-24",
     "branch": "qa/syntax-audit-in625-a1",
-    "current_head_sha": "875418a0d82cc1bda1f64f380cd2fc09ac6b62b5",
+    "current_head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
     "open_pull_request": 48,
-    "pull_request_head_sha": "875418a0d82cc1bda1f64f380cd2fc09ac6b62b5",
+    "pull_request_head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
     "pull_request_base_sha": "7cbef02b75884bee6c10049da8d3784d21f7313e",
     "pull_request_mergeable": true,
     "pull_request_mergeable_state": "unstable",
     "exact_head_pull_request_workflow_runs": [
-      40046050472,
-      40046050475,
-      40046050487,
-      40046050435,
-      40046050437,
-      40046050428,
-      40046050422,
-      40046050593,
-      40046050505,
-      40046050521,
-      40046050565,
-      40046050438,
-      40046050493,
-      40046050580,
-      40046050515,
-      40046050541
+      40069115987,
+      40069116025,
+      40069116074,
+      40069116098,
+      40069116120,
+      40069116121,
+      40069116223,
+      40069116227,
+      40069116272,
+      40069111537,
+      40069111608
     ],
-    "conclusion": "Merge r281 push y reconciliacion completados. Gate acumulativo SUCCESS exacto-en-HEAD (run 40046050475), continuity/CI guard steps verdes. Fallos activos exacto-en-HEAD: CI frontend (npm audit hard gate, vuln high vite), S25 security gate (mismo root cause; historico fallido desde 2026-10-08), IN625 H1b reentry (regresion EN-RE-12 PARSE_ERROR al reinyectar resultado \\text{...}; era success en 3b4d42b7e6). Playwright E2E 40046050515 in_progress al momento de la revision.",
+    "conclusion": "EN-RE-12 corregido y validado por H1b exacto-en-HEAD. H1d y cumulative exactos en HEAD pasaron; Scientific UI y S25 pasaron. CI continúa rojo por npm audit hard gate (6 moderate, 2 low, 0 high), sin relación demostrada con la corrección del parser. Playwright E2E sigue IN_PROGRESS y debe inspeccionarse antes de dar por cerrada la reentrada completa.",
     "valid_evidence_gained": [
-      "cumulative gate success on exact HEAD 875418a0",
-      "syntax-native/a1..g1a diagnostic success",
-      "G3 parser+e2e success",
-      "accessibility S23 success",
-      "PWA S22 success",
-      "cross-browser smoke success",
-      "source-fixture integrity success",
-      "SY-N-31 scientific UI success",
-      "H1a/H1c/H1d reentry success"
+      "H1b exact current HEAD success, 8 passed including EN-RE-12",
+      "H1d exact current HEAD success, 22 passed",
+      "cumulative exact current HEAD success: 2232 passed, 8 expected fail, 34 TODO",
+      "G3 parser 26 passed",
+      "Scientific UI E2E success",
+      "S25 security gate success; does not close bilateral SECURITY-S25"
     ]
+  },
+  "en_re_12_fix_r285": {
+    "status": "FIXED_H1B_PASS_PLAYWRIGHT_WAIT",
+    "technical_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
+    "previous_test_failure": {
+      "sha": "935366887f1bb670690db90061b75d708f3f9dd8",
+      "run_id": 40049504150,
+      "conclusion": "failure",
+      "finding": "La salida generada \\text{x < -2 o x > 2} se rechazaba al reingresar."
+    },
+    "implementation_history": {
+      "intermediate_commit_sha": "1014abe9a185d760eb531b953b24ace9aa31e4ae",
+      "intermediate_ci_run_id": 40069062729,
+      "intermediate_ci_conclusion": "failure",
+      "cause": "Escape mal formado en el adaptador nuevo; corregido en el HEAD actual.",
+      "corrected_head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97"
+    },
+    "runs": [
+      {
+        "gate": "h1b",
+        "run_id": 40069116272,
+        "conclusion": "success",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
+        "tests": "8 passed; EN-RE-12 passed"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 40069111537,
+        "conclusion": "success",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
+        "tests": "22 passed"
+      },
+      {
+        "gate": "cumulative",
+        "run_id": 40069111608,
+        "conclusion": "success",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
+        "tests": "360 files passed; 2232 passed; 8 expected fail; 34 TODO"
+      },
+      {
+        "gate": "g3-parser",
+        "run_id": 40069116074,
+        "conclusion": "success",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
+        "tests": "26 passed"
+      },
+      {
+        "gate": "syntax-diagnostic",
+        "run_id": 40069115987,
+        "conclusion": "success",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97"
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 40069116227,
+        "conclusion": "success",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97"
+      },
+      {
+        "gate": "security-s25",
+        "run_id": 40069116120,
+        "conclusion": "success",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97"
+      },
+      {
+        "gate": "ci-dependency-audit",
+        "run_id": 40069116121,
+        "conclusion": "failure",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
+        "finding": "npm audit: 6 moderate, 2 low, 0 high; hard gate must remain unchanged"
+      },
+      {
+        "gate": "playwright-e2e",
+        "run_id": 40069116223,
+        "status": "in_progress",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97"
+      }
+    ],
+    "global_certification": "OPEN"
   }
 }
