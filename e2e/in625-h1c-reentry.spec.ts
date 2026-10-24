@@ -34,10 +34,33 @@ async function readOutcome(page: Page): Promise<{kind:"result"|"error"; value:st
   }
   const mf=status.locator("math-field[read-only]").first();
   if (await mf.count()) {
-    const v=String(await mf.evaluate(el => (el as HTMLElement & {value?:string}).value ?? ""));
-    if (v.trim()) return {kind:"result",value:v};
+    try {
+      // The result math-field is replaced while React re-renders. Bound the
+      // read so a detached node falls back to the status text instead of
+      // consuming the whole test timeout.
+      const v=String(await mf.evaluate(
+        el => (el as HTMLElement & {value?:string}).value ?? "",
+        undefined,
+        {timeout:5000},
+      ));
+      if (v.trim()) return {kind:"result",value:v};
+    } catch {
+      // Fall through to the accessible status text.
+    }
   }
   return {kind:"result",value:((await status.textContent())??"").trim()};
+}
+
+async function readOutcomeAfterChange(
+  page: Page,
+  previous: string,
+): Promise<{kind:"result"|"error"; value:string}> {
+  let out=await readOutcome(page);
+  await expect.poll(async () => {
+    out=await readOutcome(page);
+    return out.value!==previous;
+  }, {timeout:15000}).toBe(true);
+  return out;
 }
 
 async function submit(page: Page) {
@@ -117,7 +140,9 @@ test.describe("IN625 H1c reentrada locale/alias/ANS",()=>{
     await dialog.getByRole("button",{name:"multiplicar",exact:true}).click();
     await dialog.getByRole("button",{name:"2",exact:true}).click();
     await dialog.getByRole("button",{name:"calcular",exact:true}).click();
-    const second=await readOutcome(page);
+    // The previous result stays visible until the worker replies. Require a
+    // genuinely new outcome so this assertion does not read the stale value.
+    const second=await readOutcomeAfterChange(page,first.value);
     expect(second.kind,second.value).toBe("result");
     expect(second.value.replace(/[^0-9.-]/g,"")).toMatch(/^10(?:\.0+)?$/);
   });
