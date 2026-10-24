@@ -902,7 +902,16 @@ export function BasicScientificMode() {
       <KeyboardBasicPanel
         field={mathField}
         onBackspace={() => setLatex((prev) => prev.slice(0, -1))}
-        onClear={() => setLatex("")}
+        onClear={() => {
+          // Keep the actual MathLive field and React state in sync before a
+          // subsequent ANS insertion; a state-only clear can race the next key.
+          if (mathField) {
+            mathField.value = "";
+            const element = mathField as unknown as HTMLElement;
+            element.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "deleteContentBackward" }));
+          }
+          handleInputChange("");
+        }}
         onEnter={handleKeyboardEnter}
         lastAnswerLatex={result?.resultLatex ?? null}
       />,

@@ -42,6 +42,10 @@ async function readOutcome(page: Page): Promise<{kind:"result"|"error"; value:st
 
 async function submit(page: Page) {
   await page.evaluate(()=>window.mathVirtualKeyboard?.hide());
+  // On mobile/tablet the expanded app keyboard may cover the Entrada action.
+  // Close it through its accessible control before clicking Calcular.
+  const closeKeyboard = page.getByRole("button", {name:"Cerrar teclado", exact:true}).first();
+  if (await closeKeyboard.isVisible().catch(() => false)) await closeKeyboard.click();
   const button=page.getByRole("region", {name:"Entrada"}).getByRole("button", {name:"Calcular", exact:true});
   await expect(button).toBeEnabled();
   await button.click();
