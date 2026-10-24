@@ -14,6 +14,10 @@
 ### Decisión y siguiente acción
 H1c y Playwright quedan PASS para el SHA señalado. CI sigue BLOCKED por dependencias; global OPEN. No repetir H1c, acumulativo, Playwright ni integridad Algebra 229 sin cambios en código/fixtures o criterio. Próximo trabajo de Lite: resolver advisories con cambios mínimos de dependencias y revisar audit completo antes de repetir el hard gate. Mantener PR #48 sin merge mientras CI siga rojo.
 
+### Addendum de remediación npm audit — análisis del lockfile
+
+El lockfile v3 confirma las rutas directas: Vitest 5.0.1 → @vitest/mocker 5.0.1; AJV 8.20.0 → fast-uri 3.1.8; @rollup/plugin-terser 1.0.0 → serialize-javascript 7.1.0; y Tailwind 3.4.19 → postcss-selector-parser 6.1.4 / postcss-nested 6.2.0. No forzar parser 7 dentro de Tailwind 3. La revisión detallada y el orden seguro de remediación están en [LITE_NPM_AUDIT_TRIAGE_R286.md](LITE_NPM_AUDIT_TRIAGE_R286.md). No se modificó package-lock ni se lanzó CI: no hay checkout npm local disponible en este entorno. Siguiente acción: ejecutar la remediación con npm en un entorno con checkout y validar lock, audit, typecheck, unitarias, build y E2E antes de repetir el hard gate.
+
 ---
 
 ## 2026-10-24 UTC — r285: EN-RE-12 corregido; Playwright E2E en WAIT
