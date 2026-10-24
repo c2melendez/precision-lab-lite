@@ -6,6 +6,7 @@ import { Screen } from "../../components/Screen";
 import { type SessionHistoryEntry } from "../../components/HistoryLog";
 import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { parseExpression } from "../../engine/parsing";
+import { readRenderedInequalityUnion } from "../../engine/parsing/inequalitySolution";
 import { readInlineSubstitution } from "../../engine/parsing/inlineSubstitution";
 import { toLatex } from "../../engine/algebriteClient";
 import { splitSystemLatex, splitFreeSystemLatex } from "../../engine/parsing/systemSplit";
@@ -293,7 +294,12 @@ export function BasicScientificMode() {
       });
       return;
     }
-    const intervalUnion = readRealIntervalUnion(currentLatex);
+    // H1 EN-RE-12: results emitted as text by the inequality solver are not
+    // general math input. Recognize only the exact, bounded two-ray form we
+    // generate, convert it to canonical interval notation, then reuse the same
+    // strict interval-union validator used for native interval results.
+    const renderedInequalityUnion = readRenderedInequalityUnion(currentLatex);
+    const intervalUnion = readRealIntervalUnion(renderedInequalityUnion ?? currentLatex);
     if (intervalUnion) {
       const requestId = makeRequestId();
       onSuccess("Científica (unión de intervalos)", currentLatex, {
