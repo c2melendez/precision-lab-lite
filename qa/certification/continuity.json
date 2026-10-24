@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 285,
+  "revision": 286,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -51,9 +51,9 @@
     }
   },
   "next_action": {
-    "id": "LITE-WAIT-PLAYWRIGHT-ENRE12-R285",
-    "status": "WAIT",
-    "action": "Inspeccionar la conclusión y los logs de Playwright E2E run 40069116223 en SHA 5113fd28ee0ddf5233be930eb23c74772fcace97. No repetir H1b (40069116272), H1d (40069111537) ni cumulative (40069111608), ya SUCCESS en ese SHA. Si Playwright revela fallos EN-RE-20/EN-RE-21, leer las aserciones y corregir la causa real antes de volver a ejecutar; no suponer causa ni relanzar sin cambio. Mantener el hard gate npm audit: 6 moderate + 2 low; no bajar umbral. No mergear PR #48."
+    "id": "LITE-NPM-AUDIT-REMEDIATION-R286",
+    "status": "READY",
+    "action": "Analizar el árbol de dependencias y el lockfile del SHA técnico 14153e8bfd4f8557c24c7d195915b0a0907baa00 para definir la remediación mínima reproducible de los 8 advisories de npm audit. Priorizar Vitest/@vitest/mocker, fast-uri y serialize-javascript; evaluar KaTeX con pruebas de renderizado; tratar postcss-selector-parser/postcss-nested/Tailwind como decisión separada de mayor impacto. No editar el lock manualmente, no reducir el hard gate y no repetir Actions hasta que exista un cambio real de dependencias validado localmente. PR #48 permanece abierto y sin merge."
   },
   "blockers": [
     {
@@ -83,7 +83,7 @@
       "detail": "Lugares geométricos VC-LG-01..25: canal vacío y sin endpoint de producto."
     }
   ],
-  "ledger_note": "r285: EN-RE-12 corregido y H1b SUCCESS en SHA 5113fd28 (run 40069116272, 8/8 incl. EN-RE-12); H1d 40069111537 SUCCESS 22/22; cumulative 40069111608 SUCCESS (360 archivos, 2232 passed, 8 expected fail, 34 TODO); G3 parser 40069116074 SUCCESS 26/26; S25 40069116120 SUCCESS; Scientific UI 40069116227 SUCCESS. CI 40069116121 FAILURE por hard gate npm audit (6 moderate, 2 low, 0 high). Playwright E2E 40069116223 sigue IN_PROGRESS en el mismo SHA. Global OPEN; PR #48 no mergeado.",
+  "ledger_note": "r286: H1c 40072711602, Playwright E2E 40072711609, cumulative 40072711574, Algebra 229 integrity 40072711589 y los demás gates técnicos anotados en CURRENT_STATE.md SUCCESS en SHA 14153e8bfd4f8557c24c7d195915b0a0907baa00. CI 40072711615 FAILURE en npm audit hard gate: 2 low + 6 moderate, 0 high. Triaging documentado en LITE_NPM_AUDIT_TRIAGE_R286.md. S19 Plus usó snapshot Lite antiguo 6cbec7645b73ad18875d4472182c704eb35228b0, no evidencia diferencial para el SHA actual. Global OPEN; PR #48 no mergeado.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
