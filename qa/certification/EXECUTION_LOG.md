@@ -1,3 +1,12 @@
+## 2026-10-24 UTC — r286 addendum: dependencia exacta del hard gate
+
+- Actualizada `continuity.json` a r286: commit `e68df94f83ed3eab1452d9807745a741f6d5d9c3`; siguiente acción es preparar una remediación reproducible, sin relanzar Actions idénticas.
+- Inspección de lockfile v3: `fast-uri@3.1.8` llega por `ajv@8.20.0`; `serialize-javascript@7.1.0` por `@rollup/plugin-terser@1.0.0`; Vitest y `@vitest/mocker` están ambos en 5.0.1; Tailwind 3.4.19 requiere parser selector 6.x mediante sí mismo y `postcss-nested`.
+- Añadida la cadena de dependencias al documento `LITE_NPM_AUDIT_TRIAGE_R286.md` (commit `457d189d361c6a824cc6b4c96de86d3b07bd29cb`). No se alteró `package-lock.json` ni se dispararon Actions: no existe checkout local con npm en el entorno actual.
+- Estado: CI hard gate BLOCKED por 8 advisories (2 low, 6 moderate); global OPEN; PR #48 no mergeado. Próximo paso: remediación reproducible en entorno npm, validar antes de cualquier CI.
+
+---
+
 ## 2026-10-24 UTC — r286: reconciliación H1c/E2E y bloqueo de auditoría
 
 - SHA técnico: `14153e8bfd4f8557c24c7d195915b0a0907baa00`.
