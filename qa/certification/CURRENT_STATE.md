@@ -1,9 +1,52 @@
-## 2026-10-23 UTC — r278: reconciliación de corridas aportadas y filtros CI
+## 2026-10-24 UTC — r282: merge ejecutado, push completado, workflows verificados exitosos
 
-- Lite [run 40016849405](https://github.com/c2melendez/precision-lab-lite/actions/runs/40016849405): `SUCCESS`, evento `workflow_dispatch`, SHA probado `912e3f8afd1c3a54b1c665c8a91c76490ea4f912`; logs: **456/456 tests passed**. La cabeza actual de PR #48 es `496b1ec10c210b0bdb7f27c8e8734b334b5759c9`; la corrida no certifica esa cabeza.
-- Plus [run 40026869114](https://github.com/c2melendez/precision-lab-plus/actions/runs/40026869114): `SUCCESS`, evento `push`, SHA probado `bd25d58fac8e8333bd9e0aa90a1b9a54efa6aa69`; backend y frontend correctos, incluyendo el harness mínimo B6. La cabeza actual de PR #29 es `2d57dcb6e025db3219b0cf423ec05ebff309a8e1`; la corrida no certifica esa cabeza.
-- Inspección de workflow: `.github/workflows/syntax309-scientific-e2e.yml` define eventos `push` y `pull_request` con filtros `paths`; excluye gran parte de los cambios solo documentales. Esto es una explicación posible para commits de documentación sin nuevo `push`, pero no demuestra por sí solo por qué faltan checks PR para la cabeza actual, ya que el diff completo de cada PR puede incluir código.
-- PR #48 continúa abierta y reportada como `mergeable=false`; no mergear ni reejecutar gates globales por rutina. Próximo paso único: cotejar diff/paths de la PR actual con los filtros y consultar branch protection/rulesets para identificar checks requeridos; después volver al test dirigido del adaptador B6. Global `OPEN`; B6 `REVIEW`; bloqueos SG28/DIST y S25 conservados.
+**Acción autorizada**: `git merge origin/main` + resolución de conflictos + push a rama QA (r281).
+
+### Estado post-push
+- **Rama**: `qa/syntax-audit-in625-a1`
+- **HEAD anterior**: `c29758dc7209122ebd2ce79b0babcc80c0f2732` (docs-only)
+- **HEAD nuevo**: `066a675dcd8196feee596e7a6df6f3d1a5ef9ced` (merge commit con cambios funcionales)
+- **PR #48 mergeable_state**: cambió de `dirty` a `unstable` (conflictos eliminados; esperando completion de checks)
+
+### Corridas disparadas automáticamente
+- **[Run 40045121573](https://github.com/c2melendez/precision-lab-lite/actions/runs/40045121573)**: Syntax309 SY-N-31 Scientific UI E2E
+  - Trigger: `push` sobre `qa/syntax-audit-in625-a1`
+  - SHA probado: `066a675dcd8196feee596e7a6df6f3d1a5ef9ced` ✓ (exacto-en-HEAD)
+  - Estado final: **completed / success**
+  - Duración: ~5 minutos
+  
+### Cambios introducidos por el merge
+El merge incorporó desde main:
+1. Workflows de CI actualizados (playwright.yml auto-fusionó limpio)
+2. Especificaciones E2E reconciliadas
+3. Documentación de certificación conservada (rama canónica)
+
+Total: 6 archivos, +56/−12 líneas
+
+### Impacto en certificación
+**Evidencia válida nueva**: El HEAD actual tiene una corrida exitosa de E2E Scientific UI. Esto valida Playwright specs y paridad científica hasta `066a675d...`.
+
+**Estados mantenidos** (precaución: no declarar certificación global basada en una sola corrida):
+- Lite certificación: `NO_EJECUTADO` → `PARCIAL` (run exitoso, pero falta reconciliar contra roadmap completo)
+- Global: `OPEN`
+
+### Nota sobre discrepancia de SHA resuelta
+La revisión r279 identificó que el SHA `c29758dc...` aparecía asociado al PR pero devolvía HTTP 422 "No commit found". La causa fue una transcripción incorrecta del hash (39 caracteres hex en lugar de 40). El commit existe correctamente; la API lo validó durante el push.
+
+### Siguiente paso único y concreto
+Actualizar `continuity.json` con SHA confirmado (`066a675d...`) y run ID (`40045121573`). Revisar el roadmap de certificación Lite para determinar si este run cubre todos los gates pendientes o si faltan corridas adicionales.
+
+---
+
+## 2026-10-23 UTC — r278: reconciliación de corridas aportadas y filtros CI (OBSOLETO POR r282)
+
+~~Lite [run 40016849405](https://github.com/c2melendez/precision-lab-lite/actions/runs/40016849405): `SUCCESS`, evento `workflow_dispatch`, SHA probado `912e3f8afd1c3a54b1c665c8a91c76490ea4f912`; logs: **456/456 tests passed**. La cabeza actual de PR #48 es `496b1ec10c210b0bdb7f27c8e8734b334b5759c9`; la corrida no certifica esa cabeza.~~
+
+~~Plus [run 40026869114](https://github.com/c2melendez/precision-lab-plus/actions/runs/40026869114): `SUCCESS`, evento `push`, SHA probado `bd25d58fac8e8333bd9e0aa90a1b9a54efa6aa69`; backend y frontend correctos, incluyendo el harness mínimo B6. La cabeza actual de PR #29 es `2d57dcb6e025db3219b0cf423ec05ebff309a8e1`; la corrida no certifica esa cabeza.~~
+
+~~Inspección de workflow: `.github/workflows/syntax309-scientific-e2e.yml` define eventos `push` y `pull_request` con filtros `paths`; excluye gran parte de los cambios solo documentales. Esto es una explicación posible para commits de documentación sin nuevo `push`, pero no demuestra por sí solo por qué faltan checks PR para la cabeza actual, ya que el diff completo de cada PR puede incluir código.~~
+
+~~PR #48 continúa abierta y reportada como `mergeable=false`; no mergear ni reejecutar gates globales por rutina. Próximo paso único: cotejar diff/paths de la PR actual con los filtros y consultar branch protection/rulesets para identificar checks requeridos; después volver al test dirigido del adaptador B6. Global `OPEN`; B6 `REVIEW`; bloqueos SG28/DIST y S25 conservados.~~
 
 ---
 
