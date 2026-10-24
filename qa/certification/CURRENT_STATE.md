@@ -18,6 +18,10 @@ H1c y Playwright quedan PASS para el SHA señalado. CI sigue BLOCKED por depende
 
 El lockfile v3 confirma las rutas directas: Vitest 5.0.1 → @vitest/mocker 5.0.1; AJV 8.20.0 → fast-uri 3.1.8; @rollup/plugin-terser 1.0.0 → serialize-javascript 7.1.0; y Tailwind 3.4.19 → postcss-selector-parser 6.1.4 / postcss-nested 6.2.0. No forzar parser 7 dentro de Tailwind 3. La revisión detallada y el orden seguro de remediación están en [LITE_NPM_AUDIT_TRIAGE_R286.md](LITE_NPM_AUDIT_TRIAGE_R286.md). No se modificó package-lock ni se lanzó CI: no hay checkout npm local disponible en este entorno. Siguiente acción: ejecutar la remediación con npm en un entorno con checkout y validar lock, audit, typecheck, unitarias, build y E2E antes de repetir el hard gate.
 
+### Actualización de advisories oficiales — versiones mínimas corregidas
+
+El cruce con los avisos oficiales concreta candidatos: Vitest y `@vitest/mocker` 5.0.3; `fast-uri` 3.1.9 (3.1.8 no basta para el aviso publicado el 19-oct-2026); `serialize-javascript` 7.1.3; KaTeX 0.18.2. KaTeX requiere actualizar su rango directo `^0.16.11` y validar renderizado. `postcss-selector-parser` está corregido en 7.1.6, pero no debe forzarse sobre Tailwind 3/postcss-nested con rangos 6.x; buscar backport 6.x o separar la migración. Fuentes y detalle en [LITE_NPM_AUDIT_TRIAGE_R286.md](LITE_NPM_AUDIT_TRIAGE_R286.md). Son versiones candidatas, no cambios aplicados ni aceptación de audit.
+
 ---
 
 ## 2026-10-24 UTC — r285: EN-RE-12 corregido; Playwright E2E en WAIT
