@@ -3,7 +3,15 @@ name: CI
 on:
   push:
     branches: [main, master, qa/exhaustive-suite-module-01]
+    paths-ignore:
+      - '**/*.md'
+      - 'README.md'
+      - 'qa/certification/continuity.json'
   pull_request:
+    paths-ignore:
+      - '**/*.md'
+      - 'README.md'
+      - 'qa/certification/continuity.json'
   workflow_dispatch:
 
 permissions:
