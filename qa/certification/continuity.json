@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 278,
+  "revision": 283,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -51,15 +51,9 @@
     }
   },
   "next_action": {
-    "id": "EDCX-B6",
-    "status": "REVIEW",
-    "action": "Completar reconciliación de checks para las cabezas actuales de PR #29/#48. Las corridas aportadas fueron SUCCESS, pero pertenecen a SHA anteriores a las cabezas actuales. Se inspeccionaron los workflows y hay filtros paths que excluyen documentación general; falta verificar por qué no aparecen runs pull_request para las cabezas actuales y cuáles checks exige la protección de rama. No despachar gates globales ni mergear. Después continuar la prueba dirigida del adaptador/oráculo B6.",
-    "technical_sha_by_repo": {
-      "c2melendez/precision-lab-plus": "2d57dcb6e025db3219b0cf423ec05ebff309a8e1",
-      "c2melendez/precision-lab-lite": "496b1ec10c210b0bdb7f27c8e8734b334b5759c9"
-    },
-    "product_changed": false,
-    "audit": "r278 (2026-10-23): Plus run 40026869114 SUCCESS sobre bd25d58fac8e8333bd9e0aa90a1b9a54efa6aa69; Lite run 40016849405 SUCCESS sobre 912e3f8afd1c3a54b1c665c8a91c76490ea4f912. Las cabezas actuales de PR #29/#48 son 2d57dcb6e025db3219b0cf423ec05ebff309a8e1 y 496b1ec10c210b0bdb7f27c8e8734b334b5759c9, respectivamente. Logs confirman Lite: 456/456 tests passed; Plus: backend/frontend success y harness B6 aprobado dentro de regresión. Ninguno valida la cabeza actual. Los workflows contienen filtros paths y eventos push/pull_request; todavía no se ha probado que sean la única causa de ausencia de checks actuales. PRs abiertas y mergeable=false; global OPEN; bloqueos conservados."
+    "id": "LITE-HEAD-FAILURES-TRIAGE",
+    "status": "OPEN",
+    "action": "Corregir los 3 fallos reproducibles del HEAD 875418a0d82cc1bda1f64f380cd2fc09ac6b62b5 en Lite: (1) S25/CI audit duro: alta vulnerabilidad vite 7.0.0-7.3.6 con fix disponible (GHSA-9jrq-w75r-8gcw et al.) -> npm update vite + regenerar package-lock; (2) IN625 H1b reentry EN-RE-12 regresion funcional: reinjection de '\\text{x < -2 o x > 2} produce PARSE_ERROR (pass en 3b4d42b7e6, fail desde merge r281); (3) verificar Playwright E2E run 40046050515 tras conclusion. No mergear PR #48 hasta tener checks verdes o excepciones documentadas."
   },
   "blockers": [
     {
@@ -2553,27 +2547,43 @@
     }
   },
   "latest_reconciliation": {
-    "checked_at": "2026-10-23",
+    "checked_at": "2026-10-24",
     "branch": "qa/syntax-audit-in625-a1",
-    "current_head_sha": "1e8b625454179435dc85f9033984d10098def56c",
+    "current_head_sha": "875418a0d82cc1bda1f64f380cd2fc09ac6b62b5",
     "open_pull_request": 48,
-    "pull_request_head_sha": "1e8b625454179435dc85f9033984d10098def56c",
-    "pull_request_base_sha": "eb728e0ebb367f15b06aca491ca6236006834387",
-    "pull_request_mergeable": false,
-    "pull_request_reported_commit_count": 3260,
-    "pull_request_reported_changed_files": 553,
-    "exact_head_pull_request_workflow_runs": [],
-    "latest_visible_push_run_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
-    "latest_visible_push_run_ids": [
-      39914455096,
-      39914455133,
-      39914455092
+    "pull_request_head_sha": "875418a0d82cc1bda1f64f380cd2fc09ac6b62b5",
+    "pull_request_base_sha": "7cbef02b75884bee6c10049da8d3784d21f7313e",
+    "pull_request_mergeable": true,
+    "pull_request_mergeable_state": "unstable",
+    "exact_head_pull_request_workflow_runs": [
+      40046050472,
+      40046050475,
+      40046050487,
+      40046050435,
+      40046050437,
+      40046050428,
+      40046050422,
+      40046050593,
+      40046050505,
+      40046050521,
+      40046050565,
+      40046050438,
+      40046050493,
+      40046050580,
+      40046050515,
+      40046050541
     ],
-    "conclusion": "No PR-triggered workflow run was returned for the exact current HEAD by fetch_commit_workflow_runs. Latest visible push runs are on older SHAs. PR remains open and mergeable=false; do not merge or use old green runs as current-head evidence.",
-    "coverage_limit": "Exact-SHA PR workflow query and bounded first-page event queries only; not an exhaustive history. No workflow dispatched.",
-    "exact_head_check_runs_count": 0,
-    "exact_head_commit_statuses_count": 0,
-    "exact_head_combined_status": "pending",
-    "exact_head_check": "GET /commits/{HEAD}/check-runs and /commits/{HEAD}/status both returned zero entries; do not interpret this as passing."
+    "conclusion": "Merge r281 push y reconciliacion completados. Gate acumulativo SUCCESS exacto-en-HEAD (run 40046050475), continuity/CI guard steps verdes. Fallos activos exacto-en-HEAD: CI frontend (npm audit hard gate, vuln high vite), S25 security gate (mismo root cause; historico fallido desde 2026-10-08), IN625 H1b reentry (regresion EN-RE-12 PARSE_ERROR al reinyectar resultado \\text{...}; era success en 3b4d42b7e6). Playwright E2E 40046050515 in_progress al momento de la revision.",
+    "valid_evidence_gained": [
+      "cumulative gate success on exact HEAD 875418a0",
+      "syntax-native/a1..g1a diagnostic success",
+      "G3 parser+e2e success",
+      "accessibility S23 success",
+      "PWA S22 success",
+      "cross-browser smoke success",
+      "source-fixture integrity success",
+      "SY-N-31 scientific UI success",
+      "H1a/H1c/H1d reentry success"
+    ]
   }
 }

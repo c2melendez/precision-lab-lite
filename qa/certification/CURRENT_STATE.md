@@ -1,3 +1,24 @@
+## 2026-10-24 UTC — r283: reconciliación exacta-en-HEAD tras push del merge (verificada vía API con auth)
+
+**HEAD verificado**: `875418a0d82cc1bda1f64f380cd2fc09ac6b62b5` (PR #48, base `7cbef02b...`, mergeable=True, mergeable_state=`unstable`). El estado `dirty` de r280 queda RESUELTO por el merge r281.
+
+### Evidencia válida nueva (pull_request, exacta en HEAD)
+- **IN625 Cumulative Certification Gate: SUCCESS** (run 40046050475). Pasos "Certification continuity and CI guard regressions" verdes. Primer gate acumulativo exitoso exacto-en-HEAD de Lite.
+- SUCCESS además en: Syntax diagnostic A1..G1a (40046050580), G3 parser (40046050428), G3 e2e desktop/tablet/mobile (40046050541), S23 accessibility (40046050422), S22 PWA offline (40046050593), cross-browser smoke (40046050505), Algebra229 source/fixture integrity (40046050521), SY-N-31 Scientific UI (40046050437), H1a/H1c/H1d reentry.
+- Playwright E2E (40046050515): in_progress al momento de esta revisión; verificar antes de mergear.
+
+### Fallos activos exacta-en-HEAD (causas raíz identificadas con logs/artifact)
+1. **CI frontend / hard gate de auditoría** (run 40046050472) y **S25 Security Gate** (run 40046050487): mismo root cause — `npm audit` reporta 1 HIGH con fix disponible: **vite 7.0.0–7.3.6** (GHSA-9jrq-w75r-8gcw, GHSA-rq7h-c2jc-7f22 + launch-editor). Artifact `lite-npm-audit` (ID 12540964499): total 9 (high 1, moderate 6, low 2). S25 arrastra fallo histórico desde 2026-10-08 (runs 37818703343/37818738329/37843775488 también FAILURE); SECURITY-S25 permanece BLOCKED con causa concreta y accionable: actualizar vite y regenerar package-lock.
+2. **IN625 H1b Reentry** (run 40046050435): regresión funcional EN-RE-12 — reinyectar el resultado `	ext{x < -2 o x > 2}` produce PARSE_ERROR ("Texto no matemático"). Este gate era SUCCESS en `3b4d42b7e6`; el fallo aparece desde el merge r281 → probable interacción con código traído de main. Requiere bisect/dirimir antes de tocar producción.
+
+### Estados de certificación
+Global OPEN · B6 REVIEW · B5 BLOCKED/NO_EJECUTADO · SG28-DIST BLOCKED (confirmado por evidencia Plus r283) · **SECURITY-S25 BLOCKED (root cause concreto: vuln high vite)** · SY-P-23 OPEN · SY-X-04-PLUS-HTTP BLOCKED · ALGEBRA229-AS-B-29 ON_HOLD. No se modifica ninguna aceptación de bloque: los éxitos nuevos son evidencia a registrar, no certificación.
+
+### Siguiente paso único y concreto
+Triage de fallos del HEAD: (a) bump de vite + lockfile para destrabar S25/audit; (b) diagnóstico EN-RE-12 en H1b; (c) confirmar conclusión de Playwright E2E 40046050515. No mergear PR #48 hasta checks verdes o excepciones documentadas.
+
+---
+
 ## 2026-10-24 UTC — r282: merge ejecutado, push completado, workflows verificados exitosos
 
 **Acción autorizada**: `git merge origin/main` + resolución de conflictos + push a rama QA (r281).
