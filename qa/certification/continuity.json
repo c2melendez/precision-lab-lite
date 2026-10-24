@@ -1,0 +1,2660 @@
+{
+  "schema_version": 1,
+  "revision": 286,
+  "repository": "c2melendez/precision-lab-lite",
+  "canonical_branch": "qa/syntax-audit-in625-a1",
+  "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
+  "baseline_case": "EDCX-B3-MIRROR-R262",
+  "baseline_status": "NO_EJECUTADO",
+  "global_certification": "OPEN",
+  "prose_only_paths": [
+    "README.md",
+    "qa/certification/README.md",
+    "qa/certification/CURRENT_STATE.md",
+    "qa/certification/EXECUTION_LOG.md",
+    "qa/certification/CONTINUITY_NEXT_ACTION.json",
+    "qa/certification/EXECUTION_LOG_AS229_SECTION_A.md",
+    "qa/certification/ALGEBRA229_PREPARATION.md",
+    "qa/certification/ROADMAP_CONTINUITY.md",
+    "qa/certification/CONTINUATION_PROMPT.md",
+    "qa/certification/EDCX_B6_ADAPTER_ORACLE_PLAN.md"
+  ],
+  "gates": {
+    "cumulative": {
+      "workflow": ".github/workflows/in625-cumulative-certification.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    "h1d": {
+      "workflow": ".github/workflows/in625-h1d-reentry.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    "security": {
+      "workflow": ".github/workflows/certification-dependency-gates.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "allow_reuse": false
+    },
+    "scientific": {
+      "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
+    }
+  },
+  "next_action": {
+    "id": "LITE-NPM-AUDIT-REMEDIATION-IMPLEMENTATION-R286",
+    "status": "BLOCKED_ENVIRONMENT",
+    "action": "La revisión del árbol y los advisories ya identificó versiones candidatas: vitest/@vitest/mocker 5.0.3, fast-uri 3.1.9, serialize-javascript 7.1.3 y KaTeX 0.18.2; no forzar postcss-selector-parser 7.1.6 dentro de Tailwind 3. El siguiente paso requiere checkout del repo en un entorno con npm para actualizar dependencias y regenerar package-lock de forma reproducible. Después ejecutar npm ci, npm audit --package-lock-only, typecheck, unitarias, build y E2E visual relevante. No editar lock manualmente ni disparar CI antes de cambios y validación local. Mantener PR #48 abierto y sin merge hasta que el hard gate pase."
+  },
+  "blockers": [
+    {
+      "id": "H2-SG28-DIST-01..08",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "SECURITY-S25",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "SY-P-23",
+      "status": "OPEN"
+    },
+    {
+      "id": "SY-X-04-PLUS-HTTP",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "ALGEBRA229-AS-B-29",
+      "status": "ON_HOLD"
+    },
+    {
+      "id": "EDCX-B5",
+      "status": "BLOCKED",
+      "kind": "capability",
+      "detail": "Lugares geométricos VC-LG-01..25: canal vacío y sin endpoint de producto."
+    }
+  ],
+  "ledger_note": "r286: gates técnicos verdes en SHA 14153e8bfd4f8557c24c7d195915b0a0907baa00 excepto CI 40072711615, bloqueado por npm audit (2 low, 6 moderate, 0 high). Lockfile y advisories oficiales revisados; versiones candidatas documentadas en LITE_NPM_AUDIT_TRIAGE_R286.md. No se alteró package-lock ni se ejecutaron Actions nuevas. La implementación queda bloqueada por ausencia de checkout/npm local. S19 Plus usó snapshot Lite antiguo 6cbec7645b73ad18875d4472182c704eb35228b0, no evidencia diferencial para SHA actual. Global OPEN; PR #48 no mergeado.",
+  "documentary_closure_r207": {
+    "status": "VERIFIED",
+    "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
+    "gates": [
+      {
+        "gate": "cumulative",
+        "run_id": 39551266478,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39551266478",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39551268683,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39551268683",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39551270883,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39551270883",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
+        "head_sha_matches": true
+      }
+    ],
+    "ev_d_04": "READY_NOT_STARTED"
+  },
+  "ev_d_04_execution_r209": {
+    "status": "IN_PROGRESS",
+    "test_commit_sha": "9623bfa02b50f4fde154fc2fdd96f894151e65e3",
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39552903560,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39552903560",
+        "status": "in_progress",
+        "expected_head_sha": "9623bfa02b50f4fde154fc2fdd96f894151e65e3"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39552903434,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39552903434",
+        "status": "in_progress",
+        "expected_head_sha": "9623bfa02b50f4fde154fc2fdd96f894151e65e3"
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39552903511,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39552903511",
+        "status": "in_progress",
+        "expected_head_sha": "9623bfa02b50f4fde154fc2fdd96f894151e65e3"
+      }
+    ],
+    "product_changed": false,
+    "global_certification": "OPEN"
+  },
+  "ev_d_04_execution_r210": {
+    "status": "IN_PROGRESS",
+    "diagnostic": "Lite r209 cumulative failed only because test called evaluate('csc(pi/6)') directly; Algebrite returned csc(1/6*pi). Official pipeline rewrites csc to 1/sin before evaluate. Test now uses parseExpression(INPUT_ASCII,'RAD').algebrite.",
+    "product_changed": false,
+    "test_commit_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4",
+    "runs": [
+      {
+        "gate": "scientific-ui",
+        "run_id": 39554410696,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39554410696",
+        "status": "in_progress",
+        "expected_head_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4"
+      },
+      {
+        "gate": "cumulative",
+        "run_id": 39554410679,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39554410679",
+        "status": "in_progress",
+        "expected_head_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39554410715,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39554410715",
+        "status": "in_progress",
+        "expected_head_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4"
+      }
+    ],
+    "global_certification": "OPEN"
+  },
+  "ev_d_04_closure_r211": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "product_changed": false,
+    "lite_test_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4",
+    "plus_test_sha": "f6756dc37bdf193a01de05a4bb9208b65cf47867",
+    "runs": [
+      {
+        "repo": "c2melendez/precision-lab-lite",
+        "gate": "cumulative",
+        "run_id": 39554410679,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4",
+        "head_sha_matches": true
+      },
+      {
+        "repo": "c2melendez/precision-lab-lite",
+        "gate": "h1d",
+        "run_id": 39554410715,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4",
+        "head_sha_matches": true
+      },
+      {
+        "repo": "c2melendez/precision-lab-lite",
+        "gate": "scientific-ui",
+        "run_id": 39554410696,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "0467aa89c470abf6607d1b67e9c40191642d8df4",
+        "head_sha_matches": true
+      },
+      {
+        "repo": "c2melendez/precision-lab-plus",
+        "gate": "cumulative",
+        "run_id": 39552906521,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "f6756dc37bdf193a01de05a4bb9208b65cf47867",
+        "head_sha_matches": true
+      },
+      {
+        "repo": "c2melendez/precision-lab-plus",
+        "gate": "h1d",
+        "run_id": 39552906515,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "f6756dc37bdf193a01de05a4bb9208b65cf47867",
+        "head_sha_matches": true
+      }
+    ],
+    "scope": "EV-D-04 csc(pi/6)=2; Lite ASCII+LaTeX via official parser; Plus HTTP ASCII only",
+    "global_certification": "OPEN"
+  },
+  "ev_d_05_execution_r211": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c",
+      "c2melendez/precision-lab-plus": "8885a3b47dc6509c52a08312bbc87d5f1651c6da"
+    },
+    "product_changed": false,
+    "runs": [
+      {
+        "repo": "c2melendez/precision-lab-lite",
+        "gate": "cumulative",
+        "run_id": 39555164790,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c",
+        "head_sha_matches": true,
+        "tests": "1972 passed; 8 expected fail; 34 TODO; EV-D-05 file 3/3 passed"
+      },
+      {
+        "repo": "c2melendez/precision-lab-lite",
+        "gate": "h1d",
+        "run_id": 39555164686,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c",
+        "head_sha_matches": true
+      },
+      {
+        "repo": "c2melendez/precision-lab-lite",
+        "gate": "scientific-ui",
+        "run_id": 39555164730,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "24871267ec1ee9f64bbd2d34fd449b41ee74f99c",
+        "head_sha_matches": true
+      },
+      {
+        "repo": "c2melendez/precision-lab-plus",
+        "gate": "cumulative",
+        "run_id": 39556359520,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "8885a3b47dc6509c52a08312bbc87d5f1651c6da",
+        "head_sha_matches": true,
+        "tests": "1764 passed; 6 xfailed; coverage 88.07%; EV-D-05 source+HTTP tests passed"
+      },
+      {
+        "repo": "c2melendez/precision-lab-plus",
+        "gate": "h1d",
+        "run_id": 39556359572,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "8885a3b47dc6509c52a08312bbc87d5f1651c6da",
+        "head_sha_matches": true
+      }
+    ],
+    "scope": "sec(pi/3)=2; Lite ASCII+LaTeX via official parser; Plus HTTP ASCII; frozen source row verified",
+    "global_certification": "OPEN"
+  },
+  "ev_d_06_execution": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "EV-D-06 cot(pi/4)=1; Lite official parser ASCII+LaTeX; Plus HTTP ASCII",
+    "source_row_verified": true,
+    "product_changed": false,
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+      "c2melendez/precision-lab-plus": "6369a617e59f2f23fe73ac4e464683de310a688a"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39557479991,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479991",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39557479974,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39557479974",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39557480008,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39557480008",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+        "head_sha_matches": true
+      }
+    ],
+    "diagnostic": "Lite initial cumulative failed only because source result `1` is backtick-delimited; corrected assertion. Final Lite cumulative/H1d passed; Scientific UI in progress. Plus H1d passed; cumulative frontend passed and backend regression in progress.",
+    "global_certification": "OPEN",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8"
+    }
+  },
+  "ev_d_06_closure_r218": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "cot(pi/4)=1",
+    "product_changed": false,
+    "technical_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39557479991,
+        "conclusion": "success",
+        "head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39557479974,
+        "conclusion": "success",
+        "head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39557480008,
+        "conclusion": "success",
+        "head_sha": "00892789a8cd5c6e12ba43cb47fce4d97f7b1bc8",
+        "head_sha_matches": true
+      }
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-D-07-TEST-FIRST",
+    "next_status": "READY_SOURCE_ROW_VERIFICATION"
+  },
+  "ev_d_07_closure_r219": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "sin(5*pi/4) = -sqrt(2)/2; Lite official parser ASCII+LaTeX; Plus HTTP ASCII; frozen source row verified",
+    "product_changed": false,
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "1275c24933b2ca77a31bba6e1d2c01274e97795e",
+      "c2melendez/precision-lab-plus": "1717a160a5219a06d6542f26e87c94fe7de59fd5"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39560031960,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39560031960",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "1275c24933b2ca77a31bba6e1d2c01274e97795e",
+        "head_sha_matches": true,
+        "tests": "335 files; 1978 passed; 8 expected fail; 34 TODO; EV-D-07 file 3/3 passed"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39560031969,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39560031969",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "1275c24933b2ca77a31bba6e1d2c01274e97795e",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39560031973,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39560031973",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "1275c24933b2ca77a31bba6e1d2c01274e97795e",
+        "head_sha_matches": true
+      }
+    ],
+    "diagnostic": "No diagnostic needed: the local pre-push probe fixed the float-format assumption (Algebrite prints '-0.707107'); the test asserts algebraic equivalence plus numeric closeness and rejects decimal-only output. No product change.",
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-D-08-TEST-FIRST",
+    "next_status": "READY_SOURCE_ROW_VERIFICATION"
+  },
+  "ev_d_08_closure_r220": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "sin(1) approx 0.841470985; Lite official parser ASCII+LaTeX keeps exact sin(1); Plus HTTP ASCII keeps exact sin(1); approx-oracle convention documented in EXECUTION_PROTOCOL.md",
+    "product_changed": false,
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "d605a23bac884d99b5eee38a5a1f4197c4172c57",
+      "c2melendez/precision-lab-plus": "e532b9e20054580b0d2f8d2d6ea702d7b173a55d"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39561366616,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39561366616",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "d605a23bac884d99b5eee38a5a1f4197c4172c57",
+        "head_sha_matches": true,
+        "tests": "336 files; 1982 passed; 8 expected fail; 34 TODO; EV-D-08 file 4/4 passed"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39561366691,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39561366691",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "d605a23bac884d99b5eee38a5a1f4197c4172c57",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39561366624,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39561366624",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "d605a23bac884d99b5eee38a5a1f4197c4172c57",
+        "head_sha_matches": true
+      }
+    ],
+    "oracle_convention": "EV-D-08 is the first documented approximation row: exact symbolic form mandatory, documented value is the 9-decimal rounding, tolerance 5e-10 for high-precision engines and 1e-6 for Lite's 6-decimal float channel.",
+    "diagnostic": "No diagnostic needed: local pre-push run passed in both engines on the first attempt.",
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-D-09-TEST-FIRST",
+    "next_status": "IN_PROGRESS"
+  },
+  "ev_d_09_closure_r221": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "cos(2) approx -0.416146837; Lite official parser ASCII+LaTeX keeps exact cos(2); Plus HTTP ASCII keeps exact cos(2)",
+    "product_changed": false,
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "7e6d29ae4c391805154ebae8029436792ee010fb",
+      "c2melendez/precision-lab-plus": "efeba0caecfae5ce824c481d02b3b7bb21d05d76"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39562383033,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39562383033",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7e6d29ae4c391805154ebae8029436792ee010fb",
+        "head_sha_matches": true,
+        "tests": "337 files; 1986 passed; 8 expected fail; 34 TODO; EV-D-09 file 4/4 passed"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39562383038,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39562383038",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7e6d29ae4c391805154ebae8029436792ee010fb",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39562383018,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39562383018",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7e6d29ae4c391805154ebae8029436792ee010fb",
+        "head_sha_matches": true
+      }
+    ],
+    "diagnostic": "No diagnostic needed: approx-row oracle reused from EV-D-08 and passed first push in both engines.",
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-D-10-TEST-FIRST",
+    "next_status": "IN_PROGRESS_PRODUCT_FIX"
+  },
+  "ev_d_10_closure_r222": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "cot(pi/2)=0; product fix in Lite parser (cot -> cos/sin); Plus unchanged (SymPy already 0)",
+    "product_changed": true,
+    "product_fix": {
+      "repo": "c2melendez/precision-lab-lite",
+      "file": "src/engine/parsing/index.ts",
+      "change": "cot(a) rewritten as cos(a)/sin(a) instead of 1/tan(a); fixes removable singularity at pi/2 while keeping cot(0) undefined",
+      "fix_sha": "b5bd0fa3b06da410d10b9a0fe2503756d7f6570a"
+    },
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "4c92b797189cb41ffe70de93332938ba67d389b5",
+      "c2melendez/precision-lab-plus": "b635db5fa6e00fab92a144d421398ff5d5df0763"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39564052659,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39564052659",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "4c92b797189cb41ffe70de93332938ba67d389b5",
+        "head_sha_matches": true,
+        "tests": "338 files; 1989 passed; 8 expected fail; 34 TODO; EV-D-10 file 3/3 passed"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39564052660,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39564052660",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "4c92b797189cb41ffe70de93332938ba67d389b5",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39564052665,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39564052665",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "4c92b797189cb41ffe70de93332938ba67d389b5",
+        "head_sha_matches": true
+      }
+    ],
+    "diagnostic": "First cumulative run 39563431468 on the fix SHA failed only in oracle EN-AL-11 (expected cot/ or 1/tan/), a harness/oracle mismatch caused by the intentional encoding change; oracle updated to accept cos/sin. Product was not changed to satisfy the test.",
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-D-11-TEST-FIRST",
+    "next_status": "IN_PROGRESS"
+  },
+  "ev_d_11_closure_r223": {
+    "status": "PASS_SCOPED_EQUIVALENT",
+    "scope": "sin^2(pi/8)+cos^2(pi/8)=1; Lite keeps exact identity form and certifies exact equivalence via simplify; Plus returns literal 1",
+    "product_changed": false,
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "52f50ea44558343c88c2a926e438d61d0f03486d",
+      "c2melendez/precision-lab-plus": "2f37ee2f10f8bac361eff592bbe3e0a5a3b654e9"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39583453889,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39583453889",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "52f50ea44558343c88c2a926e438d61d0f03486d",
+        "head_sha_matches": true,
+        "tests": "339 files; 1992 passed; 8 expected fail; 34 TODO; EV-D-11 file 3/3 passed"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39583453775,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39583453775",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "52f50ea44558343c88c2a926e438d61d0f03486d",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39583453805,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39583453805",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "52f50ea44558343c88c2a926e438d61d0f03486d",
+        "head_sha_matches": true
+      }
+    ],
+    "limitation": "evaluate() does not collapse the Pythagorean identity to a bare 1; certification relies on exact equivalence (simplify difference = 0) per G2 rule, not on textual output.",
+    "diagnostic": "No diagnostic needed: first pushed SHA passed all gates in both engines.",
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-D-12-TEST-FIRST",
+    "next_status": "READY_SOURCE_ROW_AND_ERROR_CONTRACT"
+  },
+  "ev_d_12_closure_r224": {
+    "status": "PASS_SCOPED",
+    "scope": "tan(pi/2) undefined must raise a clear DOMAIN_ERROR in both engines; log(0) aligned with Plus",
+    "product_changed": true,
+    "product_fix": {
+      "repo": "c2melendez/precision-lab-lite",
+      "files": [
+        "src/engine/algebriteClient.ts",
+        "src/engine/parsing/index.ts"
+      ],
+      "change": "tan-only pole detection via exact cos(arg)=0 -> DOMAIN_ERROR; log(0)/ln(0) -> DOMAIN_ERROR; arccot(0) -> pi/2 (AUD-SING-01)"
+    },
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "7cc7bf8a458d37c182adbfd898a1626e665aba76",
+      "c2melendez/precision-lab-plus": "95601e5b13131af26f94b56028542b4feda56ec5"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39593868026,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39593868026",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7cc7bf8a458d37c182adbfd898a1626e665aba76",
+        "head_sha_matches": true,
+        "tests": "1999 passed; 8 expected fail; 34 TODO; EV-D-12 file 7/7 passed"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39593867990,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39593867990",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7cc7bf8a458d37c182adbfd898a1626e665aba76",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39593867986,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39593867986",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7cc7bf8a458d37c182adbfd898a1626e665aba76",
+        "head_sha_matches": true
+      }
+    ],
+    "diagnostic": "tan(pi/2) returned the unevaluated 'tan(1/2*pi)' instead of a domain error: guard added only for whole-result tan(...) using the engine's exact cosine; composite forms untouched to avoid diverging from Plus on 1/tan(pi/2).",
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-AUD-SING-02",
+    "next_status": "IN_PROGRESS"
+  },
+  "aud_sing_closure_r225": {
+    "status": "PASS_SCOPED",
+    "scope": "avoidable singularities and silent wrong values: arccot(0), hyperbolic aliases, GRAD sec/csc/cot, arcsin/acos domain",
+    "product_changed": true,
+    "product_fixes": [
+      "arccot(x): exact zero -> pi/2 instead of arctan(1/0)",
+      "aliases arcsinh/arccosh/arctanh/arccoth/arccsch/arcsech resolved to real functions (previously implicit products, e.g. arcsinh(1)=0)",
+      "GRAD mode converts sec/csc/cot arguments (previously degrees interpreted as radians)",
+      "arcsin/arccos numeric arguments outside [-1, 1] -> DOMAIN_ERROR"
+    ],
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39595606769,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39595606769",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7d83a9ac14c73dc70fb52d8902e01dc9313d1924",
+        "head_sha_matches": true,
+        "tests": "2008 passed; 8 expected fail; 34 TODO"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39595606725,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39595606725",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7d83a9ac14c73dc70fb52d8902e01dc9313d1924",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39595606686,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39595606686",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7d83a9ac14c73dc70fb52d8902e01dc9313d1924",
+        "head_sha_matches": true
+      }
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-I-GROUP-A",
+    "next_status": "IN_PROGRESS"
+  },
+  "ev_i_group_a_r226": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "EV-I-01..06, EV-I-08, EV-I-11 exact values with frozen source rows",
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "11d0192582c337e38ec3718940f5f620644e44f0",
+      "c2melendez/precision-lab-plus": "43738a0fd6387e99a71bdf0124e15fb5c698c877"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39596378248,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39596378248",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "11d0192582c337e38ec3718940f5f620644e44f0",
+        "head_sha_matches": true,
+        "tests": "2016 passed; 8 expected fail; 34 TODO"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39596378313,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39596378313",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "11d0192582c337e38ec3718940f5f620644e44f0",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39596378121,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39596378121",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "11d0192582c337e38ec3718940f5f620644e44f0",
+        "head_sha_matches": true
+      }
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-H-01..12",
+    "next_status": "IN_PROGRESS"
+  },
+  "ev_h_closure_r227": {
+    "status": "PASS_SCOPED",
+    "scope": "EV-H-01..12 hyperbolic values; exact for 01..03 and 12, numeric channel for 04..11",
+    "product_changed": false,
+    "limitation": "exact rational display (3/4, 5/4, 3/5, 4/3, 4/5, 5/3) is not produced by either engine; result_text stays symbolic in Plus and 6-decimal in Lite",
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "54f81f21806fbe02ebf4c40ed237ed244a667de4",
+      "c2melendez/precision-lab-plus": "e7107279a0309e9c31114b3b725b51103cffbef7"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39596870367,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39596870367",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "54f81f21806fbe02ebf4c40ed237ed244a667de4",
+        "head_sha_matches": true,
+        "tests": "2025 passed; 8 expected fail; 34 TODO; EV-H file 9/9"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39596869965,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39596869965",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "54f81f21806fbe02ebf4c40ed237ed244a667de4",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39596870180,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39596870180",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "54f81f21806fbe02ebf4c40ed237ed244a667de4",
+        "head_sha_matches": true
+      }
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "TRIG-EV-I-07-BRANCH",
+    "next_status": "READY_DECISION"
+  },
+  "ev_i07_closure_r228": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "arccot principal range (0, pi): arccot(-1)=3pi/4, arccot(0)=pi/2, arccot(1)=pi/4 in both engines",
+    "product_changed": true,
+    "product_fix": "Lite parser rewrites arccot(a) as pi/2-arctan(a) (also the \\cot^{-1} path in normalize.ts); Plus evaluate_service rewrites acot nodes as pi/2-atan(x) before evaluation",
+    "test_commit_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "76e89a9b3546ad73b4be61fea4cd48de5905195f",
+      "c2melendez/precision-lab-plus": "f8bdd40a2bbd6016f412019a246e4dbce23835f1"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39648569475,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39648569475",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "76e89a9b3546ad73b4be61fea4cd48de5905195f",
+        "head_sha_matches": true,
+        "tests": "2028 passed; 8 expected fail; 34 TODO; EV-I-07 file 3/3"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39648569239,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39648569239",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "76e89a9b3546ad73b4be61fea4cd48de5905195f",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39648569417,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39648569417",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "76e89a9b3546ad73b4be61fea4cd48de5905195f",
+        "head_sha_matches": true
+      }
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "LOG-EV-L-REWRITE",
+    "next_status": "IN_PROGRESS"
+  },
+  "ev_l_closure_r229": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "EV-L-01..14 logarithms (matriz_log_exp_radicales)",
+    "product_changed": true,
+    "product_fix": "Lite: exact log-ratio and perfect-power simplification (engine/logSimplify.ts), invalid-base guard and parser normalization of every \\log_{b}(arg) occurrence. Plus: invalid logarithm base validation and bounded LaTeX log normalization.",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "47988786a6340d434db67a7a627ff525ae697864",
+      "c2melendez/precision-lab-plus": "6edbb54d2b13e897e98c83f3a6872eefae869765"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39651672489,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39651672489",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "47988786a6340d434db67a7a627ff525ae697864",
+        "head_sha_matches": true,
+        "tests": "346 files; 2034 passed, 8 expected fail, 34 todo; tests/trigonometryEvL01to14.audit.test.ts 6/6"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39651672506,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39651672506",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "47988786a6340d434db67a7a627ff525ae697864",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39651672303,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39651672303",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "47988786a6340d434db67a7a627ff525ae697864",
+        "head_sha_matches": true
+      }
+    ],
+    "scope_notes": "EV-L-01/02/03/04/06/07/10 exact; EV-L-05/08/11 exact form plus 9-decimal reference; EV-L-09 product of base-b logs in ASCII and LaTeX; EV-L-12 DOMAIN_ERROR; EV-L-13 i*pi (complex branch documented by the row); EV-L-14 invalid base with a clear error.",
+    "global_certification": "OPEN"
+  },
+  "ev_i09_i10_closure_r229": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "EV-I-09 arcsin(sin 2)=pi-2 and EV-I-10 sin(arccos 3/5)=4/5",
+    "product_changed": true,
+    "product_fix": "Lite: engine/inverseTrigComposition.ts rewrites whole inverse/direct compositions with numeric arguments to the exact principal branch (integer multiples of pi) and the Pythagorean identities; parsing/normalize.ts now accepts and unescapes the contractual LaTeX macros (\\arcsin, \\arccos, \\arctan, \\arcsec, \\arccsc, \\arccot and the inverse hyperbolic ones) that G3 rejected as unknown commands. Plus: no product change (already returned -2+pi and 4/5).",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "bd9c207c1b091bfd017fb8f3ca7ff8f21e06415b",
+      "c2melendez/precision-lab-plus": "996ed03026c95ced15443a579c35115f25d5e3c3"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39679799460,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39679799460",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "bd9c207c1b091bfd017fb8f3ca7ff8f21e06415b",
+        "head_sha_matches": true,
+        "tests": "347 files; 2043 passed, 8 expected fail, 34 todo; tests/trigonometryEvI09I10.audit.test.ts 9/9; guard skip=false (real execution)"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39679798743,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39679798743",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "bd9c207c1b091bfd017fb8f3ca7ff8f21e06415b",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 39679798735,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39679798735",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "bd9c207c1b091bfd017fb8f3ca7ff8f21e06415b",
+        "head_sha_matches": true
+      }
+    ],
+    "finding": "The official EV-I rows are written with \\arcsin/\\arccos/\\arctan; before this change Lite could only certify them through the ASCII channel because G3 aborted with 'Comando desconocido'.",
+    "global_certification": "OPEN"
+  },
+  "ev_e_diagnosis_r229": {
+    "status": "IN_PROGRESS",
+    "scope": "EV-E-01..14 exponentials (matriz_log_exp_radicales), local probe only",
+    "evidence_kind": "local_probe",
+    "correct_already": [
+      "EV-E-01",
+      "EV-E-02",
+      "EV-E-03",
+      "EV-E-04",
+      "EV-E-05",
+      "EV-E-06",
+      "EV-E-07",
+      "EV-E-08",
+      "EV-E-09",
+      "EV-E-11",
+      "EV-E-13"
+    ],
+    "defects": [
+      {
+        "case": "EV-E-10",
+        "layer": "product",
+        "repos": [
+          "lite"
+        ],
+        "detail": "Lite returns exp(log(2)+log(3)); Plus returns 6"
+      },
+      {
+        "case": "EV-E-12",
+        "layer": "presentation/complexity",
+        "repos": [
+          "lite",
+          "plus"
+        ],
+        "detail": "result_text is a ~3600-digit exact fraction in both engines; result_approx is 2.716923932"
+      },
+      {
+        "case": "EV-E-14",
+        "layer": "convention",
+        "repos": [
+          "lite",
+          "plus"
+        ],
+        "detail": "both return 1; the row admits 1 only under a declared convention"
+      }
+    ],
+    "global_certification": "OPEN"
+  },
+  "ev_e_closure_r230": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "EV-E-01..14 exponentials (matriz_log_exp_radicales)",
+    "product_changed": true,
+    "product_fix": "Lite only: engine/expLogSimplify.ts applies the exact identity exp(+-log r1 +- log r2 ...) = product/quotient of literal positive rationals using safe integers and gcd reduction, wired after simplifyLogResult; unsupported forms are returned untouched. e^(ln 2+ln 3) now returns 6 instead of exp(log(2)+log(3)).",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "16e5ca750f103782d790acc6a579ec1999716a12",
+      "c2melendez/precision-lab-plus": "9a06ae8da282e2525240a2cde1a63d625832f9b9"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39681554692,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39681554692",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16e5ca750f103782d790acc6a579ec1999716a12",
+        "head_sha_matches": true,
+        "tests": "348 files; 2049 passed, 8 expected fail, 34 todo; tests/logExpEvE01to14.audit.test.ts 6/6",
+        "evidence_guard": {
+          "skip": "false",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39681554639,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39681554639",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16e5ca750f103782d790acc6a579ec1999716a12",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific",
+        "run_id": 39681554580,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39681554580",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16e5ca750f103782d790acc6a579ec1999716a12",
+        "head_sha_matches": true
+      }
+    ],
+    "oracles": {
+      "exact": [
+        "EV-E-01",
+        "EV-E-03",
+        "EV-E-04",
+        "EV-E-05",
+        "EV-E-06",
+        "EV-E-10",
+        "EV-E-13"
+      ],
+      "nine_decimal_reference": [
+        "EV-E-02",
+        "EV-E-07",
+        "EV-E-08",
+        "EV-E-09",
+        "EV-E-11 (relative)",
+        "EV-E-12"
+      ]
+    },
+    "declared_conventions": [
+      "EV-E-14: 0^0 = 1 by declared convention (recorded in MANUAL_CAPABILITY_GAPS).",
+      "EV-E-12: certified on the numeric oracle (2.716923932); the exact ~3600-digit fraction is kept as result_text in both engines and declared as a presentation limitation.",
+      "EV-E-13: -1 on the complex branch documented by the row."
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "EV-R-01..14 radicals",
+    "next_status": "IN_PROGRESS"
+  },
+  "ev_r_closure_r231": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "EV-R-01..14 radicals (matriz_log_exp_radicales)",
+    "product_changed": true,
+    "product_fix": "Lite: engine/radicalRationalize.ts applies the exact conjugate identity for whole 1/(a+-sqrt(b)) results with literal integers and |b-a^2| = 1, wired after the log/exp simplifiers. Plus: parsing.py maps odd-index radical notation of a negative literal radicand to the real root (EV-R-03/05) and routers/evaluate.py denests a bare square root whose radicand already contains a square root (EV-R-11/12).",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "c7875936249eabc5e3e1d146b6f4d965d3447920",
+      "c2melendez/precision-lab-plus": "870766b99a025807caa84cfacfa9ad2928a8f4e7"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39683361872,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39683361872",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c7875936249eabc5e3e1d146b6f4d965d3447920",
+        "head_sha_matches": true,
+        "tests": "349 files; 2055 passed, 8 expected fail, 34 todo; tests/radicalsEvR01to14.audit.test.ts 6/6",
+        "evidence_guard": {
+          "skip": "false",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39683361229,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39683361229",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c7875936249eabc5e3e1d146b6f4d965d3447920",
+        "head_sha_matches": true
+      },
+      {
+        "gate": "scientific",
+        "run_id": 39683361538,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39683361538",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c7875936249eabc5e3e1d146b6f4d965d3447920",
+        "head_sha_matches": true
+      }
+    ],
+    "declared_conventions": [
+      "Odd-index radical notation is the real root (EV-R-03/05: -2).",
+      "Fractional powers use the principal branch (EV-R-14: 2*(-1)^(1/3) = 1+sqrt(3)i).",
+      "sqrt(-4) = 2i on the declared complex branch (EV-R-13).",
+      "Rationalization scope: whole 1/(a+-sqrt(b)) results, literal integers, |b-a^2| = 1.",
+      "Denesting scope: a bare square root whose radicand already contains a square root."
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "EV-M-01..13 mixed",
+    "next_status": "IN_PROGRESS"
+  },
+  "ev_m_closure_r234": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "EV-M-01..13 mixed log/exp/radical/polynomial (matriz_log_exp_radicales)",
+    "product_changed": true,
+    "product_fix": "Lite: engine/expLogSimplify.ts applies exp(k*log r) = r^k exactly for integer k (|k| <= 400) and positive rational r with a bounded BigInt product; engine/logSimplify.ts reduces log(a-sqrt(b))+log(a+sqrt(b)) to 0 exactly for conjugate radical pairs with a>0 and a^2-b = 1; engine/parsing/index.ts reads a local one-variable definition followed by its call, accepting \\left/\\right and balanced parentheses in the argument. Plus: services/evaluate_service.py reads the same definition-plus-call form with balanced delimiters and re-emits natural logarithms as ln(...) after the SymPy round-trip, so f(x)=ln(x^2+1); f(sqrt(e-1)) = 1 while log keeps base 10; services/parsing.py rejects only numeric scientific literals ((?<=\\d)[eE][+-]?\\d+), so the constant e in e-1 is accepted.",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "737a82d4eacf6bd6e4c22e719fa7f75df2de3410",
+      "c2melendez/precision-lab-plus": "16df9f6e5e1edc8303c2f66bc7154c93c54e67ef"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39697894520,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39697894520",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "737a82d4eacf6bd6e4c22e719fa7f75df2de3410",
+        "head_sha_matches": true,
+        "tests": "350 files; 2063 passed, 8 expected fail, 34 todo; tests/logExpEvM01to13.audit.test.ts 7/7",
+        "evidence_guard": {
+          "skip": "false",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39697894475,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39697894475",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "737a82d4eacf6bd6e4c22e719fa7f75df2de3410",
+        "head_sha_matches": true,
+        "tests": "22 passed"
+      },
+      {
+        "gate": "scientific",
+        "run_id": 39697894504,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39697894504",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "737a82d4eacf6bd6e4c22e719fa7f75df2de3410",
+        "head_sha_matches": true,
+        "tests": "456 passed"
+      },
+      {
+        "gate": "cumulative",
+        "run_id": 39697901542,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39697901542",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16df9f6e5e1edc8303c2f66bc7154c93c54e67ef",
+        "head_sha_matches": true,
+        "tests": "1831 passed, 6 xfailed, 1 warning; coverage 88.05%; frontend 149 files, 1008 passed; tests/test_log_exp_matrix_ev_m01_l13.py 6/6 PASSED",
+        "evidence_guard": {
+          "skip": "false",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39697901415,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39697901415",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16df9f6e5e1edc8303c2f66bc7154c93c54e67ef",
+        "head_sha_matches": true,
+        "tests": "38 passed"
+      },
+      {
+        "gate": "native-syntax",
+        "run_id": 39697901339,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39697901339",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16df9f6e5e1edc8303c2f66bc7154c93c54e67ef",
+        "head_sha_matches": true,
+        "tests": "26 passed; 52 passed"
+      },
+      {
+        "gate": "sg28-prototype",
+        "run_id": 39697901366,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39697901366",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16df9f6e5e1edc8303c2f66bc7154c93c54e67ef",
+        "head_sha_matches": true,
+        "tests": "69 passed, 1 warning"
+      },
+      {
+        "gate": "security",
+        "run_id": 39697901513,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39697901513",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "16df9f6e5e1edc8303c2f66bc7154c93c54e67ef",
+        "head_sha_matches": true,
+        "tests": "No known vulnerabilities found; 24 passed; 121 passed"
+      }
+    ],
+    "declared_conventions": [
+      "exp(k*ln r) = r^k is exact only for integer k (|k| <= 400) and positive rational r, with a bounded product; other exponential/log shapes stay untouched.",
+      "log(a-sqrt(b)) + log(a+sqrt(b)) = 0 only for conjugate radical pairs with a>0 and a^2-b = 1; general log sums/products are not collapsed.",
+      "A one-variable definition plus call is an ephemeral per-request substitution; there is no persistent function registry.",
+      "Lite consumes the frozen LaTeX form with \\left/\\right; Plus consumes the documented plain translation and the test anchors the frozen LaTeX row.",
+      "Plus keeps calculator semantics across the substitution: log is base 10 and ln is natural.",
+      "Scientific notation is only a numeric literal digit+e/E (1e5, 2.5E-3); the constant e followed by a sign (e-1) is not rejected."
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "EV-T-01..12 trigonometric, hyperbolic and inverse",
+    "next_status": "IN_PROGRESS",
+    "next_precondition": "Fix the Plus semantic domain leak (ln(1-1) and ln(cos(pi/2)) return success=true with result_text=\"zoo\") and require DOMAIN_ERROR in EV-T-11 before certifying EV-T."
+  },
+  "ev_t_closure_r235": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "EV-T-01..12 trigonometric, hyperbolic and inverse compositions (matriz_log_exp_radicales)",
+    "product_changed": true,
+    "product_fix": "Lite: new engine/inverseHyperbolicExact.ts restores the exact value of two compositions Algebrite leaves unsolved and that the float() retry degraded to spurious decimals: asinh((e-e^-1)/2) = asinh(sinh 1) = 1 (EV-T-09) and exp(atanh(1/2)) = ((1+1/2)/(1-1/2))^(1/2) = 3^(1/2) (EV-T-10); it runs before the float() retry and only over whole literal numeric forms. Plus: services/evaluate_service.py adds a symbolic logarithmic-singularity guard (EV-T-11) that simplifies expressions containing a log whose argument is not proven nonzero and raises DOMAIN_ERROR when the result is zoo/oo/-oo/nan; ln(1-1), ln(0), ln(0+0), ln(cos(pi/2)) and log(0,10) now give a clear error while ln(-1)=I*pi, ln(e)=1, log(100)=2 and sqrt(cos(pi))=I stay intact.",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "e8b1def62e2ef1249ffccbde0dfbf09868ca5f0e",
+      "c2melendez/precision-lab-plus": "d1e387536713bc057109e2fec1af2846a2c1b36b"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39701580546,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39701580546",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8b1def62e2ef1249ffccbde0dfbf09868ca5f0e",
+        "head_sha_matches": true,
+        "tests": "351 files; 2071 passed, 8 expected fail, 34 todo; tests/logExpEvT01to12.audit.test.ts 8/8",
+        "evidence_guard": {
+          "skip": "false",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39701580477,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39701580477",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8b1def62e2ef1249ffccbde0dfbf09868ca5f0e",
+        "head_sha_matches": true,
+        "tests": "22 passed"
+      },
+      {
+        "gate": "scientific",
+        "run_id": 39701580446,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39701580446",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8b1def62e2ef1249ffccbde0dfbf09868ca5f0e",
+        "head_sha_matches": true,
+        "tests": "456 passed"
+      },
+      {
+        "gate": "cumulative",
+        "run_id": 39701587699,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39701587699",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "d1e387536713bc057109e2fec1af2846a2c1b36b",
+        "head_sha_matches": true,
+        "tests": "1838 passed, 6 xfailed, 1 warning; coverage 88.05%; frontend 149 files, 1008 passed; tests/test_log_exp_matrix_ev_t01_l12.py 7/7 PASSED",
+        "evidence_guard": {
+          "skip": "false",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39701587450,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39701587450",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "d1e387536713bc057109e2fec1af2846a2c1b36b",
+        "head_sha_matches": true,
+        "tests": "38 passed"
+      },
+      {
+        "gate": "native-syntax",
+        "run_id": 39701587574,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39701587574",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "d1e387536713bc057109e2fec1af2846a2c1b36b",
+        "head_sha_matches": true,
+        "tests": "26 passed; 52 passed"
+      },
+      {
+        "gate": "sg28-prototype",
+        "run_id": 39701587542,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39701587542",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "d1e387536713bc057109e2fec1af2846a2c1b36b",
+        "head_sha_matches": true,
+        "tests": "69 passed, 1 warning"
+      }
+    ],
+    "security_gate": {
+      "triggered": false,
+      "reason": "The certification dependency/security gate is path-filtered; the EV-T change only touches backend/app/services/evaluate_service.py, which is outside its filter. Advisories unchanged; blocker SECURITY-S25 stays OPEN/BLOCKED."
+    },
+    "declared_conventions": [
+      "EV-T-05 (\\ln(\\cosh 1) approx 0.433780830) is certified on the numeric channel: Lite prints a 6-decimal float (0.433781, tolerance 1e-6), Plus keeps the exact form ln(cosh(1)) with result_approx; same limitation as EV-H-10/11.",
+      "Exact equivalent forms are admitted (G2): EV-T-02 is certified with exp(1/2) = sqrt(e) and EV-T-10 with 3^(1/2) = sqrt(3); no textual equality is required when an exact equivalent representation exists.",
+      "EV-T-07 (\\sin(10^{22})) keeps the exact argument-reduced form sin(10^22) (rule 2) and matches the reference approximation -0.852200850 on the numeric channel.",
+      "i (row input) is equivalent to I (SymPy output) in EV-T-08/EV-T-12; the frozen row declares the complex branch i and both engines follow the documented complex branch.",
+      "Lite hyperbolics: engine/inverseHyperbolicExact.ts only acts on a whole asinh/acosh/atanh(<numeric>) whose real value is exactly an integer, or on exp(atanh(a/b)) with integers 0<=a<b; any other shape is returned untouched.",
+      "Plus inverse-hyperbolic aliases: \\operatorname{arsinh}/\\operatorname{artanh} are evaluated through the documented plain translation asinh/atanh (the frontend maps arsinh -> \\operatorname{asinh}); Plus keeps its documented rejection of arcsinh/arccosh/arctanh (capability unchanged).",
+      "Plus logarithmic-singularity guard: a log whose argument is not proven nonzero must resolve to a clear DOMAIN_ERROR (zoo/oo/-oo/nan), not a spurious finite value."
+    ],
+    "global_certification": "OPEN",
+    "next_objective": "Matrices/Vectores (legacy_sources/matriz_matrices_vectores.md.gz)",
+    "next_status": "IN_PROGRESS",
+    "next_precondition": "Verify the frozen rows of legacy_sources/matriz_matrices_vectores.md.gz before assuming any expression/result; canonical order after Log/Exp/Radicales."
+  },
+  "logic_audit_r232": {
+    "date_utc": "2026-10-21",
+    "scope": "logical audit of the certification process: EV-L/I/E/R closures, EV singular rows, EV-M probe, frozen-source traceability, protocol parity",
+    "report": "qa/certification/LOGIC_AUDIT_2026-10-21.md",
+    "verdict": {
+      "mathematics": "CORRECT: no singularity approved as a finite result; declared conventions are admitted by the frozen matrix",
+      "process": "EVIDENCE_CHAIN_INTACT_IN_CERTIFIED_BLOCKS; documentary and traceability gaps corrected in r232",
+      "global_certification": "OPEN"
+    },
+    "decisions_reviewed": [
+      "G2 equivalent forms (EV-D-11 PASS_SCOPED_EQUIVALENT)",
+      "arccot principal range (EV-I-07)",
+      "composition rewrite scope (EV-I-09/10)",
+      "log ratio / perfect power (EV-L)",
+      "exp(log a + log b) exact identity (EV-E-10)",
+      "numeric oracle with exact form preserved (EV-E-12)",
+      "0^0 = 1 declared convention (EV-E-14)",
+      "odd radical = real root; fractional power = principal branch (EV-R-03/05/14)",
+      "sqrt(-4) = 2i complex branch (EV-R-13)",
+      "bounded rationalization and denesting scopes (EV-R-08/11/12)"
+    ],
+    "findings": [
+      {
+        "id": "DOC-STATE-DRIFT",
+        "severity": "HIGH",
+        "status": "FIXED",
+        "detail": "CONTINUITY_NEXT_ACTION.json rev 160, CONTINUITY.md ending at AS-PAR-02, dashboard last cut 2026-10-19, all contradicting continuity.json rev 231."
+      },
+      {
+        "id": "PLUS-EVT11-SEMANTIC-LOG-DOMAIN",
+        "severity": "HIGH",
+        "scope": "PRODUCT_NOT_CERTIFIED",
+        "status": "OPEN",
+        "repro": [
+          "ln(1-1)",
+          "ln(cos(pi/2))"
+        ],
+        "observed": "success=true, result_text=zoo",
+        "expected": "DOMAIN_ERROR (EV-T-11)",
+        "required_action": "semantic domain guard for log(0) after evaluation; EV-T-11 test must assert DOMAIN_ERROR"
+      },
+      {
+        "id": "TEST-ORACLE-TRACEABILITY",
+        "severity": "MEDIUM",
+        "status": "FIXED",
+        "detail": "EV-E approx rows anchor the frozen reference inside the row and reject a bare-decimal result_text (protocol rule 2); EV-R exact rows anchored.",
+        "commits": {
+          "lite": "c4a49a515a27d05e096bf0480629fcb68fac6ffb",
+          "plus": "89bf0e26efcaa5a0688c955844a01e0b9571c3d6"
+        }
+      },
+      {
+        "id": "LEGACY-MANIFEST-NOT-IN-CI",
+        "severity": "MEDIUM",
+        "status": "OPEN",
+        "detail": "check_legacy_sources.py verifies the frozen matrix SHA-256 (LER bb7030e2..., 47710 bytes; local PASS both repos) but no workflow runs it."
+      },
+      {
+        "id": "PLUS-PROTOCOL-PARITY",
+        "severity": "MEDIUM",
+        "status": "FIXED",
+        "detail": "Plus protocol lacked global-certification, independent-blocker and syntax-leak recertification guardrails."
+      },
+      {
+        "id": "CURRENT-STATE-APPEND-ONLY",
+        "severity": "LOW",
+        "status": "OPEN",
+        "detail": "CURRENT_STATE.md has 13 stacked cuts instead of a single snapshot; top cut is current. Recommend moving old cuts to EXECUTION_LOG at next maintenance."
+      }
+    ],
+    "gates": {
+      "lite": {
+        "sha": "c4a49a515a27d05e096bf0480629fcb68fac6ffb",
+        "cumulative": {
+          "id": 39686329058,
+          "conclusion": "success",
+          "files": 349,
+          "passed": 2056,
+          "expected_fail": 8,
+          "todo": 34,
+          "guard": "skip=false"
+        },
+        "h1d": {
+          "id": 39686328895,
+          "conclusion": "success"
+        },
+        "scientific_ui": {
+          "id": 39686328765,
+          "conclusion": "success"
+        }
+      },
+      "plus": {
+        "sha": "89bf0e26efcaa5a0688c955844a01e0b9571c3d6",
+        "cumulative": {
+          "id": 39686337173,
+          "conclusion": "success",
+          "passed": 1825,
+          "xfailed": 6,
+          "coverage": "88.04%",
+          "guard": "skip=false"
+        },
+        "h1d": {
+          "id": 39686337053,
+          "conclusion": "success"
+        }
+      },
+      "docs": {
+        "sha": "574ca8bf8522bee50831cf69216abd01bc4a23a5",
+        "cumulative": {
+          "id": 39687537314,
+          "conclusion": "success"
+        },
+        "h1d": {
+          "id": 39687537328,
+          "conclusion": "success"
+        },
+        "trigger": "path filter: CONTINUITY_NEXT_ACTION.json (lite) / EXECUTION_PROTOCOL.md (plus); not a deliberate re-run"
+      }
+    },
+    "ev_t_precondition": "Fix the Plus semantic log-domain leak (zoo) and assert DOMAIN_ERROR in EV-T-11 before certifying EV-T.",
+    "next_action_unchanged": "EXP-EV-M-EVALUATION"
+  },
+  "run_reconciliation_r233": {
+    "date_utc": "2026-10-21",
+    "scope": "reconcile documentary history against GitHub Actions for both repositories",
+    "report": "qa/certification/RUN_RECONCILIATION_2026-10-21.md",
+    "method": {
+      "strong_citations_checked": 477,
+      "full_shas_checked": 197,
+      "cross_repo_citations_resolved": 297,
+      "logs_rechecked": [
+        "r229",
+        "r230",
+        "r231",
+        "r232"
+      ],
+      "doc_only_commits_checked": [
+        "6287463d",
+        "b7bd70a3",
+        "29d08a47",
+        "4ec07aed",
+        "8ec414bb",
+        "6eab838d"
+      ]
+    },
+    "result": {
+      "nonexistent_runs": 0,
+      "shas_without_runs": 0,
+      "false_success": 0,
+      "hidden_failures_r229_r232": 0,
+      "all_gates_attempt_1": true,
+      "counts_match_logs": true,
+      "doc_only_commits_zero_runs": true
+    },
+    "path_filter_docs_runs": {
+      "lite_574ca8bf": [
+        39687537314,
+        39687537328
+      ],
+      "plus_a5009a79": [
+        39687547538,
+        39687547667
+      ]
+    },
+    "missing_sha_citations_fixed": [
+      {
+        "sha": "8db3456be0324aecefd5d63ba8b68ab474399e56",
+        "repo": "lite",
+        "runs": [
+          39219361555,
+          39219361565,
+          39219361663
+        ],
+        "where": "CONTINUITY.md (AS-DIV-07)"
+      },
+      {
+        "sha": "0fcdc9bb77c2e9dc5e3ae5cb399e10b9ef3d139c",
+        "repo": "plus",
+        "runs": [
+          39219370525,
+          39219370577
+        ],
+        "where": "CONTINUITY.md (AS-DIV-07)"
+      },
+      {
+        "sha": "482d81d5f42a249fd0a03af898a231cf012fe45a",
+        "repo": "lite",
+        "runs": [
+          39557278838
+        ],
+        "where": "CURRENT_STATE.md (failed initial run, superseded)"
+      },
+      {
+        "sha": "0690d47592b063e0542a38b2f80d2ce6b1de0cdc",
+        "repo": "lite",
+        "runs": [
+          38207655164,
+          38207655170,
+          38207655199
+        ],
+        "where": "SY_P_23_CONVENTION.md"
+      },
+      {
+        "sha": "19daac09e6f98d4429ceeca904bcfdd5b7efd46b",
+        "repo": "plus",
+        "runs": [
+          38207857516,
+          38207857573
+        ],
+        "where": "SY_P_23_CONVENTION.md"
+      },
+      {
+        "sha": "9f17dc516af64cd276154dc11dfb4f66add79241",
+        "repo": "plus",
+        "runs": [
+          39274466829
+        ],
+        "where": "GLOBAL_CERTIFICATION_DASHBOARD.md (AS-PAR-09)"
+      }
+    ],
+    "verdict": "CONSISTENT: documentary history matches GitHub Actions; no fabricated runs, no false SUCCESS, no hidden gate failures; traceability gap of 12 citations fixed",
+    "next_action_unchanged": "EXP-EV-M-EVALUATION",
+    "r233_docs_commit_runs": {
+      "lite": {
+        "sha": "895a09efc478fd67e4a0ee57878822ca80888f71",
+        "runs": [
+          {
+            "id": 39691427912,
+            "workflow": "cumulative",
+            "conclusion": "success"
+          },
+          {
+            "id": 39691427979,
+            "workflow": "h1d",
+            "conclusion": "success"
+          },
+          {
+            "id": 39691427890,
+            "workflow": "scientific_ui",
+            "conclusion": "success"
+          }
+        ]
+      },
+      "plus": {
+        "sha": "5e412582523c36b983b3fac10228a270a255861e",
+        "runs": [
+          {
+            "id": 39691435132,
+            "workflow": "cumulative",
+            "conclusion": "success"
+          },
+          {
+            "id": 39691435191,
+            "workflow": "h1d",
+            "conclusion": "success"
+          }
+        ]
+      },
+      "trigger": "path filter re-includes qa/certification/SY_P_23_CONVENTION.md, touched by a SHA annotation",
+      "all_success_attempt_1": true,
+      "counts": {
+        "lite": "349 files, 2056 passed, 8 expected fail, 34 todo",
+        "plus": "1825 passed, 6 xfailed, 88.06%"
+      }
+    }
+  },
+  "mv_a_closure_r236": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "MV-A-01..25 basic matrix operations (matriz_matrices_vectores)",
+    "product_changed": true,
+    "product_fix": "Lite only: engine/matrixOps.ts powerMatrix now accepts negative integer exponents by inverting first (A^-2=(A^-1)^2) while singular matrices still raise DOMAIN_ERROR and non-integer exponents stay rejected; engine/matrixExpression.ts accepts numeric scalar primaries, enabling 2*A*B and therefore (A+B)^2-(A^2+2AB+B^2) (MV-A-24); modes/Matrices/MatrixMode.tsx allows negative exponents (min -10). Plus unchanged: MV-A runs through /matrix/*, scalar x matrix via the same (k*I) x A diagonal route as BasicMode.tsx, and MV-A-24 is composed with multiply/subtract.",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "c191bcc2cea091ac18342418ae8ed0369f6760c2",
+      "c2melendez/precision-lab-plus": "dfdf7d1a87043901b10ff1e6926fafe835e65bca"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39714994068,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39714994068",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c191bcc2cea091ac18342418ae8ed0369f6760c2",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "352 files; 2100 passed, 8 expected fail, 34 todo; tests/matricesMvA01to25.audit.test.ts 29/29; tests/exhaustive-module06-matrices.test.ts 10/10",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "c191bcc2cea091ac18342418ae8ed0369f6760c2",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39714994065,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39714994065",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c191bcc2cea091ac18342418ae8ed0369f6760c2",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "22 passed"
+      },
+      {
+        "gate": "scientific",
+        "run_id": 39714994064,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39714994064",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c191bcc2cea091ac18342418ae8ed0369f6760c2",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "456 passed"
+      },
+      {
+        "gate": "cumulative",
+        "run_id": 39715004689,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39715004689",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "dfdf7d1a87043901b10ff1e6926fafe835e65bca",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "backend 1865 passed, 6 xfailed, coverage 88.16%; frontend 149 files, 1008 passed, 28 todo; tests/test_matrices_mv_a01_l25.py 27/27 PASSED",
+        "evidence_guard": {
+          "skip": "false",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39715004680,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39715004680",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "dfdf7d1a87043901b10ff1e6926fafe835e65bca",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "38 passed"
+      }
+    ],
+    "security_gate": {
+      "triggered": true,
+      "push_run": {
+        "run_id": 39715004827,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39715004827",
+        "conclusion": "cancelled",
+        "attempt": 1,
+        "head_sha": "dfdf7d1a87043901b10ff1e6926fafe835e65bca",
+        "reason": "mutation/plus-frontend-stryker exceeded the hard 35m job timeout (infrastructure)."
+      },
+      "dispatch_run": {
+        "run_id": 39718717187,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39718717187",
+        "conclusion": "cancelled",
+        "attempt": 1,
+        "head_sha": "dfdf7d1a87043901b10ff1e6926fafe835e65bca",
+        "reason": "fresh revalidation widened the scope; security/frontend-audit failed on 10 pre-existing npm advisories (4 moderate, 6 high). frontend/package-lock.json is identical between d1e38753 and dfdf7d1a, so the finding is external and maps to blocker SECURITY-S25; the run was cancelled after that failure."
+      },
+      "blocker": "SECURITY-S25",
+      "used_as_mv_a_evidence": false
+    },
+    "artifacts": {
+      "jsonl": "qa/certification/matrices_ejecutables.jsonl",
+      "rows": 153,
+      "sections": {
+        "A": 25,
+        "B": 22,
+        "C": 19,
+        "D": 17,
+        "E": 12,
+        "F": 17,
+        "G": 22,
+        "H": 12,
+        "J": 7
+      },
+      "sha256": "6C93E9081E6A4727B538EBD84C2F578153A562F39ECCA8D333D1066B964B1B0F",
+      "generator": "qa/certification/derive_matrices_ejecutables.py",
+      "identical_in_both_repos": true
+    },
+    "conventions": [
+      "LaTeX \\frac{a}{b} cells are translated to the ASCII a/b accepted by Lite's Matrices grid; the calculator intent path normalizes the same form.",
+      "Scalar x matrix in Plus uses the product's own diagonal route (k*I) x A (BasicMode.tsx); no scale endpoint exists.",
+      "MV-A-24 is composed with product operations (Lite matrixExpression; Plus multiply/subtract = BA-AB).",
+      "Negative powers in Lite invert first; singular matrices keep DOMAIN_ERROR.",
+      "Error rows 20-23 require DIMENSION_MISMATCH with a non-empty message."
+    ],
+    "preexisting_failures": [
+      "AS-FAC-09, AS-B-18, AS-B-20 reproduce on baseline fd779625 via git stash (environment-dependent factorization).",
+      "AS-FAC-08 and AS-B-06 appear only under parallel load."
+    ],
+    "next": "MV-B (22 determinant rows); extend the JSONL executor and audit tests, anchored to the frozen source."
+  },
+  "mv_b_closure_r237": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "MV-B-01..22 determinants (matriz_matrices_vectores)",
+    "product_changed": true,
+    "product_fix": "Lite: new src/engine/symbolicDeterminant.ts performs a bounded 4x4 cofactor expansion with Algebrite simplify; src/workers/compute.worker.ts routes determinant Fraction -> constants -> symbolic while the exact numeric path is unchanged. Plus: parse_matrix(..., allow_symbolic=True) and _parse_matrix_cell(..., allow_symbolic=True) accept free symbols and elementary sqrt/abs/sin/cos/tan only on /matrix/determinant; determinant() applies trigsimp+simplify and factor for polynomial results, and the rest of /matrix/* keeps the strict numeric contract.",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+      "c2melendez/precision-lab-plus": "c31e54091302acd102945858cfbbce7d70e034ed"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "run_id": 39725461570,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39725461570",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "353 files; 2127 passed, 8 expected fail, 34 todo; tests/matricesMvB01to22.audit.test.ts 27/27",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39725461610,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39725461610",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "22 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "scientific",
+        "run_id": 39725461481,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39725461481",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "456 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "09ac205f7716994a2a04a222c5d276f35cef78fa",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "cumulative",
+        "run_id": 39725461036,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39725461036",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c31e54091302acd102945858cfbbce7d70e034ed",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "backend 1891 passed, 6 xfailed, coverage 88.28%; frontend 149 files, 1008 passed, 28 todo; tests/test_matrices_mv_b01_l22.py 26/26 PASSED",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "c31e54091302acd102945858cfbbce7d70e034ed",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "run_id": 39725461033,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39725461033",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c31e54091302acd102945858cfbbce7d70e034ed",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "38 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "c31e54091302acd102945858cfbbce7d70e034ed",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "native-syntax",
+        "run_id": 39725461074,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39725461074",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c31e54091302acd102945858cfbbce7d70e034ed",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "desktop 26 passed; tablet/mobile 52 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "c31e54091302acd102945858cfbbce7d70e034ed",
+          "reason": "No reusable completed evidence found."
+        }
+      }
+    ],
+    "security_gate": {
+      "triggered": false,
+      "reason": "The technical push touched backend/app/services/matrix_service.py, backend/app/routers/matrices.py and backend/tests/test_matrices_mv_b01_l22.py only; none is in the certification-dependency-gates path filter, so no security/dependency run was scheduled.",
+      "blocker": "SECURITY-S25",
+      "used_as_mv_b_evidence": false
+    },
+    "artifacts": {
+      "jsonl": "qa/certification/matrices_ejecutables.jsonl",
+      "rows": 153,
+      "sections": {
+        "A": 25,
+        "B": 22,
+        "C": 19,
+        "D": 17,
+        "E": 12,
+        "F": 17,
+        "G": 22,
+        "H": 12,
+        "J": 7
+      },
+      "sha256": "6C93E9081E6A4727B538EBD84C2F578153A562F39ECCA8D333D1066B964B1B0F",
+      "generator": "qa/certification/derive_matrices_ejecutables.py",
+      "identical_in_both_repos": true,
+      "closure_rows": "MV-B-01..22"
+    },
+    "conventions": [
+      "Lite numeric LaTeX \\frac{a}{b} cells are translated to the ASCII a/b accepted by the Matrices grid; the calculator intent path normalizes the same form.",
+      "Plus symbolic a^{2} is translated to a^2 and \\cos\\theta to cos(theta); the API does not consume raw LaTeX.",
+      "MV-B-13 and MV-B-14 are composed with product operations (det(2A), det(AB)), not with a parallel oracle.",
+      "Symbolic results are accepted by exact algebraic equivalence; rows 18 and 19 are additionally required to be factored products.",
+      "Lite toLatex removes '*', so tests assert the exact symbolic expression rather than the LaTeX text.",
+      "Row 22 requires DIMENSION_MISMATCH with a non-empty message.",
+      "Plus symbolic support is scoped to /matrix/determinant; the rest of /matrix/* keeps the strict numeric contract, and result_approx is None when free symbols remain."
+    ],
+    "preexisting_failures": [
+      "Lite local full suite: five environment-dependent factorization timeouts (AS-FAC-08, AS-FAC-09, AS-B-06, AS-B-18, AS-B-20); the CI cumulative gate is green.",
+      "Plus local full suite: seven failures plus two errors in SG28 interruptible/cancellation, S25 CORS and SY-X-16, all pre-existing Windows/environment findings; the CI cumulative gate is green."
+    ],
+    "next": "MV-C (19 rows); extend the JSONL executor and audit tests, anchored to the frozen source.",
+    "documentary_verification": {
+      "lite_commits": [
+        "34efd08f2596701fb43decc7210dd6a8f13c7871",
+        "55c59d03f7633271b3c40ecd472874fde3750ba0"
+      ],
+      "plus_commits": [
+        "3b7f18640aef1dc457fa04c82b213a29a59731a7",
+        "e3c4a907359b73bd19e23ac1b36748458fae361c"
+      ],
+      "workflow_runs": 0,
+      "verified_via": "GitHub Actions API query by head_sha; documentation paths are excluded by the workflow filters."
+    }
+  },
+  "mv_c_closure_r238": {
+    "status": "PASS_SCOPED_BILATERAL",
+    "scope": "MV-C-01..19 inverse, adjugate, cofactors and matrix equations (matriz_matrices_vectores)",
+    "product_changed": true,
+    "product_fix": "Lite: matrixOps adds exact numeric inverse/adjugate/cofactor and solveMatrixEquation (left/right product order); symbolicMatrix.ts adds bounded 4x4 symbolic/complex inverse, adjugate and cofactor with Algebrite; compute.worker.ts routes those operations through Fraction and falls back to symbolic only for non-rational cells; MatrixMode exposes adjugate, cofactors and matrix equations. Plus: /matrix/inverse accepts free symbols and elementary trig with SYMBOLIC_MATRIX_LIMIT=4 and UNSUPPORTED_OPERATION outside the cap; /matrix/adjugate and /matrix/cofactor keep the strict numeric contract; new /matrix/solve-equation accepts x_side=left|right; frontend MatrixMode exposes adjugate, cofactors and equation side. frontend/src/types/api.ts only updates the hand-maintained OperationType union because the generated file is stale; the HTTP contract is unchanged.",
+    "technical_sha_by_repo": {
+      "c2melendez/precision-lab-lite": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+      "c2melendez/precision-lab-plus": "9083811b04609489fa26973cbec90e3aa2238769"
+    },
+    "runs": [
+      {
+        "gate": "cumulative",
+        "repo": "c2melendez/precision-lab-lite",
+        "run_id": 39732103530,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39732103530",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "354 files; 2152 passed, 8 expected fail, 34 todo; tests/matricesMvC01to19.audit.test.ts 24/24; tests/matrixModeParity.test.ts 2/2",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "repo": "c2melendez/precision-lab-lite",
+        "run_id": 39732103564,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39732103564",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "22 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "scientific",
+        "repo": "c2melendez/precision-lab-lite",
+        "run_id": 39732103583,
+        "url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/39732103583",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "456 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "3aec2c258c2fbe5e2c2c11f50d3db74aa8d610ec",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "cumulative",
+        "repo": "c2melendez/precision-lab-plus",
+        "run_id": 39732103487,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39732103487",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "backend 1915 passed, 6 xfailed, coverage 88.08%; frontend 149 files, 1010 passed, 28 todo; tests/test_matrices_mv_c01_l19.py 25/25 PASSED; src/__tests__/MatrixMode.test.tsx 7/7",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "h1d",
+        "repo": "c2melendez/precision-lab-plus",
+        "run_id": 39732103479,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39732103479",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "38 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "native-syntax",
+        "repo": "c2melendez/precision-lab-plus",
+        "run_id": 39732103484,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39732103484",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "desktop 26 passed; tablet/mobile 52 passed",
+        "evidence_guard": {
+          "skip": "false",
+          "checkout_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+          "reason": "No reusable completed evidence found."
+        }
+      },
+      {
+        "gate": "sg28-backend-isolation",
+        "repo": "c2melendez/precision-lab-plus",
+        "run_id": 39732103482,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39732103482",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "69 passed"
+      },
+      {
+        "gate": "sg28-ui-cancellation",
+        "repo": "c2melendez/precision-lab-plus",
+        "run_id": 39732103492,
+        "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39732103492",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+        "head_sha_matches": true,
+        "attempt": 1,
+        "tests": "21 passed"
+      }
+    ],
+    "security_gate": {
+      "triggered": true,
+      "run_id": 39732103637,
+      "url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/39732103637",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "head_sha": "9083811b04609489fa26973cbec90e3aa2238769",
+      "head_sha_matches": true,
+      "attempt": 1,
+      "timeout_minutes": 35,
+      "plus_frontend_job_id": 119669346495,
+      "jobs": {
+        "audit-request": "success",
+        "security/backend-security": "success",
+        "security/frontend-audit": "skipped",
+        "mutation/plus-backend-mutmut": "success",
+        "mutation/plus-frontend-stryker": "cancelled",
+        "mutation/lite-frontend-stryker": "skipped"
+      },
+      "reason": "mutation/plus-frontend-stryker hit the hard 35-minute job timeout after instrumenting 2627 mutants and running 696 initial tests; it uploaded no report. The run is attempt=1 and was not relaunched because the same full-profile dispatch under the same structural timeout would reproduce the cancellation.",
+      "used_as_mv_c_evidence": false,
+      "blocker": "SECURITY-S25"
+    },
+    "artifacts": {
+      "jsonl": "qa/certification/matrices_ejecutables.jsonl",
+      "rows": 153,
+      "sections": {
+        "A": 25,
+        "B": 22,
+        "C": 19,
+        "D": 17,
+        "E": 12,
+        "F": 17,
+        "G": 22,
+        "H": 12,
+        "J": 7
+      },
+      "sha256": "6C93E9081E6A4727B538EBD84C2F578153A562F39ECCA8D333D1066B964B1B0F",
+      "generator": "qa/certification/derive_matrices_ejecutables.py",
+      "identical_in_both_repos": true,
+      "closure_rows": "MV-C-01..19"
+    },
+    "conventions": [
+      "Lite numeric LaTeX \\frac{a}{b} cells are translated to the ASCII a/b accepted by the Matrices grid; the calculator intent path normalizes the same form.",
+      "Plus symbolic \\cos\\theta is translated to cos(theta) and a^{2} to a^2; the API does not consume raw LaTeX.",
+      "The row-level input i is mapped to SymPy I; MV-C-08 preserves the exact complex result.",
+      "Symbolic results are accepted by exact algebraic equivalence; MV-C-08/10/11 are checked against explicit SymPy matrices.",
+      "Lite symbolic inverse/adjugate/cofactor are bounded to 4x4; Plus symbolic inverse is bounded to 4x4, while Plus adjugate/cofactor remain strictly numeric.",
+      "Lite solveMatrixEquation and Plus /matrix/solve-equation are strictly numeric; MV-C-18 uses X*A=B (x_side=left) and MV-C-19 uses A*X=B (x_side=right).",
+      "Both UIs expose adjugate, cofactors and the matrix-equation side; this is no longer a UI capability gap.",
+      "MV-C-14/15/16 are checked as adjugate, adjugate and cofactor matrix respectively; cof(A)=adj(A)^T is not collapsed into adj(A)."
+    ],
+    "preexisting_failures": [
+      "Lite local full suite: environment-dependent factorization timeouts; the CI cumulative gate is green.",
+      "Plus local full suite: SG28/S25/SY-X-16 Windows/environment findings and one e2e timeout that passed in isolation; the CI cumulative gate is green."
+    ],
+    "next": "MV-D-01..17: linear systems (unique, parametric and inconsistent, including parameter a), rref, LU decomposition and unnormalized Gram-Schmidt, anchored to matriz_matrices_vectores.md.gz.",
+    "documentary_verification": {
+      "workflow_runs": 0,
+      "verified_via": "GitHub Actions API query by head_sha after the r238 documentary push; documentation paths are excluded by the workflow filters."
+    }
+  },
+  "mv_d_gate_verification_r239": {
+    "note": "MV-D-01..17 technical pushes (Lite c28091c / Plus 91d7f7b) verified on exact SHA: Lite cumulative [39754424771] SUCCESS, h1d [39754424829] SUCCESS, scientific-ui [39754424596] SUCCESS; Plus cumulative [39754425445], backend-isolation [39754425427], h1d [39754425636], native-syntax [39754425572], SG28 UI [39754425501] all SUCCESS. Dependency/security gate [39754425516] cancelled reproduces the documented plus-frontend-mutmut 35-min structural timeout (same input, same limit); not relaunched, consistent with mv_c_closure_r238 precedent; SECURITY-S25 blocker unchanged.",
+    "gate_ids_by_repo": {
+      "c2melendez/precision-lab-lite": [
+        "39754424771",
+        "39754424829",
+        "39754424596"
+      ],
+      "c2melendez/precision-lab-plus": [
+        "39754425445",
+        "39754425427",
+        "39754425636",
+        "39754425572",
+        "39754425501"
+      ]
+    }
+  },
+  "r240_plus_gate_coordination": {
+    "plus_sha": "bae07b39dfc71eb01c0921524b6bbf162369166d",
+    "runs": {
+      "dependency_security": 39814332343,
+      "cumulative": 39814332246,
+      "h1d": 39814332232
+    },
+    "status": "QUEUED_AT_DOCUMENTATION",
+    "note": "Plus S25 unresolved; no MV-D formal closure until frontend npm audit and Stryker are green."
+  },
+  "edcx_a1_a2_closure_r254": {
+    "status": "PASS_SCOPED",
+    "scope": "EDCX Parte A A1 (53) + A2 (50); certificacion ejecutada solo en Plus",
+    "plus": {
+      "technical_sha": "fdcf2d635517e97c20910b0f92d6eb9d3c245404",
+      "rows_total": 103,
+      "rows_pass": 76,
+      "rows_blocked": 27,
+      "a1_pass": 47,
+      "a1_blocked": 6,
+      "a2_pass": 29,
+      "a2_blocked": 21,
+      "runs": [
+        {
+          "gate": "cumulative",
+          "run_id": 39924322798,
+          "conclusion": "SUCCESS"
+        },
+        {
+          "gate": "h1d",
+          "run_id": 39924322809,
+          "conclusion": "SUCCESS"
+        },
+        {
+          "gate": "cumulative-fix",
+          "sha": "5a76477a7fc420638b0bf75d62c81dd5c7e8943b",
+          "run_id": 39922491068,
+          "conclusion": "SUCCESS"
+        }
+      ]
+    },
+    "lite": {
+      "status": "NO_EJECUTADO",
+      "rows_executed": 0,
+      "technical_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
+      "reason": "src/engine/stepEngine/ode.ts solo cubre y'=f(x) y 2.o orden con coeficientes constantes",
+      "evidence": "lectura de codigo del motor, sin ejecucion; no se declara PASS ni FAIL"
+    },
+    "global_certification": "OPEN"
+  },
+  "edcx_a3_a4_mirror_r255": {
+    "status": "NO_EJECUTADO",
+    "scope": "Espejo documental de EDCX A3+A4; Plus PASS_SCOPED, Lite sin ejecución",
+    "lite": {
+      "rows_executed": 0,
+      "reason": "src/engine/stepEngine/ode.ts solo cubre y'=f(x) y segundo orden con coeficientes constantes; no hay sistemas, exponencial matricial, Laplace ni ecuaciones integrales",
+      "bilateral_verdict": null
+    },
+    "plus_evidence": {
+      "status": "PASS_SCOPED",
+      "rows_total": 40,
+      "rows_pass": 4,
+      "rows_blocked": 36,
+      "blocks": {
+        "A3": {
+          "rows": 16,
+          "pass": 3,
+          "blocked": 13
+        },
+        "A4": {
+          "rows": 24,
+          "pass": 1,
+          "blocked": 23
+        }
+      },
+      "cumulative_a1_a4": {
+        "rows": 143,
+        "pass": 80,
+        "blocked": 63
+      },
+      "runs": [
+        {
+          "gate": "cumulative",
+          "sha": "6aef25713a618798a06a96ad41dc50f6ac4f7163",
+          "run_id": 39926515965,
+          "conclusion": "SUCCESS",
+          "tests": "2130 passed, 1 skipped, 6 xfailed; coverage 87.92%"
+        },
+        {
+          "gate": "h1d",
+          "sha": "6aef25713a618798a06a96ad41dc50f6ac4f7163",
+          "run_id": 39926515979,
+          "conclusion": "SUCCESS"
+        },
+        {
+          "gate": "cumulative",
+          "sha": "02e198ac2435e99fcd47ad6392660a88e490a87f",
+          "run_id": 39927284848,
+          "conclusion": "SUCCESS",
+          "tests": "2157 passed, 1 skipped, 6 xfailed; coverage 87.85%"
+        },
+        {
+          "gate": "h1d",
+          "sha": "02e198ac2435e99fcd47ad6392660a88e490a87f",
+          "run_id": 39927284862,
+          "conclusion": "SUCCESS"
+        }
+      ]
+    },
+    "known_defect_confirmed_plus": "La segunda condicion inicial separada por ';' documentada en _parse_initial_condition no esta implementada: _split_equation_and_condition parte por coma y el valor '0; y'(0)=0' falla con PARSE_ERROR 'No se pudo interpretar la condicion inicial.' Reproduccion: y''-y=exp(x), y(0)=0; y'(0)=0. No corregido en r255.",
+    "global_certification": "OPEN"
+  },
+  "edcx_a5_mirror_r256": {
+    "status": "NO_EJECUTADO",
+    "scope": "Espejo documental de EDCX A5; Plus PASS_SCOPED, Lite sin ejecución",
+    "lite": {
+      "rows_executed": 0,
+      "reason": "src/engine/stepEngine/ode.ts solo cubre y'=f(x) y segundo orden con coeficientes constantes; no implementa series, Frobenius ni clasificacion de puntos singulares",
+      "bilateral_verdict": null
+    },
+    "plus_evidence": {
+      "status": "PASS_SCOPED",
+      "rows_total": 10,
+      "rows_pass": 8,
+      "rows_blocked": 2,
+      "pass_exact": [
+        "ED-F-01",
+        "ED-F-02",
+        "ED-F-03",
+        "ED-F-04",
+        "ED-F-05"
+      ],
+      "pass_scoped": [
+        "ED-F-06",
+        "ED-F-07",
+        "ED-F-08"
+      ],
+      "blocked_ids": [
+        "ED-F-09",
+        "ED-F-10"
+      ],
+      "blocked_reason": "Las filas piden clasificar x=0 como punto singular regular/irregular. El producto resuelve la EDO pero no clasifica; /api/v1/complex/singularities solo devuelve {0}. No existe operacion de clasificacion ODE.",
+      "cumulative_a1_a5": {
+        "rows": 153,
+        "pass": 88,
+        "blocked": 65
+      },
+      "runs": [
+        {
+          "gate": "cumulative",
+          "sha": "50d9ca03393c71bcc8c07cce8c6186f7dd1abb4a",
+          "run_id": 39929466812,
+          "conclusion": "SUCCESS",
+          "tests": "2168 passed, 1 skipped, 6 xfailed; coverage 87.85%"
+        },
+        {
+          "gate": "h1d",
+          "sha": "50d9ca03393c71bcc8c07cce8c6186f7dd1abb4a",
+          "run_id": 39929467052,
+          "conclusion": "SUCCESS"
+        }
+      ]
+    },
+    "global_certification": "OPEN"
+  },
+  "edcx_a6_mirror_r257": {
+    "status": "NO_EJECUTADO",
+    "scope": "espejo documental de EDCX A6 (26 filas, EDP) certificado en Plus",
+    "plus_status": "PASS_SCOPED",
+    "plus_rows_total": 26,
+    "plus_rows_pass": 1,
+    "plus_rows_blocked": 25,
+    "plus_pass_scoped": [
+      "ED-P-25"
+    ],
+    "plus_cumulative_a1_a6": {
+      "rows": 179,
+      "pass": 89,
+      "blocked": 90
+    },
+    "lite_reason": "src/engine/stepEngine/ode.ts solo cubre y'=f(x) y segundo orden con coeficientes constantes; no hay EDP, clasificacion, caracteristicas, series de Fourier ni nucleo del calor",
+    "lite_rows_executed": 0,
+    "product_changed": false,
+    "plus_harness": "backend/tests/test_edcx_ed_a6_01_l26.py (30 passed local y CI)",
+    "plus_runs": [
+      {
+        "gate": "cumulative",
+        "sha": "9a828f3c2f9d9483528eb94a51aed0f65a59ba88",
+        "run_id": 39932526897,
+        "conclusion": "SUCCESS",
+        "tests": "2198 passed, 1 skipped, 6 xfailed; coverage 87.90%"
+      },
+      {
+        "gate": "h1d",
+        "sha": "9a828f3c2f9d9483528eb94a51aed0f65a59ba88",
+        "run_id": 39932526943,
+        "conclusion": "SUCCESS"
+      }
+    ],
+    "registration": "Los runs pertenecen al repositorio Plus y al SHA 9a828f3c; no se reutilizan como evidencia de Lite. El espejo no dispara CI (paths documentales excluidos).",
+    "global_certification": "OPEN"
+  },
+  "edcx_a7_mirror_r258": {
+    "status": "NO_EJECUTADO",
+    "scope": "espejo documental de EDCX A7 (25 filas, cualitativo/numerico/retardo) certificado en Plus",
+    "plus_status": "PASS_SCOPED",
+    "plus_rows_total": 25,
+    "plus_rows_pass": 4,
+    "plus_rows_blocked": 21,
+    "plus_pass_exact": [
+      "ED-Q-23",
+      "ED-Q-24"
+    ],
+    "plus_pass_scoped": [
+      "ED-Q-05",
+      "ED-Q-06"
+    ],
+    "plus_cumulative_a1_a7": {
+      "rows": 204,
+      "pass": 93,
+      "blocked": 111
+    },
+    "lite_reason": "src/engine/stepEngine/ode.ts solo cubre y'=f(x) y segundo orden con coeficientes constantes; no hay analisis cualitativo, metodos numericos, recurrencias ni retardo",
+    "lite_rows_executed": 0,
+    "product_changed": false,
+    "plus_harness": "backend/tests/test_edcx_ed_a7_01_l25.py (19 passed local y CI)",
+    "plus_runs": [
+      {
+        "gate": "cumulative",
+        "sha": "795a97ef060ec5768618a5e91ce960be1656bea8",
+        "run_id": 39934588535,
+        "conclusion": "SUCCESS",
+        "tests": "2217 passed, 1 skipped, 6 xfailed; coverage 87.90%"
+      },
+      {
+        "gate": "h1d",
+        "sha": "795a97ef060ec5768618a5e91ce960be1656bea8",
+        "run_id": 39934588487,
+        "conclusion": "SUCCESS"
+      }
+    ],
+    "registration": "Los runs pertenecen al repositorio Plus y al SHA 795a97ef; no se reutilizan como evidencia de Lite. El espejo no dispara CI (paths documentales excluidos).",
+    "global_certification": "OPEN"
+  },
+  "edcx_a8_mirror_r259": {
+    "status": "NO_EJECUTADO",
+    "scope": "espejo documental de EDCX A8 (6 filas, casos limite) y cierre de la Parte A certificado en Plus",
+    "plus_status": "BLOCKED",
+    "plus_rows_total": 6,
+    "plus_rows_pass": 0,
+    "plus_rows_blocked": 6,
+    "plus_parte_a_cumulative": {
+      "rows": 210,
+      "pass": 93,
+      "blocked": 117,
+      "source_rows": 638
+    },
+    "plus_parte_b": {
+      "rows": 428,
+      "measured": false
+    },
+    "lite_reason": "src/engine/stepEngine/ode.ts solo cubre y'=f(x) y segundo orden con coeficientes constantes; no hay existencia/unicidad, ramas multiples, intervalo maximo, fronteras ni variable compleja",
+    "lite_rows_executed": 0,
+    "product_changed": false,
+    "plus_harness": "backend/tests/test_edcx_ed_a8_01_l6.py (7 passed local y CI)",
+    "plus_runs": [
+      {
+        "gate": "cumulative",
+        "sha": "c3d389721a6ad5503508f5168f653105ee976fe4",
+        "run_id": 39935820474,
+        "conclusion": "SUCCESS",
+        "tests": "2224 passed, 1 skipped, 6 xfailed; coverage 87.94%"
+      },
+      {
+        "gate": "h1d",
+        "sha": "c3d389721a6ad5503508f5168f653105ee976fe4",
+        "run_id": 39935820754,
+        "conclusion": "SUCCESS"
+      }
+    ],
+    "registration": "Los runs pertenecen al repositorio Plus y al SHA c3d38972; no se reutilizan como evidencia de Lite. El espejo no dispara CI (paths documentales excluidos).",
+    "global_certification": "OPEN"
+  },
+  "edcx_b1_mirror_r260": {
+    "status": "NO_EJECUTADO",
+    "scope": "espejo documental de EDCX B1 (49 filas, conversion entre representaciones B/P/T/X) certificado en Plus",
+    "plus_status": "PASS_SCOPED",
+    "plus_rows_total": 49,
+    "plus_rows_pass": 45,
+    "plus_rows_pass_scoped": 45,
+    "plus_rows_blocked": 4,
+    "plus_blocked": {
+      "B-17": "arg(0)=0 sin aviso frente a topolar(0)=DOMAIN_ERROR; la fila exige argumento indefinido con aviso claro",
+      "T-09": "Abs/arg sin reducir; no entrega (2cos(theta/2))_{theta/2}",
+      "T-10": "Abs/arg sin reducir; no entrega 2sin(theta/2)_{(pi-theta)/2}",
+      "X-12": "exp(im(theta)) y arg sin reducir; no entrega 1_{-theta}"
+    },
+    "plus_channel": "Sin notacion polar de entrada (2_{pi/3} -> PARSE_ERROR; 2 angle pi/3 -> 2*pi*angle/3) ni de salida (topolar colapsa a binomica o raiz). La conversion se certifica con abs+arg y oraculo sympy que reconstruye B/T/X; las 10 filas P usan la traduccion r_theta -> r*(cos(theta)+i*sin(theta)).",
+    "plus_cumulative": {
+      "rows": 259,
+      "pass": 138,
+      "blocked": 121,
+      "source_rows": 638
+    },
+    "plus_parte_b": {
+      "rows": 428,
+      "measured": false,
+      "measured_blocks": [
+        "B1"
+      ],
+      "rows_measured": 49
+    },
+    "lite_reason": "No existe motor de variable compleja que cubra la conversion B/P/T/X ni las operaciones abs/arg/re/im/topolar con esa semantica",
+    "lite_rows_executed": 0,
+    "product_changed": false,
+    "plus_harness": "backend/tests/test_edcx_ed_b1_01_l49.py (61 passed local y CI)",
+    "plus_runs": [
+      {
+        "gate": "cumulative",
+        "sha": "a53449db2e4104f32e84bd6090a61acd0e90cb47",
+        "run_id": 39940618566,
+        "conclusion": "SUCCESS",
+        "tests": "2285 passed, 1 skipped, 6 xfailed; coverage 87.94%"
+      },
+      {
+        "gate": "h1d",
+        "sha": "a53449db2e4104f32e84bd6090a61acd0e90cb47",
+        "run_id": 39940618559,
+        "conclusion": "SUCCESS"
+      }
+    ],
+    "registration": "Los runs pertenecen al repositorio Plus y al SHA a53449db; no se reutilizan como evidencia de Lite. El espejo no dispara CI (paths documentales excluidos).",
+    "global_certification": "OPEN"
+  },
+  "edcx_b2_mirror_r261": {
+    "status": "NO_EJECUTADO",
+    "scope": "espejo documental de EDCX B2 (41 filas, operaciones con numeros complejos B/P/T/X) certificado en Plus",
+    "plus_status": "PASS_SCOPED",
+    "plus_rows_total": 41,
+    "plus_rows_pass": 33,
+    "plus_rows_pass_exact": 20,
+    "plus_rows_pass_scoped": 13,
+    "plus_rows_blocked": 8,
+    "plus_pass_scoped": {
+      "P-01..P-09": "entrada r_theta traducida a r*(cos(theta)+i*sin(theta)); resultado exacto emitido en forma binomica o de raiz",
+      "T-05": "exp(I*(alpha+beta)), equivalente exacto por Euler de cos(alpha+beta)+i*sin(alpha+beta)",
+      "X-04": "potencia principal 32*(-1)**(5/6) = -16*sqrt(3)+16i, en forma de raiz",
+      "X-08": "3*exp(-I*conjugate(theta)) y exp(-I*conjugate(theta))*conjugate(r); exacto con theta y r reales",
+      "X-09": "exp(re(a)-im(b)); exacto con a,b reales, igual a exp(a)"
+    },
+    "plus_blocked": {
+      "T-04": "exp(I*theta)**n sin combinar; no produce exp(I*n*theta) ni cos(n*theta)+i*sin(n*theta)",
+      "T-06": "cos(3*theta) sin expandir; no produce 4cos^3(theta)-3cos(theta)",
+      "T-07": "sin(3*theta) sin expandir; no produce 3sin(theta)-4sin^3(theta)",
+      "T-08": "cos(theta)**4 sin linealizar; no produce (3+4cos(2theta)+cos(4theta))/8",
+      "T-09": "sum(...) y Sum(...) devuelven PARSE_ERROR; no hay nodo de sumatoria",
+      "X-10": "exp(I*theta)**n sin combinar en exp(I*n*theta)",
+      "X-11": "1/(1-exp(I*theta)) sin reescribir; no produce 1/2+i/2*cot(theta/2)",
+      "X-12": "Abs(exp(I*theta)+1) sin reducir; no produce 2*Abs(cos(theta/2))"
+    },
+    "plus_channel": "Forma binomica literal, incluida la multiplicacion implicita ((2+3i)(1-i)=5+i). Las nueve entradas r_{theta} devuelven PARSE_ERROR. cos3theta se interpreta como simbolo libre, no como cos(3*theta).",
+    "plus_cumulative": {
+      "rows": 300,
+      "pass": 171,
+      "blocked": 129,
+      "source_rows": 638
+    },
+    "plus_parte_b": {
+      "rows": 428,
+      "measured": false,
+      "measured_blocks": [
+        "B1",
+        "B2"
+      ],
+      "rows_measured": 90
+    },
+    "lite_reason": "No existe motor de operaciones con numeros complejos (unidad i, re, im, conj, abs, exp) con esa semantica; B2 no se ejecuta en Lite",
+    "lite_rows_executed": 0,
+    "product_changed": false,
+    "plus_harness": "backend/tests/test_edcx_ed_b2_01_l41.py (38 passed local y CI)",
+    "plus_runs": [
+      {
+        "gate": "cumulative",
+        "sha": "7c87b95f00edfb3e983f270286ace6172d791d2c",
+        "run_id": 39943293295,
+        "conclusion": "SUCCESS",
+        "tests": "2323 passed, 1 skipped, 6 xfailed; coverage 87.96%"
+      },
+      {
+        "gate": "h1d",
+        "sha": "7c87b95f00edfb3e983f270286ace6172d791d2c",
+        "run_id": 39943293116,
+        "conclusion": "SUCCESS"
+      }
+    ],
+    "registration": "Los runs pertenecen al repositorio Plus y al SHA 7c87b95f; no se reutilizan como evidencia de Lite. El espejo no dispara CI (paths documentales excluidos).",
+    "global_certification": "OPEN"
+  },
+  "edcx_b3_mirror_r262": {
+    "status": "NO_EJECUTADO",
+    "scope": "espejo documental de EDCX B3 (19 filas, potencias y raices de complejos VC-PR-01..19) certificado en Plus",
+    "plus_status": "PASS_SCOPED",
+    "plus_rows_total": 19,
+    "plus_rows_pass": 17,
+    "plus_rows_pass_exact": 7,
+    "plus_rows_pass_scoped": 10,
+    "plus_rows_blocked": 2,
+    "plus_pass_exact": [
+      "VC-PR-01..06",
+      "VC-PR-19"
+    ],
+    "plus_pass_scoped": {
+      "VC-PR-07": "sqrt(i) devuelve sqrt(I); /solve z^2=i devuelve ±sqrt(I), equivalente exacto de ±(1+i)/sqrt(2)",
+      "VC-PR-08": "sqrt devuelve solo 1+2i; /solve z^2=-3+4i devuelve ±(1+2i)",
+      "VC-PR-09": "sqrt devuelve solo 3-2i; /solve z^2=5-12i devuelve ±(3-2i)",
+      "VC-PR-10": "/solve z^3=8 devuelve 2, -1±i*sqrt(3) exactos",
+      "VC-PR-11": "/solve z^3=-8 devuelve -2, 1±i*sqrt(3) exactos",
+      "VC-PR-12": "/solve z^3=i devuelve -i, ±sqrt(3)/2+i/2 exactos",
+      "VC-PR-13": "/solve z^4=-4 devuelve ±1±i exactos",
+      "VC-PR-14": "/solve z^4=1 devuelve 1, i, -1, -i exactos",
+      "VC-PR-15": "/solve z^6=1 devuelve seis raices como radicales cartesianos",
+      "VC-PR-16": "/solve z^3=1+i devuelve la raiz principal como radicales cartesianos"
+    },
+    "plus_blocked": {
+      "VC-PR-17": "sum(...) y Sum(...) devuelven PARSE_ERROR; no hay nodo de sumatoria",
+      "VC-PR-18": "no hay operacion de producto de raices"
+    },
+    "plus_channel": "evaluate resuelve potencias enteras y negativas exactas; sqrt/root devuelven solo la raiz principal; /api/v1/solve sobre z^n=w enumera todas las raices exactas.",
+    "plus_cumulative": {
+      "rows": 319,
+      "pass": 188,
+      "blocked": 131,
+      "source_rows": 638
+    },
+    "plus_parte_b": {
+      "rows": 428,
+      "measured": false,
+      "measured_blocks": [
+        "B1",
+        "B2",
+        "B3"
+      ],
+      "rows_measured": 109
+    },
+    "lite_reason": "No existe motor de variable compleja con potencias y raices (potencia entera, raiz n-esima, rama principal ni enumeracion de raices); B3 no se ejecuta en Lite",
+    "lite_rows_executed": 0,
+    "product_changed": false,
+    "plus_harness": "backend/tests/test_edcx_ed_b3_01_l19.py (22 passed local y CI)",
+    "plus_runs": [
+      {
+        "gate": "cumulative",
+        "sha": "ab2204258d21bddb9a5baf7664f62c7f96245182",
+        "run_id": 39945613218,
+        "conclusion": "SUCCESS",
+        "tests": "2345 passed, 1 skipped, 6 xfailed; cobertura 87.92%"
+      },
+      {
+        "gate": "h1d",
+        "sha": "ab2204258d21bddb9a5baf7664f62c7f96245182",
+        "run_id": 39945613228,
+        "conclusion": "SUCCESS"
+      }
+    ],
+    "global_certification": "OPEN"
+  },
+  "edcx_b4_closure_r263": {
+    "status": "NO_EJECUTADO",
+    "scope": "EDCX Parte B B4 (34 filas, ecuaciones en C) en Lite",
+    "lite": "NO_EJECUTADO",
+    "reason": "Lite no tiene motor complejo equivalente para ecuaciones en C; no se declara paridad sin ejecucion.",
+    "plus_reference": {
+      "test_first": "7e501f5bffdf7a1242f396f8a2c96ca3267b635f",
+      "closure_docs": "177955dcad78afb9de1ca504a6d2970e85b5f040",
+      "classification": {
+        "pass": 14,
+        "pass_scoped": 14,
+        "fail": 4,
+        "blocked": 2
+      }
+    },
+    "product_changed": false
+  },
+  "gates_r263": {
+    "sha": "61f438d2eb7ed7758b14ab97818f872f225e084a",
+    "status": "success",
+    "runs": {
+      "cumulative": "40015124636",
+      "h1d": "40015127464",
+      "scientific": "40015130309"
+    }
+  },
+  "latest_reconciliation": {
+    "checked_at": "2026-10-24",
+    "branch": "qa/syntax-audit-in625-a1",
+    "current_head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
+    "open_pull_request": 48,
+    "pull_request_head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
+    "pull_request_base_sha": "7cbef02b75884bee6c10049da8d3784d21f7313e",
+    "pull_request_mergeable": true,
+    "pull_request_mergeable_state": "unstable",
+    "exact_head_pull_request_workflow_runs": [
+      40069115987,
+      40069116025,
+      40069116074,
+      40069116098,
+      40069116120,
+      40069116121,
+      40069116223,
+      40069116227,
+      40069116272,
+      40069111537,
+      40069111608
+    ],
+    "conclusion": "EN-RE-12 corregido y validado por H1b exacto-en-HEAD. H1d y cumulative exactos en HEAD pasaron; Scientific UI y S25 pasaron. CI continúa rojo por npm audit hard gate (6 moderate, 2 low, 0 high), sin relación demostrada con la corrección del parser. Playwright E2E sigue IN_PROGRESS y debe inspeccionarse antes de dar por cerrada la reentrada completa.",
+    "valid_evidence_gained": [
+      "H1b exact current HEAD success, 8 passed including EN-RE-12",
+      "H1d exact current HEAD success, 22 passed",
+      "cumulative exact current HEAD success: 2232 passed, 8 expected fail, 34 TODO",
+      "G3 parser 26 passed",
+      "Scientific UI E2E success",
+      "S25 security gate success; does not close bilateral SECURITY-S25"
+    ]
+  },
+  "en_re_12_fix_r285": {
+    "status": "FIXED_H1B_PASS_PLAYWRIGHT_WAIT",
+    "technical_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
+    "previous_test_failure": {
+      "sha": "935366887f1bb670690db90061b75d708f3f9dd8",
+      "run_id": 40049504150,
+      "conclusion": "failure",
+      "finding": "La salida generada \\text{x < -2 o x > 2} se rechazaba al reingresar."
+    },
+    "implementation_history": {
+      "intermediate_commit_sha": "1014abe9a185d760eb531b953b24ace9aa31e4ae",
+      "intermediate_ci_run_id": 40069062729,
+      "intermediate_ci_conclusion": "failure",
+      "cause": "Escape mal formado en el adaptador nuevo; corregido en el HEAD actual.",
+      "corrected_head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97"
+    },
+    "runs": [
+      {
+        "gate": "h1b",
+        "run_id": 40069116272,
+        "conclusion": "success",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
+        "tests": "8 passed; EN-RE-12 passed"
+      },
+      {
+        "gate": "h1d",
+        "run_id": 40069111537,
+        "conclusion": "success",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
+        "tests": "22 passed"
+      },
+      {
+        "gate": "cumulative",
+        "run_id": 40069111608,
+        "conclusion": "success",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
+        "tests": "360 files passed; 2232 passed; 8 expected fail; 34 TODO"
+      },
+      {
+        "gate": "g3-parser",
+        "run_id": 40069116074,
+        "conclusion": "success",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
+        "tests": "26 passed"
+      },
+      {
+        "gate": "syntax-diagnostic",
+        "run_id": 40069115987,
+        "conclusion": "success",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97"
+      },
+      {
+        "gate": "scientific-ui",
+        "run_id": 40069116227,
+        "conclusion": "success",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97"
+      },
+      {
+        "gate": "security-s25",
+        "run_id": 40069116120,
+        "conclusion": "success",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97"
+      },
+      {
+        "gate": "ci-dependency-audit",
+        "run_id": 40069116121,
+        "conclusion": "failure",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97",
+        "finding": "npm audit: 6 moderate, 2 low, 0 high; hard gate must remain unchanged"
+      },
+      {
+        "gate": "playwright-e2e",
+        "run_id": 40069116223,
+        "status": "in_progress",
+        "head_sha": "5113fd28ee0ddf5233be930eb23c74772fcace97"
+      }
+    ],
+    "global_certification": "OPEN"
+  }
+}

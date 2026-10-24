@@ -25,3 +25,7 @@ El `playwright.config.ts` levanta el artefacto de producción con Vite Preview y
 ## Quality gate recomendado
 
 No publicar si falla cualquiera de estos pasos: audit de dependencias, typecheck, Vitest/paridad del teclado, build de producción o Playwright E2E. En CI, `npm audit --package-lock-only` es un gate duro: una vulnerabilidad reportada por npm debe dejar el workflow en rojo hasta ser evaluada y corregida sin usar `npm audit fix --force`.
+
+## Certification continuity
+
+For the active certification state and execution rules, start at `qa/certification/README.md`. Do not reconstruct the certification plan from chat history when repository state is available.

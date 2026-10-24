@@ -5,19 +5,27 @@
 // Módulo 1: "evaluate" (Modo 1). Módulo 3: "solveAlgebra" (Modo 2 - Álgebra).
 // Los demás tipos de operación se añaden en módulos posteriores.
 
+import { constantDeterminant } from "../engine/constantDeterminant";
+import { symbolicDeterminant } from "../engine/symbolicDeterminant";
+import { symbolicAdjugate, symbolicCofactor, symbolicInverse } from "../engine/symbolicMatrix";
 import { evaluate, toLatex, toDecimalApprox, ErrorCode as ClientErrorCode } from "../engine/algebriteClient";
+import { realAbsolutePiecewise } from "../engine/absPiecewise";
 import { toFractionResult, fractionToLatex } from "../engine/fractions";
+import { reciprocalPoleLimit, reciprocalLimitAtInfinity } from "../engine/reciprocalLimit";
 import { compileNumeric, numericLimit, numericLimitAtInfinity } from "../engine/numericFallback";
 import { tryStatFunction, splitTopLevelArgs } from "../engine/statFunctions";
 import { tryComplexFunction, parseComplex } from "../engine/complexFunctions";
 import { residueAtRational, singularitiesOfRational } from "../engine/complexAnalysis";
 import { tryPlusMinus } from "../engine/plusMinus";
+import { trySymbolicBinomialPair } from "../engine/binomial";
+import { tryPermutationAlias } from "../engine/permutationAlias";
 import { tryFiniteProduct } from "../engine/product";
-import { validateFiniteSumRange } from "../engine/sum";
+import { validateFiniteSumRange, trySymbolicIdentitySum } from "../engine/sum";
 import { tryCbrtSign } from "../engine/cbrtSign";
 import { solveLinearInequalitySystem } from "../engine/stepEngine/linearInequalitySystem";
 import type { InequalityOperator } from "../engine/parsing/inequalitySplit";
 import { solveInequality } from "../engine/inequality";
+import { intersectLinearInequalities, type LinearConstraint } from "../engine/linearInequalityIntersection";
 import { solveAlgebra } from "../engine/stepEngine/algebra";
 import {
   calcDerivative,
@@ -26,6 +34,7 @@ import {
   calcDefiniteIntegral,
 } from "../engine/stepEngine/calculus";
 import { solveLinearSystem } from "../engine/stepEngine/linearSystem";
+import { tryQuadraticSystem } from "../engine/stepEngine/quadraticSystem";
 import {
   toFractionMatrix,
   addMatrices,
@@ -34,7 +43,11 @@ import {
   transposeMatrix,
   determinant,
   invertMatrix,
+  cofactorMatrix,
+  adjugateMatrix,
+  solveMatrixEquation,
   powerMatrix,
+  type Matrix,
   ref,
   rref,
   kroneckerProduct,
@@ -43,13 +56,17 @@ import {
   vectorNorm,
   trace,
   rank,
+  luDecomposition,
+  gramSchmidt,
+  parametricValueToLatex,
 } from "../engine/matrixOps";
 import { analyzeGraph, analyzeGraphPolar, analyzeGraphParametric, analyzeGraphSurface3D } from "../engine/stepEngine/graphing";
 import { computeEigenvalues } from "../engine/eigenOps";
 import { evaluateMatrixExpression, matrixExpressionValueToLatex } from "../engine/matrixExpression";
 import { solveODE } from "../engine/stepEngine/ode";
 import { ErrorCode, makeRequestId, type MathResult, type AppError, type ResultConfidence } from "../types";
-import { extractDomainConditions, mergeDomainConditions } from "../engine/domainConditions";
+import { extractDomainConditions, mergeDomainConditions, withRealDomainSummary } from "../engine/domainConditions";
+import { conventionDeclarations, realOddRootValue } from "../engine/conventionNotes";
 
 export type ComputeRequest =
   | { type: "evaluate"; requestId: string; expressionAlgebrite: string }
@@ -59,6 +76,15 @@ export type ComputeRequest =
       leftAlgebrite: string;
       rightAlgebrite: string;
       variable: string;
+    }
+  | {
+      type: "constrainedEquation";
+      requestId: string;
+      leftAlgebrite: string;
+      rightAlgebrite: string;
+      variable: string;
+      operator: "<" | "<=" | ">" | ">=";
+      bound: number;
     }
   | {
       type: "derivative";
@@ -85,14 +111,19 @@ export type ComputeRequest =
       lower: number;
       upper: number;
     }
+  | { type: "inequalityIntersection"; requestId: string; inequalities: LinearConstraint[]; variable: string }
+  | { type: "solveSystem"; requestId: string; equationsAlgebrite: string[]; variables: string[] }
   | { type: "linearSystem"; requestId: string; equationsAlgebrite: string[]; variables: string[] }
   | {
       type: "matrixOp";
       requestId: string;
-      op: "add" | "subtract" | "multiply" | "transpose" | "determinant" | "inverse" | "power" | "ref" | "rref" | "kron" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank";
+      op: "scale" | "literal" | "add" | "subtract" | "multiply" | "transpose" | "determinant" | "inverse" | "adjugate" | "cofactor" | "solveEquation" | "power" | "ref" | "rref" | "kron" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank" | "lu" | "gramSchmidt";
       a: (string | number)[][];
       b?: (string | number)[][];
       exponent?: number;
+      scalar?: string;
+      /** true: X·A = B; false: A·X = B. Solo se usa con solveEquation. */
+      xOnLeft?: boolean;
     }
   | {
       type: "matrixExpression";
@@ -146,6 +177,13 @@ export type ComputeRequest =
       variable: string;
     }
   | {
+      type: "solveChainedInequality";
+      requestId: string;
+      first: { diffAlgebrite: string; operator: "<" | ">" | "<=" | ">=" };
+      second: { diffAlgebrite: string; operator: "<" | ">" | "<=" | ">=" };
+      variable: string;
+    }
+  | {
       // Corrección post-auditoría (Módulo C, spec_motor_matematico_pendiente.md
       // §4): faltaba el mensaje de worker que conecta el motor ya construido
       // (solveLinearInequalitySystem) con la UI — el motor existía pero nada
@@ -195,6 +233,15 @@ function handle(msg: ComputeRequest): MathResult {
       return handleEvaluate(msg.expressionAlgebrite, msg.requestId);
     case "solveAlgebra":
       return handleSolveAlgebra(msg.leftAlgebrite, msg.rightAlgebrite, msg.variable, msg.requestId);
+    case "constrainedEquation":
+      return handleConstrainedEquation(
+        msg.leftAlgebrite,
+        msg.rightAlgebrite,
+        msg.variable,
+        msg.operator,
+        msg.bound,
+        msg.requestId,
+      );
     case "derivative":
       return runCalculus(msg.requestId, msg.expressionAlgebrite, () => calcDerivative(msg.expressionAlgebrite, msg.variable, msg.order));
     case "limit":
@@ -207,6 +254,19 @@ function handle(msg: ComputeRequest): MathResult {
       return runCalculus(msg.requestId, msg.expressionAlgebrite, () =>
         calcDefiniteIntegral(msg.expressionAlgebrite, msg.variable, msg.lower, msg.upper),
       );
+    case "inequalityIntersection":
+      try {
+        return {
+          success: true, resultLatex: intersectLinearInequalities(msg.inequalities, msg.variable),
+          resultViewLabel: "Intersección real", steps: [], hasDetailedSteps: false,
+          confidence: "SYMBOLIC", requestId: msg.requestId,
+        };
+      } catch (err) {
+        const appErr = err as AppError;
+        return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), msg.requestId);
+      }
+    case "solveSystem":
+      return handlePolynomialSystem(msg.equationsAlgebrite, msg.variables, msg.requestId);
     case "linearSystem":
       return handleLinearSystem(msg.equationsAlgebrite, msg.variables, msg.requestId);
     case "matrixOp":
@@ -236,6 +296,8 @@ function handle(msg: ComputeRequest): MathResult {
       );
     case "solveInequality":
       return handleSolveInequality(msg.diffAlgebrite, msg.operator, msg.variable, msg.requestId);
+    case "solveChainedInequality":
+      return handleSolveChainedInequality(msg.first, msg.second, msg.variable, msg.requestId);
     case "linearInequalitySystem":
       return handleLinearInequalitySystem(msg.inequalities, msg.variables, msg.requestId);
     case "ode":
@@ -307,7 +369,17 @@ function handleSolveAlgebra(
   requestId: string,
 ): MathResult {
   try {
-    const { steps, solutionsAlgebrite } = solveAlgebra(leftAlgebrite, rightAlgebrite, variable);
+    const { steps, solutionsAlgebrite, truth } = solveAlgebra(leftAlgebrite, rightAlgebrite, variable);
+    if (truth) {
+      return {
+        success: true,
+        resultLatex: truth === "identity" ? "\\text{Verdadero para todos los valores}" : "\\text{Falso: no hay solución}",
+        steps,
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
     const allNumeric = solutionsAlgebrite.every(
       (s) => /^-?\d+(\.\d+)?$/.test(s) || /^-?\d+\/\d+$/.test(s),
     );
@@ -338,6 +410,58 @@ function handleSolveAlgebra(
   }
 }
 
+function handleConstrainedEquation(
+  leftAlgebrite: string,
+  rightAlgebrite: string,
+  variable: string,
+  operator: "<" | "<=" | ">" | ">=",
+  bound: number,
+  requestId: string,
+): MathResult {
+  try {
+    const { steps, solutionsAlgebrite, truth } = solveAlgebra(leftAlgebrite, rightAlgebrite, variable);
+    if (truth) {
+      return {
+        success: true,
+        resultLatex: truth === "identity" ? "\\text{Verdadero para todos los valores}" : "\\text{Falso: no hay solución}",
+        steps,
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
+
+    const satisfies = (value: number) =>
+      operator === ">" ? value > bound :
+      operator === ">=" ? value >= bound :
+      operator === "<" ? value < bound :
+      value <= bound;
+
+    const filtered = solutionsAlgebrite.filter((solution) => {
+      const numeric = Number(solution);
+      return Number.isFinite(numeric) && satisfies(numeric);
+    });
+
+    return {
+      success: true,
+      resultLatex: filtered.length
+        ? filtered.map((s) => `${variable} = ${toLatex(s)}`).join(",\\ ")
+        : "\\text{Sin solución bajo la restricción}",
+      steps,
+      hasDetailedSteps: false,
+      confidence: "SYMBOLIC",
+      requestId,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(
+      appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION,
+      appErr.message ?? String(err),
+      requestId,
+    );
+  }
+}
+
 /**
  * Fix (decisión de Carlos, cierre de la suite de paridad de teclado):
  * solver básico de desigualdades — ver engine/inequality.ts para el
@@ -346,6 +470,59 @@ function handleSolveAlgebra(
  * muestra directamente sin pasar por toLatex()/toFractionResult() (que
  * esperan sintaxis de Algebrite, no una descripción de intervalo).
  */
+
+function handleSolveChainedInequality(
+  first: { diffAlgebrite: string; operator: "<" | ">" | "<=" | ">=" },
+  second: { diffAlgebrite: string; operator: "<" | ">" | "<=" | ">=" },
+  variable: string,
+  requestId: string,
+): MathResult {
+  try {
+    const a = solveInequality(first.diffAlgebrite, first.operator, variable);
+    const b = solveInequality(second.diffAlgebrite, second.operator, variable);
+
+    const parseBound = (text: string) => {
+      const m = new RegExp(`^${variable}\\s*(<=|<|>=|>)\\s*(-?\\d+(?:\\.\\d+)?)$`).exec(text.trim());
+      return m ? { op: m[1], value: m[2] } : null;
+    };
+
+    const ba = parseBound(a.resultText);
+    const bb = parseBound(b.resultText);
+    let resultText = `${a.resultText} y ${b.resultText}`;
+
+    if (ba && bb) {
+      const bounds = [ba, bb];
+      const lower = bounds.find((x) => x.op === ">" || x.op === ">=");
+      const upper = bounds.find((x) => x.op === "<" || x.op === "<=");
+      if (lower && upper) {
+        const lop = lower.op === ">" ? "<" : "<=";
+        const uop = upper.op === "<" ? "<" : "<=";
+        const low = Number(lower.value);
+        const high = Number(upper.value);
+        if (low > high || (low === high && (lop === "<" || uop === "<"))) {
+          resultText = "No tiene solución real.";
+        } else if (low === high) {
+          resultText = `${variable} = ${lower.value}`;
+        } else {
+          resultText = `${lower.value} ${lop} ${variable} ${uop} ${upper.value}`;
+        }
+      }
+    }
+
+    return {
+      success: true,
+      resultLatex: `\\text{${resultText}}`,
+      steps: [...a.steps, ...b.steps],
+      hasDetailedSteps: false,
+      confidence: "SYMBOLIC",
+      requestId,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), requestId);
+  }
+}
+
 function handleSolveInequality(
   diffAlgebrite: string,
   operator: "<" | ">" | "<=" | ">=",
@@ -391,40 +568,37 @@ const ALGEBRITE_UNSUPPORTED_NUMERIC = /\b(asinh|acosh|atanh|sign)\(/;
  * (compileNumeric + numericLimit), reconstruyendo cuerpo/variable/punto a
  * partir de la propia llamada sin evaluar.
  */
-function tryLimitFallback(raw: string): string | null {
+function tryLimitFallback(raw: string): { value: string; confidence: ResultConfidence } | null {
   const match = raw.match(/^limit\((.*)\)$/s);
   if (!match) return null;
   const args = splitTopLevelArgs(match[1]);
   if (args.length !== 3 && args.length !== 4) return null;
   const [body, variable, pointExpr, directionArg] = args;
   try {
-    // Fase 2 externa (hueco #4): límite lateral — 4to argumento opcional,
-    // 1=derecha, -1=izquierda (ver normalize.ts, sufijo ^+/^- del punto).
     const direction = directionArg === "1" ? "right" : directionArg === "-1" ? "left" : "both";
-
-    // Fase 2 externa (hueco #3): límite al infinito. Para cuando esto se
-    // ejecuta, \infty ya se tradujo a "oo" (misma pasada de normalize.ts)
-    // — Number("oo") siempre da NaN, así que se compara como string en
-    // vez de intentar convertir primero.
     const pointRaw = evaluate(pointExpr);
+    const exact = reciprocalPoleLimit(body, variable, pointRaw, direction)
+      ?? reciprocalLimitAtInfinity(body, variable, pointRaw);
+    if (exact !== null) return { value: exact, confidence: "SYMBOLIC" };
     if (pointRaw === "oo" || pointRaw === "-oo") {
       const fn = compileNumeric(body, variable);
       const { value, converged } = numericLimitAtInfinity(fn, pointRaw === "oo" ? 1 : -1);
-      return Number.isFinite(value) && converged ? String(value) : null;
+      return Number.isFinite(value) && converged
+        ? { value: String(value), confidence: "NUMERIC_FALLBACK" } : null;
     }
-
     const pointNumeric = Number(pointRaw);
     if (!Number.isFinite(pointNumeric)) return null;
     const fn = compileNumeric(body, variable);
     const { value, converged } = numericLimit(fn, pointNumeric, direction);
-    return Number.isFinite(value) && converged ? String(value) : null;
+    return Number.isFinite(value) && converged
+      ? { value: String(value), confidence: "NUMERIC_FALLBACK" } : null;
   } catch {
     return null;
   }
 }
 
 /**
- * Fase 2 externa (integral con límites, inline): "defintegral(cuerpo,a,b)"
+ * Fase 2 externa (integral con límites, inline): "defintegral(cuerpo,a,b[,var])"
  * es un marcador propio (nunca nativo de Algebrite) producido solo por
  * normalize.ts. Se resuelve en DOS llamadas separadas — antiderivada
  * primero, sustituir después — porque envolver integral() sin evaluar
@@ -438,13 +612,17 @@ function tryDefiniteIntegral(expr: string): string | null {
   const match = expr.match(/^defintegral\((.*)\)$/s);
   if (!match) return null;
   const args = splitTopLevelArgs(match[1]);
-  if (args.length !== 3) return null;
-  const [body, lower, upper] = args;
-  const antiderivative = evaluate(`integral((${body}),x)`);
+  if (args.length !== 3 && args.length !== 4) return null;
+  const [body, lower, upper, variableRaw] = args;
+  const variable = variableRaw?.trim() || "x";
+  if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(variable)) {
+    throw { code: ErrorCode.PARSE_ERROR, message: "Variable de integración inválida." } as AppError;
+  }
+  const antiderivative = evaluate(`integral((${body}),${variable})`);
   if (/^integral\(/.test(antiderivative)) {
     throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "Algebrite no pudo resolver esta integral simbólicamente." } as AppError;
   }
-  const raw = evaluate(`float(subst(${upper},x,${antiderivative}))-float(subst(${lower},x,${antiderivative}))`);
+  const raw = evaluate(`float(subst(${upper},${variable},${antiderivative}))-float(subst(${lower},${variable},${antiderivative}))`);
   // Igual que float() en general (ver hallazgo arriba), el resultado
   // puede traer "..." literal de Algebrite indicando precisión truncada
   // (ej. "2.666667...") — no es válido reinyectarlo en otra llamada a
@@ -463,6 +641,39 @@ function tryNumericFallback(expr: string): string | null {
   } catch {
     return null;
   }
+}
+
+// Algebra114 AS-DOM-01/02: cancel common factors of a univariate polynomial
+// quotient (x^2-1)/(x-1) -> x+1. The original domain is kept separately by
+// extractDomainConditions(expr), which reads the uncancelled input.
+function cancelRationalFunction(expr: string, raw: string): string {
+  const names = new Set(expr.match(/[A-Za-z_]\w*/g) ?? []);
+  if (names.size !== 1 || !expr.includes("/")) return raw;
+  const variable = [...names][0];
+  try {
+    const rational = evaluate(`rationalize(${raw})`);
+    const denominator = evaluate(`denominator(${rational})`);
+    if (!new RegExp(`\\b${variable}\\b`).test(denominator)) return raw;
+    const numerator = evaluate(`numerator(${rational})`);
+    const common = evaluate(`gcd(${numerator},${denominator})`);
+    if (!new RegExp(`\\b${variable}\\b`).test(common)) return raw;
+    const reduced = evaluate(`(${evaluate(`quotient(${numerator},${common},${variable})`)})/(${evaluate(`quotient(${denominator},${common},${variable})`)})`);
+    return evaluate(`numerator(rationalize((${reduced})-(${raw})))`) === "0" ? reduced : raw;
+  } catch {
+    return raw;
+  }
+}
+
+// Algebra114 AS-DOM-04: |v|/v equals 1 where v>0 and -1 where v<0 (v != 0).
+function absoluteRatioSignSteps(raw: string): MathResult["steps"] {
+  const match = /^abs\((.+)\)\/\(?(.+?)\)?$/.exec(raw.replace(/\s+/g, ""));
+  if (!match || match[1] !== match[2]) return [];
+  const v = match[1];
+  return [{
+    id: "absolute-ratio-sign",
+    latex: `\\begin{cases}1 & ${toLatex(v)}>0\\\\-1 & ${toLatex(v)}<0\\end{cases}`,
+    explanation: `Con ${v} ≠ 0: vale 1 si ${v} > 0 y -1 si ${v} < 0.`,
+  }];
 }
 
 function handleEvaluate(expr: string, requestId: string): MathResult {
@@ -533,6 +744,27 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       };
     }
 
+    // AS-CONV (sección L, paridad con Plus): raíz impar EXACTA de constante
+    // negativa se resuelve en ℝ antes que la rama principal ℂ de
+    // tryComplexFunction — root(-8,3) = -2. Solo cuando existe raíz entera
+    // exacta; cualquier otro root(z,n) sigue el flujo normal (ℂ declarado).
+    const oddRootReal = realOddRootValue(expr);
+    if (oddRootReal !== null) {
+      return {
+        success: true,
+        resultLatex: toLatex(oddRootReal),
+        fraction: toFractionResult(oddRootReal),
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        domainConditions: mergeDomainConditions(
+          withRealDomainSummary(extractDomainConditions(expr)),
+          conventionDeclarations(expr),
+        ),
+        requestId,
+      };
+    }
+
     // P4 (spec v2 §5.1): re/im/arg/conj/topolar — mismo motivo y mismo
     // patrón que las funciones de estadística arriba (no nativas de
     // Algebrite, ver cabecera de complexFunctions.ts sobre por qué se
@@ -546,6 +778,68 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
         steps: [],
         hasDetailedSteps: false,
         confidence: "NUMERIC_FALLBACK",
+        // AS-CONV: declaraciones de convención también en rutas fallback.
+        domainConditions: mergeDomainConditions(
+          withRealDomainSummary(extractDomainConditions(expr)),
+          conventionDeclarations(expr),
+        ),
+        requestId,
+      };
+    }
+
+    const permutation = tryPermutationAlias(expr);
+    if (permutation !== null) {
+      return {
+        success: true,
+        resultLatex: toLatex(permutation.value),
+        interpretedLatex: "\\operatorname{nPr}(" + permutation.n + "," + permutation.r + ")",
+        resultViewLabel: "Permutaciones",
+        fraction: toFractionResult(permutation.value),
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
+
+    const symbolicBinomial = trySymbolicBinomialPair(expr);
+    if (symbolicBinomial !== null) {
+      return {
+        success: true,
+        resultLatex: toLatex(symbolicBinomial.value),
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        domainConditions: [{
+          expressionAlgebrite: symbolicBinomial.variable,
+          operator: ">=",
+          comparisonAlgebrite: "0",
+          variable: symbolicBinomial.variable,
+          kind: "domain",
+          text: symbolicBinomial.variable + " debe ser un entero no negativo.",
+          latex: symbolicBinomial.variable + "\\in\\mathbb{Z}_{\\ge0}",
+        }],
+        requestId,
+      };
+    }
+
+    const symbolicSum = trySymbolicIdentitySum(expr);
+    if (symbolicSum !== null) {
+      return {
+        success: true,
+        resultLatex: toLatex(symbolicSum.value),
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        domainConditions: [{
+          expressionAlgebrite: symbolicSum.bound,
+          operator: ">=",
+          comparisonAlgebrite: "0",
+          variable: symbolicSum.bound,
+          kind: "domain",
+          text: symbolicSum.bound + " debe ser un entero no negativo.",
+          latex: symbolicSum.bound + "\\in\\mathbb{Z}_{\\ge0}",
+        }],
         requestId,
       };
     }
@@ -620,13 +914,35 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
       }
     }
 
+    // SY-S-08: evaluate native numeric hyperbolic calls through the independent
+    // parser before Algebrite can turn float(sinh(1)) into a spurious NaN.
+    // Symbolic/free-variable inputs and unsupported expressions still use CAS.
+    if (/\b(?:sinh|cosh|tanh)\(/.test(expr)) {
+      const numeric = tryNumericFallback(expr);
+      if (numeric !== null && Number.isFinite(Number(numeric))) {
+        return {
+          success: true, resultLatex: numeric,
+          decimalApprox: numeric, steps: [], hasDetailedSteps: false,
+          confidence: "NUMERIC_FALLBACK", requestId,
+        };
+      }
+    }
+
+    const absPiecewise = realAbsolutePiecewise(expr);
+    if (absPiecewise !== null) {
+      return {
+        success: true, resultLatex: absPiecewise.latex, resultViewLabel: "Por tramos en ℝ",
+        steps: [], hasDetailedSteps: false, confidence: "SYMBOLIC", requestId,
+      };
+    }
+
     let raw = evaluate(expr);
     let confidence: MathResult["confidence"] = "SYMBOLIC";
     if (/^limit\(/.test(raw)) {
       const limitFallback = tryLimitFallback(raw);
       if (limitFallback !== null) {
-        raw = limitFallback;
-        confidence = "NUMERIC_FALLBACK";
+        raw = limitFallback.value;
+        confidence = limitFallback.confidence;
       }
     }
     if (ALGEBRITE_UNSUPPORTED_NUMERIC.test(raw)) {
@@ -636,6 +952,7 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
         confidence = "NUMERIC_FALLBACK";
       }
     }
+    raw = cancelRationalFunction(expr, raw);
     const isNumeric = /^-?\d+(\.\d+)?$/.test(raw) || /^-?\d+\/\d+$/.test(raw);
     const fraction = isNumeric ? toFractionResult(raw) : undefined;
 
@@ -651,17 +968,36 @@ function handleEvaluate(expr: string, requestId: string): MathResult {
     // "2^(1/2)/2"), se intenta igual una aproximación decimal vía
     // float() para que la pestaña "dec" de ResultPanel no quede
     // mostrando el mismo string simbólico que "sqrt".
-    const decimalApprox = !fraction ? (toDecimalApprox(raw) ?? undefined) : undefined;
+    // SY-N-31: very small exact rationals need a usable scientific decimal
+    // approximation as well as the preserved exact fraction. Avoid computing
+    // with unsafe integers or replacing the authoritative symbolic result.
+    let decimalApprox = !fraction ? (toDecimalApprox(raw) ?? undefined) : undefined;
+    if (fraction && /^-?\d+\/\d+$/.test(raw)) {
+      const [numerator, denominator] = raw.split("/").map(Number);
+      if (Number.isSafeInteger(numerator) && Number.isSafeInteger(denominator) && denominator !== 0) {
+        const numeric = numerator / denominator;
+        if (Number.isFinite(numeric) && numeric !== 0 && Math.abs(numeric) < 1e-6) {
+          decimalApprox = numeric.toExponential(9);
+        }
+      }
+    }
 
     return {
       success: true,
       resultLatex,
       fraction,
       decimalApprox,
-      steps: [],
+      steps: absoluteRatioSignSteps(raw),
       hasDetailedSteps: false,
       confidence,
-      domainConditions: extractDomainConditions(expr),
+      // AS-CONV (sección L): declaraciones de convención ℝ/ℂ adjuntas al
+      // canal contractual de contexto (DomainCondition kind "domain").
+      // Nunca alteran el valor del CAS; solo lo acompañan. Ver
+      // engine/conventionNotes.ts para la correspondencia con Plus.
+      domainConditions: mergeDomainConditions(
+        withRealDomainSummary(extractDomainConditions(expr)),
+        conventionDeclarations(expr),
+      ),
       requestId,
     };
   } catch (err) {
@@ -700,19 +1036,91 @@ function runCalculus(
   }
 }
 
+function handlePolynomialSystem(equations: string[], variables: string[], requestId: string): MathResult {
+  try {
+    const roots = tryQuadraticSystem(equations, variables);
+    if (roots === null) return handleLinearSystem(equations, variables, requestId);
+    return {
+      success: true,
+      resultLatex: roots.length
+        ? roots.map(pair => variables.map((v, i) => v + " = " + toLatex(pair[i])).join(",\\ ")).join("\\quad\\text{o}\\quad ")
+        : "\\varnothing",
+      interpretedLatex: "\\text{Soluciones reales; sustitución lineal en ecuación cuadrática}",
+      resultViewLabel: "Soluciones reales",
+      steps: [],
+      hasDetailedSteps: false,
+      confidence: "SYMBOLIC",
+      requestId,
+    };
+  } catch (err) {
+    const appErr = err as AppError;
+    return errorResult(appErr.code ?? ClientErrorCode.UNSUPPORTED_OPERATION, appErr.message ?? String(err), requestId);
+  }
+}
+
+function systemTupleLatex(variables: string[], components: string[]): string {
+  return `\\left(${variables.join(",\\ ")}\\right)=\\left(${components.join(",\\ ")}\\right)`;
+}
+
+function systemCaseBodyLatex(caseSolution: NonNullable<ReturnType<typeof solveLinearSystem>["cases"]>[number], variables: string[]): string {
+  if (caseSolution.kind === "none") return "\\text{sin solución (sistema incompatible)}";
+  if (caseSolution.kind === "unique") {
+    const components = caseSolution.values
+      ? caseSolution.values.map((value) => fractionToLatex(value))
+      : (caseSolution.symbolicValues ?? []).map((value) => toLatex(value));
+    return systemTupleLatex(variables, components);
+  }
+  if (caseSolution.parametric) {
+    return "\\text{infinitas soluciones } " + systemTupleLatex(
+      variables,
+      caseSolution.parametric.values.map((value) => parametricValueToLatex(value)),
+    );
+  }
+  return "\\text{infinitas soluciones (sistema compatible indeterminado)}";
+}
+
 function handleLinearSystem(equationsAlgebrite: string[], variables: string[], requestId: string): MathResult {
   try {
     const solution = solveLinearSystem(equationsAlgebrite, variables);
-    if (solution.kind === "none") {
-      return errorResult(ErrorCode.UNSUPPORTED_OPERATION, "El sistema no tiene solución (es inconsistente).", requestId);
-    }
-    if (solution.kind === "infinite") {
+    if (solution.cases && solution.cases.length > 0) {
+      const resultLatex = solution.cases
+        .map((caseSolution) =>
+          `\\text{si } ${caseSolution.conditionLatex}:\\ ${systemCaseBodyLatex(caseSolution, variables)}`,
+        )
+        .join(";\\quad ");
       return {
         success: true,
-        resultLatex: "Infinitas soluciones (sistema compatible indeterminado).",
+        resultLatex,
         steps: solution.steps,
         hasDetailedSteps: true,
-        confidence: "PARTIAL", // no se calcula la parametrización explícita todavía — ver README
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
+    if (solution.kind === "none") {
+      return {
+        success: true,
+        resultLatex: "\\text{Sin solución (sistema incompatible).}",
+        steps: solution.steps,
+        hasDetailedSteps: true,
+        confidence: "SYMBOLIC",
+        requestId,
+      };
+    }
+    if (solution.kind === "infinite") {
+      const parametric = solution.parametric;
+      const resultLatex = parametric
+        ? `${systemTupleLatex(
+            variables,
+            parametric.values.map((value) => parametricValueToLatex(value)),
+          )},\\ ${parametric.parameters.map((parameter) => `${parameter}\\in\\mathbb{R}`).join(",\\ ")}`
+        : "Infinitas soluciones (sistema compatible indeterminado).";
+      return {
+        success: true,
+        resultLatex,
+        steps: solution.steps,
+        hasDetailedSteps: true,
+        confidence: "SYMBOLIC",
         requestId,
       };
     }
@@ -813,12 +1221,51 @@ function handleMatrixExpression(
   }
 }
 
+function matrixToPmatrix(m: Matrix): string {
+  const cellLatex = (value: Matrix[number][number]): string => {
+    const [numerator, denominator] = value.toFraction().split("/");
+    return denominator ? `\\frac{${numerator}}{${denominator}}` : numerator;
+  };
+  return `\\begin{pmatrix} ${m.map((row) => row.map(cellLatex).join(" & ")).join(" \\\\ ")} \\end{pmatrix}`;
+}
+
 function handleMatrixOp(
   msg: Extract<ComputeRequest, { type: "matrixOp" }>,
   requestId: string,
 ): MathResult {
   try {
-    const a = toFractionMatrix(msg.a);
+    // Determinante, inversa, adjunta y cofactores: primero Fraction
+    // (exacto); si alguna celda no es racional (variables, trigonométricas
+    // o `i`), se usa el fallback simbólico con Algebrite. El determinante
+    // conserva además la ruta de constantes reales (sqrt/pi/e). El resto de
+    // operaciones mantiene la ruta numérica estricta.
+    let numericMatrix: Matrix | null = null;
+    const supportsSymbolic = msg.op === "determinant" || msg.op === "inverse"
+      || msg.op === "adjugate" || msg.op === "cofactor";
+    if (supportsSymbolic) {
+      try {
+        numericMatrix = toFractionMatrix(msg.a);
+      } catch (err) {
+        const appErr = err as AppError;
+        if (appErr.code !== ClientErrorCode.PARSE_ERROR) throw err;
+      }
+      if (!numericMatrix) {
+        if (msg.op === "determinant") {
+          try {
+            const constant = constantDeterminant(msg.a, requestId);
+            if (constant) return constant;
+          } catch (err) {
+            const appErr = err as AppError;
+            if (appErr.code !== ClientErrorCode.PARSE_ERROR) throw err;
+          }
+          return symbolicDeterminant(msg.a, requestId);
+        }
+        if (msg.op === "inverse") return symbolicInverse(msg.a, requestId);
+        if (msg.op === "adjugate") return symbolicAdjugate(msg.a, requestId);
+        return symbolicCofactor(msg.a, requestId);
+      }
+    }
+    const a = numericMatrix ?? toFractionMatrix(msg.a);
     const b = msg.b ? toFractionMatrix(msg.b) : undefined;
 
     let resultLatex: string;
@@ -827,6 +1274,22 @@ function handleMatrixOp(
     let confidence: ResultConfidence = "SYMBOLIC";
 
     switch (msg.op) {
+      case "scale": {
+        const factor = toFractionMatrix([[msg.scalar ?? "1"]])[0][0];
+        const result = a.map(row=>row.map(value=>value.mul(factor)));
+        const cellLatex = (value: typeof result[number][number]): string => {
+          const [numerator,denominator] = value.toFraction().split("/");
+          return denominator ? "\\frac{"+numerator+"}{"+denominator+"}" : numerator;
+        };
+        resultLatex = "\\begin{pmatrix}"+result.map(row=>row.map(cellLatex).join(" & ")).join(" \\\\ ")+"\\end{pmatrix}";
+        steps = [];
+        break;
+      }
+      case "literal": {
+        resultLatex = a.map(row => row.map(value => value.toFraction(true)).join(", ")).join(" | ");
+        steps = [];
+        break;
+      }
       case "add": {
         const { result, steps: s } = addMatrices(a, b!);
         resultLatex = result.map((row) => row.map((v) => v.toFraction(true)).join(", ")).join(" | ");
@@ -847,7 +1310,11 @@ function handleMatrixOp(
       }
       case "transpose": {
         const { result, steps: s } = transposeMatrix(a);
-        resultLatex = result.map((row) => row.map((v) => v.toFraction(true)).join(", ")).join(" | ");
+        const cellLatex = (value: typeof result[number][number]): string => {
+          const [numerator,denominator] = value.toFraction().split("/");
+          return denominator ? "\\frac{"+numerator+"}{"+denominator+"}" : numerator;
+        };
+        resultLatex = "\\begin{pmatrix}"+result.map(row=>row.map(cellLatex).join(" & ")).join(" \\\\ ")+"\\end{pmatrix}";
         steps = s;
         break;
       }
@@ -860,13 +1327,42 @@ function handleMatrixOp(
       }
       case "inverse": {
         const { result, steps: s } = invertMatrix(a);
-        resultLatex = result.map((row) => row.map((v) => v.toFraction(true)).join(", ")).join(" | ");
+        const cellLatex = (value: typeof result[number][number]): string => {
+          const [numerator,denominator] = value.toFraction().split("/");
+          return denominator ? "\\frac{"+numerator+"}{"+denominator+"}" : numerator;
+        };
+        resultLatex = "\\begin{pmatrix}"+result.map(row=>row.map(cellLatex).join(" & ")).join(" \\\\ ")+"\\end{pmatrix}";
+        steps = s;
+        break;
+      }
+      case "adjugate": {
+        const { result, steps: s } = adjugateMatrix(a);
+        resultLatex = matrixToPmatrix(result);
+        steps = s;
+        break;
+      }
+      case "cofactor": {
+        const { result, steps: s } = cofactorMatrix(a);
+        resultLatex = matrixToPmatrix(result);
+        steps = s;
+        break;
+      }
+      case "solveEquation": {
+        if (!b) {
+          throw { code: ErrorCode.DIMENSION_MISMATCH, message: "La ecuación matricial requiere la matriz B." } as AppError;
+        }
+        const { result, steps: s } = solveMatrixEquation(a, b, msg.xOnLeft ?? true);
+        resultLatex = matrixToPmatrix(result);
         steps = s;
         break;
       }
       case "power": {
         const { result, steps: s } = powerMatrix(a, msg.exponent ?? 1);
-        resultLatex = result.map((row) => row.map((v) => v.toFraction(true)).join(", ")).join(" | ");
+        const cellLatex = (value: typeof result[number][number]): string => {
+          const [numerator, denominator] = value.toFraction().split("/");
+          return denominator ? "\\frac{" + numerator + "}{" + denominator + "}" : numerator;
+        };
+        resultLatex = "\\begin{pmatrix}" + result.map(row => row.map(cellLatex).join(" & ")).join(" \\\\ ") + "\\end{pmatrix}";
         steps = s;
         break;
       }
@@ -878,7 +1374,19 @@ function handleMatrixOp(
       }
       case "rref": {
         const { result, steps: s } = rref(a);
-        resultLatex = result.map((row) => row.map((v) => v.toFraction(true)).join(", ")).join(" | ");
+        resultLatex = matrixToPmatrix(result);
+        steps = s;
+        break;
+      }
+      case "lu": {
+        const { l, u, steps: s } = luDecomposition(a);
+        resultLatex = `L = ${matrixToPmatrix(l)},\\quad U = ${matrixToPmatrix(u)}`;
+        steps = s;
+        break;
+      }
+      case "gramSchmidt": {
+        const { result, steps: s } = gramSchmidt(a);
+        resultLatex = matrixToPmatrix(result);
         steps = s;
         break;
       }

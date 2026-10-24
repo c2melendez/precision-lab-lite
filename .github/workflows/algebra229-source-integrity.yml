@@ -1,0 +1,41 @@
+name: Algebra 229 Source and Fixture Integrity
+
+on:
+  push:
+    branches: [qa/syntax-audit-in625-a1]
+    paths:
+      - "qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz"
+      - "qa/certification/build_algebra229_fixture.py"
+      - "qa/certification/check_algebra229_source.py"
+      - "qa/certification/check_algebra229_fixture.py"
+      - ".github/workflows/algebra229-source-integrity.yml"
+  pull_request:
+    paths:
+      - "qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz"
+      - "qa/certification/build_algebra229_fixture.py"
+      - "qa/certification/check_algebra229_source.py"
+      - "qa/certification/check_algebra229_fixture.py"
+      - ".github/workflows/algebra229-source-integrity.yml"
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Reason for rechecking Algebra 229 source/fixture"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  source-and-fixture-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify frozen Markdown source
+        run: python3 qa/certification/check_algebra229_source.py
+      - name: Build and verify canonical fixture from frozen source
+        run: python3 qa/certification/check_algebra229_fixture.py

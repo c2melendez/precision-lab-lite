@@ -7,6 +7,9 @@
 // ensamblar string Algebrite -> (si es ecuación) aplicar igualdad -> aplicar
 // conversión de ángulo RAD/GRAD.
 
+import { readInlineSubstitution } from "./inlineSubstitution";
+import { compileNumeric } from "../numericFallback";
+import { parsePermutationAlias } from "../permutationAlias";
 import { preprocessLatex, normalizeUnicode, validateDecimalPoints } from "./normalize";
 import { tokenize, type Token } from "./tokenize";
 import { insertImplicitMultiplication } from "./implicitMultiplication";
@@ -105,7 +108,13 @@ function rewriteBinaryFunction(expr: string, fnName: string, build: (a: string, 
 function rewriteCombinatorics(algebrite: string): string {
   let result = algebrite;
   result = rewriteBinaryFunction(result, "nPr", (n, r) => `(factorial(${n})/factorial((${n})-(${r})))`);
-  result = rewriteBinaryFunction(result, "nCr", (n, r) => `(factorial(${n})/(factorial(${r})*factorial((${n})-(${r}))))`);
+  const wholePair = /^nCr\([A-Za-z],2\)$/.test(result);
+  result = rewriteBinaryFunction(result, "nCr", (n, r) =>
+    // Preserve combinatorial provenance for the worker's symbolic pair rule.
+    // A raw factorial quotient must retain its own domain, not inherit this extension.
+    wholePair && /^[A-Za-z]$/.test(n) && !/^[eEiI]$/.test(n) && r === "2"
+      ? "binomialpair(" + n + ")"
+      : `(factorial(${n})/(factorial(${r})*factorial((${n})-(${r}))))`);
   return result;
 }
 
@@ -155,7 +164,12 @@ export function rewriteReciprocalFunctions(expr: string): string {
   // texto reemplazado ya no contiene "sec(" suelto y no hay colisión.
   result = rewriteUnaryFunction(result, "arcsec", (a) => `(arccos(1/(${a})))`);
   result = rewriteUnaryFunction(result, "arccsc", (a) => `(arcsin(1/(${a})))`);
-  result = rewriteUnaryFunction(result, "arccot", (a) => `(arctan(1/(${a})))`);
+  // EV-I-07: la matriz congelada exige el rango principal (0, π):
+  // arccot(-1) = 3π/4, arccot(0) = π/2, arccot(1) = π/4. La identidad
+  // arctan(1/x) daba la rama (−π/2, π/2) y además rompía en x=0; se usa
+  // arccot(x) = π/2 − arctan(x), válida para todo x real y coherente con
+  // la fila EV-I-08.
+  result = rewriteUnaryFunction(result, "arccot", (a) => `(pi/2-arctan(${a}))`);
   // Módulo A (spec §2): mismo problema de substring que arcsec/arccsc/
   // arccot de arriba — "asech" contiene "sech", "acsch" contiene "csch",
   // "acoth" contiene "coth" — se reescriben ANTES que sus versiones
@@ -167,7 +181,12 @@ export function rewriteReciprocalFunctions(expr: string): string {
   result = rewriteUnaryFunction(result, "acoth", (a) => `(atanh(1/(${a})))`);
   result = rewriteUnaryFunction(result, "sec", (a) => `(1/cos(${a}))`);
   result = rewriteUnaryFunction(result, "csc", (a) => `(1/sin(${a}))`);
-  result = rewriteUnaryFunction(result, "cot", (a) => `(1/tan(${a}))`);
+  // EV-D-10 (cot(pi/2) = 0, matriz trigonométrica congelada): la identidad
+  // (1/tan(a)) es correcta salvo en los ceros de tan, donde 1/tan(pi/2)
+  // deja una singularidad evitable y el motor devolvía "1/(tan(1/2*pi))"
+  // en lugar de 0. cos/sin conserva la identidad y resuelve el caso exacto:
+  // cos(pi/2)/sin(pi/2) = 0/1 = 0, y mantiene cot(0) indefinida (1/0).
+  result = rewriteUnaryFunction(result, "cot", (a) => `(cos(${a})/sin(${a}))`);
   result = rewriteUnaryFunction(result, "sech", (a) => `(1/cosh(${a}))`);
   result = rewriteUnaryFunction(result, "csch", (a) => `(1/sinh(${a}))`);
   result = rewriteUnaryFunction(result, "coth", (a) => `(1/tanh(${a}))`);
@@ -209,7 +228,12 @@ function extractFreeVariables(tokens: Token[]): string[] {
 /** Convierte los argumentos de trig DIRECTAS (sin/cos/tan) de grados a radianes cuando angleMode === "GRAD" (spec v10 §5: alcance exacto de angle_unit). "GRAD" es una decisión deliberada del proyecto para significar grados sexagesimales, no gradianes — ver spec_calculadora_v10_sin_backend.md. */
 function applyAngleMode(algebrite: string, angleMode: "RAD" | "GRAD"): string {
   if (angleMode === "RAD") return algebrite;
-  const directTrig = ["sin", "cos", "tan"];
+  // AUD-SING-02: sec/csc/cot también reciben un ÁNGULO y se reescriben a
+  // 1/cos, 1/sin y cos/sin ANTES de evaluar; sin incluirlas aquí, en modo
+  // GRAD se interpretaban como radianes (sec(90) = -2.2318, cot(45) = 0.6174,
+  // csc(30) = -1.0121 en vez de indefinida/1/2). El conversor ya evita
+  // prefijos de letra (arcsec/arccsc/arccot no se tocan).
+  const directTrig = ["sin", "cos", "tan", "sec", "csc", "cot"];
   let result = algebrite;
   for (const fn of directTrig) {
     result = wrapFunctionArgsWithDegToRad(result, fn);
@@ -296,6 +320,54 @@ export function parseAlgebraicFragment(text: string, angleMode: "RAD" | "GRAD" =
 }
 
 /**
+ * IN625 D3: convierte literales decimales ya validados a racionales exactos
+ * antes de tokenizar/evaluar. No toca enteros ni notación malformada; esa
+ * última ya fue rechazada por validateDecimalPoints().
+ */
+function rationalizeDecimalLiterals(expr: string): string {
+  return expr.replace(/(?<![A-Za-z0-9_.])(\d+)\.(\d+)(?![A-Za-z0-9_.])/g, (_m, intPart, fracPart) => {
+    const digits = String(fracPart);
+    const numerator = String(intPart) + digits;
+    const denominator = "1" + "0".repeat(digits.length);
+    return `(${numerator}/${denominator})`;
+  });
+}
+
+/**
+ * EV-M-04: lee una definición local de una variable seguida de su llamada.
+ *
+ * La versión anterior exigía `f(` literal y un argumento sin paréntesis, así
+ * que `f\left(\sqrt{e-1}\right)` y `f(sqrt(e-1))` caían al parser de
+ * ecuaciones y fallaban con "Carácter no reconocido: ';'". La lectura aquí
+ * acepta los delimitadores `\left`/`\right` y equilibra los paréntesis del
+ * argumento; la sustitución sigue siendo efímera (no hay registro global).
+ */
+function readDefinitionCall(
+  source: string,
+): { variable: string; body: string; argument: string } | null {
+  const normalized = source.replace(/\\left\s*/g, "").replace(/\\right\s*/g, "");
+  const head = /^\s*([A-Za-z])\(([A-Za-z])\)\s*=\s*([\s\S]+?);\s*(?:\\\s*)?\1\s*\(/.exec(normalized);
+  if (!head) return null;
+  const variable = head[2];
+  const body = head[3];
+  const start = head[0].length;
+  let depth = 1;
+  let index = start;
+  for (; index < normalized.length; index += 1) {
+    const char = normalized[index];
+    if (char === "(") depth += 1;
+    else if (char === ")") {
+      depth -= 1;
+      if (depth === 0) break;
+    }
+  }
+  if (depth !== 0) return null;
+  const argument = normalized.slice(start, index);
+  if (normalized.slice(index + 1).trim() !== "") return null;
+  return { variable, body: body.trim(), argument: argument.trim() };
+}
+
+/**
  * Parser completo de sintaxis de entrada (Módulo 2). Lanza AppError con
  * ErrorCode.PARSE_ERROR ante cualquier violación de las reglas de la spec.
  */
@@ -303,9 +375,68 @@ export function parseExpression(
   latex: string,
   angleMode: "RAD" | "GRAD" = "RAD",
 ): ParsedExpression {
+  // SY-R-12: do not interpret this prose-only input as multiplied variables.
+  if (latex.replace(/\\(?:text|mathrm|operatorname)\s*\{/g, '').replace(/[{}]/g, '').replace(/\\(?:,|;|!| )/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase() === 'no existe') {
+    throw new Error('Entrada no matemática: escribe una expresión válida.');
+  }
+  // SY-R-04: parse both fragments normally, validate a finite real value,
+  // then replace only the complete parsed identifier. Do not route the
+  // assignment as an equation or persist it in a global variable registry.
+  const inline = readInlineSubstitution(latex);
+  if (inline) {
+    const body = parseExpression(inline.body, angleMode);
+    const value = parseExpression(inline.value, "RAD");
+    if (body.isEquation || body.isInequality || value.isEquation || value.isInequality) {
+      throw new Error("La sustitución requiere una expresión y un valor numérico.");
+    }
+    try {
+      const numeric = compileNumeric(value.algebrite.replace(/\blog\s*\(/g, "ln("), "")(0);
+      if (!Number.isFinite(numeric)) throw new Error("Valor no finito.");
+    } catch {
+      throw new Error("El valor de sustitución debe ser un número real finito sin variables libres.");
+    }
+    const pattern = new RegExp("\\b" + inline.variable + "\\b", "g");
+    const substituted = body.algebrite.replace(pattern, "(" + value.algebrite + ")");
+    return {
+      ...body, algebrite: substituted, leftAlgebrite: substituted, rightAlgebrite: "0",
+      freeVariables: body.freeVariables.filter(name => name !== inline.variable),
+    };
+  }
+
+  // SY-V-06: two-parameter local definition followed by one call.
+  // Substitute parameters simultaneously to avoid cascading replacements.
+  const pairCall = latex.match(/^\s*([A-Za-z])\(([A-Za-z]),([A-Za-z])\)\s*=\s*([^;]+);\s*(?:\\\s*)?\1\(([^(),]+),([^(),]+)\)\s*$/);
+  if (pairCall) {
+    const [, , first, second, body, firstValue, secondValue] = pairCall;
+    if (first === second) throw new Error("Los parámetros deben ser distintos.");
+    const substitutions: Record<string, string> = {
+      [first]: "(" + firstValue + ")",
+      [second]: "(" + secondValue + ")",
+    };
+    const substituted = body.replace(/\b[A-Za-z]\b/g, token => substitutions[token] ?? token);
+    return parseExpression(substituted, angleMode);
+  }
+  // SY-V-04: ephemeral named function call with no persistent registry.
+  // EV-M-04: accepts `\left(...\right)` and balanced parentheses in the
+  // argument, so `f\left(\sqrt{e-1}\right)` is a definition-plus-call rather
+  // than an equation with a stray semicolon.
+  const call = readDefinitionCall(latex);
+  if (call) {
+    const { variable, body, argument } = call;
+    const substituted = body.replace(new RegExp("\\b" + variable + "\\b", "g"), "(" + argument + ")");
+    return parseExpression(substituted, angleMode);
+  }
+  // A local P definition above takes priority over the numeric permutation alias.
+  const permutationAlias = parsePermutationAlias(latex);
+  if (permutationAlias !== null) {
+    const parsed = parseExpression("nPr(" + permutationAlias.n + "," + permutationAlias.r + ")", angleMode);
+    const marker = "permutationalias(" + permutationAlias.n + "," + permutationAlias.r + ")";
+    return { ...parsed, algebrite: marker, leftAlgebrite: marker };
+  }
   const preprocessed = preprocessLatex(latex);
   const unicodeNormalized = normalizeUnicode(preprocessed);
   validateDecimalPoints(unicodeNormalized);
+  const exactNormalized = rationalizeDecimalLiterals(unicodeNormalized);
 
   function pipelineOneSide(side: string): { algebrite: string; tokens: Token[] } {
     const tokens = expandPostfixOperators(tokenize(side));
@@ -325,7 +456,7 @@ export function parseExpression(
   // Fix (decisión de Carlos, cierre de la suite de paridad de teclado):
   // se revisa desigualdad ANTES que "=" — "<="/">=" contienen un "="
   // literal que splitEquation partiría mal si no se distingue primero.
-  const inequalitySplit = splitInequality(unicodeNormalized);
+  const inequalitySplit = splitInequality(exactNormalized);
   if (inequalitySplit) {
     const leftResult = pipelineOneSide(inequalitySplit.left);
     const rightResult = pipelineOneSide(inequalitySplit.right);
@@ -343,7 +474,7 @@ export function parseExpression(
     };
   }
 
-  const { left, right, isEquation } = splitEquation(unicodeNormalized);
+  const { left, right, isEquation } = splitEquation(exactNormalized);
 
   const leftResult = pipelineOneSide(left);
   const freeVariables = extractFreeVariables(leftResult.tokens);

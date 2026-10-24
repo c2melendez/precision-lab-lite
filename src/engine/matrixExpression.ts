@@ -218,8 +218,13 @@ class Parser {
       return value;
     }
 
+    if (token.kind === "number") {
+      this.consume();
+      return { kind: "scalar", value: new Fraction(token.value) };
+    }
+
     if (token.kind !== "name") {
-      parseError("Se esperaba una matriz A–F, una función o un paréntesis.");
+      parseError("Se esperaba una matriz A–F, un escalar, una función o un paréntesis.");
     }
     this.consume();
 

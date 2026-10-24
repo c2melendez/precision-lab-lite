@@ -15,7 +15,7 @@ import {
 // Las operaciones y el worker siguen recibiendo arrays ordinarios: la
 // persistencia/selección vive en UI/store y no altera el motor matemático.
 
-type Op = "add" | "subtract" | "multiply" | "kron" | "transpose" | "determinant" | "inverse" | "power" | "ref" | "rref" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank";
+type Op = "add" | "subtract" | "multiply" | "kron" | "transpose" | "determinant" | "inverse" | "adjugate" | "cofactor" | "solveEquation" | "power" | "ref" | "rref" | "lu" | "gramSchmidt" | "dot" | "cross" | "norm" | "eigen" | "trace" | "rank";
 
 const OP_LABELS: Record<Op, string> = {
   add: "A + B",
@@ -24,10 +24,15 @@ const OP_LABELS: Record<Op, string> = {
   kron: "A ⊗ B",
   transpose: "Aᵀ",
   determinant: "det(A)",
+  adjugate: "adj(A)",
+  cofactor: "cof(A)",
+  solveEquation: "Ecuación matricial",
   inverse: "A⁻¹",
   power: "Aⁿ",
   ref: "ref(A)",
   rref: "rref(A)",
+  lu: "LU(A)",
+  gramSchmidt: "Gram-Schmidt (filas)",
   dot: "A · B",
   cross: "A ⨯ B",
   norm: "‖A‖",
@@ -36,7 +41,7 @@ const OP_LABELS: Record<Op, string> = {
   rank: "rango(A)",
 };
 
-const NEEDS_B: Op[] = ["add", "subtract", "multiply", "kron", "dot", "cross"];
+const NEEDS_B: Op[] = ["add", "subtract", "multiply", "kron", "dot", "cross", "solveEquation"];
 const MIN_SIZE = 1;
 const MAX_SIZE = 6;
 
@@ -48,10 +53,15 @@ function operationLabel(op: Op, primary: MatrixName, secondary: MatrixName): str
     case "kron": return `${primary} ⊗ ${secondary}`;
     case "transpose": return `${primary}ᵀ`;
     case "determinant": return `det(${primary})`;
+    case "adjugate": return `adj(${primary})`;
+    case "cofactor": return `cof(${primary})`;
+    case "solveEquation": return `Resolver X*A=B / A*X=B`;
     case "inverse": return `${primary}⁻¹`;
     case "power": return `${primary}ⁿ`;
     case "ref": return `ref(${primary})`;
     case "rref": return `rref(${primary})`;
+    case "lu": return `LU(${primary})`;
+    case "gramSchmidt": return `Gram-Schmidt (filas de ${primary})`;
     case "dot": return `${primary} · ${secondary}`;
     case "cross": return `${primary} ⨯ ${secondary}`;
     case "norm": return `‖${primary}‖`;
@@ -117,6 +127,7 @@ function MatrixSelector({
 export function MatrixMode() {
   const [op, setOp] = useState<Op>("add");
   const [exponent, setExponent] = useState(2);
+  const [xOnLeft, setXOnLeft] = useState(true);
   const [matrixExpression, setMatrixExpression] = useState("A+B");
   const [copyTarget, setCopyTarget] = useState<MatrixName>("C");
   const [result, setResult] = useState<MathResult | null>(null);
@@ -145,7 +156,11 @@ export function MatrixMode() {
       setResult(e.data);
       if (e.data.success) {
         const input = NEEDS_B.includes(op)
-          ? JSON.stringify({ [primary]: matrixA.values, [secondary]: matrixB.values })
+          ? JSON.stringify({
+              [primary]: matrixA.values,
+              [secondary]: matrixB.values,
+              ...(op === "solveEquation" ? { xOnLeft } : {}),
+            })
           : JSON.stringify({ [primary]: matrixA.values });
         addHistoryEntry({
           mode: `Matrices (${label})`,
@@ -155,7 +170,16 @@ export function MatrixMode() {
       }
     };
 
-    if (NEEDS_B.includes(op)) {
+    if (op === "solveEquation") {
+      worker.postMessage({
+        type: "matrixOp",
+        requestId,
+        op,
+        a: matrixA.values,
+        b: matrixB.values,
+        xOnLeft,
+      });
+    } else if (NEEDS_B.includes(op)) {
       worker.postMessage({
         type: "matrixOp",
         requestId,
@@ -179,7 +203,7 @@ export function MatrixMode() {
         a: matrixA.values,
       });
     }
-  }, [op, primary, secondary, matrixA, matrixB, exponent, getWorker]);
+  }, [op, primary, secondary, matrixA, matrixB, exponent, xOnLeft, getWorker]);
 
   const handleExpressionCompute = useCallback(() => {
     const expression = matrixExpression.trim();
@@ -373,11 +397,28 @@ export function MatrixMode() {
             Exponente n:
             <input
               type="number"
-              min={0}
+              min={-10}
               value={exponent}
               onChange={(e) => setExponent(parseInt(e.target.value, 10) || 0)}
               className="w-16 rounded bg-paper-soft px-2 py-1 text-center text-ink"
             />
+          </label>
+        )}
+
+        {op === "solveEquation" && (
+          <label className="flex flex-wrap items-center justify-center gap-2 text-sm text-muted">
+            Ecuación:
+            <select
+              value={xOnLeft ? "left" : "right"}
+              onChange={(event) => {
+                setXOnLeft(event.target.value === "left");
+                setResult(null);
+              }}
+              className="rounded bg-paper-soft px-2 py-1 text-ink"
+            >
+              <option value="left">X·A = B (X = B·A⁻¹)</option>
+              <option value="right">A·X = B (X = A⁻¹·B)</option>
+            </select>
           </label>
         )}
 

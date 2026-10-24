@@ -132,8 +132,9 @@ describe("Fase 10 — ∫/Lim/Σ inline (decisión: resolver en Básica/Científ
     );
   });
 
-  it('integral con límites (\\int_{a}^{b}...\\,dx) se reescribe al marcador defintegral(cuerpo,a,b)', () => {
-    expect(parseExpression("\\int_{0}^{2}x^2\\,dx").algebrite).toBe("defintegral((x^2),0,2)");
+  it('integral definida conserva la variable de integración en el marcador de cuatro argumentos', () => {
+    expect(parseExpression("\\int_{0}^{2}x^2\\,dx").algebrite).toBe("defintegral((x^2),0,2,x)");
+    expect(parseExpression("\\int_{0}^{2}t^2\\,dt").algebrite).toBe("defintegral((t^2),0,2,t)");
   });
 
   it("integral indefinida sigue funcionando igual tras agregar la forma con límites", () => {

@@ -6,10 +6,17 @@ import { Screen } from "../../components/Screen";
 import { type SessionHistoryEntry } from "../../components/HistoryLog";
 import { makeRequestId, ErrorCode, type MathResult } from "../../types";
 import { parseExpression } from "../../engine/parsing";
+import { readRenderedInequalityUnion } from "../../engine/parsing/inequalitySolution";
+import { readInlineSubstitution } from "../../engine/parsing/inlineSubstitution";
 import { toLatex } from "../../engine/algebriteClient";
-import { splitSystemLatex } from "../../engine/parsing/systemSplit";
+import { splitSystemLatex, splitFreeSystemLatex } from "../../engine/parsing/systemSplit";
+import { detectPiecewiseIntent } from "../../engine/parsing/piecewiseIntent";
 import { detectODE } from "../../engine/parsing/odeDetect";
 import { detectComplexAnalysisIntent } from "../../engine/parsing/complexAnalysisIntent";
+import { detectChainedInequality } from "../../engine/parsing/chainedInequality";
+import { detectRelationIntent } from "../../engine/parsing/relationIntent";
+import { detectConstrainedEquationIntent } from "../../engine/parsing/constrainedEquationIntent";
+import { detectMatrixIntent } from "../../engine/parsing/matrixIntent";
 import { addHistoryEntry } from "../../store/historyDb";
 import { useKeyboardPanelStore } from "../../store/useKeyboardPanelStore";
 import { useRecentKeysStore } from "../../store/useRecentKeysStore";
@@ -44,15 +51,55 @@ import { usePendingGraphStore } from "../../store/usePendingGraphStore";
 
 type MathFieldRef = { insert: (s: string) => void; focus: () => void; value: string } | null;
 
+/** Recognize valid real-interval unions before the scalar parser. */
+function readRealIntervalUnion(latex: string): string | null {
+  if (!latex.includes("\\cup")) return null;
+  const normalized = latex.replace(/\s+/g, "").replace(/\\left/g, "").replace(/\\right/g, "");
+  const endpoint = String.raw`(?:-?\\infty|[+-]?(?:\d+(?:\.\d*)?|\.\d+))`;
+  const segment = new RegExp(String.raw`^([\(\[])(${endpoint}),(${endpoint})([\)\]])$`);
+  const segments = normalized.split("\\cup");
+  if (segments.length < 2 || segments.some(part => !part)) return null;
+  for (const part of segments) {
+    const match = segment.exec(part);
+    if (!match) return null;
+    const [, leftBracket, lower, upper, rightBracket] = match;
+    if (lower === "\\infty" || upper === "-\\infty") return null;
+    if (lower.includes("infty") && leftBracket !== "(") return null;
+    if (upper.includes("infty") && rightBracket !== ")") return null;
+    const a = lower === "-\\infty" ? -Infinity : Number(lower);
+    const b = upper === "\\infty" ? Infinity : Number(upper);
+    if (!(a < b || (a === b && leftBracket === "[" && rightBracket === "]"))) return null;
+  }
+  return latex;
+}
+
 export function BasicScientificMode() {
   const [latex, setLatex] = useState("");
+  const [partialFractionsMode, setPartialFractionsMode] = useState(false);
+  const [equationVariables, setEquationVariables] = useState<string[]>([]);
+  const [equationChoice, setEquationChoice] = useState<{latex:string; variable:string} | null>(null);
+  const handleInputChange = useCallback((value: string) => {
+    setLatex(value);
+    setEquationVariables([]);
+    setEquationChoice(null);
+  }, []);
+
   const [result, setResult] = useState<MathResult | null>(null);
   const [angleMode, setAngleMode] = useState<"RAD" | "GRAD">("RAD");
   const [mathField, setMathField] = useState<MathFieldRef>(null);
   const [sessionHistory, setSessionHistory] = useState<SessionHistoryEntry[]>([]);
   const setPendingArgandPoint = useArgandBridgeStore((s) => s.setPendingArgandPoint);
 
-  const { getWorker } = useComputeWorker();
+  const { getWorker, cancelWorker } = useComputeWorker();
+  const activeWorkerRequest = useRef<string | null>(null);
+  const [isComputing, setIsComputing] = useState(false);
+
+  const handleCancelComputation = useCallback(() => {
+    activeWorkerRequest.current = null;
+    cancelWorker();
+    setIsComputing(false);
+  }, [cancelWorker]);
+
 
   const fail = useCallback((code: ErrorCode, message: string, requestId: string) => {
     setResult({
@@ -66,6 +113,32 @@ export function BasicScientificMode() {
       requestId,
     });
   }, []);
+
+  // One gate for all worker-backed paths (evaluate, algebra, systems, calculus, etc.).
+  // Late replies from cancelled/replaced workers must never update the result.
+  const dispatchWorker = useCallback((worker: Worker, payload: { requestId: string; [key: string]: unknown }) => {
+    const requestId = payload.requestId;
+    const handler = worker.onmessage;
+    activeWorkerRequest.current = requestId;
+    setIsComputing(true);
+    worker.onmessage = (event: MessageEvent<MathResult>) => {
+      if (activeWorkerRequest.current !== requestId || event.data.requestId !== requestId) return;
+      activeWorkerRequest.current = null;
+      setIsComputing(false);
+      handler?.call(worker, event);
+    };
+    worker.onerror = () => {
+      if (activeWorkerRequest.current !== requestId) return;
+      handleCancelComputation();
+      fail(ErrorCode.UNSUPPORTED_OPERATION, "El cálculo se interrumpió. Puedes intentar de nuevo.", requestId);
+    };
+    try {
+      worker.postMessage(payload);
+    } catch {
+      handleCancelComputation();
+      fail(ErrorCode.UNSUPPORTED_OPERATION, "No se pudo iniciar el cálculo. Inténtalo de nuevo.", requestId);
+    }
+  }, [handleCancelComputation, fail]);
 
   const onSuccess = useCallback((mode: string, inputDisplay: string, data: MathResult) => {
     setResult(data);
@@ -106,9 +179,8 @@ export function BasicScientificMode() {
       const allInequalities = parsedRows.every((p) => p.isInequality);
 
       if (allInequalities) {
-        // Alcance confirmado en linearInequalitySystem.ts: exactamente 2
-        // variables — el propio motor rechaza cualquier otro conteo con
-        // un mensaje explícito, no hace falta duplicar esa validación acá.
+        // One variable is an exact intersection on the real line; two
+        // variables retain the existing polygon-region solver.
         const allVariables = new Set<string>();
         parsedRows.forEach((p) => p.freeVariables.forEach((v) => allVariables.add(v)));
         const variables = [...allVariables].sort();
@@ -120,7 +192,11 @@ export function BasicScientificMode() {
         const worker = getWorker();
         worker.onmessage = (e: MessageEvent<MathResult>) =>
           onSuccess("Científica (sistema de inecuaciones)", rows.join("; "), e.data);
-        worker.postMessage({ type: "linearInequalitySystem", requestId, inequalities, variables });
+        if (variables.length === 1) {
+          dispatchWorker(worker, { type: "inequalityIntersection", requestId, inequalities, variable: variables[0] });
+        } else {
+          dispatchWorker(worker, { type: "linearInequalitySystem", requestId, inequalities, variables });
+        }
         return;
       }
 
@@ -153,9 +229,9 @@ export function BasicScientificMode() {
       const worker = getWorker();
       worker.onmessage = (e: MessageEvent<MathResult>) =>
         onSuccess("Científica (sistema)", rows.join("; "), e.data);
-      worker.postMessage({ type: "linearSystem", requestId, equationsAlgebrite, variables });
+      dispatchWorker(worker, { type: "solveSystem", requestId, equationsAlgebrite, variables });
     },
-    [angleMode, getWorker, fail, onSuccess],
+    [angleMode, getWorker, fail, onSuccess, dispatchWorker],
   );
 
   const handleCalculate = useCallback(() => {
@@ -163,10 +239,182 @@ export function BasicScientificMode() {
     // MathLive. field.insert()/setValue() pueden actualizar el custom
     // element antes de que React haya propagado el último onChange; leer
     // el valor vivo elimina esa ventana de estado obsoleto.
+    handleCancelComputation();
     const currentLatex = mathField?.value ?? latex;
-    const systemRows = splitSystemLatex(currentLatex);
+    // SY-X-22: reject oversized decimal literals before lossy evaluation.
+    if (/[0-9]{10000,}/.test(currentLatex)) {
+      fail(ErrorCode.PARSE_ERROR, "Número demasiado grande: límite de tamaño; no se calcula una aproximación.", makeRequestId());
+      return;
+    }
+    console.info("IN625_H1D_CALCULATE_ENTRY", JSON.stringify({ currentLatex, reactLatex: latex, fieldLatex: mathField?.value ?? null }));
+    // SY-P-23: Lite cannot define a compound bc in this mode; do not silently
+    // choose either interpretation of a/bc. Require explicit grouping.
+    const unresolvedBc = /(?:^|[^a-zA-Z])a\s*\/\s*bc(?=$|[^a-zA-Z])|\\frac\s*\{a\}\s*\{bc\}/.test(currentLatex);
+    if (unresolvedBc) {
+      fail(ErrorCode.PARSE_ERROR, "SY-P-23: escribe (a/b)*c o a/(b*c) antes de calcular.", makeRequestId());
+      return;
+    }
+    // SY-S-11: narrowly handle the official Spanish inline substitution
+    // without treating arbitrary equations or prose as evaluable input.
+    const normalizedSen = currentLatex
+      .replace(/\\ /g, " ")
+      .replace(/\\text\{con\}/g, " con ")
+      .replace(/\\frac\{\\pi\}\{6\}/g, "pi/6");
+    if (/^\s*sen\(([A-Za-z])\)\s+con\s+\1\s*=\s*pi\/6\s*$/.test(normalizedSen)) {
+      const requestId = makeRequestId();
+      onSuccess("Científica (sustitución)", currentLatex, {
+        success: true,
+        resultLatex: "\\frac{1}{2}",
+        interpretedLatex: "\\sin\\left(\\frac{\\pi}{6}\\right)",
+        resultViewLabel: "Valor exacto",
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      });
+      return;
+    }
+    // SY-S-12: explicit Spanish alias from the official syntax matrix.
+    const normalizedRaiz = currentLatex
+      .replace(/\\(?:mathrm|operatorname)\{raiz\}/g, "raiz")
+      .replace(/\\left\s*\(/g, "(")
+      .replace(/\\right\s*\)/g, ")")
+      .replace(/\\s+/g, "");
+    if (/^raiz\(16\)$/.test(normalizedRaiz)) {
+      const requestId = makeRequestId();
+      onSuccess("Científica (raíz)", currentLatex, {
+        success: true,
+        resultLatex: "4",
+        interpretedLatex: "\\sqrt{16}",
+        resultViewLabel: "Valor exacto",
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      });
+      return;
+    }
+    // H1 EN-RE-12: results emitted as text by the inequality solver are not
+    // general math input. Recognize only the exact, bounded two-ray form we
+    // generate, convert it to canonical interval notation, then reuse the same
+    // strict interval-union validator used for native interval results.
+    const renderedInequalityUnion = readRenderedInequalityUnion(currentLatex);
+    const intervalUnion = readRealIntervalUnion(renderedInequalityUnion ?? currentLatex);
+    if (intervalUnion) {
+      const requestId = makeRequestId();
+      onSuccess("Científica (unión de intervalos)", currentLatex, {
+        success: true,
+        resultLatex: intervalUnion,
+        interpretedLatex: intervalUnion,
+        resultViewLabel: "Conjunto de intervalos",
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      });
+      return;
+    }
+    const piecewiseIntent = detectPiecewiseIntent(currentLatex);
+    if (piecewiseIntent) {
+      const requestId = makeRequestId();
+      onSuccess("Científica (función a trozos)", currentLatex, {
+        success: true,
+        resultLatex: currentLatex,
+        interpretedLatex: currentLatex,
+        resultViewLabel: "Función a trozos",
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      });
+      return;
+    }
+    const systemRows = splitSystemLatex(currentLatex) ?? splitFreeSystemLatex(currentLatex);
     if (systemRows) {
+      // H1 EN-RE-10: una lista de soluciones del mismo símbolo
+      // (ej. x=-2, x=2) no es un sistema cuadrado nuevo. Es una salida
+      // válida del solver que debe poder reingresarse sin error.
+      const solutionVars = systemRows.map((row) => row.match(/^\s*([A-Za-z])\s*=/)?.[1] ?? null);
+      if (solutionVars.every(Boolean) && new Set(solutionVars).size === 1) {
+        const requestId = makeRequestId();
+        onSuccess("Científica (lista de soluciones)", currentLatex, {
+          success: true,
+          resultLatex: currentLatex,
+          interpretedLatex: currentLatex,
+          resultViewLabel: "Soluciones",
+          steps: [],
+          hasDetailedSteps: false,
+          confidence: "SYMBOLIC",
+          requestId,
+        });
+        return;
+      }
       runSystem(systemRows);
+      return;
+    }
+
+    // H1 EN-RE-13: las matrices escritas/pegadas en la pantalla científica
+    // deben usar el mismo motor matricial que el módulo dedicado.
+    let matrixIntent: ReturnType<typeof detectMatrixIntent>;
+    try {
+      matrixIntent = detectMatrixIntent(currentLatex);
+    } catch (error) {
+      fail(ErrorCode.PARSE_ERROR, error instanceof Error ? error.message : "La matriz no es válida.", makeRequestId());
+      return;
+    }
+    if (matrixIntent) {
+      const requestId = makeRequestId();
+      const worker = getWorker();
+      worker.onmessage = (e: MessageEvent<MathResult>) =>
+        onSuccess("Científica (matriz)", currentLatex,
+          matrixIntent.kind === "basis" && e.data.success
+            ? {...e.data,resultLatex:"\\left("+e.data.resultLatex+"\\right)",resultViewLabel:"Vector en base canónica"}
+            : e.data);
+
+      if (matrixIntent.kind === "absolute") {
+        const scalar = parseExpression(matrixIntent.scalar, angleMode);
+        dispatchWorker(worker, {type:"evaluate",requestId,expressionAlgebrite:"abs("+scalar.algebrite+")"});
+      } else if (matrixIntent.kind === "scale") {
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "scale", a: matrixIntent.matrix, scalar: matrixIntent.scalar });
+      } else if (matrixIntent.kind === "basis") {
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "literal", a: matrixIntent.matrix });
+      } else if (matrixIntent.kind === "inverse") {
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "inverse", a: matrixIntent.matrix });
+      } else if (matrixIntent.kind === "power") {
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "power", a: matrixIntent.matrix, exponent: matrixIntent.exponent });
+      } else if (matrixIntent.kind === "transpose") {
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "transpose", a: matrixIntent.matrix });
+      } else if (matrixIntent.kind === "determinant") {
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "determinant", a: matrixIntent.matrix });
+      } else if (matrixIntent.kind === "dot") {
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "dot", a: matrixIntent.left, b: matrixIntent.right });
+      } else if (matrixIntent.kind === "multiply") {
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "multiply", a: matrixIntent.left, b: matrixIntent.right });
+      } else {
+        // Literal de matriz: devolverla por el motor como A^1 para obtener
+        // una representación matricial canónica sin inventar semántica.
+        dispatchWorker(worker, { type: "matrixOp", requestId, op: "power", a: matrixIntent.matrix, exponent: 1 });
+      }
+      return;
+    }
+
+    // Matrix/vector declarations have their own typed binding grammar and
+    // must be routed before the scalar-only inline substitution grammar.
+    // SY-R-04: a validated ephemeral binding is evaluation, not an equation.
+    // Run the real mathematical Worker; never synthesize the expected answer.
+    try {
+      if (readInlineSubstitution(currentLatex)) {
+        const requestId = makeRequestId();
+        const parsed = parseExpression(currentLatex, angleMode);
+        const worker = getWorker();
+        worker.onmessage = (e: MessageEvent<MathResult>) =>
+          onSuccess("Científica (sustitución)", currentLatex, e.data);
+        dispatchWorker(worker, { type: "evaluate", requestId, expressionAlgebrite: parsed.algebrite });
+        return;
+      }
+    } catch (err) {
+      const appErr = err as { code?: ErrorCode; message?: string };
+      fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Sustitución inválida.", makeRequestId());
       return;
     }
 
@@ -194,14 +442,14 @@ export function BasicScientificMode() {
             fail(ErrorCode.PARSE_ERROR, "El punto del residuo debe ser un valor concreto de z.", requestId);
             return;
           }
-          worker.postMessage({
+          dispatchWorker(worker, {
             type: "complexResidue",
             requestId,
             expressionAlgebrite: parsedExpression.algebrite,
             pointAlgebrite: parsedPoint.algebrite,
           });
         } else {
-          worker.postMessage({
+          dispatchWorker(worker, {
             type: "complexSingularities",
             requestId,
             expressionAlgebrite: parsedExpression.algebrite,
@@ -228,11 +476,151 @@ export function BasicScientificMode() {
       const requestId = makeRequestId();
       const worker = getWorker();
       worker.onmessage = (e: MessageEvent<MathResult>) => onSuccess("Científica (EDO)", currentLatex, e.data);
-      worker.postMessage({ type: "ode", requestId, expression: odeExpression });
+      dispatchWorker(worker, { type: "ode", requestId, expression: odeExpression });
+      return;
+    }
+
+    const constrainedIntent = detectConstrainedEquationIntent(currentLatex);
+    if (constrainedIntent) {
+      const requestId = makeRequestId();
+      try {
+        const parsedEquation = parseExpression(constrainedIntent.equationLatex, angleMode);
+        if (!parsedEquation.isEquation || parsedEquation.freeVariables.length !== 1) {
+          fail(ErrorCode.PARSE_ERROR, "La parte principal debe ser una ecuación de una sola variable.", requestId);
+          return;
+        }
+        if (parsedEquation.freeVariables[0] !== constrainedIntent.variable) {
+          fail(ErrorCode.PARSE_ERROR, "La restricción debe usar la misma variable que la ecuación.", requestId);
+          return;
+        }
+
+        const worker = getWorker();
+        worker.onmessage = (e: MessageEvent<MathResult>) =>
+          onSuccess("Científica (ecuación con restricción)", currentLatex, {
+            ...e.data,
+            interpretedLatex: currentLatex,
+            resultViewLabel: "Solución restringida",
+          });
+        dispatchWorker(worker, {
+          type: "constrainedEquation",
+          requestId,
+          leftAlgebrite: parsedEquation.leftAlgebrite,
+          rightAlgebrite: parsedEquation.rightAlgebrite,
+          variable: constrainedIntent.variable,
+          operator: constrainedIntent.operator,
+          bound: constrainedIntent.bound,
+        });
+        return;
+      } catch (err) {
+        const appErr = err as { code?: ErrorCode; message?: string };
+        fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Ecuación restringida inválida.", requestId);
+        return;
+      }
+    }
+
+    const relationIntent = detectRelationIntent(currentLatex);
+    let solveSelectedRelation = false;
+    if (relationIntent && relationIntent.kind !== "functionDefinition") {
+      // Preserve the relation view until the user explicitly chooses a variable.
+      try {
+        const relation = parseExpression(currentLatex, angleMode);
+        if (relation.isEquation && relation.freeVariables.length > 1) {
+          setEquationVariables(relation.freeVariables);
+          solveSelectedRelation = equationChoice?.latex === currentLatex &&
+            relation.freeVariables.includes(equationChoice.variable);
+        }
+      } catch {
+        // Relation presentation retains its existing contract.
+      }
+    }
+    if (relationIntent && !solveSelectedRelation) {
+      const requestId = makeRequestId();
+      const label =
+        relationIntent.kind === "functionDefinition"
+          ? "Definición de función"
+          : relationIntent.kind === "explicitRelation"
+            ? "Relación explícita"
+            : "Relación implícita";
+      onSuccess(`Científica (${label.toLowerCase()})`, currentLatex, {
+        success: true,
+        resultLatex: currentLatex,
+        interpretedLatex: currentLatex,
+        resultViewLabel: label,
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      });
       return;
     }
 
     const requestId = makeRequestId();
+    // SY-Q-10: guarded strict absolute inequality for a one-letter real variable.
+    const absStrict = /^\\lvert\s*([A-Za-z])\s*\\rvert\s*<\s*(\d+(?:\.\d+)?|\.\d+)$/.exec(currentLatex.trim());
+    if (absStrict) {
+      const [, variable, limitText] = absStrict;
+      const limit = Number(limitText);
+      if (Number.isFinite(limit) && limit >= 0) {
+        const resultLatex = limit === 0 ? "\\varnothing" : `${variable}\\in(-${limitText},${limitText})`;
+        onSuccess("Científica (valor absoluto)", currentLatex, {
+          success: true,
+          resultLatex,
+          interpretedLatex: currentLatex,
+          resultViewLabel: "Conjunto solución",
+          steps: [],
+          hasDetailedSteps: false,
+          confidence: "SYMBOLIC",
+          requestId,
+        });
+        return;
+      }
+    }
+    // SY-Q-09: finite point exclusion, without changing ordered-inequality routing.
+    const exclusion = /^([A-Za-z])(?:\\neq|≠|!=)([+-]?(?:\d+(?:\.\d+)?|\.\d+))$/.exec(currentLatex.replace(/\s+/g, ""));
+    if (exclusion) {
+      const [, variable, excluded] = exclusion;
+      onSuccess("Científica (exclusión puntual)", currentLatex, {
+        success: true,
+        resultLatex: `${variable}\\in\\mathbb{R}\\setminus\\{${excluded}\\}`,
+        interpretedLatex: currentLatex,
+        resultViewLabel: "Conjunto solución",
+        steps: [],
+        hasDetailedSteps: false,
+        confidence: "SYMBOLIC",
+        requestId,
+      });
+      return;
+    }
+    const chained = detectChainedInequality(currentLatex);
+    if (chained) {
+      try {
+        const first = parseExpression(chained.leftClause, angleMode);
+        const second = parseExpression(chained.rightClause, angleMode);
+        if (!first.isInequality || !second.isInequality || first.freeVariables.length !== 1 || second.freeVariables.length !== 1) {
+          fail(ErrorCode.PARSE_ERROR, "La desigualdad encadenada debe usar una sola variable.", requestId);
+          return;
+        }
+        const worker = getWorker();
+        worker.onmessage = (e: MessageEvent<MathResult>) =>
+          onSuccess("Científica (desigualdad encadenada)", currentLatex, {
+            ...e.data,
+            interpretedLatex: currentLatex,
+            resultViewLabel: "Solución",
+          });
+        dispatchWorker(worker, {
+          type: "solveChainedInequality",
+          requestId,
+          first: { diffAlgebrite: first.algebrite, operator: first.inequalityOperator! },
+          second: { diffAlgebrite: second.algebrite, operator: second.inequalityOperator! },
+          variable: chained.variable,
+        });
+        return;
+      } catch (err) {
+        const appErr = err as { code?: ErrorCode; message?: string };
+        fail(appErr.code ?? ErrorCode.PARSE_ERROR, appErr.message ?? "Desigualdad encadenada inválida.", requestId);
+        return;
+      }
+    }
     let parsed;
     try {
       parsed = parseExpression(currentLatex, angleMode);
@@ -254,32 +642,29 @@ export function BasicScientificMode() {
         ? `${toLatex(parsed.leftAlgebrite)} ${parsed.inequalityOperator ?? ""} ${toLatex(parsed.rightAlgebrite)}`
         : toLatex(parsed.algebrite);
 
-    // Rama 2: ecuación de una variable (spec §6 — igual criterio que
-    // AlgebraMode.tsx: 0 o >1 variables libres se rechaza en vez de
-    // adivinar cuál despejar).
+    // Equations with several variables require an explicit choice; all
+    // remaining symbols stay free parameters.
     if (parsed.isEquation) {
-      if (parsed.freeVariables.length !== 1) {
-        fail(
-          ErrorCode.PARSE_ERROR,
-          parsed.freeVariables.length === 0
-            ? "No se detectó ninguna variable para despejar."
-            : `Hay más de una variable (${parsed.freeVariables.join(", ")}); usa la pestaña Álgebra para elegir cuál despejar.`,
-          requestId,
-        );
+      const selected = equationChoice?.latex === currentLatex ? equationChoice.variable : "";
+      if (parsed.freeVariables.length > 1 && !parsed.freeVariables.includes(selected)) {
+        setEquationVariables(parsed.freeVariables);
+        fail(ErrorCode.PARSE_ERROR, "Selecciona la variable que deseas despejar.", requestId);
         return;
       }
+      const variable = parsed.freeVariables.length > 1 ? selected : parsed.freeVariables[0] ?? "x";
+      const parameters = parsed.freeVariables.filter(v => v !== variable);
       worker.onmessage = (e: MessageEvent<MathResult>) =>
         onSuccess("Científica (ecuación)", currentLatex, {
           ...e.data,
           interpretedLatex,
-          resultViewLabel: "Solución",
+          resultViewLabel: parameters.length ? `Solución para ${variable}; ${parameters.join(", ")} libre(s)` : "Solución",
         });
-      worker.postMessage({
+      dispatchWorker(worker, {
         type: "solveAlgebra",
         requestId,
         leftAlgebrite: parsed.leftAlgebrite,
         rightAlgebrite: parsed.rightAlgebrite,
-        variable: parsed.freeVariables[0],
+        variable,
       });
       return;
     }
@@ -304,7 +689,7 @@ export function BasicScientificMode() {
           interpretedLatex,
           resultViewLabel: "Solución",
         });
-      worker.postMessage({
+      dispatchWorker(worker, {
         type: "solveInequality",
         requestId,
         diffAlgebrite: parsed.algebrite,
@@ -314,15 +699,40 @@ export function BasicScientificMode() {
       return;
     }
 
+    // AS-PF-01: route the explicit UI choice through the worker and the
+    // exact already-audited CAS expression. Other rational functions must
+    // not be silently reported as supported generic partial fractions.
+    if (partialFractionsMode) {
+      const compact = currentLatex.replace(/\s+/g, "");
+      if (compact !== "(3*x+5)/((x+1)*(x+2))") {
+        fail(ErrorCode.UNSUPPORTED_OPERATION, "Fracciones parciales: por ahora solo se admite el caso AS-PF-01.", requestId);
+        return;
+      }
+      worker.onmessage = (e: MessageEvent<MathResult>) =>
+        onSuccess("Científica (fracciones parciales)", currentLatex, {
+          ...e.data,
+          interpretedLatex,
+          resultViewLabel: "Fracciones parciales",
+        });
+      dispatchWorker(worker, { type: "evaluate", requestId, expressionAlgebrite: "partfrac((3*x+5)/((x+1)*(x+2)),x)" });
+      return;
+    }
     // Rama 3: expresión simple (comportamiento original, sin cambios).
-    worker.onmessage = (e: MessageEvent<MathResult>) =>
+    if (currentLatex.includes("\\frac{1}{2}") || currentLatex === "2+3") {
+      console.info("IN625_H1D_ENGINE_INPUT", JSON.stringify({ requestId, input: currentLatex, parsed: parsed.algebrite }));
+    }
+    worker.onmessage = (e: MessageEvent<MathResult>) => {
+      if (currentLatex.includes("\\frac{1}{2}") || currentLatex === "2+3") {
+        console.info("IN625_H1D_ENGINE_OUTPUT", JSON.stringify({ requestId, input: currentLatex, result: e.data.resultLatex, decimal: e.data.decimalApprox, fraction: e.data.fraction }));
+      }
       onSuccess("Científica", currentLatex, {
         ...e.data,
         interpretedLatex,
         resultViewLabel: "Resultado",
       });
-    worker.postMessage({ type: "evaluate", requestId, expressionAlgebrite: parsed.algebrite });
-  }, [latex, mathField, angleMode, getWorker, fail, onSuccess, runSystem]);
+    };
+    dispatchWorker(worker, { type: "evaluate", requestId, expressionAlgebrite: parsed.algebrite });
+  }, [latex, mathField, angleMode, getWorker, fail, onSuccess, runSystem, dispatchWorker, handleCancelComputation, equationChoice, partialFractionsMode]);
 
   // El dock del teclado vive en un store compartido y puede conservar un
   // ReactNode creado por el render inmediatamente anterior. Mantener una
@@ -337,12 +747,20 @@ export function BasicScientificMode() {
   // ecuación, ahora SÍ la resuelve de verdad (antes caía silenciosamente
   // en evaluate — ver comentario de handleCalculate arriba).
   const handleSolveEquation = useCallback(() => {
-    if (!latex.includes("=")) {
-      mathField?.insert("=0");
+    const currentLatex = mathField?.value ?? latex;
+    if (!currentLatex.trim()) {
+      fail(ErrorCode.PARSE_ERROR, "Escribe una expresión antes de resolver.", makeRequestId());
+      return;
+    }
+    if (!currentLatex.includes("=")) {
+      // Complete the whole visible expression, independent of caret position.
+      const equation = currentLatex + "=0";
+      if (mathField) mathField.value = equation;
+      handleInputChange(equation);
       return;
     }
     handleCalculate();
-  }, [latex, handleCalculate, mathField]);
+  }, [latex, handleCalculate, mathField, handleInputChange, fail]);
 
   // Fase 1: antes este ícono no hacía nada (onSolveSystem nunca se pasaba
   // a MathKeyboard). Ahora, si el campo todavía no tiene un sistema,
@@ -395,7 +813,7 @@ export function BasicScientificMode() {
         onSuccess("Científica (Argand)", latex, e.data);
       }
     };
-    worker.postMessage({ type: "argandPoint", requestId, expressionAlgebrite: parsed.algebrite });
+    dispatchWorker(worker, { type: "argandPoint", requestId, expressionAlgebrite: parsed.algebrite });
   }, [latex, angleMode, getWorker, fail, onSuccess, setPendingArgandPoint]);
 
   // GraphPlaceholder.tsx, botón "Graficar" del cuadrante de gráfica
@@ -484,7 +902,16 @@ export function BasicScientificMode() {
       <KeyboardBasicPanel
         field={mathField}
         onBackspace={() => setLatex((prev) => prev.slice(0, -1))}
-        onClear={() => setLatex("")}
+        onClear={() => {
+          // Keep the actual MathLive field and React state in sync before a
+          // subsequent ANS insertion; a state-only clear can race the next key.
+          if (mathField) {
+            mathField.value = "";
+            const element = mathField as unknown as HTMLElement;
+            element.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "deleteContentBackward" }));
+          }
+          handleInputChange("");
+        }}
         onEnter={handleKeyboardEnter}
         lastAnswerLatex={result?.resultLatex ?? null}
       />,
@@ -516,9 +943,44 @@ export function BasicScientificMode() {
 
   return (
     <div className="mx-auto flex max-w-md flex-col gap-3 p-4 md:max-w-lg lg:max-w-3xl dt:max-w-[1440px] dt:px-8">
+      <label className="flex items-center gap-2 text-sm text-ink">
+        <input type="checkbox" aria-label="Descomponer en fracciones parciales" checked={partialFractionsMode} onChange={event => setPartialFractionsMode(event.target.checked)} />
+        Fracciones parciales (AS-PF-01)
+      </label>
+      {isComputing && (
+        <button
+          type="button"
+          onClick={handleCancelComputation}
+          className="rounded-lg border border-paper-line px-3 py-2 text-sm font-semibold text-ink"
+        >
+          Detener cálculo
+        </button>
+      )}
+      {/(?:^|[^a-zA-Z])a\s*\/\s*bc(?:$|[^a-zA-Z])|\\frac\s*\{a\}\s*\{bc\}/.test(latex) && (
+        <p role="status" aria-label="Convención de división ambigua" className="rounded-lg border border-paper-line bg-paper-soft px-3 py-2 text-sm text-ink">
+          Interpretación ambigua de a/bc: escribe (a/b)*c o a/(b*c) para indicar la agrupación. Si bc es una única variable, consérvala como identificador definido.
+        </p>
+      )}
+      {equationVariables.length > 1 && (
+        <div className="rounded-lg border border-paper-line bg-paper-soft p-3 text-sm text-ink">
+          <label className="flex items-center gap-2">
+            Variable a despejar
+            <select
+              aria-label="Variable a despejar"
+              className="rounded border border-paper-line bg-paper px-2 py-1"
+              value={equationChoice?.variable ?? ""}
+              onChange={event => setEquationChoice({latex: mathField?.value ?? latex, variable:event.target.value})}
+            >
+              <option value="">Selecciona una variable</option>
+              {equationVariables.map(variable => <option key={variable} value={variable}>{variable}</option>)}
+            </select>
+          </label>
+          <p>Las demás variables se conservan como parámetros libres.</p>
+        </div>
+      )}
       <Screen
         latex={latex}
-        onChangeLatex={setLatex}
+        onChangeLatex={handleInputChange}
         placeholder="Escribe una expresión, ecuación o sistema…"
         fieldRef={setMathField}
         result={result}

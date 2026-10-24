@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "status": "HISTORICAL_POINTER",
+  "superseded_by": "qa/certification/continuity.json",
+  "superseded_revision": 232,
+  "next_action": {
+    "id": "EXP-EV-M-EVALUATION",
+    "status": "IN_PROGRESS"
+  },
+  "note": "No es fuente de estado. El estado vigente está en continuity.json (revisión 232), el corte superior de CURRENT_STATE.md y EXECUTION_LOG.md. Se conserva solo como puntero histórico; no se actualiza."
+}

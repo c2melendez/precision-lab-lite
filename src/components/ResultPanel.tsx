@@ -19,6 +19,14 @@ import type { MathResult } from "../types";
 
 type AnswerFormat = "dec" | "frac" | "scn" | "sqrt";
 
+export function formatScientificResult(source: string): string | null {
+  const normalized = source.replace(/…|\.\.\./g, "");
+  const value = Number(normalized);
+  if (!normalized.trim() || !Number.isFinite(value)) return null;
+  const [mantissa, exponent] = value.toExponential(9).split("e");
+  return mantissa + "\\times10^{" + Number(exponent) + "}";
+}
+
 export function ResultPanel({ result }: { result: MathResult | null }) {
   const [format, setFormat] = useState<AnswerFormat>("dec");
   // Antes: "frac" siempre mostraba mixta cuando estaba disponible
@@ -52,13 +60,10 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
       // fraction.decimal y decimalApprox pueden traer "…" al final cuando
       // el motor truncó un decimal periódico (fractions.ts / Fase E en
       // algebriteClient.ts) — Number() necesita el string limpio.
-      const source = (result?.fraction?.decimal ?? result?.decimalApprox ?? result?.resultLatex ?? "").replace(
-        "…",
-        "",
-      );
-      const n = Number(source);
-      return Number.isFinite(n)
-        ? { latex: n.toExponential(6), isPlainNumber: true }
+      const source = result?.decimalApprox ?? result?.fraction?.decimal ?? result?.resultLatex ?? "";
+      const formatted = formatScientificResult(source);
+      return formatted !== null
+        ? { latex: formatted, isPlainNumber: false }
         : { latex: result?.resultLatex ?? "", isPlainNumber: false };
     }
     if (format === "dec") {
@@ -90,7 +95,7 @@ export function ResultPanel({ result }: { result: MathResult | null }) {
   const isPlainNumber = hasSymbolicViews ? false : rendered.isPlainNumber;
 
   return (
-    <div className="pt-1" role="status" aria-live="polite" aria-atomic="true">
+    <div className="pt-1" role="status" aria-live="polite" aria-atomic="true" data-result-request-id={result.requestId} data-result-reentry-latex={result.resultLatex ?? ""}>
       {result.confidence === "NUMERIC_FALLBACK" && (
         <p className="mb-1.5 inline-block rounded bg-marker-soft px-2 py-0.5 text-xs text-marker-text">
           Aproximado numéricamente (no resuelto simbólicamente)

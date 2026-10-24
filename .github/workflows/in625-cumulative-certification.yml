@@ -1,0 +1,75 @@
+name: IN625 Cumulative Certification Gate
+
+on:
+  push:
+    branches: [qa/syntax-audit-in625-a1]
+    paths:
+      - '**'
+      - '!**/*.md'
+      - '!qa/certification/continuity.json'
+      - 'qa/certification/EXECUTION_PROTOCOL.md'
+      - 'qa/certification/SG28_DISTRIBUTED_ACCEPTANCE.md'
+      - 'qa/certification/SY_P_23_CONVENTION.md'
+      - 'qa/certification/SY_X_04_LENGTH_CONTRACT.md'
+      - 'qa/certification/SY_X_04_LENGTH_DECISION.md'
+      - 'qa/certification/SG28_INTEGRATION_EXIT_CRITERIA.md'
+  pull_request:
+    paths:
+      - '**'
+      - '!**/*.md'
+      - '!qa/certification/continuity.json'
+      - 'qa/certification/EXECUTION_PROTOCOL.md'
+      - 'qa/certification/SG28_DISTRIBUTED_ACCEPTANCE.md'
+      - 'qa/certification/SY_P_23_CONVENTION.md'
+      - 'qa/certification/SY_X_04_LENGTH_CONTRACT.md'
+      - 'qa/certification/SY_X_04_LENGTH_DECISION.md'
+      - 'qa/certification/SG28_INTEGRATION_EXIT_CRITERIA.md'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for revalidating this SHA (recorded in the guard log)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  cumulative:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reuse only verified evidence for this checkout
+        id: certification_guard
+        working-directory: .
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REVALIDATION_REASON: ${{ inputs.reason }}
+        run: python3 scripts/certification/ci_guard.py --profile lite-cumulative
+      - name: Validate original Algebra114 fixture integrity
+        if: steps.certification_guard.outputs.skip != 'true'
+        working-directory: .
+        run: python3 qa/certification/check_algebra114_fixture.py
+      - name: Certification continuity and CI guard regressions
+        if: steps.certification_guard.outputs.skip != 'true'
+        working-directory: .
+        run: python3 -m unittest discover -s scripts/certification -p 'test_*.py'
+      - uses: actions/setup-node@v4
+        if: steps.certification_guard.outputs.skip != 'true'
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        if: steps.certification_guard.outputs.skip != 'true'
+        run: npm ci
+      - name: Typecheck
+        if: steps.certification_guard.outputs.skip != 'true'
+        run: npm run typecheck
+      - name: Unit and parity regression
+        if: steps.certification_guard.outputs.skip != 'true'
+        run: npm test
+      - name: Production build
+        if: steps.certification_guard.outputs.skip != 'true'
+        run: npm run build

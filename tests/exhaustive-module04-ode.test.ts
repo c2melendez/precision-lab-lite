@@ -28,13 +28,10 @@ describe("Suite exhaustiva original — Módulo 4: EDO", () => {
     expect(r.resultLatex).toContain("2");
   });
 
-  it("dependencia y'=y se rechaza explícitamente por alcance actual", () => {
-    try {
-      solveODE("y'=y");
-      throw new Error("expected rejection");
-    } catch (e) {
-      expect((e as { code?: ErrorCode }).code).toBe(ErrorCode.UNSUPPORTED_OPERATION);
-    }
+  it("y'=y se resuelve como crecimiento exponencial", () => {
+    const r = solveODE("y'=y");
+    expect(r.resultLatex).toContain("C_1");
+    expect(r.resultLatex).toContain("e^");
   });
 
   it("orden 3 se rechaza explícitamente", () => {

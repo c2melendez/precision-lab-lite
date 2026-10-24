@@ -107,13 +107,14 @@ describe("calcLimit (Fase 3 — infinito y lateral, paridad con la pantalla úni
 
   it("límite en +infinito: 1/x -> 0", () => {
     const result = calcLimit("1/x", "x", "oo", 0);
-    expect(result.confidence).toBe("NUMERIC_FALLBACK"); // Algebrite no lo resuelve simbólicamente
-    expect(Number(result.resultLatex)).toBeCloseTo(0, 3);
+    expect(result.confidence).toBe("SYMBOLIC"); // Regla exacta para el recíproco al infinito
+    expect(result.resultLatex).toBe("0");
   });
 
   it("límite en -infinito: 1/x -> 0", () => {
     const result = calcLimit("1/x", "x", "-oo", 0);
-    expect(Number(result.resultLatex)).toBeCloseTo(0, 3);
+    expect(result.confidence).toBe("SYMBOLIC");
+    expect(result.resultLatex).toBe("0");
   });
 
   it("límite lateral derecho de 1/x en 0 -> +infinito (no converge, pero no explota)", () => {

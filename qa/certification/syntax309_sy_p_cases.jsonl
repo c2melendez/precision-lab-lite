@@ -1,0 +1,33 @@
+{"matriz":"SY","seccion":"P","id":"SY-P-01","nivel":"N1","operacion":"valor","entrada":"2(3+4)","esperado":"14","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-02","nivel":"N1","operacion":"valor","entrada":"2\\pi","esperado":"6.283185307","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-03","nivel":"N1","operacion":"interpretacion","entrada":"3\\sin x","esperado":"3\\cdot\\sin(x)","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-04","nivel":"N2","operacion":"interpretacion","entrada":"2x^{2}","esperado":"2\\cdot\\left(x^{2}\\right)","nota":"Con x=3 vale 18, no 36."}
+{"matriz":"SY","seccion":"P","id":"SY-P-05","nivel":"N2","operacion":"interpretacion","entrada":"-x^{2}","esperado":"-\\left(x^{2}\\right)","nota":"Con x=3 vale -9."}
+{"matriz":"SY","seccion":"P","id":"SY-P-06","nivel":"N1","operacion":"valor","entrada":"(-3)^{2}","esperado":"9","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-07","nivel":"N2","operacion":"valor","entrada":"-3^{2}","esperado":"-9","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-08","nivel":"N2","operacion":"valor","entrada":"2^{3^{2}}","esperado":"512","nota":"La potencia se agrupa por la derecha: 2^(3^2)."}
+{"matriz":"SY","seccion":"P","id":"SY-P-09","nivel":"N1","operacion":"valor","entrada":"\\left(2^{3}\\right)^{2}","esperado":"64","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-10","nivel":"N1","operacion":"valor","entrada":"2^{-1}","esperado":"\\frac{1}{2}","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-11","nivel":"N1","operacion":"valor","entrada":"5-3-1","esperado":"1","nota":"Asociatividad por la izquierda."}
+{"matriz":"SY","seccion":"P","id":"SY-P-12","nivel":"N1","operacion":"valor","entrada":"100\\div10\\div5","esperado":"2","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-13","nivel":"N1","operacion":"valor","entrada":"2+3\\cdot4","esperado":"14","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-14","nivel":"N1","operacion":"valor","entrada":"(2+3)\\cdot4","esperado":"20","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-15","nivel":"N2","operacion":"valor","entrada":"-2^{2}+3","esperado":"-1","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-16","nivel":"N1","operacion":"valor","entrada":"+5","esperado":"5","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-17","nivel":"N1","operacion":"valor","entrada":"1-(-1)","esperado":"2","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-18","nivel":"N2","operacion":"convencion","entrada":"8\\div2(2+2)","esperado":"16 \\ \\text{(izq. a der.)}\\ \\text{o}\\ 1","nota":"Declarar si la multiplicación implícita tiene mayor precedencia que la división."}
+{"matriz":"SY","seccion":"P","id":"SY-P-19","nivel":"N2","operacion":"convencion","entrada":"6\\div2(1+2)","esperado":"9 \\ \\text{o}\\ 1","nota":"Misma ambigüedad que el caso anterior."}
+{"matriz":"SY","seccion":"P","id":"SY-P-20","nivel":"N2","operacion":"interpretacion","entrada":"\\frac{1}{2}x","esperado":"\\frac{x}{2}","nota":"La fracción es una unidad; sin ambigüedad."}
+{"matriz":"SY","seccion":"P","id":"SY-P-21","nivel":"N2","operacion":"convencion","entrada":"1/2x","esperado":"\\frac{x}{2}\\ \\text{o}\\ \\frac{1}{2x}","nota":"Con `/` en línea hay dos lecturas; declarar cuál."}
+{"matriz":"SY","seccion":"P","id":"SY-P-22","nivel":"N1","operacion":"interpretacion","entrada":"1/(2x)","esperado":"\\frac{1}{2x}","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-23","nivel":"N2","operacion":"convencion","entrada":"a/bc","esperado":"\\frac{ac}{b}\\ \\text{o}\\ \\frac{a}{bc}","nota":"Declarar la convención."}
+{"matriz":"SY","seccion":"P","id":"SY-P-24","nivel":"N1","operacion":"interpretacion","entrada":"xy","esperado":"x\\cdot y","nota":"Dos variables, no un símbolo llamado `xy`."}
+{"matriz":"SY","seccion":"P","id":"SY-P-25","nivel":"N1","operacion":"interpretacion","entrada":"xyz","esperado":"x\\cdot y\\cdot z","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-26","nivel":"N1","operacion":"interpretacion","entrada":"x^{2}y","esperado":"x^{2}\\cdot y","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-27","nivel":"N1","operacion":"interpretacion","entrada":"2e^{x}","esperado":"2\\cdot e^{x}","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-28","nivel":"N2","operacion":"interpretacion","entrada":"e^{2}x","esperado":"e^{2}\\cdot x","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-29","nivel":"N1","operacion":"equivalente","entrada":"(x+1)(x-1)","esperado":"x^{2}-1","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-30","nivel":"N2","operacion":"equivalente","entrada":"x(x+1)","esperado":"x^{2}+x","nota":"Sin `f` definida, `x(...)` es producto, no llamada a función."}
+{"matriz":"SY","seccion":"P","id":"SY-P-31","nivel":"N2","operacion":"equivalente","entrada":"2(x)(3)","esperado":"6x","nota":""}
+{"matriz":"SY","seccion":"P","id":"SY-P-32","nivel":"N2","operacion":"convencion","entrada":"f(x+1)","esperado":"Si `f` no está definida: producto `f\\cdot(x+1)` o aviso \"f no definida\"","nota":"No debe descartar `f` ni inventar una función."}
+{"matriz":"SY","seccion":"P","id":"SY-P-33","nivel":"N1","operacion":"valor","entrada":"2\\cdot3^{2}","esperado":"18","nota":""}

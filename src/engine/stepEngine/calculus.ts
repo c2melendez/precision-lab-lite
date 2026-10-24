@@ -16,8 +16,10 @@ import {
   indefiniteIntegral,
   symbolicLimit,
   evaluate,
+  toLatex,
   ErrorCode,
 } from "../algebriteClient";
+import { reciprocalPoleLimit, reciprocalLimitAtInfinity } from "../reciprocalLimit";
 import { compileNumeric, numericLimit, numericLimitAtInfinity, simpsonIntegral } from "../numericFallback";
 import { rewriteReciprocalFunctions } from "../parsing";
 import type { Step, AppError, ResultConfidence } from "../../types";
@@ -47,14 +49,15 @@ export interface CalculusResult {
 // la lógica acá.
 export function calcDerivative(exprAlgebrite: string, variable: string, order: number): CalculusResult {
   const result = symbolicDerivative(rewriteReciprocalFunctions(exprAlgebrite), variable, order);
+  const resultLatex = toLatex(result);
   return {
-    resultLatex: result,
+    resultLatex,
     confidence: "SYMBOLIC",
     steps: [
       { id: "original", latex: exprAlgebrite, explanation: "Expresión original." },
       {
         id: "result",
-        latex: `\\frac{d${order > 1 ? `^${order}` : ""}}{d${variable}${order > 1 ? `^${order}` : ""}} = ${result}`,
+        latex: `\\frac{d${order > 1 ? `^${order}` : ""}}{d${variable}${order > 1 ? `^${order}` : ""}} = ${resultLatex}`,
         explanation: `Derivada de orden ${order} calculada simbólicamente.`,
       },
     ],
@@ -79,6 +82,20 @@ export function calcLimit(
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
+
+  const reciprocalPole = reciprocalPoleLimit(exprAlgebrite, variable, pointAlgebrite, direction)
+    ?? reciprocalLimitAtInfinity(exprAlgebrite, variable, pointAlgebrite);
+  if (reciprocalPole !== null) {
+    const latex = toLatex(reciprocalPole);
+    return {
+      resultLatex: latex,
+      confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "result", latex, explanation: isInfinite ? "Límite exacto del recíproco al infinito." : "Límite lateral exacto del recíproco en cero." },
+      ],
+    };
+  }
 
   try {
     // symbolicLimit ya detecta el caso "Algebrite devolvió la llamada sin

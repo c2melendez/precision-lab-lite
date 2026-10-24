@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { parseExpression } from "../src/engine/parsing";
+import { evaluate } from "../src/engine/algebriteClient";
 import { ErrorCode } from "../src/types";
 
 // Casos obligatorios de la spec (v9 §15, heredados en v10). NO EJECUTADO en
@@ -11,22 +12,15 @@ describe("parseExpression", () => {
     expect(parseExpression("√4+1").algebrite).toBe("sqrt(4)+1");
   });
 
-  it("rechaza .5 (punto decimal sin dígito inicial)", () => {
-    expect(() => parseExpression(".5")).toThrowError(
-      expect.objectContaining({ code: ErrorCode.PARSE_ERROR }),
-    );
+  // Contrato vigente IN625 D1 EN-NM-03/05 y D2 EN-CI-05/06/07:
+  // los formatos abreviados se normalizan, no se rechazan (spec v9 obsoleta).
+  it("IN625 D1 acepta y normaliza .5 y 5.", () => {
+    expect(Number(evaluate(`simplify((${parseExpression(".5").algebrite})-(1/2))`))).toBe(0);
+    expect(parseExpression("5.").algebrite).toBe("5");
   });
 
-  it("rechaza 5. (punto decimal sin dígito final)", () => {
-    expect(() => parseExpression("5.")).toThrowError(
-      expect.objectContaining({ code: ErrorCode.PARSE_ERROR }),
-    );
-  });
-
-  it("rechaza notación científica 1e5", () => {
-    expect(() => parseExpression("1e5")).toThrowError(
-      expect.objectContaining({ code: ErrorCode.PARSE_ERROR }),
-    );
+  it("IN625 D2 acepta notación científica 1e5", () => {
+    expect(() => parseExpression("1e5")).not.toThrow();
   });
 
   it('no divide "theta" en t*h*e*t*a', () => {
@@ -48,8 +42,8 @@ describe("parseExpression", () => {
     expect(result).toBe("theta*x");
   });
 
-  it('"xyz" sin separadores es un único identificador de 3 letras', () => {
-    expect(parseExpression("xyz").algebrite).toBe("xyz");
+  it('IN625 C10 interpreta "xyz" como producto de variables individuales', () => {
+    expect(parseExpression("xyz").algebrite).toBe("x*y*z");
   });
 
   it("log(x) es válido (aridad 1)", () => {
@@ -236,13 +230,13 @@ describe("cierre de la suite de paridad de teclado v1.0", () => {
   it("\\csc\\left(x\\right)/\\sec\\left(x\\right)/\\cot\\left(x\\right) básicos (sin inversa) parsean (antes tronaban: solo sin/cos/tan tenían regla de despojo de backslash)", () => {
     expect(parseExpression("\\csc\\left(1\\right)").algebrite).toBe("(1/sin(1))");
     expect(parseExpression("\\sec\\left(1\\right)").algebrite).toBe("(1/cos(1))");
-    expect(parseExpression("\\cot\\left(1\\right)").algebrite).toBe("(1/tan(1))");
+    expect(parseExpression("\\cot\\left(1\\right)").algebrite).toBe("(cos(1)/sin(1))");
   });
 
   it("\\csc^{-1}/\\sec^{-1}/\\cot^{-1} (inversas de las recíprocas) parsean y reescriben a la identidad equivalente", () => {
     expect(parseExpression("\\csc^{-1}\\left(2\\right)").algebrite).toBe("(arcsin(1/(2)))");
     expect(parseExpression("\\sec^{-1}\\left(2\\right)").algebrite).toBe("(arccos(1/(2)))");
-    expect(parseExpression("\\cot^{-1}\\left(1\\right)").algebrite).toBe("(arctan(1/(1)))");
+    expect(parseExpression("\\cot^{-1}\\left(1\\right)").algebrite).toBe("(pi/2-arctan(1))");
   });
 
   it("csch/sech/coth (hiperbólicas recíprocas) parsean y reescriben a la identidad equivalente", () => {
@@ -279,4 +273,25 @@ describe("suite de regresión v1.1: conversión a grados no confunde subcadenas"
     expect(parseExpression("cosh(1)", "GRAD").algebrite).toBe("cosh(1)");
     expect(parseExpression("tanh(1)", "GRAD").algebrite).toBe("tanh(1)");
   });
+});
+
+
+describe("IN625 G3 — raw inputs canonicalizados por MathLive", () => {
+  const rawCases = [
+    ["EN-ER-05", "2^"],
+    ["EN-ER-15", "\\foo{x}"],
+    ["EN-ER-19", "{x+1"],
+    ["EN-ER-20", "x+1}"],
+    ["EN-ER-26", "=3"],
+    ["EN-ER-27", "x^{}"],
+    ["EN-ER-31", "\\text{hola}"],
+  ] as const;
+
+  for (const [id, input] of rawCases) {
+    it(id + " rechaza la entrada cruda antes del CAS", () => {
+      expect(() => parseExpression(input)).toThrowError(
+        expect.objectContaining({ code: ErrorCode.PARSE_ERROR }),
+      );
+    });
+  }
 });

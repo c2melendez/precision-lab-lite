@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { parseExpression } from "../src/engine/parsing";
 import { solveInequality } from "../src/engine/inequality";
+import { readRenderedInequalityUnion } from "../src/engine/parsing/inequalitySolution";
 
 // Fix (decisión de Carlos, cierre de la suite de paridad de teclado v1.0):
 // <, >, ≤, ≥ no tenían ningún solver — "solver básico" = análisis de
@@ -57,5 +58,25 @@ describe("solveInequality (decisión de Carlos: solver básico de <,>,≤,≥)",
     const parsed = parseExpression("x+y<5", "RAD");
     expect(parsed.isInequality).toBe(true);
     expect(parsed.freeVariables.length).toBe(2);
+  });
+});
+
+
+describe("reentrada del resultado textual de inecuaciones", () => {
+  it("normaliza la salida generada de dos rayos a una unión de intervalos canónica", () => {
+    expect(readRenderedInequalityUnion(String.raw`\text{x < -2 o x > 2}`)).toBe(
+      String.raw`\left(-\infty,-2\right)\cup\left(2,\infty\right)`,
+    );
+  });
+
+  it("conserva los extremos cerrados de una unión inclusiva", () => {
+    expect(readRenderedInequalityUnion(String.raw`\text{x <= -2 o x >= 2}`)).toBe(
+      String.raw`\left(-\infty,-2\right]\cup\left[2,\infty\right)`,
+    );
+  });
+
+  it("no interpreta texto arbitrario ni una unión no disjunta como entrada matemática", () => {
+    expect(readRenderedInequalityUnion(String.raw`\text{resultado aproximado}`)).toBeNull();
+    expect(readRenderedInequalityUnion(String.raw`\text{x < 3 o x > 2}`)).toBeNull();
   });
 });

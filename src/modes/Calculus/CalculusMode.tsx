@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useComputeWorker } from "../../hooks/useComputeWorker";
 import { Screen } from "../../components/Screen";
 import { type SessionHistoryEntry } from "../../components/HistoryLog";
@@ -43,7 +43,15 @@ export function CalculusMode() {
   const [, setMathField] = useState<MathFieldRef>(null);
   const [sessionHistory, setSessionHistory] = useState<SessionHistoryEntry[]>([]);
 
-  const { getWorker } = useComputeWorker();
+  const { getWorker, cancelWorker } = useComputeWorker();
+  const activeRequestRef = useRef<string | null>(null);
+  const [isComputing, setIsComputing] = useState(false);
+
+  const handleCancel = useCallback(() => {
+    activeRequestRef.current = null;
+    cancelWorker();
+    setIsComputing(false);
+  }, [cancelWorker]);
 
   const fail = useCallback((code: ErrorCode, message: string, requestId: string) => {
     setResult({
@@ -59,6 +67,8 @@ export function CalculusMode() {
   }, []);
 
   const handleCompute = useCallback(() => {
+    // Abort the previous worker before dispatching a new calculation.
+    handleCancel();
     const requestId = makeRequestId();
     let parsed;
     try {
@@ -78,7 +88,17 @@ export function CalculusMode() {
     }
     const variable = parsed.freeVariables[0];
     const worker = getWorker();
+    activeRequestRef.current = requestId;
+    setIsComputing(true);
+    worker.onerror = () => {
+      if (activeRequestRef.current !== requestId) return;
+      handleCancel();
+      fail(ErrorCode.UNSUPPORTED_OPERATION, "El motor de cálculo se interrumpió. Puedes intentar otra operación.", requestId);
+    };
     worker.onmessage = (e: MessageEvent<MathResult>) => {
+      if (activeRequestRef.current !== requestId || e.data.requestId !== requestId) return;
+      activeRequestRef.current = null;
+      setIsComputing(false);
       setResult(e.data);
       if (e.data.success) {
         addHistoryEntry({ mode: `Cálculo (${operation})`, input: latex, resultSummary: e.data.resultLatex ?? "" });
@@ -88,6 +108,7 @@ export function CalculusMode() {
 
     if (operation === "derivative") {
       if (!Number.isInteger(order) || order < 1 || order > 20) {
+        handleCancel();
         fail(ErrorCode.PARSE_ERROR, "El orden debe ser un entero entre 1 y 20.", requestId);
         return;
       }
@@ -109,6 +130,7 @@ export function CalculusMode() {
       const isInfinitePoint = point === "oo" || point === "-oo";
       const pointNumeric = isInfinitePoint ? 0 : parseFloat(point);
       if (!isInfinitePoint && Number.isNaN(pointNumeric)) {
+        handleCancel();
         fail(ErrorCode.PARSE_ERROR, 'El punto del límite debe ser un número, o "oo"/"-oo" para infinito.', requestId);
         return;
       }
@@ -132,6 +154,7 @@ export function CalculusMode() {
       const lowerNumeric = parseFloat(lower);
       const upperNumeric = parseFloat(upper);
       if (Number.isNaN(lowerNumeric) || Number.isNaN(upperNumeric)) {
+        handleCancel();
         fail(ErrorCode.PARSE_ERROR, "Los límites de integración deben ser números.", requestId);
         return;
       }
@@ -144,7 +167,7 @@ export function CalculusMode() {
         upper: upperNumeric,
       });
     }
-  }, [latex, operation, order, point, direction, lower, upper, angleMode, getWorker, fail]);
+  }, [latex, operation, order, point, direction, lower, upper, angleMode, getWorker, fail, handleCancel]);
 
   return (
     <div className="mx-auto flex max-w-md flex-col gap-3 p-4">
@@ -251,6 +274,16 @@ export function CalculusMode() {
             />
           </label>
         </div>
+      )}
+
+      {isComputing && (
+        <button
+          type="button"
+          onClick={handleCancel}
+          className="rounded-lg border border-paper-line py-2 text-sm font-semibold text-ink"
+        >
+          Detener cálculo
+        </button>
       )}
 
       <button

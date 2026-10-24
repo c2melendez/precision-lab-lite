@@ -785,7 +785,7 @@ export function MathKeyboard({
                         setOpenCategory(null);
                       }}
                       aria-label="Resolver ecuación"
-                      title="Resuelve una ecuación escrita con signo igual"
+                      title="Si falta =, añade =0 al final; después pulsa Calcular"
                       className="rounded-md bg-marker-soft/10 py-2 text-xs text-marker hover:bg-marker-soft/20"
                     >
                       f(x)=0
@@ -902,7 +902,7 @@ export function MathKeyboard({
         <button
           onClick={onSolveEquation}
           aria-label="Resolver ecuación"
-          title="Resuelve una ecuación escrita con signo igual"
+          title="Si falta =, añade =0 al final; después pulsa Calcular"
           className="rounded-md bg-marker-soft/15 py-2 text-[11px] font-medium text-marker hover:bg-marker-soft/25"
         >
           f(x)=0
