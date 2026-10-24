@@ -1,3 +1,21 @@
+## 2026-10-24 UTC — r286: H1c y Playwright corregidos en el SHA técnico; CI sigue bloqueado por audit
+
+**SHA técnico evaluado:** `14153e8bfd4f8557c24c7d195915b0a0907baa00` en `qa/syntax-audit-in625-a1`. PR #48 sigue abierto; no se ha mergeado.
+
+### Evidencia exacta asociada a este SHA
+- H1c Reentry [40072711602](https://github.com/c2melendez/precision-lab-lite/actions/runs/40072711602): SUCCESS.
+- Playwright E2E [40072711609](https://github.com/c2melendez/precision-lab-lite/actions/runs/40072711609): SUCCESS. Resuelve la espera anterior de browser; no repetirlo sin cambio relevante.
+- Acumulativo [40072711574](https://github.com/c2melendez/precision-lab-lite/actions/runs/40072711574): SUCCESS.
+- Algebra 229 Source and Fixture Integrity [40072711589](https://github.com/c2melendez/precision-lab-lite/actions/runs/40072711589): SUCCESS.
+- H1a [40072711552](https://github.com/c2melendez/precision-lab-lite/actions/runs/40072711552), H1b [40072711557](https://github.com/c2melendez/precision-lab-lite/actions/runs/40072711557), H1d [40072711543](https://github.com/c2melendez/precision-lab-lite/actions/runs/40072711543), G3 parser [40072711586](https://github.com/c2melendez/precision-lab-lite/actions/runs/40072711586), G3 E2E [40072711548](https://github.com/c2melendez/precision-lab-lite/actions/runs/40072711548), S22 [40072711559](https://github.com/c2melendez/precision-lab-lite/actions/runs/40072711559), S23 [40072711607](https://github.com/c2melendez/precision-lab-lite/actions/runs/40072711607), S25 [40072711628](https://github.com/c2melendez/precision-lab-lite/actions/runs/40072711628), Scientific UI [40072711620](https://github.com/c2melendez/precision-lab-lite/actions/runs/40072711620) y cross-browser [40072711577](https://github.com/c2melendez/precision-lab-lite/actions/runs/40072711577): SUCCESS.
+- CI [40072711615](https://github.com/c2melendez/precision-lab-lite/actions/runs/40072711615): FAILURE en `QA dependency audit (hard gate)`; 8 advisories reportados: 2 low y 6 moderate. No reducir ni omitir el hard gate.
+- S19 de Plus usó el snapshot Lite antiguo `6cbec7645b73ad18875d4472182c704eb35228b0`; por ello no constituye evidencia diferencial para este SHA.
+
+### Decisión y siguiente acción
+H1c y Playwright quedan PASS para el SHA señalado. CI sigue BLOCKED por dependencias; global OPEN. No repetir H1c, acumulativo, Playwright ni integridad Algebra 229 sin cambios en código/fixtures o criterio. Próximo trabajo de Lite: resolver advisories con cambios mínimos de dependencias y revisar audit completo antes de repetir el hard gate. Mantener PR #48 sin merge mientras CI siga rojo.
+
+---
+
 ## 2026-10-24 UTC — r285: EN-RE-12 corregido; Playwright E2E en WAIT
 
 **HEAD técnico verificado:** `5113fd28ee0ddf5233be930eb23c74772fcace97` en `qa/syntax-audit-in625-a1`. PR #48 sigue abierto; no se ha mergeado.
