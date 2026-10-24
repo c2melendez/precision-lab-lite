@@ -1,3 +1,11 @@
+## 2026-10-24 UTC — r286: reconciliación H1c/E2E y bloqueo de auditoría
+
+- SHA técnico: `14153e8bfd4f8557c24c7d195915b0a0907baa00`.
+- H1c 40072711602, Playwright 40072711609, cumulative 40072711574, Algebra 229 integrity 40072711589, H1a/H1b/H1d, G3 parser/E2E, S22, S23, S25, Scientific UI y cross-browser: SUCCESS.
+- CI 40072711615: FAILURE en `QA dependency audit (hard gate)`, 2 low + 6 moderate. No bajar umbral ni omitir auditoría.
+- S19 de Plus usó Lite SHA antiguo `6cbec7645b73ad18875d4472182c704eb35228b0`; no valida diferencialmente el SHA `14153e8`.
+- No repetir gates verdes sin cambios relevantes. Global OPEN; PR #48 no mergeado. Siguiente acción: remediar advisories con cambio mínimo y reevaluar auditoría antes de repetir CI.
+
 ## 2026-10-24 UTC — r285: EN-RE-12 corregido y gates exactos conciliados
 
 - HEAD técnico: `5113fd28ee0ddf5233be930eb23c74772fcace97`; rama `qa/syntax-audit-in625-a1`; PR #48 no mergeado.
