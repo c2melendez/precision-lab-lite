@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 286,
+  "revision": 287,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -51,9 +51,9 @@
     }
   },
   "next_action": {
-    "id": "LITE-NPM-AUDIT-REMEDIATION-IMPLEMENTATION-R286",
-    "status": "BLOCKED_ENVIRONMENT",
-    "action": "La revisión del árbol y los advisories ya identificó versiones candidatas: vitest/@vitest/mocker 5.0.3, fast-uri 3.1.9, serialize-javascript 7.1.3 y KaTeX 0.18.2; no forzar postcss-selector-parser 7.1.6 dentro de Tailwind 3. El siguiente paso requiere checkout del repo en un entorno con npm para actualizar dependencias y regenerar package-lock de forma reproducible. Después ejecutar npm ci, npm audit --package-lock-only, typecheck, unitarias, build y E2E visual relevante. No editar lock manualmente ni disparar CI antes de cambios y validación local. Mantener PR #48 abierto y sin merge hasta que el hard gate pase."
+    "id": "LITE-H1C-EN-RE-20-21-DIAGNOSE-R287",
+    "status": "READY",
+    "action": "La remediación npm audit quedó implementada y verificada en el SHA técnico 1cf29a7192c803afc461e10fb4912f9bc88cec4e: CI 40138503619 SUCCESS con 'found 0 vulnerabilities', typecheck, 2,232 tests y build; cumulative 40137719189, H1d 40137719188, scientific 40137719203 y dependency gates 40137719274 SUCCESS. El hard gate no se rebajó ni se añadió excepción. Playwright 40138909348 FAILURE: 979 passed, 4 failed en e2e/in625-h1c-reentry.spec.ts; EN-RE-21 falla en los tres viewports y EN-RE-20 agotó 30 s esperando math-field[read-only]. EN-RE-21 ya fallaba en a8d726f0 (run 40078650376: 2 failed, ambos EN-RE-21; EN-RE-20 pasó en 2.2 s), y los paquetes cambiados son de build/test o no se usan en runtime, así que no hay vínculo demostrado. Siguiente paso: diagnosticar EN-RE-21 y el timeout de EN-RE-20 en el canal de reentrada H1c, con un cambio de producto justificado y su regresión; no modificar specs, oráculos ni gates para forzar verde y no repetir CI/cumulative/H1d/scientific ya verdes. PR #48 sigue OPEN/DRAFT con mergeable=false, por lo que los workflows de pull_request no se disparan; los gates se ejecutaron con workflow_dispatch sobre la rama. Mantener SECURITY-S25 BLOCKED, AS-B-29 ON_HOLD, SG28 H2 BLOCKED, EDCX-B5 BLOCKED y global OPEN."
   },
   "blockers": [
     {
@@ -81,9 +81,15 @@
       "status": "BLOCKED",
       "kind": "capability",
       "detail": "Lugares geométricos VC-LG-01..25: canal vacío y sin endpoint de producto."
+    },
+    {
+      "id": "LITE-PLAYWRIGHT-H1C-EN-RE-21",
+      "status": "OPEN",
+      "kind": "e2e_regression",
+      "detail": "Playwright 40138909348 en 1cf29a7192: EN-RE-21 falla en desktop/tablet/mobile y EN-RE-20 agota 30 s en desktop. EN-RE-21 ya fallaba en a8d726f0 (run 40078650376). Sin vínculo demostrado con la remediación de dependencias."
     }
   ],
-  "ledger_note": "r286: gates técnicos verdes en SHA 14153e8bfd4f8557c24c7d195915b0a0907baa00 excepto CI 40072711615, bloqueado por npm audit (2 low, 6 moderate, 0 high). Lockfile y advisories oficiales revisados; versiones candidatas documentadas en LITE_NPM_AUDIT_TRIAGE_R286.md. No se alteró package-lock ni se ejecutaron Actions nuevas. La implementación queda bloqueada por ausencia de checkout/npm local. S19 Plus usó snapshot Lite antiguo 6cbec7645b73ad18875d4472182c704eb35228b0, no evidencia diferencial para SHA actual. Global OPEN; PR #48 no mergeado.",
+  "ledger_note": "r286: gates técnicos verdes en SHA 14153e8bfd4f8557c24c7d195915b0a0907baa00 excepto CI 40072711615, bloqueado por npm audit (2 low, 6 moderate, 0 high). Lockfile y advisories oficiales revisados; versiones candidatas documentadas en LITE_NPM_AUDIT_TRIAGE_R286.md. No se alteró package-lock ni se ejecutaron Actions nuevas. La implementación queda bloqueada por ausencia de checkout/npm local. S19 Plus usó snapshot Lite antiguo 6cbec7645b73ad18875d4472182c704eb35228b0, no evidencia diferencial para SHA actual. Global OPEN; PR #48 no mergeado. r287: Lite implementó la remediación npm audit en 1cf29a7192 (vitest/@vitest/mocker 5.0.3, fast-uri 3.1.9, serialize-javascript 7.1.4, katex 0.18.2 y override postcss-selector-parser 7.1.7 con CSS generado byte a byte idéntico: 59,816 bytes, SHA-256 E9D13FB752B976D46FF6CE78F2D81FCDF4D71A93ACF20B1EB67BD14F38B43436). npm audit queda en 0 vulnerabilidades y el hard gate no se rebajó. CI 40138503619 SUCCESS (found 0 vulnerabilities; 2,232 tests; build); cumulative 40137719189, H1d 40137719188, scientific 40137719203 y dependency gates 40137719274 SUCCESS. Playwright 40138909348 FAILURE con 4 fallos en in625-h1c-reentry.spec.ts: EN-RE-21 en los tres viewports (ya fallaba en a8d726f0, run 40078650376) y EN-RE-20 con timeout de 30 s en desktop. No se tocaron specs ni oráculos. PR #48 sigue OPEN/DRAFT y mergeable=false, lo que impide workflows de pull_request; CI y Playwright se despacharon a mano sobre la rama. Global OPEN.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",

@@ -217,3 +217,13 @@
 - Producto Lite ya verificado en `c28091c` (cumulative/h1d/scientific-ui SUCCESS).
 - Campaña Plus S25/S19 CLEAR (39890525978, 39899659414).
 - Cierre documental bilateral; siguiente objetivo MV-E.
+
+## 2026-10-24 UTC — r287: npm audit remediado y verificado en CI
+
+- SHA técnico `1cf29a7192c803afc461e10fb4912f9bc88cec4e`. Se actualizaron `vitest`/`@vitest/mocker` a 5.0.3, `fast-uri` a 3.1.9, `serialize-javascript` a 7.1.4 y `katex` a 0.18.2; `package-lock.json` regenerado con npm (lockfile v3) y validado con `npm ci`.
+- `postcss-selector-parser` se resolvió con override a 7.1.7 porque Tailwind 3.4.19 no admite el rango 7.x. La compatibilidad se demostró, no se asumió: el CSS de producción es byte a byte idéntico antes y después (`index-BcOzQwa2.css`, 59,816 bytes, SHA-256 `E9D13FB752B976D46FF6CE78F2D81FCDF4D71A93ACF20B1EB67BD14F38B43436`), con typecheck, suite completa y build correctos.
+- **Hard gate CLEARED**: `npm audit --package-lock-only` devuelve 0 vulnerabilidades (antes: 2 low, 6 moderate). No se rebajó el gate ni se añadió excepción. Detalle en `LITE_NPM_AUDIT_REMEDIATION_R287.md`.
+- Evidencia en GitHub: CI [40138503619](https://github.com/c2melendez/precision-lab-lite/actions/runs/40138503619) **SUCCESS** con `found 0 vulnerabilities`, 360 archivos / 2,232 passed / 8 expected fail / 34 TODO y build 5.71 s; cumulative [40137719189](https://github.com/c2melendez/precision-lab-lite/actions/runs/40137719189), H1d [40137719188](https://github.com/c2melendez/precision-lab-lite/actions/runs/40137719188), scientific [40137719203](https://github.com/c2melendez/precision-lab-lite/actions/runs/40137719203) y dependency gates [40137719274](https://github.com/c2melendez/precision-lab-lite/actions/runs/40137719274) SUCCESS.
+- PR #48 está `OPEN`/`DRAFT` con `mergeable: false` (`dirty`), por lo que GitHub no dispara workflows de `pull_request` en los pushes nuevos. Para no declarar verde un gate no ejecutado, CI y Playwright se despacharon con `workflow_dispatch` sobre la rama; no se modificó ningún workflow ni filtro.
+- Playwright [40138909348](https://github.com/c2melendez/precision-lab-lite/actions/runs/40138909348) **FAILURE**: 979 passed, 4 failed, todos en `e2e/in625-h1c-reentry.spec.ts` (EN-RE-21 en desktop/tablet/mobile y EN-RE-20 con timeout de 30 s en desktop esperando `math-field[read-only]`). En `a8d726f0` (run 40078650376, antes de la remediación) ya fallaba EN-RE-21 y EN-RE-20 pasaba en 2.2 s; no hay vínculo demostrado con los paquetes cambiados (build/test o no usados en runtime). No se tocaron specs ni oráculos.
+- Bloqueos sin cambios: SECURITY-S25 BLOCKED; ALGEBRA229-AS-B-29 ON_HOLD; H2-SG28-DIST-01..08 BLOCKED; EDCX-B5 BLOCKED; SY-X-04-PLUS-HTTP BLOCKED; PR #48 OPEN/DRAFT; certificación global OPEN.
