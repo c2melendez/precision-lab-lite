@@ -13,22 +13,17 @@
  */
 export function readRenderedInequalityUnion(latex: string): string | null {
   const source = latex.trim();
-  const bound = String.raw\`[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)\`;
-  const match = new RegExp(
-    String.raw\`^\\\\text\\{\\s*([A-Za-z])\\s*(<=|<)\\s*(\${bound})\\s+o\\s+\\1\\s*(>=|>)\\s*(\${bound})\\s*\\}$\`,
-  ).exec(source);
-
+  const match = /^\\text\{\s*([A-Za-z])\s*(<=|<)\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s+o\s+\1\s*(>=|>)\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s*\}$/.exec(source);
   if (!match) return null;
-  const [, variable, leftOperator, leftBound, rightOperator, rightBound] = match;
-  void variable; // The repeated identifier is already enforced by the regex.
 
+  const [, , leftOperator, leftBound, rightOperator, rightBound] = match;
   const lower = Number(leftBound);
   const upper = Number(rightBound);
   if (!Number.isFinite(lower) || !Number.isFinite(upper) || lower >= upper) return null;
 
-  const leftInterval = "\\\\left(-\\\\infty," + leftBound +
-    (leftOperator === "<" ? "\\\\right)" : "\\\\right]");
-  const rightInterval = (rightOperator === ">" ? "\\\\left(" : "\\\\left[") +
-    rightBound + ",\\\\infty\\\\right)";
-  return leftInterval + "\\\\cup" + rightInterval;
+  const leftInterval = "\\left(-\\infty," + leftBound +
+    (leftOperator === "<" ? "\\right)" : "\\right]");
+  const rightInterval = (rightOperator === ">" ? "\\left(" : "\\left[") +
+    rightBound + ",\\infty\\right)";
+  return leftInterval + "\\cup" + rightInterval;
 }
