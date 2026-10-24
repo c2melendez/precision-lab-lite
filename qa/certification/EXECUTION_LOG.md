@@ -1,3 +1,11 @@
+## 2026-10-24 UTC — r286: handoff de remediación refinado
+
+- `continuity.json` actualizado a `BLOCKED_ENVIRONMENT`: el análisis del árbol y la consulta de advisories terminó, pero el entorno no contiene checkout local ni npm para regenerar el lock de forma segura.
+- Próximo paso para la siguiente sesión: usar un entorno npm con checkout; probar Vitest/mocker 5.0.3, fast-uri 3.1.9, serialize-javascript 7.1.3 y KaTeX 0.18.2; resolver Tailwind/parser por separado. Validar lock, audit, typecheck, tests, build y E2E antes de cualquier nueva Action.
+- No se modificó `package-lock.json`; no se lanzaron Actions; CI sigue BLOCKED por 8 advisories; global OPEN; PR #48 sin merge.
+
+---
+
 ## 2026-10-24 UTC — r286 addendum: versiones parcheadas contrastadas con advisories oficiales
 
 - Candidatos mínimos documentados: Vitest/`@vitest/mocker` 5.0.3; `fast-uri` 3.1.9 (el aviso GHSA-w74x-v6f9-j3xg hace insuficiente 3.1.8); `serialize-javascript` 7.1.3; KaTeX 0.18.2.
