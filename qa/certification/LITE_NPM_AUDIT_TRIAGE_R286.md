@@ -34,3 +34,16 @@ El informe agregado declara **8 vulnerabilidades: 2 low, 6 moderate, 0 high y 0 
 No repetir los gates que ya pasaron en el SHA auditado: H1c 40072711602, Playwright 40072711609, cumulative 40072711574, Algebra 229 integrity 40072711589 y los demás diagnósticos verdes anotados en `CURRENT_STATE.md`. El S19 de Plus usó Lite SHA `6cbec7645b73ad18875d4472182c704eb35228b0`, por lo que no certifica diferencialmente el SHA `14153e8`.
 
 **Estado de certificación:** global `OPEN`; CI de Lite `BLOCKED`; PR #48 no se fusiona mientras el hard gate permanezca rojo.
+
+
+## Confirmación del árbol de dependencias (lockfile r286)
+
+Inspección de `package-lock.json` (lockfile v3, blob SHA `fc0be1058f039f6127c081e8ad01dadc06773b98`):
+
+- `vitest@5.0.1` depende directamente de `@vitest/mocker@5.0.1`; ambos deben actualizarse coordinadamente a una versión corregida compatible, sin mezclar versiones Vitest.
+- `fast-uri@3.1.8` es dependencia directa de `ajv@8.20.0` mediante el rango `^3.0.1`. El rango permite una versión corregida 3.x; primero se debe comprobar que el resolvedor pueda llevarla a >=3.1.9 sin override innecesario.
+- `serialize-javascript@7.1.0` llega a través de `@rollup/plugin-terser@1.0.0` (rango `^7.0.3`), por lo que hay que confirmar compatibilidad de la versión resuelta antes de forzar una actualización transitiva.
+- `tailwindcss@3.4.19` depende directamente de `postcss-selector-parser` con rango `^6.1.2` y de `postcss-nested@6.2.0`; este último también depende de parser `^6.1.1`. Un override a parser 7 no satisface estos rangos y no es una remediación segura.
+- `katex@0.16.47` es dependencia directa del producto; cualquier actualización debe validar renderizado, fórmulas de Algebra 229 y E2E visual pertinente.
+
+Esta inspección confirma que el primer lote de menor riesgo es Vitest/mocker y los dos transitivos `fast-uri` y `serialize-javascript`, pero **no prueba aún** que la remediación esté aplicada ni que el audit haya quedado limpio. El entorno de trabajo actual no tiene checkout local del repositorio para regenerar el lock con npm; por tanto no se cambia `package-lock.json` ni se dispara CI en este paso. El siguiente paso de implementación requiere un entorno de trabajo con npm y el repositorio, o una ejecución controlada de workflow diseñada explícitamente para generar y validar el lock; no crear un workflow improvisado ni modificar el lock manualmente.
