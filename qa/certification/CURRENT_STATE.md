@@ -1,3 +1,22 @@
+## 2026-10-24 UTC — r284: el HIGH de vite ya no está; siguen EN-RE-12 y el hard gate por moderate
+
+**HEAD verificado:** `935366887f1bb670690db90061b75d708f3f9dd8` (bump vite 7.3.6 → 7.3.7, posterior al corte r283).
+
+### Evidencia pull_request exacta en este HEAD
+- **S25 Security Gate SUCCESS** [40049504130](https://github.com/c2melendez/precision-lab-lite/actions/runs/40049504130). El paso del workflow es `npm audit --audit-level=high`. El HIGH de vite (GHSA citado en r283) ya no falla este gate. No cierra SECURITY-S25 bilateral: el índice sigue BLOCKED hasta las condiciones de salida, y el hard gate de CI es otro contrato.
+- **CI frontend FAILURE** [40049504154](https://github.com/c2melendez/precision-lab-lite/actions/runs/40049504154). `npm ci` reporta 8 vulnerabilidades (2 low, 6 moderate, 0 high) y `npm audit --package-lock-only` sale 1. El hard gate no usa `--audit-level`. No se baja el umbral ni se suprime el paso. Clasificación: dependencia/advisory residual, ya no el HIGH de vite.
+- **H1b FAILURE** [40049504150](https://github.com/c2melendez/precision-lab-lite/actions/runs/40049504150). EN-RE-12: S1=`\text{x < -2 o x > 2}` reinyectado igual produce `PARSE_ERROR` «Texto no matemático». 7 passed. Clasificación: **producto/parser**. El fallo ya existía desde el merge r281; el bump de vite no lo toca.
+- **Playwright E2E FAILURE** [40049504117](https://github.com/c2melendez/precision-lab-lite/actions/runs/40049504117). 6 failed, 977 passed, 1 skipped. EN-RE-12 en desktop/tablet/mobile; además EN-RE-21 en tablet y mobile, y EN-RE-20 en mobile. Esas dos últimas quedan REVIEW: el resumen no trae la aserción y no se inventa la causa.
+- Cumulative, H1d y Scientific UI del mismo SHA: SUCCESS (push 40049500403 / 40049500417 / 40049500463 y sus equivalentes pull_request).
+
+### Estados
+Global OPEN · B6 REVIEW · B5 BLOCKED/NO_EJECUTADO · SG28-DIST BLOCKED · SECURITY-S25 BLOCKED · SY-P-23 OPEN · SY-X-04-PLUS-HTTP BLOCKED · ALGEBRA229-AS-B-29 ON_HOLD. No mergear PR #48.
+
+### Siguiente paso único
+Diagnosticar EN-RE-12 en el parser (por qué la forma `\text{...}` de la inecuación, que el propio producto acaba de emitir, se rechaza al reentrar). No relanzar H1b ni Playwright hasta cambiar esa precondición. No repetir el bump de vite.
+
+---
+
 ## 2026-10-24 UTC — r283: reconciliación exacta-en-HEAD tras push del merge (verificada vía API con auth)
 
 **HEAD verificado**: `875418a0d82cc1bda1f64f380cd2fc09ac6b62b5` (PR #48, base `7cbef02b...`, mergeable=True, mergeable_state=`unstable`). El estado `dirty` de r280 queda RESUELTO por el merge r281.

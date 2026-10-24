@@ -1,3 +1,14 @@
+## 2026-10-24 UTC — r284: vite HIGH fuera de S25; EN-RE-12 sigue
+
+- HEAD `935366887f1bb670690db90061b75d708f3f9dd8`.
+- S25 [40049504130](https://github.com/c2melendez/precision-lab-lite/actions/runs/40049504130) SUCCESS (`--audit-level=high`).
+- CI [40049504154](https://github.com/c2melendez/precision-lab-lite/actions/runs/40049504154) FAILURE: audit sin nivel, 6 moderate + 2 low, 0 high. Gate no se relaja.
+- H1b [40049504150](https://github.com/c2melendez/precision-lab-lite/actions/runs/40049504150) FAILURE EN-RE-12 PARSE_ERROR al reinyectar `\text{x < -2 o x > 2}`. Producto.
+- Playwright [40049504117](https://github.com/c2melendez/precision-lab-lite/actions/runs/40049504117) FAILURE: EN-RE-12 en tres viewports; EN-RE-20 mobile y EN-RE-21 tablet/mobile en REVIEW.
+- Siguiente: causa de EN-RE-12 antes de otra corrida. Global OPEN. No merge de PR #48.
+
+---
+
 ## 2026-10-23 UTC — r264: registro gates r263 — Lite success
 
 - r264: gates r263 Lite en success: cumulative 40015124636, H1d 40015127464, scientific-ui 40015130309 sobre 61f438d2.

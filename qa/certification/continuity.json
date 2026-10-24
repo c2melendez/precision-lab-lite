@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 283,
+  "revision": 284,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -51,9 +51,9 @@
     }
   },
   "next_action": {
-    "id": "LITE-HEAD-FAILURES-TRIAGE",
+    "id": "LITE-EN-RE-12",
     "status": "OPEN",
-    "action": "Corregir los 3 fallos reproducibles del HEAD 875418a0d82cc1bda1f64f380cd2fc09ac6b62b5 en Lite: (1) S25/CI audit duro: alta vulnerabilidad vite 7.0.0-7.3.6 con fix disponible (GHSA-9jrq-w75r-8gcw et al.) -> npm update vite + regenerar package-lock; (2) IN625 H1b reentry EN-RE-12 regresion funcional: reinjection de '\\text{x < -2 o x > 2} produce PARSE_ERROR (pass en 3b4d42b7e6, fail desde merge r281); (3) verificar Playwright E2E run 40046050515 tras conclusion. No mergear PR #48 hasta tener checks verdes o excepciones documentadas."
+    "action": "Diagnosticar la regresion de producto EN-RE-12 en HEAD 935366887f1bb670690db90061b75d708f3f9dd8 antes de relanzar: reinyectar \\\\text{x < -2 o x > 2} devuelve PARSE_ERROR. Evidencia H1b run 40049504150 y Playwright 40049504117 (este tambien falla EN-RE-20 mobile y EN-RE-21 tablet/mobile, causa aun no leida). El bump de vite ya esta en este HEAD; S25 run 40049504130 SUCCESS. CI run 40049504154 sigue rojo por npm audit sin audit-level (6 moderate, 2 low, 0 high): no bajar el gate. No mergear PR #48."
   },
   "blockers": [
     {
@@ -83,7 +83,7 @@
       "detail": "Lugares geométricos VC-LG-01..25: canal vacío y sin endpoint de producto."
     }
   ],
-  "ledger_note": "r277: prioridad = diagnosticar ausencia de checks en el HEAD exacto de ambas PR; no confundir cero checks con green. Mantener gates y bloqueos.",
+  "ledger_note": "r284: HIGH vite fuera de S25 en 93536688. Siguiente accion real = EN-RE-12. CI hard gate aun rojo por moderate/low. S25 global sigue BLOCKED.",
   "documentary_closure_r207": {
     "status": "VERIFIED",
     "repository_head_sha": "5b7a642dbfdb56cc932101116ca8f28afe4da871",
