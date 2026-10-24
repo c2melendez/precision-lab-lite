@@ -1,3 +1,11 @@
+## 2026-10-24 UTC — r286 addendum: versiones parcheadas contrastadas con advisories oficiales
+
+- Candidatos mínimos documentados: Vitest/`@vitest/mocker` 5.0.3; `fast-uri` 3.1.9 (el aviso GHSA-w74x-v6f9-j3xg hace insuficiente 3.1.8); `serialize-javascript` 7.1.3; KaTeX 0.18.2.
+- KaTeX 0.18.2 requiere ampliar el rango directo actualmente `^0.16.11` y validar renderizado. `postcss-selector-parser` está corregido en 7.1.6, pero sus consumidores del árbol Lite piden 6.x; no forzar override incompatible.
+- Fuentes oficiales enlazadas en `LITE_NPM_AUDIT_TRIAGE_R286.md`. Ningún paquete ni lockfile se modificó; sin checkout/npm local, no se lanza CI. Hard gate continúa BLOCKED; global OPEN; PR #48 abierto.
+
+---
+
 ## 2026-10-24 UTC — r286 addendum: dependencia exacta del hard gate
 
 - Actualizada `continuity.json` a r286: commit `e68df94f83ed3eab1452d9807745a741f6d5d9c3`; siguiente acción es preparar una remediación reproducible, sin relanzar Actions idénticas.
