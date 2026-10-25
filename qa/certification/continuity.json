@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 288,
+  "revision": 289,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -51,9 +51,9 @@
     }
   },
   "next_action": {
-    "id": "LITE-PR48-AND-EXACT-HEAD-RECONCILE-R289",
-    "status": "READY",
-    "action": "El canal H1c queda cerrado: EN-RE-21 era una carrera del arnés (se leía el resultado anterior, 5, antes de que el worker devolviera 5·2) y EN-RE-20 era un timeout de CI al leer un nodo math-field que React reemplaza durante el re-render. La corrección 444df962 (solo arnés: espera de un resultado nuevo y lectura acotada a 5 s con fallback al texto de estado) está verificada en GitHub: H1c 40143756120 SUCCESS 6 passed desktop (EN-RE-20 y EN-RE-21 en 1.6 s), Playwright 40143758336 SUCCESS 983 passed y 1 skipped con EN-RE-20/21 verdes en desktop/tablet/mobile, cumulative 40143738485 SUCCESS 360 archivos / 2,232 passed / 8 expected fail / 34 TODO y H1d 40143738467 SUCCESS 22 passed. Siguiente paso: reconciliar el PR #48 (OPEN/DRAFT, mergeable=false/dirty) y determinar qué gates tienen evidencia exacta en el HEAD vigente; despachar una sola vez solo los gates sin evidencia en ese HEAD. No repetir H1c, Playwright, cumulative ni H1d ya verdes, no modificar workflows, specs, oráculos ni umbrales para forzar verde y no declarar PASS sin run real en el SHA exacto. Mantener SECURITY-S25 BLOCKED, ALGEBRA229-AS-B-29 ON_HOLD, H2-SG28-DIST-01..08 BLOCKED, EDCX-B5 BLOCKED, SY-X-04-PLUS-HTTP BLOCKED, SY-P-23 OPEN, PR #48 OPEN/DRAFT y certificación global OPEN."
+    "id": "LITE-PR48-MERGE-DECISION-R290",
+    "status": "AWAITING_DECISION",
+    "action": "El canal H1c está cerrado y verificado. El único bloqueo técnico restante de Lite es la integración del PR #48: GitHub lo reporta OPEN/DRAFT, mergeable=false, dirty. El conflicto es exclusivamente textual en package.json: main avanzó con vitest 5.0.3 y katex 0.18.2 y su cola choca con el bloque overrides de la rama. La rama ya contiene esas versiones y su lockfile es consistente; main, en cambio, declara katex ^0.16.11 en package.json, ^0.18.2 en la raíz del lock e instala 0.16.47. Un merge local en worktree desechable con resolución que conserva los archivos de la rama produce un árbol byte a byte idéntico a ea68e99a (diff vacío), es decir, resolución mecánica sin cambio de contenido. No se publicó: el commit de merge tiene delta cero frente a su primer padre y, al volverse mergeable el PR, GitHub volvería a despachar la batería de gates ya verdes. Decisión requerida: (a) publicar el merge de topología asumiendo que los workflows de PR se re-despachan, (b) dejar el PR en draft hasta que exista autorización de integración, o (c) fijar otra estrategia de integración. No repetir H1c, Playwright, cumulative ni H1d mientras no cambie el contenido. Mantener SECURITY-S25 BLOCKED, ALGEBRA229-AS-B-29 ON_HOLD, H2-SG28-DIST-01..08 BLOCKED, EDCX-B5 BLOCKED, SY-X-04-PLUS-HTTP BLOCKED, SY-P-23 OPEN, PR #48 OPEN/DRAFT y certificación global OPEN."
   },
   "blockers": [
     {
@@ -2701,5 +2701,50 @@
       }
     ],
     "global_certification": "OPEN"
+  },
+  "pr48_conflict_diagnosis_r289": {
+    "status": "DIAGNOSED_NOT_PUSHED",
+    "pull_request": 48,
+    "state": "OPEN/DRAFT",
+    "mergeable": false,
+    "mergeable_state": "dirty",
+    "head_sha": "ea68e99a",
+    "declared_base_sha": "7cbef02b",
+    "current_main_sha": "773f7b28",
+    "main_advance": [
+      "0b091108 Update vitest version to 5.0.3",
+      "773f7b28 Update katex dependency version to 0.18.2 (lockfile only)"
+    ],
+    "conflict": {
+      "paths": [
+        "package.json"
+      ],
+      "auto_merged": [
+        "package-lock.json"
+      ],
+      "cause": "La cola de package.json cambió en ambos lados: main termina devDependencies en vitest, la rama añade el bloque overrides para postcss-selector-parser 7.1.7 y sube vite a ^7.3.7."
+    },
+    "main_inconsistency": {
+      "package_json_katex": "^0.16.11",
+      "lock_root_katex": "^0.18.2",
+      "lock_installed_katex": "0.16.47",
+      "branch": {
+        "package_json_katex": "^0.18.2",
+        "lock_root_katex": "^0.18.2",
+        "lock_installed_katex": "0.18.2"
+      }
+    },
+    "local_merge_experiment": {
+      "base": "773f7b28",
+      "head": "ea68e99a",
+      "resolution": "Conservar package.json y package-lock.json de la rama; ambas partes ya contienen las versiones que main pretendía.",
+      "result": "Árbol idéntico a ea68e99a: git diff --stat ea68e99a vacío. Commit local 773bcba9, no publicado y sin referencia remota."
+    },
+    "why_not_pushed": "El commit de merge no cambia contenido frente a su primer padre. Publicarlo haría mergeable el PR y dispararía de nuevo workflows de PR ya verdes, además de que el clasificador de alcance evaluaría un delta vacío. Se deja la decisión explícita en next_action.",
+    "gate_evidence_reconciliation": {
+      "ea68e99a": "Solo documentación; los workflows de push ignoran **/*.md y continuity.json, por lo que no se crearon runs en ese SHA.",
+      "444df962": "H1c 40143756120, Playwright 40143758336, cumulative 40143738485 y H1d 40143738467: SUCCESS.",
+      "1cf29a71": "CI 40138503619, cumulative 40137719189, H1d 40137719188, scientific 40137719203 y dependency gates 40137719274: SUCCESS. El único delta hasta 444df962 es un spec E2E, que no entra en tsconfig.app.json (include: src) ni en la suite unitaria, así que esos verdes siguen aplicando a la fuente sin cambios."
+    }
   }
 }
