@@ -1,6 +1,4 @@
-node_modules/
-dist/
-*.tsbuildinfo
-playwright-report/
-test-results/
+*.bundle
 .env
+repositories/lite/
+repositories/plus/
