@@ -541,3 +541,16 @@ SHA técnico Lite `c28091c`; gates cumulative/h1d/scientific-ui SUCCESS. Campañ
 - La integración se reconsiderará cuando cierren los bloqueos de certificación (SECURITY-S25, ALGEBRA229-AS-B-29, H2-SG28-DIST-01..08, EDCX-B5, SY-X-04-PLUS-HTTP) o exista autorización explícita.
 - Evidencia de gates vigente: `444df962` (H1c, Playwright, cumulative, H1d verdes) y `1cf29a71` (CI, cumulative, H1d, scientific y dependency gates verdes). No hay cambios de fuente desde `1cf29a71`; el único delta es el arnés E2E, fuera de `tsconfig.app.json` y de la suite unitaria. No se repiten esos gates.
 - Bloqueos sin cambios: SECURITY-S25 BLOCKED; ALGEBRA229-AS-B-29 ON_HOLD; H2-SG28-DIST-01..08 BLOCKED; EDCX-B5 BLOCKED; SY-X-04-PLUS-HTTP BLOCKED; SY-P-23 OPEN; PR #48 OPEN/DRAFT; certificación global OPEN.
+
+## 2026-10-25 UTC — r291: triage local cerrado; los bloqueos restantes son bilaterales o de capacidad
+
+- **Estado del repositorio:** HEAD `4cee0e76` en `qa/syntax-audit-in625-a1`, árbol limpio. No hay cambios de fuente, fixtures, workflows, dependencias ni contrato desde `1cf29a71` (gates verdes) y `ea68e99a`/`444df962` (H1c, Playwright, cumulative y H1d verdes). PR #48 sigue **OPEN/DRAFT** con `mergeable: false`.
+- **Triage de bloqueos:** no queda ningún bloqueo de certificación accionable solo en Lite.
+  - **SECURITY-S25**: el canal de remediación de Lite quedó cerrado en r287 (`LITE_NPM_AUDIT_REMEDIATION_R287.md`); lo que resta es evidencia del gate de seguridad compartido, que se reconcilia desde Plus.
+  - **ALGEBRA229-AS-B-29**: ON_HOLD por decisión de contrato; no es PASS ni FAIL y no se desbloquea ejecutando pruebas de Lite.
+  - **H2-SG28-DIST-01..08**: requiere la topología distribuida y la evidencia de Plus; Lite no tiene canal equivalente.
+  - **EDCX-B5**: VC-LG-01..25 carece de canal y endpoint de producto en ambos repos; no se simula capacidad inexistente.
+  - **SY-X-04-PLUS-HTTP**: es un canal HTTP de Plus; la evidencia de parser/UI de Lite no lo sustituye.
+  - **SY-P-23**: sigue **OPEN** por convención no declarada (`a/bc`); no se certifica como PASS ni se cierra por pruebas numéricas de las lecturas explícitas.
+- **Decisión registrada:** no se despachan runs nuevos ni se repiten H1c, Playwright, cumulative, H1d, CI, scientific ni dependency gates mientras no cambie un insumo técnico o exista una decisión explícita de contrato/alcance. El PR #48 permanece en draft y no se publica el merge de topología. La certificación global sigue **OPEN**.
+- **Siguiente acción única:** reentrar cuando Plus produzca evidencia nueva de S19/seguridad o cuando se autorice una decisión de contrato para ALGEBRA229, SG28 distribuido, EDCX-B5 o SY-P-23; en ese momento se reevalúa el merge de PR #48 y se ejecuta solo el gate afectado.

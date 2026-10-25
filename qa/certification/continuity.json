@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 290,
+  "revision": 291,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -51,9 +51,9 @@
     }
   },
   "next_action": {
-    "id": "LITE-CERTIFICATION-BLOCKERS-NEXT-R290",
-    "status": "READY",
-    "action": "Decisión registrada: el PR #48 permanece OPEN/DRAFT y no se publica el merge de topología contra main. El conflicto es solo textual en package.json y está resuelto localmente sin cambio de contenido (árbol idéntico a ea68e99a), pero publicarlo volvería a despachar los workflows de PR ya verdes sin aportar evidencia nueva. La integración se reconsiderará cuando cierren los bloqueos que impiden la certificación global: SECURITY-S25 BLOCKED, ALGEBRA229-AS-B-29 ON_HOLD, H2-SG28-DIST-01..08 BLOCKED, EDCX-B5 BLOCKED y SY-X-04-PLUS-HTTP BLOCKED. Siguiente paso: no repetir H1c, Playwright, cumulative ni H1d (verdes en 444df962) ni CI, cumulative, H1d, scientific y dependency gates (verdes en 1cf29a71, sin cambios de fuente desde entonces); trabajar sobre el siguiente bloqueo de certificación que no dependa de integración. Mantener SY-P-23 OPEN, PR #48 OPEN/DRAFT y certificación global OPEN."
+    "id": "LITE-BLOCKER-BOUNDARY-R291",
+    "status": "WAITING_ON_BILATERAL_EVIDENCE",
+    "action": "Decisión registrada en r291: no queda ningún bloqueo de certificación accionable solo en Lite. SECURITY-S25 se reconcilia desde Plus; ALGEBRA229-AS-B-29 sigue ON_HOLD por contrato; H2-SG28-DIST-01..08 requiere la topología y evidencia de Plus; EDCX-B5 carece de canal y endpoint de producto; SY-X-04-PLUS-HTTP es un canal HTTP de Plus; SY-P-23 sigue OPEN por convención no declarada. No repetir H1c, Playwright, cumulative, H1d, CI, scientific ni dependency gates: no hay cambios de fuente desde 1cf29a71/ea68e99a. Mantener PR #48 OPEN/DRAFT y no publicar el merge de topología. Reentrar cuando Plus produzca evidencia nueva de S19/seguridad o cuando se autorice una decisión de contrato para ALGEBRA229, SG28 distribuido, EDCX-B5 o SY-P-23; entonces se ejecuta solo el gate afectado y se reevalúa PR #48. Mantener certificación global OPEN."
   },
   "blockers": [
     {
@@ -2753,5 +2753,26 @@
     "rationale": "El merge contra main es mecánico y no cambia contenido (árbol idéntico a ea68e99a), pero publicarlo haría mergeable el PR y volvería a despachar workflows de PR ya verdes. Los bloqueos SECURITY-S25, ALGEBRA229-AS-B-29, H2-SG28-DIST-01..08, EDCX-B5 y SY-X-04-PLUS-HTTP siguen abiertos, así que la integración no es el camino crítico.",
     "revisit_condition": "Cuando los bloqueos de certificación estén cerrados o exista autorización explícita de integración.",
     "evidence_preserved": "pr48_conflict_diagnosis_r289"
+  },
+  "lite_blocker_boundary_r291": {
+    "decision": "NO_LOCAL_ACTIONABLE_BLOCKER",
+    "decided_at": "2026-10-25",
+    "head_sha": "4cee0e76",
+    "evidence_preserved": [
+      "444df962",
+      "1cf29a71",
+      "ea68e99a"
+    ],
+    "no_new_runs_reason": "Sin cambios de fuente, fixtures, workflows, dependencias ni contrato desde los SHA verdes; repetir gates no aporta evidencia.",
+    "blockers": {
+      "SECURITY-S25": "reconciliación desde Plus; canal Lite cerrado en r287",
+      "ALGEBRA229-AS-B-29": "ON_HOLD por contrato",
+      "H2-SG28-DIST-01..08": "requiere topología y evidencia de Plus",
+      "EDCX-B5": "sin canal ni endpoint de producto",
+      "SY-X-04-PLUS-HTTP": "canal HTTP de Plus",
+      "SY-P-23": "OPEN por convención no declarada"
+    },
+    "pr48": "OPEN/DRAFT, merge no publicado",
+    "revisit_condition": "Evidencia nueva de Plus (S19/seguridad) o decisión explícita de contrato/alcance."
   }
 }
