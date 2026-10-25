@@ -247,3 +247,10 @@
 - Motivo para no publicarlo: el merge no cambia contenido frente a su primer padre; al volverse `mergeable` el PR, GitHub volvería a despachar los workflows de PR ya verdes y el clasificador de alcance evaluaría un delta vacío. La decisión queda explícita en `next_action`.
 - Reconciliación de evidencia por SHA: `ea68e99a` es solo documentación y los workflows de push ignoran `**/*.md` y `continuity.json`, por lo que no generó runs; `444df962` aporta H1c, Playwright, cumulative y H1d verdes; `1cf29a71` aporta CI, cumulative, H1d, scientific y dependency gates verdes. El único delta hasta `444df962` es un spec E2E, que no entra en `tsconfig.app.json` (`include: src`) ni en la suite unitaria, así que esos verdes siguen aplicando a la fuente sin cambios.
 - Bloqueos sin cambios: SECURITY-S25 BLOCKED; ALGEBRA229-AS-B-29 ON_HOLD; H2-SG28-DIST-01..08 BLOCKED; EDCX-B5 BLOCKED; SY-X-04-PLUS-HTTP BLOCKED; SY-P-23 OPEN; PR #48 OPEN/DRAFT; certificación global OPEN.
+
+## 2026-10-24/25 UTC — r290: decisión sobre PR #48 (mantener draft)
+
+- Decisión registrada: PR #48 permanece **OPEN/DRAFT** y **no se publica** el merge de topología contra `main`. El conflicto es solo textual en `package.json` y la resolución local no cambia contenido (árbol idéntico a `ea68e99a`), pero publicarlo haría mergeable el PR y volvería a despachar workflows de PR ya verdes sin evidencia nueva.
+- La integración se reconsiderará cuando cierren los bloqueos de certificación (SECURITY-S25, ALGEBRA229-AS-B-29, H2-SG28-DIST-01..08, EDCX-B5, SY-X-04-PLUS-HTTP) o exista autorización explícita.
+- Evidencia de gates vigente: `444df962` (H1c, Playwright, cumulative, H1d verdes) y `1cf29a71` (CI, cumulative, H1d, scientific y dependency gates verdes). No hay cambios de fuente desde `1cf29a71`; el único delta es el arnés E2E, fuera de `tsconfig.app.json` y de la suite unitaria. No se repiten esos gates.
+- Bloqueos sin cambios: SECURITY-S25 BLOCKED; ALGEBRA229-AS-B-29 ON_HOLD; H2-SG28-DIST-01..08 BLOCKED; EDCX-B5 BLOCKED; SY-X-04-PLUS-HTTP BLOCKED; SY-P-23 OPEN; PR #48 OPEN/DRAFT; certificación global OPEN.

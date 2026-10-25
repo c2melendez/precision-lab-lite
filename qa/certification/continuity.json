@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 289,
+  "revision": 290,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -51,9 +51,9 @@
     }
   },
   "next_action": {
-    "id": "LITE-PR48-MERGE-DECISION-R290",
-    "status": "AWAITING_DECISION",
-    "action": "El canal H1c está cerrado y verificado. El único bloqueo técnico restante de Lite es la integración del PR #48: GitHub lo reporta OPEN/DRAFT, mergeable=false, dirty. El conflicto es exclusivamente textual en package.json: main avanzó con vitest 5.0.3 y katex 0.18.2 y su cola choca con el bloque overrides de la rama. La rama ya contiene esas versiones y su lockfile es consistente; main, en cambio, declara katex ^0.16.11 en package.json, ^0.18.2 en la raíz del lock e instala 0.16.47. Un merge local en worktree desechable con resolución que conserva los archivos de la rama produce un árbol byte a byte idéntico a ea68e99a (diff vacío), es decir, resolución mecánica sin cambio de contenido. No se publicó: el commit de merge tiene delta cero frente a su primer padre y, al volverse mergeable el PR, GitHub volvería a despachar la batería de gates ya verdes. Decisión requerida: (a) publicar el merge de topología asumiendo que los workflows de PR se re-despachan, (b) dejar el PR en draft hasta que exista autorización de integración, o (c) fijar otra estrategia de integración. No repetir H1c, Playwright, cumulative ni H1d mientras no cambie el contenido. Mantener SECURITY-S25 BLOCKED, ALGEBRA229-AS-B-29 ON_HOLD, H2-SG28-DIST-01..08 BLOCKED, EDCX-B5 BLOCKED, SY-X-04-PLUS-HTTP BLOCKED, SY-P-23 OPEN, PR #48 OPEN/DRAFT y certificación global OPEN."
+    "id": "LITE-CERTIFICATION-BLOCKERS-NEXT-R290",
+    "status": "READY",
+    "action": "Decisión registrada: el PR #48 permanece OPEN/DRAFT y no se publica el merge de topología contra main. El conflicto es solo textual en package.json y está resuelto localmente sin cambio de contenido (árbol idéntico a ea68e99a), pero publicarlo volvería a despachar los workflows de PR ya verdes sin aportar evidencia nueva. La integración se reconsiderará cuando cierren los bloqueos que impiden la certificación global: SECURITY-S25 BLOCKED, ALGEBRA229-AS-B-29 ON_HOLD, H2-SG28-DIST-01..08 BLOCKED, EDCX-B5 BLOCKED y SY-X-04-PLUS-HTTP BLOCKED. Siguiente paso: no repetir H1c, Playwright, cumulative ni H1d (verdes en 444df962) ni CI, cumulative, H1d, scientific y dependency gates (verdes en 1cf29a71, sin cambios de fuente desde entonces); trabajar sobre el siguiente bloqueo de certificación que no dependa de integración. Mantener SY-P-23 OPEN, PR #48 OPEN/DRAFT y certificación global OPEN."
   },
   "blockers": [
     {
@@ -2746,5 +2746,12 @@
       "444df962": "H1c 40143756120, Playwright 40143758336, cumulative 40143738485 y H1d 40143738467: SUCCESS.",
       "1cf29a71": "CI 40138503619, cumulative 40137719189, H1d 40137719188, scientific 40137719203 y dependency gates 40137719274: SUCCESS. El único delta hasta 444df962 es un spec E2E, que no entra en tsconfig.app.json (include: src) ni en la suite unitaria, así que esos verdes siguen aplicando a la fuente sin cambios."
     }
+  },
+  "pr48_merge_decision_r290": {
+    "decision": "KEEP_DRAFT_DO_NOT_PUBLISH_MERGE",
+    "decided_at": "2026-10-24",
+    "rationale": "El merge contra main es mecánico y no cambia contenido (árbol idéntico a ea68e99a), pero publicarlo haría mergeable el PR y volvería a despachar workflows de PR ya verdes. Los bloqueos SECURITY-S25, ALGEBRA229-AS-B-29, H2-SG28-DIST-01..08, EDCX-B5 y SY-X-04-PLUS-HTTP siguen abiertos, así que la integración no es el camino crítico.",
+    "revisit_condition": "Cuando los bloqueos de certificación estén cerrados o exista autorización explícita de integración.",
+    "evidence_preserved": "pr48_conflict_diagnosis_r289"
   }
 }
