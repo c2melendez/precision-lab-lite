@@ -22,8 +22,8 @@ class RunnerPolicyTests(unittest.TestCase):
         self.assertTrue(messages, "runner must have a reviewed commit message")
         forbidden = re.compile(
             r"\[(?:skip ci|ci skip|no ci|skip actions|actions skip)\]"
-            r"|(?m)^skip-checks\s*:\s*true\s*$",
-            re.IGNORECASE,
+            r"|^skip-checks\s*:\s*true\s*$",
+            re.IGNORECASE | re.MULTILINE,
         )
         for message in messages:
             with self.subTest(message=message):
