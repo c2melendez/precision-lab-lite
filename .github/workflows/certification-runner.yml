@@ -1,0 +1,108 @@
+name: Certification Runner
+
+# Versión corregida. Cambios respecto a la plantilla:
+# - Resuelve la rama canónica desde qa/certification/README.md de la rama predeterminada.
+# - Checkout y commits documentales sobre la rama canónica, no sobre main.
+# - continuity.py no tiene --gate ni ejecuta gates: solo calcula huellas (--fingerprint, lectura).
+#   Este workflow NO ejecuta gates ni despacha workflows.
+# - Documentación con [skip ci]; push con GITHUB_TOKEN (no re-dispara workflows).
+# - Triggers de push: GitHub exige ramas literales. Si cambia la rama canónica, actualizar aquí.
+#
+# Disparadores:
+# - workflow_dispatch: ejecución manual (input dry_run por defecto true: solo lectura)
+# - push: solo a la rama canónica, sin cambios puramente documentales
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_repo:
+        description: "Repositorio a procesar (lite|plus|both)"
+        required: true
+        default: both
+        type: choice
+        options: [lite, plus, both]
+      gate:
+        description: "Gate de qa/certification/continuity.json (p. ej. cumulative, h1d, security) o auto"
+        required: false
+        default: auto
+        type: string
+      dry_run:
+        description: "Solo lectura: no publica commits documentales"
+        required: false
+        default: true
+        type: boolean
+  push:
+    branches: ["qa/syntax-audit-in625-a1"]
+    paths-ignore:
+      - "**.md"
+      - "qa/certification/continuity.json"
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: certification-runner-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  certification-cycle:
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.target_repo == 'both' || endsWith(github.repository, format('-{0}', inputs.target_repo)) }}
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      REPO: ${{ github.repository }}
+      GATE_INPUT: ${{ inputs.gate }}
+    steps:
+      - name: Resolve canonical branch from default-branch README
+        run: |
+          set -euo pipefail
+          DEFAULT_BRANCH=$(gh api "repos/$REPO" --jq .default_branch)
+          README=$(gh api "repos/$REPO/contents/qa/certification/README.md?ref=$DEFAULT_BRANCH" --jq .content | base64 -d)
+          CANONICAL=$(printf '%s\n' "$README" | awk '/^## Rama can/{getline; gsub(/[`[:space:]]/,""); print; exit}')
+          if [ -z "$CANONICAL" ]; then
+            echo "No se pudo resolver la rama canónica desde el README de $DEFAULT_BRANCH"
+            exit 1
+          fi
+          echo "Rama predeterminada: $DEFAULT_BRANCH"
+          echo "Rama canónica: $CANONICAL"
+          echo "DEFAULT_BRANCH=$DEFAULT_BRANCH" >> "$GITHUB_ENV"
+          echo "CANONICAL_BRANCH=$CANONICAL" >> "$GITHUB_ENV"
+
+      - name: Checkout canonical branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CANONICAL_BRANCH }}
+          fetch-depth: 0
+
+      - name: Record base commit
+        run: echo "BASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Read-only planner fingerprint for selected gate
+        run: |
+          set -euo pipefail
+          GATE="${GATE_INPUT:-auto}"
+          if python3 -c "import json,sys; sys.exit(0 if sys.argv[1] in json.load(open('qa/certification/continuity.json'))['gates'] else 1)" "$GATE"; then
+            python3 scripts/certification/continuity.py --fingerprint "$GATE"
+          else
+            echo "Gate '$GATE' no es una clave de continuity.json: se omite la huella. No se ejecuta ningún gate."
+          fi
+
+      - name: Publish documentary commit (skipped on dry run)
+        if: ${{ success() && inputs.dry_run != true }}
+        run: |
+          set -euo pipefail
+          git add -- qa/certification/*.md qa/certification/continuity.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "Sin cambios documentales que publicar."
+            exit 0
+          fi
+          git config user.name "certification-bot"
+          git config user.email "certification-bot@users.noreply.github.com"
+          git commit -m "docs(certification): persist session state [skip ci]"
+          git fetch origin "$CANONICAL_BRANCH"
+          if [ "$(git rev-parse "origin/$CANONICAL_BRANCH")" != "$BASE_SHA" ]; then
+            echo "La rama canónica cambió durante la ejecución; no se publica para no pisar otro trabajo."
+            exit 1
+          fi
+          git push origin "HEAD:$CANONICAL_BRANCH"
