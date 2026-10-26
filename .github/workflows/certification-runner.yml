@@ -178,7 +178,7 @@ jobs:
           print(f"Escrito {path}")
           PY
 
-      - name: Commit result record with [skip ci]
+      - name: Commit result record (paths-ignore prevents record-only loops)
         if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.dry_run != true }}
         run: |
           set -uo pipefail
@@ -194,7 +194,7 @@ jobs:
           fi
           git config user.name "certification-bot"
           git config user.email "certification-bot@users.noreply.github.com"
-          git commit -m "docs(certification): record runner ${GATE} result [skip ci]"
+          git commit -m "docs(certification): record runner ${GATE} result"
           git fetch origin "$CANONICAL_BRANCH"
           if [ "$(git rev-parse "origin/$CANONICAL_BRANCH")" != "$BASE_SHA" ]; then
             echo "::error::La rama canónica cambió durante la ejecución; no se publica para no pisar otro trabajo."

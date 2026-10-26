@@ -591,3 +591,10 @@ SHA técnico Lite `c28091c`; gates cumulative/h1d/scientific-ui SUCCESS. Campañ
 - Se actualizó `CONTINUITY.md` para eliminar el snapshot histórico r235 y documentar la excepción estricta y los marcadores de Actions.
 - El siguiente paso es validar este commit mediante la corrida acumulativa activada por el cambio técnico y reconciliar `technical_baseline_sha` con evidencia exacta antes de volver a usar el planificador. No repetir otros gates verdes por rutina.
 - Certificación global: OPEN. Bloqueos existentes: sin cambios.
+
+## 2026-10-26 UTC — r299: el runner deja de suprimir workflows por el mensaje del commit
+
+- Corrección adicional: el commit que registra una ejecución ya no lleva `[skip ci]`. `paths-ignore` evita bucles cuando el push contiene únicamente archivos `qa/certification/runner/`; no silencia el mismo push si también cambia un contrato.
+- El runner v2 de esta rama conserva su operación gate; el runner v3 del branch predeterminado recibe la misma corrección para gate y docs.
+- Las corridas iniciadas sobre el SHA previo no deben atribuirse al HEAD que contiene esta corrección. Esperar evidencia exacta del commit actual y reconciliar la baseline tras revisar las pruebas.
+- Certificación global OPEN; bloqueos de producto sin cambio.
