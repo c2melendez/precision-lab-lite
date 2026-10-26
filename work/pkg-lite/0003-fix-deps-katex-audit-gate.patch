@@ -1,0 +1,88 @@
+From f506e8fc486594d68a0f9fb8a28812151edc5d54 Mon Sep 17 00:00:00 2001
+From: "qwen.ai[bot]" <qwenlm-intl@service.alibaba.com>
+Date: Mon, 26 Oct 2026 16:14:35 +0000
+Subject: [PATCH] fix(deps): bump katex to ^0.19.1 to clear CI audit hard gate
+ (GHSA-238p-pmpm-9mq7)
+
+Unblocks PR #54: the 'QA dependency audit (hard gate)' step in ci.yml runs
+npm audit --package-lock-only --json, which exits non-zero while any advisory
+remains. main's lock had katex 0.16.47 (low, prototype pollution, vulnerable
+range 0.11.0-0.18.1). Latest 0.16.x is 0.16.47, so no in-range fix exists;
+bumped direct dependency to ^0.19.1 (fix version reported by npm audit).
+
+Verification (local, node 22):
+- npm audit --package-lock-only --json -> exit 0, 0 vulnerabilities
+- npm ci -> ok; tsc -b --noEmit -> ok; vitest -> 515/515 passed; vite build -> ok
+- katex has zero imports in src/ (unused direct dep), so runtime impact is nil
+---
+ package-lock.json | 18 +++++++++---------
+ package.json      |  2 +-
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/package-lock.json b/package-lock.json
+index 204802bd..45fd66d0 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -11,7 +11,7 @@
+         "algebrite": "^1.4.0",
+         "fraction.js": "^4.3.7",
+         "idb": "^8.0.0",
+-        "katex": "^0.16.11",
++        "katex": "^0.19.1",
+         "mathlive": "^0.110.0",
+         "react": "^18.3.1",
+         "react-dom": "^18.3.1",
+@@ -3411,12 +3411,12 @@
+       }
+     },
+     "node_modules/commander": {
+-      "version": "8.3.0",
+-      "resolved": "https://registry.npmjs.org/commander/-/commander-8.3.0.tgz",
+-      "integrity": "sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==",
++      "version": "15.0.0",
++      "resolved": "https://registry.npmjs.org/commander/-/commander-15.0.0.tgz",
++      "integrity": "sha512-z67u4ZhzCL/Tydu1lJARtEZYWbWaN7oYLHbsuzocr6y4N6WZAagG3RQ4FW61V1/0+jImpj293XfrcYnd1qxtPg==",
+       "license": "MIT",
+       "engines": {
+-        "node": ">= 12"
++        "node": ">=22.12.0"
+       }
+     },
+     "node_modules/common-tags": {
+@@ -5035,16 +5035,16 @@
+       }
+     },
+     "node_modules/katex": {
+-      "version": "0.16.47",
+-      "resolved": "https://registry.npmjs.org/katex/-/katex-0.16.47.tgz",
+-      "integrity": "sha512-Eeo8Ys1doU1z+x8AZsPpQu+p/QcZBI5PeOo7QGQdy2x2m0MU/hYagBbGOmXwr5KVbEfVuWv9LpnQWeehogurjg==",
++      "version": "0.19.1",
++      "resolved": "https://registry.npmjs.org/katex/-/katex-0.19.1.tgz",
++      "integrity": "sha512-jG8uKntjSEcm2EpQOh0XturpPuuC9r3Sq5HLHdsFdWZT27E672SF19QEi+of0/YeOy15lDgRhKvr5614uRrEfA==",
+       "funding": [
+         "https://opencollective.com/katex",
+         "https://github.com/sponsors/katex"
+       ],
+       "license": "MIT",
+       "dependencies": {
+-        "commander": "^8.3.0"
++        "commander": "^15.0.0"
+       },
+       "bin": {
+         "katex": "cli.js"
+diff --git a/package.json b/package.json
+index 6ffcf5ac..bda1f761 100644
+--- a/package.json
++++ b/package.json
+@@ -14,7 +14,7 @@
+     "algebrite": "^1.4.0",
+     "fraction.js": "^4.3.7",
+     "idb": "^8.0.0",
+-    "katex": "^0.16.11",
++    "katex": "^0.19.1",
+     "mathlive": "^0.110.0",
+     "react": "^18.3.1",
+     "react-dom": "^18.3.1",
+-- 
+2.39.5
+
