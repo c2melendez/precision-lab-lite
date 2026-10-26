@@ -64,3 +64,11 @@ Para comunicar una interpretación matemática inequívoca, solicitar paréntesi
 - Decisiones de Carlos (05:04 UTC): desambiguación obligatoria solo para la entrada exacta `a/bc` o `\frac{a}{bc}`; sin detector general de ambigüedad; XFAIL de `b` y `c` separadas en Plus aceptado como limitación documentada, no convertido en PASS.
 - Evidencia: Bloqueo exacto ya implementado en src/modes/BasicScientific/BasicScientificMode.tsx (handleCalculate, mensaje 'SY-P-23: escribe (a/b)*c o a/(b*c) antes de calcular.'). Cubierto por los E2E SY-P-23 Lite del run H1d 40271318616 (22/22 PASS) sobre SHA b8b77e5. Cumulative 40270952483 PASS sobre 904a739.
 - Estado: **OPEN, ACCEPTED_PENDING_CI**. El cierre se registrará solo cuando cumulative y H1d estén verdes en el commit de registro, con IDs de run.
+
+## 2026-10-26 — Cierre de SY-P-23 bajo `2026-10-26-sy-p-23-exact-block-v1`
+- cumulative: runner `40272650949` → gate `40272665879`, **success**, sobre base `1893d06`.
+- h1d: runner `40272871857` → gate `40272886275`, **success**, sobre base `afc54a3`.
+- Criterios de salida: convención decidida (opción 3); bloqueo exacto presente en ambos frontends; casos numéricos discriminantes existentes; cumulative y H1d verdes con IDs registrados.
+- Limitación aceptada: XFAIL estricto de `b` y `c` separadas en Plus; no se convierte en PASS.
+- La certificación global sigue OPEN.
+
