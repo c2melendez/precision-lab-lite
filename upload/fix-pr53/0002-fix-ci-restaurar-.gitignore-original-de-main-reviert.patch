@@ -1,0 +1,26 @@
+From de0b19791bf5b58159d5cfb9737e60f2e1f49664 Mon Sep 17 00:00:00 2001
+From: cert-fix <cert-fix@local>
+Date: Mon, 26 Oct 2026 14:05:14 +0000
+Subject: [PATCH 2/2] fix(ci): restaurar .gitignore original de main (revierte
+ eliminacion destructiva del PR #53)
+
+El PR #53 reemplazo las 6 lineas de proteccion (node_modules/, dist/, *.tsbuildinfo, playwright-report/, test-results/, .env) por solo *.tar.gz, causando el fallo del hard gate 'QA dependency audit' en el run 40334765495. Se restaura el blob exacto de main (4a3b9d5).
+---
+ .gitignore | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/.gitignore b/.gitignore
+index 335ec95..4a3b9d5 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1 +1,6 @@
+-*.tar.gz
++node_modules/
++dist/
++*.tsbuildinfo
++playwright-report/
++test-results/
++.env
+-- 
+2.39.5
+
