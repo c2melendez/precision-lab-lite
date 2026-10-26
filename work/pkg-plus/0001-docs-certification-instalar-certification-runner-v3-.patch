@@ -1,0 +1,557 @@
+From e01ac695ed2349537ee251d438c115da682d6043 Mon Sep 17 00:00:00 2001
+From: certification-bot <certification-bot@users.noreply.github.com>
+Date: Mon, 26 Oct 2026 15:43:55 +0000
+Subject: [PATCH 1/2] =?UTF-8?q?docs(certification):=20instalar=20certifica?=
+ =?UTF-8?q?tion-runner=20v3=20en=20la=20rama=20can=C3=B3nica=20y=20registr?=
+ =?UTF-8?q?ar=20docs=5Fworkflows=20[skip=20ci]?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .github/workflows/certification-runner.yml | 369 ++++++++++++++++++++-
+ qa/certification/CURRENT_STATE.md          |  11 +
+ qa/certification/EXECUTION_LOG.md          |   7 +
+ qa/certification/continuity.json           |  29 +-
+ 4 files changed, 395 insertions(+), 21 deletions(-)
+
+diff --git a/.github/workflows/certification-runner.yml b/.github/workflows/certification-runner.yml
+index 91f3c773..23e42cf6 100644
+--- a/.github/workflows/certification-runner.yml
++++ b/.github/workflows/certification-runner.yml
+@@ -1,35 +1,72 @@
+ name: Certification Runner
+ 
+-# Versión 2. Cambios respecto a la versión anterior:
+-# - Despacha el workflow de CI del gate elegido sobre la rama canónica QA y espera su resultado.
+-# - Gates: cumulative y h1d en Lite y Plus; security solo en Lite.
+-# - security en Plus queda bloqueado hasta resolver S19 (PLUS-S19-EQUIVALENCE-REVIEW-R304).
+-# - Registra cada ejecución en qa/certification/runner/<run_id>.json, publicado con [skip ci].
+-# - dry_run=true (por defecto): valida gate y política, calcula la huella. No despacha ni publica.
+-# - dry_run=false: despacha, espera, registra y publica el JSON.
+-# - Push a QA: solo calcula la huella; no despacha ni publica.
+-# - Rama canónica resuelta desde qa/certification/README.md de la rama predeterminada.
++# Versión 3. Dos operaciones independientes:
++#
++# - gate: conserva el comportamiento de la versión 2. Despacha el workflow del gate
++#   elegido sobre la rama canónica, espera su resultado y registra el run.
++# - docs: publica commits documentales preparados fuera de GitHub. Descarga un paquete
++#   en formato `git format-patch`, verifica su SHA-256, exige el SHA base exacto de la
++#   rama canónica, aplica los commits conservando su historial y los publica con
++#   compare-and-swap. Rechaza cualquier cambio que no sea documental.
++#
++# Reglas de la operación docs:
++# - Solo se aceptan rutas `qa/certification/**.md` y `qa/certification/continuity.json`.
++# - Se rechazan workflows, scripts, tests, dependencias, fixtures y registros del runner.
++# - No se aceptan symlinks, gitlinks, binarios, commits vacíos ni merges.
++# - Si la rama canónica cambió desde `docs_expected_base_sha`, no se publica nada.
++# - dry_run=true descarga, aplica y valida el paquete, pero no publica.
++# - Los commits documentales no usan `[skip ci]`: los filtros `paths-ignore` de cada
++#   workflow deciden si el cambio activa pruebas (los contratos .md siguen activando gates).
++#
++# La rama canónica se resuelve siempre desde qa/certification/README.md de la rama
++# predeterminada; nunca se codifica aquí.
+ 
+ on:
+   workflow_dispatch:
+     inputs:
++      operation:
++        description: "Operación: gate (ejecutar pruebas) | docs (publicar commits documentales)"
++        required: true
++        default: gate
++        type: choice
++        options: [gate, docs]
+       target_repo:
+-        description: "Repositorio a procesar (lite|plus|both)"
++        description: "Repositorio a procesar (lite|plus|both). docs exige lite o plus, nunca both"
+         required: true
+         default: both
+         type: choice
+         options: [lite, plus, both]
+       gate:
+-        description: "Gate de qa/certification/continuity.json"
++        description: "Gate de qa/certification/continuity.json (solo operation=gate)"
+         required: true
+         default: cumulative
+         type: choice
+         options: [cumulative, h1d, security]
+       dry_run:
+-        description: "true: solo planifica. false: despacha, espera y publica el resultado"
++        description: "true: valida sin despachar ni publicar. false: despacha (gate) o publica (docs)"
+         required: false
+         default: true
+         type: boolean
++      docs_patch_url:
++        description: "URL HTTPS del paquete documental git format-patch (solo operation=docs)"
++        required: false
++        default: ""
++        type: string
++      docs_patch_sha256:
++        description: "SHA-256 hex (64) del archivo descargado (solo operation=docs)"
++        required: false
++        default: ""
++        type: string
++      docs_expected_base_sha:
++        description: "SHA completo (40) de la rama canónica sobre el que se preparó el paquete"
++        required: false
++        default: ""
++        type: string
++      docs_patch_hosts:
++        description: "Hosts HTTPS adicionales permitidos, separados por coma (opcional)"
++        required: false
++        default: ""
++        type: string
+   push:
+     branches: ["qa/syntax-audit-in625-a1"]
+     paths-ignore:
+@@ -53,7 +90,13 @@ jobs:
+     env:
+       GH_TOKEN: ${{ secrets.GH_TOKEN }}
+       REPO: ${{ github.repository }}
++      OPERATION: ${{ inputs.operation }}
+       GATE: ${{ inputs.gate }}
++      TARGET_REPO: ${{ inputs.target_repo }}
++      DOCS_PATCH_URL: ${{ inputs.docs_patch_url }}
++      DOCS_PATCH_SHA256: ${{ inputs.docs_patch_sha256 }}
++      DOCS_EXPECTED_BASE_SHA: ${{ inputs.docs_expected_base_sha }}
++      DOCS_PATCH_HOSTS: ${{ inputs.docs_patch_hosts }}
+     steps:
+       - name: Resolve canonical branch from default-branch README
+         run: |
+@@ -79,14 +122,16 @@ jobs:
+       - name: Record base commit
+         run: echo "BASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+ 
++      # ---------------------------------------------------------------- gate ----
++
+       - name: Read-only planner fingerprint for selected gate
+-        if: ${{ github.event_name == 'workflow_dispatch' }}
++        if: ${{ github.event_name == 'workflow_dispatch' && inputs.operation == 'gate' }}
+         run: |
+           set -euo pipefail
+           python3 scripts/certification/continuity.py --fingerprint "$GATE"
+ 
+       - name: Gate policy and workflow resolution
+-        if: ${{ github.event_name == 'workflow_dispatch' }}
++        if: ${{ github.event_name == 'workflow_dispatch' && inputs.operation == 'gate' }}
+         run: |
+           set -euo pipefail
+           python3 - <<'PY'
+@@ -103,7 +148,7 @@ jobs:
+           PY
+ 
+       - name: Dry-run summary
+-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run == true }}
++        if: ${{ github.event_name == 'workflow_dispatch' && inputs.operation == 'gate' && inputs.dry_run == true }}
+         run: |
+           echo "dry_run=true: se validó el gate $GATE."
+           echo "Workflow que se despacharía: $GATE_WORKFLOW sobre $CANONICAL_BRANCH en $BASE_SHA."
+@@ -115,7 +160,7 @@ jobs:
+           echo "Evento push: sin gate. No se despacha ningún workflow ni se publica documentación."
+ 
+       - name: Dispatch gate workflow and wait for its result
+-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run != true }}
++        if: ${{ github.event_name == 'workflow_dispatch' && inputs.operation == 'gate' && inputs.dry_run != true }}
+         run: |
+           set -euo pipefail
+           WF_FILE="$(basename "$GATE_WORKFLOW")"
+@@ -147,7 +192,7 @@ jobs:
+           echo "Run $RUN_ID: status=$STATUS"
+ 
+       - name: Record result in QA (dispatch runs only)
+-        if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.dry_run != true }}
++        if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.operation == 'gate' && inputs.dry_run != true }}
+         run: |
+           set -uo pipefail
+           python3 - <<'PY'
+@@ -179,7 +224,7 @@ jobs:
+           PY
+ 
+       - name: Commit result record with [skip ci]
+-        if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.dry_run != true }}
++        if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.operation == 'gate' && inputs.dry_run != true }}
+         run: |
+           set -uo pipefail
+           RUN_FILE="qa/certification/runner/${GITHUB_RUN_ID}.json"
+@@ -201,3 +246,291 @@ jobs:
+             exit 1
+           fi
+           git push origin "HEAD:$CANONICAL_BRANCH"
++
++      # ---------------------------------------------------------------- docs ----
++
++      - name: Docs request validation
++        if: ${{ github.event_name == 'workflow_dispatch' && inputs.operation == 'docs' }}
++        run: |
++          set -euo pipefail
++          python3 - <<'PY'
++          import ipaddress, os, re, sys
++          from urllib.parse import urlsplit
++
++          errors = []
++          repo = os.environ.get("REPO", "")
++          target = os.environ.get("TARGET_REPO", "").strip().lower()
++          expected_target = "plus" if repo.endswith("-plus") else "lite" if repo.endswith("-lite") else ""
++          if not expected_target:
++              errors.append(f"Repositorio no reconocido: {repo}")
++          elif target != expected_target:
++              errors.append(
++                  f"operation=docs exige target_repo={expected_target} para {repo}; recibido '{target}'. "
++                  "No se admite 'both' con un único paquete: ejecutar una vez por repositorio."
++              )
++
++          url = os.environ.get("DOCS_PATCH_URL", "").strip()
++          parsed = urlsplit(url)
++          if parsed.scheme != "https":
++              errors.append("docs_patch_url debe usar https://")
++          if parsed.username or parsed.password:
++              errors.append("docs_patch_url no debe incluir credenciales en la URL")
++          host = (parsed.hostname or "").lower().rstrip(".")
++          if not host:
++              errors.append("docs_patch_url no tiene host")
++          else:
++              if host == "localhost" or host.endswith(".local") or host.endswith(".internal"):
++                  errors.append(f"Host no permitido: {host}")
++              try:
++                  ip = ipaddress.ip_address(host)
++                  if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved:
++                      errors.append(f"Dirección IP no permitida: {host}")
++              except ValueError:
++                  pass
++              default_hosts = {
++                  "raw.githubusercontent.com",
++                  "github.com",
++                  "objects.githubusercontent.com",
++                  "codeload.github.com",
++                  "gist.githubusercontent.com",
++                  "gist.github.com",
++              }
++              extra = {
++                  h.strip().lower().rstrip(".")
++                  for h in os.environ.get("DOCS_PATCH_HOSTS", "").split(",")
++                  if h.strip()
++              }
++              if host not in default_hosts and host not in extra:
++                  errors.append(
++                      f"Host '{host}' fuera de la allowlist. Añadirlo en docs_patch_hosts si es de confianza."
++                  )
++          try:
++              port = parsed.port
++          except ValueError:
++              errors.append("Puerto inválido en docs_patch_url")
++              port = None
++          if port not in (None, 443):
++              errors.append("docs_patch_url solo admite el puerto 443")
++
++          if not re.fullmatch(r"[0-9a-fA-F]{64}", os.environ.get("DOCS_PATCH_SHA256", "").strip()):
++              errors.append("docs_patch_sha256 debe ser un SHA-256 hexadecimal de 64 caracteres")
++          if not re.fullmatch(r"[0-9a-fA-F]{40}", os.environ.get("DOCS_EXPECTED_BASE_SHA", "").strip()):
++              errors.append("docs_expected_base_sha debe ser un SHA hexadecimal completo de 40 caracteres")
++
++          if errors:
++              for error in errors:
++                  print(f"::error::{error}")
++              sys.exit(1)
++          print(f"Paquete documental válido para {repo} sobre {os.environ['DOCS_EXPECTED_BASE_SHA']}.")
++          PY
++
++      - name: Download and verify docs package
++        if: ${{ github.event_name == 'workflow_dispatch' && inputs.operation == 'docs' }}
++        run: |
++          set -euo pipefail
++          PATCH_PATH="$RUNNER_TEMP/docs-publication.patch"
++          rm -f -- "$PATCH_PATH"
++          curl --fail --silent --show-error --location \
++            --proto '=https' --proto-redir '=https' --tlsv1.2 \
++            --max-time 180 --max-redirs 5 --max-filesize 5242880 \
++            --output "$PATCH_PATH" "$DOCS_PATCH_URL"
++          if [ ! -s "$PATCH_PATH" ]; then
++            echo "::error::El paquete documental está vacío o no se descargó."
++            exit 1
++          fi
++          PATCH_BYTES="$(wc -c < "$PATCH_PATH" | tr -d ' ')"
++          if [ "$PATCH_BYTES" -gt 5242880 ]; then
++            echo "::error::El paquete documental supera 5 MiB."
++            exit 1
++          fi
++          EXPECTED="$(printf '%s' "$DOCS_PATCH_SHA256" | tr 'A-F' 'a-f')"
++          ACTUAL="$(sha256sum "$PATCH_PATH" | awk '{print $1}')"
++          if [ "$ACTUAL" != "$EXPECTED" ]; then
++            echo "::error::SHA-256 no coincide. Esperado $EXPECTED, obtenido $ACTUAL."
++            exit 1
++          fi
++          if grep -aq '^GIT binary patch' "$PATCH_PATH"; then
++            echo "::error::El paquete contiene parches binarios; la publicación documental no los admite."
++            exit 1
++          fi
++          echo "PATCH_PATH=$PATCH_PATH" >> "$GITHUB_ENV"
++          echo "PATCH_BYTES=$PATCH_BYTES" >> "$GITHUB_ENV"
++          echo "Paquete verificado: $PATCH_BYTES bytes, sha256=$ACTUAL"
++
++      - name: Apply docs package and enforce documentary scope
++        if: ${{ github.event_name == 'workflow_dispatch' && inputs.operation == 'docs' }}
++        run: |
++          set -euo pipefail
++          if [ -n "$(git status --porcelain)" ]; then
++            echo "::error::El árbol de trabajo no está limpio antes de aplicar el paquete."
++            exit 1
++          fi
++          git fetch --no-tags origin "+refs/heads/${CANONICAL_BRANCH}:refs/remotes/origin/${CANONICAL_BRANCH}"
++          if [ "$(git rev-parse HEAD)" != "$DOCS_EXPECTED_BASE_SHA" ]; then
++            echo "::error::HEAD local $(git rev-parse HEAD) no coincide con docs_expected_base_sha $DOCS_EXPECTED_BASE_SHA."
++            exit 1
++          fi
++          REMOTE_SHA="$(git rev-parse "origin/${CANONICAL_BRANCH}")"
++          if [ "$REMOTE_SHA" != "$DOCS_EXPECTED_BASE_SHA" ]; then
++            echo "::error::La rama canónica avanzó a $REMOTE_SHA; el paquete se preparó sobre $DOCS_EXPECTED_BASE_SHA. No se aplica nada."
++            exit 1
++          fi
++          git config user.name "certification-bot"
++          git config user.email "certification-bot@users.noreply.github.com"
++          if ! git am --3way "$PATCH_PATH"; then
++            git am --abort || true
++            echo "::error::El paquete no se pudo aplicar sobre $DOCS_EXPECTED_BASE_SHA (conflicto o formato inválido)."
++            exit 1
++          fi
++          python3 - <<'PY'
++          import os, subprocess, sys
++
++          def git(*args):
++              return subprocess.check_output(["git", *args], text=True).strip()
++
++          base = os.environ["BASE_SHA"]
++          commits = git("rev-list", "--reverse", f"{base}..HEAD").splitlines()
++          if not commits:
++              sys.exit("El paquete documental no contiene commits.")
++          if len(commits) > 50:
++              sys.exit(f"El paquete contiene {len(commits)} commits; el máximo es 50.")
++
++          allowed_exact = {"qa/certification/continuity.json"}
++
++          def allowed(path: str) -> bool:
++              parts = path.split("/")
++              if not path or path.startswith("/") or "\\" in path or ".." in parts:
++                  return False
++              if path in allowed_exact:
++                  return True
++              return path.startswith("qa/certification/") and path.endswith(".md")
++
++          problems = []
++          for commit in commits:
++              paths = git("diff-tree", "--no-commit-id", "--name-only", "-r", "--root", commit).splitlines()
++              if not paths:
++                  problems.append(f"{commit}: commit vacío")
++              for path in paths:
++                  if not allowed(path):
++                      problems.append(f"{commit}: ruta no documental: {path}")
++              raw = git("diff-tree", "--no-commit-id", "--raw", "-r", "--root", commit).splitlines()
++              for line in raw:
++                  meta = line.split("\t", 1)[0].lstrip(":").split()
++                  if len(meta) >= 2:
++                      old_mode, new_mode = meta[0], meta[1]
++                      # 000000 = alta o baja de archivo; 100644 = blob regular sin ejecutable.
++                      # Se rechazan symlinks (120000), gitlinks (160000) y cambios de modo.
++                      if new_mode != "100644" or old_mode not in ("100644", "000000"):
++                          problems.append(
++                              f"{commit}: modo no permitido ({old_mode} -> {new_mode}) en {line.split(chr(9))[-1]}"
++                          )
++
++          if problems:
++              for problem in problems:
++                  print(f"::error::{problem}")
++              sys.exit("Paquete rechazado: contiene cambios no documentales.")
++
++          print(f"Paquete válido: {len(commits)} commits documentales sobre {base}.")
++          for commit in commits:
++              print(f"  {commit[:12]} {git('log', '-1', '--format=%s', commit)}")
++          PY
++
++      - name: Docs dry-run summary
++        if: ${{ github.event_name == 'workflow_dispatch' && inputs.operation == 'docs' && inputs.dry_run == true }}
++        run: |
++          {
++            echo "### Certification Runner — docs (dry_run)"
++            echo ""
++            echo "Base: \`$BASE_SHA\`"
++            echo "Paquete: sha256 \`$DOCS_PATCH_SHA256\` ($PATCH_BYTES bytes)"
++            echo ""
++            echo '```'
++            git log --oneline "$BASE_SHA..HEAD"
++            echo '```'
++            echo ""
++            echo "Validación superada. No se publicó nada (dry_run=true)."
++          } >> "$GITHUB_STEP_SUMMARY"
++          echo "dry_run=true: el paquete es válido y se publicaría sobre $BASE_SHA. No se publicó nada."
++
++      - name: Record docs publication and commit
++        if: ${{ github.event_name == 'workflow_dispatch' && inputs.operation == 'docs' && inputs.dry_run != true }}
++        run: |
++          set -euo pipefail
++          python3 - <<'PY'
++          import datetime, json, os, subprocess
++          from urllib.parse import urlsplit, urlunsplit
++
++          def git(*args):
++              return subprocess.check_output(["git", *args], text=True).strip()
++
++          base = os.environ["BASE_SHA"]
++          head = git("rev-parse", "HEAD")
++          commits = [
++              {"sha": sha, "subject": git("log", "-1", "--format=%s", sha)}
++              for sha in git("rev-list", "--reverse", f"{base}..{head}").splitlines()
++          ]
++          paths = git("diff", "--name-only", f"{base}..{head}").splitlines()
++          parsed = urlsplit(os.environ["DOCS_PATCH_URL"])
++          safe_url = urlunsplit((parsed.scheme, parsed.netloc, parsed.path, "", ""))
++          run_id = os.environ["GITHUB_RUN_ID"]
++          data = {
++              "schema_version": 2,
++              "operation": "docs",
++              "repo": os.environ["REPO"],
++              "canonical_branch": os.environ.get("CANONICAL_BRANCH", ""),
++              "base_sha": base,
++              "patch": {
++                  "url": safe_url,
++                  "sha256": os.environ["DOCS_PATCH_SHA256"].lower(),
++                  "bytes": int(os.environ.get("PATCH_BYTES", "0")),
++              },
++              "commits": commits,
++              "paths": paths,
++              "patch_head_sha": head,
++              "decision": "PUBLISHED",
++              "runner_run_id": run_id,
++              "runner_run_url": f"https://github.com/{os.environ['REPO']}/actions/runs/{run_id}",
++              "recorded_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
++          }
++          path = f"qa/certification/runner/{run_id}.json"
++          os.makedirs(os.path.dirname(path), exist_ok=True)
++          with open(path, "w", encoding="utf-8") as fh:
++              json.dump(data, fh, indent=2, ensure_ascii=False)
++              fh.write("\n")
++          print(f"Escrito {path}")
++          PY
++          git add -- "qa/certification/runner/${GITHUB_RUN_ID}.json"
++          git commit -m "docs(certification): record docs publication ${GITHUB_RUN_ID} [skip ci]"
++
++      - name: Publish docs package with compare-and-swap
++        if: ${{ github.event_name == 'workflow_dispatch' && inputs.operation == 'docs' && inputs.dry_run != true }}
++        run: |
++          set -euo pipefail
++          git fetch --no-tags origin "+refs/heads/${CANONICAL_BRANCH}:refs/remotes/origin/${CANONICAL_BRANCH}"
++          REMOTE_SHA="$(git rev-parse "origin/${CANONICAL_BRANCH}")"
++          if [ "$REMOTE_SHA" != "$BASE_SHA" ]; then
++            echo "::error::La rama canónica cambió a $REMOTE_SHA durante la ejecución (base $BASE_SHA). No se publica para no pisar otro trabajo."
++            exit 1
++          fi
++          LOCAL_HEAD="$(git rev-parse HEAD)"
++          git push --force-with-lease="refs/heads/${CANONICAL_BRANCH}:${BASE_SHA}" \
++            origin "HEAD:refs/heads/${CANONICAL_BRANCH}"
++          REMOTE_AFTER="$(git ls-remote origin "refs/heads/${CANONICAL_BRANCH}" | awk '{print $1}')"
++          if [ "$REMOTE_AFTER" != "$LOCAL_HEAD" ]; then
++            echo "::error::La rama canónica quedó en $REMOTE_AFTER y no en $LOCAL_HEAD tras el push."
++            exit 1
++          fi
++          {
++            echo "### Certification Runner — docs (publicado)"
++            echo ""
++            echo "Repositorio: \`$REPO\`"
++            echo "Rama: \`$CANONICAL_BRANCH\`"
++            echo "Base: \`$BASE_SHA\`"
++            echo "Publicado: \`$LOCAL_HEAD\`"
++            echo "Paquete: sha256 \`$DOCS_PATCH_SHA256\` ($PATCH_BYTES bytes)"
++            echo ""
++            echo '```'
++            git log --oneline "$BASE_SHA..$LOCAL_HEAD"
++            echo '```'
++          } >> "$GITHUB_STEP_SUMMARY"
++          echo "Publicado $LOCAL_HEAD en $CANONICAL_BRANCH (base $BASE_SHA)."
+diff --git a/qa/certification/CURRENT_STATE.md b/qa/certification/CURRENT_STATE.md
+index 4370fb64..6ae46a4f 100644
+--- a/qa/certification/CURRENT_STATE.md
++++ b/qa/certification/CURRENT_STATE.md
+@@ -961,3 +961,14 @@ Ver r252.
+ - **Pendiente real (un host).** Evidencia por caso de EN-SG-01..32 (`IN625_H2_MATRIX.md`). Sin referencia etiquetada en tests: EN-SG-01..08, 21, 23..27 y 32; puede haber cobertura sin etiqueta (preflights syntax309, `in625-syntax-native.spec.ts`) que debe verificarse antes de añadir tests. EN-SG-29 tiene test backend; falta evidencia de run por SHA exacto.
+ - Solo documentación; sin Actions ni cambios de producto. Estados sin cambio: SECURITY-S25 BLOCKED; ALGEBRA229-AS-B-29 ON_HOLD; EDCX-B5 BLOCKED; SY-X-04-PLUS-HTTP BLOCKED; DIST OUT_OF_SCOPE_SINGLE_HOST; H2 y certificación global OPEN.
+ - **Siguiente acción:** auditoría de evidencia por caso EN-SG-01..32 y pruebas test-first solo para los GAP confirmados.
++
++## 2026-10-26 UTC — r312: sincronización del Certification Runner v3 en la rama canónica y registro `docs_workflows`
++
++- **Configuración verificada desde el README.** `qa/certification/README.md` en `main` indica la misma rama canónica `qa/syntax-audit-in625-a1` que Lite; coincidencia confirmada antes de modificar.
++- **Sincronización de blobs.** `main` ya contenía el runner v3 (merge de PR #52 en Lite; blob `23e42cf6dad30b281036cbbb63eff938c6646fde`, sha256 `c85eb1d4b89606a51904ec792c7ca8bb141dd9ee9ca0f15b1d0eddc82815e0d7`). La rama canónica de Plus tenía v2 (`91f3c77344daca1a48aba10f2b4fa23b11ffa39a`) y se actualizó al blob v3 idéntico a `main`. GitHub Actions registra `Certification Runner` activo en Plus (workflow ID 374437934; Lite 374437900).
++- **Validación sintáctica.** YAML + 13 pasos (`bash -n` en bloques `run`, `py_compile` en heredocs Python) sobre el blob exacto; sin divergencia entre repos ni entre ramas.
++- **Índice `continuity.json`.** Clave raíz `docs_workflows.certification_runner` (v3, operaciones `gate|docs`, ramas instaladas, IDs de workflow, hashes) en paridad con Lite.
++- **Bloqueo de seguridad confirmado.** `gate=security` en Plus permanece bloqueado por diseño hasta cerrar S19 (PLUS-S19-EQUIVALENCE-REVIEW-R304); el dry-run debe mostrar el rechazo explícito sin despachar matrices.
++- **Dry-run.** Simulación local del pipeline `gate`: los gates declarados en `continuity.json` se resuelven a sus workflows y `gate=security` se rechaza por el bloqueo S19/R304 sin despachar nada. El dispatch obligatorio en GitHub (`gh workflow run certification-runner.yml --ref qa/syntax-audit-in625-a1 -f operation=gate -f gate=cumulative -f target_repo=plus -f dry_run=true`) queda pendiente de credenciales `actions:write`; el intento anónimo devolvió 401 sin exponer secretos. Evidencia previa: r308 registró la publicación real con `operation=docs`. Solo documentación; sin gates reales, sin merges, sin cambios de producto.
++- **Estado.** Gates S19/SG28 sin cambios (r309/r310 vigentes; r311 en curso para el bloque local H2-SG28). Certificación global OPEN.
++- **Siguiente acción:** mantener `H2-EN-SG-CASE-EVIDENCE-AUDIT-R311` y añadir el run ID del dry-run del runner v3 cuando se ejecute con credenciales.
+diff --git a/qa/certification/EXECUTION_LOG.md b/qa/certification/EXECUTION_LOG.md
+index e9fb5fef..9d3ab7bb 100644
+--- a/qa/certification/EXECUTION_LOG.md
++++ b/qa/certification/EXECUTION_LOG.md
+@@ -456,3 +456,10 @@
+ ## 2026-10-26 UTC — r311: corrección del bloque local H2-SG28
+ 
+ - La cuota/concurrencia local ya estaba implementada y probada; se corrige `still_required_local` de r310. Siguiente: auditoría de evidencia EN-SG-01..32. Índice r311; sin Actions.
++
++## 2026-10-26 UTC — r312: runner v3 sincronizado en la rama canónica e índice docs_workflows
++
++- Rama canónica de Plus: workflow v2 `91f3c773` → v3 `23e42cf6`, blob idéntico a `main` (paridad con Lite, r298).
++- Validación sintáctica completa del blob v3 (YAML/bash/python, 13 pasos).
++- `continuity.json`: clave `docs_workflows.certification_runner` registrada (workflow ID Plus 374437934, active).
++- Bloqueo de seguridad `gate=security` en Plus verificado (S19/R304) mediante simulación local del pipeline gate. Dispatch obligatorio de dry-run pendiente de credenciales `actions:write`; sin gates reales, sin merges, sin exposición de credenciales.
+diff --git a/qa/certification/continuity.json b/qa/certification/continuity.json
+index 15c0116f..4014b723 100644
+--- a/qa/certification/continuity.json
++++ b/qa/certification/continuity.json
+@@ -1,6 +1,6 @@
+ {
+   "schema_version": 1,
+-  "revision": 311,
++  "revision": 312,
+   "repository": "c2melendez/precision-lab-plus",
+   "canonical_branch": "qa/syntax-audit-in625-a1",
+   "technical_baseline_sha": "ab2204258d21bddb9a5baf7664f62c7f96245182",
+@@ -51,9 +51,9 @@
+     }
+   },
+   "next_action": {
+-    "id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R311",
++    "id": "PLUS-RUNNER-V3-SYNC-DOCS-WORKFLOWS-R312",
+     "status": "READY",
+-    "action": "Construir la tabla de evidencia por caso EN-SG-01..32 (test, archivo, run/job por SHA exacto, PASS/FAIL/GAP/MANUAL) desde backend/tests/test_in625_h2_security.py, frontend/e2e/in625-h2-sg28-cancel.spec.ts, syntax309 SYX preflights, in625-syntax-native.spec.ts y los runs reales. Para cada GAP, escribir primero la prueba en Plus API (EN-SG-21, 23..27, 32; 01..08 en frontend) sin cargas extremas en producción. No activar SG28_EVALUATE_ISOLATION en producción; no repetir gates verdes. Mantener SECURITY-S25 BLOCKED, ALGEBRA229-AS-B-29 ON_HOLD, EDCX-B5 BLOCKED, SY-X-04-PLUS-HTTP BLOCKED, PR #29 OPEN/DRAFT y certificación global OPEN."
++    "action": "Runner v3 (blob 23e42cf6) sincronizado de main a la rama canónica de Plus y registrado en docs_workflows (paridad Lite r298). Pendiente obligatorio: dry-run operation=gate gate=cumulative dry_run=true con credenciales actions:write; confirmar rechazo explícito de gate=security (S19/R304) sin despachar. Continuar H2-EN-SG-CASE-EVIDENCE-AUDIT-R311."
+   },
+   "blockers": [
+     {
+@@ -3517,5 +3517,28 @@
+     ],
+     "sg28_flag": "SG28_EVALUATE_ISOLATION permanece desactivada por defecto; activarla en Render/producción requiere autorización aparte.",
+     "s19_link": "Los mutantes SG28 de _evaluate_impl (líneas 34, 37, 39-57) diferidos en s19_focused_acceptance_r309 se resolverán contra el contrato local, no el distribuido."
++  },
++  "docs_workflows": {
++    "certification_runner": {
++      "path": ".github/workflows/certification-runner.yml",
++      "version": 3,
++      "blob_sha": "23e42cf6dad30b281036cbbb63eff938c6646fde",
++      "sha256": "c85eb1d4b89606a51904ec792c7ca8bb141dd9ee9ca0f15b1d0eddc82815e0d7",
++      "operations": [
++        "gate",
++        "docs"
++      ],
++      "installed_branches": [
++        "main",
++        "qa/syntax-audit-in625-a1"
++      ],
++      "workflow_ids": {
++        "c2melendez/precision-lab-lite": 374437900,
++        "c2melendez/precision-lab-plus": 374437934
++      },
++      "state": "active",
++      "verified_at": "2026-10-26T15:40:00Z",
++      "notes": "v3 instalado en main (PR #52 merge 11806ba5 en Lite; PR #33 equivalente en Plus) y sincronizado a la rama canónica. Validación sintáctica YAML/bash/python del blob 23e42cf6. Dry-run gate pendiente de credenciales para el dispatch."
++    }
+   }
+ }
+-- 
+2.39.5
+

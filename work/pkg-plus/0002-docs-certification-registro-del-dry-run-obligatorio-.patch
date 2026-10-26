@@ -1,0 +1,95 @@
+From bbe694ad8f376f5c57d44cd985c5c3017b2ed945 Mon Sep 17 00:00:00 2001
+From: certification-bot <certification-bot@users.noreply.github.com>
+Date: Mon, 26 Oct 2026 15:43:55 +0000
+Subject: [PATCH 2/2] docs(certification): registro del dry-run obligatorio
+ (pendiente de credenciales) [skip ci]
+
+---
+ qa/certification/CURRENT_STATE.md             |  5 +++++
+ qa/certification/EXECUTION_LOG.md             |  2 ++
+ qa/certification/continuity.json              | 21 ++++++++++++++++++-
+ .../runner/PENDING-AUTH-20261026-plus.json    | 17 +++++++++++++++
+ 4 files changed, 44 insertions(+), 1 deletion(-)
+ create mode 100644 qa/certification/runner/PENDING-AUTH-20261026-plus.json
+
+diff --git a/qa/certification/CURRENT_STATE.md b/qa/certification/CURRENT_STATE.md
+index 6ae46a4f..76fdeb24 100644
+--- a/qa/certification/CURRENT_STATE.md
++++ b/qa/certification/CURRENT_STATE.md
+@@ -972,3 +972,8 @@ Ver r252.
+ - **Dry-run.** Simulación local del pipeline `gate`: los gates declarados en `continuity.json` se resuelven a sus workflows y `gate=security` se rechaza por el bloqueo S19/R304 sin despachar nada. El dispatch obligatorio en GitHub (`gh workflow run certification-runner.yml --ref qa/syntax-audit-in625-a1 -f operation=gate -f gate=cumulative -f target_repo=plus -f dry_run=true`) queda pendiente de credenciales `actions:write`; el intento anónimo devolvió 401 sin exponer secretos. Evidencia previa: r308 registró la publicación real con `operation=docs`. Solo documentación; sin gates reales, sin merges, sin cambios de producto.
+ - **Estado.** Gates S19/SG28 sin cambios (r309/r310 vigentes; r311 en curso para el bloque local H2-SG28). Certificación global OPEN.
+ - **Siguiente acción:** mantener `H2-EN-SG-CASE-EVIDENCE-AUDIT-R311` y añadir el run ID del dry-run del runner v3 cuando se ejecute con credenciales.
++
++### Addendum — registro del dry-run obligatorio
++
++- Dispatch real pendiente de credenciales `actions:write` (intento anónimo: 401/404, sin exposición de secretos). Simulación local: gates descubiertos desde `continuity.json`; `security`+Plus rechazado por política antes de despachar.
++- Registro en formato runner: `qa/certification/runner/PENDING-AUTH-20261026-plus.json` (decisión NOT_DISPATCHED).
+diff --git a/qa/certification/EXECUTION_LOG.md b/qa/certification/EXECUTION_LOG.md
+index 9d3ab7bb..6238c8d5 100644
+--- a/qa/certification/EXECUTION_LOG.md
++++ b/qa/certification/EXECUTION_LOG.md
+@@ -463,3 +463,5 @@
+ - Validación sintáctica completa del blob v3 (YAML/bash/python, 13 pasos).
+ - `continuity.json`: clave `docs_workflows.certification_runner` registrada (workflow ID Plus 374437934, active).
+ - Bloqueo de seguridad `gate=security` en Plus verificado (S19/R304) mediante simulación local del pipeline gate. Dispatch obligatorio de dry-run pendiente de credenciales `actions:write`; sin gates reales, sin merges, sin exposición de credenciales.
++
++- Addendum: registro NOT_DISPATCHED en `qa/certification/runner/PENDING-AUTH-20261026-plus.json`; dry-run en GitHub queda como siguiente acción obligatoria con credenciales. Sin gates reales, sin merges, sin cambios de producto.
+diff --git a/qa/certification/continuity.json b/qa/certification/continuity.json
+index 4014b723..85485497 100644
+--- a/qa/certification/continuity.json
++++ b/qa/certification/continuity.json
+@@ -3538,7 +3538,26 @@
+       },
+       "state": "active",
+       "verified_at": "2026-10-26T15:40:00Z",
+-      "notes": "v3 instalado en main (PR #52 merge 11806ba5 en Lite; PR #33 equivalente en Plus) y sincronizado a la rama canónica. Validación sintáctica YAML/bash/python del blob 23e42cf6. Dry-run gate pendiente de credenciales para el dispatch."
++      "canonical_head_before": "da153d1117f56a3ec22c5a443830a7a33cf552d5",
++      "canonical_head_after": "e01ac695ed2349537ee251d438c115da682d6043",
++      "dry_run_gate": {
++        "status": "PENDING_CREDENTIALS",
++        "requested_inputs": {
++          "operation": "gate",
++          "gate": "cumulative",
++          "target_repo": "plus",
++          "dry_run": true
++        },
++        "local_simulation": {
++          "gates_discovered": [
++            "cumulative",
++            "h1d",
++            "security"
++          ],
++          "security_plus_block": "verified"
++        },
++        "record": "qa/certification/runner/PENDING-AUTH-20261026-plus.json"
++      }
+     }
+   }
+ }
+diff --git a/qa/certification/runner/PENDING-AUTH-20261026-plus.json b/qa/certification/runner/PENDING-AUTH-20261026-plus.json
+new file mode 100644
+index 00000000..5ea3bd81
+--- /dev/null
++++ b/qa/certification/runner/PENDING-AUTH-20261026-plus.json
+@@ -0,0 +1,17 @@
++{
++  "schema_version": 1,
++  "repo": "c2melendez/precision-lab-plus",
++  "canonical_branch": "qa/syntax-audit-in625-a1",
++  "base_sha": "da153d1117f56a3ec22c5a443830a7a33cf552d5",
++  "gate": "cumulative",
++  "gate_workflow": ".github/workflows/in625-cumulative-certification.yml",
++  "decision": "NOT_DISPATCHED",
++  "runner_run_id": "PENDING-AUTH-20261026",
++  "runner_run_url": "https://github.com/c2melendez/precision-lab-plus/actions/workflows/374437934",
++  "dispatched_run_id": "",
++  "dispatched_run_url": "",
++  "dispatched_status": "",
++  "dispatched_conclusion": "",
++  "recorded_at": "2026-10-26T16:00:00+00:00",
++  "note": "Dry-run obligatorio no despachado en GitHub: sin gh CLI ni credenciales actions:write; dispatch anónimo rechazado (HTTP 404/401) sin exponer secretos. Simulación local del pipeline gate sobre continuity.json: gates descubiertos y bloqueo security-plus verificado. Comandos pendientes con credenciales: gh workflow run certification-runner.yml --repo c2melendez/precision-lab-plus --ref qa/syntax-audit-in625-a1 -f operation=gate -f gate=cumulative -f target_repo=plus -f dry_run=true"
++}
+-- 
+2.39.5
+

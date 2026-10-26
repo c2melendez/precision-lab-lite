@@ -1,0 +1,1 @@
+Validación sintáctica del blob 23e42cf6 (v3): YAML parse OK; 16 pasos (15 bloques run): bash -n OK en todos; 5 heredocs Python compilados OK; sin fallos.

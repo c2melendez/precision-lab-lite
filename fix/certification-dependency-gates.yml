@@ -1,0 +1,42 @@
+name: Certification dependency and security gates
+
+# Security advisories can change without a new SHA: these gates are never reused
+# by ci_guard.py. Preserve all existing PR/main triggers in the called workflows.
+on:
+  push:
+    branches: [qa/syntax-audit-in625-a1]
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'index.html'
+      - '.github/workflows/s25-security.yml'
+      - '.github/workflows/certification-dependency-gates.yml'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for fresh security/mutation revalidation'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  audit-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Record revalidation reason
+        env:
+          EVENT: ${{ github.event_name }}
+          REVALIDATION_REASON: ${{ inputs.reason }}
+        run: |
+          python3 - <<'PYCODE'
+          import json, os
+          reason = os.environ.get("REVALIDATION_REASON", "").strip()
+          if os.environ["EVENT"] == "workflow_dispatch" and not reason:
+              raise SystemExit("Manual revalidation requires a reason")
+          print(json.dumps({"event": os.environ["EVENT"], "reason": reason}))
+          PYCODE
+  security:
+    needs: audit-request
+    uses: ./.github/workflows/s25-security.yml
