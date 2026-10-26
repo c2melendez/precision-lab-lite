@@ -413,7 +413,7 @@ jobs:
               paths = git("diff-tree", "--no-commit-id", "--name-only", "-r", "--root", commit).splitlines()
               message = git("log", "-1", "--format=%B", commit).lower()
               if (any(marker in message for marker in skip_markers)
-                      or re.search(r"(?m)^skip-checks\\s*:\\s*true\\s*$", message)):
+                      or re.search(r"(?m)^skip-checks\s*:\s*true\s*$", message)):
                   problems.append(
                       f"{commit}: se prohíben marcadores de omisión de Actions en commits del paquete documental"
                   )
