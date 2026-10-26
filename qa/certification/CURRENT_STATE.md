@@ -1,3 +1,20 @@
+# VERIFIED LIVE SNAPSHOT — 2026-10-26 UTC
+
+> Este bloque superior es el corte operativo actual. Los apartados fechados más abajo son registros históricos preservados; no deben interpretarse como el siguiente paso vigente. La selección operativa se resuelve desde `continuity.json` tras consultar HEAD y Actions de nuevo.
+
+- **Rama canónica bilateral:** `qa/syntax-audit-in625-a1`; ambos punteros de README en `main` coinciden.
+- **Lite:** índice r301; baseline técnico validado `8c2cd395752959dbdc70cdf4e262d7bf8c597b82`. Acumulativo [40359884483](https://github.com/c2melendez/precision-lab-lite/actions/runs/40359884483) y H1d [40359884531](https://github.com/c2melendez/precision-lab-lite/actions/runs/40359884531) terminaron SUCCESS en ese SHA. Desde el baseline, los dos commits canónicos posteriores solo modifican `CURRENT_STATE.md`, `EXECUTION_LOG.md` y `continuity.json`; son cambios documentales excluidos de la huella técnica.
+- **Plus:** índice r314; baseline técnico validado `676f36ed2ca9566f5b37d27dd4c4f43065133f82`. Acumulativo [40360048532](https://github.com/c2melendez/precision-lab-plus/actions/runs/40360048532) y H1d [40360048942](https://github.com/c2melendez/precision-lab-plus/actions/runs/40360048942) terminaron SUCCESS en ese SHA. El commit canónico posterior solo modifica los mismos tres documentos excluidos de la huella técnica.
+- **Runs del Certification Runner en esos cortes:** Lite [40359884623](https://github.com/c2melendez/precision-lab-lite/actions/runs/40359884623) y Plus [40360048710](https://github.com/c2melendez/precision-lab-plus/actions/runs/40360048710) son runs de evento `push`; sus pasos de fingerprint, resolución del gate, despacho y registro quedaron omitidos. No acreditan una ejecución gate/docs, aunque los gates acumulativo y H1d de los SHA técnicos sí son evidencia ejecutada.
+- **Estado global:** OPEN. No repetir acumulativo/H1d ni seguridad por rutina. La siguiente acción vigente es la auditoría por caso EN-SG-01..32 en Plus, ID `H2-EN-SG-CASE-EVIDENCE-AUDIT-R314`, según `continuity.json` de Plus: mapear cada caso a test, archivo y run/job/SHA exacto; revisar cobertura ya existente antes de escribir tests; probar solo GAP confirmados. El índice Lite indica WAIT y solo debe reflejar documentalmente el hito bilateral.
+- **API GPT read-only:** `https://precision-lab-readonly-api.onrender.com`; el deploy live observado es `dep-dbfnu8nlk1mc73fksl6g`, commit `b6d5efdcae0802d5b5a24c79d8d7373bfa9e1acd`. La API solo planifica/lee y no despacha gates. Render conserva `autoDeployTrigger=off` y `healthCheckPath` vacío pese a que `render.yaml` declara `/healthz`; una comprobación autenticada reciente de /v1/status y planner sigue pendiente. No inferir disponibilidad de secretos ni mostrar sus valores.
+
+## Próximo paso operativo exacto
+
+Primero confirmar de nuevo que HEAD canónico coincide con el baseline en su árbol técnico (los commits posteriores son solo estado/log/índice), sin gates nuevos. Después empezar `H2-EN-SG-CASE-EVIDENCE-AUDIT-R314` en Plus, localizar los casos EN-SG-01..32 y crear una tabla de trazabilidad basada en evidencia existente. Si aparece un GAP, añadir una prueba test-first solo tras verificar contrato y cobertura; no activar aislamiento SG28 en producción ni ejecutar cargas extremas.
+
+---
+
 ## 2026-10-24 UTC — r286: H1c y Playwright corregidos en el SHA técnico; CI sigue bloqueado por audit
 
 **SHA técnico evaluado:** `14153e8bfd4f8557c24c7d195915b0a0907baa00` en `qa/syntax-audit-in625-a1`. PR #48 sigue abierto; no se ha mergeado.
