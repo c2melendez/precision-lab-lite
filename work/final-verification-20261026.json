@@ -1,0 +1,43 @@
+{
+  "verified_at": "2026-10-26T16:20:00Z",
+  "results": [
+    {
+      "repo": "lite",
+      "main_runner_blob": "23e42cf6dad30b281036cbbb63eff938c6646fde",
+      "cert_runner_blob": "91f3c77344daca1a48aba10f2b4fa23b11ffa39a",
+      "cert_head": "98c78b7ad6224b16694fa7adb20b3432540de665",
+      "docs_workflows": "null",
+      "state": null
+    },
+    {
+      "repo": "plus",
+      "main_runner_blob": "23e42cf6dad30b281036cbbb63eff938c6646fde",
+      "cert_runner_blob": "91f3c77344daca1a48aba10f2b4fa23b11ffa39a",
+      "cert_head": "da153d1117f56a3ec22c5a443830a7a33cf552d5",
+      "docs_workflows": "null",
+      "state": null
+    }
+  ],
+  "package_integrity": "sha256sum -c work/SHA256SUMS.txt -> OK (4/4)",
+  "syntax_validation": "YAML OK; bash -n 0 fallos; heredocs PY 0 fallos; blob main == c85eb1d4... sha256 en lite y plus",
+  "dry_run_remote": "PENDING_CREDENTIALS — gh ausente y sin GH_TOKEN; dispatch anónimo devolvió 401 (verificado); registros locales PENDING-AUTH NOT_DISPATCHED",
+  "gate_dry_runs_already_executed": {
+    "lite": [
+      "#19",
+      "#20",
+      "#21",
+      "#22"
+    ],
+    "plus": [
+      "#9",
+      "#10",
+      "#11",
+      "#12"
+    ]
+  },
+  "dispatch_commands": [
+    "gh workflow run certification-runner.yml --repo c2melendez/precision-lab-lite --ref qa/syntax-audit-in625-a1 -f operation=gate -f gate=cumulative -f target_repo=lite -f dry_run=true",
+    "gh workflow run certification-runner.yml --repo c2melendez/precision-lab-plus --ref qa/syntax-audit-in625-a1 -f operation=gate -f gate=cumulative -f target_repo=plus -f dry_run=true",
+    "gh workflow run certification-runner.yml --repo c2melendez/precision-lab-plus --ref qa/syntax-audit-in625-a1 -f operation=gate -f gate=security -f target_repo=plus -f dry_run=true"
+  ]
+}
