@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 300,
+  "revision": 301,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
@@ -51,9 +51,9 @@
     }
   },
   "next_action": {
-    "id": "LITE-WAIT-PLUS-CONTINUITY-VALIDATION-R300",
+    "id": "LITE-WAIT-PLUS-H2-EVIDENCE-AUDIT-R301",
     "status": "WAIT",
-    "action": "La corrección de continuidad está validada en Lite (cumulative 40359884483 y H1d 40359884531 SUCCESS exactos en 8c2cd395752959dbdc70cdf4e262d7bf8c597b82). No ejecutar más gates en Lite para este arreglo. Esperar el acumulativo de Plus y, una vez reconciliado bilateralmente, continuar con el objetivo H2-EN-SG-01..32 de Plus. Certificación global OPEN."
+    "action": "La corrección de continuidad queda validada bilateralmente en Lite (cumulative 40359884483, H1d 40359884531) y Plus (cumulative 40360048532, H1d 40360048942), exactos en sus respectivos SHA. No ejecutar más gates en Lite para este arreglo. El siguiente trabajo es el inventario de evidencia EN-SG-01..32 en Plus; actualizar el índice Lite solo como espejo documental de hitos bilaterales. Certificación global OPEN."
   },
   "blockers": [
     {
@@ -2819,30 +2819,52 @@
     "lite_impact": "Registro de paridad documental. SG28 es de Plus; Lite no cambia gates ni evidencia. Los contratos funcionales visibles se mantienen."
   },
   "planner_maintenance": {
-    "status": "VERIFIED_LITE_PENDING_PLUS",
+    "status": "VERIFIED_BILATERAL",
     "change": "numeric_generated_runner_records_excluded_from_gate_fingerprints_and_runner_commits_use_paths_ignore_not_skip_markers",
     "planner_version": 2,
     "runner_commit_skip_marker": false,
     "validated_head_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
     "validation": {
-      "cumulative": {
-        "run_id": 40359884483,
-        "conclusion": "success",
-        "head_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
-        "head_sha_matches": true,
-        "continuity_regressions": "35 tests OK"
+      "lite": {
+        "cumulative": {
+          "run_id": 40359884483,
+          "conclusion": "success",
+          "head_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
+          "head_sha_matches": true,
+          "continuity_regressions": "35 tests OK"
+        },
+        "h1d": {
+          "run_id": 40359884531,
+          "conclusion": "success",
+          "head_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
+          "head_sha_matches": true
+        },
+        "runner": {
+          "run_id": 40359884623,
+          "conclusion": "success",
+          "head_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
+          "head_sha_matches": true
+        }
       },
-      "h1d": {
-        "run_id": 40359884531,
-        "conclusion": "success",
-        "head_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
-        "head_sha_matches": true
-      },
-      "certification_runner": {
-        "run_id": 40359884623,
-        "conclusion": "success",
-        "head_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
-        "head_sha_matches": true
+      "plus": {
+        "cumulative": {
+          "run_id": 40360048532,
+          "conclusion": "success",
+          "head_sha": "676f36ed2ca9566f5b37d27dd4c4f43065133f82",
+          "head_sha_matches": true
+        },
+        "h1d": {
+          "run_id": 40360048942,
+          "conclusion": "success",
+          "head_sha": "676f36ed2ca9566f5b37d27dd4c4f43065133f82",
+          "head_sha_matches": true
+        },
+        "runner": {
+          "run_id": 40360048710,
+          "conclusion": "success",
+          "head_sha": "676f36ed2ca9566f5b37d27dd4c4f43065133f82",
+          "head_sha_matches": true
+        }
       }
     }
   }

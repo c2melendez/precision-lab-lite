@@ -321,3 +321,11 @@
 - H1d [40359884531](https://github.com/c2melendez/precision-lab-lite/actions/runs/40359884531) SUCCESS exacto en este SHA. Certification Runner push [40359884623](https://github.com/c2melendez/precision-lab-lite/actions/runs/40359884623) SUCCESS.
 - Se fija `technical_baseline_sha` en el SHA probado. Esta publicación posterior solo actualiza CURRENT_STATE, EXECUTION_LOG y continuity.json; dichas rutas están excluidas de la huella, por lo que no se necesita otro gate.
 - Resultado acotado: validada la corrección de continuidad en Lite, **no** significa certificación global ni desbloquea otros bloqueos. Global OPEN. Siguiente: esperar validación equivalente de Plus; no repetir gates de Lite.
+
+## 2026-10-26 UTC — r301: validación bilateral de continuidad cerrada; H2 sigue en Plus
+
+- Lite: cumulative [40359884483](https://github.com/c2melendez/precision-lab-lite/actions/runs/40359884483) y H1d [40359884531](https://github.com/c2melendez/precision-lab-lite/actions/runs/40359884531) SUCCESS exactos en `8c2cd395752959dbdc70cdf4e262d7bf8c597b82`; las regresiones de continuidad reportan 35 pruebas, `OK`.
+- Plus: cumulative [40360048532](https://github.com/c2melendez/precision-lab-plus/actions/runs/40360048532), H1d [40360048942](https://github.com/c2melendez/precision-lab-plus/actions/runs/40360048942) y Certification Runner [40360048710](https://github.com/c2melendez/precision-lab-plus/actions/runs/40360048710) SUCCESS exactos en `676f36ed2ca9566f5b37d27dd4c4f43065133f82`.
+- Ambas ramas eliminan el marcador `[skip ci]` de los commits creados por el runner; `paths-ignore` gestiona los pushes compuestos solo por registros. La operación documental también rechaza marcadores de omisión en los commits del paquete.
+- `technical_baseline_sha` de Lite sigue fijada al SHA técnico probado `8c2cd395752959dbdc70cdf4e262d7bf8c597b82`; este commit solo actualiza estado/registro/índice.
+- No se repiten gates de Lite ni se relanza S19/S25. El objetivo operativo siguiente corresponde a Plus: auditoría de evidencia por caso EN-SG-01..32. Global OPEN; bloqueos existentes sin cambio.
