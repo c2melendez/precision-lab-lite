@@ -570,3 +570,9 @@ SHA técnico Lite `c28091c`; gates cumulative/h1d/scientific-ui SUCCESS. Campañ
 - **Audit de la rama canónica.** `npm audit --package-lock-only` sobre el lockfile de `qa/syntax-audit-in625-a1` devuelve **0 vulnerabilidades** (0 low, 0 moderate, 0 high, 0 critical; 492 dependencias). El fallo de CI del PR #52 ocurría en `main` (lockfile distinto: 1 low + 3 moderate) y no afecta a la rama certificada.
 - **S25 sin cambio de estado.** El gate de seguridad de Lite conserva evidencia verde en `1cf29a71` (run 40137719274); no se reutiliza por SHA y un audit local no cierra el blocker. SECURITY-S25 permanece **BLOCKED** hasta cumplir su condición de salida explícita y registrar la aceptación.
 - **Siguiente acción:** sin cambios respecto a r294.
+
+## 2026-10-26 UTC — r296: paridad con la decisión S19 de Plus
+
+- Plus registró (r309, commit `04962ba`) la aceptación `2026-10-26-s19-focused-acceptance-v1`: S19 backend CLOSED_SCOPED sobre el alcance focalizado, con los mutantes SG28 diferidos a H2-SG28. Esa mutación es de Plus; **Lite no cambia** gates, umbrales ni evidencia.
+- Estado Lite sin cambios: SECURITY-S25 BLOCKED; ALGEBRA229-AS-B-29 ON_HOLD; H2-SG28-DIST-01..08 BLOCKED; EDCX-B5 BLOCKED; SY-X-04-PLUS-HTTP BLOCKED; SY-P-23 CLOSED; PR #48 OPEN/DRAFT; certificación global OPEN. Solo documentación; sin Actions.
+- **Siguiente acción:** sin cambios respecto a r295; reentrar cuando Plus produzca evidencia nueva o se apruebe el contrato SG28.

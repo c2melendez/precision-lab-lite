@@ -289,3 +289,7 @@
 - `operation=docs` publicó r294: run 40286599978 (dry-run 40286528777), base `c1627046`, commits `58bdbafe` + `66bd7ec7`.
 - `npm audit --package-lock-only` en la rama canónica: 0 vulnerabilidades. El rojo de CI del PR #52 pertenece a `main`, no a la rama certificada.
 - SECURITY-S25 sigue BLOCKED; no se cierra por audit local ni se reutiliza evidencia por SHA.
+
+## 2026-10-26 UTC — r296: paridad con decisión S19 de Plus
+
+- Registro documental de `2026-10-26-s19-focused-acceptance-v1` (Plus r309, `04962ba`). Sin impacto en gates ni evidencia de Lite; índice r296.
