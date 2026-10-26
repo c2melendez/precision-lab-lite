@@ -15,8 +15,10 @@ name: Certification Runner
 # - No se aceptan symlinks, gitlinks, binarios, commits vacíos ni merges.
 # - Si la rama canónica cambió desde `docs_expected_base_sha`, no se publica nada.
 # - dry_run=true descarga, aplica y valida el paquete, pero no publica.
-# - Los commits documentales no usan `[skip ci]`: los filtros `paths-ignore` de cada
-#   workflow deciden si el cambio activa pruebas (los contratos .md siguen activando gates).
+# - Los commits del paquete documental no pueden contener marcadores de omisión de Actions:
+#   la validación de docs los rechaza para que los contratos publiquen y activen sus gates.
+#   El commit de registro propio del runner puede usar [skip ci] porque solo cambia runner/**,
+#   excluido explícitamente por paths-ignore.
 #
 # La rama canónica se resuelve siempre desde qa/certification/README.md de la rama
 # predeterminada; nunca se codifica aquí.
@@ -383,7 +385,7 @@ jobs:
             exit 1
           fi
           python3 - <<'PY'
-          import os, subprocess, sys
+          import os, re, subprocess, sys
 
           def git(*args):
               return subprocess.check_output(["git", *args], text=True).strip()
@@ -406,8 +408,15 @@ jobs:
               return path.startswith("qa/certification/") and path.endswith(".md")
 
           problems = []
+          skip_markers = ("[skip ci]", "[ci skip]", "[no ci]", "[skip actions]", "[actions skip]")
           for commit in commits:
               paths = git("diff-tree", "--no-commit-id", "--name-only", "-r", "--root", commit).splitlines()
+              message = git("log", "-1", "--format=%B", commit).lower()
+              if (any(marker in message for marker in skip_markers)
+                      or re.search(r"(?m)^skip-checks\\s*:\\s*true\\s*$", message)):
+                  problems.append(
+                      f"{commit}: se prohíben marcadores de omisión de Actions en commits del paquete documental"
+                  )
               if not paths:
                   problems.append(f"{commit}: commit vacío")
               for path in paths:
