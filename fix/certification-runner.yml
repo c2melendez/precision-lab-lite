@@ -1,0 +1,203 @@
+name: Certification Runner
+
+# Versión 2. Cambios respecto a la versión anterior:
+# - Despacha el workflow de CI del gate elegido sobre la rama canónica QA y espera su resultado.
+# - Gates: cumulative y h1d en Lite y Plus; security solo en Lite.
+# - security en Plus queda bloqueado hasta resolver S19 (PLUS-S19-EQUIVALENCE-REVIEW-R304).
+# - Registra cada ejecución en qa/certification/runner/<run_id>.json, publicado con [skip ci].
+# - dry_run=true (por defecto): valida gate y política, calcula la huella. No despacha ni publica.
+# - dry_run=false: despacha, espera, registra y publica el JSON.
+# - Push a QA: solo calcula la huella; no despacha ni publica.
+# - Rama canónica resuelta desde qa/certification/README.md de la rama predeterminada.
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_repo:
+        description: "Repositorio a procesar (lite|plus|both)"
+        required: true
+        default: both
+        type: choice
+        options: [lite, plus, both]
+      gate:
+        description: "Gate de qa/certification/continuity.json"
+        required: true
+        default: cumulative
+        type: choice
+        options: [cumulative, h1d, security]
+      dry_run:
+        description: "true: solo planifica. false: despacha, espera y publica el resultado"
+        required: false
+        default: true
+        type: boolean
+  push:
+    branches: ["qa/syntax-audit-in625-a1"]
+    paths-ignore:
+      - "**.md"
+      - "qa/certification/continuity.json"
+      - "qa/certification/runner/**"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: certification-runner-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  certification-cycle:
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.target_repo == 'both' || endsWith(github.repository, format('-{0}', inputs.target_repo)) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 200
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      REPO: ${{ github.repository }}
+      GATE: ${{ inputs.gate }}
+    steps:
+      - name: Resolve canonical branch from default-branch README
+        run: |
+          set -euo pipefail
+          DEFAULT_BRANCH=$(gh api "repos/$REPO" --jq .default_branch)
+          README=$(gh api "repos/$REPO/contents/qa/certification/README.md?ref=$DEFAULT_BRANCH" --jq .content | base64 -d)
+          CANONICAL=$(printf '%s\n' "$README" | awk '/^## Rama can/{getline; gsub(/[`[:space:]]/,""); print; exit}')
+          if [ -z "$CANONICAL" ]; then
+            echo "No se pudo resolver la rama canónica desde el README de $DEFAULT_BRANCH"
+            exit 1
+          fi
+          echo "Rama predeterminada: $DEFAULT_BRANCH"
+          echo "Rama canónica: $CANONICAL"
+          echo "DEFAULT_BRANCH=$DEFAULT_BRANCH" >> "$GITHUB_ENV"
+          echo "CANONICAL_BRANCH=$CANONICAL" >> "$GITHUB_ENV"
+
+      - name: Checkout canonical branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CANONICAL_BRANCH }}
+          fetch-depth: 0
+
+      - name: Record base commit
+        run: echo "BASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Read-only planner fingerprint for selected gate
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          set -euo pipefail
+          python3 scripts/certification/continuity.py --fingerprint "$GATE"
+
+      - name: Gate policy and workflow resolution
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, sys
+          repo, gate = os.environ["REPO"], os.environ["GATE"]
+          gates = json.load(open("qa/certification/continuity.json"))["gates"]
+          if gate not in gates:
+              sys.exit(f"Gate '{gate}' no está en continuity.json")
+          if gate == "security" and repo.endswith("-plus"):
+              sys.exit("security en Plus está bloqueado hasta resolver S19 (PLUS-S19-EQUIVALENCE-REVIEW-R304). No se despacha nada.")
+          with open(os.environ["GITHUB_ENV"], "a") as env_file:
+              env_file.write(f"GATE_WORKFLOW={gates[gate]['workflow']}\n")
+          print(f"Gate {gate} -> {gates[gate]['workflow']}")
+          PY
+
+      - name: Dry-run summary
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run == true }}
+        run: |
+          echo "dry_run=true: se validó el gate $GATE."
+          echo "Workflow que se despacharía: $GATE_WORKFLOW sobre $CANONICAL_BRANCH en $BASE_SHA."
+          echo "No se despachó ningún workflow ni se publicó documentación."
+
+      - name: Push summary
+        if: ${{ github.event_name != 'workflow_dispatch' }}
+        run: |
+          echo "Evento push: sin gate. No se despacha ningún workflow ni se publica documentación."
+
+      - name: Dispatch gate workflow and wait for its result
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run != true }}
+        run: |
+          set -euo pipefail
+          WF_FILE="$(basename "$GATE_WORKFLOW")"
+          START="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          REASON="certification-runner run=${GITHUB_RUN_ID} gate=${GATE} sha=${BASE_SHA}"
+          gh workflow run "$WF_FILE" --repo "$REPO" --ref "$CANONICAL_BRANCH" -f reason="$REASON"
+          RUN_ID=""
+          for _ in $(seq 1 24); do
+            RUN_ID="$(gh run list --repo "$REPO" --workflow "$WF_FILE" --branch "$CANONICAL_BRANCH" --event workflow_dispatch --limit 20 \
+              --json databaseId,createdAt,headSha \
+              --jq "[.[] | select(.createdAt >= \"$START\" and .headSha == \"$BASE_SHA\")] | sort_by(.createdAt) | .[0].databaseId // empty")"
+            if [ -n "$RUN_ID" ]; then break; fi
+            sleep 5
+          done
+          if [ -z "$RUN_ID" ]; then
+            echo "::error::No apareció el run despachado de $WF_FILE sobre $BASE_SHA"
+            exit 1
+          fi
+          echo "RUN_ID=$RUN_ID" >> "$GITHUB_ENV"
+          echo "DISPATCHED_URL=$(gh run view "$RUN_ID" --repo "$REPO" --json url --jq .url)" >> "$GITHUB_ENV"
+          STATUS=""
+          for _ in $(seq 1 360); do
+            STATUS="$(gh run view "$RUN_ID" --repo "$REPO" --json status --jq .status)"
+            if [ "$STATUS" = "completed" ]; then break; fi
+            sleep 30
+          done
+          echo "DISPATCHED_STATUS=$STATUS" >> "$GITHUB_ENV"
+          echo "DISPATCHED_CONCLUSION=$(gh run view "$RUN_ID" --repo "$REPO" --json conclusion --jq '.conclusion // ""')" >> "$GITHUB_ENV"
+          echo "Run $RUN_ID: status=$STATUS"
+
+      - name: Record result in QA (dispatch runs only)
+        if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.dry_run != true }}
+        run: |
+          set -uo pipefail
+          python3 - <<'PY'
+          import datetime, json, os
+          run_id = os.environ["GITHUB_RUN_ID"]
+          dispatched = os.environ.get("RUN_ID", "")
+          data = {
+              "schema_version": 1,
+              "repo": os.environ["REPO"],
+              "canonical_branch": os.environ.get("CANONICAL_BRANCH", ""),
+              "base_sha": os.environ.get("BASE_SHA", ""),
+              "gate": os.environ.get("GATE", ""),
+              "gate_workflow": os.environ.get("GATE_WORKFLOW", ""),
+              "decision": "DISPATCHED" if dispatched else "NOT_DISPATCHED",
+              "runner_run_id": run_id,
+              "runner_run_url": f"https://github.com/{os.environ['REPO']}/actions/runs/{run_id}",
+              "dispatched_run_id": dispatched,
+              "dispatched_run_url": os.environ.get("DISPATCHED_URL", ""),
+              "dispatched_status": os.environ.get("DISPATCHED_STATUS", ""),
+              "dispatched_conclusion": os.environ.get("DISPATCHED_CONCLUSION", ""),
+              "recorded_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
+          }
+          path = f"qa/certification/runner/{run_id}.json"
+          os.makedirs(os.path.dirname(path), exist_ok=True)
+          with open(path, "w", encoding="utf-8") as fh:
+              json.dump(data, fh, indent=2, ensure_ascii=False)
+              fh.write("\n")
+          print(f"Escrito {path}")
+          PY
+
+      - name: Commit result record with [skip ci]
+        if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.dry_run != true }}
+        run: |
+          set -uo pipefail
+          RUN_FILE="qa/certification/runner/${GITHUB_RUN_ID}.json"
+          if [ ! -f "$RUN_FILE" ]; then
+            echo "No existe $RUN_FILE; nada que publicar."
+            exit 0
+          fi
+          git add -- "$RUN_FILE"
+          if git diff --cached --quiet; then
+            echo "Sin cambios que publicar."
+            exit 0
+          fi
+          git config user.name "certification-bot"
+          git config user.email "certification-bot@users.noreply.github.com"
+          git commit -m "docs(certification): record runner ${GATE} result [skip ci]"
+          git fetch origin "$CANONICAL_BRANCH"
+          if [ "$(git rev-parse "origin/$CANONICAL_BRANCH")" != "$BASE_SHA" ]; then
+            echo "::error::La rama canónica cambió durante la ejecución; no se publica para no pisar otro trabajo."
+            exit 1
+          fi
+          git push origin "HEAD:$CANONICAL_BRANCH"

@@ -1,0 +1,19 @@
+name: Syntax 309 Data Integrity
+on:
+  push:
+    branches: [qa/syntax-audit-in625-a1]
+    paths:
+      - 'qa/certification/syntax309_*.jsonl'
+      - 'qa/certification/check_syntax309_fixture.py'
+      - '.github/workflows/syntax309-integrity.yml'
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify official fixture integrity
+        run: python qa/certification/check_syntax309_fixture.py
