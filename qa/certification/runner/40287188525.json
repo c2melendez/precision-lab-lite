@@ -1,0 +1,28 @@
+{
+  "schema_version": 2,
+  "operation": "docs",
+  "repo": "c2melendez/precision-lab-lite",
+  "canonical_branch": "qa/syntax-audit-in625-a1",
+  "base_sha": "66bd7ec75fa1080c6479d8c34bcd0280cc0d6cac",
+  "patch": {
+    "url": "https://gist.githubusercontent.com/c2melendez/0aabb9638bae6c8131af2246d8d5d88f/raw/e025c86b23322f0654522a83788d2b74a3ab2fde/lite-r295.patch",
+    "sha256": "d841755fa5a34916af04ed18c5ddf65d105d555f3f42f28198615b78673cdcc9",
+    "bytes": 4140
+  },
+  "commits": [
+    {
+      "sha": "d56a88180f174477677158b78e207eb28e3e63cc",
+      "subject": "docs(certification): r295 publication evidence and canonical audit [skip ci]"
+    }
+  ],
+  "paths": [
+    "qa/certification/CURRENT_STATE.md",
+    "qa/certification/EXECUTION_LOG.md",
+    "qa/certification/continuity.json"
+  ],
+  "patch_head_sha": "d56a88180f174477677158b78e207eb28e3e63cc",
+  "decision": "PUBLISHED",
+  "runner_run_id": "40287188525",
+  "runner_run_url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/40287188525",
+  "recorded_at": "2026-10-26T07:40:15+00:00"
+}
