@@ -1,0 +1,25 @@
+From 38af96583d39cd4bda37db34856110adf69ecc09 Mon Sep 17 00:00:00 2001
+From: "qwen.ai[bot]" <qwenlm-intl@service.alibaba.com>
+Date: Mon, 26 Oct 2026 14:18:30 +0000
+Subject: [PATCH] fix(ci): restaurar .gitignore original de main en rama del PR
+ #53 (revierte eliminacion destructiva que rompio el hard gate npm audit)
+
+---
+ .gitignore | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/.gitignore b/.gitignore
+index 335ec95..4a3b9d5 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1 +1,6 @@
+-*.tar.gz
++node_modules/
++dist/
++*.tsbuildinfo
++playwright-report/
++test-results/
++.env
+-- 
+2.39.5
+

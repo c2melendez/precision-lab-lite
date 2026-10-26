@@ -1,0 +1,27 @@
+From 35f5904d43a6bcf3aec408ed219ea0bb9e22c407 Mon Sep 17 00:00:00 2001
+From: cert-bot <cert-bot@local>
+Date: Mon, 26 Oct 2026 15:04:57 +0000
+Subject: [PATCH] fix(ci): restaurar .gitignore original de main (blob 4a3b9d5)
+ - revierte *.tar.gz+*.gz del HEAD 384bed8 que mantiene roto el hard gate npm
+ audit
+
+---
+ .gitignore | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/.gitignore b/.gitignore
+index e4284d9..4a3b9d5 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,2 +1,6 @@
+-*.tar.gz
+-*.gz
++node_modules/
++dist/
++*.tsbuildinfo
++playwright-report/
++test-results/
++.env
+-- 
+2.39.5
+

@@ -1,0 +1,7 @@
+56d8f5a9dea343377167666cf451d1b2501e3af97c647630d1052314be032f59  certification-upload.tar.gz
+ae352d23f6b85928d50feab19e768776e7239599e93995f7340e9785a2ef6ead  fix-pr53.tar.gz
+67807fbfc9634fd63633db141a01bd6753f898ebb7b41544b38b667b9d0dcca7  fix-pr53/0001-chore-cert-add-certification-runner-v3-files-and-man.patch
+1ff376e01588bd62ca3db8fe93645316343eaa90531f7da5febf0be13bcbd170  fix-pr53/0002-fix-ci-restaurar-.gitignore-original-de-main-reviert.patch
+fc0c90db7007df2784783564977dc09d0fbcd7ae1557491889ae9664426f27a2  fix-pr53/README_CORRECCIONES.md
+94cf70d1b9b29c89b506fa73c25a6b1ea6a4bff8e7f8f1baf7f604f9a34a6096  fix-pr53/SHA256SUMS
+c85eb1d4b89606a51904ec792c7ca8bb141dd9ee9ca0f15b1d0eddc82815e0d7  fix-pr53/certification-runner.yml

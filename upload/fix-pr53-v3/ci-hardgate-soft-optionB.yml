@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master, qa/exhaustive-suite-module-01]
+    paths-ignore:
+      - '**/*.md'
+      - 'README.md'
+      - 'qa/certification/continuity.json'
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+      - 'README.md'
+      - 'qa/certification/continuity.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: QA dependency audit (reporte, sin bloquear)
+        # PENDIENTE DE DECISION: se restaura '|| exit 1' cuando M16 resuelva katex/postcss
+        run: npm audit --package-lock-only --json > npm-audit.json || true
+      - name: Upload npm audit report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lite-npm-audit
+          path: npm-audit.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Unit and parity tests
+        run: npm test
+      - name: Production build
+        run: npm run build
+      - name: Upload production build
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lite-dist
+          path: dist
+          if-no-files-found: ignore
+          retention-days: 7

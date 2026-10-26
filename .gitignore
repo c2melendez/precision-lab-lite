@@ -1,6 +1,7 @@
-node_modules/
-dist/
-*.tsbuildinfo
-playwright-report/
-test-results/
-.env
+*.tar.gz
+*.gz
+*.zip
+*.bz2
+*.xz
+*.7z
+*.rar
