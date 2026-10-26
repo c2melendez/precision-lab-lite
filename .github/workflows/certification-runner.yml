@@ -17,8 +17,8 @@ name: Certification Runner
 # - dry_run=true descarga, aplica y valida el paquete, pero no publica.
 # - Los commits del paquete documental no pueden contener marcadores de omisión de Actions:
 #   la validación de docs los rechaza para que los contratos publiquen y activen sus gates.
-#   El commit de registro propio del runner puede usar [skip ci] porque solo cambia runner/**,
-#   excluido explícitamente por paths-ignore.
+#   Ningún commit publicado por el runner lleva marcadores de omisión: paths-ignore evita
+#   bucles cuando solo cambia runner/** y permite activar gates si cambia un contrato.
 #
 # La rama canónica se resuelve siempre desde qa/certification/README.md de la rama
 # predeterminada; nunca se codifica aquí.
@@ -225,7 +225,7 @@ jobs:
           print(f"Escrito {path}")
           PY
 
-      - name: Commit result record with [skip ci]
+      - name: Commit result record (paths-ignore handles runner-only push)
         if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.operation == 'gate' && inputs.dry_run != true }}
         run: |
           set -uo pipefail
@@ -241,7 +241,7 @@ jobs:
           fi
           git config user.name "certification-bot"
           git config user.email "certification-bot@users.noreply.github.com"
-          git commit -m "docs(certification): record runner ${GATE} result [skip ci]"
+          git commit -m "docs(certification): record runner ${GATE} result"
           git fetch origin "$CANONICAL_BRANCH"
           if [ "$(git rev-parse "origin/$CANONICAL_BRANCH")" != "$BASE_SHA" ]; then
             echo "::error::La rama canónica cambió durante la ejecución; no se publica para no pisar otro trabajo."
@@ -509,7 +509,7 @@ jobs:
           print(f"Escrito {path}")
           PY
           git add -- "qa/certification/runner/${GITHUB_RUN_ID}.json"
-          git commit -m "docs(certification): record docs publication ${GITHUB_RUN_ID} [skip ci]"
+          git commit -m "docs(certification): record docs publication ${GITHUB_RUN_ID}"
 
       - name: Publish docs package with compare-and-swap
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.operation == 'docs' && inputs.dry_run != true }}
