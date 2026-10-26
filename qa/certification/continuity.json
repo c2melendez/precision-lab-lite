@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "revision": 299,
+  "revision": 300,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
+  "technical_baseline_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
   "baseline_case": "EDCX-B3-MIRROR-R262",
   "baseline_status": "NO_EJECUTADO",
   "global_certification": "OPEN",
@@ -51,9 +51,9 @@
     }
   },
   "next_action": {
-    "id": "CONTINUITY-PLANNER-RUNNER-EXCLUSION-R299",
-    "status": "VALIDATION_PENDING",
-    "action": "Validar el SHA exacto final tras corregir la exclusión de registros y retirar [skip ci] de los commits generados por el runner. Confirmar el resultado acumulativo y los gates automáticamente activados por los cambios de workflow; no reutilizar resultados de un SHA anterior. Después, actualizar technical_baseline_sha con el commit técnico validado y reanudar el siguiente objetivo de certificación sin repetir gates por rutina."
+    "id": "LITE-WAIT-PLUS-CONTINUITY-VALIDATION-R300",
+    "status": "WAIT",
+    "action": "La corrección de continuidad está validada en Lite (cumulative 40359884483 y H1d 40359884531 SUCCESS exactos en 8c2cd395752959dbdc70cdf4e262d7bf8c597b82). No ejecutar más gates en Lite para este arreglo. Esperar el acumulativo de Plus y, una vez reconciliado bilateralmente, continuar con el objetivo H2-EN-SG-01..32 de Plus. Certificación global OPEN."
   },
   "blockers": [
     {
@@ -2819,9 +2819,31 @@
     "lite_impact": "Registro de paridad documental. SG28 es de Plus; Lite no cambia gates ni evidencia. Los contratos funcionales visibles se mantienen."
   },
   "planner_maintenance": {
-    "status": "VALIDATION_PENDING",
+    "status": "VERIFIED_LITE_PENDING_PLUS",
     "change": "numeric_generated_runner_records_excluded_from_gate_fingerprints_and_runner_commits_use_paths_ignore_not_skip_markers",
     "planner_version": 2,
-    "runner_commit_skip_marker": false
+    "runner_commit_skip_marker": false,
+    "validated_head_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
+    "validation": {
+      "cumulative": {
+        "run_id": 40359884483,
+        "conclusion": "success",
+        "head_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
+        "head_sha_matches": true,
+        "continuity_regressions": "35 tests OK"
+      },
+      "h1d": {
+        "run_id": 40359884531,
+        "conclusion": "success",
+        "head_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
+        "head_sha_matches": true
+      },
+      "certification_runner": {
+        "run_id": 40359884623,
+        "conclusion": "success",
+        "head_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
+        "head_sha_matches": true
+      }
+    }
   }
 }

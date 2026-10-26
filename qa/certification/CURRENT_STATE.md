@@ -598,3 +598,11 @@ SHA técnico Lite `c28091c`; gates cumulative/h1d/scientific-ui SUCCESS. Campañ
 - El runner v2 de esta rama conserva su operación gate; el runner v3 del branch predeterminado recibe la misma corrección para gate y docs.
 - Las corridas iniciadas sobre el SHA previo no deben atribuirse al HEAD que contiene esta corrección. Esperar evidencia exacta del commit actual y reconciliar la baseline tras revisar las pruebas.
 - Certificación global OPEN; bloqueos de producto sin cambio.
+
+## 2026-10-26 UTC — r300: continuidad del runner validada en Lite
+
+- HEAD técnico validado: `8c2cd395752959dbdc70cdf4e262d7bf8c597b82`.
+- Cumulative [40359884483](https://github.com/c2melendez/precision-lab-lite/actions/runs/40359884483) SUCCESS exacto en este SHA; el job de regresiones de continuidad ejecutó 35 pruebas y terminó `OK`.
+- H1d [40359884531](https://github.com/c2melendez/precision-lab-lite/actions/runs/40359884531) SUCCESS exacto en este SHA. Certification Runner push [40359884623](https://github.com/c2melendez/precision-lab-lite/actions/runs/40359884623) SUCCESS.
+- Se fija `technical_baseline_sha` en el SHA probado. Esta publicación posterior solo actualiza CURRENT_STATE, EXECUTION_LOG y continuity.json; dichas rutas están excluidas de la huella, por lo que no se necesita otro gate.
+- Resultado acotado: validada la corrección de continuidad en Lite, **no** significa certificación global ni desbloquea otros bloqueos. Global OPEN. Siguiente: esperar validación equivalente de Plus; no repetir gates de Lite.
