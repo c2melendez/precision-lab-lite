@@ -283,3 +283,9 @@
 - Pruebas locales 27/27 y validación de YAML/shell. Esta revisión se publica con el propio mecanismo (`operation=docs`); no se lanzaron gates.
 - Playwright de Plus reconciliado: runs 40155180977 (`9acc0bff`) y 40154343463 (`73be7940`) SUCCESS.
 - Bloqueos sin cambios; siguiente acción en `continuity.json` r294.
+
+## 2026-10-26 UTC — r295: IDs de publicación y audit canónico
+
+- `operation=docs` publicó r294: run 40286599978 (dry-run 40286528777), base `c1627046`, commits `58bdbafe` + `66bd7ec7`.
+- `npm audit --package-lock-only` en la rama canónica: 0 vulnerabilidades. El rojo de CI del PR #52 pertenece a `main`, no a la rama certificada.
+- SECURITY-S25 sigue BLOCKED; no se cierra por audit local ni se reutiliza evidencia por SHA.

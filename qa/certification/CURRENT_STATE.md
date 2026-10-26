@@ -563,3 +563,10 @@ SHA técnico Lite `c28091c`; gates cumulative/h1d/scientific-ui SUCCESS. Campañ
 - **Evidencia de esta revisión.** Publicada con `operation=docs` (run registrado en `qa/certification/runner/` en el mismo commit de publicación), sin push manual y sin ejecutar gates.
 - **Estado.** Sin cambios de fuente desde `1cf29a71`/`444df962`: H1c, Playwright, cumulative, H1d, scientific, CI y dependency gates conservan su evidencia (REUSE). SECURITY-S25 BLOCKED; ALGEBRA229-AS-B-29 ON_HOLD; H2-SG28-DIST-01..08 BLOCKED; EDCX-B5 BLOCKED; SY-X-04-PLUS-HTTP BLOCKED; SY-P-23 CLOSED; PR #48 OPEN/DRAFT; certificación global OPEN.
 - **Siguiente acción.** Reconciliar evidencia nueva de Plus (S19/seguridad) cuando cambie; no repetir gates verdes ni reintentar S25 sin cambio de dependencia o advisory.
+
+## 2026-10-26 UTC — r295: evidencia de publicación del runner v3 y audit de la rama canónica
+
+- **Publicación real con `operation=docs`.** Run [40286599978](https://github.com/c2melendez/precision-lab-lite/actions/runs/40286599978) **SUCCESS** (dry-run [40286528777](https://github.com/c2melendez/precision-lab-lite/actions/runs/40286528777)), base `c1627046`, commits `58bdbafe` (documentación) y `66bd7ec7` (registro), registro `qa/certification/runner/40286599978.json`. Los pasos de gate quedaron omitidos; no se dispararon matrices.
+- **Audit de la rama canónica.** `npm audit --package-lock-only` sobre el lockfile de `qa/syntax-audit-in625-a1` devuelve **0 vulnerabilidades** (0 low, 0 moderate, 0 high, 0 critical; 492 dependencias). El fallo de CI del PR #52 ocurría en `main` (lockfile distinto: 1 low + 3 moderate) y no afecta a la rama certificada.
+- **S25 sin cambio de estado.** El gate de seguridad de Lite conserva evidencia verde en `1cf29a71` (run 40137719274); no se reutiliza por SHA y un audit local no cierra el blocker. SECURITY-S25 permanece **BLOCKED** hasta cumplir su condición de salida explícita y registrar la aceptación.
+- **Siguiente acción:** sin cambios respecto a r294.
