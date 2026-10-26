@@ -4,10 +4,10 @@ name: Certification Runner
 # - Despacha el workflow de CI del gate elegido sobre la rama canónica QA y espera su resultado.
 # - Gates: cumulative y h1d en Lite y Plus; security solo en Lite.
 # - security en Plus queda bloqueado hasta resolver S19 (PLUS-S19-EQUIVALENCE-REVIEW-R304).
-# - Registra cada ejecución en qa/certification/runner/<run_id>.json, publicado con [skip ci].
+# - Registra cada ejecución en qa/certification/runner/<run_id>.json sin marcadores de omisión.
 # - dry_run=true (por defecto): valida gate y política, calcula la huella. No despacha ni publica.
 # - dry_run=false: despacha, espera, registra y publica el JSON.
-# - Push a QA: solo calcula la huella; no despacha ni publica.
+# - Push a QA: solo calcula la huella; no despacha ni publica. Los commits que solo cambian runner/** se filtran por paths-ignore.
 # - Rama canónica resuelta desde qa/certification/README.md de la rama predeterminada.
 
 on:
