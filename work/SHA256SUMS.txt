@@ -1,0 +1,4 @@
+ba51703f835e2aa8a84f5f9f3afeed2acce861c6cdadd5195872f7e17611b7ce  work/pkg-lite/0001-docs-certification-instalar-certification-runner-v3-.patch
+74c7d5f9974dcb8ee6b1033b9cb3c127f347b7343934ad523802c3fab03ec186  work/pkg-lite/0002-docs-certification-registro-del-dry-run-obligatorio-.patch
+53f80d7e96da303f0975a0d9f698fea7d67a25d5fa72ad10abe1c3839ccc8f05  work/pkg-plus/0001-docs-certification-instalar-certification-runner-v3-.patch
+60675a2fd226e1c7e3069f926fb00690b9185c121116e4ffb4b87a5950ab2bc3  work/pkg-plus/0002-docs-certification-registro-del-dry-run-obligatorio-.patch
