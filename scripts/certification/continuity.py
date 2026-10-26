@@ -9,6 +9,7 @@ from datetime import datetime, timezone, timedelta
 import fnmatch
 import hashlib
 import json
+import re
 from pathlib import Path
 import subprocess
 
@@ -28,14 +29,17 @@ def tree(root, sha):
 
 
 def selected(path, gate, prose_paths):
-    # Exact, reviewed prose allowlist. Unknown files and contracts stay inputs.
-    if path in prose_paths or path == 'qa/certification/continuity.json':
+    # Exact, reviewed exclusions only. Generated numeric runner records are
+    # audit metadata written after a run; they must not invalidate its inputs.
+    if (path in prose_paths
+            or path == 'qa/certification/continuity.json'
+            or re.fullmatch(r'qa/certification/runner/[0-9]{1,20}\.json', path)):
         return False
     return any(fnmatch.fnmatchcase(path, pattern) for pattern in gate['inputs'])
 
 
 def fingerprint(entries, gate, prose_paths):
-    payload = {'planner_version': 1, 'gate': gate,
+    payload = {'planner_version': 2, 'gate': gate,
                'inputs': {p: v for p, v in sorted(entries.items())
                           if selected(p, gate, prose_paths)}}
     return hashlib.sha256(json.dumps(payload, sort_keys=True,

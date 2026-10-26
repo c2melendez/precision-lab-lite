@@ -18,7 +18,8 @@ class ContinuityTests(unittest.TestCase):
                      'qa/certification/cases.jsonl': ['100644', 'blob', 'b'],
                      'qa/certification/SG28_DISTRIBUTED_ACCEPTANCE.md': ['100644', 'blob', 'c'],
                      'scripts/certification/continuity.py': ['100644', 'blob', 'd'],
-                     'qa/certification/CURRENT_STATE.md': ['100644', 'blob', 'e']}
+                     'qa/certification/CURRENT_STATE.md': ['100644', 'blob', 'e'],
+                     'qa/certification/runner/12345.json': ['100644', 'blob', 'f']}
         self.trees = {'old': self.base, 'head': copy.deepcopy(self.base)}
         self.trees['head']['qa/certification/CURRENT_STATE.md'][2] = 'new prose'
         self.run = {'id': 1, 'path': '.github/workflows/test.yml', 'head_sha': 'old',
@@ -59,11 +60,19 @@ class ContinuityTests(unittest.TestCase):
         self.state['gates']['unit']['max_evidence_age_hours'] = 0.5
         self.assertEqual(self.decision(), 'REVIEW')
 
+    def test_generated_runner_record_does_not_invalidate_evidence(self):
+        self.trees['head'] = copy.deepcopy(self.base)
+        self.trees['head']['qa/certification/runner/12345.json'][2] = 'new generated record blob'
+        self.assertEqual(self.decision(), 'REUSE')
+        result = plan(self.state, self.live, self.trees.__getitem__, self.now)
+        self.assertEqual(result['state_status'], 'CURRENT')
+
     def test_each_technical_input_invalidates_evidence(self):
         paths = ['src/math.ts', 'qa/certification/cases.jsonl',
                  'qa/certification/SG28_DISTRIBUTED_ACCEPTANCE.md',
                  'scripts/certification/continuity.py', '.github/workflows/test.yml',
-                 'package-lock.json', 'backend/requirements.txt', 'tests/regression.ts']
+                 'package-lock.json', 'backend/requirements.txt', 'tests/regression.ts',
+                 'qa/certification/runner/manifest.json']
         for path in paths:
             with self.subTest(path=path):
                 self.trees['head'] = copy.deepcopy(self.base)

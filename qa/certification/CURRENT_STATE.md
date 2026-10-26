@@ -582,3 +582,12 @@ SHA técnico Lite `c28091c`; gates cumulative/h1d/scientific-ui SUCCESS. Campañ
 - Plus registró (r310) `2026-10-26-sg28-single-host-scope-v1`: H2-SG28-DIST-01..08 = OUT_OF_SCOPE_SINGLE_HOST (no PASS; reapertura si hay varias instancias). SG28 es de Plus; **Lite no cambia** gates ni evidencia.
 - Estado Lite: SECURITY-S25 BLOCKED; ALGEBRA229-AS-B-29 ON_HOLD; EDCX-B5 BLOCKED; SY-X-04-PLUS-HTTP BLOCKED; SY-P-23 CLOSED; PR #48 OPEN/DRAFT; certificación global OPEN. Solo documentación; sin Actions.
 - **Siguiente acción:** sin cambios respecto a r295; reentrar cuando Plus produzca evidencia nueva.
+
+
+## 2026-10-26 UTC — r298: exclusión de registros generados del fingerprint; validación pendiente
+
+- Corrección aplicada en `scripts/certification/continuity.py`: la huella ignora únicamente `qa/certification/runner/<id>.json` con ID numérico; el algoritmo pasa a versión 2.
+- Pruebas de regresión: cambiar el contenido de un registro generado no invalida evidencia; añadir un archivo no numérico en `runner/` o modificar un contrato sí invalida la huella.
+- Se actualizó `CONTINUITY.md` para eliminar el snapshot histórico r235 y documentar la excepción estricta y los marcadores de Actions.
+- El siguiente paso es validar este commit mediante la corrida acumulativa activada por el cambio técnico y reconciliar `technical_baseline_sha` con evidencia exacta antes de volver a usar el planificador. No repetir otros gates verdes por rutina.
+- Certificación global: OPEN. Bloqueos existentes: sin cambios.

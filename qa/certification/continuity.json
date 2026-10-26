@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 297,
+  "revision": 298,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -51,9 +51,9 @@
     }
   },
   "next_action": {
-    "id": "LITE-RUNNER-DOCS-R294",
-    "status": "READY",
-    "action": "Runner v3 con operación docs desplegado en main (PR #52, merge 11806ba5). Esta revisión se publicó con operation=docs y quedó registrada en qa/certification/runner/. No repetir H1c, Playwright, cumulative, H1d, CI, scientific ni dependency gates: no hay cambios de fuente desde 1cf29a71/444df962. SECURITY-S25 BLOCKED sin reintentos hasta cambio de dependencia/advisory; ALGEBRA229-AS-B-29 ON_HOLD; H2-SG28-DIST-01..08 BLOCKED; EDCX-B5 BLOCKED; SY-X-04-PLUS-HTTP BLOCKED; SY-P-23 CLOSED. Mantener PR #48 OPEN/DRAFT y certificación global OPEN. Reentrar cuando Plus produzca evidencia nueva de S19/seguridad o se autorice una decisión de contrato."
+    "id": "CONTINUITY-PLANNER-RUNNER-EXCLUSION-R298",
+    "status": "VALIDATION_PENDING",
+    "action": "Validar en el SHA exacto del cambio que scripts/certification/continuity.py y sus pruebas pasan en la corrida acumulativa; comprobar que cambiar qa/certification/runner/<id>.json no altera el fingerprint y que archivos no numéricos/contratos sí lo alteran. No repetir gates previos. Solo después de revisar el run, actualizar technical_baseline_sha mediante una publicación documental y reanudar H2-EN-SG evidence audit."
   },
   "blockers": [
     {
@@ -2817,5 +2817,10 @@
     "reference": "c2melendez/precision-lab-plus continuity.json r310",
     "contract_id": "2026-10-26-sg28-single-host-scope-v1",
     "lite_impact": "Registro de paridad documental. SG28 es de Plus; Lite no cambia gates ni evidencia. Los contratos funcionales visibles se mantienen."
+  },
+  "planner_maintenance": {
+    "status": "VALIDATION_PENDING",
+    "change": "numeric_generated_runner_records_excluded_from_gate_fingerprints",
+    "planner_version": 2
   }
 }

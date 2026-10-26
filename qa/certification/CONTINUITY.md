@@ -1,6 +1,6 @@
 # Continuidad verificable y prevención de ejecuciones redundantes
 
-> **Vigencia (r235, 2026-10-21).** Las secciones de procedimiento de este documento siguen siendo referencia. El **estado** y la "Reentrada exacta" del final son historicos (AS-PAR-02), no vigentes. El estado canonico esta en `continuity.json` (revision 235; siguiente objetivo `EXP-MATRICES-VECTORES-EVALUATION`) y en el corte superior de `CURRENT_STATE.md`.
+> **Vigencia del procedimiento.** Este archivo describe reglas estables de continuidad y revisión. No conserva un snapshot vigente del proyecto: el estado variable, los bloqueos y el siguiente objetivo se leen de `continuity.json` y del corte más reciente de `CURRENT_STATE.md`. Los ejemplos históricos de este archivo no autorizan una ejecución nueva.
 
 
 `continuity.json` es el índice estructurado vigente. No sustituye contratos, logs ni GitHub Actions. `CURRENT_STATE.md` presenta este índice a personas; `EXECUTION_LOG.md` conserva historia. Si difieren, reconciliar evidencia real antes de programar pruebas. El prompt externo es únicamente bootstrap.
@@ -14,9 +14,13 @@
 5. Antes de publicar, releer HEAD y usar actualización de referencia con `expected_sha`. Si cambió, reconciliar/rebasar y recalcular; no sobrescribir trabajo de otra sesión. No existe un lock permanente: una sesión interrumpida no debe impedir a la siguiente continuar. Para una corrida en curso, GitHub es autoridad. Un campo local de intención de trabajo no equivale a una corrida ni reserva exclusividad.
 6. Publicar cambio técnico consolidado, comprobar que el push activa el workflow correcto para ese SHA y registrar su ID. Las actualizaciones posteriores del índice y prosa no deben despertar E2E. No repetir despacho manual si apareció el run esperado. La concurrencia de workflows es una segunda defensa contra eventos duplicados/obsoletos, no una evidencia de aprobación.
 
+La operación documental del runner debe rechazar commits de paquete con marcadores de omisión de Actions (`[skip ci]`, `[ci skip]`, `[no ci]`, `[skip actions]`, `[actions skip]` o `skip-checks: true`). De lo contrario, una modificación de contrato puede publicarse sin activar su gate. El marcador permitido en el commit que registra el resultado del propio runner es distinto: solo se usa porque `paths-ignore` excluye explícitamente `qa/certification/runner/**`.
+
 ## Huella y alcance
 
 `scripts/certification/continuity.py` usa SHA-256 sobre ruta, modo, tipo y OID Git de todos los insumos seleccionados, configuración del gate y versión del planificador. Incluye adiciones, cambios y eliminaciones. Por defecto los gates usan `inputs: ["*"]`, cobertura conservadora de todo el árbol. Las únicas exclusiones son las rutas **exactas** declaradas como prosa y el índice `continuity.json` para evitar autorreferencia. Los objetos `tree` intermedios no son insumos; blobs, symlinks y submodules sí.
+
+Los archivos `qa/certification/runner/<run_id>.json` con `<run_id>` exclusivamente decimal son registros generados después de una ejecución y quedan excluidos de la huella. La exclusión es estrecha: no cubre scripts, workflows, tests, esquemas ni otros archivos dentro de `qa/certification/runner/`; esos continúan siendo insumos. La excepción está implementada con patrón exacto y pruebas de regresión.
 
 No excluir `qa/certification/**`: fixtures JSONL, verificadores, contratos de aceptación, scripts, tests, workflows, dependencias y lockfiles son insumos. Los contratos `.md` no están en la lista de prosa. Cambiar criterios externos exige incrementar `acceptance_revision` y revisar la evidencia contra esos criterios; un run antiguo sin esta revisión queda REVIEW. La revisión no se infiere del color verde.
 
