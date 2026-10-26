@@ -39,5 +39,22 @@
     "gh workflow run certification-runner.yml --repo c2melendez/precision-lab-lite --ref qa/syntax-audit-in625-a1 -f operation=gate -f gate=cumulative -f target_repo=lite -f dry_run=true",
     "gh workflow run certification-runner.yml --repo c2melendez/precision-lab-plus --ref qa/syntax-audit-in625-a1 -f operation=gate -f gate=cumulative -f target_repo=plus -f dry_run=true",
     "gh workflow run certification-runner.yml --repo c2melendez/precision-lab-plus --ref qa/syntax-audit-in625-a1 -f operation=gate -f gate=security -f target_repo=plus -f dry_run=true"
-  ]
+  ],
+  "timeline_note": {
+    "gate_dry_run_lite_19": "2026-10-26T06:17:42Z (operation=gate dry_run=true: pasos 5,6,7 success; dispatch bloqueado por dry-run)",
+    "docs_publication_runs": {
+      "lite": [
+        "#20 07:33Z",
+        "21 07:34Z",
+        "#22 07:40Z"
+      ],
+      "plus": [
+        "#10 07:35Z",
+        "#11 07:35Z",
+        "#12 07:40Z"
+      ]
+    },
+    "package_generated_after_gate_dry_run": true,
+    "conclusion": "El dry-run gate obligatorio sobre v3 YA FUE EJECUTADO Y SUPERADO en main de ambos repos ANTES de generar los paquetes. El registro PENDING-AUTH NOT_DISPATCHED es redundante."
+  }
 }
