@@ -293,3 +293,7 @@
 ## 2026-10-26 UTC — r296: paridad con decisión S19 de Plus
 
 - Registro documental de `2026-10-26-s19-focused-acceptance-v1` (Plus r309, `04962ba`). Sin impacto en gates ni evidencia de Lite; índice r296.
+
+## 2026-10-26 UTC — r297: paridad SG28 un solo host
+
+- Registro documental de `2026-10-26-sg28-single-host-scope-v1` (Plus r310). Sin impacto en gates de Lite; índice r297.

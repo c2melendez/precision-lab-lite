@@ -576,3 +576,9 @@ SHA técnico Lite `c28091c`; gates cumulative/h1d/scientific-ui SUCCESS. Campañ
 - Plus registró (r309, commit `04962ba`) la aceptación `2026-10-26-s19-focused-acceptance-v1`: S19 backend CLOSED_SCOPED sobre el alcance focalizado, con los mutantes SG28 diferidos a H2-SG28. Esa mutación es de Plus; **Lite no cambia** gates, umbrales ni evidencia.
 - Estado Lite sin cambios: SECURITY-S25 BLOCKED; ALGEBRA229-AS-B-29 ON_HOLD; H2-SG28-DIST-01..08 BLOCKED; EDCX-B5 BLOCKED; SY-X-04-PLUS-HTTP BLOCKED; SY-P-23 CLOSED; PR #48 OPEN/DRAFT; certificación global OPEN. Solo documentación; sin Actions.
 - **Siguiente acción:** sin cambios respecto a r295; reentrar cuando Plus produzca evidencia nueva o se apruebe el contrato SG28.
+
+## 2026-10-26 UTC — r297: paridad con SG28 un solo host de Plus
+
+- Plus registró (r310) `2026-10-26-sg28-single-host-scope-v1`: H2-SG28-DIST-01..08 = OUT_OF_SCOPE_SINGLE_HOST (no PASS; reapertura si hay varias instancias). SG28 es de Plus; **Lite no cambia** gates ni evidencia.
+- Estado Lite: SECURITY-S25 BLOCKED; ALGEBRA229-AS-B-29 ON_HOLD; EDCX-B5 BLOCKED; SY-X-04-PLUS-HTTP BLOCKED; SY-P-23 CLOSED; PR #48 OPEN/DRAFT; certificación global OPEN. Solo documentación; sin Actions.
+- **Siguiente acción:** sin cambios respecto a r295; reentrar cuando Plus produzca evidencia nueva.

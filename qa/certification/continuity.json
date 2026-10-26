@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 296,
+  "revision": 297,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -58,7 +58,8 @@
   "blockers": [
     {
       "id": "H2-SG28-DIST-01..08",
-      "status": "BLOCKED"
+      "status": "OUT_OF_SCOPE_SINGLE_HOST",
+      "detail": "Paridad con Plus r310 (2026-10-26-sg28-single-host-scope-v1). No es PASS; reapertura si hay varias instancias con cuota compartida."
     },
     {
       "id": "SECURITY-S25",
@@ -2811,5 +2812,10 @@
     "status": "CLOSED_SCOPED en Plus",
     "lite_impact": "ninguno: la mutación backend S19 es de Plus; Lite no cambia gates, umbrales Stryker (break 10.3) ni evidencia. Solo registro de paridad documental.",
     "sg28_exception": "mutantes SG28 de _evaluate_impl diferidos a H2-SG28 (Plus)"
+  },
+  "plus_sg28_single_host_r297": {
+    "reference": "c2melendez/precision-lab-plus continuity.json r310",
+    "contract_id": "2026-10-26-sg28-single-host-scope-v1",
+    "lite_impact": "Registro de paridad documental. SG28 es de Plus; Lite no cambia gates ni evidencia. Los contratos funcionales visibles se mantienen."
   }
 }
