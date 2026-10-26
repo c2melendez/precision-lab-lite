@@ -275,3 +275,11 @@
 - Nota técnica: `continuity.py` no reutiliza evidencia por SHA. La huella de `h1d` difiere entre `b8b77e5` (`3df6e85a…`) y `88a2593` (`63ff7cae…`), así que un gate sobre `88a2593` se decidiría como `RUN`. Esta decisión es documental.
 - Este registro está en un archivo de solo prosa, así que no altera la huella de `h1d`.
 - Estado: certificación global OPEN; bloqueos sin cambios.
+
+## 2026-10-26 UTC — r294: runner v3 con publicación documental
+
+- PR #52 (`ci/runner-v3-docs`) fusionado en `main`: merge `11806ba5b2dc05d8690d4300f3897e073859b76a`; workflow blob `23e42cf6dad30b281036cbbb63eff938c6646fde`.
+- La operación `docs` aplica `git format-patch` con `git am --3way`, valida alcance documental y publica con compare-and-swap. La operación `gate` no cambia.
+- Pruebas locales 27/27 y validación de YAML/shell. Esta revisión se publica con el propio mecanismo (`operation=docs`); no se lanzaron gates.
+- Playwright de Plus reconciliado: runs 40155180977 (`9acc0bff`) y 40154343463 (`73be7940`) SUCCESS.
+- Bloqueos sin cambios; siguiente acción en `continuity.json` r294.

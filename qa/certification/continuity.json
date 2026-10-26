@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 293,
+  "revision": 294,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "40b000b8f40fc8ac6c3e286b48c83554dac1e9e3",
@@ -51,9 +51,9 @@
     }
   },
   "next_action": {
-    "id": "LITE-BLOCKER-BOUNDARY-R291",
-    "status": "WAITING_ON_BILATERAL_EVIDENCE",
-    "action": "Decisión registrada en r291: no queda ningún bloqueo de certificación accionable solo en Lite. SECURITY-S25 se reconcilia desde Plus; ALGEBRA229-AS-B-29 sigue ON_HOLD por contrato; H2-SG28-DIST-01..08 requiere la topología y evidencia de Plus; EDCX-B5 carece de canal y endpoint de producto; SY-X-04-PLUS-HTTP es un canal HTTP de Plus; SY-P-23 sigue OPEN por convención no declarada. No repetir H1c, Playwright, cumulative, H1d, CI, scientific ni dependency gates: no hay cambios de fuente desde 1cf29a71/ea68e99a. Mantener PR #48 OPEN/DRAFT y no publicar el merge de topología. Reentrar cuando Plus produzca evidencia nueva de S19/seguridad o cuando se autorice una decisión de contrato para ALGEBRA229, SG28 distribuido, EDCX-B5 o SY-P-23; entonces se ejecuta solo el gate afectado y se reevalúa PR #48. Mantener certificación global OPEN."
+    "id": "LITE-RUNNER-DOCS-R294",
+    "status": "READY",
+    "action": "Runner v3 con operación docs desplegado en main (PR #52, merge 11806ba5). Esta revisión se publicó con operation=docs y quedó registrada en qa/certification/runner/. No repetir H1c, Playwright, cumulative, H1d, CI, scientific ni dependency gates: no hay cambios de fuente desde 1cf29a71/444df962. SECURITY-S25 BLOCKED sin reintentos hasta cambio de dependencia/advisory; ALGEBRA229-AS-B-29 ON_HOLD; H2-SG28-DIST-01..08 BLOCKED; EDCX-B5 BLOCKED; SY-X-04-PLUS-HTTP BLOCKED; SY-P-23 CLOSED. Mantener PR #48 OPEN/DRAFT y certificación global OPEN. Reentrar cuando Plus produzca evidencia nueva de S19/seguridad o se autorice una decisión de contrato."
   },
   "blockers": [
     {
