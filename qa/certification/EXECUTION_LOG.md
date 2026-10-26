@@ -267,3 +267,11 @@
   - **SY-P-23**: sigue **OPEN** por convención no declarada (`a/bc`); no se certifica como PASS ni se cierra por pruebas numéricas de las lecturas explícitas.
 - **Decisión registrada:** no se despachan runs nuevos ni se repiten H1c, Playwright, cumulative, H1d, CI, scientific ni dependency gates mientras no cambie un insumo técnico o exista una decisión explícita de contrato/alcance. El PR #48 permanece en draft y no se publica el merge de topología. La certificación global sigue **OPEN**.
 - **Siguiente acción única:** reentrar cuando Plus produzca evidencia nueva de S19/seguridad o cuando se autorice una decisión de contrato para ALGEBRA229, SG28 distribuido, EDCX-B5 o SY-P-23; en ese momento se reevalúa el merge de PR #48 y se ejecuta solo el gate afectado.
+
+## 2026-10-26 UTC — h1d: evidencia conservada en b8b77e5
+
+- Decisión: se conserva la evidencia existente de `h1d` en `b8b77e5` (run `40271318616`, success, 22/22 tests). No se lanza gate nuevo.
+- Motivo: entre `b8b77e5` y `88a2593` solo cambian archivos de `qa/certification/` (`SY_P_23_CONVENTION.md`, `continuity.json` y registros de runner). No hay cambios en `src/` ni en tests, así que el código certificado es idéntico.
+- Nota técnica: `continuity.py` no reutiliza evidencia por SHA. La huella de `h1d` difiere entre `b8b77e5` (`3df6e85a…`) y `88a2593` (`63ff7cae…`), así que un gate sobre `88a2593` se decidiría como `RUN`. Esta decisión es documental.
+- Este registro está en un archivo de solo prosa, así que no altera la huella de `h1d`.
+- Estado: certificación global OPEN; bloqueos sin cambios.
