@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 314,
+  "revision": 315,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
@@ -41,9 +41,9 @@
   "next_action": {
     "id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
     "status": "IN_PROGRESS",
-    "action": "Lite's actual path is MathLive NaturalInput -> BasicScientificMode -> engine/parsing -> worker; no MathRenderer exists. src/modes/BasicScientific/latexToAlgebrite.ts is a minimal string-conversion placeholder, not an HTML renderer. Next: add focused tests around Lite's parseExpression/worker boundary for H2 malicious LaTeX literals, ensuring rejection and no state change; do not claim frontend HTML-render coverage from Plus. Plus exact EN-SG-03 passed CI 40599001729. Plus exact H2 input tests/no-anchor assertions have frontend Typecheck, Unit/parity and Production build SUCCESS in CI 40601719487; backend job pending. Plus EN-SG-08 remains GAP until probe-backed backend tests. Security job 40601719418 SKIPPED, not PASS. Global OPEN.",
+    "action": "Bridge parked. Lite uses MathLive NaturalInput -> BasicScientificMode -> parseExpression -> worker; parser-level H2 cases EN-SG-01/02/04..08 already exist in tests/in625H2Security.audit.test.ts, but this is not HTML/browser escaping evidence. Runner now fingerprints push events using cumulative gate by default and its target_repo input is scoped to Lite; Plus was updated analogously in commit 67113dfa4881838a7e376835b09bd0dfccd858c4. Plus added probe-backed EN-SG-08 backend tests; inspect new CI before classifying. Cross-repo fan-out remains unsupported: dispatch once per repository. Security job 40601719418 SKIPPED, not PASS; SECURITY-S25 BLOCKED. Global OPEN.",
     "previous_id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
-    "updated_utc": "2026-10-27T23:28:00Z"
+    "updated_utc": "2026-10-27T23:31:00Z"
   },
   "blockers": [
     {
@@ -125,5 +125,5 @@
       "IN625_H2_MATRIX.md is inventory, not PASS"
     ]
   },
-  "ledger_note": "r314 motor-only. Lite uses MathLive NaturalInput -> BasicScientificMode -> parseExpression -> worker, not MathRenderer. latexToAlgebrite.ts is a minimal string converter. Next test actual parser/worker boundary for exact H2 malicious LaTeX inputs. Plus CI 40601719487 frontend checks/build passed; backend pending. Security job 40601719418 SKIPPED. Global OPEN."
+  "ledger_note": "r315 motor-only. Lite parser tests already cover exact H2 malicious LaTeX inputs EN-SG-01/02/04..08; no claim of UI escaping. Runner push fingerprint corrected and target_repo scoped to Lite. Plus commit 67113dfa4881838a7e376835b09bd0dfccd858c4 adds SG08 probe-backed backend tests and Runner fix; CI pending. Global OPEN."
 }

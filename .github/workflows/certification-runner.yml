@@ -14,11 +14,11 @@ on:
   workflow_dispatch:
     inputs:
       target_repo:
-        description: "Repositorio a procesar (lite|plus|both)"
+        description: "Este runner sólo procesa el repositorio actual; para ambos, despacha una vez en cada repositorio"
         required: true
-        default: both
+        default: lite
         type: choice
-        options: [lite, plus, both]
+        options: [lite]
       gate:
         description: "Gate de qa/certification/continuity.json"
         required: true
@@ -47,13 +47,13 @@ concurrency:
 
 jobs:
   certification-cycle:
-    if: ${{ github.event_name != 'workflow_dispatch' || inputs.target_repo == 'both' || endsWith(github.repository, format('-{0}', inputs.target_repo)) }}
+    if: ${{ github.event_name != 'workflow_dispatch' || endsWith(github.repository, format('-{0}', inputs.target_repo)) }}
     runs-on: ubuntu-latest
     timeout-minutes: 200
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
       REPO: ${{ github.repository }}
-      GATE: ${{ inputs.gate }}
+      GATE: ${{ inputs.gate || 'cumulative' }}
     steps:
       - name: Resolve canonical branch from default-branch README
         run: |
@@ -80,7 +80,7 @@ jobs:
         run: echo "BASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
 
       - name: Read-only planner fingerprint for selected gate
-        if: ${{ github.event_name == 'workflow_dispatch' }}
+        if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' }}
         run: |
           set -euo pipefail
           python3 scripts/certification/continuity.py --fingerprint "$GATE"
@@ -143,7 +143,7 @@ jobs:
       - name: Push summary
         if: ${{ github.event_name != 'workflow_dispatch' }}
         run: |
-          echo "Evento push: sin gate. No se despacha ningún workflow ni se publica documentación."
+          echo "Evento push: se calculó la huella del gate $GATE; no se despacha ningún workflow ni se publica documentación."
 
       - name: Dispatch gate workflow and wait for its result
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run != true && env.RUN_ID == '' }}
