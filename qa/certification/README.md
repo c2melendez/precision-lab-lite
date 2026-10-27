@@ -50,14 +50,11 @@ Tras resolver la rama canónica, leer [continuity.json](continuity.json) y [CONT
 5. El puntero en README predeterminado puede corregirse mediante un cambio documental acotado; mientras falte, la recuperación por Actions + índices bilaterales verificados mantiene la continuidad. Esta regla es genérica, no un snapshot de un caso o SHA.
 
 
-## Excepción autorizada: certificación paralela mediante Compass
+## Workflow principal de certificación
 
-- [Excepción: certificación paralela mediante Compass Bridge](EXCEPTION_PARALLEL_CERTIFICATION_WITH_COMPASS_BRIDGE.md) — autorización acotada para continuar la certificación original mientras se certifica la conexión.
+El método primario para ejecutar gates es `.github/workflows/certification-runner.yml` del repositorio correspondiente. Lee sus inputs y el estado canónico antes de cualquier despacho. La documentación de continuidad y la evidencia de Actions determinan si corresponde RUN, WAIT, REUSE, DIAGNOSE o REVIEW.
 
-## Prioridad P0 — Conexión alternativa a GitHub
+## Fallback condicionado: Precision Lab Bridge / Cert Runner Compass
 
-Antes de retomar la certificación general de motores matemáticos, leer y ejecutar en orden:
-1. [HANDOFF_GITHUB_ALTERNATIVE_CONNECTION.md](HANDOFF_GITHUB_ALTERNATIVE_CONNECTION.md)
-2. [ROADMAP_GITHUB_ALTERNATIVE_CONNECTION.md](ROADMAP_GITHUB_ALTERNATIVE_CONNECTION.md)
-
-El Prompt maestro `CONTINUATION_PROMPT.md` impone esta prioridad. Estado vigente al 2026-10-27: Cert Runner Compass está implementado y su certificación v1.1 permanece OPEN/no certificada. Fase 1 completada (9/9, cero runs; E1/E4 simuladas). Fase 2 autorizada: primero verificar por lectura el despliegue de la corrección HTTP 204/rechazos; después B3 y secuencia B4/B5, B6, C1-C3. La persistencia de Compass está en Lovable Cloud, no en Supabase `oqlzftercvraprnvjifo`; la API Render sigue siendo read-only. Leer el corte actual en `HANDOFF_GITHUB_ALTERNATIVE_CONNECTION.md`, `ROADMAP_GITHUB_ALTERNATIVE_CONNECTION.md`, `LEDGER_GITHUB_ALTERNATIVE_CONNECTION.md` y `CURRENT_STATE.md`. No usar `GET /api/run`, que puede despachar. La auditoría D-01 de Supabase sigue siendo un trabajo separado y bloqueado.
+- [Procedimiento de fallback](EXCEPTION_PARALLEL_CERTIFICATION_WITH_COMPASS_BRIDGE.md): usar únicamente si el LLM no puede acceder, leer o utilizar `.github/workflows/certification-runner.yml` en el/los repositorios necesarios. En ese caso, debe informar la limitación y solicitar autorización/instrucciones al responsable antes de utilizar Bridge/Compass.
+- Compass no es el método predeterminado, no reemplaza el workflow y no modifica criterios de certificación.
