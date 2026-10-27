@@ -25,27 +25,32 @@ def utc_now() -> str:
     return dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
 
 
-def gh_gate_jobs(repo: str, run_id: str) -> list[dict[str, Any]]:
+def gh_gate_jobs(repo: str, run_id: str) -> tuple[list[dict[str, Any]], str | None]:
     if not run_id:
-        return []
-    result = subprocess.run(
-        ["gh", "run", "view", run_id, "--repo", repo, "--json", "jobs"],
-        check=True, capture_output=True, text=True,
-    )
-    payload = json.loads(result.stdout)
-    return [
-        {
-            "name": job.get("name", ""),
-            "status": job.get("status", ""),
-            "conclusion": job.get("conclusion", ""),
-            "steps": [
-                {"name": step.get("name", ""), "status": step.get("status", ""),
-                 "conclusion": step.get("conclusion", "")}
-                for step in job.get("steps", [])
-            ],
-        }
-        for job in payload.get("jobs", [])
-    ]
+        return [], None
+    try:
+        result = subprocess.run(
+            ["gh", "run", "view", run_id, "--repo", repo, "--json", "jobs"],
+            check=True, capture_output=True, text=True,
+        )
+        payload = json.loads(result.stdout)
+        jobs = [
+            {
+                "name": job.get("name", ""),
+                "status": job.get("status", ""),
+                "conclusion": job.get("conclusion", ""),
+                "steps": [
+                    {"name": step.get("name", ""), "status": step.get("status", ""),
+                     "conclusion": step.get("conclusion", "")}
+                    for step in job.get("steps", [])
+                ],
+            }
+            for job in payload.get("jobs", [])
+        ]
+        return jobs, None
+    except (subprocess.CalledProcessError, json.JSONDecodeError, OSError) as error:
+        detail = getattr(error, "stderr", None) or str(error)
+        return [], f"Could not retrieve gate jobs; review required: {detail[:500]}"
 
 
 def classify(record: dict[str, Any], jobs: list[dict[str, Any]]) -> str:
@@ -109,9 +114,11 @@ def main() -> int:
     record = json.loads(record_path.read_text(encoding="utf-8"))
     repo = str(record["repo"])
     gate_run_id = str(record.get("dispatched_run_id") or "")
-    jobs = gh_gate_jobs(repo, gate_run_id)
+    jobs, jobs_error = gh_gate_jobs(repo, gate_run_id)
     classification = classify(record, jobs)
     record["gate_jobs"] = jobs
+    if jobs_error:
+        record["gate_jobs_error"] = jobs_error
     record["execution_classification"] = classification
     record["acceptance_reviewed"] = False
     record["certification_pass"] = False
