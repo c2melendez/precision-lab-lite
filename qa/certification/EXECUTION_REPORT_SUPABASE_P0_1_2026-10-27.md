@@ -96,3 +96,8 @@ No solicitar ni incluir credenciales, tokens, claves ni cadenas de conexión en 
 ### Estado y siguiente paso
 
 P0.1 permanece parcial: la auditoría de objetos de aplicación no encontró un almacén de idempotencia existente; la fuente de migraciones y la exposición efectiva de Data API siguen pendientes. Antes de DDL, cerrar el contrato de persistencia y verificar cómo se accede a Supabase. P0.2 sigue DRAFT: reforzar explícitamente la prueba de SHA ejecutado con el `base_sha` del registro del Runner. Global `OPEN`; E2E no demostrado; sin nuevas Actions.
+
+
+### Addendum de contrato — 2026-10-27 UTC
+
+El contrato Bridge v1 DRAFT fue actualizado bilateralmente en Plus y Lite para exigir que el Bridge valide `base_sha` dentro de `qa/certification/runner/<runner_run_id>.json` contra `requested_sha`, y que el run del gate esté asociado al mismo SHA. El contrato ahora distingue `requested_sha`, `base_sha` realmente testeado y `actual_head_sha` posterior a la publicación del registro. Si falta el registro o el SHA ejecutado no puede verificarse, no se permite `SUCCEEDED`. Cambio documental únicamente; el contrato sigue DRAFT, sin implementación, DDL ni Actions.
