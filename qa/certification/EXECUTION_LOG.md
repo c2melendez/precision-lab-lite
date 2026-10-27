@@ -354,3 +354,13 @@
 - Lite run [40403964745](https://github.com/c2melendez/precision-lab-lite/actions/runs/40403964745): job frontend SUCCESS en checkout combinado de PR, HEAD `cdc9c94841505e3d39696fb4c349c7cc396743ef` (merge de `c26a88536551fa256113ba7da3d9f872fea189f9` en `4507082a101fbc5a196cfbfe335db6e83c2cb6d0`), no el SHA de la rama canónica. Log: auditoría npm 0 vulnerabilidades, typecheck, pruebas (47 en una fase y 515 en otra) y build completados. En la limpieza posterior aparece advertencia de Git: `No url found for submodule path 'fix/pkg/sim' in .gitmodules`; no falló el job, pero queda como higiene de checkout a inspeccionar en el SHA del PR.
 - No se lanzaron nuevas Actions para duplicar estos resultados. No se encontraron en estos runs pruebas autenticadas de la API ni evidencia de Bridge→Runner.
 - Estado de esta sección: API live y endpoints públicos comprobados; llamada autenticada y lectura actual de ambos repos pendientes; discrepancia `healthCheckPath` efectiva pendiente; Bridge no localizado/validado; E2E global `NOT_YET_VERIFIED`. No cambiar el `next_action` matemático de continuidad ni declarar certificación global cerrada.
+
+
+## 2026-10-27 UTC — P0: handoff y hoja de ruta de conexión alternativa a GitHub
+
+- Publicados `HANDOFF_GITHUB_ALTERNATIVE_CONNECTION.md` y `ROADMAP_GITHUB_ALTERNATIVE_CONNECTION.md` en Lite y Plus; los documentos tienen el mismo contenido (mismos SHA de blob verificados).
+- Actualizado `CONTINUATION_PROMPT.md` en ambos repos para que la conexión P0 anteceda temporalmente la certificación general de motores matemáticos. Tras el PASS de conexión, se vuelve al `next_action` matemático canónico vigente.
+- API README actualizado con enlaces a los documentos y recordatorio de que la API existente es read-only, no el Bridge ejecutor.
+- Supabase `oqlzftercvraprnvjifo` sigue INACTIVE. Lectura de tablas: “Database is possibly not accessible at the moment”; migraciones: timeout de conexión. No se inspeccionó esquema completo ni se ejecutó DDL/restauración. Confirmar impacto de facturación/autorización antes de restaurar.
+- Estado de conexión: BLOCKED/no demostrado. Faltan auth positiva bilateral, configuración health check conciliada, Bridge identificado, persistencia idempotente, replay/concurrencia/reinicio y evidencia E2E Push→API→Bridge→Runner→resultado.
+- No se cambió `continuity.json`, contratos matemáticos ni `next_action`; global permanece OPEN. Solo documentación; no Actions ni commits artificiales.
