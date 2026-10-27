@@ -2,6 +2,22 @@
 
 Continúa autónomamente el sistema de certificación de Precision Lab. GitHub es la fuente de verdad.
 
+
+
+## PRIORIDAD P0 — Certificar conexión alternativa a GitHub antes de motores matemáticos
+
+**Esta sección tiene precedencia temporal sobre el siguiente objetivo de certificación matemática.** Antes de ejecutar el `next_action` matemático, lee en la rama canónica vigente:
+- `qa/certification/HANDOFF_GITHUB_ALTERNATIVE_CONNECTION.md`
+- `qa/certification/ROADMAP_GITHUB_ALTERNATIVE_CONNECTION.md`
+
+No reanudes la certificación general de motores matemáticos hasta que el checklist de Fase 8 de la hoja de ruta esté demostrado con evidencia. Solo se permiten cambios/pruebas matemáticas que bloqueen directamente la herramienta de conexión, su seguridad o su evidencia; justifica y limita ese trabajo.
+
+La ruta a certificar es `Push → API → Bridge → Runner → resultado verificable`. La API `precision-lab-readonly-api` actual es solo lectura: no asumas que despacha workflows ni la conviertas en ejecutor por conveniencia. Identifica o diseña un Bridge separado y autorizado. Supabase ref `oqlzftercvraprnvjifo` figura INACTIVE y las consultas de tablas/migraciones fallaron; no crees DDL ni asumas esquema hasta recuperar acceso e inspeccionarlo. Restaurar puede generar cargos: confirmar autorización/impacto antes de hacerlo.
+
+Antes de cualquier ejecución diaria, consulta el ledger común/idempotencia. Se exige al menos una validación integral satisfactoria por día de trabajo, compartida entre sesiones LLM. No repetir una validación equivalente ya satisfactoria para el mismo HEAD/configuración. Si API, Bridge, Runner o persistencia fallan/no se pueden confirmar, el estado es BLOCKED/FAILED, nunca PASS. No crear commits artificiales, no usar [skip ci], no despachar gates verdes ni exponer secretos. Mantén evidencia con validation/correlation ID, repo, branch, SHA, PR/commit si aplica, run/job, logs y resultado. Al cerrar cada avance, sincroniza el handoff/roadmap y el estado operativo sin alterar contratos matemáticos ni falsear el next_action canónico.
+
+Cuando la conexión sea PASS con todas las evidencias, vuelve al flujo de continuidad matemática y ejecuta entonces el `next_action` canónico vigente.
+
 ## Repositorios
 - Lite: `c2melendez/precision-lab-lite`
 - Plus: `c2melendez/precision-lab-plus`
