@@ -30,3 +30,19 @@ P0.1 permanece **BLOCKED**. Antes de DDL:
 - comprobar permisos efectivos con `has_schema_privilege`/`has_table_privilege` y prueba negativa para `anon`/`authenticated`, sin tocar tablas existentes.
 
 No ejecutar gates matemáticos ni repetir workflows verdes para esta auditoría documental. Certificación global OPEN.
+
+
+## Ampliación de inventario de catálogo — 2026-10-26
+
+Consulta de solo lectura adicional para comprobar si existe ya un esquema de aplicación alternativo al que se pueda asignar el ledger sin reutilizar tablas existentes:
+
+- En los esquemas de aplicación examinados, el único esquema no interno con tablas/vistas encontrado fue `public`, con `public.calls` y `public.history`. No se encontró un esquema privado de aplicación ya preparado para el Bridge.
+- La consulta de funciones encontró `public.set_updated_at()`, con `EXECUTE` concedido a `anon` y `authenticated`; es la función de soporte del trigger de actualización ya documentado. No se cambió su permiso ni configuración.
+- La función `pgbouncer.get_auth(text)` aparece como `SECURITY DEFINER`, pero las comprobaciones de privilegio devolvieron `anon_execute=false` y `authenticated_execute=false`; no se modificó.
+- Estos resultados describen catálogo y privilegios SQL, **no** confirman qué esquemas o funciones están expuestos en la configuración efectiva de la Data API.
+
+### Resultado operativo
+
+No existe todavía un esquema privado de aplicación verificado para reutilizar, así que no se crea el ledger ni se ejecuta DDL en esta fase. El siguiente paso bloqueante sigue siendo revisar en Supabase Dashboard **Integrations → Data API** la lista efectiva de *Exposed schemas* y funciones, y contrastarla con la configuración de aplicaciones externas. Referencia oficial: https://supabase.com/docs/guides/api
+
+**Cambios de estado:** ninguno. Sin DDL, cambios de grants/RLS, cambios de datos, proyectos creados/eliminados/pausados ni GitHub Actions. P0.1 sigue **BLOCKED**; certificación global **OPEN**.
