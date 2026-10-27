@@ -66,6 +66,8 @@ GitHub es fuente de verdad. La API desplegada es read-only; no añadir dispatch 
 **Aceptación:** API/OpenAPI/host coinciden; auth positiva/negativa probada; estado bilateral y plan de solo lectura verificados. /healthz por sí solo no prueba GitHub ni Bridge.
 
 ## Fase 5 — Runner y evidencia
+
+**Estado 2026-10-27:** cadena Runner → gate verificada con evidencia histórica (Lite `40272871857`→`40272886275`, Plus `40273483681`→`40273499483`; `base_sha` igual al `head_sha` del gate, conclusión success y registro en `qa/certification/runner/`). Parcial: no hay Push → API → Bridge ni correlación legible por máquina (D-07). Sin nuevos runs.
 1. Inspeccionar workflows en Lite/Plus: triggers, branch filters, permissions, concurrency, outputs, registro padre/hijo y filtros de docs; preservar regla de no usar `[skip ci]`.
 2. Definir una prueba de conexión mínima, inocua y autorizada; no lanzar gates matemáticos completos para validar la herramienta.
 3. Un push debe ser un cambio real necesario. Si no existe, no inventar commits; usar mecanismo de prueba autorizado documentado.

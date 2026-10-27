@@ -306,7 +306,9 @@ Fuente: `.github/workflows/certification-runner.yml` en Lite y Plus (rama canón
 | Registro | Escribe `qa/certification/runner/<run_id>.json` y hace push | Mueve el HEAD; el fingerprint v2 ignora registros numéricos |
 | Anti-loop | `paths-ignore` para `**.md`, `continuity.json`, `runner/**`; sin `[skip ci]` | Correcto; no suprimir gates |
 | Guard de publicación | Compara `origin/<branch>` con `BASE_SHA` antes del push | Evita pisar trabajo concurrente; falla explícitamente si cambió |
-| Evidencia | JSON con `runner_run_id`, `gate_run_id`, conclusión, URLs | Falta `validation_id`/`correlation_id` del Bridge (D-07) |
+| Evidencia | JSON con `runner_run_id`, `base_sha`, `dispatched_run_id`, conclusión y URLs | Falta `validation_id`/`correlation_id` del Bridge (D-07) |
+
+**Verificación empírica (2026-10-27, sin ejecución):** los registros schema 1 existentes incluyen `base_sha`, `dispatched_run_id`, `dispatched_status` y `dispatched_conclusion`. En Lite `40272871857`→`40272886275` y Plus `40273483681`→`40273499483` el `base_sha` coincide con el `head_sha` del gate y la conclusión es `success`. El `reason` con run/gate/sha aparece en el log del gate, pero `GET /actions/runs/{id}` devuelve `inputs: null`: la correlación no es recuperable por API y D-07 sigue abierta.
 
 **Conclusión:** el Runner es un ejecutor razonable, pero no es un Bridge: no autentica clientes, no reclama idempotencia, no valida allowlist/SHA y no correlaciona con una solicitud externa. El Bridge debe añadir esas garantías sin ampliar los permisos del Runner.
 

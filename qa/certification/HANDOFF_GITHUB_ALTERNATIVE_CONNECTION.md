@@ -23,6 +23,8 @@ Certificar la ruta autorizada `Push → API → Bridge → Runner → resultado 
 - Restaurar Supabase puede reanudar consumo/cargos. Comprobar condiciones y obtener autorización antes de restaurar; no se ejecutó restauración.
 - Existen workflows/Runner y registros en Lite/Plus, pero un push registrado no demuestra que el Runner haya procesado el trabajo. No hay correlación E2E confirmada solicitud → Bridge → run/job → resultado durable.
 
+- **Cadena Runner → gate verificada con evidencia histórica (2026-10-27, sin nuevos runs):** Lite `40272871857` → gate h1d `40272886275` y Plus `40273483681` → `40273499483`, ambos `workflow_dispatch` completed/success, con el `base_sha` del registro igual al `head_sha` del gate y registro durable en `qa/certification/runner/<id>.json`. No es E2E: faltan Push → API → Bridge. El `reason` con run/gate/sha solo es legible en logs; el objeto REST del run devuelve `inputs: null` (D-07).
+
 ## Decisiones vinculantes
 1. La conexión es P0. La certificación general de motores matemáticos queda pausada hasta aprobar los criterios de la hoja de ruta.
 2. Solo atender un defecto matemático si bloquea directamente una prueba de conexión, seguridad, serialización de evidencia o correlación; documentar el vínculo y mantener alcance mínimo.
