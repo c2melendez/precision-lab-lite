@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 313,
+  "revision": 314,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
@@ -41,9 +41,9 @@
   "next_action": {
     "id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
     "status": "IN_PROGRESS",
-    "action": "Bridge parked. Lite CI 40596658330 SUCCESS, but Lite has no frontend/src/components/MathRenderer.tsx, so Plus renderer tests are not Lite certification evidence. Exact H.2 source recovered from Matrices.zip, SHA-256 58fbc0ed04aef158148981fc28074d470e45ec07a67604f89b3847b55c625528. Plus exact EN-SG-03 test passed CI 40599001729. Plus added EN-SG-01..08 frontend tests in 9d13cd39227839099c1809ddd2c4eeed32ee4842; CI 40601412886 frontend checks passed but backend was pending. Follow-up commit 2db9e7b1d15c49b22299d4007cfda01959c67efc tightens no-anchor assertions; Plus CI 40601719487 frontend tests/build passed, backend pending. Do not copy Plus PASS status to Lite. Next: inspect whether Lite has a distinct equivalent render path; then only add tests to that actual component if present. Plus EN-SG-08 remains GAP pending file/process probes. Runner discrepancies remain documented. Security job 40601412812 SKIPPED, not PASS; SECURITY-S25 BLOCKED. Global OPEN.",
+    "action": "Lite's actual path is MathLive NaturalInput -> BasicScientificMode -> engine/parsing -> worker; no MathRenderer exists. src/modes/BasicScientific/latexToAlgebrite.ts is a minimal string-conversion placeholder, not an HTML renderer. Next: add focused tests around Lite's parseExpression/worker boundary for H2 malicious LaTeX literals, ensuring rejection and no state change; do not claim frontend HTML-render coverage from Plus. Plus exact EN-SG-03 passed CI 40599001729. Plus exact H2 input tests/no-anchor assertions have frontend Typecheck, Unit/parity and Production build SUCCESS in CI 40601719487; backend job pending. Plus EN-SG-08 remains GAP until probe-backed backend tests. Security job 40601719418 SKIPPED, not PASS. Global OPEN.",
     "previous_id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
-    "updated_utc": "2026-10-27T23:27:00Z"
+    "updated_utc": "2026-10-27T23:28:00Z"
   },
   "blockers": [
     {
@@ -125,5 +125,5 @@
       "IN625_H2_MATRIX.md is inventory, not PASS"
     ]
   },
-  "ledger_note": "r313 motor-only. Lite lacks MathRenderer at frontend/src/components/MathRenderer.tsx; Plus-only tests are not Lite evidence. Plus EN-SG-03 exact-source test passed CI 40599001729. Plus exact H2 tests and no-anchor assertions passed frontend Typecheck/Unit-parity/Production build in CI 40601719487; backend pending. Plus EN-SG-08 still GAP pending backend probe assertions. Security job 40601719418 SKIPPED, not PASS. Global OPEN."
+  "ledger_note": "r314 motor-only. Lite uses MathLive NaturalInput -> BasicScientificMode -> parseExpression -> worker, not MathRenderer. latexToAlgebrite.ts is a minimal string converter. Next test actual parser/worker boundary for exact H2 malicious LaTeX inputs. Plus CI 40601719487 frontend checks/build passed; backend pending. Security job 40601719418 SKIPPED. Global OPEN."
 }
