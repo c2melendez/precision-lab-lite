@@ -651,3 +651,10 @@ SHA técnico Lite `c28091c`; gates cumulative/h1d/scientific-ui SUCCESS. Campañ
 - Ambas ramas eliminan el marcador `[skip ci]` de los commits creados por el runner; `paths-ignore` gestiona los pushes compuestos solo por registros. La operación documental también rechaza marcadores de omisión en los commits del paquete.
 - `technical_baseline_sha` de Lite sigue fijada al SHA técnico probado `8c2cd395752959dbdc70cdf4e262d7bf8c597b82`; este commit solo actualiza estado/registro/índice.
 - No se repiten gates de Lite ni se relanza S19/S25. El objetivo operativo siguiente corresponde a Plus: auditoría de evidencia por caso EN-SG-01..32. Global OPEN; bloqueos existentes sin cambio.
+
+## 2026-10-27 — Persistencia del Bridge: decisión de mínimo privilegio
+
+- Se registra una decisión de diseño: no reutilizar ni modificar `public.calls`/`public.history`; el proyecto Supabase actual solo queda como candidato condicionado a un esquema privado dedicado. Si no se puede demostrar el aislamiento, usar un proyecto dedicado después de confirmar organización/coste.
+- No se ejecutó DDL, no se cambiaron grants/RLS, no se eliminó ni pausó el proyecto y no se lanzaron Actions. La API read-only permanece separada del Bridge.
+- Referencia: [DATABASE_MINIMUM_PRIVILEGE_DECISION_2026-10-27.md](DATABASE_MINIMUM_PRIVILEGE_DECISION_2026-10-27.md).
+- P0.1 sigue BLOCKED hasta completar inventario de exposición Data API/roles/consumidores y aprobar una migración versionada. Certificación global OPEN; no se repiten gates verdes.
