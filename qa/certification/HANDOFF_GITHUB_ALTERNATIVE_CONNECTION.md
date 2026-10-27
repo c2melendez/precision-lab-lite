@@ -62,3 +62,10 @@ Como mínimo una validación integral satisfactoria por día de trabajo. Al inic
 **P0.1:** comprobar autorización/impacto de facturación para restaurar Supabase; recuperar acceso; inventariar esquema, tablas, migraciones, constraints, índices, RLS/policies, triggers y funciones. Solo entonces decidir si reutilizar una tabla existente o crear migración. No ejecutar DDL hasta completar inspección.
 
 **P0.2:** contrato v1 en borrador (`BRIDGE_CONTRACT_GITHUB_ALTERNATIVE_CONNECTION_v1.md`); requiere revisión y aprobación de D-01..D-07. No implementar ni desplegar hasta aprobación y hasta completar el inventario de P0.1.
+
+## Decisiones aprobadas por el responsable (2026-10-27)
+
+- **D-01: opción 1.** Esquema privado dedicado en el proyecto Supabase actual `oqlzftercvraprnvjifo`, condicionado a auditoría previa. Antes de cualquier DDL hay que confirmar: (a) que la Data API no expone ese esquema; (b) que nadie usa `public.calls` ni `public.history`; (c) rol de runtime dedicado, con `USAGE` y DML solo sobre tablas del ledger, sin grants a `anon`, `authenticated` ni `PUBLIC`, y sin `service_role`. Si la auditoría no puede confirmar (a) y (b), se aplica la opción 2 (proyecto dedicado). No se modifican `public.calls` ni `public.history`.
+- **D-04: aprobado.** Implementar `connection-smoke.yml` como dispatch-only, sin gate matemático. Orden obligatorio: primero la auditoría de D-01; después el smoke. Prueba Runner → resultado; no prueba Bridge completo ni idempotencia.
+- **Pendientes:** D-02, D-03, D-05 (cupo diario de Actions, requerido antes del smoke), D-06 (responsable de rotación de claves), D-07 (`correlation_id` en el Runner).
+- **Clave:** la `SERVICE_API_KEY` anterior fue revocada por el responsable; la nueva se configura en el servicio antes de cualquier validación.
