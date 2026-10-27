@@ -178,23 +178,31 @@ jobs:
           print(f"Escrito {path}")
           PY
 
-      - name: Commit result record (paths-ignore prevents record-only loops)
+      - name: Persist execution observation in continuity records
         if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.dry_run != true }}
         run: |
-          set -uo pipefail
+          set -euo pipefail
           RUN_FILE="qa/certification/runner/${GITHUB_RUN_ID}.json"
           if [ ! -f "$RUN_FILE" ]; then
-            echo "No existe $RUN_FILE; nada que publicar."
-            exit 0
+            echo "::error::No existe $RUN_FILE; no se pueden actualizar los registros documentales."
+            exit 1
           fi
-          git add -- "$RUN_FILE"
+          python3 scripts/certification/record_runner_execution.py "$RUN_FILE"
+
+      - name: Commit runner and documentary records (paths-ignore prevents record-only loops)
+        if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.dry_run != true }}
+        run: |
+          set -euo pipefail
+          RUN_FILE="qa/certification/runner/${GITHUB_RUN_ID}.json"
+          test -f "$RUN_FILE"
+          git add -- "$RUN_FILE" qa/certification/continuity.json qa/certification/CURRENT_STATE.md qa/certification/EXECUTION_LOG.md
           if git diff --cached --quiet; then
             echo "Sin cambios que publicar."
             exit 0
           fi
           git config user.name "certification-bot"
           git config user.email "certification-bot@users.noreply.github.com"
-          git commit -m "docs(certification): record runner ${GATE} result"
+          git commit -m "docs(certification): record runner ${GATE} result and continuity"
           git fetch origin "$CANONICAL_BRANCH"
           if [ "$(git rev-parse "origin/$CANONICAL_BRANCH")" != "$BASE_SHA" ]; then
             echo "::error::La rama canónica cambió durante la ejecución; no se publica para no pisar otro trabajo."
