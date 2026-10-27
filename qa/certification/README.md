@@ -50,6 +50,10 @@ Tras resolver la rama canónica, leer [continuity.json](continuity.json) y [CONT
 5. El puntero en README predeterminado puede corregirse mediante un cambio documental acotado; mientras falte, la recuperación por Actions + índices bilaterales verificados mantiene la continuidad. Esta regla es genérica, no un snapshot de un caso o SHA.
 
 
+## Excepción autorizada: certificación paralela mediante Compass
+
+- [Excepción: certificación paralela mediante Compass Bridge](EXCEPTION_PARALLEL_CERTIFICATION_WITH_COMPASS_BRIDGE.md) — autorización acotada para continuar la certificación original mientras se certifica la conexión.
+
 ## Prioridad P0 — Conexión alternativa a GitHub
 
 Antes de retomar la certificación general de motores matemáticos, leer y ejecutar en orden:
