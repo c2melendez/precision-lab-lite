@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 315,
+  "revision": 316,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
@@ -43,7 +43,7 @@
     "status": "IN_PROGRESS",
     "action": "Bridge parked. Lite uses MathLive NaturalInput -> BasicScientificMode -> parseExpression -> worker; parser-level H2 cases EN-SG-01/02/04..08 already exist in tests/in625H2Security.audit.test.ts, but this is not HTML/browser escaping evidence. Runner now fingerprints push events using cumulative gate by default and its target_repo input is scoped to Lite; Plus was updated analogously in commit 67113dfa4881838a7e376835b09bd0dfccd858c4. Plus added probe-backed EN-SG-08 backend tests; inspect new CI before classifying. Cross-repo fan-out remains unsupported: dispatch once per repository. Security job 40601719418 SKIPPED, not PASS; SECURITY-S25 BLOCKED. Global OPEN.",
     "previous_id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
-    "updated_utc": "2026-10-27T23:31:00Z"
+    "updated_utc": "2026-10-27T23:32:00Z"
   },
   "blockers": [
     {
@@ -125,5 +125,18 @@
       "IN625_H2_MATRIX.md is inventory, not PASS"
     ]
   },
-  "ledger_note": "r315 motor-only. Lite parser tests already cover exact H2 malicious LaTeX inputs EN-SG-01/02/04..08; no claim of UI escaping. Runner push fingerprint corrected and target_repo scoped to Lite. Plus commit 67113dfa4881838a7e376835b09bd0dfccd858c4 adds SG08 probe-backed backend tests and Runner fix; CI pending. Global OPEN."
+  "ledger_note": "r315 motor-only. Lite parser tests already cover exact H2 malicious LaTeX inputs EN-SG-01/02/04..08; no claim of UI escaping. Runner push fingerprint corrected and target_repo scoped to Lite. Plus commit 67113dfa4881838a7e376835b09bd0dfccd858c4 adds SG08 probe-backed backend tests and Runner fix; CI pending. Global OPEN.",
+  "prose_only_paths": [
+    "README.md",
+    "qa/certification/README.md",
+    "qa/certification/continuity.json",
+    "qa/certification/CURRENT_STATE.md",
+    "qa/certification/EXECUTION_LOG.md",
+    "qa/certification/CONTINUITY_NEXT_ACTION.json",
+    "qa/certification/EXECUTION_LOG_AS229_SECTION_A.md",
+    "qa/certification/ALGEBRA229_PREPARATION.md",
+    "qa/certification/ROADMAP_CONTINUITY.md",
+    "qa/certification/CONTINUATION_PROMPT.md",
+    "qa/certification/EDCX_B6_ADAPTER_ORACLE_PLAN.md"
+  ]
 }
