@@ -7,7 +7,7 @@ name: Certification Runner
 # - Registra cada ejecución en qa/certification/runner/<run_id>.json sin marcadores de omisión.
 # - dry_run=true (por defecto): valida gate y política, calcula la huella. No despacha ni publica.
 # - dry_run=false: despacha, espera, registra y publica el JSON.
-# - Push a QA: solo calcula la huella; no despacha ni publica. Los commits que solo cambian runner/** se filtran por paths-ignore.
+# - Push a QA: no despacha ni publica resultados; runner/** y documentación se filtran por paths-ignore.
 # - Rama canónica resuelta desde qa/certification/README.md de la rama predeterminada.
 
 on:
