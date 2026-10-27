@@ -42,3 +42,8 @@ EN-SG-09..20, EN-SG-22, EN-SG-29..31 — primarily `backend/tests/test_in625_h2_
 - Lite CI `40602548219`: failed at mandatory `npm audit --package-lock-only`. Uploaded artifact `lite-npm-audit` records 4 LOW advisories, including `deepmerge` prototype poisoning (`GHSA-gcqx-w48m-w2h4`) in the dependency chain `deepmerge` → `@rollup/plugin-node-resolve` → `workbox-build` → `vite-plugin-pwa`. npm's suggested remediation is a major downgrade to `vite-plugin-pwa@0.2.1`; it has NOT been applied because compatibility impact must be assessed. Typecheck, unit/parity, and build were skipped in that CI.
 - Lite cumulative gate `40602548264` SUCCESS is not a substitute for the failed CI. Next: inspect `package.json`, lockfile, and advisory fix ranges; choose a compatible, minimally disruptive remediation, then run the affected checks once.
 - `SECURITY-S25` remains BLOCKED (security job skipped); global certification OPEN.
+
+
+### Dependency advisory severity reconciliation
+
+The uploaded npm audit artifact labels the `deepmerge` finding LOW, but the GitHub Advisory Database page for `GHSA-gcqx-w48m-w2h4` / `CVE-2026-93753` currently labels it HIGH (CVSS 8.7) and lists no patched upstream `deepmerge` version. Treat the discrepancy as unresolved; do not downgrade this blocker to low-risk based only on npm's artifact severity, and do not apply npm's suggested `vite-plugin-pwa@0.2.1` major downgrade blindly. Assess a compatible dependency-chain update or explicit mitigation, regenerate the lockfile, then rerun audit + typecheck/unit/build once.
