@@ -363,4 +363,4 @@
 - API README actualizado con enlaces a los documentos y recordatorio de que la API existente es read-only, no el Bridge ejecutor.
 - Supabase `oqlzftercvraprnvjifo` sigue INACTIVE. Lectura de tablas: “Database is possibly not accessible at the moment”; migraciones: timeout de conexión. No se inspeccionó esquema completo ni se ejecutó DDL/restauración. Confirmar impacto de facturación/autorización antes de restaurar.
 - Estado de conexión: BLOCKED/no demostrado. Faltan auth positiva bilateral, configuración health check conciliada, Bridge identificado, persistencia idempotente, replay/concurrencia/reinicio y evidencia E2E Push→API→Bridge→Runner→resultado.
-- No se cambió `continuity.json`, contratos matemáticos ni `next_action`; global permanece OPEN. Solo documentación; no Actions ni commits artificiales.
+- Se actualizó `continuity.json` solo para clasificar Prompt/handoff/roadmap como prose-only y subir revisión (Plus r316, Lite r303); `next_action` canónico y contratos matemáticos se preservaron, global permanece OPEN. Solo documentación; no Actions nuevas para los commits de estos documentos ni commits artificiales.
