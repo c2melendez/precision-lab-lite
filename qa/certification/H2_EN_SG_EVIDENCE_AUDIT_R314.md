@@ -47,3 +47,12 @@ EN-SG-09..20, EN-SG-22, EN-SG-29..31 — primarily `backend/tests/test_in625_h2_
 ### Dependency advisory severity reconciliation
 
 The uploaded npm audit artifact labels the `deepmerge` finding LOW, but the GitHub Advisory Database page for `GHSA-gcqx-w48m-w2h4` / `CVE-2026-93753` currently labels it HIGH (CVSS 8.7) and lists no patched upstream `deepmerge` version. Treat the discrepancy as unresolved; do not downgrade this blocker to low-risk based only on npm's artifact severity, and do not apply npm's suggested `vite-plugin-pwa@0.2.1` major downgrade blindly. Assess a compatible dependency-chain update or explicit mitigation, regenerate the lockfile, then rerun audit + typecheck/unit/build once.
+
+
+### Dependency-chain assessment and remediation decision (r319)
+
+Inspection of `package.json`, `package-lock.json`, `vite.config.ts`, and `.github/workflows/ci.yml` confirms `deepmerge@4.3.1` is a development-only transitive dependency: `vite-plugin-pwa@1.3.0` → `workbox-build@7.4.1` → `@rollup/plugin-node-resolve@16.0.3` → `deepmerge@4.3.1`. `vite.config.ts` actively configures `VitePWA` (manifest, auto-update, Workbox glob patterns), so removing `vite-plugin-pwa` without an approved replacement would regress intended PWA/offline behavior.
+
+Upstream GitHub Advisory Database classifies `GHSA-gcqx-w48m-w2h4` / `CVE-2026-93753` as HIGH (CVSS 8.7), with no patched upstream version. The upstream issue is closed, and PR [#274](https://github.com/TehShrike/deepmerge/pull/274) was closed unmerged; its immutable candidate patch commit is `c5ad573` in the contributor fork and includes regression tests (PR reports 129 tape assertions passing). This is not an upstream release, so do not add an unpinned mutable Git dependency or claim the advisory resolved.
+
+**Chosen next implementation candidate:** vendor or package a local patched `deepmerge` fork pinned to immutable commit `c5ad573`, clearly mark its patched package version, retain the upstream MIT license/attribution, regenerate `package-lock.json` using npm, inspect the resulting lock and `npm audit` output, and then run Typecheck, unit/parity tests, and production build once. Do not blindly downgrade `vite-plugin-pwa`, and do not remove PWA functionality to bypass the audit. This remediation has NOT yet been implemented or validated; Lite remains BLOCKED.
