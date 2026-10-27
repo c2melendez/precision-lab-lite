@@ -338,3 +338,12 @@
 - La política prohíbe commits vacíos/artificiales, gates omitidos y PASS sin ejecución comprobada. Si no hay cambio legítimo, el mecanismo autorizado no mutante debe validar la ruta sin fabricar un push.
 - `continuity.json` registra versión `2026-10-26-dynamic-routes-daily-e2e-v1`, estado `NOT_YET_VERIFIED`, sin evidencias inventadas. La certificación global sigue OPEN y se conserva la siguiente acción canónica existente.
 - Cambio documental; no se despacharon manualmente workflows ni se declaró certificación operativa.
+
+## 2026-10-26 — diagnóstico API/Bridge/Runner (sin certificar E2E)
+
+- Render: el servicio `precision-lab-readonly-api` está `live` sobre el deploy `dep-dbfnu8nlk1mc73fksl6g` / commit `b6d5efdcae0802d5b5a24c79d8d7373bfa9e1acd`.
+- Pruebas observadas en logs de producción: `GET /healthz` → 200; `GET /openapi.json` → 200; `GET /v1/status?repo=both` sin API key → 401 (esperado para endpoint protegido). No se obtuvo una respuesta autenticada, por lo que no se certifican los secretos ni la lectura bilateral de GitHub.
+- Desfase de configuración pendiente: Render informa `healthCheckPath=""` aunque `render.yaml` declara `/healthz`. No se modificó configuración de secretos ni se expusieron credenciales.
+- Bridge: la búsqueda en los repositorios accesibles no localizó una implementación/endpoint inequívoco; no hay evidencia de una transacción Bridge→Runner.
+- Runner: existe `.github/workflows/certification-runner.yml` en Lite y Plus. Se corrigió el comentario obsoleto de Plus sobre `[skip ci]`; no se despacharon gates de certificación. La prueba integral PUSH/evento→API→Bridge→Runner→resultado sigue `NOT_YET_VERIFIED`.
+- Próximo paso de esta sección: resolver la configuración efectiva de health check en Render; ejecutar `scripts/verify-live-api.ps1` con `SERVICE_API_KEY` desde una sesión autorizada y sin imprimir el secreto; después identificar Bridge por el artefacto/endpoint real, realizar primero dry-run y registrar correlación y evidencia. No repetir gates verdes ni cambiar el `next_action` matemático de `continuity.json`.
