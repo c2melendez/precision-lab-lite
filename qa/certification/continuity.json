@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 308,
+  "revision": 309,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
@@ -41,9 +41,9 @@
   "next_action": {
     "id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
     "status": "IN_PROGRESS",
-    "action": "Bridge parked. Lite CI run 40596658330 passed frontend unit/parity tests and production build. Plus EN-SG-03 exposed a renderer fallback defect; fix committed in Plus at 21eccd6ff4612afc73b78bfac816052de360c9ee, awaiting its CI evidence. Continue EN-SG-01/02/04..08 only after retrieving exact source matrix literals. Global OPEN.",
+    "action": "Bridge parked. Lite CI run 40596658330 passed frontend unit/parity tests and production build. Plus renderer guard committed 21eccd6ff4612afc73b78bfac816052de360c9ee; Plus CI unit/parity step passed but full CI was still in progress. EN-SG-03 remains PARTIAL pending exact original matrix literal. Recover source literals before EN-SG-01/02/04..08. Global OPEN.",
     "previous_id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
-    "updated_utc": "2026-10-27T23:20:00Z"
+    "updated_utc": "2026-10-27T23:25:00Z"
   },
   "blockers": [
     {
@@ -78,6 +78,7 @@
   "h2_en_sg_evidence_audit_r314": {
     "status": "PARTIAL",
     "covered_or_partial": [
+      "EN-SG-03",
       "EN-SG-09",
       "EN-SG-10",
       "EN-SG-11",
@@ -112,9 +113,7 @@
       "EN-SG-28",
       "EN-SG-32"
     ],
-    "pending_execution": [
-      "EN-SG-03"
-    ],
+    "pending_execution": [],
     "harness": "backend/tests/test_in625_h2_security.py",
     "notes": [
       "EN-SG-03 frontend regression added on Plus; awaiting verified Actions run",
@@ -124,5 +123,5 @@
       "IN625_H2_MATRIX.md is inventory, not PASS"
     ]
   },
-  "ledger_note": "r308 motor-only scope, Bridge parked. Lite CI 40596658330 frontend success; Plus EN-SG-03 failure diagnosed and corrective renderer guard committed, CI pending. Global OPEN."
+  "ledger_note": "r309 motor-only scope, Bridge parked. Lite CI 40596658330 frontend success; Plus EN-SG-03 synthetic regression step passed after fix, full CI in progress, exact source literal pending. Global OPEN."
 }
