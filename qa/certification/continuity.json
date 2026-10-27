@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 316,
+  "revision": 317,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
@@ -41,9 +41,9 @@
   "next_action": {
     "id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
     "status": "IN_PROGRESS",
-    "action": "Lite Runner push fingerprint now passes after restoring prose_only_paths in continuity.json (retry of run 40602548307 succeeded). Lite CI 40602548219 remains FAILURE at QA dependency audit: npm audit --package-lock-only returned exit 1, so typecheck/unit/build were skipped; this is a dependency-security blocker, not evidence about H2 parser tests. Lite parser-level tests in tests/in625H2Security.audit.test.ts cover EN-SG-01/02/04..08; UI escaping is a separate criterion. Plus CI 40602481512 frontend checks/build pass, backend is still validating probe-backed EN-SG-08. Global OPEN; SECURITY-S25 remains BLOCKED because the last inspected security job 40601719418 was SKIPPED.",
+    "action": "Lite CI 40602548219 npm audit hard gate failed with 4 LOW advisories: deepmerge prototype poisoning GHSA-gcqx-w48m-w2h4 via @rollup/plugin-node-resolve/workbox-build/vite-plugin-pwa. npm reports a fix requiring a major downgrade to vite-plugin-pwa 0.2.1; do not apply blindly. Typecheck/unit/build were skipped. Lite cumulative gate 40602548264 SUCCESS validates only its own cumulative checks, not the failed main CI. Plus CI 40602481512 frontend+backend SUCCESS and EN-SG-08 probe-backed test passed. Runner retries both repos SUCCESS. SECURITY-S25 remains BLOCKED because security job 40601719418 was SKIPPED. Global OPEN.",
     "previous_id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
-    "updated_utc": "2026-10-27T23:34:00Z"
+    "updated_utc": "2026-10-27T23:40:00Z"
   },
   "blockers": [
     {
@@ -125,7 +125,7 @@
       "IN625_H2_MATRIX.md is inventory, not PASS"
     ]
   },
-  "ledger_note": "r316 motor-only. Lite Runner retry 40602548307 SUCCESS on fingerprint and push summary. Lite CI 40602548219 FAILED at hard dependency audit npm audit (typecheck/unit/build skipped). Plus CI 40602481512 frontend checks/build SUCCESS, backend pending on SG08 probe test. Lite H2 parser-level tests exist; not UI escaping evidence. Last inspected Plus security job 40601719418 SKIPPED. Global OPEN.",
+  "ledger_note": "r317 motor-only. Lite Runner retry 40602548307 SUCCESS. Lite CI 40602548219 FAILED at npm audit hard gate due to 4 LOW advisories including deepmerge GHSA-gcqx-w48m-w2h4; typecheck/unit/build skipped. Lite cumulative gate 40602548264 SUCCESS does not replace failed CI. Plus CI 40602481512 frontend/backend SUCCESS; EN-SG-08 probe test passed. SECURITY-S25 BLOCKED; global OPEN.",
   "prose_only_paths": [
     "README.md",
     "qa/certification/README.md",
