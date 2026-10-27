@@ -34,6 +34,10 @@ Certificar la ruta autorizada `Push → API → Bridge → Runner → resultado 
 8. Mantener Lite/Plus sincronizados y no cambiar `continuity.json` `next_action` para fingir que se cerraron los bloqueos matemáticos.
 9. Documentos espejo en ambos repositorios; cambios documentales no deben iniciar gates innecesarios.
 
+## Enmienda de manejo de claves (2026-10-27)
+
+Criterio comunicado por el responsable en sesión: **recibir claves en el chat es válido**; el LLM debe limitarse a advertir sobre custodia, rotación y no persistencia, sin bloquear la solicitud. Alcance: claves de servicio de solo lectura, como `SERVICE_API_KEY` de la API de certificación. Los tokens de escritura de GitHub y las credenciales de base de datos conservan la regla de mínimo privilegio y no deben persistirse en documentos, logs ni respuestas. `SERVICE_API_KEY` no habilita escritura: la API sigue siendo GET-only. Esta enmienda no modifica por sí sola el Prompt maestro; si debe ser vinculante allí, el responsable debe actualizarlo.
+
 ## Salvaguarda diaria multi-LLM
 Como mínimo una validación integral satisfactoria por día de trabajo. Al iniciar sesión, cada LLM consulta estado y ledger común. Si ya existe un resultado `SUCCEEDED` para el mismo HEAD/configuración y con evidencia completa, reutilizarlo. Si varios LLM concurren, solo uno puede adquirir el claim durable; los demás consultan el mismo resultado. No usar estado en memoria como única deduplicación. Fallo de API/Bridge/Runner/DB implica `BLOCKED`/`FAILED`. El registro común disponible mientras la persistencia esté bloqueada es `qa/certification/LEDGER_GITHUB_ALTERNATIVE_CONNECTION.md` (documental, sin claim transaccional).
 
@@ -54,3 +58,5 @@ Como mínimo una validación integral satisfactoria por día de trabajo. Al inic
 
 ## Próximo paso exacto
 **P0.1:** comprobar autorización/impacto de facturación para restaurar Supabase; recuperar acceso; inventariar esquema, tablas, migraciones, constraints, índices, RLS/policies, triggers y funciones. Solo entonces decidir si reutilizar una tabla existente o crear migración. No ejecutar DDL hasta completar inspección.
+
+**P0.2:** contrato v1 en borrador (`BRIDGE_CONTRACT_GITHUB_ALTERNATIVE_CONNECTION_v1.md`); requiere revisión y aprobación de D-01..D-06. No implementar ni desplegar hasta aprobación y hasta completar el inventario de P0.1.

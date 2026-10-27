@@ -14,7 +14,7 @@ GitHub es fuente de verdad. La API desplegada es read-only; no añadir dispatch 
 | Planificador | GET read-only; no inicia gates | Live no verificado |
 | Render health check | `healthCheckPath` efectivo vacío, YAML declara `/healthz` | Reconciliar |
 | `GITHUB_READ_TOKEN`, `SERVICE_API_KEY` | Presencia no confirmada; valores no deben divulgarse | No demostrado |
-| Bridge | Sin E2E identificado | BLOCKED |
+| Bridge | Contrato v1 DRAFT (`BRIDGE_CONTRACT_GITHUB_ALTERNATIVE_CONNECTION_v1.md`); sin implementación ni E2E | BLOCKED |
 | Runner Lite/Plus | Workflows/ledger existen, pero sin E2E de la ruta completa | Parcial |
 | Supabase `oqlzftercvraprnvjifo` | INACTIVE; tablas fallan por inaccesibilidad, migraciones por timeout | BLOCKED |
 | Idempotencia durable | Esquema desconocido; reinicio no probado | BLOCKED |
@@ -37,6 +37,8 @@ GitHub es fuente de verdad. La API desplegada es read-only; no añadir dispatch 
 **Aceptación:** inventario reproducible y decisión de reutilizar/crear. Si no se completa, BLOCKED; no DDL.
 
 ## Fase 2 — Contrato seguro de Bridge/ejecutor
+
+**Estado 2026-10-27:** DRAFT v1 publicado; pendiente de aprobación (D-01..D-06).
 1. Especificar request/response y transiciones: `validation_id`, `idempotency_key`, `correlation_id`, repo allowlisted, branch, requested SHA, tipo de validación, timestamps, estado/resultado.
 2. Mantener API read-only para consulta/plan/evidencia. Separar ejecución y permisos.
 3. Auditar Runner actual y decidir mecanismo autorizado para una prueba controlada; no asumir que el API existente puede despachar.

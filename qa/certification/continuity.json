@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 303,
+  "revision": 304,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
@@ -20,7 +20,10 @@
     "qa/certification/EDCX_B6_ADAPTER_ORACLE_PLAN.md",
     "qa/certification/HANDOFF_GITHUB_ALTERNATIVE_CONNECTION.md",
     "qa/certification/ROADMAP_GITHUB_ALTERNATIVE_CONNECTION.md",
-    "qa/certification/continuity.json"
+    "qa/certification/continuity.json",
+    "qa/certification/BRIDGE_CONTRACT_GITHUB_ALTERNATIVE_CONNECTION_v1.md",
+    "qa/certification/LEDGER_GITHUB_ALTERNATIVE_CONNECTION.md",
+    "qa/certification/EXECUTION_REPORT_SUPABASE_P0_1_2026-10-27.md"
   ],
   "gates": {
     "cumulative": {
