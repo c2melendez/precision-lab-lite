@@ -204,9 +204,9 @@ Reglas:
 1. Resolver la rama canónica desde `qa/certification/README.md` de la rama predeterminada **en cada solicitud** y comparar con la rama pedida.
 2. Verificar `requested_sha == HEAD` mediante `GET /repos/{repo}/git/ref/heads/{branch}` inmediatamente antes del dispatch.
 3. Resolver el workflow desde un **mapa versionado del Bridge** (`cumulative → in625-cumulative-certification.yml`, etc.). El cliente nunca envía ruta de workflow.
-4. Despachar con `POST /repos/{repo}/actions/workflows/{file}/dispatches`, `ref` = rama canónica e input `reason` que incluya `correlation_id` y `validation_id`.
-5. Localizar el run por `workflow_id`, `created_at >= dispatch_time` y `head_sha == requested_sha`; guardar `runner_run_id`.
-6. Tras el run del Runner, localizar el run del gate que este despachó (`dispatched_run_id` en el registro del Runner) y verificarlo por API.
+4. Despachar con `POST /repos/{repo}/actions/workflows/{file}/dispatches`, `ref` = rama canónica e inputs **reales** del Runner: `target_repo`, `gate`, `dry_run=false`. El Runner v2 **no acepta** un input `reason`/`correlation_id`; enviarlo provocaría un rechazo por input desconocido. La correlación se resuelve por ventana de tiempo + `head_sha` + política de una validación activa por repo, y se mejora con D-07.
+5. Localizar el run por `workflow_id`, `created_at >= dispatch_time` y `head_sha == requested_sha`; guardar `runner_run_id`. Con una sola validación activa por repo y la concurrencia del Runner, la ambigüedad es acotada; si aparecen dos runs candidatos, el estado es `UNKNOWN_DISPATCH`.
+6. Mientras el Runner está activo, localizar el run del gate despachado por `workflow` del gate, `created_at >= dispatch_time` y `head_sha == requested_sha`; al cerrar, contrastarlo con `dispatched_run_id` del registro `runner/<id>.json`.
 7. Si `head_sha` del run ≠ `requested_sha`, marcar `SHA_DRIFT` y no continuar como éxito.
 8. **Interacción conocida:** el Runner publica `qa/certification/runner/<id>.json`, lo que mueve el HEAD de la rama canónica al terminar. El Bridge debe registrar `actual_head_sha` y no reutilizar `requested_sha` como HEAD vigente después de esa publicación.
 9. La concurrencia del workflow (`group: certification-runner-<repo>`, `cancel-in-progress: false`) serializa ejecuciones; el Bridge, además, limita a una validación activa por repo para no encolar trabajo innecesario.
@@ -286,6 +286,7 @@ Permisos del token del Bridge (fine-grained, solo Lite/Plus):
 | D-04 | Gate inocuo `runner_smoke` para E2E sin gates matemáticos | Fase 5/6 |
 | D-05 | Cupo diario y presupuesto de Actions | Operación |
 | D-06 | Responsable de emisión/rotación de claves | Operación |
+| D-07 | Añadir input opcional `correlation_id` al Runner v2 y propagarlo al `reason` del gate | Auditoría E2E inequívoca |
 
 **D-04 es la decisión más rentable:** hoy no existe un gate barato para probar la cadena. Un workflow `connection-smoke.yml` con un job trivial (echo del SHA, artefacto y registro) permitiría certificar `Bridge → Runner → resultado` sin ejecutar Playwright ni mutación.
 
@@ -295,7 +296,7 @@ Fuente: `.github/workflows/certification-runner.yml` en Lite y Plus (rama canón
 
 | Aspecto | Hallazgo | Riesgo/observación |
 |---|---|---|
-| Trigger útil | `workflow_dispatch` con `target_repo`, `gate`, `dry_run` | `dry_run=true` por defecto: correcto |
+| Trigger útil | `workflow_dispatch` con `target_repo`, `gate`, `dry_run` | `dry_run=true` por defecto: correcto; **no acepta `reason`/`correlation_id`** (gap D-07) |
 | Trigger `push` | Se dispara en la rama canónica pero no despacha ni publica | Consume un runner por push no documental; coste menor |
 | Permisos | `contents: write`, `actions: write` | Necesarios para publicar el registro y despachar; el token debe ser fine-grained y limitado |
 | Token | `secrets.GH_TOKEN` | No se puede verificar su alcance desde aquí; debe revisarse sin exponerlo |
@@ -305,7 +306,7 @@ Fuente: `.github/workflows/certification-runner.yml` en Lite y Plus (rama canón
 | Registro | Escribe `qa/certification/runner/<run_id>.json` y hace push | Mueve el HEAD; el fingerprint v2 ignora registros numéricos |
 | Anti-loop | `paths-ignore` para `**.md`, `continuity.json`, `runner/**`; sin `[skip ci]` | Correcto; no suprimir gates |
 | Guard de publicación | Compara `origin/<branch>` con `BASE_SHA` antes del push | Evita pisar trabajo concurrente; falla explícitamente si cambió |
-| Evidencia | JSON con `runner_run_id`, `gate_run_id`, conclusión, URLs | Falta `validation_id`/`correlation_id` del Bridge |
+| Evidencia | JSON con `runner_run_id`, `gate_run_id`, conclusión, URLs | Falta `validation_id`/`correlation_id` del Bridge (D-07) |
 
 **Conclusión:** el Runner es un ejecutor razonable, pero no es un Bridge: no autentica clientes, no reclama idempotencia, no valida allowlist/SHA y no correlaciona con una solicitud externa. El Bridge debe añadir esas garantías sin ampliar los permisos del Runner.
 

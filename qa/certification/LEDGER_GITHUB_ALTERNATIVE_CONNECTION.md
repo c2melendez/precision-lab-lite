@@ -30,6 +30,8 @@
 - **Bridge:** no existe componente ni endpoint identificado; la API es estrictamente GET. El circuito `Push → API → Bridge → Runner` sigue sin eslabón de ejecución autorizado.
 - **Commits documentales:** los workflows con `push` a la rama canónica filtran `**/*.md` (o declaran rutas no documentales), por lo que los cambios de este ledger, `CURRENT_STATE` y `EXECUTION_LOG` no despachan gates.
 
+- **Correlación Bridge→Runner (2026-10-27):** el Runner v2 solo acepta `target_repo`, `gate` y `dry_run`; no admite `reason`/`correlation_id`. El contrato v1 corrige el dispatch y abre D-07 (input opcional propagado al gate) para que la auditoría E2E no dependa solo de ventana temporal y SHA.
+
 ## Estado P0.1 y bloqueo vigente
 
 - 2026-10-27: Supabase `oqlzftercvraprnvjifo` restaurado a `ACTIVE_HEALTHY` previa autorización del responsable; inventario inicial en `EXECUTION_REPORT_SUPABASE_P0_1_2026-10-27.md` (entrada `VAL-GH-ALT-2026-10-27-03`).

@@ -385,3 +385,5 @@
 - Añadida enmienda de manejo de claves al handoff: recibir claves de servicio en el chat es válido con advertencias; los tokens de escritura de GitHub y las credenciales de base de datos mantienen la regla de mínimo privilegio.
 - Alineación con P0.1: el inventario parcial (`EXECUTION_REPORT_SUPABASE_P0_1_2026-10-27.md`) muestra solo `public.calls` y `public.history`, sin tabla de idempotencia; el contrato las descarta como almacén y propone un esquema privado nuevo sujeto a migración revisada. No se modificó el esquema.
 - El contrato no está aprobado: D-01 (almacén), D-02 (hospedaje), D-03 (auth), D-04 (gate inocuo), D-05 (cupo/presupuesto) y D-06 (rotación) quedan abiertas. Sin DDL, sin código y sin Actions nuevas. P0.1 sigue parcial; certificación global OPEN.
+
+- Addendum P0.2: el Runner v2 no acepta `reason`/`correlation_id`; el contrato corrige el payload de dispatch a `target_repo`/`gate`/`dry_run=false` y registra D-07 (input opcional de correlación). Sin cambios de código ni de workflows.
