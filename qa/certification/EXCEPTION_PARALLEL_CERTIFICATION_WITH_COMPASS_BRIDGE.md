@@ -1,41 +1,43 @@
-# Excepción de continuidad: certificación Precision Lab en paralelo con Cert Runner Compass
+# Fallback condicionado: Precision Lab Bridge / Cert Runner Compass
 
 **Fecha de registro:** 2026-10-27 UTC  
 **Ámbito:** Precision Lab Lite y Precision Lab Plus  
-**Estado:** AUTORIZACIÓN OPERATIVA ACOTADA — no equivale a certificar Compass ni Precision Lab.
+**Estado:** RUTA ALTERNATIVA CONDICIONADA — requiere que el LLM no pueda acceder, leer o utilizar `.github/workflows/certification-runner.yml` en los repositorios necesarios y solicite autorización/instrucciones al responsable. Este documento no autoriza el uso predeterminado de Compass ni equivale a certificar Compass o Precision Lab.
 
 ## 1. Decisión y propósito
 
-El responsable autoriza una excepción a la prioridad temporal de conexión alternativa indicada en `CONTINUATION_PROMPT.md`: se permite que un LLM que no disponga de acceso directo a GitHub continúe la **certificación original de Precision Lab** utilizando directamente Cert Runner Compass Bridge, siempre que disponga legítimamente de las credenciales necesarias mediante un canal seguro.
+El mecanismo principal para ejecutar gates de certificación es el workflow `.github/workflows/certification-runner.yml` que existe en cada repositorio. El LLM debe inspeccionar y utilizar ese workflow conforme a sus inputs y al protocolo canónico antes de considerar una ruta alternativa.
 
-La certificación se trabajará en dos frentes paralelos:
+Este documento solo describe un **fallback**: si el LLM no puede acceder, leer o utilizar `.github/workflows/certification-runner.yml` en el/los repositorios necesarios, debe detenerse antes de despachar, explicar qué acceso falta y solicitar al responsable autorización/instrucciones para utilizar Precision Lab Bridge / Cert Runner Compass. La ausencia de acceso directo a GitHub no autoriza automáticamente el uso de Compass si el workflow puede utilizarse mediante otra vía autorizada.
 
-1. **Frente principal — certificación de Precision Lab:** continuar los criterios, matrices, contratos, oráculos, pruebas, gates y bloqueos que ya estaban vigentes antes de priorizar los mecanismos de conexión. El objetivo principal no cambia.
-2. **Frente habilitador — Compass y otros mecanismos de conexión:** seguir verificando, corrigiendo y documentando la conexión externa para aumentar su seguridad, idempotencia, trazabilidad y disponibilidad. Este frente no debe congelar innecesariamente el primero cuando Compass pueda usarse de forma acotada.
+Si el responsable autoriza el fallback y las credenciales necesarias están disponibles legítimamente, el LLM puede utilizar Compass Bridge conforme a las salvaguardas de este documento. El objetivo principal sigue siendo la certificación original de Precision Lab; Compass es un mecanismo alternativo de ejecución, no un frente que deba ejecutarse por defecto ni un requisito para toda sesión.
 
-Esta excepción cambia la **ruta de ejecución disponible**, no los criterios de aceptación de Precision Lab, la definición de PASS, los contratos matemáticos, las matrices fuente, los oráculos ni las decisiones de alcance ya registradas. No permite inventar resultados ni tratar una conexión parcial como certificación completa.
+Este fallback cambia únicamente la **ruta de ejecución disponible**, no los criterios de aceptación de Precision Lab, la definición de PASS, los contratos matemáticos, las matrices fuente, los oráculos ni las decisiones de alcance ya registradas. No permite inventar resultados ni tratar una conexión parcial como certificación completa.
 
 ## 2. Precedencia de esta excepción
 
 Para las sesiones que reciban este documento junto con el prompt permanente:
 
-- Esta excepción prevalece únicamente sobre la instrucción de **esperar a completar toda la Fase 8 de conexión antes de retomar la certificación matemática**.
-- Las demás reglas del prompt permanente continúan vigentes: resolver la rama canónica con los punteros de ambos repositorios, consultar `continuity.json`, `CURRENT_STATE.md`, `ROADMAP_CONTINUITY.md`, `EXECUTION_PROTOCOL.md`, `MANUAL_CAPABILITY_GAPS.md`, los logs y la evidencia real de GitHub; evitar repeticiones; clasificar fallos; mantener Lite/Plus coordinados; y actualizar los registros.
-- GitHub y los artefactos de certificación siguen siendo la fuente de verdad sobre el estado de producto. Este documento no reemplaza la secuencia canónica ni convierte referencias históricas en evidencia vigente.
-- Si el prompt, el índice bilateral o la evidencia real discrepan, no se debe escoger una versión por conveniencia. Registrar la discrepancia y reconciliarla antes de ejecutar pruebas que puedan alterar el estado.
+- El workflow `.github/workflows/certification-runner.yml` en el repositorio correspondiente tiene precedencia como mecanismo de ejecución. Utilízalo por defecto según sus inputs y el estado canónico.
+- Este documento **no prevalece sobre el workflow ni lo reemplaza**. Solo se aplica después de que el LLM informe que no puede acceder, leer o utilizar el workflow requerido y solicite autorización/instrucciones al responsable.
+- Si el responsable autoriza el fallback, las demás reglas de certificación continúan vigentes: resolver la rama canónica, consultar `continuity.json`, `CURRENT_STATE.md`, `ROADMAP_CONTINUITY.md`, `EXECUTION_PROTOCOL.md`, `MANUAL_CAPABILITY_GAPS.md`, logs y evidencia real; evitar repeticiones; clasificar fallos; mantener Lite/Plus coordinados; actualizar registros.
+- GitHub y los artefactos de certificación siguen siendo la fuente de verdad. Este documento no reemplaza la secuencia canónica ni convierte referencias históricas en evidencia vigente.
+- Si el prompt, el índice bilateral, el workflow o la evidencia real discrepan, no despaches pruebas potencialmente mutantes hasta reconciliar la discrepancia.
 
 
 ### Regla operativa para resolver conflictos y elegir el siguiente paso
 
-1. **La excepción vigente prevalece sobre la pausa de P0** en `CONTINUATION_PROMPT.md`: no es necesario esperar al cierre de la Fase 8 para continuar la certificación matemática original. La Fase 8 sigue siendo necesaria para declarar certificada la ruta de conexión.
-2. **El índice canónico sigue decidiendo el trabajo concreto.** Lee y reconcilia `continuity.json`, `CURRENT_STATE.md`, Actions y artefactos reales en Lite y Plus. Ejecuta únicamente el siguiente paso respaldado por esa reconciliación; no inventes una tarea ni uses el puntero matemático histórico como si fuera vigente.
-3. **Si el siguiente paso canónico es de conexión**, trabaja en ese frente. **Si corresponde continuar la certificación de producto**, continúa con sus criterios originales; si falta acceso directo a GitHub, Compass es una ruta autorizada solo bajo las salvaguardas de este documento. No se requiere terminar un frente para avanzar en el otro cuando sus prerrequisitos y evidencia permitan trabajar en paralelo.
-4. Si el prompt, el índice bilateral, el estado de los repositorios o las ejecuciones reales se contradicen, no despaches una prueba potencialmente mutante hasta reconciliar la discrepancia. Documenta qué fuente discrepa y qué evidencia resolvería el conflicto.
+1. **Primero, el workflow del repositorio:** para ejecutar gates, usa `.github/workflows/certification-runner.yml` en el repo correspondiente y sigue sus inputs y controles.
+2. **Si no hay acceso utilizable al workflow**, informa exactamente qué repositorio/archivo no puedes acceder, leer o utilizar, y solicita autorización/instrucciones al responsable para usar Compass Bridge. No uses Compass de forma predeterminada.
+3. **El índice canónico decide el trabajo concreto.** Reconcilia `continuity.json`, `CURRENT_STATE.md`, Actions y artefactos reales en Lite y Plus; no inventes tareas ni ejecutes punteros históricos sin verificarlos.
+4. Si el prompt, el índice bilateral, el workflow o la evidencia real se contradicen, no despaches una prueba potencialmente mutante hasta reconciliar la discrepancia.
 5. Los cambios exclusivamente documentales no constituyen evidencia de ejecución ni deben disparar CI según los filtros vigentes.
 
-## 3. Uso autorizado de Cert Runner Compass Bridge
+## 3. Uso de Cert Runner Compass Bridge solo tras autorización del fallback
 
-El LLM puede conectarse directamente a Cert Runner Compass en:
+No inicies el uso de Compass por defecto. Primero confirma que `.github/workflows/certification-runner.yml` no es accesible, legible o utilizable para la tarea y solicita al responsable autorización/instrucciones. Si la autorización no se concede o faltan credenciales seguras, registra `BLOCKED` y espera.
+
+Una vez autorizado el fallback, el LLM puede conectarse a Cert Runner Compass en:
 
 - Bridge: `https://cert-runner-compass.lovable.app`
 - Proyecto Lovable: `57b9141d-9f69-4fef-9b7f-0f81f2eaec2f`
@@ -88,6 +90,6 @@ No mezclar runs del Runner usados para certificar Compass con evidencia de un cr
 
 ## 7. Criterio de salida
 
-La excepción permanece vigente mientras el responsable no la revoque. El LLM puede continuar el frente principal a través de Compass dentro de las salvaguardas anteriores, mientras sigue registrando el estado de certificación de Compass por separado. La certificación global de Precision Lab solo puede declararse completa cuando sus criterios originales y bloqueos se resuelvan con la evidencia exigida por los contratos, oráculos y protocolos vigentes.
+Este procedimiento alternativo solo puede usarse para la tarea/repositorio para el que el responsable haya autorizado el fallback. Si vuelve a estar disponible el acceso a `.github/workflows/certification-runner.yml`, retorna al workflow como mecanismo principal. El uso de Compass no certifica por sí solo el Bridge ni Precision Lab. La certificación global de Precision Lab solo puede declararse completa cuando sus criterios originales y bloqueos se resuelvan con la evidencia exigida por los contratos, oráculos y protocolos vigentes.
 
 **Registro de esta actualización:** documentar esta excepción no dispara GitHub Actions, no envía POST al Bridge y no crea evidencia de ejecución.
