@@ -109,13 +109,44 @@ jobs:
           echo "Workflow que se despacharía: $GATE_WORKFLOW sobre $CANONICAL_BRANCH en $BASE_SHA."
           echo "No se despachó ningún workflow ni se publicó documentación."
 
+      - name: Detect an equivalent active gate run before dispatch
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run != true }}
+        run: |
+          set -euo pipefail
+          WF_FILE="$(basename "$GATE_WORKFLOW")"
+          EXISTING_RUN_ID="$(gh run list --repo "$REPO" --workflow "$WF_FILE" --branch "$CANONICAL_BRANCH" --limit 50 \
+            --json databaseId,headSha,status,createdAt,event \
+            --jq "[.[] | select(.headSha == \"$BASE_SHA\" and (.status == \"queued\" or .status == \"in_progress\" or .status == \"waiting\"))] | sort_by(.createdAt) | .[0].databaseId // empty")"
+          if [ -n "$EXISTING_RUN_ID" ]; then
+            echo "RUN_ID=$EXISTING_RUN_ID" >> "$GITHUB_ENV"
+            echo "DECISION=WAIT_EXISTING" >> "$GITHUB_ENV"
+            echo "DISPATCHED_URL=$(gh run view "$EXISTING_RUN_ID" --repo "$REPO" --json url --jq .url)" >> "$GITHUB_ENV"
+            echo "Se encontró un gate equivalente activo en el mismo SHA: $EXISTING_RUN_ID. Se esperará esa corrida, sin duplicarla."
+          else
+            echo "No existe una corrida activa del gate sobre $BASE_SHA; puede evaluarse el dispatch."
+          fi
+
+      - name: Wait for the equivalent active gate run
+        if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.dry_run != true && env.DECISION == 'WAIT_EXISTING' }}
+        run: |
+          set -euo pipefail
+          STATUS=""
+          for _ in $(seq 1 360); do
+            STATUS="$(gh run view "$RUN_ID" --repo "$REPO" --json status --jq .status)"
+            if [ "$STATUS" = "completed" ]; then break; fi
+            sleep 30
+          done
+          echo "DISPATCHED_STATUS=$STATUS" >> "$GITHUB_ENV"
+          echo "DISPATCHED_CONCLUSION=$(gh run view "$RUN_ID" --repo "$REPO" --json conclusion --jq '.conclusion // ""')" >> "$GITHUB_ENV"
+          echo "Corrida existente $RUN_ID: status=$STATUS"
+
       - name: Push summary
         if: ${{ github.event_name != 'workflow_dispatch' }}
         run: |
           echo "Evento push: sin gate. No se despacha ningún workflow ni se publica documentación."
 
       - name: Dispatch gate workflow and wait for its result
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run != true }}
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run != true && env.RUN_ID == '' }}
         run: |
           set -euo pipefail
           WF_FILE="$(basename "$GATE_WORKFLOW")"
@@ -135,6 +166,7 @@ jobs:
             exit 1
           fi
           echo "RUN_ID=$RUN_ID" >> "$GITHUB_ENV"
+          echo "DECISION=DISPATCHED" >> "$GITHUB_ENV"
           echo "DISPATCHED_URL=$(gh run view "$RUN_ID" --repo "$REPO" --json url --jq .url)" >> "$GITHUB_ENV"
           STATUS=""
           for _ in $(seq 1 360); do
@@ -161,7 +193,7 @@ jobs:
               "base_sha": os.environ.get("BASE_SHA", ""),
               "gate": os.environ.get("GATE", ""),
               "gate_workflow": os.environ.get("GATE_WORKFLOW", ""),
-              "decision": "DISPATCHED" if dispatched else "NOT_DISPATCHED",
+              "decision": os.environ.get("DECISION", "DISPATCHED" if dispatched else "NOT_DISPATCHED"),
               "runner_run_id": run_id,
               "runner_run_url": f"https://github.com/{os.environ['REPO']}/actions/runs/{run_id}",
               "dispatched_run_id": dispatched,
