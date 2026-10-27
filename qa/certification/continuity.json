@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 301,
+  "revision": 302,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
@@ -2866,6 +2866,33 @@
           "head_sha_matches": true
         }
       }
+    }
+  },
+  "execution_route_policy": {
+    "version": "2026-10-26-dynamic-routes-daily-e2e-v1",
+    "source": "qa/certification/CONTINUATION_PROMPT.md",
+    "requirements_unchanged": true,
+    "preferred_route_order": [
+      "direct_repository_access",
+      "direct_runner_access",
+      "bridge",
+      "API_GPT"
+    ],
+    "daily_end_to_end_safeguard": {
+      "required": true,
+      "path": [
+        "PUSH_OR_AUTHORIZED_TRIGGER",
+        "API",
+        "BRIDGE",
+        "RUNNER",
+        "VERIFIED_RESULT"
+      ],
+      "current_status": "NOT_YET_VERIFIED",
+      "last_verified_at": null,
+      "evidence": [],
+      "pass_rule": "No PASS without evidence for each stage, SHA, run/jobs/logs, idempotency and verified final result.",
+      "no_synthetic_commits": true,
+      "reuse_only_if_same_sha_fingerprint_acceptance_and_configuration": true
     }
   }
 }
