@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 309,
+  "revision": 310,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
@@ -41,9 +41,9 @@
   "next_action": {
     "id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
     "status": "IN_PROGRESS",
-    "action": "Bridge parked. Lite CI run 40596658330 passed frontend unit/parity tests and production build. Plus renderer guard committed 21eccd6ff4612afc73b78bfac816052de360c9ee; Plus CI unit/parity step passed but full CI was still in progress. EN-SG-03 remains PARTIAL pending exact original matrix literal. Recover source literals before EN-SG-01/02/04..08. Global OPEN.",
+    "action": "Bridge parked. Lite CI 40596658330 passed frontend unit/parity and production build. Plus renderer guard commit 21eccd6ff4612afc73b78bfac816052de360c9ee and synthetic EN-SG-03 regression passed Plus CI 40597214760. Recovered exact original H.2 source from Matrices.zip: matriz_entrada_sintaxis_calculadora.md, SHA-256 58fbc0ed04aef158148981fc28074d470e45ec07a67604f89b3847b55c625528, lines 864–901. Added exact EN-SG-03 literal regression in Plus commit 2e755ecdd8fef3536f8f4a7076aff961eea15cab; Plus CI 40599001729, cumulative 40599001638, H1d 40599001704 and native syntax 40599001743 are IN_PROGRESS. Do not duplicate. Security job 40599001902 completed SUCCESS but security job SKIPPED, not PASS; SECURITY-S25 remains BLOCKED. Next: inspect current runs, then test confirmed EN-SG-01/02/04..08 gaps from exact literals. Global OPEN.",
     "previous_id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
-    "updated_utc": "2026-10-27T23:25:00Z"
+    "updated_utc": "2026-10-27T23:02:00Z"
   },
   "blockers": [
     {
@@ -113,7 +113,9 @@
       "EN-SG-28",
       "EN-SG-32"
     ],
-    "pending_execution": [],
+    "pending_execution": [
+      "EN-SG-03 exact-source regression in Plus; CI 40599001729 in progress"
+    ],
     "harness": "backend/tests/test_in625_h2_security.py",
     "notes": [
       "EN-SG-03 frontend regression added on Plus; awaiting verified Actions run",
@@ -123,5 +125,5 @@
       "IN625_H2_MATRIX.md is inventory, not PASS"
     ]
   },
-  "ledger_note": "r309 motor-only scope, Bridge parked. Lite CI 40596658330 frontend success; Plus EN-SG-03 synthetic regression step passed after fix, full CI in progress, exact source literal pending. Global OPEN."
+  "ledger_note": "r310 motor-only scope, Bridge parked. Lite CI 40596658330 SUCCESS. Plus exact-source EN-SG-03 test commit 2e755ecdd8fef3536f8f4a7076aff961eea15cab is being validated by CI 40599001729, cumulative 40599001638, H1d 40599001704 and native syntax 40599001743. Security job 40599001902 SKIPPED, not PASS. Exact H.2 source recovered from Matrices.zip. Global OPEN."
 }
