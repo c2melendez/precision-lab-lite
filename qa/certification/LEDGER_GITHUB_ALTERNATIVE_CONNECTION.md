@@ -51,3 +51,10 @@
 - No se borra, renombra, pausa ni altera el proyecto actual; no se cambian los grants/RLS existentes porque no se ha descartado que haya consumidores externos. Si no puede verificarse el aislamiento, la alternativa es una base/proyecto dedicado, sujeto a confirmar organización y coste.
 - La decisión no es implementación ni aceptación final de D-01: falta verificar Data API exposure, completar el inventario de roles/consumidores y aprobar migración versionada/credenciales separadas. Sin DDL ni Actions en esta actualización.
 - Documento de diseño: [DATABASE_MINIMUM_PRIVILEGE_DECISION_2026-10-27.md](DATABASE_MINIMUM_PRIVILEGE_DECISION_2026-10-27.md). P0.1 permanece BLOCKED hasta la verificación y la prueba de privilegios efectivos.
+
+
+## 2026-10-27 — P0.1 security inventory continuation
+
+- Confirmed catalog findings: `public.calls`/`public.history` have permissive policies and broad grants to API roles; schema `public` grants USAGE to `anon`/`authenticated`; `service_role` has BYPASSRLS and must not be the Bridge runtime identity. No Bridge-specific role found in the role query.
+- Effective Data API exposed-schema configuration and external consumers remain unverified. Recent logs are not sufficient to prove no consumer. No migrations registered, which does not rule out manual DDL. Advisor still flags mutable search_path on `public.set_updated_at`.
+- No schema/permission/data changes or Actions. P0.1 remains BLOCKED. Required next step: confirm Data API configuration and runtime access pattern, then prepare reviewed migration/rollback for private Bridge schema. Details: [EXECUTION_REPORT_SUPABASE_SECURITY_AUDIT_2026-10-27.md](EXECUTION_REPORT_SUPABASE_SECURITY_AUDIT_2026-10-27.md).
