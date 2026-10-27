@@ -75,3 +75,24 @@ La certificación de conexión alternativa a GitHub permanece `BLOCKED`. No hay 
 ## Seguridad y control de ejecución
 
 No solicitar ni incluir credenciales, tokens, claves ni cadenas de conexión en este informe. No activar dispatches de Actions, no crear commits artificiales para disparar workflows y no declarar PASS sin evidencia verificable.
+
+
+## Cruce adicional de esquema y Runner — 2026-10-27 UTC
+
+### Esquemas de Supabase y migraciones
+
+- Se amplió la inspección de catálogo a esquemas no gestionados por Supabase. El resultado de `pg_tables` solo muestra objetos de aplicación en `public`: `calls` y `history`. No apareció otro esquema/tablero de aplicación ni un ledger alternativo de idempotencia en los esquemas consultados.
+- `list_migrations` sigue devolviendo una lista vacía. Las rutas estándar `supabase/config.toml` y `supabase/migrations/README.md` no existen en la rama canónica inspeccionada de Plus; no se deben interpretar estas dos rutas ausentes como prueba de que no exista SQL/migración en cualquier otra ubicación. La fuente de migraciones continúa sin reconciliarse.
+- Esto confirma que no hay base observada para reutilizar `public.calls` o `public.history` como ledger de validaciones. No se ejecutó DDL ni se cambió ningún permiso.
+
+### Runner y contrato del Bridge
+
+- La auditoría estática de `.github/workflows/certification-runner.yml` confirma que `workflow_dispatch` acepta `target_repo`, `gate` y `dry_run`; el valor predeterminado es `dry_run=true`. Solo la ejecución explícita con `dry_run=false` despacha un gate y escribe `qa/certification/runner/<run_id>.json`.
+- El evento `push` solo calcula la huella; no despacha un gate. El Runner tiene permisos de workflow `contents: write` y `actions: write`, por lo que el Bridge debe despachar exclusivamente el workflow permitido por un mapa cerrado y no ofrecer parámetros de workflow al cliente.
+- El Runner hace checkout de la rama canónica y registra `BASE_SHA` del checkout real. Por eso, para certificar que se ejecutó sobre el SHA solicitado, el Bridge debe contrastar el SHA solicitado con el `base_sha` del registro `runner/<id>.json` y con el run del gate; `head_sha` del evento del Runner, por sí solo, no basta para demostrar qué SHA se testeó si la rama avanzó entre despacho y checkout.
+- El Runner publica el registro JSON al terminar, moviendo el HEAD de la rama. El Bridge debe guardar por separado `requested_sha`, `base_sha`/SHA realmente testeado y `actual_head_sha` posterior al registro. No tratar el nuevo HEAD generado por el registro como deriva del producto ni como equivalencia automática del SHA validado.
+- La API `precision-lab-readonly-api` se mantiene exclusivamente GET y sin capacidad de escritura. No se añadió endpoint ni se compartieron credenciales.
+
+### Estado y siguiente paso
+
+P0.1 permanece parcial: la auditoría de objetos de aplicación no encontró un almacén de idempotencia existente; la fuente de migraciones y la exposición efectiva de Data API siguen pendientes. Antes de DDL, cerrar el contrato de persistencia y verificar cómo se accede a Supabase. P0.2 sigue DRAFT: reforzar explícitamente la prueba de SHA ejecutado con el `base_sha` del registro del Runner. Global `OPEN`; E2E no demostrado; sin nuevas Actions.
