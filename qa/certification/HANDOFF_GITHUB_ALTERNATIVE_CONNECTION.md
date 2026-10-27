@@ -10,7 +10,7 @@ Certificar la ruta autorizada `Push → API → Bridge → Runner → resultado 
 - Plus: `c2melendez/precision-lab-plus`
 - API de lectura: `c2melendez/precision-lab-readonly-api`
 - Render: servicio `precision-lab-readonly-api`; último estado documentado live, deploy `dep-dbfnu8nlk1mc73fksl6g`, commit `b6d5efdcae0802d5b5a24c79d8d7373bfa9e1acd`.
-- Supabase candidato a persistencia: ref `oqlzftercvraprnvjifo`, región `us-west-2`.
+- Supabase `oqlzftercvraprnvjifo` (región `us-west-2`): **candidato no confirmado**. La API desplegada no contiene integración con Supabase y el propósito del proyecto restaurado no está verificado (ledger `VAL-GH-ALT-2026-10-27-05`).
 
 ## Estado observado
 - **Verificación externa 2026-10-27 (solo GET, sin credenciales):** `/healthz` 200 con `read_only=true`; `/openapi.json` 200 con `servers[0].url` correcto, solo GET y esquema `X-API-Key`; `/v1/status?repo=both` 401 sin clave y con clave incorrecta; planificador 401 sin clave. Auth positiva, estado bilateral y `healthCheckPath` siguen pendientes. Registro en `qa/certification/LEDGER_GITHUB_ALTERNATIVE_CONNECTION.md`.
@@ -19,7 +19,7 @@ Certificar la ruta autorizada `Push → API → Bridge → Runner → resultado 
 - No se confirmó la presencia/configuración de `GITHUB_READ_TOKEN` ni `SERVICE_API_KEY`. No inferir ausencia, imprimir ni compartir valores.
 - Render reportó `healthCheckPath` vacío mientras `render.yaml` declara `/healthz`; conciliar la deriva. `autoDeployTrigger` está desactivado.
 - La API de lectura solo usa GET y no ofrece dispatch, push, cancelación, retry ni mutaciones. Token GitHub de la API: fine-grained, solo Lite/Plus, Contents: Read y Actions: Read; nunca reutilizar el token de escritura del Runner.
-- Supabase figura `INACTIVE`. `get_project` devuelve metadata, pero listar tablas falló con “Database is possibly not accessible at the moment” y listar migraciones por timeout. No se conoce aún el esquema real ni si ya existe idempotencia.
+- Supabase quedó `ACTIVE_HEALTHY` tras la restauración del 2026-10-27; el inventario inicial sigue parcial (historial de migraciones vacío, sin tabla de idempotencia). El propósito del proyecto no está demostrado: la API no lo referencia y no se halló `DATABASE_URL` ni cliente de base de datos. No se conoce si tiene otros consumidores externos.
 - Restaurar Supabase puede reanudar consumo/cargos. Comprobar condiciones y obtener autorización antes de restaurar; no se ejecutó restauración.
 - Existen workflows/Runner y registros en Lite/Plus, pero un push registrado no demuestra que el Runner haya procesado el trabajo. No hay correlación E2E confirmada solicitud → Bridge → run/job → resultado durable.
 

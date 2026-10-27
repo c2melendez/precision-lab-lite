@@ -7,7 +7,7 @@
 **Dependencias:** P0.1 (persistencia durable) para el claim transaccional; el resto del contrato puede implementarse con un almacén intercambiable.
 **Ámbito:** `c2melendez/precision-lab-lite` y `c2melendez/precision-lab-plus`, rama canónica resuelta desde `qa/certification/README.md` de la rama predeterminada.
 
-**Contexto P0.1 (2026-10-27):** Supabase `oqlzftercvraprnvjifo` se restauró y quedó `ACTIVE_HEALTHY`; el inventario inicial solo encontró `public.calls` y `public.history` (ambas vacías, RLS habilitado con políticas permisivas para `public` y grants amplios a `anon`/`authenticated`), historial de migraciones vacío y ninguna tabla de idempotencia. Ese inventario es **parcial** y no lo re-verifica este documento. Fuente: `EXECUTION_REPORT_SUPABASE_P0_1_2026-10-27.md`.
+**Contexto P0.1 (2026-10-27):** Supabase `oqlzftercvraprnvjifo` se restauró y quedó `ACTIVE_HEALTHY`; el inventario inicial solo encontró `public.calls` y `public.history` (ambas vacías, RLS habilitado con políticas permisivas para `public` y grants amplios a `anon`/`authenticated`), historial de migraciones vacío y ninguna tabla de idempotencia. Ese inventario es **parcial** y no lo re-verifica este documento. Fuente: `EXECUTION_REPORT_SUPABASE_P0_1_2026-10-27.md`. **Además (ledger `-05`):** la API desplegada no contiene integración con Supabase (`DATABASE_URL`/cliente), por lo que el propósito de ese proyecto no está verificado; no debe presuponerse como almacén del Bridge.
 
 > Este documento define el contrato del componente que falta en la ruta `Push → API → Bridge → Runner → resultado verificable`. No modifica la API read-only, no aprueba el uso de `SERVICE_API_KEY` como credencial de escritura y no crea esquema en base de datos.
 
@@ -280,7 +280,7 @@ Permisos del token del Bridge (fine-grained, solo Lite/Plus):
 
 | ID | Decisión | Bloquea |
 |---|---|---|
-| D-01 | Almacén durable: esquema privado nuevo en Supabase (`ACTIVE_HEALTHY`) u otra alternativa; `calls`/`history` no son candidatas | P0.3/idempotencia |
+| D-01 | Almacén durable: ninguno confirmado; Supabase `oqlzftercvraprnvjifo` no tiene relación de aplicación demostrada (ledger `-05`) y `calls`/`history` no son candidatas | P0.3/idempotencia |
 | D-02 | Hospedaje del Bridge (nuevo servicio privado vs componente existente) | Implementación |
 | D-03 | Autenticación: clave de servicio sola o clave + mTLS | Contrato final |
 | D-04 | Gate inocuo `runner_smoke` para E2E sin gates matemáticos | Fase 5/6 |

@@ -16,7 +16,7 @@ GitHub es fuente de verdad. La API desplegada es read-only; no añadir dispatch 
 | `GITHUB_READ_TOKEN`, `SERVICE_API_KEY` | Presencia no confirmada; valores no deben divulgarse | No demostrado |
 | Bridge | Contrato v1 DRAFT (`BRIDGE_CONTRACT_GITHUB_ALTERNATIVE_CONNECTION_v1.md`); sin implementación ni E2E | BLOCKED |
 | Runner Lite/Plus | Workflows/ledger existen, pero sin E2E de la ruta completa | Parcial |
-| Supabase `oqlzftercvraprnvjifo` | INACTIVE; tablas fallan por inaccesibilidad, migraciones por timeout | BLOCKED |
+| Supabase `oqlzftercvraprnvjifo` | `ACTIVE_HEALTHY`; sin relación de aplicación demostrada con API/Bridge e inventario parcial (ledger `-05`) | BLOCKED |
 | Idempotencia durable | Esquema desconocido; reinicio no probado | BLOCKED |
 | Resultado E2E | No hay correlación solicitud→Bridge→Runner→resultado persistido | BLOCKED |
 
