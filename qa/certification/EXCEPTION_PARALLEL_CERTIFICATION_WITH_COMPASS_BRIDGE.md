@@ -24,6 +24,15 @@ Para las sesiones que reciban este documento junto con el prompt permanente:
 - GitHub y los artefactos de certificación siguen siendo la fuente de verdad sobre el estado de producto. Este documento no reemplaza la secuencia canónica ni convierte referencias históricas en evidencia vigente.
 - Si el prompt, el índice bilateral o la evidencia real discrepan, no se debe escoger una versión por conveniencia. Registrar la discrepancia y reconciliarla antes de ejecutar pruebas que puedan alterar el estado.
 
+
+### Regla operativa para resolver conflictos y elegir el siguiente paso
+
+1. **La excepción vigente prevalece sobre la pausa de P0** en `CONTINUATION_PROMPT.md`: no es necesario esperar al cierre de la Fase 8 para continuar la certificación matemática original. La Fase 8 sigue siendo necesaria para declarar certificada la ruta de conexión.
+2. **El índice canónico sigue decidiendo el trabajo concreto.** Lee y reconcilia `continuity.json`, `CURRENT_STATE.md`, Actions y artefactos reales en Lite y Plus. Ejecuta únicamente el siguiente paso respaldado por esa reconciliación; no inventes una tarea ni uses el puntero matemático histórico como si fuera vigente.
+3. **Si el siguiente paso canónico es de conexión**, trabaja en ese frente. **Si corresponde continuar la certificación de producto**, continúa con sus criterios originales; si falta acceso directo a GitHub, Compass es una ruta autorizada solo bajo las salvaguardas de este documento. No se requiere terminar un frente para avanzar en el otro cuando sus prerrequisitos y evidencia permitan trabajar en paralelo.
+4. Si el prompt, el índice bilateral, el estado de los repositorios o las ejecuciones reales se contradicen, no despaches una prueba potencialmente mutante hasta reconciliar la discrepancia. Documenta qué fuente discrepa y qué evidencia resolvería el conflicto.
+5. Los cambios exclusivamente documentales no constituyen evidencia de ejecución ni deben disparar CI según los filtros vigentes.
+
 ## 3. Uso autorizado de Cert Runner Compass Bridge
 
 El LLM puede conectarse directamente a Cert Runner Compass en:
