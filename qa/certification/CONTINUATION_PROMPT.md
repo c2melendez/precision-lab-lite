@@ -4,6 +4,14 @@ Continúa autónomamente el sistema de certificación de Precision Lab. GitHub e
 
 
 
+
+
+## EXCEPCIÓN AUTORIZADA — Continuar certificación Precision Lab mediante Compass en paralelo
+
+Antes de aplicar la pausa matemática de la sección P0 siguiente, lee `qa/certification/EXCEPTION_PARALLEL_CERTIFICATION_WITH_COMPASS_BRIDGE.md`. El responsable autorizó mantener dos frentes paralelos: (1) la certificación original de Precision Lab y (2) la certificación de los mecanismos de conexión. Esta excepción prevalece solo sobre la condición de esperar a que toda la Fase 8 de conexión esté demostrada antes de reanudar la certificación original; **no** cambia criterios, matrices, oráculos, gates, reglas de evidencia ni criterios PASS/FAIL.
+
+Un LLM sin acceso directo a GitHub puede usar Cert Runner Compass Bridge si dispone de credenciales por un canal seguro y sigue el documento de excepción. No exponer secretos; no usar `GET /api/run`; no repetir POST ante incertidumbre; consultar el estado y reconciliar los runs. Compass v1.1 sigue OPEN/no certificado. Para retomar la tarea matemática, comprobar la rama/HEAD y la evidencia actuales en ambos repos y reconciliar el puntero matemático diferido de `continuity.json`; no ejecutar ese puntero sin verificarlo ni confundir un run de conexión con evidencia matemática.
+
 ## PRIORIDAD P0 — Certificar conexión alternativa a GitHub antes de motores matemáticos
 
 **Esta sección tiene precedencia temporal sobre el siguiente objetivo de certificación matemática.** Antes de ejecutar el `next_action` matemático, lee en la rama canónica vigente:
