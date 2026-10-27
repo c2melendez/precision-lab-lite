@@ -1,1 +1,62 @@
-PLACEHOLDER
+{
+  "schema_version": 1,
+  "revision": 306,
+  "repository": "c2melendez/precision-lab-lite",
+  "canonical_branch": "qa/syntax-audit-in625-a1",
+  "technical_baseline_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
+  "baseline_case": "EDCX-B3-MIRROR-R262",
+  "baseline_status": "NO_EJECUTADO",
+  "global_certification": "OPEN",
+  "gates": {
+    "cumulative": {
+      "workflow": ".github/workflows/in625-cumulative-certification.yml",
+      "inputs": ["*"],
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    "h1d": {
+      "workflow": ".github/workflows/in625-h1d-reentry.yml",
+      "inputs": ["*"],
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    "security": {
+      "workflow": ".github/workflows/certification-dependency-gates.yml",
+      "inputs": ["*"],
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "allow_reuse": false
+    },
+    "scientific": {
+      "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
+      "inputs": ["*"],
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
+    }
+  },
+  "next_action": {
+    "id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
+    "status": "IN_PROGRESS",
+    "action": "Prioridad motores (Bridge aparcado 2026-10-27): audit EN-SG-01..32 con evidencia existente en Plus (test_in625_h2_security.py). Gaps N1 HTML/macros y cargas extremas 21/23-27/28/32. No cargas en prod. No SG28 isolation prod. Global OPEN. HEAD canónico Lite 5eb1e2f4 / Plus df1a7d74 no son SHA de producto.",
+    "previous_id": "COMPASS-BRIDGE-V1-1-PHASE2-R1",
+    "updated_utc": "2026-10-27T22:25:00Z"
+  },
+  "blockers": [
+    {"id": "H2-SG28-DIST-01..08", "status": "OUT_OF_SCOPE_SINGLE_HOST", "detail": "Paridad Plus r310 single-host. No es PASS."},
+    {"id": "SECURITY-S25", "status": "BLOCKED"},
+    {"id": "SY-P-23", "status": "CLOSED", "detail": "2026-10-26-sy-p-23-exact-block-v1"},
+    {"id": "SY-X-04-PLUS-HTTP", "status": "BLOCKED"},
+    {"id": "ALGEBRA229-AS-B-29", "status": "ON_HOLD"},
+    {"id": "EDCX-B5", "status": "BLOCKED", "kind": "capability", "detail": "VC-LG-01..25 sin canal/endpoint."}
+  ],
+  "h2_en_sg_evidence_audit_r314": {
+    "status": "PARTIAL",
+    "covered_or_partial": ["EN-SG-09", "EN-SG-10", "EN-SG-11", "EN-SG-12", "EN-SG-13", "EN-SG-14", "EN-SG-15", "EN-SG-16", "EN-SG-17", "EN-SG-18", "EN-SG-19", "EN-SG-20", "EN-SG-22", "EN-SG-29", "EN-SG-30", "EN-SG-31"],
+    "gap": ["EN-SG-01", "EN-SG-02", "EN-SG-03", "EN-SG-04", "EN-SG-05", "EN-SG-06", "EN-SG-07", "EN-SG-08", "EN-SG-21", "EN-SG-23", "EN-SG-24", "EN-SG-25", "EN-SG-26", "EN-SG-27", "EN-SG-28", "EN-SG-32"],
+    "harness": "backend/tests/test_in625_h2_security.py",
+    "notes": [
+      "EN-SG-20: 422 VALIDATION_ERROR por max_length=500, no guard interno de profundidad",
+      "EN-SG-29: aislamiento concurrente backend, no UI last-input",
+      "EN-SG-28: tests SG28 interruptible/cancellation no cierran stop UI completo",
+      "Matriz IN625_H2_MATRIX.md es inventario, no PASS"
+    ]
+  },
+  "RESTORE_NOTE": "r315: continuity was briefly overwritten with PLACEHOLDER during tooling error; restored to compact essential index. Full historical blob available at commit 5eb1e2f444c440885a22b7c83f08960576b94f41 and local artifact continuity-lite-pre-r315.json. Re-expand from that SHA if full ledger keys are required.",
+  "ledger_note": "r315 motors: HEAD canónico no es producto (runner-only). next_action H2-EN-SG-CASE-EVIDENCE-AUDIT-R314 IN_PROGRESS. Bridge parked. Global OPEN."
+}
