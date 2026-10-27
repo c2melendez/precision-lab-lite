@@ -12,19 +12,21 @@ Antes de aplicar la pausa matemática de la sección P0 siguiente, lee `qa/certi
 
 Un LLM sin acceso directo a GitHub puede usar Cert Runner Compass Bridge si dispone de credenciales por un canal seguro y sigue el documento de excepción. No exponer secretos; no usar `GET /api/run`; no repetir POST ante incertidumbre; consultar el estado y reconciliar los runs. Compass v1.1 sigue OPEN/no certificado. Para retomar la tarea matemática, comprobar la rama/HEAD y la evidencia actuales en ambos repos y reconciliar el puntero matemático diferido de `continuity.json`; no ejecutar ese puntero sin verificarlo ni confundir un run de conexión con evidencia matemática.
 
-## PRIORIDAD P0 — Certificar conexión alternativa a GitHub antes de motores matemáticos
+## PRIORIDAD P0 — Frente de conexión en paralelo (sin congelar la certificación matemática)
 
-**Esta sección tiene precedencia temporal sobre el siguiente objetivo de certificación matemática.** Antes de ejecutar el `next_action` matemático, lee en la rama canónica vigente:
+**Regla de precedencia obligatoria:** mientras `qa/certification/EXCEPTION_PARALLEL_CERTIFICATION_WITH_COMPASS_BRIDGE.md` esté vigente, la Fase 8 de conexión **no es un requisito previo para reanudar ni continuar la certificación matemática original**. La excepción modifica únicamente esa pausa temporal; no cambia los criterios de aceptación, las matrices, los contratos, los oráculos, los gates ni las reglas PASS/FAIL. La Fase 8 sí sigue siendo necesaria para declarar certificada la ruta de conexión completa.
+
+Antes de ejecutar tareas específicas del frente de conexión, lee en la rama canónica vigente:
 - `qa/certification/HANDOFF_GITHUB_ALTERNATIVE_CONNECTION.md`
 - `qa/certification/ROADMAP_GITHUB_ALTERNATIVE_CONNECTION.md`
 
-No reanudes la certificación general de motores matemáticos hasta que el checklist de Fase 8 de la hoja de ruta esté demostrado con evidencia. Solo se permiten cambios/pruebas matemáticas que bloqueen directamente la herramienta de conexión, su seguridad o su evidencia; justifica y limita ese trabajo.
+No uses esta prioridad para detener automáticamente el frente matemático. En cada sesión, reconcilia `continuity.json`, `CURRENT_STATE.md`, la evidencia de Actions y el documento de excepción. Sigue el `next_action` bilateral vigente; si corresponde a conexión, avanza ese frente. Si la certificación matemática debe continuar y la sesión carece de acceso directo a GitHub, usa Compass solo conforme al documento de excepción y con las salvaguardas vigentes. No ejecutes un puntero matemático histórico/diferido sin verificarlo ni inventes una tarea para mantener ambos frentes ocupados.
 
 La ruta a certificar es `Push → API → Bridge → Runner → resultado verificable`. La API `precision-lab-readonly-api` de Render sigue siendo GET-only y no debe convertirse en ejecutor. El Bridge separado existente es Cert Runner Compass (Lovable project `57b9141d-9f69-4fef-9b7f-0f81f2eaec2f`), con persistencia en Lovable Cloud, no en Supabase. La certificación Compass v1.1 está OPEN: Fase 1 pasó sin runs y la Fase 2 fue autorizada por el responsable el 2026-10-27. Verifica por lectura el despliegue de `f051a4b1` o posterior antes del primer POST; después sigue B3, B4/B5, B6 y C1-C3 en orden. Nunca usar `GET /api/run`, porque puede despachar. El proyecto Supabase `oqlzftercvraprnvjifo` está separado, `ACTIVE_HEALTHY` según el inventario del 2026-10-27, pero su propósito/consumidores y la configuración efectiva de Data API no están completamente verificados; D-01 permanece bloqueado. No hacer DDL ni cambios de permisos sin auditoría y aprobación.
 
 Antes de cualquier ejecución diaria, consulta el ledger común/idempotencia. Se exige al menos una validación integral satisfactoria por día de trabajo, compartida entre sesiones LLM. No repetir una validación equivalente ya satisfactoria para el mismo HEAD/configuración. Si API, Bridge, Runner o persistencia fallan/no se pueden confirmar, el estado es BLOCKED/FAILED, nunca PASS. No crear commits artificiales, no usar [skip ci], no despachar gates verdes ni exponer secretos. Mantén evidencia con validation/correlation ID, repo, branch, SHA, PR/commit si aplica, run/job, logs y resultado. Al cerrar cada avance, sincroniza el handoff/roadmap y el estado operativo sin alterar contratos matemáticos ni falsear el next_action canónico.
 
-Cuando la conexión sea PASS con todas las evidencias, vuelve al flujo de continuidad matemática y ejecuta entonces el `next_action` canónico vigente.
+Cuando la ruta de conexión alcance PASS con todas las evidencias, actualiza su estado por separado. Eso no inicia ni reinicia por sí solo la certificación matemática: continúa siempre desde el `next_action` bilateral vigente y la evidencia real, sin duplicar pruebas ni sustituir el índice canónico por este prompt.
 
 ## Repositorios
 - Lite: `c2melendez/precision-lab-lite`
