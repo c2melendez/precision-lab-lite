@@ -34,3 +34,11 @@ EN-SG-09..20, EN-SG-22, EN-SG-29..31 — primarily `backend/tests/test_in625_h2_
 - No extreme loads or rate bursts against production.
 - No SG28 isolation activation in production.
 - Inventory matrix is not PASS.
+
+
+## Execution update — 2026-10-27
+
+- Plus CI `40602481512`: frontend and backend jobs SUCCESS; probe-backed EN-SG-08 regression passed for the specified file-read/process-launch side-effect probes. This is scoped evidence, not global H2 closure.
+- Lite CI `40602548219`: failed at mandatory `npm audit --package-lock-only`. Uploaded artifact `lite-npm-audit` records 4 LOW advisories, including `deepmerge` prototype poisoning (`GHSA-gcqx-w48m-w2h4`) in the dependency chain `deepmerge` → `@rollup/plugin-node-resolve` → `workbox-build` → `vite-plugin-pwa`. npm's suggested remediation is a major downgrade to `vite-plugin-pwa@0.2.1`; it has NOT been applied because compatibility impact must be assessed. Typecheck, unit/parity, and build were skipped in that CI.
+- Lite cumulative gate `40602548264` SUCCESS is not a substitute for the failed CI. Next: inspect `package.json`, lockfile, and advisory fix ranges; choose a compatible, minimally disruptive remediation, then run the affected checks once.
+- `SECURITY-S25` remains BLOCKED (security job skipped); global certification OPEN.
