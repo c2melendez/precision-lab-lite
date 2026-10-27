@@ -329,3 +329,12 @@
 - Ambas ramas eliminan el marcador `[skip ci]` de los commits creados por el runner; `paths-ignore` gestiona los pushes compuestos solo por registros. La operación documental también rechaza marcadores de omisión en los commits del paquete.
 - `technical_baseline_sha` de Lite sigue fijada al SHA técnico probado `8c2cd395752959dbdc70cdf4e262d7bf8c597b82`; este commit solo actualiza estado/registro/índice.
 - No se repiten gates de Lite ni se relanza S19/S25. El objetivo operativo siguiente corresponde a Plus: auditoría de evidencia por caso EN-SG-01..32. Global OPEN; bloqueos existentes sin cambio.
+
+## 2026-10-26 — Política de rutas dinámicas y salvaguarda diaria end-to-end
+
+- Se actualizó `qa/certification/CONTINUATION_PROMPT.md` sin eliminar ni reemplazar sus criterios previos.
+- Orden preferente por sesión: acceso directo al repositorio → Runner → Bridge → API_GPT; cambiar de ruta cuando la anterior no sea viable, registrando la restricción real.
+- Se reafirmó la salvaguarda diaria: PUSH/evento autorizado → API → Bridge → Runner → resultado verificable, con SHA, run/jobs/logs, idempotencia y evidencia final.
+- La política prohíbe commits vacíos/artificiales, gates omitidos y PASS sin ejecución comprobada. Si no hay cambio legítimo, el mecanismo autorizado no mutante debe validar la ruta sin fabricar un push.
+- `continuity.json` registra versión `2026-10-26-dynamic-routes-daily-e2e-v1`, estado `NOT_YET_VERIFIED`, sin evidencias inventadas. La certificación global sigue OPEN y se conserva la siguiente acción canónica existente.
+- Cambio documental; no se despacharon manualmente workflows ni se declaró certificación operativa.
