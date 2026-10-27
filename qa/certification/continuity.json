@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 307,
+  "revision": 308,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
@@ -8,33 +8,121 @@
   "baseline_status": "NO_EJECUTADO",
   "global_certification": "OPEN",
   "gates": {
-    "cumulative": {"workflow": ".github/workflows/in625-cumulative-certification.yml", "inputs": ["*"], "acceptance_revision": "2026-10-16-continuity-v1"},
-    "h1d": {"workflow": ".github/workflows/in625-h1d-reentry.yml", "inputs": ["*"], "acceptance_revision": "2026-10-16-continuity-v1"},
-    "security": {"workflow": ".github/workflows/certification-dependency-gates.yml", "inputs": ["*"], "acceptance_revision": "2026-10-16-continuity-v1", "allow_reuse": false},
-    "scientific": {"workflow": ".github/workflows/syntax309-scientific-e2e.yml", "inputs": ["*"], "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"}
+    "cumulative": {
+      "workflow": ".github/workflows/in625-cumulative-certification.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    "h1d": {
+      "workflow": ".github/workflows/in625-h1d-reentry.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    "security": {
+      "workflow": ".github/workflows/certification-dependency-gates.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "allow_reuse": false
+    },
+    "scientific": {
+      "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
+    }
   },
   "next_action": {
     "id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
     "status": "IN_PROGRESS",
-    "action": "Bridge parked. Plus added EN-SG-03 literal-HTML fallback regression (commit 58a395306cf90bfee81c2e5ae79c58ebf3105a85); CI push branch filter fix published Lite 0f84d5a18a7684677fb1046efd1d75dc429990f3 and Plus 50fd09331f46122048ff479d099bfcb12b5faec5. Run/status lookup returned no push evidence; inspect Actions runs before classifying EN-SG-03. Then continue exact-source-matrix coverage EN-SG-01/02/04..08. No extreme loads in production; no SG28 isolation prod. Global OPEN.",
+    "action": "Bridge parked. Lite CI run 40596658330 passed frontend unit/parity tests and production build. Plus EN-SG-03 exposed a renderer fallback defect; fix committed in Plus at 21eccd6ff4612afc73b78bfac816052de360c9ee, awaiting its CI evidence. Continue EN-SG-01/02/04..08 only after retrieving exact source matrix literals. Global OPEN.",
     "previous_id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
-    "updated_utc": "2026-10-27T22:55:00Z"
+    "updated_utc": "2026-10-27T23:20:00Z"
   },
   "blockers": [
-    {"id": "H2-SG28-DIST-01..08", "status": "OUT_OF_SCOPE_SINGLE_HOST", "detail": "Paridad Plus r310 single-host. No es PASS."},
-    {"id": "SECURITY-S25", "status": "BLOCKED"},
-    {"id": "SY-P-23", "status": "CLOSED", "detail": "2026-10-26-sy-p-23-exact-block-v1"},
-    {"id": "SY-X-04-PLUS-HTTP", "status": "BLOCKED"},
-    {"id": "ALGEBRA229-AS-B-29", "status": "ON_HOLD"},
-    {"id": "EDCX-B5", "status": "BLOCKED", "kind": "capability", "detail": "VC-LG-01..25 sin canal/endpoint."}
+    {
+      "id": "H2-SG28-DIST-01..08",
+      "status": "OUT_OF_SCOPE_SINGLE_HOST",
+      "detail": "Paridad Plus r310 single-host. No es PASS."
+    },
+    {
+      "id": "SECURITY-S25",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "SY-P-23",
+      "status": "CLOSED",
+      "detail": "2026-10-26-sy-p-23-exact-block-v1"
+    },
+    {
+      "id": "SY-X-04-PLUS-HTTP",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "ALGEBRA229-AS-B-29",
+      "status": "ON_HOLD"
+    },
+    {
+      "id": "EDCX-B5",
+      "status": "BLOCKED",
+      "kind": "capability",
+      "detail": "VC-LG-01..25 sin canal/endpoint."
+    }
   ],
   "h2_en_sg_evidence_audit_r314": {
     "status": "PARTIAL",
-    "covered_or_partial": ["EN-SG-09", "EN-SG-10", "EN-SG-11", "EN-SG-12", "EN-SG-13", "EN-SG-14", "EN-SG-15", "EN-SG-16", "EN-SG-17", "EN-SG-18", "EN-SG-19", "EN-SG-20", "EN-SG-22", "EN-SG-29", "EN-SG-30", "EN-SG-31"],
-    "gap": ["EN-SG-01", "EN-SG-02", "EN-SG-04", "EN-SG-05", "EN-SG-06", "EN-SG-07", "EN-SG-08", "EN-SG-21", "EN-SG-23", "EN-SG-24", "EN-SG-25", "EN-SG-26", "EN-SG-27", "EN-SG-28", "EN-SG-32"],
-    "pending_execution": ["EN-SG-03"],
+    "covered_or_partial": [
+      "EN-SG-09",
+      "EN-SG-10",
+      "EN-SG-11",
+      "EN-SG-12",
+      "EN-SG-13",
+      "EN-SG-14",
+      "EN-SG-15",
+      "EN-SG-16",
+      "EN-SG-17",
+      "EN-SG-18",
+      "EN-SG-19",
+      "EN-SG-20",
+      "EN-SG-22",
+      "EN-SG-29",
+      "EN-SG-30",
+      "EN-SG-31"
+    ],
+    "gap": [
+      "EN-SG-01",
+      "EN-SG-02",
+      "EN-SG-04",
+      "EN-SG-05",
+      "EN-SG-06",
+      "EN-SG-07",
+      "EN-SG-08",
+      "EN-SG-21",
+      "EN-SG-23",
+      "EN-SG-24",
+      "EN-SG-25",
+      "EN-SG-26",
+      "EN-SG-27",
+      "EN-SG-28",
+      "EN-SG-32"
+    ],
+    "pending_execution": [
+      "EN-SG-03"
+    ],
     "harness": "backend/tests/test_in625_h2_security.py",
-    "notes": ["EN-SG-03 frontend regression added on Plus; awaiting verified Actions run", "EN-SG-20: 422 VALIDATION_ERROR by max_length=500, not internal depth guard", "EN-SG-29: backend concurrency only, not UI last-input", "EN-SG-28: SG28 interrupt/cancellation tests do not close full stop-UI behavior", "IN625_H2_MATRIX.md is inventory, not PASS"]
+    "notes": [
+      "EN-SG-03 frontend regression added on Plus; awaiting verified Actions run",
+      "EN-SG-20: 422 VALIDATION_ERROR by max_length=500, not internal depth guard",
+      "EN-SG-29: backend concurrency only, not UI last-input",
+      "EN-SG-28: SG28 interrupt/cancellation tests do not close full stop-UI behavior",
+      "IN625_H2_MATRIX.md is inventory, not PASS"
+    ]
   },
-  "ledger_note": "r316: motor-only scope, Bridge parked. EN-SG-03 regression added but pending execution evidence. CI branch filters corrected bilaterally. Global OPEN."
+  "ledger_note": "r308 motor-only scope, Bridge parked. Lite CI 40596658330 frontend success; Plus EN-SG-03 failure diagnosed and corrective renderer guard committed, CI pending. Global OPEN."
 }
