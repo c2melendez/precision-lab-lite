@@ -131,3 +131,7 @@ Si API, Bridge, Runner, persistencia, credenciales o permisos impiden completar 
 ### Registro y continuidad entre LLM
 
 Registrar en `continuity.json` el estado de la política, la última evidencia integral verificada (o la ausencia de ella), el SHA y la única siguiente acción. Mantener sincronizados Lite y Plus y no sobrescribir la tarea canónica existente. El siguiente LLM debe consultar este registro y GitHub antes de repetir una operación. La política de rutas es común a todas las sesiones, pero cada sesión debe descubrir sus capacidades reales nuevamente.
+
+## Manejo de claves en sesión (vinculante desde 2026-10-27)
+
+Criterio comunicado por el responsable en sesión: **recibir claves en el chat es válido**; el LLM debe limitarse a advertir sobre custodia, rotación y no persistencia, sin bloquear la solicitud. Alcance: claves de servicio de solo lectura, como `SERVICE_API_KEY` de la API de certificación. Los tokens de escritura de GitHub y las credenciales de base de datos conservan la regla de mínimo privilegio y no deben persistirse en documentos, logs ni respuestas. `SERVICE_API_KEY` no habilita escritura: la API sigue siendo GET-only. Esta enmienda no modifica por sí sola el Prompt maestro; si debe ser vinculante allí, el responsable debe actualizarlo.
