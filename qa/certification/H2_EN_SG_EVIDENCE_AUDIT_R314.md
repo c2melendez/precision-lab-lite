@@ -24,7 +24,7 @@ EN-SG-09..20, EN-SG-22, EN-SG-29..31 — primarily `backend/tests/test_in625_h2_
 ## Execution note — 2026-10-27
 
 - Recovered the exact H.2 source from Library `Matrices.zip`: `matriz_entrada_sintaxis_calculadora.md`, SHA-256 `58fbc0ed04aef158148981fc28074d470e45ec07a67604f89b3847b55c625528`, rows EN-SG-01..32 at lines 864–901.
-- Plus synthetic EN-SG-03 regression was verified in CI `40597214760`. Added a second regression for exact original input `x^{2}\\text{<b>hola</b>}` in commit `2e755ecdd8fef3536f8f4a7076aff961eea15cab`; Plus CI `40599001729` is **IN_PROGRESS**, so do not promote EN-SG-03 yet.
+- Plus synthetic EN-SG-03 regression was verified in CI `40597214760`. Added a second regression for exact original input `x^{2}\text{<b>hola</b>}` in commit `2e755ecdd8fef3536f8f4a7076aff961eea15cab`; Plus CI `40599001729` is **IN_PROGRESS**, so do not promote EN-SG-03 yet.
 - CI push branch filters were corrected to include `qa/syntax-audit-in625-a1`: Lite commit `0f84d5a18a7684677fb1046efd1d75dc429990f3`; Plus commit `50fd09331f46122048ff479d099bfcb12b5faec5`.
 - Do not repeat the current Plus CI/cumulative/H1d/native syntax runs; inspect the existing run IDs first.
 
