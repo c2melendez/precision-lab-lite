@@ -38,7 +38,7 @@ GitHub es fuente de verdad. La API desplegada es read-only; no añadir dispatch 
 
 ## Fase 2 — Contrato seguro de Bridge/ejecutor
 
-**Estado 2026-10-27:** DRAFT v1 publicado; pendiente de aprobación (D-01..D-06).
+**Estado 2026-10-27:** DRAFT v1 publicado; pendiente de aprobación (D-01..D-07).
 1. Especificar request/response y transiciones: `validation_id`, `idempotency_key`, `correlation_id`, repo allowlisted, branch, requested SHA, tipo de validación, timestamps, estado/resultado.
 2. Mantener API read-only para consulta/plan/evidencia. Separar ejecución y permisos.
 3. Auditar Runner actual y decidir mecanismo autorizado para una prueba controlada; no asumir que el API existente puede despachar.

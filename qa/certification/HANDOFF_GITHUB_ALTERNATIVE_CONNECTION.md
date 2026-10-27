@@ -59,4 +59,4 @@ Como mínimo una validación integral satisfactoria por día de trabajo. Al inic
 ## Próximo paso exacto
 **P0.1:** comprobar autorización/impacto de facturación para restaurar Supabase; recuperar acceso; inventariar esquema, tablas, migraciones, constraints, índices, RLS/policies, triggers y funciones. Solo entonces decidir si reutilizar una tabla existente o crear migración. No ejecutar DDL hasta completar inspección.
 
-**P0.2:** contrato v1 en borrador (`BRIDGE_CONTRACT_GITHUB_ALTERNATIVE_CONNECTION_v1.md`); requiere revisión y aprobación de D-01..D-06. No implementar ni desplegar hasta aprobación y hasta completar el inventario de P0.1.
+**P0.2:** contrato v1 en borrador (`BRIDGE_CONTRACT_GITHUB_ALTERNATIVE_CONNECTION_v1.md`); requiere revisión y aprobación de D-01..D-07. No implementar ni desplegar hasta aprobación y hasta completar el inventario de P0.1.
