@@ -48,3 +48,12 @@ Tras resolver la rama canónica, leer [continuity.json](continuity.json) y [CONT
 3. Si no hay run de referencia, enumerar ramas y buscar el índice y README de certificación. Elegir solo con evidencia bilateral consistente y vigente. Si hay varios candidatos incompatibles, continuar la inspección y aclarar la ambigüedad antes de publicar; no escoger por memoria del chat o número de revisión aislado.
 4. No reiniciar desde el estado S26 histórico de main ni repetir pruebas por ausencia del puntero. No cambiar default_branch, mover referencias ni lanzar CI para descubrir dónde estamos.
 5. El puntero en README predeterminado puede corregirse mediante un cambio documental acotado; mientras falte, la recuperación por Actions + índices bilaterales verificados mantiene la continuidad. Esta regla es genérica, no un snapshot de un caso o SHA.
+
+
+## Prioridad P0 — Conexión alternativa a GitHub
+
+Antes de retomar la certificación general de motores matemáticos, leer y ejecutar en orden:
+1. [HANDOFF_GITHUB_ALTERNATIVE_CONNECTION.md](HANDOFF_GITHUB_ALTERNATIVE_CONNECTION.md)
+2. [ROADMAP_GITHUB_ALTERNATIVE_CONNECTION.md](ROADMAP_GITHUB_ALTERNATIVE_CONNECTION.md)
+
+El Prompt maestro `CONTINUATION_PROMPT.md` impone esta prioridad. El estado inicial sigue BLOCKED: la API actual es read-only, Bridge/E2E no está acreditado y Supabase `oqlzftercvraprnvjifo` figura INACTIVE; no ejecutar DDL sin inspeccionar esquema y migraciones.
