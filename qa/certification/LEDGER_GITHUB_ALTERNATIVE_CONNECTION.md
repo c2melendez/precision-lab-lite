@@ -43,3 +43,11 @@
 - Bloqueo vigente: definir el almacén durable (D-01), completar el inventario y aprobar una migración antes de implementar el claim.
 - 2026-10-27: la API desplegada no referencia Supabase (`DATABASE_URL` ni cliente) y `calls`/`history` no encajan con el contrato de validaciones; el propósito del proyecto restaurado queda sin verificar (`VAL-GH-ALT-2026-10-27-05`). D-01 sigue abierta: no se presupone Supabase como almacén del Bridge.
 
+
+
+## 2026-10-27 — Decisión D-01 propuesta tras autorización de mínimo privilegio
+
+- El responsable autoriza elegir/ajustar la base final para que el sistema de conexión externo funcione con permisos mínimos. Decisión de diseño documentada: conservar el proyecto Supabase actual como candidato, pero usar exclusivamente un esquema privado dedicado para el Bridge; no reutilizar ni modificar `public.calls`/`public.history`.
+- No se borra, renombra, pausa ni altera el proyecto actual; no se cambian los grants/RLS existentes porque no se ha descartado que haya consumidores externos. Si no puede verificarse el aislamiento, la alternativa es una base/proyecto dedicado, sujeto a confirmar organización y coste.
+- La decisión no es implementación ni aceptación final de D-01: falta verificar Data API exposure, completar el inventario de roles/consumidores y aprobar migración versionada/credenciales separadas. Sin DDL ni Actions en esta actualización.
+- Documento de diseño: [DATABASE_MINIMUM_PRIVILEGE_DECISION_2026-10-27.md](DATABASE_MINIMUM_PRIVILEGE_DECISION_2026-10-27.md). P0.1 permanece BLOCKED hasta la verificación y la prueba de privilegios efectivos.
