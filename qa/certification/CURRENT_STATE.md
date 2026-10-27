@@ -658,3 +658,11 @@ SHA técnico Lite `c28091c`; gates cumulative/h1d/scientific-ui SUCCESS. Campañ
 - No se ejecutó DDL, no se cambiaron grants/RLS, no se eliminó ni pausó el proyecto y no se lanzaron Actions. La API read-only permanece separada del Bridge.
 - Referencia: [DATABASE_MINIMUM_PRIVILEGE_DECISION_2026-10-27.md](DATABASE_MINIMUM_PRIVILEGE_DECISION_2026-10-27.md).
 - P0.1 sigue BLOCKED hasta completar inventario de exposición Data API/roles/consumidores y aprobar una migración versionada. Certificación global OPEN; no se repiten gates verdes.
+
+
+## 2026-10-27 — P0.1: auditoría adicional de permisos y roles
+
+- Auditoría de solo lectura: `public.calls` y `public.history` tienen RLS habilitado, políticas permisivas y grants amplios a `anon`/`authenticated`; el esquema `public` concede USAGE a esos roles. `service_role` tiene BYPASSRLS y queda excluido como identidad del Bridge.
+- No se confirmó la configuración efectiva de esquemas expuestos por Data API ni se identificaron consumidores externos. Los logs recientes no son suficientes para demostrar ausencia de consumidores. Migraciones registradas: ninguna; esto no descarta DDL manual.
+- Sin DDL, cambios de grants/RLS, cambios de datos ni Actions. No modificar `calls`/`history` hasta completar el inventario. Informe: [EXECUTION_REPORT_SUPABASE_SECURITY_AUDIT_2026-10-27.md](EXECUTION_REPORT_SUPABASE_SECURITY_AUDIT_2026-10-27.md).
+- P0.1 BLOCKED; siguiente: verificar configuración efectiva de Data API y decidir patrón de acceso del Bridge antes de migrar. Global OPEN.
