@@ -8,8 +8,8 @@ GitHub es fuente de verdad. La API desplegada es read-only; no añadir dispatch 
 ## Estado conocido
 | Componente | Evidencia actual | Estado |
 |---|---|---|
-| API `/healthz`, `/openapi.json` | Logs previos 200 | Revalidar desde fuera |
-| Auth API | Sin clave a `/v1/status` → 401 | Falta clave correcta/incorrecta |
+| API `/healthz`, `/openapi.json` | Verificado externo 2026-10-27: 200, JSON read-only, OpenAPI 3.1 con `servers[0].url` correcto y solo GET | PASS externo sin auth |
+| Auth API | Verificado externo 2026-10-27: sin clave 401 y clave incorrecta 401; positiva pendiente | Parcial: falta clave correcta |
 | Estado bilateral | No se ha verificado llamada autenticada `repo=both` | No demostrado |
 | Planificador | GET read-only; no inicia gates | Live no verificado |
 | Render health check | `healthCheckPath` efectivo vacío, YAML declara `/healthz` | Reconciliar |

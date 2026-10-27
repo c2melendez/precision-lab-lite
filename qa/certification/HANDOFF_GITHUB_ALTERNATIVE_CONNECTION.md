@@ -13,6 +13,7 @@ Certificar la ruta autorizada `Push → API → Bridge → Runner → resultado 
 - Supabase candidato a persistencia: ref `oqlzftercvraprnvjifo`, región `us-west-2`.
 
 ## Estado observado
+- **Verificación externa 2026-10-27 (solo GET, sin credenciales):** `/healthz` 200 con `read_only=true`; `/openapi.json` 200 con `servers[0].url` correcto, solo GET y esquema `X-API-Key`; `/v1/status?repo=both` 401 sin clave y con clave incorrecta; planificador 401 sin clave. Auth positiva, estado bilateral y `healthCheckPath` siguen pendientes. Registro en `qa/certification/LEDGER_GITHUB_ALTERNATIVE_CONNECTION.md`.
 - Los logs de producción del corte previo muestran `GET /healthz` y `GET /openapi.json` con 200; `GET /v1/status` sin clave con 401 (esperado).
 - No se ha verificado una llamada autenticada correcta a `/v1/status?repo=both` ni al planificador.
 - No se confirmó la presencia/configuración de `GITHUB_READ_TOKEN` ni `SERVICE_API_KEY`. No inferir ausencia, imprimir ni compartir valores.
@@ -34,7 +35,7 @@ Certificar la ruta autorizada `Push → API → Bridge → Runner → resultado 
 9. Documentos espejo en ambos repositorios; cambios documentales no deben iniciar gates innecesarios.
 
 ## Salvaguarda diaria multi-LLM
-Como mínimo una validación integral satisfactoria por día de trabajo. Al iniciar sesión, cada LLM consulta estado y ledger común. Si ya existe un resultado `SUCCEEDED` para el mismo HEAD/configuración y con evidencia completa, reutilizarlo. Si varios LLM concurren, solo uno puede adquirir el claim durable; los demás consultan el mismo resultado. No usar estado en memoria como única deduplicación. Fallo de API/Bridge/Runner/DB implica `BLOCKED`/`FAILED`.
+Como mínimo una validación integral satisfactoria por día de trabajo. Al iniciar sesión, cada LLM consulta estado y ledger común. Si ya existe un resultado `SUCCEEDED` para el mismo HEAD/configuración y con evidencia completa, reutilizarlo. Si varios LLM concurren, solo uno puede adquirir el claim durable; los demás consultan el mismo resultado. No usar estado en memoria como única deduplicación. Fallo de API/Bridge/Runner/DB implica `BLOCKED`/`FAILED`. El registro común disponible mientras la persistencia esté bloqueada es `qa/certification/LEDGER_GITHUB_ALTERNATIVE_CONNECTION.md` (documental, sin claim transaccional).
 
 ## Criterios de aceptación
 - [ ] Consulta: estado bilateral, SHA, bloqueos y runs actuales.
