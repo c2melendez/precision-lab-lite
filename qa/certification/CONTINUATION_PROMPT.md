@@ -6,28 +6,25 @@ Continúa autónomamente el sistema de certificación de Precision Lab. GitHub e
 
 
 
-## EXCEPCIÓN AUTORIZADA — Continuar certificación Precision Lab mediante Compass en paralelo
+## MÉTODO PRINCIPAL OBLIGATORIO — certification-runner.yml
 
-Antes de aplicar la pausa matemática de la sección P0 siguiente, lee `qa/certification/EXCEPTION_PARALLEL_CERTIFICATION_WITH_COMPASS_BRIDGE.md`. El responsable autorizó mantener dos frentes paralelos: (1) la certificación original de Precision Lab y (2) la certificación de los mecanismos de conexión. Esta excepción prevalece solo sobre la condición de esperar a que toda la Fase 8 de conexión esté demostrada antes de reanudar la certificación original; **no** cambia criterios, matrices, oráculos, gates, reglas de evidencia ni criterios PASS/FAIL.
+Para ejecutar o certificar gates, el método primario es el workflow **`.github/workflows/certification-runner.yml` del repositorio correspondiente**. Antes de proponer o despachar cualquier ejecución, comprueba que el archivo existe en la rama canónica real de Lite/Plus, lee su contrato e inputs, revisa `continuity.json` y la evidencia de Actions, y decide RUN / WAIT / REUSE / DIAGNOSE / REVIEW. Usa `workflow_dispatch` con los valores adecuados a la tarea canónica; respeta `dry_run=true` como planificación sin despacho y usa `dry_run=false` solo cuando la ejecución esté justificada y autorizada por el protocolo. No simules una ejecución ni declares PASS por un dry run.
 
-Un LLM sin acceso directo a GitHub puede usar Cert Runner Compass Bridge si dispone de credenciales por un canal seguro y sigue el documento de excepción. No exponer secretos; no usar `GET /api/run`; no repetir POST ante incertidumbre; consultar el estado y reconciliar los runs. Compass v1.1 sigue OPEN/no certificado. Para retomar la tarea matemática, comprobar la rama/HEAD y la evidencia actuales en ambos repos y reconciliar el puntero matemático diferido de `continuity.json`; no ejecutar ese puntero sin verificarlo ni confundir un run de conexión con evidencia matemática.
+**Fallback condicionado:** solo si el LLM no puede acceder, leer o utilizar `.github/workflows/certification-runner.yml` en el/los repositorios necesarios, debe informar esa limitación y **solicitar al responsable autorización/instrucciones para usar Precision Lab Bridge / Cert Runner Compass**. No elijas Compass por preferencia, conveniencia o por carecer de acceso directo a GitHub si todavía puedes acceder al workflow mediante otro mecanismo autorizado. No uses Bridge/Compass sin que se cumpla esta condición y sin seguir el documento de fallback.
 
-## PRIORIDAD P0 — Frente de conexión en paralelo (sin congelar la certificación matemática)
+Lee `qa/certification/EXCEPTION_PARALLEL_CERTIFICATION_WITH_COMPASS_BRIDGE.md` solo como procedimiento alternativo condicionado, no como ruta predeterminada. La ruta alternativa no cambia los criterios de aceptación, matrices, contratos, oráculos, gates ni PASS/FAIL. No mezcles evidencia del Bridge con evidencia de certificación de producto salvo que el contrato de la prueba demuestre que corresponde.
 
-**Regla de precedencia obligatoria:** mientras `qa/certification/EXCEPTION_PARALLEL_CERTIFICATION_WITH_COMPASS_BRIDGE.md` esté vigente, la Fase 8 de conexión **no es un requisito previo para reanudar ni continuar la certificación matemática original**. La excepción modifica únicamente esa pausa temporal; no cambia los criterios de aceptación, las matrices, los contratos, los oráculos, los gates ni las reglas PASS/FAIL. La Fase 8 sí sigue siendo necesaria para declarar certificada la ruta de conexión completa.
+## PRIORIDAD P0 — Resolver el siguiente paso desde el estado canónico
 
-Antes de ejecutar tareas específicas del frente de conexión, lee en la rama canónica vigente:
+No existe una pausa automática de la certificación matemática por estar incompleta la Fase 8 de conexión. En cada sesión, reconcilia los README y la rama canónica de ambos repositorios, `continuity.json`, `CURRENT_STATE.md`, HEAD, Actions, jobs, logs y artefactos. Sigue el siguiente paso bilateral vigente y usa como mecanismo de ejecución principal `.github/workflows/certification-runner.yml` del repo correspondiente.
+
+Antes de ejecutar tareas específicas de conexión, consulta los documentos de conexión alterna y su estado actual:
 - `qa/certification/HANDOFF_GITHUB_ALTERNATIVE_CONNECTION.md`
 - `qa/certification/ROADMAP_GITHUB_ALTERNATIVE_CONNECTION.md`
 
-No uses esta prioridad para detener automáticamente el frente matemático. En cada sesión, reconcilia `continuity.json`, `CURRENT_STATE.md`, la evidencia de Actions y el documento de excepción. Sigue el `next_action` bilateral vigente; si corresponde a conexión, avanza ese frente. Si la certificación matemática debe continuar y la sesión carece de acceso directo a GitHub, usa Compass solo conforme al documento de excepción y con las salvaguardas vigentes. No ejecutes un puntero matemático histórico/diferido sin verificarlo ni inventes una tarea para mantener ambos frentes ocupados.
+Estos documentos describen un frente separado y no reemplazan el flujo de certificación ni justifican por sí solos ejecutar Compass. Si la tarea canónica es de certificación de producto, usa el workflow del repositorio. Si la sesión no puede acceder al workflow requerido, solicita explícitamente autorización para usar el fallback Compass/Bridge. No ejecutes un puntero histórico/diferido sin verificarlo ni inventes tareas para mantener frentes paralelos ocupados.
 
-La ruta a certificar es `Push → API → Bridge → Runner → resultado verificable`. La API `precision-lab-readonly-api` de Render sigue siendo GET-only y no debe convertirse en ejecutor. El Bridge separado existente es Cert Runner Compass (Lovable project `57b9141d-9f69-4fef-9b7f-0f81f2eaec2f`), con persistencia en Lovable Cloud, no en Supabase. La certificación Compass v1.1 está OPEN: Fase 1 pasó sin runs y la Fase 2 fue autorizada por el responsable el 2026-10-27. Verifica por lectura el despliegue de `f051a4b1` o posterior antes del primer POST; después sigue B3, B4/B5, B6 y C1-C3 en orden. Nunca usar `GET /api/run`, porque puede despachar. El proyecto Supabase `oqlzftercvraprnvjifo` está separado, `ACTIVE_HEALTHY` según el inventario del 2026-10-27, pero su propósito/consumidores y la configuración efectiva de Data API no están completamente verificados; D-01 permanece bloqueado. No hacer DDL ni cambios de permisos sin auditoría y aprobación.
-
-Antes de cualquier ejecución diaria, consulta el ledger común/idempotencia. Se exige al menos una validación integral satisfactoria por día de trabajo, compartida entre sesiones LLM. No repetir una validación equivalente ya satisfactoria para el mismo HEAD/configuración. Si API, Bridge, Runner o persistencia fallan/no se pueden confirmar, el estado es BLOCKED/FAILED, nunca PASS. No crear commits artificiales, no usar [skip ci], no despachar gates verdes ni exponer secretos. Mantén evidencia con validation/correlation ID, repo, branch, SHA, PR/commit si aplica, run/job, logs y resultado. Al cerrar cada avance, sincroniza el handoff/roadmap y el estado operativo sin alterar contratos matemáticos ni falsear el next_action canónico.
-
-Cuando la ruta de conexión alcance PASS con todas las evidencias, actualiza su estado por separado. Eso no inicia ni reinicia por sí solo la certificación matemática: continúa siempre desde el `next_action` bilateral vigente y la evidencia real, sin duplicar pruebas ni sustituir el índice canónico por este prompt.
-
+La API `precision-lab-readonly-api` de Render es GET-only y no es un ejecutor. Compass/Bridge es una alternativa independiente y su estado OPEN/no certificado no modifica el estado de certificación de Precision Lab. No usar `GET /api/run`, porque puede despachar. No exponer secretos ni repetir operaciones de despacho ante incertidumbre.
 ## Repositorios
 - Lite: `c2melendez/precision-lab-lite`
 - Plus: `c2melendez/precision-lab-plus`
@@ -104,16 +101,13 @@ Esta política cambia únicamente **cómo** se ejecutan las operaciones; no camb
 
 Al iniciar cada sesión, identifica qué herramientas, conectores, credenciales y permisos están realmente disponibles. Distingue entre capacidad confirmada, capacidad aún no probada y capacidad no disponible. No presupongas que otra cuenta o sesión del mismo modelo tiene las mismas capacidades. No declares imposible una operación solo porque no conozcas la herramienta; inspecciona las herramientas disponibles y prueba una vía autorizada de forma controlada. Nunca inventes credenciales ni eludas controles de acceso.
 
-### Orden preferente de rutas
+### Orden obligatorio de ejecución
 
-Evalúa estas rutas en el siguiente orden, pasando rápidamente a la siguiente cuando la anterior no esté disponible o no pueda completar la operación:
+1. **Workflow del repositorio:** usar primero `.github/workflows/certification-runner.yml` del repo correspondiente. Leer el YAML y sus inputs, verificar rama canónica, estado y gates, y despachar únicamente mediante `workflow_dispatch` cuando el protocolo determine RUN.
+2. **Fallback solicitado:** si el LLM no puede acceder, leer o utilizar ese workflow en los repositorios necesarios, detenerse antes del despacho e informar qué acceso falta. Solicitar al responsable permiso/instrucciones para utilizar Precision Lab Bridge / Cert Runner Compass. No asumir que el fallback está autorizado por el mero hecho de que exista documentación de Compass.
+3. **Otras rutas:** no sustituir el workflow por llamadas directas a workflows de gate, API_GPT, Bridge u otro mecanismo, salvo que el protocolo del repositorio lo indique expresamente o el responsable autorice la alternativa tras el bloqueo descrito.
 
-1. **Acceso directo al repositorio:** credenciales/herramientas Git o GitHub para consultar, editar, crear commits y publicar en la rama autorizada.
-2. **Acceso directo al Runner:** utilizar su interfaz autorizada cuando permita preparar/publicar el cambio o ejecutar la operación requerida.
-3. **Bridge:** transmitir la operación mediante el intermediario documentado cuando la ruta directa al repositorio o al Runner no sea viable.
-4. **API_GPT:** utilizar la API documentada como alternativa para las sesiones con restricciones mayores, dentro de sus permisos y capacidades reales.
-
-Este orden es preferente, no una obligación de insistir indefinidamente. Se puede comenzar en una ruta posterior cuando la evidencia confirme que las anteriores no están disponibles o son incompatibles con la operación. Registrar la ruta elegida y los fallos relevantes, sin repetir intentos inútiles.
+Registrar la ruta elegida, los accesos comprobados y cualquier limitación; no repetir intentos inútiles ni ejecutar por una ruta alternativa solo por conveniencia.
 
 ### La selección de ruta no reduce los criterios
 
@@ -124,19 +118,13 @@ Este orden es preferente, no una obligación de insistir indefinidamente. Se pue
 - No generes commits vacíos, cambios artificiales ni marcadores `[skip ci]`/`[ci skip]` para activar Actions. Los cambios documentales deben seguir las reglas existentes de filtros; los cambios técnicos deben activar y verificar sus gates pertinentes.
 - Un commit aceptado por GitHub, una respuesta HTTP 2xx o un workflow SUCCESS con pasos omitidos/reutilizados no demuestra por sí solo que se ejecutó el recorrido integral.
 
-### Salvaguarda obligatoria: validación diaria end-to-end
+### Validación del workflow de certificación
 
-La salvaguarda diaria sigue siendo obligatoria e independiente de la ruta seleccionada. En cada día de trabajo debe existir evidencia comprobable de una validación integral del recorrido:
+La evidencia operativa de la certificación debe provenir de `.github/workflows/certification-runner.yml` y del workflow de gate que este haya despachado conforme a su contrato. Antes de una nueva ejecución, inspecciona los runs reales y reutiliza evidencia solo cuando SHA, gate, huellas, configuración y criterios de aceptación sigan siendo equivalentes y vigentes.
 
-`PUSH / evento autorizado → API → Bridge → Runner → resultado verificado`
+Registra como mínimo: repositorio, rama canónica, SHA base, gate solicitado, ID/URL del run de Certification Runner, ID/URL del run despachado, conclusión, jobs/logs revisados y artefacto `qa/certification/runner/<run_id>.json` si fue generado. Un `dry_run=true` solo demuestra que se validó/planificó la solicitud; no demuestra que se ejecutó el gate ni que pasó.
 
-La evidencia debe identificar, como mínimo: fecha/hora, repositorio, rama, SHA, identificador de correlación/ejecución, evento de activación, resultado de cada etapa, jobs y logs revisados, estado de idempotencia y enlace a la evidencia original. Debe confirmarse que el Runner procesó la tarea y que el resultado final coincide con lo esperado; la mera aceptación de la solicitud no es PASS.
-
-Antes de lanzar una nueva validación, consulta el registro compartido y los runs reales. Reutiliza evidencia diaria solo si el SHA, las huellas de los insumos, la revisión de aceptación y las versiones/configuraciones pertinentes siguen siendo válidos y no hubo cambios que la invaliden. Si falta evidencia vigente, ejecuta la validación integral por el mecanismo autorizado y evita duplicar una corrida equivalente en curso.
-
-La validación integral debe utilizar un push real asociado a un cambio coherente cuando exista tal cambio. Si no existe un cambio legítimo, **no fabriques un commit ni modifiques archivos artificialmente**: utiliza el mecanismo autorizado de activación no mutante que exista para probar el recorrido y registra explícitamente que no se necesitó un nuevo push. Esta excepción evita contradecir la prohibición vigente de commits artificiales; no permite omitir la validación diaria.
-
-Si API, Bridge, Runner, persistencia, credenciales o permisos impiden completar la prueba, registra `BLOCKED` o `FAILED`, la etapa exacta y la condición necesaria para reanudar. No declares PASS integral ni certificación global cerrada por una prueba parcial. El estado global de certificación permanece el que determine la evidencia canónica, no esta política.
+No fabriques commits para activar Actions, no repitas gates verdes equivalentes y no despaches cuando la decisión sea WAIT / REUSE / DIAGNOSE / REVIEW. Si el workflow no está accesible o no puede utilizarse, registra `BLOCKED` con el acceso o condición faltante y solicita autorización para el fallback Compass/Bridge antes de usarlo. Si el workflow o el gate falla, conserva el estado FAILED/BLOCKED según la evidencia; nunca conviertas una respuesta aceptada o un run parcial en PASS.
 
 ### Registro y continuidad entre LLM
 
