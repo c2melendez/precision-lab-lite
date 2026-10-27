@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 311,
+  "revision": 312,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c2cd395752959dbdc70cdf4e262d7bf8c597b82",
@@ -41,9 +41,9 @@
   "next_action": {
     "id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
     "status": "IN_PROGRESS",
-    "action": "Bridge parked. Lite CI 40596658330 SUCCESS, but Lite has no frontend/src/components/MathRenderer.tsx, so Plus renderer tests are not Lite certification evidence. Exact H.2 source recovered from Matrices.zip, SHA-256 58fbc0ed04aef158148981fc28074d470e45ec07a67604f89b3847b55c625528. Plus exact EN-SG-03 test passed CI 40599001729. Plus added EN-SG-01..08 frontend tests in 9d13cd39227839099c1809ddd2c4eeed32ee4842; CI 40601412886 frontend checks passed but backend was pending. Do not copy Plus PASS status to Lite. Next: inspect whether Lite has a distinct equivalent render path; then only add tests to that actual component if present. Plus EN-SG-08 remains GAP pending file/process probes. Runner discrepancies remain documented. Security job 40601412812 SKIPPED, not PASS; SECURITY-S25 BLOCKED. Global OPEN.",
+    "action": "Bridge parked. Lite CI 40596658330 SUCCESS, but Lite has no frontend/src/components/MathRenderer.tsx, so Plus renderer tests are not Lite certification evidence. Exact H.2 source recovered from Matrices.zip, SHA-256 58fbc0ed04aef158148981fc28074d470e45ec07a67604f89b3847b55c625528. Plus exact EN-SG-03 test passed CI 40599001729. Plus added EN-SG-01..08 frontend tests in 9d13cd39227839099c1809ddd2c4eeed32ee4842; CI 40601412886 frontend checks passed but backend was pending. Follow-up commit 2db9e7b1d15c49b22299d4007cfda01959c67efc tightens no-anchor assertions and needs CI verification. Do not copy Plus PASS status to Lite. Next: inspect whether Lite has a distinct equivalent render path; then only add tests to that actual component if present. Plus EN-SG-08 remains GAP pending file/process probes. Runner discrepancies remain documented. Security job 40601412812 SKIPPED, not PASS; SECURITY-S25 BLOCKED. Global OPEN.",
     "previous_id": "H2-EN-SG-CASE-EVIDENCE-AUDIT-R314",
-    "updated_utc": "2026-10-27T23:22:00Z"
+    "updated_utc": "2026-10-27T23:24:00Z"
   },
   "blockers": [
     {
@@ -125,5 +125,5 @@
       "IN625_H2_MATRIX.md is inventory, not PASS"
     ]
   },
-  "ledger_note": "r311 motor-only scope, Bridge parked. Lite CI 40596658330 SUCCESS. Lite lacks frontend/src/components/MathRenderer.tsx, so Plus H2 frontend test evidence is not Lite evidence. Exact H2 source recovered. Plus EN-SG-03 exact test passed 40599001729; Plus EN-SG-01..08 tests added in 9d13cd39227839099c1809ddd2c4eeed32ee4842 and frontend passed CI 40601412886; backend pending at last check. Security job 40601412812 SKIPPED, not PASS. Global OPEN."
+  "ledger_note": "r312 motor-only. Lite has no MathRenderer at frontend/src/components/MathRenderer.tsx; Plus-only tests are not Lite evidence. Plus exact-source EN-SG-03 passed CI 40599001729. Follow-up Plus H2 no-anchor commit 2db9e7b1d15c49b22299d4007cfda01959c67efc pending CI. Security job 40601412812 SKIPPED, not PASS. Global OPEN."
 }
