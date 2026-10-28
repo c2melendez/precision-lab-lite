@@ -1,0 +1,25 @@
+diff --git a/src/engine/algebriteClient.ts b/src/engine/algebriteClient.ts
+index c74bc49..979dbdf 100644
+--- a/src/engine/algebriteClient.ts
++++ b/src/engine/algebriteClient.ts
+@@ -44,9 +44,20 @@ function toAppError(code: ErrorCode, message: string): AppError {
+  */
+ const MAY_NEED_FLOAT = /\b(sinh|cosh|tanh|asinh|acosh|atanh|sign)\(/;
+ 
++/** EN-SG-21 (Lite R326): product length contract aligned with Plus max_length=500.
++ * Reject before CAS; do not evaluate 10k-term sums. */
++export const MAX_EXPRESSION_LENGTH = 500;
++
+ /** Evalúa/simplifica una expresión. Lanza AppError normalizado en caso de fallo. */
+ export function evaluate(expressionLatex: string): string {
+   try {
++    // EN-SG-21: length bound first — same idea as Plus HTTP max_length=500.
++    if (expressionLatex.length > MAX_EXPRESSION_LENGTH) {
++      throw toAppError(
++        ErrorCode.COMPLEXITY_LIMIT,
++        `Expresión demasiado larga (máximo ${MAX_EXPRESSION_LENGTH} caracteres).`,
++      );
++    }
+     // EV-I-09/EV-I-10: Algebrite cancela arcsin(sin(x)) = x sin respetar el
+     // rango principal (arcsin(sin 2) = π − 2, no 2) y deja sin evaluar
+     // sin(arccos(3/5)) = 4/5. La reescritura es exacta y solo actúa sobre una
