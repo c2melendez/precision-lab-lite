@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 326,
+  "revision": 327,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
@@ -31,11 +31,11 @@
     }
   },
   "next_action": {
-    "id": "LITE-H2-EN-SG-SCOPE-R326",
+    "id": "SECURITY-S25-BILATERAL-ACCEPTANCE",
     "status": "DONE",
-    "action": "R326 complete. EN-SG-21 PASS scoped length contract MAX_EXPRESSION_LENGTH=12000 (preserves SY-X-06 10000-char). EN-SG-28 OUT_OF_SCOPE (no UI stop). EN-SG-32 N/A. Product SHA 11f8a5f. CI 40765520289 SUCCESS; cumulative 40765519951 SUCCESS; H1d 40765520140 SUCCESS. Certification Runner 40765520348 failed on prior continuity JSON escape (fixed this commit). SECURITY-S25 BLOCKED bilateral. Global OPEN.",
-    "previous_id": "LITE-H2-EN-SG-MATHLIVE-MACROS-R325",
-    "updated_utc": "2026-10-28T20:50:00Z"
+    "action": "SECURITY-S25 ACCEPTED_BILATERAL. Lite independent green on technical baseline 11f8a5f4 (CI 40765520289, npm audit 0, dependency/security gates). Plus independent green on bd1742bd (CI 40651541570 + s25-security). Explicit bilateral acceptance recorded 2026-10-28; no joint run required under single-host policy. allow_reuse remains false. Global OPEN.",
+    "previous_id": "LITE-H2-EN-SG-SCOPE-R326",
+    "updated_utc": "2026-10-28T21:37:00Z"
   },
   "blockers": [
     {
@@ -45,7 +45,8 @@
     },
     {
       "id": "SECURITY-S25",
-      "status": "BLOCKED"
+      "status": "ACCEPTED_BILATERAL",
+      "detail": "2026-10-28 bilateral acceptance. Lite 11f8a5f4 + Plus bd1742bd independent green gates. allow_reuse=false retained."
     },
     {
       "id": "SY-P-23",
@@ -80,7 +81,7 @@
     "product_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
     "max_expression_length": 12000
   },
-  "ledger_note": "r326 motor-only. EN-SG-21 length contract 12000 chars (SY-X-06 preserved); EN-SG-28 OUT_OF_SCOPE; CI 40765520289 SUCCESS. SECURITY-S25 BLOCKED bilateral. Global OPEN.",
+  "ledger_note": "r327 motor-only. SECURITY-S25 ACCEPTED_BILATERAL (Lite 11f8a5f4 + Plus bd1742bd independent green). H2 EN-SG R326 CLOSED. Global OPEN. Remaining blockers: SY-X-04-PLUS-HTTP, EDCX-B5, ALGEBRA229-AS-B-29 ON_HOLD, H2-SG28-DIST OUT_OF_SCOPE_SINGLE_HOST.",
   "prose_only_paths": [
     "README.md",
     "qa/certification/README.md",
