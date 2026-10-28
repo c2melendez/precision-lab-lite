@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "revision": 325,
+  "revision": 326,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "effa9f54b0012bc2ce14ab167b23873aea474ec9",
+  "technical_baseline_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
   "baseline_case": "EDCX-B3-MIRROR-R262",
   "baseline_status": "NO_EJECUTADO",
   "global_certification": "OPEN",
@@ -31,11 +31,11 @@
     }
   },
   "next_action": {
-    "id": "LITE-H2-EN-SG-MATHLIVE-MACROS-R325",
+    "id": "LITE-H2-EN-SG-SCOPE-R326",
     "status": "DONE",
-    "action": "R325 complete. mathliveMacroGuard refuses TeX macro/IO primitives before StaticMath math-field assign; data-render-fallback=syntax on refusal. Timed pure-guard tests EN-SG-06/07 <2s. Product SHA 991bd219 + test fix effa9f54. CI 40759428403 SUCCESS. EN-SG-06/07 PASS scoped display path. Remaining gaps: 21, 28; 32 N/A. SECURITY-S25 BLOCKED bilateral. Global OPEN.",
-    "previous_id": "LITE-H2-EN-SG-ENGINE-BOUNDS-R324",
-    "updated_utc": "2026-10-28T20:05:00Z"
+    "action": "R326 complete. EN-SG-21 PASS scoped length contract MAX_EXPRESSION_LENGTH=12000 (preserves SY-X-06 10000-char). EN-SG-28 OUT_OF_SCOPE (no UI stop). EN-SG-32 N/A. Product SHA 11f8a5f. CI 40765520289 SUCCESS; cumulative 40765519951 SUCCESS; H1d 40765520140 SUCCESS. Certification Runner 40765520348 failed on prior continuity JSON escape (fixed this commit). SECURITY-S25 BLOCKED bilateral. Global OPEN.",
+    "previous_id": "LITE-H2-EN-SG-MATHLIVE-MACROS-R325",
+    "updated_utc": "2026-10-28T20:50:00Z"
   },
   "blockers": [
     {
@@ -67,18 +67,20 @@
       "detail": "VC-LG-01..25 sin canal/endpoint."
     }
   ],
-  "h2_en_sg_evidence_audit_r325": {
+  "h2_en_sg_evidence_audit_r326": {
     "status": "PARTIAL",
     "pass_scoped_architecture": ["EN-SG-01", "EN-SG-02", "EN-SG-03", "EN-SG-04", "EN-SG-05", "EN-SG-08"],
     "pass_scoped_display_macros": ["EN-SG-06", "EN-SG-07"],
     "pass_scoped_client_engine": ["EN-SG-23", "EN-SG-24", "EN-SG-25", "EN-SG-26", "EN-SG-27"],
-    "gap": ["EN-SG-21", "EN-SG-28"],
-    "out_of_scope": ["EN-SG-32"],
-    "ci_run": 40759428403,
-    "ci_sha": "effa9f54b0012bc2ce14ab167b23873aea474ec9",
-    "product_sha": "991bd219fb83c548b83bd0cae5bc550adbeeaabd"
+    "pass_scoped_length_contract": ["EN-SG-21"],
+    "out_of_scope": ["EN-SG-28", "EN-SG-32"],
+    "gap": [],
+    "ci_run": 40765520289,
+    "ci_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
+    "product_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
+    "max_expression_length": 12000
   },
-  "ledger_note": "r325 motor-only. EN-SG-06/07 PASS scoped MathLive display: refuse \def/\newcommand/\let/\catcode before assign; data-render-fallback; timed tests green CI 40759428403. SECURITY-S25 BLOCKED bilateral. Global OPEN.",
+  "ledger_note": "r326 motor-only. EN-SG-21 length contract 12000 chars (SY-X-06 preserved); EN-SG-28 OUT_OF_SCOPE; CI 40765520289 SUCCESS. SECURITY-S25 BLOCKED bilateral. Global OPEN.",
   "prose_only_paths": [
     "README.md",
     "qa/certification/README.md",
@@ -92,6 +94,10 @@
     "qa/certification/CONTINUATION_PROMPT.md",
     "qa/certification/EDCX_B6_ADAPTER_ORACLE_PLAN.md",
     "qa/certification/H2_EN_SG_LITE_PARITY_AUDIT_R323.md",
-    "qa/certification/RECOVERY_ALGEBRITE_R324.md"
+    "qa/certification/RECOVERY_ALGEBRITE_R324.md",
+    "qa/certification/H2_EN_SG_LITE_MATHLIVE_MACROS_R325.md",
+    "qa/certification/H2_EN_SG_LITE_SCOPE_R326.md",
+    "qa/certification/R326_CI_TRIGGER.md",
+    "qa/certification/R326_expression_length.patch"
   ]
 }
