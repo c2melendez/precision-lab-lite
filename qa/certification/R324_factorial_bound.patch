@@ -1,0 +1,28 @@
+--- a/src/engine/algebriteClient.ts
++++ b/src/engine/algebriteClient.ts
+@@ -122,6 +122,25 @@
+         Number(fractionalFactorial[1]) % Number(fractionalFactorial[2]) !== 0) {
+       throw toAppError(ErrorCode.DOMAIN_ERROR, "Factorial no definido para números no enteros; utilice Gamma.");
+     }
++    // EN-SG-25 (Lite R324): reject literal factorial arguments above MAX
++    // before Algebrite expands them. Aligns with Plus scoped bound (1000!).
++    // Never compute the factorial; compare digit strings only.
++    // Patterns: factorial(N), N!, and parenthesized (N)! with optional spaces.
++    const MAX_LITERAL_FACTORIAL = 1000;
++    const factorialArgMatches = [
++      ...expressionLatex.matchAll(/\bfactorial\s*\(\s*\(*\s*(\d+)\s*\)*\s*\)/g),
++      ...expressionLatex.matchAll(/(?:^|[^\w.])(\d+)\s*!/g),
++    ];
++    for (const match of factorialArgMatches) {
++      const digits = (match[1] || "").replace(/^0+/, "") || "0";
++      // Compare as integers only when short enough for Number; else reject.
++      if (digits.length > 4 || Number(digits) > MAX_LITERAL_FACTORIAL) {
++        throw toAppError(
++          ErrorCode.COMPLEXITY_LIMIT,
++          `Factorial literal fuera de rango (máximo ${MAX_LITERAL_FACTORIAL}).`,
++        );
++      }
++    }
+     // IN625 A2: Algebrite no evalúa floor()/ceiling() de forma fiable.
+     // Para expresiones puramente numéricas que usen estas funciones,
+     // reutilizamos el evaluador numérico propio. Si hay variables libres
