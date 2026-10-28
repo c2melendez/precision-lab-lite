@@ -1,1 +1,1 @@
-RECOVERY_IN_PROGRESS_USE_LOCAL_ARTIFACT
+file:///home/workdir/artifacts/algebriteClient.ts
