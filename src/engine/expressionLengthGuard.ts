@@ -1,13 +1,13 @@
 /**
  * EN-SG-21 (Lite R326): expression length product contract.
  *
- * Plus HTTP uses max_length=500. Lite is in-browser CAS: 500 was too tight
- * for certified audit inputs (e.g. SY-X-06). 4000 still rejects ~10k-term
- * scale payloads while preserving existing audit expressions.
+ * SY-X-06 certifies processing a 10000-character sum ("1+".repeat(4999)+"11").
+ * Bound must be > 10000. 12000 still refuses larger ~10k-term / multi-block
+ * payloads while preserving that audit.
  */
 import { ErrorCode, type AppError } from "../types";
 
-export const MAX_EXPRESSION_LENGTH = 4000;
+export const MAX_EXPRESSION_LENGTH = 12000;
 
 function toAppError(code: ErrorCode, message: string): AppError {
   return { code, message };
