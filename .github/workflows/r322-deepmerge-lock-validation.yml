@@ -1,0 +1,70 @@
+name: R322 local deepmerge lockfile validation
+
+on:
+  push:
+    branches: [fix/lite-deepmerge-local-patch-r322]
+    paths:
+      - 'package.json'
+      - 'vendor/deepmerge/**'
+
+permissions:
+  contents: write
+
+jobs:
+  lock-and-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: fix/lite-deepmerge-local-patch-r322
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - name: Generate lockfile with npm
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+      - name: Verify clean install
+        run: npm ci
+      - name: Capture hard-gate audit result without hiding it
+        shell: bash
+        run: |
+          set +e
+          npm audit --package-lock-only --json > npm-audit.json
+          audit_status=$?
+          echo "$audit_status" > npm-audit.exit
+          echo "npm audit exit status: $audit_status"
+          exit 0
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Unit and parity tests
+        run: npm test
+      - name: Production build
+        run: npm run build
+      - name: Verify PWA output
+        run: |
+          test -f dist/sw.js
+          test -f dist/manifest.webmanifest
+          find dist -maxdepth 2 -type f | sort
+      - name: Upload audit evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: r322-deepmerge-audit-evidence
+          path: |
+            npm-audit.json
+            npm-audit.exit
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Commit npm-generated lockfile
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json
+          if git diff --cached --quiet; then
+            echo "npm produced no lockfile changes"
+          else
+            git commit -m "build(lite): lock local patched deepmerge dependency"
+            git push origin fix/lite-deepmerge-local-patch-r322
+          fi
