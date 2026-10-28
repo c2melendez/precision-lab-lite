@@ -129,11 +129,11 @@ export function evaluate(expressionLatex: string): string {
     const MAX_LITERAL_FACTORIAL = 1000;
     const factorialArgMatches = [
       ...expressionLatex.matchAll(/\bfactorial\s*\(\s*\(*\s*(\d+)\s*\)*\s*\)/g),
-      ...expressionLatex.matchAll(/(?:^|[^\w.])(\d+)\s*!/g),
+      // Allow optional closing parens between digits and postfix !  e.g. (5000)!
+      ...expressionLatex.matchAll(/(?:^|[^\w.])(\d+)\s*\)*\s*!/g),
     ];
     for (const match of factorialArgMatches) {
       const digits = (match[1] || "").replace(/^0+/, "") || "0";
-      // Compare as integers only when short enough for Number; else reject.
       if (digits.length > 4 || Number(digits) > MAX_LITERAL_FACTORIAL) {
         throw toAppError(
           ErrorCode.COMPLEXITY_LIMIT,
