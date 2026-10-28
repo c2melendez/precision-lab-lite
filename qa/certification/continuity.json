@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "revision": 324,
+  "revision": 325,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "c2685efaa6fb523f9c519642bfec761ed050bde8",
+  "technical_baseline_sha": "effa9f54b0012bc2ce14ab167b23873aea474ec9",
   "baseline_case": "EDCX-B3-MIRROR-R262",
   "baseline_status": "NO_EJECUTADO",
   "global_certification": "OPEN",
@@ -31,11 +31,11 @@
     }
   },
   "next_action": {
-    "id": "LITE-H2-EN-SG-ENGINE-BOUNDS-R324",
+    "id": "LITE-H2-EN-SG-MATHLIVE-MACROS-R325",
     "status": "DONE",
-    "action": "R324 complete. algebriteClient restored after placeholder incident via Actions workflow; MAX_LITERAL_FACTORIAL=1000 with (N)! regex. Tests tests/h2EnSgLiteEngineBounds.test.ts cover EN-SG-23..27 timed COMPLEXITY_LIMIT. CI 40755408432 SUCCESS on d806eb25 (typecheck, unit/parity, build). EN-SG-23..27 PASS scoped client engine. Remaining Lite gaps: 21, 28; 06/07 PARTIAL; 32 N/A. SECURITY-S25 BLOCKED bilateral. Global OPEN.",
-    "previous_id": "LITE-H2-EN-SG-PARITY-R323",
-    "updated_utc": "2026-10-28T19:40:00Z"
+    "action": "R325 complete. mathliveMacroGuard refuses TeX macro/IO primitives before StaticMath math-field assign; data-render-fallback=syntax on refusal. Timed pure-guard tests EN-SG-06/07 <2s. Product SHA 991bd219 + test fix effa9f54. CI 40759428403 SUCCESS. EN-SG-06/07 PASS scoped display path. Remaining gaps: 21, 28; 32 N/A. SECURITY-S25 BLOCKED bilateral. Global OPEN.",
+    "previous_id": "LITE-H2-EN-SG-ENGINE-BOUNDS-R324",
+    "updated_utc": "2026-10-28T20:05:00Z"
   },
   "blockers": [
     {
@@ -67,18 +67,18 @@
       "detail": "VC-LG-01..25 sin canal/endpoint."
     }
   ],
-  "h2_en_sg_evidence_audit_r324": {
+  "h2_en_sg_evidence_audit_r325": {
     "status": "PARTIAL",
     "pass_scoped_architecture": ["EN-SG-01", "EN-SG-02", "EN-SG-03", "EN-SG-04", "EN-SG-05", "EN-SG-08"],
+    "pass_scoped_display_macros": ["EN-SG-06", "EN-SG-07"],
     "pass_scoped_client_engine": ["EN-SG-23", "EN-SG-24", "EN-SG-25", "EN-SG-26", "EN-SG-27"],
-    "partial": ["EN-SG-06", "EN-SG-07"],
     "gap": ["EN-SG-21", "EN-SG-28"],
     "out_of_scope": ["EN-SG-32"],
-    "ci_run": 40755408432,
-    "ci_sha": "d806eb25a1c2c1242aa72984c362c51227c5946c",
-    "product_sha": "c2685efaa6fb523f9c519642bfec761ed050bde8"
+    "ci_run": 40759428403,
+    "ci_sha": "effa9f54b0012bc2ce14ab167b23873aea474ec9",
+    "product_sha": "991bd219fb83c548b83bd0cae5bc550adbeeaabd"
   },
-  "ledger_note": "r324 motor-only. Restored algebriteClient after placeholder overwrite; EN-SG-25 factorial bound + (N)! regex; EN-SG-23..27 timed tests green on CI 40755408432. SECURITY-S25 BLOCKED bilateral. Global OPEN.",
+  "ledger_note": "r325 motor-only. EN-SG-06/07 PASS scoped MathLive display: refuse \def/\newcommand/\let/\catcode before assign; data-render-fallback; timed tests green CI 40759428403. SECURITY-S25 BLOCKED bilateral. Global OPEN.",
   "prose_only_paths": [
     "README.md",
     "qa/certification/README.md",
