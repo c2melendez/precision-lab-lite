@@ -81,6 +81,9 @@ describe("H2 EN-SG Lite MathLive macro guard (R325)", () => {
     );
     expect(code).toMatch(/hasUnsafeTexPrimitives/);
     expect(code).toMatch(/safeMathliveDisplayLatex/);
-    expect(code).toMatch(/\\(?:def|newcommand|let|catcode)/i);
+    // Source contains JS regex literals with \\ before TeX command names.
+    expect(code).toMatch(/newcommand/);
+    expect(code).toMatch(/catcode/);
+    expect(code).toMatch(/def\|edef\|gdef/);
   });
 });
