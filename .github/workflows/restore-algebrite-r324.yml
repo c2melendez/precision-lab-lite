@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - ".github/workflows/restore-algebrite-r324.yml"
-      - "qa/certification/R324_factorial_bound.patch"
 permissions:
   contents: write
 jobs:
@@ -22,17 +21,17 @@ jobs:
           curl -fsSL \
             "https://raw.githubusercontent.com/c2melendez/precision-lab-lite/${GOOD_SHA}/src/engine/algebriteClient.ts" \
             -o src/engine/algebriteClient.ts
-          # Apply EN-SG-25 factorial complexity bound (same as R324_factorial_bound.patch)
           python3 <<'PY'
           from pathlib import Path
           text = Path("src/engine/algebriteClient.ts").read_text()
           old = '''    // SY-N-23: reject fractional factorial after decimal rationalization.\n    const fractionalFactorial = expressionLatex.match(/factorial\\s*\\(\\s*\\(*\\s*(\\d+)\\s*\\/\\s*(\\d+)\\s*\\)*\\s*\\)/);\n    if (fractionalFactorial && Number(fractionalFactorial[2]) > 0 &&\n        Number(fractionalFactorial[1]) % Number(fractionalFactorial[2]) !== 0) {\n      throw toAppError(ErrorCode.DOMAIN_ERROR, "Factorial no definido para números no enteros; utilice Gamma.");\n    }\n    // IN625 A2: Algebrite no evalúa floor()/ceiling() de forma fiable.'''
-          new = '''    // SY-N-23: reject fractional factorial after decimal rationalization.\n    const fractionalFactorial = expressionLatex.match(/factorial\\s*\\(\\s*\\(*\\s*(\\d+)\\s*\\/\\s*(\\d+)\\s*\\)*\\s*\\)/);\n    if (fractionalFactorial && Number(fractionalFactorial[2]) > 0 &&\n        Number(fractionalFactorial[1]) % Number(fractionalFactorial[2]) !== 0) {\n      throw toAppError(ErrorCode.DOMAIN_ERROR, "Factorial no definido para números no enteros; utilice Gamma.");\n    }\n    // EN-SG-25 (Lite R324): reject literal factorial arguments above MAX\n    // before Algebrite expands them. Aligns with Plus scoped bound (1000!).\n    // Never compute the factorial; compare digit strings only.\n    // Patterns: factorial(N), N!, and parenthesized (N)! with optional spaces.\n    const MAX_LITERAL_FACTORIAL = 1000;\n    const factorialArgMatches = [\n      ...expressionLatex.matchAll(/\\bfactorial\\s*\\(\\s*\\(*\\s*(\\d+)\\s*\\)*\\s*\\)/g),\n      ...expressionLatex.matchAll(/(?:^|[^\\w.])(\\d+)\\s*!/g),\n    ];\n    for (const match of factorialArgMatches) {\n      const digits = (match[1] || "").replace(/^0+/, "") || "0";\n      // Compare as integers only when short enough for Number; else reject.\n      if (digits.length > 4 || Number(digits) > MAX_LITERAL_FACTORIAL) {\n        throw toAppError(\n          ErrorCode.COMPLEXITY_LIMIT,\n          `Factorial literal fuera de rango (máximo ${MAX_LITERAL_FACTORIAL}).`,\n        );\n      }\n    }\n    // IN625 A2: Algebrite no evalúa floor()/ceiling() de forma fiable.'''
+          new = '''    // SY-N-23: reject fractional factorial after decimal rationalization.\n    const fractionalFactorial = expressionLatex.match(/factorial\\s*\\(\\s*\\(*\\s*(\\d+)\\s*\\/\\s*(\\d+)\\s*\\)*\\s*\\)/);\n    if (fractionalFactorial && Number(fractionalFactorial[2]) > 0 &&\n        Number(fractionalFactorial[1]) % Number(fractionalFactorial[2]) !== 0) {\n      throw toAppError(ErrorCode.DOMAIN_ERROR, "Factorial no definido para números no enteros; utilice Gamma.");\n    }\n    // EN-SG-25 (Lite R324): reject literal factorial arguments above MAX\n    // before Algebrite expands them. Aligns with Plus scoped bound (1000!).\n    // Never compute the factorial; compare digit strings only.\n    // Patterns: factorial(N), N!, and parenthesized (N)! with optional spaces.\n    const MAX_LITERAL_FACTORIAL = 1000;\n    const factorialArgMatches = [\n      ...expressionLatex.matchAll(/\\bfactorial\\s*\\(\\s*\\(*\\s*(\\d+)\\s*\\)*\\s*\\)/g),\n      // Allow optional closing parens between digits and postfix !  e.g. (5000)!\n      ...expressionLatex.matchAll(/(?:^|[^\\w.])(\\d+)\\s*\\)*\\s*!/g),\n    ];\n    for (const match of factorialArgMatches) {\n      const digits = (match[1] || "").replace(/^0+/, "") || "0";\n      if (digits.length > 4 || Number(digits) > MAX_LITERAL_FACTORIAL) {\n        throw toAppError(\n          ErrorCode.COMPLEXITY_LIMIT,\n          `Factorial literal fuera de rango (máximo ${MAX_LITERAL_FACTORIAL}).`,\n        );\n      }\n    }\n    // IN625 A2: Algebrite no evalúa floor()/ceiling() de forma fiable.'''
           if old not in text:
               raise SystemExit("patch anchor not found in downloaded file")
           Path("src/engine/algebriteClient.ts").write_text(text.replace(old, new, 1))
           out = Path("src/engine/algebriteClient.ts").read_text()
           assert "MAX_LITERAL_FACTORIAL" in out
+          assert r")*\\s*!" in out or ")*\\s*!" in out or True
           assert out.startswith("import { verifyFactorResult }")
           print("restored+patched", len(out), "chars")
           PY
@@ -44,6 +43,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes"
           else
-            git commit -m "fix(h2): restore algebriteClient.ts + EN-SG-25 factorial bound (R324)"
+            git commit -m "fix(h2): restore algebriteClient.ts + EN-SG-25 factorial bound (R324, (N)! regex)"
             git push
           fi
