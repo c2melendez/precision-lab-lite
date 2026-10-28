@@ -1,3 +1,7 @@
+> **AVISO: DOCUMENTO HISTÓRICO SUPERADO (2026-10-28 UTC).** El estado vigente es [BRIDGE_CERT_COMPASS_V1_1_STATUS_2026-10-28.md](BRIDGE_CERT_COMPASS_V1_1_STATUS_2026-10-28.md). Las anotaciones antiguas que muestran D1 como bloqueado o D4 pendiente fueron superadas por la revisión posterior. Los fragmentos de claves de acceso se sustituyeron por marcadores de redacción; no recuperar ni copiar valores del historial.
+
+---
+
 # Cert Runner Compass v1.1 — sesión de certificación (2026-10-27)
 
 **Estado global del Bridge:** OPEN / **NO CERTIFICADO**  
@@ -75,7 +79,7 @@ Runs del runner en Lite entre 06:27 y 06:51 UTC del 27 de octubre: **5** (límit
 
 | Run | Hora UTC | Origen verificado | Modo |
 |---|---|---|---|
-| 40461232174 | 06:27:38 | Bridge, B3 (clave activa `plb_HwiIXy`) | dry_run |
+| 40461232174 | 06:27:38 | Bridge, B3 (clave activa `[valor omitido; clave expuesta]`) | dry_run |
 | 40461306085 | 06:28:26 | Bridge, B6 (misma clave) | dry_run |
 | 40461473176 | 06:30:08 | Bridge, C1 (misma clave); lanzó el gate `40461496350` | dry_run=false |
 | 40463419492 | 06:49:43 | Bridge, POST de 06:49:44 con `correlation_id` `cert-20261027-probe-only` (misma clave) | dry_run |
@@ -83,7 +87,7 @@ Runs del runner en Lite entre 06:27 y 06:51 UTC del 27 de octubre: **5** (límit
 
 **Conclusiones**
 
-- Cuatro de los cinco runs pasaron por el Bridge con la clave activa `plb_HwiIXy`. Esa clave es compartida y el Bridge no identifica la sesión que la usó.
+- Cuatro de los cinco runs pasaron por el Bridge con la clave activa `[valor omitido; clave expuesta]`. Esa clave es compartida y el Bridge no identifica la sesión que la usó.
 - El run 40463419492 excede el presupuesto. Lo originó una llamada etiquetada `probe-only`, que no estaba en el plan de pruebas documentado.
 - El run 40463536599 no tiene registro en el Bridge. La única identidad visible es la cuenta `c2melendez`, que también usa el Bridge, así que no se atribuye a ninguna sesión concreta.
 - El archivo de sesión `ses_e8024a7ceffeqltmqqjs51hw3z.json` se creó el 28 de octubre a las 00:14 UTC, después de ambos runs, y no menciona sus IDs. No los originó.
@@ -93,6 +97,6 @@ Runs del runner en Lite entre 06:27 y 06:51 UTC del 27 de octubre: **5** (límit
 
 **Acciones pendientes**
 
-1. Revocar y rotar `plb_HwiIXy`.
+1. Revocar y rotar `[valor omitido; clave expuesta]`.
 2. Asignar una clave por sesión y registrar la sesión en `correlation_id`.
 3. No dar por eliminado el límite de presupuesto sin una autorización escrita con fecha y nuevo límite.
