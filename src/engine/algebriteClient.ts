@@ -29,6 +29,8 @@ import { ErrorCode, type AppError } from "../types";
 import { isIndeterminateInfinityDifference } from "./infinityDifference";
 import { compileNumeric } from "./numericFallback";
 import { denestConstantRadicals } from "./radicalDenesting";
+import { assertExpressionLength, MAX_EXPRESSION_LENGTH } from "./expressionLengthGuard";
+export { MAX_EXPRESSION_LENGTH };
 
 function toAppError(code: ErrorCode, message: string): AppError {
   return { code, message };
@@ -47,6 +49,7 @@ const MAY_NEED_FLOAT = /\b(sinh|cosh|tanh|asinh|acosh|atanh|sign)\(/;
 /** Evalúa/simplifica una expresión. Lanza AppError normalizado en caso de fallo. */
 export function evaluate(expressionLatex: string): string {
   try {
+    assertExpressionLength(expressionLatex);
     // EV-I-09/EV-I-10: Algebrite cancela arcsin(sin(x)) = x sin respetar el
     // rango principal (arcsin(sin 2) = π − 2, no 2) y deja sin evaluar
     // sin(arccos(3/5)) = 4/5. La reescritura es exacta y solo actúa sobre una
