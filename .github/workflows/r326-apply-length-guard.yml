@@ -1,6 +1,10 @@
 name: R326 Apply EN-SG-21 length guard
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - "src/engine/expressionLengthGuard.ts"
+      - ".github/workflows/r326-apply-length-guard.yml"
 jobs:
   apply:
     runs-on: ubuntu-latest
@@ -10,16 +14,36 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: qa/syntax-audit-in625-a1
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Apply patch if not already present
+      - name: Wire assertExpressionLength into algebriteClient
         run: |
-          if grep -q 'MAX_EXPRESSION_LENGTH' src/engine/algebriteClient.ts; then
-            echo "Already applied"
-            exit 0
-          fi
-          git apply qa/certification/R326_expression_length.patch
+          python3 << 'PY'
+          from pathlib import Path
+          p = Path("src/engine/algebriteClient.ts")
+          t = p.read_text()
+          if "assertExpressionLength" in t:
+              print("already wired")
+              raise SystemExit(0)
+          a = 'import { denestConstantRadicals } from "./radicalDenesting";\n'
+          b = a + 'import { assertExpressionLength, MAX_EXPRESSION_LENGTH } from "./expressionLengthGuard";\nexport { MAX_EXPRESSION_LENGTH };\n'
+          if a not in t:
+              raise SystemExit("import anchor missing")
+          t = t.replace(a, b, 1)
+          c = "export function evaluate(expressionLatex: string): string {\n  try {\n"
+          d = c + "    assertExpressionLength(expressionLatex);\n"
+          if c not in t:
+              raise SystemExit("evaluate anchor missing")
+          t = t.replace(c, d, 1)
+          p.write_text(t)
+          print("wired ok")
+          PY
+      - name: Commit if changed
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/engine/algebriteClient.ts
-          git commit -m "fix(h2): apply R326 MAX_EXPRESSION_LENGTH=500 guard to algebriteClient"
+          if git diff --cached --quiet; then
+            echo "no changes"
+            exit 0
+          fi
+          git commit -m "fix(h2): wire R326 assertExpressionLength into algebriteClient"
           git push
