@@ -1,8 +1,7 @@
 /**
  * H2 EN-SG Lite engine bounds R324 — EN-SG-23..27 client CAS guards.
  * Timed rejections before Algebrite does unbounded work.
- * Apply only AFTER algebriteClient.ts is restored from 44924ff5 and the
- * R324 factorial patch is applied (see qa/certification/RECOVERY_ALGEBRITE_R324.md).
+ * Restored algebriteClient.ts on SHA db2202be (MAX_LITERAL_FACTORIAL=1000).
  */
 import { describe, expect, it } from "vitest";
 import { evaluate } from "../src/engine/algebriteClient";
