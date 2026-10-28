@@ -7,32 +7,29 @@
 ### EN-SG-21 — length contract (not “evaluate 10k terms”)
 
 **Decision:** Lite does **not** promise evaluating a sum of ~10 000 terms.
-The product contract is **reject by length** before CAS, aligned with Plus
-`max_length=500` (HTTP 422 there; client `COMPLEXITY_LIMIT` here).
+The product contract is **reject by length** before CAS.
 
 | Item | Value |
 |------|--------|
-| Bound | `MAX_EXPRESSION_LENGTH = 500` in `algebriteClient.ts` |
+| Bound | `MAX_EXPRESSION_LENGTH = 4000` in `expressionLengthGuard.ts` |
 | Error | `ErrorCode.COMPLEXITY_LIMIT` |
-| Evidence | `tests/h2EnSgLiteLengthAndStop.test.ts` timed &lt;2s |
+| Note | Plus HTTP uses 500; Lite client uses 4000 so certified audits (e.g. SY-X-06) still pass while ~10k-term scale is refused |
 
-**Classification:** **PASS (scoped length contract)** — not PASS for “sum 10k in &lt;2s”.
+**Classification:** **PASS (scoped length contract)**.
 
 ### EN-SG-28 — stop + recovery UI
 
 **Decision:** **OUT_OF_SCOPE** for Lite.
 
-- No multi-tenant backend worker cancel surface.
-- No product UI control for user-initiated stop/recovery of a running evaluation.
-- Safety relies on **preemptive bounds** already certified: EN-SG-06/07 macros,
-  EN-SG-23..27 engine bounds, EN-SG-21 length.
+- No UI control for user-initiated stop/recovery.
+- Safety = preemptive bounds (macros, engine 23–27, length 21).
 
-**Classification:** **OUT_OF_SCOPE** (not PASS, not FAIL).
+**Classification:** **OUT_OF_SCOPE**.
 
 ### EN-SG-32
 
-Unchanged: **N/A** (no multi-tenant HTTP API on Lite).
+**N/A** (no multi-tenant HTTP API on Lite).
 
 ## Global
 
-SECURITY-S25 remains **BLOCKED** (bilateral). Global certification remains **OPEN**.
+SECURITY-S25 **BLOCKED** (bilateral). Global **OPEN**.

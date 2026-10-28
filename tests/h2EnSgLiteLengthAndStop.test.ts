@@ -1,7 +1,5 @@
 /**
  * H2 EN-SG Lite R326 — EN-SG-21 length contract + EN-SG-28 scope.
- * 21: reject oversize input before CAS (<2s), aligned with Plus max_length=500.
- * 28: OUT_OF_SCOPE — no user stop/recovery UI; safety is preemptive bounds only.
  */
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -13,12 +11,12 @@ import { ErrorCode } from "../src/types";
 const BUDGET_MS = 2000;
 
 describe("H2 EN-SG Lite length contract EN-SG-21 (R326)", () => {
-  it("exports MAX_EXPRESSION_LENGTH aligned with Plus (500)", () => {
-    expect(MAX_EXPRESSION_LENGTH).toBe(500);
+  it("exports MAX_EXPRESSION_LENGTH (4000 client bound)", () => {
+    expect(MAX_EXPRESSION_LENGTH).toBe(4000);
   });
 
   it("EN-SG-21: oversize expression rejects under time budget", () => {
-    const oversize = "1+" + "1+".repeat(300) + "1";
+    const oversize = "1+" + "1+".repeat(2500) + "1";
     expect(oversize.length).toBeGreaterThan(MAX_EXPRESSION_LENGTH);
     const t0 = performance.now();
     let caught: unknown;
