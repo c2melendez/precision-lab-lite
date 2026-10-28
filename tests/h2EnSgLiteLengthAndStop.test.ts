@@ -6,7 +6,8 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
-import { evaluate, MAX_EXPRESSION_LENGTH } from "../src/engine/algebriteClient";
+import { evaluate } from "../src/engine/algebriteClient";
+import { MAX_EXPRESSION_LENGTH } from "../src/engine/expressionLengthGuard";
 import { ErrorCode } from "../src/types";
 
 const BUDGET_MS = 2000;
@@ -17,8 +18,7 @@ describe("H2 EN-SG Lite length contract EN-SG-21 (R326)", () => {
   });
 
   it("EN-SG-21: oversize expression rejects under time budget", () => {
-    // ~10k-term style payload approximated by a long char string (sum would exceed 500).
-    const oversize = "1+" + "1+".repeat(300) + "1"; // >500 chars
+    const oversize = "1+" + "1+".repeat(300) + "1";
     expect(oversize.length).toBeGreaterThan(MAX_EXPRESSION_LENGTH);
     const t0 = performance.now();
     let caught: unknown;
@@ -36,12 +36,18 @@ describe("H2 EN-SG Lite length contract EN-SG-21 (R326)", () => {
     expect(evaluate("2+2")).toMatch(/4/);
     expect(evaluate("factorial(5)")).toMatch(/120/);
   });
+
+  it("algebriteClient wires assertExpressionLength", () => {
+    const code = readFileSync(
+      resolve(process.cwd(), "src/engine/algebriteClient.ts"),
+      "utf8",
+    );
+    expect(code).toMatch(/assertExpressionLength/);
+  });
 });
 
 describe("H2 EN-SG Lite EN-SG-28 scope (R326)", () => {
   it("documents OUT_OF_SCOPE: no UI stop control in product sources", () => {
-    // Architecture contract: Lite does not ship a cancel/stop evaluation control.
-    // Safety is preemptive (length, factorial, powers, macros) — not interactive abort.
     const files = [
       "src/components/NaturalInput.tsx",
       "src/components/ResultPanel.tsx",
