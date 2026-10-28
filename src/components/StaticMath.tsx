@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import "mathlive";
+import { safeMathliveDisplayLatex } from "../engine/mathliveMacroGuard";
 
 /**
  * Fase 2.6 (fix real del bug de display de fracciones — reportado dos
@@ -26,6 +27,11 @@ import "mathlive";
  * versión instalada acá (0.100.0) no trae `<math-span>`/`<math-div>`
  * (verificado contra el bundle real, 0 coincidencias) — de ahí
  * `readonly` en vez de esos.
+ *
+ * R325 / EN-SG-06/07: before assigning latex to math-field, refuse TeX
+ * macro primitives (\def, \newcommand, \let, \catcode, …) so recursive
+ * definitions cannot enter the parser. On refusal, value stays empty and
+ * data-render-fallback="syntax" is set (parity signal with Plus KaTeX path).
  */
 
 interface StaticMathProps {
@@ -45,7 +51,14 @@ export function StaticMath({ latex, className }: StaticMathProps) {
     // cubre el render inicial, esto cubre updates y es la fuente de
     // verdad documentada por la API de MathfieldElement.
     el.readOnly = true;
-    if (el.value !== latex) el.value = latex;
+
+    const { value, fallback } = safeMathliveDisplayLatex(latex);
+    if (fallback) {
+      el.setAttribute("data-render-fallback", fallback);
+    } else {
+      el.removeAttribute("data-render-fallback");
+    }
+    if (el.value !== value) el.value = value;
   }, [latex]);
 
   return (
