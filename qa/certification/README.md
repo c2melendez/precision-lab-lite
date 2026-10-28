@@ -58,3 +58,8 @@ El método primario para ejecutar gates es `.github/workflows/certification-runn
 
 - [Procedimiento de fallback](EXCEPTION_PARALLEL_CERTIFICATION_WITH_COMPASS_BRIDGE.md): usar únicamente si el LLM no puede acceder, leer o utilizar `.github/workflows/certification-runner.yml` en el/los repositorios necesarios. En ese caso, debe informar la limitación y solicitar autorización/instrucciones al responsable antes de utilizar Bridge/Compass.
 - Compass no es el método predeterminado, no reemplaza el workflow y no modifica criterios de certificación.
+
+
+## Cert Runner Compass — suite de idempotencia
+
+Estado vigente: [BRIDGE_CERT_COMPASS_V1_1_STATUS_2026-10-28.md](BRIDGE_CERT_COMPASS_V1_1_STATUS_2026-10-28.md). El informe de sesión anterior es histórico. No ejecutar POST/dispatch sin autorización explícita; esta suite sigue NO CERTIFICADA hasta cerrar sus pendientes documentados.
