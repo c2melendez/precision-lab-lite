@@ -1,0 +1,15 @@
+{
+  "name": "deepmerge",
+  "version": "4.3.2-precisionlab.1",
+  "description": "Precision Lab local patched build of deepmerge 4.3.1 with CVE-2026-93753 regression fix",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "node --test test/*.test.cjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
