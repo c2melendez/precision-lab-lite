@@ -1,3 +1,16 @@
+
+## 2026-10-28 UTC - r322: deepmerge parcheado; CI de Lite en verde
+
+- `vendor/deepmerge` creado como build privada parcheada de 4.3.1 (version `4.3.2`, `private: true`, MIT, PATCH_NOTES, README). Corrige GHSA-gcqx-w48m-w2h4 / CVE-2026-93753.
+- Parche: denylist `__proto__`/`constructor`/`prototype` en ambos bucles, escritura con `Object.defineProperty`, `in` fail-closed; protección heredada de 4.3.1 intacta; helper `is-mergeable-object` inline.
+- Reproducción previa sobre 4.3.1: `admin: true` heredado en las variantes de target null-prototype y de placeholder `null`; con el parche, 13/13 regresiones pasan.
+- Cableado: `devDependencies` `file:vendor/deepmerge` + `overrides` `"$deepmerge"`. Un `file:` relativo directo en `overrides` produce un enlace roto resuelto contra el dependiente; se documenta y se descarta.
+- Lockfile generado por npm: un solo `node_modules/deepmerge` enlazado a `vendor/deepmerge`, sin entrada de registro. `npm ls deepmerge --all` deduplicado.
+- Validación: `npm ci` limpio, `npm ci --dry-run` con npm 10.9.9 OK, `npm audit` 0 con npm 11 y npm 10, typecheck OK, suite 2.232 pasan (4 timeouts de carga que pasan aislados), build + PWA 31 entradas.
+- CI [40612899135](https://github.com/c2melendez/precision-lab-lite/actions/runs/40612899135) SUCCESS; acumulativo [40612899133](https://github.com/c2melendez/precision-lab-lite/actions/runs/40612899133) SUCCESS; dependencias/seguridad [40612899246](https://github.com/c2melendez/precision-lab-lite/actions/runs/40612899246) SUCCESS con artefacto de audit `total: 0`.
+- SECURITY-S25 sigue BLOCKED (aceptación bilateral pendiente); global OPEN; PR #48 sin merge.
+
+---
 ## 2026-10-24 UTC — r286: handoff de remediación refinado
 
 - `continuity.json` actualizado a `BLOCKED_ENVIRONMENT`: el análisis del árbol y la consulta de advisories terminó, pero el entorno no contiene checkout local ni npm para regenerar el lock de forma segura.
