@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 330,
+  "revision": 331,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "21c7aae3ec445f864dc13f625bc8ce0c2f6f4ed1",
@@ -43,7 +43,7 @@
     "status": "WAIT",
     "action": "AS-B-29 verified PASS_SCOPED on the exact evidence recorded in this index; do not rerun. Keep this mathematical continuation pointer parked while the higher-priority Cert Runner Compass P0 checklist is reconciled. Resume the next canonical matrix only after P0 exit criteria are met.",
     "previous_id": "LITE-RUNNER-PLANNER-DIAGNOSE",
-    "updated_utc": "2026-10-29T04:54:00Z"
+    "updated_utc": "2026-10-29T04:58:00Z"
   },
   "blockers": [
     {
@@ -112,24 +112,25 @@
     "product_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
     "max_expression_length": 12000
   },
-  "ledger_note": "r330 Lite: ALGEBRA229-AS-B-29 PASS_SCOPED; exact-input compatibility only, no general integer factorization claim. Compass P0 read-only audit found stale RUNNING records and excess anon/authenticated ACL grants on bridge_calls/bridge_keys/bridge_runs; no POST, dispatch, DDL, or permission changes. Global OPEN.",
+  "ledger_note": "r331: AS-B-29 PASS_SCOPED; the Compass status report is prose-only and excluded from technical gate fingerprints. The current technical tree still matches 21c7aae3 after explicit prose exclusions. Compass P0 remains OPEN: three historical RUNNING records have linked completed-success runs and a least-privilege ACL review is pending. No POST, workflow dispatch, DDL, or permission changes.",
   "prose_only_paths": [
     "README.md",
-    "qa/certification/README.md",
-    "qa/certification/continuity.json",
-    "qa/certification/CURRENT_STATE.md",
-    "qa/certification/EXECUTION_LOG.md",
-    "qa/certification/CONTINUITY_NEXT_ACTION.json",
-    "qa/certification/EXECUTION_LOG_AS229_SECTION_A.md",
     "qa/certification/ALGEBRA229_PREPARATION.md",
-    "qa/certification/ROADMAP_CONTINUITY.md",
+    "qa/certification/BRIDGE_CERT_COMPASS_V1_1_STATUS_2026-10-28.md",
     "qa/certification/CONTINUATION_PROMPT.md",
+    "qa/certification/CONTINUITY_NEXT_ACTION.json",
+    "qa/certification/CURRENT_STATE.md",
     "qa/certification/EDCX_B6_ADAPTER_ORACLE_PLAN.md",
-    "qa/certification/H2_EN_SG_LITE_PARITY_AUDIT_R323.md",
-    "qa/certification/RECOVERY_ALGEBRITE_R324.md",
+    "qa/certification/EXECUTION_LOG.md",
+    "qa/certification/EXECUTION_LOG_AS229_SECTION_A.md",
     "qa/certification/H2_EN_SG_LITE_MATHLIVE_MACROS_R325.md",
+    "qa/certification/H2_EN_SG_LITE_PARITY_AUDIT_R323.md",
     "qa/certification/H2_EN_SG_LITE_SCOPE_R326.md",
     "qa/certification/R326_CI_TRIGGER.md",
-    "qa/certification/R326_expression_length.patch"
+    "qa/certification/R326_expression_length.patch",
+    "qa/certification/README.md",
+    "qa/certification/RECOVERY_ALGEBRITE_R324.md",
+    "qa/certification/ROADMAP_CONTINUITY.md",
+    "qa/certification/continuity.json"
   ]
 }
