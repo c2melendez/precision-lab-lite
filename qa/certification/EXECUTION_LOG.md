@@ -477,3 +477,9 @@ La suite v1.1 y el registro de Fase 1 recibidos el 2026-10-27 UTC son la base de
 - Se revisó la lógica de `scripts/certification/continuity.py`: `plan()` devuelve `CURRENT` solo si el fingerprint del HEAD observado coincide con el baseline técnico después de aplicar `prose_only_paths` y excluir `continuity.json`/registros numéricos del Runner.
 - Se añadió `qa/certification/BRIDGE_CERT_COMPASS_V1_1_STATUS_2026-10-28.md` a `prose_only_paths`: es un informe de estado, no un contrato ejecutable. Comparación de árboles GitHub recursivos completos (ambos `truncated=false`): HEAD documental frente a baseline técnico `21c7aae3ec445f864dc13f625bc8ce0c2f6f4ed1`; 766 entradas seleccionadas en ambos y cero diferencias. Estado reconstruido del planner: `CURRENT`.
 - No cambió ningún insumo técnico, no se activó ningún gate por las actualizaciones documentales y no se creó una corrida nueva. `ALGEBRA229-AS-B-29-VERIFY` permanece `WAIT` bajo la prioridad P0 de Compass; global OPEN.
+
+
+## 2026-10-29 UTC — causa raíz de los registros Compass RUNNING calificada
+
+- La inspección del código actual confirma que `runStatus` y `lookupRequest` reconcilian con GitHub únicamente cuando se ejecuta un GET autenticado con la clave propietaria; no se encontró un worker periódico. Por eso las filas históricas RUNNING (40461232174, 40461306085, 40463419492) quedan pendientes de lookup del dueño. Hasta esa consulta no se marca FAIL de producto.
+- `cert-20261028-OWN-B3` es una fila distinta y está SUCCEEDED, enlazada al run 40624157231. Las verificaciones son de lectura; no se hicieron POST, dispatch, DDL ni cambios de permisos.
