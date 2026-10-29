@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 327,
+  "revision": 328,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
@@ -10,32 +10,40 @@
   "gates": {
     "cumulative": {
       "workflow": ".github/workflows/in625-cumulative-certification.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-16-continuity-v1"
     },
     "h1d": {
       "workflow": ".github/workflows/in625-h1d-reentry.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-16-continuity-v1"
     },
     "security": {
       "workflow": ".github/workflows/certification-dependency-gates.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-16-continuity-v1",
       "allow_reuse": false
     },
     "scientific": {
       "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
     }
   },
   "next_action": {
-    "id": "SECURITY-S25-BILATERAL-ACCEPTANCE",
-    "status": "DONE",
-    "action": "SECURITY-S25 ACCEPTED_BILATERAL. Lite independent green on technical baseline 11f8a5f4 (CI 40765520289, npm audit 0, dependency/security gates). Plus independent green on bd1742bd (CI 40651541570 + s25-security). Explicit bilateral acceptance recorded 2026-10-28; no joint run required under single-host policy. allow_reuse remains false. Global OPEN.",
-    "previous_id": "LITE-H2-EN-SG-SCOPE-R326",
-    "updated_utc": "2026-10-28T21:37:00Z"
+    "id": "LITE-RUNNER-PLANNER-DIAGNOSE",
+    "status": "OPEN",
+    "action": "DIAGNOSE required: Lite Certification Runner run 40765520348 FAILED on technical baseline 11f8a5f4 at step \"Read-only planner fingerprint for selected gate\" while CI/Cumulative/H1d/SY-N-31/R326-guard are SUCCESS and S25 was accepted via separate dispatch run 40768604576. Logs endpoint returned 401 for this PAT; reproduce planner locally (scripts/certification/continuity.py) against checkout 11f8a5f4 or fetch logs via alternate channel, classify harness vs index-drift, fix and push. Also reconcile pointer drift: branch HEAD fc34efc is docs-only atop 11f8a5f4 (no CI needed). Plus bilateral sync event: Plus r340 / 09064f9 gates green.",
+    "previous_id": "SECURITY-S25-BILATERAL-ACCEPTANCE",
+    "updated_utc": "2026-10-29T01:55:00Z"
   },
   "blockers": [
     {
@@ -55,7 +63,8 @@
     },
     {
       "id": "SY-X-04-PLUS-HTTP",
-      "status": "BLOCKED"
+      "status": "PASS_SCOPED",
+      "detail": "2026-10-29 sincronia con Plus r340. Harness fix Plus 09064f9; gates verdes en ese SHA: CI 40800577284, Cumulative 40800577150 (guard sin REUSE, ejecucion real), H1d 40800577200, Runner 40800577170. Fronteras fijadas: n=199->OK \"199*x\"; n=200->COMPLEXITY_LIMIT (Add plano=n+1 nodos vs MAX_AST_NODES=200); n=500->422 VALIDATION_ERROR. Fila matriz completa (500 sumandos) requiere aprobacion humana Opcion B/C. Sin cambio tecnico Lite."
     },
     {
       "id": "ALGEBRA229-AS-B-29",
@@ -70,11 +79,32 @@
   ],
   "h2_en_sg_evidence_audit_r326": {
     "status": "PARTIAL",
-    "pass_scoped_architecture": ["EN-SG-01", "EN-SG-02", "EN-SG-03", "EN-SG-04", "EN-SG-05", "EN-SG-08"],
-    "pass_scoped_display_macros": ["EN-SG-06", "EN-SG-07"],
-    "pass_scoped_client_engine": ["EN-SG-23", "EN-SG-24", "EN-SG-25", "EN-SG-26", "EN-SG-27"],
-    "pass_scoped_length_contract": ["EN-SG-21"],
-    "out_of_scope": ["EN-SG-28", "EN-SG-32"],
+    "pass_scoped_architecture": [
+      "EN-SG-01",
+      "EN-SG-02",
+      "EN-SG-03",
+      "EN-SG-04",
+      "EN-SG-05",
+      "EN-SG-08"
+    ],
+    "pass_scoped_display_macros": [
+      "EN-SG-06",
+      "EN-SG-07"
+    ],
+    "pass_scoped_client_engine": [
+      "EN-SG-23",
+      "EN-SG-24",
+      "EN-SG-25",
+      "EN-SG-26",
+      "EN-SG-27"
+    ],
+    "pass_scoped_length_contract": [
+      "EN-SG-21"
+    ],
+    "out_of_scope": [
+      "EN-SG-28",
+      "EN-SG-32"
+    ],
     "gap": [],
     "ci_run": 40765520289,
     "ci_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
