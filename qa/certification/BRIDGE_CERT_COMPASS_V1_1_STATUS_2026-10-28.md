@@ -1,6 +1,6 @@
 # Estado consolidado — Cert Runner Compass v1.1 con idempotencia
 
-**Corte documental:** 2026-10-28 UTC  
+**Corte documental:** 2026-10-29 UTC  
 **Versión de suite de referencia:** v1.1, revisión 4 / workspace v11  
 **Estado global:** **EN PROGRESO — NO CERTIFICADO**  
 **Alcance de este documento:** consolidación documental de la evidencia registrada. Esta actualización no envió solicitudes al Bridge, no consultó credenciales ni disparó GitHub Actions.
@@ -106,3 +106,14 @@ No disparar nuevos workflows para “compensar”, completar conteos ni repetir 
 **Criterio de salida:** no certificar hasta cerrar E2/E3 y los defectos/ambigüedades de contrato y persistencia, confirmar la rotación de credenciales, y documentar todos los estados finales. Duplicados observados en B3–C3: 0; runs extra históricos sobre el presupuesto original: 2 de Runner; atribución de 40463536599: no resuelta.
 
 **Estado final del corte: EN PROGRESO — NO CERTIFICADO.**
+
+
+## 2026-10-29 UTC — read-only reconciliation: Compass B3/B6 ledger and ACL
+
+**No POST, workflow dispatch, DDL, or permission change was performed in this review.**
+
+- Lovable metadata confirms project `Cert Runner Compass` is published and its latest source commit is `b0442cca4f1c47f2f4d71d02ded75b63fc539428`. The provider response does not expose an independently verifiable deployed artifact SHA; do not equate this source commit with the historical references `f051a4b1`, `5f7ad6a6` or `5db4ce9f` without deployment provenance.
+- A read-only DB query confirms the record `cert-20261028-OWN-B3` is `SUCCEEDED` with outcome `SUCCEEDED`, and its stored GitHub run is [40624157231](https://github.com/c2melendez/precision-lab-lite/actions/runs/40624157231), completed/success. This resolves that specific record's final state; it does not repair unrelated historic records.
+- Three other records created on 2026-10-27 remain persisted as `RUNNING` with `outcome_state=RUNNING`, although their linked Runner workflows are completed/success on the same SHA `4507082a101fbc5a196cfbfe335db6e83c2cb6d0`: B3 [40461232174](https://github.com/c2melendez/precision-lab-lite/actions/runs/40461232174), B6 [40461306085](https://github.com/c2melendez/precision-lab-lite/actions/runs/40461306085), and the additional probe [40463419492](https://github.com/c2melendez/precision-lab-lite/actions/runs/40463419492). Do not retry these workflows. Reconcile through the authenticated owner-scoped read-only lookup only when the already-authorized key for the corresponding record is available; do not swap key hashes to impersonate an owner. The earlier attribution of run 40463536599 remains unresolved.
+- A schema-only read found RLS enabled and no policies returned for `public.bridge_calls`, `public.bridge_idempotency`, `public.bridge_keys`, and `public.bridge_runs`. `bridge_idempotency` grants are restricted to `service_role`; however, `anon` and `authenticated` still have SELECT/INSERT/UPDATE/DELETE/TRUNCATE/REFERENCES/TRIGGER grants on `bridge_calls`, `bridge_keys`, and `bridge_runs`. This ACL is broader than the documented no-public-grants requirement even though no row policies were found. No direct table-access test was attempted and no grants/policies were changed. Treat least-privilege remediation as a security change requiring a reviewed migration and protected rollout.
+- **Gate:** Compass remains `OPEN / NO CERTIFICADO`. Outstanding items include deployment provenance, reconciliation of those stale RUNNING rows, replay-response contract, D2/D5/E2/E3 evidence and formal D-07 correlation. Do not use `GET /api/run`, and do not send `POST /api/runs` merely to repeat B3/B6.
