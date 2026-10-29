@@ -124,3 +124,10 @@ No disparar nuevos workflows para “compensar”, completar conteos ni repetir 
 - Read-only review of `src/lib/bridge/lookup.server.ts` and `src/lib/bridge/core.server.ts` shows reconciliation is lazy: a final state is persisted after an authenticated GET lookup/status request queries GitHub. No background worker was found.
 - Therefore the historic rows for runs 40461232174, 40461306085 and 40463419492 are `PENDING_OWNER_LOOKUP / REVIEW`, not a confirmed product-persistence failure. There is no evidence those rows received an owner-authenticated status query after their runs completed. Reconcile only with an already-authorized owner key; never repeat dispatch or swap key hashes.
 - The ACL finding is independent: RLS is enabled but the grants to `anon`/`authenticated` on `bridge_calls`, `bridge_keys`, and `bridge_runs` exceed the stated least-privilege target. No database write or permission change was made.
+
+
+## 2026-10-29 UTC — owner lookup blocked by revoked credential
+
+- The three historical requests tied to Runner runs 40461232174, 40461306085 and 40463419492 share a credential record that the database currently marks revoked. The active key row belongs to a different request owner; the lookup endpoint's ownership check must remain intact.
+- Classification: `PENDING_OWNER_LOOKUP / BLOCKED_AUTH`, not a confirmed product failure. Do not attempt the three GETs with a different key, change the credential record, or repeat a workflow. Resume only after a reviewed and auditable recovery path is explicitly approved.
+- Access review proposal: [COMPASS_ACCESS_REVIEW_2026-10-29.md](COMPASS_ACCESS_REVIEW_2026-10-29.md). No database permission changes or deployment were performed. Global status remains OPEN / NO CERTIFICADO.
