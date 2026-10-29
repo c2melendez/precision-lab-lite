@@ -453,3 +453,11 @@ Referencia de suite/handoff recibido en la sesión: registro de Fase 1 y plan v1
 - **Claves:** las expuestas previamente se consideran comprometidas y deben rotarse por el responsable. No escribir ni repetir valores reales.
 
 La suite v1.1 y el registro de Fase 1 recibidos el 2026-10-27 UTC son la base de este corte. Los registros previos permanecen como historia; este addendum prevalece para el estado actual de Compass.
+
+
+## 2026-10-29 — r328 (Lite): sincronía Plus r340 y diagnóstico pendiente del runner
+
+- Verificación GitHub (PAT read-only API): Plus `09064f9` gates verdes confirmados por API y logs de jobs (CI 40800577284 SUCCESS backend 2725 passed/1 skipped/10 xfailed cov 88.79%; Cumulative 40800577150 SUCCESS sin REUSE — 4 tests sy_x04 PASSED nominalmente; H1d 40800577200 SUCCESS; Runner 40800577170 SUCCESS). Índice Plus reconciliado r339→r340 (commits `9e2dee516` continuity, `cc79522ff` CURRENT_STATE, `c8f64fb81` EXECUTION_LOG; 0 runs por commits documentales, paths-ignore verificado).
+- Lite blocker SY-X-04-PLUS-HTTP actualizado BLOCKED→PASS_SCOPED en continuity r328 con enlace a evidencia Plus. Ninguna corrida Lite relanzada (no hay cambio técnico Lite; no despachar gates por sincronía documental).
+- Hallazgo nuevo en auditoría de corridas de la línea base `11f8a5f4`: Runner 40765520348 FAILURE en paso "Read-only planner fingerprint for selected gate" (job certification-cycle). Corridas hermanas del mismo SHA todas SUCCESS. S25 ACCEPTED_BILATERAL se apoya en CI 40765520289 + dispatch 40768604576, ambos verdes; la aceptación se mantiene, pero el fallo del runner queda registrado como deuda del canal executor y pasa a next_action LITE-RUNNER-PLANNER-DIAGNOSE.
+- Intento de obtener el log del job fallido: HTTP 401 (PAT sin acceso a logs). Documentado como limitación de capability del canal actual; alternativa legítima: reproducción local del planificador sobre el checkout técnico.
