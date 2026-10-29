@@ -483,3 +483,10 @@ La suite v1.1 y el registro de Fase 1 recibidos el 2026-10-27 UTC son la base de
 
 - La inspección del código actual confirma que `runStatus` y `lookupRequest` reconcilian con GitHub únicamente cuando se ejecuta un GET autenticado con la clave propietaria; no se encontró un worker periódico. Por eso las filas históricas RUNNING (40461232174, 40461306085, 40463419492) quedan pendientes de lookup del dueño. Hasta esa consulta no se marca FAIL de producto.
 - `cert-20261028-OWN-B3` es una fila distinta y está SUCCEEDED, enlazada al run 40624157231. Las verificaciones son de lectura; no se hicieron POST, dispatch, DDL ni cambios de permisos.
+
+
+## 2026-10-29 UTC — Compass P0 access proposal r333
+
+- Añadido `qa/certification/COMPASS_ACCESS_REVIEW_2026-10-29.md` como propuesta no aplicada. La inspección de catálogo encontró grants amplios a roles de cliente y un rol interno que requiere atribución; no se cambiaron permisos ni datos.
+- Los tres registros históricos requieren acceso autenticado de su propietario, pero la credencial asociada está revocada. No repetir acciones ni utilizar credenciales de otros registros; el índice r333 deja el siguiente paso en espera de una vía autorizada y auditable.
+- Lovable marca Compass como publicado, pero no provee un SHA independiente del artefacto live; procedencia permanece PARCIAL. Sin POST, dispatch o DDL.
