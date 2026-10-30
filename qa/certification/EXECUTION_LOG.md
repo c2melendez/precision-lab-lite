@@ -1,4 +1,16 @@
 
+## 2026-10-30 UTC — r359: Algebra114 AS-EXP-01 PASS_SCOPED en Lite
+
+- Fuente qa/certification/algebra114_source.md, fila AS-EXP-01: (x+1)(x-1) = x^2-1.
+- Test tests/algebra114AsExp01.audit.test.ts, blob 373593e7216e1d3e710963bb7431cc96a208eca9: verifica fixture original, salida simbólica normalizada x^2-1 y cinco sustituciones x=-3,-1,0,1,4 con oráculo aritmético JavaScript independiente x*x-1; Algebrite no calcula el expected.
+- SHA técnico exacto a48496d5da441589c3ca5e231761654dc5566b6b.
+- CI [41137239350](https://github.com/c2melendez/precision-lab-lite/actions/runs/41137239350) SUCCESS (frontend: QA dependency audit, typecheck, unit/parity y production build).
+- Cumulative [41137239432](https://github.com/c2melendez/precision-lab-lite/actions/runs/41137239432) SUCCESS: 366 files, 2,259 passed, 8 expected fail, 34 todo; log confirma el test focalizado.
+- H1d [41137239316](https://github.com/c2melendez/precision-lab-lite/actions/runs/41137239316) SUCCESS: 22 E2E passed. Runner [41137239337](https://github.com/c2melendez/precision-lab-lite/actions/runs/41137239337) SUCCESS; dispatch/persistencia SKIPPED.
+- Aceptación ALGEBRA114_AS_EXP_01_ACCEPTANCE_R359.md. Solo Lite; no inferir paridad Plus ni certificar otras filas EXP. Global OPEN.
+- Siguiente acción: AS-EXP-02, revisar restricciones de dominio y reemplazar cualquier expected calculado con Algebrite por oráculo independiente.
+---
+
 ## 2026-10-28 UTC - r322: deepmerge parcheado; CI de Lite en verde
 
 - `vendor/deepmerge` creado como build privada parcheada de 4.3.1 (version `4.3.2`, `private: true`, MIT, PATCH_NOTES, README). Corrige GHSA-gcqx-w48m-w2h4 / CVE-2026-93753.
