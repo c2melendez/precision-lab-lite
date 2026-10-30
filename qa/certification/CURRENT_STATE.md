@@ -1,4 +1,4 @@
-# Corte vigente de certificación — 2026-10-30 UTC (r366)
+# Corte vigente de certificación — 2026-10-30 UTC (r367)
 
 **Fuente de verdad:** rama `qa/syntax-audit-in625-a1`, índices `continuity.json` y evidencia GitHub Actions. Este corte supersede cualquier instrucción histórica anterior que colocara Compass por delante de los motores matemáticos.
 
@@ -11,7 +11,7 @@
 - **Certification Runner Plus:** PASS_SCOPED únicamente para el camino push/no-dispatch. Run 41136660038 SUCCESS en SHA `218d682848a03a000930e2028f057563847381f3`; rama canónica, checkout y fingerprint correctos; dispatch/wait/registro/persistencia SKIPPED.
 - **Mecanismo Observer→Bridge→Actions→Runner:** fases A/B cerradas. O5 IN_PROGRESS: contratos, tests simulados y CI de Bridge/Observer aportan evidencia de componentes, pero falta traza E2E request→receipt durable→Actions→Runner→evidencia y replay sin duplicación. O6 PENDING porque no se ejecutó workflow_dispatch/POST real por la restricción operativa; no es FAIL. O7 PENDING y depende de O6. Los runs push del Runner no generan recibos ni despachan gates. No hacer dispatch directo ni sustituir por mocks.
 - **Compass Runner:** cerrado para el alcance de la conciliación documental vigente; no es bloqueo ni prerrequisito para los motores. Mantener separado del Certification Runner integrado en Lite/Plus y del plano paralelo Observer/Bridge.
-- **Motor Lite:** AS-EXP-07 EN EJECUCIÓN sobre SHA `c791540390b2e5a3c27f11b7a9a444ad04012a20`; test blob `06f362c0aeced0100b266c7dcf6465c06324f8b1`. Se sustituyó el test CAS-vs-CAS por fixture exacto, multiconjunto simbólico de términos y cinco sustituciones con oráculo JS independiente `8*x^3-36*x^2+54*x-27`. CI 41144150978, cumulative 41144150867 y H1d 41144150866 en ejecución; Scientific UI 41144150819 complementario. Runner 41144150833 SUCCESS/no-dispatch. No hay aceptación todavía.
+- **Motor Lite:** AS-EXP-07 PASS_SCOPED en SHA `c791540390b2e5a3c27f11b7a9a444ad04012a20`; test blob `06f362c0aeced0100b266c7dcf6465c06324f8b1`. Fixture exacto, multiconjunto de términos firmados y cinco sustituciones con oráculo JS independiente `8*x^3-36*x^2+54*x-27`. CI 41144150978, cumulative 41144150867 (366 archivos, 2,259 passed, 8 expected fail, 34 todo; test focalizado explícito) y H1d 41144150866 (22 E2E) SUCCESS. Runner 41144150833 SUCCESS push/no-dispatch. Scientific UI 41144150819 seguía IN_PROGRESS al corte, complementario y no requerido. Aceptación `ALGEBRA114_AS_EXP_07_ACCEPTANCE_R366.md`.
 - **Restricciones:** sin merges, despliegues, cambios de producción ni despachos reales. Global certification **OPEN**.
 
 ---
