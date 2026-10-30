@@ -87,3 +87,12 @@ Next: create a deterministic read-only fixture validator for exact original IDs/
 - SHA técnico `0a85b448298df0691b043269648d327d0a7aec0b`; CI 41141038026, cumulative 41141037941 y H1d 41141037866 SUCCESS. Runner 41141037836 SUCCESS push/no-dispatch. Scientific UI 41141038013 seguía IN_PROGRESS, complementario y no usado para aceptar el caso algebraico.
 - Aceptación acotada: `ALGEBRA114_AS_EXP_03_ACCEPTANCE_R361.md`. Solo Lite; global OPEN.
 - Siguiente: AS-EXP-04, `(x+1)(x^2-x+1)=x^3+1`, oráculo independiente `x*x*x+1`.
+
+
+## 2026-10-30 — r362: AS-EXP-04 PASS_SCOPED
+
+- Fuente algebra114_source.md, fila AS-EXP-04: `(x+1)(x^2-x+1)=x^3+1`.
+- Test tests/algebra114AsExp04.audit.test.ts, blob `753c1d83b7a44fb166fd502ccb545259d331c697`: salida simbólica normalizada y cinco sustituciones con oráculo independiente `x*x*x+1`.
+- SHA técnico `933fad5c3e55db06db9de6ff21e02cd96070da0f`; CI 41141571381, cumulative 41141571350 y H1d 41141571338 SUCCESS. Runner 41141571479 SUCCESS push/no-dispatch. Scientific UI 41141571351 seguía IN_PROGRESS como evidencia complementaria.
+- Aceptación acotada: `ALGEBRA114_AS_EXP_04_ACCEPTANCE_R362.md`. Solo Lite; global OPEN.
+- Siguiente: AS-EXP-05.
