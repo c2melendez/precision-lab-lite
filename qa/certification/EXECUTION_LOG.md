@@ -612,3 +612,11 @@ Compass P0 permanece en su propio backlog de integración/seguridad y no es cond
 - Runner push [41144150833](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150833) SUCCESS/no-dispatch. Scientific UI [41144150819](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150819) seguía IN_PROGRESS al corte; complementario, no gate de aceptación algebraica.
 - Aceptación `ALGEBRA114_AS_EXP_07_ACCEPTANCE_R366.md`. Solo Lite; no implica paridad Plus ni cierre de Algebra114/global.
 - Siguiente: AS-EXP-08 test-first. Global OPEN; sin merge, deploy, producción ni despacho real.
+
+## 2026-10-30 UTC — r368: AS-EXP-08 test-first y Runner Lite push SUCCESS
+
+- AS-EXP-08: `(x+2)(x-3)(x+1)=x^3-7x-6). Se eliminó el expected CAS-vs-CAS y se sustituyó por fixture exacto, multiconjunto simbólico firmado y seis sustituciones `x=[-4,-2,-1,0,3,5]` contra oráculo JS independiente `x*x*x-7*x-6`.
+- SHA técnico `a1a69ae9429afc9481d9febf34885b9242968917`; test blob `08c80b237acf7d5c5ce072ee32ad904b54a29c25`.
+- CI [41144965662](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965662), cumulative [41144965700](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965700), H1d [41144965719](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965719) y Scientific UI [41144965676](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965676) estaban IN_PROGRESS al corte. No aceptar AS-EXP-08 hasta CI/cumulative/H1d SUCCESS en el mismo SHA.
+- Runner push [41144965611](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965611) SUCCESS en el mismo SHA; canonical branch, checkout, BASE_SHA, fingerprint y Push summary SUCCESS; dispatch/receipt/persistencia SKIPPED.
+- Runner PASS_SCOPED_PUSH_ONLY; global OPEN. Sin merge, deploy, producción ni dispatch real.
