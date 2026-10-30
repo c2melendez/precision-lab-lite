@@ -505,3 +505,10 @@ Por instrucción expresa del responsable, se separan los frentes que antes queda
 Esta enmienda **revoca la dependencia de secuencia** introducida por las instrucciones históricas “Compass P0 antes de motores matemáticos” y “no reanudar matrices hasta satisfacer P0”. No declara resueltos los hallazgos de Compass, no cambia permisos, RLS, credenciales, datos ni despliegues, y no convierte ningún resultado parcial en PASS. Los hallazgos de acceso, idempotencia, procedencia y E2E permanecen en el backlog independiente de Compass.
 
 La continuación matemática debe seguir la matriz y el estado de cada repositorio, sin mezclar aceptación de API/Bridge con aceptación del motor. Mantener global_certification: OPEN hasta cumplir los criterios matemáticos globales. No repetir pruebas ni workflows verdes sin cambio justificado de precondición.
+
+
+## Siguiente paso matemático vigente — 2026-10-30
+
+**Siguiente paso matemático vigente:** después de ALGEBRA229-AS-B-29 PASS_SCOPED, reconciliar el siguiente bloque de la matriz matemática propia de Lite y su evidencia H2/EN-SG aplicable; seleccionar el caso test-first concreto desde las matrices existentes. No esperar Compass, no trasladar automáticamente estados EDCX-B6 de Plus y no repetir AS-B-29.
+
+Compass P0 permanece en su propio backlog de integración/seguridad y no es condición de entrada para esta tarea matemática. Certificación global OPEN.
