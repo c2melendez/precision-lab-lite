@@ -603,3 +603,12 @@ Compass P0 permanece en su propio backlog de integración/seguridad y no es cond
 - CI [41144150978](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150978), cumulative [41144150867](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150867) y H1d [41144150866](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150866) seguían IN_PROGRESS al corte. Scientific UI [41144150819](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150819) es complementario. AS-EXP-07 aún no aceptado.
 - Certification Runner push [41144150833](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150833) SUCCESS en el mismo SHA. Resolución canónica, checkout, BASE_SHA, fingerprint y Push summary SUCCESS; dispatch, receipt, persistencia y commit documental SKIPPED.
 - Runner continúa PASS_SCOPED_PUSH_ONLY. Global OPEN; sin merge, deploy, producción ni despacho real.
+
+## 2026-10-30 UTC — r367: Algebra114 AS-EXP-07 PASS_SCOPED (Lite)
+
+- Fuente `algebra114_source.md`, fila AS-EXP-07: `(2x-3)^3 = 8x^3-36x^2+54x-27`.
+- Test `tests/algebra114AsExp07.audit.test.ts`, blob `06f362c0aeced0100b266c7dcf6465c06324f8b1`: fixture exacto, términos simbólicos firmados y cinco sustituciones `x=[-3,-1,0,2,5]` con oráculo JS independiente `8*x*x*x - 36*x*x + 54*x - 27`. Se eliminó el expected CAS-vs-CAS.
+- SHA técnico `c791540390b2e5a3c27f11b7a9a444ad04012a20`. CI [41144150978](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150978), cumulative [41144150867](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150867) y H1d [41144150866](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150866) SUCCESS. Cumulative: 366 archivos, 2,259 passed, 8 expected fail, 34 todo; test focalizado PASSED. H1d: 22 E2E passed.
+- Runner push [41144150833](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150833) SUCCESS/no-dispatch. Scientific UI [41144150819](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150819) seguía IN_PROGRESS al corte; complementario, no gate de aceptación algebraica.
+- Aceptación `ALGEBRA114_AS_EXP_07_ACCEPTANCE_R366.md`. Solo Lite; no implica paridad Plus ni cierre de Algebra114/global.
+- Siguiente: AS-EXP-08 test-first. Global OPEN; sin merge, deploy, producción ni despacho real.
