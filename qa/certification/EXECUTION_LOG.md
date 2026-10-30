@@ -1,4 +1,14 @@
 
+## 2026-10-30 UTC — r364: Algebra114 AS-EXP-05 PASS_SCOPED en Lite
+
+- Fuente algebra114_source.md, fila AS-EXP-05: `(x-1)(x^2+x+1) = x^3-1`.
+- Test tests/algebra114AsExp05.audit.test.ts, blob `b6985e7139ca77edc78faa48f6d55104d76a2627`: fixture exacto, salida simbólica normalizada `x^3-1` y seis sustituciones con oráculo JavaScript independiente `x*x*x-1`; no se usa Algebrite para el expected.
+- SHA técnico `4341955335d6898c4979063520432f82a6d129ba`. CI [41142010457](https://github.com/c2melendez/precision-lab-lite/actions/runs/41142010457) SUCCESS; cumulative [41142010406](https://github.com/c2melendez/precision-lab-lite/actions/runs/41142010406) SUCCESS (366 archivos, 2,259 passed, 8 expected fail, 34 todo; test focalizado explícito); H1d [41142010389](https://github.com/c2melendez/precision-lab-lite/actions/runs/41142010389) SUCCESS (22 E2E).
+- Runner push [41142010410](https://github.com/c2melendez/precision-lab-lite/actions/runs/41142010410) SUCCESS; push/no-dispatch. Dispatch, wait, registro y persistencia SKIPPED.
+- Scientific UI [41142010385](https://github.com/c2melendez/precision-lab-lite/actions/runs/41142010385) seguía IN_PROGRESS al aceptar; es complementario, no gate de aceptación algebraica.
+- Aceptación `ALGEBRA114_AS_EXP_05_ACCEPTANCE_R364.md`. Solo Lite; no certifica EXP completa ni Plus. Global OPEN.
+- Siguiente: AS-EXP-06, recuperar la fila fuente y auditar el oráculo.
+
 ## 2026-10-30 UTC — r362: Algebra114 AS-EXP-04 PASS_SCOPED en Lite
 
 - Fuente algebra114_source.md, fila AS-EXP-04: `(x+1)(x^2-x+1) = x^3+1`.
