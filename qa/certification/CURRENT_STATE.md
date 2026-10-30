@@ -1,3 +1,17 @@
+# Corte vigente de certificación — 2026-10-30 UTC (r360)
+
+**Fuente de verdad:** rama `qa/syntax-audit-in625-a1`, índices `continuity.json` y evidencia GitHub Actions. Este corte supersede cualquier instrucción histórica anterior que colocara Compass por delante de los motores matemáticos.
+
+- **Motor Lite:** AS-SIM-01, AS-SIM-05, AS-EXP-01 y AS-EXP-02 están PASS_SCOPED. AS-EXP-02: SHA `c8c29d820e5bd16ab4df8a528bcea9b4a72f8acc`; CI 41138509410, cumulative 41138509481 (2,259 passed; test focalizado explícito), H1d 41138509536 (22 E2E) y Scientific UI 41138509494 (456 passed), todos SUCCESS. Aceptación `ALGEBRA114_AS_EXP_02_ACCEPTANCE_R360.md`.
+- **Siguiente paso matemático Lite:** AS-EXP-03, con oráculo aritmético independiente `6*x*x+5*x-4`. No inferir aceptación de AS-EXP-04..10 ni Plus.
+- **Certification Runner Lite:** PASS_SCOPED únicamente para el camino push/no-dispatch. Run 41138509571 SUCCESS en el mismo SHA; resolvió rama canónica, hizo checkout y calculó huella. Los pasos dispatch, wait, registro y persistencia fueron SKIPPED. El camino workflow_dispatch→gate→receipt→persistencia no está certificado.
+- **Certification Runner Plus:** PASS_SCOPED únicamente para el camino push/no-dispatch. Run 41136660038 SUCCESS en SHA `218d682848a03a000930e2028f057563847381f3`; rama canónica, checkout y fingerprint correctos; dispatch/wait/registro/persistencia SKIPPED.
+- **Mecanismo Observer→Bridge→Actions→Runner:** fases A/B cerradas. O5 continúa IN_PROGRESS: idempotencia/DB, contrato Runner y pruebas simuladas sólidas, pero falta traza real request→receipt→Actions→Runner. O6 PENDING por ausencia deliberada de workflow_dispatch real; O7 PENDING y depende de O6. No hacer dispatch directo ni sustituir por mocks.
+- **Compass Runner:** cerrado para el alcance de la conciliación documental vigente; no es bloqueo ni prerrequisito para los motores. Mantener separado del Certification Runner integrado en Lite/Plus y del plano paralelo Observer/Bridge.
+- **Restricciones:** sin merges, despliegues, cambios de producción ni despachos reales. Global certification **OPEN**.
+
+---
+
 ## PRIORIDAD P0 — Estado actual Cert Runner Compass v1.1 (2026-10-27 UTC)
 
 **Estado:** Bridge OPEN / NO CERTIFICADO. La Fase 1 se completó sin runs; E1 y E4 fueron simulaciones. El responsable autorizó continuar la Fase 2 y confirmó que la restricción anterior de máximo 3 runs runner + 1 gate deja de ser límite operativo porque Lite y Plus son públicos. Esta autorización no elimina la obligación de contar los runs y prevenir duplicados.
