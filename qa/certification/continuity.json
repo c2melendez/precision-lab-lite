@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 343,
+  "revision": 344,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "4341955335d6898c4979063520432f82a6d129ba",
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-EXP-06-ORACLE-AUDIT",
-    "status": "IN_PROGRESS",
-    "previous_id": "ALGEBRA114-AS-EXP-05-ORACLE-AUDIT",
-    "action": "AS-EXP-06 candidate corrected: Algebrite emits the equivalent monomials in a different commutative order, so the symbolic check now compares the sorted exact monomial multiset while numeric values use the independent oracle (x+y)^3. Final candidate SHA 5901316519ca98d0810ac0f228c91abe6380ee7f; test blob 75f74428c431f5a04b60a4580e7ade8ac70cff86. The previous candidate fe9806f failed only the overly strict term-order assertion (1 test), not the numeric oracle. Verify CI 41142684332, cumulative 41142684039, H1d 41142684020, Scientific UI 41142683997 and Runner 41142684118 on this SHA.",
-    "updated_utc": "2026-10-30T23:59:59Z"
+    "id": "ALGEBRA114-AS-EXP-07-ORACLE-AUDIT",
+    "status": "READY",
+    "previous_id": "ALGEBRA114-AS-EXP-06-ORACLE-AUDIT",
+    "action": "Iniciar AS-EXP-07 desde la fila fuente (2x-3)^3 = 8x^3-36x^2+54x-27. Auditar el test existente; exigir fixture exacto, expansión simbólica equivalente y cinco sustituciones con oráculo aritmético independiente 8*x^3-36*x^2+54*x-27. No usar Algebrite para el expected. Aceptar solo con CI, cumulative y H1d SUCCESS en el mismo SHA; Runner push/no-dispatch es evidencia de su propio alcance, no dispatch.",
+    "updated_utc": "2026-10-30T23:09:14Z"
   },
   "blockers": [
     {
@@ -111,6 +111,11 @@
       "id": "ALGEBRA114-AS-EXP-05",
       "status": "PASS_SCOPED",
       "detail": "Lite-only r364. SHA 4341955335d6898c4979063520432f82a6d129ba; test blob b6985e7139ca77edc78faa48f6d55104d76a2627; CI 41142010457, cumulative 41142010406 (test explícito, 2259 passed), H1d 41142010389 (22 passed), Runner push 41142010410 SUCCESS con dispatch/persistencia SKIPPED. Scientific UI 41142010385 seguía IN_PROGRESS y es complementario, no gate requerido. Acceptance ALGEBRA114_AS_EXP_05_ACCEPTANCE_R364.md."
+    },
+    {
+      "id": "ALGEBRA114-AS-EXP-06",
+      "status": "PASS_SCOPED",
+      "detail": "Lite-only r365. SHA 5901316519ca98d0810ac0f228c91abe6380ee7f; test blob 75f74428c431f5a04b60a4580e7ade8ac70cff86. Exact source fixture; sorted exact monomial multiset for commutative symbolic expansion; five substitutions checked against independent JS oracle (x+y)^3. CI 41142684332, cumulative 41142684039 (366 files, 2259 passed, 8 expected fail, 34 todo; focal test explicitly passed), H1d 41142684020 (22 E2E) SUCCESS. Runner 41142684118 SUCCESS push/no-dispatch. Scientific UI 41142683997 remained in progress and is complementary, not required. Acceptance ALGEBRA114_AS_EXP_06_ACCEPTANCE_R365.md. No Plus parity claim."
     }
   ],
   "h2_en_sg_evidence_audit_r326": {
@@ -314,5 +319,63 @@
     },
     "status": "GATES_QUEUED_OR_IN_PROGRESS",
     "supersedes_sha": "fe9806f3503d70aaef4d89673f85ad13092f3211"
+  },
+  "active_execution_r365": {
+    "case": "ALGEBRA114-AS-EXP-06",
+    "sha": "5901316519ca98d0810ac0f228c91abe6380ee7f",
+    "test_blob": "75f74428c431f5a04b60a4580e7ade8ac70cff86",
+    "runs": {
+      "ci": 41142684332,
+      "cumulative": 41142684039,
+      "h1d": 41142684020,
+      "scientific_ui": 41142683997,
+      "runner": 41142684118
+    },
+    "status": "PASS_SCOPED",
+    "acceptance": "qa/certification/ALGEBRA114_AS_EXP_06_ACCEPTANCE_R365.md",
+    "note": "Scientific UI remains complementary/in progress at the cut; not an Algebra114 acceptance gate."
+  },
+  "runner_certification_r365": {
+    "status": "PASS_SCOPED_PUSH_ONLY",
+    "canonical_branch": "qa/syntax-audit-in625-a1",
+    "lite": {
+      "run_id": 41142684118,
+      "run_url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/41142684118",
+      "sha": "5901316519ca98d0810ac0f228c91abe6380ee7f",
+      "event": "push",
+      "conclusion": "success"
+    },
+    "plus": {
+      "run_id": 41136660038,
+      "run_url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/41136660038",
+      "sha": "218d682848a03a000930e2028f057563847381f3",
+      "event": "push",
+      "conclusion": "success"
+    },
+    "verified_steps": [
+      "Resolve canonical branch from default-branch README",
+      "Checkout canonical branch",
+      "Record base commit",
+      "Read-only planner fingerprint",
+      "Push summary"
+    ],
+    "skipped_steps": [
+      "Gate policy/workflow resolution",
+      "Dry-run summary",
+      "Equivalent active-run detection/wait",
+      "Workflow dispatch",
+      "QA receipt recording",
+      "Continuity persistence",
+      "Documentary commit"
+    ],
+    "not_certified": [
+      "workflow_dispatch dispatch path",
+      "Gate dispatch/result wait",
+      "durable receipt correlation",
+      "Observer→Bridge→Actions→Runner end-to-end trace",
+      "idempotent replay without duplicate workflow"
+    ],
+    "global_certification": "OPEN",
+    "updated_utc": "2026-10-30T23:09:14Z"
   }
 }
