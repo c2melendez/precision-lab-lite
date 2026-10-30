@@ -52,3 +52,12 @@ Next: create a deterministic read-only fixture validator for exact original IDs/
 - SHA técnico `30b0b03120faa5252dbb7b090c81d37a8c16452a`: CI 41135927030, cumulative 41135926842 y H1d 41135926938 SUCCESS. Cumulative: 365 archivos, 2.258 passed, 8 expected fail, 34 todo.
 - Aceptación detallada: `ALGEBRA114_AS_SIM_01_ACCEPTANCE_R358.md`. PASS_SCOPED solo Lite; no certifica Algebra114 completa.
 - Siguiente: `ALGEBRA114-AS-SIM-05-TEST-FIRST`. Preservar la condición `x != 1` al simplificar `(x^2-1)/(x-1)`; no aceptar cancelación que pierda el dominio.
+
+
+## 2026-10-30 — r358: AS-SIM-05 PASS_SCOPED
+
+- Fuente: `(x^2-1)/(x-1) = x+1`, con `x != 1`.
+- Test `tests/algebra114AsSim05.audit.test.ts` (blob `d3ad970124d9f8362ae5ea0c4381dd334bfe43ea`) verifica condición original `x-1 != 0`, cinco sustituciones válidas con oráculo aritmético independiente y rechazo en `x=1`.
+- SHA técnico `4abfe22293d5088e40d27a72568d5f4e93197f10`: CI 41136809596, cumulative 41136809590 y H1d 41136809678 SUCCESS. Cumulative: 366 archivos, 2.259 passed, 8 expected fail, 34 todo.
+- Aceptación: `ALGEBRA114_AS_SIM_05_ACCEPTANCE_R358.md`. PASS_SCOPED Lite; no certifica Algebra114 completa.
+- Siguiente: auditar los oráculos de AS-EXP-01..10, empezando por AS-EXP-01; no confiar en comparación CAS-vs-CAS.
