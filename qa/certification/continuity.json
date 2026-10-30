@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 346,
+  "revision": 347,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "4341955335d6898c4979063520432f82a6d129ba",
@@ -40,10 +40,10 @@
   },
   "next_action": {
     "id": "ALGEBRA114-AS-EXP-08-ORACLE-AUDIT",
-    "status": "READY",
+    "status": "IN_PROGRESS",
     "previous_id": "ALGEBRA114-AS-EXP-07-ORACLE-AUDIT",
-    "action": "Iniciar AS-EXP-08 desde la fila fuente (x+2)(x-3)(x+1) = x^3-7x-6. Auditar test existente; exigir fixture exacto, expansión simbólica equivalente y cinco sustituciones con oráculo aritmético JS independiente (x+2)*(x-3)*(x+1). No usar Algebrite para el expected. Aceptar solo con CI, cumulative y H1d SUCCESS en el mismo SHA; Scientific UI complementario.",
-    "updated_utc": "2026-10-30T23:25:12Z"
+    "action": "AS-EXP-08 test-first iniciado en SHA a1a69ae9429afc9481d9febf34885b9242968917; test blob 08c80b237acf7d5c5ce072ee32ad904b54a29c25. Fixture exacto de algebra114_source.md; multiconjunto simbólico x^3,-7*x,-6 y seis sustituciones contra oráculo JS independiente x^3-7*x-6. CI 41144965662, cumulative 41144965700 y H1d 41144965719 siguen en ejecución. Scientific UI 41144965676 complementario. Runner 41144965611 SUCCESS push/no-dispatch. No aceptar hasta gates obligatorios SUCCESS en mismo SHA.",
+    "updated_utc": "2026-10-30T23:29:00Z"
   },
   "blockers": [
     {
@@ -440,5 +440,63 @@
     ],
     "global_certification": "OPEN",
     "updated_utc": "2026-10-30T23:23:15Z"
+  },
+  "active_execution_r368": {
+    "case": "ALGEBRA114-AS-EXP-08",
+    "sha": "a1a69ae9429afc9481d9febf34885b9242968917",
+    "test_blob": "08c80b237acf7d5c5ce072ee32ad904b54a29c25",
+    "runs": {
+      "ci": 41144965662,
+      "cumulative": 41144965700,
+      "h1d": 41144965719,
+      "scientific_ui": 41144965676,
+      "runner": 41144965611
+    },
+    "status": "GATES_IN_PROGRESS",
+    "acceptance": null,
+    "note": "Replaced CAS-vs-CAS expected expression with exact source fixture, signed symbolic term multiset and independent JavaScript arithmetic x^3-7*x-6."
+  },
+  "runner_certification_r368": {
+    "status": "PASS_SCOPED_PUSH_ONLY",
+    "canonical_branch": "qa/syntax-audit-in625-a1",
+    "lite": {
+      "run_id": 41144965611,
+      "run_url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965611",
+      "sha": "a1a69ae9429afc9481d9febf34885b9242968917",
+      "event": "push",
+      "conclusion": "success"
+    },
+    "plus": {
+      "run_id": 41136660038,
+      "run_url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/41136660038",
+      "sha": "218d682848a03a000930e2028f057563847381f3",
+      "event": "push",
+      "conclusion": "success"
+    },
+    "verified_steps": [
+      "Resolve canonical branch from default-branch README",
+      "Checkout canonical branch",
+      "Record base commit",
+      "Read-only planner fingerprint",
+      "Push summary"
+    ],
+    "skipped_steps": [
+      "Gate policy/workflow resolution",
+      "Dry-run summary",
+      "Equivalent active-run detection/wait",
+      "Workflow dispatch",
+      "QA receipt recording",
+      "Continuity persistence",
+      "Documentary commit"
+    ],
+    "not_certified": [
+      "workflow_dispatch dispatch path",
+      "Gate dispatch/result wait",
+      "durable receipt correlation",
+      "Observer→Bridge→Actions→Runner end-to-end trace",
+      "idempotent replay without duplicate workflow"
+    ],
+    "global_certification": "OPEN",
+    "updated_utc": "2026-10-30T23:29:00Z"
   }
 }
