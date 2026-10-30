@@ -1,4 +1,14 @@
 
+## 2026-10-30 UTC — r360: Algebra114 AS-EXP-02 PASS_SCOPED en Lite
+
+- Fuente `qa/certification/algebra114_source.md`, fila AS-EXP-02: `(x+2)^2 = x^2+4x+4`; sin restricción de dominio adicional.
+- Test `tests/algebra114AsExp02.audit.test.ts`, blob `9d4cd2e8fb1e70ce37a3aa47ef05cbf78083cc04`: fixture original, salida simbólica normalizada y cinco sustituciones con oráculo aritmético independiente `x*x+4*x+4`; no se usa Algebrite para el expected.
+- SHA técnico exacto `c8c29d820e5bd16ab4df8a528bcea9b4a72f8acc`.
+- CI [41138509410](https://github.com/c2melendez/precision-lab-lite/actions/runs/41138509410) SUCCESS; cumulative [41138509481](https://github.com/c2melendez/precision-lab-lite/actions/runs/41138509481) SUCCESS (366 archivos, 2,259 passed, 8 expected fail, 34 todo; test focalizado explícito); H1d [41138509536](https://github.com/c2melendez/precision-lab-lite/actions/runs/41138509536) SUCCESS (22 E2E); Scientific UI [41138509494](https://github.com/c2melendez/precision-lab-lite/actions/runs/41138509494) SUCCESS (456 passed).
+- Runner push [41138509571](https://github.com/c2melendez/precision-lab-lite/actions/runs/41138509571) SUCCESS en el mismo SHA. Resolución canónica, checkout y huella correctos; dispatch, espera, registro y persistencia SKIPPED. No hubo gate dispatch real.
+- Aceptación `ALGEBRA114_AS_EXP_02_ACCEPTANCE_R360.md`. Solo Lite; no certifica EXP completa ni Plus. Global OPEN.
+- Siguiente: AS-EXP-03 con oráculo independiente `6*x*x+5*x-4`.
+
 ## 2026-10-30 UTC — r359: Algebra114 AS-EXP-01 PASS_SCOPED en Lite
 
 - Fuente qa/certification/algebra114_source.md, fila AS-EXP-01: (x+1)(x-1) = x^2-1.
