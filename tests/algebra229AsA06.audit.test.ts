@@ -21,7 +21,6 @@ describe("Algebra229 AS-A-06 expand (x+y+z)^2", () => {
   it("expands original (x+y+z)^2 and matches multinomial oracle at samples", () => {
     const original = parseExpression("(x+y+z)^2").algebrite;
     const expanded = expand(original);
-    const oracle = parseExpression("x^2+2*x*y+2*x*z+y^2+2*y*z+z^2").algebrite;
     const samples: Array<[number, number, number]> = [
       [0, 0, 0],
       [1, 0, 0],
@@ -38,9 +37,11 @@ describe("Algebra229 AS-A-06 expand (x+y+z)^2", () => {
           .replace(/\bx\b/g, "(" + xv + ")")
           .replace(/\by\b/g, "(" + yv + ")")
           .replace(/\bz\b/g, "(" + zv + ")");
-      const numeric = (expr: string) =>
-        compileNumeric(evaluate(subst(expr)), "__no_var__")(0);
-      expect(numeric(expanded)).toBeCloseTo(numeric(oracle), 9);
+      const actual = compileNumeric(evaluate(subst(expanded)), "__no_var__")(0);
+      // Independent arithmetic oracle: do not evaluate the expected
+      // multinomial with Algebrite, the same CAS used by the product path.
+      const expected = (xv + yv + zv) ** 2;
+      expect(actual).toBeCloseTo(expected, 9);
     }
   });
 });
