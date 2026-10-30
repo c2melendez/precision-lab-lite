@@ -722,3 +722,16 @@ SHA técnico Lite `c28091c`; gates cumulative/h1d/scientific-ui SUCCESS. Campañ
 - Lectura de `src/lib/bridge/lookup.server.ts` y `src/lib/bridge/core.server.ts`: el estado final de un ledger `RUNNING` se actualiza al consultar el lookup o el endpoint de estado con una clave propietaria válida y tras obtener el resultado de GitHub; no se encontró un proceso de fondo que sincronice todos los registros al terminar una Action.
 - Clasificación correcta para los registros de 40461232174, 40461306085 y 40463419492: `PENDING_OWNER_LOOKUP / REVIEW`, no `FAIL` de producto confirmado. No hay evidencia disponible de que una consulta autenticada posterior a la finalización se haya efectuado para esas claves. No se recrearán runs ni se sustituirá el hash de una clave para simular propiedad.
 - La reconciliación SQL anterior sigue mostrando grants `anon`/`authenticated` más amplios que el objetivo; no se ejecutó DDL ni cambio de permisos. El siguiente paso sigue siendo revisión/lectura autorizada y plan de mínimo privilegio. Global OPEN.
+
+
+## Enmienda de alcance — 2026-10-30: Compass independiente del motor matemático
+
+Por instrucción expresa del responsable, se separan los frentes que antes quedaron acoplados por prioridad documental:
+
+- **Objetivo principal de Precision Lab:** ampliar, verificar y certificar las capacidades del motor matemático, con sus matrices, contratos, oráculos y evidencia propios.
+- **API_GPT / GPT Actions:** proyecto de integración y evaluación de la API de solo lectura con GPTs/LLMs diferentes. Su propósito es consultar estado, planificar en modo lectura y recuperar evidencia; no es un requisito matemático ni una condición para aceptar resultados del motor.
+- **Cert Runner Compass / Bridge:** frente independiente de automatización de GitHub Actions. Conserva sus hallazgos y su estado OPEN/NO CERTIFICADO, pero deja de ser un bloqueo o prerrequisito para continuar la certificación matemática.
+
+Esta enmienda **revoca la dependencia de secuencia** introducida por las instrucciones históricas “Compass P0 antes de motores matemáticos” y “no reanudar matrices hasta satisfacer P0”. No declara resueltos los hallazgos de Compass, no cambia permisos, RLS, credenciales, datos ni despliegues, y no convierte ningún resultado parcial en PASS. Los hallazgos de acceso, idempotencia, procedencia y E2E permanecen en el backlog independiente de Compass.
+
+La continuación matemática debe seguir la matriz y el estado de cada repositorio, sin mezclar aceptación de API/Bridge con aceptación del motor. Mantener global_certification: OPEN hasta cumplir los criterios matemáticos globales. No repetir pruebas ni workflows verdes sin cambio justificado de precondición.
