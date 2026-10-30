@@ -105,3 +105,13 @@ Next: create a deterministic read-only fixture validator for exact original IDs/
 - SHA técnico `4341955335d6898c4979063520432f82a6d129ba`; CI 41142010457, cumulative 41142010406 y H1d 41142010389 SUCCESS. Runner 41142010410 SUCCESS push/no-dispatch. Scientific UI 41142010385 seguía IN_PROGRESS como evidencia complementaria.
 - Aceptación acotada: `ALGEBRA114_AS_EXP_05_ACCEPTANCE_R364.md`. Solo Lite; global OPEN.
 - Siguiente: AS-EXP-06.
+
+## Reconciliación de ejecución r365 — AS-EXP-02 a AS-EXP-06
+
+- AS-EXP-02: PASS_SCOPED, SHA `c8c29d820e5bd16ab4df8a528bcea9b4a72f8acc`, aceptación `ALGEBRA114_AS_EXP_02_ACCEPTANCE_R360.md`.
+- AS-EXP-03: PASS_SCOPED, SHA `0a85b448298df0691b043269648d327d0a7aec0b`, aceptación `ALGEBRA114_AS_EXP_03_ACCEPTANCE_R361.md`.
+- AS-EXP-04: PASS_SCOPED, SHA `933fad5c3e55db06db9de6ff21e02cd96070da0f`, aceptación `ALGEBRA114_AS_EXP_04_ACCEPTANCE_R362.md`.
+- AS-EXP-05: PASS_SCOPED, SHA `4341955335d6898c4979063520432f82a6d129ba`, aceptación `ALGEBRA114_AS_EXP_05_ACCEPTANCE_R364.md`.
+- AS-EXP-06: PASS_SCOPED, SHA `5901316519ca98d0810ac0f228c91abe6380ee7f`, aceptación `ALGEBRA114_AS_EXP_06_ACCEPTANCE_R365.md`. Oráculo numérico independiente `(x+y)^3), cinco sustituciones; CI 41142684332, cumulative 41142684039 y H1d 41142684020 SUCCESS.
+- Próximo caso: AS-EXP-07, `(2x-3)^3), con expected calculado por aritmética independiente `8*x*x*x - 36*x*x + 54*x - 27`. No atribuir aceptación a Plus ni a toda la matriz Algebra114.
+- Certification Runner Lite [41142684118](https://github.com/c2melendez/precision-lab-lite/actions/runs/41142684118) SUCCESS push/no-dispatch; dispatch/receipt/persistencia SKIPPED. Global OPEN.
