@@ -7,7 +7,7 @@ import source from "../qa/certification/algebra114_source.md?raw";
 
 describe("Algebra114 AS-SIM-05 cancellation preserves excluded point", () => {
   it("simplifies to x+1 while retaining the original restriction x != 1", () => {
-    expect(source).toContain("| AS-SIM-05 | N2 | \\({x^{2}-1}\\over{x-1}\\) | \\(x+1\\), con \\(x\\neq1\\) |");
+    expect(source).toContain("| AS-SIM-05 | N2 | \\(\\frac{x^{2}-1}{x-1}\\) | \\(x+1\\), con \\(x\\neq1\\) |");
 
     const input = parseExpression("(x^2-1)/(x-1)").algebrite;
     const conditions = extractDomainConditions(input);
