@@ -122,3 +122,12 @@ Referencia de suite/handoff recibido en la sesión: registro de Fase 1 y plan v1
 - **Claves:** las expuestas previamente se consideran comprometidas y deben rotarse por el responsable. No escribir ni repetir valores reales.
 
 La suite v1.1 y el registro de Fase 1 recibidos el 2026-10-27 UTC son la base de este corte. Los registros previos permanecen como historia; este addendum prevalece para el estado actual de Compass.
+
+
+## Enmienda de alcance 2026-10-30 — prioridad independiente
+
+La prioridad P0 de este handoff aplica exclusivamente a la certificación de la ruta de conexión Push → API → Bridge → Runner → resultado verificable. **No bloquea ni condiciona la certificación del motor matemático.** La instrucción histórica que pausaba las matrices matemáticas hasta completar Fase 8 queda sustituida por esta enmienda del responsable.
+
+API_GPT (precision-lab-readonly-api) sigue siendo GET-only y sirve para evaluar GPT Actions y consultas entre distintos LLMs. Compass/Bridge sigue siendo un ejecutor separado, con su propio backlog de acceso, idempotencia y E2E. Ningún estado o PASS de estos componentes equivale a certificación matemática, y sus bloqueos no se trasladan al motor.
+
+No se resuelven por esta enmienda los hallazgos técnicos de Compass ni se autorizan POST, dispatch, DDL, cambios de permisos/RLS, credenciales o despliegues. Esos trabajos siguen sujetos a sus aprobaciones y controles independientes.
