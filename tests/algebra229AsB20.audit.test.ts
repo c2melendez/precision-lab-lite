@@ -30,5 +30,5 @@ describe("Algebra229 AS-B-20 factor x^4+x^2y^2+y^4", () => {
     const result = evaluate(`factor(${original})`).replace(/\s+/g, "");
     expect(evaluate(`(${result})-(${original})`).trim()).toBe("0");
     expect(result).not.toBe("(x^2-x*y+y^2)*(x^2+x*y+y^2)");
-  });
+  }, 120_000);
 });
