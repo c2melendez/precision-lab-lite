@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 336,
+  "revision": 337,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "21c7aae3ec445f864dc13f625bc8ce0c2f6f4ed1",
-  "baseline_case": "ALGEBRA229-AS-B-29-TEST-FIRST",
+  "technical_baseline_sha": "30b0b03120faa5252dbb7b090c81d37a8c16452a",
+  "baseline_case": "ALGEBRA114-AS-SIM-01",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "MATH-ENGINE-RESUME-RECONCILIATION",
-    "status": "REVIEW",
-    "previous_id": "COMPASS-P0-ACCESS-REVIEW",
-    "action": "Compass P0 is an independent API_GPT/Bridge workstream and is no longer a prerequisite for mathematical certification. Resume the mathematical engine from the repository's own open matrix and evidence. Lite: reanudar la siguiente matriz matemática propia después de ALGEBRA229-AS-B-29 PASS_SCOPED; reconciliar primero el alcance Lite y la evidencia existente (incluida la paridad H2/EN-SG cuando corresponda). No esperar a Compass, no inventar equivalencia con EDCX-B6 Plus y no repetir AS-B-29. Keep Compass findings OPEN in its separate backlog; do not claim global certification or repeat green workflows.",
-    "updated_utc": "2026-10-30T05:16:58Z"
+    "id": "ALGEBRA114-AS-SIM-05-TEST-FIRST",
+    "status": "READY",
+    "previous_id": "ALGEBRA114-AS-SIM-01",
+    "action": "Implement a test-first audit for AS-SIM-05: (x^2-1)/(x-1) simplifies to x+1 only with the original restriction x != 1 preserved. First inspect the parser/evaluator's domain metadata and existing simplification adapters. Do not accept cancellation if the excluded point is silently lost. Use an independent numeric/algebraic oracle and preserve the source row. Lite-only evidence; do not import Plus results. Global certification remains OPEN.",
+    "updated_utc": "2026-10-30T22:20:00Z"
   },
   "blockers": [
     {
@@ -76,6 +76,11 @@
       "status": "BLOCKED",
       "kind": "capability",
       "detail": "VC-LG-01..25 sin canal/endpoint."
+    },
+    {
+      "id": "ALGEBRA114-AS-SIM-01",
+      "status": "PASS_SCOPED",
+      "detail": "r358: Lite only. Source row AS-SIM-01 preserved from qa/certification/algebra114_source.md. Test tests/algebra114AsSim01.audit.test.ts blob 0af3d63cf797d0acfef92b3af664ad7c2616ea40 uses parser/evaluator output and independent JavaScript arithmetic oracle for five (x,y) substitutions; it explicitly checks normalized symbolic output 2*x+7*y. CI 41135927030 SUCCESS, cumulative 41135926842 SUCCESS (365 files, 2258 passed, 8 expected fail, 34 todo), H1d 41135926938 SUCCESS, all on exact SHA 30b0b03120faa5252dbb7b090c81d37a8c16452a. Scientific UI 41135926885 was triggered but not part of this scoped Algebra114 acceptance; its status is tracked separately. No Plus parity claim."
     }
   ],
   "h2_en_sg_evidence_audit_r326": {
@@ -112,7 +117,7 @@
     "product_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
     "max_expression_length": 12000
   },
-  "ledger_note": "r358: H2/EN-SG Lite evidence reconciled without importing Plus results. R326 index lists scoped architecture 01-05/08, MathLive display macros 06/07, client engine 23-27, length 21; 28 and 32 remain out of scope; remaining rows are partial/unclassified; aggregate PARTIAL and global OPEN. Next math block is Lite's own Algebra114 AS-SIM-01 test-first, now under CI on technical SHA 30b0b031; do not infer PASS until relevant gates/logs complete.",
+  "ledger_note": "r358: Lite AS-SIM-01 PASS_SCOPED on exact technical SHA 30b0b03120faa5252dbb7b090c81d37a8c16452a. Independent JS arithmetic oracle, five substitutions; CI 41135927030, cumulative 41135926842 (2258 passed), H1d 41135926938 SUCCESS. Lite H2/EN-SG evidence remains separately reconciled as PARTIAL (r358); no Plus EDCX equivalence inferred. Next: AS-SIM-05 test-first, preserve x!=1 domain restriction. Global OPEN.",
   "prose_only_paths": [
     "README.md",
     "qa/certification/ALGEBRA229_PREPARATION.md",
