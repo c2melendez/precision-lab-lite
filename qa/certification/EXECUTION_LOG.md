@@ -512,3 +512,12 @@ La continuación matemática debe seguir la matriz y el estado de cada repositor
 **Siguiente paso matemático vigente:** después de ALGEBRA229-AS-B-29 PASS_SCOPED, reconciliar el siguiente bloque de la matriz matemática propia de Lite y su evidencia H2/EN-SG aplicable; seleccionar el caso test-first concreto desde las matrices existentes. No esperar Compass, no trasladar automáticamente estados EDCX-B6 de Plus y no repetir AS-B-29.
 
 Compass P0 permanece en su propio backlog de integración/seguridad y no es condición de entrada para esta tarea matemática. Certificación global OPEN.
+
+
+## 2026-10-30 UTC — r358: Algebra114 AS-SIM-01 PASS_SCOPED (Lite)
+
+- SHA técnico exacto: `30b0b03120faa5252dbb7b090c81d37a8c16452a`.
+- Test `tests/algebra114AsSim01.audit.test.ts` (blob `0af3d63cf797d0acfef92b3af664ad7c2616ea40`) conserva la fuente y compara `3x+2y-x+5y` con `2x+7y` mediante salida simbólica y cinco sustituciones con oráculo aritmético JavaScript independiente.
+- CI [41135927030](https://github.com/c2melendez/precision-lab-lite/actions/runs/41135927030), cumulative [41135926842](https://github.com/c2melendez/precision-lab-lite/actions/runs/41135926842) y H1d [41135926938](https://github.com/c2melendez/precision-lab-lite/actions/runs/41135926938): SUCCESS en el mismo SHA. Cumulative: 365 archivos, 2.258 passed, 8 expected fail, 34 todo.
+- Aceptación `qa/certification/ALGEBRA114_AS_SIM_01_ACCEPTANCE_R358.md`. Solo PASS_SCOPED Lite; global OPEN.
+- Siguiente: AS-SIM-05 test-first; condición de dominio `x != 1` obligatoria.
