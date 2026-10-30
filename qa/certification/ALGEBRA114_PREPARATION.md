@@ -61,3 +61,11 @@ Next: create a deterministic read-only fixture validator for exact original IDs/
 - SHA técnico `4abfe22293d5088e40d27a72568d5f4e93197f10`: CI 41136809596, cumulative 41136809590 y H1d 41136809678 SUCCESS. Cumulative: 366 archivos, 2.259 passed, 8 expected fail, 34 todo.
 - Aceptación: `ALGEBRA114_AS_SIM_05_ACCEPTANCE_R358.md`. PASS_SCOPED Lite; no certifica Algebra114 completa.
 - Siguiente: auditar los oráculos de AS-EXP-01..10, empezando por AS-EXP-01; no confiar en comparación CAS-vs-CAS.
+
+## 2026-10-30 — r359: AS-EXP-01 PASS_SCOPED
+
+- Fuente algebra114_source.md, fila AS-EXP-01: (x+1)(x-1) = x^2-1.
+- Test tests/algebra114AsExp01.audit.test.ts, blob 373593e7216e1d3e710963bb7431cc96a208eca9: confirma fixture original, salida simbólica normalizada x^2-1 y cinco sustituciones x=-3,-1,0,1,4 con oráculo JavaScript independiente x*x-1.
+- SHA técnico a48496d5da441589c3ca5e231761654dc5566b6b; CI 41137239350, cumulative 41137239432 (366 files / 2259 passed / 8 expected fail / 34 todo), H1d 41137239316 (22 E2E passed) y Runner 41137239337, todos SUCCESS en el mismo SHA. Runner dispatch/persistencia SKIPPED.
+- Aceptación ALGEBRA114_AS_EXP_01_ACCEPTANCE_R359.md. No extrapolar a las otras nueve filas EXP ni a Plus.
+- Siguiente: AS-EXP-02; auditar restricciones de dominio y oráculo independiente. Global OPEN.
