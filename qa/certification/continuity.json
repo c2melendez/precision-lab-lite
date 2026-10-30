@@ -207,5 +207,37 @@
       "SECURITY-S25 ACCEPTED_BILATERAL is a separate acceptance and does not close the H2 EN-SG audit."
     ],
     "note": "PARTIAL remains the correct aggregate classification. The empty confirmed_gap array means no presently confirmed GAP in the reconciled rows; it does not mean all 32 rows passed. No Lite/Plus equivalence is inferred."
+  },
+  "runner_certification_r360": {
+    "status": "PASS_SCOPED_PUSH_ONLY",
+    "runner_workflow": ".github/workflows/certification-runner.yml",
+    "canonical_branch": "qa/syntax-audit-in625-a1",
+    "technical_sha": "c8c29d820e5bd16ab4df8a528bcea9b4a72f8acc",
+    "run_id": 41138509571,
+    "run_url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/41138509571",
+    "event": "push",
+    "conclusion": "success",
+    "verified_steps": [
+      "Resolve canonical branch from default-branch README",
+      "Checkout canonical branch",
+      "Record base commit",
+      "Read-only planner fingerprint for selected gate",
+      "Push summary"
+    ],
+    "skipped_steps": [
+      "Gate policy and workflow resolution",
+      "Dry-run summary",
+      "Detect an equivalent active gate run before dispatch",
+      "Wait for the equivalent active gate run",
+      "Dispatch gate workflow and wait for its result",
+      "Record result in QA (dispatch runs only)",
+      "Persist execution observation in continuity records",
+      "Commit runner and documentary records"
+    ],
+    "decision": "PASS_SCOPED for push/no-dispatch only; workflow_dispatch dispatch chain, durable receipt and replay remain unverified and are not certified.",
+    "companion_plus_run": 41136660038,
+    "companion_plus_sha": "218d682848a03a000930e2028f057563847381f3",
+    "global_certification": "OPEN",
+    "updated_utc": "2026-10-30T23:55:00Z"
   }
 }
