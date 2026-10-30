@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 339,
+  "revision": 340,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "a48496d5da441589c3ca5e231761654dc5566b6b",
-  "baseline_case": "ALGEBRA114-AS-EXP-01",
+  "technical_baseline_sha": "c8c29d820e5bd16ab4df8a528bcea9b4a72f8acc",
+  "baseline_case": "ALGEBRA114-AS-EXP-02",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-EXP-02-ORACLE-AUDIT",
+    "id": "ALGEBRA114-AS-EXP-03-ORACLE-AUDIT",
     "status": "READY",
-    "previous_id": "ALGEBRA114-AS-EXP-01-ORACLE-AUDIT",
-    "action": "Audit AS-EXP-02 against the preserved Algebra114 source row and current Lite expansion semantics. Inspect the original denominator/domain restrictions and replace any Algebrite-vs-Algebrite expected value with an independent arithmetic oracle plus explicit normalized symbolic output. Proceed one row at a time; do not infer acceptance for other expansion rows.",
-    "updated_utc": "2026-10-30T23:20:00Z"
+    "previous_id": "ALGEBRA114-AS-EXP-02-ORACLE-AUDIT",
+    "action": "Auditar AS-EXP-03 contra la fila original preservada de Algebra114. Verificar expansión de (2x-1)(3x+4) = 6x^2+5x-4, sustituir cualquier expected CAS-vs-CAS por oráculo aritmético JavaScript independiente 6*x*x+5*x-4, y comprobar salida simbólica normalizada. Ejecutar una fila por vez; no inferir aceptación de otras filas EXP.",
+    "updated_utc": "2026-10-30T23:45:00Z"
   },
   "blockers": [
     {
@@ -91,6 +91,11 @@
       "id": "ALGEBRA114-AS-EXP-01",
       "status": "PASS_SCOPED",
       "detail": "r359: Lite only. Source row AS-EXP-01: (x+1)(x-1)=x^2-1. Test tests/algebra114AsExp01.audit.test.ts blob 373593e7216e1d3e710963bb7431cc96a208eca9 uses exact source fixture, normalized symbolic output x^2-1 and five substitutions x=[-3,-1,0,1,4] against independent JavaScript arithmetic x*x-1; Algebrite expands/evaluates the product but does not calculate expected values. Exact SHA a48496d5da441589c3ca5e231761654dc5566b6b. CI 41137239350 SUCCESS (frontend job: typecheck, unit/parity, build, dependency audit), cumulative 41137239432 SUCCESS (366 files, 2259 passed, 8 expected fail, 34 todo; test included), H1d 41137239316 SUCCESS (22 E2E passed), Runner 41137239337 SUCCESS (dispatch/persist skipped), all same SHA. No Plus parity claim."
+    },
+    {
+      "id": "ALGEBRA114-AS-EXP-02",
+      "status": "PASS_SCOPED",
+      "detail": "Lite-only r360. SHA c8c29d820e5bd16ab4df8a528bcea9b4a72f8acc; CI 41138509410, cumulative 41138509481 (366 files/2259 passed/8 expected fail/34 todo; test explícito), H1d 41138509536 (22 passed), Scientific UI 41138509494 (456 passed), Runner push 41138509571 SUCCESS; Runner dispatch/persistencia SKIPPED. Acceptance ALGEBRA114_AS_EXP_02_ACCEPTANCE_R360.md."
     }
   ],
   "h2_en_sg_evidence_audit_r326": {
@@ -127,7 +132,7 @@
     "product_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
     "max_expression_length": 12000
   },
-  "ledger_note": "r359: Lite Algebra114 AS-EXP-01 PASS_SCOPED on exact SHA a48496d5da441589c3ca5e231761654dc5566b6b. Exact source row (x+1)(x-1)=x^2-1; test uses normalized symbolic output and five independent JS arithmetic substitutions. CI 41137239350, cumulative 41137239432, H1d 41137239316, Runner 41137239337 all SUCCESS on same SHA. Next AS-EXP-02 oracle audit; H2/EN-SG remains PARTIAL; global OPEN.",
+  "ledger_note": "r359: Lite Algebra114 AS-EXP-01 PASS_SCOPED on exact SHA a48496d5da441589c3ca5e231761654dc5566b6b. Exact source row (x+1)(x-1)=x^2-1; test uses normalized symbolic output and five independent JS arithmetic substitutions. CI 41137239350, cumulative 41137239432, H1d 41137239316, Runner 41137239337 all SUCCESS on same SHA. Next AS-EXP-02 oracle audit; H2/EN-SG remains PARTIAL; global OPEN. r360: AS-EXP-02 PASS_SCOPED Lite-only on SHA c8c29d820e5bd16ab4df8a528bcea9b4a72f8acc; independent arithmetic oracle and exact symbolic normalization. CI 41138509410, cumulative 41138509481 (test explicit; 2259 passed), H1d 41138509536 (22 passed), Scientific UI 41138509494 (456 passed), Runner push 41138509571 SUCCESS; dispatch/persistence SKIPPED. Next AS-EXP-03. Global OPEN.",
   "prose_only_paths": [
     "README.md",
     "qa/certification/ALGEBRA229_PREPARATION.md",
