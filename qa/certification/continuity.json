@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 344,
+  "revision": 345,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "4341955335d6898c4979063520432f82a6d129ba",
@@ -40,10 +40,10 @@
   },
   "next_action": {
     "id": "ALGEBRA114-AS-EXP-07-ORACLE-AUDIT",
-    "status": "READY",
+    "status": "IN_PROGRESS",
     "previous_id": "ALGEBRA114-AS-EXP-06-ORACLE-AUDIT",
-    "action": "Iniciar AS-EXP-07 desde la fila fuente (2x-3)^3 = 8x^3-36x^2+54x-27. Auditar el test existente; exigir fixture exacto, expansión simbólica equivalente y cinco sustituciones con oráculo aritmético independiente 8*x^3-36*x^2+54*x-27. No usar Algebrite para el expected. Aceptar solo con CI, cumulative y H1d SUCCESS en el mismo SHA; Runner push/no-dispatch es evidencia de su propio alcance, no dispatch.",
-    "updated_utc": "2026-10-30T23:09:14Z"
+    "action": "AS-EXP-07 test-first iniciado en SHA c791540390b2e5a3c27f11b7a9a444ad04012a20; test blob 06f362c0aeced0100b266c7dcf6465c06324f8b1. Fixture exacto de algebra114_source.md; comparación simbólica por multiconjunto de términos y cinco sustituciones contra oráculo JS independiente 8*x^3-36*x^2+54*x-27. Verificar CI 41144150978, cumulative 41144150867 y H1d 41144150866 en el mismo SHA. Scientific UI 41144150819 es complementario. Runner push 41144150833 SUCCESS/no-dispatch; no aceptar AS-EXP-07 hasta gates obligatorios SUCCESS.",
+    "updated_utc": "2026-10-30T23:23:15Z"
   },
   "blockers": [
     {
@@ -377,5 +377,63 @@
     ],
     "global_certification": "OPEN",
     "updated_utc": "2026-10-30T23:09:14Z"
+  },
+  "active_execution_r366": {
+    "case": "ALGEBRA114-AS-EXP-07",
+    "sha": "c791540390b2e5a3c27f11b7a9a444ad04012a20",
+    "test_blob": "06f362c0aeced0100b266c7dcf6465c06324f8b1",
+    "runs": {
+      "ci": 41144150978,
+      "cumulative": 41144150867,
+      "h1d": 41144150866,
+      "scientific_ui": 41144150819,
+      "runner": 41144150833
+    },
+    "status": "GATES_IN_PROGRESS",
+    "acceptance": null,
+    "note": "Existing CAS-vs-CAS expected-value test replaced by exact source fixture, symbolic term multiset and independent JavaScript arithmetic oracle."
+  },
+  "runner_certification_r366": {
+    "status": "PASS_SCOPED_PUSH_ONLY",
+    "canonical_branch": "qa/syntax-audit-in625-a1",
+    "lite": {
+      "run_id": 41144150833,
+      "run_url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150833",
+      "sha": "c791540390b2e5a3c27f11b7a9a444ad04012a20",
+      "event": "push",
+      "conclusion": "success"
+    },
+    "plus": {
+      "run_id": 41136660038,
+      "run_url": "https://github.com/c2melendez/precision-lab-plus/actions/runs/41136660038",
+      "sha": "218d682848a03a000930e2028f057563847381f3",
+      "event": "push",
+      "conclusion": "success"
+    },
+    "verified_steps": [
+      "Resolve canonical branch from default-branch README",
+      "Checkout canonical branch",
+      "Record base commit",
+      "Read-only planner fingerprint",
+      "Push summary"
+    ],
+    "skipped_steps": [
+      "Gate policy/workflow resolution",
+      "Dry-run summary",
+      "Equivalent active-run detection/wait",
+      "Workflow dispatch",
+      "QA receipt recording",
+      "Continuity persistence",
+      "Documentary commit"
+    ],
+    "not_certified": [
+      "workflow_dispatch dispatch path",
+      "Gate dispatch/result wait",
+      "durable receipt correlation",
+      "Observer→Bridge→Actions→Runner end-to-end trace",
+      "idempotent replay without duplicate workflow"
+    ],
+    "global_certification": "OPEN",
+    "updated_utc": "2026-10-30T23:23:15Z"
   }
 }
