@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 345,
+  "revision": 346,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "4341955335d6898c4979063520432f82a6d129ba",
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-EXP-07-ORACLE-AUDIT",
-    "status": "IN_PROGRESS",
-    "previous_id": "ALGEBRA114-AS-EXP-06-ORACLE-AUDIT",
-    "action": "AS-EXP-07 test-first iniciado en SHA c791540390b2e5a3c27f11b7a9a444ad04012a20; test blob 06f362c0aeced0100b266c7dcf6465c06324f8b1. Fixture exacto de algebra114_source.md; comparación simbólica por multiconjunto de términos y cinco sustituciones contra oráculo JS independiente 8*x^3-36*x^2+54*x-27. Verificar CI 41144150978, cumulative 41144150867 y H1d 41144150866 en el mismo SHA. Scientific UI 41144150819 es complementario. Runner push 41144150833 SUCCESS/no-dispatch; no aceptar AS-EXP-07 hasta gates obligatorios SUCCESS.",
-    "updated_utc": "2026-10-30T23:23:15Z"
+    "id": "ALGEBRA114-AS-EXP-08-ORACLE-AUDIT",
+    "status": "READY",
+    "previous_id": "ALGEBRA114-AS-EXP-07-ORACLE-AUDIT",
+    "action": "Iniciar AS-EXP-08 desde la fila fuente (x+2)(x-3)(x+1) = x^3-7x-6. Auditar test existente; exigir fixture exacto, expansión simbólica equivalente y cinco sustituciones con oráculo aritmético JS independiente (x+2)*(x-3)*(x+1). No usar Algebrite para el expected. Aceptar solo con CI, cumulative y H1d SUCCESS en el mismo SHA; Scientific UI complementario.",
+    "updated_utc": "2026-10-30T23:25:12Z"
   },
   "blockers": [
     {
@@ -116,6 +116,11 @@
       "id": "ALGEBRA114-AS-EXP-06",
       "status": "PASS_SCOPED",
       "detail": "Lite-only r365. SHA 5901316519ca98d0810ac0f228c91abe6380ee7f; test blob 75f74428c431f5a04b60a4580e7ade8ac70cff86. Exact source fixture; sorted exact monomial multiset for commutative symbolic expansion; five substitutions checked against independent JS oracle (x+y)^3. CI 41142684332, cumulative 41142684039 (366 files, 2259 passed, 8 expected fail, 34 todo; focal test explicitly passed), H1d 41142684020 (22 E2E) SUCCESS. Runner 41142684118 SUCCESS push/no-dispatch. Scientific UI 41142683997 remained in progress and is complementary, not required. Acceptance ALGEBRA114_AS_EXP_06_ACCEPTANCE_R365.md. No Plus parity claim."
+    },
+    {
+      "id": "ALGEBRA114-AS-EXP-07",
+      "status": "PASS_SCOPED",
+      "detail": "Lite-only r366. SHA c791540390b2e5a3c27f11b7a9a444ad04012a20; test blob 06f362c0aeced0100b266c7dcf6465c06324f8b1. Replaced CAS-vs-CAS oracle with exact source fixture, sorted signed symbolic terms and five substitutions x=[-3,-1,0,2,5] against independent JS arithmetic 8*x^3-36*x^2+54*x-27. CI 41144150978, cumulative 41144150867 (366 files, 2259 passed, 8 expected fail, 34 todo; focal test explicitly passed), H1d 41144150866 (22 E2E) SUCCESS. Runner 41144150833 SUCCESS push/no-dispatch. Scientific UI 41144150819 remained in progress and is complementary. Acceptance ALGEBRA114_AS_EXP_07_ACCEPTANCE_R366.md. No Plus parity claim."
     }
   ],
   "h2_en_sg_evidence_audit_r326": {
@@ -389,9 +394,9 @@
       "scientific_ui": 41144150819,
       "runner": 41144150833
     },
-    "status": "GATES_IN_PROGRESS",
-    "acceptance": null,
-    "note": "Existing CAS-vs-CAS expected-value test replaced by exact source fixture, symbolic term multiset and independent JavaScript arithmetic oracle."
+    "status": "PASS_SCOPED",
+    "acceptance": "qa/certification/ALGEBRA114_AS_EXP_07_ACCEPTANCE_R366.md",
+    "note": "Scientific UI remains complementary/in progress at the acceptance cut; not required for Algebra114 scoped acceptance."
   },
   "runner_certification_r366": {
     "status": "PASS_SCOPED_PUSH_ONLY",
