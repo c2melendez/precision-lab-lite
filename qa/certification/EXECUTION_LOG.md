@@ -583,3 +583,14 @@ Compass P0 permanece en su propio backlog de integración/seguridad y no es cond
 - CI [41136809596](https://github.com/c2melendez/precision-lab-lite/actions/runs/41136809596), cumulative [41136809590](https://github.com/c2melendez/precision-lab-lite/actions/runs/41136809590) y H1d [41136809678](https://github.com/c2melendez/precision-lab-lite/actions/runs/41136809678): SUCCESS en el mismo SHA. Cumulative: 366 archivos, 2.259 passed, 8 expected fail, 34 todo.
 - Aceptación `qa/certification/ALGEBRA114_AS_SIM_05_ACCEPTANCE_R358.md`. Solo PASS_SCOPED Lite; global OPEN.
 - Siguiente: revisar independencia de oráculos de AS-EXP-01..10, comenzando por AS-EXP-01.
+
+## 2026-10-30 UTC — r365: Algebra114 AS-EXP-06 PASS_SCOPED y reconciliación Runner Lite
+
+- AS-EXP-06: SHA técnico `5901316519ca98d0810ac0f228c91abe6380ee7f`; test `tests/algebra114AsExp06.audit.test.ts`, blob `75f74428c431f5a04b60a4580e7ade8ac70cff86`.
+- La prueba conserva el fixture de `algebra114_source.md`, compara el multiconjunto exacto de monomios de la expansión y cinco sustituciones mediante el oráculo JavaScript independiente `(x+y)^3`; no utiliza Algebrite para generar expected.
+- CI [41142684332](https://github.com/c2melendez/precision-lab-lite/actions/runs/41142684332), cumulative [41142684039](https://github.com/c2melendez/precision-lab-lite/actions/runs/41142684039) y H1d [41142684020](https://github.com/c2melendez/precision-lab-lite/actions/runs/41142684020): SUCCESS en el mismo SHA. Cumulative: 366 archivos, 2,259 passed, 8 expected fail, 34 todo; test focalizado PASSED. H1d: 22 E2E passed.
+- Runner push [41142684118](https://github.com/c2melendez/precision-lab-lite/actions/runs/41142684118) SUCCESS en el mismo SHA. Rama canónica, checkout, BASE_SHA, fingerprint y Push summary SUCCESS. Gate policy, dry-run, detección/espera, dispatch, registro, persistencia y commit documental SKIPPED.
+- Scientific UI [41142683997](https://github.com/c2melendez/precision-lab-lite/actions/runs/41142683997) seguía IN_PROGRESS en el corte; evidencia complementaria, no gate de aceptación algebraica.
+- Aceptación `ALGEBRA114_AS_EXP_06_ACCEPTANCE_R365.md`. Solo Lite; no implica paridad Plus ni cierre Algebra114/global.
+- Reconciliación Runner: PASS_SCOPED_PUSH_ONLY; no certifica workflow_dispatch, gate dispatch, recibo durable ni replay idempotente. Global OPEN.
+- Siguiente: AS-EXP-07 test-first, con oráculo aritmético independiente para `(2x-3)^3`. Sin merge, deploy, cambio de producción ni despacho real.
