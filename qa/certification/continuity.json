@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 334,
+  "revision": 335,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "21c7aae3ec445f864dc13f625bc8ce0c2f6f4ed1",
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "COMPASS-P0-ACCESS-REVIEW",
-    "status": "WAIT",
-    "previous_id": "ALGEBRA229-AS-B-29-VERIFY",
-    "action": "AS-B-29 is PASS_SCOPED; do not rerun it. Compass P0 remains open: the three historic owner lookups are blocked because the associated credential is revoked. Review qa/certification/COMPASS_ACCESS_REVIEW_2026-10-29.md and obtain an approved recovery route before continuing. No database changes or workflow dispatches. Resume the next mathematical matrix only after P0 exit criteria pass.",
-    "updated_utc": "2026-10-29T05:04:00Z"
+    "id": "MATH-ENGINE-RESUME-RECONCILIATION",
+    "status": "REVIEW",
+    "previous_id": "COMPASS-P0-ACCESS-REVIEW",
+    "action": "Compass P0 is an independent API_GPT/Bridge workstream and is no longer a prerequisite for mathematical certification. Resume the mathematical engine from the repository's own open matrix and evidence. Lite: reanudar la siguiente matriz matemática propia después de ALGEBRA229-AS-B-29 PASS_SCOPED; reconciliar primero el alcance Lite y la evidencia existente (incluida la paridad H2/EN-SG cuando corresponda). No esperar a Compass, no inventar equivalencia con EDCX-B6 Plus y no repetir AS-B-29. Keep Compass findings OPEN in its separate backlog; do not claim global certification or repeat green workflows.",
+    "updated_utc": "2026-10-30T05:16:58Z"
   },
   "blockers": [
     {
@@ -112,7 +112,7 @@
     "product_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
     "max_expression_length": 12000
   },
-  "ledger_note": "r334: AS-B-29 PASS_SCOPED; Compass P0 access review is the canonical next action. Historical owner lookup awaits approved recovery; see qa/certification/COMPASS_ACCESS_REVIEW_2026-10-29.md. No POST, dispatch or database changes. Global OPEN.",
+  "ledger_note": "r335: scope amendment 2026-10-30. Compass/API_GPT/Bridge remains an independent OPEN workstream; its P0 no longer blocks mathematical engine certification. Next action is MATH-ENGINE-RESUME-RECONCILIATION. Lite: reanudar la siguiente matriz matemática propia después de ALGEBRA229-AS-B-29 PASS_SCOPED; reconciliar primero el alcance Lite y la evidencia existente (incluida la paridad H2/EN-SG cuando corresponda). No esperar a Compass, no inventar equivalencia con EDCX-B6 Plus y no repetir AS-B-29. Global certification remains OPEN; no product code, tests, Actions, permissions, RLS, credentials, data or deployments changed.",
   "prose_only_paths": [
     "README.md",
     "qa/certification/ALGEBRA229_PREPARATION.md",
@@ -127,11 +127,13 @@
     "qa/certification/H2_EN_SG_LITE_MATHLIVE_MACROS_R325.md",
     "qa/certification/H2_EN_SG_LITE_PARITY_AUDIT_R323.md",
     "qa/certification/H2_EN_SG_LITE_SCOPE_R326.md",
+    "qa/certification/HANDOFF_GITHUB_ALTERNATIVE_CONNECTION.md",
     "qa/certification/R326_CI_TRIGGER.md",
     "qa/certification/R326_expression_length.patch",
     "qa/certification/README.md",
     "qa/certification/RECOVERY_ALGEBRITE_R324.md",
     "qa/certification/ROADMAP_CONTINUITY.md",
+    "qa/certification/ROADMAP_GITHUB_ALTERNATIVE_CONNECTION.md",
     "qa/certification/continuity.json"
   ]
 }
