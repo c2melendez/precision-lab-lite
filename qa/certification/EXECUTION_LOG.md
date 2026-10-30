@@ -521,3 +521,12 @@ Compass P0 permanece en su propio backlog de integración/seguridad y no es cond
 - CI [41135927030](https://github.com/c2melendez/precision-lab-lite/actions/runs/41135927030), cumulative [41135926842](https://github.com/c2melendez/precision-lab-lite/actions/runs/41135926842) y H1d [41135926938](https://github.com/c2melendez/precision-lab-lite/actions/runs/41135926938): SUCCESS en el mismo SHA. Cumulative: 365 archivos, 2.258 passed, 8 expected fail, 34 todo.
 - Aceptación `qa/certification/ALGEBRA114_AS_SIM_01_ACCEPTANCE_R358.md`. Solo PASS_SCOPED Lite; global OPEN.
 - Siguiente: AS-SIM-05 test-first; condición de dominio `x != 1` obligatoria.
+
+
+## 2026-10-30 UTC — r358: Algebra114 AS-SIM-05 PASS_SCOPED (Lite)
+
+- SHA técnico exacto: `4abfe22293d5088e40d27a72568d5f4e93197f10`.
+- Test `tests/algebra114AsSim05.audit.test.ts` (blob `d3ad970124d9f8362ae5ea0c4381dd334bfe43ea`) conserva `x-1 != 0`, comprueba cinco valores permitidos con oráculo JS independiente y verifica rechazo en el punto excluido x=1.
+- CI [41136809596](https://github.com/c2melendez/precision-lab-lite/actions/runs/41136809596), cumulative [41136809590](https://github.com/c2melendez/precision-lab-lite/actions/runs/41136809590) y H1d [41136809678](https://github.com/c2melendez/precision-lab-lite/actions/runs/41136809678): SUCCESS en el mismo SHA. Cumulative: 366 archivos, 2.259 passed, 8 expected fail, 34 todo.
+- Aceptación `qa/certification/ALGEBRA114_AS_SIM_05_ACCEPTANCE_R358.md`. Solo PASS_SCOPED Lite; global OPEN.
+- Siguiente: revisar independencia de oráculos de AS-EXP-01..10, comenzando por AS-EXP-01.
