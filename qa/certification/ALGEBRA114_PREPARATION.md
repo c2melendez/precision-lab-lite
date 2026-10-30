@@ -43,3 +43,12 @@ Acción independiente útil: inventariar la procedencia de la suite original (is
 Official counts by section: SIM 10; EXP 10; FAC 12; PF 8; RAT 10; DIV 8; PAR 10; AVS 10; RAD 10; DOM 6; MUL 6; CONV 8; LIM 6 (total 114). Historical `SOURCE_NOT_LOCATED` status above is superseded: original source is now versioned in both repos. **Source validated; tests still NOT MAPPED/NOT CERTIFIED**. Domain restrictions, real/complex conventions, symbolic equivalents and declared assumptions are part of the original oracles and must not be dropped.
 
 Next: create a deterministic read-only fixture validator for exact original IDs/sections/row count and then a case-channel inventory; begin with `AS-SIM-01` only after explicit parser/engine/UI expected semantics identified. Do not infer 114 PASS from existing Module 2 tests. Keep Syntax309 X04/X14 Plus and SY-P23 blockers, H2/DIST, security S25, mutation S19 and global OPEN. Do not dispatch CI solely for source documentation.
+
+
+## 2026-10-30 — r358: AS-SIM-01 PASS_SCOPED
+
+- Fuente `algebra114_source.md`, fila AS-SIM-01: `3x+2y-x+5y = 2x+7y`.
+- Test `tests/algebra114AsSim01.audit.test.ts`, blob `0af3d63cf797d0acfef92b3af664ad7c2616ea40`: conserva la fila fuente, comprueba salida simbólica normalizada y cinco sustituciones con oráculo aritmético JavaScript independiente.
+- SHA técnico `30b0b03120faa5252dbb7b090c81d37a8c16452a`: CI 41135927030, cumulative 41135926842 y H1d 41135926938 SUCCESS. Cumulative: 365 archivos, 2.258 passed, 8 expected fail, 34 todo.
+- Aceptación detallada: `ALGEBRA114_AS_SIM_01_ACCEPTANCE_R358.md`. PASS_SCOPED solo Lite; no certifica Algebra114 completa.
+- Siguiente: `ALGEBRA114-AS-SIM-05-TEST-FIRST`. Preservar la condición `x != 1` al simplificar `(x^2-1)/(x-1)`; no aceptar cancelación que pierda el dominio.
