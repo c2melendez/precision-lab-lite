@@ -1,15 +1,21 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { parseExpression } from "../src/engine/parsing";
 import { expand, evaluate } from "../src/engine/algebriteClient";
 import { compileNumeric } from "../src/engine/numericFallback";
+import source from "../qa/certification/algebra114_source.md?raw";
 
-describe("Algebra114 AS-EXP-06", () => {
-  it("checks original binomial cube expansion", () => {
-    const expanded = expand(parseExpression("(x+y)^3").algebrite);
-    const expected = parseExpression("x^3+3*x^2*y+3*x*y^2+y^3").algebrite;
-    for (const [x,y] of [[2,3],[-2,3],[0,5],[-3,-4],[1,-1]]) {
-      const calc = (s: string) => compileNumeric(evaluate(s.replace(/x/g,"("+x+")").replace(/y/g,"("+y+")")), "__no_var__")(0);
-      expect(calc(expanded)).toBeCloseTo(calc(expected),9);
+describe("Algebra114 AS-EXP-06 binomial cube", () => {
+  it("expands the original cube with an independent arithmetic oracle", () => {
+    expect(source).toContain("| AS-EXP-06 | N2 | \\((x+y)^{3}\\) | \\(x^{3}+3x^{2}y+3xy^{2}+y^{3}\\) |");
+    const original = parseExpression("(x+y)^3").algebrite;
+    const expanded = expand(original);
+    expect(expanded.replace(/\s+/g, "")).toBe("x^3+3*x^2*y+3*x*y^2+y^3");
+
+    for (const [x, y] of [[2, 3], [-2, 3], [0, 5], [-3, -4], [1, -1]]) {
+      const substituted = expanded.replace(/x/g, "(" + x + ")").replace(/y/g, "(" + y + ")");
+      const actual = compileNumeric(evaluate(substituted), "__no_var__")(0);
+      const expected = (x + y) * (x + y) * (x + y);
+      expect(actual).toBeCloseTo(expected, 9);
     }
   });
 });
