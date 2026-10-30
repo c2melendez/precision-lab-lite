@@ -115,3 +115,11 @@ Next: create a deterministic read-only fixture validator for exact original IDs/
 - AS-EXP-06: PASS_SCOPED, SHA `5901316519ca98d0810ac0f228c91abe6380ee7f`, aceptación `ALGEBRA114_AS_EXP_06_ACCEPTANCE_R365.md`. Oráculo numérico independiente `(x+y)^3), cinco sustituciones; CI 41142684332, cumulative 41142684039 y H1d 41142684020 SUCCESS.
 - Próximo caso: AS-EXP-07, `(2x-3)^3), con expected calculado por aritmética independiente `8*x*x*x - 36*x*x + 54*x - 27`. No atribuir aceptación a Plus ni a toda la matriz Algebra114.
 - Certification Runner Lite [41142684118](https://github.com/c2melendez/precision-lab-lite/actions/runs/41142684118) SUCCESS push/no-dispatch; dispatch/receipt/persistencia SKIPPED. Global OPEN.
+
+## Reconciliación de ejecución r367 — AS-EXP-07 PASS_SCOPED
+
+- AS-EXP-07: `(2x-3)^3 = 8x^3-36x^2+54x-27), PASS_SCOPED Lite.
+- SHA `c791540390b2e5a3c27f11b7a9a444ad04012a20`; test blob `06f362c0aeced0100b266c7dcf6465c06324f8b1`.
+- CI 41144150978, cumulative 41144150867 y H1d 41144150866 SUCCESS. Oráculo JS independiente con cinco valores; test focalizado aprobado.
+- Runner push 41144150833 SUCCESS/no-dispatch; no acredita dispatch ni persistencia.
+- Siguiente caso: AS-EXP-08, `(x+2)(x-3)(x+1) = x^3-7x-6`, con expected aritmético independiente. No Plus parity claim; global OPEN.
