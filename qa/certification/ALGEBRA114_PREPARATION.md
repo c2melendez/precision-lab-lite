@@ -69,3 +69,12 @@ Next: create a deterministic read-only fixture validator for exact original IDs/
 - SHA técnico a48496d5da441589c3ca5e231761654dc5566b6b; CI 41137239350, cumulative 41137239432 (366 files / 2259 passed / 8 expected fail / 34 todo), H1d 41137239316 (22 E2E passed) y Runner 41137239337, todos SUCCESS en el mismo SHA. Runner dispatch/persistencia SKIPPED.
 - Aceptación ALGEBRA114_AS_EXP_01_ACCEPTANCE_R359.md. No extrapolar a las otras nueve filas EXP ni a Plus.
 - Siguiente: AS-EXP-02; auditar restricciones de dominio y oráculo independiente. Global OPEN.
+
+
+## 2026-10-30 — r360: AS-EXP-02 PASS_SCOPED
+
+- Fuente `algebra114_source.md`, fila AS-EXP-02: `(x+2)^2 = x^2+4x+4`.
+- Test `tests/algebra114AsExp02.audit.test.ts`, blob `9d4cd2e8fb1e70ce37a3aa47ef05cbf78083cc04`: salida simbólica normalizada y cinco sustituciones con oráculo independiente `x*x+4*x+4`.
+- SHA técnico `c8c29d820e5bd16ab4df8a528bcea9b4a72f8acc); CI 41138509410, cumulative 41138509481, H1d 41138509536 y Scientific UI 41138509494 SUCCESS. Runner push 41138509571 SUCCESS; pasos de despacho/persistencia SKIPPED.
+- Aceptación acotada: `ALGEBRA114_AS_EXP_02_ACCEPTANCE_R360.md`. Solo Lite; global OPEN.
+- Siguiente: AS-EXP-03, oráculo independiente `6*x*x+5*x-4`.
