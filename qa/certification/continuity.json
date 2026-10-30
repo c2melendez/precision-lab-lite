@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 338,
+  "revision": 339,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "4abfe22293d5088e40d27a72568d5f4e93197f10",
-  "baseline_case": "ALGEBRA114-AS-SIM-05",
+  "technical_baseline_sha": "a48496d5da441589c3ca5e231761654dc5566b6b",
+  "baseline_case": "ALGEBRA114-AS-EXP-01",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-EXP-01-ORACLE-AUDIT",
+    "id": "ALGEBRA114-AS-EXP-02-ORACLE-AUDIT",
     "status": "READY",
-    "previous_id": "ALGEBRA114-AS-SIM-05",
-    "action": "Audit the existing Lite Algebra114 expansion tests, starting with AS-EXP-01. Several tests compare the Algebrite-expanded expression against an expected expression also parsed/evaluated by Algebrite; strengthen the oracle with independent arithmetic and explicit normalized symbolic output. Proceed one row at a time and do not treat the ten existing files as certified solely because they exist.",
-    "updated_utc": "2026-10-30T22:22:00Z"
+    "previous_id": "ALGEBRA114-AS-EXP-01-ORACLE-AUDIT",
+    "action": "Audit AS-EXP-02 against the preserved Algebra114 source row and current Lite expansion semantics. Inspect the original denominator/domain restrictions and replace any Algebrite-vs-Algebrite expected value with an independent arithmetic oracle plus explicit normalized symbolic output. Proceed one row at a time; do not infer acceptance for other expansion rows.",
+    "updated_utc": "2026-10-30T23:20:00Z"
   },
   "blockers": [
     {
@@ -86,6 +86,11 @@
       "id": "ALGEBRA114-AS-SIM-05",
       "status": "PASS_SCOPED",
       "detail": "r358: Lite only. Source row AS-SIM-05 preserved. Test tests/algebra114AsSim05.audit.test.ts blob d3ad970124d9f8362ae5ea0c4381dd334bfe43ea extracts the original denominator restriction x-1 != 0, checks five allowed substitutions against independent JS x+1 via numeric evaluator, and confirms x=1 remains rejected by the original expression. Exact technical SHA 4abfe22293d5088e40d27a72568d5f4e93197f10; CI 41136809596 SUCCESS, cumulative 41136809590 SUCCESS (366 files, 2259 passed, 8 expected fail, 34 todo), H1d 41136809678 SUCCESS. Scientific UI 41136809673 remained in progress and is not a gate for this scoped algebraic row. No Plus parity claim."
+    },
+    {
+      "id": "ALGEBRA114-AS-EXP-01",
+      "status": "PASS_SCOPED",
+      "detail": "r359: Lite only. Source row AS-EXP-01: (x+1)(x-1)=x^2-1. Test tests/algebra114AsExp01.audit.test.ts blob 373593e7216e1d3e710963bb7431cc96a208eca9 uses exact source fixture, normalized symbolic output x^2-1 and five substitutions x=[-3,-1,0,1,4] against independent JavaScript arithmetic x*x-1; Algebrite expands/evaluates the product but does not calculate expected values. Exact SHA a48496d5da441589c3ca5e231761654dc5566b6b. CI 41137239350 SUCCESS (frontend job: typecheck, unit/parity, build, dependency audit), cumulative 41137239432 SUCCESS (366 files, 2259 passed, 8 expected fail, 34 todo; test included), H1d 41137239316 SUCCESS (22 E2E passed), Runner 41137239337 SUCCESS (dispatch/persist skipped), all same SHA. No Plus parity claim."
     }
   ],
   "h2_en_sg_evidence_audit_r326": {
@@ -122,7 +127,7 @@
     "product_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
     "max_expression_length": 12000
   },
-  "ledger_note": "r358: Lite Algebra114 AS-SIM-01 and AS-SIM-05 PASS_SCOPED on separate exact SHAs 30b0b031 and 4abfe222. AS-SIM-05 preserves x-1 != 0, five allowed substitutions, and rejects x=1; CI 41136809596, cumulative 41136809590 (366 files, 2259 passed), H1d 41136809678 all SUCCESS on 4abfe222. H2/EN-SG Lite remains PARTIAL per r358 reconciliation. Next audit existing Algebra114 AS-EXP-01 test oracle; global OPEN.",
+  "ledger_note": "r359: Lite Algebra114 AS-EXP-01 PASS_SCOPED on exact SHA a48496d5da441589c3ca5e231761654dc5566b6b. Exact source row (x+1)(x-1)=x^2-1; test uses normalized symbolic output and five independent JS arithmetic substitutions. CI 41137239350, cumulative 41137239432, H1d 41137239316, Runner 41137239337 all SUCCESS on same SHA. Next AS-EXP-02 oracle audit; H2/EN-SG remains PARTIAL; global OPEN.",
   "prose_only_paths": [
     "README.md",
     "qa/certification/ALGEBRA229_PREPARATION.md",
