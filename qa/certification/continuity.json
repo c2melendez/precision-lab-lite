@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 337,
+  "revision": 338,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "30b0b03120faa5252dbb7b090c81d37a8c16452a",
-  "baseline_case": "ALGEBRA114-AS-SIM-01",
+  "technical_baseline_sha": "4abfe22293d5088e40d27a72568d5f4e93197f10",
+  "baseline_case": "ALGEBRA114-AS-SIM-05",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-SIM-05-TEST-FIRST",
+    "id": "ALGEBRA114-AS-EXP-01-ORACLE-AUDIT",
     "status": "READY",
-    "previous_id": "ALGEBRA114-AS-SIM-01",
-    "action": "Implement a test-first audit for AS-SIM-05: (x^2-1)/(x-1) simplifies to x+1 only with the original restriction x != 1 preserved. First inspect the parser/evaluator's domain metadata and existing simplification adapters. Do not accept cancellation if the excluded point is silently lost. Use an independent numeric/algebraic oracle and preserve the source row. Lite-only evidence; do not import Plus results. Global certification remains OPEN.",
-    "updated_utc": "2026-10-30T22:20:00Z"
+    "previous_id": "ALGEBRA114-AS-SIM-05",
+    "action": "Audit the existing Lite Algebra114 expansion tests, starting with AS-EXP-01. Several tests compare the Algebrite-expanded expression against an expected expression also parsed/evaluated by Algebrite; strengthen the oracle with independent arithmetic and explicit normalized symbolic output. Proceed one row at a time and do not treat the ten existing files as certified solely because they exist.",
+    "updated_utc": "2026-10-30T22:22:00Z"
   },
   "blockers": [
     {
@@ -81,6 +81,11 @@
       "id": "ALGEBRA114-AS-SIM-01",
       "status": "PASS_SCOPED",
       "detail": "r358: Lite only. Source row AS-SIM-01 preserved from qa/certification/algebra114_source.md. Test tests/algebra114AsSim01.audit.test.ts blob 0af3d63cf797d0acfef92b3af664ad7c2616ea40 uses parser/evaluator output and independent JavaScript arithmetic oracle for five (x,y) substitutions; it explicitly checks normalized symbolic output 2*x+7*y. CI 41135927030 SUCCESS, cumulative 41135926842 SUCCESS (365 files, 2258 passed, 8 expected fail, 34 todo), H1d 41135926938 SUCCESS, all on exact SHA 30b0b03120faa5252dbb7b090c81d37a8c16452a. Scientific UI 41135926885 was triggered but not part of this scoped Algebra114 acceptance; its status is tracked separately. No Plus parity claim."
+    },
+    {
+      "id": "ALGEBRA114-AS-SIM-05",
+      "status": "PASS_SCOPED",
+      "detail": "r358: Lite only. Source row AS-SIM-05 preserved. Test tests/algebra114AsSim05.audit.test.ts blob d3ad970124d9f8362ae5ea0c4381dd334bfe43ea extracts the original denominator restriction x-1 != 0, checks five allowed substitutions against independent JS x+1 via numeric evaluator, and confirms x=1 remains rejected by the original expression. Exact technical SHA 4abfe22293d5088e40d27a72568d5f4e93197f10; CI 41136809596 SUCCESS, cumulative 41136809590 SUCCESS (366 files, 2259 passed, 8 expected fail, 34 todo), H1d 41136809678 SUCCESS. Scientific UI 41136809673 remained in progress and is not a gate for this scoped algebraic row. No Plus parity claim."
     }
   ],
   "h2_en_sg_evidence_audit_r326": {
@@ -117,7 +122,7 @@
     "product_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
     "max_expression_length": 12000
   },
-  "ledger_note": "r358: Lite AS-SIM-01 PASS_SCOPED on exact technical SHA 30b0b03120faa5252dbb7b090c81d37a8c16452a. Independent JS arithmetic oracle, five substitutions; CI 41135927030, cumulative 41135926842 (2258 passed), H1d 41135926938 SUCCESS. Lite H2/EN-SG evidence remains separately reconciled as PARTIAL (r358); no Plus EDCX equivalence inferred. Next: AS-SIM-05 test-first, preserve x!=1 domain restriction. Global OPEN.",
+  "ledger_note": "r358: Lite Algebra114 AS-SIM-01 and AS-SIM-05 PASS_SCOPED on separate exact SHAs 30b0b031 and 4abfe222. AS-SIM-05 preserves x-1 != 0, five allowed substitutions, and rejects x=1; CI 41136809596, cumulative 41136809590 (366 files, 2259 passed), H1d 41136809678 all SUCCESS on 4abfe222. H2/EN-SG Lite remains PARTIAL per r358 reconciliation. Next audit existing Algebra114 AS-EXP-01 test oracle; global OPEN.",
   "prose_only_paths": [
     "README.md",
     "qa/certification/ALGEBRA229_PREPARATION.md",
