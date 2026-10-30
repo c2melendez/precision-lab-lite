@@ -1,3 +1,5 @@
+> **ENMIENDA DEL RESPONSABLE — 2026-10-30 (prevalece sobre la prioridad histórica):** esta hoja certifica un mecanismo de conexión/automatización independiente. Su P0/BLOCKED no es un bloqueo para las matrices ni para el motor matemático de Precision Lab. La pausa matemática descrita en el texto histórico queda revocada. Continúa la certificación matemática según el continuity.json y las matrices de Lite/Plus. API_GPT/read-only y Compass/Bridge no forman parte de los criterios de aceptación matemática. Los riesgos de seguridad, persistencia y E2E de esta hoja permanecen abiertos en su propio frente; no se declaran resueltos ni se modifican permisos, datos o despliegues.
+
 # Hoja de ruta — Certificación de mecanismos alternativos de conexión a GitHub
 
 **ID:** PL-CONN-GH-ALT-P0 · **Prioridad:** P0 antes de motores matemáticos · **Estado inicial:** BLOCKED · **Salida:** evidencia reproducible de `Push → API → Bridge → Runner → resultado verificable`.
