@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 335,
+  "revision": 336,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "21c7aae3ec445f864dc13f625bc8ce0c2f6f4ed1",
@@ -112,7 +112,7 @@
     "product_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
     "max_expression_length": 12000
   },
-  "ledger_note": "r335: scope amendment 2026-10-30. Compass/API_GPT/Bridge remains an independent OPEN workstream; its P0 no longer blocks mathematical engine certification. Next action is MATH-ENGINE-RESUME-RECONCILIATION. Lite: reanudar la siguiente matriz matemática propia después de ALGEBRA229-AS-B-29 PASS_SCOPED; reconciliar primero el alcance Lite y la evidencia existente (incluida la paridad H2/EN-SG cuando corresponda). No esperar a Compass, no inventar equivalencia con EDCX-B6 Plus y no repetir AS-B-29. Global certification remains OPEN; no product code, tests, Actions, permissions, RLS, credentials, data or deployments changed.",
+  "ledger_note": "r358: H2/EN-SG Lite evidence reconciled without importing Plus results. R326 index lists scoped architecture 01-05/08, MathLive display macros 06/07, client engine 23-27, length 21; 28 and 32 remain out of scope; remaining rows are partial/unclassified; aggregate PARTIAL and global OPEN. Next math block is Lite's own Algebra114 AS-SIM-01 test-first, now under CI on technical SHA 30b0b031; do not infer PASS until relevant gates/logs complete.",
   "prose_only_paths": [
     "README.md",
     "qa/certification/ALGEBRA229_PREPARATION.md",
@@ -135,5 +135,57 @@
     "qa/certification/ROADMAP_CONTINUITY.md",
     "qa/certification/ROADMAP_GITHUB_ALTERNATIVE_CONNECTION.md",
     "qa/certification/continuity.json"
-  ]
+  ],
+  "h2_en_sg_reconciliation_r358": {
+    "status": "PARTIAL",
+    "source_of_truth": "continuity.json revision 335; supersedes stale classifications in H2_EN_SG_LITE_PARITY_AUDIT_R323.md and older H2_EN_SG_LITE_SCOPE_R326.md prose where contradicted by this index",
+    "pass_scoped_architecture": [
+      "EN-SG-01",
+      "EN-SG-02",
+      "EN-SG-03",
+      "EN-SG-04",
+      "EN-SG-05",
+      "EN-SG-08"
+    ],
+    "pass_scoped_display_macros": [
+      "EN-SG-06",
+      "EN-SG-07"
+    ],
+    "pass_scoped_client_engine": [
+      "EN-SG-23",
+      "EN-SG-24",
+      "EN-SG-25",
+      "EN-SG-26",
+      "EN-SG-27"
+    ],
+    "pass_scoped_length_contract": [
+      "EN-SG-21"
+    ],
+    "out_of_scope": [
+      "EN-SG-28",
+      "EN-SG-32"
+    ],
+    "unclassified_or_partial": [
+      "EN-SG-09..20",
+      "EN-SG-22",
+      "EN-SG-29..31"
+    ],
+    "confirmed_gap": [],
+    "evidence": {
+      "macro_document": "qa/certification/H2_EN_SG_LITE_MATHLIVE_MACROS_R325.md",
+      "macro_ci_run": 40759428403,
+      "macro_product_sha": "991bd219fb83c548b83bd0cae5bc550adbeeaabd",
+      "current_audit_ci_run": 40765520289,
+      "current_audit_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
+      "length_scope_document": "qa/certification/H2_EN_SG_LITE_SCOPE_R326.md",
+      "max_expression_length": 12000
+    },
+    "distinctions": [
+      "EN-SG-28 is the stop/recovery UI case and remains OUT_OF_SCOPE on Lite; it is not a PASS.",
+      "H2-SG28-DIST-01..08 is a separate distributed multi-host scope and remains OUT_OF_SCOPE_SINGLE_HOST; not PASS.",
+      "EN-SG-32 is N/A/out of scope because Lite has no multi-tenant HTTP API; this does not import Plus rate-limit evidence.",
+      "SECURITY-S25 ACCEPTED_BILATERAL is a separate acceptance and does not close the H2 EN-SG audit."
+    ],
+    "note": "PARTIAL remains the correct aggregate classification. The empty confirmed_gap array means no presently confirmed GAP in the reconciled rows; it does not mean all 32 rows passed. No Lite/Plus equivalence is inferred."
+  }
 }
