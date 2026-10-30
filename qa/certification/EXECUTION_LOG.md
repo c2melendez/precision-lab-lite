@@ -594,3 +594,12 @@ Compass P0 permanece en su propio backlog de integración/seguridad y no es cond
 - Aceptación `ALGEBRA114_AS_EXP_06_ACCEPTANCE_R365.md`. Solo Lite; no implica paridad Plus ni cierre Algebra114/global.
 - Reconciliación Runner: PASS_SCOPED_PUSH_ONLY; no certifica workflow_dispatch, gate dispatch, recibo durable ni replay idempotente. Global OPEN.
 - Siguiente: AS-EXP-07 test-first, con oráculo aritmético independiente para `(2x-3)^3`. Sin merge, deploy, cambio de producción ni despacho real.
+
+## 2026-10-30 UTC — r366: AS-EXP-07 test-first y Runner Lite push PASS_SCOPED
+
+- AS-EXP-07 parte de la fila original `(2x-3)^3 = 8x^3-36x^2+54x-27`.
+- Se reemplazó el test anterior, que comparaba el resultado Algebrite con un expected también generado por Algebrite, por una regresión independiente: fixture exacto, multiconjunto simbólico de términos y cinco sustituciones `x=[-3,-1,0,2,5]` contra aritmética JavaScript `8*x*x*x - 36*x*x + 54*x - 27`.
+- SHA técnico `c791540390b2e5a3c27f11b7a9a444ad04012a20`; test blob `06f362c0aeced0100b266c7dcf6465c06324f8b1`.
+- CI [41144150978](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150978), cumulative [41144150867](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150867) y H1d [41144150866](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150866) seguían IN_PROGRESS al corte. Scientific UI [41144150819](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150819) es complementario. AS-EXP-07 aún no aceptado.
+- Certification Runner push [41144150833](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144150833) SUCCESS en el mismo SHA. Resolución canónica, checkout, BASE_SHA, fingerprint y Push summary SUCCESS; dispatch, receipt, persistencia y commit documental SKIPPED.
+- Runner continúa PASS_SCOPED_PUSH_ONLY. Global OPEN; sin merge, deploy, producción ni despacho real.
