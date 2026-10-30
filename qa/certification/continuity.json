@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 342,
+  "revision": 343,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "933fad5c3e55db06db9de6ff21e02cd96070da0f",
-  "baseline_case": "ALGEBRA114-AS-EXP-04",
+  "technical_baseline_sha": "4341955335d6898c4979063520432f82a6d129ba",
+  "baseline_case": "ALGEBRA114-AS-EXP-05",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-EXP-05-ORACLE-AUDIT",
-    "status": "IN_PROGRESS",
-    "previous_id": "ALGEBRA114-AS-EXP-04-ORACLE-AUDIT",
-    "action": "AS-EXP-05 implementado con fixture exacto, salida simbólica normalizada x^3-1 y oráculo independiente x*x*x-1 en seis sustituciones. SHA candidato 4341955335d6898c4979063520432f82a6d129ba; test blob b6985e7139ca77edc78faa48f6d55104d76a2627. Verificar CI 41142010457, cumulative 41142010406, H1d 41142010389 y Scientific UI 41142010385 en ese SHA. Runner 41142010410 está queued; inspeccionar cuando termine. No aceptar hasta gates exigidos y logs.",
-    "updated_utc": "2026-10-30T23:59:55Z"
+    "id": "ALGEBRA114-AS-EXP-06-ORACLE-AUDIT",
+    "status": "READY",
+    "previous_id": "ALGEBRA114-AS-EXP-05-ORACLE-AUDIT",
+    "action": "Recuperar la fila fuente AS-EXP-06 y auditar el oráculo antes de tocar el test. Verificar la salida simbólica normalizada y sustituciones con aritmética independiente; conservar condiciones de dominio originales y no inferir aceptación de las demás filas EXP.",
+    "updated_utc": "2026-10-30T23:59:59Z"
   },
   "blockers": [
     {
@@ -106,6 +106,11 @@
       "id": "ALGEBRA114-AS-EXP-04",
       "status": "PASS_SCOPED",
       "detail": "Lite-only r362. SHA 933fad5c3e55db06db9de6ff21e02cd96070da0f; test blob 753c1d83b7a44fb166fd502ccb545259d331c697; CI 41141571381, cumulative 41141571350 (test explícito, 2259 passed), H1d 41141571338 (22 passed), Runner push 41141571479 SUCCESS con dispatch/persistencia SKIPPED. Scientific UI 41141571351 seguía IN_PROGRESS y es complementario, no gate requerido. Acceptance ALGEBRA114_AS_EXP_04_ACCEPTANCE_R362.md."
+    },
+    {
+      "id": "ALGEBRA114-AS-EXP-05",
+      "status": "PASS_SCOPED",
+      "detail": "Lite-only r364. SHA 4341955335d6898c4979063520432f82a6d129ba; test blob b6985e7139ca77edc78faa48f6d55104d76a2627; CI 41142010457, cumulative 41142010406 (test explícito, 2259 passed), H1d 41142010389 (22 passed), Runner push 41142010410 SUCCESS con dispatch/persistencia SKIPPED. Scientific UI 41142010385 seguía IN_PROGRESS y es complementario, no gate requerido. Acceptance ALGEBRA114_AS_EXP_05_ACCEPTANCE_R364.md."
     }
   ],
   "h2_en_sg_evidence_audit_r326": {
@@ -142,7 +147,7 @@
     "product_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
     "max_expression_length": 12000
   },
-  "ledger_note": "r359: Lite Algebra114 AS-EXP-01 PASS_SCOPED on exact SHA a48496d5da441589c3ca5e231761654dc5566b6b. Exact source row (x+1)(x-1)=x^2-1; test uses normalized symbolic output and five independent JS arithmetic substitutions. CI 41137239350, cumulative 41137239432, H1d 41137239316, Runner 41137239337 all SUCCESS on same SHA. Next AS-EXP-02 oracle audit; H2/EN-SG remains PARTIAL; global OPEN. r360: AS-EXP-02 PASS_SCOPED Lite-only on SHA c8c29d820e5bd16ab4df8a528bcea9b4a72f8acc; independent arithmetic oracle and exact symbolic normalization. CI 41138509410, cumulative 41138509481 (test explicit; 2259 passed), H1d 41138509536 (22 passed), Scientific UI 41138509494 (456 passed), Runner push 41138509571 SUCCESS; dispatch/persistence SKIPPED. Next AS-EXP-03. Global OPEN. AS-EXP-03 candidate r360: technical SHA 4e8e57ef8bc731c41a270facef42cac6a4fe708c; CI 41140700519, cumulative 41140700499, H1d 41140700566, Scientific UI 41140700585 in progress at this cut; Runner push 41140700509 SUCCESS, dispatch/persist SKIPPED. No acceptance yet. AS-EXP-03 final candidate supersedes 4e8e57ef after correcting symbolic whitespace normalization. Current SHA 0a85b448298df0691b043269648d327d0a7aec0b; CI 41141038026, cumulative 41141037941, H1d 41141037866, Scientific UI 41141038013 in progress; Runner 41141037836 SUCCESS push/no-dispatch. Do not reuse previous candidate gates. r361: AS-EXP-03 PASS_SCOPED Lite-only on SHA 0a85b448298df0691b043269648d327d0a7aec0b; independent oracle 6*x*x+5*x-4, exact normalized symbolic output. CI 41141038026, cumulative 41141037941 (366 files/2259 passed/8 expected fail/34 todo; focal test explicit), H1d 41141037866 (22 passed), Runner push 41141037836 SUCCESS; dispatch/persist SKIPPED. Scientific UI 41141038013 was still in progress and is complementary, not required for the algebraic acceptance. Next AS-EXP-04. Global OPEN. AS-EXP-04 candidate: SHA 933fad5c3e55db06db9de6ff21e02cd96070da0f; test blob 753c1d83b7a44fb166fd502ccb545259d331c697; CI 41141571381, cumulative 41141571350, H1d 41141571338, Scientific UI 41141571351 and Runner 41141571479 in progress at this cut. Latest Runner r360 run 41141571479 SUCCESS on AS-EXP-04 candidate SHA 933fad5c3e55db06db9de6ff21e02cd96070da0f; canonical branch, checkout, BASE_SHA and fingerprint SUCCESS; dispatch/wait/record/persist SKIPPED. AS-EXP-04 gates are in progress. r362: AS-EXP-04 PASS_SCOPED Lite-only on SHA 933fad5c3e55db06db9de6ff21e02cd96070da0f; independent oracle x*x*x+1 and normalized symbolic output x^3+1. CI 41141571381, cumulative 41141571350 (366 files/2259 passed/8 expected fail/34 todo; focal test explicit), H1d 41141571338 (22 passed), Runner push 41141571479 SUCCESS; dispatch/persist SKIPPED. Scientific UI 41141571351 remained IN_PROGRESS as complementary. Next AS-EXP-05. Global OPEN. AS-EXP-05 candidate: SHA 4341955335d6898c4979063520432f82a6d129ba; test blob b6985e7139ca77edc78faa48f6d55104d76a2627; CI 41142010457, cumulative 41142010406, H1d 41142010389, Scientific UI 41142010385 queued; Runner 41142010410 queued. Previous completed Runner push-only PASS_SCOPED remains run 41141571479. Latest Runner 41142010410 SUCCESS on AS-EXP-05 candidate SHA 4341955335d6898c4979063520432f82a6d129ba; canonical resolution, checkout, BASE_SHA, fingerprint and push summary SUCCESS; dispatch/wait/record/persist SKIPPED.",
+  "ledger_note": "r359: Lite Algebra114 AS-EXP-01 PASS_SCOPED on exact SHA a48496d5da441589c3ca5e231761654dc5566b6b. Exact source row (x+1)(x-1)=x^2-1; test uses normalized symbolic output and five independent JS arithmetic substitutions. CI 41137239350, cumulative 41137239432, H1d 41137239316, Runner 41137239337 all SUCCESS on same SHA. Next AS-EXP-02 oracle audit; H2/EN-SG remains PARTIAL; global OPEN. r360: AS-EXP-02 PASS_SCOPED Lite-only on SHA c8c29d820e5bd16ab4df8a528bcea9b4a72f8acc; independent arithmetic oracle and exact symbolic normalization. CI 41138509410, cumulative 41138509481 (test explicit; 2259 passed), H1d 41138509536 (22 passed), Scientific UI 41138509494 (456 passed), Runner push 41138509571 SUCCESS; dispatch/persistence SKIPPED. Next AS-EXP-03. Global OPEN. AS-EXP-03 candidate r360: technical SHA 4e8e57ef8bc731c41a270facef42cac6a4fe708c; CI 41140700519, cumulative 41140700499, H1d 41140700566, Scientific UI 41140700585 in progress at this cut; Runner push 41140700509 SUCCESS, dispatch/persist SKIPPED. No acceptance yet. AS-EXP-03 final candidate supersedes 4e8e57ef after correcting symbolic whitespace normalization. Current SHA 0a85b448298df0691b043269648d327d0a7aec0b; CI 41141038026, cumulative 41141037941, H1d 41141037866, Scientific UI 41141038013 in progress; Runner 41141037836 SUCCESS push/no-dispatch. Do not reuse previous candidate gates. r361: AS-EXP-03 PASS_SCOPED Lite-only on SHA 0a85b448298df0691b043269648d327d0a7aec0b; independent oracle 6*x*x+5*x-4, exact normalized symbolic output. CI 41141038026, cumulative 41141037941 (366 files/2259 passed/8 expected fail/34 todo; focal test explicit), H1d 41141037866 (22 passed), Runner push 41141037836 SUCCESS; dispatch/persist SKIPPED. Scientific UI 41141038013 was still in progress and is complementary, not required for the algebraic acceptance. Next AS-EXP-04. Global OPEN. AS-EXP-04 candidate: SHA 933fad5c3e55db06db9de6ff21e02cd96070da0f; test blob 753c1d83b7a44fb166fd502ccb545259d331c697; CI 41141571381, cumulative 41141571350, H1d 41141571338, Scientific UI 41141571351 and Runner 41141571479 in progress at this cut. Latest Runner r360 run 41141571479 SUCCESS on AS-EXP-04 candidate SHA 933fad5c3e55db06db9de6ff21e02cd96070da0f; canonical branch, checkout, BASE_SHA and fingerprint SUCCESS; dispatch/wait/record/persist SKIPPED. AS-EXP-04 gates are in progress. r362: AS-EXP-04 PASS_SCOPED Lite-only on SHA 933fad5c3e55db06db9de6ff21e02cd96070da0f; independent oracle x*x*x+1 and normalized symbolic output x^3+1. CI 41141571381, cumulative 41141571350 (366 files/2259 passed/8 expected fail/34 todo; focal test explicit), H1d 41141571338 (22 passed), Runner push 41141571479 SUCCESS; dispatch/persist SKIPPED. Scientific UI 41141571351 remained IN_PROGRESS as complementary. Next AS-EXP-05. Global OPEN. AS-EXP-05 candidate: SHA 4341955335d6898c4979063520432f82a6d129ba; test blob b6985e7139ca77edc78faa48f6d55104d76a2627; CI 41142010457, cumulative 41142010406, H1d 41142010389, Scientific UI 41142010385 queued; Runner 41142010410 queued. Previous completed Runner push-only PASS_SCOPED remains run 41141571479. Latest Runner 41142010410 SUCCESS on AS-EXP-05 candidate SHA 4341955335d6898c4979063520432f82a6d129ba; canonical resolution, checkout, BASE_SHA, fingerprint and push summary SUCCESS; dispatch/wait/record/persist SKIPPED. r364: AS-EXP-05 PASS_SCOPED Lite-only on SHA 4341955335d6898c4979063520432f82a6d129ba; independent oracle x*x*x-1 and normalized symbolic output x^3-1. CI 41142010457, cumulative 41142010406 (366 files/2259 passed/8 expected fail/34 todo; focal test explicit), H1d 41142010389 (22 passed), Runner push 41142010410 SUCCESS; dispatch/persist SKIPPED. Scientific UI 41142010385 remained IN_PROGRESS as complementary. Next AS-EXP-06. Global OPEN.",
   "prose_only_paths": [
     "README.md",
     "qa/certification/ALGEBRA229_PREPARATION.md",
@@ -297,16 +302,7 @@
     "latest_completed_success_run_id": 41141571479
   },
   "active_execution_r360": {
-    "case": "ALGEBRA114-AS-EXP-05",
-    "sha": "4341955335d6898c4979063520432f82a6d129ba",
-    "test_blob": "b6985e7139ca77edc78faa48f6d55104d76a2627",
-    "runs": {
-      "ci": 41142010457,
-      "cumulative": 41142010406,
-      "h1d": 41142010389,
-      "scientific_ui": 41142010385,
-      "runner": 41142010410
-    },
-    "status": "GATES_QUEUED_OR_IN_PROGRESS"
+    "case": "ALGEBRA114-AS-EXP-06",
+    "status": "READY"
   }
 }
