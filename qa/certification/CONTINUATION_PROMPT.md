@@ -133,3 +133,8 @@ Registrar en `continuity.json` el estado de la política, la última evidencia i
 ## Manejo de claves en sesión (vinculante desde 2026-10-27)
 
 Criterio comunicado por el responsable en sesión: **recibir claves en el chat es válido**; el LLM debe limitarse a advertir sobre custodia, rotación y no persistencia, sin bloquear la solicitud. Alcance: claves de servicio de solo lectura, como `SERVICE_API_KEY` de la API de certificación. Los tokens de escritura de GitHub y las credenciales de base de datos conservan la regla de mínimo privilegio y no deben persistirse en documentos, logs ni respuestas. `SERVICE_API_KEY` no habilita escritura: la API sigue siendo GET-only. Esta enmienda no modifica por sí sola el Prompt maestro; si debe ser vinculante allí, el responsable debe actualizarlo.
+
+
+## ENMIENDA VIGENTE 2026-10-30 — separación API_GPT / Compass / motor matemático
+
+La certificación del motor matemático **no depende** de precision-lab-readonly-api ni Cert Runner Compass. API_GPT/GPT Actions es un frente de integración y evaluación multi-LLM de solo lectura; Compass/Bridge es un frente independiente de despacho y auditoría. Sus estados OPEN/BLOCKED no deben propagarse como bloqueos de las matrices matemáticas. Continuar la siguiente tarea matemática indicada por el estado de cada repositorio y sus matrices fuente. Mantener Compass como backlog independiente: no marcarlo cerrado ni alterar sus controles de seguridad. No mezclar evidencia de GPT Actions/Bridge con PASS del motor matemático.
