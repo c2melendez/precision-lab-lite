@@ -42,8 +42,8 @@
     "id": "ALGEBRA114-AS-EXP-03-ORACLE-AUDIT",
     "status": "IN_PROGRESS",
     "previous_id": "ALGEBRA114-AS-EXP-02-ORACLE-AUDIT",
-    "action": "AS-EXP-03 está implementado con oráculo independiente 6*x*x+5*x-4 y salida simbólica normalizada. SHA técnico candidato 4e8e57ef8bc731c41a270facef42cac6a4fe708c. Esperar y revisar CI 41140700519, cumulative 41140700499, H1d 41140700566 y Scientific UI 41140700585; verificar test focalizado en logs. No aceptar hasta que pasen los gates exigidos.",
-    "updated_utc": "2026-10-30T22:52:00Z"
+    "action": "AS-EXP-03: symbolic normalization regex corrected to /\\s+/g. Final candidate SHA 0a85b448298df0691b043269648d327d0a7aec0b; test blob c3585658febba9c8acc4c2b71e46f6f4fb6ac90d. Verify CI 41141038026, cumulative 41141037941, H1d 41141037866 and Scientific UI 41141038013 on this exact SHA. Runner 41141037836 already SUCCESS push/no-dispatch. Do not reuse gates from superseded SHA 4e8e57ef.",
+    "updated_utc": "2026-10-30T23:58:00Z"
   },
   "blockers": [
     {
@@ -132,7 +132,7 @@
     "product_sha": "11f8a5f453f0a2dd068d00e29788c5f8d339edca",
     "max_expression_length": 12000
   },
-  "ledger_note": "r359: Lite Algebra114 AS-EXP-01 PASS_SCOPED on exact SHA a48496d5da441589c3ca5e231761654dc5566b6b. Exact source row (x+1)(x-1)=x^2-1; test uses normalized symbolic output and five independent JS arithmetic substitutions. CI 41137239350, cumulative 41137239432, H1d 41137239316, Runner 41137239337 all SUCCESS on same SHA. Next AS-EXP-02 oracle audit; H2/EN-SG remains PARTIAL; global OPEN. r360: AS-EXP-02 PASS_SCOPED Lite-only on SHA c8c29d820e5bd16ab4df8a528bcea9b4a72f8acc; independent arithmetic oracle and exact symbolic normalization. CI 41138509410, cumulative 41138509481 (test explicit; 2259 passed), H1d 41138509536 (22 passed), Scientific UI 41138509494 (456 passed), Runner push 41138509571 SUCCESS; dispatch/persistence SKIPPED. Next AS-EXP-03. Global OPEN. AS-EXP-03 candidate r360: technical SHA 4e8e57ef8bc731c41a270facef42cac6a4fe708c; CI 41140700519, cumulative 41140700499, H1d 41140700566, Scientific UI 41140700585 in progress at this cut; Runner push 41140700509 SUCCESS, dispatch/persist SKIPPED. No acceptance yet.",
+  "ledger_note": "r359: Lite Algebra114 AS-EXP-01 PASS_SCOPED on exact SHA a48496d5da441589c3ca5e231761654dc5566b6b. Exact source row (x+1)(x-1)=x^2-1; test uses normalized symbolic output and five independent JS arithmetic substitutions. CI 41137239350, cumulative 41137239432, H1d 41137239316, Runner 41137239337 all SUCCESS on same SHA. Next AS-EXP-02 oracle audit; H2/EN-SG remains PARTIAL; global OPEN. r360: AS-EXP-02 PASS_SCOPED Lite-only on SHA c8c29d820e5bd16ab4df8a528bcea9b4a72f8acc; independent arithmetic oracle and exact symbolic normalization. CI 41138509410, cumulative 41138509481 (test explicit; 2259 passed), H1d 41138509536 (22 passed), Scientific UI 41138509494 (456 passed), Runner push 41138509571 SUCCESS; dispatch/persistence SKIPPED. Next AS-EXP-03. Global OPEN. AS-EXP-03 candidate r360: technical SHA 4e8e57ef8bc731c41a270facef42cac6a4fe708c; CI 41140700519, cumulative 41140700499, H1d 41140700566, Scientific UI 41140700585 in progress at this cut; Runner push 41140700509 SUCCESS, dispatch/persist SKIPPED. No acceptance yet. AS-EXP-03 final candidate supersedes 4e8e57ef after correcting symbolic whitespace normalization. Current SHA 0a85b448298df0691b043269648d327d0a7aec0b; CI 41141038026, cumulative 41141037941, H1d 41141037866, Scientific UI 41141038013 in progress; Runner 41141037836 SUCCESS push/no-dispatch. Do not reuse previous candidate gates.",
   "prose_only_paths": [
     "README.md",
     "qa/certification/ALGEBRA229_PREPARATION.md",
@@ -239,10 +239,16 @@
     "companion_plus_sha": "218d682848a03a000930e2028f057563847381f3",
     "global_certification": "OPEN",
     "updated_utc": "2026-10-30T23:55:00Z",
-    "latest_run_id": 41140700509,
-    "latest_run_url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/41140700509",
-    "latest_technical_sha": "4e8e57ef8bc731c41a270facef42cac6a4fe708c",
+    "latest_run_id": 41141037836,
+    "latest_run_url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/41141037836",
+    "latest_technical_sha": "0a85b448298df0691b043269648d327d0a7aec0b",
     "runs": [
+      {
+        "id": 41141037836,
+        "sha": "0a85b448298df0691b043269648d327d0a7aec0b",
+        "status": "SUCCESS",
+        "event": "push"
+      },
       {
         "id": 41140700509,
         "sha": "4e8e57ef8bc731c41a270facef42cac6a4fe708c",
@@ -259,16 +265,17 @@
   },
   "active_execution_r360": {
     "case": "ALGEBRA114-AS-EXP-03",
-    "sha": "4e8e57ef8bc731c41a270facef42cac6a4fe708c",
-    "test_blob": "3c64328383cdfe453bf1397f87db613a2462775e",
+    "sha": "0a85b448298df0691b043269648d327d0a7aec0b",
+    "test_blob": "c3585658febba9c8acc4c2b71e46f6f4fb6ac90d",
     "runs": {
-      "ci": 41140700519,
-      "cumulative": 41140700499,
-      "h1d": 41140700566,
-      "scientific_ui": 41140700585,
-      "runner": 41140700509
+      "ci": 41141038026,
+      "cumulative": 41141037941,
+      "h1d": 41141037866,
+      "scientific_ui": 41141038013,
+      "runner": 41141037836
     },
-    "status": "GATES_IN_PROGRESS",
-    "runner": "SUCCESS_PUSH_ONLY"
+    "status": "GATES_IN_PROGRESS_AFTER_NORMALIZATION_FIX",
+    "supersedes_candidate_sha": "4e8e57ef8bc731c41a270facef42cac6a4fe708c",
+    "note": "The previous candidate's regex was corrected; do not reuse its gates as final evidence."
   }
 }
