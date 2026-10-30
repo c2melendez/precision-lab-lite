@@ -3,6 +3,7 @@ name: Certification Runner
 # Versión 2. Cambios respecto a la versión anterior:
 # - Despacha el workflow de CI del gate elegido sobre la rama canónica QA y espera su resultado.
 # - Gates: cumulative y h1d en Lite y Plus; security solo en Lite.
+# - target_repo=both es aceptado en ambas ramas para el despacho bilateral de Bridge.
 # - security en Plus queda bloqueado hasta resolver S19 (PLUS-S19-EQUIVALENCE-REVIEW-R304).
 # - Registra cada ejecución en qa/certification/runner/<run_id>.json sin marcadores de omisión.
 # - dry_run=true (por defecto): valida gate y política, calcula la huella. No despacha ni publica.
@@ -14,11 +15,11 @@ on:
   workflow_dispatch:
     inputs:
       target_repo:
-        description: "Este runner sólo procesa el repositorio actual; para ambos, despacha una vez en cada repositorio"
+        description: "Admite el repositorio actual o both; Bridge despacha una vez en cada repositorio"
         required: true
         default: lite
         type: choice
-        options: [lite]
+        options: [lite, both]
       gate:
         description: "Gate de qa/certification/continuity.json"
         required: true
@@ -47,7 +48,7 @@ concurrency:
 
 jobs:
   certification-cycle:
-    if: ${{ github.event_name != 'workflow_dispatch' || endsWith(github.repository, format('-{0}', inputs.target_repo)) }}
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.target_repo == 'both' || endsWith(github.repository, format('-{0}', inputs.target_repo)) }}
     runs-on: ubuntu-latest
     timeout-minutes: 200
     env:
