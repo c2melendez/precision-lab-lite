@@ -102,5 +102,18 @@ class BridgeCommandRunnerTests(unittest.TestCase):
             {"action": "create", "path": "already.txt", "content": "different"},
         ]))
 
+    def test_plus_unit_profile_validates_backend_and_frontend(self):
+        from unittest.mock import patch
+
+        with patch.object(worker, "run") as run_command:
+            worker.run_profile("plus", self.root, "unit")
+
+        commands = [call.args[0] for call in run_command.call_args_list]
+        self.assertIn(["npm", "ci"], commands)
+        self.assertIn(["python", "-m", "pytest", "-q", "--cov=app", "--cov-report=term-missing",
+                       "--cov-fail-under=75", "--disable-warnings"], commands)
+        self.assertIn(["npm", "test"], commands)
+        self.assertEqual(len(commands), 4)
+
 if __name__ == "__main__":
     unittest.main()
