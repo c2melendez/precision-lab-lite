@@ -102,7 +102,7 @@ class BridgeCommandRunnerTests(unittest.TestCase):
             {"action": "create", "path": "already.txt", "content": "different"},
         ]))
 
-    def test_plus_unit_profile_validates_backend_and_frontend(self):
+    def test_plus_unit_profile_validates_backend_frontend_and_audit_gate(self):
         from unittest.mock import patch
 
         with patch.object(worker, "run") as run_command:
@@ -110,10 +110,31 @@ class BridgeCommandRunnerTests(unittest.TestCase):
 
         commands = [call.args[0] for call in run_command.call_args_list]
         self.assertIn(["npm", "ci"], commands)
-        self.assertIn(["python", "-m", "pytest", "-q", "--cov=app", "--cov-report=term-missing",
-                       "--cov-fail-under=75", "--disable-warnings"], commands)
+        audit = ["npm", "audit", "--package-lock-only"]
+        self.assertIn(audit, commands)
+        backend = ["python", "-m", "pytest", "-q", "--cov=app", "--cov-report=term-missing",
+                   "--cov-fail-under=75", "--disable-warnings"]
+        self.assertIn(backend, commands)
         self.assertIn(["npm", "test"], commands)
-        self.assertEqual(len(commands), 4)
+        self.assertLess(commands.index(["npm", "ci"]), commands.index(audit))
+        self.assertLess(commands.index(audit), commands.index(backend))
+        self.assertLess(commands.index(backend), commands.index(["npm", "test"]))
+        self.assertEqual(len(commands), 5)
+
+    def test_lite_unit_profile_enforces_audit_gate_before_tests(self):
+        from unittest.mock import patch
+
+        with patch.object(worker, "run") as run_command:
+            worker.run_profile("lite", self.root, "unit")
+
+        commands = [call.args[0] for call in run_command.call_args_list]
+        audit = ["npm", "audit", "--package-lock-only"]
+        self.assertIn(["npm", "ci"], commands)
+        self.assertIn(audit, commands)
+        self.assertIn(["npm", "test"], commands)
+        self.assertLess(commands.index(["npm", "ci"]), commands.index(audit))
+        self.assertLess(commands.index(audit), commands.index(["npm", "test"]))
+        self.assertEqual(len(commands), 3)
 
 if __name__ == "__main__":
     unittest.main()
