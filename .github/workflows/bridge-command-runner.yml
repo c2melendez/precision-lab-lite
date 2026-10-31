@@ -1,0 +1,49 @@
+name: Bridge Command Runner
+run-name: Bridge command ${{ inputs.command_id }}
+on:
+  workflow_dispatch:
+    inputs:
+      command_id:
+        description: Opaque command UUID recorded by Bridge
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: bridge-command-${{ inputs.command_id }}
+  cancel-in-progress: false
+
+jobs:
+  execute:
+    name: Claim and execute one Bridge command
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      BRIDGE_COMMAND_ID: ${{ inputs.command_id }}
+      BRIDGE_BASE_URL: https://precision-lab-bridge.onrender.com
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout Runner implementation from default branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate opaque command identifier
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$BRIDGE_COMMAND_ID" =~ ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$ ]]
+
+      - name: Claim, verify and execute typed command
+        run: python scripts/bridge_command_runner.py
