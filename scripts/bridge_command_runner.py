@@ -314,6 +314,8 @@ def prepare_dependencies(repo_kind: str, root: Path, profile: str) -> None:
         if profile not in {"unit", "typecheck", "build"}:
             raise RunnerFailure("VALIDATION_PROFILE_UNSUPPORTED", "Validation profile is not supported by Lite", "blocked")
         run(["npm", "ci"], root, timeout=1200)
+        # Preserve the repository's npm audit hard gate for every Runner profile.
+        run(["npm", "audit", "--package-lock-only"], root, timeout=600)
         return
     if repo_kind == "plus":
         if profile not in PROFILES:
@@ -322,8 +324,9 @@ def prepare_dependencies(repo_kind: str, root: Path, profile: str) -> None:
             ["python", "-m", "pip", "install", "-r", "requirements.txt", "-r", "requirements-qa.txt", "pytest-cov"],
             root / "backend", timeout=1200,
         )
-        # Frontend lockfile is synchronized and verified; all Plus profiles use clean npm ci.
+        # Frontend lockfile is synchronized and verified; every profile keeps the npm audit hard gate.
         run(["npm", "ci"], root / "frontend", timeout=1200)
+        run(["npm", "audit", "--package-lock-only"], root / "frontend", timeout=600)
         return
     raise RunnerFailure("TARGET_REPOSITORY_INVALID", "Target repository is not allowlisted", "blocked")
 
