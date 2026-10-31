@@ -79,6 +79,15 @@ No se cerraron PR históricos, no se borraron ramas y no se reescribió ningún 
 - **Gate `scientific`:** sigue declarado en `continuity.json` y fuera de las opciones del Runner.
 - **Promoción:** requiere revisión y merge separados; no se ejecuta aquí.
 
-## 7. Siguiente paso exacto
+## 7. Publicación de la integración
+
+| Repositorio | Rama | Commit | PR |
+|---|---|---|---|
+| Lite | `ci/runner-v31-integration-20261030` | `e14475fc` | #58 (Draft) |
+| Plus | `ci/runner-v31-integration-20261030` | `cbacb4dc` | #39 (Draft) |
+
+Ambos PR apuntan a `qa/syntax-audit-in625-a1` y son acumulativos: incluyen también el commit de reconciliación y pruebas de dispatch de #57/#38.
+
+## 8. Siguiente paso exacto
 
 Revisar el PR de integración en Lite y Plus. Si se aprueba, fusionarlo en la rama canónica en una operación separada y actualizar `CURRENT_STATE.md`. Después, y solo con autorización específica, ejecutar un despacho real controlado para cerrar O6/O7.
