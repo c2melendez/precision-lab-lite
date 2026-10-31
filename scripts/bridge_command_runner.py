@@ -209,16 +209,17 @@ def git_blob_sha(content: bytes) -> str:
 
 
 def safe_target(root: Path, relative: str) -> Path:
-    candidate = root.joinpath(*PurePosixPath(relative).parts)
+    parts = PurePosixPath(relative).parts
+    current = root
+    for part in parts:
+        current = current / part
+        if current.is_symlink():
+            raise RunnerFailure("PATCH_SYMLINK_REJECTED", "Patch may not traverse symlinks", "blocked")
+    candidate = root.joinpath(*parts)
     try:
         candidate.resolve(strict=False).relative_to(root.resolve())
     except ValueError:
         raise RunnerFailure("PATCH_PATH_INVALID", "Patch path escapes the checkout", "blocked")
-    current = root
-    for part in PurePosixPath(relative).parts:
-        current = current / part
-        if current.is_symlink():
-            raise RunnerFailure("PATCH_SYMLINK_REJECTED", "Patch may not traverse symlinks", "blocked")
     return candidate
 
 
