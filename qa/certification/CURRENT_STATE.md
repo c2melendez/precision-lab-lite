@@ -3,11 +3,11 @@
 <!-- certification-runner:latest:start -->
 ## Última observación de certification-runner (registro automático)
 
-- Registrado UTC: 2026-10-31T01:36:09+00:00
+- Registrado UTC: 2026-10-31T01:40:22+00:00
 - Repositorio / gate: `c2melendez/precision-lab-lite` / `cumulative`
-- SHA base del checkout probado: `e07f747d55c06917423996e033f96d8d706de35c`
-- Runner: [`41155942354`](https://github.com/c2melendez/precision-lab-lite/actions/runs/41155942354)
-- Workflow de gate: [`41155957847`](https://github.com/c2melendez/precision-lab-lite/actions/runs/41155957847)
+- SHA base del checkout probado: `b9365eea8f392967c43bec9bacaf721a3e1e23c7`
+- Runner: [`41156327854`](https://github.com/c2melendez/precision-lab-lite/actions/runs/41156327854)
+- Workflow de gate: [`41156315507`](https://github.com/c2melendez/precision-lab-lite/actions/runs/41156315507)
 - Estado/conclusión observados: `completed` / `success`
 - Clasificación automática: `GATE_WORKFLOW_SUCCESS_LOG_AND_ACCEPTANCE_REVIEW_REQUIRED`
 - **No equivale a PASS de certificación.** Revisar jobs, pasos, logs, huella, canal, oráculo y revisión de aceptación antes de aceptar o reutilizar evidencia.
