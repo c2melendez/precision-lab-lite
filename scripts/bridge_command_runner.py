@@ -322,10 +322,8 @@ def prepare_dependencies(repo_kind: str, root: Path, profile: str) -> None:
             ["python", "-m", "pip", "install", "-r", "requirements.txt", "-r", "requirements-qa.txt", "pytest-cov"],
             root / "backend", timeout=1200,
         )
-        if profile != "unit":
-            # The Plus frontend lockfile currently does not match package.json.
-            # Do not mutate manifests or bypass npm ci; those profiles remain blocked.
-            run(["npm", "ci"], root / "frontend", timeout=1200)
+        # Frontend lockfile is synchronized and verified; all Plus profiles use clean npm ci.
+        run(["npm", "ci"], root / "frontend", timeout=1200)
         return
     raise RunnerFailure("TARGET_REPOSITORY_INVALID", "Target repository is not allowlisted", "blocked")
 
@@ -347,13 +345,12 @@ def run_profile(repo_kind: str, root: Path, profile: str) -> None:
             run(command, root)
         return
     if profile == "unit":
-        # Backend-only unit profile. Frontend-targeting patches are refused until
-        # the frontend package-lock is synchronized with package.json.
         run(
             ["python", "-m", "pytest", "-q", "--cov=app", "--cov-report=term-missing",
              "--cov-fail-under=75", "--disable-warnings"],
             root / "backend", timeout=2400,
         )
+        run(["npm", "test"], root / "frontend", timeout=1800)
     elif profile == "lint":
         run(["python", "-m", "ruff", "check"], root / "backend")
         run(["npm", "run", "lint"], root / "frontend")
@@ -506,12 +503,6 @@ def execute_manifest(manifest: dict[str, Any], root: Path) -> tuple[str, dict[st
 
     operations = payload.get("operations")
     validated = validate_operations(operations)
-    if repo_kind == "plus" and any(item["path"].startswith("frontend/") for item in validated):
-        raise RunnerFailure(
-            "PLUS_FRONTEND_LOCKFILE_DRIFT_BLOCKED",
-            "Plus frontend patches require a synchronized package-lock before they can be validated",
-            "blocked",
-        )
     branch, reused_branch = ensure_work_branch(root, command_id, expected_sha)
     if reused_branch:
         if not patch_already_applied(root, operations):
