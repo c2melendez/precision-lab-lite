@@ -1,5 +1,20 @@
 # Corte vigente de certificación — 2026-10-30 UTC (r368)
 
+<!-- certification-runner:latest:start -->
+## Última observación de certification-runner (registro automático)
+
+- Registrado UTC: 2026-10-31T01:36:09+00:00
+- Repositorio / gate: `c2melendez/precision-lab-lite` / `cumulative`
+- SHA base del checkout probado: `e07f747d55c06917423996e033f96d8d706de35c`
+- Runner: [`41155942354`](https://github.com/c2melendez/precision-lab-lite/actions/runs/41155942354)
+- Workflow de gate: [`41155957847`](https://github.com/c2melendez/precision-lab-lite/actions/runs/41155957847)
+- Estado/conclusión observados: `completed` / `success`
+- Clasificación automática: `GATE_WORKFLOW_SUCCESS_LOG_AND_ACCEPTANCE_REVIEW_REQUIRED`
+- **No equivale a PASS de certificación.** Revisar jobs, pasos, logs, huella, canal, oráculo y revisión de aceptación antes de aceptar o reutilizar evidencia.
+- Este registro no modifica `next_action` ni cierra bloqueos; la siguiente tarea canónica sigue siendo la de `continuity.json` hasta una reconciliación explícita.
+<!-- certification-runner:latest:end -->
+
+
 **Fuente de verdad:** rama `qa/syntax-audit-in625-a1`, índices `continuity.json` y evidencia GitHub Actions. Este corte supersede cualquier instrucción histórica anterior que colocara Compass por delante de los motores matemáticos.
 
 - **Motor Lite:** AS-SIM-01, AS-SIM-05, AS-EXP-01 y AS-EXP-02 están PASS_SCOPED. AS-EXP-02: SHA `c8c29d820e5bd16ab4df8a528bcea9b4a72f8acc`; CI 41138509410, cumulative 41138509481 (2,259 passed; test focalizado explícito), H1d 41138509536 (22 E2E) y Scientific UI 41138509494 (456 passed), todos SUCCESS. Aceptación `ALGEBRA114_AS_EXP_02_ACCEPTANCE_R360.md`.

@@ -498,5 +498,37 @@
     ],
     "global_certification": "OPEN",
     "updated_utc": "2026-10-30T23:29:00Z"
+  },
+  "runner_observations": [
+    {
+      "runner_run_id": "41155942354",
+      "runner_run_url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/41155942354",
+      "base_sha": "e07f747d55c06917423996e033f96d8d706de35c",
+      "gate": "cumulative",
+      "gate_workflow": ".github/workflows/in625-cumulative-certification.yml",
+      "dispatched_run_id": "41155957847",
+      "dispatched_run_url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/41155957847",
+      "dispatched_status": "completed",
+      "dispatched_conclusion": "success",
+      "execution_classification": "GATE_WORKFLOW_SUCCESS_LOG_AND_ACCEPTANCE_REVIEW_REQUIRED",
+      "acceptance_reviewed": false,
+      "certification_pass": false,
+      "recorded_at": "2026-10-31T01:36:10+00:00"
+    }
+  ],
+  "last_runner_execution": {
+    "runner_run_id": "41155942354",
+    "runner_run_url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/41155942354",
+    "base_sha": "e07f747d55c06917423996e033f96d8d706de35c",
+    "gate": "cumulative",
+    "gate_workflow": ".github/workflows/in625-cumulative-certification.yml",
+    "dispatched_run_id": "41155957847",
+    "dispatched_run_url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/41155957847",
+    "dispatched_status": "completed",
+    "dispatched_conclusion": "success",
+    "execution_classification": "GATE_WORKFLOW_SUCCESS_LOG_AND_ACCEPTANCE_REVIEW_REQUIRED",
+    "acceptance_reviewed": false,
+    "certification_pass": false,
+    "recorded_at": "2026-10-31T01:36:10+00:00"
   }
 }

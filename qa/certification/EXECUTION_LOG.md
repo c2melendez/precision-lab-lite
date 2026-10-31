@@ -620,3 +620,12 @@ Compass P0 permanece en su propio backlog de integración/seguridad y no es cond
 - CI [41144965662](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965662), cumulative [41144965700](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965700), H1d [41144965719](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965719) y Scientific UI [41144965676](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965676) estaban IN_PROGRESS al corte. No aceptar AS-EXP-08 hasta CI/cumulative/H1d SUCCESS en el mismo SHA.
 - Runner push [41144965611](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965611) SUCCESS en el mismo SHA; canonical branch, checkout, BASE_SHA, fingerprint y Push summary SUCCESS; dispatch/receipt/persistencia SKIPPED.
 - Runner PASS_SCOPED_PUSH_ONLY; global OPEN. Sin merge, deploy, producción ni dispatch real.
+
+## 2026-10-31T01:36:10+00:00 — certification-runner observation
+
+- Runner run: https://github.com/c2melendez/precision-lab-lite/actions/runs/41155942354
+- Gate: `cumulative`; base SHA: `e07f747d55c06917423996e033f96d8d706de35c`.
+- Gate run: https://github.com/c2melendez/precision-lab-lite/actions/runs/41155957847; status: `completed`; conclusion: `success`.
+- Classification: `GATE_WORKFLOW_SUCCESS_LOG_AND_ACCEPTANCE_REVIEW_REQUIRED`. Jobs/steps snapshot stored in `qa/certification/runner/41155942354.json`.
+- This is execution telemetry, not acceptance. Logs, required-step execution, fingerprint, channel, oracle and acceptance revision still require review.
+- No objective/blocker was closed and `continuity.json.next_action` was deliberately left unchanged.

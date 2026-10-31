@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "repo": "c2melendez/precision-lab-lite",
+  "canonical_branch": "qa/syntax-audit-in625-a1",
+  "base_sha": "e07f747d55c06917423996e033f96d8d706de35c",
+  "gate": "cumulative",
+  "gate_workflow": ".github/workflows/in625-cumulative-certification.yml",
+  "decision": "DISPATCHED",
+  "runner_run_id": "41155942354",
+  "runner_run_url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/41155942354",
+  "dispatched_run_id": "41155957847",
+  "dispatched_run_url": "https://github.com/c2melendez/precision-lab-lite/actions/runs/41155957847",
+  "dispatched_status": "completed",
+  "dispatched_conclusion": "success",
+  "recorded_at": "2026-10-31T01:36:09+00:00",
+  "gate_jobs": [
+    {
+      "name": "cumulative",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Reuse only verified evidence for this checkout",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Validate original Algebra114 fixture integrity",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Certification continuity and CI guard regressions",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Typecheck",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Unit and parity regression",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Production build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "execution_classification": "GATE_WORKFLOW_SUCCESS_LOG_AND_ACCEPTANCE_REVIEW_REQUIRED",
+  "acceptance_reviewed": false,
+  "certification_pass": false,
+  "documentation_recorded_at": "2026-10-31T01:36:10+00:00"
+}
