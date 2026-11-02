@@ -1,0 +1,22 @@
+{
+  "name": "deepmerge",
+  "description": "Local patched build of deepmerge 4.3.1 for CVE-2026-93753 / GHSA-gcqx-w48m-w2h4 (not an upstream release)",
+  "version": "4.3.2",
+  "private": true,
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "LICENSE",
+    "PATCH_NOTES.md",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test test/prototype-poisoning.node-test.cjs"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "license": "MIT"
+}
