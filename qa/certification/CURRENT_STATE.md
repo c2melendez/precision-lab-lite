@@ -1,4 +1,14 @@
-# Corte vigente de certificación — 2026-11-03 UTC (r378)
+# Corte vigente de certificación — 2026-11-03 UTC (r379)
+
+## Actualización operativa — 2026-11-03 (r379)
+
+- Lite — Algebra114 AS-FAC-08: **PASS_SCOPED** en SHA `11477e0571ae46cb5db60a508a949c647cbb2fb3`. Fila fuente exacta; dos factores cuadráticos reales; ocho sustituciones contra oráculo JavaScript independiente. Aceptación: `ALGEBRA114_AS_FAC_08_ACCEPTANCE_R379.md`.
+- Acumulativo [41618207071](https://github.com/c2melendez/precision-lab-lite/actions/runs/41618207071) SUCCESS: 366 archivos, 2,259 passed, 8 expected fail, 34 TODO; typecheck, unit/parity y build SUCCESS. El test AS-FAC-08 aparece explícitamente en el log.
+- H1d [41618207046](https://github.com/c2melendez/precision-lab-lite/actions/runs/41618207046) SUCCESS, 22/22. Certification Runner [41618207045](https://github.com/c2melendez/precision-lab-lite/actions/runs/41618207045) SUCCESS: autenticación, resolución de rama canónica, checkout y fingerprint; sin dispatch en push.
+- CI [41618207057](https://github.com/c2melendez/precision-lab-lite/actions/runs/41618207057) FAILURE en `QA dependency audit (hard gate)`; no se modificaron dependencias ni se debilitó el hard gate.
+- Plus no ejecutó AS-FAC-08; no se afirma paridad. VC-FE-45 continúa BLOCKED por conflicto contractual con EV-I-12. Global certification OPEN.
+- Siguiente acción Lite: AS-FAC-09 test-first; fixture exacta de dos cuadráticas reales con `sqrt(2)` y siete sustituciones contra oráculo JS independiente. Sin cambio del motor salvo defecto reproducible.
+
 
 ## Actualización operativa — 2026-11-03 (r378)
 
