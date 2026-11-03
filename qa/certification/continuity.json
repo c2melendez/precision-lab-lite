@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 350,
+  "revision": 351,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "5a6662e03e413063f9e73ca1f4210b7a155da5ca",
-  "baseline_case": "ALGEBRA114-AS-EXP-10",
+  "technical_baseline_sha": "e738a0650bf3156eea40ad58c328a86d10e6be0d",
+  "baseline_case": "ALGEBRA114-AS-FAC-01",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-FAC-01-ORACLE-AUDIT",
+    "id": "ALGEBRA114-AS-FAC-02-ORACLE-AUDIT",
     "status": "READY",
-    "previous_id": "ALGEBRA114-AS-EXP-10-ORACLE-AUDIT",
-    "action": "Preparar AS-FAC-01 test-first usando exactamente la fila original de algebra114_source.md: x^2-9 = (x-3)(x+3). El test actual solo comprueba dos valores comparando evaluaciones CAS-vs-CAS y no exige la forma factorizada. Añadir fixture exacta, comprobar salida factorizada y siete sustituciones con expected JavaScript independiente (x-3)*(x+3). No usar CAS para generar expected ni cambiar el motor sin defecto reproducible."
+    "previous_id": "ALGEBRA114-AS-FAC-01-ORACLE-AUDIT",
+    "action": "Preparar AS-FAC-02 test-first usando exactamente la fila original de algebra114_source.md: x^2+5x+6 = (x+2)(x+3). El test actual solo exige el prefijo de la fila y compara valores CAS-vs-CAS. Añadir fixture exacta, exigir la forma factorizada y siete sustituciones con expected JavaScript independiente (x+2)*(x+3). No usar CAS para generar expected ni cambiar el motor sin defecto reproducible."
   },
   "blockers": [
     {
@@ -555,7 +555,7 @@
     "certification_pass": false,
     "recorded_at": "2026-10-31T01:40:23+00:00"
   },
-  "updated_utc": "2026-11-03T09:44:56Z",
+  "updated_utc": "2026-11-03T09:50:47Z",
   "active_execution_r370": {
     "case": "ALGEBRA114-AS-EXP-09",
     "sha": "13bf8b535a00b40c464057dc663b2d97ea6c44bd",
@@ -611,13 +611,13 @@
       "@trickfilm400/rollup-plugin-off-main-thread"
     ],
     "note": "No dependency/threshold changes were made. npm's suggested fix involves a semver-major dependency change/downgrade; triage separately before remediation.",
-    "latest_run": 41613294023
+    "latest_run": 41614055833
   },
   "certification_runner_readme_r370": {
     "status": "BLOCKED",
     "run_id": 41612413677,
     "reason": "Resolve canonical branch from default-branch README failed; checkout and gate dispatch skipped. Separate from math acceptance.",
-    "latest_run": 41613294032
+    "latest_run": 41614055823
   },
   "active_execution_r371": {
     "case": "ALGEBRA114-AS-EXP-10",
@@ -649,6 +649,41 @@
       },
       "certification_runner": {
         "id": 41613294032,
+        "status": "FAILURE",
+        "reason": "default README canonical-branch resolution; no checkout or dispatch"
+      }
+    }
+  },
+  "active_execution_r372": {
+    "case": "ALGEBRA114-AS-FAC-01",
+    "sha": "e738a0650bf3156eea40ad58c328a86d10e6be0d",
+    "test_blob": "a6f6ebfe43b7e131dfc80ef960b1f542dac4d2f9",
+    "source_blob": "b30ca7fcec641334ce8128ca25bec542a9d04e79",
+    "status": "PASS_SCOPED",
+    "acceptance": "qa/certification/ALGEBRA114_AS_FAC_01_ACCEPTANCE_R372.md",
+    "runs": {
+      "ci": {
+        "id": 41614055833,
+        "status": "FAILURE",
+        "reason": "npm audit hard gate: 8 moderate, 0 high, 0 critical"
+      },
+      "cumulative": {
+        "id": 41614055867,
+        "status": "SUCCESS",
+        "test_files": 366,
+        "tests_passed": 2259,
+        "expected_fail": 8,
+        "todo": 34,
+        "typecheck": "SUCCESS",
+        "build": "SUCCESS"
+      },
+      "h1d": {
+        "id": 41614055846,
+        "status": "SUCCESS",
+        "tests_passed": 22
+      },
+      "certification_runner": {
+        "id": 41614055823,
         "status": "FAILURE",
         "reason": "default README canonical-branch resolution; no checkout or dispatch"
       }
