@@ -10,11 +10,12 @@ describe("Algebra114 AS-EXP-09 three-variable trinomial square", () => {
 
     const expanded = expand(parseExpression("(a+b+c)^2").algebrite);
     const normalizedTerms = expanded
-      .replace(/\\s+/g, "")
+      .replace(/\s+/g, "")
       .replace(/-/g, "+-")
       .split("+")
       .filter(Boolean)
       .sort();
+
     expect(normalizedTerms).toEqual([
       "a^2",
       "b^2",
@@ -35,9 +36,9 @@ describe("Algebra114 AS-EXP-09 three-variable trinomial square", () => {
 
     for (const [a, b, c] of substitutions) {
       const substituted = expanded
-        .replace(/\\ba\\b/g, "(" + a + ")")
-        .replace(/\\bb\\b/g, "(" + b + ")")
-        .replace(/\\bc\\b/g, "(" + c + ")");
+        .replace(/\ba\b/g, "(" + a + ")")
+        .replace(/\bb\b/g, "(" + b + ")")
+        .replace(/\bc\b/g, "(" + c + ")");
       const actual = compileNumeric(evaluate(substituted), "__no_var__")(0);
       const expected = (a + b + c) * (a + b + c);
       expect(actual).toBeCloseTo(expected, 9);
