@@ -672,3 +672,14 @@ Compass P0 permanece en su propio backlog de integración/seguridad y no es cond
 - Decisión: PASS_SCOPED Lite únicamente; no inferir Plus ni cerrar global.
 - Siguiente: AS-FAC-01 test-first.
 
+## 2026-11-03 UTC — r372: Algebra114 AS-FAC-01 PASS_SCOPED en Lite
+
+- SHA técnico: e738a0650bf3156eea40ad58c328a86d10e6be0d; test blob a6f6ebfe43b7e131dfc80ef960b1f542dac4d2f9; fixture blob b30ca7fcec641334ce8128ca25bec542a9d04e79.
+- El test exige la fila original exacta, una forma de producto no expandida y siete sustituciones x=[-5,-3,-2,0,3,4,7] contra (x-3)*(x+3) calculado por JavaScript independiente. El motor no cambió y el CAS no genera expected.
+- Acumulativo 41614055867: SUCCESS; typecheck, unit/parity y build SUCCESS; 366 archivos / 2,259 passed / 8 expected fail / 34 TODO. AS-FAC-01 aparece explícitamente aprobado.
+- H1d 41614055846: SUCCESS, 22 passed.
+- CI 41614055833: FAILURE solo en npm audit (8 moderadas, 0 altas, 0 críticas); los pasos posteriores quedaron skipped. No se modificaron dependencias ni política.
+- Certification Runner 41614055823: FAILURE al resolver la rama desde README predeterminado; no hubo checkout ni dispatch.
+- Decisión: PASS_SCOPED Lite únicamente; Plus no ejecutó AS-FAC-01; global OPEN.
+- Siguiente: AS-FAC-02 test-first.
+
