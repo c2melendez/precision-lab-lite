@@ -760,3 +760,14 @@ Compass P0 permanece en su propio backlog de integración/seguridad y no es cond
 - CI 41618207057 FAILURE en QA dependency audit hard gate; no se modificó dependencias ni el umbral.
 - Decisión: PASS_SCOPED Lite únicamente; Plus no ejecutó AS-FAC-08; no inferir paridad. VC-FE-45 sigue BLOCKED en Plus frente a EV-I-12. Global OPEN.
 - Siguiente: AS-FAC-09 test-first.
+
+## 2026-11-03 UTC — r380: Algebra114 AS-FAC-09 PASS_SCOPED en Lite
+
+- SHA técnico: 537a84bbaa7538a33c0e5fa0c2ebb36485821c8f; test blob bfc15ba512815375439f827aad2dfa6678ccac22; fixture blob b30ca7fcec641334ce8128ca25bec542a9d04e79.
+- El test verifica la fila original exacta sobre R, exige dos factores cuadráticos reales y evalúa siete sustituciones x=[-3,-2,-1,0,1,2,3] contra (x*x+sqrt(2)*x+1)*(x*x-sqrt(2)*x+1) calculado por JavaScript independiente vía Math.sqrt(2). No se usó CAS para expected y no cambió el motor.
+- Acumulativo 41618685099 SUCCESS: 366 archivos / 2,259 passed / 8 expected fail / 34 TODO; typecheck, unit/parity y build SUCCESS. El log confirma explícitamente tests/algebra114AsFac09.audit.test.ts.
+- H1d 41618685297 SUCCESS, 22/22.
+- Certification Runner 41618685066 SUCCESS: resolvió rama desde README predeterminado, autenticó con github.token, hizo checkout y calculó fingerprint. Push event; no dispatch.
+- CI 41618685195 FAILURE en QA dependency audit hard gate; no se modificaron dependencias ni el umbral.
+- Decisión: PASS_SCOPED Lite únicamente; Plus no ejecutó AS-FAC-09; no inferir paridad. VC-FE-45 sigue BLOCKED en Plus frente a EV-I-12. Global OPEN.
+- Siguiente: AS-FAC-10 test-first.
