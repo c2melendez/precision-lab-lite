@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 349,
+  "revision": 350,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "13bf8b535a00b40c464057dc663b2d97ea6c44bd",
-  "baseline_case": "ALGEBRA114-AS-EXP-09",
+  "technical_baseline_sha": "5a6662e03e413063f9e73ca1f4210b7a155da5ca",
+  "baseline_case": "ALGEBRA114-AS-EXP-10",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-EXP-10-ORACLE-AUDIT",
+    "id": "ALGEBRA114-AS-FAC-01-ORACLE-AUDIT",
     "status": "READY",
-    "previous_id": "ALGEBRA114-AS-EXP-09-ORACLE-AUDIT",
-    "action": "Preparar AS-EXP-10 test-first usando exactamente la fila original de algebra114_source.md: -(x-1)(x+2) = -x^2-x+2. El test existente usa CAS-vs-CAS y una aserción parcial de fixture. Sustituirlo por fixture exacto, multiconjunto simbólico de -x^2, -x y 2, y siete sustituciones contra el oráculo JavaScript independiente -(x-1)*(x+2). No usar Algebrite para generar el expected. No cambiar el motor si no hay un defecto reproducible."
+    "previous_id": "ALGEBRA114-AS-EXP-10-ORACLE-AUDIT",
+    "action": "Preparar AS-FAC-01 test-first usando exactamente la fila original de algebra114_source.md: x^2-9 = (x-3)(x+3). El test actual solo comprueba dos valores comparando evaluaciones CAS-vs-CAS y no exige la forma factorizada. Añadir fixture exacta, comprobar salida factorizada y siete sustituciones con expected JavaScript independiente (x-3)*(x+3). No usar CAS para generar expected ni cambiar el motor sin defecto reproducible."
   },
   "blockers": [
     {
@@ -555,7 +555,7 @@
     "certification_pass": false,
     "recorded_at": "2026-10-31T01:40:23+00:00"
   },
-  "updated_utc": "2026-11-03T09:38:26Z",
+  "updated_utc": "2026-11-03T09:44:56Z",
   "active_execution_r370": {
     "case": "ALGEBRA114-AS-EXP-09",
     "sha": "13bf8b535a00b40c464057dc663b2d97ea6c44bd",
@@ -610,11 +610,48 @@
       "filelist",
       "@trickfilm400/rollup-plugin-off-main-thread"
     ],
-    "note": "No dependency/threshold changes were made. npm's suggested fix involves a semver-major dependency change/downgrade; triage separately before remediation."
+    "note": "No dependency/threshold changes were made. npm's suggested fix involves a semver-major dependency change/downgrade; triage separately before remediation.",
+    "latest_run": 41613294023
   },
   "certification_runner_readme_r370": {
     "status": "BLOCKED",
     "run_id": 41612413677,
-    "reason": "Resolve canonical branch from default-branch README failed; checkout and gate dispatch skipped. Separate from math acceptance."
+    "reason": "Resolve canonical branch from default-branch README failed; checkout and gate dispatch skipped. Separate from math acceptance.",
+    "latest_run": 41613294032
+  },
+  "active_execution_r371": {
+    "case": "ALGEBRA114-AS-EXP-10",
+    "sha": "5a6662e03e413063f9e73ca1f4210b7a155da5ca",
+    "test_blob": "921e144418a73af451e4c6de17bcba5cb953365a",
+    "source_blob": "b30ca7fcec641334ce8128ca25bec542a9d04e79",
+    "status": "PASS_SCOPED",
+    "acceptance": "qa/certification/ALGEBRA114_AS_EXP_10_ACCEPTANCE_R371.md",
+    "runs": {
+      "ci": {
+        "id": 41613294023,
+        "status": "FAILURE",
+        "reason": "npm audit hard gate: 8 moderate, 0 high, 0 critical"
+      },
+      "cumulative": {
+        "id": 41613294097,
+        "status": "SUCCESS",
+        "test_files": 366,
+        "tests_passed": 2259,
+        "expected_fail": 8,
+        "todo": 34,
+        "typecheck": "SUCCESS",
+        "build": "SUCCESS"
+      },
+      "h1d": {
+        "id": 41613294038,
+        "status": "SUCCESS",
+        "tests_passed": 22
+      },
+      "certification_runner": {
+        "id": 41613294032,
+        "status": "FAILURE",
+        "reason": "default README canonical-branch resolution; no checkout or dispatch"
+      }
+    }
   }
 }
