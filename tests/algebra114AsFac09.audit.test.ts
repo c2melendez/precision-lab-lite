@@ -4,17 +4,21 @@ import { compileNumeric } from "../src/engine/numericFallback";
 import source from "../qa/certification/algebra114_source.md?raw";
 
 describe("Algebra114 AS-FAC-09 real irrational factorization", () => {
-  it("returns two real quadratic factors rather than unfactored x^4+1", () => {
-    expect(source).toContain("| AS-FAC-09 | N3 |");
+  it("matches the exact source identity, returns two real quadratic factors, and uses an independent oracle", () => {
+    expect(source).toContain("| AS-FAC-09 | N3 | \\(x^{4}+1\\) sobre \\(\\mathbb{R}\\) | \\((x^{2}+\\sqrt{2}x+1)(x^{2}-\\sqrt{2}x+1)\\) |");
+
     const factored = evaluate("factor(x^4+1)");
-    const normalized = factored.replace(/\\s/g, "");
-    expect(normalized).not.toBe("x^4+1");
-    expect(normalized).not.toContain("factor(");
-    // Numeric equivalence must not substitute for a genuine factorized output.
+    expect(factored).not.toContain("factor(");
+    expect((factored.match(/\*/g) ?? []).length).toBeGreaterThanOrEqual(1);
+    expect((factored.match(/x\^2/g) ?? []).length).toBeGreaterThanOrEqual(2);
+    expect(factored).not.toContain("x^4");
+
+    const rootTwo = Math.sqrt(2);
     for (const x of [-3, -2, -1, 0, 1, 2, 3]) {
-      const value = compileNumeric(evaluate(factored.replace(/x/g, "(" + x + ")")), "__no_var__")(0);
-      const rt2 = Math.sqrt(2);
-      expect(value).toBeCloseTo((x*x + rt2*x + 1)*(x*x - rt2*x + 1), 9);
+      const substituted = factored.replace(/\bx\b/g, "(" + x + ")");
+      const actual = compileNumeric(evaluate(substituted), "__no_var__")(0);
+      const expected = (x * x + rootTwo * x + 1) * (x * x - rootTwo * x + 1);
+      expect(actual).toBeCloseTo(expected, 9);
     }
   });
 });
