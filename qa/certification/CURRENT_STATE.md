@@ -1,4 +1,13 @@
-# Corte vigente de certificación — 2026-11-03 UTC (r369)
+# Corte vigente de certificación — 2026-11-03 UTC (r370)
+
+## Actualización operativa — 2026-11-03 (r370)
+
+- Lite — Algebra114 AS-EXP-09: PASS_SCOPED en SHA 13bf8b535a00b40c464057dc663b2d97ea6c44bd. Fixture fuente exacta; multiconjunto a^2,b^2,c^2,2ab,2ac,2bc; seis sustituciones con oráculo JavaScript independiente. Aceptación: ALGEBRA114_AS_EXP_09_ACCEPTANCE_R370.md.
+- Acumulativo 41612413595 SUCCESS: 366/366 archivos, 2,259 passed, 8 expected fail, 34 TODO; typecheck y build SUCCESS. H1d 41612413591 SUCCESS, 22/22.
+- CI 41612413592 FAILURE solo en npm audit: 8 moderadas, 0 altas/críticas. No se alteraron dependencias ni el umbral. Se registra aparte; la política vigente no bloquea esta tarea matemática por deuda npm independiente.
+- Certification Runner push 41612413677 FAILURE en resolución de rama por README predeterminado; no llegó a checkout ni despachó un gate. Requiere corrección documental independiente.
+- Plus: no ejecutó AS-EXP-09; no hay afirmación de paridad. VC-FE-45 continúa BLOCKED por conflicto con EV-I-12. Global certification OPEN.
+- Siguiente acción Lite: AS-EXP-10 test-first; fixture -(x-1)(x+2)=-x^2-x+2, multiconjunto simbólico y oráculo JavaScript independiente. El test existente es CAS-vs-CAS y debe corregirse sin cambiar el motor.
 
 <!-- certification-runner:latest:start -->
 ## Última observación de certification-runner (registro automático)
