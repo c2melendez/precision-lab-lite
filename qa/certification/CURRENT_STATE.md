@@ -1,4 +1,4 @@
-# Corte vigente de certificación — 2026-11-03 UTC (r371)
+# Corte vigente de certificación — 2026-11-03 UTC (r372)
 
 ## Actualización operativa — 2026-11-03 (r370)
 
@@ -17,6 +17,15 @@
 - Certification Runner push 41613294032 FAILURE al resolver la rama desde README predeterminado; no llegó a checkout ni despachó gates.
 - AS-EXP-09 y AS-EXP-10 quedan PASS_SCOPED en Lite. Plus no ejecutó estas filas; no inferir paridad. VC-FE-45 continúa BLOCKED en Plus. Global certification OPEN.
 - Siguiente acción Lite: AS-FAC-01 test-first, x^2-9 = (x-3)(x+3); fixture exacta, forma factorizada y oráculo JS independiente. No cambiar el motor sin defecto reproducible.
+
+## Actualización operativa — 2026-11-03 (r372)
+
+- Lite — Algebra114 AS-FAC-01: PASS_SCOPED en SHA e738a0650bf3156eea40ad58c328a86d10e6be0d. Fixture exacta x^2-9=(x-3)(x+3), salida factorizada exigida y siete sustituciones con oráculo JavaScript independiente. Aceptación: ALGEBRA114_AS_FAC_01_ACCEPTANCE_R372.md.
+- Acumulativo 41614055867 SUCCESS: 366/366 archivos, 2,259 passed, 8 expected fail, 34 TODO; typecheck, unit/parity y build SUCCESS. H1d 41614055846 SUCCESS, 22/22.
+- CI 41614055833 FAILURE solo en npm audit; 8 moderadas, 0 altas/críticas. El hard gate paró antes de typecheck/tests/build; no se modificaron dependencias ni el umbral.
+- Certification Runner push 41614055823 FAILURE al resolver rama desde README predeterminado; no llegó a checkout ni dispatch.
+- AS-EXP-09, AS-EXP-10 y AS-FAC-01 quedan PASS_SCOPED en Lite. Plus no ejecutó estas filas; no inferir paridad. VC-FE-45 continúa BLOCKED en Plus. Global certification OPEN.
+- Siguiente acción Lite: AS-FAC-02 test-first, x^2+5x+6=(x+2)(x+3); fixture exacta, salida factorizada y siete sustituciones con oráculo JS independiente. Sin cambiar motor salvo defecto reproducible.
 
 <!-- certification-runner:latest:start -->
 ## Última observación de certification-runner (registro automático)
