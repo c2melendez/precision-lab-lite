@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 200
     env:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      GH_TOKEN: ${{ github.token }}
       REPO: ${{ github.repository }}
       GATE: ${{ inputs.gate || 'cumulative' }}
     steps:
