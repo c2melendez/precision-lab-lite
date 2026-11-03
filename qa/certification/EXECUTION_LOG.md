@@ -738,3 +738,14 @@ Compass P0 permanece en su propio backlog de integración/seguridad y no es cond
 - CI 41617198393 FAILURE solo en npm audit: 8 moderadas; typecheck/tests/build skipped por hard gate. Sin cambios a dependencias ni al umbral.
 - Decisión: PASS_SCOPED Lite únicamente; Plus no ejecutó AS-FAC-06; no inferir paridad. VC-FE-45 sigue BLOCKED en Plus frente a EV-I-12. Global OPEN.
 - Siguiente: AS-FAC-07 test-first.
+
+## 2026-11-03 UTC — r378: Algebra114 AS-FAC-07 PASS_SCOPED en Lite
+
+- SHA técnico: a6f45dde0625abd807538791264799c9112648ed; test blob 38e8f12d8b48ffab019cdfa9ca5abee5becd1aaf; fixture blob b30ca7fcec641334ce8128ca25bec542a9d04e79.
+- El test verifica la fila original exacta, exige cuatro factores lineales y evalúa ocho sustituciones x=[-4,-2,-1,0,1,2,3,4] contra (x-1)*(x+1)*(x-2)*(x+2) calculado por JavaScript independiente. No se usó CAS para expected y no cambió el motor.
+- Acumulativo 41617678117 SUCCESS: 366 archivos / 2,259 passed / 8 expected fail / 34 TODO; typecheck, unit/parity y build SUCCESS. El log confirma explícitamente tests/algebra114AsFac07.audit.test.ts.
+- H1d 41617678044 SUCCESS, 22/22.
+- Certification Runner 41617678059 SUCCESS: resolvió rama desde README predeterminado, autenticó con github.token, hizo checkout y calculó fingerprint. Push event; no dispatch.
+- CI 41617678130 FAILURE solo en npm audit: 8 moderadas; typecheck/tests/build skipped por hard gate. Sin cambios a dependencias ni al umbral.
+- Decisión: PASS_SCOPED Lite únicamente; Plus no ejecutó AS-FAC-07; no inferir paridad. VC-FE-45 sigue BLOCKED en Plus frente a EV-I-12. Global OPEN.
+- Siguiente: AS-FAC-08 test-first.
