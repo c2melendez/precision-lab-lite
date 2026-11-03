@@ -638,3 +638,14 @@ Compass P0 permanece en su propio backlog de integración/seguridad y no es cond
 - Classification: `GATE_WORKFLOW_SUCCESS_LOG_AND_ACCEPTANCE_REVIEW_REQUIRED`. Jobs/steps snapshot stored in `qa/certification/runner/41156327854.json`.
 - This is execution telemetry, not acceptance. Logs, required-step execution, fingerprint, channel, oracle and acceptance revision still require review.
 - No objective/blocker was closed and `continuity.json.next_action` was deliberately left unchanged.
+
+
+## 2026-11-03 UTC — r369: Algebra114 AS-EXP-08 PASS_SCOPED (Lite)
+
+- Caso original: `(x+2)(x-3)(x+1)=x^3-7x-6`, fuente `algebra114_source.md`, fila AS-EXP-08.
+- SHA exacto `a1a69ae9429afc9481d9febf34885b9242968917`; test `tests/algebra114AsExp08.audit.test.ts`, blob `08c80b237acf7d5c5ce072ee32ad904b54a29c25`.
+- El test conserva el fixture, verifica los monomios firmados `x^3,-7*x,-6` y seis sustituciones `[-4,-2,-1,0,3,5]` con oráculo JS independiente `x*x*x-7*x-6`.
+- CI [41144965662](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965662), cumulative [41144965700](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965700) y H1d [41144965719](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965719): SUCCESS en el mismo SHA. Acumulativo: `skip=false`, 366 archivos / 2,259 passed / 8 expected fail / 34 TODO; H1d: 22 E2E.
+- Runner push [41144965611](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965611) SUCCESS/no-dispatch. No acredita dispatch, recibo durable, persistencia ni replay.
+- Aceptación `ALGEBRA114_AS_EXP_08_ACCEPTANCE_R368.md`; solo Lite, sin afirmación de paridad Plus.
+- Siguiente: AS-EXP-09 `(a+b+c)^2`, test-first con oracle independiente. Certificación global OPEN.

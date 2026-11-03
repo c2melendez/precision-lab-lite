@@ -1,4 +1,4 @@
-# Corte vigente de certificación — 2026-10-30 UTC (r368)
+# Corte vigente de certificación — 2026-11-03 UTC (r369)
 
 <!-- certification-runner:latest:start -->
 ## Última observación de certification-runner (registro automático)
@@ -16,6 +16,17 @@
 
 
 **Fuente de verdad:** rama `qa/syntax-audit-in625-a1`, índices `continuity.json` y evidencia GitHub Actions. Este corte supersede cualquier instrucción histórica anterior que colocara Compass por delante de los motores matemáticos.
+
+## Actualización operativa — 2026-11-03 (r369)
+
+- **Lite — Algebra114 AS-EXP-08: PASS_SCOPED** en SHA `a1a69ae9429afc9481d9febf34885b9242968917`; fixture original, multiconjunto simbólico `x^3,-7*x,-6` y seis sustituciones contra oráculo JS independiente. Aceptación: `ALGEBRA114_AS_EXP_08_ACCEPTANCE_R368.md`.
+- Gates del mismo SHA: CI [41144965662](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965662), acumulativo [41144965700](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965700) y H1d [41144965719](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965719), todos SUCCESS. Acumulativo ejecutó `skip=false`, 2,259 tests passed, 8 expected fail y 34 TODO; H1d 22 E2E passed.
+- Runner [41144965611](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965611) SUCCESS únicamente en push/no-dispatch. No acredita workflow_dispatch, receipt, persistencia ni replay idempotente.
+- **Siguiente tarea Lite:** AS-EXP-09 test-first, `(a+b+c)^2`; recuperar la fila exacta, construir el oráculo independiente y probar casos multivariables sin usar el CAS para calcular expected.
+- **Plus:** EDCX-B6 inverse mantiene aceptación parcial de las filas 43,44,46,48,49,50,51,52,53; VC-FE-45 permanece BLOCKED por conflicto contractual con EV-I-12. No debilitar EV-I-12 ni inferir paridad con Lite.
+- Bloqueos generales no cambian. **Global certification OPEN**.
+
+
 
 - **Motor Lite:** AS-SIM-01, AS-SIM-05, AS-EXP-01 y AS-EXP-02 están PASS_SCOPED. AS-EXP-02: SHA `c8c29d820e5bd16ab4df8a528bcea9b4a72f8acc`; CI 41138509410, cumulative 41138509481 (2,259 passed; test focalizado explícito), H1d 41138509536 (22 E2E) y Scientific UI 41138509494 (456 passed), todos SUCCESS. Aceptación `ALGEBRA114_AS_EXP_02_ACCEPTANCE_R360.md`.
 - **Motor Lite:** AS-EXP-03 PASS_SCOPED en SHA `0a85b448298df0691b043269648d327d0a7aec0b`; CI 41141038026, cumulative 41141037941 (2,259 passed; test focalizado explícito), H1d 41141037866 (22 E2E) SUCCESS. Runner push 41141571479 SUCCESS/no-dispatch (SHA AS-EXP-04 candidato 933fad5c3e55db06db9de6ff21e02cd96070da0f). Scientific UI 41141038013 seguía IN_PROGRESS como evidencia complementaria, no gate de aceptación algebraica. Aceptación `ALGEBRA114_AS_EXP_03_ACCEPTANCE_R361.md`.

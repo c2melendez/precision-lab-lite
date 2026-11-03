@@ -123,3 +123,12 @@ Next: create a deterministic read-only fixture validator for exact original IDs/
 - CI 41144150978, cumulative 41144150867 y H1d 41144150866 SUCCESS. Oráculo JS independiente con cinco valores; test focalizado aprobado.
 - Runner push 41144150833 SUCCESS/no-dispatch; no acredita dispatch ni persistencia.
 - Siguiente caso: AS-EXP-08, `(x+2)(x-3)(x+1) = x^3-7x-6`, con expected aritmético independiente. No Plus parity claim; global OPEN.
+
+
+## 2026-11-03 — r369: AS-EXP-08 PASS_SCOPED
+
+- AS-EXP-08 `(x+2)(x-3)(x+1)=x^3-7x-6` queda PASS_SCOPED únicamente en Lite.
+- SHA exacto `a1a69ae9429afc9481d9febf34885b9242968917`; test blob `08c80b237acf7d5c5ce072ee32ad904b54a29c25`; fixture original, multiconjunto simbólico de tres términos y seis sustituciones con oráculo JavaScript independiente.
+- CI 41144965662, acumulativo 41144965700 (2,259 passed, test focalizado ejecutado) y H1d 41144965719 (22 E2E) SUCCESS en el mismo SHA.
+- Aceptación: `ALGEBRA114_AS_EXP_08_ACCEPTANCE_R368.md`. Runner 41144965611 solo acredita push/no-dispatch.
+- Próximo: AS-EXP-09, `(a+b+c)^2`, preparar fixture y oracle independiente; no extrapolar a Plus. Global OPEN.
