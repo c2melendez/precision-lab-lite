@@ -1,4 +1,14 @@
-# Corte vigente de certificación — 2026-11-03 UTC (r372)
+# Corte vigente de certificación — 2026-11-03 UTC (r373)
+
+## Actualización operativa — 2026-11-03 (r373)
+
+- Lite — Algebra114 AS-FAC-02: **PASS_SCOPED** en SHA `4a14dd0bd6c1797a5415b93ced37d53425d68908`. Fila fuente exacta; salida factorizada; siete sustituciones contra oráculo JavaScript independiente. Aceptación: `ALGEBRA114_AS_FAC_02_ACCEPTANCE_R373.md`.
+- Acumulativo [41615433227](https://github.com/c2melendez/precision-lab-lite/actions/runs/41615433227) SUCCESS: 366 archivos, 2,259 passed, 8 expected fail, 34 TODO; typecheck, unit/parity y build SUCCESS. El test AS-FAC-02 aparece explícitamente en el log.
+- H1d [41615433418](https://github.com/c2melendez/precision-lab-lite/actions/runs/41615433418) SUCCESS, 22/22. Certification Runner [41615433272](https://github.com/c2melendez/precision-lab-lite/actions/runs/41615433272) SUCCESS: autenticación, resolución de rama canónica, checkout y fingerprint. No hubo dispatch en el evento push.
+- CI [41615433266](https://github.com/c2melendez/precision-lab-lite/actions/runs/41615433266) FAILURE exclusivamente en npm audit: 8 vulnerabilidades moderadas. No se modificaron dependencias ni se debilitó el hard gate; el problema es independiente de la aceptación matemática.
+- Plus no ejecutó AS-FAC-02; no se afirma paridad. VC-FE-45 continúa BLOCKED por conflicto contractual con EV-I-12. Global certification OPEN.
+- Siguiente acción Lite: AS-FAC-03 test-first; fixture exacta `6x^2-11x+3=(3x-1)(2x-3)`, forma factorizada y siete sustituciones contra oráculo JS independiente. Sin cambio del motor salvo defecto reproducible.
+
 
 ## Actualización operativa — 2026-11-03 (r370)
 
