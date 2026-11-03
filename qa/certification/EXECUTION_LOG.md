@@ -649,3 +649,15 @@ Compass P0 permanece en su propio backlog de integración/seguridad y no es cond
 - Runner push [41144965611](https://github.com/c2melendez/precision-lab-lite/actions/runs/41144965611) SUCCESS/no-dispatch. No acredita dispatch, recibo durable, persistencia ni replay.
 - Aceptación `ALGEBRA114_AS_EXP_08_ACCEPTANCE_R368.md`; solo Lite, sin afirmación de paridad Plus.
 - Siguiente: AS-EXP-09 `(a+b+c)^2`, test-first con oracle independiente. Certificación global OPEN.
+
+## 2026-11-03 UTC — r370: Algebra114 AS-EXP-09 PASS_SCOPED en Lite
+
+- SHA técnico: 13bf8b535a00b40c464057dc663b2d97ea6c44bd; test blob 9ca2c77978836221bebb44b3a8401cf344c0550b; fixture blob b30ca7fcec641334ce8128ca25bec542a9d04e79.
+- El test verifica la fila exacta, seis monomios incluidos los términos cruzados y seis sustituciones contra (a+b+c)*(a+b+c) calculado por JavaScript independiente. No se usó CAS para el expected.
+- Acumulativo 41612413595: SUCCESS; typecheck, test/parity y build SUCCESS; 366 archivos / 2,259 passed / 8 expected fail / 34 TODO. El test AS-EXP-09 se ejecutó y aprobó.
+- H1d 41612413591: SUCCESS, 22 passed.
+- CI 41612413592: FAILURE solo en hard gate npm audit; artefacto reporta 8 moderadas, 0 altas y 0 críticas. Sin cambios de dependencias ni debilitamiento de política. Registrar como deuda separada.
+- Runner push 41612413677: falló al resolver la rama desde el README de la rama predeterminada; no despachó gate y no es evidencia de producto.
+- Decisión: PASS_SCOPED Lite únicamente; no inferir Plus ni cerrar certificación global.
+- Siguiente: AS-EXP-10 test-first con expected aritmético JS independiente.
+
