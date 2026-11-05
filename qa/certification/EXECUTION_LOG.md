@@ -1,3 +1,11 @@
+## 2026-11-05 UTC — r392: Algebra229 AS-A-16 PASS_SCOPED; AS-A-17 iniciado
+
+- A16 Lite SHA 36b1c73d0673a05e2418cc3c6dc49952a7c729f9: cumulative 42038744006 SUCCESS (2 focales, 2259 passed), H1d 42038743676 SUCCESS (22), Scientific UI 42038744245 SUCCESS (456), CI 42038743893 FAILURE solo npm audit (4 moderate), Runner 42038743972 push-only.
+- A16 Plus SHA 3555ce2898b31eda626c95d0c89c59a99f4dba8b: cumulative 42038783860 SUCCESS (2 focales PASSED, 2800 backend, 88.88% coverage), H1d 42038784134 SUCCESS (38), CI 42038784081 SUCCESS (2800 backend/1055 frontend), Runner 42038784013 push-only.
+- A16 PASS_SCOPED bilateral. Acceptance file `ALGEBRA229_AS_A_16_ACCEPTANCE_2026-11-05.md`.
+- A17 test-first publicado: Lite SHA b37502c5713bddabae6a022e6e1cb788ee72a87d (cumulative 42039943541, Scientific UI 42039943566, H1d 42039943721, CI 42039944052 audit failure, Runner 42039943836); Plus SHA 8232f3979cf128c1bd52c6de2bfde4e9296a5d77 (cumulative 42039991777, H1d 42039991674, CI 42039991675, Runner 42039991673). Gates pendientes.
+- Siguiente paso: revisar gates AS-A-17; global OPEN.
+
 ## 2026-11-05 UTC — r391: Algebra229 AS-A-15 PASS_SCOPED; AS-A-16 iniciado
 
 - A15 Lite SHA ea3d3901b97d3720e644c288cb66cffbceefdc24: cumulative 42035481349 SUCCESS (skip=false, 2 focales, 2259 passed), H1d 42035481377 SUCCESS (22), Scientific UI 42035481394 SUCCESS (456), CI 42035481443 FAILURE solo npm audit (4 moderate), Runner 42035481516 push-only.
