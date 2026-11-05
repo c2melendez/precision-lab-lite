@@ -908,3 +908,12 @@ Siguiente: continuar con AS-PF-03 en Lite; no extrapolar la aprobación a Plus.
 - H1d 41991375334 SUCCESS (22/22); Runner 41991375332 SUCCESS push-only; Scientific UI 41991375311 IN_PROGRESS y complementario.
 - CI 41991375289 FAILURE en QA dependency audit hard gate (4 moderadas); no se cambió el umbral.
 - PASS_SCOPED Lite-only. Plus ejecuta sus tests de racionalización AS-RAT-01/02 con oráculos independientes. Siguiente Lite AS-RAT-05. Global OPEN.
+
+
+## 2026-11-05 UTC — r396: Algebra114 AS-RAT-05 PASS_SCOPED en Lite
+
+- SHA técnico `fa6cf7132921c8d5a1c99d0bcbd1975058372115`; test `tests/algebra114AsRat05.audit.test.ts`, blob `4feeae1fa74cc449c69ee827c01e1809a15f73f8`; fixture original `b30ca7fcec641334ce8128ca25bec542a9d04e79`.
+- La prueba valida la fila exacta, la forma simbólica `(4^(1/3)-2^(1/3)+1)/3`, el oráculo Math.cbrt(2)/Math.cbrt(4), positividad y la identidad del conjugado.
+- Acumulativo 41991904550 SUCCESS (366 archivos / 2259 passed / 8 expected fail / 34 TODO; test focal explícito; typecheck/unit-parity/build SUCCESS); H1d 41991904595 SUCCESS (22/22); Scientific UI 41991904726 SUCCESS (456); Runner 41991904549 SUCCESS push-only.
+- CI 41991904623 FAILURE solo en QA dependency audit hard gate (4 moderadas); no se modificaron dependencias ni umbrales.
+- PASS_SCOPED Lite-only; Plus ejecuta su propia prueba AS-RAT-05 con oráculo numérico independiente y no queda aceptado hasta sus gates. Siguiente Lite: AS-RAT-06. Global OPEN.
