@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 373,
+  "revision": 374,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "292646eea1bab498084730f8ec06cefe02dffb25",
@@ -781,5 +781,53 @@
         "reason": "default README canonical-branch resolution; no checkout or dispatch"
       }
     }
+  },
+  "plus_companion_as_rat01_02_05_06_r388": {
+    "status": "PASS_SCOPED_PLUS_BACKEND_HTTP",
+    "sha": "a4ab5b03cbde3d53789609823cbfb2314c5aea10",
+    "source_blob": "b30ca7fcec641334ce8128ca25bec542a9d04e79",
+    "accepted_cases": [
+      {
+        "id": "AS-RAT-01",
+        "test": "backend/tests/test_algebra114_as_rat01.py",
+        "blob": "b8ac2bf64caab4372f7dc2978519d7deb35607ee",
+        "acceptance": "qa/certification/ALGEBRA114_AS_RAT_01_ACCEPTANCE_R388.md"
+      },
+      {
+        "id": "AS-RAT-02",
+        "test": "backend/tests/test_algebra114_as_rat02.py",
+        "blob": "0f80e81db9b82e97376039c56393fbb4ff8802b5",
+        "acceptance": "qa/certification/ALGEBRA114_AS_RAT_02_ACCEPTANCE_R388.md"
+      },
+      {
+        "id": "AS-RAT-05",
+        "test": "backend/tests/test_algebra114_as_rat05.py",
+        "blob": "604db61ea58e6578c346a37630e02b59b9ad697d",
+        "acceptance": "qa/certification/ALGEBRA114_AS_RAT_05_ACCEPTANCE_R388.md"
+      },
+      {
+        "id": "AS-RAT-06",
+        "test": "backend/tests/test_algebra114_as_rat06.py",
+        "blob": "855857bacdb636bb2d98622cfeba8fb25e89fc97",
+        "acceptance": "qa/certification/ALGEBRA114_AS_RAT_06_ACCEPTANCE_R388.md"
+      }
+    ],
+    "ci_run": 41993715914,
+    "ci_status": "SUCCESS",
+    "cumulative_run": 41993716059,
+    "cumulative_status": "SUCCESS",
+    "cumulative_backend_summary": "2800 passed, 1 skipped, 10 xfailed",
+    "h1d_run": 41993715913,
+    "h1d_status": "SUCCESS",
+    "h1d_passed": 38,
+    "runner_run": 41993716068,
+    "runner_status": "SUCCESS_PUSH_ONLY",
+    "next_plus_algebra114_case": "AS-RAT-03",
+    "note": "Plus backend/service+HTTP only; no UI parity claim. RAT-03 and RAT-04 tests still lack independent numeric oracles. Preserve global next_action EDCX-B6-VC-FE-45-CONTRACT-CONFLICT; it is separate from Algebra114. Global OPEN."
+  },
+  "plus_algebra114_next_action": {
+    "id": "AS-RAT-03-ORACLE-AUDIT",
+    "status": "READY",
+    "action": "Strengthen Plus backend/tests/test_algebra114_as_rat03.py with exact fixture, service+HTTP and independent math.sqrt oracle for sqrt(3)-sqrt(2)."
   }
 }

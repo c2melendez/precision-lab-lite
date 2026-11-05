@@ -926,3 +926,16 @@ Siguiente: continuar con AS-PF-03 en Lite; no extrapolar la aprobación a Plus.
 - Acumulativo 41993306207 SUCCESS (366 archivos / 2259 passed / 8 expected fail / 34 TODO; test focal explícito; typecheck/unit-parity/build SUCCESS); H1d 41993306397 SUCCESS (22/22); Runner 41993306421 SUCCESS push-only.
 - CI 41993306652 FAILURE solo en QA dependency audit hard gate (4 moderadas); no se modificaron dependencias ni umbrales.
 - Scientific UI 41993306414 seguía IN_PROGRESS y es complementario, no gate matemático. PASS_SCOPED Lite-only; Plus mantiene su propia validación. Siguiente Lite AS-RAT-07. Global OPEN.
+
+
+## Reconciliación bilateral — 2026-11-05 (Plus r388; backend/HTTP)
+
+- Plus — Algebra114 AS-RAT-01, AS-RAT-02, AS-RAT-05 y AS-RAT-06: **PASS_SCOPED** en SHA `a4ab5b03cbde3d53789609823cbfb2314c5aea10`. Tests del backend comprueban servicio y HTTP; RAT-01/02 usan `math.sqrt`, RAT-05 usa `math.cbrt`, RAT-06 valida el dominio original y siete sustituciones con `math.sqrt`.
+- CI [41993715914](https://github.com/c2melendez/precision-lab-plus/actions/runs/41993715914) y acumulativo [41993716059](https://github.com/c2melendez/precision-lab-plus/actions/runs/41993716059): **SUCCESS**. Backend 2,800 passed, 1 skipped, 10 xfailed; frontend unit/parity y build SUCCESS.
+- H1d [41993715913](https://github.com/c2melendez/precision-lab-plus/actions/runs/41993715913) SUCCESS (38/38); Runner [41993716068](https://github.com/c2melendez/precision-lab-plus/actions/runs/41993716068) SUCCESS push-only.
+- Aceptaciones Plus: `ALGEBRA114_AS_RAT_01_ACCEPTANCE_R388.md`, `ALGEBRA114_AS_RAT_02_ACCEPTANCE_R388.md`, `ALGEBRA114_AS_RAT_05_ACCEPTANCE_R388.md`, `ALGEBRA114_AS_RAT_06_ACCEPTANCE_R388.md`. Alcance solo backend/servicio HTTP; no implica paridad UI con Lite.
+- Plus aún no acepta RAT-03 y RAT-04: sus tests existen, pero no aportan todavía oráculo numérico independiente. Próxima fila Plus: **AS-RAT-03**.
+- El bloqueo global de Plus EDCX-B6 VC-FE-45/EV-I-12 permanece separado y sin cambios. Lite conserva su siguiente acción AS-RAT-07. Certificación global OPEN.
+
+
+
