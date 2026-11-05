@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 391,
+  "revision": 392,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "36b1c73d0673a05e2418cc3c6dc49952a7c729f9",
-  "baseline_case": "ALGEBRA229-AS-A-15",
+  "technical_baseline_sha": "b37502c5713bddabae6a022e6e1cb788ee72a87d",
+  "baseline_case": "ALGEBRA229-AS-A-16",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-A-16-TEST-FIRST",
+    "id": "ALGEBRA229-AS-A-17-TEST-FIRST",
     "status": "WAIT",
-    "previous_id": "ALGEBRA229-AS-A-15-TEST-FIRST",
-    "action": "Esperar y revisar gates del SHA Lite 36b1c73d0673a05e2418cc3c6dc49952a7c729f9 (cumulative 42038744006, H1d 42038743676, Scientific UI 42038744245; CI 42038743893 audit failure) y Plus 3555ce2898b31eda626c95d0c89c59a99f4dba8b (cumulative 42038783860, H1d 42038784134, CI 42038784081). Confirmar ejecución focal AS-A-16, distinguir auditoría de seguridad Lite y actualizar aceptación bilateral; después continuar AS-A-17."
+    "previous_id": "ALGEBRA229-AS-A-16-TEST-FIRST",
+    "action": "Esperar y revisar los gates sobre Lite SHA b37502c5713bddabae6a022e6e1cb788ee72a87d (cumulative 42039943541, H1d 42039943721, Scientific UI 42039943566; CI 42039944052 audit failure) y Plus SHA 8232f3979cf128c1bd52c6de2bfde4e9296a5d77 (cumulative 42039991777, H1d 42039991674, CI 42039991675; Runner 42039991673). Confirmar ejecución focal AS-A-17, registrar resultados bilateralmente y después seleccionar el siguiente caso de la matriz. Global OPEN."
   },
   "blockers": [
     {
@@ -312,7 +312,8 @@
     "qa/certification/ALGEBRA229_AS_A_09_ACCEPTANCE_R405.md",
     "qa/certification/ALGEBRA229_AS_A_10_ACCEPTANCE_R406.md",
     "qa/certification/ALGEBRA229_AS_A_11_ACCEPTANCE_R407.md",
-    "qa/certification/ALGEBRA229_AS_A_15_ACCEPTANCE_2026-11-05.md"
+    "qa/certification/ALGEBRA229_AS_A_15_ACCEPTANCE_2026-11-05.md",
+    "qa/certification/ALGEBRA229_AS_A_16_ACCEPTANCE_2026-11-05.md"
   ],
   "h2_en_sg_reconciliation_r358": {
     "status": "PARTIAL",
@@ -679,7 +680,7 @@
     "certification_pass": false,
     "recorded_at": "2026-10-31T01:40:23+00:00"
   },
-  "updated_utc": "2026-11-05T13:49:44.236Z",
+  "updated_utc": "2026-11-05T13:57:13.229Z",
   "active_execution_r370": {
     "case": "ALGEBRA114-AS-EXP-09",
     "sha": "13bf8b535a00b40c464057dc663b2d97ea6c44bd",
@@ -945,10 +946,10 @@
     "note": "Lite cumulative, H1d and Scientific UI gates passed. Standard CI dependency audit remains a separate open blocker."
   },
   "plus_algebra229_next_action": {
-    "id": "ALGEBRA229-AS-A-16-TEST-FIRST",
+    "id": "ALGEBRA229-AS-A-17-TEST-FIRST",
     "status": "WAIT",
-    "previous_id": "ALGEBRA229-AS-A-15-TEST-FIRST",
-    "action": "Esperar y revisar gates del SHA Lite 36b1c73d0673a05e2418cc3c6dc49952a7c729f9 (cumulative 42038744006, H1d 42038743676, Scientific UI 42038744245; CI 42038743893 audit failure) y Plus 3555ce2898b31eda626c95d0c89c59a99f4dba8b (cumulative 42038783860, H1d 42038784134, CI 42038784081). Confirmar ejecución focal AS-A-16, distinguir auditoría de seguridad Lite y actualizar aceptación bilateral; después continuar AS-A-17."
+    "previous_id": "ALGEBRA229-AS-A-16-TEST-FIRST",
+    "action": "Esperar y revisar los gates sobre Lite SHA b37502c5713bddabae6a022e6e1cb788ee72a87d (cumulative 42039943541, H1d 42039943721, Scientific UI 42039943566; CI 42039944052 audit failure) y Plus SHA 8232f3979cf128c1bd52c6de2bfde4e9296a5d77 (cumulative 42039991777, H1d 42039991674, CI 42039991675; Runner 42039991673). Confirmar ejecución focal AS-A-17, registrar resultados bilateralmente y después seleccionar el siguiente caso de la matriz. Global OPEN."
   },
   "algebra229_as_a07_r403": {
     "status": "PASS_SCOPED_BILATERAL_CASE",
@@ -1512,6 +1513,76 @@
     "plus_ci_run": 42038784081,
     "plus_ci_status": "IN_PROGRESS",
     "plus_runner_run": 42038784013,
+    "plus_runner_status": "IN_PROGRESS"
+  },
+  "algebra229_as_a16_r392": {
+    "status": "PASS_SCOPED_BILATERAL_CASE",
+    "lite_sha": "36b1c73d0673a05e2418cc3c6dc49952a7c729f9",
+    "lite_test": "tests/algebra229AsA16.audit.test.ts",
+    "lite_test_blob": "a68df3c295a569f9510efb32797a5cd729c6f804",
+    "lite_cumulative_run": 42038744006,
+    "lite_cumulative_status": "SUCCESS",
+    "lite_focal_tests": 2,
+    "lite_total_passed": 2259,
+    "lite_h1d_run": 42038743676,
+    "lite_h1d_status": "SUCCESS",
+    "lite_h1d_passed": 22,
+    "lite_scientific_run": 42038744245,
+    "lite_scientific_status": "SUCCESS",
+    "lite_scientific_passed": 456,
+    "lite_ci_run": 42038743893,
+    "lite_ci_status": "FAILURE_NPM_AUDIT_4_MODERATE",
+    "lite_runner_run": 42038743972,
+    "lite_runner_status": "SUCCESS_PUSH_ONLY",
+    "plus_sha": "3555ce2898b31eda626c95d0c89c59a99f4dba8b",
+    "plus_test": "backend/tests/test_algebra229_as_a16.py",
+    "plus_test_blob": "d79aaffb29e31583a5ca877592242c4888f491a8",
+    "plus_cumulative_run": 42038783860,
+    "plus_cumulative_status": "SUCCESS",
+    "plus_cumulative_skip": false,
+    "plus_focal_tests": [
+      "test_as_a16_source_row_has_exact_contract_cells PASSED",
+      "test_as_a16_expand_service_http_and_independent_gaussian_integer_oracle PASSED"
+    ],
+    "plus_backend_summary": "2800 passed, 1 skipped, 10 xfailed",
+    "plus_coverage": "88.88%",
+    "plus_h1d_run": 42038784134,
+    "plus_h1d_status": "SUCCESS",
+    "plus_h1d_passed": 38,
+    "plus_ci_run": 42038784081,
+    "plus_ci_status": "SUCCESS",
+    "plus_ci_backend": "2800 passed",
+    "plus_ci_frontend": "1055 passed",
+    "plus_runner_run": 42038784013,
+    "plus_runner_status": "SUCCESS_PUSH_ONLY",
+    "scope": "AS-A-16 only",
+    "oracle": "Exact source contract cells; independent Gaussian-integer pair multiplication."
+  },
+  "algebra229_as_a17_pending_r392": {
+    "status": "IN_PROGRESS_WAIT",
+    "lite_sha": "b37502c5713bddabae6a022e6e1cb788ee72a87d",
+    "lite_test": "tests/algebra229AsA17.audit.test.ts",
+    "lite_test_blob": "39b34eed4107e88a520a154cc2a4d4867d38dc85",
+    "lite_cumulative_run": 42039943541,
+    "lite_cumulative_status": "IN_PROGRESS",
+    "lite_h1d_run": 42039943721,
+    "lite_h1d_status": "IN_PROGRESS",
+    "lite_scientific_run": 42039943566,
+    "lite_scientific_status": "IN_PROGRESS",
+    "lite_ci_run": 42039944052,
+    "lite_ci_status": "FAILURE_NPM_AUDIT_4_MODERATE",
+    "lite_runner_run": 42039943836,
+    "lite_runner_status": "SUCCESS_PUSH_ONLY",
+    "plus_sha": "8232f3979cf128c1bd52c6de2bfde4e9296a5d77",
+    "plus_test": "backend/tests/test_algebra229_as_a17.py",
+    "plus_test_blob": "d7f9d67e77b9b5f37a2ddc91dd5231a206c55ad7",
+    "plus_cumulative_run": 42039991777,
+    "plus_cumulative_status": "IN_PROGRESS",
+    "plus_h1d_run": 42039991674,
+    "plus_h1d_status": "IN_PROGRESS",
+    "plus_ci_run": 42039991675,
+    "plus_ci_status": "QUEUED",
+    "plus_runner_run": 42039991673,
     "plus_runner_status": "IN_PROGRESS"
   }
 }
