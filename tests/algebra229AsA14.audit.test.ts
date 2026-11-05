@@ -11,10 +11,10 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_GZ = join(ROOT, "qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz");
 
 describe("Algebra229 AS-A-14 expand (sqrt2+sqrt3)^2", () => {
-  it("matches the exact frozen source row", () => {
+  it("matches the exact frozen source row including the radical-result note", () => {
     const text = gunzipSync(readFileSync(SOURCE_GZ)).toString("utf8");
     const sourceRow = text.split(/\r?\n/).find((line) => /^\|\s*AS-A-14\s*\|/.test(line))?.trim();
-    const expectedRow = "| AS-A-14 | N2 | `expandir` | `\\left(\\sqrt{2}+\\sqrt{3}\\right)^{2}` | `2 \\sqrt{6} + 5` |  |";
+    const expectedRow = "| AS-A-14 | N2 | `expandir` | `\\left(\\sqrt{2}+\\sqrt{3}\\right)^{2}` | `2 \\sqrt{6} + 5` | Resultado con radical: `5+2\\sqrt{6}`. |";
     expect(sourceRow).toBe(expectedRow);
   });
 
