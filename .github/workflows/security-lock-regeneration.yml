@@ -9,8 +9,9 @@ permissions:
   contents: read
 
 jobs:
-  regenerate-and-audit:
+  regenerate-validate-audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - name: Checkout isolated security branch
         uses: actions/checkout@v4
@@ -19,49 +20,42 @@ jobs:
         with:
           node-version: 22
       - name: Regenerate lockfile with scoped Workbox override
-        continue-on-error: true
         shell: bash
-        run: |
-          set +e
-          npm install --package-lock-only --ignore-scripts --no-audit
-          rc=$?
-          echo "$rc" > npm-install-exit-code.txt
-          echo "npm_install_exit_code=$rc"
+        run: npm install --package-lock-only --ignore-scripts --no-audit
+      - name: Install exact lockfile
+        run: npm ci
       - name: Inspect resolved packages
         continue-on-error: true
         shell: bash
         run: |
-          set +e
           npm ls glob minimatch workbox-build --all > npm-dependency-tree.txt 2>&1
           rc=$?
           echo "$rc" > npm-ls-exit-code.txt
           cat npm-dependency-tree.txt
-      - name: Run dependency audit without suppressing failures
+      - name: Audit all dependencies
         continue-on-error: true
         shell: bash
         run: |
-          set +e
-          npm audit --json > npm-audit.json
+          npm audit --package-lock-only --json > npm-audit.json
           rc=$?
           echo "$rc" > npm-audit-exit-code.txt
           echo "npm_audit_exit_code=$rc"
-          npm audit --omit=dev --json > npm-audit-production.json
-          prod_rc=$?
-          echo "$prod_rc" > npm-audit-production-exit-code.txt
-          echo "npm_audit_production_exit_code=$prod_rc"
-      - name: Upload lockfile and diagnostics
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Run unit and regression suite
+        run: npm test
+      - name: Production build
+        run: npm run build
+      - name: Upload lockfile and validation evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: security-lock-regeneration
           path: |
             package-lock.json
-            npm-install-exit-code.txt
             npm-dependency-tree.txt
             npm-ls-exit-code.txt
             npm-audit.json
             npm-audit-exit-code.txt
-            npm-audit-production.json
-            npm-audit-production-exit-code.txt
           if-no-files-found: warn
           retention-days: 7
