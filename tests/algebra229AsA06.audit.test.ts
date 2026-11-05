@@ -13,9 +13,9 @@ const SOURCE_GZ = join(ROOT, "qa/certification/legacy_sources/matriz_algebra_sim
 describe("Algebra229 AS-A-06 expand (x+y+z)^2", () => {
   it("source row is present in frozen AS229 matrix", () => {
     const text = gunzipSync(readFileSync(SOURCE_GZ)).toString("utf8");
-    expect(text).toMatch(/\|\s*AS-A-06\s*\|\s*N2\s*\|/);
-    expect(text).toContain("(x+y+z)");
-    expect(text).toContain("x^{2} + 2 x y + 2 x z + y^{2} + 2 y z + z^{2}");
+    const sourceRow = text.split(/\r?\n/).find((line) => /^\|\s*AS-A-06\s*\|/.test(line))?.trim();
+    const expectedRow = "| AS-A-06 | N2 | `expandir` | `(x+y+z)^{2}` | `x^{2} + 2 x y + 2 x z + y^{2} + 2 y z + z^{2}` |  |";
+    expect(sourceRow).toBe(expectedRow);
   });
 
   it("expands original (x+y+z)^2 and matches multinomial oracle at samples", () => {
