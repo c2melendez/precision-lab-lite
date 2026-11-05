@@ -22,11 +22,8 @@ describe("Algebra229 AS-A-14 expand (sqrt2+sqrt3)^2", () => {
     const original = parseExpression("(sqrt(2)+sqrt(3))^2").algebrite;
     const expanded = expand(original);
     const symbolicOracle = parseExpression("5+2*sqrt(6)").algebrite;
-
     expect(evaluate(`(${expanded})-(${symbolicOracle})`).trim()).toBe("0");
-
     const actual = compileNumeric(evaluate(expanded), "__no_var__")(0);
-    const expected = 5 + 2 * Math.sqrt(6);
-    expect(actual).toBeCloseTo(expected, 9);
+    expect(actual).toBeCloseTo(5 + 2 * Math.sqrt(6), 9);
   });
 });
