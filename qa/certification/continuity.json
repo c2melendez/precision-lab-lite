@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 390,
+  "revision": 391,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "ea3d3901b97d3720e644c288cb66cffbceefdc24",
-  "baseline_case": "ALGEBRA229-AS-A-14",
+  "technical_baseline_sha": "36b1c73d0673a05e2418cc3c6dc49952a7c729f9",
+  "baseline_case": "ALGEBRA229-AS-A-15",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-A-15-TEST-FIRST",
+    "id": "ALGEBRA229-AS-A-16-TEST-FIRST",
     "status": "WAIT",
-    "previous_id": "ALGEBRA229-AS-A-14-TEST-FIRST",
-    "action": "Esperar Scientific UI 42035481394 (Lite) y cumulative 42035518039 / CI 42035518143 (Plus; backend en curso). Lite cumulative 42035481349 SUCCESS (2 tests focales/2259), H1d 42035481377 SUCCESS (22); Plus H1d 42035518483 SUCCESS (38). Leer logs, confirmar AS-A-15 en Plus y cerrar bilateralmente; después iniciar AS-A-16."
+    "previous_id": "ALGEBRA229-AS-A-15-TEST-FIRST",
+    "action": "Esperar y revisar gates del SHA Lite 36b1c73d0673a05e2418cc3c6dc49952a7c729f9 (cumulative 42038744006, H1d 42038743676, Scientific UI 42038744245; CI 42038743893 audit failure) y Plus 3555ce2898b31eda626c95d0c89c59a99f4dba8b (cumulative 42038783860, H1d 42038784134, CI 42038784081). Confirmar ejecución focal AS-A-16, distinguir auditoría de seguridad Lite y actualizar aceptación bilateral; después continuar AS-A-17."
   },
   "blockers": [
     {
@@ -311,7 +311,8 @@
     "qa/certification/ALGEBRA229_AS_A_08_ACCEPTANCE_R404.md",
     "qa/certification/ALGEBRA229_AS_A_09_ACCEPTANCE_R405.md",
     "qa/certification/ALGEBRA229_AS_A_10_ACCEPTANCE_R406.md",
-    "qa/certification/ALGEBRA229_AS_A_11_ACCEPTANCE_R407.md"
+    "qa/certification/ALGEBRA229_AS_A_11_ACCEPTANCE_R407.md",
+    "qa/certification/ALGEBRA229_AS_A_15_ACCEPTANCE_2026-11-05.md"
   ],
   "h2_en_sg_reconciliation_r358": {
     "status": "PARTIAL",
@@ -678,7 +679,7 @@
     "certification_pass": false,
     "recorded_at": "2026-10-31T01:40:23+00:00"
   },
-  "updated_utc": "2026-11-05T13:27:52.631Z",
+  "updated_utc": "2026-11-05T13:49:44.236Z",
   "active_execution_r370": {
     "case": "ALGEBRA114-AS-EXP-09",
     "sha": "13bf8b535a00b40c464057dc663b2d97ea6c44bd",
@@ -944,10 +945,10 @@
     "note": "Lite cumulative, H1d and Scientific UI gates passed. Standard CI dependency audit remains a separate open blocker."
   },
   "plus_algebra229_next_action": {
-    "id": "ALGEBRA229-AS-A-15-TEST-FIRST",
+    "id": "ALGEBRA229-AS-A-16-TEST-FIRST",
     "status": "WAIT",
-    "previous_id": "ALGEBRA229-AS-A-14-TEST-FIRST",
-    "action": "Esperar Scientific UI 42035481394 (Lite) y cumulative 42035518039 / CI 42035518143 (Plus; backend en curso). Lite cumulative 42035481349 SUCCESS (2 tests focales/2259), H1d 42035481377 SUCCESS (22); Plus H1d 42035518483 SUCCESS (38). Leer logs, confirmar AS-A-15 en Plus y cerrar bilateralmente; después iniciar AS-A-16."
+    "previous_id": "ALGEBRA229-AS-A-15-TEST-FIRST",
+    "action": "Esperar y revisar gates del SHA Lite 36b1c73d0673a05e2418cc3c6dc49952a7c729f9 (cumulative 42038744006, H1d 42038743676, Scientific UI 42038744245; CI 42038743893 audit failure) y Plus 3555ce2898b31eda626c95d0c89c59a99f4dba8b (cumulative 42038783860, H1d 42038784134, CI 42038784081). Confirmar ejecución focal AS-A-16, distinguir auditoría de seguridad Lite y actualizar aceptación bilateral; después continuar AS-A-17."
   },
   "algebra229_as_a07_r403": {
     "status": "PASS_SCOPED_BILATERAL_CASE",
@@ -1441,5 +1442,76 @@
       "run": 42035201681,
       "reason": "expected row omitted the final note 'Exponentes negativos tras expandir.'; numeric oracle passed."
     }
+  },
+  "algebra229_as_a15_r391": {
+    "status": "PASS_SCOPED_BILATERAL_CASE",
+    "lite_sha": "ea3d3901b97d3720e644c288cb66cffbceefdc24",
+    "lite_test": "tests/algebra229AsA15.audit.test.ts",
+    "lite_test_blob": "73fbfefffdb2aad625df2676806fcd5aaaf8d8f0",
+    "lite_cumulative_run": 42035481349,
+    "lite_cumulative_status": "SUCCESS",
+    "lite_cumulative_skip": false,
+    "lite_focal_tests": 2,
+    "lite_total_passed": 2259,
+    "lite_h1d_run": 42035481377,
+    "lite_h1d_status": "SUCCESS",
+    "lite_h1d_passed": 22,
+    "lite_scientific_run": 42035481394,
+    "lite_scientific_status": "SUCCESS",
+    "lite_scientific_passed": 456,
+    "lite_ci_run": 42035481443,
+    "lite_ci_status": "FAILURE_NPM_AUDIT_4_MODERATE",
+    "lite_runner_run": 42035481516,
+    "lite_runner_status": "SUCCESS_PUSH_ONLY",
+    "plus_sha": "1f462162d74effb8f1a9a1c45271f99a6b3887eb",
+    "plus_test": "backend/tests/test_algebra229_as_a15.py",
+    "plus_test_blob": "f57231bd0e9625bcc7eeef2068d8e9260cb3298b",
+    "plus_cumulative_run": 42035518039,
+    "plus_cumulative_status": "SUCCESS",
+    "plus_cumulative_skip": false,
+    "plus_focal_tests": [
+      "test_as_a15_source_row_is_exact PASSED",
+      "test_as_a15_expand_service_http_and_independent_fraction_oracle PASSED"
+    ],
+    "plus_backend_summary": "2800 passed, 1 skipped, 10 xfailed",
+    "plus_coverage": "88.91%",
+    "plus_h1d_run": 42035518483,
+    "plus_h1d_status": "SUCCESS",
+    "plus_h1d_passed": 38,
+    "plus_ci_run": 42035518143,
+    "plus_ci_status": "SUCCESS",
+    "plus_ci_backend": "2800 passed",
+    "plus_ci_frontend": "1055 passed",
+    "plus_runner_run": 42035518500,
+    "plus_runner_status": "SUCCESS_PUSH_ONLY",
+    "scope": "AS-A-15 only",
+    "oracle": "Exact frozen source row including note; 7 nonzero rational samples independently evaluated with native arithmetic and Python Fraction."
+  },
+  "algebra229_as_a16_pending_r391": {
+    "status": "IN_PROGRESS_WAIT",
+    "lite_sha": "36b1c73d0673a05e2418cc3c6dc49952a7c729f9",
+    "lite_test": "tests/algebra229AsA16.audit.test.ts",
+    "lite_test_blob": "a68df3c295a569f9510efb32797a5cd729c6f804",
+    "lite_cumulative_run": 42038744006,
+    "lite_cumulative_status": "IN_PROGRESS",
+    "lite_h1d_run": 42038743676,
+    "lite_h1d_status": "IN_PROGRESS",
+    "lite_scientific_run": 42038744245,
+    "lite_scientific_status": "IN_PROGRESS",
+    "lite_ci_run": 42038743893,
+    "lite_ci_status": "FAILURE_NPM_AUDIT_4_MODERATE",
+    "lite_runner_run": 42038743972,
+    "lite_runner_status": "SUCCESS_PUSH_ONLY",
+    "plus_sha": "3555ce2898b31eda626c95d0c89c59a99f4dba8b",
+    "plus_test": "backend/tests/test_algebra229_as_a16.py",
+    "plus_test_blob": "d79aaffb29e31583a5ca877592242c4888f491a8",
+    "plus_cumulative_run": 42038783860,
+    "plus_cumulative_status": "IN_PROGRESS",
+    "plus_h1d_run": 42038784134,
+    "plus_h1d_status": "IN_PROGRESS",
+    "plus_ci_run": 42038784081,
+    "plus_ci_status": "IN_PROGRESS",
+    "plus_runner_run": 42038784013,
+    "plus_runner_status": "IN_PROGRESS"
   }
 }
