@@ -11,30 +11,27 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_GZ = join(ROOT, "qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz");
 
 describe("Algebra229 AS-A-13 expand (x+h)^3-x^3", () => {
-  it("source row is present in frozen AS229 matrix", () => {
+  it("matches the exact frozen source row", () => {
     const text = gunzipSync(readFileSync(SOURCE_GZ)).toString("utf8");
-    expect(text).toMatch(/\|\s*AS-A-13\s*\|\s*N2\s*\|/);
-    expect(text).toContain("(x+h)^{3}-x^{3}");
-    expect(text).toContain("h^{3} + 3 h^{2} x + 3 h x^{2}");
+    const sourceRow = text.split(/\r?\n/).find((line) => /^\|\s*AS-A-13\s*\|/.test(line))?.trim();
+    const expectedRow = "| AS-A-13 | N2 | `expandir` | `(x+h)^{3}-x^{3}` | `h^{3} + 3 h^{2} x + 3 h x^{2}` |  |";
+    expect(sourceRow).toBe(expectedRow);
   });
 
-  it("expands original difference of cubes quotient numerator and matches oracle at samples", () => {
+  it("expands the original difference and matches independent integer arithmetic at eight signed samples", () => {
     const original = parseExpression("(x+h)^3-x^3").algebrite;
     const expanded = expand(original);
-    const oracle = parseExpression("h^3+3*h^2*x+3*h*x^2").algebrite;
-    const numeric = (expr: string, x: number, h: number) =>
-      compileNumeric(
-        evaluate(expr.replace(/x/g, "(" + x + ")").replace(/h/g, "(" + h + ")")),
-        "__no_var__"
-      )(0);
-    for (const [x, h] of [
-      [1, 2],
-      [0, -1],
-      [-2, 3],
-      [2, 0],
-      [-3, -2],
-    ]) {
-      expect(numeric(expanded, x, h)).toBeCloseTo(numeric(oracle, x, h), 9);
+    const samples: Array<[number, number]> = [
+      [1, 2], [0, -1], [-2, 3], [2, 0],
+      [-3, -2], [4, -1], [-1, 4], [3, 1],
+    ];
+    for (const [x, h] of samples) {
+      const atPoint = expanded
+        .replace(/\bx\b/g, `(${x})`)
+        .replace(/\bh\b/g, `(${h})`);
+      const actual = compileNumeric(evaluate(atPoint), "__no_var__")(0);
+      const expected = h * h * h + 3 * h * h * x + 3 * h * x * x;
+      expect(actual).toBeCloseTo(expected, 6);
     }
   });
 });
