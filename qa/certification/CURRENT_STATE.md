@@ -1,3 +1,14 @@
+# Actualización de certificación — 2026-11-05 UTC (r388)
+
+## Algebra229 AS-A-14 — TEST-FIRST IMPLEMENTED / GATES IN PROGRESS
+
+- Lite SHA `f67f91fb58e7c175903f8c17aa86d0a6e2c6f6f0`; test `tests/algebra229AsA14.audit.test.ts`, blob `de626e4d0b8d502258511d53efa7c91b4d601f5e`. La prueba compara la fila fuente completa (incluida la nota de radical), equivalencia simbólica y `Math.sqrt(6)` independiente.
+- Lite cumulative [42033618184](https://github.com/c2melendez/precision-lab-lite/actions/runs/42033618184) **SUCCESS**, 366 archivos / 2,259 passed; los 2 tests AS-A-14 PASSED. H1d [42033618189](https://github.com/c2melendez/precision-lab-lite/actions/runs/42033618189) **SUCCESS** (22/22); Scientific UI [42033618195](https://github.com/c2melendez/precision-lab-lite/actions/runs/42033618195) **SUCCESS** (456/456). CI [42033618277](https://github.com/c2melendez/precision-lab-lite/actions/runs/42033618277) **FAILURE** solo npm audit (4 moderadas); artifact `lite-npm-audit` ID `13416204822`; no se relajó el gate.
+- Plus SHA `7795639d509258c4057fd74a9a8457b27186b374`; test `backend/tests/test_algebra229_as_a14.py`, blob `04a636857f9ba881f4853817d2d57684337def07`. Fila completa, servicio+HTTP, igualdad SymPy y `math.sqrt(6)` independiente.
+- Plus cumulative [42033653002](https://github.com/c2melendez/precision-lab-plus/actions/runs/42033653002): backend aún IN_PROGRESS, frontend SUCCESS. H1d [42033653154](https://github.com/c2melendez/precision-lab-plus/actions/runs/42033653154) **SUCCESS** (38/38). CI [42033652882](https://github.com/c2melendez/precision-lab-plus/actions/runs/42033652882): frontend SUCCESS, backend IN_PROGRESS. Runner [42033652920](https://github.com/c2melendez/precision-lab-plus/actions/runs/42033652920) push-only.
+- Candidatos de prueba supersedidos: Lite SHA `14b3698720b2e05cdd5019d4d43d458d522d297d` run 42033342352 falló por doble escape de barras; Lite SHA `5f0fe0880e0e692dcb2b7756bfc581698ed9818a` run 42033463732 falló porque la expectativa omitía la nota final de la fila. La misma omisión apareció en Plus SHA `0de7cf26e97a3a4c0ee6bef1a7963adea8a8c27d`, run 42033498258. Son fallos del oráculo de fila, no del motor; el SHA vigente contiene la fila completa exacta.
+- No se cambió código de producto. A14 permanece pendiente de confirmación del gate acumulativo Plus y CI Plus. A13 es el último caso bilateral PASS_SCOPED. Global OPEN.
+
 # Actualización de certificación — 2026-11-05 UTC (r387)
 
 ## Algebra229 AS-A-13 — PASS_SCOPED bilateral

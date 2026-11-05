@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "revision": 387,
+  "revision": 388,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "4ecf24a91918aab7350c9a40332f71bbf8e68a93",
+  "technical_baseline_sha": "f67f91fb58e7c175903f8c17aa86d0a6e2c6f6f0",
   "baseline_case": "ALGEBRA229-AS-A-13",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
@@ -40,9 +40,9 @@
   },
   "next_action": {
     "id": "ALGEBRA229-AS-A-14-TEST-FIRST",
-    "status": "READY",
+    "status": "WAIT",
     "previous_id": "ALGEBRA229-AS-A-13-TEST-FIRST",
-    "action": "Test-first bilateral de AS-A-14: expandir (sqrt(2)+sqrt(3))^2 → 5+2*sqrt(6). Fortalecer tests/algebra229AsA14.audit.test.ts y backend/tests/test_algebra229_as_a14.py con fila fuente congelada exacta, equivalencia simbólica exacta y oráculo numérico independiente Math.sqrt/Python math.sqrt. Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si la prueba falla."
+    "action": "Esperar la conclusión de los gates sobre SHA f67f91fb58e7c175903f8c17aa86d0a6e2c6f6f0 (cumulative 42033618184 SUCCESS; H1d 42033618189 SUCCESS; Scientific UI 42033618195 SUCCESS; CI 42033618277 audit failure) y Plus SHA 7795639d509258c4057fd74a9a8457b27186b374 (cumulative 42033653002 y CI 42033652882 aún con backend en curso; H1d 42033653154 SUCCESS). Leer logs, confirmar test_as_a14 y registrar aceptación bilateral; después iniciar AS-A-15."
   },
   "blockers": [
     {
@@ -678,7 +678,7 @@
     "certification_pass": false,
     "recorded_at": "2026-10-31T01:40:23+00:00"
   },
-  "updated_utc": "2026-11-05T13:07:16.944Z",
+  "updated_utc": "2026-11-05T13:18:02.228Z",
   "active_execution_r370": {
     "case": "ALGEBRA114-AS-EXP-09",
     "sha": "13bf8b535a00b40c464057dc663b2d97ea6c44bd",
@@ -945,9 +945,9 @@
   },
   "plus_algebra229_next_action": {
     "id": "ALGEBRA229-AS-A-14-TEST-FIRST",
-    "status": "READY",
+    "status": "WAIT",
     "previous_id": "ALGEBRA229-AS-A-13-TEST-FIRST",
-    "action": "Test-first bilateral de AS-A-14: expandir (sqrt(2)+sqrt(3))^2 → 5+2*sqrt(6). Fortalecer tests/algebra229AsA14.audit.test.ts y backend/tests/test_algebra229_as_a14.py con fila fuente congelada exacta, equivalencia simbólica exacta y oráculo numérico independiente Math.sqrt/Python math.sqrt. Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si la prueba falla."
+    "action": "Esperar la conclusión de los gates sobre SHA f67f91fb58e7c175903f8c17aa86d0a6e2c6f6f0 (cumulative 42033618184 SUCCESS; H1d 42033618189 SUCCESS; Scientific UI 42033618195 SUCCESS; CI 42033618277 audit failure) y Plus SHA 7795639d509258c4057fd74a9a8457b27186b374 (cumulative 42033653002 y CI 42033652882 aún con backend en curso; H1d 42033653154 SUCCESS). Leer logs, confirmar test_as_a14 y registrar aceptación bilateral; después iniciar AS-A-15."
   },
   "algebra229_as_a07_r403": {
     "status": "PASS_SCOPED_BILATERAL_CASE",
@@ -1285,5 +1285,80 @@
     "plus_runner_status": "SUCCESS_PUSH_ONLY",
     "scope": "AS-A-13 only",
     "oracle": "Exact frozen source row; eight signed integer pairs; native arithmetic independent of CAS."
+  },
+  "algebra229_as_a14_pending_r388": {
+    "status": "IN_PROGRESS_WAIT",
+    "lite_sha": "f67f91fb58e7c175903f8c17aa86d0a6e2c6f6f0",
+    "lite_test": "tests/algebra229AsA14.audit.test.ts",
+    "lite_test_blob": "de626e4d0b8d502258511d53efa7c91b4d601f5e",
+    "lite_cumulative_run": 42033618184,
+    "lite_cumulative_status": "SUCCESS",
+    "lite_cumulative_focal_tests": 2,
+    "lite_cumulative_passed": 2259,
+    "lite_h1d_run": 42033618189,
+    "lite_h1d_status": "SUCCESS",
+    "lite_h1d_passed": 22,
+    "lite_scientific_run": 42033618195,
+    "lite_scientific_status": "SUCCESS",
+    "lite_scientific_passed": 456,
+    "lite_ci_run": 42033618277,
+    "lite_ci_status": "FAILURE_NPM_AUDIT_4_MODERATE",
+    "lite_audit_artifact": 13416204822,
+    "lite_runner_run": 42033618193,
+    "lite_runner_status": "SUCCESS_PUSH_ONLY",
+    "plus_sha": "7795639d509258c4057fd74a9a8457b27186b374",
+    "plus_test": "backend/tests/test_algebra229_as_a14.py",
+    "plus_test_blob": "04a636857f9ba881f4853817d2d57684337def07",
+    "plus_cumulative_run": 42033653002,
+    "plus_cumulative_status": "IN_PROGRESS_BACKEND_FRONTEND_SUCCESS",
+    "plus_h1d_run": 42033653154,
+    "plus_h1d_status": "SUCCESS",
+    "plus_h1d_passed": 38,
+    "plus_ci_run": 42033652882,
+    "plus_ci_status": "IN_PROGRESS_BACKEND_FRONTEND_SUCCESS",
+    "plus_runner_run": 42033652920,
+    "plus_runner_status": "SUCCESS_PUSH_ONLY",
+    "superseded_candidates": [
+      {
+        "sha": "14b3698720b2e05cdd5019d4d43d458d522d297d",
+        "run": 42033342352,
+        "reason": "escaped backslashes doubled in expected row"
+      },
+      {
+        "sha": "5f0fe0880e0e692dcb2b7756bfc581698ed9818a",
+        "run": 42033463732,
+        "reason": "expected row omitted final radical note"
+      },
+      {
+        "sha": "0de7cf26e97a3a4c0ee6bef1a7963adea8a8c27d",
+        "run": 42033498258,
+        "reason": "expected row omitted final radical note"
+      }
+    ]
+  },
+  "lite_npm_audit_r388": {
+    "status": "BLOCKED_SECURITY_REVIEW",
+    "ci_run": 42033618277,
+    "artifact_id": 13416204822,
+    "moderate_findings": 4,
+    "packages": {
+      "vite_plugin_pwa": "1.3.0",
+      "workbox_build": "7.4.1",
+      "glob": "11.1.0",
+      "minimatch": "10.2.6"
+    },
+    "advisories": [
+      {
+        "id": "GHSA-3g3m-2fjr-6pw4",
+        "package": "glob",
+        "patched": "14.0.2"
+      },
+      {
+        "id": "GHSA-g3hv-75wg-m249",
+        "package": "minimatch",
+        "patched": "11.0.1"
+      }
+    ],
+    "note": "Patch versions fall outside current declared dependency ranges; no dependency override or forced audit fix applied without compatibility/security approval."
   }
 }

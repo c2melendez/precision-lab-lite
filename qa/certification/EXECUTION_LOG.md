@@ -1,3 +1,10 @@
+## 2026-11-05 UTC — r388: Algebra229 AS-A-14 TEST-FIRST / WAIT
+
+- Lite SHA f67f91fb58e7c175903f8c17aa86d0a6e2c6f6f0; cumulative 42033618184 SUCCESS (366 files/2259 passed; 2 focal AS-A-14 tests passed), H1d 42033618189 SUCCESS (22), Scientific UI 42033618195 SUCCESS (456), CI 42033618277 FAILURE only npm audit (4 moderate; artifact 13416204822), Runner 42033618193 push-only.
+- Plus SHA 7795639d509258c4057fd74a9a8457b27186b374; cumulative 42033653002 backend IN_PROGRESS/frontend SUCCESS, H1d 42033653154 SUCCESS (38), CI 42033652882 backend IN_PROGRESS/frontend SUCCESS, Runner 42033652920 push-only.
+- Test oracle diagnostics: 14b3698720b2e05cdd5019d4d43d458d522d297d / run 42033342352 failed doubled source escaping; 5f0fe0880e0e692dcb2b7756bfc581698ed9818a / run 42033463732 failed missing last-cell radical note; Plus 0de7cf26e97a3a4c0ee6bef1a7963adea8a8c27d / run 42033498258 same missing note. Final source-row expectation now includes the complete note; no product change.
+- A14 remains WAIT until Plus cumulative/CI conclude and logs are reviewed. A13 remains last bilateral PASS_SCOPED. Global OPEN.
+
 ## 2026-11-05 UTC — r387: Algebra229 AS-A-13 PASS_SCOPED bilateral
 
 - Lite SHA 4ecf24a91918aab7350c9a40332f71bbf8e68a93; cumulative 42031678745 SUCCESS (skip=false; 2 focal tests; 2259 passed), H1d 42031678847 SUCCESS (22), Scientific UI 42031678747 SUCCESS (456), CI 42031678783 FAILURE solo audit (4 moderate), Runner 42031678838 push-only.

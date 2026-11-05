@@ -1,3 +1,11 @@
+## 2026-11-05 — Lite npm audit: moderadas nuevas / BLOCKED_SECURITY_REVIEW
+
+- CI estándar Lite [42033618277](https://github.com/c2melendez/precision-lab-lite/actions/runs/42033618277) y la corrida previa [42031678783](https://github.com/c2melendez/precision-lab-lite/actions/runs/42031678783) reportan cuatro vulnerabilidades moderadas; el gate de seguridad falla antes de typecheck/unit/build. Artifact actual: `lite-npm-audit` ID `13416204822`. No se redujo el umbral.
+- `package-lock.json` en la rama canónica confirma la cadena de desarrollo `vite-plugin-pwa@1.3.0 → workbox-build@7.4.1 → glob@11.1.0 → minimatch@10.2.6`; los cuatro paquetes de esa cadena están marcados `dev: true`.
+- [GHSA-3g3m-2fjr-6pw4](https://github.com/advisories/GHSA-3g3m-2fjr-6pw4) afecta `glob` hasta 14.0.1; el parche publicado es 14.0.2. [GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249) afecta `minimatch` anterior a 11.0.1; el parche es 11.0.1. La cadena actual declara `glob ^11.0.1` y `minimatch ^10.1.1`, por lo que los parches quedan fuera de sus rangos actuales.
+- El metadata de `vite-plugin-pwa@2.0.0` sigue declarando `workbox-build ^7.4.1` y eleva el mínimo de Node a 20.19.0; cambiar solo la versión mayor del plugin no elimina esta cadena. Un override forzado puede introducir incompatibilidad con las APIs/rangos de Workbox.
+- **Decisión:** no modificar dependencias ni aplicar `npm audit fix --force` sin revisión de compatibilidad y autorización de seguridad. Mantener BLOCKED_SECURITY_REVIEW; preparar una rama aislada con pruebas PWA/build/lockfile y revisión explícita antes de cualquier actualización.
+
 # Manual / Capability Gaps
 
 Estos puntos NO deben marcarse automáticamente como fallo del producto mientras el runner no pueda reproducir fielmente la capacidad requerida.
