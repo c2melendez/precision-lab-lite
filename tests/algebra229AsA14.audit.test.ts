@@ -11,21 +11,22 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_GZ = join(ROOT, "qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz");
 
 describe("Algebra229 AS-A-14 expand (sqrt2+sqrt3)^2", () => {
-  it("source row is present in frozen AS229 matrix", () => {
+  it("matches the exact frozen source row", () => {
     const text = gunzipSync(readFileSync(SOURCE_GZ)).toString("utf8");
-    expect(text).toMatch(/\|\s*AS-A-14\s*\|\s*N2\s*\|/);
-    expect(text).toContain("\\left(\\sqrt{2}+\\sqrt{3}\\right)^{2}");
-    expect(text).toContain("2 \\sqrt{6} + 5");
+    const sourceRow = text.split(/\r?\n/).find((line) => /^\|\s*AS-A-14\s*\|/.test(line))?.trim();
+    const expectedRow = "| AS-A-14 | N2 | `expandir` | `\\left(\\sqrt{2}+\\sqrt{3}\\right)^{2}` | `2 \\sqrt{6} + 5` |  |";
+    expect(sourceRow).toBe(expectedRow);
   });
 
-  it("expands radical square: exact difference with oracle is zero and numeric value matches", () => {
+  it("expands the radical square with exact symbolic equality and an independent Math.sqrt oracle", () => {
     const original = parseExpression("(sqrt(2)+sqrt(3))^2").algebrite;
     const expanded = expand(original);
-    const oracle = parseExpression("5+2*sqrt(6)").algebrite;
-    // equivalencia_simbolica: la diferencia con el esperado se simplifica a 0 (exacto, sin muestreo).
-    expect(evaluate(`(${expanded})-(${oracle})`).trim()).toBe("0");
-    // y el valor numérico coincide con 5+2*sqrt(6) a tolerancia 1e-9.
-    const value = compileNumeric(evaluate(expanded), "__no_var__")(0);
-    expect(value).toBeCloseTo(5 + 2 * Math.sqrt(6), 9);
+    const symbolicOracle = parseExpression("5+2*sqrt(6)").algebrite;
+
+    expect(evaluate(`(${expanded})-(${symbolicOracle})`).trim()).toBe("0");
+
+    const actual = compileNumeric(evaluate(expanded), "__no_var__")(0);
+    const expected = 5 + 2 * Math.sqrt(6);
+    expect(actual).toBeCloseTo(expected, 9);
   });
 });
