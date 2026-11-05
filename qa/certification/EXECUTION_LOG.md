@@ -917,3 +917,12 @@ Siguiente: continuar con AS-PF-03 en Lite; no extrapolar la aprobación a Plus.
 - Acumulativo 41991904550 SUCCESS (366 archivos / 2259 passed / 8 expected fail / 34 TODO; test focal explícito; typecheck/unit-parity/build SUCCESS); H1d 41991904595 SUCCESS (22/22); Scientific UI 41991904726 SUCCESS (456); Runner 41991904549 SUCCESS push-only.
 - CI 41991904623 FAILURE solo en QA dependency audit hard gate (4 moderadas); no se modificaron dependencias ni umbrales.
 - PASS_SCOPED Lite-only; Plus ejecuta su propia prueba AS-RAT-05 con oráculo numérico independiente y no queda aceptado hasta sus gates. Siguiente Lite: AS-RAT-06. Global OPEN.
+
+
+## 2026-11-05 UTC — r397: Algebra114 AS-RAT-06 PASS_SCOPED en Lite
+
+- SHA técnico `292646eea1bab498084730f8ec06cefe02dffb25`; test `tests/algebra114AsRat06.audit.test.ts`, blob `9abf3882005ddeb231e7189d2e92564a58890fc2`; fixture original `b30ca7fcec641334ce8128ca25bec542a9d04e79`.
+- La prueba compara la fila exacta y las condiciones (x>0), (h>-x), (h\\neq0); exige la forma (1/(\\sqrt{x+h}+\\sqrt{x})) y usa siete pares válidos contra oráculos Math.sqrt para el cociente original y el conjugado.
+- Acumulativo 41993306207 SUCCESS (366 archivos / 2259 passed / 8 expected fail / 34 TODO; test focal explícito; typecheck/unit-parity/build SUCCESS); H1d 41993306397 SUCCESS (22/22); Runner 41993306421 SUCCESS push-only.
+- CI 41993306652 FAILURE solo en QA dependency audit hard gate (4 moderadas); no se modificaron dependencias ni umbrales.
+- Scientific UI 41993306414 seguía IN_PROGRESS y es complementario, no gate matemático. PASS_SCOPED Lite-only; Plus mantiene su propia validación. Siguiente Lite AS-RAT-07. Global OPEN.
