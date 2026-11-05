@@ -1,3 +1,21 @@
+# Actualización de certificación — 2026-11-05 UTC (r391)
+
+## Algebra229 AS-A-15 — PASS_SCOPED bilateral
+
+- Lite SHA `ea3d3901b97d3720e644c288cb66cffbceefdc24`; test `tests/algebra229AsA15.audit.test.ts`, blob `73fbfefffdb2aad625df2676806fcd5aaaf8d8f0`. La fila congelada completa incluye la nota `Exponentes negativos tras expandir.`; se comparan la equivalencia simbólica y siete fracciones/racionales no nulos con aritmética nativa independiente.
+- Lite cumulative [42035481349](https://github.com/c2melendez/precision-lab-lite/actions/runs/42035481349) SUCCESS, guard `skip=false`, 2 focales, 2,259 passed; H1d [42035481377](https://github.com/c2melendez/precision-lab-lite/actions/runs/42035481377) SUCCESS (22/22); Scientific UI [42035481394](https://github.com/c2melendez/precision-lab-lite/actions/runs/42035481394) SUCCESS (456/456). CI [42035481443](https://github.com/c2melendez/precision-lab-lite/actions/runs/42035481443) FAILURE solamente por npm audit, cuatro moderadas. Runner 42035481516 push-only.
+- Plus SHA `1f462162d74effb8f1a9a1c45271f99a6b3887eb`; test `backend/tests/test_algebra229_as_a15.py`, blob `f57231bd0e9625bcc7eeef2068d8e9260cb3298b`. Logs muestran ambos tests focales PASSED; servicio+HTTP, equivalencia simbólica y siete muestras racionales con `Fraction` independiente.
+- Plus cumulative [42035518039](https://github.com/c2melendez/precision-lab-plus/actions/runs/42035518039) SUCCESS, guard `skip=false`, backend 2,800 passed / 1 skipped / 10 xfailed; H1d [42035518483](https://github.com/c2melendez/precision-lab-plus/actions/runs/42035518483) SUCCESS (38/38); CI [42035518143](https://github.com/c2melendez/precision-lab-plus/actions/runs/42035518143) SUCCESS (backend 2,800 / frontend 1,055); Runner 42035518500 push-only.
+- A15 queda **PASS_SCOPED bilateral**. El fallo npm audit Lite sigue como bloqueo de seguridad separado, no como PASS.
+
+## Algebra229 AS-A-16 — TEST-FIRST / WAIT
+
+- Lite test `tests/algebra229AsA16.audit.test.ts` ampliado; commit técnico `36b1c73d0673a05e2418cc3c6dc49952a7c729f9`, blob `a68df3c295a569f9510efb32797a5cd729c6f804`. Comprueba celdas de contrato fuente y calcula `(1+i)^4` mediante multiplicación independiente de enteros gaussianos.
+- Lite cumulative 42038744006, H1d 42038743676, Scientific UI 42038744245 y CI 42038743893 (npm audit moderadas) sobre el mismo SHA. Gates aún en ejecución salvo auditoría.
+- Plus test `backend/tests/test_algebra229_as_a16.py` ampliado; commit técnico `3555ce2898b31eda626c95d0c89c59a99f4dba8b`, blob `d79aaffb29e31583a5ca877592242c4888f491a8`. Comprueba celdas fuente, servicio+HTTP y oráculo independiente de enteros gaussianos.
+- Plus cumulative 42038783860, H1d 42038784134 y CI 42038784081 en ejecución; Runner 42038784013 push-only.
+- A16 no está aprobado hasta que concluyan y se revisen todos sus gates.
+
 # Actualización de certificación — 2026-11-05 UTC (r390)
 
 ## Algebra229 AS-A-15 — TEST-FIRST IMPLEMENTED / GATES IN PROGRESS
