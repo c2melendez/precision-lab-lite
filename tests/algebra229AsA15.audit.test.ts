@@ -14,7 +14,7 @@ describe("Algebra229 AS-A-15 expand (x+1/x)^3", () => {
   it("matches the exact frozen source row", () => {
     const text = gunzipSync(readFileSync(SOURCE_GZ)).toString("utf8");
     const sourceRow = text.split(/\r?\n/).find((line) => /^\|\s*AS-A-15\s*\|/.test(line))?.trim();
-    const expectedRow = "| AS-A-15 | N3 | `expandir` | `\\left(x+\\frac{1}{x}\\right)^{3}` | `x^{3} + 3 x + \\frac{3}{x} + \\frac{1}{x^{3}}` |  |";
+    const expectedRow = "| AS-A-15 | N3 | `expandir` | `\\left(x+\\frac{1}{x}\\right)^{3}` | `x^{3} + 3 x + \\frac{3}{x} + \\frac{1}{x^{3}}` | Exponentes negativos tras expandir. |";
     expect(sourceRow).toBe(expectedRow);
   });
 
