@@ -1,3 +1,15 @@
+# Corte vigente de certificación — 2026-11-05 UTC (r390)
+
+## Actualización operativa — 2026-11-05 (r390)
+
+- Lite — Algebra114 AS-PF-07: **PASS_SCOPED** en SHA `34e4e77d699d3c73e15dda533fbfaa17e82c8b67`. Fila exacta, dos términos con numerador lineal y siete sustituciones contra doble oráculo JavaScript independiente. Acumulativo [41988713632](https://github.com/c2melendez/precision-lab-lite/actions/runs/41988713632) SUCCESS (366 archivos, 2,259 passed; test focal explícito); H1d [41988713569](https://github.com/c2melendez/precision-lab-lite/actions/runs/41988713569) SUCCESS (22/22); Runner [41988713657](https://github.com/c2melendez/precision-lab-lite/actions/runs/41988713657) SUCCESS push-only.
+- CI [41988713436](https://github.com/c2melendez/precision-lab-lite/actions/runs/41988713436) FAILURE en QA dependency audit hard gate (4 moderadas); no se modificó el umbral.
+- Scientific UI [41988713564](https://github.com/c2melendez/precision-lab-lite/actions/runs/41988713564) IN_PROGRESS al corte; complementario.
+- Aceptación: `ALGEBRA114_AS_PF_07_ACCEPTANCE_R390.md`. Plus ya tiene suite backend PF-01..08; PF-03..05 reforzados y aceptados en SHA `a8dc4ee`. Global certification OPEN.
+- Siguiente acción matemática Lite: **AS-PF-08** (última fila de fracciones parciales).
+
+
+
 # Corte vigente de certificación — 2026-11-05 UTC (r389)
 
 ## Actualización operativa — 2026-11-05 (r389)
