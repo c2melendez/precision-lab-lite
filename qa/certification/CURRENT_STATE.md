@@ -1,3 +1,15 @@
+# Corte vigente de certificación — 2026-11-05 UTC (r398)
+
+## Actualización operativa — 2026-11-05 (r398)
+
+- Lite — Algebra114 AS-RAT-07: **PASS_SCOPED** en SHA `0f7daaeb73485465809c66e20ac03ea121a26d23`. Fila exacta, forma `(sqrt(6)+sqrt(2))/2`, oráculo independiente Math.sqrt para radical original y forma denestada, positividad e identidad del cuadrado.
+- Acumulativo [41994849117](https://github.com/c2melendez/precision-lab-lite/actions/runs/41994849117) SUCCESS (366 archivos, 2,259 passed; test focal explícito); H1d [41994848997](https://github.com/c2melendez/precision-lab-lite/actions/runs/41994848997) SUCCESS (22/22); Runner [41994848968](https://github.com/c2melendez/precision-lab-lite/actions/runs/41994848968) SUCCESS push-only.
+- CI [41994848966](https://github.com/c2melendez/precision-lab-lite/actions/runs/41994848966) FAILURE en QA dependency audit hard gate (4 moderadas); no se cambió el umbral.
+- Scientific UI [41994849059](https://github.com/c2melendez/precision-lab-lite/actions/runs/41994849059) seguía IN_PROGRESS al corte; complementario, no gate matemático.
+- Aceptación: `qa/certification/ALGEBRA114_AS_RAT_07_ACCEPTANCE_R398.md`. Plus tiene RAT03 en validación propia. Siguiente acción matemática Lite: **AS-RAT-08**. Global certification OPEN.
+
+
+
 ## Reconciliación bilateral — 2026-11-05 (Plus r388; backend/HTTP)
 
 - Plus — Algebra114 AS-RAT-01, AS-RAT-02, AS-RAT-05 y AS-RAT-06: **PASS_SCOPED** en SHA `a4ab5b03cbde3d53789609823cbfb2314c5aea10`. Tests del backend comprueban servicio y HTTP; RAT-01/02 usan `math.sqrt`, RAT-05 usa `math.cbrt`, RAT-06 valida el dominio original y siete sustituciones con `math.sqrt`.
