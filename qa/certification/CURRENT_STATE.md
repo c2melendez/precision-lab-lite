@@ -1,3 +1,18 @@
+# Corte vigente de certificación — 2026-11-05 UTC (r384)
+
+## Actualización operativa — 2026-11-05 (r381–r384)
+
+- Lite — Algebra114 AS-FAC-10: **PASS_SCOPED** en SHA `6312a16de6959f1f7c739a4b9c59274b77fab86e`. Test `tests/algebra114AsFac10.audit.test.ts` verificado en acumulativo [41619183893](https://github.com/c2melendez/precision-lab-lite/actions/runs/41619183893) SUCCESS y H1d [41619183741](https://github.com/c2melendez/precision-lab-lite/actions/runs/41619183741) SUCCESS (22/22). Aceptación: `ALGEBRA114_AS_FAC_10_ACCEPTANCE_R381.md`. CI [41619183745](https://github.com/c2melendez/precision-lab-lite/actions/runs/41619183745) permanece FAILURE en dependency audit hard gate; no se rebajó el umbral.
+- Lite — Algebra114 AS-FAC-11: **PASS_SCOPED** en SHA `0f8dcc3497d231cfbe6aad963d8102cbb4ab71e3`. Test `tests/algebra114AsFac11.audit.test.ts` verificado en acumulativo [41983335147](https://github.com/c2melendez/precision-lab-lite/actions/runs/41983335147) SUCCESS y H1d [41983335288](https://github.com/c2melendez/precision-lab-lite/actions/runs/41983335288) SUCCESS (22/22). Aceptación: `ALGEBRA114_AS_FAC_11_ACCEPTANCE_R382.md`. CI [41983335251](https://github.com/c2melendez/precision-lab-lite/actions/runs/41983335251) permanece FAILURE en dependency audit hard gate; no se rebajó el umbral.
+- Lite — Algebra114 AS-FAC-12: **PASS_SCOPED** en SHA `960cfb4abb8e1f0dfaed50a90d6cdf8d91f5d1a5`. Test `tests/algebra114AsFac12.audit.test.ts` verificado en acumulativo [41983612691](https://github.com/c2melendez/precision-lab-lite/actions/runs/41983612691) SUCCESS y H1d [41983612688](https://github.com/c2melendez/precision-lab-lite/actions/runs/41983612688) SUCCESS (22/22). Aceptación: `ALGEBRA114_AS_FAC_12_ACCEPTANCE_R383.md`. CI [41983612649](https://github.com/c2melendez/precision-lab-lite/actions/runs/41983612649) permanece FAILURE en dependency audit hard gate; no se rebajó el umbral.
+- Lite — Algebra114 AS-PF-01: **PASS_SCOPED** en SHA `070c5e9a5e36ef7cc0c75d525cbff56572046a89`. Test `tests/algebra114AsPf01.audit.test.ts` verificado en acumulativo [41984143490](https://github.com/c2melendez/precision-lab-lite/actions/runs/41984143490) SUCCESS y H1d [41984143650](https://github.com/c2melendez/precision-lab-lite/actions/runs/41984143650) SUCCESS (22/22). Aceptación: `ALGEBRA114_AS_PF_01_ACCEPTANCE_R384.md`. CI [41984143529](https://github.com/c2melendez/precision-lab-lite/actions/runs/41984143529) permanece FAILURE en dependency audit hard gate; no se rebajó el umbral.
+- Plus no ejecutó estas cuatro filas; no se declara paridad. Se preserva su siguiente paso **BLOCKED** en VC-FE-45 por conflicto contractual con EV-I-12. No debilitar EV-I-12 ni aceptar ramas complejas sin decisión versionada.
+- El último SHA técnico de Lite es `070c5e9a5e36ef7cc0c75d525cbff56572046a89`; Acceptance revisions R381–R384 documentan exclusivamente resultados sobre esos SHAs.
+- Global certification **OPEN**.
+- Siguiente acción Lite: **AS-PF-02** test-first; reforzar fila exacta, tres términos de polos simples/repetidos y oráculo JavaScript independiente.
+
+
+
 # Corte vigente de certificación — 2026-11-03 UTC (r380)
 
 ## Actualización operativa — 2026-11-03 (r380)

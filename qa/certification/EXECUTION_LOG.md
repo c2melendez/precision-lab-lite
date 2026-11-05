@@ -771,3 +771,38 @@ Compass P0 permanece en su propio backlog de integración/seguridad y no es cond
 - CI 41618685195 FAILURE en QA dependency audit hard gate; no se modificaron dependencias ni el umbral.
 - Decisión: PASS_SCOPED Lite únicamente; Plus no ejecutó AS-FAC-09; no inferir paridad. VC-FE-45 sigue BLOCKED en Plus frente a EV-I-12. Global OPEN.
 - Siguiente: AS-FAC-10 test-first.
+
+
+## 2026-11-05 UTC — r381–r384: Algebra114 AS-FAC-10..12 y AS-PF-01 en Lite
+
+### AS-FAC-10 — PASS_SCOPED Lite-only
+- SHA técnico: `6312a16de6959f1f7c739a4b9c59274b77fab86e`; test `tests/algebra114AsFac10.audit.test.ts`, blob `27c70add37494f1163cf626af62c5b8adfb6a621`; fixture original blob `b30ca7fcec641334ce8128ca25bec542a9d04e79`.
+- Acumulativo 41619183893 SUCCESS; H1d 41619183741 SUCCESS (22/22); Runner 41619183775 SUCCESS en push/no-dispatch.
+- CI 41619183745 FAILURE en `QA dependency audit (hard gate)` (8 moderadas); no se alteraron dependencias ni threshold.
+- Criterio y oráculo: Fixture exacta de la fila original AS-FAC-10. Estructura del resultado con un factor lineal y uno cuadrático. Sustituciones numéricas comparadas con el oráculo JavaScript independiente; el motor CAS no genera los valores expected.
+- Aceptación: `ALGEBRA114_AS_FAC_10_ACCEPTANCE_R381.md`. No se declara paridad con Plus.
+
+### AS-FAC-11 — PASS_SCOPED Lite-only
+- SHA técnico: `0f8dcc3497d231cfbe6aad963d8102cbb4ab71e3`; test `tests/algebra114AsFac11.audit.test.ts`, blob `34b2bb856cefa6ce3547523ea66a8c59c4c2f5d3`; fixture original blob `b30ca7fcec641334ce8128ca25bec542a9d04e79`.
+- Acumulativo 41983335147 SUCCESS; H1d 41983335288 SUCCESS (22/22); Runner 41983335273 SUCCESS en push/no-dispatch.
+- CI 41983335251 FAILURE en `QA dependency audit (hard gate)` (8 moderadas); no se alteraron dependencias ni threshold.
+- Criterio y oráculo: Fixture exacta de AS-FAC-11. Presencia del factor lineal x+1 y del factor cuadrático x²+1; se rechaza la expresión sin factorizar. Siete sustituciones enteras contra el oráculo JavaScript independiente `(x+1)*(x*x+1)`.
+- Aceptación: `ALGEBRA114_AS_FAC_11_ACCEPTANCE_R382.md`. No se declara paridad con Plus.
+
+### AS-FAC-12 — PASS_SCOPED Lite-only
+- SHA técnico: `960cfb4abb8e1f0dfaed50a90d6cdf8d91f5d1a5`; test `tests/algebra114AsFac12.audit.test.ts`, blob `a2428ffe9aa6d9ad39e799c6f7b0580aaa05eea9`; fixture original blob `b30ca7fcec641334ce8128ca25bec542a9d04e79`.
+- Acumulativo 41983612691 SUCCESS; H1d 41983612688 SUCCESS (22/22); Runner 41983612674 SUCCESS en push/no-dispatch.
+- CI 41983612649 FAILURE en `QA dependency audit (hard gate)` (8 moderadas); no se alteraron dependencias ni threshold.
+- Criterio y oráculo: Fixture exacta de la fila AS-FAC-12. Estructura de tres factores lineales y rechazo de la forma cuadrática original no factorizada. 216 ternas de sustituciones, con valores de `[-3,-1,0,1,2,4]` para cada variable, comparadas con `(x-y)*(x-z)*(y-z)` calculado en JavaScript.
+- Aceptación: `ALGEBRA114_AS_FAC_12_ACCEPTANCE_R383.md`. No se declara paridad con Plus.
+
+### AS-PF-01 — PASS_SCOPED Lite-only
+- SHA técnico: `070c5e9a5e36ef7cc0c75d525cbff56572046a89`; test `tests/algebra114AsPf01.audit.test.ts`, blob `172f43277971982dfccae81838bd80d32d0a20d9`; fixture original blob `b30ca7fcec641334ce8128ca25bec542a9d04e79`.
+- Acumulativo 41984143490 SUCCESS; H1d 41984143650 SUCCESS (22/22); Runner 41984143542 SUCCESS en push/no-dispatch.
+- CI 41984143529 FAILURE en `QA dependency audit (hard gate)` (8 moderadas); no se alteraron dependencias ni threshold.
+- Criterio y oráculo: Fixture exacta de AS-PF-01. El resultado no conserva `partfrac(...)` ni devuelve el cociente original; se comprueban dos denominadores distintos, x+1 y x+2. Nueve sustituciones enteras no singulares `[-5,-4,-3,0,1,3,4,5,6]`, comparadas con el oráculo independiente `2/(x+1)+1/(x+2)` en JavaScript.
+- Aceptación: `ALGEBRA114_AS_PF_01_ACCEPTANCE_R384.md`. No se declara paridad con Plus.
+
+- AS-PF-01 tuvo un candidato previo `60f0a3158b8aeb4cef7f5593facf5abc162bfcaa` con error del test en sustituciones decimales. La revisión `070c5e9...` usa enteros no singulares y pasa; no hubo cambio de motor.
+- Plus no ejecutó estos casos. VC-FE-45 continúa BLOCKED frente a EV-I-12. Global OPEN.
+- Siguiente: AS-PF-02 test-first en Lite.
