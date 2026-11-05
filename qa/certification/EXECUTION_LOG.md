@@ -863,3 +863,12 @@ Siguiente: continuar con AS-PF-03 en Lite; no extrapolar la aprobación a Plus.
 - H1d 41988713569 SUCCESS (22/22); Runner 41988713657 SUCCESS push-only; Scientific UI 41988713564 IN_PROGRESS y complementario.
 - CI 41988713436 FAILURE en QA dependency audit hard gate (4 moderadas); no se cambió el umbral.
 - PASS_SCOPED Lite-only. Plus suite PF01..08 PASS en SHA a8dc4ee; PF03..05 reforzadas con oráculos Fraction. Global OPEN. Siguiente Lite: AS-PF-08.
+
+
+## 2026-11-05 UTC — r391: Algebra114 AS-PF-08 PASS_SCOPED en Lite
+
+- SHA técnico `e8692ea53ccfb1b09ba50dbd3ecf71f473cc6aca`; test `tests/algebra114AsPf08.audit.test.ts`, blob `ac8a3385dce4f7a9600ea326e4469041ad48bdf6`.
+- Acumulativo 41989337913 SUCCESS: 366 archivos, 2,259 passed, 8 expected fail, 34 TODO; test focal explícito; typecheck, regresiones y build SUCCESS.
+- H1d 41989337908 SUCCESS (22/22); Runner 41989337892 SUCCESS push-only; Scientific UI 41989338015 IN_PROGRESS y complementario.
+- CI 41989337844 FAILURE en QA dependency audit hard gate (4 moderadas); no se cambió el umbral.
+- PASS_SCOPED Lite-only. Plus backend PF01..08 pasó en su acumulativo; PF03..05 con oráculos Fraction. Siguiente Lite AS-RAT-01. Global OPEN.

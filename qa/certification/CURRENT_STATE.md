@@ -1,3 +1,15 @@
+# Corte vigente de certificación — 2026-11-05 UTC (r391)
+
+## Actualización operativa — 2026-11-05 (r391)
+
+- Lite — Algebra114 AS-PF-08: **PASS_SCOPED** en SHA `e8692ea53ccfb1b09ba50dbd3ecf71f473cc6aca`. División impropia, forma exacta, exclusiones originales (x\neq\pm1) y siete sustituciones con doble oráculo JavaScript. Acumulativo [41989337913](https://github.com/c2melendez/precision-lab-lite/actions/runs/41989337913) SUCCESS (366 archivos, 2,259 passed); H1d [41989337908](https://github.com/c2melendez/precision-lab-lite/actions/runs/41989337908) SUCCESS (22/22); Runner [41989337892](https://github.com/c2melendez/precision-lab-lite/actions/runs/41989337892) SUCCESS push-only.
+- CI [41989337844](https://github.com/c2melendez/precision-lab-lite/actions/runs/41989337844) FAILURE en QA dependency audit hard gate (4 moderadas); no se modificó el umbral.
+- Scientific UI [41989338015](https://github.com/c2melendez/precision-lab-lite/actions/runs/41989338015) IN_PROGRESS al corte; complementario.
+- Aceptación: `ALGEBRA114_AS_PF_08_ACCEPTANCE_R391.md`. Plus tiene suite backend PF-01..08 ejecutada con éxito; PF-03..05 reforzadas con oráculo independiente. Global certification OPEN.
+- La sección de fracciones parciales AS-PF-01..08 está cubierta en Lite con aceptaciones PASS_SCOPED. Siguiente acción: **AS-RAT-01**, primera fila después de PF-08 en el orden de la matriz.
+
+
+
 # Corte vigente de certificación — 2026-11-05 UTC (r390)
 
 ## Actualización operativa — 2026-11-05 (r390)
