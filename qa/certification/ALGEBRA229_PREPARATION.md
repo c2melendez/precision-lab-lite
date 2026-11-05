@@ -17,8 +17,8 @@ Coincide byte a byte con `Matrices.zip`. El JSONL del handoff v0.3 es historico;
 
 ## Avance seccion A (expandir)
 
-AS-A-01..07 cerrados PASS_SCOPED bilateral con runs cumulative SUCCESS (ver `CURRENT_STATE.md` / `EXECUTION_LOG.md` / `continuity.json`).
+AS-A-01..08 cerrados PASS_SCOPED bilateral con runs cumulative SUCCESS (ver `CURRENT_STATE.md` / `EXECUTION_LOG.md` / `continuity.json`).
 
 ## Siguiente
 
-`ALGEBRA229-AS-A-08-TEST-FIRST` — expandir `(x-1)^5` → `x^5-5x^4+10x^3-10x^2+5x-1` bilateral. Global OPEN.
+`ALGEBRA229-AS-A-09-TEST-FIRST` — expandir `(x+1)(x+2)(x+3)(x+4)` → `x^4+10x^3+35x^2+50x+24` bilateral. Global OPEN.

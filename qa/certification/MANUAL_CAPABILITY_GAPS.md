@@ -600,3 +600,10 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
 - A07 obtuvo Lite cumulative 42004987491 SUCCESS, H1d 42004987501 SUCCESS y Scientific UI 42004987667 SUCCESS; Plus CI 42005026736, cumulative 42005026806 y H1d 42005026732 SUCCESS. La fila A07 es PASS_SCOPED bilateral, no certifica el resto de Algebra229.
 - El CI estándar Lite 42004987602 sigue fallando exclusivamente en QA dependency audit por cuatro vulnerabilidades moderadas; no se alteró el umbral. Los pasos posteriores fueron omitidos en ese workflow.
 - Mitigación en rama aislada `security/lite-workbox-glob-remediation-20261105`: PR draft [#62](https://github.com/c2melendez/precision-lab-lite/pull/62) contra la rama canónica. Run 42002749017 validó lockfile, audit cero, npm ci, typecheck, unit suite y build. El lockfile committed (blob abb3a51ad826542460777c6a6533f84e25b3b8a9) coincide con el artefacto probado. Falta verificación de checks PR sobre SHA 90bde019dc8bf5e6bd4c4eaa673694c21ea28388; mantener blocker hasta entonces. Sin merge/deploy.
+
+
+## Reconciliación AS-A-08 — CI y mitigación Workbox Lite (2026-11-05)
+
+- AS-A-08 PASS_SCOPED bilateral: Lite cumulative 42006623286, H1d 42006623192, Scientific UI 42006623224 SUCCESS; Plus CI 42006654279, cumulative 42006654698 y H1d 42006653939 SUCCESS.
+- CI estándar Lite 42006623461 sigue FAILURE en QA dependency audit por cuatro vulnerabilidades moderadas; el umbral no se relajó.
+- Mitigación en PR draft [#62](https://github.com/c2melendez/precision-lab-lite/pull/62), SHA `b24d3951e9548eff46cdd105b6f44225c8bfc7e6`, base canónica. CI 42006804485, cumulative 42006804436, S25 42006804328, S22 42006804337, G3 42006804289 y H1a-d ya SUCCESS; Playwright 42006804266, Scientific UI 42006804363 y Cross-browser 42006804217 seguían IN_PROGRESS al corte. Lockfile probado por separado con audit cero, npm ci, typecheck, tests y build; mantener blocker hasta terminar checks y revisión humana.

@@ -1,3 +1,19 @@
+# Actualización de certificación — 2026-11-05 UTC (r404)
+
+## Algebra229 AS-A-08 — PASS_SCOPED bilateral
+
+- Lite SHA `e1f5c9cc67ffe2cd9bdfc3dcdcb07b8de291d21f`; test `tests/algebra229AsA08.audit.test.ts`, blob `3863c4a54007bb3200ced4a157a4c8a4f4617390`; fila exacta y siete valores firmados con `Math.pow(x-1,5)`.
+- Lite acumulativo [42006623286](https://github.com/c2melendez/precision-lab-lite/actions/runs/42006623286) **SUCCESS**, 2 focal tests, 366 archivos / 2,259 passed / 8 XFAIL / 34 TODO; H1d [42006623192](https://github.com/c2melendez/precision-lab-lite/actions/runs/42006623192) **SUCCESS** (22/22); Scientific UI [42006623224](https://github.com/c2melendez/precision-lab-lite/actions/runs/42006623224) **SUCCESS** (456 desktop/tablet/mobile). CI [42006623461](https://github.com/c2melendez/precision-lab-lite/actions/runs/42006623461) **FAILURE** en audit por cuatro moderadas; typecheck/unit/build omitidos; umbral intacto. Runner 42006623362 push-only.
+- Plus SHA `6a42292878494500c8d902cada0dadaa39e8d2ee`; test `backend/tests/test_algebra229_as_a08.py`, blob `5d95493a65876a9456515164995147c6ef6d3e59`; fila exacta, servicio+HTTP y siete puntos con Python independiente.
+- Plus CI [42006654279](https://github.com/c2melendez/precision-lab-plus/actions/runs/42006654279) **SUCCESS**; acumulativo [42006654698](https://github.com/c2melendez/precision-lab-plus/actions/runs/42006654698) **SUCCESS**, ambos focales PASSED, backend 2,800 passed / 1 skipped / 10 XFAIL; H1d [42006653939](https://github.com/c2melendez/precision-lab-plus/actions/runs/42006653939) **SUCCESS** (38/38); Runner 42006654470 push-only.
+- A08 queda cerrada bilateralmente como PASS_SCOPED. Siguiente: **AS-A-09**. Global certification **OPEN**.
+
+## Mitigación Workbox — PR draft #62
+
+- Head PR `b24d3951e9548eff46cdd105b6f44225c8bfc7e6`, base `qa/syntax-audit-in625-a1`; manifiestos únicamente, sin merge/deploy.
+- En ese SHA: CI 42006804485, acumulativo 42006804436, S25 42006804328, S22 42006804337, G3 42006804289 y H1a-d 42006804182/42006804246/42006804287/42006804195 **SUCCESS**. Playwright 42006804266, Scientific UI 42006804363 y Cross-browser 42006804217 seguían en progreso en este corte.
+- Lockfile validado en run aislado 42002749017 con audit 0, npm ci, typecheck, 366/2259 tests y build SUCCESS. Mantener blocker hasta terminar checks y revisión humana.
+
 # Actualización de certificación — 2026-11-05 UTC (r403)
 
 ## Algebra229 AS-A-07 — PASS_SCOPED bilateral

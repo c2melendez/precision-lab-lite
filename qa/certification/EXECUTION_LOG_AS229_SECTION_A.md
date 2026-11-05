@@ -20,6 +20,15 @@
 
 **Alcance:** fila A07 solamente. Lite acumulativo: focal 2 tests, 366 archivos/2259 passed/8 XFAIL/34 TODO; Scientific UI nativo desktop/tablet/mobile 456 passed. Plus acumulativo: ambos tests focales PASSED, backend 2800 passed/1 skip/10 XFAIL. Runner Lite 42004987409 y Plus 42005026827 SUCCESS_PUSH_ONLY; no prueban dispatch/persistencia. El CI estándar Lite conserva bloqueo de auditoría, no modifica el resultado de gates requeridos de Algebra229. Siguiente: A08.
 
+## Revalidación bilateral AS-A-08 — 2026-11-05
+
+| Repositorio | SHA técnico | Test | CI | Acumulativo | H1d | Scientific UI |
+|---|---|---|---|---|---|---|
+| Lite | `e1f5c9cc67ffe2cd9bdfc3dcdcb07b8de291d21f` | `tests/algebra229AsA08.audit.test.ts` | [42006623461](https://github.com/c2melendez/precision-lab-lite/actions/runs/42006623461) FAILURE (audit 4 moderadas) | [42006623286](https://github.com/c2melendez/precision-lab-lite/actions/runs/42006623286) SUCCESS | [42006623192](https://github.com/c2melendez/precision-lab-lite/actions/runs/42006623192) SUCCESS | [42006623224](https://github.com/c2melendez/precision-lab-lite/actions/runs/42006623224) SUCCESS |
+| Plus | `6a42292878494500c8d902cada0dadaa39e8d2ee` | `backend/tests/test_algebra229_as_a08.py` | [42006654279](https://github.com/c2melendez/precision-lab-plus/actions/runs/42006654279) SUCCESS | [42006654698](https://github.com/c2melendez/precision-lab-plus/actions/runs/42006654698) SUCCESS | [42006653939](https://github.com/c2melendez/precision-lab-plus/actions/runs/42006653939) SUCCESS | N/A per contract |
+
+**Alcance:** fila A08 solamente. Lite: 2 focal tests, 366 archivos/2259 passed/8 XFAIL/34 TODO; Scientific UI 456 passed. Plus: ambos tests focales PASSED, backend 2800 passed/1 skip/10 XFAIL. Runner Lite 42006623362 y Plus 42006654470 SUCCESS_PUSH_ONLY; no prueban dispatch/persistencia. Siguiente: A09.
+
 | Caso | Lite technical SHA | Lite cumulative | Plus technical SHA | Plus cumulative |
 |------|--------------------|-----------------|--------------------|-----------------|
 | AS-A-01 | `6493c4b2aefe71ef608309dfb60e45e0a027c178` | [39392408916](https://github.com/c2melendez/precision-lab-lite/actions/runs/39392408916) SUCCESS | `b6cc70fc1e2f65c97e199261b73b968b879a32ca` | [39392421243](https://github.com/c2melendez/precision-lab-plus/actions/runs/39392421243) SUCCESS |
@@ -49,5 +58,6 @@ AS-A-12: `(x^2-1)^2` → `x^4-2x^2+1`. Local Lite vitest 2 passed; Plus pytest 2
 AS-A-13: `(x+h)^3-x^3` → `h^3+3h^2x+3hx^2`. Local Lite vitest 2 passed; Plus pytest 2 passed. CI bilateral verde sobre SHA técnico exacto. Global **OPEN**. Siguiente: **AS-A-14** `(\sqrt{2}+\sqrt{3})^{2}`.
 
 AS-A-14: `(sqrt2+sqrt3)^2` → `5+2*sqrt6`. Local Lite vitest 2 passed; Plus pytest 2 passed. CI bilateral verde sobre SHA técnico exacto. Global **OPEN**. Siguiente: **AS-A-15**.
+
 
 

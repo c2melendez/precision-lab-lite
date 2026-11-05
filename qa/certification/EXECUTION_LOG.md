@@ -1,3 +1,9 @@
+## 2026-11-05 UTC — r404: Algebra229 AS-A-08 PASS_SCOPED bilateral
+
+- Lite SHA `e1f5c9cc67ffe2cd9bdfc3dcdcb07b8de291d21f`; test `tests/algebra229AsA08.audit.test.ts`, blob `3863c4a54007bb3200ced4a157a4c8a4f4617390`; cumulative 42006623286 SUCCESS (2 focal tests, 366 files/2259 passed); H1d 42006623192 SUCCESS (22/22); Scientific UI 42006623224 SUCCESS (456). CI 42006623461 FAILURE solo audit 4 moderadas; umbral intacto. Runner 42006623362 push-only.
+- Plus SHA `6a42292878494500c8d902cada0dadaa39e8d2ee`; test `backend/tests/test_algebra229_as_a08.py`, blob `5d95493a65876a9456515164995147c6ef6d3e59`; CI 42006654279 SUCCESS (2800 passed); cumulative 42006654698 SUCCESS con dos focales PASSED y 2800 passed; H1d 42006653939 SUCCESS (38/38); Runner 42006654470 push-only.
+- A08 bilateral PASS_SCOPED. Siguiente A09. Lite dependency audit blocker sigue pendiente; PR draft #62 contra canonical tiene CI/cumulative/S25/S22/G3/H1a-d SUCCESS; Playwright/Scientific UI/Cross-browser pending al corte. Global OPEN.
+
 ## 2026-11-05 UTC — r403: Algebra229 AS-A-07 PASS_SCOPED bilateral
 
 - Lite SHA `02e1fff40eb05e58946e2ec9fdc2ba1618821bd2`; test `tests/algebra229AsA07.audit.test.ts`, blob `4af7e3b65f7f16b1b6f0f4c37648bd935c10c123`. Cumulative [42004987491](https://github.com/c2melendez/precision-lab-lite/actions/runs/42004987491) SUCCESS (focal 2 tests, 366 files/2259 passed); H1d [42004987501](https://github.com/c2melendez/precision-lab-lite/actions/runs/42004987501) SUCCESS (22/22); Scientific UI [42004987667](https://github.com/c2melendez/precision-lab-lite/actions/runs/42004987667) SUCCESS (456 passed); CI [42004987602](https://github.com/c2melendez/precision-lab-lite/actions/runs/42004987602) FAILURE en audit 4 moderadas, umbral sin cambio; Runner push-only 42004987409.
