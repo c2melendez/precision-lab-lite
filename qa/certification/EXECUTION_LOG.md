@@ -953,3 +953,17 @@ Siguiente: continuar con AS-PF-03 en Lite; no extrapolar la aprobación a Plus.
 
 
 
+
+
+## 2026-11-05 UTC — r398: Algebra114 AS-RAT-07 PASS_SCOPED en Lite
+
+## Reconciliación bilateral — 2026-11-05 (r398): Lite RAT-07 y Plus RAT-03
+
+- Lite — Algebra114 AS-RAT-07: **PASS_SCOPED** en SHA `8016196304e1c561f4f12831f65fcbe05d4ee8e5`; acumulativo [41994849117](https://github.com/c2melendez/precision-lab-lite/actions/runs/41994849117) SUCCESS (366 archivos, 2259 passed; test focal explícito), H1d [41994848997](https://github.com/c2melendez/precision-lab-lite/actions/runs/41994848997) SUCCESS (22/22), Scientific UI [41994849059](https://github.com/c2melendez/precision-lab-lite/actions/runs/41994849059) SUCCESS (456). Aceptación `ALGEBRA114_AS_RAT_07_ACCEPTANCE_R398.md`.
+- CI Lite [41994848966](https://github.com/c2melendez/precision-lab-lite/actions/runs/41994848966) FAILURE solo en QA dependency audit hard gate (4 moderadas); no se bajó umbral.
+- Plus — Algebra114 AS-RAT-03: **PASS_SCOPED** en SHA `8371417c3b57135dd83ad9af4b502e4bb04a6c92`, limitado a backend/servicio HTTP. Acumulativo [41994877568](https://github.com/c2melendez/precision-lab-plus/actions/runs/41994877568), CI [41994877761](https://github.com/c2melendez/precision-lab-plus/actions/runs/41994877761) SUCCESS; H1d [41994877552](https://github.com/c2melendez/precision-lab-plus/actions/runs/41994877552) SUCCESS (38/38); Runner [41994877571](https://github.com/c2melendez/precision-lab-plus/actions/runs/41994877571) SUCCESS push-only. Test servicio+HTTP con oráculo independiente math.sqrt. No se afirma paridad UI.
+- Próxima acción matemática Lite: AS-RAT-08. Próxima acción Algebra114 de Plus: AS-RAT-04 (oráculo math.cbrt independiente pendiente).
+- El bloqueo global Plus VC-FE-45/EV-I-12 permanece separado y sin cambios. Global certification OPEN.
+
+
+
