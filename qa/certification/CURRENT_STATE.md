@@ -1,3 +1,14 @@
+# Corte vigente de certificación — 2026-11-05 UTC (r386)
+
+## Actualización operativa — 2026-11-05 (r386)
+
+- Lite — Algebra114 AS-PF-03: **PASS_SCOPED** en SHA `91f3cd4f97bf712b778d4a803a952a59e4dea7e4`. Fila exacta, salida normalizada `1/x+(1-x)/(x^2+1)` y ocho sustituciones enteras contra oráculo JavaScript independiente. Acumulativo [41985243812](https://github.com/c2melendez/precision-lab-lite/actions/runs/41985243812) SUCCESS (366 archivos, 2,259 passed; test focal explícito); H1d [41985243959](https://github.com/c2melendez/precision-lab-lite/actions/runs/41985243959) SUCCESS (22/22); Scientific UI [41985243868](https://github.com/c2melendez/precision-lab-lite/actions/runs/41985243868) SUCCESS (456 passed); Runner [41985243862](https://github.com/c2melendez/precision-lab-lite/actions/runs/41985243862) SUCCESS push-only.
+- CI [41985243810](https://github.com/c2melendez/precision-lab-lite/actions/runs/41985243810) FAILURE en QA dependency audit hard gate (8 moderadas); no se modificó el umbral.
+- Aceptación: `ALGEBRA114_AS_PF_03_ACCEPTANCE_R386.md`. Plus no ejecutó esta fila; no se afirma paridad. VC-FE-45 sigue BLOCKED frente a EV-I-12. Global certification OPEN.
+- Siguiente acción matemática Lite: **AS-PF-04** test-first.
+
+
+
 # Corte vigente de certificación — 2026-11-05 UTC (r385)
 
 ## Actualización operativa — 2026-11-05 (r385)
