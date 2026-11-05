@@ -627,3 +627,9 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
 - AS-A-10 PASS_SCOPED bilateral: Lite cumulative 42022352712, H1d 42022352301 y Scientific UI 42022352493 SUCCESS; Plus CI 42022365744, cumulative 42022365789 y H1d 42022365878 SUCCESS.
 - CI estándar Lite 42022352305 sigue FAILURE exclusivamente en QA dependency audit por cuatro vulnerabilidades moderadas; umbral sin cambios.
 - El blocker de dependencias no cambia de estado: PR #62 listo (checks verdes, mergeable) pero en draft, pendiente de revisión/fusión humana.
+
+
+## 2026-11-05 — auditoría Lite persistente durante Algebra229 AS-A-16 / AS-A-17
+
+- A16 CI [42038743893](https://github.com/c2melendez/precision-lab-lite/actions/runs/42038743893) y A17 CI [42039944052](https://github.com/c2melendez/precision-lab-lite/actions/runs/42039944052) vuelven a fallar únicamente en `QA dependency audit (hard gate)`, con los mismos cuatro hallazgos moderados ya descritos. No se redujo el umbral ni se aplicó `npm audit fix --force`.
+- Cualquier actualización de `vite-plugin-pwa/workbox/glob/minimatch` sigue requiriendo revisión de compatibilidad y autorización de seguridad; el bloqueo permanece abierto.
