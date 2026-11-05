@@ -1,3 +1,10 @@
+## 2026-11-05 UTC — r393: AS-A-17 Lite PASS focal; Plus harness corregido
+
+- Lite SHA b37502c5713bddabae6a022e6e1cb788ee72a87d: cumulative 42039943541 SUCCESS (2 focales, 2259 passed), H1d 42039943721 SUCCESS (22), Scientific UI 42039943566 SUCCESS (456), CI 42039944052 FAILURE solo npm audit (4 moderate), Runner 42039943836 push-only.
+- Plus SHA 8232f3979cf128c1bd52c6de2bfde4e9296a5d77: CI 42039991675 backend FAILURE por falsa aserción `"**5" not in result_text`; polinomio observado correcto `32*x**5-80*x**4*y+80*x**3*y**2-40*x**2*y**3+10*x*y**4-y**5`. Producto intacto.
+- Harness corregido en Plus SHA 6b1bf9b9f731d6f6d36c16f33f09d1a9f2eb3238: comparación contra `(2*x-y)**5` y verificación `sp.expand(got) == got`. Reruns: cumulative 42040844511, H1d 42040844847, CI 42040844459, Runner 42040844455.
+- A17 permanece WAIT hasta revisar nueva evidencia Plus y cierre bilateral. Global OPEN.
+
 ## 2026-11-05 UTC — r392: Algebra229 AS-A-16 PASS_SCOPED; AS-A-17 iniciado
 
 - A16 Lite SHA 36b1c73d0673a05e2418cc3c6dc49952a7c729f9: cumulative 42038744006 SUCCESS (2 focales, 2259 passed), H1d 42038743676 SUCCESS (22), Scientific UI 42038744245 SUCCESS (456), CI 42038743893 FAILURE solo npm audit (4 moderate), Runner 42038743972 push-only.
