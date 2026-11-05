@@ -1,3 +1,9 @@
+## 2026-11-05 UTC — r405: Algebra229 AS-A-09 PASS_SCOPED bilateral
+
+- Lite SHA `5968d58708bda2b63fccf5c4deb70c96d1c7df81`; test `tests/algebra229AsA09.audit.test.ts`, blob `827145ee310d871e7b7a8cc362d1a7f8726f808a`; cumulative 42008399184 SUCCESS (2 focal tests, 366 files/2259 passed, typecheck y build 4.68 s); H1d 42008399193 SUCCESS (22/22); Scientific UI 42008399013 SUCCESS (456). CI 42008399087 FAILURE solo audit 4 moderadas; umbral intacto. Runner 42008399129 push-only.
+- Plus SHA `ebe7c74e1de56609f44fa05c23efc0433a26fd87`; test `backend/tests/test_algebra229_as_a09.py`, blob `c14ea7a72f86bc858761a56bcc4c06c40785b646`; CI 42008437911 SUCCESS (2800 passed backend; 1055 frontend); cumulative 42008437780 SUCCESS con dos focales PASSED y 2800 passed; H1d 42008437774 SUCCESS (38/38); Runner 42008437689 push-only.
+- A09 bilateral PASS_SCOPED. Siguiente A10. PR draft #62 con los 15 checks PR en SUCCESS sobre `b24d3951`, mergeable/CLEAN, pendiente de revisión humana; no fusionado. Global OPEN.
+
 ## 2026-11-05 UTC — r404: Algebra229 AS-A-08 PASS_SCOPED bilateral
 
 - Lite SHA `e1f5c9cc67ffe2cd9bdfc3dcdcb07b8de291d21f`; test `tests/algebra229AsA08.audit.test.ts`, blob `3863c4a54007bb3200ced4a157a4c8a4f4617390`; cumulative 42006623286 SUCCESS (2 focal tests, 366 files/2259 passed); H1d 42006623192 SUCCESS (22/22); Scientific UI 42006623224 SUCCESS (456). CI 42006623461 FAILURE solo audit 4 moderadas; umbral intacto. Runner 42006623362 push-only.

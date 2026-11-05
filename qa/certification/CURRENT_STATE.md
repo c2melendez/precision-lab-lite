@@ -1,3 +1,18 @@
+# Actualización de certificación — 2026-11-05 UTC (r405)
+
+## Algebra229 AS-A-09 — PASS_SCOPED bilateral
+
+- Lite SHA `5968d58708bda2b63fccf5c4deb70c96d1c7df81`; test `tests/algebra229AsA09.audit.test.ts`, blob `827145ee310d871e7b7a8cc362d1a7f8726f808a`; fila fuente exacta y ocho muestras firmadas con `(x+1)(x+2)(x+3)(x+4)` en aritmética entera independiente.
+- Lite acumulativo [42008399184](https://github.com/c2melendez/precision-lab-lite/actions/runs/42008399184) **SUCCESS**, 2 focal tests, 366 archivos / 2,259 passed / 8 XFAIL / 34 TODO; typecheck y build (4.68 s) SUCCESS. H1d [42008399193](https://github.com/c2melendez/precision-lab-lite/actions/runs/42008399193) **SUCCESS** (22/22); Scientific UI [42008399013](https://github.com/c2melendez/precision-lab-lite/actions/runs/42008399013) **SUCCESS** (456). CI [42008399087](https://github.com/c2melendez/precision-lab-lite/actions/runs/42008399087) **FAILURE** en audit por cuatro moderadas; typecheck/unit/build omitidos; umbral intacto. Runner 42008399129 push-only.
+- Plus SHA `ebe7c74e1de56609f44fa05c23efc0433a26fd87`; test `backend/tests/test_algebra229_as_a09.py`, blob `c14ea7a72f86bc858761a56bcc4c06c40785b646`; fila exacta, servicio+HTTP y ocho puntos con Python independiente.
+- Plus CI [42008437911](https://github.com/c2melendez/precision-lab-plus/actions/runs/42008437911) **SUCCESS** (backend 2,800 passed / 1 skipped / 10 XFAIL; frontend 150/1,055); acumulativo [42008437780](https://github.com/c2melendez/precision-lab-plus/actions/runs/42008437780) **SUCCESS**, ambos focales PASSED; H1d [42008437774](https://github.com/c2melendez/precision-lab-plus/actions/runs/42008437774) **SUCCESS** (38/38); Runner 42008437689 push-only.
+- A09 queda cerrada bilateralmente como PASS_SCOPED. Siguiente: **AS-A-10**. Global certification **OPEN**.
+
+## Mitigación Workbox — PR draft #62
+
+- Head `b24d3951e9548eff46cdd105b6f44225c8bfc7e6`, base `qa/syntax-audit-in625-a1`; los 15 checks `pull_request` figuran **SUCCESS** (CI, cumulative, H1a-d, Playwright, Scientific UI, Cross-browser, S22, S25, G3 y A2). `mergeable: MERGEABLE`, `mergeStateStatus: CLEAN`, todavía `Draft`.
+- No se fusiona ni despliega: requiere revisión/fusión humana. El hard gate de la rama canónica sigue rojo por las cuatro moderadas hasta esa integración.
+
 # Actualización de certificación — 2026-11-05 UTC (r404)
 
 ## Algebra229 AS-A-08 — PASS_SCOPED bilateral
