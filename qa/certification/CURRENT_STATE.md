@@ -1,3 +1,21 @@
+# Corte vigente de certificación — 2026-11-05 UTC (r400)
+
+## Actualización operativa — 2026-11-05 (r400): Lite Algebra114 AS-RAT-09
+
+- Lite — AS-RAT-09: **PASS_SCOPED** en SHA técnico `aa3bd34cb20fac49e86cebb598ec69058e714a9e`; test `tests/algebra114AsRat09.audit.test.ts`, blob `c8e9bcde6d716eb6f017c3cb7e9cbdaba4098739`; aceptación `ALGEBRA114_AS_RAT_09_ACCEPTANCE_R400.md`.
+- El test fija la fila exacta, incluidas las restricciones `x,y>=0` y `x!=y`; comprueba por separado la expresión original y la racionalizada con seis puntos y oráculos Math.sqrt independientes.
+- Acumulativo [41999027290](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999027290) **SUCCESS** (366 archivos, 2,259 passed; focal explícito); H1d [41999027294](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999027294) **SUCCESS** (22/22); Runner [41999027296](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999027296) **SUCCESS_PUSH_ONLY**.
+- CI estándar [41999027317](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999027317) **FAILURE** solo en QA dependency audit hard gate (4 moderadas); typecheck/unit/build omitidos después del audit. Umbral intacto. Scientific UI [41999027309](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999027309) estaba en curso al corte, complementario.
+- Baseline técnico reconciliado a `aa3bd34cb20fac49e86cebb598ec69058e714a9e`; la siguiente acción matemática Lite es **AS-RAT-10**. Global certification OPEN.
+
+## Continuidad Plus — actualización r390
+
+- Plus RAT-04: **PASS_SCOPED** backend/servicio HTTP en SHA `1ff1230e63d6788f1fec2b769b779f70f308eba5`, aceptación `ALGEBRA114_AS_RAT_04_ACCEPTANCE_R390.md`; acumulativo 41995788254, CI 41995788422 y H1d 41995788274 SUCCESS (38/38). Runner 41995788237 push-only.
+- Plus RAT-07 está en ejecución en SHA corregido `da924df6cdb9a827c2b0ff061db9f1e0e8111167`; sus nuevas corridas push son CI 41999414498, acumulativo 41999414506, H1d 41999414450 y Runner 41999414341. El candidato anterior `76123db5d0b4671e13875ac49ca602a49f1c4244` se descartó por un literal de fixture sobreescapado y no se usa como evidencia de aceptación.
+- El bloqueo contractual global EDCX-B6 VC-FE-45 frente a EV-I-12 permanece separado y sin cambios. No se afirma paridad UI.
+
+Global certification **OPEN**.
+
 # Corte vigente de certificación — 2026-11-05 UTC (r399)
 
 ## Actualización operativa — 2026-11-05 (r399)

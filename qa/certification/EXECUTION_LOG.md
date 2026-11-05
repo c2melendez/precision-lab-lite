@@ -981,3 +981,12 @@ Siguiente: continuar con AS-PF-03 en Lite; no extrapolar la aprobación a Plus.
 
 
 
+
+
+## 2026-11-05 UTC — r400: Lite Algebra114 AS-RAT-09 PASS_SCOPED
+
+- SHA técnico `aa3bd34cb20fac49e86cebb598ec69058e714a9e`; test `tests/algebra114AsRat09.audit.test.ts`, blob `c8e9bcde6d716eb6f017c3cb7e9cbdaba4098739`; aceptación `ALGEBRA114_AS_RAT_09_ACCEPTANCE_R400.md`.
+- La prueba fija la fila fuente completa (x,y>=0, x!=y), comprueba la forma simbólica y contrasta expresión original y conjugada con oráculos JavaScript Math.sqrt independientes en seis puntos válidos.
+- Acumulativo [41999027290](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999027290) SUCCESS (366 archivos, 2,259 passed, 8 expected fail, 34 TODO; test focal explícito). H1d [41999027294](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999027294) SUCCESS (22/22). Runner [41999027296](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999027296) SUCCESS push-only; dispatch/persist no certificados.
+- CI [41999027317](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999027317) FAILURE en QA dependency audit (4 moderadas); pasos posteriores omitidos y umbral intacto. Scientific UI [41999027309](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999027309) IN_PROGRESS al corte, complementario.
+- Siguiente Lite AS-RAT-10. Plus RAT-04 fue reconciliada en r390 y Plus RAT-07 se encuentra en ejecución sobre el SHA corregido `da924df6cdb9a827c2b0ff061db9f1e0e8111167`. Global certification OPEN.
