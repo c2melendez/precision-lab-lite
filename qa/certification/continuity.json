@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 379,
+  "revision": 380,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "6a8d1b7d586b4ad4e939fc9601be4498d7bd8aa9",
-  "baseline_case": "ALGEBRA114-AS-RAT-10",
+  "technical_baseline_sha": "790c49034f88ef0b20ad76c0e49c41fbb3cbd763",
+  "baseline_case": "ALGEBRA229-AS-A-06",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-ORACLE-AUDIT",
+    "id": "ALGEBRA229-AS-A-07-TEST-FIRST",
     "status": "READY",
-    "previous_id": "ALGEBRA114-AS-RAT-10-ORACLE-AUDIT",
-    "action": "Reconciliar el inventario completo de Algebra229 contra qa/certification/EXECUTION_PROTOCOL.md y los contratos de su módulo; seleccionar su primera fila pendiente en Lite, reforzar el oráculo independiente y la fila fuente exacta, y validar en CI acumulativa y H1d. No inferir paridad con Plus ni saltar gates de módulo."
+    "previous_id": "ALGEBRA229-AS-A-06-TEST-FIRST",
+    "action": "Test-first bilateral de AS-A-07: expand (2x-3)^4. Actualizar tests/algebra229AsA07.audit.test.ts y backend/tests/test_algebra229_as_a07.py para comparar la fila completa congelada y el polinomio exacto; evaluar siete puntos firmados con oráculo independiente JavaScript Math.pow/Python int arithmetic. Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si falla la prueba."
   },
   "blockers": [
     {
@@ -225,6 +225,12 @@
       "id": "ALGEBRA114-AS-RAT-08",
       "status": "PASS_SCOPED",
       "detail": "Lite-only. Technical SHA 8016196304e1c561f4f12831f65fcbe05d4ee8e5; test tests/algebra114AsRat08.audit.test.ts, blob 48c40e14041fd761ed95ac7e6feff14dd621e18a; exact source row, denested output sqrt(3)+sqrt(2), independent Math.sqrt oracle for original and denested forms, positive value and square identity. Cumulative 41995778782 SUCCESS (366 files/2259 passed; focal test explicit; typecheck/regression/build green), H1d 41995778648 SUCCESS (22/22), Runner 41995778927 SUCCESS push-only. CI 41995778596 FAILURE only QA dependency audit hard gate (4 moderate), threshold unchanged. Scientific UI 41995778671 was IN_PROGRESS at acceptance cut and complementary, not a mathematical gate. Plus RAT04 is being evaluated independently."
+    },
+    {
+      "id": "LITE-NPM-AUDIT-MODERATES-20261105",
+      "status": "BLOCKED",
+      "kind": "dependency_security_gate",
+      "detail": "CI hard gate 42001452519 on SHA 790c49034f88ef0b20ad76c0e49c41fbb3cbd763: 4 moderate advisories. vite-plugin-pwa 1.3.0 → workbox-build 7.4.1 → glob 11.1.0 → minimatch 10.2.6. npm audit suggested vite-plugin-pwa 1.1.0 downgrade (major); compatibility not accepted. Cumulative/H1d/Scientific gates passed; standard CI failure remains separate."
     }
   ],
   "h2_en_sg_evidence_audit_r326": {
@@ -298,7 +304,9 @@
     "qa/certification/ALGEBRA114_AS_FAC_08_ACCEPTANCE_R379.md",
     "qa/certification/ALGEBRA114_AS_FAC_09_ACCEPTANCE_R380.md",
     "qa/certification/ALGEBRA114_AS_RAT_09_ACCEPTANCE_R400.md",
-    "qa/certification/ALGEBRA114_AS_RAT_10_ACCEPTANCE_R401.md"
+    "qa/certification/ALGEBRA114_AS_RAT_10_ACCEPTANCE_R401.md",
+    "qa/certification/ALGEBRA229_AS_A_06_ACCEPTANCE_R402.md",
+    "qa/certification/MANUAL_CAPABILITY_GAPS.md"
   ],
   "h2_en_sg_reconciliation_r358": {
     "status": "PARTIAL",
@@ -665,7 +673,7 @@
     "certification_pass": false,
     "recorded_at": "2026-10-31T01:40:23+00:00"
   },
-  "updated_utc": "2026-11-05T09:14:24.435Z",
+  "updated_utc": "2026-11-05T09:42:07.694Z",
   "active_execution_r370": {
     "case": "ALGEBRA114-AS-EXP-09",
     "sha": "13bf8b535a00b40c464057dc663b2d97ea6c44bd",
@@ -898,5 +906,41 @@
     "scope": "Lite only",
     "oracle": "Independent Math.sqrt values for the original radical quotient and 3-sqrt(6), positive-result check and conjugate identity (3-sqrt(6))*(3+sqrt(6))=3.",
     "note": "No Plus parity claim. Scientific UI is a separate complementary E2E and was still in progress at this acceptance cut. Global certification OPEN."
+  },
+  "algebra229_as_a06_r402_or_r393": {
+    "status": "PASS_SCOPED_BILATERAL_CASE",
+    "sha": "790c49034f88ef0b20ad76c0e49c41fbb3cbd763",
+    "source_sha256": "8cd36ff08343f98f92abd83e2b162d565e0cbe5c59dc73f26b1c018f77d663c7",
+    "test": "tests/algebra229AsA06.audit.test.ts",
+    "test_blob": "6ffb510661f5c88c1c5f553a188f3d8566d05e1b",
+    "acceptance": "qa/certification/ALGEBRA229_AS_A_06_ACCEPTANCE_R402.md",
+    "cumulative_run": 42001452228,
+    "cumulative_status": "SUCCESS",
+    "cumulative_files": 366,
+    "cumulative_passed": 2259,
+    "cumulative_expected_fail": 8,
+    "cumulative_todo": 34,
+    "focal_tests": 2,
+    "h1d_run": 42001452201,
+    "h1d_status": "SUCCESS",
+    "h1d_passed": 22,
+    "scientific_ui_run": 42001452411,
+    "scientific_ui_status": "SUCCESS",
+    "scientific_ui_passed": 456,
+    "ci_run": 42001452519,
+    "ci_status": "FAILURE",
+    "ci_reason": "QA dependency audit hard gate: four moderate advisory entries; typecheck/unit/build skipped in this workflow, threshold unchanged.",
+    "runner_run": 42001452227,
+    "runner_status": "SUCCESS_PUSH_ONLY",
+    "scope": "Algebra229 AS-A-06 only; bilateral test-level acceptance",
+    "oracle": "Eight signed triples; independent arithmetic (x+y+z)^2; exact frozen source row.",
+    "next_action": "ALGEBRA229-AS-A-07-TEST-FIRST",
+    "note": "Lite cumulative, H1d and Scientific UI gates passed. Standard CI dependency audit remains a separate open blocker."
+  },
+  "plus_algebra229_next_action": {
+    "id": "ALGEBRA229-AS-A-07-TEST-FIRST",
+    "status": "READY",
+    "previous_id": "ALGEBRA229-AS-A-06-TEST-FIRST",
+    "action": "Test-first bilateral de AS-A-07: expand (2x-3)^4. Actualizar tests/algebra229AsA07.audit.test.ts y backend/tests/test_algebra229_as_a07.py para comparar la fila completa congelada y el polinomio exacto; evaluar siete puntos firmados con oráculo independiente JavaScript Math.pow/Python int arithmetic. Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si falla la prueba."
   }
 }

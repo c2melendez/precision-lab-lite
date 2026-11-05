@@ -1,3 +1,14 @@
+# Actualización de certificación — 2026-11-05 UTC (r402)
+
+## Algebra229 AS-A-06 — PASS_SCOPED bilateral
+
+- Lite SHA técnico `790c49034f88ef0b20ad76c0e49c41fbb3cbd763`; test `tests/algebra229AsA06.audit.test.ts`, blob `6ffb510661f5c88c1c5f553a188f3d8566d05e1b`. La prueba congela la fila completa y ejecuta ocho ternas firmadas con oráculo aritmético independiente.
+- Lite acumulativo [42001452228](https://github.com/c2melendez/precision-lab-lite/actions/runs/42001452228) SUCCESS (2 tests focales; 366 archivos, 2,259 passed); H1d [42001452201](https://github.com/c2melendez/precision-lab-lite/actions/runs/42001452201) SUCCESS (22/22); Scientific UI [42001452411](https://github.com/c2melendez/precision-lab-lite/actions/runs/42001452411) SUCCESS (job nativo desktop/tablet/mobile, 456 passed); Runner [42001452227](https://github.com/c2melendez/precision-lab-lite/actions/runs/42001452227) push-only SUCCESS.
+- CI estándar [42001452519](https://github.com/c2melendez/precision-lab-lite/actions/runs/42001452519) FAILURE en QA dependency audit por 4 moderadas; typecheck/unit/build omitidos en ese workflow. No se relajó el hard gate.
+- Plus SHA técnico `0b2f02e6507f50ea4072691c96d5270dfdb0827c`; CI [42002301382](https://github.com/c2melendez/precision-lab-plus/actions/runs/42002301382), acumulativo [42002301613](https://github.com/c2melendez/precision-lab-plus/actions/runs/42002301613) y H1d [42002301152](https://github.com/c2melendez/precision-lab-plus/actions/runs/42002301152) SUCCESS; Runner 42002301346 push-only. Test backend descubierto por la suite pytest completa.
+- A06 queda cerrado bilateralmente como PASS_SCOPED. Próxima fila: **AS-A-07**. Global certification OPEN.
+
+
 # Corte vigente de certificación — 2026-11-05 UTC (r401)
 
 ## Actualización operativa — 2026-11-05 (r401): Lite Algebra114 AS-RAT-10

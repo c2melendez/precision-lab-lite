@@ -2,6 +2,15 @@
 
 **Alcance:** unit/HTTP expand + fila en `matriz_algebra_simbolica.md.gz`. **No** matriz completa ni E2E MathLive AS-A.
 
+## Revalidación bilateral AS-A-06 — 2026-11-05
+
+| Repositorio | SHA técnico | Test | CI | Acumulativo | H1d | Scientific UI |
+|---|---|---|---|---|---|---|
+| Lite | `790c49034f88ef0b20ad76c0e49c41fbb3cbd763` | `tests/algebra229AsA06.audit.test.ts` | [42001452519](https://github.com/c2melendez/precision-lab-lite/actions/runs/42001452519) FAILURE (audit moderado) | [42001452228](https://github.com/c2melendez/precision-lab-lite/actions/runs/42001452228) SUCCESS | [42001452201](https://github.com/c2melendez/precision-lab-lite/actions/runs/42001452201) SUCCESS | [42001452411](https://github.com/c2melendez/precision-lab-lite/actions/runs/42001452411) SUCCESS |
+| Plus | `0b2f02e6507f50ea4072691c96d5270dfdb0827c` | `backend/tests/test_algebra229_as_a06.py` | [42002301382](https://github.com/c2melendez/precision-lab-plus/actions/runs/42002301382) SUCCESS | [42002301613](https://github.com/c2melendez/precision-lab-plus/actions/runs/42002301613) SUCCESS | [42002301152](https://github.com/c2melendez/precision-lab-plus/actions/runs/42002301152) SUCCESS | N/A per contract |
+
+**Alcance:** fila A06 solamente. Lite acumulativo confirma 2 tests focales; el backend Plus fue descubierto por el pytest suite completo. Plus job logs individuales devolvieron 404 en el conector, por lo que no se cita una línea focal independiente. Runner Lite 42001452227 y Plus 42002301346 fueron SUCCESS_PUSH_ONLY; no prueban dispatch ni persistencia. Siguiente: AS-A-07.
+
 | Caso | Lite technical SHA | Lite cumulative | Plus technical SHA | Plus cumulative |
 |------|--------------------|-----------------|--------------------|-----------------|
 | AS-A-01 | `6493c4b2aefe71ef608309dfb60e45e0a027c178` | [39392408916](https://github.com/c2melendez/precision-lab-lite/actions/runs/39392408916) SUCCESS | `b6cc70fc1e2f65c97e199261b73b968b879a32ca` | [39392421243](https://github.com/c2melendez/precision-lab-plus/actions/runs/39392421243) SUCCESS |
@@ -31,3 +40,4 @@ AS-A-12: `(x^2-1)^2` → `x^4-2x^2+1`. Local Lite vitest 2 passed; Plus pytest 2
 AS-A-13: `(x+h)^3-x^3` → `h^3+3h^2x+3hx^2`. Local Lite vitest 2 passed; Plus pytest 2 passed. CI bilateral verde sobre SHA técnico exacto. Global **OPEN**. Siguiente: **AS-A-14** `(\sqrt{2}+\sqrt{3})^{2}`.
 
 AS-A-14: `(sqrt2+sqrt3)^2` → `5+2*sqrt6`. Local Lite vitest 2 passed; Plus pytest 2 passed. CI bilateral verde sobre SHA técnico exacto. Global **OPEN**. Siguiente: **AS-A-15**.
+

@@ -586,3 +586,10 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
 - Estado: NO_EJECUTADO en Lite; BLOCKED por capacidad en Plus (espejo).
 - Causa: no existe canal definido para lugares geométricos y el campo `canal` de las 25 filas está vacío.
 - Reabrir solo cuando se defina canal y oráculo, o cuando la capacidad exista en ambos productos.
+
+
+## CI dependency-audit blocker — 2026-11-05 (Lite)
+
+- Exact run [42001452519](https://github.com/c2melendez/precision-lab-lite/actions/runs/42001452519), tested SHA `790c49034f88ef0b20ad76c0e49c41fbb3cbd763`: `QA dependency audit (hard gate)` failed on four moderate advisory entries; subsequent typecheck, unit/parity and production build steps were skipped in this CI workflow. The independent cumulative gate and its build passed; do not conflate those results.
+- Lock chain: `vite-plugin-pwa@1.3.0 → workbox-build@7.4.1 → glob@11.1.0 → minimatch@10.2.6`. Audit advisory ranges: glob `>=9.0.0 <=14.0.1` (GHSA-3g3m-2fjr-6pw4); minimatch `>=7.0.0 <11.0.1` (GHSA-g3hv-75wg-m249). Audit reports `fixAvailable: vite-plugin-pwa@1.1.0` as a SemVer-major downgrade; not applied without compatibility validation.
+- This is a dependency/security gate, not a mathematical capability gap. No threshold was lowered, no package changes were merged to the canonical branch, and the issue remains open pending isolated compatibility testing.
