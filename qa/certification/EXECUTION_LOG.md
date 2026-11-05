@@ -1,3 +1,15 @@
+## 2026-11-05 UTC — r387: Algebra229 AS-A-13 PASS_SCOPED bilateral
+
+- Lite SHA 4ecf24a91918aab7350c9a40332f71bbf8e68a93; cumulative 42031678745 SUCCESS (skip=false; 2 focal tests; 2259 passed), H1d 42031678847 SUCCESS (22), Scientific UI 42031678747 SUCCESS (456), CI 42031678783 FAILURE solo audit (4 moderate), Runner 42031678838 push-only.
+- Plus SHA c70632a8018f5acb5c8d184f3be66a3a9690d9bb; cumulative 42031691554 SUCCESS (skip=false; ambos focales PASSED; 2800 backend; 88.93% coverage), H1d 42031691537 SUCCESS (38), CI 42031691441 SUCCESS (2800 backend/1055 frontend), Runner 42031691608 push-only.
+- A13 bilateral PASS_SCOPED; siguiente A14. Global OPEN.
+
+## 2026-11-05 UTC — r386: Algebra229 AS-A-12 PASS_SCOPED bilateral
+
+- Lite SHA e5d41530b3bbee7ec07564004ed692d618e86bbd; cumulative 42026503795 SUCCESS (skip=false; 2259 passed), H1d 42026503173 SUCCESS (22), Scientific UI 42026503341 SUCCESS (456), CI 42026503150 FAILURE solo audit (4 moderate), Runner 42026503233 push-only.
+- Plus SHA d354ee5a5aa024c77222f8862cd00eecdc1b514e; cumulative 42026506521 SUCCESS (skip=false; 2800 backend/1055 frontend), H1d 42026506511 SUCCESS (38), CI 42026506505 SUCCESS, Runner 42026506528 push-only.
+- A12 bilateral PASS_SCOPED; siguiente A13. Global OPEN.
+
 ## 2026-11-05 UTC — r407: Algebra229 AS-A-11 PASS_SCOPED bilateral
 
 - Lite SHA `0393cfb4a7a690fd35f77a70afba3b900b8a8b7c`; test `tests/algebra229AsA11.audit.test.ts`, blob `7c6f13348d2deb379e62c9edfe401d25c121a7a9`; cumulative 42023809086 SUCCESS (`skip=false`, 2 focal tests, 366 files/2259 passed, typecheck y build 5.17 s); H1d 42023809104 SUCCESS (22/22); Scientific UI 42023809065 SUCCESS (456). CI 42023809135 FAILURE solo audit 4 moderadas; umbral intacto. Runner 42023809050 push-only.

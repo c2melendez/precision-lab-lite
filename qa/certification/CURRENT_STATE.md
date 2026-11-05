@@ -1,3 +1,21 @@
+# Actualización de certificación — 2026-11-05 UTC (r387)
+
+## Algebra229 AS-A-13 — PASS_SCOPED bilateral
+
+- Lite SHA `4ecf24a91918aab7350c9a40332f71bbf8e68a93`; test `tests/algebra229AsA13.audit.test.ts`, blob `31d469915bdffd6d00996aba27a524eab999bfef`; fila exacta y ocho pares enteros firmados con oráculo JavaScript independiente.
+- Lite acumulativo [42031678745](https://github.com/c2melendez/precision-lab-lite/actions/runs/42031678745) SUCCESS, `skip=false`, 2 tests focales, 2,259 passed; typecheck y build SUCCESS. H1d [42031678847](https://github.com/c2melendez/precision-lab-lite/actions/runs/42031678847) SUCCESS (22/22); Scientific UI [42031678747](https://github.com/c2melendez/precision-lab-lite/actions/runs/42031678747) SUCCESS (456/456). CI [42031678783](https://github.com/c2melendez/precision-lab-lite/actions/runs/42031678783) FAILURE solo npm audit (4 moderadas); umbral intacto. Runner 42031678838 push-only.
+- Plus SHA `c70632a8018f5acb5c8d184f3be66a3a9690d9bb`; test `backend/tests/test_algebra229_as_a13.py`, blob `646138a0f8965cb05053982b362ee39c73c4cea5`; fila exacta, servicio+HTTP y ocho pares enteros con aritmética Python independiente.
+- Plus acumulativo [42031691554](https://github.com/c2melendez/precision-lab-plus/actions/runs/42031691554) SUCCESS, `skip=false`, ambos tests focales PASSED, backend 2,800 passed / 1 skipped / 10 XFAIL, cobertura 88.93%. H1d [42031691537](https://github.com/c2melendez/precision-lab-plus/actions/runs/42031691537) SUCCESS (38/38); CI [42031691441](https://github.com/c2melendez/precision-lab-plus/actions/runs/42031691441) SUCCESS (2,800 backend / 1,055 frontend). Runner 42031691608 push-only.
+- A13 queda cerrada bilateralmente como PASS_SCOPED. Siguiente fila: **AS-A-14**, `(sqrt(2)+sqrt(3))^2`. Global OPEN.
+
+## Algebra229 AS-A-12 — PASS_SCOPED bilateral
+
+- Lite SHA `e5d41530b3bbee7ec07564004ed692d618e86bbd`; test `tests/algebra229AsA12.audit.test.ts`, blob `d4e7e5cb5d81115fd3edf886d7058c55db424a66`; fila exacta y ocho valores firmados con aritmética entera independiente.
+- Lite acumulativo [42026503795](https://github.com/c2melendez/precision-lab-lite/actions/runs/42026503795) SUCCESS, `skip=false`, 366 archivos / 2,259 passed; typecheck, regresión y build SUCCESS. H1d [42026503173](https://github.com/c2melendez/precision-lab-lite/actions/runs/42026503173) SUCCESS (22/22); Scientific UI [42026503341](https://github.com/c2melendez/precision-lab-lite/actions/runs/42026503341) SUCCESS (456/456). CI [42026503150](https://github.com/c2melendez/precision-lab-lite/actions/runs/42026503150) FAILURE solo npm audit (4 moderadas); umbral intacto. Runner 42026503233 push-only.
+- Plus SHA `d354ee5a5aa024c77222f8862cd00eecdc1b514e`; test `backend/tests/test_algebra229_as_a12.py`, blob `0e88a17eb450499bffd75feffe6fb041d329cee6`; fila exacta, servicio+HTTP y ocho valores enteros con aritmética Python independiente.
+- Plus acumulativo [42026506521](https://github.com/c2melendez/precision-lab-plus/actions/runs/42026506521) SUCCESS, `skip=false`, backend 2,800 passed / 1 skipped / 10 XFAIL; frontend 1,055 passed. H1d [42026506511](https://github.com/c2melendez/precision-lab-plus/actions/runs/42026506511) SUCCESS (38/38); CI [42026506505](https://github.com/c2melendez/precision-lab-plus/actions/runs/42026506505) SUCCESS; Runner 42026506528 push-only.
+- A12 queda cerrada bilateralmente como PASS_SCOPED. Global OPEN.
+
 # Actualización de certificación — 2026-11-05 UTC (r407)
 
 ## Algebra229 AS-A-11 — PASS_SCOPED bilateral

@@ -17,7 +17,7 @@ Coincide byte a byte con `Matrices.zip`. El JSONL del handoff v0.3 es historico;
 
 ## Avance seccion A (expandir)
 
-AS-A-01..11 cerrados PASS_SCOPED bilateral con runs cumulative SUCCESS (ver `CURRENT_STATE.md` / `EXECUTION_LOG.md` / `continuity.json`).
+AS-A-01..13 cerrados PASS_SCOPED bilateral con runs cumulative SUCCESS (ver `CURRENT_STATE.md` / `EXECUTION_LOG.md` / `continuity.json`).
 
 ## Siguiente
 
