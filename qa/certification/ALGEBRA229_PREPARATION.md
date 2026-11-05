@@ -21,4 +21,4 @@ AS-A-01..13 cerrados PASS_SCOPED bilateral con runs cumulative SUCCESS (ver `CUR
 
 ## Siguiente
 
-`ALGEBRA229-AS-A-14-TEST-FIRST` — expandir `(sqrt(2)+sqrt(3))^2` → `5+2*sqrt(6)` bilateral. Global OPEN.
+`ALGEBRA229-AS-A-15-TEST-FIRST` — expandir `(x+1/x)^3` → `x^3+3*x+3/x+1/x^3` bilateral. Global OPEN.

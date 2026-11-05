@@ -1,3 +1,10 @@
+## 2026-11-05 UTC — r389: Algebra229 AS-A-14 PASS_SCOPED bilateral
+
+- Lite SHA f67f91fb58e7c175903f8c17aa86d0a6e2c6f6f0; cumulative 42033618184 SUCCESS (skip=false; 2 focales; 2259 passed), H1d 42033618189 SUCCESS (22), Scientific UI 42033618195 SUCCESS (456), CI 42033618277 FAILURE solo audit (4 moderate; artifact 13416204822), Runner 42033618193 push-only.
+- Plus SHA 7795639d509258c4057fd74a9a8457b27186b374; cumulative 42033653002 SUCCESS (skip=false; 2 focales PASSED; 2800 backend; 88.93%), H1d 42033653154 SUCCESS (38), CI 42033652882 SUCCESS (2800 backend/1055 frontend), Runner 42033652920 push-only.
+- Diagnóstico del oráculo AS-A-14: los candidatos 14b369.../42033342352 y 5f0fe.../42033463732 en Lite, más 0de7cf.../42033498258 en Plus, fallaron por escape o nota final incompleta en el expected row. La expectativa se corrigió contra la fila fuente completa; los SHA finales pasan. No se modificó producto.
+- A14 bilateral PASS_SCOPED; siguiente A15. Global OPEN.
+
 ## 2026-11-05 UTC — r388: Algebra229 AS-A-14 TEST-FIRST / WAIT
 
 - Lite SHA f67f91fb58e7c175903f8c17aa86d0a6e2c6f6f0; cumulative 42033618184 SUCCESS (366 files/2259 passed; 2 focal AS-A-14 tests passed), H1d 42033618189 SUCCESS (22), Scientific UI 42033618195 SUCCESS (456), CI 42033618277 FAILURE only npm audit (4 moderate; artifact 13416204822), Runner 42033618193 push-only.
