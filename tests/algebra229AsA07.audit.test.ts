@@ -11,21 +11,22 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_GZ = join(ROOT, "qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz");
 
 describe("Algebra229 AS-A-07 expand (2x-3)^4", () => {
-  it("source row is present in frozen AS229 matrix", () => {
+  it("matches the exact frozen source row", () => {
     const text = gunzipSync(readFileSync(SOURCE_GZ)).toString("utf8");
-    expect(text).toMatch(/\|\s*AS-A-07\s*\|\s*N2\s*\|/);
-    expect(text).toContain("(2x-3)");
-    expect(text).toContain("16 x^{4} - 96 x^{3} + 216 x^{2} - 216 x + 81");
+    const sourceRow = text.split(/\r?\n/).find((line) => /^\|\s*AS-A-07\s*\|/.test(line))?.trim();
+    const expectedRow = "| AS-A-07 | N2 | `expandir` | `(2x-3)^{4}` | `16 x^{4} - 96 x^{3} + 216 x^{2} - 216 x + 81` |  |";
+    expect(sourceRow).toBe(expectedRow);
   });
 
-  it("expands original (2x-3)^4 and matches binomial oracle at samples", () => {
+  it("expands the original and matches independent arithmetic at seven signed samples", () => {
     const original = parseExpression("(2*x-3)^4").algebrite;
     const expanded = expand(original);
-    const oracle = parseExpression("16*x^4-96*x^3+216*x^2-216*x+81").algebrite;
-    for (const x of [-2, -1, 0, 1, 2, 3, 5]) {
-      const numeric = (expr: string) =>
-        compileNumeric(evaluate(expr.replace(/x/g, "(" + x + ")")), "__no_var__")(0);
-      expect(numeric(expanded)).toBeCloseTo(numeric(oracle), 9);
+    const samples = [-2, -1, 0, 1, 2, 3, 5];
+    for (const x of samples) {
+      const atPoint = expanded.replace(/\bx\b/g, `(${x})`);
+      const actual = compileNumeric(evaluate(atPoint), "__no_var__")(0);
+      const expected = Math.pow(2 * x - 3, 4);
+      expect(actual).toBeCloseTo(expected, 9);
     }
   });
 });
