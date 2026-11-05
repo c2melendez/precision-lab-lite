@@ -1,3 +1,13 @@
+# Actualización de certificación — 2026-11-05 UTC (r406)
+
+## Algebra229 AS-A-10 — PASS_SCOPED bilateral
+
+- Lite SHA `41d345902105bc93e51d331bd0d239bad946dd6b`; test `tests/algebra229AsA10.audit.test.ts`, blob `e7ade6cc7fa02e24ce3a79a4d4772034a9c40b59`; fila fuente exacta y ocho muestras firmadas con `Math.pow(x*x+x+1,3)`.
+- Lite acumulativo [42022352712](https://github.com/c2melendez/precision-lab-lite/actions/runs/42022352712) **SUCCESS**, 2 focal tests, 366 archivos / 2,259 passed / 8 XFAIL / 34 TODO; typecheck y build (7.31 s) SUCCESS. H1d [42022352301](https://github.com/c2melendez/precision-lab-lite/actions/runs/42022352301) **SUCCESS** (22/22); Scientific UI [42022352493](https://github.com/c2melendez/precision-lab-lite/actions/runs/42022352493) **SUCCESS** (456). CI [42022352305](https://github.com/c2melendez/precision-lab-lite/actions/runs/42022352305) **FAILURE** en audit por cuatro moderadas; umbral intacto. Runner 42022352496 push-only.
+- Plus SHA `e4e864881ebaa53e725efbf72f1b9a33aa2f4b7f`; test `backend/tests/test_algebra229_as_a10.py`, blob `9016f0af123164166f4629c3158693822746179f`; fila exacta, servicio+HTTP y ocho puntos con Python independiente.
+- Plus CI [42022365744](https://github.com/c2melendez/precision-lab-plus/actions/runs/42022365744) **SUCCESS** (backend 2,800 passed; frontend 1,055); acumulativo [42022365789](https://github.com/c2melendez/precision-lab-plus/actions/runs/42022365789) **SUCCESS**, ambos focales PASSED; H1d [42022365878](https://github.com/c2melendez/precision-lab-plus/actions/runs/42022365878) **SUCCESS** (38/38); Runner 42022365762 push-only.
+- A10 queda cerrada bilateralmente como PASS_SCOPED. Siguiente: **AS-A-11** `(a+b+c)^3`. Global certification **OPEN**.
+
 # Actualización de certificación — 2026-11-05 UTC (r405)
 
 ## Algebra229 AS-A-09 — PASS_SCOPED bilateral

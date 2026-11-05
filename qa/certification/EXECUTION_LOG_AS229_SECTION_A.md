@@ -38,6 +38,15 @@
 
 **Alcance:** fila A09 solamente. Lite: 2 focal tests, 366 archivos/2259 passed/8 XFAIL/34 TODO, typecheck y build 4.68 s; Scientific UI 456 passed. Plus: ambos tests focales PASSED, backend 2800 passed/1 skip/10 XFAIL, frontend 1055 passed. Runner Lite 42008399129 y Plus 42008437689 SUCCESS_PUSH_ONLY; no prueban dispatch/persistencia. Siguiente: A10.
 
+## Revalidación bilateral AS-A-10 — 2026-11-05
+
+| Repositorio | SHA técnico | Test | CI | Acumulativo | H1d | Scientific UI |
+|---|---|---|---|---|---|---|
+| Lite | `41d345902105bc93e51d331bd0d239bad946dd6b` | `tests/algebra229AsA10.audit.test.ts` | [42022352305](https://github.com/c2melendez/precision-lab-lite/actions/runs/42022352305) FAILURE (audit 4 moderadas) | [42022352712](https://github.com/c2melendez/precision-lab-lite/actions/runs/42022352712) SUCCESS | [42022352301](https://github.com/c2melendez/precision-lab-lite/actions/runs/42022352301) SUCCESS | [42022352493](https://github.com/c2melendez/precision-lab-lite/actions/runs/42022352493) SUCCESS |
+| Plus | `e4e864881ebaa53e725efbf72f1b9a33aa2f4b7f` | `backend/tests/test_algebra229_as_a10.py` | [42022365744](https://github.com/c2melendez/precision-lab-plus/actions/runs/42022365744) SUCCESS | [42022365789](https://github.com/c2melendez/precision-lab-plus/actions/runs/42022365789) SUCCESS | [42022365878](https://github.com/c2melendez/precision-lab-plus/actions/runs/42022365878) SUCCESS | N/A per contract |
+
+**Alcance:** fila A10 solamente. Lite: 2 focal tests, 366 archivos/2259 passed/8 XFAIL/34 TODO, typecheck y build 7.31 s; Scientific UI 456. Plus: ambos tests focales PASSED, backend 2800 passed/1 skip/10 XFAIL, frontend 1055 passed. Runner Lite 42022352496 y Plus 42022365762 SUCCESS_PUSH_ONLY; no prueban dispatch/persistencia. Siguiente: A11.
+
 | Caso | Lite technical SHA | Lite cumulative | Plus technical SHA | Plus cumulative |
 |------|--------------------|-----------------|--------------------|-----------------|
 | AS-A-01 | `6493c4b2aefe71ef608309dfb60e45e0a027c178` | [39392408916](https://github.com/c2melendez/precision-lab-lite/actions/runs/39392408916) SUCCESS | `b6cc70fc1e2f65c97e199261b73b968b879a32ca` | [39392421243](https://github.com/c2melendez/precision-lab-plus/actions/runs/39392421243) SUCCESS |
