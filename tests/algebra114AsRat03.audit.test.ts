@@ -4,10 +4,21 @@ import { compileNumeric } from "../src/engine/numericFallback";
 import source from "../qa/certification/algebra114_source.md?raw";
 
 describe("Algebra114 AS-RAT-03 two-radical conjugate", () => {
-  it("rationalizes 1/(sqrt(2)+sqrt(3)) to sqrt(3)-sqrt(2)", () => {
-    expect(source).toContain("| AS-RAT-03 | N2 |");
+  it("matches the exact source row and rationalizes to sqrt(3)-sqrt(2) with an independent conjugate oracle", () => {
+    expect(source).toContain("| AS-RAT-03 | N2 | \\(\\frac{1}{\\sqrt{2}+\\sqrt{3}}\\) | \\(\\sqrt{3}-\\sqrt{2}\\) |");
+
     const result = evaluate("1/(sqrt(2)+sqrt(3))");
-    expect(result.replace(/\s+/g, "")).toBe("sqrt(3)-sqrt(2)");
-    expect(compileNumeric(result, "__none__")(0)).toBeCloseTo(1/(Math.sqrt(2)+Math.sqrt(3)), 9);
+    const compact = result.replace(/\s+/g, "");
+    expect(compact).toBe("sqrt(3)-sqrt(2)");
+    expect(compact).not.toContain("1/(sqrt(2)+sqrt(3))");
+
+    const value = compileNumeric(result, "__no_var__")(0);
+    const rootTwo = Math.sqrt(2);
+    const rootThree = Math.sqrt(3);
+    const independentExpected = rootThree - rootTwo;
+    expect(value).toBeGreaterThan(0);
+    expect(value).toBeCloseTo(independentExpected, 12);
+    expect(value * (rootThree + rootTwo)).toBeCloseTo(1, 12);
+    expect((rootThree - rootTwo) * (rootThree + rootTwo)).toBeCloseTo(1, 12);
   });
 });
