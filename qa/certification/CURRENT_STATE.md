@@ -1,3 +1,19 @@
+# Actualización de certificación — 2026-11-05 UTC (r392)
+
+## Algebra229 AS-A-16 — PASS_SCOPED bilateral
+
+- Lite SHA `36b1c73d0673a05e2418cc3c6dc49952a7c729f9`; test `tests/algebra229AsA16.audit.test.ts`, blob `a68df3c295a569f9510efb32797a5cd729c6f804`. Las 2 pruebas focales PASSED: celdas de contrato congelado y oráculo de pares enteros gaussianos independiente. Acumulativo [42038744006](https://github.com/c2melendez/precision-lab-lite/actions/runs/42038744006) SUCCESS, 366 archivos / 2,259 passed; H1d [42038743676](https://github.com/c2melendez/precision-lab-lite/actions/runs/42038743676) SUCCESS (22/22); Scientific UI [42038744245](https://github.com/c2melendez/precision-lab-lite/actions/runs/42038744245) SUCCESS (456/456). CI [42038743893](https://github.com/c2melendez/precision-lab-lite/actions/runs/42038743893) FAILURE únicamente npm audit (4 moderadas). Runner 42038743972 SUCCESS push-only.
+- Plus SHA `3555ce2898b31eda626c95d0c89c59a99f4dba8b`; test `backend/tests/test_algebra229_as_a16.py`, blob `d79aaffb29e31583a5ca877592242c4888f491a8`. Los 2 focales PASSED; backend 2,800 passed / 1 skipped / 10 xfailed, cobertura 88.88%. Acumulativo [42038783860](https://github.com/c2melendez/precision-lab-plus/actions/runs/42038783860) SUCCESS; H1d [42038784134](https://github.com/c2melendez/precision-lab-plus/actions/runs/42038784134) SUCCESS (38/38); CI [42038784081](https://github.com/c2melendez/precision-lab-plus/actions/runs/42038784081) SUCCESS (2,800 backend / 1,055 frontend); Runner 42038784013 SUCCESS push-only.
+- A16 queda **PASS_SCOPED bilateral**. El fallo de auditoría Lite se conserva como bloqueo de seguridad separado.
+
+## Algebra229 AS-A-17 — TEST-FIRST / WAIT
+
+- Lite test `tests/algebra229AsA17.audit.test.ts` reforzado; commit técnico `b37502c5713bddabae6a022e6e1cb788ee72a87d`, blob `39b34eed4107e88a520a154cc2a4d4867d38dc85`. Compara celdas de contrato de la matriz y siete pares enteros mediante coeficientes nativos independientes.
+- Lite cumulative 42039943541, Scientific UI 42039943566, H1d 42039943721, CI 42039944052 (audit failure) y Runner 42039943836.
+- Plus test `backend/tests/test_algebra229_as_a17.py` reforzado; commit técnico `8232f3979cf128c1bd52c6de2bfde4e9296a5d77`, blob `d7f9d67e77b9b5f37a2ddc91dd5231a206c55ad7`. Servicio+HTTP y siete pares enteros con oráculo Python independiente.
+- Plus cumulative 42039991777, H1d 42039991674, CI 42039991675 y Runner 42039991673.
+- A17 no está aprobado hasta concluir y revisar todos los gates. Global OPEN.
+
 # Actualización de certificación — 2026-11-05 UTC (r391)
 
 ## Algebra229 AS-A-15 — PASS_SCOPED bilateral
