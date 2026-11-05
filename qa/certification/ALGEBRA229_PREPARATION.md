@@ -1,6 +1,6 @@
 # Algebra 229 — preparacion de matriz y trazabilidad
 
-Estado: **FIXTURE_PROMOTED**; sección A **AS-A-01..15 PASS_SCOPED bilateral** (casos individuales, tests unit/HTTP y gates por caso); matriz **NOT_EXECUTED** en bloque (no se certifican las 229 filas). Certificacion global **OPEN**.
+Estado: **FIXTURE_PROMOTED**; sección A **AS-A-01..16 PASS_SCOPED bilateral** (casos individuales, tests unit/HTTP y gates por caso); matriz **NOT_EXECUTED** en bloque (no se certifican las 229 filas). Certificacion global **OPEN**.
 
 ## Fuente y fixture
 
@@ -17,8 +17,8 @@ Coincide byte a byte con `Matrices.zip`. El JSONL del handoff v0.3 es historico;
 
 ## Avance seccion A (expandir)
 
-AS-A-01..15 cerrados PASS_SCOPED bilateral con runs cumulative SUCCESS (ver `CURRENT_STATE.md` / `EXECUTION_LOG.md` / `continuity.json`).
+AS-A-01..16 cerrados PASS_SCOPED bilateral con runs cumulative SUCCESS (ver `CURRENT_STATE.md` / `EXECUTION_LOG.md` / `continuity.json`).
 
 ## Siguiente
 
-`ALGEBRA229-AS-A-16-TEST-FIRST` — expandir `(1+i)^4` → `-4` bilateral. Global OPEN.
+`ALGEBRA229-AS-A-17-TEST-FIRST` — expandir `(2x-y)^5` → `32x^5-80x^4y+80x^3y^2-40x^2y^3+10xy^4-y^5` bilateral. Global OPEN.
