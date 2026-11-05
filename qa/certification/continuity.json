@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 384,
+  "revision": 385,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "41d345902105bc93e51d331bd0d239bad946dd6b",
-  "baseline_case": "ALGEBRA229-AS-A-10",
+  "technical_baseline_sha": "0393cfb4a7a690fd35f77a70afba3b900b8a8b7c",
+  "baseline_case": "ALGEBRA229-AS-A-11",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-A-11-TEST-FIRST",
+    "id": "ALGEBRA229-AS-A-12-TEST-FIRST",
     "status": "READY",
-    "previous_id": "ALGEBRA229-AS-A-10-TEST-FIRST",
-    "action": "Test-first bilateral de AS-A-11: expandir (a+b+c)^3 → a^3+3a^2b+3a^2c+3ab^2+6abc+3ac^2+b^3+3b^2c+3bc^2+c^3. Fortalecer tests/algebra229AsA11.audit.test.ts y backend/tests/test_algebra229_as_a11.py con fila fuente congelada exacta y muestras firmadas usando aritmética entera independiente (Math.pow/Python integer arithmetic). Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si la prueba falla."
+    "previous_id": "ALGEBRA229-AS-A-11-TEST-FIRST",
+    "action": "Test-first bilateral de AS-A-12: expandir (x^2-1)^2 → x^4-2x^2+1. Fortalecer tests/algebra229AsA12.audit.test.ts y backend/tests/test_algebra229_as_a12.py con fila fuente congelada exacta y muestras firmadas usando aritmética entera independiente (Math.pow/Python integer arithmetic). Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si la prueba falla."
   },
   "blockers": [
     {
@@ -310,7 +310,8 @@
     "qa/certification/ALGEBRA229_AS_A_07_ACCEPTANCE_R403.md",
     "qa/certification/ALGEBRA229_AS_A_08_ACCEPTANCE_R404.md",
     "qa/certification/ALGEBRA229_AS_A_09_ACCEPTANCE_R405.md",
-    "qa/certification/ALGEBRA229_AS_A_10_ACCEPTANCE_R406.md"
+    "qa/certification/ALGEBRA229_AS_A_10_ACCEPTANCE_R406.md",
+    "qa/certification/ALGEBRA229_AS_A_11_ACCEPTANCE_R407.md"
   ],
   "h2_en_sg_reconciliation_r358": {
     "status": "PARTIAL",
@@ -677,7 +678,7 @@
     "certification_pass": false,
     "recorded_at": "2026-10-31T01:40:23+00:00"
   },
-  "updated_utc": "2026-11-05T11:59:54.993Z",
+  "updated_utc": "2026-11-05T12:21:20.635Z",
   "active_execution_r370": {
     "case": "ALGEBRA114-AS-EXP-09",
     "sha": "13bf8b535a00b40c464057dc663b2d97ea6c44bd",
@@ -855,10 +856,10 @@
     "note": "Plus backend/service+HTTP only; no UI parity claim. RAT-03 and RAT-04 tests still lack independent numeric oracles. Preserve global next_action EDCX-B6-VC-FE-45-CONTRACT-CONFLICT; it is separate from Algebra114. Global OPEN."
   },
   "plus_algebra114_next_action": {
-    "id": "ALGEBRA229-AS-A-11-TEST-FIRST",
+    "id": "ALGEBRA229-AS-A-12-TEST-FIRST",
     "status": "READY",
-    "previous_id": "ALGEBRA229-AS-A-10-TEST-FIRST",
-    "action": "Test-first bilateral de AS-A-11: expandir (a+b+c)^3 → a^3+3a^2b+3a^2c+3ab^2+6abc+3ac^2+b^3+3b^2c+3bc^2+c^3. Fortalecer tests/algebra229AsA11.audit.test.ts y backend/tests/test_algebra229_as_a11.py con fila fuente congelada exacta y muestras firmadas usando aritmética entera independiente (Math.pow/Python integer arithmetic). Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si la prueba falla."
+    "previous_id": "ALGEBRA229-AS-A-11-TEST-FIRST",
+    "action": "Test-first bilateral de AS-A-12: expandir (x^2-1)^2 → x^4-2x^2+1. Fortalecer tests/algebra229AsA12.audit.test.ts y backend/tests/test_algebra229_as_a12.py con fila fuente congelada exacta y muestras firmadas usando aritmética entera independiente (Math.pow/Python integer arithmetic). Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si la prueba falla."
   },
   "algebra114_as_rat09_r400": {
     "status": "PASS_SCOPED",
@@ -943,10 +944,10 @@
     "note": "Lite cumulative, H1d and Scientific UI gates passed. Standard CI dependency audit remains a separate open blocker."
   },
   "plus_algebra229_next_action": {
-    "id": "ALGEBRA229-AS-A-11-TEST-FIRST",
+    "id": "ALGEBRA229-AS-A-12-TEST-FIRST",
     "status": "READY",
-    "previous_id": "ALGEBRA229-AS-A-10-TEST-FIRST",
-    "action": "Test-first bilateral de AS-A-11: expandir (a+b+c)^3 → a^3+3a^2b+3a^2c+3ab^2+6abc+3ac^2+b^3+3b^2c+3bc^2+c^3. Fortalecer tests/algebra229AsA11.audit.test.ts y backend/tests/test_algebra229_as_a11.py con fila fuente congelada exacta y muestras firmadas usando aritmética entera independiente (Math.pow/Python integer arithmetic). Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si la prueba falla."
+    "previous_id": "ALGEBRA229-AS-A-11-TEST-FIRST",
+    "action": "Test-first bilateral de AS-A-12: expandir (x^2-1)^2 → x^4-2x^2+1. Fortalecer tests/algebra229AsA12.audit.test.ts y backend/tests/test_algebra229_as_a12.py con fila fuente congelada exacta y muestras firmadas usando aritmética entera independiente (Math.pow/Python integer arithmetic). Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si la prueba falla."
   },
   "algebra229_as_a07_r403": {
     "status": "PASS_SCOPED_BILATERAL_CASE",
@@ -1150,5 +1151,60 @@
       "runner_status": "SUCCESS_PUSH_ONLY"
     },
     "note": "Lite CI dependency audit remains a separate blocker; PR #62 still Draft pending human review/merge."
+  },
+  "algebra229_as_a11_r407": {
+    "status": "PASS_SCOPED_BILATERAL_CASE",
+    "sha": "0393cfb4a7a690fd35f77a70afba3b900b8a8b7c",
+    "source_sha256": "8cd36ff08343f98f92abd83e2b162d565e0cbe5c59dc73f26b1c018f77d663c7",
+    "source_blob": "d216dc77cb1356ef29cb8c803cbff809450e0456",
+    "test": "tests/algebra229AsA11.audit.test.ts",
+    "test_blob": "7c6f13348d2deb379e62c9edfe401d25c121a7a9",
+    "acceptance": "qa/certification/ALGEBRA229_AS_A_11_ACCEPTANCE_R407.md",
+    "cumulative_run": 42023809086,
+    "cumulative_status": "SUCCESS",
+    "cumulative_skip": false,
+    "cumulative_files": 366,
+    "cumulative_passed": 2259,
+    "cumulative_expected_fail": 8,
+    "cumulative_todo": 34,
+    "focal_tests": 2,
+    "typecheck": "SUCCESS",
+    "build_seconds": 5.17,
+    "h1d_run": 42023809104,
+    "h1d_status": "SUCCESS",
+    "h1d_passed": 22,
+    "scientific_ui_run": 42023809065,
+    "scientific_ui_status": "SUCCESS",
+    "scientific_ui_passed": 456,
+    "ci_run": 42023809135,
+    "ci_status": "FAILURE",
+    "ci_reason": "QA dependency audit hard gate; four moderate advisories; downstream typecheck/unit/build skipped. Threshold unchanged.",
+    "runner_run": 42023809050,
+    "runner_status": "SUCCESS_PUSH_ONLY",
+    "scope": "AS-A-11 only; bilateral test-level acceptance",
+    "oracle": "Exact frozen source row and eight signed integer triples; independent integer arithmetic (a+b+c)^3.",
+    "plus": {
+      "sha": "8c7362c40afb6c3992ca956033870fd577034d8f",
+      "test": "backend/tests/test_algebra229_as_a11.py",
+      "test_blob": "c7cc8bcb0736c1f0ba1774f3d6039debf48a9aae",
+      "ci_run": 42023819574,
+      "ci_status": "SUCCESS",
+      "ci_backend_summary": "2800 passed, 1 skipped, 10 xfailed",
+      "ci_frontend_summary": "150 files, 1055 passed",
+      "cumulative_run": 42023819742,
+      "cumulative_status": "SUCCESS",
+      "cumulative_skip": false,
+      "cumulative_focal_tests": [
+        "test_as_a11_source_row_is_exact PASSED",
+        "test_as_a11_expand_service_http_independent_arithmetic_oracle PASSED"
+      ],
+      "cumulative_backend_summary": "2800 passed, 1 skipped, 10 xfailed",
+      "h1d_run": 42023819511,
+      "h1d_status": "SUCCESS",
+      "h1d_passed": 38,
+      "runner_run": 42023819548,
+      "runner_status": "SUCCESS_PUSH_ONLY"
+    },
+    "note": "Lite CI dependency audit remains a separate blocker; PR #62 still Draft pending human review/merge. Evidence was executed (skip=false), not reused."
   }
 }
