@@ -1,3 +1,15 @@
+# Corte vigente de certificación — 2026-11-05 UTC (r393)
+
+## Actualización operativa — 2026-11-05 (r393)
+
+- Lite — Algebra114 AS-RAT-02: **PASS_SCOPED** en SHA `32888aacbfbc56c2e633c245377c012b381e8045`. Fila exacta, forma racionalizada `sqrt(2)-1`, positividad y verificación independiente de conjugados. Acumulativo [41990320058](https://github.com/c2melendez/precision-lab-lite/actions/runs/41990320058) SUCCESS (366 archivos, 2,259 passed; test focal explícito); H1d [41990320041](https://github.com/c2melendez/precision-lab-lite/actions/runs/41990320041) SUCCESS (22/22); Runner [41990319989](https://github.com/c2melendez/precision-lab-lite/actions/runs/41990319989) SUCCESS push-only.
+- CI [41990320030](https://github.com/c2melendez/precision-lab-lite/actions/runs/41990320030) FAILURE en QA dependency audit hard gate (4 moderadas); no se modificó el umbral.
+- Scientific UI [41990320118](https://github.com/c2melendez/precision-lab-lite/actions/runs/41990320118) IN_PROGRESS al corte; complementario.
+- Aceptación: `ALGEBRA114_AS_RAT_02_ACCEPTANCE_R393.md`. AS-RAT-01 y AS-RAT-02 quedan aceptadas en Lite. Plus sigue ejecutando los oráculos Fraction de PF-01..08. Global certification OPEN.
+- Siguiente acción matemática Lite: **AS-RAT-03**.
+
+
+
 # Corte vigente de certificación — 2026-11-05 UTC (r392)
 
 ## Actualización operativa — 2026-11-05 (r392)
