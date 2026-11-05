@@ -1,3 +1,14 @@
+# Actualización de certificación — 2026-11-05 UTC (r390)
+
+## Algebra229 AS-A-15 — TEST-FIRST IMPLEMENTED / GATES IN PROGRESS
+
+- Lite SHA `ea3d3901b97d3720e644c288cb66cffbceefdc24`; test `tests/algebra229AsA15.audit.test.ts`, blob `73fbfefffdb2aad625df2676806fcd5aaaf8d8f0`. Fila fuente exacta con nota `Exponentes negativos tras expandir.`; igualdad simbólica y siete muestras no nulas comparadas con aritmética JavaScript independiente.
+- Lite cumulative [42035481349](https://github.com/c2melendez/precision-lab-lite/actions/runs/42035481349) **SUCCESS**, 366 archivos / 2,259 passed; AS-A-15 focal 2/2. H1d [42035481377](https://github.com/c2melendez/precision-lab-lite/actions/runs/42035481377) **SUCCESS** (22/22). Scientific UI [42035481394](https://github.com/c2melendez/precision-lab-lite/actions/runs/42035481394) **IN_PROGRESS**. CI [42035481443](https://github.com/c2melendez/precision-lab-lite/actions/runs/42035481443) **FAILURE** solo npm audit (4 moderadas). Runner 42035481516 push-only.
+- Plus SHA `1f462162d74effb8f1a9a1c45271f99a6b3887eb`; test `backend/tests/test_algebra229_as_a15.py`, blob `f57231bd0e9625bcc7eeef2068d8e9260cb3298b`. Fila completa, servicio+HTTP, igualdad simbólica y siete fracciones no nulas con aritmética Python `Fraction` independiente.
+- Plus cumulative [42035518039](https://github.com/c2melendez/precision-lab-plus/actions/runs/42035518039): backend IN_PROGRESS, frontend SUCCESS. H1d [42035518483](https://github.com/c2melendez/precision-lab-plus/actions/runs/42035518483) **SUCCESS** (38/38). CI [42035518143](https://github.com/c2melendez/precision-lab-plus/actions/runs/42035518143): backend IN_PROGRESS, frontend SUCCESS. Runner 42035518500 push-only.
+- Candidato previo Lite SHA `b0af74235f019474ec144b8a69fc8553a86dfa6d`, run 42035201681, falló únicamente porque el expected row omitía la nota final `Exponentes negativos tras expandir.`; el test numérico sí pasó. El SHA vigente incluye la nota exacta.
+- A15 permanece WAIT hasta concluir Scientific UI Lite y cumulative/CI Plus. A14 es el último caso bilateral PASS_SCOPED. Global OPEN.
+
 # Actualización de certificación — 2026-11-05 UTC (r389)
 
 ## Algebra229 AS-A-14 — PASS_SCOPED bilateral

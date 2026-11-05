@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "revision": 389,
+  "revision": 390,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "24653cb52d0822bf44104ae1133a78ff0872616f",
+  "technical_baseline_sha": "ea3d3901b97d3720e644c288cb66cffbceefdc24",
   "baseline_case": "ALGEBRA229-AS-A-14",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
@@ -40,9 +40,9 @@
   },
   "next_action": {
     "id": "ALGEBRA229-AS-A-15-TEST-FIRST",
-    "status": "READY",
+    "status": "WAIT",
     "previous_id": "ALGEBRA229-AS-A-14-TEST-FIRST",
-    "action": "Test-first bilateral de AS-A-15: expandir (x+1/x)^3 → x^3+3x+3/x+1/x^3, con x≠0. Comparar la fila fuente exacta, igualdad simbólica, y siete valores racionales no nulos mediante aritmética independiente (JavaScript nativo en Lite; fractions/math en Plus). Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si la prueba falla."
+    "action": "Esperar Scientific UI 42035481394 (Lite) y cumulative 42035518039 / CI 42035518143 (Plus; backend en curso). Lite cumulative 42035481349 SUCCESS (2 tests focales/2259), H1d 42035481377 SUCCESS (22); Plus H1d 42035518483 SUCCESS (38). Leer logs, confirmar AS-A-15 en Plus y cerrar bilateralmente; después iniciar AS-A-16."
   },
   "blockers": [
     {
@@ -678,7 +678,7 @@
     "certification_pass": false,
     "recorded_at": "2026-10-31T01:40:23+00:00"
   },
-  "updated_utc": "2026-11-05T13:21:09.311Z",
+  "updated_utc": "2026-11-05T13:27:52.631Z",
   "active_execution_r370": {
     "case": "ALGEBRA114-AS-EXP-09",
     "sha": "13bf8b535a00b40c464057dc663b2d97ea6c44bd",
@@ -945,9 +945,9 @@
   },
   "plus_algebra229_next_action": {
     "id": "ALGEBRA229-AS-A-15-TEST-FIRST",
-    "status": "READY",
+    "status": "WAIT",
     "previous_id": "ALGEBRA229-AS-A-14-TEST-FIRST",
-    "action": "Test-first bilateral de AS-A-15: expandir (x+1/x)^3 → x^3+3x+3/x+1/x^3, con x≠0. Comparar la fila fuente exacta, igualdad simbólica, y siete valores racionales no nulos mediante aritmética independiente (JavaScript nativo en Lite; fractions/math en Plus). Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si la prueba falla."
+    "action": "Esperar Scientific UI 42035481394 (Lite) y cumulative 42035518039 / CI 42035518143 (Plus; backend en curso). Lite cumulative 42035481349 SUCCESS (2 tests focales/2259), H1d 42035481377 SUCCESS (22); Plus H1d 42035518483 SUCCESS (38). Leer logs, confirmar AS-A-15 en Plus y cerrar bilateralmente; después iniciar AS-A-16."
   },
   "algebra229_as_a07_r403": {
     "status": "PASS_SCOPED_BILATERAL_CASE",
@@ -1405,5 +1405,41 @@
     "plus_runner_status": "SUCCESS_PUSH_ONLY",
     "scope": "AS-A-14 only",
     "oracle": "Exact full frozen source row; exact symbolic equality; independent Math.sqrt/Python math.sqrt numeric oracle."
+  },
+  "algebra229_as_a15_pending_r390": {
+    "status": "IN_PROGRESS_WAIT",
+    "lite_sha": "ea3d3901b97d3720e644c288cb66cffbceefdc24",
+    "lite_test": "tests/algebra229AsA15.audit.test.ts",
+    "lite_test_blob": "73fbfefffdb2aad625df2676806fcd5aaaf8d8f0",
+    "lite_cumulative_run": 42035481349,
+    "lite_cumulative_status": "SUCCESS",
+    "lite_cumulative_focal_tests": 2,
+    "lite_cumulative_passed": 2259,
+    "lite_h1d_run": 42035481377,
+    "lite_h1d_status": "SUCCESS",
+    "lite_h1d_passed": 22,
+    "lite_scientific_run": 42035481394,
+    "lite_scientific_status": "IN_PROGRESS",
+    "lite_ci_run": 42035481443,
+    "lite_ci_status": "FAILURE_NPM_AUDIT_4_MODERATE",
+    "lite_runner_run": 42035481516,
+    "lite_runner_status": "SUCCESS_PUSH_ONLY",
+    "plus_sha": "1f462162d74effb8f1a9a1c45271f99a6b3887eb",
+    "plus_test": "backend/tests/test_algebra229_as_a15.py",
+    "plus_test_blob": "f57231bd0e9625bcc7eeef2068d8e9260cb3298b",
+    "plus_cumulative_run": 42035518039,
+    "plus_cumulative_status": "IN_PROGRESS_BACKEND_FRONTEND_SUCCESS",
+    "plus_h1d_run": 42035518483,
+    "plus_h1d_status": "SUCCESS",
+    "plus_h1d_passed": 38,
+    "plus_ci_run": 42035518143,
+    "plus_ci_status": "IN_PROGRESS_BACKEND_FRONTEND_SUCCESS",
+    "plus_runner_run": 42035518500,
+    "plus_runner_status": "SUCCESS_PUSH_ONLY",
+    "superseded_candidate": {
+      "sha": "b0af74235f019474ec144b8a69fc8553a86dfa6d",
+      "run": 42035201681,
+      "reason": "expected row omitted the final note 'Exponentes negativos tras expandir.'; numeric oracle passed."
+    }
   }
 }
