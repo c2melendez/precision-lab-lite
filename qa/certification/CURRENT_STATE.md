@@ -1,3 +1,15 @@
+# Corte vigente de certificación — 2026-11-05 UTC (r395)
+
+## Actualización operativa — 2026-11-05 (r395)
+
+- Lite — Algebra114 AS-RAT-04: **PASS_SCOPED** en SHA `5b55169fa9a695a03075264f86da8384e84246f4`. Fila exacta, salida `4^(1/3)/2`, oráculo independiente Math.cbrt, positividad y cubo 1/2. Acumulativo [41991375614](https://github.com/c2melendez/precision-lab-lite/actions/runs/41991375614) SUCCESS (366 archivos, 2,259 passed; test focal explícito); H1d [41991375334](https://github.com/c2melendez/precision-lab-lite/actions/runs/41991375334) SUCCESS (22/22); Runner [41991375332](https://github.com/c2melendez/precision-lab-lite/actions/runs/41991375332) SUCCESS push-only.
+- CI [41991375289](https://github.com/c2melendez/precision-lab-lite/actions/runs/41991375289) FAILURE en QA dependency audit hard gate (4 moderadas); no se modificó el umbral.
+- Scientific UI [41991375311](https://github.com/c2melendez/precision-lab-lite/actions/runs/41991375311) IN_PROGRESS al corte; complementario.
+- Aceptación: `ALGEBRA114_AS_RAT_04_ACCEPTANCE_R395.md`. AS-RAT-01..04 aceptadas en Lite; Plus está validando AS-RAT-01/02 con oráculos independientes.
+- Siguiente acción matemática Lite: **AS-RAT-05**.
+
+
+
 # Corte vigente de certificación — 2026-11-05 UTC (r394)
 
 ## Actualización operativa — 2026-11-05 (r394)
