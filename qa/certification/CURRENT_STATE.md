@@ -1,3 +1,15 @@
+# Corte vigente de certificación — 2026-11-05 UTC (r389)
+
+## Actualización operativa — 2026-11-05 (r389)
+
+- Lite — Algebra114 AS-PF-06: **PASS_SCOPED** en SHA `5d64673455743a3bc50a4ce7975100c280cc644d`. Fila exacta, descomposición en dos denominadores cuadráticos y siete sustituciones contra doble oráculo JavaScript independiente. Acumulativo [41988271867](https://github.com/c2melendez/precision-lab-lite/actions/runs/41988271867) SUCCESS (366 archivos, 2,259 passed; test focal explícito); H1d [41988271747](https://github.com/c2melendez/precision-lab-lite/actions/runs/41988271747) SUCCESS (22/22); Runner [41988271724](https://github.com/c2melendez/precision-lab-lite/actions/runs/41988271724) SUCCESS push-only.
+- CI [41988271717](https://github.com/c2melendez/precision-lab-lite/actions/runs/41988271717) FAILURE en QA dependency audit hard gate (4 moderadas); no se modificó el umbral.
+- Scientific UI [41988271723](https://github.com/c2melendez/precision-lab-lite/actions/runs/41988271723) IN_PROGRESS al corte; complementario.
+- Aceptación: `ALGEBRA114_AS_PF_06_ACCEPTANCE_R389.md`. Plus cuenta con tests backend PF-01..08; los oráculos PF-03..05 se reforzaron y su nuevo gate sigue en curso. No se afirma paridad todavía. Global certification OPEN.
+- Siguiente acción matemática Lite: **AS-PF-07**.
+
+
+
 # Corte vigente de certificación — 2026-11-05 UTC (r388)
 
 ## Actualización operativa — 2026-11-05 (r388)
