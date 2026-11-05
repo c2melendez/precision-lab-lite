@@ -1,3 +1,19 @@
+# Actualización de certificación — 2026-11-05 UTC (r403)
+
+## Algebra229 AS-A-07 — PASS_SCOPED bilateral
+
+- Lite SHA `02e1fff40eb05e58946e2ec9fdc2ba1618821bd2`; test `tests/algebra229AsA07.audit.test.ts`, blob `4af7e3b65f7f16b1b6f0f4c37648bd935c10c123`; fila exacta y siete muestras firmadas contra `Math.pow(2*x-3,4)`.
+- Lite acumulativo [42004987491](https://github.com/c2melendez/precision-lab-lite/actions/runs/42004987491) **SUCCESS** (2 tests focales, 366 archivos, 2,259 passed); H1d [42004987501](https://github.com/c2melendez/precision-lab-lite/actions/runs/42004987501) **SUCCESS** (22/22); Scientific UI [42004987667](https://github.com/c2melendez/precision-lab-lite/actions/runs/42004987667) **SUCCESS** (456, desktop/tablet/mobile). CI [42004987602](https://github.com/c2melendez/precision-lab-lite/actions/runs/42004987602) permanece **FAILURE** solo en el hard gate de auditoría por 4 moderadas; typecheck/unit/build omitidos, umbral intacto. Runner 42004987409 push-only.
+- Plus SHA `c161cc4a9fb71274b89b3dfd6db83f5225f40bfb`; test `backend/tests/test_algebra229_as_a07.py`, blob `8b0327cccaa396df0840848a915871e811f5ecfb`; fila exacta, servicio+HTTP y siete muestras con aritmética Python independiente.
+- Plus CI [42005026736](https://github.com/c2melendez/precision-lab-plus/actions/runs/42005026736) y acumulativo [42005026806](https://github.com/c2melendez/precision-lab-plus/actions/runs/42005026806) **SUCCESS**; logs acumulativos confirman ambos tests focales; backend 2,800 passed, 1 skipped, 10 xfailed. H1d [42005026732](https://github.com/c2melendez/precision-lab-plus/actions/runs/42005026732) **SUCCESS**, 38/38; Runner 42005026827 push-only.
+- A07 queda cerrada bilateralmente como PASS_SCOPED. Siguiente fila: **AS-A-08**. Global certification OPEN.
+
+## Dependencias de Lite — mitigación aislada, pendiente de PR
+
+- El lockfile committed en la rama `security/lite-workbox-glob-remediation-20261105`, SHA `90bde019dc8bf5e6bd4c4eaa673694c21ea28388`, coincide byte a byte con el artefacto de lockfile del run validado (blob `abb3a51ad826542460777c6a6533f84e25b3b8a9`).
+- Run aislado [42002749017](https://github.com/c2melendez/precision-lab-lite/actions/runs/42002749017): audit cero vulnerabilidades, npm ci, typecheck, 366 archivos/2,259 tests passed y build SUCCESS.
+- PR draft [#62](https://github.com/c2melendez/precision-lab-lite/pull/62), base `qa/syntax-audit-in625-a1`; no merge ni despliegue. Aún no se observan checks `pull_request` para head SHA 90bde...; no marcar la remediación canónica como resuelta hasta validar el SHA del PR.
+
 # Actualización de certificación — 2026-11-05 UTC (r402)
 
 ## Algebra229 AS-A-06 — PASS_SCOPED bilateral

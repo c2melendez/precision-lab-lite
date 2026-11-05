@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 380,
+  "revision": 381,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "790c49034f88ef0b20ad76c0e49c41fbb3cbd763",
-  "baseline_case": "ALGEBRA229-AS-A-06",
+  "technical_baseline_sha": "02e1fff40eb05e58946e2ec9fdc2ba1618821bd2",
+  "baseline_case": "ALGEBRA229-AS-A-07",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-A-07-TEST-FIRST",
+    "id": "ALGEBRA229-AS-A-08-TEST-FIRST",
     "status": "READY",
-    "previous_id": "ALGEBRA229-AS-A-06-TEST-FIRST",
-    "action": "Test-first bilateral de AS-A-07: expand (2x-3)^4. Actualizar tests/algebra229AsA07.audit.test.ts y backend/tests/test_algebra229_as_a07.py para comparar la fila completa congelada y el polinomio exacto; evaluar siete puntos firmados con oráculo independiente JavaScript Math.pow/Python int arithmetic. Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si falla la prueba."
+    "previous_id": "ALGEBRA229-AS-A-07-TEST-FIRST",
+    "action": "Test-first bilateral de AS-A-08: expandir (x-1)^5 → x^5-5x^4+10x^3-10x^2+5x-1. Fortalecer tests/algebra229AsA08.audit.test.ts y backend/tests/test_algebra229_as_a08.py con fila fuente congelada exacta y siete muestras firmadas usando oráculos independientes Math.pow/Python integer arithmetic. Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Cambiar producto solo si la prueba falla."
   },
   "blockers": [
     {
@@ -228,9 +228,9 @@
     },
     {
       "id": "LITE-NPM-AUDIT-MODERATES-20261105",
-      "status": "BLOCKED",
+      "status": "BLOCKED_PR_VALIDATION_PENDING",
       "kind": "dependency_security_gate",
-      "detail": "CI hard gate 42001452519 on SHA 790c49034f88ef0b20ad76c0e49c41fbb3cbd763: 4 moderate advisories. vite-plugin-pwa 1.3.0 → workbox-build 7.4.1 → glob 11.1.0 → minimatch 10.2.6. npm audit suggested vite-plugin-pwa 1.1.0 downgrade (major); compatibility not accepted. Cumulative/H1d/Scientific gates passed; standard CI failure remains separate."
+      "detail": "CI hard gate 42001452519 on SHA 790c49034f88ef0b20ad76c0e49c41fbb3cbd763: 4 moderate advisories. vite-plugin-pwa 1.3.0 → workbox-build 7.4.1 → glob 11.1.0 → minimatch 10.2.6. npm audit suggested vite-plugin-pwa 1.1.0 downgrade (major); compatibility not accepted. Cumulative/H1d/Scientific gates passed; standard CI failure remains separate. Mitigation candidate branch security/lite-workbox-glob-remediation-20261105, PR #62 Draft against canonical branch; tested lockfile commit 90bde019dc8bf5e6bd4c4eaa673694c21ea28388 byte-matches artifact blob abb3a51ad826542460777c6a6533f84e25b3b8a9. Isolated validation run 42002749017: audit zero, npm ci, typecheck, 366/2259 tests, build SUCCESS. No normal pull_request checks observed yet; do not resolve blocker until those checks execute on the committed PR SHA."
     }
   ],
   "h2_en_sg_evidence_audit_r326": {
@@ -306,7 +306,8 @@
     "qa/certification/ALGEBRA114_AS_RAT_09_ACCEPTANCE_R400.md",
     "qa/certification/ALGEBRA114_AS_RAT_10_ACCEPTANCE_R401.md",
     "qa/certification/ALGEBRA229_AS_A_06_ACCEPTANCE_R402.md",
-    "qa/certification/MANUAL_CAPABILITY_GAPS.md"
+    "qa/certification/MANUAL_CAPABILITY_GAPS.md",
+    "qa/certification/ALGEBRA229_AS_A_07_ACCEPTANCE_R403.md"
   ],
   "h2_en_sg_reconciliation_r358": {
     "status": "PARTIAL",
@@ -673,7 +674,7 @@
     "certification_pass": false,
     "recorded_at": "2026-10-31T01:40:23+00:00"
   },
-  "updated_utc": "2026-11-05T09:42:07.694Z",
+  "updated_utc": "2026-11-05T09:54:56.598Z",
   "active_execution_r370": {
     "case": "ALGEBRA114-AS-EXP-09",
     "sha": "13bf8b535a00b40c464057dc663b2d97ea6c44bd",
@@ -938,9 +939,57 @@
     "note": "Lite cumulative, H1d and Scientific UI gates passed. Standard CI dependency audit remains a separate open blocker."
   },
   "plus_algebra229_next_action": {
-    "id": "ALGEBRA229-AS-A-07-TEST-FIRST",
+    "id": "ALGEBRA229-AS-A-08-TEST-FIRST",
     "status": "READY",
-    "previous_id": "ALGEBRA229-AS-A-06-TEST-FIRST",
-    "action": "Test-first bilateral de AS-A-07: expand (2x-3)^4. Actualizar tests/algebra229AsA07.audit.test.ts y backend/tests/test_algebra229_as_a07.py para comparar la fila completa congelada y el polinomio exacto; evaluar siete puntos firmados con oráculo independiente JavaScript Math.pow/Python int arithmetic. Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si falla la prueba."
+    "previous_id": "ALGEBRA229-AS-A-07-TEST-FIRST",
+    "action": "Test-first bilateral de AS-A-08: expandir (x-1)^5 → x^5-5x^4+10x^3-10x^2+5x-1. Fortalecer tests/algebra229AsA08.audit.test.ts y backend/tests/test_algebra229_as_a08.py con fila fuente congelada exacta y siete muestras firmadas usando oráculos independientes Math.pow/Python integer arithmetic. Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Cambiar producto solo si la prueba falla."
+  },
+  "algebra229_as_a07_r403": {
+    "status": "PASS_SCOPED_BILATERAL_CASE",
+    "sha": "02e1fff40eb05e58946e2ec9fdc2ba1618821bd2",
+    "source_sha256": "8cd36ff08343f98f92abd83e2b162d565e0cbe5c59dc73f26b1c018f77d663c7",
+    "test": "tests/algebra229AsA07.audit.test.ts",
+    "test_blob": "4af7e3b65f7f16b1b6f0f4c37648bd935c10c123",
+    "acceptance": "qa/certification/ALGEBRA229_AS_A_07_ACCEPTANCE_R403.md",
+    "cumulative_run": 42004987491,
+    "cumulative_status": "SUCCESS",
+    "cumulative_files": 366,
+    "cumulative_passed": 2259,
+    "cumulative_expected_fail": 8,
+    "cumulative_todo": 34,
+    "focal_tests": 2,
+    "h1d_run": 42004987501,
+    "h1d_status": "SUCCESS",
+    "h1d_passed": 22,
+    "scientific_ui_run": 42004987667,
+    "scientific_ui_status": "SUCCESS",
+    "scientific_ui_passed": 456,
+    "ci_run": 42004987602,
+    "ci_status": "FAILURE",
+    "ci_reason": "QA dependency audit hard gate; 4 moderate advisories. Typecheck, unit/parity and build skipped in standard CI; threshold unchanged.",
+    "runner_run": 42004987409,
+    "runner_status": "SUCCESS_PUSH_ONLY",
+    "scope": "Algebra229 AS-A-07 only; test-level acceptance bilateral",
+    "oracle": "Exact frozen source row; seven signed x values; independent Math.pow(2*x-3,4).",
+    "plus": {
+      "sha": "c161cc4a9fb71274b89b3dfd6db83f5225f40bfb",
+      "test": "backend/tests/test_algebra229_as_a07.py",
+      "test_blob": "8b0327cccaa396df0840848a915871e811f5ecfb",
+      "ci_run": 42005026736,
+      "ci_status": "SUCCESS",
+      "cumulative_run": 42005026806,
+      "cumulative_status": "SUCCESS",
+      "cumulative_focal_tests": [
+        "test_as_a07_source_row_is_exact PASSED",
+        "test_as_a07_expand_service_http_independent_arithmetic_oracle PASSED"
+      ],
+      "cumulative_backend_summary": "2800 passed, 1 skipped, 10 xfailed",
+      "h1d_run": 42005026732,
+      "h1d_status": "SUCCESS",
+      "h1d_passed": 38,
+      "runner_run": 42005026827,
+      "runner_status": "SUCCESS_PUSH_ONLY"
+    },
+    "note": "Lite standard CI dependency audit remains a separate open blocker; do not infer it passed from cumulative/H1d/Scientific gates. Security PR #62 is a draft and pending its normal pull_request checks."
   }
 }
