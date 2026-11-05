@@ -827,3 +827,12 @@ Siguiente: continuar con AS-PF-03 en Lite; no extrapolar la aprobación a Plus.
 - H1d 41985243959 SUCCESS (22/22); Scientific UI 41985243868 SUCCESS (456 passed); Runner 41985243862 SUCCESS push-only.
 - CI 41985243810 FAILURE solo en QA dependency audit hard gate (8 moderadas); no se cambió el umbral.
 - PASS_SCOPED Lite-only. Plus no ejecutó AS-PF-03; no se afirma paridad. Global OPEN. Siguiente Lite: AS-PF-04.
+
+
+## 2026-11-05 UTC — r387: Algebra114 AS-PF-04 PASS_SCOPED en Lite
+
+- SHA técnico `62b9afb1869c2b357d9b9bf01ae8a4f80474f848`; test `tests/algebra114AsPf04.audit.test.ts`, blob `bd9680dc3e7b9cbe6a991f1bc1aaf01436c384b8`; fixture original blob `b30ca7fcec641334ce8128ca25bec542a9d04e79`.
+- Acumulativo 41987091228 SUCCESS: 366 archivos, 2,259 passed, 8 expected fail, 34 TODO; test focal explícito; typecheck, regresiones y build SUCCESS.
+- H1d 41987091032 SUCCESS (22/22); Runner 41987091131 SUCCESS push-only. Scientific UI 41987091086 seguía IN_PROGRESS y se trata como complementario.
+- CI 41987091076 FAILURE en QA dependency audit hard gate (4 moderadas); no se modificó el umbral.
+- PASS_SCOPED Lite-only. Plus no ejecutó AS-PF-04; no se afirma paridad. Global OPEN. Siguiente Lite: AS-PF-05.
