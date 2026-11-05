@@ -4,14 +4,23 @@ import { compileNumeric } from "../src/engine/numericFallback";
 import source from "../qa/certification/algebra114_source.md?raw";
 
 describe("Algebra114 AS-PF-01 partial fractions, engine scope", () => {
-  it("decomposes (3x+5)/((x+1)(x+2)) into distinct simple poles", () => {
-    expect(source).toContain("| AS-PF-01 | N2 |");
+  it("matches the exact source row, returns two distinct simple poles, and uses an independent oracle", () => {
+    expect(source).toContain("| AS-PF-01 | N2 | \\(\\frac{3x+5}{(x+1)(x+2)}\\) | \\(\\frac{2}{x+1}+\\frac{1}{x+2}\\) |");
+
     const result = evaluate("partfrac((3*x+5)/((x+1)*(x+2)),x)");
     expect(result).not.toContain("partfrac(");
     expect(result).not.toContain("(3*x+5)/((x+1)*(x+2))");
-    for (const x of [-4, -3, 0, 1, 3]) {
-      const value = compileNumeric(evaluate(result.replace(/x/g, "(" + x + ")")), "__no_var__")(0);
-      expect(value).toBeCloseTo(2/(x+1)+1/(x+2), 9);
+
+    const compact = result.replace(/\s+/g, "");
+    expect(compact.match(/\//g)?.length ?? 0).toBeGreaterThanOrEqual(2);
+    expect(compact).toMatch(/(?:x\+1|1\+x)/);
+    expect(compact).toMatch(/(?:x\+2|2\+x)/);
+
+    for (const x of [-4, -3, -0.5, 0, 0.5, 1, 2.5, 3, 5]) {
+      const substituted = result.replace(/\bx\b/g, "(" + x + ")");
+      const actual = compileNumeric(evaluate(substituted), "__no_var__")(0);
+      const expected = 2 / (x + 1) + 1 / (x + 2);
+      expect(actual).toBeCloseTo(expected, 9);
     }
   });
 });
