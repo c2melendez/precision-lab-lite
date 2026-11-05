@@ -1,3 +1,12 @@
+# Actualización de certificación — 2026-11-05 UTC (r393)
+
+## Algebra229 AS-A-17 — Lite gates matemáticos PASS; Plus en corrección/re-ejecución
+
+- Lite SHA `b37502c5713bddabae6a022e6e1cb788ee72a87d`; test `tests/algebra229AsA17.audit.test.ts`, blob `39b34eed4107e88a520a154cc2a4d4867d38dc85`. Los 2 focales PASSED; acumulativo [42039943541](https://github.com/c2melendez/precision-lab-lite/actions/runs/42039943541) SUCCESS (2,259 passed); H1d [42039943721](https://github.com/c2melendez/precision-lab-lite/actions/runs/42039943721) SUCCESS (22/22); Scientific UI [42039943566](https://github.com/c2melendez/precision-lab-lite/actions/runs/42039943566) SUCCESS (456/456). CI [42039944052](https://github.com/c2melendez/precision-lab-lite/actions/runs/42039944052) FAILURE solo `QA dependency audit (hard gate)`, cuatro moderadas. Runner 42039943836 SUCCESS push-only.
+- Plus SHA anterior `8232f3979cf128c1bd52c6de2bfde4e9296a5d77`: CI [42039991675](https://github.com/c2melendez/precision-lab-plus/actions/runs/42039991675) falló únicamente en la nueva aserción `"**5" not in result_text`. El endpoint sí devolvió el polinomio expandido correcto; la aserción confundía potencias válidas (x^5,y^5) con el quinto poder sin expandir del binomio.
+- Corrección de harness publicada en Plus SHA `6b1bf9b9f731d6f6d36c16f33f09d1a9f2eb3238`: ahora verifica que la salida no sea la potencia original del binomio y que esté expandida. Nuevas corridas Plus: cumulative 42040844511, H1d 42040844847, CI 42040844459; Runner 42040844455. En progreso al registrar este estado.
+- A17 queda **WAIT**, no bilateral PASS todavía. No hubo cambio de producto. Bloqueo audit Lite permanece. Global OPEN.
+
 # Actualización de certificación — 2026-11-05 UTC (r392)
 
 ## Algebra229 AS-A-16 — PASS_SCOPED bilateral
