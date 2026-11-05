@@ -1,3 +1,14 @@
+# Corte vigente de certificación — 2026-11-05 UTC (r385)
+
+## Actualización operativa — 2026-11-05 (r385)
+
+- Lite — Algebra114 AS-PF-02: **PASS_SCOPED** en SHA `da10b65e69add69795e64a9389625a6f36aa7dcb`. Se verifica la fila original con polo simple y polo repetido, tres términos de fracciones parciales y ocho sustituciones enteras con oráculo JavaScript independiente. Acumulativo [41984780552](https://github.com/c2melendez/precision-lab-lite/actions/runs/41984780552) SUCCESS (2,259 passed; test focal explícito); H1d [41984780532](https://github.com/c2melendez/precision-lab-lite/actions/runs/41984780532) SUCCESS (22/22); Runner [41984780510](https://github.com/c2melendez/precision-lab-lite/actions/runs/41984780510) SUCCESS push-only.
+- CI [41984780602](https://github.com/c2melendez/precision-lab-lite/actions/runs/41984780602) FAILURE en QA dependency audit hard gate (8 moderadas); no se cambió el umbral.
+- Aceptación: `ALGEBRA114_AS_PF_02_ACCEPTANCE_R385.md`. Plus no ejecutó la fila; no se afirma paridad. Plus conserva VC-FE-45 BLOCKED frente a EV-I-12. Global certification OPEN.
+- Siguiente acción matemática Lite: **AS-PF-03** test-first, reforzar fixture exacta, salida de polo simple más denominador cuadrático irreducible y sustituciones independientes.
+
+
+
 # Corte vigente de certificación — 2026-11-05 UTC (r384)
 
 ## Actualización operativa — 2026-11-05 (r381–r384)
