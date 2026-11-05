@@ -990,3 +990,12 @@ Siguiente: continuar con AS-PF-03 en Lite; no extrapolar la aprobación a Plus.
 - Acumulativo [41999027290](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999027290) SUCCESS (366 archivos, 2,259 passed, 8 expected fail, 34 TODO; test focal explícito). H1d [41999027294](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999027294) SUCCESS (22/22). Runner [41999027296](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999027296) SUCCESS push-only; dispatch/persist no certificados.
 - CI [41999027317](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999027317) FAILURE en QA dependency audit (4 moderadas); pasos posteriores omitidos y umbral intacto. Scientific UI [41999027309](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999027309) IN_PROGRESS al corte, complementario.
 - Siguiente Lite AS-RAT-10. Plus RAT-04 fue reconciliada en r390 y Plus RAT-07 se encuentra en ejecución sobre el SHA corregido `da924df6cdb9a827c2b0ff061db9f1e0e8111167`. Global certification OPEN.
+
+
+## 2026-11-05 UTC — r401: Lite Algebra114 AS-RAT-10 PASS_SCOPED
+
+- SHA técnico `6a8d1b7d586b4ad4e939fc9601be4498d7bd8aa9`; test `tests/algebra114AsRat10.audit.test.ts`, blob `34f349104607d808d5aeba165b51965107bcdbaf`; aceptación `ALGEBRA114_AS_RAT_10_ACCEPTANCE_R401.md`.
+- La fila exacta AS-RAT-10, salida `3-sqrt(6)`, oráculos Math.sqrt para expresión original y racionalizada, positividad e identidad conjugada fueron verificados. Log acumulativo demuestra ejecución del test focal.
+- Acumulativo [41999844182](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999844182) SUCCESS (366 archivos, 2,259 passed, 8 expected fail, 34 TODO; typecheck/unit/build SUCCESS). H1d [41999844363](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999844363) SUCCESS. Runner [41999844233](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999844233) SUCCESS push-only; dispatch/persist omitidos.
+- CI [41999844221](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999844221) FAILURE solo QA dependency audit (4 moderadas), sin cambiar umbral. Scientific UI [41999844229](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999844229) IN_PROGRESS al corte.
+- Siguiente trabajo Lite: reconciliar el inventario y comenzar Algebra229 según protocolo. Plus RAT-07 fue aceptada en r391; siguiente Plus RAT-08. Global OPEN.

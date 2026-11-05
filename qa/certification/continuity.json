@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 378,
+  "revision": 379,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "aa3bd34cb20fac49e86cebb598ec69058e714a9e",
-  "baseline_case": "ALGEBRA114-AS-RAT-09",
+  "technical_baseline_sha": "6a8d1b7d586b4ad4e939fc9601be4498d7bd8aa9",
+  "baseline_case": "ALGEBRA114-AS-RAT-10",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA114-AS-RAT-10-ORACLE-AUDIT",
+    "id": "ALGEBRA229-ORACLE-AUDIT",
     "status": "READY",
-    "previous_id": "ALGEBRA114-AS-RAT-09-ORACLE-AUDIT",
-    "action": "Reforzar tests/algebra114AsRat10.audit.test.ts contra la fila exacta AS-RAT-10. Verificar la forma 3-sqrt(6), positividad y la equivalencia con sqrt(3)/(sqrt(2)+sqrt(3)) usando un oráculo independiente Math.sqrt; comprobar el test focal en acumulativo y H1d sin relajar la auditoría de dependencias."
+    "previous_id": "ALGEBRA114-AS-RAT-10-ORACLE-AUDIT",
+    "action": "Reconciliar el inventario completo de Algebra229 contra qa/certification/EXECUTION_PROTOCOL.md y los contratos de su módulo; seleccionar su primera fila pendiente en Lite, reforzar el oráculo independiente y la fila fuente exacta, y validar en CI acumulativa y H1d. No inferir paridad con Plus ni saltar gates de módulo."
   },
   "blockers": [
     {
@@ -297,7 +297,8 @@
     "qa/certification/ALGEBRA114_AS_FAC_07_ACCEPTANCE_R378.md",
     "qa/certification/ALGEBRA114_AS_FAC_08_ACCEPTANCE_R379.md",
     "qa/certification/ALGEBRA114_AS_FAC_09_ACCEPTANCE_R380.md",
-    "qa/certification/ALGEBRA114_AS_RAT_09_ACCEPTANCE_R400.md"
+    "qa/certification/ALGEBRA114_AS_RAT_09_ACCEPTANCE_R400.md",
+    "qa/certification/ALGEBRA114_AS_RAT_10_ACCEPTANCE_R401.md"
   ],
   "h2_en_sg_reconciliation_r358": {
     "status": "PARTIAL",
@@ -664,7 +665,7 @@
     "certification_pass": false,
     "recorded_at": "2026-10-31T01:40:23+00:00"
   },
-  "updated_utc": "2026-11-05T09:06:44.837Z",
+  "updated_utc": "2026-11-05T09:14:24.435Z",
   "active_execution_r370": {
     "case": "ALGEBRA114-AS-EXP-09",
     "sha": "13bf8b535a00b40c464057dc663b2d97ea6c44bd",
@@ -871,5 +872,31 @@
     "scope": "Lite only",
     "oracle": "Independent JavaScript Math.sqrt for original quotient and rationalized conjugate form; both are checked at six valid real-domain points, including zero radicands; exact source row preserves x,y>=0 and x!=y.",
     "note": "No Plus parity claim. Scientific UI run is complementary and not required for the scoped algebraic test acceptance. Global certification OPEN."
+  },
+  "algebra114_as_rat10_r401": {
+    "status": "PASS_SCOPED",
+    "sha": "6a8d1b7d586b4ad4e939fc9601be4498d7bd8aa9",
+    "source_blob": "b30ca7fcec641334ce8128ca25bec542a9d04e79",
+    "test": "tests/algebra114AsRat10.audit.test.ts",
+    "test_blob": "34f349104607d808d5aeba165b51965107bcdbaf",
+    "acceptance": "qa/certification/ALGEBRA114_AS_RAT_10_ACCEPTANCE_R401.md",
+    "cumulative_run": 41999844182,
+    "cumulative_status": "SUCCESS",
+    "cumulative_files": "366 passed",
+    "cumulative_tests": "2259 passed, 8 expected fail, 34 todo",
+    "focal_test": "tests/algebra114AsRat10.audit.test.ts — 1 test passed",
+    "h1d_run": 41999844363,
+    "h1d_status": "SUCCESS",
+    "h1d_passed": 22,
+    "runner_run": 41999844233,
+    "runner_status": "SUCCESS_PUSH_ONLY",
+    "ci_run": 41999844221,
+    "ci_status": "FAILURE",
+    "ci_reason": "QA dependency audit hard gate; 4 moderate severity vulnerabilities. Typecheck, unit/parity and build were skipped after the audit failure; threshold unchanged.",
+    "scientific_ui_run": 41999844229,
+    "scientific_ui_status": "IN_PROGRESS_AT_ACCEPTANCE",
+    "scope": "Lite only",
+    "oracle": "Independent Math.sqrt values for the original radical quotient and 3-sqrt(6), positive-result check and conjugate identity (3-sqrt(6))*(3+sqrt(6))=3.",
+    "note": "No Plus parity claim. Scientific UI is a separate complementary E2E and was still in progress at this acceptance cut. Global certification OPEN."
   }
 }

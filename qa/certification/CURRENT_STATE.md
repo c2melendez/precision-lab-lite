@@ -1,3 +1,20 @@
+# Corte vigente de certificación — 2026-11-05 UTC (r401)
+
+## Actualización operativa — 2026-11-05 (r401): Lite Algebra114 AS-RAT-10
+
+- Lite — AS-RAT-10: **PASS_SCOPED** en SHA técnico `6a8d1b7d586b4ad4e939fc9601be4498d7bd8aa9`; test `tests/algebra114AsRat10.audit.test.ts`, blob `34f349104607d808d5aeba165b51965107bcdbaf`; aceptación `ALGEBRA114_AS_RAT_10_ACCEPTANCE_R401.md`.
+- Fila exacta, forma simbólica `3-sqrt(6)`, `Math.sqrt` independiente para original y racionalizada, positividad e identidad conjugada. Test focal ejecutado.
+- Acumulativo [41999844182](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999844182) **SUCCESS** (366 archivos, 2,259 passed, 8 expected fail, 34 TODO); log focal explícito. H1d [41999844363](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999844363) **SUCCESS**. Runner [41999844233](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999844233) **SUCCESS_PUSH_ONLY**.
+- CI estándar [41999844221](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999844221) **FAILURE** en QA dependency audit hard gate (4 moderadas), sin reducción de umbral; typecheck/unit/build omitidos. Scientific UI [41999844229](https://github.com/c2melendez/precision-lab-lite/actions/runs/41999844229) permanecía IN_PROGRESS en el corte, complementario.
+- `technical_baseline_sha` actualizado al SHA ejecutado. Se termina el subconjunto Algebra114 Lite conocido hasta RAT-10; siguiente acción: inventariar y comenzar Algebra229 según EXECUTION_PROTOCOL. Global certification OPEN.
+
+## Continuidad Plus — actualización r391
+
+- Plus — Algebra114 AS-RAT-07: **PASS_SCOPED** backend/servicio HTTP en SHA `da924df6cdb9a827c2b0ff061db9f1e0e8111167`; aceptación `ALGEBRA114_AS_RAT_07_ACCEPTANCE_R391.md`; CI 41999414498, acumulativo 41999414506 y H1d 41999414450 SUCCESS; backend 2,800 passed y H1d 38/38. Runner 41999414341 push-only.
+- Próxima fila matemática Plus: AS-RAT-08. Bloqueo global VC-FE-45/EV-I-12 sin cambios; no se declara paridad UI.
+
+Global certification **OPEN**.
+
 # Corte vigente de certificación — 2026-11-05 UTC (r400)
 
 ## Actualización operativa — 2026-11-05 (r400): Lite Algebra114 AS-RAT-09
