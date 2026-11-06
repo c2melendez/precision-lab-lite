@@ -1,3 +1,29 @@
+# Actualización de certificación — 2026-11-06 UTC (r438)
+
+## Algebra229 AS-B-25 — PASS_SCOPED bilateral (r438)
+
+**Contrato D22:** `factor(x^2+1) sobre ℂ` → `(x-i)*(x+i)` únicamente con el sufijo explícito. Sin sufijo, no se introduce `i`.
+
+### Lite — SHA técnico `dbea0c0e5aea6701d327d82ebedb8507fea7bb33`
+- Cumulative [42224254086](https://github.com/c2melendez/precision-lab-lite/actions/runs/42224254086) SUCCESS; focal 5/5, 366/366 archivos, 2,263 passed, 8 expected fail y 34 TODO; guard `skip=false`, sin REUSE.
+- CI [42224254124](https://github.com/c2melendez/precision-lab-lite/actions/runs/42224254124) SUCCESS; focal 5/5, 366/366 archivos, npm audit sin vulnerabilidades.
+- H1d [42224254222](https://github.com/c2melendez/precision-lab-lite/actions/runs/42224254222) SUCCESS; 22/22 Playwright.
+- Scientific UI [42224254152](https://github.com/c2melendez/precision-lab-lite/actions/runs/42224254152) SUCCESS; 456/456 Playwright desktop/tablet/mobile.
+- Runner [42224254110](https://github.com/c2melendez/precision-lab-lite/actions/runs/42224254110) SUCCESS; solo continuidad/fingerprint.
+
+### Plus — SHA técnico `1da7ecac06ab65c7d377af33ee88479ef6218e9a`
+- Cumulative [42224279552](https://github.com/c2melendez/precision-lab-plus/actions/runs/42224279552) SUCCESS; frontend/backend SUCCESS, focal 4/4, backend 2,804 passed, 1 skipped y 10 xfailed; guard `skip=false`, sin REUSE.
+- CI [42224279542](https://github.com/c2melendez/precision-lab-plus/actions/runs/42224279542) SUCCESS; frontend/backend SUCCESS, backend 2,804 passed, 1 skipped y 10 xfailed.
+- H1d [42224279507](https://github.com/c2melendez/precision-lab-plus/actions/runs/42224279507) SUCCESS; 38/38 Playwright.
+- Runner [42224279695](https://github.com/c2melendez/precision-lab-plus/actions/runs/42224279695) SUCCESS.
+
+### Decisión
+Los logs revisados confirman ejecución de las pruebas, no REUSE. Los cambios técnicos de ambos productos se limitaron a sus tests focales; no se modificó motor ni producto. Acceptance bilateral: `ALGEBRA229_AS_B_25_ACCEPTANCE_2026-11-06.md`. La certificación global permanece **OPEN**; SG28/H2/DIST, SECURITY-S25 y los gaps independientes siguen abiertos.
+
+**Siguiente:** AS-B-26 `\\text{factorizar el entero }360` → `2^{3}\\cdot 3^{2}\\cdot 5` (N2). Global **OPEN**.
+
+---
+
 # Actualización de certificación — 2026-11-06 UTC (r437)
 
 ## Algebra229 AS-B-25 — IN_PROGRESS
