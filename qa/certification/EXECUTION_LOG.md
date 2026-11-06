@@ -1,3 +1,11 @@
+## 2026-11-06 UTC — r400: AS-B-02 PASS_SCOPED bilateral; AS-B-03 TEST-FIRST iniciado
+
+- AS-B-02 Lite SHA `4a5bb09703c527a0ddd68a33749fc228748d2060`: cumulative 42135018417 SUCCESS (2 focales/2,259; 366 archivos), H1d 42135018449 SUCCESS (22), Scientific UI 42135018517 SUCCESS (456 desktop/tablet/mobile), Runner 42135018349 SUCCESS; CI 42135018389 FAILURE solo npm audit (4 moderadas, artifact 13465385686).
+- AS-B-02 Plus SHA `e8bbb528bdf1d70ee8acd947c8e58144ad07d3a6`: cumulative 42135022942 SUCCESS (2 focales; 2,800 backend passed/1 skipped/10 xfailed; 88.93%; 1,055 frontend), H1d 42135022812 SUCCESS (38), CI 42135022746 SUCCESS (2,800 backend/1,055 frontend), Runner 42135022814 SUCCESS.
+- Aceptación `ALGEBRA229_AS_B_02_ACCEPTANCE_2026-11-06.md` creada en ambos repositorios. AS-B-02 PASS_SCOPED bilateral. CI audit Lite continúa como bloqueo de seguridad independiente.
+- AS-B-03 tests reforzados: Lite SHA `fe78fd9a1061a66f5f0a05280ed65fea13cefa30`, blob `e02c7c16db2b014685ab8ff28f876c70b5a8fb54`; Plus SHA `300bdede38cf5f58e8f47a59ff20a83dd4389dfe`, blob `2feb08b6fa8e95730aa470c5acc0c036f6934dcb`. Fila exacta con nota de irreducibilidad; diez sustituciones enteras independientes; Plus añade verificación HTTP y grados 1/2/discriminante negativo.
+- Corridas automáticas en push B03: Lite cumulative 42136026980, H1d 42136027012, Scientific UI 42136027006, CI 42136026913, Runner 42136027069; Plus cumulative 42136032221, H1d 42136032228, CI 42136032313, Runner 42136032220. En curso/cola al registrar.
+- AS-B-03 permanece WAIT hasta revisar logs y resultados de los gates.
 ## 2026-11-06 UTC — r399: AS-B-02 cumulative gates PASS; UI Lite / CI backend Plus pending
 
 - Lite SHA `4a5bb09703c527a0ddd68a33749fc228748d2060`: cumulative 42135018417 SUCCESS (skip=false; B02 2/2; 366 files / 2,259 passed), H1d 42135018449 SUCCESS (22), Runner 42135018349 SUCCESS. Scientific UI 42135018517 IN_PROGRESS; CI 42135018389 FAILURE solo npm audit 4 moderadas (artifact 13465385686).
