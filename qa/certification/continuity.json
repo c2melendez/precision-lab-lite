@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 420,
+  "revision": 433,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "4ab22e5565255bc0d0a451dfae3debf24f8521fa",
-  "baseline_case": "ALGEBRA229-AS-B-21",
+  "technical_baseline_sha": "b385d88845d9f1e257cbce03295c73273cf4446b",
+  "baseline_case": "ALGEBRA229-AS-B-22",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-22-TEST-FIRST",
+    "id": "ALGEBRA229-AS-B-23-TEST-FIRST",
     "status": "READY",
-    "previous_id": "ALGEBRA229-AS-B-21-TEST-FIRST",
-    "action": "AS-B-22 x^{2}+1 -> x^{2} + 1 (N1, irreducible sobre Q y R; debe quedar igual). Test-first: verificar que el oraculo cumple el estandar de AS-B-16..21 (fila exacta de siete celdas y oraculo entero independiente en 10 muestras), reforzarlo si es debil, y obtener evidencia CI del mismo SHA antes de acceptance. Gates: Plus cumulative+H1d; Lite cumulative+H1d+Scientific UI.",
-    "updated_utc": "2026-11-06T11:35:00Z"
+    "previous_id": "ALGEBRA229-AS-B-22-TEST-FIRST",
+    "action": "AS-B-23 x^{2}-2 -> x^{2} - 2 (N2, irreducible sobre Q: debe quedar igual). Test-first: verificar fila exacta de siete celdas contra la matriz congelada y oráculo entero independiente en 10 muestras; comprobar que el resultado no se factoriza sobre Q y conserva la equivalencia. Gates: Plus cumulative+H1d; Lite cumulative+H1d+Scientific UI.",
+    "updated_utc": "2026-11-06T12:27:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
