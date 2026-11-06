@@ -1,3 +1,11 @@
+## 2026-11-06 UTC — r439: AS-B-26 test-first reforzado; WAIT gates exact-SHA
+
+- Lite SHA `26cc8cc69d32e4a5614dc9921a87030308f9cdd1`: Cumulative 42270957296 SUCCESS (focal 4/4, 366 archivos, 2,264 passed, 8 expected fail, 34 TODO; guard skip=false/no REUSE); H1d 42270957306 SUCCESS (22/22); CI 42270957315 SUCCESS. Scientific UI 42270957389 permanece IN_PROGRESS (job 128075078138).
+- Plus SHA corregido `ef97ca2a23324d2512f4f26585ad51f421d316ff`: Cumulative 42271188323 IN_PROGRESS (backend 128075870922); CI 42271188505 IN_PROGRESS (backend 128075871815); H1d 42271188301 SUCCESS (38/38); Runner 42271188377 SUCCESS.
+- El commit Plus previo `be31d726bdc0104a9f07fc5479a3325abd0c6f0d` se sustituyó por corrección de raw-string en los escapes literales del fixture; no se usa como evidencia.
+- El test focal Lite valida fila exacta de ocho celdas, salida `2^3*3^2*5`, división de prueba independiente y producto 360. Plus añade endpoint HTTP, fila exacta, evaluación entera AST y oráculo de factores primos. Solo tests, sin cambios de motor/producto.
+- Decisión WAIT; no reruns equivalentes. Global OPEN. Próxima acción tras gates: aceptación bilateral AS-B-26; luego AS-B-27 (1001).
+
 ## 2026-11-06 UTC — r438: Algebra229 AS-B-25 PASS_SCOPED bilateral
 
 - Lite SHA `dbea0c0e5aea6701d327d82ebedb8507fea7bb33`: Cumulative 42224254086 SUCCESS (focal 5/5, 366/366, 2,263 passed, 8 expected fail, 34 TODO); CI 42224254124 SUCCESS (focal 5/5, npm audit 0); H1d 42224254222 SUCCESS (22/22); Scientific UI 42224254152 SUCCESS (456/456 desktop/tablet/mobile).
