@@ -1,3 +1,8 @@
+## 2026-11-06 — confirmación de bloqueo npm audit Lite
+
+- CI Lite [42133782701](https://github.com/c2melendez/precision-lab-lite/actions/runs/42133782701) y [42134131960](https://github.com/c2melendez/precision-lab-lite/actions/runs/42134131960) vuelven a fallar en `npm audit --package-lock-only` con los mismos cuatro hallazgos moderados. El segundo artifact es `lite-npm-audit` ID `13464163830`.
+- La corrida estándar termina antes de typecheck/unit/build; las pruebas de certificación independientes continúan en sus propios gates. No se cambió el umbral, no se ejecutó `npm audit fix --force` y no se modificaron dependencias. Se mantiene **BLOCKED_SECURITY_REVIEW** hasta una remediación aislada y validación de compatibilidad PWA/Workbox.
+
 ## 2026-11-05 — Lite npm audit: moderadas nuevas / BLOCKED_SECURITY_REVIEW
 
 - CI estándar Lite [42033618277](https://github.com/c2melendez/precision-lab-lite/actions/runs/42033618277) y la corrida previa [42031678783](https://github.com/c2melendez/precision-lab-lite/actions/runs/42031678783) reportan cuatro vulnerabilidades moderadas; el gate de seguridad falla antes de typecheck/unit/build. Artifact actual: `lite-npm-audit` ID `13416204822`. No se redujo el umbral.
