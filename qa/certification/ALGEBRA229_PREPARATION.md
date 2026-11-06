@@ -1,6 +1,6 @@
 # Algebra 229 — preparación de matriz y trazabilidad
 
-Estado: **FIXTURE_PROMOTED**; sección A **AS-A-01..17 PASS_SCOPED bilateral** (casos individuales, tests unit/HTTP y gates por caso); sección B iniciada, **AS-B-01 TEST-FIRST / WAIT**; matriz **NOT_EXECUTED** en bloque (no se certifican las 229 filas). Certificación global **OPEN**.
+Estado: **FIXTURE_PROMOTED**; sección A **AS-A-01..17 PASS_SCOPED bilateral**; sección B **AS-B-01 PASS_SCOPED bilateral**, **AS-B-02 TEST-FIRST / WAIT**; matriz **NOT_EXECUTED** en bloque (no se certifican las 229 filas). Certificación global **OPEN**.
 
 ## Fuente y fixture
 
@@ -15,12 +15,13 @@ Estado: **FIXTURE_PROMOTED**; sección A **AS-A-01..17 PASS_SCOPED bilateral** (
 
 ## Avance sección A (expandir)
 
-AS-A-01..17 cerrados **PASS_SCOPED bilateral**. Acceptance: `ALGEBRA229_AS_A_17_ACCEPTANCE_2026-11-05.md`. La matriz completa permanece NOT_EXECUTED.
+AS-A-01..17 cerrados **PASS_SCOPED bilateral**. Acceptance de AS-A-17: `ALGEBRA229_AS_A_17_ACCEPTANCE_2026-11-05.md`.
 
 ## Sección B (factorizar)
 
-AS-B-01: factorizar (x^2-5x+6) como ((x-3)(x-2)). Los tests se reforzaron con las celdas fuente exactas y diez sustituciones enteras. El primer run Lite identificó un falso negativo por signed-zero; ya está corregido en Lite SHA `7e21f3f9d9bebaab2741a76f4cc533992e56d76a`. Plus SHA de test: `eb3a45c4b0ae68ff3d8da440b434c27098cf69c1`. Las corridas de validación están activas; no aceptar hasta concluir acumulativo y reingreso en ambos proyectos, además de Scientific UI Lite.
+- **AS-B-01** (x^2-5x+6=(x-3)(x-2)): **PASS_SCOPED bilateral**. Acceptance: `ALGEBRA229_AS_B_01_ACCEPTANCE_2026-11-06.md`. Oráculo independiente de diez sustituciones enteras; HTTP verificado en Plus; pruebas UI nativas de Lite en desktop/tablet/mobile.
+- **AS-B-02** (x^2-9=(x-3)(x+3)): tests reforzados con fila fuente exacta y diez sustituciones enteras independientes; SHA Lite `4a5bb09703c527a0ddd68a33749fc228748d2060`, SHA Plus `e8bbb528bdf1d70ee8acd947c8e58144ad07d3a6`. Estado **WAIT** hasta resolver corridas automáticas de ambos repositorios.
 
 ## Siguiente
 
-`ALGEBRA229-AS-B-01-TEST-FIRST` — cerrar la re-ejecución de Lite SHA `7e21f3f9d9bebaab2741a76f4cc533992e56d76a` y Plus SHA `eb3a45c4b0ae68ff3d8da440b434c27098cf69c1`. Global OPEN.
+`ALGEBRA229-AS-B-02-TEST-FIRST` — revisar runs Lite 42135018417/42135018449/42135018517/42135018389/42135018349 y Plus 42135022942/42135022812/42135022746/42135022814. Global OPEN.
