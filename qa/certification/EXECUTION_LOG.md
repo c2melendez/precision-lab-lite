@@ -1,3 +1,8 @@
+## 2026-11-06 UTC — r401: AS-B-03 gates parciales
+
+- Lite SHA `fe78fd9a1061a66f5f0a05280ed65fea13cefa30`: cumulative 42136026980 SUCCESS (skip=false, B03 2/2, 366 files/2,259 passed), H1d 42136027012 SUCCESS (22), Runner 42136027069 SUCCESS. Scientific UI 42136027006 IN_PROGRESS (Install Chromium al último sondeo); CI 42136026913 FAILURE solo npm audit (4 moderadas, artifact 13466271200).
+- Plus SHA `300bdede38cf5f58e8f47a59ff20a83dd4389dfe`: H1d 42136032228 SUCCESS (38), Runner 42136032220 SUCCESS. Cumulative 42136032221 frontend SUCCESS (1,055), backend IN_PROGRESS; CI 42136032313 frontend SUCCESS (1,055), backend IN_PROGRESS.
+- AS-B-03 no está aceptado mientras falten Scientific UI Lite y ambos backend jobs Plus.
 ## 2026-11-06 UTC — r400: AS-B-02 PASS_SCOPED bilateral; AS-B-03 TEST-FIRST iniciado
 
 - AS-B-02 Lite SHA `4a5bb09703c527a0ddd68a33749fc228748d2060`: cumulative 42135018417 SUCCESS (2 focales/2,259; 366 archivos), H1d 42135018449 SUCCESS (22), Scientific UI 42135018517 SUCCESS (456 desktop/tablet/mobile), Runner 42135018349 SUCCESS; CI 42135018389 FAILURE solo npm audit (4 moderadas, artifact 13465385686).
