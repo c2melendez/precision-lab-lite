@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 437,
+  "revision": 438,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "dbea0c0e5aea6701d327d82ebedb8507fea7bb33",
-  "baseline_case": "ALGEBRA229-AS-B-24",
+  "baseline_case": "ALGEBRA229-AS-B-25",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-25-TEST-FIRST",
-    "status": "WAIT",
-    "previous_id": "ALGEBRA229-AS-B-24-TEST-FIRST",
-    "action": "AS-B-25: factor(x^2+1) sobre ℂ -> (x-i)*(x+i) solo con sufijo explícito. Test-first en Lite y Plus: fila fuente exacta, resultado complejo ASCII, equivalencia, oráculo complejo independiente en ocho muestras, y regresión sin sufijo. Lite SHA dbea0c0e5aea6701d327d82ebedb8507fea7bb33: Cumulative 42224254086 SUCCESS, focal 5/5 y 366/366 archivos; CI 42224254124 SUCCESS, focal 5/5; H1d 42224254222 SUCCESS 22/22; Scientific UI 42224254152 sigue IN_PROGRESS. Plus SHA 1da7ecac06ab65c7d377af33ee88479ef6218e9a: H1d 42224279507 SUCCESS 38/38; cumulative 42224279552 y CI 42224279542 siguen IN_PROGRESS, ambos frontend SUCCESS y backend en curso. Runner Lite 42224254110 SUCCESS. Esperar gates ya activos, no relanzar.",
-    "updated_utc": "2026-11-06T13:19:25Z"
+    "id": "ALGEBRA229-AS-B-26-TEST-FIRST",
+    "status": "READY",
+    "previous_id": "ALGEBRA229-AS-B-25-TEST-FIRST",
+    "action": "AS-B-26 N2: factorizar el entero 360 -> 2^3*3^2*5. Test-first bilateral: verificar los siete campos semánticos exactos de la fila congelada (entrada \\text{factorizar el entero }360 y salida 2^{3}\\cdot 3^{2}\\cdot 5), forma ASCII exacta, HTTP Plus, y oráculo independiente por división de prueba que compruebe bases primas, multiplicidades [2^3,3^2,5] y producto 360. Gates: Plus cumulative+H1d; Lite cumulative+H1d+Scientific UI.",
+    "updated_utc": "2026-11-06T18:16:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
