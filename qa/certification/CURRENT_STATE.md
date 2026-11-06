@@ -1,3 +1,30 @@
+# Actualización de certificación — 2026-11-06 UTC (r437)
+
+## Algebra229 AS-B-25 — IN_PROGRESS
+
+**Contrato (D22):** `factor(x^2+1) sobre ℂ` → `(x-i)*(x+i)` solo con el sufijo complejo explícito. La entrada `factor(x^2+1)` sin sufijo no cambia ni debe introducir `i`. No es soporte general de factorización compleja.
+
+### Lite — SHA técnico `dbea0c0e5aea6701d327d82ebedb8507fea7bb33`
+- Test `tests/algebra229AsB25.audit.test.ts`: 5/5 PASS en acumulativo y CI; siete celdas semánticas exactas de la fila congelada, resultado ASCII, equivalencia simbólica, oráculo independiente de multiplicación compleja en ocho muestras enteras y regresión de entrada sin sufijo.
+- Cumulative [42224254086](https://github.com/c2melendez/precision-lab-lite/actions/runs/42224254086) SUCCESS; job 127913631923; 366/366 archivos.
+- CI [42224254124](https://github.com/c2melendez/precision-lab-lite/actions/runs/42224254124) SUCCESS; job 127913631707; 366/366 archivos; focal 5/5.
+- H1d [42224254222](https://github.com/c2melendez/precision-lab-lite/actions/runs/42224254222) SUCCESS; job 127913632237; 22/22 Playwright.
+- Scientific UI [42224254152](https://github.com/c2melendez/precision-lab-lite/actions/runs/42224254152) IN_PROGRESS; job 127913632048 dentro de `Install Chromium`.
+- Runner [42224254110](https://github.com/c2melendez/precision-lab-lite/actions/runs/42224254110) SUCCESS, push-only.
+
+### Plus — SHA técnico `1da7ecac06ab65c7d377af33ee88479ef6218e9a`
+- Test `backend/tests/test_algebra229_as_b25.py`: 4 pruebas; fila fuente, HTTP exacto, equivalencia simbólica, AST complejo independiente para ocho muestras enteras y regresión de la entrada sin sufijo.
+- H1d [42224279507](https://github.com/c2melendez/precision-lab-plus/actions/runs/42224279507) SUCCESS; job 127913716294; 38/38 Playwright.
+- Cumulative [42224279552](https://github.com/c2melendez/precision-lab-plus/actions/runs/42224279552) IN_PROGRESS; frontend SUCCESS, backend job 127913716240 ejecutando regresión.
+- CI [42224279542](https://github.com/c2melendez/precision-lab-plus/actions/runs/42224279542) IN_PROGRESS; frontend SUCCESS, backend job 127913716574 ejecutando tests.
+- Runner [42224279695](https://github.com/c2melendez/precision-lab-plus/actions/runs/42224279695) SUCCESS.
+
+### Decisión
+Los logs Lite confirman que `tests/algebra229AsB25.audit.test.ts` ejecutó las cinco pruebas y que los 366 archivos pasaron. H1d está confirmado en ambos motores. B25 sigue IN_PROGRESS hasta Scientific UI Lite y los backends acumulativo/CI Plus. No modificar motor/producto mientras las pruebas pasan. No relanzar los gates ya activos.
+
+**Baseline aceptado:** AS-B-24 PASS_SCOPED. La certificación global permanece **OPEN**.
+
+---
 # Actualización de certificación — 2026-11-06 UTC (r436)
 
 ## Algebra229 AS-B-24 — PASS_SCOPED bilateral

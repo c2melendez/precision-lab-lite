@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "revision": 436,
+  "revision": 437,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "2342cbd5ac2de6e9a7b1fbf42ddb9df4ee1f9c8d",
+  "technical_baseline_sha": "dbea0c0e5aea6701d327d82ebedb8507fea7bb33",
   "baseline_case": "ALGEBRA229-AS-B-24",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
@@ -40,10 +40,10 @@
   },
   "next_action": {
     "id": "ALGEBRA229-AS-B-25-TEST-FIRST",
-    "status": "READY",
+    "status": "WAIT",
     "previous_id": "ALGEBRA229-AS-B-24-TEST-FIRST",
-    "action": "AS-B-25: factor(x^2+1) sobre ℂ -> (x-i)*(x+i) únicamente con la indicación explícita de dominio complejo. Sin sufijo complejo, no introducir i ni factorizar sobre ℂ por defecto. Reforzar tests en Lite/Plus: recuperar y fijar las siete celdas semánticas exactas de la fila congelada; comprobar salida simbólica/HTTP ASCII, equivalencia en ℂ con multiplicación compleja independiente y muestras numéricas; conservar la regresión de entrada sin sufijo. Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d; CI pertinente.",
-    "updated_utc": "2026-11-06T13:11:01Z"
+    "action": "AS-B-25: factor(x^2+1) sobre ℂ -> (x-i)*(x+i) solo con sufijo explícito. Test-first en Lite y Plus: fila fuente exacta, resultado complejo ASCII, equivalencia, oráculo complejo independiente en ocho muestras, y regresión sin sufijo. Lite SHA dbea0c0e5aea6701d327d82ebedb8507fea7bb33: Cumulative 42224254086 SUCCESS, focal 5/5 y 366/366 archivos; CI 42224254124 SUCCESS, focal 5/5; H1d 42224254222 SUCCESS 22/22; Scientific UI 42224254152 sigue IN_PROGRESS. Plus SHA 1da7ecac06ab65c7d377af33ee88479ef6218e9a: H1d 42224279507 SUCCESS 38/38; cumulative 42224279552 y CI 42224279542 siguen IN_PROGRESS, ambos frontend SUCCESS y backend en curso. Runner Lite 42224254110 SUCCESS. Esperar gates ya activos, no relanzar.",
+    "updated_utc": "2026-11-06T13:19:25Z"
   },
   "blockers": [],
   "prose_only_paths": [

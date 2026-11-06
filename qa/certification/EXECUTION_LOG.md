@@ -1271,3 +1271,13 @@ AS-B-24, N3: `factor(x^2-2) sobre ℝ` → `(x-sqrt(2))*(x+sqrt(2))). Se fijó l
 - Resultado: **PASS_SCOPED bilateral**, acotado a AS-B-24. Global **OPEN**; SG28/H2/DIST, SECURITY-S25 y otros gaps siguen abiertos/sin cambio.
 - Siguiente fila: AS-B-25, factorización de `x^2+1` sobre `ℂ` únicamente cuando se especifica el dominio complejo; la entrada sin sufijo no debe introducir `i`.
 
+
+## 2026-11-06 UTC (r437) — Algebra229 AS-B-25 IN_PROGRESS; suites Lite unitarias y H1d bilaterales verdes
+
+AS-B-25 (D22): `factor(x^2+1) sobre ℂ` -> `(x-i)*(x+i)` solo con sufijo explícito; la entrada sin sufijo debe permanecer sin esa factorización.
+
+- Lite SHA `dbea0c0e5aea6701d327d82ebedb8507fea7bb33`: [Cumulative 42224254086](https://github.com/c2melendez/precision-lab-lite/actions/runs/42224254086) SUCCESS (test focal 5/5; 366 archivos); [CI 42224254124](https://github.com/c2melendez/precision-lab-lite/actions/runs/42224254124) SUCCESS (focal 5/5; 366 archivos); [H1d 42224254222](https://github.com/c2melendez/precision-lab-lite/actions/runs/42224254222) SUCCESS (22/22); [Scientific UI 42224254152](https://github.com/c2melendez/precision-lab-lite/actions/runs/42224254152) IN_PROGRESS en Install Chromium; [Runner 42224254110](https://github.com/c2melendez/precision-lab-lite/actions/runs/42224254110) SUCCESS.
+- Plus SHA `1da7ecac06ab65c7d377af33ee88479ef6218e9a`: [H1d 42224279507](https://github.com/c2melendez/precision-lab-plus/actions/runs/42224279507) SUCCESS (38/38); [Cumulative 42224279552](https://github.com/c2melendez/precision-lab-plus/actions/runs/42224279552) IN_PROGRESS (frontend passed; backend active); [CI 42224279542](https://github.com/c2melendez/precision-lab-plus/actions/runs/42224279542) IN_PROGRESS (frontend passed; backend active); [Runner 42224279695](https://github.com/c2melendez/precision-lab-plus/actions/runs/42224279695) SUCCESS.
+- Test-first changes modify only the focal test files; no changes to production engine or API. Global certification remains OPEN. Último baseline aceptado: AS-B-24 PASS_SCOPED.
+- Próximo paso: esperar el Scientific UI Lite y backend cumulative/CI Plus ya activos; no disparar duplicados ni cerrar B25 prematuramente.
+
