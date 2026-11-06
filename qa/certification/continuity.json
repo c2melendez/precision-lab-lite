@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 443,
+  "revision": 444,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "a69eacd5b64b371bee52ee88ae3869976092b2d3",
-  "baseline_case": "ALGEBRA229-AS-B-27",
+  "technical_baseline_sha": "6aa6b374f50a199886d6f022409f74b457fab2e9",
+  "baseline_case": "ALGEBRA229-AS-B-28",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-28-TEST-FIRST",
+    "id": "ALGEBRA229-AS-B-29-TEST-FIRST",
     "status": "READY",
-    "previous_id": "ALGEBRA229-AS-B-27-TEST-FIRST",
-    "action": "AS-B-28 N3: factorizar el entero 4294967297 -> 641*6700417. Test-first bilateral: reforzar los tests actuales que solo comprueban presencia de fila/salida/equivalencia; verificar todas las celdas exactas de la matriz congelada, forma ASCII, HTTP Plus y oráculo independiente por división de prueba que demuestre primalidad de 641 y 6700417, multiplicidades 1 y producto exacto 4294967297. Gates: Plus cumulative+H1d; Lite cumulative+H1d+Scientific UI.",
-    "updated_utc": "2026-11-06T19:23:00Z"
+    "previous_id": "ALGEBRA229-AS-B-28-TEST-FIRST",
+    "action": "AS-B-29 N2: factorizar 123456789 -> 3^2*3607*3803. Test-first bilateral: fortalecer los tests que solo comprueban presencia de fila/salida/equivalencia; verificar todas las celdas exactas de la matriz congelada, salida ASCII, endpoint HTTP Plus y oráculo independiente por división de prueba que confirme primalidad de 3, 3607 y 3803, multiplicidades [2,1,1] y producto exacto 123456789. Gates: Plus cumulative+H1d; Lite cumulative+H1d+Scientific UI.",
+    "updated_utc": "2026-11-06T20:03:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
