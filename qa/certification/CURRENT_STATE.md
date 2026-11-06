@@ -1,3 +1,14 @@
+# Actualización de certificación — 2026-11-06 UTC (r443)
+
+## Algebra229 AS-B-27 — PASS_SCOPED bilateral (r443)
+
+- Lite HEAD técnico a69eacd5b64b371bee52ee88ae3869976092b2d3: Cumulative 42274271213 SUCCESS (focal 4/4; 366 archivos, 2,265 passed, 8 expected fail, 34 TODO); H1d 42274271107 SUCCESS (22/22); Scientific UI 42274271105 SUCCESS (456/456 desktop/tablet/mobile); CI 42274271188 SUCCESS; Runner 42274271145 SUCCESS (fingerprint push-only).
+- Plus HEAD técnico f817f1c568635b4b64f26e54eb3a41b22a0712ed: Cumulative 42274292997 SUCCESS (frontend/backend; focal 3/3; backend 2,806 passed, 1 skipped, 10 xfailed); H1d 42274292987 SUCCESS (38/38); CI 42274293004 SUCCESS (backend 2,806 passed, 1 skipped, 10 xfailed; cobertura 88.91%); Runner 42274293046 SUCCESS (fingerprint push-only).
+- Los seis jobs de gates registraron skip=false y evidence_run_id vacío; evidencia ejecutada en los SHA exactos, sin REUSE.
+- Acceptance bilateral: ALGEBRA229_AS_B_27_ACCEPTANCE_2026-11-06.md. Solo se reforzaron tests; ningún cambio de producto o motor.
+- Siguiente: AS-B-28, N3, factorizar 4294967297 → 641*6700417. Los tests actuales solo verifican presencia de fila/salida/equivalencia; reforzar fila exacta y oráculo independiente de primalidad, multiplicidades y producto. Global OPEN.
+
+---
 # Actualización de certificación — 2026-11-06 UTC (r442)
 
 ## Algebra229 AS-B-26 — PASS_SCOPED bilateral (r442)
