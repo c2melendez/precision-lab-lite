@@ -1,3 +1,11 @@
+# Actualización de certificación — 2026-11-06 UTC (r399)
+
+## Algebra229 AS-B-02 — acumulativos y H1d aprobados; dos gates pendientes
+
+- **Lite:** SHA `4a5bb09703c527a0ddd68a33749fc228748d2060`; acumulativo [42135018417](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018417) SUCCESS, guard `skip=false`, test focal 2/2, 366 archivos / 2,259 passed; H1d [42135018449](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018449) SUCCESS (22/22); Runner [42135018349](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018349) SUCCESS. Scientific UI [42135018517](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018517) IN_PROGRESS. CI estándar [42135018389](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018389) FAILURE únicamente npm audit (4 moderadas; artifact 13465385686).
+- **Plus:** SHA `e8bbb528bdf1d70ee8acd947c8e58144ad07d3a6`; acumulativo [42135022942](https://github.com/c2melendez/precision-lab-plus/actions/runs/42135022942) SUCCESS, guard `skip=false`; ambos focales AS-B-02 PASSED; backend 2,800 passed / 1 skipped / 10 xfailed, cobertura 88.93%; frontend 1,055 passed; H1d [42135022812](https://github.com/c2melendez/precision-lab-plus/actions/runs/42135022812) SUCCESS (38/38); Runner [42135022814](https://github.com/c2melendez/precision-lab-plus/actions/runs/42135022814) SUCCESS. CI [42135022746](https://github.com/c2melendez/precision-lab-plus/actions/runs/42135022746): frontend SUCCESS (1,055 passed), backend IN_PROGRESS.
+- **Decisión AS-B-02:** WAIT bilateral hasta que Scientific UI Lite y backend CI Plus concluyan y se revisen sus logs. Global certification **OPEN**.
+
 # Actualización de certificación — 2026-11-06 UTC (r398)
 
 ## Algebra229 AS-B-02 — TEST-FIRST / WAIT; gates en progreso
