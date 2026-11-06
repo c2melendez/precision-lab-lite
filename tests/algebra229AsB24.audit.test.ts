@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { evaluate } from "../src/engine/algebriteClient";
+import { compileNumeric } from "../src/engine/numericFallback";
 import { gunzipSync } from "node:zlib";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -9,21 +10,48 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_GZ = join(ROOT, "qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz");
 const INPUT = "factor(x^2-2) sobre ℝ";
 const EXPECTED = "(x-sqrt(2))*(x+sqrt(2))";
+const SAMPLES = [0, 1, -1, 2, -2, 3, -3, 4, 5, 10];
 
-describe("Algebra229 AS-B-24 factor x^2-2 sobre ℝ", () => {
-  it("source row is present in frozen AS229 matrix", () => {
+describe("Algebra229 AS-B-24 factor x^2-2 over the reals", () => {
+  it("matches the frozen source row structure and all known contract cells", () => {
     const text = gunzipSync(readFileSync(SOURCE_GZ)).toString("utf8");
-    expect(text).toMatch(/\|\s*AS-B-24\s*\|\s*N3\s*\|/);
-    expect(text).toContain("Con raíces permitidas");
+    const sourceRow = text.split(/\r?\n/).find((line) => /^\|\s*AS-B-24\s*\|/.test(line))?.trim();
+    expect(sourceRow).toBeTruthy();
+    const cells = sourceRow!.split("|").map((cell) => cell.trim());
+    expect(cells).toHaveLength(9);
+    expect(cells.slice(1, 6)).toEqual([
+      "AS-B-24",
+      "N3",
+      "`factorizar`",
+      "`factor(x^2-2) sobre ℝ`",
+      "`(x-sqrt(2))*(x+sqrt(2))`",
+    ]);
+    expect(cells[6]).toContain("Con raíces permitidas");
+    expect(cells[7]).toBe("");
+    expect(cells[8]).toBe("");
   });
 
-  it("returns the ASCII sqrt form over the reals", () => {
+  it("returns the required ASCII real-factor form without changing the contract", () => {
     const result = evaluate(INPUT).replace(/\s+/g, "");
     expect(result).toBe(EXPECTED);
+    expect(result).not.toContain("i");
   });
 
-  it("result is equivalent to x^2-2", () => {
+  it("is symbolically equivalent to x^2-2", () => {
     const result = evaluate(INPUT).replace(/\s+/g, "");
     expect(evaluate(`(${result})-(x^2-2)`).trim()).toBe("0");
+  });
+
+  it("independent numeric oracle matches x^2-2 over 10 integer samples", () => {
+    const result = evaluate(INPUT).replace(/\s+/g, "");
+    for (const x of SAMPLES) {
+      const substituted = result.replace(/\bx\b/g, `(${x})`);
+      const actual = compileNumeric(substituted, "__no_var__")(0);
+      const expected = x ** 2 - 2;
+      expect(Number.isFinite(actual)).toBe(true);
+      expect(Math.abs(actual - expected)).toBeLessThan(1e-10);
+    }
+    expect(2 ** 2).toBeLessThan(8);
+    expect(3 ** 2).toBeGreaterThan(8);
   });
 });
