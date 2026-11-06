@@ -1,3 +1,14 @@
+# Actualización de certificación — 2026-11-06 UTC (r446)
+
+## Algebra229 AS-B-29 — WAIT (Plus H1d y CI pendientes)
+
+- Contrato N2: factorizar 123456789 → 3^2*3607*3803. Tests fortalecidos bilateralmente: fila congelada exacta, salida ASCII, primalidad por división de prueba, multiplicidades [2,1,1], producto exacto y endpoint HTTP Plus.
+- Lite SHA `1004174a0cd6ad29c9b252097f2664175c277918`: Cumulative 42292655779 SUCCESS (focal 4/4; 2,267 passed); CI 42292655724 SUCCESS (focal 4/4); H1d 42292655725 SUCCESS (22/22); Scientific UI 42292655744 SUCCESS (456/456 desktop/tablet/mobile). Los gates de Lite están completos.
+- Plus SHA corregido `534e5f208cb5986794f3c2aea8b3056fb9d30e7f`: Cumulative 42293287002 SUCCESS; focal B29 3/3 PASS; guard `skip=false`, `evidence_run_id` vacío; backend 2,808 passed, 1 skipped, 10 xfailed. Cumulative frontend/backend SUCCESS.
+- Plus H1d 42293286948 sigue IN_PROGRESS en instalación de Chromium; Plus CI 42293286925 sigue IN_PROGRESS en Backend tests (frontend SUCCESS). No se acredita el primer SHA `4fac5e5…`: su fallo era solo el AST auxiliar del test interpretando `^` como XOR. Corregido en el SHA actual, sin tocar el motor.
+- No declarar B29 PASS bilateral ni avanzar a B30 hasta que Plus H1d y CI terminen SUCCESS y se revisen sus logs/guards. Último baseline: AS-B-28 PASS_SCOPED; global OPEN.
+
+---
 # Actualización de certificación — 2026-11-06 UTC (r445)
 
 ## Algebra229 AS-B-29 — WAIT (revalidación bilateral pendiente)
