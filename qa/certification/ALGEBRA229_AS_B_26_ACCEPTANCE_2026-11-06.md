@@ -4,12 +4,12 @@
 
 ## Contrato congelado
 - AS-B-26, N2, `factorizar`.
-- Entrada original: `\\text{factorizar el entero }360`.
-- Salida original: `2^{3}\\cdot 3^{2}\\cdot 5`.
+- Entrada original: `\text{factorizar el entero }360`.
+- Salida original: `2^{3}\cdot 3^{2}\cdot 5`.
 - Forma ASCII esperada del motor: `2^3*3^2*5`.
 
 ## Pruebas y oráculos
-- Lite `tests/algebra229AsB26.audit.test.ts`: 4/4 PASS. Comprueba las ocho celdas de la fila congelada, forma ASCII exacta, factorización independiente por división de prueba (`[(2,3),(3,2),(5,1)]), verificando además que el producto sea 360) y equivalencia simbólica con 360.
+- Lite `tests/algebra229AsB26.audit.test.ts`: 4/4 PASS. Comprueba las ocho celdas de la fila congelada, forma ASCII exacta, factorización independiente por división de prueba (`[(2,3),(3,2),(5,1)]`, verificando además que el producto sea 360) y equivalencia simbólica con 360.
 - Plus `backend/tests/test_algebra229_as_b26.py`: 3/3 PASS. Comprueba fila fuente exacta, endpoint HTTP `POST /api/v1/factor`, forma ASCII exacta, división de prueba independiente con bases primas/multiplicidades exactas y evaluación entera mediante AST restringido (sin `eval`).
 
 ## Evidencia Lite — SHA técnico `26cc8cc69d32e4a5614dc9921a87030308f9cdd1`
@@ -32,4 +32,4 @@
 
 La aceptación es **PASS_SCOPED bilateral**. SG28/H2/DIST, SECURITY-S25 y los demás gaps independientes permanecen abiertos; global **OPEN**.
 
-Siguiente: AS-B-27, `\\text{factorizar el entero }1001` → `7\\cdot 11\\cdot 13` (N2). Global **OPEN**.
+Siguiente: AS-B-27, `\text{factorizar el entero }1001` → `7\cdot 11\cdot 13` (N2). Global **OPEN**.
