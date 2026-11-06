@@ -1,3 +1,17 @@
+# Actualización de certificación — 2026-11-06 UTC (r402)
+
+## Algebra229 AS-B-03 — falso negativo del oráculo Plus corregido; re-ejecución / WAIT
+
+- **Lite** SHA `fe78fd9a1061a66f5f0a05280ed65fea13cefa30`: acumulativo [42136026980](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136026980) SUCCESS (guard false, B03 2/2, 366 archivos / 2,259 passed); H1d [42136027012](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136027012) SUCCESS (22/22); Runner [42136027069](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136027069) SUCCESS. Scientific UI [42136027006](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136027006) IN_PROGRESS. CI [42136026913](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136026913) FAILURE solo npm audit (4 moderadas; artifact 13466271200).
+- **Plus primer intento** SHA `300bdede38cf5f58e8f47a59ff20a83dd4389dfe`; el test de fila exacta pasó, pero `test_as_b03_factor_difference_of_cubes_http_and_independent_integer_oracle` falló en la sustitución `x=-7`: el evaluador AST insertaba `-7` sin paréntesis, y Python interpretaba `-7**2` como `-(7**2)`. Observado: `531`; esperado: `-351`; el resultado HTTP era la factorización correcta `(x-2)(x^2+2x+4)`. Clasificación: **HARNESS/ORACLE precedence false negative**, no producto.
+- **Plus corrección** SHA `e4122f5fc2f88073feabd89df3f9b0660065dcfb`; test `backend/tests/test_algebra229_as_b03.py`, blob `cae8d5e4023bffc6dc11f901a1e134bdfaa11b3d`. La sustitución ahora envuelve cada entero como `(x_value)`, preservando la precedencia. La nueva validación se activó por push:
+  - Cumulative [42136796602](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136796602)
+  - H1d [42136796500](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136796500)
+  - CI [42136796498](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136796498)
+  - Runner [42136796513](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136796513) SUCCESS.
+- Los runs Plus anteriores [42136032221](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136032221) cumulative y [42136032313](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136032313) CI backend fallaron por el mismo falso negativo; H1d [42136032228](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136032228) SUCCESS (38), Runner [42136032220](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136032220) SUCCESS. No se acepta con esos intentos.
+- **Siguiente paso exacto:** revisar los nuevos cuatro runs Plus sobre el SHA corregido y Scientific UI Lite; verificar focales, guard `skip=false`, logs y conteos. Aceptar AS-B-03 solamente con todos los gates requeridos concluidos satisfactoriamente. Global certification **OPEN**.
+
 # Actualización de certificación — 2026-11-06 UTC (r401)
 
 ## Algebra229 AS-B-03 — TEST-FIRST / WAIT; resultados parciales confirmados
