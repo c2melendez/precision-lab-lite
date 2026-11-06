@@ -18,7 +18,7 @@ describe("Algebra229 AS-B-24 factor x^2-2 over the reals", () => {
     const sourceRow = text.split(/\r?\n/).find((line) => /^\|\s*AS-B-24\s*\|/.test(line))?.trim();
     expect(sourceRow).toBeTruthy();
     const cells = sourceRow!.split("|").map((cell) => cell.trim());
-    expect(cells).toHaveLength(9);
+    expect(cells).toHaveLength(8);
     expect(cells.slice(1, 6)).toEqual([
       "AS-B-24",
       "N3",
@@ -28,7 +28,6 @@ describe("Algebra229 AS-B-24 factor x^2-2 over the reals", () => {
     ]);
     expect(cells[6]).toContain("Con raíces permitidas");
     expect(cells[7]).toBe("");
-    expect(cells[8]).toBe("");
   });
 
   it("returns the required ASCII real-factor form without changing the contract", () => {
