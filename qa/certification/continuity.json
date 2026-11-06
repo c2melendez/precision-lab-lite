@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 438,
+  "revision": 439,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "dbea0c0e5aea6701d327d82ebedb8507fea7bb33",
@@ -40,10 +40,10 @@
   },
   "next_action": {
     "id": "ALGEBRA229-AS-B-26-TEST-FIRST",
-    "status": "READY",
+    "status": "WAIT",
     "previous_id": "ALGEBRA229-AS-B-25-TEST-FIRST",
-    "action": "AS-B-26 N2: factorizar el entero 360 -> 2^3*3^2*5. Test-first bilateral: verificar los siete campos semánticos exactos de la fila congelada (entrada \\text{factorizar el entero }360 y salida 2^{3}\\cdot 3^{2}\\cdot 5), forma ASCII exacta, HTTP Plus, y oráculo independiente por división de prueba que compruebe bases primas, multiplicidades [2^3,3^2,5] y producto 360. Gates: Plus cumulative+H1d; Lite cumulative+H1d+Scientific UI.",
-    "updated_utc": "2026-11-06T18:16:00Z"
+    "action": "AS-B-26: factorizar 360 -> 2^3*3^2*5. Test-first ya publicado en ambos productos; pruebas focales y gates exact-SHA en curso. Lite SHA 26cc8cc69d32e4a5614dc9921a87030308f9cdd1: Cumulative 42270957296 SUCCESS (focal 4/4, 2,264 passed); H1d 42270957306 SUCCESS (22/22); CI 42270957315 SUCCESS; Scientific UI 42270957389 IN_PROGRESS (job 128075078138); Runner 42270957317 SUCCESS. Plus SHA ef97ca2a23324d2512f4f26585ad51f421d316ff: Cumulative 42271188323 IN_PROGRESS (backend job 128075870922); CI 42271188505 IN_PROGRESS (backend job 128075871815); H1d 42271188301 SUCCESS (38/38); Runner 42271188377 SUCCESS. Plus SHA anterior be31d726... es obsoleto tras corregir raw-string del fixture y no es evidencia de aceptación. Esperar gates activos, comprobar focales y logs; no repetir ni declarar PASS todavía.",
+    "updated_utc": "2026-11-06T18:33:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
