@@ -1,3 +1,9 @@
+## 2026-11-06 UTC — r416: AS-B-17 PASS_SCOPED bilateral
+
+- Lite SHA `47b381c81f899dd9f5e3a073b4de6cd726ccda1c` (test reforzado de AS-B-17): cumulative 42197934523 SUCCESS (focal 2/2 PASSED; 2,259 passed), H1d 42197934472 SUCCESS, Scientific UI 42197934467 SUCCESS, Runner 42197934461 SUCCESS, CI 42197934400 SUCCESS.
+- Plus SHA `5d3df39fbfb19bc209b47f5f5bedb02a7212c19a`: cumulative 42197922106 SUCCESS (focal 2/2 PASSED), H1d 42197922135, CI 42197922387, Runner 42197922120 SUCCESS.
+- Sin cambio de producto; el reforzado pasó sin fase roja. Acceptance `ALGEBRA229_AS_B_17_ACCEPTANCE_2026-11-06.md`. Siguiente AS-B-18 `x^8-1`. Global OPEN.
+
 ## 2026-11-06 UTC — r415: Algebra229 AS-B-16 PASS_SCOPED bilateral
 
 - Evidencia Lite `e2007be5` (Cumulative 42194172938, focal 2/2) y Plus `481cb08` (Cumulative 42159166321, focal 2/2). Sin cambio de producto; no hubo fase roja porque el test ya pasaba.

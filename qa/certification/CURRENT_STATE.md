@@ -1,4 +1,13 @@
-# Actualización de certificación — 2026-11-06 UTC (r415)
+# Actualización de certificación — 2026-11-06 UTC (r416)
+
+## Algebra229 AS-B-17 — PASS_SCOPED bilateral (r416)
+
+- Plus HEAD técnico `5d3df39fbfb19bc209b47f5f5bedb02a7212c19a` (test reforzado): Cumulative 42197922106 con focal 2/2 PASS; H1d 42197922135, CI 42197922387 y Runner 42197922120 SUCCESS.
+- Lite HEAD técnico `47b381c81f899dd9f5e3a073b4de6cd726ccda1c` (test reforzado): Cumulative 42197934523 con focal 2/2 PASS; H1d 42197934472, Scientific UI 42197934467, Runner 42197934461 y CI 42197934400 SUCCESS.
+- Acceptance: `ALGEBRA229_AS_B_17_ACCEPTANCE_2026-11-06.md`. Sin cambio de producto.
+- **Siguiente:** AS-B-18 `x^8-1` → `(x-1)(x+1)(x^2+1)(x^4+1)`. Global **OPEN**.
+
+---
 
 ## Dependencias de auditoría Lite — r414
 
@@ -15,3 +24,4 @@
 - Evidencia de ejecución del focal: Lite `e2007be5` Cumulative `42194172938`, focal 2/2 PASS (vitest). Plus `481cb08` Cumulative `42159166321`, focal 2/2 PASS (pytest).
 - Acceptance: `ALGEBRA229_AS_B_16_ACCEPTANCE_2026-11-06.md`.
 - **Siguiente:** AS-B-17 `a^3+b^3` → `(a+b)(a^2-ab+b^2)`. Test presente en ambos motores y pasa localmente; falta evidencia CI del mismo SHA. Global **OPEN**.
+
