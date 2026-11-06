@@ -1,3 +1,10 @@
+## 2026-11-06 UTC — r447: AS-B-29 Lite gates PASS; Plus Cumulative+CI PASS; H1d WAIT
+
+**AS-B-29 todavía no está aceptado bilateralmente; resta Plus H1d.** Lite SHA `1004174a0cd6ad29c9b252097f2664175c277918`: [Cumulative 42292655779](https://github.com/c2melendez/precision-lab-lite/actions/runs/42292655779) SUCCESS (focal 4/4; 2,267 passed), [CI 42292655724](https://github.com/c2melendez/precision-lab-lite/actions/runs/42292655724) SUCCESS (focal 4/4), [H1d 42292655725](https://github.com/c2melendez/precision-lab-lite/actions/runs/42292655725) SUCCESS (22/22), [Scientific UI 42292655744](https://github.com/c2melendez/precision-lab-lite/actions/runs/42292655744) SUCCESS (456/456).
+
+Plus corrected SHA `534e5f208cb5986794f3c2aea8b3056fb9d30e7f`: [Cumulative 42293287002](https://github.com/c2melendez/precision-lab-plus/actions/runs/42293287002) SUCCESS (focal 3/3; backend 2,808 passed, 1 skipped, 10 xfailed); [CI 42293286925](https://github.com/c2melendez/precision-lab-plus/actions/runs/42293286925) SUCCESS (backend 2,808 passed, 1 skipped, 10 xfailed; coverage 88.88%). [H1d 42293286948](https://github.com/c2melendez/precision-lab-plus/actions/runs/42293286948) continúa IN_PROGRESS en instalación de Chromium.
+
+La corrección AST fue solo en el test: Python parseaba `^` como XOR. El SHA corregido pasa los oráculos focales de B29. Falta Plus H1d con Playwright 38/38 y guard sin REUSE. B29 **WAIT**. Baseline B28 PASS_SCOPED. Global **OPEN**.
 ## 2026-11-06 UTC — r446: AS-B-29 Lite gates PASS; Plus Cumulative PASS; H1d/CI WAIT
 
 **AS-B-29 todavía no está aceptado bilateralmente.** Lite SHA `1004174a0cd6ad29c9b252097f2664175c277918`: [Cumulative 42292655779](https://github.com/c2melendez/precision-lab-lite/actions/runs/42292655779) SUCCESS (focal 4/4; 2,267 passed), [CI 42292655724](https://github.com/c2melendez/precision-lab-lite/actions/runs/42292655724) SUCCESS (focal 4/4), [H1d 42292655725](https://github.com/c2melendez/precision-lab-lite/actions/runs/42292655725) SUCCESS (22/22), [Scientific UI 42292655744](https://github.com/c2melendez/precision-lab-lite/actions/runs/42292655744) SUCCESS (456/456).
