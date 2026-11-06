@@ -1,3 +1,9 @@
+## 2026-11-06 — npm audit sigue bloqueando el CI estándar durante AS-B-02
+
+- CI Lite [42135018389](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018389) vuelve a terminar en `npm audit --package-lock-only` con los mismos cuatro hallazgos moderados; artifact `lite-npm-audit` ID `13465385686`.
+- No se trata de un fallo de la nueva fila AS-B-02: su acumulativo independiente ejecutó 2,259 tests, incluyendo los dos focales; typecheck y build del acumulativo se mantienen como gates separados.
+- El umbral permanece intacto. No se ejecutó `npm audit fix --force` ni se modificaron dependencias. PR #62 sigue en Draft y su rama está 60 commits detrás; no es una remediación reutilizable hasta rebase y revalidación.
+
 ## 2026-11-06 — PR #62 Workbox glob candidate remains stale
 
 - El hard gate continúa reportando cuatro vulnerabilidades moderadas en CI estándar; último ejemplo: Lite AS-B-02 CI run 42135018389, artifact `lite-npm-audit` ID `13465385686`. No se cambió el umbral ni se aplicó `npm audit fix --force`.
