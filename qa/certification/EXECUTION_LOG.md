@@ -1,3 +1,8 @@
+## 2026-11-06 UTC — r415: Algebra229 AS-B-16 PASS_SCOPED bilateral
+
+- Evidencia Lite `e2007be5` (Cumulative 42194172938, focal 2/2) y Plus `481cb08` (Cumulative 42159166321, focal 2/2). Sin cambio de producto; no hubo fase roja porque el test ya pasaba.
+- Acceptance `ALGEBRA229_AS_B_16_ACCEPTANCE_2026-11-06.md`. Siguiente AS-B-17 `a^3+b^3`. Global OPEN.
+
 ## 2026-11-06 UTC — r414: dependencias de auditoría Lite y AS-B-16 en verificación
 
 - Lite SHA técnico `e2007be51f848a33e0b9881dff3c6a2689991672` (`build(deps): override glob and minimatch to clear npm audit`): sólo `package.json` y `package-lock.json`. `overrides` añadidos: `glob ^14.0.4`, `minimatch ^11.0.5`; `vite-plugin-pwa` 1.3.0 se mantiene. Se descartó subir a 2.0.0 porque la cadena `workbox-build` → `glob`/`minimatch` sigue vulnerable.

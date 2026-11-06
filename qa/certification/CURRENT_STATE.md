@@ -1,4 +1,4 @@
-# Actualización de certificación — 2026-11-06 UTC (r414)
+# Actualización de certificación — 2026-11-06 UTC (r415)
 
 ## Dependencias de auditoría Lite — r414
 
@@ -8,9 +8,10 @@
 - Auditoría: 0 vulnerabilidades (antes 4 moderadas). Typecheck y build de producción con `sw.js` generado: OK.
 - Riesgo registrado, no bloqueo: 4 pruebas pesadas de álgebra (AS-FAC-08/09, AS-B-06/18) exceden el timeout de 5 s en entorno local, igual que en el HEAD previo. En CI del SHA `e2007be5` pasaron.
 
-## Algebra229 AS-B-16 — en verificación
+## Algebra229 AS-B-16 — PASS_SCOPED bilateral (r415)
 
 - Tests presentes: Lite `tests/algebra229AsB16.audit.test.ts`; Plus `backend/tests/test_algebra229_as_b16.py`.
 - Sin cambio de producto: ambos motores ya factorizan `a^3-b^3` como `(a-b)(a^2+ab+b^2)`.
 - Evidencia de ejecución del focal: Lite `e2007be5` Cumulative `42194172938`, focal 2/2 PASS (vitest). Plus `481cb08` Cumulative `42159166321`, focal 2/2 PASS (pytest).
-- Siguiente: acceptance `ALGEBRA229_AS_B_16` PASS_SCOPED bilateral y después el siguiente bloque. Global **OPEN**.
+- Acceptance: `ALGEBRA229_AS_B_16_ACCEPTANCE_2026-11-06.md`.
+- **Siguiente:** AS-B-17 `a^3+b^3` → `(a+b)(a^2-ab+b^2)`. Test presente en ambos motores y pasa localmente; falta evidencia CI del mismo SHA. Global **OPEN**.

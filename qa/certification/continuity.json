@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 414,
+  "revision": 415,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "e2007be51f848a33e0b9881dff3c6a2689991672",
-  "baseline_case": "ALGEBRA229-AS-B-15",
+  "baseline_case": "ALGEBRA229-AS-B-16",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-16-TEST-FIRST",
-    "status": "IN_PROGRESS",
-    "previous_id": "ALGEBRA229-AS-B-15-TEST-FIRST",
-    "action": "AS-B-16 a^3-b^3 -> (a-b)(a^2+ab+b^2): test ya presente en Lite y Plus, pasa sin cambio de producto. Pendiente: acceptance PASS_SCOPED bilateral con evidencia del mismo SHA, luego siguiente bloque. Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d.",
-    "updated_utc": "2026-11-06T09:40:00Z"
+    "id": "ALGEBRA229-AS-B-17-TEST-FIRST",
+    "status": "READY",
+    "previous_id": "ALGEBRA229-AS-B-16-TEST-FIRST",
+    "action": "AS-B-17 a^3+b^3 -> (a+b)(a^2-ab+b^2). Test presente en Lite y Plus; pasa localmente en ambos motores. Pendiente: evidencia CI del mismo SHA y acceptance. Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d.",
+    "updated_utc": "2026-11-06T09:50:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
