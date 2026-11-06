@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 398,
+  "revision": 399,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "4a5bb09703c527a0ddd68a33749fc228748d2060",
@@ -42,8 +42,8 @@
     "id": "ALGEBRA229-AS-B-02-TEST-FIRST",
     "status": "WAIT",
     "previous_id": "ALGEBRA229-AS-B-01-TEST-FIRST",
-    "action": "Lite cumulative 42135018417 SUCCESS (skip=false, 2 focales/2259; 366 archivos), H1d 42135018449 SUCCESS (22); Scientific UI 42135018517 IN_PROGRESS; CI 42135018389 FAILURE npm audit (4 moderadas; artifact 13465385686); Runner 42135018349 SUCCESS. AS-B-02 sigue WAIT. Revisar el job Scientific UI Lite y los backend jobs acumulativo/CI Plus, obtener logs focales, confirmar guard skip=false y resumen completo; aceptar solo al completar los gates pertinentes.",
-    "updated_utc": "2026-11-06T00:15:00Z"
+    "action": "AS-B-02 Lite cumulative 42135018417 SUCCESS (B02 2/2, 2259 passed, skip=false), H1d 42135018449 SUCCESS (22), Runner 42135018349 SUCCESS; Scientific UI 42135018517 IN_PROGRESS; CI 42135018389 FAILURE solo audit (4 moderadas). Plus cumulative 42135022942 SUCCESS (B02 focales PASSED, 2800 backend passed/1 skipped/10 xfailed/88.93%, frontend 1055), H1d 42135022812 SUCCESS (38), Runner 42135022814 SUCCESS; CI 42135022746 frontend SUCCESS (1055), backend IN_PROGRESS. Esperar Scientific UI Lite y CI backend Plus, revisar logs y concluir los gates antes de aceptar B02.",
+    "updated_utc": "2026-11-06T00:17:00Z"
   },
   "blockers": [
     {
