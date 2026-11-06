@@ -1,3 +1,12 @@
+## 2026-11-06 UTC — r403: AS-B-03 PASS_SCOPED bilateral; AS-B-04 TEST-FIRST / WAIT
+
+- AS-B-03 Lite SHA fe78fd9a1061a66f5f0a05280ed65fea13cefa30: cumulative 42136026980 SUCCESS (2 focales/2259, 366 files; guard false), H1d 42136027012 SUCCESS (22), Scientific UI 42136027006 SUCCESS (456 desktop/tablet/mobile), Runner 42136027069 SUCCESS; CI 42136026913 FAILURE solo npm audit (4 moderadas).
+- AS-B-03 Plus SHA corregido e4122f5fc2f88073feabd89df3f9b0660065dcfb: cumulative 42136796602 SUCCESS (ambos focales PASSED; 2800 backend/1 skipped/10 xfailed; 88.88%), H1d 42136796500 SUCCESS (38), CI 42136796498 SUCCESS (2800 backend/1055 frontend), Runner 42136796513 SUCCESS. El intento anterior falló por precedencia Python al sustituir x negativo sin paréntesis; se corrigió en el harness, no en el motor.
+- Acceptance `ALGEBRA229_AS_B_03_ACCEPTANCE_2026-11-06.md` creada bilateral. B03 PASS_SCOPED bilateral.
+- AS-B-04 tests reforzados: Lite SHA 8229e0961b4bae6d0f7dbd07d3521939a76bf508, blob be56ddb3ecd74ced31d237cd854fb81bfabd2e4a; Plus SHA 54a7963d47e020b35ea5a3cde75379953d513742, blob cb8ba0d07c9a31a13123f3d16e9115d31b8b1e13. Fuente fila exacta, HTTP/estructura en Plus y 10 sustituciones enteras independientes.
+- Lite B04: cumulative 42137517887 SUCCESS (skip=false, 2 focales/2259), H1d 42137518068 SUCCESS (22), Runner 42137517842 SUCCESS; Scientific UI 42137517759 IN_PROGRESS; CI 42137518118 FAILURE solo npm audit (4 moderadas, artifact 13465288525).
+- Plus B04: cumulative 42137523357 frontend SUCCESS/1055 y backend IN_PROGRESS; H1d 42137523360 SUCCESS/38; CI 42137523336 frontend SUCCESS/1055 y backend IN_PROGRESS; Runner 42137523341 SUCCESS.
+- B04 sigue WAIT hasta completar Scientific UI Lite y backend cumulative/CI Plus. Global OPEN.
 ## 2026-11-06 UTC — r402: AS-B-03 oráculo AST Plus corregido y re-ejecución
 
 - Lite SHA `fe78fd9a1061a66f5f0a05280ed65fea13cefa30`: cumulative 42136026980 SUCCESS (skip=false, B03 2/2; 2,259 passed / 366 files), H1d 42136027012 SUCCESS (22), Runner 42136027069 SUCCESS. Scientific UI 42136027006 IN_PROGRESS; CI 42136026913 FAILURE solo npm audit (4 moderadas; artifact 13466271200).
