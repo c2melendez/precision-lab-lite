@@ -1,3 +1,8 @@
+## 2026-11-06 UTC — r399: AS-B-02 cumulative gates PASS; UI Lite / CI backend Plus pending
+
+- Lite SHA `4a5bb09703c527a0ddd68a33749fc228748d2060`: cumulative 42135018417 SUCCESS (skip=false; B02 2/2; 366 files / 2,259 passed), H1d 42135018449 SUCCESS (22), Runner 42135018349 SUCCESS. Scientific UI 42135018517 IN_PROGRESS; CI 42135018389 FAILURE solo npm audit 4 moderadas (artifact 13465385686).
+- Plus SHA `e8bbb528bdf1d70ee8acd947c8e58144ad07d3a6`: cumulative 42135022942 SUCCESS (skip=false; ambos B02 focales PASSED; 2,800 passed / 1 skipped / 10 xfailed; 88.93%; frontend 1,055 passed); H1d 42135022812 SUCCESS (38), Runner 42135022814 SUCCESS. CI 42135022746 frontend SUCCESS (1,055), backend IN_PROGRESS.
+- AS-B-02 sigue WAIT hasta que finalicen Scientific UI Lite y backend CI Plus; no se declara aceptación parcial.
 ## 2026-11-06 UTC — r398: reconciliación parcial AS-B-02
 
 - Lite B02 SHA 4a5bb09703c527a0ddd68a33749fc228748d2060: acumulativo 42135018417 SUCCESS (skip=false, 2 focales/2259; 366 archivos), H1d 42135018449 SUCCESS (22). Scientific UI 42135018517 sigue IN_PROGRESS; CI 42135018389 FAILURE solo npm audit (4 moderadas, artifact 13465385686); Runner 42135018349 SUCCESS.
