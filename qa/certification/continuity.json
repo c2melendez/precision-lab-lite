@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 401,
+  "revision": 402,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "fe78fd9a1061a66f5f0a05280ed65fea13cefa30",
@@ -42,8 +42,8 @@
     "id": "ALGEBRA229-AS-B-03-TEST-FIRST",
     "status": "WAIT",
     "previous_id": "ALGEBRA229-AS-B-02-TEST-FIRST",
-    "action": "AS-B-03 Lite SHA fe78fd9a1061a66f5f0a05280ed65fea13cefa30 cumulative 42136026980 SUCCESS (2 focales/2259; skip=false), H1d 42136027012 SUCCESS (22), Runner 42136027069 SUCCESS; Scientific UI 42136027006 IN_PROGRESS en Install Chromium; CI 42136026913 FAILURE solo npm audit 4 moderadas (artifact 13466271200). Plus SHA 300bdede38cf5f58e8f47a59ff20a83dd4389dfe H1d 42136032228 SUCCESS (38), Runner 42136032220 SUCCESS; cumulative 42136032221 frontend SUCCESS/1055, backend IN_PROGRESS; CI 42136032313 frontend SUCCESS/1055, backend IN_PROGRESS. Esperar Scientific UI Lite y backend cumulative/CI Plus, revisar logs y focales antes de aceptar.",
-    "updated_utc": "2026-11-06T00:22:00Z"
+    "action": "AS-B-03 Plus primer SHA 300bdede38cf5f58e8f47a59ff20a83dd4389dfe: HTTP regresó (x-2)(x²+2x+4) correcto, fila fuente PASSED; la prueba numérica falló por oráculo AST con sustitución negativa sin paréntesis (-7**2 interpretado como -(7**2), 531 vs -351). HARNESS/ORACLE false negative, no producto. Fix Plus SHA e4122f5fc2f88073feabd89df3f9b0660065dcfb, blob cae8d5e4023bffc6dc11f901a1e134bdfaa11b3d: nueva sustitución parentizada. Nuevos Plus cumulative 42136796602, H1d 42136796500, CI 42136796498; Runner 42136796513 SUCCESS. Lite SHA fe78fd9a1061a66f5f0a05280ed65fea13cefa30 cumulative 42136026980 SUCCESS (2 focales/2259), H1d 42136027012 SUCCESS (22), Runner 42136027069 SUCCESS; Scientific UI 42136027006 IN_PROGRESS; CI 42136026913 FAILURE solo npm audit 4 moderadas (artifact 13466271200). Revisar nuevas corridas Plus y Scientific UI Lite antes de aceptación.",
+    "updated_utc": "2026-11-06T00:26:00Z"
   },
   "blockers": [
     {
