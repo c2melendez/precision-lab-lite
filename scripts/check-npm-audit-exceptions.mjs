@@ -2,9 +2,29 @@ import { readFileSync } from "node:fs";
 
 const audit = JSON.parse(readFileSync("npm-audit.json", "utf8"));
 const lock = JSON.parse(readFileSync("package-lock.json", "utf8"));
-const vulnerabilities = audit.vulnerabilities ?? {};
+
+if (
+  audit.auditReportVersion !== 2 ||
+  !audit.metadata?.vulnerabilities ||
+  !audit.metadata?.dependencies ||
+  !audit.vulnerabilities ||
+  typeof audit.vulnerabilities !== "object" ||
+  audit.error
+) {
+  process.stderr.write(
+    "npm audit did not produce a complete v2 report; an incomplete/failed audit cannot pass CI.\n",
+  );
+  process.exit(1);
+}
+
+const vulnerabilities = audit.vulnerabilities;
 const names = Object.keys(vulnerabilities).sort();
-const total = audit.metadata?.vulnerabilities?.total ?? names.length;
+const total = audit.metadata.vulnerabilities.total;
+
+if (!Number.isInteger(total) || total < 0) {
+  process.stderr.write("npm audit returned an invalid vulnerability total.\n");
+  process.exit(1);
+}
 
 if (total === 0 && names.length === 0) {
   process.stdout.write("Full dependency audit: no vulnerabilities reported.\n");
