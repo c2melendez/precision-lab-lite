@@ -1,3 +1,21 @@
+# Actualización de certificación — 2026-11-06 UTC (r403)
+
+## Algebra229 AS-B-03 — PASS_SCOPED bilateral; AS-B-04 TEST-FIRST / WAIT
+
+- **AS-B-03 Lite** — SHA `fe78fd9a1061a66f5f0a05280ed65fea13cefa30`; test blob `e02c7c16db2b014685ab8ff28f876c70b5a8fb54`. Acumulativo [42136026980](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136026980) SUCCESS (guard false, 2 focales/2,259; 366 archivos); H1d [42136027012](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136027012) SUCCESS (22); Scientific UI [42136027006](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136027006) SUCCESS (456 desktop/tablet/mobile); Runner [42136027069](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136027069) SUCCESS. CI [42136026913](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136026913) FAILURE solo npm audit (4 moderadas; artifact 13466271200).
+- **AS-B-03 Plus** — primer SHA `300bdede38cf5f58e8f47a59ff20a83dd4389dfe` falló por sustitución negativa sin paréntesis en el oráculo AST (531 frente a -351 para x=-7), no por producto. Corrección parentizada en SHA `e4122f5fc2f88073feabd89df3f9b0660065dcfb`; test blob `cae8d5e4023bffc6dc11f901a1e134bdfaa11b3d`. Acumulativo [42136796602](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136796602) SUCCESS (ambos focales PASSED, 2,800 passed/1 skipped/10 xfailed, 88.88%); H1d [42136796500](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136796500) SUCCESS (38); CI [42136796498](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136796498) SUCCESS (2,800 backend/1,055 frontend); Runner [42136796513](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136796513) SUCCESS.
+- **Decisión AS-B-03:** PASS_SCOPED bilateral. Acceptance `ALGEBRA229_AS_B_03_ACCEPTANCE_2026-11-06.md` creada en ambos repositorios. El false negative del oráculo queda documentado; no hubo cambio de producto.
+
+## AS-B-04 — TEST-FIRST reforzado; gates en curso
+
+- Fila: suma de cubos (x^3+27=(x+3)(x^2-3x+9)), fixture congelado SHA-256 `8cd36ff08343f98f92abd83e2b162d565e0cbe5c59dc73f26b1c018f77d663c7`.
+- Lite: SHA `8229e0961b4bae6d0f7dbd07d3521939a76bf508`; test `tests/algebra229AsB04.audit.test.ts`, blob `be56ddb3ecd74ced31d237cd854fb81bfabd2e4a`. Valida seis celdas exactas y diez sustituciones enteras con `compileNumeric`.
+- Plus: SHA `54a7963d47e020b35ea5a3cde75379953d513742`; test `backend/tests/test_algebra229_as_b04.py`, blob `cb8ba0d07c9a31a13123f3d16e9115d31b8b1e13`. Valida fila, HTTP `POST /api/v1/factor`, grados 1/2, discriminante del cuadrático negativo y diez sustituciones con AST/aritmética entera independiente.
+- Runs push automáticos:
+  - Lite cumulative [42137517887](https://github.com/c2melendez/precision-lab-lite/actions/runs/42137517887) SUCCESS (2 focales/2,259; skip=false), H1d [42137518068](https://github.com/c2melendez/precision-lab-lite/actions/runs/42137518068) SUCCESS (22), Scientific UI [42137517759](https://github.com/c2melendez/precision-lab-lite/actions/runs/42137517759) IN_PROGRESS, CI [42137518118](https://github.com/c2melendez/precision-lab-lite/actions/runs/42137518118) FAILURE solo npm audit (4 moderadas, artifact 13465288525), Runner [42137517842](https://github.com/c2melendez/precision-lab-lite/actions/runs/42137517842) SUCCESS.
+  - Plus cumulative [42137523357](https://github.com/c2melendez/precision-lab-plus/actions/runs/42137523357) backend IN_PROGRESS / frontend SUCCESS (1,055); H1d [42137523360](https://github.com/c2melendez/precision-lab-plus/actions/runs/42137523360) SUCCESS (38); CI [42137523336](https://github.com/c2melendez/precision-lab-plus/actions/runs/42137523336) backend IN_PROGRESS / frontend SUCCESS (1,055); Runner [42137523341](https://github.com/c2melendez/precision-lab-plus/actions/runs/42137523341) SUCCESS.
+- Siguiente paso: revisar los focales y logs de los jobs restantes de B04; no aceptar hasta finalizar Scientific UI Lite y backend acumulativo/CI Plus. Global certification **OPEN**.
+
 # Actualización de certificación — 2026-11-06 UTC (r402)
 
 ## Algebra229 AS-B-03 — falso negativo del oráculo Plus corregido; re-ejecución / WAIT
