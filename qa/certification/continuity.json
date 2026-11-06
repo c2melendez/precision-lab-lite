@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 396,
+  "revision": 397,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "7e21f3f9d9bebaab2741a76f4cc533992e56d76a",
-  "baseline_case": "ALGEBRA229-AS-A-17",
+  "technical_baseline_sha": "4a5bb09703c527a0ddd68a33749fc228748d2060",
+  "baseline_case": "ALGEBRA229-AS-B-01",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-01-TEST-FIRST",
+    "id": "ALGEBRA229-AS-B-02-TEST-FIRST",
     "status": "WAIT",
-    "previous_id": "ALGEBRA229-AS-A-17-TEST-FIRST",
-    "action": "AS-B-01: Lite SHA 7e21f3f9d9bebaab2741a76f4cc533992e56d76a cumulative 42134131999 SUCCESS (2 focales/2259), H1d 42134131938 SUCCESS (22), Runner 42134131871 SUCCESS; Scientific UI 42134132036 IN_PROGRESS, job 127617846312; CI 42134131960 FAILURE solo npm audit (4 moderadas, artifact 13464163830). Plus SHA eb3a45c4b0ae68ff3d8da440b434c27098cf69c1 cumulative 42133788691 SUCCESS (2 focales, 2800 passed/1 skipped/10 xfailed, 88.91%), H1d 42133788792 SUCCESS (38), CI 42133788642 SUCCESS (2800 backend/1055 frontend), Runner 42133788643 SUCCESS. Esperar el job Scientific UI Lite. Al SUCCESS, registrar aceptación scoped y empezar AS-B-02; si falla, diagnosticar antes de aceptar.",
-    "updated_utc": "2026-11-06T00:09:00Z"
+    "previous_id": "ALGEBRA229-AS-B-01-TEST-FIRST",
+    "action": "AS-B-01 PASS_SCOPED bilateral. Lite SHA 7e21f3f9d9bebaab2741a76f4cc533992e56d76a: cumulative 42134131999 SUCCESS (2 focales/2259), H1d 42134131938 SUCCESS (22), Scientific UI 42134132036 SUCCESS (456 desktop/tablet/mobile), Runner 42134131871 SUCCESS; CI 42134131960 FAILURE solo npm audit (4 moderadas, artifact 13464163830). Plus SHA eb3a45c4b0ae68ff3d8da440b434c27098cf69c1: cumulative 42133788691 SUCCESS (2 focales, 2800 passed/1 skipped/10 xfailed), H1d 42133788792 SUCCESS (38), CI 42133788642 SUCCESS (2800 backend/1055 frontend), Runner 42133788643 SUCCESS. AS-B-02 tests reforzados en Lite SHA 4a5bb09703c527a0ddd68a33749fc228748d2060 (blob 38f2aed6e2830c3fb2849d5adc6f0e72109bd8a0) y Plus SHA e8bbb528bdf1d70ee8acd947c8e58144ad07d3a6 (blob e6a56a899f4a62f32b483debe3959fca99c29594). Runs push detectados Lite cumulative 42135018417, H1d 42135018449, Scientific 42135018517, CI 42135018389, Runner 42135018349; Plus cumulative 42135022942, H1d 42135022812, CI 42135022746, Runner 42135022814. Revisar focales, guard skip=false, resumen, jobs/logs; aceptar solo si gates pertinentes pasan.",
+    "updated_utc": "2026-11-06T00:10:00Z"
   },
   "blockers": [
     {
