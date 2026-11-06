@@ -1,3 +1,10 @@
+## 2026-11-06 UTC — r438: Algebra229 AS-B-25 PASS_SCOPED bilateral
+
+- Lite SHA `dbea0c0e5aea6701d327d82ebedb8507fea7bb33`: Cumulative 42224254086 SUCCESS (focal 5/5, 366/366, 2,263 passed, 8 expected fail, 34 TODO); CI 42224254124 SUCCESS (focal 5/5, npm audit 0); H1d 42224254222 SUCCESS (22/22); Scientific UI 42224254152 SUCCESS (456/456 desktop/tablet/mobile).
+- Plus SHA `1da7ecac06ab65c7d377af33ee88479ef6218e9a`: Cumulative 42224279552 SUCCESS (focal 4/4, backend 2,804 passed, 1 skipped, 10 xfailed); CI 42224279542 SUCCESS; H1d 42224279507 SUCCESS (38/38).
+- Los logs de Cumulative muestran guard `skip=false` y `evidence_run_id=""`; los focales se ejecutaron realmente en los SHA técnicos indicados. Los runners no se contabilizan como gates adicionales.
+- Sin cambio de motor/producto; solo tests. Acceptance bilateral `ALGEBRA229_AS_B_25_ACCEPTANCE_2026-11-06.md`. Global OPEN. Siguiente AS-B-26: factorizar el entero 360 → 2^3·3^2·5.
+
 ## 2026-11-06 UTC — r433: Algebra229 AS-B-22 PASS_SCOPED bilateral
 
 - Lite SHA `b385d88845d9f1e257cbce03295c73273cf4446b`: cumulative 42211290550 SUCCESS (focal 3/3; 2,260 passed, 8 expected fail, 34 TODO), H1d 42211290765 SUCCESS (22/22), Scientific UI 42211290551 SUCCESS (456/456 desktop/tablet/mobile), CI 42211290654 SUCCESS; Runner 42211290975 solo calculó fingerprint.
