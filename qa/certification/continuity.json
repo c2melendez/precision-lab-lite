@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 393,
+  "revision": 394,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "b37502c5713bddabae6a022e6e1cb788ee72a87d",
-  "baseline_case": "ALGEBRA229-AS-A-16",
+  "technical_baseline_sha": "b26787342ab1bcd9edd7af8e723246306215be51",
+  "baseline_case": "ALGEBRA229-AS-A-17",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-A-17-TEST-FIRST",
-    "status": "WAIT",
-    "previous_id": "ALGEBRA229-AS-A-16-TEST-FIRST",
-    "action": "Lite gates matemáticos AS-A-17 confirmados: cumulative 42039943541 SUCCESS (2 focales/2259), H1d 42039943721 SUCCESS (22), Scientific UI 42039943566 SUCCESS (456); CI 42039944052 falla solo npm audit (4 moderadas), Runner 42039943836 SUCCESS. Plus false negative del harness corregido en SHA 6b1bf9b9f731d6f6d36c16f33f09d1a9f2eb3238; revisar nuevas corridas cumulative 42040844511, H1d 42040844847, CI 42040844459 y Runner 42040844455. Confirmar focales y paridad antes de PASS_SCOPED bilateral; luego elegir siguiente fila."
+    "id": "ALGEBRA229-AS-B-01-TEST-FIRST",
+    "status": "REVIEW",
+    "previous_id": "ALGEBRA229-AS-A-17-TEST-FIRST",
+    "action": "AS-A-17 PASS_SCOPED bilateral. Lite SHA b37502c5713bddabae6a022e6e1cb788ee72a87d: cumulative 42039943541 SUCCESS (2 focales/2259), H1d 42039943721 SUCCESS (22), Scientific UI 42039943566 SUCCESS (456), Runner 42039943836 SUCCESS; CI 42039944052 FAILURE solo npm audit (4 moderadas). Plus SHA 6b1bf9b9f731d6f6d36c16f33f09d1a9f2eb3238: cumulative 42040844511 SUCCESS (2 focales, 2800 passed/1 skipped/10 xfailed, 88.93%), H1d 42040844847 SUCCESS (38), CI 42040844459 SUCCESS (2800 backend/1055 frontend), Runner 42040844455 SUCCESS. AS-B-01 tests reforzados en Lite SHA b26787342ab1bcd9edd7af8e723246306215be51 y Plus SHA eb3a45c4b0ae68ff3d8da440b434c27098cf69c1. Los YAML verifican push en rama canónica y los paths incluyen las pruebas. fetch_commit_workflow_runs filtra PR; respuestas vacías para ambos SHA no significan ausencia de push runs. Recuperar/verificar los runs push, skip=false, tests focales, resumen completo, jobs y logs antes de aceptar B01.",
+    "updated_utc": "2026-11-06T00:00:00Z"
   },
   "blockers": [
     {
