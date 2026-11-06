@@ -661,3 +661,8 @@ Soportado: una variable, radicandos polinómicos de coeficientes racionales, ín
 
 - A16 CI [42038743893](https://github.com/c2melendez/precision-lab-lite/actions/runs/42038743893) y A17 CI [42039944052](https://github.com/c2melendez/precision-lab-lite/actions/runs/42039944052) vuelven a fallar únicamente en `QA dependency audit (hard gate)`, con los mismos cuatro hallazgos moderados ya descritos. No se redujo el umbral ni se aplicó `npm audit fix --force`.
 - Cualquier actualización de `vite-plugin-pwa/workbox/glob/minimatch` sigue requiriendo revisión de compatibilidad y autorización de seguridad; el bloqueo permanece abierto.
+
+## 2026-11-06 — auditoría Lite persistente durante Algebra229 AS-B-04..B-07
+
+- B04 CI 42137518118, B05 CI 42143597848, B06 CI 42144769724 y B07 CI 42145939134 fallan únicamente en `QA dependency audit (hard gate)` con los mismos cuatro hallazgos moderados. No se redujo el umbral ni se aplicó `npm audit fix --force`.
+- B04–B07 quedan aceptadas como PASS_SCOPED bilateral por sus gates cumulative/H1d/Scientific UI y Plus CI/cumulative/H1d, manteniendo el bloqueo de dependencias como riesgo separado. PR #62 sigue en draft pendiente de revisión/fusión humana.
