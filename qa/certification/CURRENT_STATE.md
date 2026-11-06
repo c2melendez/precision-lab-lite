@@ -1,3 +1,21 @@
+# Actualización de certificación — 2026-11-06 UTC (r397)
+
+## Algebra229 AS-B-01 — PASS_SCOPED bilateral; AS-B-02 TEST-FIRST / WAIT
+
+- **AS-B-01 Lite** — SHA `7e21f3f9d9bebaab2741a76f4cc533992e56d76a`; test blob `792dc12c825ac9752a6a2e07958182edad6883ef`. Acumulativo [42134131999](https://github.com/c2melendez/precision-lab-lite/actions/runs/42134131999) SUCCESS (guard false, test focal 2/2, 366 archivos / 2,259 passed); H1d [42134131938](https://github.com/c2melendez/precision-lab-lite/actions/runs/42134131938) SUCCESS (22/22); Scientific UI [42134132036](https://github.com/c2melendez/precision-lab-lite/actions/runs/42134132036) SUCCESS (456/456, desktop/tablet/mobile); Runner [42134131871](https://github.com/c2melendez/precision-lab-lite/actions/runs/42134131871) SUCCESS. CI [42134131960](https://github.com/c2melendez/precision-lab-lite/actions/runs/42134131960) FAILURE únicamente por hard gate npm audit (4 moderadas; artifact 13464163830), separado de la aceptación matemática.
+- **AS-B-01 Plus** — SHA `eb3a45c4b0ae68ff3d8da440b434c27098cf69c1`; test blob `12aa538e77b63137ef92e47ede8f68506f6dbc71`. Acumulativo [42133788691](https://github.com/c2melendez/precision-lab-plus/actions/runs/42133788691) SUCCESS (2 focales PASSED; 2,800 passed / 1 skipped / 10 xfailed; 88.91% cobertura); H1d [42133788792](https://github.com/c2melendez/precision-lab-plus/actions/runs/42133788792) SUCCESS (38/38); CI [42133788642](https://github.com/c2melendez/precision-lab-plus/actions/runs/42133788642) SUCCESS (2,800 backend / 1,055 frontend); Runner [42133788643](https://github.com/c2melendez/precision-lab-plus/actions/runs/42133788643) SUCCESS.
+- **Decisión AS-B-01:** PASS_SCOPED bilateral, solo para la fila de diferencia de trinomio (x^2-5x+6=(x-3)(x-2)). Acceptance files en ambos repositorios: `ALGEBRA229_AS_B_01_ACCEPTANCE_2026-11-06.md`. La auditoría de dependencias Lite sigue bloqueada por separado; no se relajó ni modificó.
+
+## AS-B-02 — TEST-FIRST publicado; gates en curso
+
+- Contrato: factorizar (x^2-9) como ((x-3)(x+3)), misma matriz fuente congelada y SHA-256 `8cd36ff08343f98f92abd83e2b162d565e0cbe5c59dc73f26b1c018f77d663c7`.
+- Lite: SHA `4a5bb09703c527a0ddd68a33749fc228748d2060`; `tests/algebra229AsB02.audit.test.ts`, blob `38f2aed6e2830c3fb2849d5adc6f0e72109bd8a0`. Valida todas las celdas de la fila exacta y diez sustituciones enteras con `compileNumeric` y oráculo JavaScript independiente (normaliza exclusivamente signed-zero antes de igualdad entera exacta).
+- Plus: SHA `e8bbb528bdf1d70ee8acd947c8e58144ad07d3a6`; `backend/tests/test_algebra229_as_b02.py`, blob `e6a56a899f4a62f32b483debe3959fca99c29594`. Valida todas las celdas de la fila, servicio HTTP `POST /api/v1/factor`, dos factores lineales y diez sustituciones enteras con evaluador AST restringido y aritmética Python nativa independiente de SymPy.
+- Push automático detectado en la rama canónica, sin despacho manual:
+  - Lite cumulative [42135018417](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018417), H1d [42135018449](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018449), Scientific UI [42135018517](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018517), CI [42135018389](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018389), Runner [42135018349](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018349).
+  - Plus cumulative [42135022942](https://github.com/c2melendez/precision-lab-plus/actions/runs/42135022942), H1d [42135022812](https://github.com/c2melendez/precision-lab-plus/actions/runs/42135022812), CI [42135022746](https://github.com/c2melendez/precision-lab-plus/actions/runs/42135022746), Runner [42135022814](https://github.com/c2melendez/precision-lab-plus/actions/runs/42135022814).
+- Siguiente paso exacto: obtener conclusión/jobs/logs de las corridas anteriores, verificar guard `skip=false`, ambos focales, resumen acumulativo, H1d y Scientific UI Lite; aceptar AS-B-02 únicamente tras gates requeridos satisfactorios. El npm audit Lite continúa como bloqueo de seguridad separado. Global certification **OPEN**.
+
 # Actualización de certificación — 2026-11-06 UTC (r396)
 
 ## Algebra229 AS-B-01 — Lite E2E pendiente; Plus gates completos
