@@ -1,3 +1,8 @@
+## 2026-11-06 UTC — r398: reconciliación parcial AS-B-02
+
+- Lite B02 SHA 4a5bb09703c527a0ddd68a33749fc228748d2060: acumulativo 42135018417 SUCCESS (skip=false, 2 focales/2259; 366 archivos), H1d 42135018449 SUCCESS (22). Scientific UI 42135018517 sigue IN_PROGRESS; CI 42135018389 FAILURE solo npm audit (4 moderadas, artifact 13465385686); Runner 42135018349 SUCCESS.
+- Plus B02 SHA e8bbb528bdf1d70ee8acd947c8e58144ad07d3a6: H1d 42135022812 SUCCESS (38); cumulative 42135022942 frontend SUCCESS (1,055), backend IN_PROGRESS; CI 42135022746 frontend SUCCESS (1,055), backend IN_PROGRESS; Runner 42135022814 SUCCESS.
+- AS-B-02 continúa WAIT; no declarar PASS a partir de un gate parcial. No hubo cambio de producto ni cambio al umbral de seguridad.
 ## 2026-11-06 UTC — r397: AS-B-01 PASS_SCOPED bilateral; AS-B-02 TEST-FIRST iniciado
 
 - AS-B-01 Lite SHA `7e21f3f9d9bebaab2741a76f4cc533992e56d76a`: cumulative 42134131999 SUCCESS (guard false, 2 focales/2,259; 366 archivos), H1d 42134131938 SUCCESS (22), Scientific UI 42134132036 SUCCESS (456; desktop/tablet/mobile), Runner 42134131871 SUCCESS. CI estándar 42134131960 FAILURE únicamente npm audit (4 moderadas; artifact 13464163830).
