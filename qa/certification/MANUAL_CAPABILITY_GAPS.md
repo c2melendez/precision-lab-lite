@@ -1,3 +1,8 @@
+## 2026-11-06 — npm audit Lite durante AS-B-03
+
+- CI [42136026913](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136026913) falla únicamente en `npm audit --package-lock-only`: cuatro vulnerabilidades moderadas; artifact `lite-npm-audit` ID `13466271200`.
+- El acumulativo B03 [42136026980](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136026980) ejecuta el test focal y la suite completa (2,259 passed); typecheck y build pasan. No se modificó el umbral ni las dependencias.
+
 ## 2026-11-06 — npm audit sigue bloqueando el CI estándar durante AS-B-02
 
 - CI Lite [42135018389](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018389) vuelve a terminar en `npm audit --package-lock-only` con los mismos cuatro hallazgos moderados; artifact `lite-npm-audit` ID `13465385686`.
