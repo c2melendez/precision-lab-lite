@@ -1261,3 +1261,13 @@ Se iniciaron pruebas test-first bilaterales para AS-B-24, N3: `factor(x^2-2) sob
 - Diagnóstico harness: se corrigieron las aserciones de fila (8 posiciones delimitadas, LaTeX congelado y una barra literal en `\sqrt{2}`); no fue fallo del motor ni de la matemática. Los SHA finales listados son los únicos candidatos para aceptación.
 - Decisión: WAIT por H1d Lite ya en curso; no lanzar retry ni marcar B24 PASS_SCOPED antes de su éxito. Global **OPEN**; baseline aceptado anterior permanece AS-B-23.
 
+
+## 2026-11-06 UTC (r436) — Algebra229 AS-B-24 PASS_SCOPED bilateral; siguiente AS-B-25
+
+AS-B-24, N3: `factor(x^2-2) sobre ℝ` → `(x-sqrt(2))*(x+sqrt(2))). Se fijó la fila congelada completa, forma ASCII, equivalencia algebraica y diez muestras enteras con oráculos independientes. Los tests focales se ejecutaron realmente en los SHA listados; sin REUSE. Solo cambios de tests, ningún cambio de motor/producto.
+
+- Lite SHA `2342cbd5ac2de6e9a7b1fbf42ddb9df4ee1f9c8d`: [Cumulative 42222060038](https://github.com/c2melendez/precision-lab-lite/actions/runs/42222060038) SUCCESS (focal 4/4; 366 archivos); [CI 42222060154](https://github.com/c2melendez/precision-lab-lite/actions/runs/42222060154) SUCCESS (focal 4/4); [Scientific UI 42222060025](https://github.com/c2melendez/precision-lab-lite/actions/runs/42222060025) SUCCESS (456/456 desktop/tablet/mobile); [H1d 42222060032](https://github.com/c2melendez/precision-lab-lite/actions/runs/42222060032) SUCCESS (22/22 desktop Chromium); [Runner 42222059941](https://github.com/c2melendez/precision-lab-lite/actions/runs/42222059941) SUCCESS push-only.
+- Plus SHA `5d8d78f8e35d02830bfbce63c107fe5990904cd1`: [Cumulative 42221909462](https://github.com/c2melendez/precision-lab-plus/actions/runs/42221909462) SUCCESS (focal 3/3; backend 2,803 passed, 1 skipped, 10 xfailed); [H1d 42221909235](https://github.com/c2melendez/precision-lab-plus/actions/runs/42221909235) SUCCESS (38/38); [CI 42221909164](https://github.com/c2melendez/precision-lab-plus/actions/runs/42221909164) SUCCESS (frontend/backend; backend 2,803 passed, 1 skipped, 10 xfailed); [Runner 42221910347](https://github.com/c2melendez/precision-lab-plus/actions/runs/42221910347) SUCCESS push-only.
+- Resultado: **PASS_SCOPED bilateral**, acotado a AS-B-24. Global **OPEN**; SG28/H2/DIST, SECURITY-S25 y otros gaps siguen abiertos/sin cambio.
+- Siguiente fila: AS-B-25, factorización de `x^2+1` sobre `ℂ` únicamente cuando se especifica el dominio complejo; la entrada sin sufijo no debe introducir `i`.
+

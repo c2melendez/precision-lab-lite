@@ -1,3 +1,33 @@
+# Actualización de certificación — 2026-11-06 UTC (r436)
+
+## Algebra229 AS-B-24 — PASS_SCOPED bilateral
+
+**Contrato:** `factor(x^2-2) sobre ℝ` → `(x-sqrt(2))*(x+sqrt(2))` (N3). Se conserva la distinción con AS-B-23: sobre ℚ, `x^2-2` permanece irreducible.
+
+### Lite — SHA técnico `2342cbd5ac2de6e9a7b1fbf42ddb9df4ee1f9c8d`
+- Test `tests/algebra229AsB24.audit.test.ts`: 4/4 PASS; fija la fila congelada, salida ASCII, equivalencia simbólica y oráculo numérico independiente en diez muestras enteras.
+- Cumulative [42222060038](https://github.com/c2melendez/precision-lab-lite/actions/runs/42222060038) SUCCESS; job 127906275669, 366/366 archivos, test focal 4/4.
+- CI [42222060154](https://github.com/c2melendez/precision-lab-lite/actions/runs/42222060154) SUCCESS; job 127906274051, test focal 4/4, 366/366 archivos.
+- Scientific UI [42222060025](https://github.com/c2melendez/precision-lab-lite/actions/runs/42222060025) SUCCESS; job 127906273503, 456/456 Playwright desktop/tablet/mobile.
+- H1d [42222060032](https://github.com/c2melendez/precision-lab-lite/actions/runs/42222060032) SUCCESS; job 127906273506, 22/22 Playwright en desktop Chromium.
+- Runner [42222059941](https://github.com/c2melendez/precision-lab-lite/actions/runs/42222059941) SUCCESS, fingerprint push-only.
+
+### Plus — SHA técnico `5d8d78f8e35d02830bfbce63c107fe5990904cd1`
+- Test `backend/tests/test_algebra229_as_b24.py`: 3/3 PASS; fila congelada, endpoint HTTP `POST /api/v1/factor`, forma ASCII, equivalencia SymPy y oráculo AST independiente en diez muestras enteras.
+- Cumulative [42221909462](https://github.com/c2melendez/precision-lab-plus/actions/runs/42221909462) SUCCESS; frontend/backend SUCCESS; focal 3/3; backend 2,803 passed, 1 skipped, 10 xfailed.
+- H1d [42221909235](https://github.com/c2melendez/precision-lab-plus/actions/runs/42221909235) SUCCESS, 38/38 Playwright.
+- CI [42221909164](https://github.com/c2melendez/precision-lab-plus/actions/runs/42221909164) SUCCESS; frontend/backend SUCCESS; backend 2,803 passed, 1 skipped, 10 xfailed.
+- Runner [42221910347](https://github.com/c2melendez/precision-lab-plus/actions/runs/42221910347) SUCCESS, fingerprint push-only.
+
+### Alcance y decisión
+Los logs de los SHA finales muestran ejecución focal real (no REUSE). Solo cambiaron los tests de certificación; no hubo modificación de motores ni producto. Los intentos intermedios corrigieron discrepancias del propio test al reflejar exactamente los delimitadores y escapes LaTeX del fixture; no constituyeron fallos de la matemática ni del motor.
+
+**Resultado: PASS_SCOPED bilateral.** La certificación global permanece **OPEN**. SG28/H2/DIST, SECURITY-S25 y los demás capability gaps no relacionados permanecen sin cambio.
+
+**Siguiente:** AS-B-25, `factor(x^2+1) sobre ℂ` → `(x-i)*(x+i)`, solo con sufijo complejo explícito; sin ese sufijo, no introducir `i`.
+
+---
+
 # Actualización de certificación — 2026-11-06 UTC (r435)
 
 ## Algebra229 AS-B-24 — IN_PROGRESS (B24 sin aceptación bilateral todavía)
