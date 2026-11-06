@@ -9,7 +9,7 @@
 The frontend CI runs two distinct audits:
 
 1. `npm audit --omit=dev --package-lock-only` is the **blocking gate**. Any vulnerability in the production dependency tree fails the frontend job and prevents typecheck, unit/parity tests and build from being treated as a successful CI run.
-2. `npm audit --package-lock-only --json` audits the **complete dependency tree** and is retained as the `lite-npm-audit` artifact for 14 days. It is diagnostic and non-blocking only for the currently reviewed development-tooling advisory; the full findings are not suppressed or removed from the lockfile.
+2. `npm audit --package-lock-only --json` audits the **complete dependency tree** and is retained as the `lite-npm-audit` artifact for 14 days. The audit command's exit is captured so the complete report can be checked and uploaded; `scripts/check-npm-audit-exceptions.mjs` then accepts only the exact four-package chain and the one reviewed GHSA below. Any additional advisory, package, version, severity or package-lock dev/runtime classification fails CI.
 
 ## Current exception: GHSA-gcqx-w48m-w2h4
 
