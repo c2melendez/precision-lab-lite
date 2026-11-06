@@ -1,4 +1,13 @@
-# Actualización de certificación — 2026-11-06 UTC (r416)
+# Actualización de certificación — 2026-11-06 UTC (r417)
+
+## Algebra229 AS-B-18 — PASS_SCOPED bilateral (r417)
+
+- Lite HEAD técnico `bb159a449f2d320d607b65503310bb8741cf16b2` (test reforzado): Cumulative 42199356489 con focal 2/2 PASS; H1d 42199356467, Scientific UI 42199356498, Runner 42199356546 y CI 42199356505 SUCCESS.
+- Plus HEAD técnico `1fab6d5507822c922288c63ba9454f7536d3aead`: Cumulative 42199349315 con focal 2/2 PASS; H1d 42199349400, CI 42199349335 y Runner 42199349956 SUCCESS.
+- Acceptance: `ALGEBRA229_AS_B_18_ACCEPTANCE_2026-11-06.md`. Sin cambio de producto.
+- **Siguiente:** AS-B-19 `x^{2}y-xy^{2}` → `x y \left(x - y\right)`. Global **OPEN**.
+
+---
 
 ## Algebra229 AS-B-17 — PASS_SCOPED bilateral (r416)
 
@@ -24,4 +33,5 @@
 - Evidencia de ejecución del focal: Lite `e2007be5` Cumulative `42194172938`, focal 2/2 PASS (vitest). Plus `481cb08` Cumulative `42159166321`, focal 2/2 PASS (pytest).
 - Acceptance: `ALGEBRA229_AS_B_16_ACCEPTANCE_2026-11-06.md`.
 - **Siguiente:** AS-B-17 `a^3+b^3` → `(a+b)(a^2-ab+b^2)`. Test presente en ambos motores y pasa localmente; falta evidencia CI del mismo SHA. Global **OPEN**.
+
 
