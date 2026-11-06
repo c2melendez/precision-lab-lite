@@ -35,6 +35,8 @@
   },
   "overrides": {
     "postcss-selector-parser": "7.1.7",
-    "deepmerge": "$deepmerge"
+    "deepmerge": "$deepmerge",
+    "glob": "14.0.3",
+    "minimatch": "11.0.3"
   }
 }
