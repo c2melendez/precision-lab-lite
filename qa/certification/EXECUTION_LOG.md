@@ -1,3 +1,11 @@
+## 2026-11-06 UTC — r440: AS-B-26 Lite gates PASS, Plus fixture-oracle correction / WAIT
+
+- Lite SHA `26cc8cc69d32e4a5614dc9921a87030308f9cdd1`: Cumulative 42270957296 SUCCESS (focal 4/4; 366/366; 2,264 passed, 8 expected fail, 34 TODO); H1d 42270957306 SUCCESS (22/22); CI 42270957315 SUCCESS; Scientific UI 42270957389 SUCCESS (456/456 desktop/tablet/mobile); Runner 42270957317 SUCCESS.
+- Plus SHA previo `ef97ca2a23324d2512f4f26585ad51f421d316ff`: CI 42271188505 FAILURE exclusivamente en `test_as_b26_source_row_has_all_frozen_contract_cells`; diff demuestra que el test esperaba dos barras inversas pero la fila fuente congelada contiene una. Backend: 2,804 passed, 1 skipped, 10 xfailed; solo ese test falló. Clasificación: test/oráculo de fixture, no producto/motor.
+- Corrección publicada: `backend/tests/test_algebra229_as_b26.py` compara el LaTeX con raw strings de una barra invertida. Nuevo SHA Plus `4509e41570258a1f573f8992475433b1b05ef120`.
+- Nuevos gates Plus del SHA corregido: Cumulative 42272022466 IN_PROGRESS; CI 42272022354 IN_PROGRESS; H1d 42272022376 IN_PROGRESS; Runner 42272022361 SUCCESS. No acreditar el SHA previo ni duplicar gates.
+- Lite y Plus solo han cambiado tests; no cambio de motor/producto. AS-B-26 continúa WAIT; global OPEN.
+
 ## 2026-11-06 UTC — r439: AS-B-26 test-first reforzado; WAIT gates exact-SHA
 
 - Lite SHA `26cc8cc69d32e4a5614dc9921a87030308f9cdd1`: Cumulative 42270957296 SUCCESS (focal 4/4, 366 archivos, 2,264 passed, 8 expected fail, 34 TODO; guard skip=false/no REUSE); H1d 42270957306 SUCCESS (22/22); CI 42270957315 SUCCESS. Scientific UI 42270957389 permanece IN_PROGRESS (job 128075078138).
