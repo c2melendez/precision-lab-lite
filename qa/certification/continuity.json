@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 444,
+  "revision": 445,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "6aa6b374f50a199886d6f022409f74b457fab2e9",
@@ -40,10 +40,10 @@
   },
   "next_action": {
     "id": "ALGEBRA229-AS-B-29-TEST-FIRST",
-    "status": "READY",
+    "status": "WAIT",
     "previous_id": "ALGEBRA229-AS-B-28-TEST-FIRST",
-    "action": "AS-B-29 N2: factorizar 123456789 -> 3^2*3607*3803. Test-first bilateral: fortalecer los tests que solo comprueban presencia de fila/salida/equivalencia; verificar todas las celdas exactas de la matriz congelada, salida ASCII, endpoint HTTP Plus y oráculo independiente por división de prueba que confirme primalidad de 3, 3607 y 3803, multiplicidades [2,1,1] y producto exacto 123456789. Gates: Plus cumulative+H1d; Lite cumulative+H1d+Scientific UI.",
-    "updated_utc": "2026-11-06T20:03:00Z"
+    "action": "AS-B-29 N2: factorizar 123456789 -> 3^2*3607*3803. Los tests exactos de fila, salida ASCII y oráculo independiente están implementados. Lite gates en el SHA 1004174a0cd6ad29c9b252097f2664175c277918 completados: Cumulative 42292655779 SUCCESS (focal 4/4; 2,267 passed), CI 42292655724 SUCCESS, H1d 42292655725 SUCCESS (22/22), Scientific UI 42292655744 SUCCESS (456/456); guards skip=false, sin REUSE. Plus primer SHA 4fac5e52415d7a9ad03d222a899ad9a19b8e1be2: Cumulative 42292660804 falló solo en el evaluador AST del test porque Python interpreta ^ como XOR; fila HTTP y oráculo de factores pasan. Corregido únicamente el test AST para normalizar ^ a **. Revalidación Plus exact-SHA 534e5f208cb5986794f3c2aea8b3056fb9d30e7f: Cumulative 42293287002, H1d 42293286948, CI 42293286925 continúan IN_PROGRESS. No aceptar B29 ni avanzar a B30 hasta que los tres gates Plus terminen en SUCCESS y se revisen logs focales y guards skip=false/no REUSE.",
+    "updated_utc": "2026-11-06T21:06:30Z"
   },
   "blockers": [],
   "prose_only_paths": [
