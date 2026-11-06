@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 445,
+  "revision": 446,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "6aa6b374f50a199886d6f022409f74b457fab2e9",
@@ -42,8 +42,8 @@
     "id": "ALGEBRA229-AS-B-29-TEST-FIRST",
     "status": "WAIT",
     "previous_id": "ALGEBRA229-AS-B-28-TEST-FIRST",
-    "action": "AS-B-29 N2: factorizar 123456789 -> 3^2*3607*3803. Los tests exactos de fila, salida ASCII y oráculo independiente están implementados. Lite gates en el SHA 1004174a0cd6ad29c9b252097f2664175c277918 completados: Cumulative 42292655779 SUCCESS (focal 4/4; 2,267 passed), CI 42292655724 SUCCESS, H1d 42292655725 SUCCESS (22/22), Scientific UI 42292655744 SUCCESS (456/456); guards skip=false, sin REUSE. Plus primer SHA 4fac5e52415d7a9ad03d222a899ad9a19b8e1be2: Cumulative 42292660804 falló solo en el evaluador AST del test porque Python interpreta ^ como XOR; fila HTTP y oráculo de factores pasan. Corregido únicamente el test AST para normalizar ^ a **. Revalidación Plus exact-SHA 534e5f208cb5986794f3c2aea8b3056fb9d30e7f: Cumulative 42293287002, H1d 42293286948, CI 42293286925 continúan IN_PROGRESS. No aceptar B29 ni avanzar a B30 hasta que los tres gates Plus terminen en SUCCESS y se revisen logs focales y guards skip=false/no REUSE.",
-    "updated_utc": "2026-11-06T21:06:30Z"
+    "action": "AS-B-29 N2: factorizar 123456789 -> 3^2*3607*3803. Lite: SHA 1004174a0cd6ad29c9b252097f2664175c277918; Cumulative 42292655779 SUCCESS (focal 4/4; 2,267 passed); CI 42292655724 SUCCESS (4/4 focal); H1d 42292655725 SUCCESS (22/22); Scientific UI 42292655744 SUCCESS (456/456); todos los gates Lite completos. Plus: SHA corregido 534e5f208cb5986794f3c2aea8b3056fb9d30e7f; Cumulative 42293287002 SUCCESS, log focal 3/3 PASS (fila exacta, HTTP y oracle), guard skip=false/evidence_run_id vacío, backend 2,808 passed, 1 skipped, 10 xfailed. Plus H1d 42293286948 y CI 42293286925 permanecen IN_PROGRESS (Chromium/Backend tests); esperar sus SUCCESS y revisar logs/guards antes de PASS_SCOPED bilateral y antes de avanzar a B30. Falla previa Plus SHA 4fac5e52415d7a9ad03d222a899ad9a19b8e1be2 fue solo el AST test que interpretó ^ como XOR; corregido de forma test-only.",
+    "updated_utc": "2026-11-06T21:08:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
