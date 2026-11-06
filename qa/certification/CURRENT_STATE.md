@@ -1,4 +1,13 @@
-# Actualización de certificación — 2026-11-06 UTC (r418)
+# Actualización de certificación — 2026-11-06 UTC (r419)
+
+## Algebra229 AS-B-20 — PASS_SCOPED bilateral (r419)
+
+- Lite HEAD técnico `b92f75b9121462bb4e720f554a6b440ea5fef64b` (test reforzado): Cumulative 42206950541 con focal 3/3 PASS; H1d 42206950644, Scientific UI 42206950607, Runner 42206950545 y CI 42206950542 SUCCESS.
+- Plus HEAD técnico `fecbf483992095a937f680a1ddab8807b065f166` (test reforzado): Cumulative 42206944853 con focal 2/2 PASS; H1d 42206944896, CI 42206944888 y Runner 42206944815 SUCCESS.
+- Acceptance: `ALGEBRA229_AS_B_20_ACCEPTANCE_2026-11-06.md`. Sin cambio de producto.
+- **Siguiente:** AS-B-21 `(x^{2}+1)^{2}-4x^{2}` → `(x - 1)^{2} (x + 1)^{2}`. Global **OPEN**.
+
+---
 
 ## Algebra229 AS-B-19 — PASS_SCOPED bilateral (r418)
 
