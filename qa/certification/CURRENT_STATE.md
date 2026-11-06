@@ -1,3 +1,14 @@
+# Actualización de certificación — 2026-11-06 UTC (r444)
+
+## Algebra229 AS-B-28 — PASS_SCOPED bilateral (r444)
+
+- Lite SHA técnico `6aa6b374f50a199886d6f022409f74b457fab2e9`: Cumulative 42283415265 SUCCESS (focal 4/4; 366 archivos, 2,266 passed, 8 expected fail, 34 TODO); H1d 42283415226 SUCCESS (22/22); Scientific UI 42283415403 SUCCESS (456/456 desktop/tablet/mobile); CI 42283415015 SUCCESS; Runner 42283415020 SUCCESS (fingerprint push-only).
+- Plus SHA técnico `ab434ccf746ed9fb83b643e5eedc26b69c5f814b`: Cumulative 42283418797 SUCCESS (frontend/backend; focal 3/3; backend 2,807 passed, 1 skipped, 10 xfailed); H1d 42283418744 SUCCESS (38/38); CI 42283418918 SUCCESS (2,807 passed, 1 skipped, 10 xfailed; coverage 88.91%); Runner 42283418924 SUCCESS (fingerprint push-only).
+- Los gates aplicables registraron `skip=false` y `evidence_run_id` vacío; los tests focales fueron ejecutados en los SHA exactos, sin REUSE.
+- Acceptance bilateral: `ALGEBRA229_AS_B_28_ACCEPTANCE_2026-11-06.md`. Las fallas preliminares fueron regex incorrectas de los tests; se corrigieron únicamente los tests, no el motor.
+- **Siguiente:** AS-B-29, N2, factorizar 123456789 → 3^2*3607*3803. Reforzar fila exacta y oráculo independiente por división de prueba/primalidad. Global **OPEN**.
+
+---
 # Actualización de certificación — 2026-11-06 UTC (r443)
 
 ## Algebra229 AS-B-27 — PASS_SCOPED bilateral (r443)
