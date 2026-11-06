@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "revision": 394,
+  "revision": 395,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "b26787342ab1bcd9edd7af8e723246306215be51",
+  "technical_baseline_sha": "7e21f3f9d9bebaab2741a76f4cc533992e56d76a",
   "baseline_case": "ALGEBRA229-AS-A-17",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
@@ -40,10 +40,10 @@
   },
   "next_action": {
     "id": "ALGEBRA229-AS-B-01-TEST-FIRST",
-    "status": "REVIEW",
+    "status": "WAIT",
     "previous_id": "ALGEBRA229-AS-A-17-TEST-FIRST",
-    "action": "AS-A-17 PASS_SCOPED bilateral. Lite SHA b37502c5713bddabae6a022e6e1cb788ee72a87d: cumulative 42039943541 SUCCESS (2 focales/2259), H1d 42039943721 SUCCESS (22), Scientific UI 42039943566 SUCCESS (456), Runner 42039943836 SUCCESS; CI 42039944052 FAILURE solo npm audit (4 moderadas). Plus SHA 6b1bf9b9f731d6f6d36c16f33f09d1a9f2eb3238: cumulative 42040844511 SUCCESS (2 focales, 2800 passed/1 skipped/10 xfailed, 88.93%), H1d 42040844847 SUCCESS (38), CI 42040844459 SUCCESS (2800 backend/1055 frontend), Runner 42040844455 SUCCESS. AS-B-01 tests reforzados en Lite SHA b26787342ab1bcd9edd7af8e723246306215be51 y Plus SHA eb3a45c4b0ae68ff3d8da440b434c27098cf69c1. Los YAML verifican push en rama canónica y los paths incluyen las pruebas. fetch_commit_workflow_runs filtra PR; respuestas vacías para ambos SHA no significan ausencia de push runs. Recuperar/verificar los runs push, skip=false, tests focales, resumen completo, jobs y logs antes de aceptar B01.",
-    "updated_utc": "2026-11-06T00:00:00Z"
+    "action": "AS-A-17 PASS_SCOPED bilateral. AS-B-01: Lite primer commit b26787342ab1bcd9edd7af8e723246306215be51 falló cumulative 42133782553 por signed-zero en el matcher (HARNESS/ORACLE), no producto. Fix Lite SHA 7e21f3f9d9bebaab2741a76f4cc533992e56d76a: nuevos cumulative 42134131999, H1d 42134131938 y Scientific UI 42134132036 IN_PROGRESS; CI 42134131960 FAILURE solo npm audit 4 moderadas; Runner 42134131871 SUCCESS. Plus SHA eb3a45c4b0ae68ff3d8da440b434c27098cf69c1: cumulative 42133788691 backend IN_PROGRESS/frontend SUCCESS, H1d 42133788792 SUCCESS (38), CI 42133788642 backend IN_PROGRESS/frontend SUCCESS (1055), Runner 42133788643 SUCCESS. Inspeccionar los jobs y logs; aceptar B01 solo después de los gates matemáticos y UI requeridos. Lite npm audit permanece como bloqueo separado.",
+    "updated_utc": "2026-11-06T00:04:00Z"
   },
   "blockers": [
     {
