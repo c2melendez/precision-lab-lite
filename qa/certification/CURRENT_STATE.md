@@ -1,3 +1,17 @@
+# Actualización de certificación — 2026-11-06 UTC (r433)
+
+## Algebra229 AS-B-22 — PASS_SCOPED bilateral (r433)
+
+- Lite HEAD técnico `b385d88845d9f1e257cbce03295c73273cf4446b`: Cumulative 42211290550 SUCCESS (focal 3/3 PASS; 366 archivos, 2,260 passed, 8 expected fail, 34 TODO); H1d 42211290765 SUCCESS (22/22); Scientific UI 42211290551 SUCCESS (456/456 desktop/tablet/mobile); CI 42211290654 SUCCESS. Runner 42211290975 SUCCESS, solo fingerprint de push.
+- Plus HEAD técnico `c2bc727e04d12867bfff1b718c072fe735cf1003`: Cumulative 42211299152 SUCCESS (frontend y backend; focal 3/3 PASS; backend 2,801 passed, 1 skipped, 10 xfailed); H1d 42211299254 SUCCESS (38/38); CI 42211299150 SUCCESS. Runner 42211299262 SUCCESS, solo fingerprint de push.
+- En los seis jobs de gates aplicables: guard `skip=false`, `evidence_run_id=""`; pruebas ejecutadas realmente en el SHA de este caso, sin REUSE.
+- Acceptance bilateral: `ALGEBRA229_AS_B_22_ACCEPTANCE_2026-11-06.md`. Solo se reforzaron tests; ningún cambio de producto/motor.
+- **Siguiente:** AS-B-23 `x^{2}-2` → `x^{2} - 2` (N2, irreducible sobre ℚ: debe quedar igual). Global **OPEN**.
+
+**Reconciliación documental:** Lite mantenía índice/CURRENT_STATE r420 mientras su EXECUTION_LOG ya tenía r432; se sincronizan ambos productos a r433. La certificación global y los gaps externos no cambian.
+
+---
+
 # Actualización de certificación — 2026-11-06 UTC (r420)
 
 ## Algebra229 AS-B-21 — PASS_SCOPED bilateral (r420)
