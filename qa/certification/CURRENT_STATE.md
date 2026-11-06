@@ -1,3 +1,31 @@
+# Actualización de certificación — 2026-11-06 UTC (r442)
+
+## Algebra229 AS-B-26 — PASS_SCOPED bilateral (r442)
+
+**Contrato:** `factorizar el entero 360` → `2^{3}\\cdot 3^{2}\\cdot 5` (N2). Los oráculos comparan las celdas exactas de la matriz congelada, la forma ASCII y una factorización independiente por división de prueba, incluyendo multiplicidades primas y producto 360.
+
+### Lite — SHA técnico `26cc8cc69d32e4a5614dc9921a87030308f9cdd1`
+- Cumulative [42270957296](https://github.com/c2melendez/precision-lab-lite/actions/runs/42270957296) SUCCESS; focal 4/4, 366/366 archivos, 2,264 passed, 8 expected fail y 34 TODO.
+- H1d [42270957306](https://github.com/c2melendez/precision-lab-lite/actions/runs/42270957306) SUCCESS; 22/22 Playwright.
+- CI [42270957315](https://github.com/c2melendez/precision-lab-lite/actions/runs/42270957315) SUCCESS.
+- Scientific UI [42270957389](https://github.com/c2melendez/precision-lab-lite/actions/runs/42270957389) SUCCESS; 456/456 desktop/tablet/mobile.
+- Runner [42270957317](https://github.com/c2melendez/precision-lab-lite/actions/runs/42270957317) SUCCESS; push-only.
+
+### Plus — SHA técnico corregido `4509e41570258a1f573f8992475433b1b05ef120`
+- Cumulative [42272022466](https://github.com/c2melendez/precision-lab-plus/actions/runs/42272022466) SUCCESS; focal 3/3, backend 2,805 passed, 1 skipped, 10 xfailed.
+- H1d [42272022376](https://github.com/c2melendez/precision-lab-plus/actions/runs/42272022376) SUCCESS; 38/38 Playwright.
+- CI [42272022354](https://github.com/c2melendez/precision-lab-plus/actions/runs/42272022354) SUCCESS; frontend/backend, 2,805 passed, 1 skipped, 10 xfailed.
+- Runner [42272022361](https://github.com/c2melendez/precision-lab-plus/actions/runs/42272022361) SUCCESS; push-only.
+
+### Diagnóstico y alcance
+La primera revalidación de CI Plus [42271188505](https://github.com/c2melendez/precision-lab-plus/actions/runs/42271188505), SHA `ef97ca2a23324d2512f4f26585ad51f421d316ff`, falló únicamente por doble escape en la expectativa del test de fila. La matriz congelada contiene una sola barra invertida; el test raw-string se corrigió. Los gates posteriores en SHA `4509e415...` pasan y son la evidencia válida. No hubo cambio del motor ni del producto; únicamente tests. Aceptación: `ALGEBRA229_AS_B_26_ACCEPTANCE_2026-11-06.md`.
+
+La aceptación de AS-B-26 es **PASS_SCOPED bilateral**. SG28/H2/DIST, SECURITY-S25 y otros gaps independientes permanecen abiertos; certificación global **OPEN**.
+
+**Siguiente:** AS-B-27, `\\text{factorizar el entero }1001` → `7\\cdot 11\\cdot 13` (N2). Global **OPEN**.
+
+---
+
 # Actualización de certificación — 2026-11-06 UTC (r440)
 
 ## Algebra229 AS-B-26 — WAIT (Plus revalidación exact-SHA)
