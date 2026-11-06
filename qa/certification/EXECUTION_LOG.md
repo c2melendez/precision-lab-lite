@@ -1,3 +1,9 @@
+## 2026-11-06 UTC — r402: AS-B-03 oráculo AST Plus corregido y re-ejecución
+
+- Lite SHA `fe78fd9a1061a66f5f0a05280ed65fea13cefa30`: cumulative 42136026980 SUCCESS (skip=false, B03 2/2; 2,259 passed / 366 files), H1d 42136027012 SUCCESS (22), Runner 42136027069 SUCCESS. Scientific UI 42136027006 IN_PROGRESS; CI 42136026913 FAILURE solo npm audit (4 moderadas; artifact 13466271200).
+- Plus primer SHA `300bdede38cf5f58e8f47a59ff20a83dd4389dfe`: cumulative 42136032221 y CI 42136032313 backend FAILURE por oráculo AST que reemplazaba x negativo por literal sin paréntesis; para x=-7 se evaluó `-7**2` como `-(7**2)`, dando 531 frente a -351. La respuesta HTTP observada era la factorización correcta. Clasificación HARNESS/ORACLE, no producto. H1d 42136032228 SUCCESS (38); Runner 42136032220 SUCCESS.
+- Fix Plus SHA `e4122f5fc2f88073feabd89df3f9b0660065dcfb`, blob `cae8d5e4023bffc6dc11f901a1e134bdfaa11b3d`: sustituye x por `(x_value)` parentizado. Nuevos pushes: CI 42136796498; H1d 42136796500; Runner 42136796513 SUCCESS; cumulative 42136796602. Corridas de gate pendientes de revisar.
+- No hubo cambios de producto, dependencias o contratos; AS-B-03 continúa WAIT. Global OPEN.
 ## 2026-11-06 UTC — r401: AS-B-03 gates parciales
 
 - Lite SHA `fe78fd9a1061a66f5f0a05280ed65fea13cefa30`: cumulative 42136026980 SUCCESS (skip=false, B03 2/2, 366 files/2,259 passed), H1d 42136027012 SUCCESS (22), Runner 42136027069 SUCCESS. Scientific UI 42136027006 IN_PROGRESS (Install Chromium al último sondeo); CI 42136026913 FAILURE solo npm audit (4 moderadas, artifact 13466271200).
