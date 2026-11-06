@@ -22,7 +22,7 @@ describe("Algebra229 AS-B-14 factor x^4+x^2+1", () => {
       "`factorizar`",
       "`x^{4}+x^{2}+1`",
       "`\\left(x^{2} - x + 1\\right) \\left(x^{2} + x + 1\\right)`",
-      "",
+      "Se factoriza como diferencia de cuadrados en ℚ.",
       "",
     ]);
   });
