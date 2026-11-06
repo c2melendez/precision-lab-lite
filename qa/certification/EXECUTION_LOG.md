@@ -1,3 +1,9 @@
+## 2026-11-06 UTC — r444: Algebra229 AS-B-28 PASS_SCOPED bilateral
+
+- Lite SHA `6aa6b374f50a199886d6f022409f74b457fab2e9`: Cumulative 42283415265 SUCCESS (focal 4/4; 2,266 passed, 8 expected fail, 34 TODO), H1d 42283415226 SUCCESS (22/22), Scientific UI 42283415403 SUCCESS (456/456 desktop/tablet/mobile), CI 42283415015 SUCCESS; Runner 42283415020 fingerprint push-only.
+- Plus SHA `ab434ccf746ed9fb83b643e5eedc26b69c5f814b`: Cumulative 42283418797 SUCCESS (frontend/backend SUCCESS, focal 3/3; 2,807 passed, 1 skipped, 10 xfailed), H1d 42283418744 SUCCESS (38/38), CI 42283418918 SUCCESS (2,807 passed, 1 skipped, 10 xfailed; coverage 88.91%); Runner 42283418924 fingerprint push-only.
+- Guards `skip=false`, `evidence_run_id=""`; los focales B28 pasan: Lite 4/4, Plus 3/3. Los runs preliminares fallaron por regex sobreescapadas en tests; se corrigieron sin cambios de motor/producto.
+- Acceptance bilateral `ALGEBRA229_AS_B_28_ACCEPTANCE_2026-11-06.md`. Global OPEN. Siguiente AS-B-29: factorizar 123456789 → 3^2*3607*3803; reforzar fila exacta y oráculo independiente.
 ## 2026-11-06 UTC — r443: Algebra229 AS-B-27 PASS_SCOPED bilateral
 
 - Lite SHA a69eacd5b64b371bee52ee88ae3869976092b2d3: Cumulative 42274271213 SUCCESS (focal 4/4; 2,265 passed, 8 expected fail, 34 TODO), H1d 42274271107 SUCCESS (22/22), Scientific UI 42274271105 SUCCESS (456/456 desktop/tablet/mobile), CI 42274271188 SUCCESS; Runner 42274271145 solo calculó fingerprint.
