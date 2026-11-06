@@ -1,3 +1,10 @@
+## 2026-11-06 UTC — r395: AS-B-01 signed-zero false negative corregido; gates en re-ejecución
+
+- Lite primer intento SHA `b26787342ab1bcd9edd7af8e723246306215be51`: acumulativo 42133782553 FAILURE porque `compileNumeric` devolvió `-0` en una raíz y Vitest `toBe` usa `Object.is`; clasificación HARNESS/ORACLE, no motor.
+- Lite test fix SHA `7e21f3f9d9bebaab2741a76f4cc533992e56d76a`, blob `792dc12c825ac9752a6a2e07958182edad6883ef`: normaliza signed-zero y conserva igualdad entera exacta, sin tolerancia. Nuevos runs: cumulative 42134131999 IN_PROGRESS; H1d 42134131938 IN_PROGRESS; Scientific UI 42134132036 IN_PROGRESS; CI 42134131960 FAILURE solo npm audit (4 moderadas; artifact 13464163830); Runner 42134131871 SUCCESS.
+- Plus SHA `eb3a45c4b0ae68ff3d8da440b434c27098cf69c1`, blob `12aa538e77b63137ef92e47ede8f68506f6dbc71`: cumulative 42133788691 backend IN_PROGRESS/frontend SUCCESS; H1d 42133788792 SUCCESS (38); CI 42133788642 backend IN_PROGRESS/frontend SUCCESS (1,055 passed); Runner 42133788643 SUCCESS.
+- Se verificó que todas las corridas nuevas corresponden al SHA correcto y al evento `push` de la rama canónica. No hay dispatch manual.
+- AS-A-17 se acepta PASS_SCOPED bilateral en la entrada r394; no se reabre por los nuevos trabajos de AS-B-01. No hay cambio de producto. Global OPEN.
 ## 2026-11-05 UTC — r394: AS-A-17 PASS_SCOPED bilateral; AS-B-01 oráculo reforzado
 
 - AS-A-17 Lite SHA `b37502c5713bddabae6a022e6e1cb788ee72a87d`: cumulative 42039943541 SUCCESS (guard false; 2 focales/2,259 passed), H1d 42039943721 SUCCESS (22), Scientific UI 42039943566 SUCCESS (456), Runner 42039943836 SUCCESS. CI 42039944052 FAILURE únicamente npm audit (4 moderadas).
