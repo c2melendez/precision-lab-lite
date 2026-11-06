@@ -23,8 +23,8 @@ describe("Algebra229 AS-B-24 factor x^2-2 over the reals", () => {
       "AS-B-24",
       "N3",
       "`factorizar`",
-      "`factor(x^2-2) sobre ℝ`",
-      "`(x-sqrt(2))*(x+sqrt(2))`",
+      "`x^{2}-2\\ \\text{sobre }\\mathbb{R}`",
+      "`\\left(x - \\sqrt{2}\\right) \\left(x + \\sqrt{2}\\right)`",
     ]);
     expect(cells[6]).toContain("Con raíces permitidas");
     expect(cells[7]).toBe("");
