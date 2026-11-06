@@ -20,7 +20,7 @@ describe("Algebra229 AS-B-24 factor x^2-2 over the reals", () => {
     const cells = sourceRow!.split("|").map((cell) => cell.trim());
     expect(cells).toHaveLength(8);
     const slash = String.fromCharCode(92);
-    const expectedNote = "Con raíces permitidas: `(x-" + slash + "sqrt(2))(x+" + slash + "sqrt(2))`.";
+    const expectedNote = "Con raíces permitidas: `(x-" + slash + "sqrt{2})(x+" + slash + "sqrt{2})`.";
     expect(cells.slice(1, 7)).toEqual([
       "AS-B-24",
       "N3",
