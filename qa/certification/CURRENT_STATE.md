@@ -1,9 +1,16 @@
-# Actualización de certificación — 2026-11-06 UTC (r413)
+# Actualización de certificación — 2026-11-06 UTC (r414)
 
-## Algebra229 AS-B-14 y AS-B-15 — PASS_SCOPED bilateral
+## Dependencias de auditoría Lite — r414
 
-- **AS-B-14** fix celda descripción + oráculo. Validado en HEAD Lite `0f0d0296…` / Plus `8a0015f6…` (Cumulative SUCCESS bilateral; fix SHA Plus `5028fa4b…` Cumulative SUCCESS).
-- **AS-B-15** Lite SHA `0f0d0296069d3a710d98f77f33d18a30a63b2420`: Cumulative/H1d/Scientific UI/Runner SUCCESS.
-- **AS-B-15** Plus SHA `8a0015f6803599449dffcc9a35b51428978335cc`: Cumulative/H1d/CI/Runner SUCCESS.
-- Acceptances: `ALGEBRA229_AS_B_14_ACCEPTANCE_2026-11-06.md`, `ALGEBRA229_AS_B_15_ACCEPTANCE_2026-11-06.md`.
-- **Siguiente:** AS-B-16 `a^3-b^3` → `(a-b)(a^2+ab+b^2)`. Global **OPEN**.
+- El gate `QA dependency audit (hard gate)` de CI fallaba desde commits anteriores por 4 vulnerabilidades moderadas: `vite-plugin-pwa` 1.3.0 → `workbox-build` → `glob`/`minimatch`.
+- Subir `vite-plugin-pwa` a 2.0.0 no corrige la cadena, porque `workbox-build` 7.4.1 mantiene `glob` 11.1.0 y `minimatch` afectados. Se fijaron `overrides` `glob ^14.0.4` y `minimatch ^11.0.5`, y `vite-plugin-pwa` queda en 1.3.0.
+- Lite SHA técnico `e2007be51f848a33e0b9881dff3c6a2689991672`: CI `42194172999` SUCCESS (incluye tests unitarios y build), Cumulative `42194172938` SUCCESS, H1d `42194172980` SUCCESS, Scientific UI `42194172930` SUCCESS, Runner `42194172934` SUCCESS, dependency/security gates `42194172973` SUCCESS.
+- Auditoría: 0 vulnerabilidades (antes 4 moderadas). Typecheck y build de producción con `sw.js` generado: OK.
+- Riesgo registrado, no bloqueo: 4 pruebas pesadas de álgebra (AS-FAC-08/09, AS-B-06/18) exceden el timeout de 5 s en entorno local, igual que en el HEAD previo. En CI del SHA `e2007be5` pasaron.
+
+## Algebra229 AS-B-16 — en verificación
+
+- Tests presentes: Lite `tests/algebra229AsB16.audit.test.ts`; Plus `backend/tests/test_algebra229_as_b16.py`.
+- Sin cambio de producto: ambos motores ya factorizan `a^3-b^3` como `(a-b)(a^2+ab+b^2)`.
+- Evidencia de ejecución del focal: Lite `e2007be5` Cumulative `42194172938`, focal 2/2 PASS (vitest). Plus `481cb08` Cumulative `42159166321`, focal 2/2 PASS (pytest).
+- Siguiente: acceptance `ALGEBRA229_AS_B_16` PASS_SCOPED bilateral y después el siguiente bloque. Global **OPEN**.

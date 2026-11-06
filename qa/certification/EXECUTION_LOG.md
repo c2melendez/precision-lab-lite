@@ -1,3 +1,11 @@
+## 2026-11-06 UTC — r414: dependencias de auditoría Lite y AS-B-16 en verificación
+
+- Lite SHA técnico `e2007be51f848a33e0b9881dff3c6a2689991672` (`build(deps): override glob and minimatch to clear npm audit`): sólo `package.json` y `package-lock.json`. `overrides` añadidos: `glob ^14.0.4`, `minimatch ^11.0.5`; `vite-plugin-pwa` 1.3.0 se mantiene. Se descartó subir a 2.0.0 porque la cadena `workbox-build` → `glob`/`minimatch` sigue vulnerable.
+- Verificación local: `npm audit --package-lock-only` 0 vulnerabilidades; typecheck y build OK; `sw.js` generado con precache; vitest 362/366 archivos, 4 timeouts de 5 s (AS-FAC-08/09, AS-B-06/18) que también aparecen en el HEAD previo.
+- CI del SHA `e2007be5`: CI `42194172999` SUCCESS, Cumulative `42194172938` SUCCESS, H1d `42194172980` SUCCESS, Scientific UI `42194172930` SUCCESS, Runner `42194172934` SUCCESS, dependency/security gates `42194172973` SUCCESS.
+- AS-B-16 (`a^3-b^3`): test presente en Lite y Plus; pasa sin cambio de producto. Evidencia focal: Lite `e2007be5` Cumulative `42194172938` (2/2); Plus `481cb08` Cumulative `42159166321` (pytest 2/2, backend 2800 passed).
+- Commit documental de esta revisión: sólo `qa/certification/**`, sin disparar matrices. Global OPEN.
+
 ## 2026-11-06 UTC — r408: AS-B-08 PASS_SCOPED bilateral
 
 - Lite SHA `8cb03f920fab0d5e5b665eeef1fefb6807131529`: cumulative 42147149489 SUCCESS (guard `skip=false`, focal 2/2; 366 archivos/2,259 passed), H1d 42147149472 SUCCESS (22), Scientific UI 42147149512 SUCCESS (456), Runner 42147149478 SUCCESS; CI 42147149533 FAILURE solo npm audit (4 moderadas; artifact 13470881892), umbral intacto.
