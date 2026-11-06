@@ -1,3 +1,10 @@
+## 2026-11-06 UTC — r442: Algebra229 AS-B-26 PASS_SCOPED bilateral
+
+- Lite SHA `26cc8cc69d32e4a5614dc9921a87030308f9cdd1`: Cumulative 42270957296 SUCCESS (focal 4/4, 366/366 archivos, 2,264 passed, 8 expected fail, 34 TODO); H1d 42270957306 SUCCESS (22/22); CI 42270957315 SUCCESS; Scientific UI 42270957389 SUCCESS (456/456 desktop/tablet/mobile); Runner 42270957317 SUCCESS..
+- Plus SHA `4509e41570258a1f573f8992475433b1b05ef120`: Cumulative 42272022466 SUCCESS (guard skip=false, evidence_run_id vacío; focal 3/3; 2,805 passed, 1 skipped, 10 xfailed); H1d 42272022376 SUCCESS (38/38); CI 42272022354 SUCCESS (backend 2,805 passed, 1 skipped, 10 xfailed); Runner 42272022361 SUCCESS.
+- La falla de CI Plus 42271188505 sobre SHA `ef97ca2a...` se clasificó como test/oráculo de fixture: esperaba dos backslashes, pero la matriz congelada contiene uno. La prueba se corrigió con raw string de una barra literal y los gates posteriores pasaron en el SHA corregido; el run fallido anterior no se reutiliza.
+- Veredicto focal: Lite 4/4 PASS; Plus 3/3 PASS. Los diffs técnicos cambian solo los tests; ningún cambio de motor/producto. Aceptaciones: `ALGEBRA229_AS_B_26_ACCEPTANCE_2026-11-06.md`. Global OPEN. Siguiente AS-B-27: factorizar 1001 → 7·11·13.
+
 ## 2026-11-06 UTC — r440: AS-B-26 Lite gates PASS, Plus fixture-oracle correction / WAIT
 
 - Lite SHA `26cc8cc69d32e4a5614dc9921a87030308f9cdd1`: Cumulative 42270957296 SUCCESS (focal 4/4; 366/366; 2,264 passed, 8 expected fail, 34 TODO); H1d 42270957306 SUCCESS (22/22); CI 42270957315 SUCCESS; Scientific UI 42270957389 SUCCESS (456/456 desktop/tablet/mobile); Runner 42270957317 SUCCESS.
