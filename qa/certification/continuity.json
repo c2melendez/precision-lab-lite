@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 410,
+  "revision": 411,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "4dc5351126a4761029391360b3fc1cc1a6a49b82",
-  "baseline_case": "ALGEBRA229-AS-B-10",
+  "technical_baseline_sha": "b99a50dda74a2d6882947bd00c4194b8d18e7689",
+  "baseline_case": "ALGEBRA229-AS-B-11",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -31,11 +31,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-11-TEST-FIRST",
+    "id": "ALGEBRA229-AS-B-12-TEST-FIRST",
     "status": "READY",
-    "previous_id": "ALGEBRA229-AS-B-10-TEST-FIRST",
-    "action": "AS-B-10 PASS_SCOPED bilateral. Lite SHA 4dc5351126a4761029391360b3fc1cc1a6a49b82 cumulative 42151552959 SUCCESS, H1d 42151552846 SUCCESS (22), Scientific UI 42151552832 SUCCESS; CI FAILURE solo npm audit; Runner fingerprint FAILURE (no bloquea). Plus SHA 978cf1a6cc2930f2b58af1a845be12ecd7d1a4cf cumulative 42151649390 SUCCESS, H1d 42151649251 SUCCESS (38), CI 42151649250 SUCCESS; Runner fingerprint FAILURE (no bloquea). Test-first AS-B-11 bilateral: factorizar ax+ay+bx+by -> (a+b)(x+y); fila congelada exacta, agrupación de términos y sustituciones independientes. Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si la prueba falla.",
-    "updated_utc": "2026-11-06T02:50:00Z"
+    "previous_id": "ALGEBRA229-AS-B-11-TEST-FIRST",
+    "action": "AS-B-11 PASS_SCOPED bilateral. Lite SHA b99a50dda74a2d6882947bd00c4194b8d18e7689 cumulative 42153075457 SUCCESS, H1d 42153075474 SUCCESS, Scientific UI 42153075443 SUCCESS, Runner 42153075527 SUCCESS; CI FAILURE solo npm audit. Plus SHA 8fbac45e34c99ed08588930f92d0ee37876af78b cumulative 42153137640 SUCCESS, H1d 42153137790 SUCCESS, CI 42153137651 SUCCESS, Runner 42153137717 SUCCESS. Test-first AS-B-12 bilateral: factorizar x^5-x -> x(x-1)(x+1)(x^2+1); fila congelada exacta, cuatro factores y sustituciones enteras independientes. Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si la prueba falla.",
+    "updated_utc": "2026-11-06T03:05:00Z"
   },
   "blockers": [],
   "prose_only_paths": ["qa/certification/**", "**/*.md", "README.md"]
