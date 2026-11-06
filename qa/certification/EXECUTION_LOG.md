@@ -1,3 +1,10 @@
+## 2026-11-06 UTC — r433: Algebra229 AS-B-22 PASS_SCOPED bilateral
+
+- Lite SHA `b385d88845d9f1e257cbce03295c73273cf4446b`: cumulative 42211290550 SUCCESS (focal 3/3; 2,260 passed, 8 expected fail, 34 TODO), H1d 42211290765 SUCCESS (22/22), Scientific UI 42211290551 SUCCESS (456/456 desktop/tablet/mobile), CI 42211290654 SUCCESS; Runner 42211290975 solo calculó fingerprint.
+- Plus SHA `c2bc727e04d12867bfff1b718c072fe735cf1003`: cumulative 42211299152 SUCCESS (frontend/backend SUCCESS; focal 3/3; backend 2,801 passed, 1 skipped, 10 xfailed), H1d 42211299254 SUCCESS (38/38), CI 42211299150 SUCCESS; Runner 42211299262 solo calculó fingerprint.
+- Los seis jobs de gates registraron `skip=false`, `evidence_run_id=""` y ejecutaron sus pruebas. Revisión de logs focales confirma fila fuente exacta de siete celdas y oráculo independiente de diez muestras.
+- Sin cambio de motor/producto; solo tests. Acceptance bilateral: `ALGEBRA229_AS_B_22_ACCEPTANCE_2026-11-06.md`. Global OPEN. Siguiente AS-B-23 `x^{2}-2` → `x^{2} - 2` (N2, irreducible sobre ℚ).
+
 ## 2026-11-06 UTC — r420: AS-B-21 PASS_SCOPED bilateral
 
 - Lite SHA `4ab22e5565255bc0d0a451dfae3debf24f8521fa` (test reforzado de AS-B-21): cumulative 42209065420 SUCCESS (focal 3/3 PASSED; 2,259 passed), H1d 42209065464 SUCCESS, Scientific UI 42209065501 SUCCESS, Runner 42209065402 SUCCESS y CI 42209065433 SUCCESS.
