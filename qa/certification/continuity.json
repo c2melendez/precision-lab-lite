@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 395,
+  "revision": 396,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "7e21f3f9d9bebaab2741a76f4cc533992e56d76a",
@@ -42,8 +42,8 @@
     "id": "ALGEBRA229-AS-B-01-TEST-FIRST",
     "status": "WAIT",
     "previous_id": "ALGEBRA229-AS-A-17-TEST-FIRST",
-    "action": "AS-A-17 PASS_SCOPED bilateral. AS-B-01: Lite primer commit b26787342ab1bcd9edd7af8e723246306215be51 falló cumulative 42133782553 por signed-zero en el matcher (HARNESS/ORACLE), no producto. Fix Lite SHA 7e21f3f9d9bebaab2741a76f4cc533992e56d76a: nuevos cumulative 42134131999, H1d 42134131938 y Scientific UI 42134132036 IN_PROGRESS; CI 42134131960 FAILURE solo npm audit 4 moderadas; Runner 42134131871 SUCCESS. Plus SHA eb3a45c4b0ae68ff3d8da440b434c27098cf69c1: cumulative 42133788691 backend IN_PROGRESS/frontend SUCCESS, H1d 42133788792 SUCCESS (38), CI 42133788642 backend IN_PROGRESS/frontend SUCCESS (1055), Runner 42133788643 SUCCESS. Inspeccionar los jobs y logs; aceptar B01 solo después de los gates matemáticos y UI requeridos. Lite npm audit permanece como bloqueo separado.",
-    "updated_utc": "2026-11-06T00:04:00Z"
+    "action": "AS-B-01: Lite SHA 7e21f3f9d9bebaab2741a76f4cc533992e56d76a cumulative 42134131999 SUCCESS (2 focales/2259), H1d 42134131938 SUCCESS (22), Runner 42134131871 SUCCESS; Scientific UI 42134132036 IN_PROGRESS, job 127617846312; CI 42134131960 FAILURE solo npm audit (4 moderadas, artifact 13464163830). Plus SHA eb3a45c4b0ae68ff3d8da440b434c27098cf69c1 cumulative 42133788691 SUCCESS (2 focales, 2800 passed/1 skipped/10 xfailed, 88.91%), H1d 42133788792 SUCCESS (38), CI 42133788642 SUCCESS (2800 backend/1055 frontend), Runner 42133788643 SUCCESS. Esperar el job Scientific UI Lite. Al SUCCESS, registrar aceptación scoped y empezar AS-B-02; si falla, diagnosticar antes de aceptar.",
+    "updated_utc": "2026-11-06T00:09:00Z"
   },
   "blockers": [
     {
