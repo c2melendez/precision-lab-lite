@@ -1,3 +1,21 @@
+# Actualización de certificación — 2026-11-06 UTC (r400)
+
+## Algebra229 AS-B-02 — PASS_SCOPED bilateral; AS-B-03 TEST-FIRST / WAIT
+
+- **AS-B-02 Lite** — SHA `4a5bb09703c527a0ddd68a33749fc228748d2060`; test blob `38f2aed6e2830c3fb2849d5adc6f0e72109bd8a0`. Acumulativo [42135018417](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018417) SUCCESS (skip=false, 2 focales/2,259, 366 archivos); H1d [42135018449](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018449) SUCCESS (22); Scientific UI [42135018517](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018517) SUCCESS (456, desktop/tablet/mobile); Runner [42135018349](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018349) SUCCESS. CI [42135018389](https://github.com/c2melendez/precision-lab-lite/actions/runs/42135018389) FAILURE únicamente npm audit (4 moderadas; artifact 13465385686).
+- **AS-B-02 Plus** — SHA `e8bbb528bdf1d70ee8acd947c8e58144ad07d3a6`; test blob `e6a56a899f4a62f32b483debe3959fca99c29594`. Acumulativo [42135022942](https://github.com/c2melendez/precision-lab-plus/actions/runs/42135022942) SUCCESS, guard false, ambos focales PASS; backend 2,800 passed / 1 skipped / 10 xfailed; 88.93%; frontend 1,055 passed. H1d [42135022812](https://github.com/c2melendez/precision-lab-plus/actions/runs/42135022812) SUCCESS (38); CI [42135022746](https://github.com/c2melendez/precision-lab-plus/actions/runs/42135022746) SUCCESS (2,800 backend / 1,055 frontend); Runner [42135022814](https://github.com/c2melendez/precision-lab-plus/actions/runs/42135022814) SUCCESS.
+- **Decisión AS-B-02:** PASS_SCOPED bilateral. Acceptance `ALGEBRA229_AS_B_02_ACCEPTANCE_2026-11-06.md` en ambos repositorios. El bloqueo npm audit Lite queda separado.
+ 
+## AS-B-03 — TEST-FIRST publicado; validación automática en curso
+
+- Contrato fuente: factorizar (x^3-8) como ((x-2)(x^2+2x+4)), con nota de factor cuadrático irreducible. Fixture congelado SHA-256 `8cd36ff08343f98f92abd83e2b162d565e0cbe5c59dc73f26b1c018f77d663c7`.
+- Lite: SHA `fe78fd9a1061a66f5f0a05280ed65fea13cefa30`; `tests/algebra229AsB03.audit.test.ts`, blob `e02c7c16db2b014685ab8ff28f876c70b5a8fb54`. Valida todas las celdas, incluida la nota, y diez sustituciones enteras con `compileNumeric` independiente.
+- Plus: SHA `300bdede38cf5f58e8f47a59ff20a83dd4389dfe`; `backend/tests/test_algebra229_as_b03.py`, blob `2feb08b6fa8e95730aa470c5acc0c036f6934dcb`. Valida la fila, HTTP `POST /api/v1/factor`, una estructura de un factor lineal y uno cuadrático con discriminante negativo, más diez sustituciones con AST/aritimética Python independiente.
+- Push automático en la rama canónica:
+  - Lite cumulative [42136026980](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136026980), H1d [42136027012](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136027012), Scientific UI [42136027006](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136027006), CI [42136026913](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136026913), Runner [42136027069](https://github.com/c2melendez/precision-lab-lite/actions/runs/42136027069).
+  - Plus cumulative [42136032221](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136032221), H1d [42136032228](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136032228), CI [42136032313](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136032313), Runner [42136032220](https://github.com/c2melendez/precision-lab-plus/actions/runs/42136032220).
+- **Siguiente paso exacto:** verificar focales, `skip=false`, conteos, jobs y logs de estos ocho runs; aceptar AS-B-03 solo al completar los gates pertinentes. Global certification **OPEN**.
+
 # Actualización de certificación — 2026-11-06 UTC (r399)
 
 ## Algebra229 AS-B-02 — acumulativos y H1d aprobados; dos gates pendientes
