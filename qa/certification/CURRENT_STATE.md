@@ -1,3 +1,11 @@
+# Actualización de certificación — 2026-11-06 UTC (r398)
+
+## Algebra229 AS-B-02 — TEST-FIRST / WAIT; gates en progreso
+
+- Fila congelada AS-B-02: `factorizar x^2-9 → (x-3)(x+3)`; test `tests/algebra229AsB02.audit.test.ts`, blob `38f2aed6e2830c3fb2849d5adc6f0e72109bd8a0`; SHA técnico `4a5bb09703c527a0ddd68a33749fc228748d2060`. Se verifican celdas exactas y diez sustituciones enteras mediante oráculo independiente.
+- Lite cumulative 42135018417 SUCCESS (skip=false, 2 focales/2259; 366 archivos), H1d 42135018449 SUCCESS (22); Scientific UI 42135018517 IN_PROGRESS; CI 42135018389 FAILURE npm audit (4 moderadas; artifact 13465385686); Runner 42135018349 SUCCESS.
+- Decisión: no aceptar AS-B-02 hasta que finalicen y se revisen los focales, gates acumulativos y Scientific UI Lite. Global certification **OPEN**.
+
 # Actualización de certificación — 2026-11-06 UTC (r397)
 
 ## Algebra229 AS-B-01 — PASS_SCOPED bilateral; AS-B-02 TEST-FIRST / WAIT
