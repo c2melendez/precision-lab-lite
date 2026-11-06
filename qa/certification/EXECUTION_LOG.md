@@ -1,3 +1,9 @@
+## 2026-11-06 UTC — r445: Algebra229 AS-B-29 WAIT; Lite PASS gates, Plus AST test-oracle correction
+
+- Lite SHA `1004174a0cd6ad29c9b252097f2664175c277918`: Cumulative 42292655779 SUCCESS (B29 focal 4/4; 2,267 passed, 8 expected fail, 34 TODO); CI 42292655724 SUCCESS (focal 4/4); H1d 42292655725 SUCCESS (22/22); Scientific UI 42292655744 SUCCESS (456/456). Cumulative/H1d/Scientific guards `skip=false`, `evidence_run_id=""`.
+- Plus SHA `4fac5e52415d7a9ad03d222a899ad9a19b8e1be2`: Cumulative 42292660804 FAILURE, un solo fallo en `_independent_integer_eval`: Python AST interpreta `3^2*3607*3803` como `BitXor`; los asserts anteriores de fila, HTTP y oráculo por división de prueba/primalidad pasan. Se clasifica como defecto del test, no del producto.
+- Corrección test-only publicada en `backend/tests/test_algebra229_as_b29.py`: normaliza `^` a `**` al crear el AST. Nuevo Plus SHA `534e5f208cb5986794f3c2aea8b3056fb9d30e7f`. Gates exact-SHA en curso: Cumulative 42293287002 (backend active; frontend SUCCESS), H1d 42293286948 (Chromium/install active), CI 42293286925 (backend active; frontend SUCCESS). No usar SHA/run fallidos como aceptación.
+- Estado B29 `WAIT`; no aceptar ni avanzar a B30 hasta validar los tres gates Plus corregidos. No hubo modificación del motor ni del producto matemático. Último baseline `ALGEBRA229-AS-B-28 PASS_SCOPED`; global OPEN.
 ## 2026-11-06 UTC — r444: Algebra229 AS-B-28 PASS_SCOPED bilateral
 
 - Lite SHA `6aa6b374f50a199886d6f022409f74b457fab2e9`: Cumulative 42283415265 SUCCESS (focal 4/4; 2,266 passed, 8 expected fail, 34 TODO), H1d 42283415226 SUCCESS (22/22), Scientific UI 42283415403 SUCCESS (456/456 desktop/tablet/mobile), CI 42283415015 SUCCESS; Runner 42283415020 fingerprint push-only.
