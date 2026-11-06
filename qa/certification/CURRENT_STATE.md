@@ -1,4 +1,10 @@
-# Actualización de certificación — 2026-11-06 UTC (r407)
+# Actualización de certificación — 2026-11-06 UTC (r408)
+
+## Algebra229 AS-B-08 — PASS_SCOPED bilateral
+
+- **AS-B-08 Lite** — SHA `8cb03f920fab0d5e5b665eeef1fefb6807131529`; test `tests/algebra229AsB08.audit.test.ts`, blob `a883794a96ad74ffd6ca2fe99cacaed6bb60717f`. Acumulativo [42147149489](https://github.com/c2melendez/precision-lab-lite/actions/runs/42147149489) **SUCCESS** (guard `skip=false`, focal 2/2; 366 archivos/2,259 passed); H1d [42147149472](https://github.com/c2melendez/precision-lab-lite/actions/runs/42147149472) **SUCCESS** (22); Scientific UI [42147149512](https://github.com/c2melendez/precision-lab-lite/actions/runs/42147149512) **SUCCESS** (456); Runner [42147149478](https://github.com/c2melendez/precision-lab-lite/actions/runs/42147149478) **SUCCESS**. CI [42147149533](https://github.com/c2melendez/precision-lab-lite/actions/runs/42147149533) **FAILURE** solo npm audit (4 moderadas; artifact 13470881892).
+- **AS-B-08 Plus** — SHA `073c28998087ad2d24b0688a5089d4af75187f33`; test `backend/tests/test_algebra229_as_b08.py`, blob `ce7b9c095c4e30f6762441c754b90c60ce48abff`. Acumulativo [42147155135](https://github.com/c2melendez/precision-lab-plus/actions/runs/42147155135) **SUCCESS** (guard `skip=false`; ambos focales PASSED; frontend 1,055 passed/28 todo); H1d [42147155163](https://github.com/c2melendez/precision-lab-plus/actions/runs/42147155163) **SUCCESS** (38); CI [42147155107](https://github.com/c2melendez/precision-lab-plus/actions/runs/42147155107) **SUCCESS** (2,800 backend/1,055 frontend); Runner [42147155112](https://github.com/c2melendez/precision-lab-plus/actions/runs/42147155112) **SUCCESS**.
+- **Decisión AS-B-08:** PASS_SCOPED bilateral. Acceptance `ALGEBRA229_AS_B_08_ACCEPTANCE_2026-11-06.md`. Sin cambio de producto. Siguiente: **AS-B-09** `6x^2+5x-4` → `(2x-1)(3x+4)`. Global **OPEN**.
 
 ## Algebra229 AS-B-07 — PASS_SCOPED bilateral
 
