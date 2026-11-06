@@ -1,3 +1,14 @@
+# Actualización de certificación — 2026-11-06 UTC (r418)
+
+## Algebra229 AS-B-19 — PASS_SCOPED bilateral (r418)
+
+- Lite HEAD técnico `7cec57d31bdc78ce5ba0d48c1f7a6f42d7608977` (test reforzado): Cumulative 42202183460 con focal 2/2 PASS; H1d 42202183400, Scientific UI 42202183396, Runner 42202183405 y CI 42202183478 SUCCESS.
+- Plus HEAD técnico `f5109b537005943738ad9797908bef340d23a5b6` (test reforzado): Cumulative 42202185841 con focal 2/2 PASS; H1d 42202185915, CI 42202185876 y Runner 42202185863 SUCCESS.
+- Acceptance: `ALGEBRA229_AS_B_19_ACCEPTANCE_2026-11-06.md`. Sin cambio de producto.
+- **Siguiente:** AS-B-20 `x^{4}+x^{2}y^{2}+y^{4}` → `(x^2 - x y + y^2)(x^2 + x y + y^2)`. Global **OPEN**.
+
+---
+
 # Actualización de certificación — 2026-11-06 UTC (r417)
 
 ## Algebra229 AS-B-18 — PASS_SCOPED bilateral (r417)

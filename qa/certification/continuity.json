@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 417,
+  "revision": 418,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "bb159a449f2d320d607b65503310bb8741cf16b2",
-  "baseline_case": "ALGEBRA229-AS-B-18",
+  "technical_baseline_sha": "7cec57d31bdc78ce5ba0d48c1f7a6f42d7608977",
+  "baseline_case": "ALGEBRA229-AS-B-19",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-19-TEST-FIRST",
+    "id": "ALGEBRA229-AS-B-20-TEST-FIRST",
     "status": "READY",
-    "previous_id": "ALGEBRA229-AS-B-18-TEST-FIRST",
-    "action": "AS-B-19 x^2y-xy^2 -> x y (x-y). Multivariable (x,y). Test-first: verificar que el oráculo cumple el estándar de AS-B-16/17/18 (fila exacta y oráculo entero independiente en dos variables), reforzarlo si es débil, y obtener evidencia CI del mismo SHA antes de acceptance. Gates: Plus cumulative+H1d; Lite cumulative+H1d+Scientific UI.",
-    "updated_utc": "2026-11-06T10:20:00Z"
+    "previous_id": "ALGEBRA229-AS-B-19-TEST-FIRST",
+    "action": "AS-B-20 x^{4}+x^{2}y^{2}+y^{4} -> (x^2 - x y + y^2)(x^2 + x y + y^2). Multivariable (x,y), N3. Test-first: verificar que el oraculo cumple el estandar de AS-B-16/17/18/19 (fila exacta y oraculo entero independiente en dos variables), reforzarlo si es debil, y obtener evidencia CI del mismo SHA antes de acceptance. Gates: Plus cumulative+H1d; Lite cumulative+H1d+Scientific UI.",
+    "updated_utc": "2026-11-06T10:30:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
