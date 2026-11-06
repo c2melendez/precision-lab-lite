@@ -1,41 +1,24 @@
 {
   "schema_version": 1,
-  "revision": 412,
+  "revision": 413,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "51fbb68f427144272db4c0d9cc5e17ba1c9ff7cb",
-  "baseline_case": "ALGEBRA229-AS-B-13",
+  "technical_baseline_sha": "0f0d0296069d3a710d98f77f33d18a30a63b2420",
+  "baseline_case": "ALGEBRA229-AS-B-15",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
-    "cumulative": {
-      "workflow": ".github/workflows/in625-cumulative-certification.yml",
-      "inputs": ["*"],
-      "acceptance_revision": "2026-10-16-continuity-v1"
-    },
-    "h1d": {
-      "workflow": ".github/workflows/in625-h1d-reentry.yml",
-      "inputs": ["*"],
-      "acceptance_revision": "2026-10-16-continuity-v1"
-    },
-    "security": {
-      "workflow": ".github/workflows/certification-dependency-gates.yml",
-      "inputs": ["*"],
-      "acceptance_revision": "2026-10-16-continuity-v1",
-      "allow_reuse": false
-    },
-    "scientific": {
-      "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-      "inputs": ["*"],
-      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
-    }
+    "cumulative": {"workflow": ".github/workflows/in625-cumulative-certification.yml", "inputs": ["*"], "acceptance_revision": "2026-10-16-continuity-v1"},
+    "h1d": {"workflow": ".github/workflows/in625-h1d-reentry.yml", "inputs": ["*"], "acceptance_revision": "2026-10-16-continuity-v1"},
+    "security": {"workflow": ".github/workflows/certification-dependency-gates.yml", "inputs": ["*"], "acceptance_revision": "2026-10-16-continuity-v1", "allow_reuse": false},
+    "scientific": {"workflow": ".github/workflows/syntax309-scientific-e2e.yml", "inputs": ["*"], "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"}
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-B-14-TEST-FIRST",
+    "id": "ALGEBRA229-AS-B-16-TEST-FIRST",
     "status": "READY",
-    "previous_id": "ALGEBRA229-AS-B-13-TEST-FIRST",
-    "action": "AS-B-12 and AS-B-13 PASS_SCOPED bilateral. H1d intermittent Playwright install flakes noted (infra, not product). Test-first AS-B-14. Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d. Modificar producto solo si la prueba falla.",
-    "updated_utc": "2026-11-06T03:30:00Z"
+    "previous_id": "ALGEBRA229-AS-B-15-TEST-FIRST",
+    "action": "AS-B-14 and AS-B-15 PASS_SCOPED bilateral. Test-first AS-B-16: factorizar a^3-b^3 -> (a-b)(a^2+ab+b^2). Gates: Lite cumulative+H1d+Scientific UI; Plus cumulative+H1d.",
+    "updated_utc": "2026-11-06T03:55:00Z"
   },
   "blockers": [],
   "prose_only_paths": ["qa/certification/**", "**/*.md", "README.md"]
