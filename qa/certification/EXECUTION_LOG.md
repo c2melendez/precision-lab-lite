@@ -1,3 +1,11 @@
+## 2026-11-06 UTC — r397: AS-B-01 PASS_SCOPED bilateral; AS-B-02 TEST-FIRST iniciado
+
+- AS-B-01 Lite SHA `7e21f3f9d9bebaab2741a76f4cc533992e56d76a`: cumulative 42134131999 SUCCESS (guard false, 2 focales/2,259; 366 archivos), H1d 42134131938 SUCCESS (22), Scientific UI 42134132036 SUCCESS (456; desktop/tablet/mobile), Runner 42134131871 SUCCESS. CI estándar 42134131960 FAILURE únicamente npm audit (4 moderadas; artifact 13464163830).
+- AS-B-01 Plus SHA `eb3a45c4b0ae68ff3d8da440b434c27098cf69c1`: cumulative 42133788691 SUCCESS (2 focales; 2,800 backend passed / 1 skipped / 10 xfailed; 88.91%), H1d 42133788792 SUCCESS (38), CI 42133788642 SUCCESS (2,800 backend/1,055 frontend), Runner 42133788643 SUCCESS. Ambos tests focales se enumeran como PASSED.
+- Aceptación `ALGEBRA229_AS_B_01_ACCEPTANCE_2026-11-06.md` creada en ambos repositorios. AS-B-01 PASS_SCOPED bilateral; no cambio de producto. npm audit Lite sigue como bloqueo de seguridad independiente.
+- AS-B-02 tests reforzados: Lite SHA `4a5bb09703c527a0ddd68a33749fc228748d2060`, blob `38f2aed6e2830c3fb2849d5adc6f0e72109bd8a0`; Plus SHA `e8bbb528bdf1d70ee8acd947c8e58144ad07d3a6`, blob `e6a56a899f4a62f32b483debe3959fca99c29594`. Fila fuente exacta, factor lineal y diez sustituciones enteras con aritmética independiente.
+- Runs automáticos exactos B02: Lite cumulative 42135018417, H1d 42135018449, Scientific UI 42135018517, CI 42135018389, Runner 42135018349; Plus cumulative 42135022942, H1d 42135022812, CI 42135022746, Runner 42135022814. Todos detectados como push sobre rama canónica; resultados aún pendientes al registrar.
+- AS-B-02 permanece WAIT hasta revisar focales y gates completos. Global OPEN.
 ## 2026-11-06 UTC — r396: actualización AS-B-01
 
 - Plus CI backend run 42133788642 terminó SUCCESS: 2,800 passed / 1 skipped / 10 xfailed, cobertura 88.91%; frontend 1,055 passed; H1d 42133788792 SUCCESS (38), cumulative 42133788691 SUCCESS y Runner 42133788643 SUCCESS. Ambos tests focales AS-B-01 aparecen explícitamente PASSED en cumulative.
