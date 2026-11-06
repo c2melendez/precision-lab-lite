@@ -1,3 +1,14 @@
+# Actualización de certificación — 2026-11-06 UTC (r434)
+
+## Algebra229 AS-B-23 — PASS_SCOPED bilateral (r434)
+
+- Lite HEAD técnico `f99fff6c06d7950ff14a8711e88035f9c7afd881`: Cumulative 42218347585 SUCCESS (focal 3/3 PASS; 366 archivos, 2,261 passed, 8 expected fail y 34 TODO); H1d 42218347590 SUCCESS (22/22); Scientific UI 42218347639 SUCCESS (456/456 desktop/tablet/mobile); CI 42218347555 SUCCESS; Runner 42218347616 SUCCESS, solo fingerprint de push.
+- Plus HEAD técnico `120184413febf16d6471ee0b72a30cabe467fa0c`: Cumulative 42218368185 SUCCESS (frontend/backend SUCCESS; focal 3/3 PASS; backend 2,802 passed, 1 skipped y 10 xfailed); H1d 42218368203 SUCCESS (38/38); CI 42218368283 SUCCESS (frontend/backend SUCCESS); Runner 42218368207 SUCCESS, solo fingerprint de push.
+- Acceptance bilateral: `ALGEBRA229_AS_B_23_ACCEPTANCE_2026-11-06.md`. Solo se reforzaron tests; no hubo cambios de motor/producto.
+- **Siguiente:** AS-B-24 `factor(x^2-2) sobre ℝ` → `(x-sqrt(2))*(x+sqrt(2))` (N3, se permiten raíces reales). Global **OPEN**.
+
+---
+
 # Actualización de certificación — 2026-11-06 UTC (r433)
 
 ## Algebra229 AS-B-22 — PASS_SCOPED bilateral (r433)
