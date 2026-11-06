@@ -1,3 +1,9 @@
+## 2026-11-06 UTC — r396: actualización AS-B-01
+
+- Plus CI backend run 42133788642 terminó SUCCESS: 2,800 passed / 1 skipped / 10 xfailed, cobertura 88.91%; frontend 1,055 passed; H1d 42133788792 SUCCESS (38), cumulative 42133788691 SUCCESS y Runner 42133788643 SUCCESS. Ambos tests focales AS-B-01 aparecen explícitamente PASSED en cumulative.
+- Lite SHA 7e21f3f9d9bebaab2741a76f4cc533992e56d76a: cumulative 42134131999 SUCCESS (2 focales/2,259; 366 archivos), H1d 42134131938 SUCCESS (22), Runner 42134131871 SUCCESS. Scientific UI 42134132036 continúa IN_PROGRESS en el paso desktop/tablet/mobile.
+- CI estándar Lite 42134131960 FAILURE solo npm audit: 4 moderadas; artifact 13464163830. El build/unit gate acumulativo se ejecutó y pasó; seguridad sigue bloqueada y separada.
+- AS-B-01 permanece WAIT bilateral exclusivamente a la conclusión Scientific UI Lite. No se declara aceptación todavía.
 ## 2026-11-06 UTC — r395: AS-B-01 signed-zero false negative corregido; gates en re-ejecución
 
 - Lite primer intento SHA `b26787342ab1bcd9edd7af8e723246306215be51`: acumulativo 42133782553 FAILURE porque `compileNumeric` devolvió `-0` en una raíz y Vitest `toBe` usa `Object.is`; clasificación HARNESS/ORACLE, no motor.
