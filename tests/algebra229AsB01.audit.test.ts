@@ -36,7 +36,9 @@ describe("Algebra229 AS-B-01 factor x^2-5x+6", () => {
       const substituted = factored.replace(/\bx\b/g, `(${x})`);
       const actual = compileNumeric(substituted, "__no_var__")(0);
       const expected = x * x - 5 * x + 6;
-      expect(actual).toBe(expected);
+      // IEEE-754 distinguishes -0 from +0, although both are the same exact integer here.
+      const normalized = Object.is(actual, -0) ? 0 : actual;
+      expect(normalized).toBe(expected);
     }
   });
 });
