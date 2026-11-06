@@ -1,3 +1,15 @@
+# Actualización de certificación — 2026-11-06 UTC (r445)
+
+## Algebra229 AS-B-29 — WAIT (revalidación bilateral pendiente)
+
+- Contrato: N2, factorizar 123456789 → 3^2*3607*3803. Se reforzaron los tests Lite/Plus con comparación de las ocho celdas congeladas, forma ASCII y oráculo independiente por división de prueba; primalidad y multiplicidades [2,1,1], producto exacto y evaluación independiente.
+- Lite SHA `1004174a0cd6ad29c9b252097f2664175c277918`: Cumulative 42292655779 SUCCESS (focal 4/4; 366 archivos, 2,267 passed, 8 expected fail, 34 TODO); CI 42292655724 SUCCESS (focal 4/4); H1d 42292655725 SUCCESS (22/22); Scientific UI 42292655744 SUCCESS (456/456 desktop/tablet/mobile). Los guards Cumulative/H1d/Scientific indican `skip=false` y `evidence_run_id` vacío.
+- Plus test SHA inicial `4fac5e52415d7a9ad03d222a899ad9a19b8e1be2`: Cumulative 42292660804 falló únicamente en la evaluación AST auxiliar del test. La fila congelada, el endpoint HTTP y el oráculo de factores primos pasaron; el error fue `BitXor` porque Python interpreta `^` como XOR. No se observó fallo del motor/API.
+- Plus test corregido SHA `534e5f208cb5986794f3c2aea8b3056fb9d30e7f`: se normaliza `^` a `**` exclusivamente dentro del evaluador AST del test. Nuevas corridas exact-SHA: Cumulative 42293287002, H1d 42293286948 y CI 42293286925 siguen IN_PROGRESS. Los jobs frontend Cumulative y CI completaron SUCCESS; los backends y H1d permanecen activos.
+- No se registra aceptación bilateral de B29 todavía. No avanzar a B30 ni lanzar gates duplicados mientras continúe la revalidación exact-SHA.
+- Baseline bilateral vigente: AS-B-28 `PASS_SCOPED`. Certificación global `OPEN`.
+
+---
 # Actualización de certificación — 2026-11-06 UTC (r444)
 
 ## Algebra229 AS-B-28 — PASS_SCOPED bilateral (r444)
