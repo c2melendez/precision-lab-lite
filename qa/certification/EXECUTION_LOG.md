@@ -1,3 +1,9 @@
+## 2026-11-06 UTC — r404: AS-B-04 PASS_SCOPED bilateral
+
+- Lite SHA `8229e0961b4bae6d0f7dbd07d3521939a76bf508`: cumulative 42137517887 SUCCESS (guard `skip=false`, 2 focales/2,259, 366 archivos), H1d 42137518068 SUCCESS (22), Scientific UI 42137517759 SUCCESS (456), Runner 42137517842 SUCCESS; CI 42137518118 FAILURE solo npm audit (4 moderadas; artifact 13465288525), umbral intacto.
+- Plus SHA `54a7963d47e020b35ea5a3cde75379953d513742`: cumulative 42137523357 SUCCESS (ambos focales PASSED; 2,800 backend/1 skipped/10 xfailed; 88.88%; 1,055 frontend), H1d 42137523360 SUCCESS (38), CI 42137523336 SUCCESS (2,800 backend/1,055 frontend), Runner 42137523341 SUCCESS.
+- Acceptance `ALGEBRA229_AS_B_04_ACCEPTANCE_2026-11-06.md` confirmada bilateral. B04 PASS_SCOPED bilateral; sin cambio de producto. Siguiente AS-B-05 `x^4-1`. Global OPEN.
+
 ## 2026-11-06 UTC — r403: AS-B-03 PASS_SCOPED bilateral; AS-B-04 TEST-FIRST / WAIT
 
 - AS-B-03 Lite SHA fe78fd9a1061a66f5f0a05280ed65fea13cefa30: cumulative 42136026980 SUCCESS (2 focales/2259, 366 files; guard false), H1d 42136027012 SUCCESS (22), Scientific UI 42136027006 SUCCESS (456 desktop/tablet/mobile), Runner 42136027069 SUCCESS; CI 42136026913 FAILURE solo npm audit (4 moderadas).

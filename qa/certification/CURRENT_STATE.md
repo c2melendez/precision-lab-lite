@@ -1,3 +1,11 @@
+# Actualización de certificación — 2026-11-06 UTC (r404)
+
+## Algebra229 AS-B-04 — PASS_SCOPED bilateral
+
+- **AS-B-04 Lite** — SHA `8229e0961b4bae6d0f7dbd07d3521939a76bf508`; test `tests/algebra229AsB04.audit.test.ts`, blob `be56ddb3ecd74ced31d237cd854fb81bfabd2e4a`. Acumulativo [42137517887](https://github.com/c2melendez/precision-lab-lite/actions/runs/42137517887) **SUCCESS** (guard `skip=false`, 2 focales/2,259; 366 archivos); H1d [42137518068](https://github.com/c2melendez/precision-lab-lite/actions/runs/42137518068) **SUCCESS** (22); Scientific UI [42137517759](https://github.com/c2melendez/precision-lab-lite/actions/runs/42137517759) **SUCCESS** (456 desktop/tablet/mobile); Runner [42137517842](https://github.com/c2melendez/precision-lab-lite/actions/runs/42137517842) **SUCCESS**. CI [42137518118](https://github.com/c2melendez/precision-lab-lite/actions/runs/42137518118) **FAILURE** solo npm audit (4 moderadas; artifact 13465288525); umbral intacto.
+- **AS-B-04 Plus** — SHA `54a7963d47e020b35ea5a3cde75379953d513742`; test `backend/tests/test_algebra229_as_b04.py`, blob `cb8ba0d07c9a31a13123f3d16e9115d31b8b1e13`. Acumulativo [42137523357](https://github.com/c2melendez/precision-lab-plus/actions/runs/42137523357) **SUCCESS** (ambos focales PASSED; backend 2,800 passed/1 skipped/10 xfailed, 88.88%; frontend 1,055 passed); H1d [42137523360](https://github.com/c2melendez/precision-lab-plus/actions/runs/42137523360) **SUCCESS** (38); CI [42137523336](https://github.com/c2melendez/precision-lab-plus/actions/runs/42137523336) **SUCCESS** (2,800 backend/1,055 frontend); Runner [42137523341](https://github.com/c2melendez/precision-lab-plus/actions/runs/42137523341) **SUCCESS**.
+- **Decisión AS-B-04:** PASS_SCOPED bilateral. Acceptance `ALGEBRA229_AS_B_04_ACCEPTANCE_2026-11-06.md` en ambos repositorios. Sin cambio de producto. Siguiente: **AS-B-05** `x^4-1`. Global **OPEN**.
+
 # Actualización de certificación — 2026-11-06 UTC (r403)
 
 ## Algebra229 AS-B-03 — PASS_SCOPED bilateral; AS-B-04 TEST-FIRST / WAIT
