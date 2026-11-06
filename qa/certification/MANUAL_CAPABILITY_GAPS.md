@@ -1,3 +1,10 @@
+## 2026-11-06 — PR #62 Workbox glob candidate remains stale
+
+- El hard gate continúa reportando cuatro vulnerabilidades moderadas en CI estándar; último ejemplo: Lite AS-B-02 CI run 42135018389, artifact `lite-npm-audit` ID `13465385686`. No se cambió el umbral ni se aplicó `npm audit fix --force`.
+- PR draft [#62](https://github.com/c2melendez/precision-lab-lite/pull/62), head `b24d3951e9548eff46cdd105b6f44225c8bfc7e6`, sigue abierto y sin merge. Su validación favorable (audit 0, CI/cumulative, S25, S22, G3, Playwright y cross-browser) corresponde a ese SHA previo.
+- Comparación actual con `qa/syntax-audit-in625-a1`: ramas **diverged**, candidato 5 commits ahead y **60 behind**; solo toca `package.json` y `package-lock.json`. No es evidencia reutilizable ni compatible con el HEAD actual sin rebase/reaplicación y revalidación completa.
+- Decisión: no fusionar ni aplicar estos overrides desde la rama canónica; no declarar cerrado el blocker de seguridad. Requiere rebase controlado, gates actuales (incluidos PWA/Workbox, audit, browser E2E y build) y revisión/autorización de seguridad antes de cualquier merge.
+
 ## 2026-11-06 — confirmación de bloqueo npm audit Lite
 
 - CI Lite [42133782701](https://github.com/c2melendez/precision-lab-lite/actions/runs/42133782701) y [42134131960](https://github.com/c2melendez/precision-lab-lite/actions/runs/42134131960) vuelven a fallar en `npm audit --package-lock-only` con los mismos cuatro hallazgos moderados. El segundo artifact es `lite-npm-audit` ID `13464163830`.
