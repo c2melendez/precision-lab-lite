@@ -38,7 +38,7 @@ function isPrimeByTrialDivision(value: number): boolean {
 }
 
 function parsePrimePowers(expression: string): PrimePower[] {
-  return [...expression.matchAll(/(\\d+)(?:\\^(\\d+))?/g)].map((match) => [
+  return [...expression.matchAll(/(\d+)(?:\^(\d+))?/g)].map((match) => [
     Number(match[1]),
     Number(match[2] ?? "1"),
   ] as const);
@@ -47,7 +47,7 @@ function parsePrimePowers(expression: string): PrimePower[] {
 describe("Algebra229 AS-B-28 factor entero 4294967297", () => {
   it("matches the frozen matrix row cells exactly", () => {
     const text = gunzipSync(readFileSync(SOURCE_GZ)).toString("utf8");
-    const sourceRow = text.split(/\\r?\\n/).find((line) => /^\\|\\s*AS-B-28\\s*\\|/.test(line))?.trim();
+    const sourceRow = text.split(/\r?\n/).find((line) => /^\|\s*AS-B-28\s*\|/.test(line))?.trim();
     expect(sourceRow).toBeTruthy();
     const cells = sourceRow!.split("|").map((cell) => cell.trim());
     expect(cells).toHaveLength(8);
@@ -55,19 +55,19 @@ describe("Algebra229 AS-B-28 factor entero 4294967297", () => {
       "AS-B-28",
       "N3",
       "`factorizar`",
-      "`\\\\text{factorizar el entero }4294967297`",
-      "`641\\\\cdot 6700417`",
+      "`\\text{factorizar el entero }4294967297`",
+      "`641\\cdot 6700417`",
       "",
     ]);
     expect(cells[7]).toBe("");
   });
 
   it("returns the exact ASCII prime factorization", () => {
-    expect(evaluate(INPUT).replace(/\\s+/g, "")).toBe(EXPECTED);
+    expect(evaluate(INPUT).replace(/\s+/g, "")).toBe(EXPECTED);
   });
 
   it("independent trial-division oracle proves prime factors, multiplicities, and product", () => {
-    const result = evaluate(INPUT).replace(/\\s+/g, "");
+    const result = evaluate(INPUT).replace(/\s+/g, "");
     const expected = trialDivisionFactorization(ORIGINAL);
     const actual = parsePrimePowers(result);
     expect(expected).toEqual([[641, 1], [6700417, 1]]);
@@ -81,7 +81,7 @@ describe("Algebra229 AS-B-28 factor entero 4294967297", () => {
   });
 
   it("result remains symbolically equivalent to the original integer", () => {
-    const result = evaluate(INPUT).replace(/\\s+/g, "");
-    expect(evaluate(`(${result})-${ORIGINAL}`).trim()).toBe("0");
+    const result = evaluate(INPUT).replace(/\s+/g, "");
+    expect(evaluate("(" + result + ")-" + ORIGINAL).trim()).toBe("0");
   });
 });
