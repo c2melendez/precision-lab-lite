@@ -1,3 +1,10 @@
+## 2026-11-06 UTC — r447: Algebra229 AS-B-29 WAIT; Plus Cumulative/CI PASS, H1d pending
+
+- Lite SHA `1004174a0cd6ad29c9b252097f2664175c277918`: Cumulative 42292655779 SUCCESS (focal 4/4; 2,267 passed, 8 expected fail, 34 TODO); CI 42292655724 SUCCESS (focal 4/4); H1d 42292655725 SUCCESS (22/22); Scientific UI 42292655744 SUCCESS (456/456).
+- Plus corrected SHA `534e5f208cb5986794f3c2aea8b3056fb9d30e7f`: Cumulative 42293287002 SUCCESS; focal B29 3/3 PASS, guard `skip=false`, no REUSE; backend 2,808 passed, 1 skipped, 10 xfailed. CI 42293286925 SUCCESS (backend 2,808 passed, 1 skipped, 10 xfailed; coverage 88.88%; frontend/backend SUCCESS).
+- Plus H1d 42293286948 remains IN_PROGRESS at `Install Chromium`. Wait for final H1d status and inspect Playwright count/guard before acceptance.
+- Prior Plus SHA `4fac5e52415d7a9ad03d222a899ad9a19b8e1be2` is diagnostic only (test AST parsed ^ as XOR); corrected SHA normalizes the exponent marker inside the test helper. No engine/API/product change.
+- B29 remains WAIT. Do not advance to B30. Baseline B28 PASS_SCOPED, global OPEN.
 ## 2026-11-06 UTC — r446: Algebra229 AS-B-29 WAIT; Lite complete, Plus Cumulative PASS
 
 - Lite SHA `1004174a0cd6ad29c9b252097f2664175c277918`: Cumulative 42292655779 SUCCESS (focal 4/4; 2,267 passed, 8 expected fail, 34 TODO); CI 42292655724 SUCCESS (focal 4/4); H1d 42292655725 SUCCESS (22/22); Scientific UI 42292655744 SUCCESS (456/456).
