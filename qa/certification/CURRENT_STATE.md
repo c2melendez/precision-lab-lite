@@ -1,3 +1,20 @@
+# Actualización de certificación — 2026-11-05 UTC (r394)
+
+## Algebra229 AS-A-17 — PASS_SCOPED bilateral; AS-B-01 TEST-FIRST / REVIEW
+
+- **AS-A-17 Lite** — SHA `b37502c5713bddabae6a022e6e1cb788ee72a87d`; test `tests/algebra229AsA17.audit.test.ts`, blob `39b34eed4107e88a520a154cc2a4d4867d38dc85`. Acumulativo [42039943541](https://github.com/c2melendez/precision-lab-lite/actions/runs/42039943541) SUCCESS (guard `skip=false`, 2 focales / 2,259 passed); H1d [42039943721](https://github.com/c2melendez/precision-lab-lite/actions/runs/42039943721) SUCCESS (22/22); Scientific UI [42039943566](https://github.com/c2melendez/precision-lab-lite/actions/runs/42039943566) SUCCESS (456/456); Runner [42039943836](https://github.com/c2melendez/precision-lab-lite/actions/runs/42039943836) SUCCESS. CI [42039944052](https://github.com/c2melendez/precision-lab-lite/actions/runs/42039944052) FAILURE únicamente por el hard gate npm audit (cuatro moderadas), separado de los gates matemáticos.
+- **AS-A-17 Plus** — SHA `6b1bf9b9f731d6f6d36c16f33f09d1a9f2eb3238`; test `backend/tests/test_algebra229_as_a17.py`, blob `ed9052343bec6a4347d3075933135e2839809bfd`. Se corrigió un falso negativo del harness que prohibía los monomios válidos (x^5) y (y^5). Acumulativo [42040844511](https://github.com/c2melendez/precision-lab-plus/actions/runs/42040844511) SUCCESS (guard `skip=false`, 2 focales; 2,800 passed / 1 skipped / 10 xfailed; 88.93% cobertura); H1d [42040844847](https://github.com/c2melendez/precision-lab-plus/actions/runs/42040844847) SUCCESS (38/38); CI [42040844459](https://github.com/c2melendez/precision-lab-plus/actions/runs/42040844459) SUCCESS (2,800 backend / 1,055 frontend); Runner [42040844455](https://github.com/c2melendez/precision-lab-plus/actions/runs/42040844455) SUCCESS.
+- **Decisión AS-A-17:** PASS_SCOPED bilateral para la fila contractual, con el fallo npm audit Lite retenido como bloqueo de seguridad independiente. No hubo cambio de producto. Acceptance: `ALGEBRA229_AS_A_17_ACCEPTANCE_2026-11-05.md`.
+
+## AS-B-01 — TEST-FIRST actualizado; gates del nuevo SHA por reconciliar
+
+- Fila congelada: factorizar (x^2-5x+6) como ((x-3)(x-2)), fuente `legacy_sources/matriz_algebra_simbolica.md.gz`, SHA-256 descomprimido `8cd36ff08343f98f92abd83e2b162d565e0cbe5c59dc73f26b1c018f77d663c7`.
+- Lite cambio técnico: SHA `b26787342ab1bcd9edd7af8e723246306215be51`; `tests/algebra229AsB01.audit.test.ts`, blob `32982309677fe63e7e2db85f7e2fae62c4be3693`. El test coteja las seis celdas de la fila y diez sustituciones enteras mediante `compileNumeric`, sin usar Algebrite como oráculo numérico.
+- Plus cambio técnico: SHA `eb3a45c4b0ae68ff3d8da440b434c27098cf69c1`; `backend/tests/test_algebra229_as_b01.py`, blob `12aa538e77b63137ef92e47ede8f68506f6dbc71`. El test coteja la fila exacta, exige dos factores lineales en HTTP y valida diez sustituciones con un evaluador restringido de AST y aritmética entera Python, independiente de SymPy.
+- Los tests anteriores de AS-B-01 habían pasado en acumulativos previos, pero esos resultados anteceden esta ampliación del oráculo y **no validan estos blobs nuevos**.
+- Los YAML revisados ya incluyen `push` sobre la rama canónica y los filtros permiten ambos archivos de test. Lite también incluye `tests/**` en Scientific UI. El conector de Actions disponible para commits devuelve solo runs de PR; la consulta de estos dos SHA regresó listas vacías. Esto **no demuestra ausencia de corridas push**. No hay IDs/logs nuevos verificables para los SHA AS-B-01 todavía.
+- **Siguiente paso exacto:** recuperar los runs push de `b26787342ab1bcd9edd7af8e723246306215be51` y `eb3a45c4b0ae68ff3d8da440b434c27098cf69c1`; revisar guard `skip=false`, focales AS-B-01, resumen completo, H1d y CI; incluir Scientific UI Lite. No aceptar AS-B-01 hasta comprobarlos. Si algún run no existe, diagnosticar filtros/permisos/Actions antes de cualquier despacho alternativo. Global certification **OPEN**.
+
 # Actualización de certificación — 2026-11-05 UTC (r393)
 
 ## Algebra229 AS-A-17 — Lite gates matemáticos PASS; Plus en corrección/re-ejecución
