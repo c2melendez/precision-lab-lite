@@ -1,3 +1,9 @@
+## 2026-11-06 UTC — r443: Algebra229 AS-B-27 PASS_SCOPED bilateral
+
+- Lite SHA a69eacd5b64b371bee52ee88ae3869976092b2d3: Cumulative 42274271213 SUCCESS (focal 4/4; 2,265 passed, 8 expected fail, 34 TODO), H1d 42274271107 SUCCESS (22/22), Scientific UI 42274271105 SUCCESS (456/456 desktop/tablet/mobile), CI 42274271188 SUCCESS; Runner 42274271145 solo calculó fingerprint.
+- Plus SHA f817f1c568635b4b64f26e54eb3a41b22a0712ed: Cumulative 42274292997 SUCCESS (frontend/backend SUCCESS, focal 3/3; backend 2,806 passed, 1 skipped, 10 xfailed), H1d 42274292987 SUCCESS (38/38), CI 42274293004 SUCCESS (2,806 passed, 1 skipped, 10 xfailed; coverage 88.91%); Runner 42274293046 solo calculó fingerprint.
+- Los seis jobs de gates aplicables registraron skip=false y evidence_run_id vacío; los logs focales confirman ejecución efectiva en los SHA técnicos exactos.
+- Los commits técnicos solo cambian tests. Sin cambios de motor/producto. Acceptance bilateral: ALGEBRA229_AS_B_27_ACCEPTANCE_2026-11-06.md. Global OPEN. Siguiente AS-B-28: factorizar 4294967297 → 641*6700417; reforzar oráculo por división de prueba y primalidad.
 ## 2026-11-06 UTC — r442: Algebra229 AS-B-26 PASS_SCOPED bilateral
 
 - Lite SHA `26cc8cc69d32e4a5614dc9921a87030308f9cdd1`: Cumulative 42270957296 SUCCESS (focal 4/4, 366/366 archivos, 2,264 passed, 8 expected fail, 34 TODO); H1d 42270957306 SUCCESS (22/22); CI 42270957315 SUCCESS; Scientific UI 42270957389 SUCCESS (456/456 desktop/tablet/mobile); Runner 42270957317 SUCCESS..
