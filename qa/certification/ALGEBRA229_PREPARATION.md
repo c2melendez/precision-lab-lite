@@ -1,6 +1,6 @@
 # Algebra 229 — preparación de matriz y trazabilidad
 
-Estado: **FIXTURE_PROMOTED**; sección A **AS-A-01..17 PASS_SCOPED bilateral**; sección B **AS-B-01..04 PASS_SCOPED bilateral**; matriz **NOT_EXECUTED** en bloque (no se certifican las 229 filas). Certificación global **OPEN**.
+Estado: **FIXTURE_PROMOTED**; sección A **AS-A-01..17 PASS_SCOPED bilateral**; sección B **AS-B-01..05 PASS_SCOPED bilateral**; matriz **NOT_EXECUTED** en bloque (no se certifican las 229 filas). Certificación global **OPEN**.
 
 ## Fuente y fixture
 
@@ -23,7 +23,8 @@ AS-A-01..17 cerrados **PASS_SCOPED bilateral**.
 - **AS-B-02** (x^2-9=(x-3)(x+3)): **PASS_SCOPED bilateral**.
 - **AS-B-03** (x^3-8=(x-2)(x^2+2x+4)): **PASS_SCOPED bilateral**. Plus oráculo AST corregido tras falso negativo por sustitución negativa no parentizada; no hubo fallo de producto.
 - **AS-B-04** (x^3+27=(x+3)(x^2-3x+9)): **PASS_SCOPED bilateral**. Lite SHA `8229e0961b4bae6d0f7dbd07d3521939a76bf508` (cumulative 42137517887, H1d 42137518068, Scientific UI 42137517759, Runner 42137517842 SUCCESS; CI 42137518118 FAILURE solo npm audit); Plus SHA `54a7963d47e020b35ea5a3cde75379953d513742` (cumulative 42137523357, H1d 42137523360, CI 42137523336, Runner 42137523341 SUCCESS). Sin cambio de producto.
+- **AS-B-05** (x^4-1=(x-1)(x+1)(x^2+1) sobre ℚ): **PASS_SCOPED bilateral**. Lite SHA `9a4352732241a6d97c2a21686b4618cb069d8144` (cumulative 42143597700, H1d 42143597591, Scientific UI 42143597597, Runner 42143597781 SUCCESS; CI 42143597848 FAILURE solo npm audit); Plus SHA `1a93f562579a615e8faed9bac2449ed74c8ef543` (cumulative 42143597860, H1d 42143597715, CI 42143597710, Runner 42143597834 SUCCESS). Sin cambio de producto.
 
 ## Siguiente
 
-`ALGEBRA229-AS-B-05-TEST-FIRST` — factorizar `x^4-1` → `(x-1)(x+1)(x^2+1)` sobre Q, bilateral. Global OPEN.
+`ALGEBRA229-AS-B-06-TEST-FIRST` — factorizar `x^4+4` → `(x^2-2x+2)(x^2+2x+2)` (Sophie Germain), bilateral. Global OPEN.
