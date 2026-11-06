@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 434,
+  "revision": 435,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f99fff6c06d7950ff14a8711e88035f9c7afd881",
@@ -40,10 +40,10 @@
   },
   "next_action": {
     "id": "ALGEBRA229-AS-B-24-TEST-FIRST",
-    "status": "READY",
+    "status": "WAIT",
     "previous_id": "ALGEBRA229-AS-B-23-TEST-FIRST",
-    "action": "AS-B-24 factor(x^2-2) sobre ℝ -> (x-sqrt(2))*(x+sqrt(2)) (N3, se permiten raíces reales). Test-first: verificar las siete celdas exactas de la fila congelada; comprobar la salida ASCII de factores con sqrt(2), equivalencia simbólica con x^2-2 y un oráculo independiente en 10 muestras enteras; conservar la distinción con AS-B-23 sobre ℚ. Gates: Plus cumulative+H1d; Lite cumulative+H1d+Scientific UI.",
-    "updated_utc": "2026-11-06T12:40:00Z"
+    "action": "AS-B-24 factor(x^2-2) sobre ℝ -> (x-sqrt(2))*(x+sqrt(2)) (N3). Tests reforzados en ambos motores: siete celdas semánticas exactas de la fila fuente, salida ASCII, equivalencia simbólica y oráculo independiente en diez muestras enteras. Lite SHA 2342cbd5ac2de6e9a7b1fbf42ddb9df4ee1f9c8d: cumulative/CI/Scientific SUCCESS; único gate pendiente H1d run 42222060032, job 127906273506, activo en Install Chromium y Run IN625 H1d aún pendiente. Plus SHA 5d8d78f8e35d02830bfbce63c107fe5990904cd1: cumulative/CI/H1d SUCCESS. Esperar el job Lite ya en curso; no despachar duplicado ni declarar PASS bilateral hasta su conclusión.",
+    "updated_utc": "2026-11-06T13:06:26Z"
   },
   "blockers": [],
   "prose_only_paths": [
