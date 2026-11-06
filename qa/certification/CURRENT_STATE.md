@@ -1,3 +1,12 @@
+# Actualización de certificación — 2026-11-06 UTC (r396)
+
+## Algebra229 AS-B-01 — Lite E2E pendiente; Plus gates completos
+
+- Lite SHA `7e21f3f9d9bebaab2741a76f4cc533992e56d76a`; acumulativo [42134131999](https://github.com/c2melendez/precision-lab-lite/actions/runs/42134131999) SUCCESS, guard `skip=false`, test focal 2/2, 366 archivos / 2,259 passed; H1d [42134131938](https://github.com/c2melendez/precision-lab-lite/actions/runs/42134131938) SUCCESS (22/22); Runner [42134131871](https://github.com/c2melendez/precision-lab-lite/actions/runs/42134131871) SUCCESS. Scientific UI [42134132036](https://github.com/c2melendez/precision-lab-lite/actions/runs/42134132036) **IN_PROGRESS**: paso Playwright nativo desktop/tablet/mobile sigue activo. CI estándar [42134131960](https://github.com/c2melendez/precision-lab-lite/actions/runs/42134131960) FAILURE exclusivamente por `npm audit` (4 moderadas; artifact 13464163830), sin impacto sobre el gate acumulativo.
+- Plus SHA `eb3a45c4b0ae68ff3d8da440b434c27098cf69c1`; acumulativo [42133788691](https://github.com/c2melendez/precision-lab-plus/actions/runs/42133788691) SUCCESS, ambas pruebas AS-B-01 PASS, backend 2,800 passed / 1 skipped / 10 xfailed, cobertura 88.91%; H1d [42133788792](https://github.com/c2melendez/precision-lab-plus/actions/runs/42133788792) SUCCESS (38/38); CI estándar [42133788642](https://github.com/c2melendez/precision-lab-plus/actions/runs/42133788642) SUCCESS (backend 2,800 passed; frontend 1,055 passed); Runner [42133788643](https://github.com/c2melendez/precision-lab-plus/actions/runs/42133788643) SUCCESS.
+- Decisión: Plus gates completos; AS-B-01 **WAIT bilateral** únicamente por Scientific UI Lite. El CI Lite de seguridad permanece como bloqueo de auditoría separado, sin cambiar el umbral ni dependencias.
+- Siguiente paso exacto: obtener conclusión/logs del job `127617846312` en run `42134132036`; si SUCCESS, registrar aceptación scoped bilateral de AS-B-01 y abrir AS-B-02 TEST-FIRST. Si falla, clasificar causa y corregir el test/harness o producto según evidencia. Global certification **OPEN**.
+
 # Actualización de certificación — 2026-11-06 UTC (r395)
 
 ## Algebra229 AS-A-17 — PASS_SCOPED bilateral; AS-B-01 — TEST-FIRST / WAIT
