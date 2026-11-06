@@ -1,6 +1,6 @@
 # Algebra 229 — preparación de matriz y trazabilidad
 
-Estado: **FIXTURE_PROMOTED**; sección A **AS-A-01..17 PASS_SCOPED bilateral**; sección B **AS-B-01 PASS_SCOPED bilateral**, **AS-B-02 TEST-FIRST / WAIT**; matriz **NOT_EXECUTED** en bloque (no se certifican las 229 filas). Certificación global **OPEN**.
+Estado: **FIXTURE_PROMOTED**; sección A **AS-A-01..17 PASS_SCOPED bilateral**; sección B **AS-B-01..02 PASS_SCOPED bilateral**, **AS-B-03 TEST-FIRST / WAIT**; matriz **NOT_EXECUTED** en bloque (no se certifican las 229 filas). Certificación global **OPEN**.
 
 ## Fuente y fixture
 
@@ -15,13 +15,14 @@ Estado: **FIXTURE_PROMOTED**; sección A **AS-A-01..17 PASS_SCOPED bilateral**; 
 
 ## Avance sección A (expandir)
 
-AS-A-01..17 cerrados **PASS_SCOPED bilateral**. Acceptance de AS-A-17: `ALGEBRA229_AS_A_17_ACCEPTANCE_2026-11-05.md`.
+AS-A-01..17 cerrados **PASS_SCOPED bilateral**.
 
 ## Sección B (factorizar)
 
-- **AS-B-01** (x^2-5x+6=(x-3)(x-2)): **PASS_SCOPED bilateral**. Acceptance: `ALGEBRA229_AS_B_01_ACCEPTANCE_2026-11-06.md`. Oráculo independiente de diez sustituciones enteras; HTTP verificado en Plus; pruebas UI nativas de Lite en desktop/tablet/mobile.
-- **AS-B-02** (x^2-9=(x-3)(x+3)): tests reforzados con fila fuente exacta y diez sustituciones enteras independientes; SHA Lite `4a5bb09703c527a0ddd68a33749fc228748d2060`, SHA Plus `e8bbb528bdf1d70ee8acd947c8e58144ad07d3a6`. Estado **WAIT** hasta resolver corridas automáticas de ambos repositorios.
+- **AS-B-01** (x^2-5x+6=(x-3)(x-2)): **PASS_SCOPED bilateral**. Acceptance `ALGEBRA229_AS_B_01_ACCEPTANCE_2026-11-06.md`.
+- **AS-B-02** (x^2-9=(x-3)(x+3)): **PASS_SCOPED bilateral**. Acceptance `ALGEBRA229_AS_B_02_ACCEPTANCE_2026-11-06.md`.
+- **AS-B-03** (x^3-8=(x-2)(x^2+2x+4)): tests reforzados con fila exacta (incluida nota de irreducibilidad) y diez sustituciones enteras independientes. SHA Lite `fe78fd9a1061a66f5f0a05280ed65fea13cefa30`, SHA Plus `300bdede38cf5f58e8f47a59ff20a83dd4389dfe`; estado **WAIT** por gates automáticos en curso.
 
 ## Siguiente
 
-`ALGEBRA229-AS-B-02-TEST-FIRST` — revisar runs Lite 42135018417/42135018449/42135018517/42135018389/42135018349 y Plus 42135022942/42135022812/42135022746/42135022814. Global OPEN.
+`ALGEBRA229-AS-B-03-TEST-FIRST` — revisar Lite runs 42136026980/42136027012/42136027006/42136026913/42136027069 y Plus 42136032221/42136032228/42136032313/42136032220. Global OPEN.
