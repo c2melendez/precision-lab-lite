@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 449,
+  "revision": 450,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "99bbc9bc17b79d00c45299415b5f9d63a9d09c36",
-  "baseline_case": "ALGEBRA229-AS-B-30",
-  "baseline_status": "PASS_SCOPED",
+  "technical_baseline_sha": "bb4e86b52a43f3da6b09651692f1a5f167f84f38",
+  "baseline_case": "ALGEBRA229-AS-C-01",
+  "baseline_status": "PASS",
   "global_certification": "OPEN",
   "gates": {
     "cumulative": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-C-01-TEST-FIRST",
+    "id": "ALGEBRA229-AS-C-02-TEST-FIRST",
     "status": "RUN",
-    "previous_id": "ALGEBRA229-AS-B-30-TEST-FIRST",
-    "action": "AS-C-01 N1 simplificar: (x^2-1)/(x-1) -> x+1, valido para x!=1. B30 cerrado bilateral PASS_SCOPED con Lite 99bbc9bc17b79d00c45299415b5f9d63a9d09c36 (Cumulative 42329909267 focal 4/4 y 2,271 passed, CI 42329909188, H1d 42329909190 22/22, Scientific 42329909206 456/456, Runner 42329909192) y Plus a831d31d5bc13193e470949eb8efb06cc4527533 (Cumulative 42329897688 focal 3/3, CI 42329897714 con 2,811 passed y 88.89%, H1d 42329897684 38/38). La seccion B queda completa (30/30). Siguiente: tests bilaterales de fila congelada, simplificacion exacta, equivalencia simbolica fuera de x=1 y control de dominio en x=1; luego gates en el nuevo SHA tecnico.",
-    "updated_utc": "2026-11-06T22:10:00Z"
+    "previous_id": "ALGEBRA229-AS-C-01-TEST-FIRST",
+    "action": "AS-C-02 N2 simplificar: (x^3-1)/(x^2-1) -> (x^2+x+1)/(x+1). C-01 cerrado bilateral PASS con Lite bb4e86b52a43f3da6b09651692f1a5f167f84f38 (Cumulative 42331112760 focal 5/5 y 2,276 passed, CI 42331112758, H1d 42331112802 22/22, Scientific 42331112826, Runner 42331112757) y Plus e5dd15712a6522edd1f5638c64964b8bca302956 (Cumulative 42331096760 focal 5/5, CI 42331096764 con 2,816 passed y 88.87%, H1d 42331096766 38/38). La seccion C queda iniciada (1/23). Siguiente: tests bilaterales de fila congelada, simplificacion exacta, equivalencia simbolica fuera de x=1 y x=-1, y control de dominio en los puntos excluidos; luego gates en el nuevo SHA tecnico.",
+    "updated_utc": "2026-11-06T23:15:00Z"
   },
   "blockers": [],
   "prose_only_paths": [

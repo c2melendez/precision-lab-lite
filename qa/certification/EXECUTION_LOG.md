@@ -1,3 +1,13 @@
+## 2026-11-06 UTC - r450: Algebra229 AS-C-01 PASS bilateral; seccion C iniciada
+
+- Test-first sin cambios de producto: Lite `simplifyExpression` ya devolvia `x+1`; Plus `POST /api/v1/simplify` ya devolvia `x + 1` y `Ne(x,1)` como condicion de dominio.
+- Tests Lite `tests/algebra229AsC01.audit.test.ts` 5/5: fila congelada exacta, salida exacta, diferencia simbolica cero, oraculo aritmetico independiente y `ErrorCode.DOMAIN_ERROR` en `x=1`.
+- Tests Plus `backend/tests/test_algebra229_as_c01.py` 5/5: fila congelada, endpoint real, `domain_conditions` con `x \neq 1`, oraculo `Fraction` en muestras fuera de `x=1` y `DOMAIN_ERROR` en el punto excluido.
+- Lite `bb4e86b52a43f3da6b09651692f1a5f167f84f38`: Cumulative 42331112760 SUCCESS (focal 5/5, 295 ms; 368 archivos, 2,276 passed, 8 expected fail, 34 TODO), H1d 42331112802 SUCCESS (22/22), Scientific UI 42331112826 SUCCESS, CI 42331112758 SUCCESS, Runner 42331112757 SUCCESS.
+- Plus `e5dd15712a6522edd1f5638c64964b8bca302956`: Cumulative 42331096760 SUCCESS (focal 5/5), CI 42331096764 SUCCESS (2,816 passed, 1 skipped, 10 xfailed; 88.87%), H1d 42331096766 SUCCESS (38/38), Runner 42331096757 SUCCESS.
+- Guards `skip=false`, `evidence_run_id` vacio y sin REUSE en los gates aplicables de ambos repos.
+- Aceptacion bilateral: `ALGEBRA229_AS_C_01_ACCEPTANCE_2026-11-06.md`. Baseline `ALGEBRA229-AS-C-01 PASS`; seccion C abierta (1/23). S25/security y SG28/H2/DIST siguen independientes y abiertos. Global OPEN.
+- Siguiente: AS-C-02 N2 simplificar `(x^3-1)/(x^2-1)` -> `(x^2+x+1)/(x+1)`, test-first bilateral.
 ## 2026-11-06 UTC - r449: Algebra229 AS-B-30 PASS_SCOPED bilateral; seccion B completa
 
 - Diagnostico previo: la entrada congelada `\text{¿es primo }1000000007?` devolvia PARSE_ERROR en Plus; clasificado como gap de capability, no de harness ni oraculo.

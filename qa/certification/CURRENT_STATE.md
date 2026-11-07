@@ -1,3 +1,13 @@
+# Actualización de certificación - 2026-11-06 UTC (r450)
+
+## Algebra229 AS-C-01 - PASS bilateral (cerrado; inicio de sección C)
+
+- Contrato N1: `simplificar` `\frac{x^{2}-1}{x-1}` → `x + 1`, con nota de dominio `Válido para x\neq1`. Test-first en verde sin cambios de producto en ninguno de los dos motores.
+- Lite SHA `bb4e86b52a43f3da6b09651692f1a5f167f84f38`: Cumulative 42331112760 SUCCESS (focal 5/5, 295 ms; 368 archivos, 2,276 passed, 8 expected fail, 34 TODO), H1d 42331112802 SUCCESS (22/22), Scientific UI 42331112826 SUCCESS, CI 42331112758 SUCCESS, Runner 42331112757 SUCCESS.
+- Plus SHA `e5dd15712a6522edd1f5638c64964b8bca302956`: Cumulative 42331096760 SUCCESS (focal AS-C-01 5/5; backend y frontend), CI 42331096764 SUCCESS (2,816 passed, 1 skipped, 10 xfailed; cobertura 88.87%), H1d 42331096766 SUCCESS (38/38), Runner 42331096757 SUCCESS.
+- Guards revisados: runs por push sin inputs de dispatch, `skip=false` y `evidence_run_id` vacío; sin REUSE. Los logs muestran los cinco casos focales ejecutados y aprobados en ambos repos.
+- Aceptación bilateral: `ALGEBRA229_AS_C_01_ACCEPTANCE_2026-11-06.md`. Baseline `ALGEBRA229-AS-C-01 PASS`; sección C abierta (1/23). El gate de seguridad (S25) y SG28/H2/DIST siguen siendo frentes independientes abiertos; global **OPEN**.
+- **Siguiente:** AS-C-02, N2, `simplificar` - `\frac{x^{3}-1}{x^{2}-1}` → `\frac{x^{2} + x + 1}{x + 1}`, sin nota de dominio en la fila congelada. Test-first bilateral con fila congelada, simplificación exacta, equivalencia simbólica fuera de las raíces excluidas y control de dominio en `x=1` y `x=-1`.
 # Actualización de certificación — 2026-11-06 UTC (r449)
 
 ## Algebra229 AS-B-30 — PASS_SCOPED bilateral (cerrado; sección B completa)
