@@ -1,3 +1,16 @@
+# Actualización de certificación — 2026-11-07 UTC (r453)
+
+## Algebra229 AS-C-04 — PASS bilateral (cerrado)
+
+- Contrato N2: `simplificar` `\frac{x^{2}-4}{x^{2}+4x+4}\cdot\frac{x+2}{x-2}` → `1`, sin nota de dominio en la fila congelada. Expectativas congeladas sin cambios.
+- Test-first: fila congelada, resultado exacto, equivalencia simbólica, muestras fuera de x=-2 y x=2, y control de `DOMAIN_ERROR` en x=-2 y x=2. Ambos motores ya cumplían sin cambios de producto.
+- precision-lab-lite SHA `4ef338d`: focal AS-C-04 5/5; 371 archivos, 2,291 passed, 8 expected fail, 34 TODO. Runs: CI 42345867487, Cumulative 42345867424, H1d 42345867402, Scientific UI 42345867469, Runner 42345867428, todos SUCCESS.
+- Guards revisados: `skip=false` y `evidence_run_id` vacío; sin REUSE.
+- Aceptación bilateral: `ALGEBRA229_AS_C_04_ACCEPTANCE_2026-11-07.md`. Baseline `ALGEBRA229-AS-C-04 PASS`; sección C en 4/23. Global **OPEN**; S25, SG28, H2 y DIST siguen abiertos.
+- **Siguiente:** AS-C-05, N1, `simplificar` — `\frac{1}{x}+\frac{1}{y}` → `\frac{x + y}{x y}`, suma de fracciones con denominador común.
+
+---
+
 # Actualización de certificación — 2026-11-07 UTC (r452)
 
 ## Algebra229 AS-C-03 — PASS bilateral (cerrado)
