@@ -30,6 +30,7 @@ import { isIndeterminateInfinityDifference } from "./infinityDifference";
 import { compileNumeric } from "./numericFallback";
 import { denestConstantRadicals } from "./radicalDenesting";
 import { assertExpressionLength, MAX_EXPRESSION_LENGTH } from "./expressionLengthGuard";
+import { MAX_PRIMALITY_VALUE, parsePrimalityQuery, primalityAnswer } from "./primality";
 export { MAX_EXPRESSION_LENGTH };
 
 function toAppError(code: ErrorCode, message: string): AppError {
@@ -65,6 +66,19 @@ export function evaluate(expressionLatex: string): string {
     // Exact scoped rule; general complex-domain factorization is not implemented.
     if (/^factor\(x\^2\+1\)sobreℂ$/.test(expressionLatex.replace(/\s+/g, ""))) {
       return "(x-i)*(x+i)";
+    }
+    // AS-B-30: the frozen matrix `valor` row asks a bounded yes/no primality
+    // question. Only the exact shapes are recognised; general natural-language
+    // understanding is not implemented.
+    const primalityValue = parsePrimalityQuery(expressionLatex);
+    if (primalityValue !== null) {
+      if (primalityValue > MAX_PRIMALITY_VALUE) {
+        throw toAppError(
+          ErrorCode.COMPLEXITY_LIMIT,
+          "El entero consultado excede el límite de primalidad de 64 bits.",
+        );
+      }
+      return primalityAnswer(primalityValue);
     }
     if (isIndeterminateInfinityDifference(expressionLatex)) {
       throw toAppError(ErrorCode.DOMAIN_ERROR, "Forma indeterminada: infinito menos infinito no está definido.");
