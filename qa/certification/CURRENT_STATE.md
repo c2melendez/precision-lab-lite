@@ -1,3 +1,14 @@
+# Actualización de certificación — 2026-11-06 UTC (r448)
+
+## Algebra229 AS-B-29 — PASS_SCOPED bilateral (cerrado)
+
+- Evidencia verificada directamente en GitHub, no heredada del ledger: Lite SHA `1004174a0cd6ad29c9b252097f2664175c277918` con Cumulative 42292655779 SUCCESS (focal 4/4; 366 archivos, 2,267 passed, 8 expected fail, 34 TODO), CI 42292655724 SUCCESS, H1d 42292655725 SUCCESS (22/22), Scientific UI 42292655744 SUCCESS (456/456) y Runner 42292655803 SUCCESS.
+- Plus SHA `534e5f208cb5986794f3c2aea8b3056fb9d30e7f` con Cumulative 42293287002 SUCCESS (focal B29 3/3; backend 2,808 passed, 1 skipped, 10 xfailed), CI 42293286925 SUCCESS (cobertura 88.88%), H1d 42293286948 SUCCESS (38/38) y Runner 42293287033 SUCCESS.
+- Logs revisados: los guards de Cumulative/H1d registran `skip=false`, `evidence_run_id` vacío y "No reusable completed evidence found"; no hubo REUSE. El SHA previo `4fac5e5...` queda como diagnóstico test-only (`^` vs XOR), no como evidencia de aceptación.
+- Aceptación bilateral: `ALGEBRA229_AS_B_29_ACCEPTANCE_2026-11-06.md`. Baseline `ALGEBRA229-AS-B-29 PASS_SCOPED`; certificación global **OPEN**.
+- **Siguiente:** AS-B-30, N3, `valor` — `\text{¿es primo }1000000007?` → `sí, es primo`. Gap de capability confirmado en Plus HEAD: `POST /api/v1/evaluate` responde `PARSE_ERROR`. Implementar capacidad acotada de primalidad en Lite y Plus, con tests bilaterales (fila congelada, oráculo independiente por división de prueba y control compuesto), y ejecutar los gates en el SHA técnico nuevo.
+
+---
 # Actualización de certificación — 2026-11-06 UTC (r447)
 
 ## Algebra229 AS-B-29 — WAIT (solo Plus H1d pendiente)

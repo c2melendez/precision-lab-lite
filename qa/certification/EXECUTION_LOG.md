@@ -1,3 +1,11 @@
+## 2026-11-06 UTC - r448: Algebra229 AS-B-29 PASS_SCOPED bilateral; AS-B-30 iniciado
+
+- Verificación directa en GitHub: Plus H1d 42293286948 cerró SUCCESS con 38/38 Playwright y guard `skip=false`, `evidence_run_id` vacío. Se satisface la condición de salida del WAIT de r447.
+- Lite `1004174a0cd6ad29c9b252097f2664175c277918`: Cumulative 42292655779 SUCCESS (focal 4/4; 2,267 passed, 8 expected fail, 34 TODO), CI 42292655724 SUCCESS, H1d 42292655725 SUCCESS (22/22), Scientific UI 42292655744 SUCCESS (456/456), Runner 42292655803 SUCCESS.
+- Plus `534e5f208cb5986794f3c2aea8b3056fb9d30e7f`: Cumulative 42293287002 SUCCESS (focal B29 3/3; 2,808 passed, 1 skipped, 10 xfailed), CI 42293286925 SUCCESS (88.88%), H1d 42293286948 SUCCESS (38/38), Runner 42293287033 SUCCESS.
+- B29 aceptado bilateral como PASS_SCOPED: `ALGEBRA229_AS_B_29_ACCEPTANCE_2026-11-06.md`. Sin cambios de motor: los diffs técnicos de B29 fueron solo tests.
+- AS-B-30 (N3, `valor`, `\text{¿es primo }1000000007?` -> `sí, es primo`) iniciado como test-first. Gap confirmado en Plus: `/api/v1/evaluate` en HEAD devuelve PARSE_ERROR. Se implementará una capacidad acotada de primalidad en Lite y Plus y se ejecutarán los gates en el nuevo SHA técnico.
+- Global OPEN. Baseline `ALGEBRA229-AS-B-29 PASS_SCOPED`.
 ## 2026-11-06 UTC — r447: Algebra229 AS-B-29 WAIT; Plus Cumulative/CI PASS, H1d pending
 
 - Lite SHA `1004174a0cd6ad29c9b252097f2664175c277918`: Cumulative 42292655779 SUCCESS (focal 4/4; 2,267 passed, 8 expected fail, 34 TODO); CI 42292655724 SUCCESS (focal 4/4); H1d 42292655725 SUCCESS (22/22); Scientific UI 42292655744 SUCCESS (456/456).
