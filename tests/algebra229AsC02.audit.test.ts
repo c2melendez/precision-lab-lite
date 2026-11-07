@@ -1,72 +1,74 @@
-"""Algebra229 AS-C-02 simplify (x^3-1)/(x^2-1): frozen row, exact result, excluded points."""
-import gzip
-from fractions import Fraction
-from pathlib import Path
+import { describe, expect, it } from "vitest";
+import { evaluate, simplifyExpression } from "../src/engine/algebriteClient";
+import { ErrorCode, type AppError } from "../src/types";
+import { gunzipSync } from "node:zlib";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 
-from fastapi.testclient import TestClient
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const SOURCE_GZ = join(ROOT, "qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz");
+const INPUT = "(x^3-1)/(x^2-1)";
+const EXPECTED = "(x^2+x+1)/(x+1)";
+const SAMPLES = [-3, -2, 0, 2, 3, 5];
 
-from app.main import app
+function compact(expression: string): string {
+  return expression.replace(/\s+/g, "");
+}
 
-SOURCE_GZ = Path(__file__).resolve().parents[2] / "qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz"
-INPUT = "(x^3-1)/(x^2-1)"
-EXPECTED = "(x^2+x+1)/(x+1)"
-SAMPLES = (-3, -2, 0, 2, 3, 5)
+// Accepts an exact "a/b" fraction or decimal text returned by the engine.
+function toNumber(text: string): number {
+  const fraction = /^(-?\d+)\/(\d+)$/.exec(compact(text));
+  return fraction ? Number(fraction[1]) / Number(fraction[2]) : Number(compact(text));
+}
 
+function expectDomainError(expression: string): void {
+  try {
+    evaluate(expression);
+  } catch (error) {
+    expect((error as AppError).code).toBe(ErrorCode.DOMAIN_ERROR);
+    return;
+  }
+  throw new Error(`Expected ${expression} to fail with DOMAIN_ERROR`);
+}
 
-def _compact(text: str) -> str:
-    return "".join(text.split())
+describe("Algebra229 AS-C-02 simplificar (x^3-1)/(x^2-1)", () => {
+  it("matches every frozen source-row contract cell", () => {
+    const text = gunzipSync(readFileSync(SOURCE_GZ)).toString("utf8");
+    const sourceRow = text.split(/\r?\n/).find((line) => /^\|\s*AS-C-02\s*\|/.test(line))?.trim();
+    expect(sourceRow).toBeTruthy();
+    const cells = sourceRow!.split("|").map((cell) => cell.trim());
+    expect(cells).toHaveLength(8);
+    expect(cells.slice(1, 7)).toEqual([
+      "AS-C-02",
+      "N2",
+      "`simplificar`",
+      "`\\frac{x^{3}-1}{x^{2}-1}`",
+      "`\\frac{x^{2} + x + 1}{x + 1}`",
+      "",
+    ]);
+    expect(cells[7]).toBe("");
+  });
 
+  it("simplifies to the exact frozen result", () => {
+    expect(compact(simplifyExpression(INPUT))).toBe(EXPECTED);
+  });
 
-def _simplify(expression: str) -> dict:
-    with TestClient(app) as client:
-        response = client.post("/api/v1/simplify", json={"expression": expression})
-    assert response.status_code == 200, response.text
-    result = response.json()
-    assert result["success"] is True, result
-    assert result["operation"] == "simplify", result
-    assert result["request_id"], result
-    return result
+  it("is symbolically equivalent to the original away from x=1 and x=-1", () => {
+    expect(compact(simplifyExpression("((x^3-1)/(x^2-1))-((x^2+x+1)/(x+1))"))).toBe("0");
+  });
 
+  it("independent arithmetic matches every sample outside x=1 and x=-1", () => {
+    for (const value of SAMPLES) {
+      const expected = (value ** 3 - 1) / (value ** 2 - 1);
+      expect(expected).toBeCloseTo((value ** 2 + value + 1) / (value + 1), 12);
+      const actual = toNumber(String(evaluate(`((${value})^3-1)/((${value})^2-1)`)));
+      expect(actual).toBeCloseTo(expected, 12);
+    }
+  });
 
-def _evaluate(expression: str) -> dict:
-    with TestClient(app) as client:
-        response = client.post("/api/v1/evaluate", json={"expression": expression})
-    assert response.status_code == 200, response.text
-    return response.json()
-
-
-def test_as_c02_source_row_matches_all_frozen_contract_cells():
-    text = gzip.decompress(SOURCE_GZ.read_bytes()).decode("utf-8")
-    source_row = next(line.strip() for line in text.splitlines() if line.startswith("| AS-C-02 |"))
-    cells = [cell.strip() for cell in source_row.split("|")]
-    assert len(cells) == 8, source_row
-    assert cells[1:7] == [
-        "AS-C-02",
-        "N2",
-        "`simplificar`",
-        r"`\frac{x^{3}-1}{x^{2}-1}`",
-        r"`\frac{x^{2} + x + 1}{x + 1}`",
-        "",
-    ], source_row
-    assert cells[7] == "", source_row
-
-
-def test_as_c02_simplify_endpoint_returns_exact_result():
-    result = _simplify(INPUT)
-    assert _compact(result["result_text"]) == _compact(EXPECTED), result
-
-
-def test_as_c02_independent_arithmetic_matches_every_sample_outside_roots():
-    for value in SAMPLES:
-        expected = Fraction(value**3 - 1, value**2 - 1)
-        assert expected == Fraction(value**2 + value + 1, value + 1)
-        result = _evaluate(f"(x^3-1)/(x^2-1) con x={value}")
-        assert result["success"] is True, result
-        assert Fraction(_compact(result["result_text"])) == expected, (value, result)
-
-
-def test_as_c02_excluded_points_are_not_claimed_as_equivalent():
-    for value in (1, -1):
-        result = _evaluate(f"(x^3-1)/(x^2-1) con x={value}")
-        assert result["success"] is False, result
-        assert result["error_code"] == "DOMAIN_ERROR", result
+  it("does not claim a value at the excluded points x=1 and x=-1", () => {
+    expectDomainError("((1)^3-1)/((1)^2-1)");
+    expectDomainError("((-1)^3-1)/((-1)^2-1)");
+  });
+});
