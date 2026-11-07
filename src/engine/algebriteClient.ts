@@ -699,11 +699,28 @@ export function substituteExact(
   }
 }
 
+// Algebrite's simplify() does not combine sums of rational terms, so a difference of two equal
+// fractions keeps its denominators. The expanded form is accepted only when it is exactly zero
+// or denominator-free; any other rational result keeps the simplify() form.
+function expandedSimplification(expressionAlgebrite: string): string | undefined {
+  try {
+    const expanded: unknown = Algebrite.run(`simplify(expand(${expressionAlgebrite}))`);
+    if (typeof expanded !== "string" || /stop|Stop/.test(expanded)) return undefined;
+    return expanded === "0" || !expanded.includes("/") ? expanded : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 export function simplifyExpression(expressionAlgebrite: string): string {
   try {
     const result: string = Algebrite.run(`simplify(${expressionAlgebrite})`);
     if (typeof result !== "string" || result.length === 0 || /stop|Stop/.test(result)) {
       throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, "No se pudo simplificar la expresión.");
+    }
+    if (result.includes("/")) {
+      const expanded = expandedSimplification(expressionAlgebrite);
+      if (expanded !== undefined) return expanded;
     }
     return result;
   } catch (err) {
