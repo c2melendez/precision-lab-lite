@@ -10,6 +10,6 @@
 - Corrección: Plus usa `cancel` sobre el resultado de `simplify` cuando no aumenta la complejidad; Lite acepta `simplify(expand(...))` solo si da `0` o no tiene denominador.
 - Oráculo de Plus: normalización de notación `**` → `^`; expectativa matemática intacta.
 
-## Evidencia Lite — SHA `c9fe409310f287d25f231c07dfdf68fdb055ec1a` (solo si es el SHA técnico final)
+## Evidencia Lite — SHA `c9fe409310f287d25f231c07dfdf68fdb055ec1a`
 - Cumulative 42335763410 SUCCESS; focal AS-C-02 5/5; 2,281 passed.
 - CI 42335763323, H1d 42335763455, Scientific UI 42335763346, Runner 42335763341: SUCCESS.
