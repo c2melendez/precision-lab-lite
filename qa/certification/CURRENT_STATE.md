@@ -1,3 +1,15 @@
+# Actualización de certificación — 2026-11-06 UTC (r449)
+
+## Algebra229 AS-B-30 — PASS_SCOPED bilateral (cerrado; sección B completa)
+
+- Gap de capability corregido: la entrada congelada `\text{¿es primo }1000000007?` devolvía `PARSE_ERROR`. Se añadió primalidad determinista de 64 bits en Lite (`src/engine/primality.ts`) y Plus (`backend/app/services/primality.py`), acotada a la forma LaTeX congelada y a `primo(n)`/`esprimo(n)`. Miller-Rabin con testigos 2..37, exacto para `n <= 2^64-1`; no es un intérprete general de lenguaje natural.
+- Lite SHA `99bbc9bc17b79d00c45299415b5f9d63a9d09c36`: Cumulative 42329909267 SUCCESS (focal 4/4; 367 archivos, 2,271 passed, 8 expected fail, 34 TODO), H1d 42329909190 SUCCESS (22/22), Scientific UI 42329909206 SUCCESS (456/456), CI 42329909188 SUCCESS, Runner 42329909192 SUCCESS.
+- Plus SHA `a831d31d5bc13193e470949eb8efb06cc4527533`: Cumulative 42329897688 SUCCESS (focal 3/3), CI 42329897714 SUCCESS (2,811 passed, 1 skipped, 10 xfailed; 88.89%), H1d 42329897684 SUCCESS (38/38), Runner 42329897649 SUCCESS.
+- Guards revisados: `skip=false` y `evidence_run_id` vacío en Cumulative/H1d de ambos repos; sin REUSE.
+- Aceptación bilateral: `ALGEBRA229_AS_B_30_ACCEPTANCE_2026-11-06.md`. Baseline `ALGEBRA229-AS-B-30 PASS_SCOPED`; la sección B (AS-B-01..30) queda completa. El gate de seguridad (S25) y SG28/H2/DIST siguen siendo frentes independientes abiertos; global **OPEN**.
+- **Siguiente:** AS-C-01, N1, `simplificar` — `\frac{x^{2}-1}{x-1}` → `x + 1`, válido para `x \neq 1`. Test-first bilateral: fila congelada, simplificación exacta, equivalencia simbólica fuera de `x=1` y control de dominio en `x=1`.
+
+---
 # Actualización de certificación — 2026-11-06 UTC (r448)
 
 ## Algebra229 AS-B-29 — PASS_SCOPED bilateral (cerrado)

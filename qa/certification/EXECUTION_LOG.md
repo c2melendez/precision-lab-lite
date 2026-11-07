@@ -1,3 +1,12 @@
+## 2026-11-06 UTC - r449: Algebra229 AS-B-30 PASS_SCOPED bilateral; seccion B completa
+
+- Diagnostico previo: la entrada congelada `\text{¿es primo }1000000007?` devolvia PARSE_ERROR en Plus; clasificado como gap de capability, no de harness ni oraculo.
+- Implementacion de producto: primalidad determinista de 64 bits en Lite (`src/engine/primality.ts` + `algebriteClient.ts`) y Plus (`backend/app/services/primality.py` + `evaluate_service` + `routers/evaluate.py`). Formas aceptadas: LaTeX congelada y `primo(n)`/`esprimo(n)`. Miller-Rabin con testigos 2..37.
+- Lite `99bbc9bc17b79d00c45299415b5f9d63a9d09c36`: Cumulative 42329909267 SUCCESS (focal B30 4/4; 367 archivos, 2,271 passed, 8 expected fail, 34 TODO), H1d 42329909190 SUCCESS (22/22), Scientific UI 42329909206 SUCCESS (456/456), CI 42329909188 SUCCESS, Runner 42329909192 SUCCESS.
+- Plus `a831d31d5bc13193e470949eb8efb06cc4527533`: Cumulative 42329897688 SUCCESS (focal B30 3/3), CI 42329897714 SUCCESS (2,811 passed, 1 skipped, 10 xfailed; 88.89%), H1d 42329897684 SUCCESS (38/38), Runner 42329897649 SUCCESS.
+- Guards `skip=false`, `evidence_run_id` vacio y sin REUSE en los gates aplicables de ambos repos.
+- Aceptacion bilateral: `ALGEBRA229_AS_B_30_ACCEPTANCE_2026-11-06.md`. Baseline `ALGEBRA229-AS-B-30 PASS_SCOPED`; seccion B completa (30/30). S25/security y SG28/H2/DIST siguen independientes y abiertos. Global OPEN.
+- Siguiente: AS-C-01 N1 simplificar `(x^2-1)/(x-1)` -> `x+1` (x != 1), test-first bilateral.
 ## 2026-11-06 UTC - r448: Algebra229 AS-B-29 PASS_SCOPED bilateral; AS-B-30 iniciado
 
 - Verificación directa en GitHub: Plus H1d 42293286948 cerró SUCCESS con 38/38 Playwright y guard `skip=false`, `evidence_run_id` vacío. Se satisface la condición de salida del WAIT de r447.
