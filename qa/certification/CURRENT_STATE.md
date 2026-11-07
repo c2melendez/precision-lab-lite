@@ -1,3 +1,16 @@
+# Actualización de certificación — 2026-11-07 UTC (r452)
+
+## Algebra229 AS-C-03 — PASS bilateral (cerrado)
+
+- Contrato N2: `simplificar` `\frac{x^{2}+3x+2}{x^{2}-x-2}` → `\frac{x + 2}{x - 2}`, sin nota de dominio en la fila congelada. Expectativas congeladas sin cambios.
+- Test-first: tests de fila congelada, resultado exacto, equivalencia simbólica, muestras fuera de x=2 y x=-1, y control de `DOMAIN_ERROR` en x=2 y x=-1. Ambos motores ya cumplían sin cambios de producto.
+- precision-lab-lite SHA `1c2f7d5`: focal AS-C-03 5/5; 370 archivos, 2,286 passed, 8 expected fail, 34 TODO. Runs: CI 42337677029, Cumulative 42337677166, H1d 42337676952, Scientific UI 42337676945, Runner 42337677013, todos SUCCESS.
+- Guards revisados: `skip=false` y `evidence_run_id` vacío; sin REUSE.
+- Aceptación bilateral: `ALGEBRA229_AS_C_03_ACCEPTANCE_2026-11-07.md`. Baseline `ALGEBRA229-AS-C-03 PASS`; sección C en 3/23. Global **OPEN**; S25, SG28, H2 y DIST siguen abiertos.
+- **Siguiente:** AS-C-04, N2, `simplificar` — `\frac{x^{2}-4}{x^{2}+4x+4}\cdot\frac{x+2}{x-2}` → `1`.
+
+---
+
 # Actualización de certificación — 2026-11-07 UTC (r451)
 
 ## Algebra229 AS-C-02 — PASS bilateral (cerrado)
