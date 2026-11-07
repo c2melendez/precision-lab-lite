@@ -712,6 +712,31 @@ function expandedSimplification(expressionAlgebrite: string): string | undefined
   }
 }
 
+// True when the text has a "+" or a binary "-" outside any parentheses (a top-level sum).
+function hasTopLevelSum(text: string): boolean {
+  let flat = text;
+  let previous: string;
+  do {
+    previous = flat;
+    flat = flat.replace(/\([^()]*\)/g, "");
+  } while (flat !== previous);
+  return flat.includes("+") || flat.slice(1).includes("-");
+}
+
+// Algebrite's rationalize() combines a sum of fractions over one common denominator. Its output
+// is accepted only as a single numerator/denominator fraction with a product-like denominator.
+function combinedSingleFraction(expressionAlgebrite: string): string | undefined {
+  try {
+    const combined: unknown = Algebrite.run(`rationalize(${expressionAlgebrite})`);
+    if (typeof combined !== "string" || /stop|Stop/.test(combined)) return undefined;
+    const parts = combined.split("/");
+    if (parts.length !== 2 || hasTopLevelSum(parts[1])) return undefined;
+    return combined;
+  } catch {
+    return undefined;
+  }
+}
+
 export function simplifyExpression(expressionAlgebrite: string): string {
   try {
     const result: string = Algebrite.run(`simplify(${expressionAlgebrite})`);
@@ -721,6 +746,10 @@ export function simplifyExpression(expressionAlgebrite: string): string {
     if (result.includes("/")) {
       const expanded = expandedSimplification(expressionAlgebrite);
       if (expanded !== undefined) return expanded;
+      if (hasTopLevelSum(result)) {
+        const combined = combinedSingleFraction(expressionAlgebrite);
+        if (combined !== undefined) return combined;
+      }
     }
     return result;
   } catch (err) {
