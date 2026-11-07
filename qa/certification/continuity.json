@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 450,
+  "revision": 451,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "bb4e86b52a43f3da6b09651692f1a5f167f84f38",
-  "baseline_case": "ALGEBRA229-AS-C-01",
+  "technical_baseline_sha": "c9fe409310f287d25f231c07dfdf68fdb055ec1a",
+  "baseline_case": "ALGEBRA229-AS-C-02",
   "baseline_status": "PASS",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-C-02-TEST-FIRST",
+    "id": "ALGEBRA229-AS-C-03-TEST-FIRST",
     "status": "RUN",
-    "previous_id": "ALGEBRA229-AS-C-01-TEST-FIRST",
-    "action": "AS-C-02 N2 simplificar: (x^3-1)/(x^2-1) -> (x^2+x+1)/(x+1). C-01 cerrado bilateral PASS con Lite bb4e86b52a43f3da6b09651692f1a5f167f84f38 (Cumulative 42331112760 focal 5/5 y 2,276 passed, CI 42331112758, H1d 42331112802 22/22, Scientific 42331112826, Runner 42331112757) y Plus e5dd15712a6522edd1f5638c64964b8bca302956 (Cumulative 42331096760 focal 5/5, CI 42331096764 con 2,816 passed y 88.87%, H1d 42331096766 38/38). La seccion C queda iniciada (1/23). Siguiente: tests bilaterales de fila congelada, simplificacion exacta, equivalencia simbolica fuera de x=1 y x=-1, y control de dominio en los puntos excluidos; luego gates en el nuevo SHA tecnico.",
-    "updated_utc": "2026-11-06T23:15:00Z"
+    "previous_id": "ALGEBRA229-AS-C-02-TEST-FIRST",
+    "action": "AS-C-03 N2 simplificar: (x^2+3x+2)/(x^2-x-2) -> (x+2)/(x-2). AS-C-02 cerrado bilateral PASS con Lite c9fe409310f287d25f231c07dfdf68fdb055ec1a y Plus 610cfc2e37ac898412a483c0eb0437b9949e4fc1. Siguiente: tests bilaterales de fila congelada, simplificacion exacta, equivalencia fuera de raices excluidas y control de dominio.",
+    "updated_utc": "2026-11-07T04:00:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
