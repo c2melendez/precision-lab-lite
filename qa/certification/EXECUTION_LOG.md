@@ -1,3 +1,11 @@
+## 2026-11-08 UTC - r456: Algebra229 AS-C-07 PASS bilateral
+
+- Contrato N2 `1/(x-1)-1/(x+1)` -> `2/((x-1)*(x+1))`. Test-first sin cambios de producto.
+- Ambos motores devuelven `2/(x^2-1)`, representacion equivalente; la aceptacion se apoya en diferencia exacta 0 y oraculo independiente, no en igualdad textual (permitido por el protocolo para formas equivalentes).
+- Plus `7c61d94bf58342944bd163bafc08443c9cd364c5`: Cumulative 42450284227 SUCCESS (focal 4/4), CI 42450284226 SUCCESS (2,840 passed, 1 skipped, 10 xfailed; 88.88%), H1d 42450284220 SUCCESS (38/38), Runner 42450284255 SUCCESS.
+- Lite `2c807c5433de932e544a2c21ec702f7924a1ed22`: Cumulative 42450296439 SUCCESS (focal 4/4; 374 archivos, 2,305 passed), CI 42450296465 SUCCESS, H1d 42450296447 SUCCESS (22/22), Scientific 42450296494 SUCCESS (456/456), Runner 42450296577 SUCCESS.
+- Aceptacion bilateral: `ALGEBRA229_AS_C_07_ACCEPTANCE_2026-11-08.md`. Baseline `ALGEBRA229-AS-C-07 PASS`; seccion C 7/23. Global OPEN.
+- Siguiente: AS-C-08 N2 `(x+1)/(x^2-1)-1/(x-1)` -> `0`.
 ## 2026-11-08 UTC - r455: Algebra229 AS-C-06 PASS bilateral
 
 - Contrato N2 `((1/x)-(1/y))/(x-y)` -> `-1/(x*y)`. Primer intento Lite en `6a36f3af2` devolvia `(1/x-1/y)/(x-y)`: gap de capability real, no de oraculo.

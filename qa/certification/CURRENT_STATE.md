@@ -1,3 +1,14 @@
+# Actualización de certificación - 2026-11-08 UTC (r456)
+
+## Algebra229 AS-C-07 - PASS bilateral (cerrado)
+
+- Contrato N2: `simplificar` `\frac{1}{x-1}-\frac{1}{x+1}` → `\frac{2}{\left(x - 1\right) \left(x + 1\right)}`, sin nota de dominio en la fila congelada.
+- Test-first en verde sin cambios de producto. Ambos motores devuelven `2/(x^2-1)`: representación equivalente a la celda congelada, verificada con diferencia exacta `0` y oráculo independiente; no se exige igualdad textual entre formas equivalentes.
+- Plus SHA `7c61d94bf58342944bd163bafc08443c9cd364c5`: Cumulative 42450284227 SUCCESS (focal 4/4), CI 42450284226 SUCCESS (2,840 passed, 1 skipped, 10 xfailed; 88.88%), H1d 42450284220 SUCCESS (38/38), Runner 42450284255 SUCCESS.
+- Lite SHA `2c807c5433de932e544a2c21ec702f7924a1ed22`: Cumulative 42450296439 SUCCESS (focal 4/4; 374 archivos, 2,305 passed, 8 expected fail, 34 TODO), CI 42450296465 SUCCESS, H1d 42450296447 SUCCESS (22/22), Scientific UI 42450296494 SUCCESS (456/456), Runner 42450296577 SUCCESS.
+- Guards revisados: `skip=false`, `evidence_run_id` vacío y sin REUSE.
+- Aceptación bilateral: `ALGEBRA229_AS_C_07_ACCEPTANCE_2026-11-08.md`. Baseline `ALGEBRA229-AS-C-07 PASS`; sección C en 7/23. Global **OPEN**; S25, SG28, H2 y DIST siguen abiertos.
+- **Siguiente:** AS-C-08, N2, `simplificar` - `\frac{x+1}{x^{2}-1}-\frac{1}{x-1}` → `0`, sin nota de dominio en la fila congelada.
 # Actualización de certificación - 2026-11-08 UTC (r455)
 
 ## Algebra229 AS-C-06 - PASS bilateral (cerrado)

@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 455,
+  "revision": 456,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "12cab2e2e536d313635256f280ce0951a73afebd",
-  "baseline_case": "ALGEBRA229-AS-C-06",
+  "technical_baseline_sha": "2c807c5433de932e544a2c21ec702f7924a1ed22",
+  "baseline_case": "ALGEBRA229-AS-C-07",
   "baseline_status": "PASS",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-C-07-TEST-FIRST",
+    "id": "ALGEBRA229-AS-C-08-TEST-FIRST",
     "status": "RUN",
-    "previous_id": "ALGEBRA229-AS-C-06-TEST-FIRST",
-    "action": "AS-C-07 N2 simplificar: 1/(x-1)-1/(x+1) -> 2/((x-1)*(x+1)). C-06 cerrado bilateral PASS con Lite 12cab2e2e536d313635256f280ce0951a73afebd (Cumulative 42449459397 focal 5/5 y 2,301 passed, CI 42449459368, H1d 42449459386 22/22, Scientific 42449459435 456/456, Runner 42449459424) y Plus 9ddc8205ec97a13bed7857a1487024a2650e1e78 (Cumulative 42403960553 focal 4/4, CI 42403960642 con 2,836 passed y 88.89%, H1d 42403960552 38/38). C-05 y C-06 quedan documentados; seccion C en 6/23. Siguiente: tests bilaterales de fila congelada, simplificacion exacta, equivalencia simbolica fuera de x=-1 y x=1, y control de dominio en los puntos excluidos; luego gates en el nuevo SHA tecnico.",
-    "updated_utc": "2026-11-08T05:25:00Z"
+    "previous_id": "ALGEBRA229-AS-C-07-TEST-FIRST",
+    "action": "AS-C-08 N2 simplificar: (x+1)/(x^2-1)-1/(x-1) -> 0. C-07 cerrado bilateral PASS con Lite 2c807c5433de932e544a2c21ec702f7924a1ed22 (Cumulative 42450296439 focal 4/4 y 2,305 passed, CI 42450296465, H1d 42450296447 22/22, Scientific 42450296494 456/456, Runner 42450296577) y Plus 7c61d94bf58342944bd163bafc08443c9cd364c5 (Cumulative 42450284227 focal 4/4, CI 42450284226 con 2,840 passed y 88.88%, H1d 42450284220 38/38). Seccion C en 7/23. Siguiente: tests bilaterales de fila congelada, resultado exacto 0, equivalencia simbolica y control de dominio en x=-1 y x=1; luego gates en el nuevo SHA tecnico.",
+    "updated_utc": "2026-11-08T05:35:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
