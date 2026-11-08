@@ -42,7 +42,7 @@ describe("Algebra229 AS-C-20 gcd(48,180)", () => {
   it("evaluate(gcd(48,180)) returns the frozen exact value 12", () => {
     const actual = String(evaluate(INPUT));
     expect(compact(actual)).toBe(EXPECTED);
-    expect(compact(simplifyExpression(\`(\${actual})-12\`))).toBe("0");
+    expect(compact(simplifyExpression("(" + actual + ")-12"))).toBe("0");
   });
 
   it("independent Euclidean oracle confirms the gcd and divisibility", () => {
