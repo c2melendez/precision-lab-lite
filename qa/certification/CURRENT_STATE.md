@@ -1,3 +1,17 @@
+# Actualización de certificación — 2026-11-08 UTC (r461)
+
+## Algebra229 AS-C-12 — PASS bilateral (cerrado)
+
+- Contrato N2: `simplificar` `\frac{x^{2}-y^{2}}{(x-y)^{2}}` → `\frac{x + y}{x - y}`, sin nota de dominio en la fila congelada. Expectativas congeladas sin cambios.
+- Test-first con oráculos aritméticos independientes, equivalencia simbólica y control de `DOMAIN_ERROR` en x=y.
+- Fix acotado en `simplifyExpression`: `expandedSingleFraction` acepta `simplify(expand(...))` solo si es una única fracción (la barra es el único operador de nivel superior, denominador sin suma) y es estrictamente más corta. Un primer intento (`7d16198`) rompió AS-C-02 y AS-C-03; se corrigió en `8ad889e`.
+- precision-lab-lite SHA `8ad889e`: focal AS-C-12 5/5; 379 archivos, 2,326 passed, 8 expected fail, 34 TODO; AS-C-02/03/05 en verde en la misma corrida. Runs: CI 42477254793, Cumulative 42477254895, H1d 42477254896, Scientific UI 42477254947, Runner 42477254878, todos SUCCESS.
+- Guards revisados: `skip=false` y `evidence_run_id` vacío; sin REUSE.
+- Aceptación bilateral: `ALGEBRA229_AS_C_12_ACCEPTANCE_2026-11-08.md`. Baseline `ALGEBRA229-AS-C-12 PASS`; sección C en 12/23. Global **OPEN**; S25, SG28, H2 y DIST siguen abiertos.
+- **Siguiente:** AS-C-13, N2, `division` — `\left(x^{3}+2x^{2}-x+3\right)\div(x-2)` → `q=x^{2} + 4 x + 7,\ r=17`.
+
+---
+
 # Actualización de certificación — 2026-11-08 UTC (r460)
 
 ## Algebra229 AS-C-11 — PASS bilateral (cerrado)
