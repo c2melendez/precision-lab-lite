@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 465,
+  "revision": 466,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "dde091c21d4e0415b01b8e5e3bdcb66e4aaa86e8",
-  "baseline_case": "ALGEBRA229-AS-C-16",
+  "technical_baseline_sha": "0aa5e5db33b2d22851e36752c2656a88259445e5",
+  "baseline_case": "ALGEBRA229-AS-C-17",
   "baseline_status": "PASS",
   "global_certification": "OPEN",
   "gates": {
@@ -14,11 +14,11 @@
     "scientific": {"workflow": ".github/workflows/syntax309-scientific-e2e.yml", "inputs": ["*"], "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"}
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-C-17-TEST-FIRST",
+    "id": "ALGEBRA229-AS-C-18-TEST-FIRST",
     "status": "RUN",
-    "previous_id": "ALGEBRA229-AS-C-16-TEST-FIRST",
-    "action": "AS-C-17 N2 valor: gcd(x^2-1, x^2-2x+1) -> x-1. C-16 cerrado bilateral PASS. Seccion C en 16/23. Test-first publicado (Lite 0aa5e5d, Plus 4a87278); verificar gates.",
-    "updated_utc": "2026-11-08T14:26:00Z"
+    "previous_id": "ALGEBRA229-AS-C-17-TEST-FIRST",
+    "action": "AS-C-18 N2 valor: lcm(x^2-1, x^2-2x+1) -> (x-1)^2 (x+1). C-17 cerrado bilateral PASS. Seccion C en 17/23. Test-first publicado (Lite 404fc7c, Plus b5ad42c); verificar gates.",
+    "updated_utc": "2026-11-08T14:59:00Z"
   },
   "blockers": [],
   "prose_only_paths": ["qa/certification/**", "**/*.md", "README.md"]
