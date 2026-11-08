@@ -863,7 +863,8 @@ function expandedSingleFraction(expressionAlgebrite: string, current: string): s
     const expanded: unknown = Algebrite.run(`simplify(expand(${expressionAlgebrite}))`);
     if (typeof expanded !== "string" || /stop|Stop/.test(expanded)) return undefined;
     const parts = expanded.split("/");
-    if (parts.length !== 2 || hasTopLevelSum(parts[1])) return undefined;
+    // The division sign must be the only top-level operator: "x+1/(x+1)" is a sum, not a fraction.
+    if (parts.length !== 2 || hasTopLevelSum(expanded) || hasTopLevelSum(parts[1])) return undefined;
     return expanded.length < current.length ? expanded : undefined;
   } catch {
     return undefined;
