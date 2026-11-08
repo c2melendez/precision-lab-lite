@@ -778,6 +778,83 @@ function factoredCancellation(expressionAlgebrite: string): string | undefined {
   }
 }
 
+// One fraction "numerator/denominator" whose denominator has no top-level sum.
+function isSingleProductFraction(text: string): boolean {
+  const parts = text.split("/");
+  return parts.length === 2 && !hasTopLevelSum(parts[1]);
+}
+
+// Algebrite's simplify()/rationalize() cannot flatten a multi-level continued fraction in one
+// step. Rewrite parenthesized sub-expressions bottom-up: each level is rationalized only when it
+// becomes a single fraction with a product-like denominator. Bounded by nesting depth; every
+// other shape keeps its previous simplify() form.
+const MAX_NESTED_FRACTION_DEPTH = 6;
+
+function rationalizeGroups(text: string, depth: number): string {
+  if (depth > MAX_NESTED_FRACTION_DEPTH) return text;
+  let output = "";
+  let index = 0;
+  while (index < text.length) {
+    const char = text[index];
+    if (char !== "(") {
+      output += char;
+      index += 1;
+      continue;
+    }
+    let level = 0;
+    let end = -1;
+    for (let cursor = index; cursor < text.length; cursor += 1) {
+      if (text[cursor] === "(") level += 1;
+      else if (text[cursor] === ")") {
+        level -= 1;
+        if (level === 0) {
+          end = cursor;
+          break;
+        }
+      }
+    }
+    if (end === -1) {
+      output += text.slice(index);
+      break;
+    }
+    const inner = rationalizeGroups(text.slice(index + 1, end), depth + 1);
+    let content = inner;
+    if (inner.includes("/")) {
+      try {
+        const rational: unknown = Algebrite.run(`rationalize(${inner})`);
+        if (typeof rational === "string" && !/stop|Stop/.test(rational) && isSingleProductFraction(rational)) {
+          content = rational;
+        }
+      } catch {
+        // Keep the recursively rewritten content.
+      }
+    }
+    output += `(${content})`;
+    index = end + 1;
+  }
+  return output;
+}
+
+// Continued fractions of several levels keep many division signs and survive simplify(). Flatten
+// each parenthesized level with exact rationalize(), then accept the result only as one product
+// fraction whose difference with the original simplifies to exactly zero.
+function nestedContinuedFraction(expressionAlgebrite: string): string | undefined {
+  try {
+    const rewritten = rationalizeGroups(expressionAlgebrite, 0);
+    if (rewritten === expressionAlgebrite) return undefined;
+    const candidate: unknown = Algebrite.run(`rationalize(${rewritten})`);
+    if (typeof candidate !== "string" || candidate.length === 0 || /stop|Stop/.test(candidate)) {
+      return undefined;
+    }
+    if (!isSingleProductFraction(candidate)) return undefined;
+    const difference: unknown = Algebrite.run(`simplify((${expressionAlgebrite})-(${candidate}))`);
+    if (difference !== "0") return undefined;
+    return candidate;
+  } catch {
+    return undefined;
+  }
+}
+
 export function simplifyExpression(expressionAlgebrite: string): string {
   try {
     const result: string = Algebrite.run(`simplify(${expressionAlgebrite})`);
@@ -792,10 +869,13 @@ export function simplifyExpression(expressionAlgebrite: string): string {
         if (combined !== undefined) return combined;
       }
       // Nested fractions keep several division signs even after simplify(). Factor and cancel
-      // common polynomial factors so the result is one reduced fraction.
+      // common polynomial factors, or flatten a continued fraction level by level, so the result
+      // is one reduced fraction.
       if (result.split("/").length > 2) {
         const cancelled = factoredCancellation(expressionAlgebrite);
         if (cancelled !== undefined) return cancelled;
+        const continued = nestedContinuedFraction(expressionAlgebrite);
+        if (continued !== undefined) return continued;
       }
     }
     return result;
