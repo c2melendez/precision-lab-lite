@@ -1,1 +1,1 @@
-RESTORE_FROM_FILE
+EMERGENCY: file was corrupted to PLACEHOLDER. Restore from commit d867368cba39ac2ac79421133e6ab5e0dfbb84ee path src/engine/algebriteClient.ts then re-apply AS-C-18 scoped rule. Full good content is in local artifacts/algebriteClient_RESTORE.ts (43642 bytes).
