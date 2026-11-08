@@ -1,0 +1,9 @@
+# ALGEBRA229 AS-C-19 — Aceptación bilateral (2026-11-08)
+
+- Estado: PASS bilateral. Fila N2, valor, gcd(12*x^2*y, 18*x*y^2) → 6*x*y.
+- Lite SHA ee251a95f7cd5012623a183edda9507274a4e5b4: Cumulative [42512905625](https://github.com/c2melendez/precision-lab-lite/actions/runs/42512905625) SUCCESS (focal 3/3); CI [42512905597](https://github.com/c2melendez/precision-lab-lite/actions/runs/42512905597) SUCCESS; H1d [42512905598](https://github.com/c2melendez/precision-lab-lite/actions/runs/42512905598) SUCCESS (22/22); Scientific UI [42512905608](https://github.com/c2melendez/precision-lab-lite/actions/runs/42512905608) SUCCESS (456/456).
+- Plus SHA 78103b975569799afade2c6c540cc45930bbcdc0: Cumulative [42510750283](https://github.com/c2melendez/precision-lab-plus/actions/runs/42510750283) SUCCESS (focal 5/5); CI [42510750258](https://github.com/c2melendez/precision-lab-plus/actions/runs/42510750258) SUCCESS; H1d [42510750377](https://github.com/c2melendez/precision-lab-plus/actions/runs/42510750377) SUCCESS (38/38).
+- Tests focales: Lite tests/algebra229AsC19.audit.test.ts 3/3; Plus backend/tests/test_algebra229_as_c19.py 5/5. Verifican fila congelada, equivalencia del GCD con 6*x*y, gcd de coeficientes, grados mínimos y divisibilidad de ambos argumentos.
+- Los guards de los acumulativos indican skip=false y evidence_run_id vacío; los tests fueron ejecutados en estos mismos checkouts, sin REUSE ni re-dispatch. H1d/Scientific Lite también se ejecutaron y terminaron SUCCESS.
+- No se requirió cambio de producto específico para C19. La restauración del adaptador Algebrite y el fallback limitado de C18 están documentados en ALGEBRA229_AS_C_C18_ACCEPTANCE_2026-11-08.md.
+- S25/seguridad, SG28, H2 y DIST permanecen abiertos; global OPEN. Los logs npm audit de Plus reportaron 12 hallazgos en CI y 13 en H1d; no se ocultan ni se rebaja su umbral.

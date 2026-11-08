@@ -1,3 +1,14 @@
+## 2026-11-08 UTC — Algebra229 AS-C-19 PASS bilateral
+
+- Contrato N2 valor: gcd(12*x^2*y, 18*x*y^2) → 6*x*y.
+- Lite ee251a95f7cd5012623a183edda9507274a4e5b4: Cumulative 42512905625 SUCCESS (AS-C-19 3/3; guard skip=false, evidence_run_id vacío), CI 42512905597 SUCCESS, H1d 42512905598 SUCCESS (22/22), Scientific UI 42512905608 SUCCESS (456/456).
+- Plus 78103b975569799afade2c6c540cc45930bbcdc0: Cumulative 42510750283 SUCCESS (AS-C-19 5/5; guard skip=false, evidence_run_id vacío), CI 42510750258 SUCCESS, H1d 42510750377 SUCCESS (38/38).
+- Los mismos acumulativos ejecutaron también AS-C-18: Lite 4/4 y Plus 5/5. C18 quedó aceptado bilateralmente en la revisión r467 de Lite y en la revisión documental Plus r468.
+- No se cambió producto específicamente para C19; se verificó la fila congelada, equivalencia simbólica del GCD y divisibilidad de ambos polinomios. La reparación Algebrite requerida para C18 se detalla en su aceptación.
+- Aceptación bilateral: ALGEBRA229_AS_C_19_ACCEPTANCE_2026-11-08.md. Sección C: 19/23. Global OPEN; S25, SG28, H2 y DIST permanecen abiertos. npm audit Plus conserva informes de 12 y 13 vulnerabilidades bajo revisión S25.
+
+---
+
 ## 2026-11-08 UTC — Algebra229 AS-C-18 PASS bilateral
 
 - Contrato N2 valor: lcm(x^2-1, x^2-2*x+1) → (x-1)^2 (x+1).

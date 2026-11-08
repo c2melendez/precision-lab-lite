@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 467,
+  "revision": 468,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "ee251a95f7cd5012623a183edda9507274a4e5b4",
-  "baseline_case": "ALGEBRA229-AS-C-18",
+  "baseline_case": "ALGEBRA229-AS-C-19",
   "baseline_status": "PASS",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-C-19-VERIFY",
-    "status": "REUSE",
-    "previous_id": "ALGEBRA229-AS-C-18-TEST-FIRST",
-    "action": "AS-C-19 N2 valor: gcd(12*x^2*y, 18*x*y^2) -> 6*x*y. Lite (ee251a95f7cd5012623a183edda9507274a4e5b4) y Plus (78103b975569799afade2c6c540cc45930bbcdc0) ya ejecutaron los tests focales (Lite 3/3, Plus 5/5) dentro de los acumulativos revisados; los gates Cumulative/H1d/Scientific requeridos terminaron SUCCESS. Cerrar C-19 con la evidencia existente, verificando el mismo checkout; no lanzar corridas equivalentes.",
-    "updated_utc": "2026-11-08T19:09:58.426Z"
+    "id": "ALGEBRA229-AS-C-20-SOURCE-REVIEW",
+    "status": "REVIEW",
+    "previous_id": "ALGEBRA229-AS-C-19-VERIFY",
+    "action": "Recuperar desde la fuente congelada qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz la fila completa AS-C-20, verificarla contra SHA-256 8cd36ff08343f98f92abd83e2b162d565e0cbe5c59dc73f26b1c018f77d663c7 y registrar input/expected/nota exactos antes de crear tests test-first bilaterales. No inferir el contrato ni implementar hasta verificar la fuente.",
+    "updated_utc": "2026-11-08T19:14:26.522Z"
   },
   "blockers": [],
   "prose_only_paths": [
