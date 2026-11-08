@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 464,
+  "revision": 465,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "16846a4fcdbee004525f0a7e6d92bc5a8f3be3ab",
-  "baseline_case": "ALGEBRA229-AS-C-15",
+  "technical_baseline_sha": "dde091c21d4e0415b01b8e5e3bdcb66e4aaa86e8",
+  "baseline_case": "ALGEBRA229-AS-C-16",
   "baseline_status": "PASS",
   "global_certification": "OPEN",
   "gates": {
@@ -14,11 +14,11 @@
     "scientific": {"workflow": ".github/workflows/syntax309-scientific-e2e.yml", "inputs": ["*"], "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"}
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-C-16-TEST-FIRST",
+    "id": "ALGEBRA229-AS-C-17-TEST-FIRST",
     "status": "RUN",
-    "previous_id": "ALGEBRA229-AS-C-15-TEST-FIRST",
-    "action": "AS-C-16 N2 division: (x^5-1)/(x-1) -> q=x^4+x^3+x^2+x+1, r=0. C-15 cerrado bilateral PASS. Seccion C en 15/23. Test-first ya publicado (Lite dde091c, Plus 8a723e4); verificar gates.",
-    "updated_utc": "2026-11-08T14:00:00Z"
+    "previous_id": "ALGEBRA229-AS-C-16-TEST-FIRST",
+    "action": "AS-C-17 N2 valor: gcd(x^2-1, x^2-2x+1) -> x-1. C-16 cerrado bilateral PASS. Seccion C en 16/23. Test-first publicado (Lite 0aa5e5d, Plus 4a87278); verificar gates.",
+    "updated_utc": "2026-11-08T14:26:00Z"
   },
   "blockers": [],
   "prose_only_paths": ["qa/certification/**", "**/*.md", "README.md"]
