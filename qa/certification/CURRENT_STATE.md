@@ -1,3 +1,25 @@
+# Actualización de certificación - 2026-11-08 UTC (r455)
+
+## Algebra229 AS-C-06 - PASS bilateral (cerrado)
+
+- Contrato N2: `simplificar` `\frac{\frac{1}{x}-\frac{1}{y}}{x-y}` → `- \frac{1}{x y}`, sin nota de dominio en la fila congelada.
+- Gap real de capability en Lite: `simplify()` devolvía `(1/x-1/y)/(x-y)`. Se añadió `factoredCancellation` en `src/engine/algebriteClient.ts` (rationalize + factor de numerador/denominador + simplify, aceptando solo una fracción única con denominador producto). Plus ya cumplía con SymPy.
+- Lite SHA `12cab2e2e536d313635256f280ce0951a73afebd`: Cumulative 42449459397 SUCCESS (focal 5/5; 373 archivos, 2,301 passed, 8 expected fail, 34 TODO), CI 42449459368 SUCCESS, H1d 42449459386 SUCCESS (22/22), Scientific UI 42449459435 SUCCESS (456/456), Runner 42449459424 SUCCESS.
+- Plus SHA `9ddc8205ec97a13bed7857a1487024a2650e1e78`: Cumulative 42403960553 SUCCESS (focal 4/4), CI 42403960642 SUCCESS (2,836 passed, 1 skipped, 10 xfailed; cobertura 88.89%), H1d 42403960552 SUCCESS (38/38), Runner 42403960657 SUCCESS.
+- Guards revisados: `skip=false`, `evidence_run_id` vacío y sin REUSE. Suite completa Lite 373/373 archivos verificada localmente; sin regresiones en C-02..C-05.
+- Aceptación bilateral: `ALGEBRA229_AS_C_06_ACCEPTANCE_2026-11-07.md`. Baseline `ALGEBRA229-AS-C-06 PASS`; sección C en 6/23. Global **OPEN**; S25, SG28, H2 y DIST siguen abiertos.
+- **Siguiente:** AS-C-07, N2, `simplificar` - `\frac{1}{x-1}-\frac{1}{x+1}` → `\frac{2}{\left(x - 1\right) \left(x + 1\right)}`, sin nota de dominio en la fila congelada.
+
+# Actualización de certificación - 2026-11-08 UTC (r454)
+
+## Algebra229 AS-C-05 - PASS bilateral (cerrado)
+
+- Contrato N1: `simplificar` `\frac{1}{x}+\frac{1}{y}` → `\frac{x + y}{x y}`, con nota "Suma de fracciones con denominador común".
+- Gap de capability en Lite: `simplify()` dejaba la suma sin combinar. Se añadió `combinedSingleFraction` (`rationalize()` acotado a una fracción única con denominador producto). Plus ya cumplía con SymPy.
+- Plus SHA `310b7ceaa89c3c309443ae6865263b67bf95373d`: Cumulative 42346703999 SUCCESS (focal 4/4), CI 42346704029 SUCCESS (2,832 passed, 1 skipped, 10 xfailed; 88.89%), H1d 42346704039 SUCCESS (38/38), Runner 42346704001 SUCCESS.
+- Lite SHA `6e83392473bbaebe738ed493d73279f7c595cbfb`: Cumulative 42347259419 SUCCESS (focal 5/5; 372 archivos, 2,296 passed, 8 expected fail, 34 TODO), CI 42347259190 SUCCESS (focal 5/5), H1d 42347259257 SUCCESS (22/22), Scientific UI 42347259155 SUCCESS, Runner 42347259168 SUCCESS.
+- Aceptación bilateral: `ALGEBRA229_AS_C_05_ACCEPTANCE_2026-11-07.md`. Baseline `ALGEBRA229-AS-C-05 PASS`; reconciliación documental: `continuity.json` estaba en r451/C-02 mientras CURRENT_STATE ya tenía r453/C-04; se sincroniza a r455/C-06.
+- **Siguiente (en ese momento):** AS-C-06, N2, `simplificar` - `\frac{\frac{1}{x}-\frac{1}{y}}{x-y}` → `- \frac{1}{x y}`.
 # Actualización de certificación — 2026-11-07 UTC (r453)
 
 ## Algebra229 AS-C-04 — PASS bilateral (cerrado)
