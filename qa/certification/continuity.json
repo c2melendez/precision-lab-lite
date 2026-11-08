@@ -1,46 +1,25 @@
 {
   "schema_version": 1,
-  "revision": 463,
+  "revision": 464,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "bcc10b8e793d63ce6f39d30949741238acbae974",
-  "baseline_case": "ALGEBRA229-AS-C-14",
+  "technical_baseline_sha": "16846a4fcdbee004525f0a7e6d92bc5a8f3be3ab",
+  "baseline_case": "ALGEBRA229-AS-C-15",
   "baseline_status": "PASS",
   "global_certification": "OPEN",
   "gates": {
-    "cumulative": {
-      "workflow": ".github/workflows/in625-cumulative-certification.yml",
-      "inputs": ["*"],
-      "acceptance_revision": "2026-10-16-continuity-v1"
-    },
-    "h1d": {
-      "workflow": ".github/workflows/in625-h1d-reentry.yml",
-      "inputs": ["*"],
-      "acceptance_revision": "2026-10-16-continuity-v1"
-    },
-    "security": {
-      "workflow": ".github/workflows/certification-dependency-gates.yml",
-      "inputs": ["*"],
-      "acceptance_revision": "2026-10-16-continuity-v1",
-      "allow_reuse": false
-    },
-    "scientific": {
-      "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-      "inputs": ["*"],
-      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
-    }
+    "cumulative": {"workflow": ".github/workflows/in625-cumulative-certification.yml", "inputs": ["*"], "acceptance_revision": "2026-10-16-continuity-v1"},
+    "h1d": {"workflow": ".github/workflows/in625-h1d-reentry.yml", "inputs": ["*"], "acceptance_revision": "2026-10-16-continuity-v1"},
+    "security": {"workflow": ".github/workflows/certification-dependency-gates.yml", "inputs": ["*"], "acceptance_revision": "2026-10-16-continuity-v1", "allow_reuse": false},
+    "scientific": {"workflow": ".github/workflows/syntax309-scientific-e2e.yml", "inputs": ["*"], "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"}
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-C-15-TEST-FIRST",
+    "id": "ALGEBRA229-AS-C-16-TEST-FIRST",
     "status": "RUN",
-    "previous_id": "ALGEBRA229-AS-C-14-TEST-FIRST",
-    "action": "AS-C-15 N3 division: (2x^3+3x^2-5x+7)/(x^2+1) -> q=2x+3, r=4-7x. C-14 cerrado bilateral PASS con Lite bcc10b8 (Cumulative 42485418740, CI 42485418724, H1d 42485418698, Scientific 42485418770) y Plus 970a838 (Cumulative 42485437185, CI 42485437171, H1d 42485437226). Seccion C en 14/23. Siguiente: test-first bilateral con fila congelada, identidad polinomial, cociente/resto y samples.",
-    "updated_utc": "2026-11-08T13:42:00Z"
+    "previous_id": "ALGEBRA229-AS-C-15-TEST-FIRST",
+    "action": "AS-C-16 N2 division: (x^5-1)/(x-1) -> q=x^4+x^3+x^2+x+1, r=0. C-15 cerrado bilateral PASS. Seccion C en 15/23. Test-first ya publicado (Lite dde091c, Plus 8a723e4); verificar gates.",
+    "updated_utc": "2026-11-08T14:00:00Z"
   },
   "blockers": [],
-  "prose_only_paths": [
-    "qa/certification/**",
-    "**/*.md",
-    "README.md"
-  ]
+  "prose_only_paths": ["qa/certification/**", "**/*.md", "README.md"]
 }
