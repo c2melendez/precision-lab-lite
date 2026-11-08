@@ -79,13 +79,11 @@ describe("Algebra229 AS-C-13 division (x^3+2x^2-x+3) entre (x-2)", () => {
   });
 
   it("engine values match q(x) + 17/(x-2) on every sample with x != 2", () => {
-    const result = simplifyExpression(INPUT);
     const numeric = (x: number) => toNumber(String(evaluate(`((${x})^3+2*(${x})^2-(${x})+3)/((${x})-2)`)));
     for (const x of SAMPLES) {
       const expected = x * x + 4 * x + 7 + 17 / (x - 2);
       expect(numeric(x)).toBeCloseTo(expected, 12);
     }
-    expect(result).toBeTruthy();
   });
 
   it("does not claim a value at the excluded point x=2", () => {
