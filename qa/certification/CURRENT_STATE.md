@@ -1,3 +1,14 @@
+# Actualización de certificación - 2026-11-08 UTC (r457)
+
+## Algebra229 AS-C-08 - PASS bilateral (cerrado)
+
+- Contrato N2: `simplificar` `\frac{x+1}{x^{2}-1}-\frac{1}{x-1}` → `0`, sin nota de dominio en la fila congelada.
+- Test-first en verde sin cambios de producto. `simplifyExpression` devuelve `0`; la equivalencia se verifica además con oráculo numérico independiente fuera de `x=±1` y `DOMAIN_ERROR` en los puntos excluidos.
+- Plus SHA `fc4b51bb206c0cd1e96106629b6ab984a2711f22`: Cumulative 42450945978 SUCCESS (focal 4/4), CI 42450946053 SUCCESS (2,844 passed, 1 skipped, 10 xfailed; 88.88%), H1d 42450945950 SUCCESS (38/38), Runner 42450946020 SUCCESS.
+- Lite SHA `edfcfe6b0766bea686b2bde25e88b67f66ffc064`: Cumulative 42450945971 SUCCESS (focal 4/4; 375 archivos, 2,309 passed, 8 expected fail, 34 TODO), CI 42450946128 SUCCESS, H1d 42450945960 SUCCESS (22/22), Scientific UI 42450945998 SUCCESS (456/456), Runner 42450946110 SUCCESS.
+- Guards revisados: `skip=false`, `evidence_run_id` vacío y sin REUSE.
+- Aceptación bilateral: `ALGEBRA229_AS_C_08_ACCEPTANCE_2026-11-08.md`. Baseline `ALGEBRA229-AS-C-08 PASS`; sección C en 8/23. Global **OPEN**; S25, SG28, H2 y DIST siguen abiertos.
+- **Siguiente:** AS-C-09, N2, `simplificar` - `\frac{a}{b}+\frac{b}{a}` → `\frac{a^{2} + b^{2}}{a b}`, combinación de dos fracciones sobre denominador común `a b`.
 # Actualización de certificación - 2026-11-08 UTC (r456)
 
 ## Algebra229 AS-C-07 - PASS bilateral (cerrado)

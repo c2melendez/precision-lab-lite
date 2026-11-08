@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 456,
+  "revision": 457,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "2c807c5433de932e544a2c21ec702f7924a1ed22",
-  "baseline_case": "ALGEBRA229-AS-C-07",
+  "technical_baseline_sha": "edfcfe6b0766bea686b2bde25e88b67f66ffc064",
+  "baseline_case": "ALGEBRA229-AS-C-08",
   "baseline_status": "PASS",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-C-08-TEST-FIRST",
+    "id": "ALGEBRA229-AS-C-09-TEST-FIRST",
     "status": "RUN",
-    "previous_id": "ALGEBRA229-AS-C-07-TEST-FIRST",
-    "action": "AS-C-08 N2 simplificar: (x+1)/(x^2-1)-1/(x-1) -> 0. C-07 cerrado bilateral PASS con Lite 2c807c5433de932e544a2c21ec702f7924a1ed22 (Cumulative 42450296439 focal 4/4 y 2,305 passed, CI 42450296465, H1d 42450296447 22/22, Scientific 42450296494 456/456, Runner 42450296577) y Plus 7c61d94bf58342944bd163bafc08443c9cd364c5 (Cumulative 42450284227 focal 4/4, CI 42450284226 con 2,840 passed y 88.88%, H1d 42450284220 38/38). Seccion C en 7/23. Siguiente: tests bilaterales de fila congelada, resultado exacto 0, equivalencia simbolica y control de dominio en x=-1 y x=1; luego gates en el nuevo SHA tecnico.",
-    "updated_utc": "2026-11-08T05:35:00Z"
+    "previous_id": "ALGEBRA229-AS-C-08-TEST-FIRST",
+    "action": "AS-C-09 N2 simplificar: a/b+b/a -> (a^2+b^2)/(a*b). C-08 cerrado bilateral PASS con Lite edfcfe6b0766bea686b2bde25e88b67f66ffc064 (Cumulative 42450945971 focal 4/4 y 2,309 passed, CI 42450946128, H1d 42450945960 22/22, Scientific 42450945998 456/456, Runner 42450946110) y Plus fc4b51bb206c0cd1e96106629b6ab984a2711f22 (Cumulative 42450945978 focal 4/4, CI 42450946053 con 2,844 passed y 88.88%, H1d 42450945950 38/38). Seccion C en 8/23. Siguiente: test-first bilateral con fila congelada, fraccion unica combinada, equivalencia exacta y control de dominio a=0 y b=0; Gates en el nuevo SHA tecnico.",
+    "updated_utc": "2026-11-08T05:50:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
