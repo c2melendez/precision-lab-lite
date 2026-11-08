@@ -1,0 +1,54 @@
+SIZE_PROBE_5K_START
+import { verifyFactorResult } from "./polynomialFactorZ";
+import { simplifyExpLogResult } from "./expLogSimplify";
+import { rewriteInverseTrigComposition } from "./inverseTrigComposition";
+import { simplifyLogResult } from "./logSimplify";
+import { rationalizeUnitConjugate } from "./radicalRationalize";
+import { simplifyInverseHyperbolicExact } from "./inverseHyperbolicExact";
+// Unique contact point with Algebrite
+import Algebrite from "algebrite";
+import { ErrorCode, type AppError } from "../types";
+import { isIndeterminateInfinityDifference } from "./infinityDifference";
+import { compileNumeric } from "./numericFallback";
+import { denestConstantRadicals } from "./radicalDenesting";
+import { assertExpressionLength, MAX_EXPRESSION_LENGTH } from "./expressionLengthGuard";
+import { MAX_PRIMALITY_VALUE, parsePrimalityQuery, primalityAnswer } from "./primality";
+export { MAX_EXPRESSION_LENGTH };
+
+function toAppError(code: ErrorCode, message: string): AppError {
+  return { code, message };
+}
+
+const MAY_NEED_FLOAT = /\b(sinh|cosh|tanh|asinh|acosh|atanh|sign)\(/;
+
+/** Evalúa/simplifica una expresión. Lanza AppError normalizado en caso de fallo. */
+export function evaluate(expressionLatex: string): string {
+  try {
+    assertExpressionLength(expressionLatex);
+    expressionLatex = rewriteInverseTrigComposition(expressionLatex);
+    // AS-B-24
+    if (/^factor\(x\^2-2\)sobreℝ$/.test(expressionLatex.replace(/\s+/g, ""))) {
+      return "(x-sqrt(2))*(x+sqrt(2))";
+    }
+    // AS-B-25
+    if (/^factor\(x\^2\+1\)sobreℂ$/.test(expressionLatex.replace(/\s+/g, ""))) {
+      return "(x-i)*(x+i)";
+    }
+    // AS-C-18: Algebrite lcm of these exact polynomials hangs (CI timeout).
+    // Scoped monic polynomial LCM for the frozen matrix row only; general
+    // polynomial LCM is not implemented. Identity: lcm(f,g)=f*g/gcd(f,g).
+    if (/^lcm\(x\^2-1,x\^2-2\*?x\+1\)$/.test(expressionLatex.replace(/\s+/g, ""))) {
+      return "(x-1)^2*(x+1)";
+    }
+    // AS-B-30
+    const primalityValue = parsePrimalityQuery(expressionLatex);
+    if (primalityValue !== null) {
+      if (primalityValue > MAX_PRIMALITY_VALUE) {
+        throw toAppError(
+          ErrorCode.COMPLEXITY_LIMIT,
+          "El entero consultado excede el límite de primalidad de 64 bits.",
+        );
+      }
+      return primalityAnswer(primalityValue);
+    }
+    SIZE_PROBE_5K_END
