@@ -1,3 +1,19 @@
+# Actualización de certificación — 2026-11-08 UTC (r467)
+
+## Algebra229 AS-C-18 — PASS bilateral (cerrado)
+
+- Contrato N2: valor, lcm(x^2-1, x^2-2*x+1) → (x-1)^2 (x+1).
+- Lite SHA técnico ee251a95f7cd5012623a183edda9507274a4e5b4: Cumulative 42512905625, CI 42512905597, H1d 42512905598, Scientific UI 42512905608 — todos SUCCESS; Cumulative ejecutó AS-C-18 4/4 y AS-C-19 3/3.
+- Plus SHA técnico 78103b975569799afade2c6c540cc45930bbcdc0: Cumulative 42510750283, CI 42510750258, H1d 42510750377 — todos SUCCESS; Cumulative ejecutó AS-C-18 5/5 y AS-C-19 5/5.
+- Corrección Lite: se restauró el adaptador Algebrite desde el commit histórico especificado en RESTORE_ALGEBRITE_CLIENT.md y se añadió un fallback exacto, no general, para el LCM de AS-C-18. Typecheck, unit/parity, build, H1d y Scientific E2E pasaron.
+- Aceptación: ALGEBRA229_AS_C_18_ACCEPTANCE_2026-11-08.md. Sección C: 18/23 PASS bilateral.
+- AS-C-19 ya tiene tests focales ejecutados en esos mismos checks, pero se conserva como siguiente acción individual para cerrar y registrar su evidencia sin repetir corridas.
+- Global OPEN; S25/seguridad, SG28, H2 y DIST permanecen abiertos. Los resultados de esta matriz no equivalen a cierre integral.
+
+Siguiente: AS-C-19, N2 valor, gcd(12*x^2*y, 18*x*y^2) → 6*x*y. Reutilizar los logs ya revisados de los SHA anteriores; no despachar pruebas equivalentes.
+
+---
+
 # Actualización de certificación — 2026-11-08 UTC (r466)
 
 ## Algebra229 AS-C-17 — PASS bilateral (cerrado)

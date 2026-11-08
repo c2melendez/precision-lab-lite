@@ -1,3 +1,14 @@
+## 2026-11-08 UTC — Algebra229 AS-C-18 PASS bilateral
+
+- Contrato N2 valor: lcm(x^2-1, x^2-2*x+1) → (x-1)^2 (x+1).
+- Lite ee251a95f7cd5012623a183edda9507274a4e5b4: Cumulative 42512905625 SUCCESS (focal 4/4; 386 test files passed), CI 42512905597 SUCCESS (typecheck, unit/parity, build; npm audit 0), H1d 42512905598 SUCCESS (22/22), Scientific UI 42512905608 SUCCESS (456/456). Guards ejecutaron (skip=false, sin evidence_run_id).
+- Plus 78103b975569799afade2c6c540cc45930bbcdc0: Cumulative 42510750283 SUCCESS (focal 5/5; backend 2,896 passed, 1 skipped, 10 xfailed; frontend 1,055 passed, 28 todo), CI 42510750258 SUCCESS, H1d 42510750377 SUCCESS (38/38). Guards ejecutaron (skip=false, sin evidence_run_id).
+- Restauración Lite y fallback exacto AS-C-18 documentados en la aceptación. No se amplió LCM a una operación general.
+- Aceptación bilateral: ALGEBRA229_AS_C_18_ACCEPTANCE_2026-11-08.md. C-19 remains next action; sus pruebas también aparecen PASS en los logs de estos acumulativos y serán conciliadas por REUSE, sin nueva corrida.
+- Global OPEN; S25, SG28, H2 y DIST siguen abiertos.
+
+---
+
 # Actualización de certificación — 2026-11-08 UTC (r462)
 
 ## Algebra229 AS-C-13 — PASS bilateral (cerrado)

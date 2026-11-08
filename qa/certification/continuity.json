@@ -1,25 +1,54 @@
 {
   "schema_version": 1,
-  "revision": 466,
+  "revision": 467,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "0aa5e5db33b2d22851e36752c2656a88259445e5",
-  "baseline_case": "ALGEBRA229-AS-C-17",
+  "technical_baseline_sha": "ee251a95f7cd5012623a183edda9507274a4e5b4",
+  "baseline_case": "ALGEBRA229-AS-C-18",
   "baseline_status": "PASS",
   "global_certification": "OPEN",
   "gates": {
-    "cumulative": {"workflow": ".github/workflows/in625-cumulative-certification.yml", "inputs": ["*"], "acceptance_revision": "2026-10-16-continuity-v1"},
-    "h1d": {"workflow": ".github/workflows/in625-h1d-reentry.yml", "inputs": ["*"], "acceptance_revision": "2026-10-16-continuity-v1"},
-    "security": {"workflow": ".github/workflows/certification-dependency-gates.yml", "inputs": ["*"], "acceptance_revision": "2026-10-16-continuity-v1", "allow_reuse": false},
-    "scientific": {"workflow": ".github/workflows/syntax309-scientific-e2e.yml", "inputs": ["*"], "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"}
+    "cumulative": {
+      "workflow": ".github/workflows/in625-cumulative-certification.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    "h1d": {
+      "workflow": ".github/workflows/in625-h1d-reentry.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    "security": {
+      "workflow": ".github/workflows/certification-dependency-gates.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "allow_reuse": false
+    },
+    "scientific": {
+      "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
+      "inputs": [
+        "*"
+      ],
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
+    }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-C-18-TEST-FIRST",
-    "status": "RUN",
-    "previous_id": "ALGEBRA229-AS-C-17-TEST-FIRST",
-    "action": "AS-C-18 N2 valor: lcm(x^2-1, x^2-2x+1) -> (x-1)^2 (x+1). C-17 cerrado bilateral PASS. Seccion C en 17/23. Test-first publicado (Lite 404fc7c, Plus b5ad42c); verificar gates.",
-    "updated_utc": "2026-11-08T14:59:00Z"
+    "id": "ALGEBRA229-AS-C-19-VERIFY",
+    "status": "REUSE",
+    "previous_id": "ALGEBRA229-AS-C-18-TEST-FIRST",
+    "action": "AS-C-19 N2 valor: gcd(12*x^2*y, 18*x*y^2) -> 6*x*y. Lite (ee251a95f7cd5012623a183edda9507274a4e5b4) y Plus (78103b975569799afade2c6c540cc45930bbcdc0) ya ejecutaron los tests focales (Lite 3/3, Plus 5/5) dentro de los acumulativos revisados; los gates Cumulative/H1d/Scientific requeridos terminaron SUCCESS. Cerrar C-19 con la evidencia existente, verificando el mismo checkout; no lanzar corridas equivalentes.",
+    "updated_utc": "2026-11-08T19:09:58.426Z"
   },
   "blockers": [],
-  "prose_only_paths": ["qa/certification/**", "**/*.md", "README.md"]
+  "prose_only_paths": [
+    "qa/certification/**",
+    "**/*.md",
+    "README.md"
+  ]
 }
