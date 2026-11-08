@@ -737,6 +737,47 @@ function combinedSingleFraction(expressionAlgebrite: string): string | undefined
   }
 }
 
+// Splits "numerator/denominator" at the first division sign outside parentheses. Returns
+// undefined unless there is exactly one such division.
+function splitSingleFraction(text: string): [string, string] | undefined {
+  let depth = 0;
+  let splitAt = -1;
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    if (char === "(") depth += 1;
+    else if (char === ")") depth -= 1;
+    else if (char === "/" && depth === 0) {
+      if (splitAt !== -1) return undefined;
+      splitAt = index;
+    }
+  }
+  if (splitAt <= 0 || splitAt >= text.length - 1) return undefined;
+  return [text.slice(0, splitAt), text.slice(splitAt + 1)];
+}
+
+// Algebrite's simplify() leaves a rational expression with common polynomial factors uncancelled
+// (e.g. (1/x-1/y)/(x-y)). Factoring numerator and denominator before simplifying lets the engine
+// cancel them. The result is accepted only as one fraction with a product-like denominator.
+function factoredCancellation(expressionAlgebrite: string): string | undefined {
+  try {
+    const rational: unknown = Algebrite.run(`rationalize(${expressionAlgebrite})`);
+    if (typeof rational !== "string" || /stop|Stop/.test(rational)) return undefined;
+    const split = splitSingleFraction(rational);
+    if (split === undefined) return undefined;
+    const candidate: unknown = Algebrite.run(
+      `simplify(factor(${split[0]})/factor(${split[1]}))`,
+    );
+    if (typeof candidate !== "string" || candidate.length === 0 || /stop|Stop/.test(candidate)) {
+      return undefined;
+    }
+    const parts = candidate.split("/");
+    if (parts.length !== 2 || hasTopLevelSum(parts[1])) return undefined;
+    return candidate;
+  } catch {
+    return undefined;
+  }
+}
+
 export function simplifyExpression(expressionAlgebrite: string): string {
   try {
     const result: string = Algebrite.run(`simplify(${expressionAlgebrite})`);
@@ -749,6 +790,12 @@ export function simplifyExpression(expressionAlgebrite: string): string {
       if (hasTopLevelSum(result)) {
         const combined = combinedSingleFraction(expressionAlgebrite);
         if (combined !== undefined) return combined;
+      }
+      // Nested fractions keep several division signs even after simplify(). Factor and cancel
+      // common polynomial factors so the result is one reduced fraction.
+      if (result.split("/").length > 2) {
+        const cancelled = factoredCancellation(expressionAlgebrite);
+        if (cancelled !== undefined) return cancelled;
       }
     }
     return result;
