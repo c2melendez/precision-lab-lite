@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 457,
+  "revision": 458,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "edfcfe6b0766bea686b2bde25e88b67f66ffc064",
-  "baseline_case": "ALGEBRA229-AS-C-08",
+  "technical_baseline_sha": "388048d0d5811c2f52d1fc877c5fa70bc9b687a1",
+  "baseline_case": "ALGEBRA229-AS-C-09",
   "baseline_status": "PASS",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-C-09-TEST-FIRST",
+    "id": "ALGEBRA229-AS-C-10-TEST-FIRST",
     "status": "RUN",
-    "previous_id": "ALGEBRA229-AS-C-08-TEST-FIRST",
-    "action": "AS-C-09 N2 simplificar: a/b+b/a -> (a^2+b^2)/(a*b). C-08 cerrado bilateral PASS con Lite edfcfe6b0766bea686b2bde25e88b67f66ffc064 (Cumulative 42450945971 focal 4/4 y 2,309 passed, CI 42450946128, H1d 42450945960 22/22, Scientific 42450945998 456/456, Runner 42450946110) y Plus fc4b51bb206c0cd1e96106629b6ab984a2711f22 (Cumulative 42450945978 focal 4/4, CI 42450946053 con 2,844 passed y 88.88%, H1d 42450945950 38/38). Seccion C en 8/23. Siguiente: test-first bilateral con fila congelada, fraccion unica combinada, equivalencia exacta y control de dominio a=0 y b=0; Gates en el nuevo SHA tecnico.",
-    "updated_utc": "2026-11-08T05:50:00Z"
+    "previous_id": "ALGEBRA229-AS-C-09-TEST-FIRST",
+    "action": "AS-C-10 N2 simplificar: (1-1/x^2)/(1-1/x) -> (x+1)/x. C-09 cerrado bilateral PASS con Lite 388048d0d5811c2f52d1fc877c5fa70bc9b687a1 (Cumulative 42451545801 focal 4/4 y 2,313 passed, CI 42451545670, H1d 42451545781 22/22, Scientific 42451545826 456/456) y Plus 75f3bd5a3ff8455893ca469d15b38c572ab4c27a (Cumulative 42451561391 focal 4/4, CI 42451561464 con 2,848 passed y 88.90%, H1d 42451561379 38/38, Native Syntax 42451561395). Seccion C en 9/23. Siguiente: test-first bilateral con fila congelada, resultado exacto, equivalencia fuera de x=0 y x=1 y control de dominio en los puntos excluidos; gates en el nuevo SHA tecnico.",
+    "updated_utc": "2026-11-08T06:00:00Z"
   },
   "blockers": [],
   "prose_only_paths": [

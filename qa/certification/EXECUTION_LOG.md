@@ -1,3 +1,12 @@
+## 2026-11-08 UTC - r458: Algebra229 AS-C-09 PASS bilateral
+
+- Contrato N2 `a/b+b/a` -> `(a^2+b^2)/(a*b)`. Test-first: commit de pruebas Plus `bc4473f` fallo en la fraccion unica combinada (devuelvia `a/b + b/a`).
+- Fix Plus `backend/app/services/algebra_service.py`: `_is_sum_of_fractions` + `_is_single_fraction_with_product_denominator` en `_cancel_common_factors`. Lite ya cumplia.
+- Plus `75f3bd5a3ff8455893ca469d15b38c572ab4c27a`: Cumulative 42451561391 SUCCESS (focal 4/4), CI 42451561464 SUCCESS (2,848 passed, 1 skipped, 10 xfailed; 88.90%), H1d 42451561379 SUCCESS (38/38), Native Syntax 42451561395 SUCCESS, Runner 42451561385 SUCCESS.
+- Lite `388048d0d5811c2f52d1fc877c5fa70bc9b687a1`: Cumulative 42451545801 SUCCESS (focal 4/4; 376 archivos, 2,313 passed), CI 42451545670 SUCCESS, H1d 42451545781 SUCCESS (22/22), Scientific 42451545826 SUCCESS (456/456), Runner 42451545669 SUCCESS.
+- Nota de harness: `evaluate` de Plus no soporta sustitucion multivariable `con a=1, b=2`; los tests usan sustitucion numerica directa. No afecta a `simplificar`.
+- Aceptacion bilateral: `ALGEBRA229_AS_C_09_ACCEPTANCE_2026-11-08.md`. Baseline `ALGEBRA229-AS-C-09 PASS`; seccion C 9/23. Global OPEN.
+- Siguiente: AS-C-10 N2 `(1-1/x^2)/(1-1/x)` -> `(x+1)/x`.
 ## 2026-11-08 UTC - r457: Algebra229 AS-C-08 PASS bilateral
 
 - Contrato N2 `(x+1)/(x^2-1)-1/(x-1)` -> `0`. Test-first sin cambios de producto.

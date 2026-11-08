@@ -1,3 +1,14 @@
+# Actualización de certificación - 2026-11-08 UTC (r458)
+
+## Algebra229 AS-C-09 - PASS bilateral (cerrado)
+
+- Contrato N2: `simplificar` `\frac{a}{b}+\frac{b}{a}` → `\frac{a^{2} + b^{2}}{a b}`, sin nota de dominio en la fila congelada.
+- Test-first en Plus: el commit de pruebas `bc4473f` falló en la expectativa de fracción única (devolvía `a/b + b/a`). Fix acotado en `algebra_service.py`: `_is_sum_of_fractions` + `_is_single_fraction_with_product_denominator` dentro de `_cancel_common_factors`. Clasificación: gap de capability. Lite ya cumplía (ruta `rationalize()` de C-05).
+- Plus SHA `75f3bd5a3ff8455893ca469d15b38c572ab4c27a`: Cumulative 42451561391 SUCCESS (focal 4/4), CI 42451561464 SUCCESS (2,848 passed, 1 skipped, 10 xfailed; 88.90%), H1d 42451561379 SUCCESS (38/38), Native Syntax 42451561395 SUCCESS, Runner 42451561385 SUCCESS.
+- Lite SHA `388048d0d5811c2f52d1fc877c5fa70bc9b687a1`: Cumulative 42451545801 SUCCESS (focal 4/4; 376 archivos, 2,313 passed, 8 expected fail, 34 TODO), CI 42451545670 SUCCESS, H1d 42451545781 SUCCESS (22/22), Scientific UI 42451545826 SUCCESS (456/456), Runner 42451545669 SUCCESS.
+- Guards revisados: `skip=false`, `evidence_run_id` vacío y sin REUSE. La corrida local completa en Windows tiene fallos ambientales (cp1252 en `read_text()` y tests Linux-only de aislamiento); la evidencia válida es CI Ubuntu, que pasa completo con el cambio.
+- Aceptación bilateral: `ALGEBRA229_AS_C_09_ACCEPTANCE_2026-11-08.md`. Baseline `ALGEBRA229-AS-C-09 PASS`; sección C en 9/23. Global **OPEN**; S25, SG28, H2 y DIST siguen abiertos.
+- **Siguiente:** AS-C-10, N2, `simplificar` - `\frac{1-\frac{1}{x^{2}}}{1-\frac{1}{x}}` → `\frac{x + 1}{x}`.
 # Actualización de certificación - 2026-11-08 UTC (r457)
 
 ## Algebra229 AS-C-08 - PASS bilateral (cerrado)
