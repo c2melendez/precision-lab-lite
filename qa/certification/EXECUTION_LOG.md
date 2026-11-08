@@ -1,3 +1,14 @@
+## 2026-11-08 UTC — Algebra229 AS-C-20 PASS bilateral
+
+- Fila fuente recuperada del gzip legacy; blob d216dc77cb1356ef29cb8c803cbff809450e0456; 229 filas. N1, valor: gcd(48,180) → 12; nota vacía.
+- Lite e43c028d0ef8b96b7d2d743c41a6053941c34624: Cumulative 42514437202 SUCCESS (AS-C-20 3/3; 387 test files; skip=false y sin evidence_run_id), CI 42514437070 SUCCESS (audit 0, typecheck, unit/parity, build), H1d 42514437057 SUCCESS (22/22; skip=false), Scientific UI 42514437060 SUCCESS (456/456; verificación nativa desktop/tablet/móvil y skip=false).
+- Plus 5ff8bd3e61c2c052091f4adb993033f19959c27c: Cumulative 42514461767 SUCCESS (AS-C-20 4/4; backend 2,900 passed, 1 skipped, 10 xfailed; skip=false), CI 42514461597 SUCCESS (backend 2,900 passed, 1 skipped, 10 xfailed; frontend 150 test files passed), H1d 42514461658 SUCCESS (38/38; skip=false).
+- Runner Lite 42514437345 y Runner Plus 42514461959 fueron push summaries; los pasos de dispatch manual se omitieron porque los gates automáticos ya estaban activos.
+- El primer intento de test-first falló solo en el test de origen por un patrón de split mal escapado (la matriz entera se interpretaba como una fila); corregido en los commits finales. Ningún motor ni oráculo de producto fue debilitado o modificado para C20.
+- Aceptación bilateral: ALGEBRA229_AS_C_20_ACCEPTANCE_2026-11-08.md. Sección C 20/23. Global OPEN; S25, SG28, H2 y DIST siguen abiertos. npm audit Plus: 12 hallazgos en CI y 13 en H1d, pendientes S25.
+
+---
+
 ## 2026-11-08 UTC — Algebra229 AS-C-19 PASS bilateral
 
 - Contrato N2 valor: gcd(12*x^2*y, 18*x*y^2) → 6*x*y.
