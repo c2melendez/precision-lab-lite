@@ -1,3 +1,16 @@
+# Actualización de certificación — 2026-11-08 UTC (r460)
+
+## Algebra229 AS-C-11 — PASS bilateral (cerrado)
+
+- Contrato N3: `simplificar` `\frac{1}{1+\frac{1}{1+\frac{1}{x}}}` → `\frac{x + 1}{2 x + 1}`, fracción continua de tres niveles. Expectativas congeladas sin cambios.
+- Test-first: fila congelada, resultado exacto, equivalencia simbólica y muestras fuera de los puntos excluidos. Lite necesitó un fix acotado de aplanado de fracciones continuas (`34be3af`); Plus cumplía sin cambios de producto.
+- precision-lab-lite SHA `34be3af`: focal AS-C-11 4/4; 378 archivos, 2,321 passed, 8 expected fail, 34 TODO. Runs: CI 42453091447, Cumulative 42453091430, H1d 42453091450, Scientific UI 42453091426, Runner 42453091420, todos SUCCESS.
+- Guards revisados: `skip=false` y `evidence_run_id` vacío; sin REUSE.
+- Aceptación bilateral: `ALGEBRA229_AS_C_11_ACCEPTANCE_2026-11-08.md`. Baseline `ALGEBRA229-AS-C-11 PASS`; sección C en 11/23. Global **OPEN**; S25, SG28, H2 y DIST siguen abiertos.
+- **Siguiente:** AS-C-12, N2, `simplificar` — `\frac{x^{2}-y^{2}}{(x-y)^{2}}` → `\frac{x + y}{x - y}`, excluidos x=y.
+
+---
+
 # Actualización de certificación - 2026-11-08 UTC (r459)
 
 ## Algebra229 AS-C-10 - PASS bilateral (cerrado)
