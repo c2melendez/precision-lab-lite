@@ -855,6 +855,21 @@ function nestedContinuedFraction(expressionAlgebrite: string): string | undefine
   }
 }
 
+// simplify(expand(...)) can cancel a common factor that simplify() keeps, e.g. (x^2-y^2)/(x-y)^2.
+// It is accepted only as a single fraction with a denominator free of top-level sums, and only
+// when it is strictly shorter than the simplify() form.
+function expandedSingleFraction(expressionAlgebrite: string, current: string): string | undefined {
+  try {
+    const expanded: unknown = Algebrite.run(`simplify(expand(${expressionAlgebrite}))`);
+    if (typeof expanded !== "string" || /stop|Stop/.test(expanded)) return undefined;
+    const parts = expanded.split("/");
+    if (parts.length !== 2 || hasTopLevelSum(parts[1])) return undefined;
+    return expanded.length < current.length ? expanded : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 export function simplifyExpression(expressionAlgebrite: string): string {
   try {
     const result: string = Algebrite.run(`simplify(${expressionAlgebrite})`);
@@ -877,6 +892,8 @@ export function simplifyExpression(expressionAlgebrite: string): string {
         const continued = nestedContinuedFraction(expressionAlgebrite);
         if (continued !== undefined) return continued;
       }
+      const single = expandedSingleFraction(expressionAlgebrite, result);
+      if (single !== undefined) return single;
     }
     return result;
   } catch (err) {
