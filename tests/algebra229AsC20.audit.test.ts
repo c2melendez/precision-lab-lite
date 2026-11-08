@@ -11,7 +11,7 @@ const INPUT = "gcd(48,180)";
 const EXPECTED = "12";
 
 function compact(expression: string): string {
-  return expression.replace(/\\s+/g, "").replace(/\\*/g, "");
+  return expression.replace(/\s+/g, "").replace(/\*/g, "");
 }
 
 function integerGcd(a: number, b: number): number {
@@ -24,7 +24,7 @@ function integerGcd(a: number, b: number): number {
 describe("Algebra229 AS-C-20 gcd(48,180)", () => {
   it("matches every frozen source-row contract cell", () => {
     const text = gunzipSync(readFileSync(SOURCE_GZ)).toString("utf8");
-    const sourceRow = text.split(/\\r?\\n/).find((line) => /^\\|\\s*AS-C-20\\s*\\|/.test(line))?.trim();
+    const sourceRow = text.split(/\r?\n/).find((line) => /^\|\s*AS-C-20\s*\|/.test(line))?.trim();
     expect(sourceRow).toBeTruthy();
     const cells = sourceRow!.split("|").map((cell) => cell.trim());
     expect(cells).toHaveLength(8);
@@ -32,7 +32,7 @@ describe("Algebra229 AS-C-20 gcd(48,180)", () => {
       "AS-C-20",
       "N1",
       "`valor`",
-      "`\\\\gcd(48,180)`",
+      "`\\gcd(48,180)`",
       "`12`",
       "",
     ]);
@@ -42,7 +42,7 @@ describe("Algebra229 AS-C-20 gcd(48,180)", () => {
   it("evaluate(gcd(48,180)) returns the frozen exact value 12", () => {
     const actual = String(evaluate(INPUT));
     expect(compact(actual)).toBe(EXPECTED);
-    expect(compact(simplifyExpression(`(${actual})-12`))).toBe("0");
+    expect(compact(simplifyExpression(\`(\${actual})-12\`))).toBe("0");
   });
 
   it("independent Euclidean oracle confirms the gcd and divisibility", () => {
