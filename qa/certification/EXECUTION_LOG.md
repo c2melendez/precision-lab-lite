@@ -1,3 +1,11 @@
+## 2026-11-08 UTC - r459: Algebra229 AS-C-10 PASS bilateral
+
+- Contrato N2 `(1-1/x^2)/(1-1/x)` -> `(x+1)/x`. Test-first sin cambios de producto.
+- Lite devuelve `1+1/x`; Plus devuelve `(x+1)/x`. Equivalencia exacta (diferencia 0) y oraculos independientes; no se exige igualdad textual.
+- Plus `87420a3aa61c7e8029574d2b312d34edc67adc89`: Cumulative 42452288128 SUCCESS (focal 4/4), CI 42452288129 SUCCESS (2,852 passed, 1 skipped, 10 xfailed; 88.90%), H1d 42452288132 SUCCESS (38/38), Runner 42452288091 SUCCESS.
+- Lite `fb964599b7379ab0d83646dab762d371608011fd`: Cumulative 42452287676 SUCCESS (focal 4/4; 377 archivos, 2,317 passed), CI 42452287666 SUCCESS, H1d 42452287697 SUCCESS (22/22), Scientific 42452287704 SUCCESS (456/456), Runner 42452287683 SUCCESS.
+- Aceptacion bilateral: `ALGEBRA229_AS_C_10_ACCEPTANCE_2026-11-08.md`. Baseline `ALGEBRA229-AS-C-10 PASS`; seccion C 10/23. Global OPEN.
+- Siguiente: AS-C-11 N3 `1/(1+1/(1+1/x))` -> `(x+1)/(2*x+1)`, fraccion continua de tres niveles.
 ## 2026-11-08 UTC - r458: Algebra229 AS-C-09 PASS bilateral
 
 - Contrato N2 `a/b+b/a` -> `(a^2+b^2)/(a*b)`. Test-first: commit de pruebas Plus `bc4473f` fallo en la fraccion unica combinada (devuelvia `a/b + b/a`).

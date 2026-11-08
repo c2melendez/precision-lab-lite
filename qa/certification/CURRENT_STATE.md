@@ -1,3 +1,14 @@
+# Actualización de certificación - 2026-11-08 UTC (r459)
+
+## Algebra229 AS-C-10 - PASS bilateral (cerrado)
+
+- Contrato N2: `simplificar` `\frac{1-\frac{1}{x^{2}}}{1-\frac{1}{x}}` → `\frac{x + 1}{x}`, sin nota de dominio en la fila congelada.
+- Test-first en verde sin cambios de producto. Lite devuelve la forma equivalente `1+1/x`; Plus devuelve la forma congelada `(x + 1)/x`. La equivalencia se valida con diferencia simbólica exacta `0` y oráculos independientes; no se exige igualdad textual.
+- Plus SHA `87420a3aa61c7e8029574d2b312d34edc67adc89`: Cumulative 42452288128 SUCCESS (focal 4/4), CI 42452288129 SUCCESS (2,852 passed, 1 skipped, 10 xfailed; 88.90%), H1d 42452288132 SUCCESS (38/38), Runner 42452288091 SUCCESS.
+- Lite SHA `fb964599b7379ab0d83646dab762d371608011fd`: Cumulative 42452287676 SUCCESS (focal 4/4; 377 archivos, 2,317 passed, 8 expected fail, 34 TODO), CI 42452287666 SUCCESS, H1d 42452287697 SUCCESS (22/22), Scientific UI 42452287704 SUCCESS (456/456), Runner 42452287683 SUCCESS.
+- Guards revisados: `skip=false`, `evidence_run_id` vacío y sin REUSE.
+- Aceptación bilateral: `ALGEBRA229_AS_C_10_ACCEPTANCE_2026-11-08.md`. Baseline `ALGEBRA229-AS-C-10 PASS`; sección C en 10/23. Global **OPEN**; S25, SG28, H2 y DIST siguen abiertos.
+- **Siguiente:** AS-C-11, N3, `simplificar` - `\frac{1}{1+\frac{1}{1+\frac{1}{x}}}` → `\frac{x + 1}{2 x + 1}`, fracción continua de tres niveles.
 # Actualización de certificación - 2026-11-08 UTC (r458)
 
 ## Algebra229 AS-C-09 - PASS bilateral (cerrado)

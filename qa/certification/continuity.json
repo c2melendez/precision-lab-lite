@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 458,
+  "revision": 459,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "388048d0d5811c2f52d1fc877c5fa70bc9b687a1",
-  "baseline_case": "ALGEBRA229-AS-C-09",
+  "technical_baseline_sha": "fb964599b7379ab0d83646dab762d371608011fd",
+  "baseline_case": "ALGEBRA229-AS-C-10",
   "baseline_status": "PASS",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-C-10-TEST-FIRST",
+    "id": "ALGEBRA229-AS-C-11-TEST-FIRST",
     "status": "RUN",
-    "previous_id": "ALGEBRA229-AS-C-09-TEST-FIRST",
-    "action": "AS-C-10 N2 simplificar: (1-1/x^2)/(1-1/x) -> (x+1)/x. C-09 cerrado bilateral PASS con Lite 388048d0d5811c2f52d1fc877c5fa70bc9b687a1 (Cumulative 42451545801 focal 4/4 y 2,313 passed, CI 42451545670, H1d 42451545781 22/22, Scientific 42451545826 456/456) y Plus 75f3bd5a3ff8455893ca469d15b38c572ab4c27a (Cumulative 42451561391 focal 4/4, CI 42451561464 con 2,848 passed y 88.90%, H1d 42451561379 38/38, Native Syntax 42451561395). Seccion C en 9/23. Siguiente: test-first bilateral con fila congelada, resultado exacto, equivalencia fuera de x=0 y x=1 y control de dominio en los puntos excluidos; gates en el nuevo SHA tecnico.",
-    "updated_utc": "2026-11-08T06:00:00Z"
+    "previous_id": "ALGEBRA229-AS-C-10-TEST-FIRST",
+    "action": "AS-C-11 N3 simplificar: 1/(1+1/(1+1/x)) -> (x+1)/(2*x+1), fraccion continua de tres niveles. C-10 cerrado bilateral PASS con Lite fb964599b7379ab0d83646dab762d371608011fd (Cumulative 42452287676 focal 4/4 y 2,317 passed, CI 42452287666, H1d 42452287697 22/22, Scientific 42452287704 456/456) y Plus 87420a3aa61c7e8029574d2b312d34edc67adc89 (Cumulative 42452288128 focal 4/4, CI 42452288129 con 2,852 passed y 88.90%, H1d 42452288132 38/38). Seccion C en 10/23. Siguiente: test-first bilateral con fila congelada, resultado exacto, equivalencia y control de dominio en x=0, x=-1 y x=-1/2; gates en el nuevo SHA tecnico.",
+    "updated_utc": "2026-11-08T06:10:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
