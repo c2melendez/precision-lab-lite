@@ -1,3 +1,9 @@
+## 2026-11-09 UTC - Corrección: EV-HI-01..12 pasa a PASS_SCOPED
+
+- Motivo: el PASS bilateral anterior excedía lo verificado. Los literales LaTeX de la matriz y la forma exacta de los resultados no están certificados; Lite compara valores numéricos en EV-HI-04..09.
+- Sin cambios de producto. Evidencia previa (`35e4998`, CI 42555320524 SUCCESS) se conserva como referencia.
+- Acta actualizada: `TRIG_EV_HI_01_12_ACCEPTANCE_2026-11-09.md` (estado PASS_SCOPED).
+
 ## 2026-11-09 UTC - Trigonometría EV-HI-01..12 PASS bilateral
 
 - Fuente: `legacy_sources/ejercicios_trigonometria.md.gz` blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`.
