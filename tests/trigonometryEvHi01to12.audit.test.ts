@@ -105,12 +105,12 @@ describe("Trigonometry EV-HI-10..12 composition and real domain", () => {
 
 describe("Trigonometry EV-HI-04..09 exact symbolic equivalence", () => {
   const exactCases: Array<[string, string]> = [
-    ["arsinh(1)", "log(1+sqrt(2))"],
-    ["arcosh(2)", "log(2+sqrt(3))"],
-    ["artanh(1/2)", "log(3)/2"],
-    ["arcsch(1)", "log(1+sqrt(2))"],
-    ["arsech(1/2)", "log(2+sqrt(3))"],
-    ["arcoth(2)", "log(3)/2"],
+    ["arsinh(1)", "ln(1+sqrt(2))"],
+    ["arcosh(2)", "ln(2+sqrt(3))"],
+    ["artanh(1/2)", "ln(3)/2"],
+    ["arcsch(1)", "ln(1+sqrt(2))"],
+    ["arsech(1/2)", "ln(2+sqrt(3))"],
+    ["arcoth(2)", "ln(3)/2"],
   ];
 
   for (const [input, expected] of exactCases) {

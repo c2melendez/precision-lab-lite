@@ -51,12 +51,12 @@ function exactRationalSqrt(num: number, den: number): string {
 }
 
 const EV_HI_EXACT_FORMS: Readonly<Record<string, string>> = {
-  "asinh(1)": "log(1+sqrt(2))",
-  "acosh(2)": "log(2+sqrt(3))",
-  "atanh(1/2)": "log(3)/2",
-  "acsch(1)": "log(1+sqrt(2))",
-  "asech(1/2)": "log(2+sqrt(3))",
-  "acoth(2)": "log(3)/2",
+  "asinh(1)": "ln(1+sqrt(2))",
+  "acosh(2)": "ln(2+sqrt(3))",
+  "atanh(1/2)": "ln(3)/2",
+  "acsch(1)": "ln(1+sqrt(2))",
+  "asech(1/2)": "ln(2+sqrt(3))",
+  "acoth(2)": "ln(3)/2",
 };
 
 export function simplifyInverseHyperbolicExact(
