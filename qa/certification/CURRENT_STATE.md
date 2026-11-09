@@ -1,3 +1,21 @@
+# Actualización de certificación — 2026-11-09 UTC (r479; EC-D-03 PASS_SCOPED)
+
+## Trigonometría EC-D-03 — PASS_SCOPED bilateral
+
+- Contrato congelado: \(\tan x=\sqrt{3}\) → \(x=\frac{\pi}{3}+k\pi,\ k\in\mathbb{Z}\). La matriz exige la familia infinita completa.
+- Lite SHA verificado d10a2cd2d6032fb7b2c87afaa290fe1b82773d45; test tests/trigonometryEcD03.audit.test.ts. La salida contiene una única familia paramétrica; se verifican k = -3, 0 y 2 y la sustitución en la ecuación.
+- Lite CI 42712032373 SUCCESS (396 archivos, 2,402 passed, 8 XFAIL, 34 TODO); Cumulative 42712032384 SUCCESS (EC-D-03 2/2, guard skip=false, evidence_run_id vacío); H1d 42712032789 SUCCESS (22/22, skip=false); Scientific UI 42712032408 SUCCESS (456/456); Runner 42712032501 SUCCESS push-only.
+- Plus SHA verificado d02a3076b57d9bb2cd02d7c89e1bce3e176a9055; test backend/tests/test_trigonometry_ec_d03.py. POST /api/v1/solve entrega una ImageSet sobre Integers y el solver verifica simbólicamente la familia.
+- Plus Cumulative 42712350673 SUCCESS (tests EC-D-03 2/2 explícitos; 2,927 passed, 1 skipped, 11 xfailed; guard skip=false y evidence_run_id vacío); CI 42712350706 SUCCESS; H1d 42712350501 SUCCESS (38/38, skip=false); Native Syntax and Recovery 42712350400 SUCCESS (52/52); Runner 42712350393 SUCCESS push-only.
+- Aceptación: qa/certification/TRIG_EC_D_03_ACCEPTANCE_2026-11-09.md.
+- Alcance: familia completa \(x=\pi/3+k\pi,\ k\in\mathbb Z\), en radianes. Las pruebas usan ecuación ASCII; no certifican ingesta literal LaTeX ni UI específica de este caso.
+- Plus Certification dependency and security gates 42712350624 sigue IN_PROGRESS en mutation/plus-backend-mutmut; es independiente de este cierre.
+- Global **OPEN**; EV-D-01 Plus /api/v1/evaluate permanece BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
+
+**Siguiente:** TRIG-EC-D-04. Fila congelada: \(2\sin^{2}x-\sin x-1=0,\ x\in[0,2\pi)\) → \(x=\frac{\pi}{2},\ \frac{7\pi}{6},\ \frac{11\pi}{6}\). Fijar primero la prueba focal bilateral y demostrar el conjunto exacto de tres raíces en el intervalo; no inferir el contrato a partir de la factorización ni alterar los casos EC-D-01..03.
+
+---
+
 # Actualización de certificación — 2026-11-09 UTC (r478; EC-D-02 PASS_SCOPED)
 
 ## Trigonometría EC-D-02 — PASS_SCOPED bilateral
