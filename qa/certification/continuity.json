@@ -1,49 +1,41 @@
 {
   "schema_version": 1,
-  "revision": 474,
+  "revision": 475,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "35e49984b1631415c3121a787bacfaf383c1df52",
+  "technical_baseline_sha": "a770100a35dcfbc6379086fddd4d3712d048f93f",
   "baseline_case": "TRIG-EV-HI-01-12",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
     "cumulative": {
       "workflow": ".github/workflows/in625-cumulative-certification.yml",
-      "inputs": [
-        "*"
-      ],
+      "inputs": ["*"],
       "acceptance_revision": "2026-10-16-continuity-v1"
     },
     "h1d": {
       "workflow": ".github/workflows/in625-h1d-reentry.yml",
-      "inputs": [
-        "*"
-      ],
+      "inputs": ["*"],
       "acceptance_revision": "2026-10-16-continuity-v1"
     },
     "security": {
       "workflow": ".github/workflows/certification-dependency-gates.yml",
-      "inputs": [
-        "*"
-      ],
+      "inputs": ["*"],
       "acceptance_revision": "2026-10-16-continuity-v1",
       "allow_reuse": false
     },
     "scientific": {
       "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-      "inputs": [
-        "*"
-      ],
+      "inputs": ["*"],
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
     }
   },
   "next_action": {
-    "id": "TRIG-EV-HI-04-09-EXACT-FORMS",
+    "id": "TRIG-EV-REMAINING-INVENTORY",
     "status": "RUN",
-    "previous_id": "TRIG-EV-REMAINING-INVENTORY",
-    "action": "Completar test-first bilateral para equivalencia simbólica exacta EV-HI-04..09. Plus: el test c167799ac04daafa8a4a301bb1820820990499b9 falló solo porque expand_func no reescribe acosh(2); sustituir el oráculo por rewrite(log), sin modificar el motor. Lite: verificar el test nuevo 4c9749917c88b9394ecc66fecf2e45898570904c; si falla por salida decimal, añadir simplificación exacta acotada para los seis valores congelados en inverseHyperbolicExact.ts. No ampliar la ingesta LaTeX de /evaluate ni la whitelist de alias; esos alcances siguen fuera de autorización.",
-    "updated_utc": "2026-11-09T07:11:00Z"
+    "previous_id": "TRIG-EV-HI-04-09-EXACT-FORMS",
+    "action": "EV-HI-04..09 exact symbolic equivalence is covered in Plus by the normalized frozen-form oracle at technical commit 910962f17ff2570fbbdaf47601c61850228c856f; Plus CI 42632393208, Cumulative 42632393251, and H1d 42632393471 are successful. Lite remains at PASS_SCOPED evidence on a770100a35dcfbc6379086fddd4d3712d048f93f (CI 42586167009, Cumulative 42586167033, H1d 42586167142, Scientific UI 42586167168 SUCCESS); its exact symbolic form check was included in the Lite cumulative source but no current exact-SHA logs were retrieved in this review. Keep the bilateral matrix scoped: LaTeX inputs and Plus aliases arcsch/arsech/arcoth remain uncovered. Next validate the frozen trig source and inventory remaining EV-M/EV-T families; select the first uncertified actionable case for test-first.",
+    "updated_utc": "2026-11-09T14:12:25Z"
   },
   "blockers": [],
   "prose_only_paths": [
