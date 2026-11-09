@@ -95,3 +95,22 @@ describe("Trigonometry EV-HI-10..12 composition and real domain", () => {
     expect(err.code).toBe(ErrorCode.DOMAIN_ERROR);
   });
 });
+
+describe("Trigonometry EV-HI-04..09 exact symbolic equivalence", () => {
+  const exactCases: Array<[string, string]> = [
+    ["arsinh(1)", "log(1+sqrt(2))"],
+    ["arcosh(2)", "log(2+sqrt(3))"],
+    ["artanh(1/2)", "log(3)/2"],
+    ["arcsch(1)", "log(1+sqrt(2))"],
+    ["arsech(1/2)", "log(2+sqrt(3))"],
+    ["arcoth(2)", "log(3)/2"],
+  ];
+
+  for (const [input, expected] of exactCases) {
+    it(`${input} is exactly equivalent to the frozen logarithmic form`, () => {
+      const actual = run(input);
+      const difference = String(evaluate(`simplify((${actual})-(${expected}))`)).replace(/\\s+/g, "");
+      expect(difference).toBe("0");
+    });
+  }
+});
