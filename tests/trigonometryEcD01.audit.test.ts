@@ -29,13 +29,18 @@ describe("Trigonometry EC-D-01: sin(x) = 1/2 on [0, 2*pi)", () => {
     const result = solveAlgebra(parsed.leftAlgebrite, parsed.rightAlgebrite, "x");
     expect(result.solutionsAlgebrite).toHaveLength(2);
 
-    const actualAsExpectedDifferences = result.solutionsAlgebrite
-      .map((root) => EXPECTED_ROOTS.map((expected) =>
-        evaluate("simplify((" + root + ")-(" + expected + "))").replace(/\s+/g, ""),
-      ))
-      .sort((a, b) => a.join(",").localeCompare(b.join(",")));
+    const matchedExpectedRoots = result.solutionsAlgebrite.map((root) => {
+      const match = EXPECTED_ROOTS.find((expected) =>
+        evaluate("simplify((" + root + ")-(" + expected + "))").replace(/\\s+/g, "") === "0",
+      );
+      return match ?? "UNMATCHED:" + root;
+    });
+    expect(matchedExpectedRoots.sort()).toEqual([...EXPECTED_ROOTS].sort());
 
-    expect(actualAsExpectedDifferences).toEqual([["0", "0"], ["0", "0"]]);
+    const numericRoots = result.solutionsAlgebrite.map((root) =>
+      Number(evaluate("float(" + root + ")").replace(/\\.\\.\\.$/, "")),
+    );
+    expect(numericRoots.every((value) => Number.isFinite(value) && value >= 0 && value < 2 * Math.PI)).toBe(true);
 
     for (const root of result.solutionsAlgebrite) {
       expect(evaluate("simplify(sin(" + root + ")-1/2)").replace(/\s+/g, "")).toBe("0");
