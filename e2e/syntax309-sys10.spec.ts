@@ -1,6 +1,6 @@
 import {test,expect} from "@playwright/test";
 for(const source of [String.raw`\operatorname{argsenh}1`,String.raw`\operatorname{argsenh}\left(1\right)`]){
- test("SY-S-10 native hyperbolic sine "+source,async({page})=>{
+ test("SY-S-10 native inverse hyperbolic sine exact form "+source,async({page})=>{
   await page.addInitScript(()=>localStorage.setItem("precision-lab-layout-mode","split"));
   await page.goto("./");
   const input=page.locator("math-field[aria-label='Entrada matemática']").first();
@@ -12,8 +12,9 @@ for(const source of [String.raw`\operatorname{argsenh}1`,String.raw`\operatornam
   const latex=await result.getAttribute("data-result-reentry-latex");
   expect(latex).toBeTruthy();
   expect(latex).not.toMatch(/NaN|Infinity/);
-  const number=Number(latex?.replace(/\\(?:operatorname|mathrm)\{[^}]+\}/g,"").replace(/\\,/g,"").trim());
-  expect(Number.isFinite(number),String(latex)).toBe(true);
-  expect(Math.abs(number-0.881373587)).toBeLessThan(5e-10);
+  const normalizedLatex = String(latex)
+    .replace(/\\left|\\right/g,"")
+    .replace(/\s+/g,"");
+  expect(normalizedLatex).toBe(String.raw`\ln(1+\sqrt{2})`);
  });
 }

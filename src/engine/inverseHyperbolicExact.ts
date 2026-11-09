@@ -57,6 +57,9 @@ const EV_HI_EXACT_FORMS: Readonly<Record<string, string>> = {
   "acsch(1)": "ln(1+sqrt(2))",
   "asech(1/2)": "ln(2+sqrt(3))",
   "acoth(2)": "ln(3)/2",
+  "asinh(1/(1))": "ln(1+sqrt(2))",
+  "acosh(1/(1/2))": "ln(2+sqrt(3))",
+  "atanh(1/(2))": "ln(3)/2",
 };
 
 export function simplifyInverseHyperbolicExact(
@@ -65,7 +68,9 @@ export function simplifyInverseHyperbolicExact(
 ): string {
   // EV-HI-04..09: preserve the six frozen matrix values in exact logarithmic
   // form before Algebrite's numeric fallback can collapse them to decimals.
-  const normalizedSource = sourceExpression?.replace(/\s+/g, "");
+  const normalizedSource = sourceExpression
+    ?.replace(/\s+/g, "")
+    .replace(/^\((.*)\)$/, "$1");
   if (normalizedSource && EV_HI_EXACT_FORMS[normalizedSource]) {
     return EV_HI_EXACT_FORMS[normalizedSource];
   }
