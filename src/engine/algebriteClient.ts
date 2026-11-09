@@ -3,7 +3,7 @@ import { simplifyExpLogResult } from "./expLogSimplify";
 import { rewriteInverseTrigComposition } from "./inverseTrigComposition";
 import { simplifyLogResult } from "./logSimplify";
 import { rationalizeUnitConjugate } from "./radicalRationalize";
-import { simplifyInverseHyperbolicExact } from "./inverseHyperbolicExact";
+import { resolveInverseHyperbolicNumeric, simplifyInverseHyperbolicExact } from "./inverseHyperbolicExact";
 // Único punto de contacto con Algebrite en todo el proyecto (regla de capa
 // dura, spec v10 §3). Ningún componente de /modes o /components debe hacer
 // `import Algebrite from "algebrite"` directamente.
@@ -382,6 +382,9 @@ export function evaluate(expressionLatex: string): string {
         result = retried;
       }
     }
+    // EV-HI-04..12: evaluación numérica y dominio real de las inversas
+    // hiperbólicas puras que Algebrite deja sin resolver.
+    result = resolveInverseHyperbolicNumeric(result);
     // SY-S-08: Algebrite sometimes returns "NaN..." after float(sinh(1)).
     // Only replace a non-finite hyperbolic result when our independent numeric
     // parser can evaluate the entire expression to a finite real number.

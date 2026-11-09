@@ -20,7 +20,12 @@
  * sustitución silenciosa.
  */
 
+import { ErrorCode, type AppError } from "../types";
 import { compileNumeric } from "./numericFallback";
+
+function toAppError(code: ErrorCode, message: string): AppError {
+  return { code, message };
+}
 
 function gcd(a: number, b: number): number {
   let x = Math.abs(a);
@@ -62,7 +67,23 @@ export function simplifyInverseHyperbolicExact(result: string): string {
     return result;
   }
 
-  // 2. exp(atanh(a/b)) con literales enteros 0 <= a < b.
+  // 2. EV-HI-10: sinh(asinh(u)) = u para todo u real. Algebrite deja la
+  // composición sin resolver (`sinh(asinh(3.0))`). Solo se reduce cuando el
+  // argumento es puramente numérico; una forma simbólica sigue intacta.
+  const sinhAsinh = /^sinh\(asinh\((.+)\)\)$/.exec(compact);
+  if (sinhAsinh) {
+    try {
+      const inner = compileNumeric(sinhAsinh[1], "__none__")(0);
+      if (Number.isFinite(inner)) {
+        return String(inner);
+      }
+    } catch {
+      // La forma no es evaluable numéricamente: se conserva intacta.
+    }
+    return result;
+  }
+
+  // 3. exp(atanh(a/b)) con literales enteros 0 <= a < b.
   const expAtanh = /^exp\(atanh\((\d+)(?:\/(\d+))?\)\)$/.exec(compact);
   if (expAtanh) {
     const a = Number(expAtanh[1]);
@@ -79,4 +100,53 @@ export function simplifyInverseHyperbolicExact(result: string): string {
   }
 
   return result;
+}
+
+/**
+ * EV-HI-04..09/EV-HI-11/12: Algebrite deja `asinh(1.0)`, `acosh(2.0)` y
+ * `atanh(0.5)` sin evaluar incluso después del reintento `float()`. Cuando la
+ * salida es exactamente una inversa hiperbólica de un argumento numérico, se
+ * evalúa con el canal numérico propio respetando el dominio real:
+ *
+ * - acosh exige argumento >= 1;
+ * - atanh exige |argumento| < 1.
+ *
+ * Fuera de dominio se lanza DOMAIN_ERROR en vez de devolver un complejo o un
+ * eco de la llamada. Cualquier forma simbólica o no reconocida se conserva.
+ */
+export function resolveInverseHyperbolicNumeric(result: string): string {
+  const compact = result.replace(/\s+/g, "");
+  const match = /^(asinh|acosh|atanh)\((.+)\)$/.exec(compact);
+  if (!match) return result;
+  const [, name, argument] = match;
+
+  let argumentValue: number;
+  try {
+    argumentValue = compileNumeric(argument, "__none__")(0);
+  } catch {
+    return result;
+  }
+  if (!Number.isFinite(argumentValue)) return result;
+
+  if (name === "acosh" && argumentValue < 1) {
+    throw toAppError(
+      ErrorCode.DOMAIN_ERROR,
+      "acosh no está definida fuera del dominio real [1, +∞).",
+    );
+  }
+  if (name === "atanh" && Math.abs(argumentValue) >= 1) {
+    throw toAppError(
+      ErrorCode.DOMAIN_ERROR,
+      "atanh no está definida fuera del dominio real (-1, 1).",
+    );
+  }
+
+  const value =
+    name === "asinh"
+      ? Math.asinh(argumentValue)
+      : name === "acosh"
+        ? Math.acosh(argumentValue)
+        : Math.atanh(argumentValue);
+  if (!Number.isFinite(value)) return result;
+  return String(value);
 }

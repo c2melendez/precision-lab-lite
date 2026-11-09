@@ -257,6 +257,12 @@ const LOCALIZED_ALIAS_MAP: Record<string, string> = {
   arccsch: "acsch",
   arcsech: "asech",
   arccoth: "acoth",
+  // EV-HI-07..09: la matriz congelada escribe las recíprocas inversas sin la
+  // "c" extra (arcsch/arsech/arcoth). Sin este mapeo el parser las partía como
+  // producto implícito ("a*r*c*s*c*h*(1)").
+  arcsch: "acsch",
+  arsech: "asech",
+  arcoth: "acoth",
   lg: "\\log",
   sgn: "sign",
   raiz: "sqrt",
@@ -280,12 +286,12 @@ function normalizeLocalizedAliases(input: string): string {
   );
 
   out = out.replace(
-    /\\(sen|tg|ctg|cotg|cosec|arcsen|arctg|arcctg|arccotg|arccosec|senh|tgh|ctgh|cotgh|cosech|argsenh|arcsenh|argcosh|argtgh|arctgh|arsinh|arcsinh|arcosh|arccosh|artanh|arctanh|arccsch|arcsech|arccoth|raiz)(?![A-Za-z])/gi,
+    /\\(sen|tg|ctg|cotg|cosec|arcsen|arctg|arcctg|arccotg|arccosec|senh|tgh|ctgh|cotgh|cosech|argsenh|arcsenh|argcosh|argtgh|arctgh|arsinh|arcsinh|arcosh|arccosh|artanh|arctanh|arccsch|arcsech|arccoth|arcsch|arsech|arcoth|raiz)(?![A-Za-z])/gi,
     (_m, rawName) => LOCALIZED_ALIAS_MAP[String(rawName).toLowerCase()] ?? String(rawName),
   );
 
   out = out.replace(
-    /(?<![A-Za-zÁÉÍÓÚáéíóúÑñ])(arccosec|arccotg|arcctg|arcsenh|argsenh|argcosh|argtgh|arctgh|arsinh|arcsinh|arcosh|arccosh|artanh|arctanh|arccsch|arcsech|arccoth|arcsen|arctg|cosech|cotgh|ctgh|senh|tgh|cotg|cosec|ctg|sen|tg|lg|raíz|raiz|mcd|mcm|máx|mín)(?![A-Za-zÁÉÍÓÚáéíóúÑñ])/gi,
+    /(?<![A-Za-zÁÉÍÓÚáéíóúÑñ])(arccosec|arccotg|arcctg|arcsenh|argsenh|argcosh|argtgh|arctgh|arsinh|arcsinh|arcosh|arccosh|artanh|arctanh|arccsch|arcsech|arccoth|arcsch|arsech|arcoth|arcsen|arctg|cosech|cotgh|ctgh|senh|tgh|cotg|cosec|ctg|sen|tg|lg|raíz|raiz|mcd|mcm|máx|mín)(?![A-Za-zÁÉÍÓÚáéíóúÑñ])/gi,
     (rawName) => LOCALIZED_ALIAS_MAP[String(rawName).toLowerCase()] ?? String(rawName),
   );
 

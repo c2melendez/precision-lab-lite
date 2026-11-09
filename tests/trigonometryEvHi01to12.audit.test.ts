@@ -57,9 +57,10 @@ describe("Trigonometry EV-HI-04..09 inverse hyperbolic values", () => {
     ["EV-HI-04", "arsinh(1)", "0.881373587", 0.881373587019543],
     ["EV-HI-05", "arcosh(2)", "1.316957897", 1.3169578969248166],
     ["EV-HI-06", "artanh(1/2)", "0.549306144", 0.5493061443340549],
-    ["EV-HI-07", "arcsch(1)", "0.881373587", 0.881373587019543],
-    ["EV-HI-08", "arsech(1/2)", "1.316957897", 1.3169578969248166],
-    ["EV-HI-09", "arcoth(2)", "0.549306144", 0.5493061443340549],
+    // Las filas 07..09 documentan solo la forma exacta (sin decimal ≈).
+    ["EV-HI-07", "arcsch(1)", "\\ln\\left(1+\\sqrt{2}\\right)", 0.881373587019543],
+    ["EV-HI-08", "arsech(1/2)", "\\ln\\left(2+\\sqrt{3}\\right)", 1.3169578969248166],
+    ["EV-HI-09", "arcoth(2)", "\\frac{1}{2}\\ln 3", 0.5493061443340549],
   ];
 
   for (const [id, input, documented, expected] of cases) {
