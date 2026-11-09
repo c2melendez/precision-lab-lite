@@ -52,16 +52,54 @@ export function solveDirectTrigonometricEquation(
   right: string,
   variable: string,
 ): TrigonometricEquationResult | null {
-  // The variable is a validated single-letter identifier from parseExpression.
-  const directPattern = new RegExp("^(sin|cos|tan)\\(\\s*" + variable + "\\s*\\)$");
-  const leftMatch = left.replace(/\s+/g, "").match(directPattern);
-  const rightMatch = right.replace(/\s+/g, "").match(directPattern);
+  const compactLeft = left.replace(/\s+/g, "");
+  const compactRight = right.replace(/\s+/g, "");
+  const directPattern = new RegExp("^(sin|cos|tan)\\(" + variable + "\\)$");
+  const leftMatch = compactLeft.match(directPattern);
+  const rightMatch = compactRight.match(directPattern);
 
   if (leftMatch && rightMatch) return null;
-  if (!leftMatch && !rightMatch) return null;
 
-  const fn = (leftMatch?.[1] ?? rightMatch?.[1]) as DirectTrigFunction;
-  const constant = leftMatch ? right : left;
+  let fn: DirectTrigFunction;
+  let constant: string;
+
+  if (leftMatch || rightMatch) {
+    fn = (leftMatch?.[1] ?? rightMatch?.[1]) as DirectTrigFunction;
+    constant = leftMatch ? right : left;
+  } else {
+    // Narrow affine form: a*sin(x)+b=0, a*cos(x)+b=0, or a*tan(x)+b=0.
+    // Both coefficients must be numeric constants; compound trig expressions,
+    // transformed arguments, and multiple trig terms remain on the generic path.
+    let standardForm: string;
+    try {
+      standardForm = simplify("(" + left + ")-(" + right + ")").replace(/\s+/g, "");
+    } catch {
+      return null;
+    }
+
+    const numericLiteral = "(?:\\d+(?:/\\d+)?|\\d*\\.\\d+)";
+    const affinePattern = new RegExp(
+      "^([+-]?(?:" + numericLiteral + ")?\\*?)(sin|cos|tan)\\(" + variable + "\\)([+-]" + numericLiteral + ")?$",
+    );
+    const affineMatch = standardForm.match(affinePattern);
+    if (!affineMatch) return null;
+
+    const rawCoefficient = affineMatch[1].replace(/\*$/, "");
+    const coefficient = rawCoefficient === "" || rawCoefficient === "+"
+      ? "1"
+      : rawCoefficient === "-"
+        ? "-1"
+        : rawCoefficient;
+    const offset = affineMatch[3] ?? "0";
+    const coefficientValue = numericValue(coefficient);
+    if (coefficientValue === null || coefficientValue === 0 || numericValue(offset) === null) {
+      return null;
+    }
+
+    fn = affineMatch[2] as DirectTrigFunction;
+    constant = simplify("(0-(" + offset + "))/(" + coefficient + ")");
+  }
+
   const target = numericValue(constant);
   if (target === null) return null;
 
@@ -70,7 +108,7 @@ export function solveDirectTrigonometricEquation(
       solutions: [],
       step: {
         id: "trigonometric-domain",
-        latex: "\\varnothing",
+        latex: "\\\\varnothing",
         explanation: "El valor está fuera del rango real de " + fn + "; no existen soluciones reales.",
       },
       contradiction: true,
@@ -114,14 +152,14 @@ export function solveDirectTrigonometricEquation(
       return null;
     }
 
-    const rendered = solutions.length ? solutions.join(",\\quad ") : "\\varnothing";
+    const rendered = solutions.length ? solutions.join(",\\\\quad ") : "\\\\varnothing";
     return {
       solutions,
       step: {
         id: "trigonometric-period",
         title: "Soluciones en un período",
         rule: "Periodicidad trigonométrica",
-        latex: variable + "\\in[0,2\\pi):\\quad " + variable + "=" + rendered,
+        latex: variable + "\\\\in[0,2\\\\pi):\\\\quad " + variable + "=" + rendered,
         explanation:
           "Se usa la periodicidad de " + fn +
           " y se enumeran las soluciones reales en el intervalo [0, 2π), sin afirmar que sean las únicas soluciones en toda la recta real.",
