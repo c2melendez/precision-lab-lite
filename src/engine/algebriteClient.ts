@@ -540,7 +540,10 @@ export function toLatex(algebriteResult: string): string {
     // el significado al reingresar la propia salida.
     return latex
       .replace(/\\log(?=\b|\s|\\left|\()/g, "\\ln")
-      .replace(/\blog\s*\(/g, "\\ln(");
+      .replace(/\blog\s*\(/g, "\\ln(")
+      // Algebrite may print the native ln() token without a LaTeX command.
+      // Preserve an existing \\ln and canonicalize only an unescaped operator.
+      .replace(/(^|[^\\])\bln(?=\\left|\()/g, "$1\\ln");
   } catch {
     return algebriteResult;
   }
