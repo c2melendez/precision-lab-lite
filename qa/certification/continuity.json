@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 477,
+  "revision": 478,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "fab98e252e404c2564e69c8426e9d51e3b15af0d",
-  "baseline_case": "TRIG-EC-D-01",
+  "technical_baseline_sha": "5e58fda3bb98c90520bfc5cf833f4222009fa1b1",
+  "baseline_case": "TRIG-EC-D-02",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EC-D-02",
+    "id": "TRIG-EC-D-03",
     "status": "RUN",
-    "previous_id": "TRIG-EC-D-01",
-    "action": "La fila EC-D-02 ya fue recuperada de qa/certification/legacy_sources/ejercicios_trigonometria.md.gz: tres columnas (ID, ejercicio, resultado esperado), sin una columna de nota separada. Contrato: 2\\cos x-1=0, x∈[0,2π) → π/3 y 5π/3. Test Plus ya PASS en Cumulative 42669733996 (2/2), CI 42669734319 SUCCESS, H1d 42669734287 SUCCESS, Runner 42669734406 SUCCESS; no repetirlos mientras el árbol Plus no cambie. Lite test tests/trigonometryEcD02.audit.test.ts creado; el intento sobre SHA 8639502ef468480581e7bc267fe1c59b6ce274af falló realmente en el solver (No se encontró una solución algebraica para x). El reconocedor se ajustó; último SHA Lite 6ec2dc0abfd87ab0bb173911725b9dbe88a45520. Sus cinco workflows (Cumulative 42671859688, CI 42671859806, H1d 42671859274, Scientific UI 42671859357, Runner 42671859381) concluyeron FAILURE con cero jobs y cero check-runs, sin logs; no tomarlo como resultado del test ni repetir a ciegas. Próximo: diagnosticar la finalización pre-job de Actions Lite y ejecutar/verificar el focal sobre el SHA vigente. Mantener EC-D-02 RUN; no emitir PASS bilateral ni cambiar el baseline EC-D-01 PASS_SCOPED; global OPEN. Mantener separados EV-D-01 /api/v1/evaluate y EV-HI PASS_SCOPED.",
-    "updated_utc": "2026-11-09T18:12:51Z"
+    "previous_id": "TRIG-EC-D-02",
+    "action": "EC-D-02 fue aceptado como PASS_SCOPED bilateral. Lite SHA 5e58fda3: CI 42708572030 SUCCESS (395 files, 2,400 passed, audit/typecheck/build); Cumulative 42708571839 SUCCESS (focal 2/2, guard skip=false, evidence_run_id vacío); H1d 42708572192 SUCCESS (22/22, skip=false); Runner 42708571827 SUCCESS push-only. Scientific UI 42708571826 estaba IN_PROGRESS en la verificación nativa desktop/tablet/mobile; es complementario y no fue usado como oráculo matemático. Plus test focal 2/2 PASS en Cumulative 42669733996; CI 42669734319, H1d 42669734287 y Runner 42669734406 SUCCESS; no repetir. Siguiente TRIG-EC-D-03: fuente exacta tan x = sqrt(3) → x = pi/3 + k*pi, k entero. El contrato exige familia infinita; no aceptar dos raíces finitas en un período. Determinar representación paramétrica en ambos motores y probar test-first. Mantener EV-D-01 Plus /api/v1/evaluate BLOCKED, EV-HI PASS_SCOPED, certificación global OPEN.",
+    "updated_utc": "2026-11-09T22:10:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
