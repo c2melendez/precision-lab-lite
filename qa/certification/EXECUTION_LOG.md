@@ -1,4 +1,15 @@
-## 2026-11-08 UTC — Algebra229 AS-C-20 PASS bilateral
+## 2026-11-08 UTC - Algebra229 AS-C-21 PASS bilateral
+
+- Fila fuente recuperada del gzip legacy verificado por blob d216dc77cb1356ef29cb8c803cbff809450e0456; 229 filas. N1, valor: lcm(48,180) -> 720; nota vacía.
+- Lite e3987a2536ae7d3a78f104b572b3e445eeccd89f: Cumulative 42515359869 SUCCESS (AS-C-21 3/3; 388 test files, 2,366 passed, 8 expected fail, 34 todo; skip=false y sin evidence_run_id), CI 42515359905 SUCCESS (audit 0, typecheck, unit/parity, build), H1d 42515359842 SUCCESS (22/22; skip=false), Scientific UI 42515359846 SUCCESS (456/456; skip=false).
+- Plus 2724b464f63778cfebf71329748714dccf407cd0: Cumulative 42515399590 SUCCESS (AS-C-21 4/4; backend 2,904 passed, 1 skipped, 10 xfailed; frontend 1,055 passed; skip=false), CI 42515399583 SUCCESS (backend 2,904 passed; frontend 150 test files passed), H1d 42515399592 SUCCESS (38/38; skip=false).
+- Runner Lite 42515359863 y Runner Plus 42515399673 fueron push summaries; los pasos de dispatch manual se omitieron porque los gates automáticos ya estaban activos.
+- Sin cambios de motor ni de oráculos: lcm(48,180) dio 720 en ambos al primer intento test-first; no hubo correcciones de harness para este caso.
+- Aceptación bilateral: ALGEBRA229_AS_C_21_ACCEPTANCE_2026-11-08.md. Sección C 21/23. Global OPEN; S25, SG28, H2 y DIST siguen abiertos. npm audit Plus: 12 hallazgos en CI y 13 en H1d, pendientes S25.
+
+---
+
+## 2026-11-08 UTC - Algebra229 AS-C-20 PASS bilateral
 
 - Fila fuente recuperada del gzip legacy; blob d216dc77cb1356ef29cb8c803cbff809450e0456; 229 filas. N1, valor: gcd(48,180) → 12; nota vacía.
 - Lite e43c028d0ef8b96b7d2d743c41a6053941c34624: Cumulative 42514437202 SUCCESS (AS-C-20 3/3; 387 test files; skip=false y sin evidence_run_id), CI 42514437070 SUCCESS (audit 0, typecheck, unit/parity, build), H1d 42514437057 SUCCESS (22/22; skip=false), Scientific UI 42514437060 SUCCESS (456/456; verificación nativa desktop/tablet/móvil y skip=false).

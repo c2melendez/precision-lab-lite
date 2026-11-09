@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 469,
+  "revision": 470,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "e43c028d0ef8b96b7d2d743c41a6053941c34624",
-  "baseline_case": "ALGEBRA229-AS-C-20",
+  "technical_baseline_sha": "e3987a2536ae7d3a78f104b572b3e445eeccd89f",
+  "baseline_case": "ALGEBRA229-AS-C-21",
   "baseline_status": "PASS",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "ALGEBRA229-AS-C-21-TEST-FIRST",
+    "id": "ALGEBRA229-AS-C-22-TEST-FIRST",
     "status": "RUN",
-    "previous_id": "ALGEBRA229-AS-C-20-TEST-FIRST",
-    "action": "AS-C-21 N1 valor: lcm(48,180) -> 720; verificar todas las celdas congeladas en qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz; crear pruebas test-first bilaterales sin cambiar motor hasta observar resultados.",
-    "updated_utc": "2026-11-08T19:29:02.196Z"
+    "previous_id": "ALGEBRA229-AS-C-21-TEST-FIRST",
+    "action": "AS-C-22 N2 valor: resto de x^100-1 entre x-1 -> 0 (teorema del resto p(1)=0); verificar todas las celdas congeladas en qa/certification/legacy_sources/matriz_algebra_simbolica.md.gz; crear pruebas test-first bilaterales sin cambiar motor hasta observar resultados.",
+    "updated_utc": "2026-11-09T02:11:11.858Z"
   },
   "blockers": [],
   "prose_only_paths": [
