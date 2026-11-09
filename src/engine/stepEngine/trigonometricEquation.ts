@@ -1,4 +1,4 @@
-import { evaluate } from "../algebriteClient";
+import { evaluate, toLatex } from "../algebriteClient";
 import type { Step } from "../../types";
 
 type DirectTrigFunction = "sin" | "cos" | "tan";
@@ -43,9 +43,10 @@ function uniqueRoots(values: string[]): string[] {
 }
 
 /**
- * Resolves a direct one-variable sin/cos/tan equation over one principal
- * period [0, 2*pi). This is intentionally narrow: no compound arguments,
- * transformed functions, or unbounded periodic-set claims.
+ * Resolves direct one-variable trigonometric equations with constant targets.
+ * Sine/cosine return roots in [0, 2*pi); tangent returns its complete
+ * integer-parameter family because its fundamental period is pi. No
+ * compound arguments or transformed functions are handled here.
  */
 export function solveDirectTrigonometricEquation(
   left: string,
@@ -137,6 +138,25 @@ export function solveDirectTrigonometricEquation(
   try {
     const inverse = fn === "sin" ? "arcsin" : fn === "cos" ? "arccos" : "arctan";
     const angle = simplify(inverse + "(" + constant + ")");
+
+    if (fn === "tan") {
+      if (!equivalent("tan(" + angle + ")", constant)) return null;
+      const family = simplify("(" + angle + ")+k*pi");
+      return {
+        solutions: [family],
+        step: {
+          id: "trigonometric-periodic-family",
+          title: "Solución general por periodicidad",
+          rule: "Periodicidad de la tangente",
+          latex: variable + "=" + toLatex(family) + ",\\quad k\\in\\mathbb{Z}",
+          explanation:
+            "La tangente tiene período fundamental π. La familia completa de soluciones reales es " +
+            variable + " = " + family + " con k entero; no se limita a un período principal.",
+        },
+        contradiction: false,
+      };
+    }
+
     let candidates: string[];
 
     if (fn === "sin") {
