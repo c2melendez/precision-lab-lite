@@ -1,3 +1,20 @@
+## 2026-11-09 UTC — TRIG-EC-D-03 PASS_SCOPED bilateral
+
+- Fuente congelada: blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb; fila EC-D-03 = \(\tan x=\sqrt{3}\) → \(x=\frac{\pi}{3}+k\pi,\ k\in\mathbb{Z}\). La fila exige una familia infinita completa.
+- Lite SHA verificado d10a2cd2d6032fb7b2c87afaa290fe1b82773d45: CI 42712032373 SUCCESS; Cumulative 42712032384 SUCCESS (focal 2/2, 396 archivos, 2,402 passed, 8 XFAIL, 34 TODO; guard skip=false, evidence_run_id vacío); H1d 42712032789 SUCCESS (22/22, skip=false); Scientific UI 42712032408 SUCCESS (456/456); Runner 42712032501 SUCCESS.
+- Lite implementa la familia general para tan directo en radianes. El paso expone k entero; la prueba sustituye k = -3, 0 y 2 y comprueba la identidad trigonométrica.
+- Plus SHA verificado d02a3076b57d9bb2cd02d7c89e1bce3e176a9055: Cumulative 42712350673 SUCCESS; el log ejecutó explícitamente test_ec_d03_source_row_and_periodic_oracle_are_frozen y test_ec_d03_http_solve_returns_complete_integer_parameter_family; ambos PASSED. Backend: 2,927 passed, 1 skipped, 11 xfailed. Guard skip=false, evidence_run_id vacío.
+- Plus CI 42712350706 SUCCESS (backend/frontend; backend 2,927 passed, 1 skipped, 11 xfailed); H1d 42712350501 SUCCESS (38/38, skip=false); Native Syntax and Recovery 42712350400 SUCCESS (52/52); Runner 42712350393 SUCCESS.
+- Plus usa solveset para producir una ImageSet sobre Integers y verifica simbólicamente el residuo de la familia en la ecuación original.
+- Ambas pruebas usan ecuación ASCII para los canales de cálculo; el archivo original se usa para anclar el contrato. No se certifica entrada literal LaTeX ni UI específica de EC-D-03.
+- Resultado: **PASS_SCOPED bilateral**. No cierra la matriz trigonométrica ni IN625 global.
+- Plus Certification dependency and security gates 42712350624 permanece IN_PROGRESS en plus-backend-mutmut; es una actividad de seguridad/mutación separada.
+- Global OPEN; EV-D-01 Plus /api/v1/evaluate sigue BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
+
+**Siguiente:** TRIG-EC-D-04. Fila original: \(2\sin^{2}x-\sin x-1=0,\ x\in[0,2\pi)\) → \(\{\pi/2,7\pi/6,11\pi/6\}\). Recuperar y anclar sus celdas, después test-first bilateral para conjunto exacto e intervalo.
+
+---
+
 ## 2026-11-09 UTC — TRIG-EC-D-02 PASS_SCOPED bilateral
 
 - Fuente: blob \`3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb\`; EC-D-02 = \`2\cos x-1=0,\quad x\in[0,2\pi)\` → \`x=\frac{\pi}{3},\ \frac{5\pi}{3}\`. Tres columnas, sin nota independiente.
