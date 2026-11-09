@@ -9,7 +9,7 @@ import { solveAlgebra } from "../src/engine/stepEngine/algebra";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_GZ = join(ROOT, "qa/certification/legacy_sources/ejercicios_trigonometria.md.gz");
-const INPUT_LATEX = "\\sin x=\\frac{1}{2}";
+const INPUT_LATEX = "\\sin\\left(x\\right)=\\frac{1}{2}";
 const EXPECTED_ROOTS = ["pi/6", "5*pi/6"];
 
 describe("Trigonometry EC-D-01: sin(x) = 1/2 on [0, 2*pi)", () => {
@@ -17,8 +17,8 @@ describe("Trigonometry EC-D-01: sin(x) = 1/2 on [0, 2*pi)", () => {
     const source = gunzipSync(readFileSync(SOURCE_GZ)).toString("utf8");
     expect(source).toMatch(/\|\s*EC-D-01\s*\|/);
     expect(source).toContain("\\sin x=\\frac{1}{2}");
-    expect(source).toContain("\\frac{\pi}{6}");
-    expect(source).toContain("\\frac{5\pi}{6}");
+    expect(source).toContain("\\frac{\\pi}{6}");
+    expect(source).toContain("\\frac{5\\pi}{6}");
   });
 
   it("solves the official equation to both exact roots in the stated interval", () => {
