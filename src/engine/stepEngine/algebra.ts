@@ -13,6 +13,7 @@ import { derivative, evaluate, solveEquation, substituteExact, ErrorCode } from 
 import type { Step, AppError } from "../../types";
 import { solveRealAbsoluteCases } from "../absPiecewise";
 import { solveRealRadicalEquation } from "../radicalCases";
+import { solveDirectTrigonometricEquation } from "./trigonometricEquation";
 
 export interface AlgebraSolveResult {
   steps: Step[];
@@ -328,6 +329,16 @@ export function solveAlgebra(
       explanation: "Raíces de los tramos verificadas en la ecuación original.",
     });
     return { steps, solutionsAlgebrite: absoluteCases.solutions };
+  }
+
+  const trigonometricResult = solveDirectTrigonometricEquation(leftAlgebrite, rightAlgebrite, variable);
+  if (trigonometricResult !== null) {
+    steps.push(trigonometricResult.step);
+    return {
+      steps,
+      solutionsAlgebrite: trigonometricResult.solutions,
+      ...(trigonometricResult.contradiction ? { truth: "contradiction" as const } : {}),
+    };
   }
 
   const radicalCases = solveRealRadicalEquation(leftAlgebrite, rightAlgebrite, variable);
