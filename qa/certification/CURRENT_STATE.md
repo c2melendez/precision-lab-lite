@@ -1,3 +1,18 @@
+# Actualización de certificación - 2026-11-09 UTC (r473)
+
+## Trigonometría EV-HI-01..12 - PASS bilateral (cerrado)
+
+- Contrato: matriz legacy `ejercicios_trigonometria.md.gz` (blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`), filas EV-HI-01..12.
+- Técnico final: `35e49984b1631415c3121a787bacfaf383c1df52`. Cumulative 42555320522 SUCCESS; CI 42555320524 SUCCESS; H1d 42555320578 SUCCESS; Runner 42555320521 SUCCESS.
+- Test-first previo: `14aba1f49c03a86f57951a7fd5306446ca667acd` con CI rojo (cumulative 42552094186 y CI 42552094194 FAILURE).
+- Ajuste de literales Lite: EV-HI-07..09 alineados con la forma exacta de la matriz; valores numéricos sin cambios. Anotado en EXECUTION_LOG.
+- Aceptación: `TRIG_EV_HI_01_12_ACCEPTANCE_2026-11-09.md`.
+- No es cierre global: S25, SG28, H2 y DIST siguen abiertos.
+
+**Siguiente:** inventariar las familias EV-* de trigonometría que no tienen PASS bilateral vigente (D, H, I, L, M, T según la matriz), identificar el primer caso sin certificar y ejecutarlo test-first bilateral. No reutilizar PASS_SCOPED fuera de su alcance.
+
+---
+
 # Actualización de certificación - 2026-11-09 UTC (r472)
 
 ## Algebra229 AS-C-23 - PASS bilateral · Sección C 23/23 (cerrada)
