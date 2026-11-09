@@ -78,25 +78,44 @@ export function solveDirectTrigonometricEquation(
     }
 
     const numericLiteral = "(?:\\d+(?:/\\d+)?|\\d*\\.\\d+)";
-    const affinePattern = new RegExp(
+    const functionFirst = new RegExp(
       "^([+-]?(?:" + numericLiteral + ")?\\*?)(sin|cos|tan)\\(" + variable + "\\)([+-]" + numericLiteral + ")?$",
-    );
-    const affineMatch = standardForm.match(affinePattern);
-    if (!affineMatch) return null;
+    ).exec(standardForm);
+    const constantFirst = new RegExp(
+      "^([+-]?" + numericLiteral + ")([+-](?:" + numericLiteral + ")?\\*?)(sin|cos|tan)\\(" + variable + "\\)$",
+    ).exec(standardForm);
+    const functionTimesCoefficient = new RegExp(
+      "^(sin|cos|tan)\\(" + variable + "\\)\\*([+-]?" + numericLiteral + ")([+-]" + numericLiteral + ")?$",
+    ).exec(standardForm);
 
-    const rawCoefficient = affineMatch[1].replace(/\*$/, "");
+    let rawCoefficient: string;
+    let offset: string;
+    if (functionFirst) {
+      rawCoefficient = functionFirst[1].replace(/\\*$/, "");
+      fn = functionFirst[2] as DirectTrigFunction;
+      offset = functionFirst[3] ?? "0";
+    } else if (constantFirst) {
+      offset = constantFirst[1];
+      rawCoefficient = constantFirst[2].replace(/\\*$/, "");
+      fn = constantFirst[3] as DirectTrigFunction;
+    } else if (functionTimesCoefficient) {
+      fn = functionTimesCoefficient[1] as DirectTrigFunction;
+      rawCoefficient = functionTimesCoefficient[2];
+      offset = functionTimesCoefficient[3] ?? "0";
+    } else {
+      return null;
+    }
+
     const coefficient = rawCoefficient === "" || rawCoefficient === "+"
       ? "1"
       : rawCoefficient === "-"
         ? "-1"
         : rawCoefficient;
-    const offset = affineMatch[3] ?? "0";
     const coefficientValue = numericValue(coefficient);
     if (coefficientValue === null || coefficientValue === 0 || numericValue(offset) === null) {
       return null;
     }
 
-    fn = affineMatch[2] as DirectTrigFunction;
     constant = simplify("(0-(" + offset + "))/(" + coefficient + ")");
   }
 
