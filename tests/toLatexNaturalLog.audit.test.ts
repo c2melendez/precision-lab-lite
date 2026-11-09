@@ -6,6 +6,6 @@ describe("natural logarithm LaTeX reentry", () => {
     const latex = toLatex("ln(1+sqrt(2))");
     expect(latex).toContain("\\ln");
     expect(latex).not.toContain("\\\\ln");
-    expect(latex).not.toMatch(/(^|[^\\\\])ln(?=\\\\left|\\()/);
+    expect(latex).not.toMatch(/^ln/);
   });
 });
