@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { parseExpression } from "../src/engine/parsing";
 import { evaluate } from "../src/engine/algebriteClient";
+import { compileNumeric } from "../src/engine/numericFallback";
 import { gunzipSync } from "node:zlib";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -31,7 +32,7 @@ describe("Trigonometry LM-D-01 lim x->0 sin(x)/x", () => {
 
   it("independent samples of sin(x)/x approach 1 near x=0 (numerical oracle)", () => {
     for (const x of SAMPLES) {
-      const actual = Number(evaluate(`float(sin(${x})/(${x}))`));
+      const actual = compileNumeric(`sin(${x})/(${x})`, "__unused__")(0);
       expect(actual).toBeCloseTo(Math.sin(x) / x, 10);
       expect(actual).toBeCloseTo(1, 2); // within ~0.01 at |x|<=0.1
     }
