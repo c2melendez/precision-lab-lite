@@ -1571,3 +1571,13 @@ AS-B-25 (D22): `factor(x^2+1) sobre ℂ` -> `(x-i)*(x+i)` solo con sufijo explí
 - Test-first changes modify only the focal test files; no changes to production engine or API. Global certification remains OPEN. Último baseline aceptado: AS-B-24 PASS_SCOPED.
 - Próximo paso: esperar el Scientific UI Lite y backend cumulative/CI Plus ya activos; no disparar duplicados ni cerrar B25 prematuramente.
 
+
+## 2026-11-09 UTC (r476) — Trigonometría EC-D-01 PASS_SCOPED
+
+- Fuente congelada: `qa/certification/legacy_sources/ejercicios_trigonometria.md.gz`; EC-D-01, `sin(x)=1/2`, intervalo `[0,2π)`, raíces `π/6` y `5π/6`.
+- Lite: SHA `fab98e252e404c2564e69c8426e9d51e3b15af0d`. Test `tests/trigonometryEcD01.audit.test.ts`, 2/2 PASS en Cumulative; CI 42663515300, Cumulative 42663515427, H1d 42663515370, Runner 42663515272 — SUCCESS. Cumulative: 394 test files, 2,398 passed, 8 expected fail, 34 TODO. Scientific UI 42663515384 seguía IN_PROGRESS al corte, job 129320995828 en la verificación nativa desktop/tablet/mobile.
+- Plus: SHA `21a29a342034ed7b0427b62ca2fbbc67395cbca8`. Test `backend/tests/test_trigonometry_ec_d01.py`, 2/2 PASS explícitos en Cumulative job 129316220114. CI 42662156729, Cumulative 42662156740, H1d 42662156790, Runner 42662156997 — SUCCESS. Backend 2,923 passed, 1 skipped, 11 xfailed; frontend 1,055 passed, 28 TODO.
+- Lite requirió una corrección acotada del motor: `solveDirectTrigonometricEquation` resuelve formas directas sin/cos/tan en un período y verifica las raíces. No se certifica el conjunto periódico infinito ni entrada literal idéntica en ambos canales; el alcance es el intervalo congelado.
+- Solo se considera el SHA final de cada repositorio. Global **OPEN**; EV-D-01 LaTeX en Plus /evaluate continúa BLOCKED; EV-HI permanece PASS_SCOPED; S25, SG28/H2 y DIST no cambian.
+- Siguiente acción: EC-D-02; recuperar primero la fila exacta de la matriz gzip y luego test-first bilateral.
+

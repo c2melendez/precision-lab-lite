@@ -1,3 +1,22 @@
+# Actualización de certificación — 2026-11-09 UTC (r476)
+
+## Trigonometría EC-D-01 — PASS_SCOPED bilateral (soluciones exactas en [0, 2π))
+
+- Fila congelada: `sin(x)=1/2`, intervalo `[0,2π)`; raíces exactas esperadas `π/6` y `5π/6`. La prueba ancla el caso a la fila original de `ejercicios_trigonometria.md.gz`.
+- Alcance: se verifican las dos raíces exactas, su pertenencia al intervalo y la sustitución en la ecuación. No se afirma certificación de la ingesta literal idéntica en ambos endpoints: Lite ejercita la forma normalizada `\sin(x)=\frac{1}{2}`; Plus ejercita `/api/v1/solve` con `sin(x)-1/2=0`.
+- Lite SHA técnico `fab98e252e404c2564e69c8426e9d51e3b15af0d`; implementación acotada en `src/engine/stepEngine/trigonometricEquation.ts`, integrada en `src/engine/stepEngine/algebra.ts`. El resolvedor cubre ecuaciones directas `sin/cos/tan` sobre un período principal `[0,2π)`, valida simbólicamente cada raíz y no afirma que esas sean todas las soluciones sobre ℝ.
+- Lite CI [42663515300](https://github.com/c2melendez/precision-lab-lite/actions/runs/42663515300) SUCCESS: 394 test files, 2,398 passed, 8 expected fail, 34 TODO; typecheck y dependency audit SUCCESS.
+- Lite Cumulative [42663515427](https://github.com/c2melendez/precision-lab-lite/actions/runs/42663515427) SUCCESS: ejecutó `tests/trigonometryEcD01.audit.test.ts` (2/2 PASS), 394 test files, 2,398 passed, 8 expected fail, 34 TODO.
+- Lite H1d [42663515370](https://github.com/c2melendez/precision-lab-lite/actions/runs/42663515370) SUCCESS (22 pruebas ejecutadas); Runner [42663515272](https://github.com/c2melendez/precision-lab-lite/actions/runs/42663515272) SUCCESS.
+- Scientific UI [42663515384](https://github.com/c2melendez/precision-lab-lite/actions/runs/42663515384) seguía IN_PROGRESS en `Native desktop/tablet/mobile scientific result verification` al corte; complementario, no usado como oráculo del caso EC-D-01.
+
+- Correcciones del harness Lite antes del SHA aceptado: escapes de la fila congelada, forma de entrada con argumento explícito, comparación como conjunto no ordenado y normalización correcta de salida `float(...)`. Los SHA candidatos previos con fallos de oráculo no son evidencia de aceptación.
+- Resultado del caso: **PASS_SCOPED**, no cierre de la matriz de trigonometría ni de la certificación global. Plus mantiene EV-D-01 LaTeX BLOCKED en `/api/v1/evaluate`; EV-HI-01..12 sigue PASS_SCOPED. S25, SG28/H2 y DIST continúan abiertos.
+
+**Siguiente:** EC-D-02. Recuperar su fila exacta desde el gzip congelado y fijar el contrato antes de escribir pruebas. Global **OPEN**.
+
+---
+
 # Actualización de certificación - 2026-11-09 UTC (r474)
 
 ## Trigonometría EV-HI-01..12 - PASS_SCOPED (corregido desde PASS bilateral)
