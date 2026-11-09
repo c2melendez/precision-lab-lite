@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { parseExpression } from "../src/engine/parsing";
 import { evaluate } from "../src/engine/algebriteClient";
 import { compileNumeric } from "../src/engine/numericFallback";
+import { calcLimit } from "../src/engine/stepEngine/calculus";
 import { gunzipSync } from "node:zlib";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -28,6 +29,13 @@ describe("Trigonometry LM-D-01 lim x->0 sin(x)/x", () => {
     expect(parsed).toMatch(/^limit\(/);
     expect(parsed).toContain("sin");
     expect(parsed).toMatch(/,x,0\)?$/);
+  });
+
+  it("computes the frozen limit through Lite's calculus engine", () => {
+    const result = calcLimit("sin(x)/x", "x", "0", 0, "both");
+    expect(result.confidence).toBe("NUMERIC_FALLBACK");
+    expect(Number(result.resultLatex)).toBeCloseTo(1, 6);
+    expect(result.steps.some((step) => step.id === "numeric")).toBe(true);
   });
 
   it("independent samples of sin(x)/x approach 1 near x=0 (numerical oracle)", () => {
