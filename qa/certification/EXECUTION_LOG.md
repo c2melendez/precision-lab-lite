@@ -1,3 +1,17 @@
+## 2026-11-09 UTC — TRIG-EC-D-02 PASS_SCOPED bilateral
+
+- Fuente: blob \`3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb\`; EC-D-02 = \`2\cos x-1=0,\quad x\in[0,2\pi)\` → \`x=\frac{\pi}{3},\ \frac{5\pi}{3}\`. Tres columnas, sin nota independiente.
+- Lite técnico \`5e58fda3bb98c90520bfc5cf833f4222009fa1b1\`: [CI 42708572030](https://github.com/c2melendez/precision-lab-lite/actions/runs/42708572030) SUCCESS; [Cumulative 42708571839](https://github.com/c2melendez/precision-lab-lite/actions/runs/42708571839) SUCCESS (2/2 focal, 395 archivos, 2,400 passed, 8 XFAIL, 34 TODO); [H1d 42708572192](https://github.com/c2melendez/precision-lab-lite/actions/runs/42708572192) SUCCESS (22/22); [Runner 42708571827](https://github.com/c2melendez/precision-lab-lite/actions/runs/42708571827) SUCCESS.
+- Guards Cumulative/H1d: \`skip=false\`, \`evidence_run_id=""\`; ejecución real en el SHA aceptado. CI: typecheck, audit y build correctos.
+- Test Lite ancla la fila y verifica el conjunto exacto \`{\pi/3,5\pi/3}\`, intervalo y sustitución. El fallo anterior era la limpieza del coeficiente \`2*\`; el commit final corrigió la regex para quitar el asterisco literal.
+- Scientific UI 42708571826 seguía IN_PROGRESS al corte; complementario, no usado como oráculo matemático.
+- Plus ya había pasado con test explícito en Cumulative 42669733996 (2/2), CI 42669734319 SUCCESS, H1d 42669734287 SUCCESS y Runner 42669734406 SUCCESS; sin repetir gates en Plus.
+- Resultado **PASS_SCOPED bilateral**; no cierre global. EV-D-01 /evaluate Plus sigue BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
+
+**Siguiente:** TRIG-EC-D-03, cuya fila espera la familia periódica \`x=\pi/3+k\pi,\ k\in\mathbb Z\`. Confirmar la representación paramétrica real que admiten ambos motores antes de implementar; una lista finita de raíces por período no satisface el contrato.
+
+---
+
 ## 2026-11-09 UTC — TRIG-EC-D-02 IN_PROGRESS; Lite pendiente de ejecución verificable
 
 - Fuente congelada recuperada: fila EC-D-02 = `2\cos x-1=0,\quad x\in[0,2\pi)` → `x=\frac{\pi}{3},\ \frac{5\pi}{3}`. El archivo gzip contiene tres columnas; no tiene nota separada.
