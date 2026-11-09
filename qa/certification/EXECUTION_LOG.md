@@ -1,3 +1,13 @@
+## 2026-11-09 UTC - Trigonometría EV-HI-01..12 PASS bilateral
+
+- Fuente: `legacy_sources/ejercicios_trigonometria.md.gz` blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`.
+- Test-first: `14aba1f49c03a86f57951a7fd5306446ca667acd` con CI rojo (cumulative 42552094186 y CI 42552094194 FAILURE).
+- Técnico final: `35e49984b1631415c3121a787bacfaf383c1df52`. Cumulative 42555320522 SUCCESS; CI 42555320524 SUCCESS; H1d 42555320578 SUCCESS; Runner 42555320521 SUCCESS.
+- Producto: algebriteClient.ts (resolución numérica de asinh/acosh/atanh puras con dominio real), inverseHyperbolicExact.ts (sinh(asinh(u))=u para u numérico), parsing/normalize.ts (alias arcsch/arsech/arcoth).
+- Ajuste de literales Lite (registrado a petición): EV-HI-07..09 pasaron de decimales aproximados a la forma exacta de la matriz congelada, sin cambiar los valores numéricos esperados ni la fuente. Corrección del harness contra la fuente, no relajación del oráculo.
+- Aceptación: `qa/certification/TRIG_EV_HI_01_12_ACCEPTANCE_2026-11-09.md`.
+- Siguiente: inventario de las familias EV-* restantes (ver CURRENT_STATE).
+
 ## 2026-11-09 UTC - Algebra229 AS-C-23 PASS bilateral; Sección C 23/23 cerrada
 
 - Fila fuente del gzip legacy verificado por blob d216dc77cb1356ef29cb8c803cbff809450e0456; 229 filas. N2, valor: p(2) con p(x)=x^3-3x+1 -> 3; nota: evaluar un polinomio en un punto.
