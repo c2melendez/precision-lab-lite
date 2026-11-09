@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 476,
+  "revision": 477,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "fab98e252e404c2564e69c8426e9d51e3b15af0d",
@@ -42,8 +42,8 @@
     "id": "TRIG-EC-D-02",
     "status": "RUN",
     "previous_id": "TRIG-EC-D-01",
-    "action": "Recuperar directamente la fila EC-D-02 de qa/certification/legacy_sources/ejercicios_trigonometria.md.gz, fijar sus siete celdas/entrada/salida/nota exactas y continuar test-first bilateral. No inferir el contrato a partir del nombre del caso. EC-D-01 ya tiene PASS_SCOPED en los SHA registrados; no repetir sus gates. Mantener separado el bloqueo EV-D-01 de ingesta LaTeX en Plus /api/v1/evaluate y el alcance PASS_SCOPED de EV-HI.",
-    "updated_utc": "2026-11-09T17:24:30Z"
+    "action": "La fila EC-D-02 ya fue recuperada de qa/certification/legacy_sources/ejercicios_trigonometria.md.gz: tres columnas (ID, ejercicio, resultado esperado), sin una columna de nota separada. Contrato: 2\\cos x-1=0, x∈[0,2π) → π/3 y 5π/3. Test Plus ya PASS en Cumulative 42669733996 (2/2), CI 42669734319 SUCCESS, H1d 42669734287 SUCCESS, Runner 42669734406 SUCCESS; no repetirlos mientras el árbol Plus no cambie. Lite test tests/trigonometryEcD02.audit.test.ts creado; el intento sobre SHA 8639502ef468480581e7bc267fe1c59b6ce274af falló realmente en el solver (No se encontró una solución algebraica para x). El reconocedor se ajustó; último SHA Lite 6ec2dc0abfd87ab0bb173911725b9dbe88a45520. Sus cinco workflows (Cumulative 42671859688, CI 42671859806, H1d 42671859274, Scientific UI 42671859357, Runner 42671859381) concluyeron FAILURE con cero jobs y cero check-runs, sin logs; no tomarlo como resultado del test ni repetir a ciegas. Próximo: diagnosticar la finalización pre-job de Actions Lite y ejecutar/verificar el focal sobre el SHA vigente. Mantener EC-D-02 RUN; no emitir PASS bilateral ni cambiar el baseline EC-D-01 PASS_SCOPED; global OPEN. Mantener separados EV-D-01 /api/v1/evaluate y EV-HI PASS_SCOPED.",
+    "updated_utc": "2026-11-09T18:12:51Z"
   },
   "blockers": [],
   "prose_only_paths": [
