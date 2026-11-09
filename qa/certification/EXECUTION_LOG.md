@@ -1,3 +1,15 @@
+## 2026-11-09 UTC — TRIG-EC-D-02 IN_PROGRESS; Lite pendiente de ejecución verificable
+
+- Fuente congelada recuperada: fila EC-D-02 = `2\cos x-1=0,quad xin[0,2pi)` → `x=\frac{pi}{3}, rac{5pi}{3}`. El archivo gzip contiene tres columnas; no tiene nota separada.
+- Test Lite creado: `tests/trigonometryEcD02.audit.test.ts`. Primer intento tenía un error de sintaxis en el test; corregido. La ejecución posterior detectó un gap real: el resolvedor genérico de Lite no encontró raíces. Se actualizó `src/engine/stepEngine/trigonometricEquation.ts` en SHA `70a4340935ca8f477a140db3c51990b26d436f7f`, luego se corrigieron escapes LaTeX en `8639502ef468480581e7bc267fe1c59b6ce274af`; ese intento seguía sin interceptar la forma normalizada. Último ajuste de ordenamientos en SHA `6ec2dc0abfd87ab0bb173911725b9dbe88a45520`; pendiente de verificación.
+- Runs Lite del último SHA: Cumulative 42671859688, CI 42671859806, H1d 42671859274, Scientific UI 42671859357 y Runner 42671859381 finalizaron FAILURE sin jobs ni check-runs; no hay logs de pasos. Es un bloqueo de ejecución/observabilidad, no una prueba focal con resultado conocido.
+- Plus SHA técnico probado `6a150e29bba160fd4f2cff92748dee0baccb35a2`: Cumulative 42669733996 SUCCESS (los dos tests EC-D-02 PASSED; backend 2,925 passed, 1 skipped, 11 xfailed); CI 42669734319 SUCCESS (backend y frontend); H1d 42669734287 SUCCESS; Runner 42669734406 SUCCESS. No repetir estos gates mientras su árbol no cambie.
+- Estado del caso: IN_PROGRESS; no hay PASS bilateral ni acta de aceptación. Baseline EC-D-01 PASS_SCOPED; certificación global OPEN. Sin dispatch manual ni merge/deploy.
+
+**Siguiente:** diagnosticar la finalización pre-job de los workflows Lite y obtener ejecución real del test focal para el SHA vigente. Solo entonces revisar CI/Cumulative/H1d/Scientific UI y considerar PASS_SCOPED. No repetir Plus ni EC-D-01.
+
+---
+
 ## 2026-11-09 UTC - Corrección: EV-HI-01..12 pasa a PASS_SCOPED
 
 - Motivo: el PASS bilateral anterior excedía lo verificado. Los literales LaTeX de la matriz y la forma exacta de los resultados no están certificados; Lite compara valores numéricos en EV-HI-04..09.
