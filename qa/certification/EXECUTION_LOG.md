@@ -1,3 +1,15 @@
+## 2026-11-09 UTC - Algebra229 AS-C-23 PASS bilateral; Sección C 23/23 cerrada
+
+- Fila fuente del gzip legacy verificado por blob d216dc77cb1356ef29cb8c803cbff809450e0456; 229 filas. N2, valor: p(2) con p(x)=x^3-3x+1 -> 3; nota: evaluar un polinomio en un punto.
+- Lite 1d404ea1343ed21507d01969b5977fe76389a4d5: Cumulative 42550854839 SUCCESS (AS-C-23 4/4; 390 test files, 2,374 passed, 8 expected fail, 34 todo; skip=false y sin evidence_run_id), CI 42550854770 SUCCESS (audit 0, typecheck, unit/parity, build), H1d 42550854778 SUCCESS (22/22; skip=false), Scientific UI 42550854777 SUCCESS (456/456).
+- Plus 4efac10f268319f95d8757f424f5a44d44e77772: Cumulative 42550854786 SUCCESS (AS-C-23 4/4; backend 2,912 passed, 1 skipped, 10 xfailed; frontend 1,055 passed; skip=false), CI 42550854863 SUCCESS (backend 2,912 passed; frontend 150 test files), H1d 42550854740 SUCCESS (38/38; skip=false).
+- Sin cambios de motor ni de oráculos; p(2)=3 exacto en ambos al primer intento test-first; oráculos adicionales de forma canónica y Horner.
+- Runner Lite 42550854804 y Runner Plus 42550854855 fueron push summaries; dispatch manual omitido.
+- Aceptación bilateral: ALGEBRA229_AS_C_23_ACCEPTANCE_2026-11-08.md. Sección C 23/23; matriz Algebra229 completa (A, B, C). Global OPEN; S25, SG28, H2 y DIST siguen abiertos. S25 BLOCKED por braces sin parche; npm audit Plus 12/13 hallazgos.
+- Siguiente: abrir trigonometría desde qa/certification/legacy_sources/ejercicios_trigonometria.md.gz; validar fuente, inventariar EV-M/EV-T y elegir el primer caso no certificado para test-first.
+
+---
+
 ## 2026-11-09 UTC - Algebra229 AS-C-22 PASS bilateral
 
 - Fila fuente del gzip legacy verificado por blob d216dc77cb1356ef29cb8c803cbff809450e0456; 229 filas. N2, valor: resto de x^100-1 entre x-1 -> 0; nota: teorema del resto p(1)=0.
