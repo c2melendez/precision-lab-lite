@@ -33,7 +33,7 @@ describe("Trigonometry EC-D-03: tan(x)=sqrt(3), general real solution", () => {
     expect(family).toContain("pi");
 
     for (const k of [-3, 0, 2]) {
-      const member = family.replace(/\bk\b/g, String(k));
+      const member = family.replace(/\bk\b/g, "(" + String(k) + ")");
       expect(evaluate("simplify((" + member + ")-(pi/3)-(" + k + ")*pi)")).toBe("0");
       expect(evaluate("simplify(tan(" + member + ")-sqrt(3))")).toBe("0");
     }
