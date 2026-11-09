@@ -38,7 +38,7 @@ describe("Trigonometry EC-D-01: sin(x) = 1/2 on [0, 2*pi)", () => {
     expect(matchedExpectedRoots.sort()).toEqual([...EXPECTED_ROOTS].sort());
 
     const numericRoots = result.solutionsAlgebrite.map((root) =>
-      Number(evaluate("float(" + root + ")").replace(/\\.\\.\\.$/, "")),
+      Number(evaluate("float(" + root + ")").trim().replace(/\.\.\.$/, "")),
     );
     expect(numericRoots.every((value) => Number.isFinite(value) && value >= 0 && value < 2 * Math.PI)).toBe(true);
 
