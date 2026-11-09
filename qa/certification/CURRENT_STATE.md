@@ -1,3 +1,18 @@
+# Actualización de certificación — 2026-11-09 UTC (r477; EC-D-02 IN_PROGRESS)
+
+## Trigonometría TRIG-EC-D-02 — IN_PROGRESS; sin aceptación bilateral
+
+- Contrato recuperado directamente de `qa/certification/legacy_sources/ejercicios_trigonometria.md.gz`: `2\cos x-1=0,quad xin[0,2pi)` → `x=\frac{pi}{3}, rac{5pi}{3}`. La fila original tiene tres columnas (ID, ejercicio, resultado esperado); no existe una columna de nota separada y no se inventa.
+- Test focal: `tests/trigonometryEcD02.audit.test.ts`; ancla la fuente y verifica el conjunto exacto de raíces, intervalo y sustitución.
+- Lite: último SHA `6ec2dc0abfd87ab0bb173911725b9dbe88a45520`. El intento ejecutado sobre `8639502ef468480581e7bc267fe1c59b6ce274af` aún devolvió `No se encontró una solución algebraica para "x"`; se amplió el reconocedor directo afín en `src/engine/stepEngine/trigonometricEquation.ts` para admitir ordenaciones del término trigonométrico y el término constante. Ese cambio **no está verificado**.
+- En `6ec2dc0`, los runs [Cumulative 42671859688](https://github.com/c2melendez/precision-lab-lite/actions/runs/42671859688), [CI 42671859806](https://github.com/c2melendez/precision-lab-lite/actions/runs/42671859806), [H1d 42671859274](https://github.com/c2melendez/precision-lab-lite/actions/runs/42671859274), [Scientific UI 42671859357](https://github.com/c2melendez/precision-lab-lite/actions/runs/42671859357) y [Runner 42671859381](https://github.com/c2melendez/precision-lab-lite/actions/runs/42671859381) concluyeron FAILURE **sin jobs creados**; la consulta de jobs devuelve 0 y la de check-runs devuelve 0. No hay logs de pasos ni evidencia para atribuirlos al test o al motor. No relanzar a ciegas.
+- Plus ejecutó y aprobó el caso (ver evidencia en la bitácora Plus); esto no sustituye la ejecución Lite.
+- No se emite PASS_SCOPED ni acta de aceptación. El último baseline aceptado sigue siendo EC-D-01 PASS_SCOPED (r476); certificación global **OPEN**.
+
+**Siguiente:** diagnosticar por qué GitHub Actions está finalizando los cinco workflows Lite sin crear jobs; después ejecutar/verificar el test focal en el SHA vigente. No repetir los gates verdes de Plus ni los gates de EC-D-01. No declarar bilateral PASS hasta tener evidencia Lite. Mantener separado EV-D-01 `/api/v1/evaluate` y EV-HI PASS_SCOPED.
+
+---
+
 # Actualización de certificación — 2026-11-09 UTC (r476)
 
 ## Trigonometría EC-D-01 — PASS_SCOPED bilateral (soluciones exactas en [0, 2π))
