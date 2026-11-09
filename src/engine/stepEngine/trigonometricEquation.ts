@@ -91,12 +91,12 @@ export function solveDirectTrigonometricEquation(
     let rawCoefficient: string;
     let offset: string;
     if (functionFirst) {
-      rawCoefficient = functionFirst[1].replace(/\\*$/, "");
+      rawCoefficient = functionFirst[1].replace(/\*$/, "");
       fn = functionFirst[2] as DirectTrigFunction;
       offset = functionFirst[3] ?? "0";
     } else if (constantFirst) {
       offset = constantFirst[1];
-      rawCoefficient = constantFirst[2].replace(/\\*$/, "");
+      rawCoefficient = constantFirst[2].replace(/\*$/, "");
       fn = constantFirst[3] as DirectTrigFunction;
     } else if (functionTimesCoefficient) {
       fn = functionTimesCoefficient[1] as DirectTrigFunction;
