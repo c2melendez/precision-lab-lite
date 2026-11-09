@@ -108,7 +108,7 @@ export function solveDirectTrigonometricEquation(
       solutions: [],
       step: {
         id: "trigonometric-domain",
-        latex: "\\\\varnothing",
+        latex: "\\varnothing",
         explanation: "El valor está fuera del rango real de " + fn + "; no existen soluciones reales.",
       },
       contradiction: true,
@@ -152,14 +152,14 @@ export function solveDirectTrigonometricEquation(
       return null;
     }
 
-    const rendered = solutions.length ? solutions.join(",\\\\quad ") : "\\\\varnothing";
+    const rendered = solutions.length ? solutions.join(",\\quad ") : "\\varnothing";
     return {
       solutions,
       step: {
         id: "trigonometric-period",
         title: "Soluciones en un período",
         rule: "Periodicidad trigonométrica",
-        latex: variable + "\\\\in[0,2\\\\pi):\\\\quad " + variable + "=" + rendered,
+        latex: variable + "\\in[0,2\\pi):\\quad " + variable + "=" + rendered,
         explanation:
           "Se usa la periodicidad de " + fn +
           " y se enumeran las soluciones reales en el intervalo [0, 2π), sin afirmar que sean las únicas soluciones en toda la recta real.",
