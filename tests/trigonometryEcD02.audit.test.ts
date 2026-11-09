@@ -9,16 +9,16 @@ import { solveAlgebra } from "../src/engine/stepEngine/algebra";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_GZ = join(ROOT, "qa/certification/legacy_sources/ejercicios_trigonometria.md.gz");
-const INPUT_LATEX = String.raw\`2\cos\left(x\right)-1=0\`;
+const INPUT_LATEX = "2\\cos\\left(x\\right)-1=0";
 const EXPECTED_ROOTS = ["pi/3", "5*pi/3"];
 
 describe("Trigonometry EC-D-02: 2*cos(x)-1 = 0 on [0, 2*pi)", () => {
   it("anchors the equation and exact solution set in the frozen matrix", () => {
     const source = gunzipSync(readFileSync(SOURCE_GZ)).toString("utf8");
     expect(source).toMatch(/\|\s*EC-D-02\s*\|/);
-    expect(source).toContain(String.raw\`2\cos x-1=0\`);
-    expect(source).toContain(String.raw\`x=\frac{\pi}{3}\`);
-    expect(source).toContain(String.raw\`\frac{5\pi}{3}\`);
+    expect(source).toContain("2\\cos x-1=0");
+    expect(source).toContain("x=\\frac{\\pi}{3}");
+    expect(source).toContain("\\frac{5\\pi}{3}");
   });
 
   it("solves the official equation to both exact roots in the stated interval", () => {
