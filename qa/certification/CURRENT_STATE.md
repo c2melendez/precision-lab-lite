@@ -1,3 +1,21 @@
+# Actualización de certificación — 2026-11-09 UTC (r478; EC-D-02 PASS_SCOPED)
+
+## Trigonometría EC-D-02 — PASS_SCOPED bilateral
+
+- Contrato congelado desde \`qa/certification/legacy_sources/ejercicios_trigonometria.md.gz\`: \`2\cos x-1=0,\quad x\in[0,2\pi)\` → \`x=\frac{\pi}{3},\ \frac{5\pi}{3}\`. La fila tiene tres columnas; no existe nota separada.
+- Lite SHA técnico \`5e58fda3bb98c90520bfc5cf833f4222009fa1b1\`; test \`tests/trigonometryEcD02.audit.test.ts\`, 2/2 PASS en CI y Cumulative.
+- [Lite CI 42708572030](https://github.com/c2melendez/precision-lab-lite/actions/runs/42708572030) SUCCESS: 395 archivos, 2,400 passed, 8 XFAIL, 34 TODO; typecheck, auditoría y build SUCCESS.
+- [Lite Cumulative 42708571839](https://github.com/c2melendez/precision-lab-lite/actions/runs/42708571839) SUCCESS: focal 2/2; guard \`skip=false\`, \`evidence_run_id=""\`; 395 archivos, 2,400 passed, 8 XFAIL, 34 TODO.
+- [Lite H1d 42708572192](https://github.com/c2melendez/precision-lab-lite/actions/runs/42708572192) SUCCESS, 22/22; guard \`skip=false\`. [Runner 42708571827](https://github.com/c2melendez/precision-lab-lite/actions/runs/42708571827) SUCCESS push-only, sin dispatch manual.
+- [Scientific UI 42708571826](https://github.com/c2melendez/precision-lab-lite/actions/runs/42708571826) seguía IN_PROGRESS en desktop/tablet/mobile al corte; complementario, no usado como oráculo matemático.
+- Aceptación: \`qa/certification/TRIG_EC_D_02_ACCEPTANCE_2026-11-09.md\`.
+- Alcance: dos raíces exactas, intervalo \`[0,2π)\` y sustitución. No afirmar la familia periódica infinita sobre \(\mathbb R\); EC-D-03 tiene ese contrato.
+- Global **OPEN**; EV-D-01 Plus \`/api/v1/evaluate\` sigue BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
+
+**Siguiente:** TRIG-EC-D-03. Recuperar su fila exacta y certificar la familia infinita \`x=π/3+kπ,\ k∈ℤ\`; no sustituirla por dos raíces de un período. Evaluar la representación paramétrica en ambos motores antes de ampliar el solver.
+
+---
+
 # Actualización de certificación — 2026-11-09 UTC (r477; EC-D-02 IN_PROGRESS)
 
 ## Trigonometría TRIG-EC-D-02 — IN_PROGRESS; sin aceptación bilateral
