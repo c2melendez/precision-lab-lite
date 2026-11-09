@@ -38,18 +38,15 @@ describe("Trigonometry LM-D-01 lim x->0 sin(x)/x", () => {
     }
   });
 
-  it("does not claim a value by substituting x=0 into sin(x)/x (0/0)", () => {
+  it("does not claim a finite value by substituting x=0 into sin(x)/x (0/0)", () => {
     // Removable discontinuity: direct substitution is undefined; limit is 1.
-    // Engine must not silently return a wrong finite value for 0/0 form.
-    let threw = false;
+    // Either an explicit domain error or a non-finite sentinel is acceptable.
+    let result: string;
     try {
-      const r = evaluate("sin(0)/0");
-      // If it returns something, it must not be a false finite non-limit claim.
-      // Accept only explicit error path for this control.
-      expect(String(r)).not.toMatch(/^-?\d+(\.\d+)?$/);
+      result = evaluate("sin(0)/0");
     } catch {
-      threw = true;
+      return;
     }
-    expect(threw || true).toBe(true);
+    expect(Number.isFinite(Number(result))).toBe(false);
   });
 });
