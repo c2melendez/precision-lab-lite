@@ -1,3 +1,15 @@
+## 2026-11-09 UTC - Algebra229 AS-C-22 PASS bilateral
+
+- Fila fuente del gzip legacy verificado por blob d216dc77cb1356ef29cb8c803cbff809450e0456; 229 filas. N2, valor: resto de x^100-1 entre x-1 -> 0; nota: teorema del resto p(1)=0.
+- Lite ab7a067d0cb16d59ab912444ccf0923ab10b2a7d: Cumulative 42549824064 SUCCESS (AS-C-22 4/4; 389 test files, 2,370 passed, 8 expected fail, 34 todo; skip=false y sin evidence_run_id), CI 42549824060 SUCCESS (audit 0, typecheck, unit/parity, build), H1d 42549824101 SUCCESS (22/22; skip=false), Scientific UI 42549824059 SUCCESS (456/456; skip=false).
+- Plus 77c64aca73130382c46da427d11a1e25d2aa17c6: Cumulative 42549824419 SUCCESS (AS-C-22 4/4; backend 2,908 passed, 1 skipped, 10 xfailed; frontend 1,055 passed; skip=false), CI 42549824404 SUCCESS (backend 2,908 passed; frontend 150 test files), H1d 42549824409 SUCCESS (38/38; skip=false).
+- Verificación: p(1)=0 por el canal público; cociente exacto en x=2 = 2^100-1; oráculo geométrico independiente. Ningún producto expone resto de división polinómica (rem -> PARSE_ERROR en Plus); se documenta el alcance sin crear capability.
+- Sin cambios de motor ni de oráculos; ambos productos dieron los valores exactos al primer intento test-first.
+- Runner Lite 42549824091 y Runner Plus 42549824395 fueron push summaries; dispatch manual omitido.
+- Aceptación bilateral: ALGEBRA229_AS_C_22_ACCEPTANCE_2026-11-08.md. Sección C 22/23. Global OPEN; S25, SG28, H2 y DIST siguen abiertos. S25 BLOCKED por braces sin parche; npm audit Plus 12/13 hallazgos.
+
+---
+
 ## 2026-11-08 UTC - Algebra229 AS-C-21 PASS bilateral
 
 - Fila fuente recuperada del gzip legacy verificado por blob d216dc77cb1356ef29cb8c803cbff809450e0456; 229 filas. N1, valor: lcm(48,180) -> 720; nota vacía.
