@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 478,
+  "revision": 479,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "5e58fda3bb98c90520bfc5cf833f4222009fa1b1",
-  "baseline_case": "TRIG-EC-D-02",
+  "technical_baseline_sha": "d10a2cd2d6032fb7b2c87afaa290fe1b82773d45",
+  "baseline_case": "TRIG-EC-D-03",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EC-D-03",
+    "id": "TRIG-EC-D-04",
     "status": "RUN",
-    "previous_id": "TRIG-EC-D-02",
-    "action": "EC-D-02 fue aceptado como PASS_SCOPED bilateral. Lite SHA 5e58fda3: CI 42708572030 SUCCESS (395 files, 2,400 passed, audit/typecheck/build); Cumulative 42708571839 SUCCESS (focal 2/2, guard skip=false, evidence_run_id vacío); H1d 42708572192 SUCCESS (22/22, skip=false); Runner 42708571827 SUCCESS push-only. Scientific UI 42708571826 estaba IN_PROGRESS en la verificación nativa desktop/tablet/mobile; es complementario y no fue usado como oráculo matemático. Plus test focal 2/2 PASS en Cumulative 42669733996; CI 42669734319, H1d 42669734287 y Runner 42669734406 SUCCESS; no repetir. Siguiente TRIG-EC-D-03: fuente exacta tan x = sqrt(3) → x = pi/3 + k*pi, k entero. El contrato exige familia infinita; no aceptar dos raíces finitas en un período. Determinar representación paramétrica en ambos motores y probar test-first. Mantener EV-D-01 Plus /api/v1/evaluate BLOCKED, EV-HI PASS_SCOPED, certificación global OPEN.",
-    "updated_utc": "2026-11-09T22:10:00Z"
+    "previous_id": "TRIG-EC-D-03",
+    "action": "EC-D-03 quedó PASS_SCOPED bilateral. Lite SHA d10a2cd2: CI 42712032373 SUCCESS (396 files, 2,402 passed, typecheck/audit/build); Cumulative 42712032384 SUCCESS (focal 2/2, guard skip=false, evidence_run_id vacío; 396 files, 2,402 passed); H1d 42712032789 SUCCESS (22/22, skip=false); Scientific UI 42712032408 SUCCESS (456/456 desktop/tablet/mobile); Runner 42712032501 SUCCESS push-only. Plus SHA d02a3076: Cumulative 42712350673 SUCCESS (ambos tests EC-D-03 PASSED explícitos; 2,927 passed, 1 skipped, 11 xfailed; guard skip=false y evidence_run_id vacío); CI 42712350706 SUCCESS; H1d 42712350501 SUCCESS (38 passed, skip=false); Native Syntax and Recovery 42712350400 SUCCESS (52 passed); Runner 42712350393 SUCCESS. La salida Lite es una familia con k entero; Plus devuelve ImageSet sobre Integers y verifica simbólicamente la familia. Próximo TRIG-EC-D-04: 2*sin^2(x)-sin(x)-1=0 en [0,2*pi) → pi/2, 7*pi/6, 11*pi/6. Anclar fila congelada y test-first bilateral; no inferir ni relajar. Plus Certification dependency/security gates 42712350624 continúa IN_PROGRESS en plus-backend-mutmut, separado de D03. Global OPEN; EV-D-01 /api/v1/evaluate permanece BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.",
+    "updated_utc": "2026-11-09T22:42:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
