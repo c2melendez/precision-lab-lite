@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { parseExpression } from "../src/engine/parsing";
 import { evaluate } from "../src/engine/algebriteClient";
+import { compileNumeric } from "../src/engine/numericFallback";
 import { ErrorCode } from "../src/types";
 import { gunzipSync } from "node:zlib";
 import { readFileSync } from "node:fs";
@@ -27,9 +28,15 @@ function run(input: string): string {
 /** Reads the numeric value of the public engine result, never the echo of the call. */
 function numeric(input: string): number {
   const raw = String(evaluate(parseExpression(input, "RAD").algebrite)).replace(/\.\.\.$/, "").trim();
-  const value = Number(raw);
-  if (!Number.isFinite(value)) throw new Error(`non-numeric engine output: ${raw}`);
-  return value;
+  const direct = Number(raw);
+  if (Number.isFinite(direct)) return direct;
+  try {
+    const approximated = compileNumeric(raw, "__unused__")(0);
+    if (Number.isFinite(approximated)) return approximated;
+  } catch {
+    // The exact expression is retained as the symbolic oracle.
+  }
+  throw new Error(`non-numeric engine output: ${raw}`);
 }
 
 function domainError(input: string): AppErr {

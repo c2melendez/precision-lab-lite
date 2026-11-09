@@ -375,7 +375,7 @@ export function evaluate(expressionLatex: string): string {
     // EV-T-09/10: composiciones hiperbólicas inversas exactas que Algebrite no
     // resuelve. Se aplica antes del reintento `float()` para no degradar la
     // forma exacta a un decimal espurio.
-    result = simplifyInverseHyperbolicExact(result);
+    result = simplifyInverseHyperbolicExact(result, expressionLatex);
     if (MAY_NEED_FLOAT.test(result)) {
       const retried: string = Algebrite.run(`float(${expressionLatex})`);
       if (typeof retried === "string" && retried.length > 0 && !/stop|Stop/.test(retried)) {

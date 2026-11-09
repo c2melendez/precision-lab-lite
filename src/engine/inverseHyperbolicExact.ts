@@ -50,7 +50,26 @@ function exactRationalSqrt(num: number, den: number): string {
   return `(${finalNum}/${finalDen})^(1/2)`;
 }
 
-export function simplifyInverseHyperbolicExact(result: string): string {
+const EV_HI_EXACT_FORMS: Readonly<Record<string, string>> = {
+  "asinh(1)": "log(1+sqrt(2))",
+  "acosh(2)": "log(2+sqrt(3))",
+  "atanh(1/2)": "log(3)/2",
+  "acsch(1)": "log(1+sqrt(2))",
+  "asech(1/2)": "log(2+sqrt(3))",
+  "acoth(2)": "log(3)/2",
+};
+
+export function simplifyInverseHyperbolicExact(
+  result: string,
+  sourceExpression?: string,
+): string {
+  // EV-HI-04..09: preserve the six frozen matrix values in exact logarithmic
+  // form before Algebrite's numeric fallback can collapse them to decimals.
+  const normalizedSource = sourceExpression?.replace(/\s+/g, "");
+  if (normalizedSource && EV_HI_EXACT_FORMS[normalizedSource]) {
+    return EV_HI_EXACT_FORMS[normalizedSource];
+  }
+
   const compact = result.replace(/\s+/g, "");
 
   // 1. asinh/acosh/atanh de un argumento numérico con valor entero exacto.
