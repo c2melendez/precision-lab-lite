@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 472,
+  "revision": 473,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "1d404ea1343ed21507d01969b5977fe76389a4d5",
-  "baseline_case": "ALGEBRA229-AS-C-23",
+  "technical_baseline_sha": "35e49984b1631415c3121a787bacfaf383c1df52",
+  "baseline_case": "TRIG-EV-HI-01-12",
   "baseline_status": "PASS",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EV-INVENTORY-VERIFY",
+    "id": "TRIG-EV-REMAINING-INVENTORY",
     "status": "RUN",
-    "previous_id": "ALGEBRA229-AS-C-23-TEST-FIRST",
-    "action": "Abrir trigonometría: validar qa/certification/legacy_sources/ejercicios_trigonometria.md.gz (IDs EV-*), inventariar evidencia EV-M/EV-T y su alcance, identificar el primer caso no certificado y ejecutarlo test-first bilateral; no reutilizar PASS_SCOPED fuera de su alcance.",
-    "updated_utc": "2026-11-09T02:34:35.045Z"
+    "previous_id": "TRIG-EV-INVENTORY-VERIFY",
+    "action": "Inventariar familias EV-* de trigonometría sin PASS bilateral vigente (D, H, I, L, M, T), identificar el primer caso no certificado y ejecutarlo test-first bilateral; no reutilizar PASS_SCOPED fuera de su alcance.",
+    "updated_utc": "2026-11-09T04:30:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
