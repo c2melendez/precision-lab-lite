@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 479,
+  "revision": 480,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "d10a2cd2d6032fb7b2c87afaa290fe1b82773d45",
@@ -42,8 +42,8 @@
     "id": "TRIG-EC-D-04",
     "status": "RUN",
     "previous_id": "TRIG-EC-D-03",
-    "action": "EC-D-03 quedó PASS_SCOPED bilateral. Lite SHA d10a2cd2: CI 42712032373 SUCCESS (396 files, 2,402 passed, typecheck/audit/build); Cumulative 42712032384 SUCCESS (focal 2/2, guard skip=false, evidence_run_id vacío; 396 files, 2,402 passed); H1d 42712032789 SUCCESS (22/22, skip=false); Scientific UI 42712032408 SUCCESS (456/456 desktop/tablet/mobile); Runner 42712032501 SUCCESS push-only. Plus SHA d02a3076: Cumulative 42712350673 SUCCESS (ambos tests EC-D-03 PASSED explícitos; 2,927 passed, 1 skipped, 11 xfailed; guard skip=false y evidence_run_id vacío); CI 42712350706 SUCCESS; H1d 42712350501 SUCCESS (38 passed, skip=false); Native Syntax and Recovery 42712350400 SUCCESS (52 passed); Runner 42712350393 SUCCESS. La salida Lite es una familia con k entero; Plus devuelve ImageSet sobre Integers y verifica simbólicamente la familia. Próximo TRIG-EC-D-04: 2*sin^2(x)-sin(x)-1=0 en [0,2*pi) → pi/2, 7*pi/6, 11*pi/6. Anclar fila congelada y test-first bilateral; no inferir ni relajar. Plus Certification dependency/security gates 42712350624 continúa IN_PROGRESS en plus-backend-mutmut, separado de D03. Global OPEN; EV-D-01 /api/v1/evaluate permanece BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.",
-    "updated_utc": "2026-11-09T22:42:00Z"
+    "action": "EC-D-04: contrato congelado 2*sin^2(x)-sin(x)-1=0, x∈[0,2π) → π/2, 7π/6, 11π/6. Lite SHA 9663f1625fcca7cc668c61d55f844453eb90dfd0; tests focales 2/2 PASSED en CI 42730206344 SUCCESS y Cumulative 42730206373 SUCCESS (397 archivos, 2,404 passed, 8 XFAIL, 34 TODO; guard skip=false, evidence_run_id vacío); H1d 42730206364 SUCCESS (22/22); Runner 42730206411 SUCCESS. Scientific UI 42730206324 IN_PROGRESS y complementario. Plus SHA 633ec35dc8de728c657cd00907328a2ff6f5c2eb; tests focales 2/2 PASSED explícitos en Cumulative 42730138929 SUCCESS (backend 2,929 passed, 1 skipped, 11 xfailed; guard skip=false, evidence_run_id vacío; frontend 1,055 passed/build SUCCESS); H1d 42730138616 SUCCESS (38/38, skip=false); Native Syntax 42730138595 SUCCESS (52/52); Runner 42730138951 SUCCESS. Plus CI 42730138619 sigue IN_PROGRESS en backend tests, frontend SUCCESS. Próximo: verificar que Plus CI concluya SUCCESS; luego acta PASS_SCOPED bilateral y avanzar EC-D-05. Mantener EC-D-04 IN_PROGRESS hasta entonces, sin repetir gates verdes; baseline EC-D-03 PASS_SCOPED y global OPEN. Alcance no incluye entrada literal LaTeX en Plus /api/v1/evaluate ni UI específica del caso. Mantener EV-D-01 BLOCKED, EV-HI PASS_SCOPED, S25/SG28/H2/DIST abiertos.",
+    "updated_utc": "2026-11-10T00:47:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
