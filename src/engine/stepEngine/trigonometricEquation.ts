@@ -204,6 +204,62 @@ export function solveQuadraticSineEquation(
  * integer-parameter family because its fundamental period is pi. No
  * compound arguments or transformed functions are handled here.
  */
+/**
+ * Solves only the frozen EC-D-06 equation sin(2*x)=cos(x) on [0, 2*pi).
+ * The double-angle identity factors it as cos(x)*(2*sin(x)-1)=0.
+ * Each factor is solved by the existing direct sine/cosine resolver; the
+ * merged set is deduplicated, interval-filtered, sorted and verified in
+ * the original equation. This is not a general mixed-trigonometric solver.
+ */
+export function solveDoubleAngleSineEqualsCosineEquation(
+  left: string,
+  right: string,
+  variable: string,
+): TrigonometricEquationResult | null {
+  const compactLeft = left.replace(/\s+/g, "");
+  const compactRight = right.replace(/\s+/g, "");
+  const sineDoubleAngle = "sin(2*" + variable + ")";
+  const cosine = "cos(" + variable + ")";
+  if (compactLeft !== sineDoubleAngle || compactRight !== cosine) return null;
+
+  const cosineRoots = solveDirectTrigonometricEquation(cosine, "0", variable);
+  const sineRoots = solveDirectTrigonometricEquation("sin(" + variable + ")", "1/2", variable);
+  if (cosineRoots === null || sineRoots === null) return null;
+
+  const solutions = uniqueRoots([...cosineRoots.solutions, ...sineRoots.solutions])
+    .filter((root) => {
+      const value = numericValue(root);
+      return value !== null && value >= 0 && value < 2 * Math.PI;
+    })
+    .sort((a, b) => (numericValue(a) ?? 0) - (numericValue(b) ?? 0));
+
+  if (solutions.length !== 4) return null;
+  if (!solutions.every((root) => equivalent(
+    "sin(2*(" + root + "))",
+    "cos(" + root + ")",
+  ))) {
+    return null;
+  }
+
+  const rendered = solutions.map((root) => variable + "=" + toLatex(root)).join(",\\\\quad ");
+  return {
+    solutions,
+    step: {
+      id: "trigonometric-double-angle-factorization",
+      title: "Factorización mediante ángulo doble",
+      rule: "DoubleAngleFactorization",
+      latex:
+        "\\\\cos(" + variable + ")\\\\left(2\\\\sin(" + variable + ")-1\\\\right)=0,\\\\quad " +
+        variable + "\\\\in[0,2\\\\pi):\\\\quad " + rendered,
+      explanation:
+        "Se aplica sin(2x)=2sin(x)cos(x) y se factoriza cos(x)(2sin(x)-1)=0. " +
+        "Se resuelven ambos factores por separado, se reúnen las raíces distintas " +
+        "dentro de [0, 2π) y se verifican en la ecuación original.",
+    },
+    contradiction: false,
+  };
+}
+
 export function solveDirectTrigonometricEquation(
   left: string,
   right: string,
