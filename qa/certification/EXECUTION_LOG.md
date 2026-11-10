@@ -1,3 +1,16 @@
+## 2026-11-10 UTC — TRIG-EC-D-06 IN_PROGRESS; Lite PASS focal, Plus corregido pendiente de CI/Cumulative
+
+- Fuente congelada (gzip blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`): `sin(2x)=cos(x)`, `x∈[0,2π)` → `{π/6,π/2,5π/6,3π/2}`.
+- Lite test-first inicial `9ce1e18de656ea05b39741e0c17fd47ee4176377`: el test identificó gap del resolvedor genérico (`No se encontró una solución algebraica para x`). Implementación focal en `trigonometricEquation.ts` y enrutamiento en `algebra.ts`; SHA técnico final `2af7cefc410d1b7cb2c15483f3affd3473b54a89`.
+- Lite SHA final: Cumulative 42746381569 SUCCESS (focal 2/2; 399 archivos, 2,408 passed, 8 expected fails, 34 TODO; guard skip=false, evidence_run_id vacío); CI 42746381637 SUCCESS (mismos conteos; typecheck/audit/build SUCCESS); H1d 42746381850 SUCCESS 22/22, skip=false; Runner 42746381595 SUCCESS push-only. Scientific UI 42746381589 seguía IN_PROGRESS en la verificación nativa desktop/tablet/mobile al corte.
+- Plus test inicial `7b038743f96afc782997e059f5b4215985e231e3`: CI falló porque el solver general devolvió `-pi/2` en vez de la raíz representada en el intervalo como `3*pi/2`; el resto del backend indicó 2,932 passed, 1 skipped, 11 xfailed. Se agregó `_double_angle_sine_equals_cosine_interval_result`, que solo reconoce `sin(2x)=cos(x)`, factoriza por identidad de ángulo doble y resuelve cada factor sobre `[0,2*pi)`. SHA final Plus `2a7ff0f2b243597ef6476e665b4a102dcfffdd85`.
+- Plus final H1d 42746666095 SUCCESS 38/38, guard skip=false; Native Syntax 42746666542 SUCCESS 52/52, guard skip=false; Runner 42746666546 SUCCESS push-only. En CI 42746666105 y Cumulative 42746666257, frontend SUCCESS pero backend IN_PROGRESS al corte. Seguridad/mutación 42746666307 continúa en `plus-backend-mutmut`, independiente de esta aceptación focal.
+- EC-D-06 continúa IN_PROGRESS; no acta ni PASS_SCOPED bilateral. Baseline EC-D-05 PASS_SCOPED; global OPEN.
+
+**Siguiente:** revisar los logs de backend CI/Cumulative Plus sobre SHA `2a7ff0f2...` y comprobar explícitamente que ambos tests focales PASSED. Revisar también cierre del Scientific UI Lite. No repetir gates Lite verdes ni Plus H1d/Native. No dispatch manual.
+
+---
+
 ## 2026-11-10 UTC — TRIG-EC-D-05 PASS_SCOPED bilateral
 
 - Fila congelada: EC-D-05, `sin x+cos x=1`, `x∈[0,2π)` → `{0,π/2}`; fuente gzip blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`.
