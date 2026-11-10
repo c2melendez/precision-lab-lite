@@ -1,3 +1,16 @@
+## 2026-11-10 UTC — r485: EC-D-07 IN_PROGRESS; Lite focal PASS, Plus backend pendiente
+
+**Contrato congelado:** `csc(x)=2`, `x∈[0,2π)` → `{π/6,5π/6}`.
+
+- Lite SHA `3ad626602b3639310921ba6fd27952293732be39`: CI 42748347965 SUCCESS y Cumulative 42748348152 SUCCESS (focal 2/2; 400 archivos, 2,410 passed, 8 expected fail, 34 TODO; Cumulative skip=false/no REUSE); H1d 42748347964 SUCCESS. Scientific UI 42748348035 seguía IN_PROGRESS.
+- Plus SHA `864c4cf68bb88e331b6df3b64a0ddb2354b047af`: test focal añadido; H1d 42748028455 SUCCESS y Runner 42748028867 SUCCESS; CI 42748028579 y Cumulative 42748028770 frontend SUCCESS, backend IN_PROGRESS.
+- Lite requirió helper focal para la representación parser-normalizada `1/sin(x)=2`; Plus permanece test-first, sin cambio de producto hasta verificar el backend.
+- EC-D-07 no se acepta aún bilateralmente. Baseline EC-D-06 PASS_SCOPED; global OPEN.
+
+**Siguiente:** revisar el resultado focal Plus y cierre Scientific UI Lite; solo entonces decidir aceptación bilateral. No repetir gates verdes.
+
+---
+
 ## 2026-11-10 UTC — r484: Trigonometría EC-D-06 PASS_SCOPED bilateral
 
 **EC-D-06 — PASS_SCOPED bilateral.** \`sin(2x)=cos(x)\`, \`x∈[0,2π)\` → \`{π/6,π/2,5π/6,3π/2}\`.
