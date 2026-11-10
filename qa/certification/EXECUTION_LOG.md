@@ -1,3 +1,19 @@
+## 2026-11-10 UTC — TRIG-EC-D-04 PASS_SCOPED bilateral
+
+- Contrato congelado: \(2\sin^{2}x-\sin x-1=0,\ x\in[0,2\pi)\) → \(\{\pi/2,7\pi/6,11\pi/6\}\). Fuente blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb.
+- Lite SHA 9663f1625fcca7cc668c61d55f844453eb90dfd0. Test tests/trigonometryEcD04.audit.test.ts: ambos tests PASSED; anclaje a la fuente y tres raíces exactas en [0,2π), verificadas por sustitución.
+- CI 42730206344 SUCCESS (397 archivos, 2,404 passed, 8 XFAIL, 34 TODO; typecheck/audit/build); Cumulative 42730206373 SUCCESS (focal 2/2; skip=false; evidence_run_id vacío); H1d 42730206364 SUCCESS (22/22); Scientific UI 42730206324 SUCCESS (456/456); Runner 42730206411 SUCCESS push-only.
+- Implementación Lite: helper solveQuadraticSineEquation sustituye u=sin(x), resuelve el cuadrático y genera las dos ramas en [0,2π); la regresión exige el conjunto exacto y sustitución.
+- Plus SHA 633ec35dc8de728c657cd00907328a2ff6f5c2eb: ambos tests EC-D-04 PASSED explícitamente en Cumulative 42730138929 SUCCESS; backend 2,929 passed, 1 skipped, 11 xfailed; guard skip=false, evidence_run_id vacío. Frontend 150 archivos, 1,055 passed, 28 TODO; typecheck/build SUCCESS.
+- Plus CI 42730138619 SUCCESS (backend 2,929 passed, 1 skipped, 11 xfailed; frontend 1,055 passed); H1d 42730138616 SUCCESS (38/38); Native Syntax 42730138595 SUCCESS (52/52); Runner 42730138951 SUCCESS push-only.
+- Plus helper _quadratic_sine_interval_result sustituye u=sin(x), resuelve el cuadrático numérico, normaliza ambas ramas al intervalo y verifica la ecuación original.
+- Acta qa/certification/TRIG_EC_D_04_ACCEPTANCE_2026-11-10.md. El endpoint Plus probado es /api/v1/solve con entrada ASCII; no se certifica /api/v1/evaluate ni ingesta literal LaTeX.
+- Resultado PASS_SCOPED bilateral; global OPEN. Plus security/mutation 42730139009 permanece IN_PROGRESS en plus-backend-mutmut, independiente del caso.
+
+**Siguiente:** TRIG-EC-D-05; recuperar primero su fila literal del gzip, fijar el contrato completo y continuar test-first bilateral. No inferir ni repetir EC-D-01..04.
+
+---
+
 ## 2026-11-10 UTC — TRIG-EC-D-04: focal bilateral PASS; CI Plus pendiente
 
 - Fuente congelada (blob \`3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb\`): \(2\sin^{2}x-\sin x-1=0,\ x\in[0,2\pi)\) → \(\{\pi/2,7\pi/6,11\pi/6\}\). Test ancla ecuación, intervalo y las tres raíces exactas.
