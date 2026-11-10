@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 480,
+  "revision": 481,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "d10a2cd2d6032fb7b2c87afaa290fe1b82773d45",
-  "baseline_case": "TRIG-EC-D-03",
+  "technical_baseline_sha": "9663f1625fcca7cc668c61d55f844453eb90dfd0",
+  "baseline_case": "TRIG-EC-D-04",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EC-D-04",
+    "id": "TRIG-EC-D-05",
     "status": "RUN",
-    "previous_id": "TRIG-EC-D-03",
-    "action": "EC-D-04: contrato congelado 2*sin^2(x)-sin(x)-1=0, x∈[0,2π) → π/2, 7π/6, 11π/6. Lite SHA 9663f1625fcca7cc668c61d55f844453eb90dfd0; tests focales 2/2 PASSED en CI 42730206344 SUCCESS y Cumulative 42730206373 SUCCESS (397 archivos, 2,404 passed, 8 XFAIL, 34 TODO; guard skip=false, evidence_run_id vacío); H1d 42730206364 SUCCESS (22/22); Runner 42730206411 SUCCESS. Scientific UI 42730206324 IN_PROGRESS y complementario. Plus SHA 633ec35dc8de728c657cd00907328a2ff6f5c2eb; tests focales 2/2 PASSED explícitos en Cumulative 42730138929 SUCCESS (backend 2,929 passed, 1 skipped, 11 xfailed; guard skip=false, evidence_run_id vacío; frontend 1,055 passed/build SUCCESS); H1d 42730138616 SUCCESS (38/38, skip=false); Native Syntax 42730138595 SUCCESS (52/52); Runner 42730138951 SUCCESS. Plus CI 42730138619 sigue IN_PROGRESS en backend tests, frontend SUCCESS. Próximo: verificar que Plus CI concluya SUCCESS; luego acta PASS_SCOPED bilateral y avanzar EC-D-05. Mantener EC-D-04 IN_PROGRESS hasta entonces, sin repetir gates verdes; baseline EC-D-03 PASS_SCOPED y global OPEN. Alcance no incluye entrada literal LaTeX en Plus /api/v1/evaluate ni UI específica del caso. Mantener EV-D-01 BLOCKED, EV-HI PASS_SCOPED, S25/SG28/H2/DIST abiertos.",
-    "updated_utc": "2026-11-10T00:47:00Z"
+    "previous_id": "TRIG-EC-D-04",
+    "action": "EC-D-04 fue aceptado PASS_SCOPED bilateral. Lite SHA 9663f1625fcca7cc668c61d55f844453eb90dfd0: focal 2/2 PASSED; CI 42730206344 SUCCESS (397 archivos, 2,404 passed, 8 XFAIL, 34 TODO), Cumulative 42730206373 SUCCESS (skip=false, evidence_run_id vacío), H1d 42730206364 SUCCESS (22/22), Scientific UI 42730206324 SUCCESS (456/456, skip=false), Runner 42730206411 SUCCESS push-only. Plus SHA 633ec35dc8de728c657cd00907328a2ff6f5c2eb: dos tests focales PASSED explícitamente; Cumulative 42730138929 SUCCESS (backend 2,929 passed, 1 skipped, 11 xfailed; skip=false, evidence_run_id vacío; frontend 1,055 passed); CI 42730138619 SUCCESS; H1d 42730138616 SUCCESS (38/38); Native Syntax 42730138595 SUCCESS (52/52); Runner 42730138951 SUCCESS push-only. Acta TRIG_EC_D_04_ACCEPTANCE_2026-11-10.md. Próximo TRIG-EC-D-05: recuperar fila literal del gzip, fijar contrato completo y test-first bilateral. No repetir EC-D-01..04. Baseline TRIG-EC-D-04 PASS_SCOPED; global OPEN. EV-D-01 /api/v1/evaluate BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos. Plus security/mutation 42730139009 sigue IN_PROGRESS en plus-backend-mutmut, independiente.",
+    "updated_utc": "2026-11-10T00:50:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
