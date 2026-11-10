@@ -1,3 +1,18 @@
+## 2026-11-10 UTC — TRIG-EC-I-01 PASS_SCOPED bilateral
+
+- Contrato congelado: \(\arcsin x=\frac{\pi}{6}\) → \(x=\frac{1}{2}\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas; sin nota separada.
+- Lite test-first: `tests/trigonometryEcI01.audit.test.ts` (commit `6c9a557`). Una aserción propia contaba `pi` como variable libre; se corrigió en `dbd4db7`.
+- El focal reveló un fallo real de producto: el solver no hallaba la raíz de `arcsin(x)=π/6`. Corrección en `5eb357d1d5e944777b2a0b392de8aab3e2de70d7`: `solveInverseSineEquation` en `trigonometricEquation.ts`, enrutado desde `algebra.ts`, con rango principal y verificación por sustitución. Regresión `tests/trigonometryInverseSineRegression.audit.test.ts`: `arcsin(x)=π/6`, forma invertida y `arcsin(x)=2` sin raíz.
+- Verificación local previa al push: transpilación sin errores de sintaxis y ejecución del helper contra Algebrite (x=1/2 en ambas formas; caso fuera de rango sin candidato).
+- Corridas de 5eb357d: CI 42796690318, Cumulative 42796690519, H1d 42796690060, Scientific UI 42796690585 y Runner 42796690081, todas SUCCESS. Sin dispatch manual ni REUSE.
+- Plus test-first `backend/tests/test_trigonometry_ec_i01.py` (commit `b51612f`): sin cambio de producto; Cumulative 42793636117 y CI 42793636114 SUCCESS.
+- Alcance: solo `arcsin(x)=π/6` en radianes con variable `x`, y su forma invertida en Lite. No es un resolvedor general de arcsin ni certifica la ingesta LaTeX literal de Plus `/api/v1/evaluate`.
+- Resultado: PASS_SCOPED bilateral. Global OPEN; EV-D-01 BLOCKED, EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
+
+**Siguiente:** TRIG-EC-I-02 (\(\arccos x=\frac{\pi}{3}\) → \(x=\frac{1}{2}\)), test-first en ambos repositorios.
+
+---
+
 ## 2026-11-10 UTC — TRIG-EC-D-10 PASS_SCOPED bilateral
 
 - Contrato congelado: \(\sin x=2\) → sin solución real; gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas; sin nota separada.

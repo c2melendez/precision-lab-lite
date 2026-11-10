@@ -1,3 +1,22 @@
+# Actualización de certificación - 2026-11-10 UTC (r490; EC-I-01 PASS_SCOPED bilateral)
+
+## Trigonometría TRIG-EC-I-01 - PASS_SCOPED bilateral
+
+- Fila congelada del gzip legacy (blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb): \(\arcsin x=\frac{\pi}{6}\) → \(x=\frac{1}{2}\). Tres columnas; sin nota separada.
+- Lite SHA técnico final `5eb357d1d5e944777b2a0b392de8aab3e2de70d7`. Corrección de producto: `solveInverseSineEquation` en `src/engine/stepEngine/trigonometricEquation.ts`, enrutado desde `algebra.ts`; restringe c a [-π/2, π/2], verifica x=sin(c) en la ecuación original y acepta la forma invertida. Tests `tests/trigonometryEcI01.audit.test.ts` y `tests/trigonometryInverseSineRegression.audit.test.ts`. CI 42796690318 SUCCESS; Cumulative 42796690519 SUCCESS; H1d 42796690060 SUCCESS; Scientific UI 42796690585 SUCCESS; Runner 42796690081 SUCCESS push-only.
+- Plus SHA técnico `b51612f19bab96e11c51f24644e991301a07d673`, solo prueba `backend/tests/test_trigonometry_ec_i01.py`; sin cambio de producto. Cumulative 42793636117 SUCCESS; CI 42793636114 SUCCESS; H1d 42793636399 SUCCESS; Runner 42793636120 SUCCESS push-only.
+- Acta bilateral: qa/certification/TRIG_EC_I_01_ACCEPTANCE_2026-11-10.md en ambos repositorios.
+- continuity.json no se modificó en esta pasada; su esquema sigue pendiente de revisión.
+
+## Estado y siguiente acción
+
+- Último caso aceptado: TRIG-EC-I-01 — PASS_SCOPED bilateral.
+- Siguiente: TRIG-EC-I-02, sección 2.B Inversas: \(\arccos x=\frac{\pi}{3}\) → \(x=\frac{1}{2}\). Recuperar la fila exacta del gzip y escribir primero las pruebas focales en ambos repositorios.
+- Certificación global: OPEN. EV-D-01 en Plus /api/v1/evaluate sigue BLOCKED; EV-HI conserva PASS_SCOPED; S25, SG28, H2 y DIST siguen abiertos.
+- No repetir gates verdes de EC-D-01..10 ni de EC-I-01; no ejecutar dispatch manual.
+
+---
+
 # Actualización de certificación - 2026-11-10 UTC (r489; EC-D-10 PASS_SCOPED bilateral)
 
 ## Trigonometría TRIG-EC-D-10 - PASS_SCOPED bilateral
