@@ -1,3 +1,35 @@
+# Actualización de certificación — 2026-11-10 UTC (r485; EC-D-07 IN_PROGRESS)
+
+## Trigonometría TRIG-EC-D-07 — Lite focal aprobado; E2E complementario pendiente
+
+- Fila congelada recuperada directamente de `qa/certification/legacy_sources/ejercicios_trigonometria.md.gz`, blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`: `\csc x=2,quad x\in[0,2\pi)` → `x=\frac{\pi}{6},\ \frac{5\pi}{6}`. La fila original tiene tres columnas (ID, ejercicio, resultado esperado); no hay nota separada.
+- Test focal `tests/trigonometryEcD07.audit.test.ts`: anclaje de fuente + resolución exacta de ambas raíces, intervalo semiabierto y sustitución recíproca.
+- El primer intento Lite SHA `0bb1e92ea97e01335524e43040a49744134b4264` detectó que el resolvedor genérico no encontraba soluciones para `csc(x)=2`; el resto de las suites previas pasó.
+- Corrección Lite acotada: `src/engine/stepEngine/trigonometricEquation.ts` añade `solveCosecantEqualsTwoEquation`, reconoce la forma normalizada `1/sin(x)=2` que produce el parser desde `csc(x)`, reutiliza el resolvedor directo de `sin(x)=1/2` y verifica cada raíz contra la ecuación recíproca. Enrutamiento en `src/engine/stepEngine/algebra.ts`. No es un resolvedor general de funciones recíprocas.
+- SHA técnico Lite final `3ad626602b3639310921ba6fd27952293732be39`.
+- Lite CI [42748347965](https://github.com/c2melendez/precision-lab-lite/actions/runs/42748347965) SUCCESS: test EC-D-07 2/2; 400 archivos, 2,410 passed, 8 expected fail, 34 TODO.
+- Lite Cumulative [42748348152](https://github.com/c2melendez/precision-lab-lite/actions/runs/42748348152) SUCCESS: test EC-D-07 2/2; 400 archivos, 2,410 passed, 8 expected fail, 34 TODO; guard `skip=false`, `evidence_run_id=""`.
+- Lite H1d [42748347964](https://github.com/c2melendez/precision-lab-lite/actions/runs/42748347964) SUCCESS.
+- Lite Scientific UI [42748348035](https://github.com/c2melendez/precision-lab-lite/actions/runs/42748348035) seguía IN_PROGRESS en verificación nativa desktop/tablet/mobile al corte. Runner [42748348237](https://github.com/c2melendez/precision-lab-lite/actions/runs/42748348237) es un resumen push-only, no dispatch manual.
+- No emitir PASS_SCOPED bilateral ni acta mientras falta Plus CI/Cumulative backend y Scientific UI Lite sigue activo.
+
+## Plus — test focal en curso
+
+- Test `backend/tests/test_trigonometry_ec_d07.py` añadido en SHA `864c4cf68bb88e331b6df3b64a0ddb2354b047af`; valida fila fuente y POST `/api/v1/solve`, las dos raíces exactas y su sustitución.
+- Plus H1d [42748028455](https://github.com/c2melendez/precision-lab-plus/actions/runs/42748028455) SUCCESS; Runner [42748028867](https://github.com/c2melendez/precision-lab-plus/actions/runs/42748028867) SUCCESS.
+- Plus CI [42748028579](https://github.com/c2melendez/precision-lab-plus/actions/runs/42748028579) y Cumulative [42748028770](https://github.com/c2melendez/precision-lab-plus/actions/runs/42748028770) tenían frontend SUCCESS y backend IN_PROGRESS al corte. Aún no se ha demostrado si el solver general SymPy cubre el caso sin cambio de producto.
+
+## Estado y siguiente acción
+
+- Último baseline aceptado: EC-D-06 PASS_SCOPED bilateral.
+- EC-D-07: IN_PROGRESS; Lite focal y CI/Cumulative/H1d PASS, E2E complementario pendiente; Plus H1d PASS, backend CI/Cumulative pendiente.
+- Certificación global: OPEN.
+- No repetir Lite CI/Cumulative/H1d que ya cerraron SUCCESS. No repetir Plus H1d ni Runner. No dispatch manual.
+
+**Siguiente:** verificar el test focal y el total backend en Plus CI/Cumulative; confirmar el cierre Scientific UI Lite. Si la ruta general Plus pasa, no añadir código de producto innecesario. Solo entonces redactar aceptación bilateral y avanzar a EC-D-08.
+
+---
+
 # Actualización de certificación — 2026-11-10 UTC (r484; EC-D-06 PASS_SCOPED)
 
 ## Trigonometría TRIG-EC-D-06 — PASS_SCOPED bilateral
