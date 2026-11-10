@@ -101,14 +101,14 @@ export function solveSineCosineUnitSumEquation(
       return null;
     }
 
-    const rootsLatex = solutions.map((root) => variable + "=" + toLatex(root)).join(",\\\\quad ");
+    const rootsLatex = solutions.map((root) => variable + "=" + toLatex(root)).join(",\\quad ");
     return {
       solutions,
       step: {
         id: "trigonometric-half-angle",
         title: "Sustitución de medio ángulo",
         rule: "TangentHalfAngleSubstitution",
-        latex: variable + "\\\\in[0,2\\\\pi):\\\\quad " + rootsLatex,
+        latex: variable + "\\in[0,2\\pi):\\quad " + rootsLatex,
         explanation:
           "Con t=tan(x/2), se reescriben sin(x)=2t/(1+t²) y cos(x)=(1-t²)/(1+t²). " +
           "Se resuelve el numerador polinómico en t, se recuperan los ángulos del intervalo " +
