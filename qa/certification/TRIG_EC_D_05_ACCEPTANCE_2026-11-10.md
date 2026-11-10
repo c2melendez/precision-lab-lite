@@ -25,7 +25,7 @@
 - CI [42731929126](https://github.com/c2melendez/precision-lab-plus/actions/runs/42731929126) SUCCESS: backend 2,931 passed, 1 skipped, 11 xfailed; frontend 150 archivos, 1,055 passed; typecheck y build SUCCESS.
 - H1d [42731929115](https://github.com/c2melendez/precision-lab-plus/actions/runs/42731929115) SUCCESS: 38/38; guard \`skip=false\`, \`evidence_run_id=""\`.
 - Runner [42731929156](https://github.com/c2melendez/precision-lab-plus/actions/runs/42731929156) SUCCESS, push-only; sin dispatch manual.
-- El motor Plus no requirió cambios de producto: SymPy resolvió la ecuación por su camino general a las dos raíces exactas. Se prueba el endpoint \`POST /api/v1/solve\) con entrada ASCII.
+- El motor Plus no requirió cambios de producto: SymPy resolvió la ecuación por su camino general a las dos raíces exactas. Se prueba el endpoint \`POST /api/v1/solve\` con entrada ASCII.
 
 ## Alcance y límites
 
