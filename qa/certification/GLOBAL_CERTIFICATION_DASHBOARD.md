@@ -41,15 +41,15 @@
 
 ## 2026-11-10 UTC — r484: Trigonometría EC-D-06 PASS_SCOPED bilateral
 
-**EC-D-06 — PASS_SCOPED bilateral.** \`sin(2x)=cos(x)\`, \`x∈[0,2π)\` → \`{π/6,π/2,5π/6,3π/2}\`.
+**EC-D-06 — PASS_SCOPED bilateral.** `sin(2x)=cos(x)`, `x∈[0,2π)` → `{π/6,π/2,5π/6,3π/2}`.
 
-- Lite SHA \`2af7cefc410d1b7cb2c15483f3affd3473b54a89\`: Cumulative 42746381569 SUCCESS (focal 2/2; 399 archivos, 2,408 passed, 8 expected fail, 34 TODO); CI 42746381637 SUCCESS; H1d 42746381850 SUCCESS 22/22; Scientific UI 42746381589 SUCCESS 456/456; Runner 42746381595 SUCCESS push-only. Guards Cumulative/H1d/Scientific \`skip=false\`, \`evidence_run_id=""\`.
-- Plus SHA \`2a7ff0f2b243597ef6476e665b4a102dcfffdd85\`: Cumulative 42746666257 SUCCESS (dos tests focales PASSED explícitamente; backend 2,933 passed, 1 skipped, 11 xfailed); CI 42746666105 SUCCESS (backend 2,933 passed, frontend SUCCESS); H1d 42746666095 SUCCESS 38/38; Native Syntax 42746666542 SUCCESS 52/52; Runner 42746666546 SUCCESS push-only. Guards Cumulative/H1d/Native \`skip=false\`, sin reutilización.
-- Acta bilateral \`qa/certification/TRIG_EC_D_06_ACCEPTANCE_2026-11-10.md\`. Corrección inicial Plus de rama \`-π/2\` a \`3π/2\` incorporada y probada en SHA final.
-- Seguridad/mutación Plus 42746666307 seguía IN_PROGRESS en \`plus-backend-mutmut\`, fuera del alcance matemático del caso.
-- Alcance limitado a ecuación y conjunto exacto del intervalo semiabierto; no certifica ingesta literal LaTeX en Plus \`/api/v1/evaluate\`. Global **OPEN**; EV-D-01 BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
+- Lite SHA `2af7cefc410d1b7cb2c15483f3affd3473b54a89`: Cumulative 42746381569 SUCCESS (focal 2/2; 399 archivos, 2,408 passed, 8 expected fail, 34 TODO); CI 42746381637 SUCCESS; H1d 42746381850 SUCCESS 22/22; Scientific UI 42746381589 SUCCESS 456/456; Runner 42746381595 SUCCESS push-only. Guards Cumulative/H1d/Scientific `skip=false`, `evidence_run_id=""`.
+- Plus SHA `2a7ff0f2b243597ef6476e665b4a102dcfffdd85`: Cumulative 42746666257 SUCCESS (dos tests focales PASSED explícitamente; backend 2,933 passed, 1 skipped, 11 xfailed); CI 42746666105 SUCCESS (backend 2,933 passed, frontend SUCCESS); H1d 42746666095 SUCCESS 38/38; Native Syntax 42746666542 SUCCESS 52/52; Runner 42746666546 SUCCESS push-only. Guards Cumulative/H1d/Native `skip=false`, sin reutilización.
+- Acta bilateral `qa/certification/TRIG_EC_D_06_ACCEPTANCE_2026-11-10.md`. Corrección inicial Plus de rama `-π/2` a `3π/2` incorporada y probada en SHA final.
+- Seguridad/mutación Plus 42746666307 seguía IN_PROGRESS en `plus-backend-mutmut`, fuera del alcance matemático del caso.
+- Alcance limitado a ecuación y conjunto exacto del intervalo semiabierto; no certifica ingesta literal LaTeX en Plus `/api/v1/evaluate`. Global **OPEN**; EV-D-01 BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
 
-**Siguiente:** TRIG-EC-D-07; fila congelada \`csc(x)=2,\ x∈[0,2π)\` → \`{π/6,5π/6}\`. No repetir EC-D-01..06.
+**Siguiente:** TRIG-EC-D-07; fila congelada `csc(x)=2,\ x∈[0,2π)` → `{π/6,5π/6}`. No repetir EC-D-01..06.
 
 ---
 
