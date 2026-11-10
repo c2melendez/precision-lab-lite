@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 485,
+  "revision": 486,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "2af7cefc410d1b7cb2c15483f3affd3473b54a89",
-  "baseline_case": "TRIG-EC-D-06",
+  "technical_baseline_sha": "3ad626602b3639310921ba6fd27952293732be39",
+  "baseline_case": "TRIG-EC-D-07",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EC-D-07",
-    "status": "IN_PROGRESS",
-    "previous_id": "TRIG-EC-D-06",
-    "action": "EC-D-07 IN_PROGRESS. Fila congelada del gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb: csc(x)=2, x∈[0,2π) → {π/6,5π/6}; tres columnas, sin nota separada. Lite SHA final 3ad626602b3639310921ba6fd27952293732be39: CI 42748347965 SUCCESS (focal 2/2, 400 archivos, 2410 passed, 8 expected fail, 34 TODO), Cumulative 42748348152 SUCCESS (focal 2/2, skip=false, evidence_run_id vacío; mismos conteos), H1d 42748347964 SUCCESS; Scientific UI 42748348035 IN_PROGRESS. Primer intento Lite identificó gap: parser reescribe csc(x) a 1/sin(x), solver genérico no encuentra raíces. Fix acotado en trigonometricEquation.ts + algebra.ts reconoce 1/sin(x)=2, reutiliza sin(x)=1/2 y verifica ecuación original. Plus test-only SHA 864c4cf68bb88e331b6df3b64a0ddb2354b047af. Plus H1d 42748028455 SUCCESS; Runner 42748028867 SUCCESS; CI 42748028579 y Cumulative 42748028770 frontend SUCCESS, backend IN_PROGRESS. Próximo: confirmar focal y total de backend Plus, cerrar Scientific UI Lite; no repetir gates ya verdes ni dispatch manual. No PASS bilateral hasta completar evidencia. Baseline EC-D-06 PASS_SCOPED; global OPEN.",
-    "updated_utc": "2026-11-10T03:20:00Z"
+    "id": "TRIG-EC-D-08",
+    "status": "RUN",
+    "previous_id": "TRIG-EC-D-07",
+    "action": "Recuperar directamente la fila TRIG-EC-D-08 desde qa/certification/legacy_sources/ejercicios_trigonometria.md.gz; anclar las columnas/entrada/salida originales y fijar ecuación, intervalo y conjunto esperado antes de escribir pruebas. Continuar test-first bilateral, sin inferir el contrato desde el ID. EC-D-07 ya tiene PASS_SCOPED bilateral: Lite SHA 3ad626602b3639310921ba6fd27952293732be39 (CI 42748347965, Cumulative 42748348152, H1d 42748347964, Scientific UI 42748348035, todos SUCCESS; focal 2/2, guard skip=false/sin REUSE; 2410 passed, 8 expected fail, 34 TODO; Scientific UI 456/456) y Plus SHA de prueba 864c4cf68bb88e331b6df3b64a0ddb2354b047af (CI 42748028579, Cumulative 42748028770, H1d 42748028455, Runner 42748028867 SUCCESS; focal 2/2; backend 2935 passed, 1 skipped, 11 xfailed; guards skip=false/sin REUSE). No repetir gates verdes de EC-D-01..07 ni hacer dispatch manual. Mantener global OPEN y separar EV-D-01 /api/v1/evaluate BLOCKED, EV-HI PASS_SCOPED, S25, SG28, H2 y DIST abiertos.",
+    "updated_utc": "2026-11-10T04:02:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
