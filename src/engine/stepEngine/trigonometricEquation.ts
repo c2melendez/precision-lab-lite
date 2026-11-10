@@ -60,9 +60,9 @@ export function solveQuadraticSineEquation(
     if (occurrences.length < 2) return null;
 
     const polynomial = standardForm.replace(sinePattern, "u");
-    if (!/\\bu\\^2\\b/.test(polynomial) || /\\bu\\^[3-9]/.test(polynomial)) return null;
-    if (/[A-Za-z]/.test(polynomial.replace(/\\bu\\b/g, ""))) return null;
-    if (/\\b(?:cos|tan|sinh|cosh|tanh)\\(/.test(polynomial)) return null;
+    if (!/\bu\^2\b/.test(polynomial) || /\bu\^[3-9]/.test(polynomial)) return null;
+    if (/[A-Za-z]/.test(polynomial.replace(/\bu\b/g, ""))) return null;
+    if (/\b(?:cos|tan|sinh|cosh|tanh)\(/.test(polynomial)) return null;
 
     const parameterRoots = solveEquation(polynomial, "u");
     if (parameterRoots.length < 1 || parameterRoots.length > 2) return null;
