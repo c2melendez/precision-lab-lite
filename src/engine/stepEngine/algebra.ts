@@ -13,7 +13,15 @@ import { derivative, evaluate, solveEquation, substituteExact, ErrorCode } from 
 import type { Step, AppError } from "../../types";
 import { solveRealAbsoluteCases } from "../absPiecewise";
 import { solveRealRadicalEquation } from "../radicalCases";
-import { solveCosecantEqualsTwoEquation, solveDirectTrigonometricEquation, solveDoubleAngleSineEqualsCosineEquation, solveQuadraticSineEquation, solveSecantEqualsMinusTwoEquation, solveSineCosineUnitSumEquation } from "./trigonometricEquation";
+import {
+  solveCosecantEqualsTwoEquation,
+  solveCotangentEqualsOneEquation,
+  solveDirectTrigonometricEquation,
+  solveDoubleAngleSineEqualsCosineEquation,
+  solveQuadraticSineEquation,
+  solveSecantEqualsMinusTwoEquation,
+  solveSineCosineUnitSumEquation,
+} from "./trigonometricEquation";
 
 export interface AlgebraSolveResult {
   steps: Step[];
@@ -341,6 +349,12 @@ export function solveAlgebra(
   if (secantResult !== null) {
     steps.push(secantResult.step);
     return { steps, solutionsAlgebrite: secantResult.solutions };
+  }
+
+  const cotangentResult = solveCotangentEqualsOneEquation(leftAlgebrite, rightAlgebrite, variable);
+  if (cotangentResult !== null) {
+    steps.push(cotangentResult.step);
+    return { steps, solutionsAlgebrite: cotangentResult.solutions };
   }
 
   const doubleAngleResult = solveDoubleAngleSineEqualsCosineEquation(leftAlgebrite, rightAlgebrite, variable);

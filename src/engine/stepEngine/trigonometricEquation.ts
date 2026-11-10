@@ -336,6 +336,69 @@ export function solveSecantEqualsMinusTwoEquation(
   };
 }
 
+/**
+ * Solves only the frozen EC-D-09 equation cot(x)=1 on [0, 2*pi).
+ * The parser rewrites cot(x) to cos(x)/sin(x); this helper recognizes
+ * only that exact normalized form, reuses the tangent branch arctan(1)
+ * and enumerates both branches inside [0, 2*pi), then verifies every
+ * candidate against the original cotangent equation. It is not a
+ * generic cotangent solver.
+ */
+export function solveCotangentEqualsOneEquation(
+  left: string,
+  right: string,
+  variable: string,
+): TrigonometricEquationResult | null {
+  const stripOuterParens = (value: string) => {
+    const compact = value.replace(/\s+/g, "");
+    return compact.startsWith("(") && compact.endsWith(")")
+      ? compact.slice(1, -1)
+      : compact;
+  };
+  const normalizedLeft = stripOuterParens(left);
+  const normalizedRight = stripOuterParens(right);
+  const quotient = "cos(" + variable + ")/sin(" + variable + ")";
+  const isTarget = normalizedLeft === quotient && normalizedRight === "1";
+  const isReversed = normalizedRight === quotient && normalizedLeft === "1";
+  if (!isTarget && !isReversed) return null;
+
+  const angle = simplify("arctan(1)");
+  const candidates = [angle, simplify("(" + angle + ")+pi")];
+
+  const solutions = uniqueRoots(candidates)
+    .filter((root) => {
+      const value = numericValue(root);
+      return value !== null && value >= 0 && value < 2 * Math.PI;
+    })
+    .sort((a, b) => (numericValue(a) ?? 0) - (numericValue(b) ?? 0));
+
+  if (solutions.length !== 2) return null;
+  if (!solutions.every((root) => equivalent(
+    "cos(" + root + ")/sin(" + root + ")",
+    "1",
+  ))) {
+    return null;
+  }
+
+  const rendered = solutions.map((root) => variable + "=" + toLatex(root)).join(",\\quad ");
+  return {
+    solutions,
+    step: {
+      id: "trigonometric-cotangent-reciprocal",
+      title: "Reducción de cotangente a tangente",
+      rule: "CotangentReciprocalIdentity",
+      latex:
+        "cos(" + variable + ")/sin(" + variable + ")=1,\\quad " +
+        variable + "\\in[0,2\\pi):\\quad " + rendered,
+      explanation:
+        "Se usa cot(x)=cos(x)/sin(x), equivalente a tan(x)=1 allí donde sin(x)≠0. " +
+        "Se obtienen las dos ramas de la tangente dentro de [0, 2π), y cada raíz se " +
+        "verifica en la ecuación cotangente original.",
+    },
+    contradiction: false,
+  };
+}
+
 export function solveDoubleAngleSineEqualsCosineEquation(
   left: string,
   right: string,
