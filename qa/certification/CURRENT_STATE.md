@@ -1,3 +1,24 @@
+# Actualización de certificación — 2026-11-10 UTC (r482; EC-D-05 PASS_SCOPED)
+
+## Trigonometría TRIG-EC-D-05 — PASS_SCOPED bilateral
+
+- Contrato congelado desde `qa/certification/legacy_sources/ejercicios_trigonometria.md.gz`, blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`: `\sin x+\cos x=1,quad xin[0,2\pi)` → `\{0,\frac{\pi}{2}\}`.
+- Oráculo: exactamente dos raíces reales distintas, ambas en el intervalo semiabierto y verificadas por sustitución en la ecuación original.
+- Lite SHA técnico `28964186aa61be64924d49e83e929ea724fc7383`. Test `tests/trigonometryEcD05.audit.test.ts`: anclaje de fuente + resolución focal, 2/2. CI [42732509176](https://github.com/c2melendez/precision-lab-lite/actions/runs/42732509176) SUCCESS (398 archivos, 2,406 passed, 8 XFAIL esperados, 34 TODO); Cumulative [42732509088](https://github.com/c2melendez/precision-lab-lite/actions/runs/42732509088) SUCCESS (focal 2/2; guard skip=false, evidence_run_id vacío); H1d [42732509506](https://github.com/c2melendez/precision-lab-lite/actions/runs/42732509506) SUCCESS (22/22; skip=false); Scientific UI [42732509163](https://github.com/c2melendez/precision-lab-lite/actions/runs/42732509163) SUCCESS (456/456; skip=false); Runner [42732509098](https://github.com/c2melendez/precision-lab-lite/actions/runs/42732509098) SUCCESS, push-only.
+- Plus SHA técnico `971774693b5e3bd35cebe188be2fa8d9d96a55dd`. Test `backend/tests/test_trigonometry_ec_d05.py`: los dos tests PASSED explícitamente en Cumulative [42731929122](https://github.com/c2melendez/precision-lab-plus/actions/runs/42731929122); backend 2,931 passed, 1 skipped, 11 xfailed; guard skip=false, evidence_run_id vacío. CI [42731929126](https://github.com/c2melendez/precision-lab-plus/actions/runs/42731929126) SUCCESS (backend/frontend); H1d [42731929115](https://github.com/c2melendez/precision-lab-plus/actions/runs/42731929115) SUCCESS (38/38; skip=false); Runner [42731929156](https://github.com/c2melendez/precision-lab-plus/actions/runs/42731929156) SUCCESS, push-only.
+- Implementación Lite estrictamente acotada: sustitución `t=tan(x/2)`; el numerador resultante es `2t(1-t)`, con candidatos `t=0,1`, que se convierten en `x=0,pi/2`. Los candidatos se normalizan al intervalo y se verifican en la ecuación original. Plus no necesitó cambio de producto; SymPy resolvió por la ruta general.
+
+## Alcance y límites
+
+- PASS_SCOPED cubre solamente el conjunto exacto `{0, π/2}` en `[0,2π)` para `sin(x)+cos(x)=1`; no generaliza a combinaciones arbitrarias de funciones trigonométricas ni a una familia periódica sobre toda `R`.
+- Las entradas de cálculo son ASCII/forma normalizada y la fila fuente se ancla como fixture. No se certifica ingesta literal LaTeX en Plus `/api/v1/evaluate` ni una interfaz dedicada a este ejercicio.
+- EV-D-01 Plus `/api/v1/evaluate` permanece BLOCKED; EV-HI conserva PASS_SCOPED; S25, SG28, H2 y DIST siguen abiertos.
+- La certificación global permanece **OPEN**.
+
+**Siguiente:** TRIG-EC-D-06. Recuperar primero la fila literal de EC-D-06 desde el gzip congelado; fijar ejercicio, intervalo y resultado esperado antes de escribir pruebas. No inferir el contrato por el identificador ni repetir EC-D-01..05.
+
+---
+
 # Actualización de certificación — 2026-11-10 UTC (r481; EC-D-04 PASS_SCOPED)
 
 ## Trigonometría EC-D-04 — PASS_SCOPED bilateral
