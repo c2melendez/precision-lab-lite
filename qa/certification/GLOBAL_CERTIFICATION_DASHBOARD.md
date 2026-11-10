@@ -1,3 +1,17 @@
+## 2026-11-10 UTC — r486: EC-D-07 PASS_SCOPED bilateral; siguiente EC-D-08
+
+**Contrato congelado:** \(\csc x=2,\ x\in[0,2\pi)\) → \(\{\pi/6,5\pi/6\}\). Fila del gzip con tres columnas; sin nota separada.
+
+- Lite SHA 3ad626602b3639310921ba6fd27952293732be39: CI 42748347965 SUCCESS y Cumulative 42748348152 SUCCESS (focal 2/2; 400 archivos, 2,410 passed, 8 expected fail, 34 TODO; skip=false/no REUSE); H1d 42748347964 SUCCESS (22/22); Scientific UI 42748348035 SUCCESS (456/456); Runner 42748348237 SUCCESS push-only.
+- Plus SHA de prueba 864c4cf68bb88e331b6df3b64a0ddb2354b047af: Cumulative 42748028770 SUCCESS (ambos tests focales PASSED; backend 2,935 passed, 1 skipped, 11 xfailed; frontend SUCCESS; skip=false/no REUSE); CI 42748028579 SUCCESS (backend y frontend); H1d 42748028455 SUCCESS (38/38); Runner 42748028867 SUCCESS push-only.
+- Lite usa helper focal para la forma normalizada 1/sin(x)=2; Plus resolvió por la ruta existente, sin cambios de producto.
+- Alcance: dos raíces exactas en [0,2π), sustitución recíproca. No se certifica ingesta LaTeX literal en Plus /api/v1/evaluate ni capacidad general para funciones recíprocas.
+- Actas: qa/certification/TRIG_EC_D_07_ACCEPTANCE_2026-11-10.md en ambos repositorios. Resultado PASS_SCOPED bilateral; certificación global OPEN.
+
+**Siguiente:** TRIG-EC-D-08; recuperar fila exacta del gzip y fijar el contrato antes de comenzar test-first. No repetir gates verdes de EC-D-01..07.
+
+---
+
 ## 2026-11-10 UTC — r485: EC-D-07 IN_PROGRESS; Lite focal PASS, Plus backend pendiente
 
 **Contrato congelado:** `csc(x)=2`, `x∈[0,2π)` → `{π/6,5π/6}`.
