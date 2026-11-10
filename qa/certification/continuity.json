@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 481,
+  "revision": 482,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "9663f1625fcca7cc668c61d55f844453eb90dfd0",
-  "baseline_case": "TRIG-EC-D-04",
+  "technical_baseline_sha": "28964186aa61be64924d49e83e929ea724fc7383",
+  "baseline_case": "TRIG-EC-D-05",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EC-D-05",
+    "id": "TRIG-EC-D-06",
     "status": "RUN",
-    "previous_id": "TRIG-EC-D-04",
-    "action": "EC-D-04 fue aceptado PASS_SCOPED bilateral. Lite SHA 9663f1625fcca7cc668c61d55f844453eb90dfd0: focal 2/2 PASSED; CI 42730206344 SUCCESS (397 archivos, 2,404 passed, 8 XFAIL, 34 TODO), Cumulative 42730206373 SUCCESS (skip=false, evidence_run_id vacío), H1d 42730206364 SUCCESS (22/22), Scientific UI 42730206324 SUCCESS (456/456, skip=false), Runner 42730206411 SUCCESS push-only. Plus SHA 633ec35dc8de728c657cd00907328a2ff6f5c2eb: dos tests focales PASSED explícitamente; Cumulative 42730138929 SUCCESS (backend 2,929 passed, 1 skipped, 11 xfailed; skip=false, evidence_run_id vacío; frontend 1,055 passed); CI 42730138619 SUCCESS; H1d 42730138616 SUCCESS (38/38); Native Syntax 42730138595 SUCCESS (52/52); Runner 42730138951 SUCCESS push-only. Acta TRIG_EC_D_04_ACCEPTANCE_2026-11-10.md. Próximo TRIG-EC-D-05: recuperar fila literal del gzip, fijar contrato completo y test-first bilateral. No repetir EC-D-01..04. Baseline TRIG-EC-D-04 PASS_SCOPED; global OPEN. EV-D-01 /api/v1/evaluate BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos. Plus security/mutation 42730139009 sigue IN_PROGRESS en plus-backend-mutmut, independiente.",
-    "updated_utc": "2026-11-10T00:50:00Z"
+    "previous_id": "TRIG-EC-D-05",
+    "action": "EC-D-05 fue aceptado PASS_SCOPED bilateral. Contrato congelado en qa/certification/legacy_sources/ejercicios_trigonometria.md.gz (blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb): sin(x)+cos(x)=1 en [0,2π) → {0,π/2}. Lite SHA técnico 28964186aa61be64924d49e83e929ea724fc7383: CI 42732509176 SUCCESS (398 archivos, 2406 passed), Cumulative 42732509088 SUCCESS (focal 2/2, skip=false, evidence_run_id vacío), H1d 42732509506 SUCCESS (22/22), Scientific UI 42732509163 SUCCESS (456/456), Runner 42732509098 SUCCESS push-only. Plus SHA 971774693b5e3bd35cebe188be2fa8d9d96a55dd: Cumulative 42731929122 SUCCESS (dos tests focales PASSED, backend 2931 passed, 1 skipped, 11 xfailed, skip=false), CI 42731929126 SUCCESS, H1d 42731929115 SUCCESS (38/38), Runner 42731929156 SUCCESS push-only. No repetir estos gates mientras el árbol no cambie. Siguiente TRIG-EC-D-06: recuperar primero su fila literal del gzip, fijar ecuación/intervalo/resultado y luego test-first bilateral. No inferir el contrato por el ID ni repetir EC-D-01..05. Baseline TRIG-EC-D-05 PASS_SCOPED; certificación global OPEN. EV-D-01 Plus /api/v1/evaluate BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.",
+    "updated_utc": "2026-11-10T02:45:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
