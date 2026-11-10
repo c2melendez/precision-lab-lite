@@ -1,3 +1,17 @@
+## 2026-11-10 UTC — r487: EC-D-08 PASS_SCOPED bilateral; siguiente EC-D-09
+
+**Contrato congelado:** \(\sec x=-2,\ x\in[0,2\pi)\) → \(\{2\pi/3,4\pi/3\}\). Fila del gzip con tres columnas; no hay nota separada.
+
+- Lite SHA b8c3ffcf7815c373c7f46849dc547d1cf1864de8: CI 42754588522 SUCCESS y Cumulative 42754588411 SUCCESS (focal 2/2; 401 archivos, 2,412 passed, 8 expected fail, 34 TODO; skip=false/no REUSE); H1d 42754588566 SUCCESS (22/22); Scientific UI 42754588396 SUCCESS (456/456); Runner 42754588787 SUCCESS push-only.
+- Plus SHA fb430768589eabfb930b03790d135b879ddf9109: Cumulative 42755121582 SUCCESS (ambos tests focales PASSED; backend 2,937 passed, 1 skipped, 11 xfailed; skip=false/no REUSE); CI 42755121784 SUCCESS (backend y frontend); H1d 42755121628 SUCCESS (38/38); Native Syntax 42755121609 SUCCESS (26 desktop, 52 tablet/mobile); Runner 42755121603 SUCCESS push-only.
+- Helpers estrictamente acotados a la forma congelada sec(x)=-2, con verificación en el intervalo y en la ecuación recíproca original. No se amplía el alcance a un resolvedor general de secantes.
+- Actas: qa/certification/TRIG_EC_D_08_ACCEPTANCE_2026-11-10.md en ambos repositorios. Resultado PASS_SCOPED bilateral; certificación global OPEN.
+- EV-D-01 /api/v1/evaluate sigue BLOCKED; EV-HI permanece PASS_SCOPED; S25, SG28, H2 y DIST no cambian.
+
+**Siguiente:** TRIG-EC-D-09; recuperar la fila exacta del gzip y fijar el contrato antes de comenzar test-first. No repetir gates verdes de EC-D-01..08.
+
+---
+
 ## 2026-11-10 UTC — r486: EC-D-07 PASS_SCOPED bilateral; siguiente EC-D-08
 
 **Contrato congelado:** \(\csc x=2,\ x\in[0,2\pi)\) → \(\{\pi/6,5\pi/6\}\). Fila del gzip con tres columnas; sin nota separada.
