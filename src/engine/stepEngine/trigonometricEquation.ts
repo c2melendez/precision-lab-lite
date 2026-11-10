@@ -1,4 +1,4 @@
-import { evaluate, toLatex } from "../algebriteClient";
+import { evaluate, solveEquation, toLatex } from "../algebriteClient";
 import type { Step } from "../../types";
 
 type DirectTrigFunction = "sin" | "cos" | "tan";
@@ -40,6 +40,79 @@ function uniqueRoots(values: string[]): string[] {
     if (!result.some((existing) => equivalent(existing, value))) result.push(value);
   }
   return result;
+}
+
+/**
+ * Solves the bounded polynomial family P(sin(x))=0 when P is quadratic
+ * with numeric coefficients. Roots are converted to their exact sine
+ * branches in [0, 2*pi), then checked against the original equation.
+ * This does not handle mixed trig functions or transformed arguments.
+ */
+export function solveQuadraticSineEquation(
+  left: string,
+  right: string,
+  variable: string,
+): TrigonometricEquationResult | null {
+  try {
+    const standardForm = simplify("(" + left + ")-(" + right + ")");
+    const sinePattern = new RegExp("sin\\(" + variable + "\\)", "g");
+    const occurrences = standardForm.match(sinePattern) ?? [];
+    if (occurrences.length < 2) return null;
+
+    const polynomial = standardForm.replace(sinePattern, "u");
+    if (!/\\bu\\^2\\b/.test(polynomial) || /\\bu\\^[3-9]/.test(polynomial)) return null;
+    if (/[A-Za-z]/.test(polynomial.replace(/\\bu\\b/g, ""))) return null;
+    if (/\\b(?:cos|tan|sinh|cosh|tanh)\\(/.test(polynomial)) return null;
+
+    const parameterRoots = solveEquation(polynomial, "u");
+    if (parameterRoots.length < 1 || parameterRoots.length > 2) return null;
+
+    const candidates: string[] = [];
+    for (const parameterRoot of parameterRoots) {
+      const target = numericValue(parameterRoot);
+      if (target === null) return null;
+      if (target < -1 || target > 1) continue;
+
+      const principal = simplify("arcsin(" + parameterRoot + ")");
+      const principalValue = numericValue(principal);
+      if (principalValue === null) return null;
+      const first = principalValue < 0
+        ? simplify("2*pi+(" + principal + ")")
+        : principal;
+      const second = simplify("pi-(" + principal + ")");
+      candidates.push(first, second);
+    }
+
+    const solutions = uniqueRoots(candidates)
+      .filter((root) => {
+        const value = numericValue(root);
+        return value !== null && value >= 0 && value < 2 * Math.PI;
+      })
+      .sort((a, b) => (numericValue(a) ?? 0) - (numericValue(b) ?? 0));
+
+    const originalWithCandidate = (root: string) =>
+      standardForm.replace(sinePattern, "sin(" + root + ")");
+    if (!solutions.every((root) => equivalent(originalWithCandidate(root), "0"))) {
+      return null;
+    }
+
+    return {
+      solutions,
+      step: {
+        id: "trigonometric-sine-quadratic",
+        title: "Reducción polinómica con u = sin(x)",
+        rule: "QuadraticSineSubstitution",
+        latex:
+          variable + "\\in[0,2\\pi):\\quad " +
+          solutions.map((root) => variable + "=" + root).join(",\\quad "),
+        explanation:
+          "Se resuelve el polinomio cuadrático en u=sin(x), se generan ambas ramas reales del seno y se conservan únicamente las raíces distintas dentro de [0, 2π), verificadas en la ecuación original.",
+      },
+      contradiction: solutions.length === 0,
+    };
+  } catch {
+    return null;
+  }
 }
 
 /**
