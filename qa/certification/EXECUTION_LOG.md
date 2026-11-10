@@ -1,3 +1,16 @@
+## 2026-11-10 UTC — TRIG-EC-D-10 PASS_SCOPED bilateral
+
+- Contrato congelado: \(\sin x=2\) → sin solución real; gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas; sin nota separada.
+- Lite test `tests/trigonometryEcD10.audit.test.ts`: 2/2 PASS en Cumulative 42767488183 (log verificado). SHA `d32c724afca7159280758ed12eaf1d87baa75549`. CI 42767488254 SUCCESS; H1d 42767488334 SUCCESS; Scientific UI 42767488416 SUCCESS. Sin cambio de producto.
+- Plus tests `backend/tests/test_trigonometry_ec_d10.py`: ambos PASSED en Cumulative 42768654446 (log verificado). SHA `fea4d7c6c94ce15b28954f64bfb0423b90e17982`. CI 42768654580 SUCCESS; H1d 42768654442 SUCCESS; Native Syntax 42768654659 SUCCESS.
+- Fallo previo Plus `704fce9` (CI y Cumulative FAILURE) descartado como evidencia. `fea4d7c` acota el guard de dominio real a `x` en `solve_service.py`.
+- Sin dispatch manual ni REUSE. Alcance: solo \(\sin x=2\) como contradicción real; no es un resolvedor general ni certifica la ingesta LaTeX de Plus `/api/v1/evaluate`.
+- Resultado: PASS_SCOPED bilateral. Global OPEN; EV-D-01 /api/v1/evaluate BLOCKED, EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
+
+**Siguiente:** TRIG-EC-I-01 (sección 2.B Inversas): \(\arcsin x=\frac{\pi}{6}\) → \(x=\frac{1}{2}\). Recuperar la fila exacta del gzip y fijar el contrato antes de escribir pruebas test-first. No repetir gates verdes de EC-D-01..10 ni hacer dispatch manual.
+
+---
+
 ## 2026-11-10 UTC — TRIG-EC-D-09 PASS_SCOPED bilateral
 
 - Contrato congelado: \(\cot x=1,\ x\in[0,2\pi)\) → \(\{\pi/4,5\pi/4\}\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas en la fila; sin nota separada.

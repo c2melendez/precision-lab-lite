@@ -1,3 +1,22 @@
+# Actualización de certificación - 2026-11-10 UTC (r489; EC-D-10 PASS_SCOPED bilateral)
+
+## Trigonometría TRIG-EC-D-10 - PASS_SCOPED bilateral
+
+- Fila congelada del gzip legacy (blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb): \(\sin x=2\) → sin solución real. Tres columnas; sin nota separada.
+- Lite SHA técnico `d32c724afca7159280758ed12eaf1d87baa75549`. Test `tests/trigonometryEcD10.audit.test.ts`: 2/2 PASS en Cumulative 42767488183 (log verificado). CI 42767488254 SUCCESS; H1d 42767488334 SUCCESS; Scientific UI 42767488416 SUCCESS; Runner 42767488196 SUCCESS push-only.
+- Plus SHA técnico `fea4d7c6c94ce15b28954f64bfb0423b90e17982`. Tests `backend/tests/test_trigonometry_ec_d10.py`: ambos PASSED en Cumulative backend 42768654446 (log verificado). CI 42768654580 SUCCESS; H1d 42768654442 SUCCESS; Native Syntax 42768654659 SUCCESS; dependency 42768654564 SUCCESS; Runner 42768654622 SUCCESS push-only.
+- Intento previo Plus `704fce9` (CI 42767510829 y Cumulative 42767510903 FAILURE) no es evidencia; corregido en `fea4d7c`, que acota el guard de dominio real a la variable `x`.
+- Acta bilateral: qa/certification/TRIG_EC_D_10_ACCEPTANCE_2026-11-10.md en ambos repositorios.
+
+## Estado y siguiente acción
+
+- Último caso aceptado: TRIG-EC-D-10 — PASS_SCOPED bilateral. Sección 2.A Directas (EC-D-01..10) completa.
+- Siguiente: TRIG-EC-I-01, sección 2.B Inversas de la batería: \(\arcsin x=\frac{\pi}{6}\) → \(x=\frac{1}{2}\). Recuperar y fijar la fila exacta del gzip (blob 3a41b0c2…) antes de escribir pruebas; no inferir el contrato por el identificador.
+- Certificación global: OPEN. EV-D-01 en Plus /api/v1/evaluate sigue BLOCKED; EV-HI conserva PASS_SCOPED; S25, SG28, H2 y DIST siguen abiertos.
+- No repetir gates verdes de EC-D-01..10 ni ejecutar dispatch manual.
+
+---
+
 # Actualización de certificación - 2026-11-10 UTC (r488; EC-D-09 PASS_SCOPED bilateral)
 
 ## Trigonometría TRIG-EC-D-09 - PASS_SCOPED bilateral
