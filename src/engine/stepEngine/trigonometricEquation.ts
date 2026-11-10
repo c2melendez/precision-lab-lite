@@ -61,6 +61,16 @@ export function solveSineCosineUnitSumEquation(
   variable: string,
 ): TrigonometricEquationResult | null {
   try {
+    // Cheap structural prefilter first: this helper is called by the generic
+    // algebra solver, so unrelated equations must not pay for CAS simplification.
+    const compactInput = (left + "+" + right).replace(/\s+/g, "");
+    if (
+      !compactInput.includes("sin(" + variable + ")") ||
+      !compactInput.includes("cos(" + variable + ")")
+    ) {
+      return null;
+    }
+
     const standardForm = simplify("(" + left + ")-(" + right + ")");
     const expectedForms = [
       "sin(" + variable + ")+cos(" + variable + ")-1",
