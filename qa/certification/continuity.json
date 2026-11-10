@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 483,
+  "revision": 484,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "28964186aa61be64924d49e83e929ea724fc7383",
-  "baseline_case": "TRIG-EC-D-05",
+  "technical_baseline_sha": "2af7cefc410d1b7cb2c15483f3affd3473b54a89",
+  "baseline_case": "TRIG-EC-D-06",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EC-D-06",
-    "status": "IN_PROGRESS",
-    "previous_id": "TRIG-EC-D-05",
-    "action": "TRIG-EC-D-06 IN_PROGRESS. Fuente congelada (gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb): sin(2x)=cos(x), x∈[0,2π) → {π/6, π/2, 5π/6, 3π/2}. Lite final SHA 2af7cefc410d1b7cb2c15483f3affd3473b54a89: Cumulative 42746381569 SUCCESS (focal 2/2, 399 test files, 2408 passed, 8 expected fails, 34 TODO; skip=false, evidence_run_id vacío); CI 42746381637 SUCCESS (typecheck/audit/tests/build; mismos conteos); H1d 42746381850 SUCCESS 22/22, skip=false; Runner 42746381595 SUCCESS push-only. Scientific UI 42746381589 sigue IN_PROGRESS al corte. Plus primer test SHA 7b038743f96afc782997e059f5b4215985e231e3 devolvió -π/2 en lugar de 3π/2 dentro del intervalo. Corregido en SHA final Plus 2a7ff0f2b243597ef6476e665b4a102dcfffdd85 con resolvedor específico por factorization y solveset en [0,2π). Plus H1d 42746666095 SUCCESS 38/38; Native Syntax 42746666542 SUCCESS 52/52, ambos skip=false; CI 42746666105 y Cumulative 42746666257 tienen frontend SUCCESS y backend IN_PROGRESS al corte. Security/mutation 42746666307 continúa con plus-backend-mutmut, complementario. Próximo: revisar test focal en backend CI/Cumulative Plus y el cierre Scientific UI Lite; no repetir los gates verdes. No PASS bilateral ni acta hasta tener esa evidencia. Baseline EC-D-05 PASS_SCOPED, global OPEN.",
-    "updated_utc": "2026-11-10T03:07:00Z"
+    "id": "TRIG-EC-D-07",
+    "status": "RUN",
+    "previous_id": "TRIG-EC-D-06",
+    "action": "EC-D-06 aceptado PASS_SCOPED bilateral. Contrato congelado (gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb): sin(2x)=cos(x), x∈[0,2π) → {π/6,π/2,5π/6,3π/2}. Lite SHA técnico 2af7cefc410d1b7cb2c15483f3affd3473b54a89: Cumulative 42746381569 SUCCESS (focal 2/2; 399 archivos, 2408 passed, 8 expected fail, 34 TODO; skip=false/no REUSE); CI 42746381637 SUCCESS; H1d 42746381850 SUCCESS 22/22; Scientific UI 42746381589 SUCCESS 456/456; Runner 42746381595 SUCCESS push-only. Plus SHA técnico 2a7ff0f2b243597ef6476e665b4a102dcfffdd85: Cumulative 42746666257 SUCCESS con ambos tests focales explícitamente PASSED, backend 2933 passed, 1 skipped, 11 xfailed, skip=false; CI 42746666105 SUCCESS (backend 2933 passed); H1d 42746666095 SUCCESS 38/38; Native Syntax 42746666542 SUCCESS 52/52; Runner 42746666546 SUCCESS push-only. No repetir estos gates mientras no cambie el árbol. Siguiente TRIG-EC-D-07: fila exacta del gzip `csc x=2, x∈[0,2π)` → `{π/6,5π/6}`; tres columnas y sin nota independiente. Iniciar test-first bilateral; no inferir contrato ni repetir EC-D-01..06. Baseline TRIG-EC-D-06 PASS_SCOPED; global OPEN. EV-D-01 Plus /api/v1/evaluate BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos. Security/mutation Plus 42746666307 sigue independiente en plus-backend-mutmut; no se afirma su cierre.",
+    "updated_utc": "2026-11-10T03:10:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
