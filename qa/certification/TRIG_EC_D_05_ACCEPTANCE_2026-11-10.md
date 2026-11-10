@@ -34,3 +34,10 @@
 - Scientific UI Lite [42732509163](https://github.com/c2melendez/precision-lab-lite/actions/runs/42732509163) permanecía IN_PROGRESS al redactar el acta. No se afirma resultado para ese E2E complementario; no sustituye ni invalida las pruebas focales y gates matemáticos cerrados.
 - Resultado: **PASS_SCOPED bilateral**; no cierra la matriz trigonométrica ni la certificación global.
 - Certificación global: **OPEN**. EV-D-01 en Plus \`/api/v1/evaluate\` permanece BLOCKED; EV-HI conserva PASS_SCOPED; S25, SG28, H2 y DIST siguen abiertos. Plus security/mutation [42730139009](https://github.com/c2melendez/precision-lab-plus/actions/runs/42730139009) sigue IN_PROGRESS en \`plus-backend-mutmut\`, independiente y no bloqueante para EC-D-05.
+
+
+## Addendum — verificación posterior de Scientific UI Lite
+
+- El acta se redactó mientras Scientific UI [42732509163](https://github.com/c2melendez/precision-lab-lite/actions/runs/42732509163) seguía IN_PROGRESS. La ejecución terminó posteriormente en SUCCESS sobre el mismo SHA técnico `28964186aa61be64924d49e83e929ea724fc7383`.
+- Job `scientific-ui`: 456 pruebas pasadas (desktop/tablet/mobile). Guard `skip=false`, `evidence_run_id=""`; ejecución real, sin reutilización.
+- Este E2E es evidencia complementaria. No cambia el oráculo matemático ni amplía el alcance de EC-D-05.
