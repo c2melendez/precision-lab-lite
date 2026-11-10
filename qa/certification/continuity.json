@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 484,
+  "revision": 485,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "2af7cefc410d1b7cb2c15483f3affd3473b54a89",
@@ -40,10 +40,10 @@
   },
   "next_action": {
     "id": "TRIG-EC-D-07",
-    "status": "RUN",
+    "status": "IN_PROGRESS",
     "previous_id": "TRIG-EC-D-06",
-    "action": "EC-D-06 aceptado PASS_SCOPED bilateral. Contrato congelado (gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb): sin(2x)=cos(x), x∈[0,2π) → {π/6,π/2,5π/6,3π/2}. Lite SHA técnico 2af7cefc410d1b7cb2c15483f3affd3473b54a89: Cumulative 42746381569 SUCCESS (focal 2/2; 399 archivos, 2408 passed, 8 expected fail, 34 TODO; skip=false/no REUSE); CI 42746381637 SUCCESS; H1d 42746381850 SUCCESS 22/22; Scientific UI 42746381589 SUCCESS 456/456; Runner 42746381595 SUCCESS push-only. Plus SHA técnico 2a7ff0f2b243597ef6476e665b4a102dcfffdd85: Cumulative 42746666257 SUCCESS con ambos tests focales explícitamente PASSED, backend 2933 passed, 1 skipped, 11 xfailed, skip=false; CI 42746666105 SUCCESS (backend 2933 passed); H1d 42746666095 SUCCESS 38/38; Native Syntax 42746666542 SUCCESS 52/52; Runner 42746666546 SUCCESS push-only. No repetir estos gates mientras no cambie el árbol. Siguiente TRIG-EC-D-07: fila exacta del gzip `csc x=2, x∈[0,2π)` → `{π/6,5π/6}`; tres columnas y sin nota independiente. Iniciar test-first bilateral; no inferir contrato ni repetir EC-D-01..06. Baseline TRIG-EC-D-06 PASS_SCOPED; global OPEN. EV-D-01 Plus /api/v1/evaluate BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos. Security/mutation Plus 42746666307 sigue independiente en plus-backend-mutmut; no se afirma su cierre.",
-    "updated_utc": "2026-11-10T03:10:00Z"
+    "action": "EC-D-07 IN_PROGRESS. Fila congelada del gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb: csc(x)=2, x∈[0,2π) → {π/6,5π/6}; tres columnas, sin nota separada. Lite SHA final 3ad626602b3639310921ba6fd27952293732be39: CI 42748347965 SUCCESS (focal 2/2, 400 archivos, 2410 passed, 8 expected fail, 34 TODO), Cumulative 42748348152 SUCCESS (focal 2/2, skip=false, evidence_run_id vacío; mismos conteos), H1d 42748347964 SUCCESS; Scientific UI 42748348035 IN_PROGRESS. Primer intento Lite identificó gap: parser reescribe csc(x) a 1/sin(x), solver genérico no encuentra raíces. Fix acotado en trigonometricEquation.ts + algebra.ts reconoce 1/sin(x)=2, reutiliza sin(x)=1/2 y verifica ecuación original. Plus test-only SHA 864c4cf68bb88e331b6df3b64a0ddb2354b047af. Plus H1d 42748028455 SUCCESS; Runner 42748028867 SUCCESS; CI 42748028579 y Cumulative 42748028770 frontend SUCCESS, backend IN_PROGRESS. Próximo: confirmar focal y total de backend Plus, cerrar Scientific UI Lite; no repetir gates ya verdes ni dispatch manual. No PASS bilateral hasta completar evidencia. Baseline EC-D-06 PASS_SCOPED; global OPEN.",
+    "updated_utc": "2026-11-10T03:20:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
