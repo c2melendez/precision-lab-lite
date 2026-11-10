@@ -1,17 +1,3 @@
-## 2026-11-10 UTC — TRIG-EC-I-02 PASS_SCOPED bilateral
-
-- Contrato congelado: \(\arccos x=\frac{\pi}{3}\) → \(x=\frac{1}{2}\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas; sin nota separada.
-- Lite test-first `tests/trigonometryEcI02.audit.test.ts` (commit `ecfc2eb2ebdb2734c215352c58b228863bac3475`): falló con «No se encontró una solución algebraica para x». CI 42799259561 y Cumulative 42799259668 FAILURE. Clasificado como producto: el solver no tenía rama para arccos.
-- Corrección en `d11a8429f075a4cd96171f544bf9247c84fcbc43`: `solveInverseCosineEquation` en `trigonometricEquation.ts`, enrutado desde `algebra.ts` después de la rama de arcsin, con rango principal [0, π], verificación por sustitución y regresión `tests/trigonometryInverseCosineRegression.audit.test.ts` (`arccos(x)=π/3`, forma invertida y `arccos(x)=4` sin raíz).
-- Corridas de d11a842: CI 42800767008, Cumulative 42800766990 (2426 passed, 8 expected fail, 34 todo), H1d 42800767370, Scientific UI 42800766911 y Runner 42800767136, todas SUCCESS. Sin dispatch manual ni REUSE.
-- Plus test-first `backend/tests/test_trigonometry_ec_i02.py` (commit `aa28a790478058d1a9ff8e26e030ce1af2c46dbb`): PASS sin cambio de producto. Cumulative 42799271495 SUCCESS (2945 passed, EC-I-02 2/2); CI 42799271134 y H1d 42799271230 SUCCESS.
-- Alcance: solo `arccos(x)=π/3` en radianes con variable `x`, más su forma invertida y el caso fuera de rango en Lite. No es un resolvedor general de arccos ni certifica la ingesta LaTeX literal de Plus `/api/v1/evaluate`.
-- Resultado: PASS_SCOPED bilateral. Global OPEN; EV-D-01 BLOCKED, EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
-
-**Siguiente:** TRIG-EC-I-03 (\(\arctan x=\frac{\pi}{4}\) → \(x=1\)), test-first en ambos repositorios.
-
----
-
 ## 2026-11-10 UTC — TRIG-EC-I-01 PASS_SCOPED bilateral
 
 - Contrato congelado: \(\arcsin x=\frac{\pi}{6}\) → \(x=\frac{1}{2}\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas; sin nota separada.

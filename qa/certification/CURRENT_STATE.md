@@ -1,22 +1,3 @@
-# Actualización de certificación - 2026-11-10 UTC (r491; EC-I-02 PASS_SCOPED bilateral)
-
-## Trigonometría TRIG-EC-I-02 - PASS_SCOPED bilateral
-
-- Fila congelada del gzip legacy (blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb): \(\arccos x=\frac{\pi}{3}\) → \(x=\frac{1}{2}\). Tres columnas; sin nota separada.
-- Lite test-first `ecfc2eb` falló con «No se encontró una solución algebraica para x» (CI 42799259561 y Cumulative 42799259668 FAILURE): hueco real de producto. Corrección `d11a8429f075a4cd96171f544bf9247c84fcbc43`: `solveInverseCosineEquation` en `trigonometricEquation.ts`, enrutado desde `algebra.ts`, con rama principal [0, π] y verificación por sustitución. Tests `tests/trigonometryEcI02.audit.test.ts` (2/2) y `tests/trigonometryInverseCosineRegression.audit.test.ts` (3/3). CI 42800767008 SUCCESS; Cumulative 42800766990 SUCCESS (2426 passed); H1d 42800767370 SUCCESS; Scientific UI 42800766911 SUCCESS; Runner 42800767136 SUCCESS push-only.
-- Plus SHA técnico `aa28a790478058d1a9ff8e26e030ce1af2c46dbb`, solo prueba `backend/tests/test_trigonometry_ec_i02.py`; sin cambio de producto. Cumulative 42799271495 SUCCESS (2945 passed; EC-I-02 2/2 PASSED); CI 42799271134 SUCCESS; H1d 42799271230 SUCCESS; Runner 42799271368 SUCCESS push-only.
-- Acta bilateral: qa/certification/TRIG_EC_I_02_ACCEPTANCE_2026-11-10.md en ambos repositorios.
-- continuity.json no se modificó en esta pasada; su esquema sigue pendiente de revisión.
-
-## Estado y siguiente acción
-
-- Último caso aceptado: TRIG-EC-I-02 — PASS_SCOPED bilateral.
-- Siguiente: TRIG-EC-I-03, sección 2.B Inversas: \(\arctan x=\frac{\pi}{4}\) → \(x=1\). Recuperar la fila exacta del gzip y escribir primero las pruebas focales en ambos repositorios.
-- Certificación global: OPEN. EV-D-01 en Plus /api/v1/evaluate sigue BLOCKED; EV-HI conserva PASS_SCOPED; S25, SG28, H2 y DIST siguen abiertos.
-- No repetir gates verdes de EC-D-01..10 ni de EC-I-01..02; no ejecutar dispatch manual.
-
----
-
 # Actualización de certificación - 2026-11-10 UTC (r490; EC-I-01 PASS_SCOPED bilateral)
 
 ## Trigonometría TRIG-EC-I-01 - PASS_SCOPED bilateral
