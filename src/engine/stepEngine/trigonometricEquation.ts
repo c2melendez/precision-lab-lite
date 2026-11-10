@@ -211,6 +211,69 @@ export function solveQuadraticSineEquation(
  * merged set is deduplicated, interval-filtered, sorted and verified in
  * the original equation. This is not a general mixed-trigonometric solver.
  */
+/**
+ * Solves only the frozen EC-D-07 equation csc(x)=2 on [0, 2*pi).
+ * The parser rewrites csc(x) to 1/sin(x); this helper recognizes that exact
+ * normalized form, reuses the direct sine solver for sin(x)=1/2, and verifies
+ * every candidate against the reciprocal equation. It is not a generic
+ * reciprocal-trigonometric solver.
+ */
+export function solveCosecantEqualsTwoEquation(
+  left: string,
+  right: string,
+  variable: string,
+): TrigonometricEquationResult | null {
+  const stripOuterParens = (value: string) => {
+    const compact = value.replace(/\s+/g, "");
+    return compact.startsWith("(") && compact.endsWith(")")
+      ? compact.slice(1, -1)
+      : compact;
+  };
+  const normalizedLeft = stripOuterParens(left);
+  const normalizedRight = stripOuterParens(right);
+  const reciprocal = "1/sin(" + variable + ")";
+  const isTarget = normalizedLeft === reciprocal && normalizedRight === "2";
+  const isReversed = normalizedRight === reciprocal && normalizedLeft === "2";
+  if (!isTarget && !isReversed) return null;
+
+  const sineResult = solveDirectTrigonometricEquation(
+    "sin(" + variable + ")",
+    "1/2",
+    variable,
+  );
+  if (sineResult === null) return null;
+
+  const solutions = uniqueRoots(sineResult.solutions)
+    .filter((root) => {
+      const value = numericValue(root);
+      return value !== null && value >= 0 && value < 2 * Math.PI;
+    })
+    .sort((a, b) => (numericValue(a) ?? 0) - (numericValue(b) ?? 0));
+
+  if (solutions.length !== 2) return null;
+  if (!solutions.every((root) => equivalent("1/sin(" + root + ")", "2"))) {
+    return null;
+  }
+
+  const rendered = solutions.map((root) => variable + "=" + toLatex(root)).join(",\\\\quad ");
+  return {
+    solutions,
+    step: {
+      id: "trigonometric-cosecant-reciprocal",
+      title: "Reducción de cosecante a seno",
+      rule: "CosecantReciprocalIdentity",
+      latex:
+        "\\\\frac{1}{\\\\sin(" + variable + ")}=2,\\\\quad " +
+        variable + "\\\\in[0,2\\\\pi):\\\\quad " + rendered,
+      explanation:
+        "Se usa csc(x)=1/sin(x), por lo que sin(x)=1/2. Se obtienen las dos " +
+        "ramas del seno dentro de [0, 2π), y cada raíz se verifica en la " +
+        "ecuación recíproca original.",
+    },
+    contradiction: false,
+  };
+}
+
 export function solveDoubleAngleSineEqualsCosineEquation(
   left: string,
   right: string,
