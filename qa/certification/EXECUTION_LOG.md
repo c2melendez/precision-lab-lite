@@ -1,3 +1,16 @@
+## 2026-11-10 UTC — TRIG-EC-D-05 PASS_SCOPED bilateral
+
+- Fila congelada: EC-D-05, `sin x+cos x=1`, `x∈[0,2π)` → `{0,π/2}`; fuente gzip blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`.
+- Lite SHA `28964186aa61be64924d49e83e929ea724fc7383`; `tests/trigonometryEcD05.audit.test.ts` 2/2. Cumulative 42732509088 y CI 42732509176 SUCCESS; 398 archivos, 2,406 passed, 8 XFAIL, 34 TODO. Cumulative guard skip=false, evidence_run_id vacío. H1d 42732509506 SUCCESS 22/22. Scientific UI 42732509163 SUCCESS 456/456 (terminó después de la redacción inicial del acta; guard skip=false). Runner 42732509098 SUCCESS push-only.
+- Plus SHA `971774693b5e3bd35cebe188be2fa8d9d96a55dd`; `backend/tests/test_trigonometry_ec_d05.py` ambos tests PASSED explícitamente en Cumulative 42731929122. Backend 2,931 passed, 1 skipped, 11 xfailed; skip=false, evidence_run_id vacío. CI 42731929126 SUCCESS; H1d 42731929115 SUCCESS 38/38; Runner 42731929156 SUCCESS push-only.
+- Lite usa sustitución de medio ángulo `t=tan(x/2)` para este contrato; Plus resuelve por su ruta general. Ambas verificaciones sustituyen en la ecuación original y comprueban el intervalo.
+- Alcance: ecuación concreta, dos raíces exactas en `[0,2π)`, entrada de cálculo ASCII/normalizada. No se certifica ingesta literal LaTeX en Plus /api/v1/evaluate ni generalización a otras combinaciones mixtas.
+- Acta bilateral: `qa/certification/TRIG_EC_D_05_ACCEPTANCE_2026-11-10.md`. Global OPEN; EV-D-01 BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
+
+**Siguiente:** TRIG-EC-D-06; recuperar la fila exacta desde el gzip antes de definir contrato o tests. No repetir EC-D-01..05.
+
+---
+
 ## 2026-11-10 UTC — TRIG-EC-D-04 PASS_SCOPED bilateral
 
 - Contrato congelado: \(2\sin^{2}x-\sin x-1=0,\ x\in[0,2\pi)\) → \(\{\pi/2,7\pi/6,11\pi/6\}\). Fuente blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb.
