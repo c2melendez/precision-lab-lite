@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 487,
+  "revision": 488,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "b8c3ffcf7815c373c7f46849dc547d1cf1864de8",
-  "baseline_case": "TRIG-EC-D-08",
+  "technical_baseline_sha": "b5cbbd727a9493c3606378a007f44350e550b3f2",
+  "baseline_case": "TRIG-EC-D-09",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EC-D-09",
+    "id": "TRIG-EC-D-10",
     "status": "RUN",
-    "previous_id": "TRIG-EC-D-08",
-    "action": "Recuperar directamente la fila TRIG-EC-D-09 desde qa/certification/legacy_sources/ejercicios_trigonometria.md.gz; anclar las columnas, entrada y salida originales y fijar ecuación, intervalo y conjunto esperado antes de escribir pruebas. Continuar test-first bilateral, sin inferir el contrato desde el ID. EC-D-08 ya tiene PASS_SCOPED bilateral: Lite SHA b8c3ffcf7815c373c7f46849dc547d1cf1864de8 (CI 42754588522, Cumulative 42754588411, H1d 42754588566, Scientific UI 42754588396, Runner 42754588787 SUCCESS; focal 2/2; 2,412 passed, 8 expected fail, 34 TODO; guards skip=false/sin REUSE; Scientific UI 456/456) y Plus SHA fb430768589eabfb930b03790d135b879ddf9109 (CI 42755121784, Cumulative 42755121582, H1d 42755121628, Native Syntax 42755121609, Runner 42755121603 SUCCESS; focal 2/2; backend 2,937 passed, 1 skipped, 11 xfailed; guards skip=false/sin REUSE). No repetir gates verdes de EC-D-01..08 ni hacer dispatch manual. Mantener global OPEN y separar EV-D-01 /api/v1/evaluate BLOCKED, EV-HI PASS_SCOPED, S25, SG28, H2 y DIST abiertos.",
-    "updated_utc": "2026-11-10T04:27:00Z"
+    "previous_id": "TRIG-EC-D-09",
+    "action": "Recuperar directamente la fila TRIG-EC-D-10 desde qa/certification/legacy_sources/ejercicios_trigonometria.md.gz; anclar las columnas, entrada y salida originales y fijar el oráculo de ausencia de soluciones reales antes de escribir pruebas. Continuar test-first bilateral. EC-D-09 ya tiene PASS_SCOPED bilateral: Lite SHA b5cbbd727a9493c3606378a007f44350e550b3f2 (CI 42765580144, Cumulative 42765579797, H1d 42765579607, Scientific UI 42765579621, Runner 42765579737 SUCCESS; focal 2/2; 2,414 passed, 8 expected fail, 34 TODO; guards skip=false/sin REUSE; Scientific UI 456/456) y Plus SHA 0b18ddf9f7ca0a94e905867ea83d62d88e07b656 (CI 42765601827, Cumulative 42765602623, H1d 42765602038, Native Syntax 42765602152, Runner 42765601905 SUCCESS; focal 2/2; backend 2,939 passed, 1 skipped, 11 xfailed; guards skip=false/sin REUSE). No repetir gates verdes de EC-D-01..09 ni hacer dispatch manual. Mantener global OPEN y separar EV-D-01 /api/v1/evaluate BLOCKED, EV-HI PASS_SCOPED, S25, SG28, H2 y DIST abiertos.",
+    "updated_utc": "2026-11-10T06:08:00Z"
   },
   "blockers": [],
   "prose_only_paths": [

@@ -1,3 +1,19 @@
+## 2026-11-10 UTC — TRIG-EC-D-09 PASS_SCOPED bilateral
+
+- Contrato congelado: \(\cot x=1,\ x\in[0,2\pi)\) → \(\{\pi/4,5\pi/4\}\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas en la fila; sin nota separada.
+- Lite test tests/trigonometryEcD09.audit.test.ts: 2/2 PASS en CI y Cumulative. SHA b5cbbd727a9493c3606378a007f44350e550b3f2. CI 42765580144 SUCCESS (402 archivos, 2,414 passed, 8 expected fail, 34 TODO); Cumulative 42765579797 SUCCESS (focal 2/2; mismos totales; guard skip=false, evidence_run_id vacío); H1d 42765579607 SUCCESS (22/22); Scientific UI 42765579621 SUCCESS (456/456; guard skip=false, evidence_run_id vacío); Runner 42765579737 SUCCESS push-only.
+- Plus test backend/tests/test_trigonometry_ec_d09.py: ambos tests PASSED explícitamente en Cumulative 42765602623. SHA 0b18ddf9f7ca0a94e905867ea83d62d88e07b656. Backend 2,939 passed, 1 skipped, 11 xfailed; guard skip=false, evidence_run_id vacío. CI 42765601827 SUCCESS (backend y frontend 150 archivos, 1,055 passed, 28 TODO); H1d 42765602038 SUCCESS (38/38); Native Syntax 42765602152 SUCCESS (26 desktop y 52 tablet/mobile); Runner 42765601905 SUCCESS push-only.
+- El test-first de Lite detectó que, tras normalizar cot(x) a cos(x)/sin(x), el resolvedor genérico no hallaba solución; el helper acotado reconoce sólo cos(x)/sin(x)=1, enumera arctan(1) y +π dentro de [0,2π) y verifica cada raíz en la ecuación original.
+- El test-first de Plus detectó que el camino genérico devolvía sólo π/4. El helper final resuelve tan(x)=1 sobre [0,2π), exige exactamente dos raíces y verifica ambas en cot(x)=1. Sólo cuenta el SHA final 0b18ddf9.
+- Sin dispatch manual ni REUSE. Alcance: únicamente cot(x)=1, sus dos raíces exactas en [0,2π) y la sustitución; no se certifica un resolvedor general de cotangentes ni la ingesta literal LaTeX de Plus /api/v1/evaluate.
+- Resultado: PASS_SCOPED bilateral. Global OPEN; EV-D-01 /api/v1/evaluate BLOCKED, EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
+
+**Siguiente:** TRIG-EC-D-10. Recuperar la fila exacta de la matriz congelada (`\sin x=2` → sin solución real) y fijar el oráculo de ausencia de soluciones reales antes de comenzar test-first. No repetir gates verdes de EC-D-01..09 ni hacer dispatch manual.
+
+- Seguimiento independiente al corte r488: workflow de dependencias/seguridad Plus 42765601805 sigue IN_PROGRESS en mutation/plus-backend-mutmut; validación de solicitud y seguridad backend ya finalizaron SUCCESS. La mutación es independiente del oráculo EC-D-09 y no altera su PASS_SCOPED.
+
+---
+
 ## 2026-11-10 UTC — TRIG-EC-D-08 PASS_SCOPED bilateral
 
 - Contrato congelado: \(\sec x=-2,\ x\in[0,2\pi)\) → \(\{2\pi/3,4\pi/3\}\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas en la fila; sin nota separada.

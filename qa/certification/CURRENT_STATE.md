@@ -1,3 +1,23 @@
+# Actualización de certificación - 2026-11-10 UTC (r488; EC-D-09 PASS_SCOPED bilateral)
+
+## Trigonometría TRIG-EC-D-09 - PASS_SCOPED bilateral
+
+- Fila congelada del gzip legacy (blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb): \(\cot x=1,\quad x\in[0,2\pi)\) → \(\{\pi/4,\ 5\pi/4\}\). La fila original tiene tres columnas (ID, ejercicio y resultado esperado); no existe una nota separada.
+- Oráculo: exactamente dos raíces distintas, ambas en el intervalo semiabierto y verificadas por sustitución en la ecuación cotangente original.
+- Lite SHA técnico `b5cbbd727a9493c3606378a007f44350e550b3f2`. Test focal tests/trigonometryEcD09.audit.test.ts: 2/2 PASS en CI y Cumulative. CI 42765580144 SUCCESS (402 archivos, 2,414 passed, 8 expected fail, 34 TODO); Cumulative 42765579797 SUCCESS (focal 2/2; mismos totales; skip=false, evidence_run_id vacío); H1d 42765579607 SUCCESS (22/22); Scientific UI 42765579621 SUCCESS (456/456 desktop/tablet/mobile; skip=false, evidence_run_id vacío); Runner 42765579737 SUCCESS push-only.
+- Plus SHA técnico `0b18ddf9f7ca0a94e905867ea83d62d88e07b656`. Test focal backend/tests/test_trigonometry_ec_d09.py: ambos tests PASSED explícitamente en Cumulative 42765602623. Backend 2,939 passed, 1 skipped, 11 xfailed; guard skip=false y evidence_run_id vacío. CI 42765601827 SUCCESS (backend y frontend 150 archivos, 1,055 passed, 28 TODO); H1d 42765602038 SUCCESS (38/38); Native Syntax 42765602152 SUCCESS (26 desktop y 52 tablet/mobile); Runner 42765601905 SUCCESS push-only.
+- Lite normaliza cot(x) a cos(x)/sin(x); el helper acotado reconoce sólo esa forma, reutiliza la rama arctan(1), enumera ambas ramas en [0,2π) y verifica cada raíz en la ecuación original. Plus resuelve tan(x)=1 sobre [0,2π), exige exactamente dos raíces y las verifica en cot(x)=1. No son resolvedores generales de cotangentes.
+- Acta bilateral: qa/certification/TRIG_EC_D_09_ACCEPTANCE_2026-11-10.md en ambos repositorios.
+
+## Estado y siguiente acción
+
+- Último caso aceptado: TRIG-EC-D-09 - PASS_SCOPED bilateral.
+- Siguiente: TRIG-EC-D-10; recuperar primero la fila fuente exacta del gzip (`\sin x=2` → sin solución real) y fijar el oráculo de ausencia de soluciones reales antes de escribir pruebas.
+- Certificación global: OPEN. EV-D-01 en Plus /api/v1/evaluate sigue BLOCKED; EV-HI conserva PASS_SCOPED; S25, SG28, H2 y DIST siguen abiertos.
+- No repetir gates verdes de EC-D-01..09 ni ejecutar dispatch manual.
+
+---
+
 # Actualización de certificación — 2026-11-10 UTC (r487; EC-D-08 PASS_SCOPED bilateral)
 
 ## Trigonometría TRIG-EC-D-08 — PASS_SCOPED bilateral
