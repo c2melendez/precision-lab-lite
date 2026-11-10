@@ -13,7 +13,7 @@ import { derivative, evaluate, solveEquation, substituteExact, ErrorCode } from 
 import type { Step, AppError } from "../../types";
 import { solveRealAbsoluteCases } from "../absPiecewise";
 import { solveRealRadicalEquation } from "../radicalCases";
-import { solveDirectTrigonometricEquation, solveDoubleAngleSineEqualsCosineEquation, solveQuadraticSineEquation, solveSineCosineUnitSumEquation } from "./trigonometricEquation";
+import { solveCosecantEqualsTwoEquation, solveDirectTrigonometricEquation, solveDoubleAngleSineEqualsCosineEquation, solveQuadraticSineEquation, solveSineCosineUnitSumEquation } from "./trigonometricEquation";
 
 export interface AlgebraSolveResult {
   steps: Step[];
@@ -329,6 +329,12 @@ export function solveAlgebra(
       explanation: "Raíces de los tramos verificadas en la ecuación original.",
     });
     return { steps, solutionsAlgebrite: absoluteCases.solutions };
+  }
+
+  const cosecantResult = solveCosecantEqualsTwoEquation(leftAlgebrite, rightAlgebrite, variable);
+  if (cosecantResult !== null) {
+    steps.push(cosecantResult.step);
+    return { steps, solutionsAlgebrite: cosecantResult.solutions };
   }
 
   const doubleAngleResult = solveDoubleAngleSineEqualsCosineEquation(leftAlgebrite, rightAlgebrite, variable);
