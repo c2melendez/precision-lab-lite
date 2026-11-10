@@ -1,3 +1,15 @@
+## 2026-11-10 UTC — TRIG-EC-D-07 IN_PROGRESS; Lite focal PASS, Plus backend pendiente
+
+- Contrato congelado: `csc(x)=2`, `x∈[0,2π)` → `{π/6,5π/6}`; gzip blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`. Tres columnas en la fila, sin nota separada.
+- Lite primer intento `0bb1e92e...`: el test focal falló porque el solver genérico no encontraba solución. Product fix focal en `trigonometricEquation.ts` + `algebra.ts`, SHA final `3ad626602b3639310921ba6fd27952293732be39`; reconoce solo la forma normalizada `1/sin(x)=2`, reutiliza el solver de seno y verifica la ecuación recíproca.
+- Lite final: CI 42748347965 SUCCESS (EC-D-07 2/2; 400 test files, 2,410 passed, 8 expected fail, 34 TODO); Cumulative 42748348152 SUCCESS (focal 2/2, mismo total, guard skip=false/evidence_run_id vacío); H1d 42748347964 SUCCESS. Scientific UI 42748348035 IN_PROGRESS en desktop/tablet/mobile al corte.
+- Plus test-only SHA `864c4cf68bb88e331b6df3b64a0ddb2354b047af`; test `backend/tests/test_trigonometry_ec_d07.py`. Plus H1d 42748028455 SUCCESS; Runner 42748028867 SUCCESS. CI 42748028579 y Cumulative 42748028770 frontend SUCCESS, backend IN_PROGRESS al corte. No modificar producto Plus hasta ver si SymPy ya devuelve las raíces exigidas.
+- No aceptación bilateral ni acta todavía. Baseline EC-D-06 PASS_SCOPED; global OPEN.
+
+**Siguiente:** verificar los dos tests focales y el total backend en CI/Cumulative Plus; cerrar Scientific UI Lite. No repetir Lite gates verdes ni Plus H1d/Runner; no dispatch manual.
+
+---
+
 ## 2026-11-10 UTC — TRIG-EC-D-06 PASS_SCOPED bilateral
 
 - Contrato congelado: \`sin(2x)=cos(x)\`, \`x∈[0,2π)\` → \`{π/6,π/2,5π/6,3π/2}\`; gzip blob \`3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb\`.
