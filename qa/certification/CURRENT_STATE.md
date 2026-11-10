@@ -1,3 +1,28 @@
+# Actualización de certificación — 2026-11-10 UTC (r483; EC-D-06 IN_PROGRESS)
+
+## Trigonometría TRIG-EC-D-06 — IN_PROGRESS; Lite focal y gates principales en verde
+
+- Fila congelada recuperada directamente del gzip, blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`: `sin(2x)=cos(x)`, intervalo `[0,2π)`; resultado exacto `{π/6, π/2, 5π/6, 3π/2}`.
+- Test focal `tests/trigonometryEcD06.audit.test.ts`: anclaje de la fila original y verificación del conjunto exacto de cuatro raíces, intervalo semiabierto y sustitución en la ecuación original.
+- Primer intento técnico Lite SHA `9ce1e18de656ea05b39741e0c17fd47ee4176377`: el test nuevo reprodujo un gap real del solver genérico (`No se encontró una solución algebraica para "x"`); el resto de la suite pasó.
+- Corrección de producto acotada en `src/engine/stepEngine/trigonometricEquation.ts` y orquestación en `src/engine/stepEngine/algebra.ts`: factoriza solo esta ecuación congelada usando `sin(2x)=2sin(x)cos(x)`, genera raíces de `cos(x)=0` y `sin(x)=1/2`, y verifica cada candidato contra la ecuación original. No es un resolvedor genérico para ecuaciones trigonométricas mixtas.
+- SHA técnico final Lite `2af7cefc410d1b7cb2c15483f3affd3473b54a89`.
+- Lite Cumulative [42746381569](https://github.com/c2melendez/precision-lab-lite/actions/runs/42746381569) SUCCESS: EC-D-06 focal 2/2; 399 archivos, 2,408 passed, 8 expected fail, 34 TODO; guard `skip=false`, `evidence_run_id=""`.
+- Lite CI [42746381637](https://github.com/c2melendez/precision-lab-lite/actions/runs/42746381637) SUCCESS: EC-D-06 focal 2/2; typecheck, audit, unit/parity y build SUCCESS; 399 archivos, 2,408 passed, 8 expected fail, 34 TODO.
+- Lite H1d [42746381850](https://github.com/c2melendez/precision-lab-lite/actions/runs/42746381850) SUCCESS, 22/22; guard `skip=false`, sin reutilización. Runner [42746381595](https://github.com/c2melendez/precision-lab-lite/actions/runs/42746381595) SUCCESS, push-only.
+- Lite Scientific UI [42746381589](https://github.com/c2melendez/precision-lab-lite/actions/runs/42746381589) seguía IN_PROGRESS al corte, job `scientific-ui` dentro de `Native desktop/tablet/mobile scientific result verification`. Es complementario; no se ha contabilizado como SUCCESS.
+
+## Estado bilateral y límites
+
+- Plus creó su prueba focal, pero el primer SHA de prueba `7b038743f96afc782997e059f5b4215985e231e3` devolvió `-π/2` en lugar de la representación exigida `3π/2` dentro de `[0,2π)`. Se corrigió con un resolvedor acotado por intervalo en Plus; su SHA final de código es `2a7ff0f2b243597ef6476e665b4a102dcfffdd85`.
+- Plus H1d [42746666095](https://github.com/c2melendez/precision-lab-plus/actions/runs/42746666095) SUCCESS (38/38; guard skip=false); Native Syntax [42746666542](https://github.com/c2melendez/precision-lab-plus/actions/runs/42746666542) SUCCESS (52/52; guard skip=false). Plus CI [42746666105](https://github.com/c2melendez/precision-lab-plus/actions/runs/42746666105) y Cumulative [42746666257](https://github.com/c2melendez/precision-lab-plus/actions/runs/42746666257) tenían frontend SUCCESS y backend IN_PROGRESS al corte. No hay todavía evidencia final del test Plus en esos gates.
+- Gate de seguridad/mutación Plus [42746666307](https://github.com/c2melendez/precision-lab-plus/actions/runs/42746666307) sigue IN_PROGRESS en `plus-backend-mutmut`; es complementario y no sustituye la evidencia del solver.
+- **No emitir PASS_SCOPED bilateral ni acta de aceptación** hasta revisar el test focal en el backend Plus final y que CI/Cumulative Plus cierren SUCCESS. El baseline aceptado sigue EC-D-05 PASS_SCOPED; certificación global OPEN.
+
+**Siguiente:** terminar la inspección de logs de CI/Cumulative Plus sobre SHA `2a7ff0f2...`; confirmar explícitamente los dos tests EC-D-06 y su total de backend. Verificar si Lite Scientific UI [42746381589] termina SUCCESS. Si todo lo exigido cierra verde, redactar acta bilateral y avanzar a EC-D-07. No repetir los gates Lite que ya están SUCCESS ni H1d/Native Plus. Sin dispatch manual.
+
+---
+
 # Actualización de certificación — 2026-11-10 UTC (r482; EC-D-05 PASS_SCOPED)
 
 ## Trigonometría TRIG-EC-D-05 — PASS_SCOPED bilateral
