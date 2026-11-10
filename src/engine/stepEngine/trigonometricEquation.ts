@@ -48,6 +48,79 @@ function uniqueRoots(values: string[]): string[] {
  * branches in [0, 2*pi), then checked against the original equation.
  * This does not handle mixed trig functions or transformed arguments.
  */
+/**
+ * Solves the frozen direct mixed sine/cosine equation by the tangent
+ * half-angle substitution t=tan(x/2). The transformed numerator is a
+ * polynomial in t; candidates are mapped back to [0, 2*pi) and checked
+ * against the original trigonometric equation. This helper intentionally
+ * accepts only sin(x)+cos(x)=1 (either term order), not arbitrary mixtures.
+ */
+export function solveSineCosineUnitSumEquation(
+  left: string,
+  right: string,
+  variable: string,
+): TrigonometricEquationResult | null {
+  try {
+    const standardForm = simplify("(" + left + ")-(" + right + ")");
+    const expectedForms = [
+      "sin(" + variable + ")+cos(" + variable + ")-1",
+      "cos(" + variable + ")+sin(" + variable + ")-1",
+    ];
+    if (!expectedForms.some((expected) => equivalent(standardForm, expected))) {
+      return null;
+    }
+
+    const transformed = [
+      "(2*t)/(1+t^2)",
+      "(1-t^2)/(1+t^2)",
+    ].join("+") + "-1";
+    const numerator = simplify("numerator(simplify(" + transformed + "))");
+    const parameterRoots = solveEquation(numerator, "t");
+    if (parameterRoots.length < 1 || parameterRoots.length > 2) return null;
+
+    const candidates = parameterRoots.map((root) =>
+      simplify("2*arctan(" + root + ")"),
+    ).map((angle) => {
+      const value = numericValue(angle);
+      if (value === null) return angle;
+      return value < 0 ? simplify("(" + angle + ")+2*pi") : angle;
+    });
+
+    const solutions = uniqueRoots(candidates)
+      .filter((root) => {
+        const value = numericValue(root);
+        return value !== null && value >= 0 && value < 2 * Math.PI;
+      })
+      .sort((a, b) => (numericValue(a) ?? 0) - (numericValue(b) ?? 0));
+
+    if (solutions.length !== 2) return null;
+    if (!solutions.every((root) => equivalent(
+      "sin(" + root + ")+cos(" + root + ")",
+      "1",
+    ))) {
+      return null;
+    }
+
+    const rootsLatex = solutions.map((root) => variable + "=" + toLatex(root)).join(",\\\\quad ");
+    return {
+      solutions,
+      step: {
+        id: "trigonometric-half-angle",
+        title: "Sustitución de medio ángulo",
+        rule: "TangentHalfAngleSubstitution",
+        latex: variable + "\\\\in[0,2\\\\pi):\\\\quad " + rootsLatex,
+        explanation:
+          "Con t=tan(x/2), se reescriben sin(x)=2t/(1+t²) y cos(x)=(1-t²)/(1+t²). " +
+          "Se resuelve el numerador polinómico en t, se recuperan los ángulos del intervalo " +
+          "y se verifican en la ecuación original.",
+      },
+      contradiction: false,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export function solveQuadraticSineEquation(
   left: string,
   right: string,
