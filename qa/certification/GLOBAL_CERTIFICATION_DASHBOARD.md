@@ -1,3 +1,19 @@
+## 2026-11-10 UTC — r482: Trigonometría EC-D-05 PASS_SCOPED bilateral
+
+**EC-D-05 — PASS_SCOPED bilateral.** `sin(x)+cos(x)=1`, `x∈[0,2π)`; conjunto exacto `{0,π/2}`.
+
+- Lite SHA `28964186aa61be64924d49e83e929ea724fc7383`: CI 42732509176 SUCCESS (398 archivos, 2,406 passed); Cumulative 42732509088 SUCCESS (focal 2/2, skip=false, evidence_run_id vacío); H1d 42732509506 SUCCESS (22/22); Scientific UI 42732509163 SUCCESS (456/456, skip=false); Runner 42732509098 SUCCESS push-only.
+- Plus SHA `971774693b5e3bd35cebe188be2fa8d9d96a55dd`: Cumulative 42731929122 SUCCESS (focal 2/2 explícito; backend 2,931 passed, 1 skipped, 11 xfailed, skip=false); CI 42731929126 SUCCESS; H1d 42731929115 SUCCESS (38/38); Runner 42731929156 SUCCESS push-only.
+- Los gates acumulativos y H1d muestran `skip=false` y `evidence_run_id=""`; las pruebas fueron ejecutadas, no reutilizadas. No hubo dispatch manual.
+- Acta bilateral: `qa/certification/TRIG_EC_D_05_ACCEPTANCE_2026-11-10.md`. El E2E complementario de Lite finalizó posteriormente en 456/456.
+- Alcance limitado a la ecuación y al conjunto exacto de raíces en `[0,2π)`; no certifica ingesta literal LaTeX en Plus /api/v1/evaluate.
+
+**Siguiente:** TRIG-EC-D-06; recuperar primero la fila exacta del gzip, fijar su contrato y continuar test-first bilateral. No repetir EC-D-01..05.
+
+La certificación global permanece **OPEN**. EV-D-01 Plus /api/v1/evaluate sigue BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
+
+---
+
 ## 2026-11-10 UTC — r481: Trigonometría EC-D-04 PASS_SCOPED bilateral
 
 **EC-D-04 — PASS_SCOPED bilateral.** \(2\sin^{2}x-\sin x-1=0\), \(x\in[0,2\pi)\); raíces exactas \(\{\pi/2,7\pi/6,11\pi/6\}\).
