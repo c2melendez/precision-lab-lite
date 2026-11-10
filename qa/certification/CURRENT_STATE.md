@@ -1,3 +1,25 @@
+# Actualización de certificación — 2026-11-10 UTC (r480; EC-D-04 IN_PROGRESS)
+
+## Trigonometría EC-D-04 — pruebas focales bilaterales PASS; gates finales pendientes
+
+- Contrato congelado desde \`qa/certification/legacy_sources/ejercicios_trigonometria.md.gz\`, blob \`3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb\`: \(2\sin^{2}x-\sin x-1=0,\ x\in[0,2\pi)\) → \(\{\frac{\pi}{2},\frac{7\pi}{6},\frac{11\pi}{6}\}\).
+- Lite SHA técnico verificado \`9663f1625fcca7cc668c61d55f844453eb90dfd0\`. Test \`tests/trigonometryEcD04.audit.test.ts\`: anclaje de fila + conjunto exacto de tres raíces, intervalo semiabierto y sustitución en la ecuación original; ambas pruebas PASSED explícitamente.
+- Lite [CI 42730206344](https://github.com/c2melendez/precision-lab-lite/actions/runs/42730206344) SUCCESS: 397 archivos, 2,404 passed, 8 XFAIL esperados y 34 TODO; typecheck, auditoría y build completados.
+- Lite [Cumulative 42730206373](https://github.com/c2melendez/precision-lab-lite/actions/runs/42730206373) SUCCESS: EC-D-04 2/2; 397 archivos, 2,404 passed, 8 XFAIL y 34 TODO. Guard \`skip=false\`, \`evidence_run_id=""\`; ejecución real sobre este SHA.
+- Lite [H1d 42730206364](https://github.com/c2melendez/precision-lab-lite/actions/runs/42730206364) SUCCESS: 22/22, guard \`skip=false\`, sin reutilización. [Runner 42730206411](https://github.com/c2melendez/precision-lab-lite/actions/runs/42730206411) SUCCESS, push-only.
+- Lite [Scientific UI 42730206324](https://github.com/c2melendez/precision-lab-lite/actions/runs/42730206324) seguía IN_PROGRESS al corte en \`Native desktop/tablet/mobile scientific result verification\`; complementario, no usado como oráculo matemático de EC-D-04.
+- Plus SHA técnico verificado \`633ec35dc8de728c657cd00907328a2ff6f5c2eb\`. Test \`backend/tests/test_trigonometry_ec_d04.py\`: ancla la fila y verifica \`POST /api/v1/solve\` con entrada ASCII; el resultado esperado es exactamente el conjunto de tres raíces dentro de \([0,2\pi)\).
+- Plus [Cumulative 42730138929](https://github.com/c2melendez/precision-lab-plus/actions/runs/42730138929) SUCCESS: ambos tests EC-D-04 PASSED explícitamente; backend 2,929 passed, 1 skipped, 11 xfailed. Guard \`skip=false\`, \`evidence_run_id=""\`. Frontend: 150 archivos, 1,055 passed, 28 TODO; typecheck y build SUCCESS.
+- Plus [H1d 42730138616](https://github.com/c2melendez/precision-lab-plus/actions/runs/42730138616) SUCCESS: 38/38, guard \`skip=false\`, sin reutilización. [Native Syntax and Recovery 42730138595](https://github.com/c2melendez/precision-lab-plus/actions/runs/42730138595) SUCCESS: 52/52 desktop/tablet/mobile. [Runner 42730138951](https://github.com/c2melendez/precision-lab-plus/actions/runs/42730138951) SUCCESS, push-only.
+- Plus [CI 42730138619](https://github.com/c2melendez/precision-lab-plus/actions/runs/42730138619) seguía IN_PROGRESS al corte; frontend SUCCESS y backend tests aún activos. Este gate debe concluir antes de cerrar el caso.
+- Implementación Lite: sustitución acotada \(u=\sin x\), resolución del polinomio cuadrático, generación de ambas ramas reales, normalización a \([0,2\pi)\), deduplicación y sustitución en la ecuación original. Plus aplica el mismo contrato de intervalo para esta familia. Los cambios no amplían el alcance a funciones trigonométricas compuestas o argumentos transformados.
+- Alcance: cálculo por canales de texto ASCII/forma normalizada y anclaje a la fila congelada. No se certifica ingesta literal LaTeX en Plus \`/api/v1/evaluate\` ni una UI específica para este ejercicio.
+- Estado: **IN_PROGRESS**; no crear acta de aceptación ni mover el puntero a EC-D-05 hasta que Plus CI cierre SUCCESS. El E2E Scientific UI de Lite se registra como complementario si continúa activo. Baseline aceptado: EC-D-03 PASS_SCOPED. Certificación global **OPEN**.
+
+**Siguiente:** verificar Plus CI 42730138619; si termina SUCCESS, emitir aceptación PASS_SCOPED bilateral con el alcance anterior y avanzar a EC-D-05. No repetir CI/Cumulative/H1d/Native ya verdes. No cambiar EV-D-01 BLOCKED, EV-HI PASS_SCOPED ni los pendientes S25, SG28, H2 y DIST.
+
+---
+
 # Actualización de certificación — 2026-11-09 UTC (r479; EC-D-03 PASS_SCOPED)
 
 ## Trigonometría EC-D-03 — PASS_SCOPED bilateral
