@@ -1,3 +1,28 @@
+# Actualización de certificación — 2026-11-10 UTC (r481; EC-D-04 PASS_SCOPED)
+
+## Trigonometría EC-D-04 — PASS_SCOPED bilateral
+
+- Contrato congelado: \(2\sin^{2}x-\sin x-1=0,\ x\in[0,2\pi)\) → \(\{\frac{\pi}{2},\frac{7\pi}{6},\frac{11\pi}{6}\}\). Fuente: qa/certification/legacy_sources/ejercicios_trigonometria.md.gz, blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb.
+- Lite SHA 9663f1625fcca7cc668c61d55f844453eb90dfd0. Test tests/trigonometryEcD04.audit.test.ts: anclaje de la fila y oráculo 2/2 PASS; exactamente tres raíces, intervalo semiabierto y sustitución en la ecuación original.
+- CI 42730206344 SUCCESS: typecheck, audit, unit/parity y build; 397 archivos, 2,404 passed, 8 XFAIL esperados, 34 TODO.
+- Cumulative 42730206373 SUCCESS: focal 2/2; guard skip=false, evidence_run_id vacío; 397 archivos, 2,404 passed, 8 XFAIL y 34 TODO.
+- H1d 42730206364 SUCCESS: 22/22, guard skip=false y sin reutilización.
+- Scientific UI 42730206324 SUCCESS: 456/456 desktop/tablet/mobile; guard skip=false y evidence_run_id vacío.
+- Runner 42730206411 SUCCESS, push-only; sin dispatch manual.
+- Implementación acotada: sustitución u=sin(x), resolución del polinomio cuadrático, generación de ambas ramas, normalización a [0,2π), deduplicación y verificación de cada raíz en la ecuación original.
+- Acta bilateral: qa/certification/TRIG_EC_D_04_ACCEPTANCE_2026-11-10.md.
+
+## Alcance y límites
+
+- Se certifica el conjunto exacto de tres raíces reales dentro de [0,2π); no se afirma que ese conjunto finito represente todas las soluciones sobre R.
+- La ecuación se calcula mediante texto ASCII/forma normalizada. La fila LaTeX original se ancla como fixture, pero no se certifica ingesta literal LaTeX en todos los endpoints ni una UI dedicada a este ejercicio.
+- No cierra la matriz trigonométrica ni IN625. Certificación global **OPEN**.
+- EV-D-01 Plus /api/v1/evaluate sigue BLOCKED; EV-HI continúa PASS_SCOPED; S25, SG28, H2 y DIST siguen abiertos.
+
+**Siguiente:** TRIG-EC-D-05. Recuperar primero la fila exacta del gzip congelado, fijar entrada/intervalo/salida y después test-first bilateral. No inferir el contrato por el nombre del caso ni repetir los gates EC-D-01..04 ya aceptados.
+
+---
+
 # Actualización de certificación — 2026-11-10 UTC (r480; EC-D-04 IN_PROGRESS)
 
 ## Trigonometría EC-D-04 — pruebas focales bilaterales PASS; gates finales pendientes
