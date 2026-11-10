@@ -1,3 +1,16 @@
+## 2026-11-10 UTC — r483: EC-D-06 IN_PROGRESS; Lite focal/gates verdes, Plus backend pendiente
+
+**Contrato congelado:** `sin(2x)=cos(x)`, `x∈[0,2π)` → `{π/6,π/2,5π/6,3π/2}`.
+
+- Lite SHA `2af7cefc410d1b7cb2c15483f3affd3473b54a89`: Cumulative 42746381569 SUCCESS (focal 2/2, 399 archivos, 2,408 passed, 8 expected fail, 34 TODO, skip=false/no REUSE); CI 42746381637 SUCCESS (typecheck, audit, tests, build; mismos conteos); H1d 42746381850 SUCCESS (22/22); Runner 42746381595 SUCCESS push-only. Scientific UI 42746381589 seguía IN_PROGRESS al corte.
+- Plus SHA `2a7ff0f2b243597ef6476e665b4a102dcfffdd85`: H1d 42746666095 SUCCESS (38/38, skip=false); Native Syntax 42746666542 SUCCESS (52/52, skip=false); Runner 42746666546 SUCCESS push-only. CI 42746666105 y Cumulative 42746666257: frontend SUCCESS, backend IN_PROGRESS al corte.
+- El primer test Plus reveló normalización de raíz `-π/2` fuera del intervalo frente a `3π/2`; la corrección acotada usa `solveset` en `[0,2π)`. El job de seguridad/mutación 42746666307 continúa independientemente en `plus-backend-mutmut`.
+- Sin acta ni aceptación bilateral todavía. No repetir gates Lite exitosos ni Plus H1d/Native. No hubo dispatch manual.
+
+**Siguiente:** confirmar los dos tests focales en logs backend de CI/Cumulative Plus y el cierre Scientific UI Lite. Solo entonces considerar PASS_SCOPED bilateral. Global OPEN; baseline EC-D-05 PASS_SCOPED; EV-D-01 Plus /api/v1/evaluate BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
+
+---
+
 ## 2026-11-10 UTC — r482: Trigonometría EC-D-05 PASS_SCOPED bilateral
 
 **EC-D-05 — PASS_SCOPED bilateral.** `sin(x)+cos(x)=1`, `x∈[0,2π)`; conjunto exacto `{0,π/2}`.
