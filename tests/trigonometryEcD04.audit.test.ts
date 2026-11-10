@@ -15,11 +15,11 @@ describe("Trigonometry EC-D-04: 2*sin(x)^2-sin(x)-1=0 on [0,2*pi)", () => {
   it("anchors the equation, interval and exact three-root oracle in the frozen matrix", () => {
     const source = gunzipSync(readFileSync(SOURCE_GZ)).toString("utf8");
     expect(source).toMatch(/\|\s*EC-D-04\s*\|/);
-    expect(source).toContain(String.raw\`2\sin^{2}x-\sin x-1=0\`);
-    expect(source).toContain(String.raw\`x\in[0,2\pi)\`);
-    expect(source).toContain(String.raw\`x=\frac{\pi}{2}\`);
-    expect(source).toContain(String.raw\`\frac{7\pi}{6}\`);
-    expect(source).toContain(String.raw\`\frac{11\pi}{6}\`);
+    expect(source).toContain("2\\sin^{2}x-\\sin x-1=0");
+    expect(source).toContain("x\\in[0,2\\pi)");
+    expect(source).toContain("x=\\frac{\\pi}{2}");
+    expect(source).toContain("\\frac{7\\pi}{6}");
+    expect(source).toContain("\\frac{11\\pi}{6}");
   });
 
   it("returns exactly the three distinct roots in [0,2*pi), each verified in the original equation", () => {
