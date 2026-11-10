@@ -1,3 +1,17 @@
+## 2026-11-10 UTC — r481: Trigonometría EC-D-04 PASS_SCOPED bilateral
+
+**EC-D-04 — PASS_SCOPED bilateral.** \(2\sin^{2}x-\sin x-1=0\), \(x\in[0,2\pi)\); raíces exactas \(\{\pi/2,7\pi/6,11\pi/6\}\).
+
+- Lite SHA 9663f1625fcca7cc668c61d55f844453eb90dfd0: CI 42730206344 SUCCESS; Cumulative 42730206373 SUCCESS (focal 2/2; 397 archivos, 2,404 passed); H1d 42730206364 SUCCESS (22/22); Scientific UI 42730206324 SUCCESS (456/456); Runner 42730206411 SUCCESS push-only.
+- Plus SHA 633ec35dc8de728c657cd00907328a2ff6f5c2eb: Cumulative 42730138929 SUCCESS (ambos tests focales PASSED; backend 2,929 passed); CI 42730138619 SUCCESS; H1d 42730138616 SUCCESS (38/38); Native Syntax 42730138595 SUCCESS (52/52); Runner 42730138951 SUCCESS push-only.
+- Guards skip=false y evidence_run_id vacío en Cumulative/H1d y en los gates específicos de interfaz; pruebas focales ejecutadas realmente. No hubo dispatch manual.
+- Acta: qa/certification/TRIG_EC_D_04_ACCEPTANCE_2026-11-10.md. Alcance limitado al conjunto exacto en [0,2π); no certifica ingesta literal LaTeX en Plus /api/v1/evaluate.
+- Próximo: TRIG-EC-D-05, recuperando primero su fila exacta del gzip y fijando su contrato antes del test-first.
+
+Certificación global **OPEN**. EV-D-01 Plus /api/v1/evaluate sigue BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos. Plus security/mutation 42730139009 continúa IN_PROGRESS en plus-backend-mutmut, independiente de EC-D-04.
+
+---
+
 ## 2026-11-06 UTC — r447: AS-B-29 Lite gates PASS; Plus Cumulative+CI PASS; H1d WAIT
 
 **AS-B-29 todavía no está aceptado bilateralmente; resta Plus H1d.** Lite SHA `1004174a0cd6ad29c9b252097f2664175c277918`: [Cumulative 42292655779](https://github.com/c2melendez/precision-lab-lite/actions/runs/42292655779) SUCCESS (focal 4/4; 2,267 passed), [CI 42292655724](https://github.com/c2melendez/precision-lab-lite/actions/runs/42292655724) SUCCESS (focal 4/4), [H1d 42292655725](https://github.com/c2melendez/precision-lab-lite/actions/runs/42292655725) SUCCESS (22/22), [Scientific UI 42292655744](https://github.com/c2melendez/precision-lab-lite/actions/runs/42292655744) SUCCESS (456/456).
