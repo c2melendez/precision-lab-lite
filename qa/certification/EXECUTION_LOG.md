@@ -1,3 +1,17 @@
+## 2026-11-10 UTC — TRIG-EC-D-06 PASS_SCOPED bilateral
+
+- Contrato congelado: \`sin(2x)=cos(x)\`, \`x∈[0,2π)\` → \`{π/6,π/2,5π/6,3π/2}\`; gzip blob \`3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb\`.
+- Lite SHA \`2af7cefc410d1b7cb2c15483f3affd3473b54a89\`: Cumulative 42746381569 SUCCESS (focal 2/2; 399 files, 2,408 passed, 8 expected fail, 34 TODO; guard skip=false/no REUSE); CI 42746381637 SUCCESS; H1d 42746381850 SUCCESS 22/22; Scientific UI 42746381589 SUCCESS 456/456; Runner 42746381595 SUCCESS push-only.
+- Plus SHA \`2a7ff0f2b243597ef6476e665b4a102dcfffdd85\`: Cumulative 42746666257 SUCCESS; log explícito: \`test_ec_d06_source_row_and_exact_oracle_are_frozen PASSED\` y \`test_ec_d06_http_solve_returns_exact_four_roots_in_half_open_interval PASSED\`; backend 2,933 passed, 1 skipped, 11 xfailed; guard skip=false/no REUSE. CI 42746666105 SUCCESS con backend 2,933 passed; H1d 42746666095 SUCCESS 38/38; Native Syntax 42746666542 SUCCESS 52/52; Runner 42746666546 SUCCESS push-only.
+- El test-first inicial Plus (SHA \`7b038743...\`) encontró una representación \`-π/2\` fuera del intervalo; el helper de \`solve_service.py\` normaliza el conjunto finito sobre \`[0,2π)\`. No usar el intento inicial como evidencia de aceptación.
+- Implementación Lite acotada a esta ecuación en \`trigonometricEquation.ts\` + \`algebra.ts\`; Plus acotada en \`solve_service.py\`. Ambos comprueban sustitución en la ecuación original.
+- Acta \`TRIG_EC_D_06_ACCEPTANCE_2026-11-10.md\`. Alcance: ecuación concreta/intervalo congelado; no ingesta literal LaTeX en \`/api/v1/evaluate\` ni generalización a toda \`R\`.
+- Seguridad/mutación Plus 42746666307 seguía IN_PROGRESS en \`plus-backend-mutmut\`, separada de este PASS_SCOPED. Global OPEN; EV-D-01 BLOCKED, EV-HI PASS_SCOPED, S25/SG28/H2/DIST abiertos.
+
+**Siguiente:** TRIG-EC-D-07; fila congelada \`csc(x)=2\`, \`x∈[0,2π)\` → \`{π/6,5π/6}\`. Recuperada del gzip, sin columna de nota. Test-first bilateral. No repetir EC-D-01..06.
+
+---
+
 ## 2026-11-10 UTC — TRIG-EC-D-06 IN_PROGRESS; Lite PASS focal, Plus corregido pendiente de CI/Cumulative
 
 - Fuente congelada (gzip blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`): `sin(2x)=cos(x)`, `x∈[0,2π)` → `{π/6,π/2,5π/6,3π/2}`.
