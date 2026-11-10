@@ -609,3 +609,57 @@ export function solveDirectTrigonometricEquation(
     return null;
   }
 }
+
+/**
+ * Solves only the inverse-sine equation arcsin(variable)=constant (or its
+ * reversed form) on the real domain. The constant must lie in the principal
+ * range [-pi/2, pi/2]; the single candidate x=sin(constant) is accepted only
+ * when arcsin(candidate) is equivalent to the constant. Out-of-range constants
+ * and other inverse functions return null and stay on the generic path. This
+ * is not a general inverse-trigonometry solver.
+ */
+export function solveInverseSineEquation(
+  left: string,
+  right: string,
+  variable: string,
+): TrigonometricEquationResult | null {
+  const compactLeft = left.replace(/\s+/g, "");
+  const compactRight = right.replace(/\s+/g, "");
+  const target = "arcsin(" + variable + ")";
+
+  let constant: string;
+  if (compactLeft === target) {
+    constant = right;
+  } else if (compactRight === target) {
+    constant = left;
+  } else {
+    return null;
+  }
+
+  const value = numericValue(constant);
+  if (value === null) return null;
+  const halfPi = Math.PI / 2;
+  if (value < -halfPi - 1e-12 || value > halfPi + 1e-12) return null;
+
+  const candidate = simplify("sin(" + constant + ")");
+  const candidateValue = numericValue(candidate);
+  if (candidateValue === null || candidateValue < -1 || candidateValue > 1) return null;
+  if (!equivalent("arcsin(" + candidate + ")", constant)) return null;
+
+  return {
+    solutions: [candidate],
+    step: {
+      id: "trigonometric-inverse-sine",
+      title: "Inversa del seno en la rama principal",
+      rule: "InverseSineBranch",
+      latex:
+        "\\arcsin(" + variable + ")=" + toLatex(constant) + ",\\quad " +
+        variable + "=" + toLatex(candidate),
+      explanation:
+        "La constante está en el rango principal [-π/2, π/2] de arcsin, así que la " +
+        "única solución real es " + variable + " = sin(" + constant + "). Se verifica " +
+        "que arcsin(" + candidate + ") coincide con la constante original.",
+    },
+    contradiction: false,
+  };
+}

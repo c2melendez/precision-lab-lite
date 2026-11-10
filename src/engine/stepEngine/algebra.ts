@@ -18,6 +18,7 @@ import {
   solveCotangentEqualsOneEquation,
   solveDirectTrigonometricEquation,
   solveDoubleAngleSineEqualsCosineEquation,
+  solveInverseSineEquation,
   solveQuadraticSineEquation,
   solveSecantEqualsMinusTwoEquation,
   solveSineCosineUnitSumEquation,
@@ -337,6 +338,12 @@ export function solveAlgebra(
       explanation: "Raíces de los tramos verificadas en la ecuación original.",
     });
     return { steps, solutionsAlgebrite: absoluteCases.solutions };
+  }
+
+  const inverseSineResult = solveInverseSineEquation(leftAlgebrite, rightAlgebrite, variable);
+  if (inverseSineResult !== null) {
+    steps.push(inverseSineResult.step);
+    return { steps, solutionsAlgebrite: inverseSineResult.solutions };
   }
 
   const cosecantResult = solveCosecantEqualsTwoEquation(leftAlgebrite, rightAlgebrite, variable);
