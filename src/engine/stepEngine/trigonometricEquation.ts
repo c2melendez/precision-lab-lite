@@ -274,6 +274,68 @@ export function solveCosecantEqualsTwoEquation(
   };
 }
 
+/**
+ * Solves only the frozen EC-D-08 equation sec(x)=-2 on [0, 2*pi).
+ * The parser rewrites sec(x) to 1/cos(x); this helper recognizes only
+ * that exact normalized reciprocal form, reuses cos(x)=-1/2 and verifies
+ * every candidate against 1/cos(x)=-2. It is not a generic secant solver.
+ */
+export function solveSecantEqualsMinusTwoEquation(
+  left: string,
+  right: string,
+  variable: string,
+): TrigonometricEquationResult | null {
+  const stripOuterParens = (value: string) => {
+    const compact = value.replace(/\s+/g, "");
+    return compact.startsWith("(") && compact.endsWith(")")
+      ? compact.slice(1, -1)
+      : compact;
+  };
+  const normalizedLeft = stripOuterParens(left);
+  const normalizedRight = stripOuterParens(right);
+  const reciprocal = "1/cos(" + variable + ")";
+  const isTarget = normalizedLeft === reciprocal && normalizedRight === "-2";
+  const isReversed = normalizedRight === reciprocal && normalizedLeft === "-2";
+  if (!isTarget && !isReversed) return null;
+
+  const cosineResult = solveDirectTrigonometricEquation(
+    "cos(" + variable + ")",
+    "-1/2",
+    variable,
+  );
+  if (cosineResult === null) return null;
+
+  const solutions = uniqueRoots(cosineResult.solutions)
+    .filter((root) => {
+      const value = numericValue(root);
+      return value !== null && value >= 0 && value < 2 * Math.PI;
+    })
+    .sort((a, b) => (numericValue(a) ?? 0) - (numericValue(b) ?? 0));
+
+  if (solutions.length !== 2) return null;
+  if (!solutions.every((root) => equivalent("1/cos(" + root + ")", "-2"))) {
+    return null;
+  }
+
+  const rendered = solutions.map((root) => variable + "=" + toLatex(root)).join(",\\quad ");
+  return {
+    solutions,
+    step: {
+      id: "trigonometric-secant-reciprocal",
+      title: "Reducción de secante a coseno",
+      rule: "SecantReciprocalIdentity",
+      latex:
+        "1/\\cos(" + variable + ")=-2,\\quad " +
+        variable + "\\in[0,2\\pi):\\quad " + rendered,
+      explanation:
+        "Se usa sec(x)=1/cos(x), por lo que cos(x)=-1/2. Se obtienen las dos " +
+        "ramas del coseno dentro de [0, 2π), y cada raíz se verifica en la " +
+        "ecuación recíproca original.",
+    },
+    contradiction: false,
+  };
+}
+
 export function solveDoubleAngleSineEqualsCosineEquation(
   left: string,
   right: string,
