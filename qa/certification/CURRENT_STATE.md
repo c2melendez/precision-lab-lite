@@ -1,3 +1,23 @@
+# Actualización de certificación — 2026-11-10 UTC (r486; EC-D-07 PASS_SCOPED bilateral)
+
+## Trigonometría TRIG-EC-D-07 — PASS_SCOPED bilateral
+
+- Fila congelada de qa/certification/legacy_sources/ejercicios_trigonometria.md.gz, blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb: \(\csc x=2,\ x\in[0,2\pi)\) → \(\{\pi/6,5\pi/6\}\). La fila original tiene tres columnas (ID, ejercicio, resultado esperado); no existe nota separada.
+- Oráculo focal: exactamente dos raíces distintas, ambas en el intervalo semiabierto y ambas verificadas por sustitución en la ecuación recíproca original.
+- Lite SHA técnico 3ad626602b3639310921ba6fd27952293732be39. Test tests/trigonometryEcD07.audit.test.ts: 2/2 PASS en CI y Cumulative. CI 42748347965 SUCCESS; Cumulative 42748348152 SUCCESS (400 archivos, 2,410 passed, 8 expected fail, 34 TODO; skip=false, sin evidencia reutilizada); H1d 42748347964 SUCCESS (22/22); Scientific UI 42748348035 SUCCESS (456/456 desktop/tablet/mobile); Runner 42748348237 SUCCESS push-only.
+- Plus SHA de prueba 864c4cf68bb88e331b6df3b64a0ddb2354b047af, sin cambios de producto. Test backend/tests/test_trigonometry_ec_d07.py: 2/2 PASS explícitos en Cumulative 42748028770 SUCCESS (backend 2,935 passed, 1 skipped, 11 xfailed; frontend SUCCESS; skip=false, sin reutilización); CI 42748028579 SUCCESS (backend 2,935 passed; frontend 150 archivos, 1,055 passed, 28 TODO); H1d 42748028455 SUCCESS (38/38); Runner 42748028867 SUCCESS push-only.
+- Lite requiere helper acotado porque el parser normaliza csc(x) a 1/sin(x); el helper reconoce únicamente la forma normalizada 1/sin(x)=2, reutiliza el caso de seno y verifica la ecuación recíproca. Plus resuelve el caso sin cambios del motor.
+- No se certifica ingesta LaTeX literal en Plus /api/v1/evaluate ni se afirma resolución general de funciones recíprocas.
+
+## Estado y siguiente acción
+
+- Último caso aceptado: TRIG-EC-D-07 — PASS_SCOPED bilateral.
+- Siguiente: TRIG-EC-D-08; recuperar primero la fila fuente exacta y fijar su contrato antes de escribir pruebas.
+- Certificación global: OPEN. EV-D-01 /api/v1/evaluate continúa BLOCKED; EV-HI permanece PASS_SCOPED; S25, SG28, H2 y DIST siguen abiertos.
+- No repetir los gates ya verdes de EC-D-01..07 ni ejecutar dispatch manual.
+
+---
+
 # Actualización de certificación — 2026-11-10 UTC (r485; EC-D-07 IN_PROGRESS)
 
 ## Trigonometría TRIG-EC-D-07 — Lite focal aprobado; E2E complementario pendiente
