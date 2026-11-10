@@ -1,3 +1,19 @@
+## 2026-11-10 UTC — TRIG-EC-D-04: focal bilateral PASS; CI Plus pendiente
+
+- Fuente congelada (blob \`3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb\`): \(2\sin^{2}x-\sin x-1=0,\ x\in[0,2\pi)\) → \(\{\pi/2,7\pi/6,11\pi/6\}\). Test ancla ecuación, intervalo y las tres raíces exactas.
+- Lite SHA \`9663f1625fcca7cc668c61d55f844453eb90dfd0\`: \`tests/trigonometryEcD04.audit.test.ts\` 2/2 PASS en CI y Cumulative, incluyendo conjunto exacto, pertenencia a \([0,2\pi)\) y sustitución en la ecuación original.
+- Lite CI 42730206344 SUCCESS (397 archivos, 2,404 passed, 8 XFAIL, 34 TODO; typecheck/audit/build); Cumulative 42730206373 SUCCESS (focal 2/2, guard skip=false y evidence_run_id vacío; mismas cifras); H1d 42730206364 SUCCESS (22/22, skip=false); Runner 42730206411 SUCCESS push-only. Scientific UI 42730206324 seguía IN_PROGRESS al corte; complementario.
+- Lite implementación final: \`solveQuadraticSineEquation\` en \`src/engine/stepEngine/trigonometricEquation.ts\`, integrada en \`src/engine/stepEngine/algebra.ts\`. Corrige la forma \(P(\sin x)=0\) cuadrática en un período principal; no pretende resolver familias compuestas arbitrarias. Un SHA intermedio falló typecheck por escapes de regex y queda superseded; el SHA final \`9663f162\` pasó typecheck y ejecutó focal.
+- Plus SHA \`633ec35dc8de728c657cd00907328a2ff6f5c2eb\`: Cumulative 42730138929 SUCCESS; los dos tests \`test_ec_d04_source_row_and_exact_oracle_are_frozen\` y \`test_ec_d04_http_solve_returns_exact_three_roots_in_half_open_interval\` PASSED explícitamente; backend 2,929 passed, 1 skipped, 11 xfailed; guard skip=false, evidence_run_id vacío.
+- Plus frontend Cumulative SUCCESS: 150 archivos, 1,055 passed, 28 TODO, typecheck/build SUCCESS. H1d 42730138616 SUCCESS (38/38, skip=false); Native Syntax and Recovery 42730138595 SUCCESS (52/52); Runner 42730138951 SUCCESS push-only.
+- Plus CI 42730138619 seguía IN_PROGRESS en Backend tests al corte; frontend SUCCESS. No hay aceptación bilateral hasta que CI concluya.
+- Cambio Plus: \`_quadratic_sine_interval_result\` en \`backend/app/services/solve_service.py\`, que resuelve el polinomio en \(u=\sin x\), construye ambas ramas, normaliza a \([0,2\pi)\) y verifica en la ecuación original. La entrada HTTP se probó en ASCII; no se certifica ingesta literal LaTeX ni \`/api/v1/evaluate\`.
+- Estado: EC-D-04 IN_PROGRESS; sin acta de aceptación y sin avance a EC-D-05. Baseline EC-D-03 PASS_SCOPED; global OPEN. No repetir gates ya verdes.
+
+**Siguiente:** revisar conclusión/logs de Plus CI 42730138619. Si SUCCESS, redactar acta bilateral PASS_SCOPED y actualizar CURRENT_STATE/continuity a EC-D-05. Si falla, aislar primero el error sin repetir los gates verdes.
+
+---
+
 ## 2026-11-09 UTC — TRIG-EC-D-03 PASS_SCOPED bilateral
 
 - Fuente congelada: blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb; fila EC-D-03 = \(\tan x=\sqrt{3}\) → \(x=\frac{\pi}{3}+k\pi,\ k\in\mathbb{Z}\). La fila exige una familia infinita completa.
