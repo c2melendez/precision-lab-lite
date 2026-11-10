@@ -1,3 +1,24 @@
+# Actualización de certificación — 2026-11-10 UTC (r484; EC-D-06 PASS_SCOPED)
+
+## Trigonometría TRIG-EC-D-06 — PASS_SCOPED bilateral
+
+- Fila congelada: \`sin(2x)=cos(x)\`, \`x∈[0,2π)\` → \`{π/6, π/2, 5π/6, 3π/2}\`; gzip blob \`3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb\`. La fuente contiene tres columnas, sin nota independiente.
+- Lite SHA \`2af7cefc410d1b7cb2c15483f3affd3473b54a89\`: test \`tests/trigonometryEcD06.audit.test.ts\` 2/2; Cumulative 42746381569 SUCCESS (399 archivos, 2,408 passed, 8 expected fail, 34 TODO, skip=false, sin REUSE); CI 42746381637 SUCCESS (typecheck/audit/tests/build, mismos conteos); H1d 42746381850 SUCCESS (22/22, skip=false); Scientific UI 42746381589 SUCCESS (456/456 desktop/tablet/mobile, skip=false); Runner 42746381595 SUCCESS push-only.
+- Plus SHA \`2a7ff0f2b243597ef6476e665b4a102dcfffdd85\`: test \`backend/tests/test_trigonometry_ec_d06.py\` 2/2 PASS explícito en Cumulative 42746666257; backend 2,933 passed, 1 skipped, 11 xfailed, skip=false. CI 42746666105 SUCCESS (mismos conteos backend y frontend SUCCESS); H1d 42746666095 SUCCESS 38/38 (skip=false); Native Syntax 42746666542 SUCCESS 52/52 (skip=false); Runner 42746666546 SUCCESS push-only.
+- Lite factoriza este caso concreto mediante identidad de ángulo doble; Plus normaliza las raíces al intervalo usando solveset sobre los factores. Cada candidato se sustituye en la ecuación original.
+- Acta bilateral: \`qa/certification/TRIG_EC_D_06_ACCEPTANCE_2026-11-10.md\`.
+
+## Alcance y límites
+
+- PASS_SCOPED cubre solo la ecuación congelada y el conjunto exacto de cuatro raíces en \`[0,2π)\`; no generaliza a ecuaciones trigonométricas mixtas arbitrarias ni a familias sobre toda \`R\`.
+- Las entradas de cálculo son ASCII/forma normalizada. No se certifica aquí ingesta literal LaTeX en Plus \`/api/v1/evaluate\`.
+- Plus \`Certification dependency and security gates\` 42746666307 seguía ejecutando \`plus-backend-mutmut\`, independiente de la aceptación matemática EC-D-06.
+- Certificación global **OPEN**. EV-D-01 Plus \`/api/v1/evaluate\` BLOCKED; EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
+
+**Siguiente:** TRIG-EC-D-07, cuya fila congelada ya fue recuperada: \`csc(x)=2,\ x∈[0,2π)\` → \`{π/6,5π/6}\`. Fijar el contrato literal y continuar test-first bilateral. No repetir EC-D-01..06.
+
+---
+
 # Actualización de certificación — 2026-11-10 UTC (r483; EC-D-06 IN_PROGRESS)
 
 ## Trigonometría TRIG-EC-D-06 — IN_PROGRESS; Lite focal y gates principales en verde
