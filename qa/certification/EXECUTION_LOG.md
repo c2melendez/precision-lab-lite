@@ -1,3 +1,18 @@
+## 2026-11-10 UTC — TRIG-EC-D-08 PASS_SCOPED bilateral
+
+- Contrato congelado: \(\sec x=-2,\ x\in[0,2\pi)\) → \(\{2\pi/3,4\pi/3\}\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas en la fila; sin nota separada.
+- Lite test tests/trigonometryEcD08.audit.test.ts: 2/2 PASS en CI y Cumulative. SHA b8c3ffcf7815c373c7f46849dc547d1cf1864de8. CI 42754588522 SUCCESS; Cumulative 42754588411 SUCCESS (2,412 passed, 8 expected fail, 34 TODO; guard skip=false, evidence_run_id vacío); H1d 42754588566 SUCCESS (22/22); Scientific UI 42754588396 SUCCESS (456/456); Runner 42754588787 SUCCESS push-only.
+- Plus test backend/tests/test_trigonometry_ec_d08.py: ambos tests PASSED explícitamente en Cumulative 42755121582. SHA fb430768589eabfb930b03790d135b879ddf9109. Backend 2,937 passed, 1 skipped, 11 xfailed; CI 42755121784 SUCCESS (backend y frontend); H1d 42755121628 SUCCESS (38/38); Native Syntax 42755121609 SUCCESS (26 desktop y 52 tablet/mobile); Runner 42755121603 SUCCESS. Guard Cumulative skip=false, evidence_run_id vacío.
+- El primer test-first de Lite detectó que el resolvedor genérico no encontraba raíces para la forma normalizada 1/cos(x)=-2; se añadió un helper estrictamente focal y se verificó en el SHA final.
+- El primer test-first de Plus detectó que el camino genérico devolvía -2π/3, coterminal con 4π/3 pero fuera del intervalo. El helper final resuelve cos(x)=-1/2 directamente sobre [0,2π) y verifica ambas raíces en sec(x)=-2. Sólo se acepta el SHA final fb430768; el intento inicial no cuenta como evidencia de aceptación.
+- No hubo dispatch manual ni REUSE en los gates de aceptación. Los workflows finales de Lite y Plus ejecutaron CI/Cumulative/H1d; Scientific UI Lite y Native Syntax Plus también pasaron.
+- Alcance: únicamente sec(x)=-2, las dos raíces exactas dentro de [0,2π) y su sustitución. No se certifica un resolvedor general de secantes ni la ingesta literal LaTeX de Plus /api/v1/evaluate.
+- Resultado: PASS_SCOPED bilateral. Global OPEN; EV-D-01 /api/v1/evaluate, S25, SG28, H2 y DIST permanecen abiertos; EV-HI conserva PASS_SCOPED.
+
+**Siguiente:** TRIG-EC-D-09. Recuperar la fila exacta de la matriz congelada y fijar el contrato antes de comenzar test-first. No repetir gates verdes de EC-D-01..08 ni hacer dispatch manual.
+
+---
+
 ## 2026-11-10 UTC — TRIG-EC-D-07 PASS_SCOPED bilateral
 
 - Contrato congelado: \(\csc x=2,\ x\in[0,2\pi)\) → \(\{\pi/6,5\pi/6\}\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas en la fila; no hay nota separada.
