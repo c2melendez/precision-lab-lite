@@ -663,3 +663,56 @@ export function solveInverseSineEquation(
     contradiction: false,
   };
 }
+
+/**
+ * Solves only the inverse-cosine equation arccos(variable)=constant (or its
+ * reversed form) on the real domain. The constant must lie in the principal
+ * range [0, pi]; the single candidate x=cos(constant) is accepted only when
+ * arccos(candidate) is equivalent to the constant. Out-of-range constants and
+ * other inverse functions return null and stay on the generic path. This is
+ * not a general inverse-trigonometry solver.
+ */
+export function solveInverseCosineEquation(
+  left: string,
+  right: string,
+  variable: string,
+): TrigonometricEquationResult | null {
+  const compactLeft = left.replace(/\s+/g, "");
+  const compactRight = right.replace(/\s+/g, "");
+  const target = "arccos(" + variable + ")";
+
+  let constant: string;
+  if (compactLeft === target) {
+    constant = right;
+  } else if (compactRight === target) {
+    constant = left;
+  } else {
+    return null;
+  }
+
+  const value = numericValue(constant);
+  if (value === null) return null;
+  if (value < -1e-12 || value > Math.PI + 1e-12) return null;
+
+  const candidate = simplify("cos(" + constant + ")");
+  const candidateValue = numericValue(candidate);
+  if (candidateValue === null || candidateValue < -1 || candidateValue > 1) return null;
+  if (!equivalent("arccos(" + candidate + ")", constant)) return null;
+
+  return {
+    solutions: [candidate],
+    step: {
+      id: "trigonometric-inverse-cosine",
+      title: "Inversa del coseno en la rama principal",
+      rule: "InverseCosineBranch",
+      latex:
+        "\\arccos(" + variable + ")=" + toLatex(constant) + ",\\quad " +
+        variable + "=" + toLatex(candidate),
+      explanation:
+        "La constante está en el rango principal [0, π] de arccos, así que la " +
+        "única solución real es " + variable + " = cos(" + constant + "). Se verifica " +
+        "que arccos(" + candidate + ") coincide con la constante original.",
+    },
+    contradiction: false,
+  };
+}

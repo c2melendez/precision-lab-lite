@@ -18,6 +18,7 @@ import {
   solveCotangentEqualsOneEquation,
   solveDirectTrigonometricEquation,
   solveDoubleAngleSineEqualsCosineEquation,
+  solveInverseCosineEquation,
   solveInverseSineEquation,
   solveQuadraticSineEquation,
   solveSecantEqualsMinusTwoEquation,
@@ -344,6 +345,12 @@ export function solveAlgebra(
   if (inverseSineResult !== null) {
     steps.push(inverseSineResult.step);
     return { steps, solutionsAlgebrite: inverseSineResult.solutions };
+  }
+
+  const inverseCosineResult = solveInverseCosineEquation(leftAlgebrite, rightAlgebrite, variable);
+  if (inverseCosineResult !== null) {
+    steps.push(inverseCosineResult.step);
+    return { steps, solutionsAlgebrite: inverseCosineResult.solutions };
   }
 
   const cosecantResult = solveCosecantEqualsTwoEquation(leftAlgebrite, rightAlgebrite, variable);
