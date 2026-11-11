@@ -1,3 +1,13 @@
+## 2026-11-11 UTC — TRIG-EC-I-03 PASS_SCOPED bilateral
+
+- Contrato congelado: \(\arctan x=\frac{\pi}{4}\) → \(x=1\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas; sin nota separada.
+- Lite test-first `tests/trigonometryEcI03.audit.test.ts` (commit `11b0038f2ac1f9bcf378c775ba1cd2249a44507c`): falló con «No se encontró una solución algebraica para x». CI 42930765664 y Cumulative 42930765708 FAILURE. Clasificado como producto: el solver no tenía rama para arctan.
+- Corrección en `238b1e8d1fb9b8fc1745044ebca8c72db4f4915a`: `solveInverseTangentEquation` en `trigonometricEquation.ts`, enrutado desde `algebra.ts` tras la rama de arccos, con intervalo principal abierto (-π/2, π/2), verificación por sustitución y regresión `tests/trigonometryInverseTangentRegression.audit.test.ts`.
+- Corridas de 238b1e8d: CI 42931990369, Cumulative 42931990398 (2431 passed, 8 expected fail, 34 todo), H1d 42931990364, Scientific UI 42931990451 y Runner 42931990385, todas SUCCESS. Sin dispatch manual.
+- Plus test-first `backend/tests/test_trigonometry_ec_i03.py` (commit `167fa2f05`): PASS sin cambio de producto. Cumulative 42930769666 SUCCESS (2947 passed, EC-I-03 2/2); CI 42930769742 y H1d 42930769513 SUCCESS.
+- Alcance: solo `arctan(x)=π/4` en radianes con variable `x`, más su forma invertida y el caso fuera de rango en Lite. No es un resolvedor general de arctan.
+- Siguiente acción: TRIG-EC-I-04; recuperar primero la fila exacta de la matriz gzip y luego test-first bilateral.
+
 ## 2026-11-10 UTC — TRIG-EC-I-02 PASS_SCOPED bilateral
 
 - Contrato congelado: \(\arccos x=\frac{\pi}{3}\) → \(x=\frac{1}{2}\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas; sin nota separada.
