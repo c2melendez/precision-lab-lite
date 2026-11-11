@@ -42,7 +42,7 @@
     "id": "TRIG-EC-H-01",
     "status": "RUN",
     "previous_id": "TRIG-EC-I-09",
-    "action": "Recuperar directamente la fila TRIG-EC-H-01 de qa/certification/legacy_sources/ejercicios_trigonometria.md.gz y anclar las tres columnas: sinh(x)=0 -> x=0 (sección 2.C, Hiperbólicas). Iniciar test-first bilateral; inspeccionar parser/aliases, servicio genérico de ecuaciones y los tests hiperbólicos existentes antes de modificar motores. Verificar el contrato HTTP y conservar una prueba de regresión. No repetir EC-I-01..09 ni los gates verdes. Mantener global OPEN; EV-D-01 /api/v1/evaluate sigue BLOCKED, EV-HI PASS_SCOPED y S25, SG28, H2 y DIST abiertos. El workflow de seguridad Plus 43099243580 sigue en curso por mutation / plus-backend-mutmut; no marcar S25 PASS hasta su conclusión."
+    "action": "Recuperar directamente la fila TRIG-EC-H-01 de qa/certification/legacy_sources/ejercicios_trigonometria.md.gz y anclar las tres columnas: sinh(x)=0 -> x=0 (sección 2.C, Hiperbólicas). Iniciar test-first bilateral; inspeccionar parser/aliases, servicio genérico de ecuaciones y tests hiperbólicos existentes antes de modificar motores. Añadir prueba focal y regresión, ejecutar gates pertinentes una sola vez. No repetir EC-I-01..09 ni gates verdes. Mantener global OPEN; EV-D-01 /api/v1/evaluate BLOCKED, EV-HI PASS_SCOPED y S25, SG28, H2, DIST abiertos. Seguridad Plus 43099243580 permanece en curso por mutation / plus-backend-mutmut; no marcar S25 PASS hasta su conclusión."
   },
   "blockers": [],
   "prose_only_paths": [
@@ -52,5 +52,5 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-11T21:11:17Z"
+  "updated_utc": "2026-11-11T21:17:47Z"
 }

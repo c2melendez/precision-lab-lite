@@ -1,11 +1,12 @@
 ## 2026-11-11 UTC (r497) — TRIG-EC-I-09 PASS_SCOPED bilateral
 
-- Fila congelada: \`\\arcsin x=2\` → sin solución real; gzip blob \`3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb\`. Los logs del run previo demostraron el fallo en ambos motores: fallback sin solución algebraica en Lite y clasificación \`EQUATION_SOLUTIONS\` incorrecta en Plus.
-- Correcciones técnicas: Lite \`6be7239fcd827433b9b90395ebc4cc61953056f4\` (rango inverso de arcsin y propagación de contradicción); Plus \`6be7239fcd827433b9b90395ebc4cc61953056f4\` (reconocedor SymPy acotado a objetivo real fuera de rango). No se alteraron oráculos, fixtures ni filtros CI.
-- Lite: Cumulative 43099223869 SUCCESS; CI 43099223928 SUCCESS; H1d 43099223905 SUCCESS; Scientific UI 43099223847 SUCCESS (456/456); Runner 43099223832 SUCCESS. Focal 2/2, typecheck, build y acumulativo: 2,452 passed, 8 expected fail, 34 TODO.
-- Plus: Cumulative 43099223869 SUCCESS; CI 43099223928 SUCCESS; H1d 43099223905 SUCCESS; Native Syntax undefined SUCCESS; Runner 43099223832 SUCCESS. Focal 2/2; backend 2,959 passed, 1 skipped, 11 xfailed; cobertura 88.50%.
-- Seguridad Plus undefined: validación, change-scope y backend-security SUCCESS; mutation backend sigue IN_PROGRESS. S25 no se cierra.
-- Siguiente acción única: TRIG-EC-H-01, \`sinh(x)=0\` → \`x=0\`, test-first bilateral; el caso está en el gzip legacy, sección 2.C.
+- Fila congelada: `\arcsin x=2` → sin solución real; gzip blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`. Los logs de los HEAD previos confirmaron el fallback sin solución algebraica en Lite y la clasificación `EQUATION_SOLUTIONS` incorrecta en Plus.
+- Correcciones: Lite `6be7239fcd827433b9b90395ebc4cc61953056f4` (rango inverso de arcsin y propagación de contradicción); Plus `bce42289992d35b8ebac6d21d505906e69c000f5` (reconocedor SymPy acotado a objetivo real fuera de rango). No se alteraron oráculos, fixtures ni filtros CI.
+- Lite: Cumulative 43099223869, CI 43099223928, H1d 43099223905, Scientific UI 43099223847 y Runner 43099223832 — todos SUCCESS. Focal 2/2; typecheck/build; 2,452 passed, 8 expected fail, 34 TODO; Scientific UI 456/456.
+- Plus: Cumulative 43099243483, CI 43099243741, H1d 43099243513, Native Syntax 43099243422 y Runner 43099243486 — todos SUCCESS. Focal 2/2; backend 2,959 passed, 1 skipped, 11 xfailed; cobertura 88.50%.
+- Seguridad Plus 43099243580: validación, change-scope y backend-security SUCCESS; mutation backend job 130785403853 sigue IN_PROGRESS. S25 no se cierra.
+- Siguiente acción única: TRIG-EC-H-01, `\sinh x=0` → `x=0`, test-first bilateral; recuperar fila exacta de la sección 2.C del gzip.
+
 
 ## 2026-11-11 UTC - TRIG-EC-I-07 PASS_SCOPED bilateral
 
