@@ -15,8 +15,11 @@ describe("Trigonometry EC-H-03: sinh(x)=1 over the reals", () => {
     const source = gunzipSync(readFileSync(SOURCE_GZ)).toString("utf8");
     const row = source.split(/\r?\n/).find((line) => /\|\s*EC-H-03\s*\|/.test(line));
     expect(row).toBeDefined();
-    expect(row).toContain("\\sinh x=1");
-    expect(row).toContain("x=\\ln\\left(1+\\sqrt{2}\\right)");
+    const cells = row!.split("|").map((cell) => cell.trim()).filter(Boolean);
+    expect(cells).toHaveLength(3);
+    expect(cells[0]).toBe("EC-H-03");
+    expect(cells[1]).toContain("\\sinh x=1");
+    expect(cells[2]).toContain("x=\\ln\\left(1+\\sqrt{2}\\right)");
   });
 
   it("returns exactly the real logarithmic root through the algebra equation solver", () => {
