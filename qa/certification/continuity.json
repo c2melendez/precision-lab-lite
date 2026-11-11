@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 496,
+  "revision": 497,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "3d74fb4953310b9179a139fce6decc1b3704e718",
-  "baseline_case": "TRIG-EC-I-07",
+  "technical_baseline_sha": "6be7239fcd827433b9b90395ebc4cc61953056f4",
+  "baseline_case": "TRIG-EC-I-09",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EC-I-08",
+    "id": "TRIG-EC-H-01",
     "status": "RUN",
-    "previous_id": "TRIG-EC-I-07",
-    "action": "Recuperar directamente la fila TRIG-EC-I-08 desde qa/certification/legacy_sources/ejercicios_trigonometria.md.gz y anclar las tres columnas antes de escribir pruebas. El contrato congelado es arccsc(x)=pi/6 -> x=2. En Lite el parser normaliza arccsc(x) a arcsin(1/x) y Algebrite no evalua arccsc; Plus resuelve acsc(x)=pi/6 por la ruta existente. Continuar test-first bilateral. EC-I-07 ya tiene PASS_SCOPED bilateral: Lite SHA 3d74fb4953310b9179a139fce6decc1b3704e718 (CI 42963305101, Cumulative 42963305029, H1d 42963305042, Scientific UI 42963305033, Runner 42963305152 SUCCESS; focal 2/2; 2,448 passed, 8 expected fail, 34 TODO; guards skip=false/sin REUSE) y Plus SHA cb66602a9bbde41204dfc990b019b3b95eebee05 (test-only; CI 42962916200, Cumulative 42962916532, H1d 42962916326, Runner 42962916227 SUCCESS; focal 2/2; backend 2,955 passed, 1 skipped, 11 xfailed; guards skip=false/sin REUSE). Security Plus 42961178959 con validacion/seguridad SUCCESS y mutacion en curso al registrar. No repetir gates verdes de EC-D-01..10 ni EC-I-01..07 ni hacer dispatch manual. Mantener global OPEN y separar EV-D-01 /api/v1/evaluate BLOCKED, EV-HI PASS_SCOPED, S25, SG28, H2 y DIST abiertos.",
-    "updated_utc": "2026-11-11T05:20:00Z"
+    "previous_id": "TRIG-EC-I-09",
+    "action": "Recuperar directamente la fila TRIG-EC-H-01 de qa/certification/legacy_sources/ejercicios_trigonometria.md.gz y anclar las tres columnas: sinh(x)=0 -> x=0 (sección 2.C, Hiperbólicas). Iniciar test-first bilateral; inspeccionar parser/aliases, servicio genérico de ecuaciones y los tests hiperbólicos existentes antes de modificar motores. Verificar el contrato HTTP y conservar una prueba de regresión. No repetir EC-I-01..09 ni los gates verdes. Mantener global OPEN; EV-D-01 /api/v1/evaluate sigue BLOCKED, EV-HI PASS_SCOPED y S25, SG28, H2 y DIST abiertos. El workflow de seguridad Plus 43099243580 sigue en curso por mutation / plus-backend-mutmut; no marcar S25 PASS hasta su conclusión."
   },
   "blockers": [],
   "prose_only_paths": [
@@ -52,5 +51,6 @@
     "qa/certification/CURRENT_STATE.md",
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
-  ]
+  ],
+  "updated_utc": "2026-11-11T21:11:17Z"
 }
