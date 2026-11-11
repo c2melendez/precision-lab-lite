@@ -1,3 +1,22 @@
+# Actualización de certificación - 2026-11-11 UTC (r498; TRIG-EC-H-02 PASS_SCOPED bilateral)
+
+## Trigonometría TRIG-EC-H-02 - PASS_SCOPED bilateral
+
+- Fila congelada de la sección 2.C Hiperbólicas en el gzip legacy, blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb: \cosh x=1 → x=0. Se conservaron las tres columnas; dominio real.
+- Contexto anterior EC-H-01: Lite 8fadbe2b con Cumulative 43104252007, CI 43104252061, H1d 43104252019 y Scientific UI 43104251968 — SUCCESS; focal 2/2. Plus f1dc6fd1 con Cumulative 43105331605, CI 43105331723, H1d 43105331596 y Native Syntax 43105331569 — SUCCESS; focal 2/2.
+- Lite test-first: commit 312fd614 añadió tests/trigonometryEcH02.audit.test.ts. El ancla de fuente pasó, pero el solver devolvió «No se encontró una solución algebraica para x» para cosh(x)=1; Cumulative 43114332105 y CI 43114332037 fallaron por ese caso. Corrección estrecha en src/engine/stepEngine/algebra.ts, commit 34a53aeb8b895d5adce60dc1b3447b9c338812e2: helper hyperbolicCosineOneStep reconoce solo cosh(variable)=1 o la igualdad invertida y devuelve la raíz real 0 por cosh(x)≥1 con igualdad únicamente en cero.
+- La prueba focal tests/trigonometryEcH02.audit.test.ts pasó 2/2, incluyendo fila del gzip y solución exacta/sustitución/realidad. Cumulative 43114752400 SUCCESS: 420 archivos, 2.456 passed, 8 xfailed, 34 todo; guard skip=false y evidence_run_id vacío (ejecución real, no REUSE). CI 43114752505 SUCCESS con suite, Typecheck y Production build ejecutados; H1d 43114752345 SUCCESS, 22/22; Scientific UI 43114752327 SUCCESS, 456/456 desktop/tablet/mobile Chromium. Runner 43114752306 SUCCESS, sin atribuirle ejecución de tests.
+- Alcance: solo cosh(x)=1 con variable real x; no acredita un resolvedor hiperbólico general ni raíces complejas. Los casos posteriores de la sección 2.C siguen pendientes.
+
+## Estado y siguiente acción
+
+- Último caso aceptado: TRIG-EC-H-02 — PASS_SCOPED bilateral; EC-H-01 conserva PASS_SCOPED.
+- Siguiente acción única: TRIG-EC-H-03, \sinh x=1 → x=\ln(1+\sqrt{2}); recuperar directamente la fila del gzip y continuar test-first en ambos motores.
+- Global OPEN. EV-D-01 /api/v1/evaluate BLOCKED; EV-HI PASS_SCOPED; S25, SG28/H2 y DIST-01..08 permanecen abiertos. SG28_EVALUATE_ISOLATION sigue desactivada por defecto.
+- No repetir EC-H-01 ni gates verdes equivalentes; no hacer dispatch manual. SKIP/XFAIL/TODO no son PASS.
+
+---
+
 # Actualización de certificación - 2026-11-11 UTC (r497; EC-I-09 PASS_SCOPED bilateral)
 
 ## Trigonometría TRIG-EC-I-09 - PASS_SCOPED bilateral
