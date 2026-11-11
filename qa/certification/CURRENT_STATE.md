@@ -1,3 +1,22 @@
+# Actualización de certificación - 2026-11-11 UTC (r493; EC-I-04 PASS_SCOPED bilateral)
+
+## Trigonometría TRIG-EC-I-04 - PASS_SCOPED bilateral
+
+- Fila congelada del gzip legacy (blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb): \(\arcsin x=\arccos x\) → \(x=\frac{\sqrt{2}}{2}\). Tres columnas; sin nota separada.
+- Lite test-first `0cd7bc71a40b3a35c6163a996bc175975ab7acc3` falló con «No se encontró una solución algebraica para x» (Cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/42946133423 FAILURE): hueco de producto. Corrección `3b1483a745cff6de4bbbd28c5718765b75b43df6`: `solveInverseSineCosineEqualEquation` en `trigonometricEquation.ts`, enrutado desde `algebra.ts`, con regresión `tests/trigonometryInverseSineCosineRegression.audit.test.ts`. CI https://github.com/c2melendez/precision-lab-lite/actions/runs/42947355930 SUCCESS; Cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/42947355901 SUCCESS (2436 passed); H1d https://github.com/c2melendez/precision-lab-lite/actions/runs/42947355958 SUCCESS; Scientific UI https://github.com/c2melendez/precision-lab-lite/actions/runs/42947355931 SUCCESS; Runner https://github.com/c2melendez/precision-lab-lite/actions/runs/42947355971 SUCCESS push-only.
+- Plus test-first `92ad6a315` falló en `/api/v1/solve` con `asin(x)=acos(x)` (CI https://github.com/c2melendez/precision-lab-plus/actions/runs/42946135416 FAILURE): hueco de producto. Corrección `0c269122b`: helper `_inverse_sine_equals_cosine_result` en `solve_service.py`. Cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/42947360512 SUCCESS (2949 passed); CI https://github.com/c2melendez/precision-lab-plus/actions/runs/42947360649 SUCCESS; H1d https://github.com/c2melendez/precision-lab-plus/actions/runs/42947360563 SUCCESS; Native Syntax https://github.com/c2melendez/precision-lab-plus/actions/runs/42947360577 SUCCESS; Runner https://github.com/c2melendez/precision-lab-plus/actions/runs/42947360521 SUCCESS push-only.
+- Seguridad Plus: https://github.com/c2melendez/precision-lab-plus/actions/runs/42947360677 con jobs de seguridad SUCCESS; mutación `plus-backend-mutmut` en curso al registrar EC-I-04.
+- Acta bilateral: qa/certification/TRIG_EC_I_04_ACCEPTANCE_2026-11-11.md en ambos repositorios.
+
+## Estado y siguiente acción
+
+- Último caso aceptado: TRIG-EC-I-04 — PASS_SCOPED bilateral.
+- Siguiente: TRIG-EC-I-05, sección 2.B Inversas: \(\arctan x+\arctan(2x)=\frac{\pi}{4}\) → \(x=\frac{\sqrt{17}-3}{4}\) (descartar \(\frac{-3-\sqrt{17}}{4}\)). Recuperar la fila exacta del gzip y escribir primero las pruebas focales en ambos repositorios.
+- Certificación global: OPEN. EV-D-01 en Plus /api/v1/evaluate sigue BLOCKED; EV-HI conserva PASS_SCOPED; S25, SG28, H2 y DIST siguen abiertos.
+- No repetir gates verdes de EC-D-01..10 ni de EC-I-01..04; no ejecutar dispatch manual.
+
+---
+
 # Actualización de certificación - 2026-11-11 UTC (r492; EC-I-03 PASS_SCOPED bilateral)
 
 ## Trigonometría TRIG-EC-I-03 - PASS_SCOPED bilateral
