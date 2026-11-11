@@ -835,12 +835,21 @@ export function solveArctanSumQuarterPiEquation(
     ["-7/10", -0.7],
   ];
   const expected = samples.map(([, x]) => Math.atan(x) + Math.atan(2 * x) - Math.PI / 4);
+  // Algebrite's float() prints six decimals followed by "...", so the parsed
+  // value carries a truncation error near 5e-7. The sample tolerance must stay
+  // above that error while remaining far below the separation between the two
+  // possible identities (checked at ~0.05 and ~2.35).
+  const SAMPLE_TOLERANCE = 1e-4;
   const values = samples.map(([literal]) => {
     const text = evaluate("float(subst(" + literal + "," + variable + ",(" + difference + ")))");
     return Number(text.trim().replace(/\.\.\.$/, ""));
   });
-  const sameSign = values.every((value, i) => Number.isFinite(value) && Math.abs(value - expected[i]) < 1e-9);
-  const oppositeSign = values.every((value, i) => Number.isFinite(value) && Math.abs(value + expected[i]) < 1e-9);
+  const sameSign = values.every(
+    (value, i) => Number.isFinite(value) && Math.abs(value - expected[i]) < SAMPLE_TOLERANCE,
+  );
+  const oppositeSign = values.every(
+    (value, i) => Number.isFinite(value) && Math.abs(value + expected[i]) < SAMPLE_TOLERANCE,
+  );
   if (!sameSign && !oppositeSign) return null;
 
   const candidates: Array<[string, number]> = [
