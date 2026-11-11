@@ -639,7 +639,22 @@ export function solveInverseSineEquation(
   const value = numericValue(constant);
   if (value === null) return null;
   const halfPi = Math.PI / 2;
-  if (value < -halfPi - 1e-12 || value > halfPi + 1e-12) return null;
+  if (value < -halfPi - 1e-12 || value > halfPi + 1e-12) {
+    return {
+      solutions: [],
+      contradiction: true,
+      step: {
+        id: "trigonometric-inverse-sine-range",
+        title: "Arcoseno fuera del rango principal",
+        rule: "InverseSineRangeContradiction",
+        latex:
+          "\\arcsin(" + variable + ")=" + toLatex(constant) + ",\\quad \\varnothing",
+        explanation:
+          "La función real arcsin solo toma valores en [-π/2, π/2]. La constante " +
+          constant + " está fuera de ese rango, por lo que no existe solución real.",
+      },
+    };
+  }
 
   const candidate = simplify("sin(" + constant + ")");
   const candidateValue = numericValue(candidate);

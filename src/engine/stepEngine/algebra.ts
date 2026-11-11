@@ -350,7 +350,11 @@ export function solveAlgebra(
   const inverseSineResult = solveInverseSineEquation(leftAlgebrite, rightAlgebrite, variable);
   if (inverseSineResult !== null) {
     steps.push(inverseSineResult.step);
-    return { steps, solutionsAlgebrite: inverseSineResult.solutions };
+    return {
+      steps,
+      solutionsAlgebrite: inverseSineResult.solutions,
+      ...(inverseSineResult.contradiction ? { truth: "contradiction" as const } : {}),
+    };
   }
 
   const inverseCosineResult = solveInverseCosineEquation(leftAlgebrite, rightAlgebrite, variable);
