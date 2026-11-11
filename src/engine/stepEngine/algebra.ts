@@ -20,6 +20,7 @@ import {
   solveDoubleAngleSineEqualsCosineEquation,
   solveInverseCosineEquation,
   solveInverseSineEquation,
+  solveInverseTangentEquation,
   solveQuadraticSineEquation,
   solveSecantEqualsMinusTwoEquation,
   solveSineCosineUnitSumEquation,
@@ -351,6 +352,12 @@ export function solveAlgebra(
   if (inverseCosineResult !== null) {
     steps.push(inverseCosineResult.step);
     return { steps, solutionsAlgebrite: inverseCosineResult.solutions };
+  }
+
+  const inverseTangentResult = solveInverseTangentEquation(leftAlgebrite, rightAlgebrite, variable);
+  if (inverseTangentResult !== null) {
+    steps.push(inverseTangentResult.step);
+    return { steps, solutionsAlgebrite: inverseTangentResult.solutions };
   }
 
   const cosecantResult = solveCosecantEqualsTwoEquation(leftAlgebrite, rightAlgebrite, variable);

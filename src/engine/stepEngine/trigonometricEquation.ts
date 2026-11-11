@@ -716,3 +716,56 @@ export function solveInverseCosineEquation(
     contradiction: false,
   };
 }
+
+/**
+ * Solves only the inverse-tangent equation arctan(variable)=constant (or its
+ * reversed form) on the real domain. The constant must lie in the open
+ * principal range (-pi/2, pi/2); the single candidate x=tan(constant) is
+ * accepted only when arctan(candidate) is equivalent to the constant. Constants
+ * outside the open range and other inverse functions return null and stay on
+ * the generic path. This is not a general inverse-trigonometry solver.
+ */
+export function solveInverseTangentEquation(
+  left: string,
+  right: string,
+  variable: string,
+): TrigonometricEquationResult | null {
+  const compactLeft = left.replace(/\s+/g, "");
+  const compactRight = right.replace(/\s+/g, "");
+  const target = "arctan(" + variable + ")";
+
+  let constant: string;
+  if (compactLeft === target) {
+    constant = right;
+  } else if (compactRight === target) {
+    constant = left;
+  } else {
+    return null;
+  }
+
+  const value = numericValue(constant);
+  if (value === null) return null;
+  const halfPi = Math.PI / 2;
+  if (value <= -halfPi + 1e-12 || value >= halfPi - 1e-12) return null;
+
+  const candidate = simplify("tan(" + constant + ")");
+  if (numericValue(candidate) === null) return null;
+  if (!equivalent("arctan(" + candidate + ")", constant)) return null;
+
+  return {
+    solutions: [candidate],
+    step: {
+      id: "trigonometric-inverse-tangent",
+      title: "Inversa de la tangente en la rama principal",
+      rule: "InverseTangentBranch",
+      latex:
+        "\\arctan(" + variable + ")=" + toLatex(constant) + ",\\quad " +
+        variable + "=" + toLatex(candidate),
+      explanation:
+        "La constante está en el rango principal (-π/2, π/2) de arctan, así que la " +
+        "única solución real es " + variable + " = tan(" + constant + "). Se verifica " +
+        "que arctan(" + candidate + ") coincide con la constante original.",
+    },
+    contradiction: false,
+  };
+}
