@@ -1,3 +1,15 @@
+## 2026-11-11 UTC - TRIG-EC-I-06 PASS_SCOPED bilateral
+
+- Contrato congelado: \(\operatorname{arccot} x=\frac{2\pi}{3}\) → \(x=-\frac{\sqrt{3}}{3}\) en la rama principal \((0,\pi)\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas; sin nota separada.
+- Lite test-first `76695ab8`: CI 42960472337 y Cumulative 42960472418 FAILURE por hueco de producto. Corrección `edfc5034`: `solveArccotTwoPiThirdsEquation`; el parser normaliza a `pi/2-arctan(x)` y Algebrite no evalúa `arccot`, así que la identidad se verifica con `pi/2-atan(x)`. CI 42960956690 SUCCESS; Cumulative 42960956673 SUCCESS (focal 2/2, regresión 3/3; 415 archivos, 2,446 passed, 8 expected fail, 34 todo; skip=false/sin REUSE); H1d 42960956871 SUCCESS (22/22); Scientific UI 42960956696 SUCCESS (456/456); Runner 42960956968 SUCCESS push-only.
+- Plus test-first `9a6dedcf`: `result_data` vacío para `acot(x)=2*pi/3`; CI 42960474932 FAILURE. Corrección `28465525`: helper `_arccot_two_pi_thirds_result`; se documenta que `acot` de SymPy usa la rama \((-π/2,\pi/2)\) para negativos y se verifica con \(\pi/2-\arctan(x)\). Cumulative 42961178858 SUCCESS (2,953 passed, 1 skipped, 11 xfailed; focal 2/2; skip=false/sin REUSE); CI 42961178836, H1d 42961178835, Native Syntax 42961178768 y Runner 42961178811 SUCCESS; Security 42961178959 con validación y seguridad SUCCESS, mutmut en curso al registrar.
+- Alcance: sólo `arccot(x)=2*pi/3` en radianes con variable `x`; no es un resolvedor general de arcotangentes inversas ni certifica la ingesta LaTeX de Plus `/api/v1/evaluate`.
+- Resultado: PASS_SCOPED bilateral. Global OPEN; EV-D-01 BLOCKED, EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
+
+**Siguiente:** TRIG-EC-I-07 (\(\operatorname{arcsec} x=\frac{\pi}{3}\) → \(x=2\)); recuperar la fila exacta del gzip y escribir primero las pruebas focales. No repetir gates verdes de EC-I-01..06 ni hacer dispatch manual.
+
+---
+
 ## 2026-11-11 UTC - TRIG-EC-I-05 PASS_SCOPED bilateral
 
 - Contrato congelado: \(\arctan x+\arctan(2x)=\frac{\pi}{4}\) → \(x=\frac{\sqrt{17}-3}{4}\), descartando \(\frac{-3-\sqrt{17}}{4}\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas; sin nota separada.

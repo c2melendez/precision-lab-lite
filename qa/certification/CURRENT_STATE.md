@@ -1,3 +1,21 @@
+# Actualización de certificación - 2026-11-11 UTC (r495; EC-I-06 PASS_SCOPED bilateral)
+
+## Trigonometría TRIG-EC-I-06 - PASS_SCOPED bilateral
+
+- Fila congelada del gzip legacy (blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb): \(\operatorname{arccot} x=\frac{2\pi}{3}\) → \(x=-\frac{\sqrt{3}}{3}\). Tres columnas; sin nota separada. Rama principal convencional \((0,\pi)\).
+- Lite test-first `76695ab8` falló con «No se encontró una solución algebraica para x» (CI https://github.com/c2melendez/precision-lab-lite/actions/runs/42960472337 y Cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/42960472418 FAILURE). Corrección `edfc50343dd5165c52f285aef354542b77281e76`: `solveArccotTwoPiThirdsEquation`, con verificación por la identidad \(\pi/2-\arctan(x)\) porque Algebrite no evalúa `arccot`. CI https://github.com/c2melendez/precision-lab-lite/actions/runs/42960956690 SUCCESS; Cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/42960956673 SUCCESS (415 archivos, 2,446 passed, 8 expected fail, 34 todo; skip=false, sin REUSE); H1d https://github.com/c2melendez/precision-lab-lite/actions/runs/42960956871 SUCCESS (22/22); Scientific UI https://github.com/c2melendez/precision-lab-lite/actions/runs/42960956696 SUCCESS (456/456); Runner https://github.com/c2melendez/precision-lab-lite/actions/runs/42960956968 SUCCESS push-only.
+- Plus test-first `9a6dedcf` devolvió `result_data` vacío para `acot(x)=2*pi/3` (CI https://github.com/c2melendez/precision-lab-plus/actions/runs/42960474932 FAILURE). Corrección `28465525480d2d28d8e39dc8da903b16ec694add`: helper `_arccot_two_pi_thirds_result`; SymPy usa la rama \((-π/2,\pi/2)\) para `acot` negativo, así que la verificación usa \(\pi/2-\arctan(x)\). Cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/42961178858 SUCCESS (2953 passed, 1 skipped, 11 xfailed; skip=false, sin REUSE); CI https://github.com/c2melendez/precision-lab-plus/actions/runs/42961178836 SUCCESS; H1d https://github.com/c2melendez/precision-lab-plus/actions/runs/42961178835 SUCCESS; Native Syntax https://github.com/c2melendez/precision-lab-plus/actions/runs/42961178768 SUCCESS; Runner https://github.com/c2melendez/precision-lab-plus/actions/runs/42961178811 SUCCESS push-only; Security https://github.com/c2melendez/precision-lab-plus/actions/runs/42961178959 con validación y seguridad SUCCESS y mutmut en curso al registrar.
+- Acta bilateral: qa/certification/TRIG_EC_I_06_ACCEPTANCE_2026-11-11.md en ambos repositorios.
+
+## Estado y siguiente acción
+
+- Último caso aceptado: TRIG-EC-I-06 — PASS_SCOPED bilateral.
+- Siguiente: TRIG-EC-I-07, sección 2.B Inversas: \(\operatorname{arcsec} x=\frac{\pi}{3}\) → \(x=2\). Recuperar la fila exacta del gzip y escribir primero las pruebas focales; Lite normaliza `arcsec(x)` a `arccos(1/x)` y Algebrite no evalúa `arcsec`, así que la verificación usa \(\arccos(1/x)\).
+- Certificación global: OPEN. EV-D-01 en Plus /api/v1/evaluate sigue BLOCKED; EV-HI conserva PASS_SCOPED; S25, SG28, H2 y DIST siguen abiertos.
+- No repetir gates verdes de EC-D-01..10 ni de EC-I-01..06; no ejecutar dispatch manual.
+
+---
+
 # Actualización de certificación - 2026-11-11 UTC (r494; EC-I-05 PASS_SCOPED bilateral)
 
 ## Trigonometría TRIG-EC-I-05 - PASS_SCOPED bilateral

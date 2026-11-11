@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 494,
+  "revision": 495,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "d837434ee9910aa28affc3830af24830bed182c5",
-  "baseline_case": "TRIG-EC-I-05",
+  "technical_baseline_sha": "edfc50343dd5165c52f285aef354542b77281e76",
+  "baseline_case": "TRIG-EC-I-06",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,11 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EC-I-06",
+    "id": "TRIG-EC-I-07",
     "status": "RUN",
-    "previous_id": "TRIG-EC-I-05",
-    "action": "Recuperar directamente la fila TRIG-EC-I-06 desde qa/certification/legacy_sources/ejercicios_trigonometria.md.gz y anclar las tres columnas antes de escribir pruebas. El contrato congelado es arccot(x)=2*pi/3 -> x=-sqrt(3)/3; en Lite el parser normaliza arccot(x) a pi/2-arctan(x) y Algebrite no evalua arccot, por lo que la verificacion numerica debe usar la identidad principal pi/2-atan(x). Continuar test-first bilateral. EC-I-05 ya tiene PASS_SCOPED bilateral: Lite SHA d837434ee9910aa28affc3830af24830bed182c5 (CI 42959213697, Cumulative 42959213535, H1d 42959213530, Scientific UI 42959213568, Runner 42959213608 SUCCESS; focal 2/2; regresion 3/3; 2,441 passed, 8 expected fail, 34 TODO; guards skip=false/sin REUSE) y Plus SHA 3daa9f2dab3354d8d1e3a525a2f0331d96982bc7 (CI 42953170611, Cumulative 42953170568, H1d 42953170622, Native Syntax 42953170572, Runner 42953170442, Security 42953170861 SUCCESS; focal 2/2; backend 2,951 passed, 1 skipped, 11 xfailed; guards skip=false/sin REUSE). No repetir gates verdes de EC-D-01..10 ni EC-I-01..05 ni hacer dispatch manual. Mantener global OPEN y separar EV-D-01 /api/v1/evaluate BLOCKED, EV-HI PASS_SCOPED, S25, SG28, H2 y DIST abiertos.",
-    "updated_utc": "2026-11-11T04:40:00Z"
+    "previous_id": "TRIG-EC-I-06",
+    "action": "Recuperar directamente la fila TRIG-EC-I-07 desde qa/certification/legacy_sources/ejercicios_trigonometria.md.gz y anclar las tres columnas antes de escribir pruebas. El contrato congelado es arcsec(x)=pi/3 -> x=2. En Lite el parser normaliza arcsec(x) a arccos(1/x) y Algebrite no evalua arcsec; Plus ya resuelve asec(x)=pi/3 por la ruta existente. Continuar test-first bilateral. EC-I-06 ya tiene PASS_SCOPED bilateral: Lite SHA edfc50343dd5165c52f285aef354542b77281e76 (CI 42960956690, Cumulative 42960956673, H1d 42960956871, Scientific UI 42960956696, Runner 42960956968 SUCCESS; focal 2/2; regresion 3/3; 2,446 passed, 8 expected fail, 34 TODO; guards skip=false/sin REUSE) y Plus SHA 28465525480d2d28d8e39dc8da903b16ec694add (CI 42961178836, Cumulative 42961178858, H1d 42961178835, Native Syntax 42961178768, Runner 42961178811 SUCCESS; focal 2/2; backend 2,953 passed, 1 skipped, 11 xfailed; guards skip=false/sin REUSE). Security Plus 42961178959 con validacion/seguridad SUCCESS y mutacion en curso al registrar. No repetir gates verdes de EC-D-01..10 ni EC-I-01..06 ni hacer dispatch manual. Mantener global OPEN y separar EV-D-01 /api/v1/evaluate BLOCKED, EV-HI PASS_SCOPED, S25, SG28, H2 y DIST abiertos.",
+    "updated_utc": "2026-11-11T05:00:00Z"
   },
   "blockers": [],
   "prose_only_paths": [
