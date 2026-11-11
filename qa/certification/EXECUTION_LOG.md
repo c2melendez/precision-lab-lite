@@ -1,3 +1,15 @@
+## 2026-11-11 UTC - TRIG-EC-I-07 PASS_SCOPED bilateral
+
+- Contrato congelado: \(\operatorname{arcsec} x=\frac{\pi}{3}\) → \(x=2\) en la rama principal; gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas; sin nota separada.
+- Lite test-first `5b0e501b`: CI 42962913097 y Cumulative 42962913015 FAILURE por hueco de producto. Corrección `3d74fb49`: `solveArcsecEqualsPiThirdsEquation`; el parser normaliza a `arccos(1/x)` y Algebrite no evalúa `arcsec`, así que la identidad se verifica con `arccos(1/2)=pi/3` y tolerancia de muestras `1e-4`. CI 42963305101 SUCCESS; Cumulative 42963305029 SUCCESS (focal 2/2; 416 archivos, 2,448 passed, 8 expected fail, 34 todo; skip=false/sin REUSE); H1d 42963305042 SUCCESS (22/22); Scientific UI 42963305033 SUCCESS (456/456); Runner 42963305152 SUCCESS push-only.
+- Plus SHA técnico `cb66602a`: sólo prueba `backend/tests/test_trigonometry_ec_i07.py`; sin cambio de producto porque `/api/v1/solve` ya resolvía `asec(x)=pi/3` con raíz exacta `2`. Cumulative 42962916532 SUCCESS (2,955 passed, 1 skipped, 11 xfailed; focal 2/2; skip=false/sin REUSE); CI 42962916200, H1d 42962916326 y Runner 42962916227 SUCCESS; Security 42961178959 (EC-I-06) con validación y seguridad SUCCESS, mutmut en curso al registrar.
+- Alcance: sólo `arcsec(x)=pi/3` en radianes con variable `x` en Lite y `asec(x)=pi/3` vía `/api/v1/solve` en Plus; no es un resolvedor general de arcosecantes inversas ni certifica la ingesta LaTeX de Plus `/api/v1/evaluate`.
+- Resultado: PASS_SCOPED bilateral. Global OPEN; EV-D-01 BLOCKED, EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
+
+**Siguiente:** TRIG-EC-I-08 (\(\operatorname{arccsc} x=\frac{\pi}{6}\) → \(x=2\)); recuperar la fila exacta del gzip y escribir primero las pruebas focales. No repetir gates verdes de EC-I-01..07 ni hacer dispatch manual.
+
+---
+
 ## 2026-11-11 UTC - TRIG-EC-I-06 PASS_SCOPED bilateral
 
 - Contrato congelado: \(\operatorname{arccot} x=\frac{2\pi}{3}\) → \(x=-\frac{\sqrt{3}}{3}\) en la rama principal \((0,\pi)\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas; sin nota separada.

@@ -1,3 +1,21 @@
+# Actualización de certificación - 2026-11-11 UTC (r496; EC-I-07 PASS_SCOPED bilateral)
+
+## Trigonometría TRIG-EC-I-07 - PASS_SCOPED bilateral
+
+- Fila congelada del gzip legacy (blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb): \(\operatorname{arcsec} x=\frac{\pi}{3}\) → \(x=2\). Tres columnas; sin nota separada. Rama principal de \(\operatorname{arcsec}\); conjunto real esperado \(\{2\}\).
+- Lite test-first `5b0e501b` falló con «No se encontró una solución algebraica para x» (CI https://github.com/c2melendez/precision-lab-lite/actions/runs/42962913097 y Cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/42962913015 FAILURE). Corrección `3d74fb4953310b9179a139fce6decc1b3704e718`: `solveArcsecEqualsPiThirdsEquation` compara la identidad por muestras con tolerancia `1e-4` y verifica \(x=2\) con \(\arccos(1/2)=\pi/3\), porque el parser normaliza `arcsec(x)` a `arccos(1/x)` y Algebrite no evalúa `arcsec`. CI https://github.com/c2melendez/precision-lab-lite/actions/runs/42963305101 SUCCESS; Cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/42963305029 SUCCESS (416 archivos, 2,448 passed, 8 expected fail, 34 todo; skip=false, sin REUSE); H1d https://github.com/c2melendez/precision-lab-lite/actions/runs/42963305042 SUCCESS (22/22); Scientific UI https://github.com/c2melendez/precision-lab-lite/actions/runs/42963305033 SUCCESS (456/456); Runner https://github.com/c2melendez/precision-lab-lite/actions/runs/42963305152 SUCCESS push-only.
+- Plus SHA técnico `cb66602a9bbde41204dfc990b019b3b95eebee05`, sólo prueba `backend/tests/test_trigonometry_ec_i07.py`; la ruta existente de `/api/v1/solve` ya devolvía la raíz exacta `2` para `asec(x)=pi/3`. Cumulative https://github.com/c2melendez/precision-lab-plus/actions/runs/42962916532 SUCCESS (2,955 passed, 1 skipped, 11 xfailed; focal 2/2; skip=false, sin REUSE); CI https://github.com/c2melendez/precision-lab-plus/actions/runs/42962916200 SUCCESS; H1d https://github.com/c2melendez/precision-lab-plus/actions/runs/42962916326 SUCCESS; Runner https://github.com/c2melendez/precision-lab-plus/actions/runs/42962916227 SUCCESS push-only. Security `42961178959` (EC-I-06) con validación y seguridad SUCCESS y mutmut en curso al registrar.
+- Acta bilateral: qa/certification/TRIG_EC_I_07_ACCEPTANCE_2026-11-11.md en ambos repositorios.
+
+## Estado y siguiente acción
+
+- Último caso aceptado: TRIG-EC-I-07 — PASS_SCOPED bilateral.
+- Siguiente: TRIG-EC-I-08, sección 2.B Inversas: \(\operatorname{arccsc} x=\frac{\pi}{6}\) → \(x=2\). Recuperar la fila exacta del gzip y escribir primero las pruebas focales; Lite normaliza `arccsc(x)` a `arcsin(1/x)` y Algebrite no evalúa `arccsc`, así que la verificación usa \(\arcsin(1/x)\).
+- Certificación global: OPEN. EV-D-01 en Plus /api/v1/evaluate sigue BLOCKED; EV-HI conserva PASS_SCOPED; S25, SG28, H2 y DIST siguen abiertos.
+- No repetir gates verdes de EC-D-01..10 ni de EC-I-01..07; no ejecutar dispatch manual.
+
+---
+
 # Actualización de certificación - 2026-11-11 UTC (r495; EC-I-06 PASS_SCOPED bilateral)
 
 ## Trigonometría TRIG-EC-I-06 - PASS_SCOPED bilateral
