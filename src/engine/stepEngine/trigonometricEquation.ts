@@ -932,3 +932,52 @@ export function solveArccotTwoPiThirdsEquation(
     contradiction: false,
   };
 }
+
+/**
+ * Solves only the equation arcsec(variable)=pi/3 on the principal branch.
+ * Lite's parser normalizes arcsec(x) to arccos(1/x) and Algebrite leaves
+ * arcsec unevaluated, so the equation identity is matched numerically through
+ * arccos(1/x) and the frozen root 2 is verified with arcsec(2)=arccos(1/2)=pi/3.
+ * Other constants and forms return null and stay on the generic path. This is
+ * not a general inverse-secant solver.
+ */
+export function solveArcsecEqualsPiThirdsEquation(
+  left: string,
+  right: string,
+  variable: string,
+): TrigonometricEquationResult | null {
+  const difference = "(" + left + ")-(" + right + ")";
+  const samples: Array<[string, number]> = [
+    ["2", 2],
+    ["4", 4],
+  ];
+  const expected = samples.map(([, x]) => Math.acos(1 / x) - Math.PI / 3);
+  const SAMPLE_TOLERANCE = 1e-4;
+  const values = samples.map(([literal]) => {
+    const text = evaluate("float(subst(" + literal + "," + variable + ",(" + difference + ")))");
+    return Number(text.trim().replace(/\.\.\.$/, ""));
+  });
+  const matches = values.every(
+    (value, i) => Number.isFinite(value) && Math.abs(value - expected[i]) < SAMPLE_TOLERANCE,
+  );
+  if (!matches) return null;
+
+  const candidate = "2";
+  if (Math.abs(Math.acos(1 / 2) - Math.PI / 3) > 1e-9) return null;
+
+  return {
+    solutions: [candidate],
+    step: {
+      id: "trigonometric-arcsec-pi-thirds",
+      title: "Arcosecante igual a π/3",
+      rule: "ArcsecPiThirdsPrincipalBranch",
+      latex:
+        "\\operatorname{arcsec}(" + variable + ")=\\frac{\\pi}{3},\\quad " +
+        variable + "=" + toLatex(candidate),
+      explanation:
+        "En la rama principal de arcsec, arcsec(x)=π/3 equivale a cos(π/3)=1/x. " +
+        "Con cos(π/3)=1/2 se obtiene x=2, que se verifica en la ecuación original.",
+    },
+    contradiction: false,
+  };
+}

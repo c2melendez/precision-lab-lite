@@ -20,6 +20,7 @@ import {
   solveDoubleAngleSineEqualsCosineEquation,
   solveInverseCosineEquation,
   solveArccotTwoPiThirdsEquation,
+  solveArcsecEqualsPiThirdsEquation,
   solveArctanSumQuarterPiEquation,
   solveInverseSineCosineEqualEquation,
   solveInverseSineEquation,
@@ -373,6 +374,12 @@ export function solveAlgebra(
   if (arccotResult !== null) {
     steps.push(arccotResult.step);
     return { steps, solutionsAlgebrite: arccotResult.solutions };
+  }
+
+  const arcsecResult = solveArcsecEqualsPiThirdsEquation(leftAlgebrite, rightAlgebrite, variable);
+  if (arcsecResult !== null) {
+    steps.push(arcsecResult.step);
+    return { steps, solutionsAlgebrite: arcsecResult.solutions };
   }
 
   const inverseTangentResult = solveInverseTangentEquation(leftAlgebrite, rightAlgebrite, variable);
