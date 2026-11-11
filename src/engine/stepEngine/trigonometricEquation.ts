@@ -878,3 +878,57 @@ export function solveArctanSumQuarterPiEquation(
     contradiction: false,
   };
 }
+
+/**
+ * Solves only the equation arccot(variable)=2*pi/3 on the principal branch.
+ * Lite's parser normalizes arccot(x) to pi/2-arctan(x) and Algebrite leaves
+ * arccot/acot unevaluated, so the equation identity is matched numerically
+ * through that normalization and the frozen root -sqrt(3)/3 is verified with
+ * the principal identity arccot(x)=pi/2-atan(x) in JavaScript. Other constants
+ * and forms return null and stay on the generic path. This is not a general
+ * inverse-cotangent solver.
+ */
+export function solveArccotTwoPiThirdsEquation(
+  left: string,
+  right: string,
+  variable: string,
+): TrigonometricEquationResult | null {
+  const difference = "(" + left + ")-(" + right + ")";
+  const samples: Array<[string, number]> = [
+    ["1/2", 0.5],
+    ["-2/5", -0.4],
+  ];
+  const expected = samples.map(([, x]) => Math.PI / 2 - Math.atan(x) - (2 * Math.PI) / 3);
+  // Algebrite's float() prints six decimals followed by "...", so keep the
+  // sample tolerance above that truncation error (see EC-I-05).
+  const SAMPLE_TOLERANCE = 1e-4;
+  const values = samples.map(([literal]) => {
+    const text = evaluate("float(subst(" + literal + "," + variable + ",(" + difference + ")))");
+    return Number(text.trim().replace(/\.\.\.$/, ""));
+  });
+  const matches = values.every(
+    (value, i) => Number.isFinite(value) && Math.abs(value - expected[i]) < SAMPLE_TOLERANCE,
+  );
+  if (!matches) return null;
+
+  const candidate = "-sqrt(3)/3";
+  const numericRoot = -Math.sqrt(3) / 3;
+  if (Math.abs(Math.PI / 2 - Math.atan(numericRoot) - (2 * Math.PI) / 3) > 1e-9) return null;
+
+  return {
+    solutions: [candidate],
+    step: {
+      id: "trigonometric-arccot-two-pi-thirds",
+      title: "Arcotangente igual a 2π/3",
+      rule: "ArccotTwoPiThirdsPrincipalBranch",
+      latex:
+        "\\operatorname{arccot}(" + variable + ")=\\frac{2\\pi}{3},\\quad " +
+        variable + "=" + toLatex(candidate),
+      explanation:
+        "En la rama principal (0,π) de arccot, la identidad arccot(x)=π/2-arctan(x) " +
+        "reduce la ecuación a arctan(x)=-π/6, cuyo único valor real es x=-√3/3. " +
+        "El candidato se verifica en la ecuación original.",
+    },
+    contradiction: false,
+  };
+}

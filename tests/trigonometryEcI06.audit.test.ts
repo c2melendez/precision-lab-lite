@@ -33,7 +33,8 @@ describe("Trigonometry EC-I-06: arccot(x)=2*pi/3 on the principal branch", () =>
     const numeric = Number(evaluate("float(" + root + ")").trim().replace(/\.\.\.$/, ""));
     expect(Number.isFinite(numeric)).toBe(true);
     // Algebrite leaves arccot/acot unevaluated, so the principal branch is checked
-    // with the exact identity arccot(x)=pi/2-atan(x) in JavaScript.
-    expect(Math.abs(Math.PI / 2 - Math.atan(numeric) - (2 * Math.PI) / 3)).toBeLessThan(1e-9);
+    // with the exact identity arccot(x)=pi/2-atan(x) in JavaScript. The parsed root
+    // comes from float(), which is truncated to six decimals, hence the 1e-5 bound.
+    expect(Math.abs(Math.PI / 2 - Math.atan(numeric) - (2 * Math.PI) / 3)).toBeLessThan(1e-5);
   });
 });
