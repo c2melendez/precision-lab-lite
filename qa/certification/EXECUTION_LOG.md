@@ -1,4 +1,17 @@
-## 2026-11-11 UTC — TRIG-EC-I-04 PASS_SCOPED bilateral
+## 2026-11-11 UTC - TRIG-EC-I-05 PASS_SCOPED bilateral
+
+- Contrato congelado: \(\arctan x+\arctan(2x)=\frac{\pi}{4}\) → \(x=\frac{\sqrt{17}-3}{4}\), descartando \(\frac{-3-\sqrt{17}}{4}\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas; sin nota separada.
+- Lite test-first `3e4ec259`: fallo de producto en Cumulative 42952105658. Los intentos `22e7d1fd` y `d60ccad1` siguieron en FAILURE: el helper ya reconocía la ecuación, pero comparaba el `float()` truncado de Algebrite (`0.046478...`) con tolerancia `1e-9`, por debajo del error de truncamiento (~5e-7). El diagnóstico temporal `88d5f438` registró las formas del parser y los valores; se eliminó después.
+- Corrección final Lite `d837434e`: tolerancia de muestras `1e-4` en `solveArctanSumQuarterPiEquation`. CI 42959213697 SUCCESS; Cumulative 42959213535 SUCCESS (focal 2/2, regresión 3/3; 413 archivos, 2,441 passed, 8 expected fail, 34 todo; skip=false/sin REUSE); H1d 42959213530 SUCCESS (22/22); Scientific UI 42959213568 SUCCESS (456/456); Runner 42959213608 SUCCESS push-only.
+- Plus test-first `3782aae6`: CI 42952108168 y Cumulative 42952108029 FAILURE, `success: False`. Corrección `3daa9f2d`: helper `_arctan_sum_quarter_pi_result` antes del camino genérico de SymPy. Cumulative 42953170568 SUCCESS (2951 passed, 1 skipped, 11 xfailed; tests focales 2/2 PASSED; skip=false/sin REUSE); CI 42953170611, H1d 42953170622, Native Syntax 42953170572 y Runner 42953170442 SUCCESS; Security 42953170861 SUCCESS con mutmut.
+- Alcance: sólo `arctan(x)+arctan(2x)=pi/4` en radianes con variable `x`; Lite cubre además la suma invertida y el rechazo de `pi/2`. No es un resolvedor general de sumas de arcotangentes ni certifica la ingesta LaTeX de Plus `/api/v1/evaluate`.
+- Resultado: PASS_SCOPED bilateral. Global OPEN; EV-D-01 BLOCKED, EV-HI PASS_SCOPED; S25, SG28, H2 y DIST abiertos.
+
+**Siguiente:** TRIG-EC-I-06 (\(\operatorname{arccot} x=\frac{2\pi}{3}\) → \(x=-\frac{\sqrt{3}}{3}\)); recuperar la fila exacta del gzip y escribir primero las pruebas focales. No repetir gates verdes de EC-I-01..05 ni hacer dispatch manual.
+
+---
+
+## 2026-11-11 UTC - TRIG-EC-I-04 PASS_SCOPED bilateral
 
 - Contrato congelado: \(\arcsin x=\arccos x\) → \(x=\frac{\sqrt{2}}{2}\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas; sin nota separada.
 - Lite test-first `tests/trigonometryEcI04.audit.test.ts` (commit `0cd7bc71a40b3a35c6163a996bc175975ab7acc3`): falló con «No se encontró una solución algebraica para x». Cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/42946133423 FAILURE. Clasificado como producto.
