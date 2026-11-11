@@ -19,6 +19,7 @@ import {
   solveDirectTrigonometricEquation,
   solveDoubleAngleSineEqualsCosineEquation,
   solveInverseCosineEquation,
+  solveInverseSineCosineEqualEquation,
   solveInverseSineEquation,
   solveInverseTangentEquation,
   solveQuadraticSineEquation,
@@ -352,6 +353,12 @@ export function solveAlgebra(
   if (inverseCosineResult !== null) {
     steps.push(inverseCosineResult.step);
     return { steps, solutionsAlgebrite: inverseCosineResult.solutions };
+  }
+
+  const inverseSineCosineEqualResult = solveInverseSineCosineEqualEquation(leftAlgebrite, rightAlgebrite, variable);
+  if (inverseSineCosineEqualResult !== null) {
+    steps.push(inverseSineCosineEqualResult.step);
+    return { steps, solutionsAlgebrite: inverseSineCosineEqualResult.solutions };
   }
 
   const inverseTangentResult = solveInverseTangentEquation(leftAlgebrite, rightAlgebrite, variable);

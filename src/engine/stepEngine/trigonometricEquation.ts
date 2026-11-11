@@ -769,3 +769,47 @@ export function solveInverseTangentEquation(
     contradiction: false,
   };
 }
+
+/**
+ * Solves only the equation arcsin(variable)=arccos(variable) (or its reversed
+ * form) on the real domain. Since arccos(x)=pi/2-arcsin(x), the equation is
+ * equivalent to arcsin(x)=pi/4, so the single candidate is x=sin(pi/4)=sqrt(2)/2,
+ * accepted only when arcsin(candidate) and arccos(candidate) coincide. Other
+ * forms return null and stay on the generic path. This is not a general
+ * inverse-trigonometry solver.
+ */
+export function solveInverseSineCosineEqualEquation(
+  left: string,
+  right: string,
+  variable: string,
+): TrigonometricEquationResult | null {
+  const compactLeft = left.replace(/\s+/g, "");
+  const compactRight = right.replace(/\s+/g, "");
+  const asinTarget = "arcsin(" + variable + ")";
+  const acosTarget = "arccos(" + variable + ")";
+  const isForward = compactLeft === asinTarget && compactRight === acosTarget;
+  const isReversed = compactLeft === acosTarget && compactRight === asinTarget;
+  if (!isForward && !isReversed) return null;
+
+  const candidate = simplify("sin(pi/4)");
+  const candidateValue = numericValue(candidate);
+  if (candidateValue === null || candidateValue < -1 || candidateValue > 1) return null;
+  if (!equivalent("arcsin(" + candidate + ")", "arccos(" + candidate + ")")) return null;
+
+  return {
+    solutions: [candidate],
+    step: {
+      id: "trigonometric-inverse-sine-cosine-equal",
+      title: "Igualdad de arcoseno y arcocoseno",
+      rule: "InverseSineCosineEqualBranch",
+      latex:
+        "\\arcsin(" + variable + ")=\\arccos(" + variable + ")" + ",\\quad " +
+        variable + "=" + toLatex(candidate),
+      explanation:
+        "Como arccos(x)=π/2-arcsin(x), la ecuación equivale a arcsin(x)=π/4. La única " +
+        "solución real es " + variable + " = sin(π/4). Se verifica que arcsin y arccos " +
+        "coinciden en ese candidato dentro de la ecuación original.",
+    },
+    contradiction: false,
+  };
+}
