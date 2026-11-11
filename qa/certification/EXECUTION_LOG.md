@@ -1,3 +1,11 @@
+## 2026-11-11 UTC — TRIG-EC-I-04 PASS_SCOPED bilateral
+
+- Contrato congelado: \(\arcsin x=\arccos x\) → \(x=\frac{\sqrt{2}}{2}\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas; sin nota separada.
+- Lite test-first `tests/trigonometryEcI04.audit.test.ts` (commit `0cd7bc71a40b3a35c6163a996bc175975ab7acc3`): falló con «No se encontró una solución algebraica para x». Cumulative https://github.com/c2melendez/precision-lab-lite/actions/runs/42946133423 FAILURE. Clasificado como producto.
+- Corrección en `3b1483a745cff6de4bbbd28c5718765b75b43df6`: `solveInverseSineCosineEqualEquation` en `trigonometricEquation.ts`, enrutado desde `algebra.ts`, con regresión `tests/trigonometryInverseSineCosineRegression.audit.test.ts`.
+- Corridas de 3b1483a7: CI 42947355930, Cumulative 42947355901 (2436 passed, 8 expected fail, 34 todo), H1d 42947355958, Scientific UI 42947355931 y Runner 42947355971, todas SUCCESS. Sin dispatch manual.
+- Siguiente acción: TRIG-EC-I-05; recuperar primero la fila exacta de la matriz gzip y luego test-first bilateral.
+
 ## 2026-11-11 UTC — TRIG-EC-I-03 PASS_SCOPED bilateral
 
 - Contrato congelado: \(\arctan x=\frac{\pi}{4}\) → \(x=1\); gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb. Tres columnas; sin nota separada.
