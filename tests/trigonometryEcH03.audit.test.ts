@@ -29,7 +29,7 @@ describe("Trigonometry EC-H-03: sinh(x)=1 over the reals", () => {
 
     const root = result.solutionsAlgebrite[0];
     expect(evaluate("simplify((" + root + ")-log(1+sqrt(2)))").replace(/\s+/g, "")).toBe("0");
-    expect(evaluate("simplify(sinh(" + root + ")-1)").replace(/\s+/g, "")).toBe("0");
+    expect(evaluate("simplify((exp(" + root + ")-exp(-(" + root + ")))/2-1)").replace(/\s+/g, "")).toBe("0");
     const numericRoot = Number(evaluate("float(" + root + ")").trim().replace(/\.\.\.$/, ""));
     expect(Number.isFinite(numericRoot)).toBe(true);
     expect(Math.abs(Math.sinh(numericRoot) - 1)).toBeLessThan(1e-5);
