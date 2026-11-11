@@ -813,3 +813,60 @@ export function solveInverseSineCosineEqualEquation(
     contradiction: false,
   };
 }
+
+/**
+ * Solves only the equation arctan(variable)+arctan(2*variable)=pi/4 (or its
+ * reversed sum) on the real domain. With tan(a+b)=(a+b)/(1-ab), the equation
+ * reduces to 2x^2+3x-1=0, with roots (-3±sqrt(17))/4. The principal sum equals
+ * pi/4 only when 1-2x^2>0: the root (-3-sqrt(17))/4 gives a sum of -3pi/4 and
+ * is discarded by a numeric check in the original sum. Other forms return null
+ * and stay on the generic path. This is not a general inverse-trigonometry solver.
+ */
+export function solveArctanSumQuarterPiEquation(
+  left: string,
+  right: string,
+  variable: string,
+): TrigonometricEquationResult | null {
+  const compactLeft = left.replace(/\s+/g, "").replace(/\*/g, "");
+  const compactRight = right.replace(/\s+/g, "").replace(/\*/g, "");
+  const direct = "arctan(" + variable + ")+arctan(2" + variable + ")";
+  const reversed = "arctan(2" + variable + ")+arctan(" + variable + ")";
+
+  let constant: string;
+  if (compactLeft === direct || compactLeft === reversed) {
+    constant = right;
+  } else if (compactRight === direct || compactRight === reversed) {
+    constant = left;
+  } else {
+    return null;
+  }
+
+  const value = numericValue(constant);
+  if (value === null || Math.abs(value - Math.PI / 4) > 1e-12) return null;
+
+  const candidates: Array<[string, number]> = [
+    ["(sqrt(17)-3)/4", (Math.sqrt(17) - 3) / 4],
+    ["(-3-sqrt(17))/4", (-3 - Math.sqrt(17)) / 4],
+  ];
+  const accepted = candidates.filter(
+    ([, x]) => Math.abs(Math.atan(x) + Math.atan(2 * x) - Math.PI / 4) < 1e-9,
+  );
+  if (accepted.length !== 1) return null;
+  const candidate = accepted[0][0];
+
+  return {
+    solutions: [candidate],
+    step: {
+      id: "trigonometric-arctan-sum-quarter-pi",
+      title: "Suma de arcotangentes igual a π/4",
+      rule: "ArctanSumQuarterPiBranch",
+      latex:
+        "\\arctan(" + variable + ")+\\arctan(2" + variable + ")=\\frac{\\pi}{4},\\quad " +
+        variable + "=" + toLatex(candidate),
+      explanation:
+        "Con tan(a+b)=(a+b)/(1-ab), la ecuación lleva a 2x²+3x-1=0. Sólo (√17-3)/4 " +
+        "hace que la suma principal valga π/4; la otra raíz da -3π/4 y se descarta.",
+    },
+    contradiction: false,
+  };
+}
