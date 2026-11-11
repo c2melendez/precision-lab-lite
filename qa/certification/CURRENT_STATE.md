@@ -1,3 +1,21 @@
+# Actualización de certificación - 2026-11-11 UTC (r492; EC-I-03 PASS_SCOPED bilateral)
+
+## Trigonometría TRIG-EC-I-03 - PASS_SCOPED bilateral
+
+- Fila congelada del gzip legacy (blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb): \(\arctan x=\frac{\pi}{4}\) → \(x=1\). Tres columnas; sin nota separada.
+- Lite test-first `11b0038f2ac1f9bcf378c775ba1cd2249a44507c` falló con «No se encontró una solución algebraica para x» (CI 42930765664 y Cumulative 42930765708 FAILURE): hueco real de producto. Corrección `238b1e8d1fb9b8fc1745044ebca8c72db4f4915a`: `solveInverseTangentEquation` en `trigonometricEquation.ts`, enrutado desde `algebra.ts`, con regresión `tests/trigonometryInverseTangentRegression.audit.test.ts`. CI 42931990369 SUCCESS; Cumulative 42931990398 SUCCESS (2431 passed); H1d 42931990364 SUCCESS; Scientific UI 42931990451 SUCCESS; Runner 42931990385 SUCCESS push-only.
+- Plus SHA técnico `167fa2f05`, solo prueba `backend/tests/test_trigonometry_ec_i03.py`; sin cambio de producto. Cumulative 42930769666 SUCCESS (2947 passed); CI 42930769742 SUCCESS; H1d 42930769513 SUCCESS; Runner 42930769515 SUCCESS push-only.
+- Acta bilateral: qa/certification/TRIG_EC_I_03_ACCEPTANCE_2026-11-11.md en ambos repositorios.
+
+## Estado y siguiente acción
+
+- Último caso aceptado: TRIG-EC-I-03 — PASS_SCOPED bilateral.
+- Siguiente: TRIG-EC-I-04, sección 2.B Inversas: \(\arcsin x=\arccos x\) → \(x=\frac{\sqrt{2}}{2}\). Recuperar la fila exacta del gzip y escribir primero las pruebas focales en ambos repositorios.
+- Certificación global: OPEN. EV-D-01 en Plus /api/v1/evaluate sigue BLOCKED; EV-HI conserva PASS_SCOPED; S25, SG28, H2 y DIST siguen abiertos.
+- No repetir gates verdes de EC-D-01..10 ni de EC-I-01..03; no ejecutar dispatch manual.
+
+---
+
 # Actualización de certificación - 2026-11-10 UTC (r491; EC-I-02 PASS_SCOPED bilateral)
 
 ## Trigonometría TRIG-EC-I-02 - PASS_SCOPED bilateral
