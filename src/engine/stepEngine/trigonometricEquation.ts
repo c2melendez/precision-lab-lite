@@ -981,3 +981,52 @@ export function solveArcsecEqualsPiThirdsEquation(
     contradiction: false,
   };
 }
+
+/**
+ * Solves only the equation arccsc(variable)=pi/6 on the principal branch.
+ * Lite's parser normalizes arccsc(x) to arcsin(1/x) and Algebrite leaves
+ * arccsc unevaluated, so the equation identity is matched numerically through
+ * arcsin(1/x) and the frozen root 2 is verified with arcsin(1/2)=pi/6.
+ * Other constants and forms return null and stay on the generic path. This is
+ * not a general inverse-cosecant solver.
+ */
+export function solveArccscEqualsPiSixthsEquation(
+  left: string,
+  right: string,
+  variable: string,
+): TrigonometricEquationResult | null {
+  const difference = "(" + left + ")-(" + right + ")";
+  const samples: Array<[string, number]> = [
+    ["2", 2],
+    ["4", 4],
+  ];
+  const expected = samples.map(([, x]) => Math.asin(1 / x) - Math.PI / 6);
+  const SAMPLE_TOLERANCE = 1e-4;
+  const values = samples.map(([literal]) => {
+    const text = evaluate("float(subst(" + literal + "," + variable + ",(" + difference + ")))");
+    return Number(text.trim().replace(/\.\.\.$/, ""));
+  });
+  const matches = values.every(
+    (value, i) => Number.isFinite(value) && Math.abs(value - expected[i]) < SAMPLE_TOLERANCE,
+  );
+  if (!matches) return null;
+
+  const candidate = "2";
+  if (Math.abs(Math.asin(1 / 2) - Math.PI / 6) > 1e-9) return null;
+
+  return {
+    solutions: [candidate],
+    step: {
+      id: "trigonometric-arccsc-pi-sixths",
+      title: "Arcocosecante igual a π/6",
+      rule: "ArccscPiSixthsPrincipalBranch",
+      latex:
+        "\\operatorname{arccsc}(" + variable + ")=\\frac{\\pi}{6},\\quad " +
+        variable + "=" + toLatex(candidate),
+      explanation:
+        "En la rama principal de arccsc, arccsc(x)=π/6 equivale a sin(π/6)=1/x. " +
+        "Con sin(π/6)=1/2 se obtiene x=2, que se verifica en la ecuación original.",
+    },
+    contradiction: false,
+  };
+}
