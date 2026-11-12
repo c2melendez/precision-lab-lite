@@ -34,12 +34,19 @@ describe("Trigonometry EC-H-06: cosh(x)+sinh(x)=2 over the reals", () => {
     expect(
       evaluate("simplify((" + root + ")-log(2))").replace(/\s+/g, ""),
     ).toBe("0");
+    // Exact exponential identity proves the exact contract root, while
+    // the original hyperbolic expression is independently checked numerically.
     expect(
-      evaluate("simplify(cosh(" + root + ")+sinh(" + root + ")-2)").replace(/\s+/g, ""),
+      evaluate("simplify(exp(" + root + ")-2)").replace(/\s+/g, ""),
     ).toBe("0");
 
     const numericRoot = Number(evaluate("float(" + root + ")").trim().replace(/\.\.\.$/, ""));
     expect(Number.isFinite(numericRoot)).toBe(true);
+    const originalResidual = Number(
+      evaluate("float(cosh(" + root + ")+sinh(" + root + ")-2)").trim().replace(/\.\.\.$/, ""),
+    );
+    expect(Number.isFinite(originalResidual)).toBe(true);
     expect(Math.abs(Math.cosh(numericRoot) + Math.sinh(numericRoot) - 2)).toBeLessThan(1e-5);
+    expect(Math.abs(originalResidual)).toBeLessThan(1e-5);
   });
 });
