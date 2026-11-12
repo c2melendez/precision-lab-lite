@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 502,
+  "revision": 503,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "66fe8eee062faa9bb5ba685c5310f42f1e964cf8",
-  "baseline_case": "TRIG-EC-H-06",
+  "technical_baseline_sha": "165f6e68f8c2886aa5ad18ea7d0404e5c07484d5",
+  "baseline_case": "TRIG-EC-H-07",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EC-H-07",
+    "id": "TRIG-EC-H-08",
     "status": "RUN",
-    "previous_id": "TRIG-EC-H-06",
-    "action": "Start bilateral test-first for the frozen source row sinh(2x)=sinh x -> x=0. Add exact three-column source anchors and one-real-root/original-substitution tests in Lite and Plus; push tests, inspect the automatically triggered exact-SHA gates, and implement only a product gap proven by the failing tests. Keep global OPEN and S25 dynamic review pending: run 43161276374 was CANCELLED without a mutmut score and run 43166276617 skipped backend-security/mutation, so do not treat either as PASS or relaunch the identical campaign without a new precondition."
+    "previous_id": "TRIG-EC-H-07",
+    "action": "Start bilateral test-first for the frozen source row sech x=1/2 -> x=+/-ln(2+sqrt(3)). Add exact three-column source anchors and two-real-root/original-substitution tests in Lite and Plus; push tests, inspect the automatically triggered exact-SHA gates, and implement only a product gap proven by the failing tests. Keep global OPEN and S25 dynamic review pending: backend-security passed at 4ff385e8 but mutation has no score, so do not treat cancelled or skipped runs as PASS."
   },
   "blockers": [],
   "prose_only_paths": [

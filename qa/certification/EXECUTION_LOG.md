@@ -1,3 +1,29 @@
+## 2026-11-12 UTC — r503: TRIG-EC-H-07 PASS_SCOPED bilateral; siguiente EC-H-08
+
+Contrato congelado: fuente gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb, sección 2.C; ecuación sinh(2x)=sinh x; solución real única x=0, demostrada con sinh(2x)=2·sinh(x)·cosh(x) y 2·cosh(x)−1>0.
+
+### Lite — PASS_SCOPED
+- Test-first e1f2c119edac89fa243e3f84ae35adcb50088c54 añadió tests/trigonometryEcH07.audit.test.ts; CI 43177221887 y Cumulative 43177221820 FAILURE con `No se encontró una solución algebraica para "x"`.
+- Corrección acotada en src/engine/stepEngine/algebra.ts, SHA técnico 165f6e68f8c2886aa5ad18ea7d0404e5c07484d5: reconoce sólo sinh(2x)=sinh(x) (y su reversa) y devuelve 0 mediante la factorización hiperbólica.
+- Cumulative 43177798414 SUCCESS: guard skip=false, evidence_run_id vacío; 425/425 suites, 2.466 passed, 8 expected fail y 34 TODO; EC-H-07 2/2 PASSED.
+- CI 43177798428 SUCCESS; H1d 43177798458 SUCCESS, 22/22; Scientific UI 43177798500 SUCCESS, 456/456; Runner 43177798381 SUCCESS push-only.
+
+### Plus — PASS_SCOPED
+- Test-first 1e7ef2e9436b56d6aeca881603ea2b70d2a1d985 añadió backend/tests/test_trigonometry_ec_h07.py; CI 43177222933 FAILURE con `assert 4 == 1` y `[0, -I*pi/3, I*pi/3, I*pi]`.
+- Corrección acotada en backend/app/services/solve_service.py, SHA técnico 4ff385e8d237b36d7ed29fe0d83d433cea7d7ee1: `_hyperbolic_sinh_double_angle_real_result` exige solveset real {0} y verifica la ecuación original.
+- Test-only f9285cf07604395f3c6136980aaa3ee8b81a4065 cambia la línea de unicidad de sp.solve (ignora `domain=S.Reals`) a sp.solveset más la identidad de factorización; el contrato no se relajó.
+- Cumulative 43177842873 SUCCESS sobre f9285cf0: guard skip=false, evidence_run_id vacío; backend 2.973 passed, 1 skipped, 11 xfailed, 1 warning; EC-H-07 2/2 PASSED.
+- CI 43177842825 (backend) fue cancelado dos veces por el techo de 15 minutos, no por fallo de tests. 649dd50858eba9c232d26b835a22ee1e6f1896d4 amplía sólo ese techo a 30 minutos; CI 43182125017 SUCCESS en ese SHA (2.973 passed, 1 skipped, 11 xfailed, cobertura 88,35%; frontend SUCCESS).
+- H1d 43177842832 SUCCESS, 38/38; Runner 43177842840 SUCCESS push-only.
+
+### Decisión y alcance
+- EC-H-07 PASS_SCOPED bilateral; no acredita un resolvedor hiperbólico general. Global OPEN; EV-D-01 BLOCKED, EV-HI PASS_SCOPED; S25 pendiente; SG28/H2 OPEN; DIST-01..08 BLOCKED.
+- S25: 43161276374 CANCELLED sin score de mutmut; 43166276617 no ejecutó backend-security ni mutmut; backend-security de 43177820759 SUCCESS en 4ff385e8; la mutación sigue sin score.
+
+**Siguiente:** TRIG-EC-H-08 (`sech x=1/2` → `x=±ln(2+√3)`) test-first bilateral, anclado a las tres celdas de la fila. No repetir gates verdes de EC-H-01..07 ni hacer dispatch manual.
+
+---
+
 ## 2026-11-12 UTC — r502: TRIG-EC-H-06 PASS_SCOPED bilateral; siguiente EC-H-07
 
 Contrato congelado: fuente gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb, sección 2.C; ecuación cosh x+sinh x=2; solución real única x=ln 2. Ambos tests anclan las tres celdas de la fila y verifican la ecuación original.

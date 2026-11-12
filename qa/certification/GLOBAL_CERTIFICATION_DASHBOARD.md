@@ -1,3 +1,20 @@
+# Actualización de certificación — 2026-11-12 UTC (r503; TRIG-EC-H-07 PASS_SCOPED bilateral; siguiente EC-H-08)
+
+## Estado de la fila hiperbólica
+
+- TRIG-EC-H-07: PASS_SCOPED bilateral; Lite 165f6e68f8c2886aa5ad18ea7d0404e5c07484d5; Plus producto 4ff385e8d237b36d7ed29fe0d83d433cea7d7ee1 con test-only f9285cf07604395f3c6136980aaa3ee8b81a4065.
+- Lite CI 43177798428, Cumulative 43177798414, H1d 43177798458 y Scientific UI 43177798500 SUCCESS (425 suites, 2.466 passed, 8 expected fail, 34 TODO; 22/22 y 456/456). Plus Cumulative 43177842873 y H1d 43177842832 SUCCESS (2.973 passed, 1 skipped, 11 xfailed; 38/38); CI 43182125017 SUCCESS en 649dd50858eba9c232d26b835a22ee1e6f1896d4 tras cancelarse dos veces por el techo de 15 minutos (2.973 passed, cobertura 88,35%).
+- S25 permanece PENDING: 43161276374 CANCELLED sin score de mutmut; 43166276617 omitió backend-security y mutmut; backend-security 43177820759 SUCCESS en 4ff385e8. Certificación global OPEN.
+- SG28 local Plus: backend 70 passed (42555334631), UI 21/21 (42329898027). H2 distribuido OPEN; DIST-01..08 BLOCKED.
+
+## Siguiente paso
+
+TRIG-EC-H-08 test-first bilateral: sech x=1/2 -> x=±ln(2+√3), anclado a las tres celdas de la fila comprimida original.
+
+El flag SG28_EVALUATE_ISOLATION permanece desactivado por defecto; no se realizaron cambios ni despliegues de producción.
+
+---
+
 # Actualización de certificación — 2026-11-12 UTC (r502; TRIG-EC-H-06 PASS_SCOPED bilateral; siguiente EC-H-07)
 
 ## Estado de la fila hiperbólica
