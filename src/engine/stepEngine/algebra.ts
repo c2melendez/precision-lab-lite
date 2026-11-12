@@ -269,10 +269,12 @@ function hyperbolicSechHalfStep(
   // EC-H-08 is a frozen real-domain equation contract. Recognize only
   // sech(x)=1/2 (or the reversed equality, or the equivalent 1/cosh(x) form);
   // sech(x)=1/2 is equivalent to cosh(x)=2 for real x.
-  const left = leftAlgebrite.replace(/\s+/g, "");
-  const right = rightAlgebrite.replace(/\s+/g, "");
-  const sechTargets = ["sech(" + variable + ")", "1/cosh(" + variable + ")", "1/(cosh(" + variable + "))"];
-  const isOneHalf = (value: string) => value === "1/2" || value === "(1/2)";
+  // The parser rewrites sech(x) as (1/cosh(x)); ignore parentheses and spaces.
+  const bare = (value: string) => value.replace(/[\s()]/g, "");
+  const left = bare(leftAlgebrite);
+  const right = bare(rightAlgebrite);
+  const sechTargets = ["sech" + variable, "1/cosh" + variable];
+  const isOneHalf = (value: string) => value === "1/2" || value === "0.5";
   const isSech = (value: string) => sechTargets.includes(value);
   if (
     !((isSech(left) && isOneHalf(right)) ||
