@@ -14,7 +14,7 @@ describe("Trigonometry EC-H-10: tanh x=2 has no real solution", () => {
   it("anchors the exact equation and the no-real-solution expectation in the frozen matrix", () => {
     const source = gunzipSync(readFileSync(SOURCE_GZ)).toString("utf8");
     expect(source).toMatch(/\|\s*EC-H-10\s*\|/);
-    expect(source).toContain(String.raw`\\tanh x=2`);
+    expect(source).toContain(String.raw`\tanh x=2`);
     expect(source.toLowerCase()).toContain("sin solución real");
   });
 
