@@ -2,47 +2,44 @@
 
 ## Trigonometría hiperbólica — EC-H-03 y EC-H-04 PASS_SCOPED bilateral
 
-Se reconciliaron los índices r498 con los árboles completos y la evidencia de Actions. Los SHA siguientes son HEAD técnicos, no commits documentales:
-
-- Lite: `d74ee60d6add511353397d58a0de6f06e211e0a3`.
-- Plus: `ba20c5c6382ed91f730cb3f86324b98a14be5099`.
+Se reconciliaron los índices r498 con árboles completos y evidencia de Actions. HEAD técnico Lite: \`d74ee60d6add511353397d58a0de6f06e211e0a3\`; HEAD técnico Plus: \`ba20c5c6382ed91f730cb3f86324b98a14be5099\`. Estos son SHA de producto, no los commits documentales r499.
 
 ### EC-H-03 — PASS_SCOPED bilateral
 
-Fila exacta de la matriz congelada `qa/certification/legacy_sources/ejercicios_trigonometria.md.gz`, blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`, sección 2.C, tres columnas: `\sinh x=1` → `x=\ln\left(1+\sqrt{2}\right)`.
+Fila congelada de \`qa/certification/legacy_sources/ejercicios_trigonometria.md.gz\`, blob \`3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb\`, sección 2.C, tres columnas: \`sinh x=1\` → \`x=ln(1+sqrt(2))\`.
 
-- Lite: helper acotado `hyperbolicSineOneStep` en `src/engine/stepEngine/algebra.ts`; tests `tests/trigonometryEcH03.audit.test.ts` 2/2, con ancla de la fila, raíz logarítmica exacta y sustitución con oráculo numérico independiente. Commit de producto `834aca7a7dd6831a024b83b7b00bcf90a07b36cb`.
-- Plus: `_hyperbolic_sine_one_real_result` en `backend/app/services/solve_service.py` usa `solveset` sobre los reales, exige exactamente `log(1+sqrt(2))), comprueba realidad y sustitución. `backend/tests/test_trigonometry_ec_h03.py` 2/2 PASSED, incluida la ruta POST `/api/v1/solve`. Commit correctivo `7906e9649f7f035a7344bb7ec8e374264c92c864`.
+- Lite: \`hyperbolicSineOneStep\` acotado en \`src/engine/stepEngine/algebra.ts\`; \`tests/trigonometryEcH03.audit.test.ts\` 2/2 (fila congelada, raíz exacta y sustitución con oráculo numérico independiente). Commit de producto \`834aca7a7dd6831a024b83b7b00bcf90a07b36cb\`.
+- Plus: \`_hyperbolic_sine_one_real_result\` limita el conjunto a los reales mediante \`solveset\`, exige la única raíz \`log(1+sqrt(2))\) y comprueba sustitución. \`backend/tests/test_trigonometry_ec_h03.py\` 2/2, incluida la ruta POST \`/api/v1/solve\`. Commit correctivo \`7906e9649f7f035a7344bb7ec8e374264c92c864\`.
 
 ### EC-H-04 — PASS_SCOPED bilateral
 
-Fila exacta de la misma matriz, tres columnas: `\cosh x=2` → `x=\pm\ln\left(2+\sqrt{3}\right)`.
+Fila congelada de la misma matriz, tres columnas: \`cosh x=2\` → \`x=±ln(2+sqrt(3))\`.
 
-- Lite: helper `hyperbolicCosineTwoStep` acotado a esta igualdad o su reversa; tests `tests/trigonometryEcH04.audit.test.ts` 2/2, dos raíces exactas, simetría y sustitución numérica en ambas. Commit técnico `d74ee60d6add511353397d58a0de6f06e211e0a3`.
-- Plus: no requirió cambio de producto; SymPy ya resolvía la igualdad. `backend/tests/test_trigonometry_ec_h04.py` 2/2 PASSED, con dos raíces reales opuestas y sustitución exacta para ambas.
+- Lite: \`hyperbolicCosineTwoStep\` estrictamente acotado a la igualdad y su reversa; \`tests/trigonometryEcH04.audit.test.ts\` 2/2, dos raíces exactas, simetría y sustitución en ambas. Commit técnico \`d74ee60d6add511353397d58a0de6f06e211e0a3\`.
+- Plus: sin cambio de producto; SymPy ya resolvía el caso. \`backend/tests/test_trigonometry_ec_h04.py\` 2/2, dos raíces reales opuestas y sustitución exacta en ambas.
 
-### Evidencia ejecutada por SHA, no REUSE
+### Evidencia ejecutada, sin REUSE
 
-**Lite — HEAD `d74ee60d6add511353397d58a0de6f06e211e0a3`:**
-- Cumulative [43124501324](https://github.com/c2melendez/precision-lab-lite/actions/runs/43124501324) SUCCESS; guard `skip=false`, `evidence_run_id=""`; H-03 2/2 y H-04 2/2; suite 422 archivos, 2.460 passed, 8 expected fail, 34 todo.
-- CI [43124501360](https://github.com/c2melendez/precision-lab-lite/actions/runs/43124501360) SUCCESS; typecheck, tests/paridad y build ejecutados.
+**Lite — SHA técnico \`d74ee60d6add511353397d58a0de6f06e211e0a3\`:**
+- Cumulative [43124501324](https://github.com/c2melendez/precision-lab-lite/actions/runs/43124501324) SUCCESS; guard \`skip=false\`, \`evidence_run_id=""\); H-03 2/2 y H-04 2/2; 422 archivos, 2.460 passed, 8 expected fail, 34 todo.
+- CI [43124501360](https://github.com/c2melendez/precision-lab-lite/actions/runs/43124501360) SUCCESS; typecheck, suite/paridad y build ejecutados.
 - H1d [43124501337](https://github.com/c2melendez/precision-lab-lite/actions/runs/43124501337) SUCCESS, 22/22.
-- Scientific UI [43124501411](https://github.com/c2melendez/precision-lab-lite/actions/runs/43124501411) SUCCESS, 456/456 desktop/tablet/mobile Chromium, guard `skip=false`.
+- Scientific UI [43124501411](https://github.com/c2melendez/precision-lab-lite/actions/runs/43124501411) SUCCESS, 456/456 desktop/tablet/mobile Chromium; guard \`skip=false\`.
 
-**Plus — HEAD `ba20c5c6382ed91f730cb3f86324b98a14be5099`:**
-- Cumulative [43123843906](https://github.com/c2melendez/precision-lab-plus/actions/runs/43123843906) SUCCESS; backend y frontend SUCCESS; guard backend `skip=false`, `evidence_run_id=""`; H-03 fuente+HTTP 2/2 y H-04 fuente+HTTP 2/2; backend 2.967 passed, 1 skipped, 11 xfailed, 1 warning.
+**Plus — SHA técnico \`ba20c5c6382ed91f730cb3f86324b98a14be5099\`:**
+- Cumulative [43123843906](https://github.com/c2melendez/precision-lab-plus/actions/runs/43123843906) SUCCESS; backend y frontend SUCCESS; guard backend \`skip=false\`, \`evidence_run_id=""\); H-03 fuente+HTTP 2/2 y H-04 fuente+HTTP 2/2; backend 2.967 passed, 1 skipped, 11 xfailed, 1 warning.
 - CI [43123843827](https://github.com/c2melendez/precision-lab-plus/actions/runs/43123843827) SUCCESS; backend 2.967 passed y frontend/typecheck/tests/build SUCCESS.
 - H1d [43123843854](https://github.com/c2melendez/precision-lab-plus/actions/runs/43123843854) SUCCESS, 38/38.
-- Native Syntax [43118563367](https://github.com/c2melendez/precision-lab-plus/actions/runs/43118563367) SUCCESS sobre el SHA de producto `7906e9649f7f035a7344bb7ec8e374264c92c864`; guard `skip=false`, 26 desktop y 52 tablet/mobile. La comparación con el HEAD actual confirma que los dos commits posteriores solo modificaron tests backend fuera del filtro Native; el código de producto no cambió.
+- Native Syntax [43118563367](https://github.com/c2melendez/precision-lab-plus/actions/runs/43118563367) SUCCESS sobre el SHA de producto \`7906e9649f7f035a7344bb7ec8e374264c92c864\`; guard \`skip=false\`, 26 desktop y 52 tablet/mobile. Los dos commits posteriores solo modificaron tests backend fuera del filtro Native; el código de producto evaluado no cambió.
 
-**S25 independiente:** campaña [43118563326](https://github.com/c2melendez/precision-lab-plus/actions/runs/43118563326) CANCELLED. `security/backend-security` pasó (24 tests), pero `mutation/plus-backend-mutmut` job `130853024064` fue CANCELLED y no hay score final verificable. Jobs SKIPPED no son PASS. S25 sigue OPEN y no se reintenta con las mismas precondiciones.
+**S25 independiente:** campaña [43118563326](https://github.com/c2melendez/precision-lab-plus/actions/runs/43118563326) CANCELLED. \`security/backend-security\` pasó (24 tests), pero \`plus-backend-mutmut\` job \`130853024064\` fue CANCELLED y no hay score final verificable. SKIPPED no es PASS. S25 sigue OPEN; no repetir la misma mutación con precondiciones idénticas.
 
 ### Estado y siguiente acción
 
-- Último caso aceptado: **TRIG-EC-H-04 — PASS_SCOPED bilateral**. H-03/H-04 solo certifican las ecuaciones congeladas en dominio real; no un resolvedor hiperbólico general.
-- **Siguiente acción única: TRIG-EC-H-05**, fila congelada `\tanh x=\frac{1}{2}` → `x=\frac{1}{2}\ln 3`. Crear primero tests focales test-first en ambos productos, anclados a las tres columnas de la fuente; inspeccionar aliases/parser; exigir exactamente una raíz real y sustitución exacta en `tanh(x)=1/2`. No hay tests H-05 en ninguno de los repositorios.
-- Ejecutar los gates pertinentes una sola vez tras cambios técnicos. Plus Native Syntax y seguridad dependen de los filtros reales; si `solve_service.py` cambia, revisar S25 dinámicamente, sin reintentar la misma mutación cancelada a menos que cambie la precondición/advisory/dependencia.
-- Global **OPEN**. EV-D-01 `/api/v1/evaluate` BLOCKED; EV-HI PASS_SCOPED; S25 OPEN; SG28/H2 OPEN; DIST-01..08 BLOCKED. `SG28_EVALUATE_ISOLATION` continúa desactivada por defecto.
+- Último caso aceptado: **TRIG-EC-H-04 — PASS_SCOPED bilateral**. H-03/H-04 solo certifican las ecuaciones congeladas en dominio real; no acreditan un resolvedor hiperbólico general.
+- **Siguiente acción única: TRIG-EC-H-05**, fila congelada \`tanh x=1/2\` → \`x=(1/2)ln(3)\`. Recuperar/anclar las tres columnas; tests H-05 aún no existen. Implementar primero tests focales en Lite y Plus; inspeccionar parser/aliases; exigir exactamente una raíz real y sustitución exacta en la ecuación original. Cambiar solo el motor que falle.
+- Ejecutar una vez los gates pertinentes después de cambios técnicos. Plus Native Syntax y seguridad solo se ejecutan si los paths modificados satisfacen sus filtros; si cambia \`solve_service.py\`, revisar S25 como gate dinámico, sin repetir la misma mutación cancelada salvo cambio de dependencia/advisory/precondición.
+- Global **OPEN**. EV-D-01 \`/api/v1/evaluate\` BLOCKED; EV-HI PASS_SCOPED; S25 OPEN; SG28/H2 OPEN; DIST-01..08 BLOCKED. \`SG28_EVALUATE_ISOLATION\` desactivada por defecto.
 - No hubo dispatch manual. SKIPPED/XFAIL/TODO no son PASS.
 
 ---
