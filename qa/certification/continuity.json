@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 500,
+  "revision": 501,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "4aa78c387a1aa8bc68c91d3397a8549009bf1541",
-  "baseline_case": "TRIG-EC-H-04",
+  "baseline_case": "TRIG-EC-H-05",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,11 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EC-H-05",
-    "status": "WAIT",
-    "previous_id": "TRIG-EC-H-04",
-    "action": "WAIT on current exact-SHA GitHub Actions evidence; Lite completed successfully (Cumulative 43158656711, CI 43158656667, H1d 43158656700, Scientific UI 43158656732). Plus test-first SHA 08d3a5f had a real-domain cardinality failure; correction is at technical SHA 9fa169337ab2e34aaafd9ab951f6b6d5960c8a0c and its current runs are Cumulative 43159677068, CI 43159676989, H1d 43159676958, Native Syntax 43159677114, Security 43159677161. Inspect final jobs/steps/logs without repeating active runs. Close H-05 bilaterally only if focal tests and applicable gates pass on the corrected Plus SHA; then begin source-anchored H-06 cosh(x)+sinh(x)=2 -> x=ln(2).",
-    "blockers": []
+    "id": "TRIG-EC-H-06",
+    "status": "RUN",
+    "previous_id": "TRIG-EC-H-05",
+    "action": "Start bilateral test-first for the frozen source row cosh(x)+sinh(x)=2 -> x=ln(2). Add exact three-column source anchors and one-real-root/original-substitution tests in Lite and Plus; push tests, inspect the automatically triggered exact-SHA gates, and implement only a product gap proven by the failing tests. Keep global OPEN and S25 dynamic review pending; do not repeat or relaunch the still-active S25 mutmut run 43161276374."
   },
   "blockers": [],
   "prose_only_paths": [
@@ -53,5 +52,5 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-12T05:14:30Z"
+  "updated_utc": "2026-11-12T05:50:15Z"
 }

@@ -1,3 +1,32 @@
+# Actualización de certificación — 2026-11-12 UTC (r501; TRIG-EC-H-05 PASS_SCOPED bilateral; siguiente EC-H-06)
+
+Contrato congelado: fuente gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb, sección 2.C; ecuación tanh x=1/2; solución real única x=(1/2)ln(3). Ambos tests anclan las tres celdas de la fila y verifican la ecuación original.
+
+### Lite — PASS_SCOPED
+- Test-first dfd68c1da5fc598c9c9066eb7bc4d79072d8cfac detectó la falta del resolver; la corrección acotada está en src/engine/stepEngine/algebra.ts, SHA técnico 4aa78c387a1aa8bc68c91d3397a8549009bf1541.
+- Cumulative 43158656711 SUCCESS, guard skip=false y evidence_run_id vacío; 423/423 suites, 2.462 passed, 8 expected fail y 34 TODO; los dos tests EC-H-05 PASSED.
+- CI 43158656667 SUCCESS; H1d 43158656700 SUCCESS, 22/22; Scientific UI 43158656732 SUCCESS, 456/456 desktop/tablet/mobile. Todos sobre el SHA técnico 4aa78c387a1aa8bc68c91d3397a8549009bf1541.
+- HEAD actual e3f422b50a9fd62df4ad316a6155099bb0f74dc6 solo añade documentación de certificación respecto al SHA técnico; árboles completos comparados, sin diferencias en archivos técnicos. La evidencia Lite sigue cubriendo el checkout técnico vigente.
+
+### Plus — PASS_SCOPED
+- Test-first 08d3a5f24f63b6d3f9883ecb35057679e5556719 detectó que la ruta genérica devolvía ramas complejas adicionales. La primera corrección con solveset sobre Reals aisló la única raíz real, pero SymPy la serializó como atanh(1/2).
+- Corrección de presentación exacta en backend/app/services/solve_service.py: commit a37f323bdeb57b8d279c9e78ffd0099b157e338d. Conserva solveset(Reals), exige un singleton real, reescribe candidate a log y exige equivalencia exacta con log(3)/2; mantiene la sustitución en la ecuación original.
+- CI 43161276309 SUCCESS en el SHA a37f323bdeb57b8d279c9e78ffd0099b157e338d: backend 2.969 passed, 1 skipped, 11 xfailed, 1 warning y cobertura 88,34%; frontend 1.055 passed, 28 TODO, QA dependency audit, typecheck, unit/parity y production build SUCCESS.
+- Cumulative 43161276262 SUCCESS en el mismo SHA; guard skip=false y evidence_run_id vacío, suite backend ejecutada 2.969 passed, 1 skipped, 11 xfailed, cobertura 88,38%; los dos tests EC-H-05 PASSED. Frontend typecheck, unit/parity y build SUCCESS.
+- H1d 43161276268 SUCCESS, 38/38. Native Syntax 43161276224 SUCCESS: 26 desktop y 52 entre tablet y móvil (26 por perfil).
+- Certification Runner 43161276369 registró SUCCESS únicamente del resumen; pasos de política, detección/espera, dispatch y persistencia quedaron SKIPPED. No se cuenta como dispatch ni como test adicional.
+
+### Decisión y alcance global
+- EC-H-05 queda PASS_SCOPED bilateral: la fila focal y los gates funcionales aplicables aprobaron en ambos motores.
+- S25 sigue PENDING / revisión dinámica: security run 43161276374 sobre a37f323b, backend-security (pip-audit, Bandit y regresiones Security/CORS) SUCCESS, pero plus-backend-mutmut continúa IN_PROGRESS sin score final. El run antiguo 43159677161 corresponde al SHA previo 9fa1693 y no se reutiliza.
+- Certificación global permanece OPEN: EV-D-01 BLOCKED; EV-HI PASS_SCOPED; S25 pendiente; SG28/H2 OPEN; DIST-01..08 BLOCKED.
+- SG28 Plus local sigue PASS_SCOPED con evidencia reutilizable por igualdad de cada archivo de los workflows: backend 70 passed en run 42555334631; E2E 21/21 desktop/tablet/móvil en run 42329898027. Esto no prueba K=1 distribuido ni cierra DIST-01..08. SG28_EVALUATE_ISOLATION permanece desactivada por defecto; no se tocó Render ni producción.
+
+### Siguiente acción única
+- Iniciar test-first bilateral EC-H-06 anclado a la fila original: cosh(x)+sinh(x)=2; única solución real x=ln(2). Añadir tests de fuente y solver/API en Lite y Plus, verificar primero el contrato; corregir producto solo donde los tests demuestren una brecha. No saltar a H-07.
+
+---
+
 # Actualización de certificación — 2026-11-12 UTC (r500; EC-H-05 ejecutado en Lite; verificación bilateral WAIT)
 
 ## TRIG-EC-H-05 — espera de cierre bilateral
