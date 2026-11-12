@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 503,
+  "revision": 504,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "165f6e68f8c2886aa5ad18ea7d0404e5c07484d5",
-  "baseline_case": "TRIG-EC-H-07",
+  "technical_baseline_sha": "1aa630c2",
+  "baseline_case": "TRIG-EC-H-08",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EC-H-08",
-    "status": "RUN",
-    "previous_id": "TRIG-EC-H-07",
-    "action": "Start bilateral test-first for the frozen source row sech x=1/2 -> x=+/-ln(2+sqrt(3)). Add exact three-column source anchors and two-real-root/original-substitution tests in Lite and Plus; push tests, inspect the automatically triggered exact-SHA gates, and implement only a product gap proven by the failing tests. Keep global OPEN and S25 dynamic review pending: backend-security passed at 4ff385e8 but mutation has no score, so do not treat cancelled or skipped runs as PASS."
+    "id": "TRIG-EC-H-09",
+    "status": "WAIT",
+    "previous_id": "TRIG-EC-H-08",
+    "action": "Esperar el intento 2 del gate de dependencias y seguridad de Plus (run 43200768165) sobre 49211e6a. Si pasa, cerrar EC-H-09 PASS_SCOPED bilateral y empezar TRIG-EC-H-10 (tanh x=2, sin solución real) con test-first en Lite y Plus. Si el job mutation vuelve a cancelarse por infraestructura, no bajar umbrales ni omitir el gate: diagnosticar primero el límite de tiempo del job."
   },
   "blockers": [],
   "prose_only_paths": [
@@ -52,5 +52,5 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-12T05:50:15Z"
+  "updated_utc": "2026-11-12T13:20:37Z"
 }
