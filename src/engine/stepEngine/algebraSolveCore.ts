@@ -1,5 +1,24 @@
 import { evaluate, solveEquation, ErrorCode } from "../algebriteClient";
 import type { Step, AppError } from "../../types";
+import { solveRealAbsoluteCases } from "../absPiecewise";
+import { solveRealRadicalEquation } from "../radicalCases";
+import {
+  solveCosecantEqualsTwoEquation,
+  solveCotangentEqualsOneEquation,
+  solveDirectTrigonometricEquation,
+  solveDoubleAngleSineEqualsCosineEquation,
+  solveInverseCosineEquation,
+  solveArccotTwoPiThirdsEquation,
+  solveArcsecEqualsPiThirdsEquation,
+  solveArccscEqualsPiSixthsEquation,
+  solveArctanSumQuarterPiEquation,
+  solveInverseSineCosineEqualEquation,
+  solveInverseSineEquation,
+  solveInverseTangentEquation,
+  solveQuadraticSineEquation,
+  solveSecantEqualsMinusTwoEquation,
+  solveSineCosineUnitSumEquation,
+} from "./trigonometricEquation";
 import { hyperbolicCoshSinhTwoStep } from "./hyperbolicCoshSinhTwoStep";
 import { hyperbolicDoubleAngleSinhStep } from "./hyperbolicDoubleAngleSinhStep";
 import { hyperbolicTangentHalfStep } from "./hyperbolicTangentHalfStep";
@@ -41,7 +60,7 @@ export function solveAlgebra(
     explanation: "Se agrupan todos los términos en un solo lado (forma estándar).",
   });
 
-  const matchers: Array<() => Step | null> = [
+  const hyperbolicMatchers: Array<() => Step | null> = [
     () => hyperbolicTangentOutOfRangeStep(leftAlgebrite, rightAlgebrite, variable),
     () => hyperbolicCoshBelowOneStep(leftAlgebrite, rightAlgebrite, variable),
     () => hyperbolicSechHalfStep(leftAlgebrite, rightAlgebrite, variable),
@@ -54,7 +73,7 @@ export function solveAlgebra(
     () => hyperbolicSineZeroStep(leftAlgebrite, rightAlgebrite, variable),
   ];
 
-  for (const match of matchers) {
+  for (const match of hyperbolicMatchers) {
     const step = match();
     if (step === null) continue;
     steps.push(step);
@@ -67,10 +86,7 @@ export function solveAlgebra(
     }
     const latex = step.latex;
     if (latex.includes("\\pm")) {
-      return {
-        steps,
-        solutionsAlgebrite: ["log(2+sqrt(3))", "-log(2+sqrt(3))"],
-      };
+      return { steps, solutionsAlgebrite: ["log(2+sqrt(3))", "-log(2+sqrt(3))"] };
     }
     if (latex.includes("frac{1}{2}")) {
       return { steps, solutionsAlgebrite: ["log(3)/2"] };
@@ -82,6 +98,73 @@ export function solveAlgebra(
       return { steps, solutionsAlgebrite: ["log(1+sqrt(2))"] };
     }
     return { steps, solutionsAlgebrite: ["0"] };
+  }
+
+  const absoluteCases = solveRealAbsoluteCases(leftAlgebrite, rightAlgebrite, variable);
+  if (absoluteCases !== null) {
+    steps.push({
+      id: "absolute-value-cases",
+      latex: leftAlgebrite + " = " + rightAlgebrite,
+      explanation: absoluteCases.notes.join(" "),
+    });
+    if (absoluteCases.solutions.length === 0) {
+      steps.push({ id: "solutions", latex: "∅", explanation: "La ecuación no tiene solución real." });
+      return { steps, solutionsAlgebrite: [], truth: "contradiction" };
+    }
+    steps.push({
+      id: "solutions",
+      latex: absoluteCases.solutions.map((s) => `${variable} = ${s}`).join(",\\quad "),
+      explanation: "Raíces de los tramos verificadas en la ecuación original.",
+    });
+    return { steps, solutionsAlgebrite: absoluteCases.solutions };
+  }
+
+  const trigSolvers = [
+    solveInverseSineEquation,
+    solveInverseCosineEquation,
+    solveInverseSineCosineEqualEquation,
+    solveArctanSumQuarterPiEquation,
+    solveArccotTwoPiThirdsEquation,
+    solveArcsecEqualsPiThirdsEquation,
+    solveArccscEqualsPiSixthsEquation,
+    solveInverseTangentEquation,
+    solveCosecantEqualsTwoEquation,
+    solveSecantEqualsMinusTwoEquation,
+    solveCotangentEqualsOneEquation,
+    solveDoubleAngleSineEqualsCosineEquation,
+    solveSineCosineUnitSumEquation,
+    solveQuadraticSineEquation,
+    solveDirectTrigonometricEquation,
+  ] as const;
+
+  for (const solver of trigSolvers) {
+    const result = solver(leftAlgebrite, rightAlgebrite, variable);
+    if (result === null) continue;
+    steps.push(result.step);
+    return {
+      steps,
+      solutionsAlgebrite: result.solutions,
+      ...(result.contradiction ? { truth: "contradiction" as const } : {}),
+    };
+  }
+
+  const radicalCases = solveRealRadicalEquation(leftAlgebrite, rightAlgebrite, variable);
+  if (radicalCases !== null) {
+    steps.push({
+      id: "radical-candidates",
+      latex: leftAlgebrite + " = " + rightAlgebrite,
+      explanation: radicalCases.notes.join(" "),
+    });
+    if (radicalCases.solutions.length === 0) {
+      steps.push({ id: "solutions", latex: "∅", explanation: "La ecuación no tiene solución real." });
+      return { steps, solutionsAlgebrite: [], truth: "contradiction" };
+    }
+    steps.push({
+      id: "solutions",
+      latex: radicalCases.solutions.map((s) => `${variable} = ${s}`).join(",\\quad "),
+      explanation: "Candidatos verificados en la ecuación original.",
+    });
+    return { steps, solutionsAlgebrite: radicalCases.solutions };
   }
 
   let solutions: string[] = [];
