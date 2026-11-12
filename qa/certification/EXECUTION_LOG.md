@@ -1,3 +1,29 @@
+## 2026-11-12 UTC — r504: TRIG-EC-H-08 PASS_SCOPED bilateral; EC-H-09 en espera del gate de seguridad de Plus
+
+Global **OPEN**. Ningún gate cancelado o saltado cuenta como PASS.
+
+### Lite — TRIG-EC-H-08 PASS_SCOPED
+- Test-first bf19ea154a2c4863279d5e3df01c39803b0a5d44 añadió tests/trigonometryEcH08.audit.test.ts; CI 43183976658 y Cumulative 43183976831 FAILURE (caso no reconocido por el solver).
+- Primer intento 49373a82: no casaba la forma que el parser entrega para sech(x)=1/2 (`(1/cosh(x))`); CI 43194968202 y Cumulative 43194968253 FAILURE.
+- Corrección acotada en src/engine/stepEngine/algebra.ts, SHA técnico 1aa630c2 (matcher que ignora paréntesis y espacios; devuelve ±log(2+sqrt(3))). Runs: Certification Runner 43196180250 success, CI 43196180393 success, IN625 Cumulative Certification Gate 43196180228 success, IN625 H1d Reentry Diagnostic 43196180344 success, Syntax309 SY-N-31 Scientific UI E2E 43196180314 success.
+
+### Plus — TRIG-EC-H-08 PASS_SCOPED
+- Test-only 0f19340222 añadió backend/tests/test_trigonometry_ec_h08.py. El producto ya devolvía las dos raíces reales; no se cambió solve_service.py. Runs: IN625 Cumulative Certification Gate 43184006236 success, IN625 H1d Reentry Diagnostic 43184006392 success, CI 43184006302 success, Certification Runner 43184006076 success; backend 2.975 passed, 1 skipped, 11 xfailed.
+
+### Lite — TRIG-EC-H-09 (cosh x = 1/2, sin solución real)
+- Test-first ebf09b2f añadió tests/trigonometryEcH09.audit.test.ts; frontend FAILURE `No se encontró una solución algebraica para "x"`.
+- Corrección acotada en src/engine/stepEngine/algebra.ts, SHA técnico c0dac291: cosh(x)=c con c racional < 1 devuelve conjunto vacío y verdict contradiction. Runs: IN625 Cumulative Certification Gate 43200739362 success, Certification Runner 43200739325 success, Syntax309 SY-N-31 Scientific UI E2E 43200739370 success, CI 43200739377 success, IN625 H1d Reentry Diagnostic 43200739352 success.
+
+### Plus — TRIG-EC-H-09 (en espera)
+- Test-first 52d0f58a añadió backend/tests/test_trigonometry_ec_h09.py; CI 43197152987 y Cumulative 43197152758 FAILURE: el producto devolvía `equation_solutions` (raíces complejas) en lugar de `contradiction`.
+- Corrección acotada en backend/app/services/solve_service.py, SHA técnico 49211e6a: `_hyperbolic_cosine_below_one_contradiction`, invocada justo después de `_sine_out_of_range_contradiction`. Runs: CI 43200768221 success, IN625 H1d Reentry Diagnostic 43200768158 success, IN625 Plus Native Syntax and Recovery 43200767959 success, Certification Runner 43200767943 success, IN625 Cumulative Certification Gate 43200767993 success.
+- Gate de dependencias y seguridad: run 43200768165 intento 1 FAILURE; el job mutation/plus-backend-mutmut 131123522698 fue cancelado tras ~80 minutos por señal de apagado del runner (infraestructura, no assertion de producto). Se reejecutaron los jobs fallidos (intento 2) y siguen en curso.
+
+### Decisión
+- TRIG-EC-H-08 queda PASS_SCOPED bilateral.
+- TRIG-EC-H-09 queda PENDIENTE hasta que el gate de seguridad de Plus termine en verde sobre 49211e6a. No se cierra con los runs parciales.
+- Siguiente acción: esperar el intento 2 del gate de seguridad (43200768165). Si pasa, cerrar EC-H-09 bilateral y empezar TRIG-EC-H-10 (tanh x = 2) con test-first en Lite y Plus. Si vuelve a cancelarse por infraestructura, no bajar umbrales ni omitir el gate; diagnosticar primero el límite de tiempo del job mutation.
+
 ## 2026-11-12 UTC — r503: TRIG-EC-H-07 PASS_SCOPED bilateral; siguiente EC-H-08
 
 Contrato congelado: fuente gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb, sección 2.C; ecuación sinh(2x)=sinh x; solución real única x=0, demostrada con sinh(2x)=2·sinh(x)·cosh(x) y 2·cosh(x)−1>0.
