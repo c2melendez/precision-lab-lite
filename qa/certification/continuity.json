@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 498,
+  "revision": 499,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "34a53aeb8b895d5adce60dc1b3447b9c338812e2",
-  "baseline_case": "TRIG-EC-H-02",
+  "technical_baseline_sha": "d74ee60d6add511353397d58a0de6f06e211e0a3",
+  "baseline_case": "TRIG-EC-H-04",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EC-H-03",
+    "id": "TRIG-EC-H-05",
     "status": "RUN",
-    "previous_id": "TRIG-EC-H-02",
-    "action": "Recuperar directamente la fila TRIG-EC-H-03 de qa/certification/legacy_sources/ejercicios_trigonometria.md.gz y anclar las tres columnas: sinh(x)=1 -> x=ln(1+sqrt(2)) (sección 2.C, Hiperbólicas). Iniciar test-first bilateral; inspeccionar parser/aliases y las rutas de solveAlgebra y /api/v1/solve. Comprobar raíz real exacta y sustitución en la ecuación original, sin aceptar raíces complejas ni extender el reconocedor a composiciones arbitrarias. Añadir pruebas focales contra la fila congelada y el resultado del motor; cambiar solo la capa que falle. Ejecutar una vez CI y acumulativo pertinentes, H1d y Scientific UI Lite/Native Syntax Plus según filtros; revisar pasos/logs y no repetir verdes. Mantener global OPEN; EV-D-01 /api/v1/evaluate BLOCKED, EV-HI PASS_SCOPED, S25 OPEN por mutation Plus 43105331705 CANCELLED sin score, SG28/H2 OPEN y DIST-01..08 BLOCKED. No reintentar la misma mutación sin cambio de precondición/advisory."
+    "previous_id": "TRIG-EC-H-04",
+    "action": "Recuperar directamente la fila TRIG-EC-H-05 de qa/certification/legacy_sources/ejercicios_trigonometria.md.gz y anclar sus tres columnas: tanh(x)=1/2 -> x=(1/2)ln(3) (sección 2.C, Hiperbólicas). Iniciar test-first bilateral: crear tests focales que lean la fila congelada y prueben Lite solveAlgebra y Plus POST /api/v1/solve; verificar exactamente una raíz real x=ln(3)/2 y sustitución exacta en tanh(x)=1/2. Inspeccionar parser/aliases antes de modificar producto y limitar cualquier reconocedor a la forma contractual. Ejecutar una vez CI y acumulativo pertinentes, H1d y Scientific UI Lite/Native Syntax Plus solo si los filtros de paths aplican; revisar jobs/pasos/logs y no repetir verdes. Mantener global OPEN: EV-D-01 /api/v1/evaluate BLOCKED, EV-HI PASS_SCOPED, S25 OPEN por mutation Plus run 43118563326 CANCELLED sin score (backend-security sí pasó); SG28/H2 OPEN y DIST-01..08 BLOCKED. No reintentar la misma mutación sin cambio de dependencia/advisory/precondición."
   },
   "blockers": [],
   "prose_only_paths": [
@@ -52,5 +52,5 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-11T23:01:56.891Z"
+  "updated_utc": "2026-11-12T04:43:46Z"
 }

@@ -1,3 +1,15 @@
+## 2026-11-12 UTC — r499: TRIG-EC-H-03/H-04 PASS_SCOPED bilateral; siguiente EC-H-05
+
+**Cierre acotado de la sección hiperbólica:**
+- EC-H-03: `sinh(x)=1` → `x=ln(1+sqrt(2))). Lite: tests focales 2/2; Plus: tests de fuente + POST `/api/v1/solve` 2/2, raíz única real y sustitución exacta. Evidencia de ejecución acumulativa/CI/H1d exact-SHA en ambos.
+- EC-H-04: `cosh(x)=2` → `x=±ln(2+sqrt(3))`. Lite y Plus tests focales 2/2; ambos oráculos exigen exactamente dos raíces reales y sustitución en ambas. Plus no requirió cambio de producto.
+- Lite HEAD `d74ee60d6add511353397d58a0de6f06e211e0a3`: Cumulative [43124501324](https://github.com/c2melendez/precision-lab-lite/actions/runs/43124501324) SUCCESS (2.460 passed/8 expected fail/34 todo), CI [43124501360](https://github.com/c2melendez/precision-lab-lite/actions/runs/43124501360) SUCCESS, H1d [43124501337](https://github.com/c2melendez/precision-lab-lite/actions/runs/43124501337) SUCCESS (22/22), Scientific UI [43124501411](https://github.com/c2melendez/precision-lab-lite/actions/runs/43124501411) SUCCESS (456/456).
+- Plus HEAD `ba20c5c6382ed91f730cb3f86324b98a14be5099`: Cumulative [43124501324](https://github.com/c2melendez/precision-lab-lite/actions/runs/43124501324) SUCCESS (2.967 passed/1 skipped/11 xfailed), CI [43124501360](https://github.com/c2melendez/precision-lab-lite/actions/runs/43124501360) SUCCESS, H1d [43124501337](https://github.com/c2melendez/precision-lab-lite/actions/runs/43124501337) SUCCESS (38/38); Native Syntax undefined SUCCESS en SHA de código `7906e9649f7f035a7344bb7ec8e374264c92c864` (26 desktop, 52 tablet/mobile). Los nuevos commits después de ese SHA solo cambiaron tests backend y quedaron fuera del filtro Native.
+- **Siguiente:** EC-H-05, `tanh(x)=1/2` → `x=(1/2)ln(3)`, test-first bilateral sobre la fila congelada.
+- S25 permanece OPEN: campaign undefined CANCELLED durante `plus-backend-mutmut`, sin score final; backend-security 24 tests SUCCESS. EV-D-01 BLOCKED; EV-HI PASS_SCOPED; SG28/H2 OPEN; DIST-01..08 BLOCKED. Certificación global **OPEN**.
+
+---
+
 ## 2026-11-10 UTC — r487: EC-D-08 PASS_SCOPED bilateral; siguiente EC-D-09
 
 **Contrato congelado:** \(\sec x=-2,\ x\in[0,2\pi)\) → \(\{2\pi/3,4\pi/3\}\). Fila del gzip con tres columnas; no hay nota separada.
