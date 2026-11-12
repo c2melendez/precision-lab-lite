@@ -1,3 +1,33 @@
+# Actualización de certificación — 2026-11-12 UTC (r500; EC-H-05 ejecutado en Lite; verificación bilateral WAIT)
+
+## TRIG-EC-H-05 — espera de cierre bilateral
+
+Contrato congelado, fuente gzip blob \`3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb\`, sección 2.C, tres columnas: \`tanh x=1/2\` → \`x=(1/2)ln(3)\`. La ecuación exige una raíz real única y sustitución en la ecuación original.
+
+### Lite — ejecución focal aprobada
+
+- Test-first commit \`dfd68c1da5fc598c9c9066eb7bc4d79072d8cfac\` añadió \`tests/trigonometryEcH05.audit.test.ts\`; su primer acumulativo [43158296281](https://github.com/c2melendez/precision-lab-lite/actions/runs/43158296281) falló solo en el resolver (el ancla de fuente pasó): \`No se encontró una solución algebraica para x\`.
+- Corrección acotada en \`src/engine/stepEngine/algebra.ts\`, commit técnico actual \`4aa78c387a1aa8bc68c91d3397a8549009bf1541\`: el reconocedor intercepta exclusivamente \`tanh(x)=1/2\` y su reversa. Usa \(t=e^x>0\), obtiene \(t^2=3\) y \(x=ln(3)/2\); documenta monotonía real y unicidad. No se declara soporte hiperbólico general.
+- [Cumulative 43158656711](https://github.com/c2melendez/precision-lab-lite/actions/runs/43158656711) SUCCESS, guard \`skip=false\`, \`evidence_run_id=""\`, H-05 2/2; 423 archivos, 2.462 passed, 8 expected fail, 34 TODO.
+- [CI 43158656667](https://github.com/c2melendez/precision-lab-lite/actions/runs/43158656667) SUCCESS; typecheck, regresión y build.
+- [H1d 43158656700](https://github.com/c2melendez/precision-lab-lite/actions/runs/43158656700) SUCCESS, 22/22.
+- [Scientific UI 43158656732](https://github.com/c2melendez/precision-lab-lite/actions/runs/43158656732) SUCCESS, 456/456 desktop/tablet/mobile Chromium.
+
+### Plus — corrección en verificación
+
+- Test-first commit \`08d3a5f24f63b6d3f9883ecb35057679e5556719\` añadió \`backend/tests/test_trigonometry_ec_h05.py\`; el ancla de fuente pasa. [CI inicial 43158346360](https://github.com/c2melendez/precision-lab-plus/actions/runs/43158346360) falló porque la ruta genérica devuelve también la rama compleja \`ln(3)/2 + i*pi\`, además de la raíz real. La suite registró 2.968 passed, 1 skipped, 11 xfailed y 1 test H-05 fallido. No se acepta esa salida compleja para la fila real.
+- Corrección de producto en \`backend/app/services/solve_service.py\`, SHA técnico actual \`9fa169337ab2e34aaafd9ab951f6b6d5960c8a0c\`: helper exacto H-05 con \`solveset(..., domain=S.Reals)\`, exactamente una raíz, comprobación de realidad y sustitución exacta. No altera otras ecuaciones hiperbólicas.
+- Corridas automáticas del push al SHA actual: [Cumulative 43159677068](https://github.com/c2melendez/precision-lab-plus/actions/runs/43159677068), [CI 43159676989](https://github.com/c2melendez/precision-lab-plus/actions/runs/43159676989), [H1d 43159676958](https://github.com/c2melendez/precision-lab-plus/actions/runs/43159676958), [Native Syntax 43159677114](https://github.com/c2melendez/precision-lab-plus/actions/runs/43159677114) y [Certification dependency/security gates 43159677161](https://github.com/c2melendez/precision-lab-plus/actions/runs/43159677161). Al corte r500, Cumulative/CI/H1d/Native están IN_PROGRESS y seguridad está QUEUED; sus jobs ya están identificados. No declarar PASS hasta revisar los pasos y logs finales.
+- [H1d del SHA de test-first 43158346511](https://github.com/c2melendez/precision-lab-plus/actions/runs/43158346511) SUCCESS, pero no sustituye la H1d del SHA corregido. La ejecución fallida [CI 43158346360](https://github.com/c2melendez/precision-lab-plus/actions/runs/43158346360) queda registrada como diagnóstico, no como PASS.
+
+### Estado y siguiente acción
+
+- Último caso bilateral aceptado: **TRIG-EC-H-04 — PASS_SCOPED**. EC-H-05 permanece **WAIT**, aunque Lite ya pasó, porque los gates del SHA correctivo de Plus siguen activos.
+- Siguiente acción única: recuperar los runs [43159677068](https://github.com/c2melendez/precision-lab-plus/actions/runs/43159677068), [43159676989](https://github.com/c2melendez/precision-lab-plus/actions/runs/43159676989), [43159676958](https://github.com/c2melendez/precision-lab-plus/actions/runs/43159676958), [43159677114](https://github.com/c2melendez/precision-lab-plus/actions/runs/43159677114) y [43159677161](https://github.com/c2melendez/precision-lab-plus/actions/runs/43159677161); revisar jobs/pasos/logs y aceptar H-05 solo si la prueba focal y los gates pertinentes pasan en el SHA \`9fa169337ab2e34aaafd9ab951f6b6d5960c8a0c\`. No repetir los runs activos. Después iniciar H-06: \`cosh(x)+sinh(x)=2\` → \`x=ln(2)\`, con ancla a la fila original.
+- Global **OPEN**. EV-D-01 \`/api/v1/evaluate\` BLOCKED; EV-HI PASS_SCOPED; S25 sigue en revisión dinámica por el cambio de \`solve_service.py\`; SG28/H2 OPEN; DIST-01..08 BLOCKED. \`SG28_EVALUATE_ISOLATION\` desactivada por defecto.
+
+---
+
 # Actualización de certificación — 2026-11-12 UTC (r499; TRIG-EC-H-03 y TRIG-EC-H-04 PASS_SCOPED bilateral)
 
 ## Trigonometría hiperbólica — EC-H-03 y EC-H-04 PASS_SCOPED bilateral

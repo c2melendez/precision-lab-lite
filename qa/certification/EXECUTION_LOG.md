@@ -1,3 +1,10 @@
+## 2026-11-12 UTC — r500: EC-H-05 WAIT bilateral
+
+- Fuente congelada (gzip blob \`3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb\`, sección 2.C): \`tanh x=1/2\` → \`x=(1/2)ln(3)\`, tres columnas.
+- Test-first Lite \`dfd68c1da5fc598c9c9066eb7bc4d79072d8cfac\` falló en resolver (test fuente pasó); el test detectó ausencia de resolución algebraica. Commit correctivo actual \`4aa78c387a1aa8bc68c91d3397a8549009bf1541\` introduce un helper exacto limitado a \`tanh(x)=1/2\`/reverso, con dominio real y argumento de unicidad.
+- Lite Cumulative [43158656711](https://github.com/c2melendez/precision-lab-lite/actions/runs/43158656711) SUCCESS: H-05 2/2, guard skip=false/no REUSE, 2462 passed/8 expected fail/34 todo; CI [43158656667](https://github.com/c2melendez/precision-lab-lite/actions/runs/43158656667) SUCCESS; H1d [43158656700](https://github.com/c2melendez/precision-lab-lite/actions/runs/43158656700) SUCCESS 22/22; Scientific UI [43158656732](https://github.com/c2melendez/precision-lab-lite/actions/runs/43158656732) SUCCESS 456/456.
+- No se ejecutaron corridas manuales. H-05 no es PASS bilateral hasta que Plus complete su corrección.
+
 ## 2026-11-12 UTC — r499: TRIG-EC-H-03 y EC-H-04 PASS_SCOPED bilateral; siguiente EC-H-05
 
 La reconciliación de los HEAD contra el baseline r498 mostró árboles completos y cambios técnicos acotados a las implementaciones/tests H-03 y H-04. Se revisaron los logs por evento push, SHA, job y pasos; los gates acumulativos no reutilizaron evidencia.

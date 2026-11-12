@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "revision": 499,
+  "revision": 500,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "d74ee60d6add511353397d58a0de6f06e211e0a3",
+  "technical_baseline_sha": "4aa78c387a1aa8bc68c91d3397a8549009bf1541",
   "baseline_case": "TRIG-EC-H-04",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
@@ -40,9 +40,10 @@
   },
   "next_action": {
     "id": "TRIG-EC-H-05",
-    "status": "RUN",
+    "status": "WAIT",
     "previous_id": "TRIG-EC-H-04",
-    "action": "Recuperar directamente la fila TRIG-EC-H-05 de qa/certification/legacy_sources/ejercicios_trigonometria.md.gz y anclar sus tres columnas: tanh(x)=1/2 -> x=(1/2)ln(3) (sección 2.C, Hiperbólicas). Iniciar test-first bilateral: crear tests focales que lean la fila congelada y prueben Lite solveAlgebra y Plus POST /api/v1/solve; verificar exactamente una raíz real x=ln(3)/2 y sustitución exacta en tanh(x)=1/2. Inspeccionar parser/aliases antes de modificar producto y limitar cualquier reconocedor a la forma contractual. Ejecutar una vez CI y acumulativo pertinentes, H1d y Scientific UI Lite/Native Syntax Plus solo si los filtros de paths aplican; revisar jobs/pasos/logs y no repetir verdes. Mantener global OPEN: EV-D-01 /api/v1/evaluate BLOCKED, EV-HI PASS_SCOPED, S25 OPEN por mutation Plus run 43118563326 CANCELLED sin score (backend-security sí pasó); SG28/H2 OPEN y DIST-01..08 BLOCKED. No reintentar la misma mutación sin cambio de dependencia/advisory/precondición."
+    "action": "WAIT on current exact-SHA GitHub Actions evidence; Lite completed successfully (Cumulative 43158656711, CI 43158656667, H1d 43158656700, Scientific UI 43158656732). Plus test-first SHA 08d3a5f had a real-domain cardinality failure; correction is at technical SHA 9fa169337ab2e34aaafd9ab951f6b6d5960c8a0c and its current runs are Cumulative 43159677068, CI 43159676989, H1d 43159676958, Native Syntax 43159677114, Security 43159677161. Inspect final jobs/steps/logs without repeating active runs. Close H-05 bilaterally only if focal tests and applicable gates pass on the corrected Plus SHA; then begin source-anchored H-06 cosh(x)+sinh(x)=2 -> x=ln(2).",
+    "blockers": []
   },
   "blockers": [],
   "prose_only_paths": [
@@ -52,5 +53,5 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-12T04:43:46Z"
+  "updated_utc": "2026-11-12T05:14:30Z"
 }
