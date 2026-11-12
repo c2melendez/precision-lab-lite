@@ -40,9 +40,13 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: QA dependency audit (hard gate)
+      - name: QA full dependency audit (report)
+        id: full-dependency-audit
+        continue-on-error: true
         run: npm audit --package-lock-only --json > npm-audit.json
-      - name: Upload npm audit report
+      - name: Validate full dependency audit exceptions
+        run: node scripts/check-npm-audit-exceptions.mjs
+      - name: Upload full npm audit report
         if: always()
         uses: actions/upload-artifact@v7
         with:
@@ -50,6 +54,8 @@ jobs:
           path: npm-audit.json
           if-no-files-found: warn
           retention-days: 14
+      - name: QA production dependency audit (hard gate)
+        run: npm audit --omit=dev --package-lock-only
       - name: Typecheck
         run: npm run typecheck
       - name: Unit and parity tests
