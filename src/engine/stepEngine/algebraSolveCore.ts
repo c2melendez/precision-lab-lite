@@ -1,4 +1,4 @@
-import { evaluate, solveEquation, ErrorCode } from "../algebriteClient";
+import { derivative, evaluate, solveEquation, substituteExact, ErrorCode } from "../algebriteClient";
 import type { Step, AppError } from "../../types";
 import { solveRealAbsoluteCases } from "../absPiecewise";
 import { solveRealRadicalEquation } from "../radicalCases";
@@ -29,6 +29,12 @@ import { hyperbolicTangentOutOfRangeStep } from "./hyperbolicTangentOutOfRangeSt
 import { hyperbolicCosineOneStep } from "./hyperbolicCosineOneStep";
 import { hyperbolicSineOneStep } from "./hyperbolicSineOneStep";
 import { hyperbolicSineZeroStep } from "./hyperbolicSineZeroStep";
+import {
+  principalSquareRootOffset,
+  realNumericSign,
+  denominatorExclusions,
+  domainRestrictionStep,
+} from "./algebraUtils";
 
 export interface AlgebraSolveResult {
   steps: Step[];
@@ -167,28 +173,137 @@ export function solveAlgebra(
     return { steps, solutionsAlgebrite: radicalCases.solutions };
   }
 
-  let solutions: string[] = [];
+  const rootEquationVariablePattern = new RegExp("\\b" + variable + "\\b");
+  let squareRootOffset: string | null = principalSquareRootOffset(leftAlgebrite, variable);
+  let squareRootParameter: string | null = squareRootOffset === null ? null : rightAlgebrite;
+  if (squareRootOffset === null) {
+    squareRootOffset = principalSquareRootOffset(rightAlgebrite, variable);
+    if (squareRootOffset !== null) squareRootParameter = leftAlgebrite;
+  }
+
+  if (squareRootOffset !== null && squareRootParameter !== null &&
+      !rootEquationVariablePattern.test(squareRootParameter)) {
+    const parameterSign = realNumericSign(squareRootParameter);
+    if (parameterSign === -1) {
+      steps.push({
+        id: "square-root-domain",
+        latex: leftAlgebrite + " = " + rightAlgebrite,
+        explanation: "La raíz cuadrada real principal nunca es negativa; el lado derecho es negativo, por lo que no existe solución real.",
+      });
+      steps.push({ id: "solutions", latex: "∅", explanation: "La ecuación no tiene solución real." });
+      return { steps, solutionsAlgebrite: [], truth: "contradiction" };
+    }
+
+    const squareRootPower = evaluate("simplify((" + squareRootParameter + ")^2)");
+    const squareRootSolution = squareRootOffset === "0"
+      ? squareRootPower
+      : evaluate("simplify((" + squareRootOffset + ")+(" + squareRootPower + "))");
+    const domainExplanation = parameterSign === null
+      ? "La raíz cuadrada real principal es no negativa: la solución solo es válida si " + squareRootParameter + " ≥ 0."
+      : "El lado derecho es no negativo; se eleva al cuadrado ambos miembros.";
+    steps.push({
+      id: "square-root-solve",
+      latex: variable + " = " + squareRootSolution,
+      explanation: domainExplanation,
+    });
+    return { steps, solutionsAlgebrite: [squareRootSolution] };
+  }
+
+  let solutions: string[];
+  const hasVariable = new RegExp(`\\b${variable}\\b`).test(standardForm);
+  const domainExclusions = denominatorExclusions(leftAlgebrite, rightAlgebrite, variable);
+  if (standardForm.trim() === "0") {
+    if (domainExclusions.length > 0) {
+      steps.push(domainRestrictionStep(
+        variable,
+        domainExclusions,
+        "La ecuación se cumple para toda x del dominio; el punto excluido no pertenece al conjunto solución.",
+      ));
+    }
+    return { steps, solutionsAlgebrite: [], truth: "identity" };
+  }
+  if (!hasVariable) {
+    return { steps, solutionsAlgebrite: [], truth: "contradiction" };
+  }
+
+  if (domainExclusions.length > 0) {
+    try {
+      const numeratorPoly = evaluate("numerator(rationalize((" + leftAlgebrite + ")-(" + rightAlgebrite + ")))");
+      const candidates = new RegExp("\\b" + variable + "\\b").test(numeratorPoly)
+        ? solveEquation(numeratorPoly, variable).map((r) => r.trim())
+        : [];
+      const excluded = candidates.filter((c) => domainExclusions.some((e) => evaluate("simplify((" + c + ")-(" + e + "))") === "0"));
+      if (excluded.length > 0 && candidates.every((c) => !/\\bi\\b|sqrt\\(-/.test(c))) {
+        const valid = candidates.filter((c) => !excluded.includes(c));
+        steps.push(domainRestrictionStep(
+          variable,
+          domainExclusions,
+          excluded.map((c) => variable + " = " + c + " anula el numerador pero no pertenece al dominio; se descarta.").join(" "),
+        ));
+        if (valid.length === 0) {
+          steps.push({ id: "solutions", latex: "∅", explanation: "La ecuación no tiene solución real." });
+          return { steps, solutionsAlgebrite: [], truth: "contradiction" };
+        }
+        steps.push({
+          id: "solutions",
+          latex: valid.map((c) => variable + " = " + c).join(",\\quad "),
+          explanation: "Raíces del numerador que pertenecen al dominio original.",
+        });
+        return { steps, solutionsAlgebrite: valid };
+      }
+    } catch {
+      // fall through
+    }
+  }
+
+  if (domainExclusions.length > 0) {
+    try {
+      const rational = evaluate("rationalize(" + standardForm + ")");
+      const numeratorTerm = evaluate("numerator(" + rational + ")");
+      if (!new RegExp("\\b" + variable + "\\b").test(numeratorTerm) && realNumericSign(numeratorTerm) !== null &&
+          realNumericSign(numeratorTerm) !== 0) {
+        steps.push(domainRestrictionStep(
+          variable,
+          domainExclusions,
+          "Al llevar todo a un denominador común el numerador es la constante no nula " + numeratorTerm + "; no existe solución.",
+        ));
+        return { steps, solutionsAlgebrite: [], truth: "contradiction" };
+      }
+    } catch {
+      // fall through
+    }
+  }
+
+  let linearSolution: string | null = null;
   try {
-    solutions = solveEquation(`(${leftAlgebrite})-(${rightAlgebrite})`, variable);
+    const variablePattern = new RegExp(`\\b${variable}\\b`);
+    const coefficient = derivative(standardForm, variable);
+    if (coefficient.trim() !== "0" && !variablePattern.test(coefficient)) {
+      const constant = substituteExact(standardForm, variable, "0");
+      if (!variablePattern.test(constant)) {
+        const candidate = evaluate(`simplify(-(${constant})/(${coefficient}))`);
+        if (!variablePattern.test(candidate)) linearSolution = candidate;
+      }
+    }
   } catch {
-    throw {
-      code: ErrorCode.UNSUPPORTED_OPERATION,
-      message: `No se encontró una solución algebraica para "${variable}".`,
-    } as AppError;
+    // fall through
   }
+
+  try {
+    solutions = linearSolution === null ? solveEquation(standardForm, variable) : [linearSolution];
+  } catch {
+    throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: `No se encontró una solución algebraica para "${variable}".` } as AppError;
+  }
+
   if (solutions.length === 0) {
-    throw {
-      code: ErrorCode.UNSUPPORTED_OPERATION,
-      message: "La ecuación no tiene solución, o Algebrite no pudo resolverla.",
-    } as AppError;
+    throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "La ecuación no tiene solución, o Algebrite no pudo resolverla." } as AppError;
   }
+
   steps.push({
     id: "solutions",
     latex: solutions.map((s) => `${variable} = ${s}`).join(",\\quad "),
-    explanation:
-      solutions.length > 1
-        ? "Raíces obtenidas simbólicamente."
-        : "Raíz obtenida simbólicamente.",
+    explanation: solutions.length > 1 ? "Raíces obtenidas simbólicamente." : "Raíz obtenida simbólicamente.",
   });
+
   return { steps, solutionsAlgebrite: solutions };
 }
