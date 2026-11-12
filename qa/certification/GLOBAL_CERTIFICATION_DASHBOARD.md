@@ -1,3 +1,20 @@
+# Actualización de certificación — 2026-11-12 UTC (r502; TRIG-EC-H-06 PASS_SCOPED bilateral; siguiente EC-H-07)
+
+## Estado de la fila hiperbólica
+
+- TRIG-EC-H-06: PASS_SCOPED bilateral; Lite producto 7e5bceab462afaeebf68efec66ad902307b37ccf con evidencia en 66fe8eee062faa9bb5ba685c5310f42f1e964cf8; Plus test-only ed8c8f983e32ce963654a9df0baa2c06fbbbc37a.
+- Lite CI 43165791744, Cumulative 43165791579, H1d 43165791669 y Scientific UI 43165791668 SUCCESS (424 suites, 2.464 passed, 8 expected fail, 34 TODO; 22/22 y 456/456). Plus CI 43164642815, Cumulative 43164642805 y H1d 43164642751 SUCCESS (2.971 passed, 1 skipped, 11 xfailed; 38/38).
+- S25 permanece PENDING: 43161276374 CANCELLED sin score de mutmut; 43166276617 no ejecutó backend-security ni mutmut (SKIPPED por change-scope). El timeout de mutmut quedó ampliado a 120 minutos en 3464f7f6, sin cambiar umbrales. Certificación global OPEN.
+- SG28 local Plus: backend 70 passed (42555334631), UI 21/21 desktop/tablet/mobile (42329898027), insumos verificados idénticos al HEAD actual. H2 distribuido continúa OPEN; DIST-01..08 BLOCKED.
+
+## Siguiente paso
+
+TRIG-EC-H-07 test-first bilateral: sinh(2x)=sinh x -> x=0, anclado a las tres celdas de la fila comprimida original.
+
+El flag SG28_EVALUATE_ISOLATION permanece desactivado por defecto; no se realizaron cambios ni despliegues de producción.
+
+---
+
 # Actualización de certificación — 2026-11-12 UTC (r501; TRIG-EC-H-05 PASS_SCOPED bilateral; siguiente EC-H-06)
 
 ## Estado de la fila hiperbólica

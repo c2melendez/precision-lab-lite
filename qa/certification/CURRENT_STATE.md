@@ -1,3 +1,31 @@
+# Actualización de certificación — 2026-11-12 UTC (r502; TRIG-EC-H-06 PASS_SCOPED bilateral; siguiente EC-H-07)
+
+Contrato congelado: fuente gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb, sección 2.C; ecuación cosh x+sinh x=2; solución real única x=ln 2. Ambos tests anclan las tres celdas de la fila y verifican la ecuación original.
+
+### Lite — PASS_SCOPED
+- Test-first 87550075f2e1a4769fdfdc422039593afdd16392 añadió tests/trigonometryEcH06.audit.test.ts; Cumulative 43164629849 FAILURE por falta de resolver (`No se encontró una solución algebraica para x`).
+- Corrección acotada en src/engine/stepEngine/algebra.ts, SHA técnico 7e5bceab462afaeebf68efec66ad902307b37ccf: reconoce sólo cosh(x)+sinh(x)=2 (y reversa) y devuelve log(2) usando la identidad cosh x+sinh x=e^x.
+- El primer intento de cierre 7e5bceab dejó CI 43165183521 y Cumulative 43165183298 en FAILURE por una aserción de representación del harness (`0.0` frente a `0` al simplificar la expresión hiperbólica), no por el producto. El commit test-only 66fe8eee062faa9bb5ba685c5310f42f1e964cf8 sustituyó esa aserción por la identidad exponencial exacta `exp(root)-2=0` y un residual numérico independiente de la ecuación original; no se relajó el contrato.
+- Cumulative 43165791579 SUCCESS sobre 66fe8eee: guard skip=false, evidence_run_id vacío; 424/424 suites, 2.464 passed, 8 expected fail y 34 TODO; los dos tests EC-H-06 PASSED.
+- CI 43165791744 SUCCESS; H1d 43165791669 SUCCESS, 22/22; Scientific UI 43165791668 SUCCESS, 456/456 desktop/tablet/mobile; Runner 43165791771 SUCCESS push-only.
+- Árbol técnico de producto en 7e5bceab; 66fe8eee sólo modifica el test focal. La evidencia cubre el checkout 66fe8eee.
+
+### Plus — PASS_SCOPED
+- Test-only ed8c8f983e32ce963654a9df0baa2c06fbbbc37a añadió backend/tests/test_trigonometry_ec_h06.py; la ruta existente de /api/v1/solve ya devolvía la única raíz real log(2), sin cambio de producto.
+- Cumulative 43164642805 SUCCESS sobre ed8c8f98: guard skip=false, evidence_run_id vacío; backend 2.971 passed, 1 skipped, 11 xfailed, 1 warning; los dos tests EC-H-06 PASSED; frontend 1.055 passed y 28 TODO.
+- CI 43164642815 SUCCESS; H1d 43164642751 SUCCESS, 38/38; Runner 43164642994 SUCCESS push-only.
+
+### Decisión y alcance global
+- EC-H-06 queda PASS_SCOPED bilateral: la fila focal y los gates funcionales aplicables aprobaron en ambos motores.
+- S25 sigue PENDING: el run 43161276374 fue CANCELLED con plus-backend-mutmut sin score final; el run 43166276617 del commit 3464f7f6 no ejecutó backend-security ni mutmut (SKIPPED por change-scope), así que no aporta evidencia de mutación. El propio 3464f7f6 amplió el timeout de mutmut a 120 minutos sin cambiar alcance, herramienta ni umbrales; no se relanza la misma campaña sin una precondición nueva.
+- Certificación global permanece OPEN: EV-D-01 BLOCKED; EV-HI PASS_SCOPED; S25 pendiente; SG28/H2 OPEN; DIST-01..08 BLOCKED.
+- SG28 Plus local sigue PASS_SCOPED con evidencia reutilizable por igualdad de cada archivo de sus workflows (backend 70 passed en 42555334631; E2E 21/21 en 42329898027). SG28_EVALUATE_ISOLATION permanece desactivada por defecto; no se tocó Render ni producción.
+
+### Siguiente acción única
+- Iniciar test-first bilateral EC-H-07 anclado a la fila original: sinh(2x)=sinh x; solución real única x=0. Añadir tests de fuente y solver/API en Lite y Plus, verificar primero el contrato; corregir producto solo donde los tests demuestren una brecha. No saltar a H-08.
+
+---
+
 # Actualización de certificación — 2026-11-12 UTC (r501; TRIG-EC-H-05 PASS_SCOPED bilateral; siguiente EC-H-06)
 
 Contrato congelado: fuente gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb, sección 2.C; ecuación tanh x=1/2; solución real única x=(1/2)ln(3). Ambos tests anclan las tres celdas de la fila y verifican la ecuación original.

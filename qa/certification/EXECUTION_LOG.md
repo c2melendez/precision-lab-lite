@@ -1,3 +1,27 @@
+## 2026-11-12 UTC — r502: TRIG-EC-H-06 PASS_SCOPED bilateral; siguiente EC-H-07
+
+Contrato congelado: fuente gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb, sección 2.C; ecuación cosh x+sinh x=2; solución real única x=ln 2. Ambos tests anclan las tres celdas de la fila y verifican la ecuación original.
+
+### Lite — PASS_SCOPED
+- Test-first 87550075f2e1a4769fdfdc422039593afdd16392 añadió tests/trigonometryEcH06.audit.test.ts; Cumulative 43164629849 FAILURE por falta de resolver.
+- Corrección acotada en src/engine/stepEngine/algebra.ts, SHA técnico 7e5bceab462afaeebf68efec66ad902307b37ccf: reconoce sólo cosh(x)+sinh(x)=2 (y reversa) y devuelve log(2) mediante cosh x+sinh x=e^x.
+- Los runs 43165183521 (CI) y 43165183298 (Cumulative) del SHA técnico fallaron por una aserción de representación del harness (`0.0` frente a `0`), no por el producto. El test-only 66fe8eee062faa9bb5ba685c5310f42f1e964cf8 sustituyó esa aserción por la identidad exponencial exacta y un residual numérico de la ecuación original.
+- Cumulative 43165791579 SUCCESS sobre 66fe8eee: guard skip=false, evidence_run_id vacío; 424/424 suites, 2.464 passed, 8 expected fail y 34 TODO; EC-H-06 2/2 PASSED.
+- CI 43165791744 SUCCESS; H1d 43165791669 SUCCESS, 22/22; Scientific UI 43165791668 SUCCESS, 456/456; Runner 43165791771 SUCCESS push-only.
+
+### Plus — PASS_SCOPED
+- Test-only ed8c8f983e32ce963654a9df0baa2c06fbbbc37a añadió backend/tests/test_trigonometry_ec_h06.py; /api/v1/solve ya devolvía la única raíz real log(2), sin cambio de producto.
+- Cumulative 43164642805 SUCCESS: guard skip=false, evidence_run_id vacío; backend 2.971 passed, 1 skipped, 11 xfailed, 1 warning; EC-H-06 2/2 PASSED; frontend 1.055 passed, 28 TODO.
+- CI 43164642815 SUCCESS; H1d 43164642751 SUCCESS, 38/38; Runner 43164642994 SUCCESS push-only.
+
+### Decisión y alcance
+- S25 sigue PENDING: 43161276374 CANCELLED sin score de mutmut; 43166276617 no ejecutó backend-security ni mutmut (SKIPPED por change-scope). 3464f7f6 amplió el timeout de mutmut a 120 minutos sin cambiar alcance, herramienta ni umbrales.
+- EC-H-06 PASS_SCOPED bilateral; no acredita un resolvedor hiperbólico general. Global OPEN; EV-D-01 BLOCKED, EV-HI PASS_SCOPED; S25 pendiente; SG28/H2 OPEN; DIST-01..08 BLOCKED. SG28_EVALUATE_ISOLATION desactivada por defecto.
+
+**Siguiente:** TRIG-EC-H-07 (`sinh(2x)=sinh x` → `x=0`) test-first bilateral, anclado a las tres celdas de la fila. No repetir gates verdes de EC-H-01..06 ni hacer dispatch manual.
+
+---
+
 ## 2026-11-12 UTC — r501: TRIG-EC-H-05 PASS_SCOPED bilateral; siguiente EC-H-06
 
 Contrato congelado: fuente gzip blob 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb, sección 2.C; ecuación tanh x=1/2; solución real única x=(1/2)ln(3). Ambos tests anclan las tres celdas de la fila y verifican la ecuación original.
