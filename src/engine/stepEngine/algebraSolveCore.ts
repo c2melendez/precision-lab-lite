@@ -32,12 +32,12 @@ import { hyperbolicSineZeroStep } from "./hyperbolicSineZeroStep";
 import {
   principalSquareRootOffset,
   realNumericSign,
+  absoluteValueOffset,
   denominatorExclusions,
   domainRestrictionStep,
 } from "./algebraUtils";
 
 function wordBoundaryPattern(variable: string): RegExp {
-  // Word-boundary matcher; String.raw avoids double-escape pitfalls in source.
   return new RegExp(String.raw`\b` + variable + String.raw`\b`);
 }
 
@@ -109,6 +109,87 @@ export function solveAlgebra(
       return { steps, solutionsAlgebrite: ["log(1+sqrt(2))"] };
     }
     return { steps, solutionsAlgebrite: ["0"] };
+  }
+
+  // Algebra114 AS-PAR-09: equidistant absolute values.
+  const absoluteLeftCenter = absoluteValueOffset(leftAlgebrite, variable);
+  const absoluteRightCenter = absoluteValueOffset(rightAlgebrite, variable);
+  if (absoluteLeftCenter !== null && absoluteRightCenter !== null) {
+    const centerDifference = evaluate("simplify((" + absoluteLeftCenter + ")-(" + absoluteRightCenter + "))");
+    if (centerDifference === "0") {
+      steps.push({
+        id: "absolute-value-equidistance",
+        latex: "a = b",
+        explanation: "Como a = b, ambos valores absolutos son idénticos; toda x real es solución.",
+      });
+      return { steps, solutionsAlgebrite: [], truth: "identity" };
+    }
+    const midpoint = evaluate("simplify(((" + absoluteLeftCenter + ")+(" + absoluteRightCenter + "))/2)");
+    const sign = realNumericSign(centerDifference);
+    steps.push({
+      id: "absolute-value-equidistance",
+      latex: variable + " = (" + absoluteLeftCenter + "+" + absoluteRightCenter + ")/2",
+      explanation: sign === null
+        ? "Si a ≠ b, los puntos equidistantes tienen como único punto medio x = (a+b)/2; si a = b, toda x real es solución."
+        : "Como a ≠ b, la única solución real es el punto medio x = (a+b)/2.",
+    });
+    steps.push({
+      id: "solutions",
+      latex: variable + " = " + midpoint,
+      explanation: "Punto medio verificado en la ecuación original.",
+    });
+    return { steps, solutionsAlgebrite: [midpoint] };
+  }
+
+  // Algebra114 AS-PAR-08: |x-a| = b three-branch contract.
+  let absoluteValueOffsetTerm: string | null = absoluteValueOffset(leftAlgebrite, variable);
+  let absoluteValueParameter: string | null = absoluteValueOffsetTerm === null ? null : rightAlgebrite;
+  if (absoluteValueOffsetTerm === null) {
+    absoluteValueOffsetTerm = absoluteValueOffset(rightAlgebrite, variable);
+    if (absoluteValueOffsetTerm !== null) absoluteValueParameter = leftAlgebrite;
+  }
+  if (absoluteValueOffsetTerm !== null && absoluteValueParameter !== null &&
+      !wordBoundaryPattern(variable).test(absoluteValueParameter)) {
+    const radiusSign = realNumericSign(absoluteValueParameter);
+    if (radiusSign === -1) {
+      steps.push({
+        id: "absolute-value-domain",
+        latex: leftAlgebrite + " = " + rightAlgebrite,
+        explanation: "El valor absoluto nunca es negativo; si b < 0, la ecuación no tiene solución real.",
+      });
+      steps.push({ id: "solutions", latex: "∅", explanation: "La ecuación no tiene solución real." });
+      return { steps, solutionsAlgebrite: [], truth: "contradiction" };
+    }
+    const center = evaluate("simplify(" + absoluteValueOffsetTerm + ")");
+    if (radiusSign === 0) {
+      steps.push({
+        id: "absolute-value-domain",
+        latex: variable + " = " + center,
+        explanation: "Si b = 0, el valor absoluto es cero solo en x = a.",
+      });
+      steps.push({
+        id: "solutions",
+        latex: variable + " = " + center,
+        explanation: "Raíz real verificada en la ecuación original.",
+      });
+      return { steps, solutionsAlgebrite: [center] };
+    }
+    const plusRoot = evaluate("simplify((" + absoluteValueOffsetTerm + ")+(" + absoluteValueParameter + "))");
+    const minusRoot = evaluate("simplify((" + absoluteValueOffsetTerm + ")-(" + absoluteValueParameter + "))");
+    const domainExplanation = radiusSign === null
+      ? "Para |x-a| = b: si b < 0 no hay solución; si b = 0, x = a; si b > 0, x = a ± b. Las ramas mostradas son condicionales a b > 0."
+      : "Como el radio es positivo, las dos raíces x = a ± b satisfacen la ecuación original.";
+    steps.push({
+      id: "absolute-value-domain",
+      latex: variable + " = " + absoluteValueOffsetTerm + " ± " + absoluteValueParameter,
+      explanation: domainExplanation,
+    });
+    steps.push({
+      id: "solutions",
+      latex: variable + " = " + plusRoot + ",\\quad " + variable + " = " + minusRoot,
+      explanation: "Soluciones por las dos ramas del valor absoluto.",
+    });
+    return { steps, solutionsAlgebrite: [plusRoot, minusRoot] };
   }
 
   const absoluteCases = solveRealAbsoluteCases(leftAlgebrite, rightAlgebrite, variable);
@@ -203,13 +284,23 @@ export function solveAlgebra(
     const squareRootSolution = squareRootOffset === "0"
       ? squareRootPower
       : evaluate("simplify((" + squareRootOffset + ")+(" + squareRootPower + "))");
+    const candidateLatex = squareRootOffset === "0"
+      ? "(" + squareRootParameter + ")^2"
+      : squareRootOffset + "+(" + squareRootParameter + ")^2";
     const domainExplanation = parameterSign === null
-      ? "La raíz cuadrada real principal es no negativa: la solución solo es válida si " + squareRootParameter + " ≥ 0."
-      : "El lado derecho es no negativo; se eleva al cuadrado ambos miembros.";
+      ? "La raíz cuadrada real principal es no negativa: x = " + squareRootOffset + "+(" + squareRootParameter + ")^2 solo es válida si " + squareRootParameter + " ≥ 0; si " + squareRootParameter + " < 0, no existe solución real."
+      : "El lado derecho es no negativo; la sustitución de x en la ecuación original verifica la raíz.";
     steps.push({
-      id: "square-root-solve",
-      latex: variable + " = " + squareRootSolution,
+      id: "square-root-domain",
+      latex: variable + " = " + candidateLatex,
       explanation: domainExplanation,
+    });
+    steps.push({
+      id: "solutions",
+      latex: variable + " = " + squareRootSolution,
+      explanation: parameterSign === null
+        ? "Solución simbólica condicionada al dominio real indicado."
+        : "Raíz real verificada en la ecuación original.",
     });
     return { steps, solutionsAlgebrite: [squareRootSolution] };
   }
