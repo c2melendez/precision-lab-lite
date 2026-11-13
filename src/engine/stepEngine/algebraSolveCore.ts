@@ -29,6 +29,7 @@ import { hyperbolicTangentOutOfRangeStep } from "./hyperbolicTangentOutOfRangeSt
 import { hyperbolicCosineOneStep } from "./hyperbolicCosineOneStep";
 import { hyperbolicSineOneStep } from "./hyperbolicSineOneStep";
 import { hyperbolicSineZeroStep } from "./hyperbolicSineZeroStep";
+import { hyperbolicArsinhOneStep } from "./hyperbolicArsinhOneStep";
 import {
   principalSquareRootOffset,
   realNumericSign,
@@ -82,6 +83,7 @@ export function solveAlgebra(
     () => hyperbolicCosineOneStep(leftAlgebrite, rightAlgebrite, variable),
     () => hyperbolicSineOneStep(leftAlgebrite, rightAlgebrite, variable),
     () => hyperbolicSineZeroStep(leftAlgebrite, rightAlgebrite, variable),
+    () => hyperbolicArsinhOneStep(leftAlgebrite, rightAlgebrite, variable),
   ];
 
   for (const match of hyperbolicMatchers) {
@@ -96,6 +98,9 @@ export function solveAlgebra(
       return { steps, solutionsAlgebrite: [], truth: "contradiction" };
     }
     const latex = step.latex;
+    if (step.id === "hyperbolic-arsinh-one-exact-root") {
+      return { steps, solutionsAlgebrite: ["sinh(1)"] };
+    }
     if (latex.includes("\\pm")) {
       return { steps, solutionsAlgebrite: ["log(2+sqrt(3))", "-log(2+sqrt(3))"] };
     }
