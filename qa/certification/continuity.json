@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 504,
+  "revision": 506,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "1aa630c2",
-  "baseline_case": "TRIG-EC-H-08",
+  "technical_baseline_sha": "bc03aebb",
+  "baseline_case": "TRIG-EC-HI-01",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EC-H-09",
-    "status": "WAIT",
-    "previous_id": "TRIG-EC-H-08",
-    "action": "Esperar el intento 2 del gate de dependencias y seguridad de Plus (run 43200768165) sobre 49211e6a. Si pasa, cerrar EC-H-09 PASS_SCOPED bilateral y empezar TRIG-EC-H-10 (tanh x=2, sin solución real) con test-first en Lite y Plus. Si el job mutation vuelve a cancelarse por infraestructura, no bajar umbrales ni omitir el gate: diagnosticar primero el límite de tiempo del job."
+    "id": "TRIG-EC-HI-02",
+    "status": "RUN",
+    "previous_id": "TRIG-EC-HI-01",
+    "action": "Test-first bilateral TRIG-EC-HI-02 (arcosh x=0 → x=1). Añadir tests anclados a la fuente y oráculo exacto en Lite y Plus; corregir producto solo si los tests fallan. Ejecutar gates acumulativos. No saltar a HI-03."
   },
   "blockers": [],
   "prose_only_paths": [
@@ -52,5 +52,5 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-12T13:20:37Z"
+  "updated_utc": "2026-11-13T21:20:00Z"
 }
