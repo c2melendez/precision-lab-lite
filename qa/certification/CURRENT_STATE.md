@@ -1,3 +1,13 @@
+# r523 — IN-D-05: fallo acumulativo Plus en diagnóstico
+
+Global OPEN; IN-D-05 no se cierra. Plus Cumulative 43637618246/job backend 132577800977 terminó FAILURE: 3030 passed, 1 failed, 1 skipped, 11 xfailed. Las seis pruebas IN-D-05 pasaron, pero AS-PAR-05 (`tests/test_algebra114_as_par05.py::test_as_par_05_original_real_domain_parameter_quadratic_service_and_http`) agotó el timeout de pytest de 60 s en SymPy. La causa de rendimiento aún no está demostrada; no clasificar el fallo como producto o harness sin reproducirlo. El CI separado 43637618227/backend 132577801082 pasó con 3031 passed, 1 skipped y 11 xfailed; no sustituye el gate acumulativo fallido. No relanzar idéntico hasta diagnóstico y cambio de insumos/precondición.
+
+Lite Scientific 43637613653 pasó 456/456 y Plus Native 43637618217 pasó 26 desktop y 52 tablet/móvil, según r522. Plus campaña de seguridad 43637618276/job 132577946517 continúa en curso; los jobs frontend omitidos no son PASS. S25, SG28/DIST y EV-D-01 siguen bloqueados.
+
+Siguiente acción única: diagnosticar el timeout de AS-PAR-05 con reproducción focal y perfilado bajo las condiciones de Cumulative, preservar todas las aserciones y el límite contractual; corregir la causa demostrada en la capa correspondiente y verificar el gate acumulativo sobre el nuevo SHA. Después reconciliar IN-D-05; no avanzar a IN-D-06 hasta cierre bilateral.
+
+---
+
 # r522 — IN-D-05: revisión de gates en curso
 
 Global OPEN; IN-D-05 VERIFYING_CI. Lite Scientific 43637613653/job 132577786225 terminó SUCCESS con 456/456 y guard skip=false en e09f87202495b24c672d848a9434d71534a0c10a. Plus Native 43637618217/job 132577801046 terminó SUCCESS: 26 desktop y 52 tablet/móvil, guard skip=false en e410077f62914a7c16844aff7d7c0deaf2a315b1. Plus Cumulative frontend/job 132577801567 ejecutó 1055 passed y 28 TODO; los TODO no son PASS.

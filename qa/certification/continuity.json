@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 522,
+  "revision": 523,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
@@ -41,8 +41,8 @@
   "next_action": {
     "id": "TRIG-IN-D-05",
     "previous_id": "TRIG-IN-D-04",
-    "status": "WAIT",
-    "action": "Revisar las corridas push existentes del SHA técnico IN-D-05, todos los jobs/pasos/logs y huellas. Corregir fallos confirmados; cerrar PASS_SCOPED solo con evidencia funcional bilateral completa. Después iniciar IN-D-06. Seguridad independiente; no duplicar corridas ni campañas."
+    "status": "DIAGNOSE",
+    "action": "Diagnosticar timeout de AS-PAR-05 en Cumulative Plus 43637618246/job 132577800977; reproducir focal y perfilar bajo condiciones equivalentes, preservar aserciones y límite, corregir causa demostrada y verificar gate sobre nuevo SHA; no avanzar a IN-D-06."
   },
   "blockers": [
     {
@@ -79,7 +79,7 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-14T20:43:51.252Z",
+  "updated_utc": "2026-11-14T21:48:11.329Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
