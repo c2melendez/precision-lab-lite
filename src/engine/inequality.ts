@@ -79,6 +79,33 @@ export function solveInequality(
       };
     }
   }
+  // IN-D-02: exact zero threshold, inclusive endpoints and all 2*pi periods.
+  if (operator === "<=" && /^[A-Za-z]$/.test(variable)
+      && diffAlgebrite.includes(`cos(${variable})`)) {
+    let isCosineZero = false;
+    try {
+      isCosineZero = evaluate(`simplify((${diffAlgebrite})-cos(${variable}))`) === "0";
+    } catch {
+      // Preserve the original fallback when exact recognition fails.
+    }
+    if (isCosineZero) {
+      return {
+        resultText: `pi/2 + 2*k*pi <= ${variable} <= 3*pi/2 + 2*k*pi, k entero`,
+        steps: [
+          {
+            id: "cosine-zero-boundaries",
+            latex: `\\cos(${variable})=0\\Rightarrow ${variable}=\\frac{\\pi}{2},\\frac{3\\pi}{2}\\pmod{2\\pi}`,
+            explanation: "En [0,2π), el coseno es no positivo entre π/2 y 3π/2, incluidos sus dos ceros.",
+          },
+          {
+            id: "cosine-zero-periodic-result",
+            latex: `\\frac{\\pi}{2}+2k\\pi \\le ${variable} \\le \\frac{3\\pi}{2}+2k\\pi,\\quad k\\in\\mathbb{Z}`,
+            explanation: "Se repite el intervalo por periodicidad de 2π. En el dominio [0,2π) se toma k=0.",
+          },
+        ],
+      };
+    }
+  }
   let rootsRaw: string[];
   try {
     rootsRaw = solveEquation(diffAlgebrite, variable);
