@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 523,
+  "revision": 524,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
@@ -41,8 +41,8 @@
   "next_action": {
     "id": "TRIG-IN-D-05",
     "previous_id": "TRIG-IN-D-04",
-    "status": "DIAGNOSE",
-    "action": "Diagnosticar timeout de AS-PAR-05 en Cumulative Plus 43637618246/job 132577800977; reproducir focal y perfilar bajo condiciones equivalentes, preservar aserciones y límite, corregir causa demostrada y verificar gate sobre nuevo SHA; no avanzar a IN-D-06."
+    "status": "WAIT",
+    "action": "Esperar y revisar Cumulative Plus 43647668540/job backend 132608950017 sobre SHA aa1f2821 (filtro estructural arccot para evitar timeout); si SUCCESS con AS-PAR-05 pasando, reconciliar IN-D-05 PASS_SCOPED bilateral; no avanzar a IN-D-06."
   },
   "blockers": [
     {
@@ -79,7 +79,7 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-14T21:48:11.329Z",
+  "updated_utc": "2026-11-14T22:30:00.000Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
@@ -151,171 +151,7 @@
   },
   "previous_accepted": {
     "id": "TRIG-IN-D-04",
-    "status": "PASS_SCOPED",
-    "evidence": {
-      "cumulative": {
-        "gate": "cumulative",
-        "input_fingerprint": "424e0a466c05c963f013dbc37876347b5cb8cc84db8d4dc1b66ac4f6c349b0f9",
-        "head_sha": "987f2efa395d9c9253fb078d7602ff07a3846329",
-        "decision": "REUSE",
-        "reason": "Diferencia HEAD limitada a prosa e índice excluidos; configuración de gate idéntica; evidencia ejecutada revisada.",
-        "run_id": 43622992290,
-        "evidence_sha": "37a2380dd9072355a630199c3597338ef4741788",
-        "logs_reviewed": true,
-        "evidence_executed": true,
-        "acceptance_revision": "2026-10-16-continuity-v1",
-        "jobs": [
-          {
-            "id": 132532572503,
-            "name": "cumulative",
-            "conclusion": "success"
-          }
-        ]
-      },
-      "h1d": {
-        "gate": "h1d",
-        "input_fingerprint": "16f21bf59d6e8a71bd60a913607e9f00a1648b441741b8e13ecd678db4b19091",
-        "head_sha": "987f2efa395d9c9253fb078d7602ff07a3846329",
-        "decision": "REUSE",
-        "reason": "Diferencia HEAD limitada a prosa e índice excluidos; configuración de gate idéntica; evidencia ejecutada revisada.",
-        "run_id": 43622992133,
-        "evidence_sha": "37a2380dd9072355a630199c3597338ef4741788",
-        "logs_reviewed": true,
-        "evidence_executed": true,
-        "acceptance_revision": "2026-10-16-continuity-v1",
-        "jobs": [
-          {
-            "id": 132532572607,
-            "name": "h1d",
-            "conclusion": "success"
-          }
-        ]
-      },
-      "security": {
-        "gate": "security",
-        "input_fingerprint": "c490db839491bb25356000e856fb8b1a92e000390a76ebf666823943a40a7dd7",
-        "head_sha": "37a2380dd9072355a630199c3597338ef4741788",
-        "decision": "REVIEW",
-        "reason": "Revisión dinámica por perfil; una ventana reciente incompleta no demuestra ausencia de evidencia ni autoriza dispatch.",
-        "logs_reviewed": false,
-        "evidence_executed": false
-      },
-      "scientific": {
-        "gate": "scientific",
-        "input_fingerprint": "ee6c2b6f6309abe3e9adddff8516ac8f85fa0acbb19362f4e53d2496a981f442",
-        "head_sha": "987f2efa395d9c9253fb078d7602ff07a3846329",
-        "decision": "REUSE",
-        "reason": "Diferencia HEAD limitada a prosa e índice excluidos; configuración de gate idéntica; evidencia ejecutada revisada.",
-        "run_id": 43622992173,
-        "evidence_sha": "37a2380dd9072355a630199c3597338ef4741788",
-        "logs_reviewed": true,
-        "evidence_executed": true,
-        "jobs": [
-          {
-            "id": 132532571910,
-            "name": "scientific-ui",
-            "conclusion": "success"
-          }
-        ],
-        "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
-      }
-    }
+    "status": "PASS_SCOPED"
   },
-  "observed_runs": [
-    {
-      "id": 43637613653,
-      "path": ".github/workflows/syntax309-scientific-e2e.yml",
-      "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "status": "in_progress",
-      "conclusion": null,
-      "created_at": "2026-11-14T20:27:47Z",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 132577786225,
-          "name": "scientific-ui",
-          "conclusion": null
-        }
-      ],
-      "logs_reviewed": false,
-      "evidence_executed": false,
-      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
-    },
-    {
-      "id": 43637613657,
-      "path": ".github/workflows/certification-runner.yml",
-      "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "status": "completed",
-      "conclusion": "success",
-      "created_at": "2026-11-14T20:27:47Z",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 132577786457,
-          "name": "certification-cycle",
-          "conclusion": "success"
-        }
-      ],
-      "logs_reviewed": false,
-      "evidence_executed": false,
-      "acceptance_revision": "2026-10-16-continuity-v1"
-    },
-    {
-      "id": 43637613567,
-      "path": ".github/workflows/in625-h1d-reentry.yml",
-      "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "status": "completed",
-      "conclusion": "success",
-      "created_at": "2026-11-14T20:27:47Z",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 132577785735,
-          "name": "h1d",
-          "conclusion": "success"
-        }
-      ],
-      "logs_reviewed": true,
-      "evidence_executed": true,
-      "acceptance_revision": "2026-10-16-continuity-v1"
-    },
-    {
-      "id": 43637613602,
-      "path": ".github/workflows/ci.yml",
-      "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "status": "completed",
-      "conclusion": "success",
-      "created_at": "2026-11-14T20:27:47Z",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 132577785949,
-          "name": "frontend",
-          "conclusion": "success"
-        }
-      ],
-      "logs_reviewed": true,
-      "evidence_executed": true,
-      "acceptance_revision": "2026-10-16-continuity-v1"
-    },
-    {
-      "id": 43637613663,
-      "path": ".github/workflows/in625-cumulative-certification.yml",
-      "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "status": "completed",
-      "conclusion": "success",
-      "created_at": "2026-11-14T20:27:47Z",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 132577786042,
-          "name": "cumulative",
-          "conclusion": "success"
-        }
-      ],
-      "logs_reviewed": true,
-      "evidence_executed": true,
-      "acceptance_revision": "2026-10-16-continuity-v1"
-    }
-  ]
+  "observed_runs": []
 }
