@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 521,
+  "revision": 522,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
@@ -79,7 +79,7 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-14T20:32:29.959Z",
+  "updated_utc": "2026-11-14T20:43:51.252Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
@@ -133,18 +133,18 @@
       "gate": "scientific",
       "input_fingerprint": "630c6cbe7e6ce3d7f9db859078ba3f625f3dbc3290ce92a5b9c563e0f169bc91",
       "head_sha": "f6f77b77667ee0e381518a9368d4bcaa69ffc5ff",
-      "decision": "WAIT",
-      "reason": "equivalent inputs already queued/running; inspect existing run",
+      "decision": "REVIEW",
+      "reason": "Ejecución y logs revisados; falta reconciliar huella del HEAD y aceptación bilateral.",
       "run_id": 43637613653,
       "evidence_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "logs_reviewed": false,
-      "evidence_executed": false,
+      "logs_reviewed": true,
+      "evidence_executed": true,
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
       "jobs": [
         {
           "id": 132577786225,
           "name": "scientific-ui",
-          "conclusion": null
+          "conclusion": "success"
         }
       ]
     }

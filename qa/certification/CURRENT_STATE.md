@@ -1,3 +1,13 @@
+# r522 — IN-D-05: revisión de gates en curso
+
+Global OPEN; IN-D-05 VERIFYING_CI. Lite Scientific 43637613653/job 132577786225 terminó SUCCESS con 456/456 y guard skip=false en e09f87202495b24c672d848a9434d71534a0c10a. Plus Native 43637618217/job 132577801046 terminó SUCCESS: 26 desktop y 52 tablet/móvil, guard skip=false en e410077f62914a7c16844aff7d7c0deaf2a315b1. Plus Cumulative frontend/job 132577801567 ejecutó 1055 passed y 28 TODO; los TODO no son PASS.
+
+Plus backend-security/job 132577896661 terminó SUCCESS: pip-audit sin vulnerabilidades conocidas, Bandit sin hallazgos y 24 regresiones. Los jobs backend de CI 43637618227 y Cumulative 43637618246 y mutación 43637618276/job 132577946517 seguían en curso al revisar; los jobs frontend de seguridad/mutación omitidos no son PASS. No se despachó ninguna corrida adicional.
+
+Siguiente acción única: inspeccionar las corridas backend existentes, jobs y logs, reconciliar huellas y cerrar IN-D-05 solo con evidencia funcional bilateral suficiente; luego IN-D-06. S25, SG28/DIST y EV-D-01 mantienen bloqueos independientes.
+
+---
+
 # r521 — Revisión parcial de CI IN-D-05
 
 IN-D-05 sigue **VERIFYING_CI**; certificación global **OPEN**. Revisión de jobs, pasos y logs del SHA técnico: Lite CI 43637613602/job 132577785949 y Cumulative 43637613663/job 132577786042 SUCCESS; ejecutaron 441 suites, 2536 passed, 8 expected fail y 34 TODO, incluidos 6/6 IN-D-05, typecheck y build. H1d Lite 43637613567/job 132577785735 ejecutó 22/22; H1d Plus 43637618190/job 132577801068 ejecutó 38/38. Los guards reales registran skip=false, SHA técnico correcto y evidence_run_id vacío. El SHA aaaa de los logs pertenece a una prueba del guard, no al checkout del producto.
