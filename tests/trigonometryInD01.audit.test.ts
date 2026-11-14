@@ -3,6 +3,7 @@ import { gunzipSync } from "node:zlib";
 import { readFileSync } from "node:fs";
 import { parseExpression } from "../src/engine/parsing";
 import { solveInequality } from "../src/engine/inequality";
+import { evaluate } from "../src/engine/algebriteClient";
 
 describe("TRIG-IN-D-01: sin(x)>1/2 in [0,2*pi)", () => {
   it("anchors all three frozen source cells", () => {
@@ -22,6 +23,29 @@ describe("TRIG-IN-D-01: sin(x)>1/2 in [0,2*pi)", () => {
     const result = solveInequality(parsed.algebrite, parsed.inequalityOperator!, "x");
     expect(result.resultText).toBe("pi/6 + 2*k*pi < x < 5*pi/6 + 2*k*pi, k entero");
     expect(result.steps.at(-1)?.latex).toBe(String.raw`\frac{\pi}{6}+2k\pi < x < \frac{5\pi}{6}+2k\pi,\quad k\in\mathbb{Z}`);
+  });
+
+  it("accepts the source LaTeX inequality without absorbing its right side into sine", () => {
+    const parsed = parseExpression(String.raw`\sin x>\frac{1}{2}`, "RAD");
+    expect(parsed.isInequality).toBe(true);
+    expect(parsed.leftAlgebrite).toBe("sin(x)");
+    expect(evaluate(parsed.rightAlgebrite)).toBe("1/2");
+    expect(solveInequality(parsed.algebrite, parsed.inequalityOperator!, "x").resultText)
+      .toBe("pi/6 + 2*k*pi < x < 5*pi/6 + 2*k*pi, k entero");
+  });
+
+  it.each([
+    [String.raw`\sin x<\frac{1}{2}`, "<"],
+    [String.raw`\sin x\le\frac{1}{2}`, "<="],
+    [String.raw`\sin x\geq\frac{1}{2}`, ">="],
+    [String.raw`\sin x≤\frac{1}{2}`, "<="],
+    [String.raw`\sin x≥\frac{1}{2}`, ">="],
+  ])("keeps the comparison outside an unparenthesized function: %s", (input, op) => {
+    const parsed = parseExpression(input, "RAD");
+    expect(parsed.isInequality).toBe(true);
+    expect(parsed.inequalityOperator).toBe(op);
+    expect(parsed.leftAlgebrite).toBe("sin(x)");
+    expect(evaluate(parsed.rightAlgebrite)).toBe("1/2");
   });
 
   it("checks open boundaries, each complementary arc, and adjacent periods independently", () => {

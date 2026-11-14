@@ -406,7 +406,10 @@ function readFunctionArgument(input: string, fromIndex: number): [string, number
       parenDepth--;
     }
     if (braceDepth === 0 && parenDepth === 0) {
-      if (/[+\-\/]/.test(input[j])) break;
+      // A relation belongs outside the function call. Consuming it here
+      // would turn `\sin x>1/2` into `sin(x>1)/2` before inequality splitting.
+      if (/[+\-\/=<>]/.test(input[j])) break;
+      if (input[j] === "\\" && /^(?:leqslant|geqslant|leq|geq|le|ge)(?![A-Za-z])/.test(input.slice(j + 1))) break;
       if (input[j] === "\\" && /^(?:cdot|times|div)(?![A-Za-z])/.test(input.slice(j + 1))) break;
       if (j > i && input[j] === "\\" && /^(?:sin|cos|tan|csc|sec|cot|ln|log|sinh|cosh|tanh)\b/.test(input.slice(j + 1))) break;
     }
