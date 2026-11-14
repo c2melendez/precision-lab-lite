@@ -1,7 +1,15 @@
-# r524 — Sincronizado con Plus: Native SUCCESS, Cumulative WAIT en fix de timeout AS-PAR-05
+# r525 — IN-D-05: cierre bilateral PASS_SCOPED tras fix Plus de timeout
 
-Global OPEN; IN-D-05 VERIFYING_CI. Lite evidencia previa SUCCESS. Plus fix aa1f2821 publicado; Native 43647668581 SUCCESS. Cumulative Plus 43647668540 en curso (backend in_progress). Esperar verificación de que AS-PAR-05 no hace timeout. No avanzar a IN-D-06.
+Global OPEN; IN-D-05 se cierra PASS_SCOPED. Plus Cumulative 43647668540 SUCCESS sobre SHA técnico aa1f2821bb2d4df92dc94db0848a67141f4fb76a (filtro estructural en arccot handler). Lite mantiene evidencia SUCCESS previa. No se relajó oráculo.
 
-S25, SG28/DIST, EV-D-01 BLOCKED.
+S25, SG28/DIST y EV-D-01 siguen BLOCKED.
 
-Siguiente: revisar resultado del Cumulative Plus al completar.
+Siguiente acción única: iniciar IN-D-06.
+
+---
+
+# r524 — sync with Plus Native SUCCESS and Cumulative WAIT on timeout fix
+
+Global OPEN; IN-D-05 no se cierra. Sincronizado con Plus: Native SUCCESS, Cumulative en verificación del fix de timeout AS-PAR-05.
+
+Siguiente acción única: esperar revisión del Cumulative Plus.
