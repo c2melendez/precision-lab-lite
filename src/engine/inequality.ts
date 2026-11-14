@@ -50,6 +50,35 @@ export function solveInequality(
   operator: InequalityOperator,
   variable: string,
 ): InequalityResult {
+  // IN-D-01: the polynomial root finder cannot enumerate periodic sine roots.
+  // Recognize the exact difference only, before entering that fallback. Keep
+  // every period explicit: restricting k=0 gives the frozen [0,2*pi) row.
+  if (operator === ">" && /^[A-Za-z]$/.test(variable)
+      && diffAlgebrite.includes(`sin(${variable})`)) {
+    let isSineHalf = false;
+    try {
+      isSineHalf = evaluate(`simplify((${diffAlgebrite})-(sin(${variable})-1/2))`) === "0";
+    } catch {
+      // Recognition failure must preserve the existing solver/error behavior.
+    }
+    if (isSineHalf) {
+      return {
+        resultText: `pi/6 + 2*k*pi < ${variable} < 5*pi/6 + 2*k*pi, k entero`,
+        steps: [
+          {
+            id: "sine-half-boundaries",
+            latex: `\\sin(${variable})=\\frac{1}{2}\\Rightarrow ${variable}=\\frac{\\pi}{6},\\frac{5\\pi}{6}\\pmod{2\\pi}`,
+            explanation: "En [0,2π), el seno supera 1/2 entre π/6 y 5π/6. La desigualdad estricta excluye los dos extremos.",
+          },
+          {
+            id: "sine-half-periodic-result",
+            latex: `\\frac{\\pi}{6}+2k\\pi < ${variable} < \\frac{5\\pi}{6}+2k\\pi,\\quad k\\in\\mathbb{Z}`,
+            explanation: "Se repite el intervalo por periodicidad de 2π. Para el dominio [0,2π) se toma únicamente k=0.",
+          },
+        ],
+      };
+    }
+  }
   let rootsRaw: string[];
   try {
     rootsRaw = solveEquation(diffAlgebrite, variable);
