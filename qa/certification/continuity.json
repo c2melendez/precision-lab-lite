@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 510,
+  "revision": 511,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "e40c719b583a49808430850133fbff66fc6b376a",
+  "technical_baseline_sha": "7cb558112afb6a78361fbedda64bc35ebf00ba14",
   "baseline_case": "TRIG-IN-D-01",
-  "baseline_status": "VERIFYING_CI",
+  "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
     "cumulative": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-IN-D-01",
-    "status": "WAIT",
-    "previous_id": "TRIG-EC-HI-08",
-    "action": "Completar corrección local del núcleo LaTeX Lite y validar/publicar con compare-and-swap. Revisar CI automática de ambos productos antes de cierre bilateral; luego IN-D-02. No redispatch equivalente."
+    "id": "TRIG-IN-D-02",
+    "previous_id": "TRIG-IN-D-01",
+    "status": "RUN",
+    "action": "Completar validación local y publicar test-first bilateral: cos(x)<=0 en [0,2*pi) -> [pi/2,3*pi/2]. Lite corrige solo el fallo polinómico reproducido; Plus test-only. Verificar gates automáticos por SHA y no cerrar con pruebas locales."
   },
   "blockers": [
     {
@@ -71,42 +71,58 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-14T02:40:36.943Z",
-  "observed_runs": [
-    {
-      "id": 43547279889,
-      "path": ".github/workflows/syntax309-scientific-e2e.yml",
-      "sha": "e40c719b583a49808430850133fbff66fc6b376a",
-      "status": "in_progress",
-      "conclusion": null
+  "updated_utc": "2026-11-14T02:59:27.480Z",
+  "evidence": {
+    "cumulative": {
+      "decision": "REUSE",
+      "run_id": 43547933065,
+      "evidence_sha": "7cb558112afb6a78361fbedda64bc35ebf00ba14",
+      "input_fingerprint": "7eab6e2f36be13b7d880e1178ee65ea571c6abc510bef536e38a3c8457b97bde",
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "jobs": [
+        {
+          "id": 132303487898,
+          "name": "cumulative",
+          "conclusion": "success"
+        }
+      ],
+      "scope": "Motor/LaTeX core y regresión general; no E2E dedicado de fila"
     },
-    {
-      "id": 43547279978,
-      "path": ".github/workflows/certification-runner.yml",
-      "sha": "e40c719b583a49808430850133fbff66fc6b376a",
-      "status": "completed",
-      "conclusion": "success"
+    "h1d": {
+      "decision": "REUSE",
+      "run_id": 43547933019,
+      "evidence_sha": "7cb558112afb6a78361fbedda64bc35ebf00ba14",
+      "input_fingerprint": "d4554a9bf8a549a4d01f33a16154d5f5eaf205d5f6690f8fba89d3b56d905114",
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "jobs": [
+        {
+          "id": 132303488076,
+          "name": "h1d",
+          "conclusion": "success"
+        }
+      ],
+      "scope": "Motor/LaTeX core y regresión general; no E2E dedicado de fila"
     },
-    {
-      "id": 43547279888,
-      "path": ".github/workflows/ci.yml",
-      "sha": "e40c719b583a49808430850133fbff66fc6b376a",
-      "status": "completed",
-      "conclusion": "success"
-    },
-    {
-      "id": 43547279902,
-      "path": ".github/workflows/in625-h1d-reentry.yml",
-      "sha": "e40c719b583a49808430850133fbff66fc6b376a",
-      "status": "completed",
-      "conclusion": "success"
-    },
-    {
-      "id": 43547279964,
-      "path": ".github/workflows/in625-cumulative-certification.yml",
-      "sha": "e40c719b583a49808430850133fbff66fc6b376a",
-      "status": "completed",
-      "conclusion": "success"
+    "scientific": {
+      "decision": "REUSE",
+      "run_id": 43547932993,
+      "evidence_sha": "7cb558112afb6a78361fbedda64bc35ebf00ba14",
+      "input_fingerprint": "a1508cfc4518f572b4aa5168c48fc99cd5b1a57296bbb5e3b0f6471e889eabb1",
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "jobs": [
+        {
+          "id": 132303487536,
+          "name": "scientific-ui",
+          "conclusion": "success"
+        }
+      ],
+      "scope": "Motor/LaTeX core y regresión general; no E2E dedicado de fila"
     }
-  ]
+  }
 }
