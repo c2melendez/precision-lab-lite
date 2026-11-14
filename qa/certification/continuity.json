@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 506,
+  "revision": 510,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "bc03aebb",
-  "baseline_case": "TRIG-EC-HI-01",
-  "baseline_status": "PASS_SCOPED",
+  "technical_baseline_sha": "e40c719b583a49808430850133fbff66fc6b376a",
+  "baseline_case": "TRIG-IN-D-01",
+  "baseline_status": "VERIFYING_CI",
   "global_certification": "OPEN",
   "gates": {
     "cumulative": {
@@ -39,12 +39,31 @@
     }
   },
   "next_action": {
-    "id": "TRIG-EC-HI-02",
-    "status": "RUN",
-    "previous_id": "TRIG-EC-HI-01",
-    "action": "Test-first bilateral TRIG-EC-HI-02 (arcosh x=0 → x=1). Añadir tests anclados a la fuente y oráculo exacto en Lite y Plus; corregir producto solo si los tests fallan. Ejecutar gates acumulativos. No saltar a HI-03."
+    "id": "TRIG-IN-D-01",
+    "status": "WAIT",
+    "previous_id": "TRIG-EC-HI-08",
+    "action": "Completar corrección local del núcleo LaTeX Lite y validar/publicar con compare-and-swap. Revisar CI automática de ambos productos antes de cierre bilateral; luego IN-D-02. No redispatch equivalente."
   },
-  "blockers": [],
+  "blockers": [
+    {
+      "id": "SECURITY-S25",
+      "status": "BLOCKED",
+      "run_id": 43538686314,
+      "job_id": 132273991849,
+      "classification": "INFRASTRUCTURE",
+      "exit_condition": "Diagnóstico y cambio comprobable de precondición antes de retry; evidencia final de mutación/aceptación propia, sin inferir score del progreso parcial."
+    },
+    {
+      "id": "H2-SG28-DIST-01..08",
+      "status": "BLOCKED",
+      "exit_condition": "Evidencia contractual multinodo real; aislamiento desactivado por defecto, sin activación en producción."
+    },
+    {
+      "id": "EV-D-01",
+      "status": "BLOCKED",
+      "exit_condition": "Cerrar con evidencia propia del canal literal; los otros PASS_SCOPED no sustituyen este requisito."
+    }
+  ],
   "prose_only_paths": [
     "README.md",
     "qa/certification/README.md",
@@ -52,5 +71,42 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-13T21:20:00Z"
+  "updated_utc": "2026-11-14T02:40:36.943Z",
+  "observed_runs": [
+    {
+      "id": 43547279889,
+      "path": ".github/workflows/syntax309-scientific-e2e.yml",
+      "sha": "e40c719b583a49808430850133fbff66fc6b376a",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 43547279978,
+      "path": ".github/workflows/certification-runner.yml",
+      "sha": "e40c719b583a49808430850133fbff66fc6b376a",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 43547279888,
+      "path": ".github/workflows/ci.yml",
+      "sha": "e40c719b583a49808430850133fbff66fc6b376a",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 43547279902,
+      "path": ".github/workflows/in625-h1d-reentry.yml",
+      "sha": "e40c719b583a49808430850133fbff66fc6b376a",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 43547279964,
+      "path": ".github/workflows/in625-cumulative-certification.yml",
+      "sha": "e40c719b583a49808430850133fbff66fc6b376a",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ]
 }
