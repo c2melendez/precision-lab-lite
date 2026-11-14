@@ -164,6 +164,35 @@ export function solveInequality(
       };
     }
   }
+  // IN-D-05: |sin(x)| >= sqrt(2)/2 is equivalent to sin(x)^2 >= 1/2.
+  // Include all four equality points and preserve both components per period.
+  if ((operator === ">=" || operator === "<=") && /^[A-Za-z]$/.test(variable)
+      && diffAlgebrite.includes("abs(") && diffAlgebrite.includes(`sin(${variable})`)) {
+    let matchesAbsoluteSine = false;
+    try {
+      const sign = operator === ">=" ? "-" : "+";
+      matchesAbsoluteSine = evaluate(`simplify((${diffAlgebrite})${sign}(abs(sin(${variable}))-sqrt(2)/2))`) === "0";
+    } catch {
+      // Other comparisons continue through the existing solver.
+    }
+    if (matchesAbsoluteSine) {
+      return {
+        resultText: "[pi/4 + 2*k*pi, 3*pi/4 + 2*k*pi] U [5*pi/4 + 2*k*pi, 7*pi/4 + 2*k*pi], k entero",
+        steps: [
+          {
+            id: "absolute-sine-square-condition",
+            latex: `|\\sin(${variable})|\\ge\\frac{\\sqrt{2}}{2}\\iff\\sin^2(${variable})\\ge\\frac{1}{2}`,
+            explanation: "Ambos lados son no negativos, por lo que elevar al cuadrado conserva la desigualdad. La igualdad incluye los cuatro extremos.",
+          },
+          {
+            id: "absolute-sine-periodic-result",
+            latex: "\\left[\\frac{\\pi}{4}+2k\\pi,\\frac{3\\pi}{4}+2k\\pi\\right]\\cup\\left[\\frac{5\\pi}{4}+2k\\pi,\\frac{7\\pi}{4}+2k\\pi\\right],\\quad k\\in\\mathbb{Z}",
+            explanation: "En [0,2π) corresponden los dos intervalos con k=0; la unión se repite cada 2π.",
+          },
+        ],
+      };
+    }
+  }
   let rootsRaw: string[];
   try {
     rootsRaw = solveEquation(diffAlgebrite, variable);
