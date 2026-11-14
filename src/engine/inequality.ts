@@ -106,6 +106,35 @@ export function solveInequality(
       };
     }
   }
+  // IN-D-03: tan is strictly increasing on each open branch between poles.
+  // Preserve all periods; k=0 is the frozen principal interval.
+  if ((operator === "<" || operator === ">") && /^[A-Za-z]$/.test(variable)
+      && diffAlgebrite.includes(`tan(${variable})`)) {
+    let isTangentOne = false;
+    try {
+      const sign = operator === "<" ? "-" : "+";
+      isTangentOne = evaluate(`simplify((${diffAlgebrite})${sign}(tan(${variable})-1))`) === "0";
+    } catch {
+      // Keep the legacy fallback for inequalities outside the frozen case.
+    }
+    if (isTangentOne) {
+      return {
+        resultText: `-pi/2 + k*pi < ${variable} < pi/4 + k*pi, k entero`,
+        steps: [
+          {
+            id: "tangent-one-principal-branch",
+            latex: `-\\frac{\\pi}{2}<${variable}<\\frac{\\pi}{2},\\quad \\tan(${variable})<1\\iff ${variable}<\\frac{\\pi}{4}`,
+            explanation: "La tangente crece estrictamente entre sus polos y arctan(1)=π/4. Se excluyen tanto el polo como el punto de igualdad.",
+          },
+          {
+            id: "tangent-one-periodic-result",
+            latex: `-\\frac{\\pi}{2}+k\\pi < ${variable} < \\frac{\\pi}{4}+k\\pi,\\quad k\\in\\mathbb{Z}`,
+            explanation: "La periodicidad es π. En la rama principal (-π/2,π/2) corresponde k=0.",
+          },
+        ],
+      };
+    }
+  }
   let rootsRaw: string[];
   try {
     rootsRaw = solveEquation(diffAlgebrite, variable);
