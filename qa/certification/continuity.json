@@ -1,157 +1,17 @@
 {
   "schema_version": 1,
-  "revision": 524,
+  "revision": 525,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
   "baseline_case": "TRIG-IN-D-05",
-  "baseline_status": "VERIFYING_CI",
+  "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
-  "gates": {
-    "cumulative": {
-      "workflow": ".github/workflows/in625-cumulative-certification.yml",
-      "inputs": [
-        "*"
-      ],
-      "acceptance_revision": "2026-10-16-continuity-v1"
-    },
-    "h1d": {
-      "workflow": ".github/workflows/in625-h1d-reentry.yml",
-      "inputs": [
-        "*"
-      ],
-      "acceptance_revision": "2026-10-16-continuity-v1"
-    },
-    "security": {
-      "workflow": ".github/workflows/certification-dependency-gates.yml",
-      "inputs": [
-        "*"
-      ],
-      "acceptance_revision": "2026-10-16-continuity-v1",
-      "allow_reuse": false
-    },
-    "scientific": {
-      "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-      "inputs": [
-        "*"
-      ],
-      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
-    }
-  },
   "next_action": {
-    "id": "TRIG-IN-D-05",
-    "previous_id": "TRIG-IN-D-04",
-    "status": "WAIT",
-    "action": "Esperar y revisar Cumulative Plus 43647668540/job backend 132608950017 sobre SHA aa1f2821 (filtro estructural arccot para evitar timeout); si SUCCESS con AS-PAR-05 pasando, reconciliar IN-D-05 PASS_SCOPED bilateral; no avanzar a IN-D-06."
+    "id": "TRIG-IN-D-06",
+    "previous_id": "TRIG-IN-D-05",
+    "status": "IDENTIFY",
+    "action": "Iniciar IN-D-06 seg\u00fan hoja de ruta y protocolo; recuperar casos y criterios, implementar/verificar bilateral."
   },
-  "blockers": [
-    {
-      "id": "SECURITY-S25",
-      "status": "BLOCKED",
-      "run_id": 43538686314,
-      "job_id": 132273991849,
-      "classification": "ACCEPTANCE_REVIEW",
-      "exit_condition": "Evaluar informe ya producido y criterios de aceptación por perfil; supervivientes/timeouts y jobs omitidos no son PASS. Conservar el shutdown histórico sin relanzar inputs idénticos.",
-      "current_run_id": 43559502112,
-      "current_job_id": 132339909267,
-      "last_shutdown_run_id": 43623011306,
-      "last_shutdown_job_id": 132532759316,
-      "last_shutdown_classification": "INFRA_SHUTDOWN_NO_FINAL_REPORT",
-      "last_shutdown_utc": "2026-11-14T20:11:00Z",
-      "review_report_run_id": 43559502112,
-      "review_report_artifact_id": 14105803916
-    },
-    {
-      "id": "H2-SG28-DIST-01..08",
-      "status": "BLOCKED",
-      "exit_condition": "Evidencia contractual multinodo real; aislamiento desactivado por defecto, sin activación en producción."
-    },
-    {
-      "id": "EV-D-01",
-      "status": "BLOCKED",
-      "exit_condition": "Cerrar con evidencia propia del canal literal; los otros PASS_SCOPED no sustituyen este requisito."
-    }
-  ],
-  "prose_only_paths": [
-    "README.md",
-    "qa/certification/README.md",
-    "qa/certification/CURRENT_STATE.md",
-    "qa/certification/EXECUTION_LOG.md",
-    "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
-  ],
-  "updated_utc": "2026-11-14T22:30:00.000Z",
-  "evidence": {
-    "cumulative": {
-      "gate": "cumulative",
-      "input_fingerprint": "90c66e47c5139c0394b284914ddb37e4806bcd2aded3dc8bc03a61549919f1db",
-      "head_sha": "f6f77b77667ee0e381518a9368d4bcaa69ffc5ff",
-      "decision": "REUSE",
-      "reason": "prior reviewed evidence covers identical gate inputs; not a new execution or global certification",
-      "run_id": 43637613663,
-      "evidence_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "logs_reviewed": true,
-      "evidence_executed": true,
-      "acceptance_revision": "2026-10-16-continuity-v1",
-      "jobs": [
-        {
-          "id": 132577786042,
-          "name": "cumulative",
-          "conclusion": "success"
-        }
-      ]
-    },
-    "h1d": {
-      "gate": "h1d",
-      "input_fingerprint": "96c079e32f149c7b6e9e87dffeecb6741bbb31bfc853331705f8bb669beea685",
-      "head_sha": "f6f77b77667ee0e381518a9368d4bcaa69ffc5ff",
-      "decision": "REUSE",
-      "reason": "prior reviewed evidence covers identical gate inputs; not a new execution or global certification",
-      "run_id": 43637613567,
-      "evidence_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "logs_reviewed": true,
-      "evidence_executed": true,
-      "acceptance_revision": "2026-10-16-continuity-v1",
-      "jobs": [
-        {
-          "id": 132577785735,
-          "name": "h1d",
-          "conclusion": "success"
-        }
-      ]
-    },
-    "security": {
-      "gate": "security",
-      "input_fingerprint": "bbcf086c8b592a14e1a9c813f322c6140697365f8b11d13c18dfeb0ec9ae4d45",
-      "head_sha": "f6f77b77667ee0e381518a9368d4bcaa69ffc5ff",
-      "decision": "REVIEW",
-      "reason": "Ventana reciente incompleta; revisión dinámica por perfil, sin dispatch ni inferencia de ausencia.",
-      "logs_reviewed": false,
-      "evidence_executed": false,
-      "acceptance_revision": "2026-10-16-continuity-v1"
-    },
-    "scientific": {
-      "gate": "scientific",
-      "input_fingerprint": "630c6cbe7e6ce3d7f9db859078ba3f625f3dbc3290ce92a5b9c563e0f169bc91",
-      "head_sha": "f6f77b77667ee0e381518a9368d4bcaa69ffc5ff",
-      "decision": "REVIEW",
-      "reason": "Ejecución y logs revisados; falta reconciliar huella del HEAD y aceptación bilateral.",
-      "run_id": 43637613653,
-      "evidence_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "logs_reviewed": true,
-      "evidence_executed": true,
-      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
-      "jobs": [
-        {
-          "id": 132577786225,
-          "name": "scientific-ui",
-          "conclusion": "success"
-        }
-      ]
-    }
-  },
-  "previous_accepted": {
-    "id": "TRIG-IN-D-04",
-    "status": "PASS_SCOPED"
-  },
-  "observed_runs": []
+  "updated_utc": "2026-11-14T22:40:30.000Z"
 }
