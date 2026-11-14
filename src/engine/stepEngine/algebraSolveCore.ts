@@ -40,7 +40,7 @@ import {
 } from "./algebraUtils";
 
 function wordBoundaryPattern(variable: string): RegExp {
-  return new RegExp(String.raw`\\b` + variable + String.raw`\\b`);
+  return new RegExp(String.raw`\b` + variable + String.raw`\b`);
 }
 
 export interface AlgebraSolveResult {
@@ -61,8 +61,18 @@ export function solveAlgebra(
     explanation: "Ecuación original.",
   });
 
-  // Run exact hyperbolic matchers first so domain-restricted cases
-  // (e.g. acosh(x)=0 → x=1) never hit the general simplify path.
+  let standardForm: string;
+  try {
+    standardForm = evaluate(`simplify(${leftAlgebrite}-(${rightAlgebrite}))`);
+  } catch (err) {
+    throw err as AppError;
+  }
+  steps.push({
+    id: "standard-form",
+    latex: `${standardForm} = 0`,
+    explanation: "Se agrupan todos los términos en un solo lado (forma estándar).",
+  });
+
   const hyperbolicMatchers: Array<() => Step | null> = [
     () => hyperbolicTangentOutOfRangeStep(leftAlgebrite, rightAlgebrite, variable),
     () => hyperbolicCoshBelowOneStep(leftAlgebrite, rightAlgebrite, variable),
@@ -85,7 +95,7 @@ export function solveAlgebra(
     if (
       step.id.includes("no-real-solution") ||
       step.latex.includes("varnothing") ||
-      step.latex === "\\\\varnothing"
+      step.latex === "\\varnothing"
     ) {
       return { steps, solutionsAlgebrite: [], truth: "contradiction" };
     }
@@ -96,13 +106,13 @@ export function solveAlgebra(
     if (step.id === "hyperbolic-arcosh-zero-exact-root") {
       return { steps, solutionsAlgebrite: ["1"] };
     }
-    if (latex.includes("\\\\pm")) {
+    if (latex.includes("\\pm")) {
       return { steps, solutionsAlgebrite: ["log(2+sqrt(3))", "-log(2+sqrt(3))"] };
     }
     if (latex.includes("frac{1}{2}")) {
       return { steps, solutionsAlgebrite: ["log(3)/2"] };
     }
-    if (latex.includes("ln 2") || latex.includes("\\\\ln 2")) {
+    if (latex.includes("ln 2") || latex.includes("\\ln 2")) {
       return { steps, solutionsAlgebrite: ["log(2)"] };
     }
     if (latex.includes("sqrt{2}")) {
@@ -110,18 +120,6 @@ export function solveAlgebra(
     }
     return { steps, solutionsAlgebrite: ["0"] };
   }
-
-  let standardForm: string;
-  try {
-    standardForm = evaluate(`simplify(${leftAlgebrite}-(${rightAlgebrite}))`);
-  } catch (err) {
-    throw err as AppError;
-  }
-  steps.push({
-    id: "standard-form",
-    latex: `${standardForm} = 0`,
-    explanation: "Se agrupan todos los términos en un solo lado (forma estándar).",
-  });
 
   // Algebra114 AS-PAR-09: equidistant absolute values.
   const absoluteLeftCenter = absoluteValueOffset(leftAlgebrite, variable);
@@ -198,7 +196,7 @@ export function solveAlgebra(
     });
     steps.push({
       id: "solutions",
-      latex: variable + " = " + plusRoot + ",\\\\quad " + variable + " = " + minusRoot,
+      latex: variable + " = " + plusRoot + ",\\quad " + variable + " = " + minusRoot,
       explanation: "Soluciones por las dos ramas del valor absoluto.",
     });
     return { steps, solutionsAlgebrite: [plusRoot, minusRoot] };
@@ -217,7 +215,7 @@ export function solveAlgebra(
     }
     steps.push({
       id: "solutions",
-      latex: absoluteCases.solutions.map((s) => `${variable} = ${s}`).join(",\\\\quad "),
+      latex: absoluteCases.solutions.map((s) => `${variable} = ${s}`).join(",\\quad "),
       explanation: "Raíces de los tramos verificadas en la ecuación original.",
     });
     return { steps, solutionsAlgebrite: absoluteCases.solutions };
@@ -265,7 +263,7 @@ export function solveAlgebra(
     }
     steps.push({
       id: "solutions",
-      latex: radicalCases.solutions.map((s) => `${variable} = ${s}`).join(",\\\\quad "),
+      latex: radicalCases.solutions.map((s) => `${variable} = ${s}`).join(",\\quad "),
       explanation: "Candidatos verificados en la ecuación original.",
     });
     return { steps, solutionsAlgebrite: radicalCases.solutions };
@@ -354,7 +352,7 @@ export function solveAlgebra(
         }
         steps.push({
           id: "solutions",
-          latex: valid.map((c) => variable + " = " + c).join(",\\\\quad "),
+          latex: valid.map((c) => variable + " = " + c).join(",\\quad "),
           explanation: "Raíces del numerador que pertenecen al dominio original.",
         });
         return { steps, solutionsAlgebrite: valid };
@@ -409,7 +407,7 @@ export function solveAlgebra(
 
   steps.push({
     id: "solutions",
-    latex: solutions.map((s) => `${variable} = ${s}`).join(",\\\\quad "),
+    latex: solutions.map((s) => `${variable} = ${s}`).join(",\\quad "),
     explanation: solutions.length > 1 ? "Raíces obtenidas simbólicamente." : "Raíz obtenida simbólicamente.",
   });
 
