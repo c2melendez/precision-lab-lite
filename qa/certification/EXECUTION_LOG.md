@@ -1,3 +1,15 @@
+# r515 — Revisión de corridas IN-D-03
+
+## Revisión posterior de evidencia IN-D-03 (2026-11-14)
+
+Las corridas push inicialmente en curso terminaron. Lite Scientific 43559483128/job 132339725404 ejecutó el paso nativo (guard skip=false): 456 pruebas aprobadas. Plus Cumulative 43559502095/jobs 132339787080 y 132339787382 ejecutó backend y frontend (guard skip=false): backend 3020 passed, 1 skipped, 11 xfailed; las seis pruebas IN-D-03 pasaron. Plus Native 43559502118/job 132339787175 ejecutó desktop 26/26 y tablet/móvil 52/52. Estos resultados no acreditan ingreso literal completo ni E2E dedicado de la fila.
+
+Plus campaña 43559502112/job 132339909267 finalizó SUCCESS y produjo artifact 14105803916, con código de proceso 0; el informe contiene supervivientes y timeouts. Los tres jobs frontend de auditoría/mutación fueron skipped y no son PASS. S25 permanece BLOCKED hasta evaluar el informe y criterios de aceptación por perfil; SG28 distribuido y EV-D-01 siguen BLOCKED. No se despacharon corridas adicionales.
+
+Siguiente acción única: reconciliar huellas de HEAD y revisar CI/H1d y contrato de cierre bilateral IN-D-03 con observaciones completas; registrar el alcance y, si se cumplen criterios, cerrar PASS_SCOPED e iniciar IN-D-04. No tratar el color verde como certificación global.
+
+---
+
 # r514 — IN-D-03 publicado y en verificación; IN-D-02 cerrado
 
 Global **OPEN**. Último cierre bilateral: **TRIG-IN-D-02 PASS_SCOPED**, acreditado por las corridas ejecutadas/revisadas en r513. Este corte inicia IN-D-03 y no lo certifica por pruebas locales ni por Runner SUCCESS.

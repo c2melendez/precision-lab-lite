@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 514,
+  "revision": 515,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
@@ -41,8 +41,8 @@
   "next_action": {
     "id": "TRIG-IN-D-03",
     "previous_id": "TRIG-IN-D-02",
-    "status": "WAIT",
-    "action": "Revisar corridas push existentes de IN-D-03, jobs/pasos/logs de Cumulative, CI, H1d, Scientific Lite y Native Plus. Corregir fallos reales; no cerrar hasta evidencia bilateral pertinente. Seguridad por perfil se mantiene independiente; no repetir equivalentes. Después IN-D-04."
+    "status": "REVIEW",
+    "action": "Reconciliar huellas de HEAD y revisar CI/H1d y criterios de cierre bilateral de IN-D-03 con observaciones completas; conservar bloqueos independientes. Si se cumplen, cerrar PASS_SCOPED e iniciar IN-D-04."
   },
   "blockers": [
     {
@@ -71,7 +71,7 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-14T05:04:24.802Z",
+  "updated_utc": "2026-11-14T17:31:41.543Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
