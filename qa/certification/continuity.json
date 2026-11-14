@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 518,
+  "revision": 519,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "37a2380dd9072355a630199c3597338ef4741788",
   "baseline_case": "TRIG-IN-D-04",
-  "baseline_status": "VERIFYING_CI",
+  "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
     "cumulative": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-IN-D-04",
-    "previous_id": "TRIG-IN-D-03",
-    "status": "REVIEW",
-    "action": "Reconciliar huellas del HEAD, CI y criterios de aceptación bilateral IN-D-04 con evidencia terminada; cerrar PASS_SCOPED si corresponde y luego iniciar IN-D-05. Seguridad independiente sin duplicar campaña."
+    "id": "TRIG-IN-D-05",
+    "previous_id": "TRIG-IN-D-04",
+    "status": "RUN",
+    "action": "Test-first bilateral de |sin(x)|>=sqrt(2)/2 en [0,2*pi); congelar fila, verificar cuatro extremos incluidos y controles; corregir brechas demostradas, publicar con expected_sha y revisar gates push. No avanzar a IN-D-06."
   },
   "blockers": [
     {
@@ -73,14 +73,14 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-14T18:47:01.966Z",
+  "updated_utc": "2026-11-14T19:48:03.230Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
       "input_fingerprint": "424e0a466c05c963f013dbc37876347b5cb8cc84db8d4dc1b66ac4f6c349b0f9",
-      "head_sha": "37a2380dd9072355a630199c3597338ef4741788",
+      "head_sha": "987f2efa395d9c9253fb078d7602ff07a3846329",
       "decision": "REUSE",
-      "reason": "prior reviewed evidence covers identical gate inputs; not a new execution or global certification",
+      "reason": "Diferencia HEAD limitada a prosa e índice excluidos; configuración de gate idéntica; evidencia ejecutada revisada.",
       "run_id": 43622992290,
       "evidence_sha": "37a2380dd9072355a630199c3597338ef4741788",
       "logs_reviewed": true,
@@ -97,9 +97,9 @@
     "h1d": {
       "gate": "h1d",
       "input_fingerprint": "16f21bf59d6e8a71bd60a913607e9f00a1648b441741b8e13ecd678db4b19091",
-      "head_sha": "37a2380dd9072355a630199c3597338ef4741788",
+      "head_sha": "987f2efa395d9c9253fb078d7602ff07a3846329",
       "decision": "REUSE",
-      "reason": "prior reviewed evidence covers identical gate inputs; not a new execution or global certification",
+      "reason": "Diferencia HEAD limitada a prosa e índice excluidos; configuración de gate idéntica; evidencia ejecutada revisada.",
       "run_id": 43622992133,
       "evidence_sha": "37a2380dd9072355a630199c3597338ef4741788",
       "logs_reviewed": true,
@@ -125,9 +125,9 @@
     "scientific": {
       "gate": "scientific",
       "input_fingerprint": "ee6c2b6f6309abe3e9adddff8516ac8f85fa0acbb19362f4e53d2496a981f442",
-      "head_sha": "37a2380dd9072355a630199c3597338ef4741788",
-      "decision": "REVIEW",
-      "reason": "Pruebas ejecutadas y logs revisados; falta reconciliar huellas de HEAD y aceptación de cierre.",
+      "head_sha": "987f2efa395d9c9253fb078d7602ff07a3846329",
+      "decision": "REUSE",
+      "reason": "Diferencia HEAD limitada a prosa e índice excluidos; configuración de gate idéntica; evidencia ejecutada revisada.",
       "run_id": 43622992173,
       "evidence_sha": "37a2380dd9072355a630199c3597338ef4741788",
       "logs_reviewed": true,
@@ -143,69 +143,69 @@
     }
   },
   "previous_accepted": {
-    "id": "TRIG-IN-D-03",
+    "id": "TRIG-IN-D-04",
     "status": "PASS_SCOPED",
     "evidence": {
       "cumulative": {
         "gate": "cumulative",
-        "input_fingerprint": "ed3a80960426e76a3355c3102f6b905d3cf8bf6345fec95762a0ff0d929c3e59",
-        "head_sha": "81dbd46e22338139d1a96dfe7c3fdf69e317d44a",
+        "input_fingerprint": "424e0a466c05c963f013dbc37876347b5cb8cc84db8d4dc1b66ac4f6c349b0f9",
+        "head_sha": "987f2efa395d9c9253fb078d7602ff07a3846329",
         "decision": "REUSE",
-        "reason": "prior reviewed evidence covers identical gate inputs; not a new execution or global certification",
-        "run_id": 43559483200,
-        "evidence_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
+        "reason": "Diferencia HEAD limitada a prosa e índice excluidos; configuración de gate idéntica; evidencia ejecutada revisada.",
+        "run_id": 43622992290,
+        "evidence_sha": "37a2380dd9072355a630199c3597338ef4741788",
         "logs_reviewed": true,
         "evidence_executed": true,
+        "acceptance_revision": "2026-10-16-continuity-v1",
         "jobs": [
           {
-            "id": 132339725187,
+            "id": 132532572503,
             "name": "cumulative",
             "conclusion": "success"
           }
-        ],
-        "acceptance_revision": "2026-10-16-continuity-v1"
+        ]
       },
       "h1d": {
         "gate": "h1d",
-        "input_fingerprint": "fd596c1c9f408d3a29c6cfa4b1c6f579dbf69c4ef37ad6cd491ab74e751bf81a",
-        "head_sha": "81dbd46e22338139d1a96dfe7c3fdf69e317d44a",
+        "input_fingerprint": "16f21bf59d6e8a71bd60a913607e9f00a1648b441741b8e13ecd678db4b19091",
+        "head_sha": "987f2efa395d9c9253fb078d7602ff07a3846329",
         "decision": "REUSE",
-        "reason": "prior reviewed evidence covers identical gate inputs; not a new execution or global certification",
-        "run_id": 43559483135,
-        "evidence_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
+        "reason": "Diferencia HEAD limitada a prosa e índice excluidos; configuración de gate idéntica; evidencia ejecutada revisada.",
+        "run_id": 43622992133,
+        "evidence_sha": "37a2380dd9072355a630199c3597338ef4741788",
         "logs_reviewed": true,
         "evidence_executed": true,
+        "acceptance_revision": "2026-10-16-continuity-v1",
         "jobs": [
           {
-            "id": 132339725464,
+            "id": 132532572607,
             "name": "h1d",
             "conclusion": "success"
           }
-        ],
-        "acceptance_revision": "2026-10-16-continuity-v1"
+        ]
       },
       "security": {
         "gate": "security",
-        "input_fingerprint": "af11ed12604ce1c1248aa8c63c63cdb21fd907a9ffcbcd43876e3a195f106416",
-        "head_sha": "81dbd46e22338139d1a96dfe7c3fdf69e317d44a",
+        "input_fingerprint": "c490db839491bb25356000e856fb8b1a92e000390a76ebf666823943a40a7dd7",
+        "head_sha": "37a2380dd9072355a630199c3597338ef4741788",
         "decision": "REVIEW",
-        "reason": "Revisión dinámica por perfil y aceptación del informe existente; no relanzar a partir de una ventana reciente incompleta.",
+        "reason": "Revisión dinámica por perfil; una ventana reciente incompleta no demuestra ausencia de evidencia ni autoriza dispatch.",
         "logs_reviewed": false,
         "evidence_executed": false
       },
       "scientific": {
         "gate": "scientific",
-        "input_fingerprint": "35e0dffffa8f4b18f08d189936ea05df38e0455ef347a2535183afa30bac4d97",
-        "head_sha": "81dbd46e22338139d1a96dfe7c3fdf69e317d44a",
+        "input_fingerprint": "ee6c2b6f6309abe3e9adddff8516ac8f85fa0acbb19362f4e53d2496a981f442",
+        "head_sha": "987f2efa395d9c9253fb078d7602ff07a3846329",
         "decision": "REUSE",
-        "reason": "prior reviewed evidence covers identical gate inputs; not a new execution or global certification",
-        "run_id": 43559483128,
-        "evidence_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
+        "reason": "Diferencia HEAD limitada a prosa e índice excluidos; configuración de gate idéntica; evidencia ejecutada revisada.",
+        "run_id": 43622992173,
+        "evidence_sha": "37a2380dd9072355a630199c3597338ef4741788",
         "logs_reviewed": true,
         "evidence_executed": true,
         "jobs": [
           {
-            "id": 132339725404,
+            "id": 132532571910,
             "name": "scientific-ui",
             "conclusion": "success"
           }
