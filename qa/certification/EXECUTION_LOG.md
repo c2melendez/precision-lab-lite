@@ -1,3 +1,13 @@
+# r518 — Revisión de CI IN-D-04
+
+## Revisión de corridas IN-D-04 (2026-11-14)
+
+Los gates funcionales pendientes terminaron: Lite Scientific 43622992173/job 132532571910 ejecutó 456/456; Plus Cumulative 43623011267/backend 132532633718 ejecutó 3025 passed, 1 skipped y 11 xfailed, incluidos 5/5 IN-D-04; frontend 132532633477 ejecutó 1055 passed y 28 TODO. Plus H1d 43623011311/job 132532633417 ejecutó 38/38; Native 43623011280/job 132532633408 ejecutó 26 desktop y 52 tablet/móvil. Guards de estos jobs skip=false, checkout de SHA técnico y evidence_run_id vacío. CI Plus 43623011274 terminó con ambos jobs SUCCESS; revisar logs y huellas para cierre. No acreditar TODO, SKIP o XFAIL como PASS.
+
+Plus seguridad 43623011306 mantiene mutación backend/job 132532759316 en ejecución y jobs frontend omitidos; no se atribuye resultado a ellos. Los bloqueos independientes se conservan. Siguiente paso: reconciliar HEAD, huellas y aceptación bilateral de IN-D-04; si corresponde cerrar PASS_SCOPED e iniciar IN-D-05, sin duplicar corridas.
+
+---
+
 # r517 — IN-D-04 implementado/publicado; verificación automática en curso
 
 Global **OPEN**. IN-D-03 quedó **PASS_SCOPED bilateral** en r516, con jobs/pasos/logs y huellas revisados; sus gates verdes no se repitieron. Esta revisión inicia IN-D-04 y no lo certifica todavía.

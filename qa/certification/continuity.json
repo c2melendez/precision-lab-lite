@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 517,
+  "revision": 518,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "37a2380dd9072355a630199c3597338ef4741788",
@@ -41,8 +41,8 @@
   "next_action": {
     "id": "TRIG-IN-D-04",
     "previous_id": "TRIG-IN-D-03",
-    "status": "WAIT",
-    "action": "Revisar CI/Cumulative/H1d y Scientific Lite/Native Plus del SHA IN-D-04, jobs/pasos/logs; corregir fallos confirmados y cerrar solo con evidencia funcional bilateral. Seguridad se revisa por perfil, sin repetir equivalentes. Después IN-D-05."
+    "status": "REVIEW",
+    "action": "Reconciliar huellas del HEAD, CI y criterios de aceptación bilateral IN-D-04 con evidencia terminada; cerrar PASS_SCOPED si corresponde y luego iniciar IN-D-05. Seguridad independiente sin duplicar campaña."
   },
   "blockers": [
     {
@@ -73,7 +73,7 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-14T17:50:07.490Z",
+  "updated_utc": "2026-11-14T18:47:01.966Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
@@ -126,12 +126,20 @@
       "gate": "scientific",
       "input_fingerprint": "ee6c2b6f6309abe3e9adddff8516ac8f85fa0acbb19362f4e53d2496a981f442",
       "head_sha": "37a2380dd9072355a630199c3597338ef4741788",
-      "decision": "WAIT",
-      "reason": "equivalent inputs already queued/running; inspect existing run",
+      "decision": "REVIEW",
+      "reason": "Pruebas ejecutadas y logs revisados; falta reconciliar huellas de HEAD y aceptación de cierre.",
       "run_id": 43622992173,
       "evidence_sha": "37a2380dd9072355a630199c3597338ef4741788",
-      "logs_reviewed": false,
-      "evidence_executed": false
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "jobs": [
+        {
+          "id": 132532571910,
+          "name": "scientific-ui",
+          "conclusion": "success"
+        }
+      ],
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
     }
   },
   "previous_accepted": {

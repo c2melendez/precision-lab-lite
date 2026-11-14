@@ -1,6 +1,12 @@
-# r517 — IN-D-04 implementado/publicado; verificación automática en curso
+# r518 — IN-D-04: gates funcionales terminados, revisión de cierre
 
 Global **OPEN**. IN-D-03 quedó **PASS_SCOPED bilateral** en r516, con jobs/pasos/logs y huellas revisados; sus gates verdes no se repitieron. Esta revisión inicia IN-D-04 y no lo certifica todavía.
+
+## Revisión de corridas IN-D-04 (2026-11-14)
+
+Los gates funcionales pendientes terminaron: Lite Scientific 43622992173/job 132532571910 ejecutó 456/456; Plus Cumulative 43623011267/backend 132532633718 ejecutó 3025 passed, 1 skipped y 11 xfailed, incluidos 5/5 IN-D-04; frontend 132532633477 ejecutó 1055 passed y 28 TODO. Plus H1d 43623011311/job 132532633417 ejecutó 38/38; Native 43623011280/job 132532633408 ejecutó 26 desktop y 52 tablet/móvil. Guards de estos jobs skip=false, checkout de SHA técnico y evidence_run_id vacío. CI Plus 43623011274 terminó con ambos jobs SUCCESS; revisar logs y huellas para cierre. No acreditar TODO, SKIP o XFAIL como PASS.
+
+Plus seguridad 43623011306 mantiene mutación backend/job 132532759316 en ejecución y jobs frontend omitidos; no se atribuye resultado a ellos. Los bloqueos independientes se conservan. Siguiente paso: reconciliar HEAD, huellas y aceptación bilateral de IN-D-04; si corresponde cerrar PASS_SCOPED e iniciar IN-D-05, sin duplicar corridas.
 
 ## Contrato y reproducción IN-D-04
 Fuente gzip 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb, sección 3.A:
@@ -33,7 +39,7 @@ Publicados con expected_sha sobre el cierre documental bilateral 7a82dce5/33bafa
 
 
 ## Revisión de CI de este corte
-Lite CI 43622992119, Cumulative 43622992290 y H1d 43622992133 terminaron SUCCESS. Cumulative/job 132532572503 ejecutó 440 suites, 2530 passed, 8 expected fail y 34 TODO, incluidos los seis casos IN-D-04; H1d/job 132532572607 22/22. Logs revisados con skip=false y sin evidencia reutilizada internamente. Backend-security Plus/job 132532725093 SUCCESS (pip-audit sin vulnerabilidades conocidas, Bandit y 24 regresiones), sin acreditar score de mutación ni perfiles omitidos. La matriz visual Lite y los gates completos Plus seguían en curso al observarlos; IN-D-04 permanece WAIT.
+Lite CI 43622992119, Cumulative 43622992290 y H1d 43622992133 terminaron SUCCESS. Cumulative/job 132532572503 ejecutó 440 suites, 2530 passed, 8 expected fail y 34 TODO, incluidos los seis casos IN-D-04; H1d/job 132532572607 22/22. Logs revisados con skip=false y sin evidencia reutilizada internamente. Backend-security Plus/job 132532725093 SUCCESS (pip-audit sin vulnerabilidades conocidas, Bandit y 24 regresiones), sin acreditar score de mutación ni perfiles omitidos. La observación original era en curso; ver los resultados finales en la revisión r518 anterior.
 
 ## Alcance, bloqueos y siguiente acción única
 Parser/motor Lite y API normalizada Plus; no ingesta literal completa del sufijo de dominio ni E2E dedicado de fila. Lite expresa periodicidad; Plus declara el período contractual. SKIP/XFAIL/TODO no son PASS.
