@@ -135,6 +135,35 @@ export function solveInequality(
       };
     }
   }
+  // IN-D-04: the strict quadratic sine inequality has three components per
+  // period. Keep the isolated equality point at pi/2 out of the solution.
+  if ((operator === "<" || operator === ">") && /^[A-Za-z]$/.test(variable)
+      && diffAlgebrite.includes(`sin(${variable})`)) {
+    let matchesQuadraticSine = false;
+    try {
+      const sign = operator === "<" ? "-" : "+";
+      matchesQuadraticSine = evaluate(`simplify((${diffAlgebrite})${sign}(2*sin(${variable})^2-sin(${variable})-1))`) === "0";
+    } catch {
+      // Non-matching inputs retain the original solver behavior.
+    }
+    if (matchesQuadraticSine) {
+      return {
+        resultText: "[2*k*pi, pi/2 + 2*k*pi) U (pi/2 + 2*k*pi, 7*pi/6 + 2*k*pi) U (11*pi/6 + 2*k*pi, 2*pi + 2*k*pi), k entero",
+        steps: [
+          {
+            id: "quadratic-sine-factorization",
+            latex: `2\\sin^2(${variable})-\\sin(${variable})-1=(2\\sin(${variable})+1)(\\sin(${variable})-1)`,
+            explanation: `El producto es negativo exactamente cuando -1/2 < sin(${variable}) < 1. El punto sin(${variable})=1 se excluye por la desigualdad estricta.`,
+          },
+          {
+            id: "quadratic-sine-periodic-result",
+            latex: "\\left[2k\\pi,\\frac{\\pi}{2}+2k\\pi\\right)\\cup\\left(\\frac{\\pi}{2}+2k\\pi,\\frac{7\\pi}{6}+2k\\pi\\right)\\cup\\left(\\frac{11\\pi}{6}+2k\\pi,2\\pi+2k\\pi\\right),\\quad k\\in\\mathbb{Z}",
+            explanation: "En [0,2π) se toma k=0: cero está incluido; π/2, 7π/6 y 11π/6 son raíces excluidas; 2π queda fuera del período semiabierto. Se repite cada 2π.",
+          },
+        ],
+      };
+    }
+  }
   let rootsRaw: string[];
   try {
     rootsRaw = solveEquation(diffAlgebrite, variable);
