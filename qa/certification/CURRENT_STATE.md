@@ -1,31 +1,31 @@
-# r511 — TRIG-IN-D-01 PASS_SCOPED bilateral; siguiente IN-D-02
+# r512 — IN-D-02 publicado y en verificación; IN-D-01 cerrado
 
-Global **OPEN**. Fuente congelada: gzip 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb, sección 3.A. IN-D-01: sin(x)>1/2, x∈[0,2π) -> (π/6,5π/6), extremos abiertos. Se revisaron resultados, jobs, pasos y logs de los SHA técnicos publicados.
+Global **OPEN**. Último caso cerrado: **TRIG-IN-D-01 PASS_SCOPED bilateral**, con evidencia y límites en la entrada r511 del log. No se reejecutaron sus gates por los commits documentales.
 
-## Evidencia de cierre
-| Motor | SHA de evidencia | Gate / run | Resultado ejecutado |
-|---|---|---|---|
-| Lite | 7cb558112afb6a78361fbedda64bc35ebf00ba14 | CI 43547932983 | SUCCESS, typecheck/tests/build |
-| Lite | mismo | Cumulative 43547933065 / job 132303487898 | 437 suites; 2513 passed, 8 expected fail, 34 TODO; focal IN-D-01 10/10 |
-| Lite | mismo | H1d 43547933019 / job 132303488076 | 22/22 |
-| Lite | mismo | Scientific UI 43547932993 / job 132303487536 | 456/456 desktop/tablet/mobile |
-| Plus | 8adf1fd7b82c8cc0413c2ddd1fc1707ee7f46f7e | CI 43547189950 | backend 3011 passed, cobertura 88.03%; frontend SUCCESS |
-| Plus | mismo | Cumulative 43547189971 / backend 132301139865, frontend 132301139614 | backend 3011 passed, 1 skipped, 11 xfailed, cobertura 88.00%; IN-D-01 3/3 PASSED explícitos; frontend 1055 passed, 28 TODO |
-| Plus | mismo | H1d 43547190003 / job 132301139765 | 38/38 |
+## IN-D-02: contrato y cambio técnico
+Fuente gzip 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb, sección 3.A: cos(x)≤0 en [0,2π) -> [π/2,3π/2], incluidos ambos extremos.
+- Lite SHA técnico 37227c30e638d1f46b24a8f874915ce958aa02cf: el test-first reprodujo roots no polinómico en ASCII y núcleo LaTeX. La corrección reconoce exactamente cos(variable)≤0 y devuelve todos los períodos con k entero; k=0 reproduce la fila. Cinco pruebas permanentes: fila completa, dos canales, signos/extremos y controles negativos. No solver trigonométrico general ficticio.
+- Plus SHA técnico 0575e1dce1af03ac5e46348ad5c47ac36a266ab7: solo tests; servicio y POST /api/v1/inequality ya devolvían Interval(pi/2,3*pi/2). Tres pruebas de fuente/servicio, HTTP y oráculo de signos. Alcance de período contractual, sin afirmar respuesta periódica global.
+- Validación local Lite: 438 suites / 2518 passed, 8 expected fail y 34 TODO, con un worker (228.90s); 89 focales/parser/inecuaciones PASS; typecheck/build PASS. Plus IN-D-01/02 y phase2: 18/18 PASS, una advertencia Starlette. No ejecución backend local completa.
+- Cambios publicados con expected_sha sobre los cierres documentales 9d1a149e/2c0e0063. Autorización explícita de publicación vigente; sin producción ni releases.
 
-Todos los jobs requeridos de esos gates terminaron SUCCESS y ninguno omitió sus pasos. Guards de acumulativo/H1d/Scientific: skip=false y evidence_run_id vacío. No se atribuyen pruebas nuevas a los Runner push (solo resumen). TODO/XFAIL/SKIP no se convierten en PASS.
+## Corridas automáticas del SHA exacto (push)
+| Motor | Workflow | Run |
+|---|---|---|
+| Lite | CI | 43549505429 |
+| Lite | Cumulative | 43549505495 |
+| Lite | H1d | 43549505444 |
+| Lite | Scientific UI | 43549505417 |
+| Plus | CI | 43549522361 |
+| Plus | Cumulative | 43549522414 |
+| Plus | H1d | 43549522371 |
 
-## Cambios y límites
-- Lite e40c719b incorporó la desigualdad periódica exacta; 7cb5581 corrigió el lector de argumentos LaTeX que absorbía el operador relacional. IN-D-01 ahora prueba núcleo LaTeX, variantes ASCII/Unicode y macros de comparación, además de controles negativos. La corrección de parser pasó 2513 pruebas locales, typecheck/build y los gates anteriores.
-- Lite devuelve todos los intervalos periódicos con k entero; k=0 representa el dominio congelado [0,2π). Plus mantiene su respuesta de período principal por servicio y POST /api/v1/inequality. No se certifica su respuesta como solución periódica global.
-- Alcance: canal de motor/parser Lite y API normalizada Plus. La anotación de dominio se conserva como contexto contractual de la fila; no se afirma ingesta literal de todo el sufijo ni un E2E dedicado IN-D-01. La suite visual general es evidencia de regresión.
-- Huellas técnicas de HEAD documental Plus 09a2f6af y origen 8adf1fd7 idénticas; Lite HEAD 7cb5581 coincide con su evidencia. Las huellas de gates se registran en continuity.json. Los commits documentales d3ec34ef/09a2f6af no generaron CI; no se relanzaron gates verdes.
-- La autorización explícita del usuario resolvió el bloqueo de publicación anterior. Código y documentación se publicaron con expected_sha; sin producción/releases ni activación de SG28.
+Al observarlas estaban IN_PROGRESS. Decisión **WAIT**: no dispatch manual ni repetición equivalente. Runner push 43549505418/43549522350 SUCCESS solo genera resumen; no cuenta como test. IN-D-02 **NO certificado** hasta conclusión y revisión de jobs/pasos/logs, incluyendo source/oráculos y omisiones. La CI local no sustituye esos gates.
 
-## Continuación
-IN-D-02: cos(x)≤0, x∈[0,2π) -> [π/2,3π/2]. Preparación local test-first: Plus 3/3 focal y 18/18 con phase2/IN-D-01; no requiere cambio de producto. Lite reprodujo roots no polinómico; corrección acotada de umbral cero y extremos cerrados, ASCII + núcleo LaTeX y controles negativos: 89 pruebas focales/parser/inecuaciones PASS, typecheck/build PASS; acumulativo local en curso. Publicar solo el cambio técnico consolidado tras esa validación y verificar su CI automática. IN-D-02 aún NO certificado.
+## Cierre anterior conservado
+IN-D-01: Lite 7cb5581 con CI 43547932983, Cumulative 43547933065 (2513 passed; focal 10/10), H1d 43547933019 (22/22), Scientific 43547932993 (456/456), todos SUCCESS. Plus 8adf1fd7 con CI 43547189950 (3011 passed), Cumulative 43547189971 (3011 passed, 88.00%, focal 3/3), H1d 43547190003 (38/38), todos SUCCESS. Jobs/pasos/logs revisados; guard skip=false y sin REUSE interno; TODO/XFAIL/SKIP fuera del PASS. Ver r511 para alcance y huellas; el cambio actual requiere evidencia propia.
 
-## Bloqueos independientes
-SECURITY-S25/mutación Plus 43538686314: fallo por shutdown signal del runner, sin score final; backend-security pasó, jobs omitidos no cuentan. No retry idéntico. EV-D-01 BLOCKED; H2/SG28 OPEN; DIST-01..08 BLOCKED hasta aceptación multinodo real. SG28_EVALUATE_ISOLATION sigue off por defecto. Los cierres matemáticos acotados no cierran la certificación global.
+## Bloqueos y siguiente acción única
+EV-D-01 BLOCKED; S25/mutación independiente sin score aceptado por shutdown del runner 43538686314/job 132273991849, sin retry idéntico; H2/SG28 OPEN; DIST-01..08 BLOCKED. SG28_EVALUATE_ISOLATION sigue off por defecto. No se certifica pegado literal del sufijo de dominio completo ni UI específica de las filas.
 
-Siguiente acción única: completar/publicar IN-D-02 en ambos repositorios y revisar sus gates. No repetir CI de IN-D-01 por esta actualización documental.
+Consultar las siete corridas anteriores y sus jobs/logs, clasificar/corregir fallos confirmados y cerrar IN-D-02 solo con evidencia pertinente. No repetir gate verde/equivalente ni usar el Runner como prueba. Tras cierre bilateral, iniciar IN-D-03. Este corte no promete ejecución fuera de la sesión activa.
