@@ -71,7 +71,7 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-14T17:31:41.543Z",
+  "updated_utc": "2026-11-14T17:33:04.340Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
@@ -124,12 +124,20 @@
       "gate": "scientific",
       "input_fingerprint": "35e0dffffa8f4b18f08d189936ea05df38e0455ef347a2535183afa30bac4d97",
       "head_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
-      "decision": "WAIT",
-      "reason": "equivalent inputs already queued/running; inspect existing run",
+      "decision": "REVIEW",
+      "reason": "Ejecución terminada y logs consultados; pendiente reconciliar huella HEAD y aceptación antes de REUSE o cierre.",
       "run_id": 43559483128,
       "evidence_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
-      "logs_reviewed": false,
-      "evidence_executed": false
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "jobs": [
+        {
+          "id": 132339725404,
+          "name": "scientific-ui",
+          "conclusion": "success"
+        }
+      ],
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
     }
   },
   "previous_accepted": {
@@ -209,17 +217,17 @@
       "head_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
       "created_at": "2026-11-14T05:01:31Z",
       "run_attempt": 1,
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "jobs": [
         {
           "id": 132339725404,
           "name": "scientific-ui",
-          "conclusion": null
+          "conclusion": "success"
         }
       ],
-      "logs_reviewed": false,
-      "evidence_executed": false,
+      "logs_reviewed": true,
+      "evidence_executed": true,
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
     },
     {
