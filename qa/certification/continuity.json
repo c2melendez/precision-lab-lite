@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 512,
+  "revision": 513,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "37227c30e638d1f46b24a8f874915ce958aa02cf",
   "baseline_case": "TRIG-IN-D-02",
-  "baseline_status": "VERIFYING_CI",
+  "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
     "cumulative": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-IN-D-02",
-    "previous_id": "TRIG-IN-D-01",
-    "status": "WAIT",
-    "action": "Inspeccionar corridas push existentes de IN-D-02, revisar jobs/pasos/logs y corregir solo fallos confirmados. Cerrar bilateralmente antes de IN-D-03. No redispatch equivalente ni contar Runner/SKIP/TODO/XFAIL como PASS."
+    "id": "TRIG-IN-D-03",
+    "previous_id": "TRIG-IN-D-02",
+    "status": "RUN",
+    "action": "Test-first de tan(x)<1 en (-pi/2,pi/2) -> (-pi/2,pi/4); anclar fila completa, extremos abiertos y exclusión de polos. Corregir solo brechas demostradas y verificar gates push por SHA. No avanzar a IN-D-04."
   },
   "blockers": [
     {
@@ -71,47 +71,71 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-14T03:03:57.277Z",
+  "updated_utc": "2026-11-14T04:49:12.047Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
       "input_fingerprint": "7f82a4442ed5869eece558d097e14a0c72389ed8ba0434ec3e1457c659ca258b",
-      "head_sha": "37227c30e638d1f46b24a8f874915ce958aa02cf",
-      "decision": "WAIT",
-      "reason": "equivalent inputs already queued/running; inspect existing run",
+      "head_sha": "d771862bd23dd638be7d0ec311166c0a1800389a",
+      "decision": "REUSE",
+      "reason": "prior reviewed evidence covers identical gate inputs; not a new execution or global certification",
       "run_id": 43549505495,
       "evidence_sha": "37227c30e638d1f46b24a8f874915ce958aa02cf",
-      "logs_reviewed": false,
-      "evidence_executed": false
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "jobs": [
+        {
+          "id": 132308439401,
+          "name": "cumulative",
+          "conclusion": "success"
+        }
+      ]
     },
     "h1d": {
       "gate": "h1d",
       "input_fingerprint": "a59f207cb848c9217f8afade097061823966ab53ad39a46d3802c986a1e5415e",
-      "head_sha": "37227c30e638d1f46b24a8f874915ce958aa02cf",
-      "decision": "WAIT",
-      "reason": "equivalent inputs already queued/running; inspect existing run",
+      "head_sha": "d771862bd23dd638be7d0ec311166c0a1800389a",
+      "decision": "REUSE",
+      "reason": "prior reviewed evidence covers identical gate inputs; not a new execution or global certification",
       "run_id": 43549505444,
       "evidence_sha": "37227c30e638d1f46b24a8f874915ce958aa02cf",
-      "logs_reviewed": false,
-      "evidence_executed": false
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "jobs": [
+        {
+          "id": 132308439436,
+          "name": "h1d",
+          "conclusion": "success"
+        }
+      ]
     },
     "security": {
       "gate": "security",
       "input_fingerprint": "ada7a264d73388eceaca64a5a3f9513d1197377c82e47cee35d9fbb7991c60d7",
-      "head_sha": "37227c30e638d1f46b24a8f874915ce958aa02cf",
+      "head_sha": "d771862bd23dd638be7d0ec311166c0a1800389a",
       "decision": "REVIEW",
-      "reason": "Dynamic external evidence and independent S25 blocker require profile/precondition review; do not dispatch from an incomplete recent-run window."
+      "reason": "Revisión dinámica por perfil y bloqueos independientes; no despachar desde una ventana de runs incompleta."
     },
     "scientific": {
       "gate": "scientific",
       "input_fingerprint": "3eac025a92975c4e8577c632ac9d6e50af16ca3f7c1e4bd50e87da3dde7cdf78",
-      "head_sha": "37227c30e638d1f46b24a8f874915ce958aa02cf",
-      "decision": "WAIT",
-      "reason": "equivalent inputs already queued/running; inspect existing run",
+      "head_sha": "d771862bd23dd638be7d0ec311166c0a1800389a",
+      "decision": "REUSE",
+      "reason": "prior reviewed evidence covers identical gate inputs; not a new execution or global certification",
       "run_id": 43549505417,
       "evidence_sha": "37227c30e638d1f46b24a8f874915ce958aa02cf",
-      "logs_reviewed": false,
-      "evidence_executed": false
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "jobs": [
+        {
+          "id": 132308439502,
+          "name": "scientific-ui",
+          "conclusion": "success"
+        }
+      ]
     }
   },
   "previous_accepted": {
@@ -170,62 +194,5 @@
         "scope": "Motor/LaTeX core y regresión general; no E2E dedicado de fila"
       }
     }
-  },
-  "observed_runs": [
-    {
-      "id": 43549505417,
-      "path": ".github/workflows/syntax309-scientific-e2e.yml",
-      "head_sha": "37227c30e638d1f46b24a8f874915ce958aa02cf",
-      "status": "in_progress",
-      "conclusion": null,
-      "created_at": "2026-11-14T03:02:25Z",
-      "run_attempt": 1,
-      "logs_reviewed": false,
-      "evidence_executed": false
-    },
-    {
-      "id": 43549505418,
-      "path": ".github/workflows/certification-runner.yml",
-      "head_sha": "37227c30e638d1f46b24a8f874915ce958aa02cf",
-      "status": "completed",
-      "conclusion": "success",
-      "created_at": "2026-11-14T03:02:25Z",
-      "run_attempt": 1,
-      "logs_reviewed": false,
-      "evidence_executed": false
-    },
-    {
-      "id": 43549505444,
-      "path": ".github/workflows/in625-h1d-reentry.yml",
-      "head_sha": "37227c30e638d1f46b24a8f874915ce958aa02cf",
-      "status": "in_progress",
-      "conclusion": null,
-      "created_at": "2026-11-14T03:02:25Z",
-      "run_attempt": 1,
-      "logs_reviewed": false,
-      "evidence_executed": false
-    },
-    {
-      "id": 43549505495,
-      "path": ".github/workflows/in625-cumulative-certification.yml",
-      "head_sha": "37227c30e638d1f46b24a8f874915ce958aa02cf",
-      "status": "in_progress",
-      "conclusion": null,
-      "created_at": "2026-11-14T03:02:25Z",
-      "run_attempt": 1,
-      "logs_reviewed": false,
-      "evidence_executed": false
-    },
-    {
-      "id": 43549505429,
-      "path": ".github/workflows/ci.yml",
-      "head_sha": "37227c30e638d1f46b24a8f874915ce958aa02cf",
-      "status": "in_progress",
-      "conclusion": null,
-      "created_at": "2026-11-14T03:02:25Z",
-      "run_attempt": 1,
-      "logs_reviewed": false,
-      "evidence_executed": false
-    }
-  ]
+  }
 }
