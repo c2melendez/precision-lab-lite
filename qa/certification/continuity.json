@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 520,
+  "revision": 521,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
@@ -79,38 +79,52 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-14T20:29:34.886Z",
+  "updated_utc": "2026-11-14T20:32:29.959Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
       "input_fingerprint": "90c66e47c5139c0394b284914ddb37e4806bcd2aded3dc8bc03a61549919f1db",
-      "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "decision": "WAIT",
-      "reason": "equivalent inputs already queued/running; inspect existing run",
+      "head_sha": "f6f77b77667ee0e381518a9368d4bcaa69ffc5ff",
+      "decision": "REUSE",
+      "reason": "prior reviewed evidence covers identical gate inputs; not a new execution or global certification",
       "run_id": 43637613663,
       "evidence_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "logs_reviewed": false,
-      "evidence_executed": false,
-      "acceptance_revision": "2026-10-16-continuity-v1"
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "jobs": [
+        {
+          "id": 132577786042,
+          "name": "cumulative",
+          "conclusion": "success"
+        }
+      ]
     },
     "h1d": {
       "gate": "h1d",
       "input_fingerprint": "96c079e32f149c7b6e9e87dffeecb6741bbb31bfc853331705f8bb669beea685",
-      "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "decision": "WAIT",
-      "reason": "equivalent inputs already queued/running; inspect existing run",
+      "head_sha": "f6f77b77667ee0e381518a9368d4bcaa69ffc5ff",
+      "decision": "REUSE",
+      "reason": "prior reviewed evidence covers identical gate inputs; not a new execution or global certification",
       "run_id": 43637613567,
       "evidence_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "logs_reviewed": false,
-      "evidence_executed": false,
-      "acceptance_revision": "2026-10-16-continuity-v1"
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "jobs": [
+        {
+          "id": 132577785735,
+          "name": "h1d",
+          "conclusion": "success"
+        }
+      ]
     },
     "security": {
       "gate": "security",
       "input_fingerprint": "bbcf086c8b592a14e1a9c813f322c6140697365f8b11d13c18dfeb0ec9ae4d45",
-      "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
+      "head_sha": "f6f77b77667ee0e381518a9368d4bcaa69ffc5ff",
       "decision": "REVIEW",
-      "reason": "Ventana reciente incompleta; revisar evidencia y precondiciones por perfil antes de cualquier dispatch. No inferir ausencia ni repetir campaña.",
+      "reason": "Ventana reciente incompleta; revisión dinámica por perfil, sin dispatch ni inferencia de ausencia.",
       "logs_reviewed": false,
       "evidence_executed": false,
       "acceptance_revision": "2026-10-16-continuity-v1"
@@ -118,14 +132,21 @@
     "scientific": {
       "gate": "scientific",
       "input_fingerprint": "630c6cbe7e6ce3d7f9db859078ba3f625f3dbc3290ce92a5b9c563e0f169bc91",
-      "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
+      "head_sha": "f6f77b77667ee0e381518a9368d4bcaa69ffc5ff",
       "decision": "WAIT",
       "reason": "equivalent inputs already queued/running; inspect existing run",
       "run_id": 43637613653,
       "evidence_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
       "logs_reviewed": false,
       "evidence_executed": false,
-      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
+      "jobs": [
+        {
+          "id": 132577786225,
+          "name": "scientific-ui",
+          "conclusion": null
+        }
+      ]
     }
   },
   "previous_accepted": {
@@ -202,26 +223,6 @@
   },
   "observed_runs": [
     {
-      "id": 43637613567,
-      "path": ".github/workflows/in625-h1d-reentry.yml",
-      "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "status": "in_progress",
-      "conclusion": null,
-      "created_at": "2026-11-14T20:27:47Z",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 132577785735,
-          "name": "h1d",
-          "status": "in_progress",
-          "conclusion": null
-        }
-      ],
-      "logs_reviewed": false,
-      "evidence_executed": false,
-      "acceptance_revision": "2026-10-16-continuity-v1"
-    },
-    {
       "id": 43637613653,
       "path": ".github/workflows/syntax309-scientific-e2e.yml",
       "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
@@ -233,53 +234,12 @@
         {
           "id": 132577786225,
           "name": "scientific-ui",
-          "status": "in_progress",
           "conclusion": null
         }
       ],
       "logs_reviewed": false,
       "evidence_executed": false,
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
-    },
-    {
-      "id": 43637613663,
-      "path": ".github/workflows/in625-cumulative-certification.yml",
-      "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "status": "in_progress",
-      "conclusion": null,
-      "created_at": "2026-11-14T20:27:47Z",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 132577786042,
-          "name": "cumulative",
-          "status": "in_progress",
-          "conclusion": null
-        }
-      ],
-      "logs_reviewed": false,
-      "evidence_executed": false,
-      "acceptance_revision": "2026-10-16-continuity-v1"
-    },
-    {
-      "id": 43637613602,
-      "path": ".github/workflows/ci.yml",
-      "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
-      "status": "in_progress",
-      "conclusion": null,
-      "created_at": "2026-11-14T20:27:47Z",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 132577785949,
-          "name": "frontend",
-          "status": "in_progress",
-          "conclusion": null
-        }
-      ],
-      "logs_reviewed": false,
-      "evidence_executed": false,
-      "acceptance_revision": "2026-10-16-continuity-v1"
     },
     {
       "id": 43637613657,
@@ -293,12 +253,68 @@
         {
           "id": 132577786457,
           "name": "certification-cycle",
-          "status": "completed",
           "conclusion": "success"
         }
       ],
       "logs_reviewed": false,
       "evidence_executed": false,
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    {
+      "id": 43637613567,
+      "path": ".github/workflows/in625-h1d-reentry.yml",
+      "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T20:27:47Z",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 132577785735,
+          "name": "h1d",
+          "conclusion": "success"
+        }
+      ],
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    {
+      "id": 43637613602,
+      "path": ".github/workflows/ci.yml",
+      "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T20:27:47Z",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 132577785949,
+          "name": "frontend",
+          "conclusion": "success"
+        }
+      ],
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    {
+      "id": 43637613663,
+      "path": ".github/workflows/in625-cumulative-certification.yml",
+      "head_sha": "e09f87202495b24c672d848a9434d71534a0c10a",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T20:27:47Z",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 132577786042,
+          "name": "cumulative",
+          "conclusion": "success"
+        }
+      ],
+      "logs_reviewed": true,
+      "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1"
     }
   ]

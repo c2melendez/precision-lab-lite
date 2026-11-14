@@ -1,3 +1,11 @@
+# r521 — Revisión parcial de CI IN-D-05
+
+IN-D-05 sigue **VERIFYING_CI**; certificación global **OPEN**. Revisión de jobs, pasos y logs del SHA técnico: Lite CI 43637613602/job 132577785949 y Cumulative 43637613663/job 132577786042 SUCCESS; ejecutaron 441 suites, 2536 passed, 8 expected fail y 34 TODO, incluidos 6/6 IN-D-05, typecheck y build. H1d Lite 43637613567/job 132577785735 ejecutó 22/22; H1d Plus 43637618190/job 132577801068 ejecutó 38/38. Los guards reales registran skip=false, SHA técnico correcto y evidence_run_id vacío. El SHA aaaa de los logs pertenece a una prueba del guard, no al checkout del producto.
+
+Scientific Lite 43637613653; CI Plus 43637618227, Cumulative Plus 43637618246, Native Plus 43637618217 y seguridad Plus 43637618276 pendientes en el corte observado. No se acreditan resultados anticipados. Evidencia funcional terminada y revisada conservada sin repetir; siguiente acción WAIT sobre las corridas restantes y revisión de cierre bilateral antes de IN-D-06. Seguridad, S25, EV-D-01 y SG28/DIST mantienen su evaluación independiente.
+
+---
+
 # r520 — IN-D-05 corregido y publicado; CI pendiente
 
 Global **OPEN**. IN-D-04 conserva PASS_SCOPED bilateral. IN-D-05 permanece **VERIFYING_CI**, sin cierre ni avance a IN-D-06.
