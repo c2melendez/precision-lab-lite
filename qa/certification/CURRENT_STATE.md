@@ -1,45 +1,24 @@
-# r515 — IN-D-03: evidencia terminada, revisión de cierre pendiente
+# r516 — IN-D-03 PASS_SCOPED bilateral; siguiente IN-D-04
 
-Global **OPEN**. Último cierre bilateral: **TRIG-IN-D-02 PASS_SCOPED**, acreditado por las corridas ejecutadas/revisadas en r513. Este corte inicia IN-D-03 y no lo certifica por pruebas locales ni por Runner SUCCESS.
+Global **OPEN**. Se revisó el contrato, las pruebas, los jobs/pasos/logs y las huellas del HEAD actual. El planificador confirmó CURRENT y REUSE para los gates funcionales. No se despachó ni repitió ninguna corrida.
 
-## Revisión posterior de evidencia IN-D-03 (2026-11-14)
+## Cierre IN-D-03
+Fuente gzip 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb, sección 3.A: tan(x)<1 en (-π/2,π/2) -> (-π/2,π/4). Polo y punto de igualdad excluidos.
+| Motor | SHA de evidencia | Gates ejecutados y revisados |
+|---|---|---|
+| Lite | 435454fdd4f4095aa6acfb05c54660fa001c532b | CI 43559483166; Cumulative 43559483200/job 132339725187: 439 suites, 2524 passed, 8 expected fail, 34 TODO, focal 6/6 |
+| Lite | mismo | H1d 43559483135/job 132339725464: 22/22; Scientific UI 43559483128/job 132339725404: 456/456 |
+| Plus | c0605101d99a1bc4d8203cb544ac0a1c5641238c | CI 43559502111/job backend 132339787358: 3020 passed, 88.04%; Cumulative 43559502095/jobs 132339787080 y 132339787382: backend 3020 passed, 1 skipped, 11 xfailed, 88.04%, focal 6/6; frontend 1055 passed, 28 TODO |
+| Plus | mismo | H1d 43559502126/job 132339786977: 38/38; Native 43559502118/job 132339787175: desktop 26 y tablet/móvil 52 |
 
-Las corridas push inicialmente en curso terminaron. Lite Scientific 43559483128/job 132339725404 ejecutó el paso nativo (guard skip=false): 456 pruebas aprobadas. Plus Cumulative 43559502095/jobs 132339787080 y 132339787382 ejecutó backend y frontend (guard skip=false): backend 3020 passed, 1 skipped, 11 xfailed; las seis pruebas IN-D-03 pasaron. Plus Native 43559502118/job 132339787175 ejecutó desktop 26/26 y tablet/móvil 52/52. Estos resultados no acreditan ingreso literal completo ni E2E dedicado de la fila.
+Todos los gates y jobs funcionales requeridos terminaron SUCCESS, sin pasos de prueba omitidos. Guards skip=false y evidence_run_id vacío: ejecución real de origen. Runner SUCCESS solo produjo resumen y no cuenta como prueba. SKIP/XFAIL/TODO no son PASS. Las revisiones documentales posteriores conservaron las mismas huellas técnicas; no requerían CI nueva.
 
-Plus campaña 43559502112/job 132339909267 finalizó SUCCESS y produjo artifact 14105803916, con código de proceso 0; el informe contiene supervivientes y timeouts. Los tres jobs frontend de auditoría/mutación fueron skipped y no son PASS. S25 permanece BLOCKED hasta evaluar el informe y criterios de aceptación por perfil; SG28 distribuido y EV-D-01 siguen BLOCKED. No se despacharon corridas adicionales.
-
-Siguiente acción única: reconciliar huellas de HEAD y revisar CI/H1d y contrato de cierre bilateral IN-D-03 con observaciones completas; registrar el alcance y, si se cumplen criterios, cerrar PASS_SCOPED e iniciar IN-D-04. No tratar el color verde como certificación global.
-
-## Contrato IN-D-03 y diagnóstico test-first
-Fuente gzip 3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb, sección 3.A: tan(x)<1 con x∈(-π/2,π/2) -> (-π/2,π/4). La asíntota inferior y el punto de igualdad están excluidos.
-- Lite: tres variantes (ASCII, núcleo LaTeX y comparación invertida) fallaron por roots no polinómico. Corrección exacta y acotada en src/engine/inequality.ts: intervalos abiertos de período π con k entero; k=0 representa la fila. Controles negativos conservan el fallback.
-- Plus: servicio y POST /api/v1/inequality devolvían Union(Interval.Ropen(0,pi/4),Interval.open(pi/2,pi)), omitiendo la parte negativa requerida. Se comprobó que pasar domain a solve_univariate_inequality tampoco la recuperaba. Corrección acotada en backend/app/services/phase2_service.py para tan(variable)<1 (también invertida): Interval.open(-pi/2,atan(1)) y advertencia pública explícita de rama principal (-pi/2,pi/2). No se presenta como solución periódica global.
-- Seis tests por motor: fuente completa, canal/servicio/HTTP, signos/monotonicidad, exclusión del polo y raíz, variantes y controles de alcance. Plus cubre cambio de variable, inversión y comparaciones constantes True/False sin romper el fallback.
-- Validación local Lite: 439 suites, 2524 passed, 8 expected fail y 34 TODO (un worker, 136.90s); 95 focales/parser/inecuaciones y build/typecheck PASS. Plus: 29 focales/phase2/SY-Q de regresión PASS, una deprecación Starlette. No se ejecutó toda la suite backend local.
-
-## Publicación y evidencia por esperar
-| Motor | SHA técnico | Workflow | Run |
-|---|---|---|---|
-| Lite | 435454fdd4f4095aa6acfb05c54660fa001c532b | CI | 43559483166 |
-| Lite | mismo | Cumulative | 43559483200 |
-| Lite | mismo | H1d | 43559483135 |
-| Lite | mismo | Scientific UI | 43559483128 |
-| Plus | c0605101d99a1bc4d8203cb544ac0a1c5641238c | CI | 43559502111 |
-| Plus | mismo | Cumulative | 43559502095 |
-| Plus | mismo | H1d | 43559502126 |
-| Plus | mismo | Native Syntax | 43559502118 |
-| Plus | mismo | Dependency/security | 43559502112 |
-
-En el corte r514 se observaron runs push IN_PROGRESS; la revisión r515 anterior recoge sus resultados finales. Runner 43559483172/43559502094 SUCCESS es solo resumen, no pruebas nuevas. La campaña Plus nueva responde a un cambio real de backend; no es un retry manual de la campaña histórica fallida. Revisar jobs, pasos y logs antes de atribuir PASS o score. Las huellas se registran en continuity.json.
-
-
-Actualización revisada del corte: CI, Cumulative y H1d Lite terminaron SUCCESS; Cumulative/job 132339725187 ejecutó 439 suites, 2524 passed y focal IN-D-03 6/6. H1d Lite 22/22; H1d Plus/job 132339786977 38/38. Frontend Cumulative Plus/job 132339787382 1055 passed y 28 TODO. Guards skip=false, sin origen REUSE interno. Backend-security Plus/job 132339875652 SUCCESS (pip-audit sin vulnerabilidades conocidas, Bandit y 24 regresiones); mutmut/job 132339909267 terminó SUCCESS (ver revisión r515) y los jobs frontend omitidos no son PASS. El backend completo Plus y los E2E terminaron; IN-D-03 permanece en REVIEW hasta reconciliar huellas y criterios.
-
-La documentación r513 se publicó bilateralmente antes de este cambio. Plus tuvo errores transitorios de API y una escritura parcial de log: se verificó HEAD/contenido, se reconcilió sobre el HEAD real y se completó en aeb61b90; Lite cierre f434f743. No se sobrescribió trabajo concurrente. Los cambios técnicos se publicaron con expected_sha.
-
-## Alcance y bloqueos
-Solo parser/motor Lite y API normalizada Plus en el dominio contractual; no ingesta literal de todo el sufijo de dominio ni E2E dedicado de fila. Lite conserva la solución periódica; Plus declara el alcance principal en warnings. TODO/XFAIL/SKIP no cuentan como PASS.
-EV-D-01 BLOCKED; S25/S19 requieren su evidencia propia (campaña histórica 43538686314/job 132273991849 falló por shutdown, sin score aceptado); H2/SG28 OPEN; DIST-01..08 BLOCKED. SG28_EVALUATE_ISOLATION sigue off por defecto. Sin producción/releases.
+Alcance certificado: parser/motor Lite con períodos explícitos (k=0 representa la fila), servicio/HTTP normalizado Plus con advertencia de rama principal. No solución periódica global de Plus, ingesta literal del sufijo completo de dominio ni E2E dedicado de fila. Las suites E2E anteriores acreditan regresión general.
 
 ## Siguiente acción única
-Consultar las corridas anteriores y todos sus jobs/pasos/logs. Clasificar y corregir fallos confirmados; cerrar IN-D-03 únicamente cuando sus gates funcionales pertinentes estén acreditados en ambos motores y conservar bloqueos de seguridad por separado conforme al protocolo. No redispatch idéntico, no confundir Runner/REUSE/SKIP con ejecución. Tras cierre bilateral iniciar IN-D-04.
+**TRIG-IN-D-04**: 2*sin(x)^2-sin(x)-1<0 en [0,2π) -> [0,π/2) ∪ (π/2,7π/6) ∪ (11π/6,2π).
+Congelar las tres celdas originales; test-first bilateral sobre parser/solver y servicio/HTTP. Verificar cero incluido, exclusión de π/2,7π/6,11π/6 y 2π en el período contractual, signos en cada componente y canales. Corregir solo brechas demostradas y publicar un cambio técnico consolidado; verificar gates automáticos por SHA. No saltar a IN-D-05.
+
+## Bloqueos separados
+EV-D-01 BLOCKED; H2/SG28 OPEN y DIST-01..08 BLOCKED. SG28_EVALUATE_ISOLATION sigue off por defecto, sin producción/releases.
+S25 sigue BLOCKED por revisión de aceptación por perfil: la campaña 43559502112/job 132339909267 ya terminó SUCCESS pero el informe contiene supervivientes/timeouts; el color verde no cierra S25 y los jobs frontend omitidos no son PASS. El shutdown histórico 43538686314 se conserva como antecedente, no como estado de una corrida aún activa. Revisar el informe existente y sus criterios, sin rerun idéntico.

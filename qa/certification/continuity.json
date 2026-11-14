@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 515,
+  "revision": 516,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
   "baseline_case": "TRIG-IN-D-03",
-  "baseline_status": "VERIFYING_CI",
+  "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
     "cumulative": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-IN-D-03",
-    "previous_id": "TRIG-IN-D-02",
-    "status": "REVIEW",
-    "action": "Reconciliar huellas de HEAD y revisar CI/H1d y criterios de cierre bilateral de IN-D-03 con observaciones completas; conservar bloqueos independientes. Si se cumplen, cerrar PASS_SCOPED e iniciar IN-D-04."
+    "id": "TRIG-IN-D-04",
+    "previous_id": "TRIG-IN-D-03",
+    "status": "RUN",
+    "action": "Test-first bilateral de 2*sin(x)^2-sin(x)-1<0 en [0,2*pi), unión exacta de tres intervalos. Congelar fila y comprobar extremos; corregir solo brechas demostradas, publicar y verificar gates push. No avanzar a IN-D-05."
   },
   "blockers": [
     {
@@ -50,8 +50,10 @@
       "status": "BLOCKED",
       "run_id": 43538686314,
       "job_id": 132273991849,
-      "classification": "INFRASTRUCTURE",
-      "exit_condition": "Diagnóstico y cambio comprobable de precondición antes de retry; evidencia final de mutación/aceptación propia, sin inferir score del progreso parcial."
+      "classification": "ACCEPTANCE_REVIEW",
+      "exit_condition": "Evaluar informe ya producido y criterios de aceptación por perfil; supervivientes/timeouts y jobs omitidos no son PASS. Conservar el shutdown histórico sin relanzar inputs idénticos.",
+      "current_run_id": 43559502112,
+      "current_job_id": 132339909267
     },
     {
       "id": "H2-SG28-DIST-01..08",
@@ -71,12 +73,12 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-14T17:33:04.340Z",
+  "updated_utc": "2026-11-14T17:35:57.558Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
       "input_fingerprint": "ed3a80960426e76a3355c3102f6b905d3cf8bf6345fec95762a0ff0d929c3e59",
-      "head_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
+      "head_sha": "81dbd46e22338139d1a96dfe7c3fdf69e317d44a",
       "decision": "REUSE",
       "reason": "prior reviewed evidence covers identical gate inputs; not a new execution or global certification",
       "run_id": 43559483200,
@@ -95,7 +97,7 @@
     "h1d": {
       "gate": "h1d",
       "input_fingerprint": "fd596c1c9f408d3a29c6cfa4b1c6f579dbf69c4ef37ad6cd491ab74e751bf81a",
-      "head_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
+      "head_sha": "81dbd46e22338139d1a96dfe7c3fdf69e317d44a",
       "decision": "REUSE",
       "reason": "prior reviewed evidence covers identical gate inputs; not a new execution or global certification",
       "run_id": 43559483135,
@@ -114,18 +116,18 @@
     "security": {
       "gate": "security",
       "input_fingerprint": "af11ed12604ce1c1248aa8c63c63cdb21fd907a9ffcbcd43876e3a195f106416",
-      "head_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
+      "head_sha": "81dbd46e22338139d1a96dfe7c3fdf69e317d44a",
       "decision": "REVIEW",
-      "reason": "Revisión dinámica por perfil; ventana reciente incompleta no acredita ausencia de campañas ni autoriza dispatch.",
+      "reason": "Revisión dinámica por perfil y aceptación del informe existente; no relanzar a partir de una ventana reciente incompleta.",
       "logs_reviewed": false,
       "evidence_executed": false
     },
     "scientific": {
       "gate": "scientific",
       "input_fingerprint": "35e0dffffa8f4b18f08d189936ea05df38e0455ef347a2535183afa30bac4d97",
-      "head_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
-      "decision": "REVIEW",
-      "reason": "Ejecución terminada y logs consultados; pendiente reconciliar huella HEAD y aceptación antes de REUSE o cierre.",
+      "head_sha": "81dbd46e22338139d1a96dfe7c3fdf69e317d44a",
+      "decision": "REUSE",
+      "reason": "prior reviewed evidence covers identical gate inputs; not a new execution or global certification",
       "run_id": 43559483128,
       "evidence_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
       "logs_reviewed": true,
@@ -212,32 +214,13 @@
   },
   "observed_runs": [
     {
-      "id": 43559483128,
-      "path": ".github/workflows/syntax309-scientific-e2e.yml",
-      "head_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
-      "created_at": "2026-11-14T05:01:31Z",
-      "run_attempt": 1,
-      "status": "completed",
-      "conclusion": "success",
-      "jobs": [
-        {
-          "id": 132339725404,
-          "name": "scientific-ui",
-          "conclusion": "success"
-        }
-      ],
-      "logs_reviewed": true,
-      "evidence_executed": true,
-      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
-    },
-    {
       "id": 43559483172,
       "path": ".github/workflows/certification-runner.yml",
       "head_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
-      "created_at": "2026-11-14T05:01:31Z",
-      "run_attempt": 1,
       "status": "completed",
       "conclusion": "success",
+      "created_at": "2026-11-14T05:01:31Z",
+      "run_attempt": 1,
       "jobs": [
         {
           "id": 132339725539,
@@ -253,10 +236,10 @@
       "id": 43559483135,
       "path": ".github/workflows/in625-h1d-reentry.yml",
       "head_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
-      "created_at": "2026-11-14T05:01:31Z",
-      "run_attempt": 1,
       "status": "completed",
       "conclusion": "success",
+      "created_at": "2026-11-14T05:01:31Z",
+      "run_attempt": 1,
       "jobs": [
         {
           "id": 132339725464,
@@ -272,10 +255,10 @@
       "id": 43559483166,
       "path": ".github/workflows/ci.yml",
       "head_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
-      "created_at": "2026-11-14T05:01:31Z",
-      "run_attempt": 1,
       "status": "completed",
       "conclusion": "success",
+      "created_at": "2026-11-14T05:01:31Z",
+      "run_attempt": 1,
       "jobs": [
         {
           "id": 132339725343,
@@ -283,18 +266,18 @@
           "conclusion": "success"
         }
       ],
-      "logs_reviewed": false,
-      "evidence_executed": false,
+      "logs_reviewed": true,
+      "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1"
     },
     {
       "id": 43559483200,
       "path": ".github/workflows/in625-cumulative-certification.yml",
       "head_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
-      "created_at": "2026-11-14T05:01:31Z",
-      "run_attempt": 1,
       "status": "completed",
       "conclusion": "success",
+      "created_at": "2026-11-14T05:01:31Z",
+      "run_attempt": 1,
       "jobs": [
         {
           "id": 132339725187,
@@ -305,6 +288,25 @@
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1"
+    },
+    {
+      "id": 43559483128,
+      "path": ".github/workflows/syntax309-scientific-e2e.yml",
+      "head_sha": "435454fdd4f4095aa6acfb05c54660fa001c532b",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T05:01:31Z",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 132339725404,
+          "name": "scientific-ui",
+          "conclusion": "success"
+        }
+      ],
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
     }
   ]
 }
