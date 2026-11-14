@@ -31,6 +31,7 @@ import { hyperbolicSineOneStep } from "./hyperbolicSineOneStep";
 import { hyperbolicSineZeroStep } from "./hyperbolicSineZeroStep";
 import { hyperbolicArsinhOneStep } from "./hyperbolicArsinhOneStep";
 import { hyperbolicArcoshZeroStep } from "./hyperbolicArcoshZeroStep";
+import { hyperbolicArtanhLogTwoStep } from "./hyperbolicArtanhLogTwoStep";
 import {
   principalSquareRootOffset,
   realNumericSign,
@@ -86,6 +87,7 @@ export function solveAlgebra(
     () => hyperbolicSineZeroStep(leftAlgebrite, rightAlgebrite, variable),
     () => hyperbolicArsinhOneStep(leftAlgebrite, rightAlgebrite, variable),
     () => hyperbolicArcoshZeroStep(leftAlgebrite, rightAlgebrite, variable),
+    () => hyperbolicArtanhLogTwoStep(leftAlgebrite, rightAlgebrite, variable),
   ];
 
   for (const match of hyperbolicMatchers) {
@@ -105,6 +107,9 @@ export function solveAlgebra(
     }
     if (step.id === "hyperbolic-arcosh-zero-exact-root") {
       return { steps, solutionsAlgebrite: ["1"] };
+    }
+    if (step.id === "hyperbolic-artanh-log-two-exact-root") {
+      return { steps, solutionsAlgebrite: ["3/5"] };
     }
     if (latex.includes("\\pm")) {
       return { steps, solutionsAlgebrite: ["log(2+sqrt(3))", "-log(2+sqrt(3))"] };
