@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 536,
+  "revision": 537,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "8c2045339735d39eccd710f186fe53b366a99931",
   "baseline_case": "TRIG-IN-D-09",
-  "baseline_status": "WAIT",
+  "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
     "cumulative": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-IN-D-09",
-    "previous_id": "TRIG-IN-D-08",
-    "status": "WAIT",
-    "action": "Revisar corridas push y logs del SHA técnico, clasificar fallos y verificar alcance literal; no duplicar gates en curso."
+    "id": "TRIG-IN-I-01",
+    "previous_id": "TRIG-IN-D-09",
+    "status": "RUN",
+    "action": "Test-first bilateral arcsin(x)>pi/6; solución (1/2,1]. Congelar fuente y validar dominio [-1,1], extremos, reverso, paridad y gates."
   },
   "blockers": [
     {
@@ -79,31 +79,43 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-15T08:42:56.134Z",
+  "updated_utc": "2026-11-15T09:47:47.558Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
       "input_fingerprint": "79daa61ff2e4145c355932ba6cdf7ad4917dd5f23f742cebbcbc35e8caa60eba",
       "head_sha": "8c2045339735d39eccd710f186fe53b366a99931",
       "evidence_sha": "8c2045339735d39eccd710f186fe53b366a99931",
-      "decision": "WAIT",
-      "reason": "Corrida push existente en curso o cola; revisar logs.",
+      "decision": "REUSE",
+      "reason": "Jobs, pasos y logs ejecutados y revisados; cambios posteriores documentales.",
       "run_id": 43695728687,
-      "logs_reviewed": false,
-      "evidence_executed": false,
-      "acceptance_revision": "2026-10-16-continuity-v1"
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "jobs": [
+        {
+          "id": 132755703577,
+          "conclusion": "success"
+        }
+      ]
     },
     "h1d": {
       "gate": "h1d",
       "input_fingerprint": "3168779467ff20017b5bb99ed754c3301ba79aac8b91248872c656ce13eb5fe4",
       "head_sha": "8c2045339735d39eccd710f186fe53b366a99931",
       "evidence_sha": "8c2045339735d39eccd710f186fe53b366a99931",
-      "decision": "WAIT",
-      "reason": "Corrida push existente en curso o cola; revisar logs.",
+      "decision": "REUSE",
+      "reason": "Jobs, pasos y logs ejecutados y revisados; cambios posteriores documentales.",
       "run_id": 43695728658,
-      "logs_reviewed": false,
-      "evidence_executed": false,
-      "acceptance_revision": "2026-10-16-continuity-v1"
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "jobs": [
+        {
+          "id": 132755703664,
+          "conclusion": "success"
+        }
+      ]
     },
     "security": {
       "gate": "security",
@@ -121,77 +133,85 @@
       "input_fingerprint": "29db12db300c569ffc96d6c3ab4ffb99e2f2ab05485de02de3767bbcc14e6d6e",
       "head_sha": "8c2045339735d39eccd710f186fe53b366a99931",
       "evidence_sha": "8c2045339735d39eccd710f186fe53b366a99931",
-      "decision": "WAIT",
-      "reason": "Corrida push existente en curso o cola; revisar logs.",
+      "decision": "REUSE",
+      "reason": "Jobs, pasos y logs ejecutados y revisados; cambios posteriores documentales.",
       "run_id": 43695728670,
-      "logs_reviewed": false,
-      "evidence_executed": false,
-      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
+      "jobs": [
+        {
+          "id": 132755703613,
+          "conclusion": "success"
+        }
+      ]
     }
   },
   "previous_accepted": {
-    "id": "TRIG-IN-D-08",
+    "id": "TRIG-IN-D-09",
     "status": "PASS_SCOPED",
     "evidence": {
       "cumulative": {
         "gate": "cumulative",
-        "input_fingerprint": "67cfe8a2a1d09aee896be48dda44ff4a2492a3a1723a376cdcb21ddddb62ed64",
-        "head_sha": "ff2d2020fe62b908cfa91680c488ef5cf5e4988c",
+        "input_fingerprint": "79daa61ff2e4145c355932ba6cdf7ad4917dd5f23f742cebbcbc35e8caa60eba",
+        "head_sha": "8c2045339735d39eccd710f186fe53b366a99931",
+        "evidence_sha": "8c2045339735d39eccd710f186fe53b366a99931",
         "decision": "REUSE",
-        "reason": "Solo CURRENT_STATE.md cambió respecto al SHA técnico; pruebas y logs revisados.",
-        "run_id": 43681790954,
-        "evidence_sha": "75558880204e15cfd23a1a1dacdcefe5e558de4f",
+        "reason": "Jobs, pasos y logs ejecutados y revisados; cambios posteriores documentales.",
+        "run_id": 43695728687,
         "logs_reviewed": true,
         "evidence_executed": true,
         "acceptance_revision": "2026-10-16-continuity-v1",
         "jobs": [
           {
-            "id": 132713777141,
+            "id": 132755703577,
             "conclusion": "success"
           }
         ]
       },
       "h1d": {
         "gate": "h1d",
-        "input_fingerprint": "f4280d88abd57f9190646cd012935ae94c9c8934b4d3c65476d52e5c995d0f37",
-        "head_sha": "ff2d2020fe62b908cfa91680c488ef5cf5e4988c",
+        "input_fingerprint": "3168779467ff20017b5bb99ed754c3301ba79aac8b91248872c656ce13eb5fe4",
+        "head_sha": "8c2045339735d39eccd710f186fe53b366a99931",
+        "evidence_sha": "8c2045339735d39eccd710f186fe53b366a99931",
         "decision": "REUSE",
-        "reason": "Solo CURRENT_STATE.md cambió respecto al SHA técnico; pruebas y logs revisados.",
-        "run_id": 43681790797,
-        "evidence_sha": "75558880204e15cfd23a1a1dacdcefe5e558de4f",
+        "reason": "Jobs, pasos y logs ejecutados y revisados; cambios posteriores documentales.",
+        "run_id": 43695728658,
         "logs_reviewed": true,
         "evidence_executed": true,
         "acceptance_revision": "2026-10-16-continuity-v1",
         "jobs": [
           {
-            "id": 132713776550,
+            "id": 132755703664,
             "conclusion": "success"
           }
         ]
       },
       "security": {
         "gate": "security",
-        "input_fingerprint": "3700d0b6323996acca44e43a29cc2b78c215ebf55b5915d32b96c865a5c02c96",
-        "head_sha": "75558880204e15cfd23a1a1dacdcefe5e558de4f",
+        "input_fingerprint": "792e551cde92bddfc1e9bde58e085ef366fea0a151100925330bf39d1c5603f3",
+        "head_sha": "8c2045339735d39eccd710f186fe53b366a99931",
+        "evidence_sha": "8c2045339735d39eccd710f186fe53b366a99931",
         "decision": "REVIEW",
-        "reason": "Seguridad dinámica; revisión por perfil pendiente.",
+        "reason": "Seguridad dinámica requiere revisión.",
         "logs_reviewed": false,
-        "evidence_executed": false
+        "evidence_executed": false,
+        "acceptance_revision": "2026-10-16-continuity-v1"
       },
       "scientific": {
         "gate": "scientific",
-        "input_fingerprint": "821db497a0baaa07a523649a799e352958d4d574f53b05076438079f99cf51ad",
-        "head_sha": "ff2d2020fe62b908cfa91680c488ef5cf5e4988c",
+        "input_fingerprint": "29db12db300c569ffc96d6c3ab4ffb99e2f2ab05485de02de3767bbcc14e6d6e",
+        "head_sha": "8c2045339735d39eccd710f186fe53b366a99931",
+        "evidence_sha": "8c2045339735d39eccd710f186fe53b366a99931",
         "decision": "REUSE",
-        "reason": "Solo CURRENT_STATE.md cambió respecto al SHA técnico; pruebas y logs revisados.",
-        "run_id": 43681790844,
-        "evidence_sha": "75558880204e15cfd23a1a1dacdcefe5e558de4f",
+        "reason": "Jobs, pasos y logs ejecutados y revisados; cambios posteriores documentales.",
+        "run_id": 43695728670,
         "logs_reviewed": true,
         "evidence_executed": true,
         "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
         "jobs": [
           {
-            "id": 132713776602,
+            "id": 132755703613,
             "conclusion": "success"
           }
         ]

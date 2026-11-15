@@ -1,3 +1,11 @@
+# r537 — IN-D-09 PASS_SCOPED; iniciar IN-I-01
+
+IN-D-09 aprobado en alcance parser/motor periódico Lite y servicio/HTTP Plus con advertencia de período; no acredita entrada literal del dominio ni E2E dedicado de la fila. Lite SHA 8c2045339735d39eccd710f186fe53b366a99931: acumulativo 43695728687/job 132755703577 (2564 passed, 8 expected fail, 34 TODO; focal 6), H1d 43695728658 (22), Scientific 43695728670 (456). Plus SHA 831197d61a845fd737022b1037e7bbf5acd2cc12: acumulativo 43695734403/backend 132755721185 (3054 passed, 1 skipped, 11 xfailed), frontend 132755720847 (1055 passed, 28 TODO); H1d 43695734378 (38), Native 43695734357 (26 desktop, 52 tablet/móvil). Pasos y logs revisados; omisiones no son PASS. Seguridad Plus 43695734343/backend mutmut 132755851381 en curso; frontend omitido. S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción única: IN-I-01 arcsin(x)>π/6, solución (1/2,1]; test-first bilateral, dominio y extremos, reverso y regresiones.
+
+---
+
 # r536 — IN-D-09 publicado; verificación CI pendiente
 
 Lite SHA 8c2045339735d39eccd710f186fe53b366a99931; Plus SHA 831197d61a845fd737022b1037e7bbf5acd2cc12. Test-first: Lite no resolvía csc(x)<-2 y Plus no advertía su período. Se implementó la solución (π,7π/6) ∪ (11π/6,2π), extremos abiertos, con periodicidad explícita y regresiones de fallback. Local: Lite 61 pruebas trigonométricas y build aprobados; Plus 46 pruebas aprobadas. Push Lite acumulativo 43695728687, H1d 43695728658, Scientific 43695728670, CI 43695728663; Plus acumulativo 43695734403, H1d 43695734378, Native 43695734357, CI 43695734385, seguridad 43695734343: pendientes de revisar. No duplicar. Global OPEN; S25, SG28/DIST y EV-D-01 BLOCKED.
