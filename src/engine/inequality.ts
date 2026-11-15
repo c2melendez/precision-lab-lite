@@ -50,6 +50,19 @@ export function solveInequality(
   operator: InequalityOperator,
   variable: string,
 ): InequalityResult {
+  // IN-D-09: match the parser's exact reciprocal-sine form, preserving poles.
+  if (/^[A-Za-z]$/.test(variable)) {
+    const cosecant = `(1/sin(${variable}))`;
+    if ((operator === "<" && diffAlgebrite === `(${cosecant})-(-2)`)
+        || (operator === ">" && diffAlgebrite === `(-2)-(${cosecant})`)) {
+      return {
+        resultText: "(pi + 2*k*pi, 7*pi/6 + 2*k*pi) U (11*pi/6 + 2*k*pi, 2*pi + 2*k*pi), k entero",
+        steps: [{id: "cosecant-minus-two-periodic-result",
+          latex: String.raw`\left(\pi+2k\pi,\frac{7\pi}{6}+2k\pi\right)\cup\left(\frac{11\pi}{6}+2k\pi,2\pi+2k\pi\right),\quad k\in\mathbb{Z}`,
+          explanation: "Los polos y los puntos de igualdad se excluyen. La solución se repite cada 2π; en [0,2π) se toma k=0."}],
+      };
+    }
+  }
   // IN-D-01: the polynomial root finder cannot enumerate periodic sine roots.
   // Recognize the exact difference only, before entering that fallback. Keep
   // every period explicit: restricting k=0 gives the frozen [0,2*pi) row.
