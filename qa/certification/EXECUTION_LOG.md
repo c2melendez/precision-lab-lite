@@ -1,3 +1,7 @@
+## r536 — IN-D-09: publicación bilateral y gates pendientes
+
+Lite 8c2045339735d39eccd710f186fe53b366a99931; Plus 831197d61a845fd737022b1037e7bbf5acd2cc12. Test-first y pruebas locales aprobadas; corridas automáticas registradas en CURRENT_STATE. WAIT hasta revisar logs; bloqueos preservados.
+
 ## r535 — IN-D-08 PASS_SCOPED bilateral
 
 Gates funcionales ejecutados y logs revisados según CURRENT_STATE r535. Plus seguridad 43691200778 aún en curso; perfiles omitidos no son PASS. Alcance literal completo y E2E dedicado no acreditados. Siguiente acción IN-D-09; global OPEN y bloqueos conservados.

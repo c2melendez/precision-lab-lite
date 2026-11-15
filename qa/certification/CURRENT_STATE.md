@@ -1,3 +1,11 @@
+# r536 — IN-D-09 publicado; verificación CI pendiente
+
+Lite SHA 8c2045339735d39eccd710f186fe53b366a99931; Plus SHA 831197d61a845fd737022b1037e7bbf5acd2cc12. Test-first: Lite no resolvía csc(x)<-2 y Plus no advertía su período. Se implementó la solución (π,7π/6) ∪ (11π/6,2π), extremos abiertos, con periodicidad explícita y regresiones de fallback. Local: Lite 61 pruebas trigonométricas y build aprobados; Plus 46 pruebas aprobadas. Push Lite acumulativo 43695728687, H1d 43695728658, Scientific 43695728670, CI 43695728663; Plus acumulativo 43695734403, H1d 43695734378, Native 43695734357, CI 43695734385, seguridad 43695734343: pendientes de revisar. No duplicar. Global OPEN; S25, SG28/DIST y EV-D-01 BLOCKED.
+
+Siguiente acción: revisar jobs y logs de los SHA técnicos y diagnosticar fallos; validar alcance literal y paridad antes de cerrar IN-D-09.
+
+---
+
 # r535 — IN-D-08 PASS_SCOPED; iniciar IN-D-09
 
 IN-D-08 aprobado en alcance: parser/motor periódico Lite y servicio/HTTP Plus con advertencia de rama principal; la ingesta literal completa del dominio y un E2E dedicado de la fila no están acreditados. Lite SHA 75558880204e15cfd23a1a1dacdcefe5e558de4f: acumulativo 43681790954 (2558 passed, 8 expected fail, 34 TODO), H1d 43681790797 (22), Scientific 43681790844 (456). Plus SHA 5f10389c4ec0217d1007aa22b5219c34ba91f0b9: acumulativo 43691200764/backend 132742038460 (3049 passed, 1 skipped, 11 xfailed) y frontend 132742038378 (1055 passed, 28 TODO); H1d 43691200749 (38), Native 43691200755 (26 desktop, 52 tablet/móvil). Jobs, pasos y logs revisados; omisiones no son PASS. Seguridad 43691200778/backend mutmut 132742142853 en curso; perfiles frontend omitidos. Global OPEN; S25, SG28/DIST y EV-D-01 BLOCKED.
