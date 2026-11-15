@@ -1,3 +1,15 @@
+# r555 — IN-I-05 funcional verificado; IN-I-06 publicado
+
+IN-I-05 PASS_SCOPED funcional: Lite 8e2ae1dc, acumulativo 43742889797 (2594 passed, 8 expected fail, 34 TODO), H1d 43742889793 (22), Scientific 43742889802 (456); Plus dcd749bb, acumulativo 43748732737/backend job 132917717850 (3129 passed, 1 skipped, 11 xfailed; literal y controles ejecutados), frontend job 132917717731 (1055 passed, 28 TODO), H1d 43748732670 (38), Native 43748732677 (26 desktop, 52 tablet/móvil). Jobs y logs revisados. No acredita E2E visual específico. Omisiones no son PASS.
+
+IN-I-06: test-first expuso que Lite no resolvía arccot(x)<pi/4 y Plus incluía negativos por la rama SymPy. Matriz y contrato EC-I-06 exigen rama principal (0,pi); ambos corrigen la comparación y el literal fuente, solución (1,∞), sin generalizar otros casos. Lite b809088d1dbbc3cb939910e2dfba02b2b27991e4: 34 pruebas locales IN-I-01..06 y build aprobados; push acumulativo 43754112597, H1d 43754112551, Scientific 43754112552, CI 43754112554 en curso. Plus ee98260b1a492b7c2490b39e74c016889d003358: 302 pruebas locales parser/seguridad/IN-I-01..06 y seis focalizadas finales aprobadas; push acumulativo 43754118546, H1d 43754118547, Native 43754118601, CI 43754118551 en curso, seguridad 43754118559 en cola. Revisar jobs/logs antes de aceptar IN-I-06.
+
+Seguridad: job backend 132917804184 de 43748732694 pasó pip-audit, Bandit y regresiones de seguridad; auditoría frontend omitida, mutación job 132917841644 en curso. Jobs de mutación 132899853255, 132883173911, 132880470180 sobre SHA anteriores siguen en curso. S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; certificación global OPEN. No despachar ni cancelar corridas equivalentes.
+
+Siguiente acción: revisar jobs y logs de IN-I-06 y resultados de mutación pendientes; verificar literal, controles y alcance antes de PASS_SCOPED, luego continuar siguiente fila viable.
+
+---
+
 # r554 — Canal HTTP literal IN-I-05 Plus en verificación
 
 Plus SHA técnico dcd749bb05793d2fbecef8562ade7fb04739b630 normaliza únicamente la forma fuente `\\arcsin x<\\arccos x` con la misma variable y conserva validaciones. Test-first: HTTP literal producía PARSE_ERROR; 290 pruebas locales de parser, seguridad y filas IN-I-03/04/05 aprobaron tras corregirlo. No acredita E2E visual. Push Plus acumulativo 43748732737, H1d 43748732670, Native 43748732677, CI 43748732641, seguridad 43748732694 en curso o cola. Lite SHA 8e2ae1dc24a7a0e1587373b575af4356e18adf25: acumulativo 43742889797 (2594 passed, 8 expected fail, 34 TODO), H1d 43742889793 (22), Scientific 43742889802 (456), revisados. Plus SHA anterior c092d7a5824545422de4052cd6cc3aa7d76a38f8: acumulativo 43742896982/backend 3125 passed, 1 skipped, 11 xfailed; frontend 1055 passed, 28 TODO; H1d 38, Native 26/52. Mutación previa 43742897037/job 132899853255 y otras sobre SHA distintos seguían en curso. S19 REVIEW, S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
