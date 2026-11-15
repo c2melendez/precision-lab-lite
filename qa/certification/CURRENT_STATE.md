@@ -1,3 +1,13 @@
+# r556 — IN-I-06 PASS_SCOPED funcional; iniciar IN-I-07
+
+IN-I-06 PASS_SCOPED funcional: Lite b809088d1dbbc3cb939910e2dfba02b2b27991e4, acumulativo 43754112597/job 132934332960 (2598 passed, 8 expected fail, 34 TODO), H1d 43754112551 SUCCESS, Scientific 43754112552 SUCCESS. Plus ee98260b1a492b7c2490b39e74c016889d003358, acumulativo 43754118546/backend job 132934352040 (3135 passed, 1 skipped, 11 xfailed; tests IN-I-06 source_row, service_principal_branch, source_literal_http, independent_principal_branch_oracle, neighboring_comparisons_keep_fallback, literal_rejects_unsafe_suffix PASSED), frontend job 132934351826 SUCCESS, H1d 43754118547 SUCCESS, Native 43754118601 SUCCESS. Jobs y logs revisados. No acredita E2E visual específico. Omisiones no son PASS.
+
+Seguridad Plus 43754118559: backend-security SUCCESS (pip-audit, Bandit, security regressions), frontend-audit skipped, mutation plus-backend-mutmut in_progress (job 132934501699). S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; certificación global OPEN. No despachar ni cancelar corridas equivalentes.
+
+Siguiente acción única: identificar y comenzar TRIG-IN-I-07 (siguiente fila de desigualdades inversas en la matriz); test-first bilateral, dominio, frontera estricta y canal literal donde aplique, sin duplicar gates de seguridad en curso.
+
+---
+
 # r555 — IN-I-05 funcional verificado; IN-I-06 publicado
 
 IN-I-05 PASS_SCOPED funcional: Lite 8e2ae1dc, acumulativo 43742889797 (2594 passed, 8 expected fail, 34 TODO), H1d 43742889793 (22), Scientific 43742889802 (456); Plus dcd749bb, acumulativo 43748732737/backend job 132917717850 (3129 passed, 1 skipped, 11 xfailed; literal y controles ejecutados), frontend job 132917717731 (1055 passed, 28 TODO), H1d 43748732670 (38), Native 43748732677 (26 desktop, 52 tablet/móvil). Jobs y logs revisados. No acredita E2E visual específico. Omisiones no son PASS.
@@ -166,18 +176,4 @@ El índice registra el SHA técnico 75558880204e15cfd23a1a1dacdcefe5e558de4f y h
 
 HEAD técnico Lite 75558880204e15cfd23a1a1dacdcefe5e558de4f; Plus a2bb123f2babfc8c4e8df725f3b00806af606061. IN-D-08: cot(x)>=1, x∈(0,π), resultado (0,π/4]. Lite acumulativo 43681790954/job 132713777141: 2558 passed, 8 expected fail, 34 TODO; focal 10. H1d 43681790797: 22 passed; científico 43681790844: 456 passed. Plus acumulativo 43681802532/backend 132713812218: 3049 passed, 1 skipped, 11 xfailed; frontend 132713812291: 1055 passed, 28 TODO. H1d 43681802533: 38 passed. Pasos y logs revisados; omisiones no son PASS. Global OPEN; S25, SG28/DIST y EV-D-01 permanecen BLOCKED.
 
-Siguiente acción: reconciliar continuity.json y verificar todos los gates y el alcance literal de IN-D-08 antes de declarar cierre; no repetir corridas equivalentes. El índice r531 aún no refleja los SHA técnicos.
-
----
-
-# r531 — IN-D-07 PASS_SCOPED bilateral; siguiente IN-D-08
-
-Global OPEN. IN-D-07: sec(x)>2 en (-π/2,π/2), solución (-π/2,-π/3) ∪ (π/3,π/2). Alcance: parser/motor Lite periódico y servicio/HTTP Plus normalizado con aviso de rama principal; no ingesta literal completa del dominio ni E2E dedicado de la fila.
-
-Evidencia ejecutada: Lite SHA d043c6b792490a504dd097496aa4c10eccda25ec; CI 43664661117, Cumulative 43664661133/job 132661261373 (2548 passed, 8 expected fail, 34 TODO; focal 6/6), H1d 43664661082/job 132661261195 (22/22), Scientific 43664661126/job 132661261425 (456/456). Plus SHA 308a40821b500478a317f2e2aa1c234d8fae402e; CI 43664684498 (3043 passed, 1 skipped, 11 xfailed), Cumulative 43664684548/backend 132661336785 (3043 passed, 1 skipped, 11 xfailed; focal 6/6) y frontend 132661337055 (1055 passed, 28 TODO), H1d 43664684521/job 132661336789 (38/38), Native 43664684545/job 132661336931 (26 desktop y 52 tablet/móvil). Guards consultados skip=false y SHA técnico; TODO/SKIP/XFAIL no son PASS.
-
-Comparación Git de cada HEAD con su SHA técnico: solo CURRENT_STATE.md, EXECUTION_LOG.md y continuity.json cambiaron, exclusiones exactas de huella; se reutiliza evidencia ejecutada sin nueva corrida. Seguridad Plus 43664684565/job 132661426597 está en curso; perfiles frontend omitidos no son PASS. S25, SG28/DIST y EV-D-01 permanecen BLOCKED.
-
-## Siguiente acción única
-IN-D-08: `cot x≥1`, x∈(0,π), solución (0,π/4]. Congelar las tres celdas originales; test-first bilateral en parser/motor y servicio/HTTP; probar polo excluido 0, igualdad incluida π/4, extremo de dominio π excluido, signos y controles. Corregir solo brechas demostradas; publicar con expected_sha y verificar gates push. No avanzar a IN-D-09.
-
+Siguiente acción: reconciliar continuity.json y verificar todos los gates y el alcance literal de IN-D-08 antes de declarar cierre; no repetir corridas
