@@ -1,3 +1,11 @@
+# r538 — IN-I-01 publicado; verificación CI pendiente
+
+Lite SHA f5c56e21abcd71e2d893aa87e06d8975d4bb3a6f; Plus SHA dca31e3d87e26c8505d5a7ca639a6c1072ad4ba3. Test-first: Lite no resolvía arcsin(x)>π/6; se implementó (1/2,1] respetando dominio real y fallback. Plus ya resolvía el caso y recibió tests de fuente, servicio y HTTP. Local: Lite 67 pruebas y build aprobados; Plus 50 pruebas aprobadas. Push Lite acumulativo 43701096046, H1d 43701096051, Scientific 43701096048, CI 43701096049; Plus acumulativo 43701103600, H1d 43701103574, CI 43701103568: en curso al registrar. Seguridad dinámica pendiente de revisión; no duplicar gates. Global OPEN; S25, SG28/DIST y EV-D-01 BLOCKED.
+
+Siguiente acción: revisar jobs/logs y alcance literal del SHA técnico antes de cerrar IN-I-01.
+
+---
+
 # r537 — IN-D-09 PASS_SCOPED; iniciar IN-I-01
 
 IN-D-09 aprobado en alcance parser/motor periódico Lite y servicio/HTTP Plus con advertencia de período; no acredita entrada literal del dominio ni E2E dedicado de la fila. Lite SHA 8c2045339735d39eccd710f186fe53b366a99931: acumulativo 43695728687/job 132755703577 (2564 passed, 8 expected fail, 34 TODO; focal 6), H1d 43695728658 (22), Scientific 43695728670 (456). Plus SHA 831197d61a845fd737022b1037e7bbf5acd2cc12: acumulativo 43695734403/backend 132755721185 (3054 passed, 1 skipped, 11 xfailed), frontend 132755720847 (1055 passed, 28 TODO); H1d 43695734378 (38), Native 43695734357 (26 desktop, 52 tablet/móvil). Pasos y logs revisados; omisiones no son PASS. Seguridad Plus 43695734343/backend mutmut 132755851381 en curso; frontend omitido. S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.

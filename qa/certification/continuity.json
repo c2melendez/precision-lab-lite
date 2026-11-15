@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 537,
+  "revision": 538,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "8c2045339735d39eccd710f186fe53b366a99931",
-  "baseline_case": "TRIG-IN-D-09",
-  "baseline_status": "PASS_SCOPED",
+  "technical_baseline_sha": "f5c56e21abcd71e2d893aa87e06d8975d4bb3a6f",
+  "baseline_case": "TRIG-IN-I-01",
+  "baseline_status": "WAIT",
   "global_certification": "OPEN",
   "gates": {
     "cumulative": {
@@ -41,8 +41,8 @@
   "next_action": {
     "id": "TRIG-IN-I-01",
     "previous_id": "TRIG-IN-D-09",
-    "status": "RUN",
-    "action": "Test-first bilateral arcsin(x)>pi/6; solución (1/2,1]. Congelar fuente y validar dominio [-1,1], extremos, reverso, paridad y gates."
+    "status": "WAIT",
+    "action": "Revisar gates push y logs del SHA técnico; confirmar paridad y alcance literal de IN-I-01 sin duplicar corridas."
   },
   "blockers": [
     {
@@ -79,49 +79,37 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-15T09:47:47.558Z",
+  "updated_utc": "2026-11-15T09:50:30.335Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
-      "input_fingerprint": "79daa61ff2e4145c355932ba6cdf7ad4917dd5f23f742cebbcbc35e8caa60eba",
-      "head_sha": "8c2045339735d39eccd710f186fe53b366a99931",
-      "evidence_sha": "8c2045339735d39eccd710f186fe53b366a99931",
-      "decision": "REUSE",
-      "reason": "Jobs, pasos y logs ejecutados y revisados; cambios posteriores documentales.",
-      "run_id": 43695728687,
-      "logs_reviewed": true,
-      "evidence_executed": true,
-      "acceptance_revision": "2026-10-16-continuity-v1",
-      "jobs": [
-        {
-          "id": 132755703577,
-          "conclusion": "success"
-        }
-      ]
+      "input_fingerprint": "5a6187f0204a2f872410a0a80b45571092e0682b2b770ac3e38efd96e1d5e686",
+      "head_sha": "f5c56e21abcd71e2d893aa87e06d8975d4bb3a6f",
+      "evidence_sha": "f5c56e21abcd71e2d893aa87e06d8975d4bb3a6f",
+      "decision": "WAIT",
+      "reason": "Corrida push existente en curso; revisar logs.",
+      "run_id": 43701096046,
+      "logs_reviewed": false,
+      "evidence_executed": false,
+      "acceptance_revision": "2026-10-16-continuity-v1"
     },
     "h1d": {
       "gate": "h1d",
-      "input_fingerprint": "3168779467ff20017b5bb99ed754c3301ba79aac8b91248872c656ce13eb5fe4",
-      "head_sha": "8c2045339735d39eccd710f186fe53b366a99931",
-      "evidence_sha": "8c2045339735d39eccd710f186fe53b366a99931",
-      "decision": "REUSE",
-      "reason": "Jobs, pasos y logs ejecutados y revisados; cambios posteriores documentales.",
-      "run_id": 43695728658,
-      "logs_reviewed": true,
-      "evidence_executed": true,
-      "acceptance_revision": "2026-10-16-continuity-v1",
-      "jobs": [
-        {
-          "id": 132755703664,
-          "conclusion": "success"
-        }
-      ]
+      "input_fingerprint": "cb401c6535393e9f19fd2c6fa29b0dcccbe9906d4483cc47fda7a4212edb1d52",
+      "head_sha": "f5c56e21abcd71e2d893aa87e06d8975d4bb3a6f",
+      "evidence_sha": "f5c56e21abcd71e2d893aa87e06d8975d4bb3a6f",
+      "decision": "WAIT",
+      "reason": "Corrida push existente en curso; revisar logs.",
+      "run_id": 43701096051,
+      "logs_reviewed": false,
+      "evidence_executed": false,
+      "acceptance_revision": "2026-10-16-continuity-v1"
     },
     "security": {
       "gate": "security",
-      "input_fingerprint": "792e551cde92bddfc1e9bde58e085ef366fea0a151100925330bf39d1c5603f3",
-      "head_sha": "8c2045339735d39eccd710f186fe53b366a99931",
-      "evidence_sha": "8c2045339735d39eccd710f186fe53b366a99931",
+      "input_fingerprint": "05a2ecc7a7bc9875f2c8d8ee7b9adc128d01fa5af27fc56bb18169543f465626",
+      "head_sha": "f5c56e21abcd71e2d893aa87e06d8975d4bb3a6f",
+      "evidence_sha": "f5c56e21abcd71e2d893aa87e06d8975d4bb3a6f",
       "decision": "REVIEW",
       "reason": "Seguridad dinámica requiere revisión.",
       "logs_reviewed": false,
@@ -130,21 +118,15 @@
     },
     "scientific": {
       "gate": "scientific",
-      "input_fingerprint": "29db12db300c569ffc96d6c3ab4ffb99e2f2ab05485de02de3767bbcc14e6d6e",
-      "head_sha": "8c2045339735d39eccd710f186fe53b366a99931",
-      "evidence_sha": "8c2045339735d39eccd710f186fe53b366a99931",
-      "decision": "REUSE",
-      "reason": "Jobs, pasos y logs ejecutados y revisados; cambios posteriores documentales.",
-      "run_id": 43695728670,
-      "logs_reviewed": true,
-      "evidence_executed": true,
-      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
-      "jobs": [
-        {
-          "id": 132755703613,
-          "conclusion": "success"
-        }
-      ]
+      "input_fingerprint": "c93ff8c1215d471dbb285820b98ce61523a06dd6336a382d7f6aa1a25709bb13",
+      "head_sha": "f5c56e21abcd71e2d893aa87e06d8975d4bb3a6f",
+      "evidence_sha": "f5c56e21abcd71e2d893aa87e06d8975d4bb3a6f",
+      "decision": "WAIT",
+      "reason": "Corrida push existente en curso; revisar logs.",
+      "run_id": 43701096048,
+      "logs_reviewed": false,
+      "evidence_executed": false,
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
     }
   },
   "previous_accepted": {

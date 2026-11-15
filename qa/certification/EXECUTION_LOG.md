@@ -1,3 +1,7 @@
+## r538 — IN-I-01: publicación bilateral y gates pendientes
+
+Lite f5c56e21abcd71e2d893aa87e06d8975d4bb3a6f; Plus dca31e3d87e26c8505d5a7ca639a6c1072ad4ba3. Test-first y pruebas locales aprobadas; corridas automáticas registradas en CURRENT_STATE. WAIT hasta revisar logs; bloqueos preservados.
+
 ## r537 — IN-D-09 PASS_SCOPED bilateral
 
 Evidencia funcional ejecutada y revisada según CURRENT_STATE r537; seguridad Plus 43695734343 continúa en curso. Iniciar IN-I-01; global OPEN y bloqueos preservados.
