@@ -1,3 +1,7 @@
+## r552 — IN-I-04 PASS_SCOPED funcional
+
+Gates funcionales ejecutados y logs revisados según CURRENT_STATE r552; S19 permanece REVIEW con dos corridas en curso. Iniciar IN-I-05 sin declarar E2E dedicado ni cierre global.
+
 ## r551 — IN-I-04 literal Plus en verificación
 
 Plus 259bc52312a2ea6516d23c13af9773ac21b62353, 281 pruebas locales aprobadas; gates push pendientes. Lite gates funcionales revisados según CURRENT_STATE. S19 REVIEW; global OPEN.
