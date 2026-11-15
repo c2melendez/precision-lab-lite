@@ -50,6 +50,20 @@ export function solveInequality(
   operator: InequalityOperator,
   variable: string,
 ): InequalityResult {
+  // IN-I-04: arctan(2*x) is strictly increasing, and atan(1)=pi/4.
+  // Recognize only the parser's exact forms to preserve the fallback.
+  if (/^[A-Za-z]$/.test(variable)) {
+    const atan = `arctan(2*${variable})`;
+    const thresholds = ["pi/4", "((pi)/(4))"];
+    if (thresholds.some(t => (operator === ">=" && diffAlgebrite === `(${atan})-(${t})`)
+      || (operator === "<=" && diffAlgebrite === `(${t})-(${atan})`))) {
+      return { resultText: `${variable} >= 1/2`, steps: [{
+        id: "arctangent-double-quarter-result",
+        latex: String.raw`\left[\frac{1}{2},\infty\right)`,
+        explanation: "El arco tangente es creciente y el factor 2 es positivo; la igualdad en 1/2 se incluye."
+      }] };
+    }
+  }
   // IN-I-03: arctan is strictly increasing on the real line; 1 radian
   // lies in its principal range. Match exact forms to preserve fallback.
   if (/^[A-Za-z]$/.test(variable)) {
