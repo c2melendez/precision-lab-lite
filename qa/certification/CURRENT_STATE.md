@@ -1,11 +1,10 @@
-# r529 — IN-D-06 PASS_SCOPED bilateral; siguiente IN-D-07
+# r530 — IN-D-07 implementado; verificación CI en curso
 
-Global OPEN. IN-D-06: `sin x cos x>0`, x∈[0,2π), solución (0,π/2) ∪ (π,3π/2). Alcance: parser/motor Lite periódico y servicio/HTTP Plus normalizado con aviso del período; no ingesta literal del sufijo ni E2E dedicado a la fila.
+Global OPEN; IN-D-06 PASS_SCOPED. Fuente `sec x>2`, x∈(-π/2,π/2): (-π/2,-π/3) ∪ (π/3,π/2), polos y extremos abiertos. Test-first: Lite tres variantes fallaron por solver de raíces no polinómicas; Plus servicio y HTTP devolvieron un representante de período distinto al solicitado. Se corrigió reconocimiento exacto en `src/engine/inequality.ts` (periodicidad 2π explícita) y `backend/app/services/phase2_service.py` (rama principal indicada en advertencia). Controles negativos mantienen fallback; no se acredita capacidad de otros casos.
 
-Evidencia ejecutada: Lite SHA 922d9264d2fa2b5fbde492d1d5eaaef4a3e304be: CI 43659654685, Cumulative 43659654692/job 132645881822 (2542 passed, 8 expected fail, 34 TODO; focal 6/6), H1d 43659654684/job 132645881909 (22/22), Scientific 43659654642/job 132645881701 (456/456). Plus SHA 8df73ce327b4effe0b325410f0d23c58e57bc146: CI 43659684444 (3037 passed, 1 skipped, 11 xfailed), Cumulative 43659684445/backend 132645981323 (3037 passed, 1 skipped, 11 xfailed; focal 6/6) y frontend 132645981142 (1055 passed, 28 TODO), H1d 43659684432/job 132645981205 (38/38), Native 43659684476/job 132645981245 (26 desktop, 52 tablet/móvil). Guards verificados skip=false y checkout SHA técnico; SKIP/XFAIL/TODO no son PASS.
+Regresiones: Lite `tests/trigonometryInD07.audit.test.ts` 6 casos; Plus `backend/tests/test_trigonometry_in_d07.py` 6 casos: fuente, signos, igualdad/polos, variantes, HTTP y controles. Validación local Lite serial: 443 suites, 2548 passed, 8 expected fail, 34 TODO; build/typecheck PASS. Plus 30 focales IN-D/phase2 PASS con una advertencia deprecación Starlette; suite completa solo por CI. TODO/SKIP/XFAIL no son PASS.
 
-Comparación Git HEAD frente a SHA técnico: solo CURRENT_STATE.md, EXECUTION_LOG.md y continuity.json modificados, excluidos de huellas; se reutiliza evidencia ejecutada sin nueva corrida. Seguridad Plus 43659684440/job 132646086855 sigue en curso; jobs frontend omitidos no son PASS. S25, SG28/DIST y EV-D-01 continúan BLOCKED.
+SHA técnico Lite d043c6b792490a504dd097496aa4c10eccda25ec: CI 43664661117, Cumulative 43664661133, H1d 43664661082, Scientific 43664661126. SHA Plus 308a40821b500478a317f2e2aa1c234d8fae402e: CI 43664684498, Cumulative 43664684548, H1d 43664684521, Native 43664684545, seguridad 43664684565. Activación push confirmada; no hubo dispatch. Revisar jobs/pasos/logs antes de atribuir PASS; Runner es resumen. Huellas calculadas con continuity.py para SHA técnicos exactos.
 
-## Siguiente acción única
-IN-D-07: `sec x>2`, x∈(-π/2,π/2), solución (-π/2,-π/3) ∪ (π/3,π/2). Congelar las tres celdas, test-first bilateral de parser/motor y servicio/HTTP, signos, polos y extremos abiertos; corregir brechas demostradas y verificar gates push. No avanzar a IN-D-08.
+Siguiente acción única: revisar corridas existentes y logs, corregir fallos confirmados y cerrar IN-D-07 solo con evidencia funcional bilateral; luego IN-D-08. Seguridad por perfil independiente; S25, SG28/DIST y EV-D-01 siguen BLOCKED.
 
