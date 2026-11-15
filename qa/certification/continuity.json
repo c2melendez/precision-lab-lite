@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 530,
+  "revision": 531,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "d043c6b792490a504dd097496aa4c10eccda25ec",
   "baseline_case": "TRIG-IN-D-07",
-  "baseline_status": "VERIFYING_CI",
+  "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
     "cumulative": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-IN-D-07",
-    "previous_id": "TRIG-IN-D-06",
-    "status": "WAIT",
-    "action": "Revisar jobs/pasos/logs de corridas push existentes de IN-D-07 y corregir fallos confirmados; cerrar solo con evidencia bilateral pertinente. Después IN-D-08; seguridad independiente."
+    "id": "TRIG-IN-D-08",
+    "previous_id": "TRIG-IN-D-07",
+    "status": "RUN",
+    "action": "Test-first bilateral cot(x)>=1 en (0,pi), resultado (0,pi/4]; congelar fuente, probar polos, igualdad y signos; corregir brechas y verificar gates. No avanzar a IN-D-09."
   },
   "blockers": [
     {
@@ -79,18 +79,18 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-15T01:48:28.022Z",
+  "updated_utc": "2026-11-15T02:43:21.601Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
       "input_fingerprint": "7a8409848e37f6388c1647b1da9bab28daade623c395d01936540914ca0a7be1",
-      "head_sha": "d043c6b792490a504dd097496aa4c10eccda25ec",
-      "decision": "REVIEW",
-      "reason": "Revisar ejecución y logs antes de REUSE",
+      "head_sha": "e0d6127f86469bced47635488480e9aa06fd8b49",
+      "decision": "REUSE",
+      "reason": "Insumos idénticos; evidencia ejecutada y revisada",
       "run_id": 43664661133,
       "evidence_sha": "d043c6b792490a504dd097496aa4c10eccda25ec",
-      "logs_reviewed": false,
-      "evidence_executed": false,
+      "logs_reviewed": true,
+      "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
       "jobs": [
         {
@@ -103,19 +103,19 @@
     "h1d": {
       "gate": "h1d",
       "input_fingerprint": "e673289e21745656cfe666df2654b894f9d430c0a711b63d01014886318a2c32",
-      "head_sha": "d043c6b792490a504dd097496aa4c10eccda25ec",
-      "decision": "WAIT",
-      "reason": "Corrida equivalente en curso; no duplicar",
+      "head_sha": "e0d6127f86469bced47635488480e9aa06fd8b49",
+      "decision": "REUSE",
+      "reason": "Insumos idénticos; evidencia ejecutada y revisada",
       "run_id": 43664661082,
       "evidence_sha": "d043c6b792490a504dd097496aa4c10eccda25ec",
-      "logs_reviewed": false,
-      "evidence_executed": false,
+      "logs_reviewed": true,
+      "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
       "jobs": [
         {
           "id": 132661261195,
           "name": "h1d",
-          "conclusion": null
+          "conclusion": "success"
         }
       ]
     },
@@ -131,41 +131,41 @@
     "scientific": {
       "gate": "scientific",
       "input_fingerprint": "0cee273a5d00882c747e0d0131108a9e4810673a26e78aefae3c32f49df3e4fa",
-      "head_sha": "d043c6b792490a504dd097496aa4c10eccda25ec",
-      "decision": "WAIT",
-      "reason": "Corrida equivalente en curso; no duplicar",
+      "head_sha": "e0d6127f86469bced47635488480e9aa06fd8b49",
+      "decision": "REUSE",
+      "reason": "Insumos idénticos; evidencia ejecutada y revisada",
       "run_id": 43664661126,
       "evidence_sha": "d043c6b792490a504dd097496aa4c10eccda25ec",
-      "logs_reviewed": false,
-      "evidence_executed": false,
+      "logs_reviewed": true,
+      "evidence_executed": true,
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
       "jobs": [
         {
           "id": 132661261425,
           "name": "scientific-ui",
-          "conclusion": null
+          "conclusion": "success"
         }
       ]
     }
   },
   "previous_accepted": {
-    "id": "TRIG-IN-D-06",
+    "id": "TRIG-IN-D-07",
     "status": "PASS_SCOPED",
     "evidence": {
       "cumulative": {
         "gate": "cumulative",
-        "input_fingerprint": "d9576420786da955022280dfe2721c21b70ed1ba4979fa5276cbb638ffc703fb",
-        "head_sha": "b50379d51e2ba6608fbc2efff4ce3765c947dc23",
+        "input_fingerprint": "7a8409848e37f6388c1647b1da9bab28daade623c395d01936540914ca0a7be1",
+        "head_sha": "e0d6127f86469bced47635488480e9aa06fd8b49",
         "decision": "REUSE",
         "reason": "Insumos idénticos; evidencia ejecutada y revisada",
-        "run_id": 43659654692,
-        "evidence_sha": "922d9264d2fa2b5fbde492d1d5eaaef4a3e304be",
+        "run_id": 43664661133,
+        "evidence_sha": "d043c6b792490a504dd097496aa4c10eccda25ec",
         "logs_reviewed": true,
         "evidence_executed": true,
         "acceptance_revision": "2026-10-16-continuity-v1",
         "jobs": [
           {
-            "id": 132645881822,
+            "id": 132661261373,
             "name": "cumulative",
             "conclusion": "success"
           }
@@ -173,18 +173,18 @@
       },
       "h1d": {
         "gate": "h1d",
-        "input_fingerprint": "69a8a4ba958c50ac550252953d85d304e6d895e8b265fc188325a1cccce4fdc8",
-        "head_sha": "b50379d51e2ba6608fbc2efff4ce3765c947dc23",
+        "input_fingerprint": "e673289e21745656cfe666df2654b894f9d430c0a711b63d01014886318a2c32",
+        "head_sha": "e0d6127f86469bced47635488480e9aa06fd8b49",
         "decision": "REUSE",
         "reason": "Insumos idénticos; evidencia ejecutada y revisada",
-        "run_id": 43659654684,
-        "evidence_sha": "922d9264d2fa2b5fbde492d1d5eaaef4a3e304be",
+        "run_id": 43664661082,
+        "evidence_sha": "d043c6b792490a504dd097496aa4c10eccda25ec",
         "logs_reviewed": true,
         "evidence_executed": true,
         "acceptance_revision": "2026-10-16-continuity-v1",
         "jobs": [
           {
-            "id": 132645881909,
+            "id": 132661261195,
             "name": "h1d",
             "conclusion": "success"
           }
@@ -192,27 +192,27 @@
       },
       "security": {
         "gate": "security",
-        "input_fingerprint": "7e3962467ebc518e537841794a23d535f56255ebadef7f2dafdc49f87f765d23",
-        "head_sha": "922d9264d2fa2b5fbde492d1d5eaaef4a3e304be",
+        "input_fingerprint": "55b3651de4cd5bb44542329b73d678310173a67f195b5d922677d96362ba1a1f",
+        "head_sha": "d043c6b792490a504dd097496aa4c10eccda25ec",
         "decision": "REVIEW",
-        "reason": "Seguridad dinámica; revisar por perfil antes de despachar.",
+        "reason": "Seguridad dinámica: revisar por perfil.",
         "logs_reviewed": false,
         "evidence_executed": false
       },
       "scientific": {
         "gate": "scientific",
-        "input_fingerprint": "dbc0932f6e41a4fd0c53fea30f240af8d8df252c96141bacc74f30418f253ed4",
-        "head_sha": "b50379d51e2ba6608fbc2efff4ce3765c947dc23",
+        "input_fingerprint": "0cee273a5d00882c747e0d0131108a9e4810673a26e78aefae3c32f49df3e4fa",
+        "head_sha": "e0d6127f86469bced47635488480e9aa06fd8b49",
         "decision": "REUSE",
         "reason": "Insumos idénticos; evidencia ejecutada y revisada",
-        "run_id": 43659654642,
-        "evidence_sha": "922d9264d2fa2b5fbde492d1d5eaaef4a3e304be",
+        "run_id": 43664661126,
+        "evidence_sha": "d043c6b792490a504dd097496aa4c10eccda25ec",
         "logs_reviewed": true,
         "evidence_executed": true,
         "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
         "jobs": [
           {
-            "id": 132645881701,
+            "id": 132661261425,
             "name": "scientific-ui",
             "conclusion": "success"
           }
