@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 557,
+  "revision": 558,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "f909c591b1df59143982c0f9364972e1bde28ffb",
   "baseline_case": "TRIG-IN-I-07",
-  "baseline_status": "WAIT",
+  "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
     "cumulative": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-IN-I-07",
-    "previous_id": "TRIG-IN-I-06",
-    "status": "WAIT",
-    "action": "Revisar jobs y logs del SHA técnico y mutación pendiente; luego continuar la siguiente fila."
+    "id": "TRIG-NEXT-GROUP",
+    "previous_id": "TRIG-IN-I-07",
+    "status": "IDENTIFY",
+    "action": "Identificar siguiente grupo contractual tras IN-I-07, última fila IN-I, e iniciar test-first bilateral; revisar mutación pendiente."
   },
   "blockers": [
     {
@@ -79,31 +79,41 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-15T22:41:42.466Z",
+  "updated_utc": "2026-11-15T23:43:09.620Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
-      "input_fingerprint": "ea87e1316186be0ac6cb0d371dab3f197d1ea4aa73735437556c9148b98bbb51",
-      "head_sha": "b809088d1dbbc3cb939910e2dfba02b2b27991e4",
-      "evidence_sha": "b809088d1dbbc3cb939910e2dfba02b2b27991e4",
+      "head_sha": "f909c591b1df59143982c0f9364972e1bde28ffb",
+      "evidence_sha": "f909c591b1df59143982c0f9364972e1bde28ffb",
       "decision": "REVIEW",
-      "reason": "El SHA técnico avanzó; reconciliar huella y evidencia antes de reutilizar.",
-      "run_id": 43754112597,
+      "reason": "Jobs ejecutados y logs revisados; recalcular huella actual antes de REUSE.",
+      "run_id": 43770664136,
       "logs_reviewed": true,
       "evidence_executed": true,
-      "acceptance_revision": "2026-10-16-continuity-v1"
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "jobs": [
+        {
+          "id": 132985621107,
+          "conclusion": "success"
+        }
+      ]
     },
     "h1d": {
       "gate": "h1d",
-      "input_fingerprint": "1490b68e3e814ca67d65e693c8ee2dbc17e8758fc28a086d8afa508170cdafa9",
-      "head_sha": "b809088d1dbbc3cb939910e2dfba02b2b27991e4",
-      "evidence_sha": "b809088d1dbbc3cb939910e2dfba02b2b27991e4",
+      "head_sha": "f909c591b1df59143982c0f9364972e1bde28ffb",
+      "evidence_sha": "f909c591b1df59143982c0f9364972e1bde28ffb",
       "decision": "REVIEW",
-      "reason": "El SHA técnico avanzó; reconciliar huella y evidencia antes de reutilizar.",
-      "run_id": 43754112551,
+      "reason": "Jobs ejecutados y logs revisados; recalcular huella actual antes de REUSE.",
+      "run_id": 43770664236,
       "logs_reviewed": true,
       "evidence_executed": true,
-      "acceptance_revision": "2026-10-16-continuity-v1"
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "jobs": [
+        {
+          "id": 132985621408,
+          "conclusion": "success"
+        }
+      ]
     },
     "security": {
       "gate": "security",
@@ -118,15 +128,20 @@
     },
     "scientific": {
       "gate": "scientific",
-      "input_fingerprint": "ae0f6d9430b0ca5223adddfda34f589970e44d4d5d74b96f8573700b34c47324",
-      "head_sha": "b809088d1dbbc3cb939910e2dfba02b2b27991e4",
-      "evidence_sha": "b809088d1dbbc3cb939910e2dfba02b2b27991e4",
+      "head_sha": "f909c591b1df59143982c0f9364972e1bde28ffb",
+      "evidence_sha": "f909c591b1df59143982c0f9364972e1bde28ffb",
       "decision": "REVIEW",
-      "reason": "El SHA técnico avanzó; reconciliar huella y evidencia antes de reutilizar.",
-      "run_id": 43754112552,
+      "reason": "Jobs ejecutados y logs revisados; recalcular huella actual antes de REUSE.",
+      "run_id": 43770664184,
       "logs_reviewed": true,
       "evidence_executed": true,
-      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
+      "jobs": [
+        {
+          "id": 132985621373,
+          "conclusion": "success"
+        }
+      ]
     }
   },
   "previous_accepted": {
@@ -150,6 +165,7 @@
       43770664236,
       43770664184,
       43770664122
-    ]
+    ],
+    "status": "functional_pass_scoped"
   }
 }

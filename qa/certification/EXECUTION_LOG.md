@@ -1,3 +1,13 @@
+# r558 — IN-I-07: evidencia funcional verificada
+
+Lite SHA f909c591b1df59143982c0f9364972e1bde28ffb: acumulativo 43770664136/job 132985621107 ejecutó IN-I-07 y 2602 pruebas aprobadas, 8 expected fail y 34 TODO; H1d 43770664236/job 132985621408 22 aprobadas; Scientific 43770664184/job 132985621373 456 aprobadas. Plus SHA 318c779ce597d0f02ca3a3eeca19f990bfdcec51: acumulativo 43770667769/backend 132985634338 3139 aprobadas, 1 skipped y 11 xfailed, incluido literal HTTP IN-I-07; frontend 132985634573 1055 aprobadas y 28 TODO; H1d 43770667753/job 132985634093 38; Native 43770667820/job 132985634625 26 desktop y 52 tablet/móvil. Jobs, pasos y logs revisados. IN-I-07 PASS_SCOPED funcional, no acredita E2E visual dedicado.
+
+Seguridad 43770667767: backend-security SUCCESS; frontend-audit skipped, job de mutación 132985769853 en curso. S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; certificación global OPEN. No duplicar mutación.
+
+La fuente congelada contiene IN-I-01 a IN-I-07, sin IN-I-08. Siguiente acción: identificar el siguiente grupo contractual conforme a EXECUTION_PROTOCOL y matriz fuente; iniciar test-first bilateral, revisando seguridad pendiente.
+
+---
+
 # r557 — IN-I-07: restauración de Lite y literal Plus publicados
 
 La rama Lite contenía un marcador provisional en src/engine/inequality.ts que impedía cargar las pruebas; se restauró desde b809088 y se añadió la regla acotada IN-I-07. Lite f909c591b1df59143982c0f9364972e1bde28ffb: cuatro pruebas focalizadas locales PASS; acumulativo 43770664136, H1d 43770664236, Scientific 43770664184 y CI 43770664122 pendientes.
