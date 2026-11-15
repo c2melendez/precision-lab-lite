@@ -1,3 +1,7 @@
+## r534 — Paridad IN-D-08 Plus en verificación
+
+Plus 5f10389c4ec0217d1007aa22b5219c34ba91f0b9: advertencia de período; 41 pruebas locales aprobadas; corridas automáticas pendientes según CURRENT_STATE. Global OPEN.
+
 ## r533 — Reconciliación IN-D-08
 
 SHA técnico 75558880204e15cfd23a1a1dacdcefe5e558de4f; acumulativo y H1d ejecutados y revisados, conforme a CURRENT_STATE r532. Seguridad Plus 43684691979 en curso; no es PASS global. Índice reconciliado; siguiente acción REVIEW del alcance literal y paridad IN-D-08. No se altera el estado de los bloqueos.

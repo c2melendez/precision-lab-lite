@@ -1,3 +1,11 @@
+# r534 — IN-D-08: paridad Plus en verificación
+
+Plus SHA técnico 5f10389c4ec0217d1007aa22b5219c34ba91f0b9 añade advertencia de rama principal y período π para cot(x)>=1; 41 pruebas locales aprobadas. Push Plus: CI 43691200754, acumulativo 43691200764, H1d 43691200749, Native 43691200755 y seguridad 43691200778 en curso o cola al registrar. Lite conserva evidencia r533. No declarar cierre hasta revisar los logs y alcance literal. Global OPEN; S25, SG28/DIST y EV-D-01 BLOCKED.
+
+Siguiente acción: revisar gates del SHA Plus y reconciliar resultados antes de cerrar IN-D-08.
+
+---
+
 # r533 — Reconciliación IN-D-08; revisión pendiente
 
 El índice registra el SHA técnico 75558880204e15cfd23a1a1dacdcefe5e558de4f y huellas de los gates ejecutados; solo CURRENT_STATE.md difiere entre ese commit técnico y el HEAD anterior. La corrida Plus de seguridad 43684691979 continúa en curso; sus perfiles no se declaran globalmente aprobados. S25, SG28/DIST y EV-D-01 permanecen BLOCKED; certificación global OPEN. Siguiente acción: revisar alcance literal y paridad IN-D-08 y finalizar evaluación de seguridad sin duplicar corridas.
