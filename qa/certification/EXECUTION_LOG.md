@@ -1,3 +1,7 @@
+## r553 — IN-I-05: publicación bilateral y gates pendientes
+
+Lite 8e2ae1dc24a7a0e1587373b575af4356e18adf25; Plus c092d7a5824545422de4052cd6cc3aa7d76a38f8. Test-first y pruebas locales aprobadas; corridas automáticas registradas en CURRENT_STATE. WAIT hasta revisar logs; S19 REVIEW y bloqueos preservados.
+
 ## r552 — IN-I-04 PASS_SCOPED funcional
 
 Gates funcionales ejecutados y logs revisados según CURRENT_STATE r552; S19 permanece REVIEW con dos corridas en curso. Iniciar IN-I-05 sin declarar E2E dedicado ni cierre global.

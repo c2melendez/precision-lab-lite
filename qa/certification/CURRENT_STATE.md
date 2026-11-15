@@ -1,3 +1,11 @@
+# r553 — IN-I-05 publicado; verificación CI pendiente
+
+Lite SHA 8e2ae1dc24a7a0e1587373b575af4356e18adf25; Plus SHA c092d7a5824545422de4052cd6cc3aa7d76a38f8. Test-first: ambos motores fallaban arcsin(x)<arccos(x); se implementó [-1,√2/2), dominio real y frontera estricta, con fallback preservado. Local: Lite 91 pruebas y build aprobados; Plus 75 pruebas aprobadas. Push Lite acumulativo 43742889797, H1d 43742889793, Scientific 43742889802, CI 43742889820; Plus acumulativo 43742896982, H1d 43742897062, Native 43742896989, CI 43742896967, seguridad 43742897037: en curso o cola al registrar. Mutación previa 43736559614 y 43737435043 sobre SHA distintos; revisar sin duplicar. S19 REVIEW, S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: revisar jobs/logs y alcance literal de IN-I-05, y resultados de mutación pendientes; no declarar cierre sin evidencia.
+
+---
+
 # r552 — IN-I-04 PASS_SCOPED funcional; iniciar IN-I-05
 
 IN-I-04: Lite parser/motor y Plus servicio/HTTP, incluido literal fuente; E2E visual dedicado no acreditado. Lite SHA ae784152e808fbe5e8139e8406c6431bdeb7526e: acumulativo 43731839741 (2588 passed, 8 expected fail, 34 TODO), H1d 43731839781 (22), Scientific 43731839744 (456). Plus SHA 259bc52312a2ea6516d23c13af9773ac21b62353: acumulativo 43737435007/backend 132883029784 (3120 passed, 1 skipped, 11 xfailed; literal y controles PASS), frontend 132883029556 (1055 passed, 28 TODO), H1d 43737435025 (38), Native 43737435068 (26 desktop, 52 tablet/móvil). Jobs y logs revisados; omisiones no son PASS. Seguridad 43737435043/job 132883173911 y 43736559614/job 132880470180 siguen en curso sobre SHA distintos. S19 REVIEW, S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
