@@ -1,3 +1,7 @@
+## r539 — IN-I-01 PASS_SCOPED bilateral
+
+Gates funcionales ejecutados y logs revisados según CURRENT_STATE r539; seguridad Plus 43695734343 sigue en curso. Iniciar IN-I-02; global OPEN y bloqueos preservados.
+
 ## r538 — IN-I-01: publicación bilateral y gates pendientes
 
 Lite f5c56e21abcd71e2d893aa87e06d8975d4bb3a6f; Plus dca31e3d87e26c8505d5a7ca639a6c1072ad4ba3. Test-first y pruebas locales aprobadas; corridas automáticas registradas en CURRENT_STATE. WAIT hasta revisar logs; bloqueos preservados.
