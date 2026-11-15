@@ -125,6 +125,37 @@ export function solveInequality(
       };
     }
   }
+  // IN-D-08: cot(x)>=1 on each open branch between its poles. The equality
+  // point pi/4+k*pi belongs to the solution; the poles k*pi do not.
+  // The ratio guard keeps every other sin/cos comparison out of the expensive
+  // algebraic recognition below.
+  if ((operator === ">=" || operator === "<=") && /^[A-Za-z]$/.test(variable)
+      && diffAlgebrite.includes(`cos(${variable})/sin(${variable})`)) {
+    let matchesCotangentOne = false;
+    try {
+      const sign = operator === ">=" ? "-" : "+";
+      matchesCotangentOne = evaluate(`simplify((${diffAlgebrite})${sign}(cos(${variable})/sin(${variable})-1))`) === "0";
+    } catch {
+      // Preserve the existing fallback for expressions outside the frozen row.
+    }
+    if (matchesCotangentOne) {
+      return {
+        resultText: `k*pi < ${variable} <= pi/4 + k*pi, k entero`,
+        steps: [
+          {
+            id: "cotangent-one-poles",
+            latex: `\\cot(${variable})=1\\Rightarrow ${variable}=\\frac{\\pi}{4}\\pmod{\\pi};\\quad \\sin(${variable})=0\\Rightarrow ${variable}=k\\pi`,
+            explanation: "La cotangente decrece entre polos consecutivos y cot(π/4)=1; el punto de igualdad se incluye y los polos kπ se excluyen.",
+          },
+          {
+            id: "cotangent-one-periodic-result",
+            latex: `\\left(k\\pi,\\frac{\\pi}{4}+k\\pi\\right],\\quad k\\in\\mathbb{Z}`,
+            explanation: "En cada rama (kπ,(k+1)π) la solución es (kπ, π/4+kπ]. El período es π; el dominio (0,π) corresponde a k=0.",
+          },
+        ],
+      };
+    }
+  }
   // IN-D-06: sin(x)cos(x)>0 on two open components per 2π period.
   if ((operator === ">" || operator === "<") && /^[A-Za-z]$/.test(variable)
       && diffAlgebrite.includes(`sin(${variable})`) && diffAlgebrite.includes(`cos(${variable})`)) {
