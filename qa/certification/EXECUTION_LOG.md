@@ -1,3 +1,7 @@
+## r540 — IN-I-02: publicación bilateral y gates pendientes
+
+Lite 92ee3a2d47ff6219e5550d171ee5747cbd96161a; Plus b141e34275bb1f965cfabeda4ea7e978b636853f. Test-first y pruebas locales aprobadas; corridas automáticas registradas en CURRENT_STATE. WAIT hasta revisar logs; bloqueos preservados.
+
 ## r539 — IN-I-01 PASS_SCOPED bilateral
 
 Gates funcionales ejecutados y logs revisados según CURRENT_STATE r539; seguridad Plus 43695734343 sigue en curso. Iniciar IN-I-02; global OPEN y bloqueos preservados.

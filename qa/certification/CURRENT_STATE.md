@@ -1,3 +1,11 @@
+# r540 — IN-I-02 publicado; verificación CI pendiente
+
+Lite SHA 92ee3a2d47ff6219e5550d171ee5747cbd96161a; Plus SHA b141e34275bb1f965cfabeda4ea7e978b636853f. Test-first: Lite no resolvía arccos(x)<=π/3; se implementó [1/2,1] respetando dominio real y fallback. Plus ya resolvía el caso y recibió tests de fuente, servicio y HTTP. Local: Lite 73 pruebas y build aprobados; Plus 54 pruebas aprobadas. Push Lite acumulativo 43705873823, H1d 43705873862, Scientific 43705873864, CI 43705873839; Plus acumulativo 43705883021, H1d 43705883049, CI 43705883014: en curso o cola al registrar. Seguridad dinámica pendiente; no duplicar gates. Global OPEN; S25, SG28/DIST y EV-D-01 BLOCKED.
+
+Siguiente acción: revisar jobs/logs y alcance literal del SHA técnico antes de cerrar IN-I-02.
+
+---
+
 # r539 — IN-I-01 PASS_SCOPED; iniciar IN-I-02
 
 IN-I-01 aprobado en alcance parser/motor Lite y servicio/HTTP Plus; no acredita E2E dedicado de la fila. Lite SHA f5c56e21abcd71e2d893aa87e06d8975d4bb3a6f: acumulativo 43701096046/job 132772192776 (2570 passed, 8 expected fail, 34 TODO), H1d 43701096051 (22), Scientific 43701096048 (456). Plus SHA dca31e3d87e26c8505d5a7ca639a6c1072ad4ba3: acumulativo 43701103600/backend 132772216342 (3058 passed, 1 skipped, 11 xfailed) y frontend 132772216124 (1055 passed, 28 TODO), H1d 43701103574 (38). Jobs y logs revisados; omisiones no son PASS. Seguridad Plus 43695734343/backend mutmut 132755851381 en curso; frontend omitido. S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
