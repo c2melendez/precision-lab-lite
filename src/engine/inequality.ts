@@ -50,6 +50,19 @@ export function solveInequality(
   operator: InequalityOperator,
   variable: string,
 ): InequalityResult {
+  // IN-I-03: arctan is strictly increasing on the real line; 1 radian
+  // lies in its principal range. Match exact forms to preserve fallback.
+  if (/^[A-Za-z]$/.test(variable)) {
+    const atan = `arctan(${variable})`;
+    if ((operator === "<" && diffAlgebrite === `(${atan})-(1)`)
+        || (operator === ">" && diffAlgebrite === `(1)-(${atan})`)) {
+      return { resultText: `${variable} < tan(1)`, steps: [{
+        id: "arctangent-one-domain-result",
+        latex: String.raw`\left(-\infty,\tan(1)\right)`,
+        explanation: "El arco tangente crece en todos los reales; la igualdad en tan(1) se excluye. El ángulo 1 está en radianes."
+      }] };
+    }
+  }
   // IN-I-02: arccos decreases on its real domain [-1,1]. Match only the
   // parser's exact forms so other comparisons keep their existing fallback.
   if (/^[A-Za-z]$/.test(variable)) {
