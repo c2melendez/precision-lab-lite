@@ -1,3 +1,11 @@
+# r542 — IN-I-03 publicado; verificación CI pendiente
+
+Lite SHA 63793b3a5ee263653835527462c4395172dc8b48; Plus SHA 4575c8f13578cd9b45216e1c0567669b6d747df5. Test-first: Lite no resolvía arctan(x)<1; se implementó x<tan(1), frontera estricta en radianes y fallback preservado. Plus ya resolvía el caso y recibió tests de fuente, servicio y HTTP. Local: Lite 79 pruebas y build aprobados; Plus 58 pruebas aprobadas. Push Lite acumulativo 43710610622, H1d 43710610635, Scientific 43710610666, CI 43710610689; Plus acumulativo 43710615660, H1d 43710615637, CI 43710615647: en curso al registrar. Seguridad 43695734343 terminó por runner shutdown sin reporte final; no repetir bloqueo idéntico. Global OPEN; S25, SG28/DIST y EV-D-01 BLOCKED.
+
+Siguiente acción: revisar jobs/logs y alcance literal del SHA técnico antes de cerrar IN-I-03.
+
+---
+
 # r541 — IN-I-02 PASS_SCOPED; iniciar IN-I-03
 
 IN-I-02 aprobado en alcance parser/motor Lite y servicio/HTTP Plus; no acredita E2E dedicado de la fila. Lite SHA 92ee3a2d47ff6219e5550d171ee5747cbd96161a: acumulativo 43705873823/job 132786702663 (2576 passed, 8 expected fail, 34 TODO; focal 6), H1d 43705873862 (22), Scientific 43705873864 (456). Plus SHA b141e34275bb1f965cfabeda4ea7e978b636853f: acumulativo 43705883021/backend 132786731076 (3062 passed, 1 skipped, 11 xfailed) y frontend 132786730866 (1055 passed, 28 TODO), H1d 43705883049 (38). Jobs y logs revisados; omisiones no son PASS. Seguridad 43695734343/job 132755851381: runner shutdown 2026-11-15T11:21:05Z, sin informe final; perfiles frontend omitidos. S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.

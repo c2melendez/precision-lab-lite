@@ -1,3 +1,7 @@
+## r542 — IN-I-03: publicación bilateral y gates pendientes
+
+Lite 63793b3a5ee263653835527462c4395172dc8b48; Plus 4575c8f13578cd9b45216e1c0567669b6d747df5. Test-first y pruebas locales aprobadas; corridas automáticas registradas en CURRENT_STATE. WAIT hasta revisar logs; bloqueos preservados.
+
 ## r541 — IN-I-02 PASS_SCOPED bilateral
 
 Gates funcionales ejecutados y logs revisados según CURRENT_STATE r541; seguridad 43695734343 terminó por runner shutdown sin informe final. Iniciar IN-I-03; global OPEN y bloqueos preservados.
