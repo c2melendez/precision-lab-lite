@@ -1,3 +1,7 @@
+## r554 — IN-I-05 HTTP literal Plus publicado
+
+Plus dcd749bb05793d2fbecef8562ade7fb04739b630: test-first literal y controles de seguridad, 290 pruebas locales aprobadas; gates push pendientes según CURRENT_STATE. Lite gates funcionales revisados. S19 REVIEW; global OPEN.
+
 ## r553 — IN-I-05: publicación bilateral y gates pendientes
 
 Lite 8e2ae1dc24a7a0e1587373b575af4356e18adf25; Plus c092d7a5824545422de4052cd6cc3aa7d76a38f8. Test-first y pruebas locales aprobadas; corridas automáticas registradas en CURRENT_STATE. WAIT hasta revisar logs; S19 REVIEW y bloqueos preservados.

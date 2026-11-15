@@ -1,3 +1,11 @@
+# r554 — Canal HTTP literal IN-I-05 Plus en verificación
+
+Plus SHA técnico dcd749bb05793d2fbecef8562ade7fb04739b630 normaliza únicamente la forma fuente `\\arcsin x<\\arccos x` con la misma variable y conserva validaciones. Test-first: HTTP literal producía PARSE_ERROR; 290 pruebas locales de parser, seguridad y filas IN-I-03/04/05 aprobaron tras corregirlo. No acredita E2E visual. Push Plus acumulativo 43748732737, H1d 43748732670, Native 43748732677, CI 43748732641, seguridad 43748732694 en curso o cola. Lite SHA 8e2ae1dc24a7a0e1587373b575af4356e18adf25: acumulativo 43742889797 (2594 passed, 8 expected fail, 34 TODO), H1d 43742889793 (22), Scientific 43742889802 (456), revisados. Plus SHA anterior c092d7a5824545422de4052cd6cc3aa7d76a38f8: acumulativo 43742896982/backend 3125 passed, 1 skipped, 11 xfailed; frontend 1055 passed, 28 TODO; H1d 38, Native 26/52. Mutación previa 43742897037/job 132899853255 y otras sobre SHA distintos seguían en curso. S19 REVIEW, S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: revisar gates Plus y resultados de mutación sin duplicar; no declarar cierre hasta verificar evidencia.
+
+---
+
 # r553 — IN-I-05 publicado; verificación CI pendiente
 
 Lite SHA 8e2ae1dc24a7a0e1587373b575af4356e18adf25; Plus SHA c092d7a5824545422de4052cd6cc3aa7d76a38f8. Test-first: ambos motores fallaban arcsin(x)<arccos(x); se implementó [-1,√2/2), dominio real y frontera estricta, con fallback preservado. Local: Lite 91 pruebas y build aprobados; Plus 75 pruebas aprobadas. Push Lite acumulativo 43742889797, H1d 43742889793, Scientific 43742889802, CI 43742889820; Plus acumulativo 43742896982, H1d 43742897062, Native 43742896989, CI 43742896967, seguridad 43742897037: en curso o cola al registrar. Mutación previa 43736559614 y 43737435043 sobre SHA distintos; revisar sin duplicar. S19 REVIEW, S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
