@@ -1,3 +1,11 @@
+# r549 — IN-I-04 publicado; verificación CI pendiente
+
+Lite SHA ae784152e808fbe5e8139e8406c6431bdeb7526e; Plus SHA 85bd8f500cc82b983b51c3a4e6712fd230e77e79. Test-first: Lite no resolvía arctan(2x)>=π/4; se implementó [1/2,∞), igualdad incluida, fallback preservado. Plus ya resolvía el caso y recibió tests de fuente, servicio y HTTP. Local: Lite 85 pruebas y build aprobados; Plus 66 pruebas aprobadas. Push Lite acumulativo 43731839741, H1d 43731839781, Scientific 43731839744, CI 43731839734; Plus acumulativo 43731842899, H1d 43731842898, CI 43731842944: en curso o cola al registrar. Seguridad Plus 43715315873/job 132815595041 y 43725643047/job 132846991188 en curso sobre SHA distintos; S19 REVIEW, no duplicar. S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: revisar jobs/logs y alcance literal de IN-I-04, y resultados de mutación pendientes; no declarar cierre sin evidencia.
+
+---
+
 # r548 — IN-I-03 PASS_SCOPED funcional; iniciar IN-I-04
 
 IN-I-03: Lite parser/motor y Plus servicio/HTTP (incluido literal fuente); E2E visual dedicado no acreditado. Lite SHA 63793b3a5ee263653835527462c4395172dc8b48: acumulativo 43710610622 (2582 passed, 8 expected fail, 34 TODO), H1d 43710610635 (22), Scientific 43710610666 (456). Plus SHA f9222b115fb2ed8bba46245cc7d8d3ecdea52b84: acumulativo 43725643080/backend 132846861090 (3082 passed, 1 skipped, 11 xfailed; literal y controles PASS), frontend 132846860774 (1055 passed, 28 TODO); H1d 43725643065 (38), Native 43725643032 (26 desktop, 52 tablet/móvil). Jobs y logs revisados. Seguridad 43725643047/job 132846991188 y mutación previa 43715315873/job 132815595041 siguen en curso; frontend omitido no es PASS. S19 REVIEW, S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.

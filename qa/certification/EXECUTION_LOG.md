@@ -1,3 +1,7 @@
+## r549 — IN-I-04: publicación bilateral y gates pendientes
+
+Lite ae784152e808fbe5e8139e8406c6431bdeb7526e; Plus 85bd8f500cc82b983b51c3a4e6712fd230e77e79. Test-first y pruebas locales aprobadas; corridas automáticas registradas en CURRENT_STATE. WAIT hasta revisar logs; S19 REVIEW y bloqueos preservados.
+
 ## r548 — IN-I-03 PASS_SCOPED funcional
 
 Gates funcionales ejecutados y logs revisados según CURRENT_STATE r548; S19 permanece REVIEW con dos corridas de mutación en curso. Iniciar IN-I-04 sin declarar E2E dedicado ni cierre global.
