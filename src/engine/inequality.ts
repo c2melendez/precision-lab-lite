@@ -106,6 +106,27 @@ export function solveInequality(
       };
     }
   }
+  // IN-D-06: sin(x)cos(x)>0 on two open components per 2π period.
+  if ((operator === ">" || operator === "<") && /^[A-Za-z]$/.test(variable)
+      && diffAlgebrite.includes(`sin(${variable})`) && diffAlgebrite.includes(`cos(${variable})`)) {
+    let matchesProduct = false;
+    try {
+      const sign = operator === ">" ? "-" : "+";
+      matchesProduct = evaluate(`simplify((${diffAlgebrite})${sign}(sin(${variable})*cos(${variable})))`) === "0";
+    } catch {
+      // Preserve the existing fallback for unrecognized expressions.
+    }
+    if (matchesProduct) {
+      return {
+        resultText: "(2*k*pi, pi/2 + 2*k*pi) U (pi + 2*k*pi, 3*pi/2 + 2*k*pi), k entero",
+        steps: [{
+          id: "sine-cosine-periodic-result",
+          latex: String.raw`\left(2k\pi,\frac{\pi}{2}+2k\pi\right)\cup\left(\pi+2k\pi,\frac{3\pi}{2}+2k\pi\right),\quad k\in\mathbb{Z}`,
+          explanation: "El producto es positivo en los cuadrantes I y III; todos los extremos son raíces excluidas. En [0,2π) se toma k=0.",
+        }],
+      };
+    }
+  }
   // IN-D-03: tan is strictly increasing on each open branch between poles.
   // Preserve all periods; k=0 is the frozen principal interval.
   if ((operator === "<" || operator === ">") && /^[A-Za-z]$/.test(variable)
