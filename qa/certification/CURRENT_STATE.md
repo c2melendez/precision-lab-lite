@@ -1,3 +1,11 @@
+# r547 — Canal HTTP literal IN-I-03 Plus en verificación
+
+Plus f9222b115fb2ed8bba46245cc7d8d3ecdea52b84 corrige la entrada fuente `\\arctan x<1` con reconocimiento acotado; 273 pruebas locales aprobadas, incluida seguridad. Push Plus acumulativo 43725643080, H1d 43725643065, Native 43725643032, CI 43725643052 y seguridad 43725643047 pendientes. La mutación anterior 43715315873/job 132815595041 sigue en curso y no se cancela. No se acredita E2E visual. S19 REVIEW, S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: revisar los gates Plus y el reporte de mutación anterior, sin duplicar corridas.
+
+---
+
 # r546 — Gates funcionales revisados; canal literal IN-I-03 pendiente
 
 Plus SHA ecfc786d8caf30aad82e83828902eaf10b029505: acumulativo 43715315872/backend 132815467936 (3078 passed, 1 skipped, 11 xfailed) y frontend 132815467653 (1055 passed, 28 TODO), H1d 43715315847 (38): pasos y logs revisados. Seguridad 43715315873: backend seguridad pasó, frontend omitido; mutación backend 132815595041 aún en curso, informe no disponible; WAIT sin duplicar. S19 permanece REVIEW.

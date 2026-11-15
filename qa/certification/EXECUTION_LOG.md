@@ -1,3 +1,7 @@
+## r547 — IN-I-03 HTTP literal Plus en verificación
+
+Plus f9222b115fb2ed8bba46245cc7d8d3ecdea52b84; 273 pruebas locales aprobadas, gates push pendientes. Mutación previa sigue en curso. Global OPEN.
+
 ## r546 — Gates Plus y diagnóstico literal IN-I-03
 
 SHA ecfc786d8caf30aad82e83828902eaf10b029505: acumulativo y H1d ejecutados y revisados, según CURRENT_STATE. Mutación 43715315873/job 132815595041 en curso, sin informe. HTTP local: literal `\\arctan x<1` produce PARSE_ERROR; forma normalizada `atan(x)<1` produce intervalo correcto. Canal literal pendiente; S19 REVIEW y global OPEN.
