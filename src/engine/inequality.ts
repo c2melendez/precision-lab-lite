@@ -50,6 +50,19 @@ export function solveInequality(
   operator: InequalityOperator,
   variable: string,
 ): InequalityResult {
+  // IN-I-05: both inverse functions have real domain [-1,1], and
+  // asin(x)+acos(x)=pi/2 there. Match only the exact comparison.
+  if (/^[A-Za-z]$/.test(variable)) {
+    const asin = `arcsin(${variable})`, acos = `arccos(${variable})`;
+    if ((operator === "<" && diffAlgebrite === `(${asin})-(${acos})`)
+        || (operator === ">" && diffAlgebrite === `(${acos})-(${asin})`)) {
+      return { resultText: `-1 <= ${variable} < sqrt(2)/2`, steps: [{
+        id: "arcsine-arccosine-domain-result",
+        latex: String.raw`\left[-1,\frac{\sqrt{2}}{2}\right)`,
+        explanation: "En [-1,1], asin(x)+acos(x)=π/2 y asin crece; la igualdad en √2/2 se excluye."
+      }] };
+    }
+  }
   // IN-I-04: arctan(2*x) is strictly increasing, and atan(1)=pi/4.
   // Recognize only the parser's exact forms to preserve the fallback.
   if (/^[A-Za-z]$/.test(variable)) {
