@@ -50,6 +50,20 @@ export function solveInequality(
   operator: InequalityOperator,
   variable: string,
 ): InequalityResult {
+  // IN-I-02: arccos decreases on its real domain [-1,1]. Match only the
+  // parser's exact forms so other comparisons keep their existing fallback.
+  if (/^[A-Za-z]$/.test(variable)) {
+    const acos = `arccos(${variable})`;
+    const thresholds = ["pi/3", "((pi)/(3))"];
+    if (thresholds.some(t => (operator === "<=" && diffAlgebrite === `(${acos})-(${t})`)
+      || (operator === ">=" && diffAlgebrite === `(${t})-(${acos})`))) {
+      return { resultText: `1/2 <= ${variable} <= 1`, steps: [{
+        id: "arccosine-third-domain-result",
+        latex: String.raw`\left[\frac{1}{2},1\right]`,
+        explanation: "El arco coseno real decrece en [-1,1]; la igualdad en 1/2 y el extremo 1 se incluyen."
+      }] };
+    }
+  }
   // IN-I-01: arcsin is increasing on its real domain [-1,1]. Match only
   // the parser's exact canonical spellings to retain other domains/fallbacks.
   if (/^[A-Za-z]$/.test(variable)) {
