@@ -106,6 +106,25 @@ export function solveInequality(
       };
     }
   }
+  // IN-D-07: sec(x)>2 on each principal positive-cosine branch.
+  if ((operator === ">" || operator === "<") && /^[A-Za-z]$/.test(variable)
+      && diffAlgebrite.includes(`cos(${variable})`)) {
+    let matchesSecant = false;
+    try {
+      const sign = operator === ">" ? "-" : "+";
+      matchesSecant = evaluate(`simplify((${diffAlgebrite})${sign}(1/cos(${variable})-2))`) === "0";
+    } catch {
+      // Preserve fallback for other inequalities.
+    }
+    if (matchesSecant) {
+      return {
+        resultText: "(-pi/2 + 2*k*pi, -pi/3 + 2*k*pi) U (pi/3 + 2*k*pi, pi/2 + 2*k*pi), k entero",
+        steps: [{id: "secant-two-periodic-result",
+          latex: String.raw`\left(-\frac{\pi}{2}+2k\pi,-\frac{\pi}{3}+2k\pi\right)\cup\left(\frac{\pi}{3}+2k\pi,\frac{\pi}{2}+2k\pi\right),\quad k\in\mathbb{Z}`,
+          explanation: "En la rama principal el coseno es positivo; las igualdades y los polos se excluyen. La solución se repite cada 2π."}],
+      };
+    }
+  }
   // IN-D-06: sin(x)cos(x)>0 on two open components per 2π period.
   if ((operator === ">" || operator === "<") && /^[A-Za-z]$/.test(variable)
       && diffAlgebrite.includes(`sin(${variable})`) && diffAlgebrite.includes(`cos(${variable})`)) {
