@@ -1,3 +1,9 @@
+# r533 — Reconciliación IN-D-08; revisión pendiente
+
+El índice registra el SHA técnico 75558880204e15cfd23a1a1dacdcefe5e558de4f y huellas de los gates ejecutados; solo CURRENT_STATE.md difiere entre ese commit técnico y el HEAD anterior. La corrida Plus de seguridad 43684691979 continúa en curso; sus perfiles no se declaran globalmente aprobados. S25, SG28/DIST y EV-D-01 permanecen BLOCKED; certificación global OPEN. Siguiente acción: revisar alcance literal y paridad IN-D-08 y finalizar evaluación de seguridad sin duplicar corridas.
+
+---
+
 # r532 — IN-D-08: evidencia acumulativa revisada; reconciliación pendiente
 
 HEAD técnico Lite 75558880204e15cfd23a1a1dacdcefe5e558de4f; Plus a2bb123f2babfc8c4e8df725f3b00806af606061. IN-D-08: cot(x)>=1, x∈(0,π), resultado (0,π/4]. Lite acumulativo 43681790954/job 132713777141: 2558 passed, 8 expected fail, 34 TODO; focal 10. H1d 43681790797: 22 passed; científico 43681790844: 456 passed. Plus acumulativo 43681802532/backend 132713812218: 3049 passed, 1 skipped, 11 xfailed; frontend 132713812291: 1055 passed, 28 TODO. H1d 43681802533: 38 passed. Pasos y logs revisados; omisiones no son PASS. Global OPEN; S25, SG28/DIST y EV-D-01 permanecen BLOCKED.
