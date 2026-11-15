@@ -1,3 +1,11 @@
+# r551 — IN-I-04: literal Plus en verificación
+
+Lite SHA ae784152e808fbe5e8139e8406c6431bdeb7526e: acumulativo 43731839741 (2588 passed, 8 expected fail, 34 TODO), H1d 43731839781 (22), Scientific 43731839744 (456), jobs y logs revisados. Plus SHA técnico 259bc52312a2ea6516d23c13af9773ac21b62353 corrige la entrada HTTP literal de la fila, antes PARSE_ERROR; 281 pruebas locales aprobadas. Push Plus acumulativo 43737435007, H1d 43737435025, Native 43737435068, CI 43737435042, seguridad 43737435043 en curso. Mutación previa 43736559614 continúa sobre SHA distinto. Seguridad 43725643047 terminó por runner shutdown sin informe; log de 43715315873/job 132815595041 no disponible (404), sin artefactos. S19 REVIEW, S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: revisar gates Plus y reporte de mutación anterior sin duplicar corridas.
+
+---
+
 # r549 — IN-I-04 publicado; verificación CI pendiente
 
 Lite SHA ae784152e808fbe5e8139e8406c6431bdeb7526e; Plus SHA 85bd8f500cc82b983b51c3a4e6712fd230e77e79. Test-first: Lite no resolvía arctan(2x)>=π/4; se implementó [1/2,∞), igualdad incluida, fallback preservado. Plus ya resolvía el caso y recibió tests de fuente, servicio y HTTP. Local: Lite 85 pruebas y build aprobados; Plus 66 pruebas aprobadas. Push Lite acumulativo 43731839741, H1d 43731839781, Scientific 43731839744, CI 43731839734; Plus acumulativo 43731842899, H1d 43731842898, CI 43731842944: en curso o cola al registrar. Seguridad Plus 43715315873/job 132815595041 y 43725643047/job 132846991188 en curso sobre SHA distintos; S19 REVIEW, no duplicar. S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
