@@ -1,3 +1,7 @@
+## r545 — S19 Plus en revisión
+
+Plus ecfc786d8caf30aad82e83828902eaf10b029505: pruebas dirigidas, 456 aprobadas localmente; reporte de mutación pendiente según CURRENT_STATE. IN-I-03 funcional verificado en los SHA previos; reconciliación pendiente. Global OPEN.
+
 ## r542 — IN-I-03: publicación bilateral y gates pendientes
 
 Lite 63793b3a5ee263653835527462c4395172dc8b48; Plus 4575c8f13578cd9b45216e1c0567669b6d747df5. Test-first y pruebas locales aprobadas; corridas automáticas registradas en CURRENT_STATE. WAIT hasta revisar logs; bloqueos preservados.

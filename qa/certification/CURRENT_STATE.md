@@ -1,3 +1,11 @@
+# r545 — S19 Plus en revisión; IN-I-03 funcional verificado
+
+Plus SHA ecfc786d8caf30aad82e83828902eaf10b029505 añade pruebas dirigidas para agregados, normalización y rechazo de entradas inválidas dentro de la selección existente; 456 pruebas locales aprobadas. Push Plus acumulativo 43715315872, H1d 43715315847 y seguridad/mutación 43715315873 en curso o cola. S19 permanece REVIEW: el informe previo registró sobrevivientes y timeouts; no se ha acreditado mejora. IN-I-03: Lite acumulativo 43710610622 (2582 passed, 8 expected fail, 34 TODO), H1d 43710610635 (22), scientific 43710610666 (456); Plus acumulativo anterior 43710615660 (3066 backend passed, 1 skipped, 11 xfailed; 1055 frontend passed, 28 TODO) y H1d 43710615637 (38). El nuevo SHA Plus requiere reconciliación antes del cierre. S25, SG28/DIST, EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: revisar gates y reporte S19 del nuevo SHA Plus y reconciliar IN-I-03 sin duplicar corridas.
+
+---
+
 # r542 — IN-I-03 publicado; verificación CI pendiente
 
 Lite SHA 63793b3a5ee263653835527462c4395172dc8b48; Plus SHA 4575c8f13578cd9b45216e1c0567669b6d747df5. Test-first: Lite no resolvía arctan(x)<1; se implementó x<tan(1), frontera estricta en radianes y fallback preservado. Plus ya resolvía el caso y recibió tests de fuente, servicio y HTTP. Local: Lite 79 pruebas y build aprobados; Plus 58 pruebas aprobadas. Push Lite acumulativo 43710610622, H1d 43710610635, Scientific 43710610666, CI 43710610689; Plus acumulativo 43710615660, H1d 43710615637, CI 43710615647: en curso al registrar. Seguridad 43695734343 terminó por runner shutdown sin reporte final; no repetir bloqueo idéntico. Global OPEN; S25, SG28/DIST y EV-D-01 BLOCKED.
