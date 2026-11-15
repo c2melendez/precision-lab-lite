@@ -1,3 +1,13 @@
+# r546 — Gates funcionales revisados; canal literal IN-I-03 pendiente
+
+Plus SHA ecfc786d8caf30aad82e83828902eaf10b029505: acumulativo 43715315872/backend 132815467936 (3078 passed, 1 skipped, 11 xfailed) y frontend 132815467653 (1055 passed, 28 TODO), H1d 43715315847 (38): pasos y logs revisados. Seguridad 43715315873: backend seguridad pasó, frontend omitido; mutación backend 132815595041 aún en curso, informe no disponible; WAIT sin duplicar. S19 permanece REVIEW.
+
+Diagnóstico independiente local en SHA ecfc786: POST /api/v1/inequality con literal fuente `\\arctan x<1` devuelve success=false, PARSE_ERROR; `atan(x)<1` devuelve el intervalo correcto. La prueba cubre el canal HTTP directo, no demuestra la interfaz visual. IN-I-03 queda funcionalmente aprobado solo para formas normalizadas; el canal literal permanece pendiente. No se declara cierre completo. S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: esperar y revisar reporte de mutación 43715315873; después corregir y verificar el canal HTTP literal IN-I-03, sin duplicar gates en curso.
+
+---
+
 # r545 — S19 Plus en revisión; IN-I-03 funcional verificado
 
 Plus SHA ecfc786d8caf30aad82e83828902eaf10b029505 añade pruebas dirigidas para agregados, normalización y rechazo de entradas inválidas dentro de la selección existente; 456 pruebas locales aprobadas. Push Plus acumulativo 43715315872, H1d 43715315847 y seguridad/mutación 43715315873 en curso o cola. S19 permanece REVIEW: el informe previo registró sobrevivientes y timeouts; no se ha acreditado mejora. IN-I-03: Lite acumulativo 43710610622 (2582 passed, 8 expected fail, 34 TODO), H1d 43710610635 (22), scientific 43710610666 (456); Plus acumulativo anterior 43710615660 (3066 backend passed, 1 skipped, 11 xfailed; 1055 frontend passed, 28 TODO) y H1d 43710615637 (38). El nuevo SHA Plus requiere reconciliación antes del cierre. S25, SG28/DIST, EV-D-01 BLOCKED; global OPEN.
