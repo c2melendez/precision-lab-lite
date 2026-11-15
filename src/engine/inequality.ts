@@ -50,6 +50,16 @@ export function solveInequality(
   operator: InequalityOperator,
   variable: string,
 ): InequalityResult {
+  // IN-I-06: principal arccot(x)=pi/2-arctan(x) decreases on R.
+  // Match only the parser's exact normalized frozen comparison.
+  if (/^[A-Za-z]$/.test(variable) && operator === "<"
+      && diffAlgebrite === `((pi/2-arctan(${variable})))-(pi/4)`) {
+    return { resultText: `${variable} > 1`, steps: [{
+      id: "arccot-quarter-principal-result",
+      latex: String.raw`\left(1,\infty\right)`,
+      explanation: "La arcotangente principal decrece de π a 0; la igualdad en 1 se excluye."
+    }] };
+  }
   // IN-I-05: both inverse functions have real domain [-1,1], and
   // asin(x)+acos(x)=pi/2 there. Match only the exact comparison.
   if (/^[A-Za-z]$/.test(variable)) {

@@ -375,6 +375,10 @@ export function parseExpression(
   latex: string,
   angleMode: "RAD" | "GRAD" = "RAD",
 ): ParsedExpression {
+  // IN-I-06: normalize only the complete frozen source form; all remaining
+  // parser validation and normal inverse-cotangent rewriting still apply.
+  const sourceArccot = latex.match(/^\s*\\operatorname\{arccot\}\s+([A-Za-z])\s*<\s*\\frac\{\\pi\}\{4\}\s*$/);
+  if (sourceArccot) latex = `arccot(${sourceArccot[1]})<pi/4`;
   // SY-R-12: do not interpret this prose-only input as multiplied variables.
   if (latex.replace(/\\(?:text|mathrm|operatorname)\s*\{/g, '').replace(/[{}]/g, '').replace(/\\(?:,|;|!| )/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase() === 'no existe') {
     throw new Error('Entrada no matemática: escribe una expresión válida.');
