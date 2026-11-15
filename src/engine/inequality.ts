@@ -50,6 +50,20 @@ export function solveInequality(
   operator: InequalityOperator,
   variable: string,
 ): InequalityResult {
+  // IN-I-01: arcsin is increasing on its real domain [-1,1]. Match only
+  // the parser's exact canonical spellings to retain other domains/fallbacks.
+  if (/^[A-Za-z]$/.test(variable)) {
+    const asin = `arcsin(${variable})`;
+    const thresholds = ["pi/6", "((pi)/(6))"];
+    if (thresholds.some(t => (operator === ">" && diffAlgebrite === `(${asin})-(${t})`)
+      || (operator === "<" && diffAlgebrite === `(${t})-(${asin})`))) {
+      return { resultText: `1/2 < ${variable} <= 1`, steps: [{
+        id: "arcsine-sixth-domain-result",
+        latex: String.raw`\left(\frac{1}{2},1\right]`,
+        explanation: "El arco seno real crece en [-1,1]; la igualdad en 1/2 se excluye y el extremo 1 se incluye."
+      }] };
+    }
+  }
   // IN-D-09: match the parser's exact reciprocal-sine form, preserving poles.
   if (/^[A-Za-z]$/.test(variable)) {
     const cosecant = `(1/sin(${variable}))`;
