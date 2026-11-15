@@ -1,3 +1,7 @@
+## r548 — IN-I-03 PASS_SCOPED funcional
+
+Gates funcionales ejecutados y logs revisados según CURRENT_STATE r548; S19 permanece REVIEW con dos corridas de mutación en curso. Iniciar IN-I-04 sin declarar E2E dedicado ni cierre global.
+
 ## r547 — IN-I-03 HTTP literal Plus en verificación
 
 Plus f9222b115fb2ed8bba46245cc7d8d3ecdea52b84; 273 pruebas locales aprobadas, gates push pendientes. Mutación previa sigue en curso. Global OPEN.
