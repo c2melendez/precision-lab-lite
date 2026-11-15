@@ -1,3 +1,11 @@
+# r532 — IN-D-08: evidencia acumulativa revisada; reconciliación pendiente
+
+HEAD técnico Lite 75558880204e15cfd23a1a1dacdcefe5e558de4f; Plus a2bb123f2babfc8c4e8df725f3b00806af606061. IN-D-08: cot(x)>=1, x∈(0,π), resultado (0,π/4]. Lite acumulativo 43681790954/job 132713777141: 2558 passed, 8 expected fail, 34 TODO; focal 10. H1d 43681790797: 22 passed; científico 43681790844: 456 passed. Plus acumulativo 43681802532/backend 132713812218: 3049 passed, 1 skipped, 11 xfailed; frontend 132713812291: 1055 passed, 28 TODO. H1d 43681802533: 38 passed. Pasos y logs revisados; omisiones no son PASS. Global OPEN; S25, SG28/DIST y EV-D-01 permanecen BLOCKED.
+
+Siguiente acción: reconciliar continuity.json y verificar todos los gates y el alcance literal de IN-D-08 antes de declarar cierre; no repetir corridas equivalentes. El índice r531 aún no refleja los SHA técnicos.
+
+---
+
 # r531 — IN-D-07 PASS_SCOPED bilateral; siguiente IN-D-08
 
 Global OPEN. IN-D-07: sec(x)>2 en (-π/2,π/2), solución (-π/2,-π/3) ∪ (π/3,π/2). Alcance: parser/motor Lite periódico y servicio/HTTP Plus normalizado con aviso de rama principal; no ingesta literal completa del dominio ni E2E dedicado de la fila.
