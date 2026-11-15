@@ -1,3 +1,13 @@
+# r557 — IN-I-07: restauración de Lite y literal Plus publicados
+
+La rama Lite contenía un marcador provisional en src/engine/inequality.ts que impedía cargar las pruebas; se restauró desde b809088 y se añadió la regla acotada IN-I-07. Lite f909c591b1df59143982c0f9364972e1bde28ffb: cuatro pruebas focalizadas locales PASS; acumulativo 43770664136, H1d 43770664236, Scientific 43770664184 y CI 43770664122 pendientes.
+
+Plus: el test-first 1bdf395 detectó PARSE_ERROR en el literal fuente. 318c779ce597d0f02ca3a3eeca19f990bfdcec51 normaliza únicamente la forma completa y conserva la validación; 269 pruebas locales de fila, parser y seguridad PASS. Acumulativo 43770667769, H1d 43770667753, Native 43770667820, CI 43770667786 y seguridad 43770667767 pendientes. No declarar PASS antes de revisar jobs y logs. S19 REVIEW, S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: comprobar jobs/logs de los SHA técnicos y mutación en curso; verificar IN-I-07 sin duplicar corridas y continuar la siguiente fila viable.
+
+---
+
 # r555 — IN-I-05 funcional verificado; IN-I-06 publicado
 
 IN-I-05 PASS_SCOPED funcional: Lite 8e2ae1dc, acumulativo 43742889797 (2594 passed, 8 expected fail, 34 TODO), H1d 43742889793 (22), Scientific 43742889802 (456); Plus dcd749bb, acumulativo 43748732737/backend job 132917717850 (3129 passed, 1 skipped, 11 xfailed; literal y controles ejecutados), frontend job 132917717731 (1055 passed, 28 TODO), H1d 43748732670 (38), Native 43748732677 (26 desktop, 52 tablet/móvil). Jobs y logs revisados. No acredita E2E visual específico. Omisiones no son PASS.

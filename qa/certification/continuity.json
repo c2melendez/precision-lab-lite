@@ -1,40 +1,48 @@
 {
   "schema_version": 1,
-  "revision": 556,
+  "revision": 557,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "b809088d1dbbc3cb939910e2dfba02b2b27991e4",
-  "baseline_case": "TRIG-IN-I-06",
-  "baseline_status": "PASS_SCOPED",
+  "technical_baseline_sha": "f909c591b1df59143982c0f9364972e1bde28ffb",
+  "baseline_case": "TRIG-IN-I-07",
+  "baseline_status": "WAIT",
   "global_certification": "OPEN",
   "gates": {
     "cumulative": {
       "workflow": ".github/workflows/in625-cumulative-certification.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-16-continuity-v1"
     },
     "h1d": {
       "workflow": ".github/workflows/in625-h1d-reentry.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-16-continuity-v1"
     },
     "security": {
       "workflow": ".github/workflows/certification-dependency-gates.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-16-continuity-v1",
       "allow_reuse": false
     },
     "scientific": {
       "workflow": ".github/workflows/syntax309-scientific-e2e.yml",
-      "inputs": ["*"],
+      "inputs": [
+        "*"
+      ],
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
     }
   },
   "next_action": {
     "id": "TRIG-IN-I-07",
     "previous_id": "TRIG-IN-I-06",
-    "status": "IDENTIFY",
-    "action": "Identificar y comenzar TRIG-IN-I-07 (siguiente fila de desigualdades inversas); test-first bilateral, dominio, frontera y literal donde aplique, sin duplicar gates de seguridad en curso."
+    "status": "WAIT",
+    "action": "Revisar jobs y logs del SHA técnico y mutación pendiente; luego continuar la siguiente fila."
   },
   "blockers": [
     {
@@ -43,7 +51,7 @@
       "run_id": 43538686314,
       "job_id": 132273991849,
       "classification": "ACCEPTANCE_REVIEW",
-      "exit_condition": "Evaluar informe ya producido y criterios de aceptaci\u00f3n por perfil; supervivientes/timeouts y jobs omitidos no son PASS. Conservar el shutdown hist\u00f3rico sin relanzar inputs id\u00e9nticos.",
+      "exit_condition": "Evaluar informe ya producido y criterios de aceptación por perfil; supervivientes/timeouts y jobs omitidos no son PASS. Conservar el shutdown histórico sin relanzar inputs idénticos.",
       "current_run_id": 43559502112,
       "current_job_id": 132339909267,
       "last_shutdown_run_id": 43695734343,
@@ -56,7 +64,7 @@
     {
       "id": "H2-SG28-DIST-01..08",
       "status": "BLOCKED",
-      "exit_condition": "Evidencia contractual multinodo real; aislamiento desactivado por defecto, sin activaci\u00f3n en producci\u00f3n."
+      "exit_condition": "Evidencia contractual multinodo real; aislamiento desactivado por defecto, sin activación en producción."
     },
     {
       "id": "EV-D-01",
@@ -71,15 +79,15 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-15T22:26:00.000Z",
+  "updated_utc": "2026-11-15T22:41:42.466Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
       "input_fingerprint": "ea87e1316186be0ac6cb0d371dab3f197d1ea4aa73735437556c9148b98bbb51",
       "head_sha": "b809088d1dbbc3cb939910e2dfba02b2b27991e4",
       "evidence_sha": "b809088d1dbbc3cb939910e2dfba02b2b27991e4",
-      "decision": "REUSE",
-      "reason": "Corrida SUCCESS revisada: 2598 passed, 8 expected fail, 34 TODO; focal IN-I-06 cubierto.",
+      "decision": "REVIEW",
+      "reason": "El SHA técnico avanzó; reconciliar huella y evidencia antes de reutilizar.",
       "run_id": 43754112597,
       "logs_reviewed": true,
       "evidence_executed": true,
@@ -90,8 +98,8 @@
       "input_fingerprint": "1490b68e3e814ca67d65e693c8ee2dbc17e8758fc28a086d8afa508170cdafa9",
       "head_sha": "b809088d1dbbc3cb939910e2dfba02b2b27991e4",
       "evidence_sha": "b809088d1dbbc3cb939910e2dfba02b2b27991e4",
-      "decision": "REUSE",
-      "reason": "Corrida SUCCESS revisada.",
+      "decision": "REVIEW",
+      "reason": "El SHA técnico avanzó; reconciliar huella y evidencia antes de reutilizar.",
       "run_id": 43754112551,
       "logs_reviewed": true,
       "evidence_executed": true,
@@ -103,7 +111,7 @@
       "head_sha": "b809088d1dbbc3cb939910e2dfba02b2b27991e4",
       "evidence_sha": "b809088d1dbbc3cb939910e2dfba02b2b27991e4",
       "decision": "REVIEW",
-      "reason": "Seguridad din\u00e1mica pendiente de revisi\u00f3n.",
+      "reason": "El SHA técnico avanzó; reconciliar huella y evidencia antes de reutilizar.",
       "logs_reviewed": false,
       "evidence_executed": false,
       "acceptance_revision": "2026-10-16-continuity-v1"
@@ -113,8 +121,8 @@
       "input_fingerprint": "ae0f6d9430b0ca5223adddfda34f589970e44d4d5d74b96f8573700b34c47324",
       "head_sha": "b809088d1dbbc3cb939910e2dfba02b2b27991e4",
       "evidence_sha": "b809088d1dbbc3cb939910e2dfba02b2b27991e4",
-      "decision": "REUSE",
-      "reason": "Corrida SUCCESS revisada.",
+      "decision": "REVIEW",
+      "reason": "El SHA técnico avanzó; reconciliar huella y evidencia antes de reutilizar.",
       "run_id": 43754112552,
       "logs_reviewed": true,
       "evidence_executed": true,
@@ -134,5 +142,14 @@
         "evidence_executed": true
       }
     }
+  },
+  "pending_i07": {
+    "head_sha": "f909c591b1df59143982c0f9364972e1bde28ffb",
+    "runs": [
+      43770664136,
+      43770664236,
+      43770664184,
+      43770664122
+    ]
   }
 }
