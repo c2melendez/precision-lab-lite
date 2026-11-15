@@ -1,3 +1,11 @@
+# r535 — IN-D-08 PASS_SCOPED; iniciar IN-D-09
+
+IN-D-08 aprobado en alcance: parser/motor periódico Lite y servicio/HTTP Plus con advertencia de rama principal; la ingesta literal completa del dominio y un E2E dedicado de la fila no están acreditados. Lite SHA 75558880204e15cfd23a1a1dacdcefe5e558de4f: acumulativo 43681790954 (2558 passed, 8 expected fail, 34 TODO), H1d 43681790797 (22), Scientific 43681790844 (456). Plus SHA 5f10389c4ec0217d1007aa22b5219c34ba91f0b9: acumulativo 43691200764/backend 132742038460 (3049 passed, 1 skipped, 11 xfailed) y frontend 132742038378 (1055 passed, 28 TODO); H1d 43691200749 (38), Native 43691200755 (26 desktop, 52 tablet/móvil). Jobs, pasos y logs revisados; omisiones no son PASS. Seguridad 43691200778/backend mutmut 132742142853 en curso; perfiles frontend omitidos. Global OPEN; S25, SG28/DIST y EV-D-01 BLOCKED.
+
+Siguiente acción única: IN-D-09 csc(x)<-2 en [0,2π), solución (π,7π/6) ∪ (11π/6,2π); test-first bilateral, polos y extremos abiertos, conservar fallback; verificar gates sin duplicar.
+
+---
+
 # r534 — IN-D-08: paridad Plus en verificación
 
 Plus SHA técnico 5f10389c4ec0217d1007aa22b5219c34ba91f0b9 añade advertencia de rama principal y período π para cot(x)>=1; 41 pruebas locales aprobadas. Push Plus: CI 43691200754, acumulativo 43691200764, H1d 43691200749, Native 43691200755 y seguridad 43691200778 en curso o cola al registrar. Lite conserva evidencia r533. No declarar cierre hasta revisar los logs y alcance literal. Global OPEN; S25, SG28/DIST y EV-D-01 BLOCKED.

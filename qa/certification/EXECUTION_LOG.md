@@ -1,3 +1,7 @@
+## r535 — IN-D-08 PASS_SCOPED bilateral
+
+Gates funcionales ejecutados y logs revisados según CURRENT_STATE r535. Plus seguridad 43691200778 aún en curso; perfiles omitidos no son PASS. Alcance literal completo y E2E dedicado no acreditados. Siguiente acción IN-D-09; global OPEN y bloqueos conservados.
+
 ## r534 — Paridad IN-D-08 Plus en verificación
 
 Plus 5f10389c4ec0217d1007aa22b5219c34ba91f0b9: advertencia de período; 41 pruebas locales aprobadas; corridas automáticas pendientes según CURRENT_STATE. Global OPEN.
