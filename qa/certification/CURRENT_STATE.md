@@ -1,3 +1,15 @@
+# r569 — IN-H-08 verificado; IN-H-09 publicado
+
+IN-H-08 PASS_SCOPED funcional: Lite 8f6026c3e6772f038ce107c5f6281d9d8f820777 acumulativo 43828081189/job 133166539375 2634 aprobadas, 8 expected fail, 34 TODO, cuatro pruebas IN-H-08; H1d 43828081089/job 133166539200 22 y Scientific 43828080996/job 133166538463 456. Plus 9850f2d417b5557f048ff8220ce1360daae4130c acumulativo 43828092083/backend 133166575031 3165 aprobadas, 1 skipped, 11 xfailed, fuente, servicio y literal HTTP IN-H-08 PASS; frontend 133166574663 1055 y 28 TODO; H1d 43828092026/job 133166574720 38 y Native 43828092093/job 133166574821 26/52. Jobs y logs revisados; no acredita E2E visual específico.
+
+IN-H-09: Lite a0c0af999e4557696019ac644443c9bc3fa75768 corrige cosh(x)<1 sin soluciones reales; 36 pruebas locales IN-H-01..09 PASS. Plus 9caf7367539289c9f4d01ec4e97bbc15182bc8d4 corrige literal fuente, conserva servicio; 294 pruebas locales casos/parser/seguridad PASS. Lite acumulativo 43841960277, H1d 43841960432, Scientific 43841960211 en curso. Plus acumulativo 43841986884, H1d 43841987139, Native 43841986995 y seguridad 43841987013 en curso. No declarar PASS sin revisar logs.
+
+S19 REVIEW: mutación anterior 43828092116/job 133166830929 en curso; frontend-audit skipped. S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: revisar jobs/logs IN-H-09 y mutación pendiente sin duplicar; verificar literal y conjunto vacío.
+
+---
+
 # r568 — IN-H-07 verificado; IN-H-08 publicado
 
 IN-H-07 PASS_SCOPED funcional: Lite 0e93f4ff28f644767c85956c9ea86ccbb6c07e2c acumulativo 43818348428/job 133135431242 2630 aprobadas, 8 expected fail, 34 TODO, cuatro pruebas IN-H-07; H1d 43818348529/job 133135431589 22 y Scientific 43818348526/job 133135431470 456. Plus a822b2607a24b809925a9ce197d5787643727ba6 acumulativo 43818357382/backend 133135458481 3162 aprobadas, 1 skipped, 11 xfailed, fuente, servicio, literal HTTP y rechazo inseguro IN-H-07 PASS; frontend 133135458157 1055 y 28 TODO; H1d 43818357389/job 133135458395 38 y Native 43818357353/job 133135458449 26/52. Jobs y logs revisados; no acredita E2E visual específico.
