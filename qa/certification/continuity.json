@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 571,
+  "revision": 572,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "2823721eb7034b1cef03d8f65b4b6afb91e1edaf",
-  "baseline_case": "TRIG-IN-HI-02",
+  "technical_baseline_sha": "16c177ade1b87ee2794b7c6b6027a8ad2572a9b0",
+  "baseline_case": "TRIG-IN-HI-03",
   "baseline_status": "WAIT",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-IN-HI-02",
-    "previous_id": "TRIG-IN-HI-01",
+    "id": "TRIG-IN-HI-03",
+    "previous_id": "TRIG-IN-HI-02",
     "status": "WAIT",
-    "action": "Revisar jobs y logs del SHA técnico, literal y frontera incluida, y mutación pendiente."
+    "action": "Reintentar publicación Plus tras error GraphQL y revisar CI bilateral."
   },
   "blockers": [
     {
@@ -79,7 +79,7 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-16T11:11:48.785Z",
+  "updated_utc": "2026-11-16T11:47:23.724Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
@@ -494,5 +494,14 @@
       43855293916,
       43855294014
     ]
+  },
+  "pending_hi03": {
+    "head_sha": "16c177ade1b87ee2794b7c6b6027a8ad2572a9b0",
+    "runs": [
+      43860683028,
+      43860683081,
+      43860683089
+    ],
+    "plus_prepared_sha": "6fde0b7439dd9b4f362d1159cc94e38ad4e10f44"
   }
 }

@@ -1,3 +1,15 @@
+# r572 — IN-HI-02 verificado; IN-HI-03 publicación parcial
+
+IN-HI-02 PASS_SCOPED funcional: Lite 2823721eb7034b1cef03d8f65b4b6afb91e1edaf acumulativo 43855293885/job 133257898864 2646 aprobadas, 8 expected fail, 34 TODO, cuatro pruebas IN-HI-02; H1d 43855293916/job 133257898886 22 y Scientific 43855294014/job 133257898990 456. Plus 1a1b4284dc968aa5cf59f6df0256bbd462fd810d acumulativo 43855517001/backend 133258642126 3174 aprobadas, 1 skipped, 11 xfailed, fuente, servicio y literal HTTP IN-HI-02 PASS; frontend 133258641726 1055 y 28 TODO; H1d 43855516990/job 133258641618 38 y Native 43855517062/job 133258641854 26/52. Jobs y logs revisados; no acredita E2E visual específico.
+
+IN-HI-03: Lite 16c177ade1b87ee2794b7c6b6027a8ad2572a9b0 implementa acosh(x)<1 con dominio [1,cosh(1)); 48 pruebas locales PASS. Acumulativo 43860683028, H1d 43860683081 y Scientific 43860683089 en curso. Plus preparado y 303 pruebas locales PASS, commit GitHub 6fde0b7439dd9b4f362d1159cc94e38ad4e10f44 no incorporado a rama: update_ref devolvió error GraphQL dos veces, HEAD sigue c762b1677b4cb2ae7a6dc530f042ed9d845c8327. Reintentar con expected_sha tras verificar HEAD; no declarar publicado ni PASS Plus.
+
+S19 REVIEW: mutación 43855517134/job 133258909548 en curso; frontend-audit skipped. S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: recuperar HEAD Plus, incorporar commit preparado por CAS si sigue siendo descendiente, revisar corridas exactas en ambos repos y registrar continuidad bilateral.
+
+---
+
 # r571 — IN-HI-01 verificado; IN-HI-02 publicado
 
 IN-HI-01 PASS_SCOPED funcional: Lite 05ce233b23c20edd7be7b9a80c4205ab2bc3204a acumulativo 43845723004/job 133225273947 2642 aprobadas, 8 expected fail, 34 TODO, cuatro pruebas IN-HI-01; H1d 43845723032/job 133225273412 22 y Scientific 43845723206/job 133225274034 456. Plus a0d00726fd8a373f93dc71b1befaf60f58bfb2d9 acumulativo 43845733017/backend 133225308247 3171 aprobadas, 1 skipped, 11 xfailed, fuente, servicio y literal HTTP IN-HI-01 PASS; frontend 133225308785 1055 y 28 TODO; H1d 43845732998/job 133225307853 38 y Native 43845733125/job 133225309057 26/52. Jobs y logs revisados; no acredita E2E visual específico.
