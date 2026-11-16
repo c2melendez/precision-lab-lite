@@ -65,6 +65,13 @@ export function solveInequality(
       }],
     };
   }
+  // IN-H-03: tanh increases on R and tanh(log(3)/2)=1/2.
+  if (/^[A-Za-z]$/.test(variable)) {
+    const f = `tanh(${variable})`;
+    if (["1/2", "((1)/(2))"].some(t => (operator === "<=" && diffAlgebrite === `(${f})-(${t})`) || (operator === ">=" && diffAlgebrite === `(${t})-(${f})`))) {
+      return { resultText: `${variable} <= log(3)/2`, steps: [{ id: "tanh-half-result", latex: String.raw`\left(-\infty,\frac{\ln 3}{2}\right]`, explanation: "La tangente hiperbólica es creciente; la igualdad en ln(3)/2 se incluye." }] };
+    }
+  }
   // IN-H-02: cosh is even, with cosh(x)=2 at ±log(2+sqrt(3)).
   if (/^[A-Za-z]$/.test(variable) && ((operator === "<" && diffAlgebrite === `(cosh(${variable}))-(2)`) || (operator === ">" && diffAlgebrite === `(2)-(cosh(${variable}))`))) {
     return { resultText: `-log(2+sqrt(3)) < ${variable} < log(2+sqrt(3))`, steps: [{id: "cosh-two-domain-result", latex: String.raw`\left(-\ln(2+\sqrt{3}),\ln(2+\sqrt{3})\right)`, explanation: "El coseno hiperbólico es par y crece para x positivo; ambos extremos se excluyen."}] };
