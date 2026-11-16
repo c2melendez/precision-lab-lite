@@ -65,6 +65,10 @@ export function solveInequality(
       }],
     };
   }
+  // IN-H-08: cosh(x) >= 1 for every real x, with equality at zero.
+  if (/^[A-Za-z]$/.test(variable) && ((operator === ">=" && diffAlgebrite === `(cosh(${variable}))-(1)`) || (operator === "<=" && diffAlgebrite === `(1)-(cosh(${variable}))`))) {
+    return {resultText: `${variable} ∈ ℝ`, steps: [{id: "cosh-real-domain-result", latex: String.raw`\mathbb{R}`, explanation: "El coseno hiperbólico tiene mínimo 1 en cero y está definido en todos los reales."}]};
+  }
   // IN-H-07: sech=1/cosh, cosh is positive and even.
   if (/^[A-Za-z]$/.test(variable) && operator === ">" && diffAlgebrite === `((1/cosh(${variable})))-(1/2)`) {
     return {resultText: `-log(2+sqrt(3)) < ${variable} < log(2+sqrt(3))`, steps: [{id: "sech-half-result", latex: String.raw`\left(-\ln(2+\sqrt{3}),\ln(2+\sqrt{3})\right)`, explanation: "Como cosh es positivo, sech(x)>1/2 equivale a cosh(x)<2."}]};
