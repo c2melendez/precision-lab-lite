@@ -65,6 +65,10 @@ export function solveInequality(
       }],
     };
   }
+  // IN-HI-02: asinh is increasing and asinh(0)=0.
+  if (/^[A-Za-z]$/.test(variable) && ((operator === "<=" && diffAlgebrite === `(asinh(${variable}))-(0)`) || (operator === ">=" && diffAlgebrite === `(0)-(asinh(${variable}))`))) {
+    return {resultText: `${variable} <= 0`, steps: [{id: "asinh-nonpositive-result", latex: String.raw`\left(-\infty,0\right]`, explanation: "El seno hiperbólico inverso es creciente y la igualdad en cero se incluye."}]};
+  }
   // IN-HI-01: asinh is strictly increasing on the real line.
   if (/^[A-Za-z]$/.test(variable) && ((operator === ">" && diffAlgebrite === `(asinh(${variable}))-(1)`) || (operator === "<" && diffAlgebrite === `(1)-(asinh(${variable}))`))) {
     return {resultText: `${variable} > sinh(1)`, steps: [{id: "asinh-one-result", latex: String.raw`\left(\sinh 1,\infty\right)`, explanation: "El seno hiperbólico inverso es creciente y la igualdad se excluye."}]};
