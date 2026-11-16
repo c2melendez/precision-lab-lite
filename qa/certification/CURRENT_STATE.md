@@ -1,3 +1,24 @@
+# r559 — IN-H-01 implementado y en verificación
+
+La sección 3.C de la matriz congelada abre con IN-H-01. La fila pide resolver `\sinh x>0` y espera `(0,\infty)`. El cero se excluye porque sinh es estrictamente creciente en ℝ y sinh(0)=0. Fuente: `qa/certification/legacy_sources/ejercicios_trigonometria.md.gz`, blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`. IN-I-07 ya tiene evidencia funcional bilateral en r558.
+
+Lite reproducía tres fallos porque el solver intentaba buscar raíces de un polinomio. La regla acotada resuelve la comparación original y la invertida, con variable explícita. Plus ya resolvía correctamente la forma normalizada y el caso invertido. Fallaba únicamente el literal LaTeX por HTTP. La normalización acotada del literal sigue pasando por el parser habitual y el cálculo permanece en el servicio existente. Las regresiones anclan la fila original y comprueban el extremo estricto y la salida exacta. El alcance cubre parser y motor Lite, y servicio y HTTP Plus. El E2E visual específico de la fila queda fuera de esta evidencia.
+
+En local aprobaron 189 pruebas y el build de Lite. Plus aprobó 105 pruebas de trigonometría y phase2, y 320 de parser y API de desigualdades. Las dos publicaciones técnicas están en `qa/syntax-audit-in625-a1`.
+
+| Producto | Commit técnico | CI | Acumulativo | H1d | UI |
+|---|---|---|---|---|---|
+| Lite | `f9a4d71d119e05f1fba7fd0210f453f1c0e49a2b` | 43778573071 | 43778573123 | 43778573058 | Scientific 43778573118 |
+| Plus | `5451deb23aedf68c5d7b8b3df9f4228352460bf1` | 43778578085 | 43778578000 | 43778578045 | Native 43778578031 |
+
+Corte de Actions 2026-11-16T00:11:14.003Z. Lite CI/job 133010374329 y acumulativo/job 133010374602 ejecutaron 453 suites, 2606 pruebas aprobadas, 8 fallos esperados y 34 TODO. Los logs confirman 4/4 de IN-H-01 y build exitoso en ambos jobs. H1d Lite/job 133010374476 ejecutó 22/22. Scientific seguía en ejecución. El frontend acumulativo Plus/job 133010390166 ejecutó 1055 pruebas aprobadas y 28 TODO. Su backend/job 133010389891, CI, H1d y Native seguían en ejecución. Los guards de los gates funcionales revisados registraron `skip=false` y el SHA técnico correspondiente.
+
+La revisión de seguridad Plus 43778578058 registró backend-security/job 133010509373 aprobado y perfiles frontend omitidos. La campaña de mutación anterior 43770667767/job 132985769853 seguía en curso en su consulta. La nueva corrida push seleccionó el backend después del cambio de parser y su job 133010546339 está en curso. S19 sigue REVIEW. S25, EV-D-01 y SG28/DIST conservan sus bloqueos. Certificación global **OPEN**.
+
+IN-H-01 queda **VERIFYING_CI**. La siguiente acción es revisar las corridas pendientes, completar el cierre funcional bilateral y continuar con IN-H-02, la segunda fila de la sección 3.C.
+
+---
+
 # r558 — IN-I-07: evidencia funcional verificada
 
 Lite SHA f909c591b1df59143982c0f9364972e1bde28ffb: acumulativo 43770664136/job 132985621107 ejecutó IN-I-07 y 2602 pruebas aprobadas, 8 expected fail y 34 TODO; H1d 43770664236/job 132985621408 22 aprobadas; Scientific 43770664184/job 132985621373 456 aprobadas. Plus SHA 318c779ce597d0f02ca3a3eeca19f990bfdcec51: acumulativo 43770667769/backend 132985634338 3139 aprobadas, 1 skipped y 11 xfailed, incluido literal HTTP IN-I-07; frontend 132985634573 1055 aprobadas y 28 TODO; H1d 43770667753/job 132985634093 38; Native 43770667820/job 132985634625 26 desktop y 52 tablet/móvil. Jobs, pasos y logs revisados. IN-I-07 PASS_SCOPED funcional, no acredita E2E visual dedicado.
