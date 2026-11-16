@@ -65,6 +65,10 @@ export function solveInequality(
       }],
     };
   }
+  // IN-H-09: cosh(x) has minimum 1 on the real line.
+  if (/^[A-Za-z]$/.test(variable) && ((operator === "<" && diffAlgebrite === `(cosh(${variable}))-(1)`) || (operator === ">" && diffAlgebrite === `(1)-(cosh(${variable}))`))) {
+    return {resultText: "∅", steps: [{id: "cosh-below-minimum-result", latex: String.raw`\varnothing`, explanation: "El coseno hiperbólico nunca es menor que 1 en los reales."}]};
+  }
   // IN-H-08: cosh(x) >= 1 for every real x, with equality at zero.
   if (/^[A-Za-z]$/.test(variable) && ((operator === ">=" && diffAlgebrite === `(cosh(${variable}))-(1)`) || (operator === "<=" && diffAlgebrite === `(1)-(cosh(${variable}))`))) {
     return {resultText: `${variable} ∈ ℝ`, steps: [{id: "cosh-real-domain-result", latex: String.raw`\mathbb{R}`, explanation: "El coseno hiperbólico tiene mínimo 1 en cero y está definido en todos los reales."}]};
