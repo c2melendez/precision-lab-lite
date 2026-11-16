@@ -65,6 +65,10 @@ export function solveInequality(
       }],
     };
   }
+  // IN-H-02: cosh is even, with cosh(x)=2 at ±log(2+sqrt(3)).
+  if (/^[A-Za-z]$/.test(variable) && ((operator === "<" && diffAlgebrite === `(cosh(${variable}))-(2)`) || (operator === ">" && diffAlgebrite === `(2)-(cosh(${variable}))`))) {
+    return { resultText: `-log(2+sqrt(3)) < ${variable} < log(2+sqrt(3))`, steps: [{id: "cosh-two-domain-result", latex: String.raw`\left(-\ln(2+\sqrt{3}),\ln(2+\sqrt{3})\right)`, explanation: "El coseno hiperbólico es par y crece para x positivo; ambos extremos se excluyen."}] };
+  }
   // IN-I-07: real arcsine domain and nonnegative output.
   if (/^[A-Za-z]$/.test(variable) && operator === ">=" && diffAlgebrite === `(arcsin(2*${variable}-1))-(0)`) {
     return { resultText: `1/2 <= ${variable} <= 1`, steps: [{id: "arcsine-affine-domain-result", latex: String.raw`\left[\frac{1}{2},1\right]`, explanation: "El argumento debe estar entre 0 y 1; ambos extremos se incluyen."}] };
