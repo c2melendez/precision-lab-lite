@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 570,
+  "revision": 571,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "05ce233b23c20edd7be7b9a80c4205ab2bc3204a",
-  "baseline_case": "TRIG-IN-HI-01",
+  "technical_baseline_sha": "2823721eb7034b1cef03d8f65b4b6afb91e1edaf",
+  "baseline_case": "TRIG-IN-HI-02",
   "baseline_status": "WAIT",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-IN-HI-01",
-    "previous_id": "TRIG-IN-H-09",
+    "id": "TRIG-IN-HI-02",
+    "previous_id": "TRIG-IN-HI-01",
     "status": "WAIT",
-    "action": "Revisar jobs y logs del SHA técnico, literal y frontera estricta, y mutación pendiente."
+    "action": "Revisar jobs y logs del SHA técnico, literal y frontera incluida, y mutación pendiente."
   },
   "blockers": [
     {
@@ -79,7 +79,7 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-16T10:06:26.693Z",
+  "updated_utc": "2026-11-16T11:11:48.785Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
@@ -485,6 +485,14 @@
       43845723004,
       43845723032,
       43845723206
+    ]
+  },
+  "pending_hi02": {
+    "head_sha": "2823721eb7034b1cef03d8f65b4b6afb91e1edaf",
+    "runs": [
+      43855293885,
+      43855293916,
+      43855294014
     ]
   }
 }
