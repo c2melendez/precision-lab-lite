@@ -65,6 +65,10 @@ export function solveInequality(
       }],
     };
   }
+  // IN-HI-01: asinh is strictly increasing on the real line.
+  if (/^[A-Za-z]$/.test(variable) && ((operator === ">" && diffAlgebrite === `(asinh(${variable}))-(1)`) || (operator === "<" && diffAlgebrite === `(1)-(asinh(${variable}))`))) {
+    return {resultText: `${variable} > sinh(1)`, steps: [{id: "asinh-one-result", latex: String.raw`\left(\sinh 1,\infty\right)`, explanation: "El seno hiperbólico inverso es creciente y la igualdad se excluye."}]};
+  }
   // IN-H-09: cosh(x) has minimum 1 on the real line.
   if (/^[A-Za-z]$/.test(variable) && ((operator === "<" && diffAlgebrite === `(cosh(${variable}))-(1)`) || (operator === ">" && diffAlgebrite === `(1)-(cosh(${variable}))`))) {
     return {resultText: "∅", steps: [{id: "cosh-below-minimum-result", latex: String.raw`\varnothing`, explanation: "El coseno hiperbólico nunca es menor que 1 en los reales."}]};
