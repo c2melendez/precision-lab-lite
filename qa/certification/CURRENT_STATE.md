@@ -1,3 +1,15 @@
+# r567 — IN-H-06 verificado; IN-H-07 publicado
+
+IN-H-06 PASS_SCOPED funcional: Lite 8d14510e5c2ddf597d21b2898ede5ced0ffbcf4e acumulativo 43811599984/job 133114258134 2626 aprobadas, 8 expected fail, 34 TODO, cinco pruebas IN-H-06; H1d 43811600069/job 133114258205 22 y Scientific 43811599990/job 133114258165 456. Plus 7065c1392267e50e26b6fb467d9fb065cc01df95 acumulativo 43811603346/backend 133114268345 3158 aprobadas, 1 skipped, 11 xfailed, fuente, servicio y literal HTTP IN-H-06 PASS; frontend 133114268509 1055 y 28 TODO; H1d 43811603264/job 133114267910 38 y Native 43811603230/job 133114268026 26/52. Jobs y logs revisados; no acredita E2E visual específico.
+
+IN-H-07: Lite 0e93f4ff28f644767c85956c9ea86ccbb6c07e2c corrige sech(x)>1/2; 28 pruebas locales IN-H-01..07 PASS. Plus a822b2607a24b809925a9ce197d5787643727ba6 corrige el literal fuente y verifica equivalencia exacta del resultado; 288 pruebas locales casos/parser/seguridad PASS. Lite acumulativo 43818348428, H1d 43818348529, Scientific 43818348526 en curso. Plus acumulativo 43818357382, H1d 43818357389, Native 43818357353 y seguridad 43818357345 en cola. No declarar PASS sin revisar logs.
+
+S19 REVIEW: mutación anterior 43811603254/job 133114440176 en curso; frontend-audit skipped. S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: revisar jobs/logs IN-H-07 y mutación pendiente sin duplicar; verificar literal y frontera estricta.
+
+---
+
 # r566 — IN-H-05 verificado e IN-H-06 publicado
 
 IN-H-05 queda **PASS_SCOPED** funcional en ambos productos. Para Lite, SHA `dbdb8b489896ec6efc35a07792898b5e48785004`, CI 43805791038 y acumulativo 43805791077/job 133096146057 ejecutaron 457 suites, 2621 pruebas aprobadas, cuatro de IN-H-05, 8 fallos esperados y 34 TODO. H1d 43805791132/job 133096146265 aprobó 22 y Scientific 43805791068/job 133096146040 aprobó 456. Para Plus, SHA `d82ba7f22c1e203d37b714695d2beffe39437efc`, CI 43805801021 y acumulativo 43805800884/backend 133096176980 ejecutaron 3154 pruebas aprobadas, 1 omitida y 11 xfail. Los logs del acumulativo identifican fuente, servicio y literal HTTP IN-H-05 aprobados. Frontend/job 133096177283 aprobó 1055 con 28 TODO. H1d 43805801086/job 133096177847 aprobó 38 y Native 43805800903/job 133096177143 aprobó 26 desktop y 52 tablet/móvil. Los guards de los gates revisados confirmaron ejecución sobre el SHA de producto. Falta evidencia E2E visual específica de la fila.
