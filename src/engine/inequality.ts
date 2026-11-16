@@ -50,6 +50,21 @@ export function solveInequality(
   operator: InequalityOperator,
   variable: string,
 ): InequalityResult {
+  // IN-H-01: sinh is strictly increasing on R and sinh(0) = 0.
+  const sinh = `sinh(${variable})`;
+  if (/^[A-Za-z]$/.test(variable) && (
+    (operator === ">" && diffAlgebrite === `(${sinh})-(0)`)
+    || (operator === "<" && diffAlgebrite === `(0)-(${sinh})`)
+  )) {
+    return {
+      resultText: `${variable} > 0`,
+      steps: [{
+        id: "hyperbolic-sine-positive",
+        latex: String.raw`\left(0,\infty\right)`,
+        explanation: "El seno hiperbólico es estrictamente creciente y vale cero en el origen. La desigualdad estricta excluye el cero.",
+      }],
+    };
+  }
   // IN-I-07: real arcsine domain and nonnegative output.
   if (/^[A-Za-z]$/.test(variable) && operator === ">=" && diffAlgebrite === `(arcsin(2*${variable}-1))-(0)`) {
     return { resultText: `1/2 <= ${variable} <= 1`, steps: [{id: "arcsine-affine-domain-result", latex: String.raw`\left[\frac{1}{2},1\right]`, explanation: "El argumento debe estar entre 0 y 1; ambos extremos se incluyen."}] };
