@@ -1,3 +1,11 @@
+# r561 — IN-H-02 implementado, CI pendiente
+
+Lite 6d1e5186bdc9a0314fddc457c1e5a391859613de: cosh(x)<2 requiere (-ln(2+sqrt(3)),ln(2+sqrt(3))) con extremos abiertos; test-first falló, corrección y siete pruebas locales IN-H-01/02 aprobaron. Plus 15dda34414755cc665564ec5ca88e3ef9723e066: el servicio devuelve intervalo equivalente con acosh(2); se verifica equivalencia a la fuente y se corrige el literal HTTP. 271 pruebas locales de casos, parser y seguridad aprobadas. CI Lite acumulativo 43782562607, H1d 43782562615 y Scientific 43782562652 en curso; Plus acumulativo 43782570937, H1d 43782570995, Native 43782570960 y seguridad 43782571029 en cola o curso. Sin PASS hasta revisar jobs y logs. S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: revisar CI de IN-H-02 y mutaciones en curso sin duplicar; verificar fronteras, equivalencia y literal antes de aceptar.
+
+---
+
 # r560 — IN-H-01 verificado funcionalmente
 
 Lite f9a4d71d119e05f1fba7fd0210f453f1c0e49a2b: acumulativo 43778573123/job 133010374602, 2606 aprobadas, 8 expected fail y 34 TODO; IN-H-01 cuatro pruebas ejecutadas; H1d 43778573058/job 133010374476 22 aprobadas; Scientific 43778573118/job 133010374658 456. Plus 5451deb23aedf68c5d7b8b3df9f4228352460bf1: acumulativo 43778578000/backend 133010389891 3143 aprobadas, 1 skipped, 11 xfailed; frontend 133010390166 1055 aprobadas y 28 TODO; H1d 43778578045/job 133010389998 38; Native 43778578031/job 133010390106 26 desktop y 52 tablet/móvil. Jobs y logs revisados; IN-H-01 PASS_SCOPED funcional, sin afirmar E2E visual dedicado.
