@@ -1,3 +1,15 @@
+# r565 — IN-H-04 verificado; IN-H-05 publicado
+
+IN-H-04 PASS_SCOPED funcional: Lite 4416c62ce9b9eb85aea1ac1ed8313d5de058eac5 acumulativo 43800325604/job 133078766494 2617 aprobadas, 8 expected fail, 34 TODO, cuatro pruebas IN-H-04; H1d 43800325614/job 133078766397 22 y Scientific 43800325549/job 133078766293 456. Plus 29aa0238ad06d661a28ca7622fd0edcda3358e01 acumulativo 43800343151/backend 133078828409 3151 aprobadas, 1 skipped, 11 xfailed, fuente, servicio y literal HTTP IN-H-04 PASS; frontend 133078827994 1055 y 28 TODO; H1d 43800343210/job 133078827942 38 y Native 43800343189/job 133078828087 26/52. Jobs y logs revisados; no acredita E2E visual específico.
+
+IN-H-05: Lite dbdb8b489896ec6efc35a07792898b5e48785004 corrige sinh(x)*cosh(x)>0; 19 pruebas locales IN-H-01..05 PASS. Plus d82ba7f22c1e203d37b714695d2beffe39437efc corrige el literal fuente, conserva servicio; 280 pruebas locales casos/parser/seguridad PASS. Lite acumulativo 43805791077, H1d 43805791132, Scientific 43805791068 en curso. Plus acumulativo 43805800884, H1d 43805801086, Native 43805800903 y seguridad 43805800857 en curso. No declarar PASS sin revisar logs.
+
+S19 REVIEW: mutación anterior 43800343177/job 133078974840 en curso; frontend-audit skipped. S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: revisar jobs/logs IN-H-05 y mutación pendiente sin duplicar; verificar literal y frontera estricta.
+
+---
+
 # r564 — IN-H-03 verificado; IN-H-04 publicado
 
 IN-H-03 PASS_SCOPED funcional: Lite c2b0f5bff701aa63cd2db757cc11f4831d169a1e acumulativo 43793958114/job 133058432470 2613 aprobadas, 8 expected fail, 34 TODO, cuatro pruebas IN-H-03; H1d 43793958051/job 133058432192 22 y Scientific 43793958112/job 133058432107 456. Plus 608afbcbf2fdee32e83969d73e21026df1fed505 acumulativo 43793966062/backend 133058457968 3148 aprobadas, 1 skipped y 11 xfailed, fuente, servicio y literal HTTP IN-H-03 PASS; frontend 133058458311 1055 y 28 TODO; H1d 43793966051 38 y Native 43793966113 26/52. Jobs y logs revisados; no acredita E2E visual específico.
