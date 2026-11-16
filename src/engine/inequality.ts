@@ -69,6 +69,21 @@ export function solveInequality(
   if (/^[A-Za-z]$/.test(variable) && operator === ">" && diffAlgebrite === `(sinh(${variable})*cosh(${variable}))-(0)`) {
     return {resultText: `${variable} > 0`, steps: [{id: "sinh-cosh-positive-result", latex: String.raw`\left(0,\infty\right)`, explanation: "El coseno hiperbólico es positivo y el seno hiperbólico tiene el signo de la variable."}]};
   }
+  // IN-H-06: cosh(2x) = 1 + 2*sinh(x)^2.
+  const doubledCosh = `cosh(2*${variable})`;
+  if (/^[A-Za-z]$/.test(variable) && (
+    (operator === "<=" && diffAlgebrite === `(${doubledCosh})-(3)`)
+    || (operator === ">=" && diffAlgebrite === `(3)-(${doubledCosh})`)
+  )) {
+    return {
+      resultText: `-log(1+sqrt(2)) <= ${variable} <= log(1+sqrt(2))`,
+      steps: [{
+        id: "cosh-double-three-interval",
+        latex: String.raw`\left[-\ln(1+\sqrt{2}),\ln(1+\sqrt{2})\right]`,
+        explanation: "Como cosh(2x) = 1 + 2 sinh²(x), la condición equivale a |sinh(x)| ≤ 1. El seno hiperbólico es creciente y ambos extremos se incluyen.",
+      }],
+    };
+  }
   // IN-H-04: sinh is strictly increasing and sinh(-asinh(1))=-1.
   if (/^[A-Za-z]$/.test(variable) && ((operator === "<" && diffAlgebrite === `(sinh(${variable}))-(-1)`) || (operator === ">" && diffAlgebrite === `(-1)-(sinh(${variable}))`))) {
     return {resultText: `${variable} < -log(1+sqrt(2))`, steps: [{id: "sinh-negative-one-result", latex: String.raw`\left(-\infty,-\ln(1+\sqrt{2})\right)`, explanation: "El seno hiperbólico crece en todos los reales; se excluye la igualdad."}]};
