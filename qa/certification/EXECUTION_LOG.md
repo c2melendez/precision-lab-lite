@@ -1,3 +1,11 @@
+# r563 — IN-H-03 implementado, CI pendiente
+
+Lite c2b0f5bff701aa63cd2db757cc11f4831d169a1e: test-first mostró que tanh(x)<=1/2 no se resolvía; regla acotada conserva frontera incluida ln(3)/2. Once pruebas locales IN-H-01..03 PASS. Plus 608afbcbf2fdee32e83969d73e21026df1fed505: el servicio normalizado resolvía correctamente; literal HTTP fallaba y fue normalizado de forma acotada. 274 pruebas locales IN-H, parser y seguridad PASS. Lite acumulativo 43793958114, H1d 43793958051, Scientific 43793958112; Plus acumulativo 43793966062, H1d 43793966051, Native 43793966113, seguridad 43793966056 en curso o cola. No declarar PASS sin revisar jobs y logs. S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: revisar jobs/logs de IN-H-03 y mutación pendiente, verificar literal y frontera, sin duplicar corridas.
+
+---
+
 # r562 — IN-H-02 verificado funcionalmente
 
 Lite 6d1e5186bdc9a0314fddc457c1e5a391859613de: acumulativo 43782562607/job 133022839135 2609 aprobadas, 8 expected fail, 34 TODO; tres pruebas IN-H-02 ejecutadas; H1d 43782562615/job 133022839007 22 aprobadas, Scientific 43782562652/job 133022839099 456. Plus 15dda34414755cc665564ec5ca88e3ef9723e066: acumulativo 43782570937/backend job 133022865516 3145 aprobadas, 1 skipped, 11 xfailed, IN-H-02 servicio y literal HTTP PASSED; frontend job 133022865750 1055 aprobadas, 28 TODO; H1d 43782570995/job 133022865295 38; Native 43782570960/job 133022865280 26 desktop y 52 tablet/móvil. Jobs y logs revisados. IN-H-02 PASS_SCOPED funcional; no acredita E2E visual específico.
