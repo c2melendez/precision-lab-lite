@@ -1,3 +1,26 @@
+# r566 — IN-H-05 verificado e IN-H-06 publicado
+
+IN-H-05 queda **PASS_SCOPED** funcional en ambos productos. Para Lite, SHA `dbdb8b489896ec6efc35a07792898b5e48785004`, CI 43805791038 y acumulativo 43805791077/job 133096146057 ejecutaron 457 suites, 2621 pruebas aprobadas, cuatro de IN-H-05, 8 fallos esperados y 34 TODO. H1d 43805791132/job 133096146265 aprobó 22 y Scientific 43805791068/job 133096146040 aprobó 456. Para Plus, SHA `d82ba7f22c1e203d37b714695d2beffe39437efc`, CI 43805801021 y acumulativo 43805800884/backend 133096176980 ejecutaron 3154 pruebas aprobadas, 1 omitida y 11 xfail. Los logs del acumulativo identifican fuente, servicio y literal HTTP IN-H-05 aprobados. Frontend/job 133096177283 aprobó 1055 con 28 TODO. H1d 43805801086/job 133096177847 aprobó 38 y Native 43805800903/job 133096177143 aprobó 26 desktop y 52 tablet/móvil. Los guards de los gates revisados confirmaron ejecución sobre el SHA de producto. Falta evidencia E2E visual específica de la fila.
+
+IN-H-06 ancla las tres celdas originales de la sección 3.C de `qa/certification/legacy_sources/ejercicios_trigonometria.md.gz`, blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`. El problema `cosh(2x) ≤ 3` equivale a `|sinh(x)| ≤ 1` y da `[-ln(1+√2), ln(1+√2)]`. Ambos extremos entran por igualdad.
+
+La reproducción inicial mostró tres fallos de Lite en el solver polinómico. Lite ahora resuelve el caso exacto por la identidad hiperbólica y acepta la comparación invertida. Plus conserva el servicio, que produce un intervalo cerrado con extremos `±acosh(3)/2` equivalentes a la forma logarítmica. El primer oráculo de Plus no simplificaba esa identidad y producía falsos negativos en servicio. El oráculo final demuestra igualdad exacta mediante la exponencial inyectiva sobre ℝ. La brecha real de Plus era el literal LaTeX por HTTP. Se añadió una normalización del literal completo dentro del parser existente. Las pruebas cubren los extremos y los lados de cada frontera, entrada de texto y LaTeX, comparación invertida y paridad entre las dos entradas HTTP.
+
+Validación local: Lite 209 pruebas aprobadas y build aprobado. Plus 440 pruebas aprobadas. Alcance de la fila: parser y motor Lite y servicio y HTTP Plus.
+
+| Producto | Commit técnico | CI | Acumulativo | H1d | UI |
+|---|---|---|---|---|---|
+| Lite | `8d14510e5c2ddf597d21b2898ede5ced0ffbcf4e` | 43811599991 | 43811599984 | 43811600069 | Scientific 43811599990 |
+| Plus | `7065c1392267e50e26b6fb467d9fb065cc01df95` | 43811603245 | 43811603346 | 43811603264 | Native 43811603230 |
+
+Seguridad de Plus: backend-security IN-H-05/job 133096290022 aprobado, frontend-audit omitido. Las campañas anteriores 43800343177/job 133078974840 y 43805800857/job 133096309242 seguían en ejecución al consultarlas. El push del cambio real de parser seleccionó la campaña 43811603254/job 133114440176. S19 sigue REVIEW. S25, SG28/DIST y EV-D-01 mantienen sus bloqueos. Certificación global **OPEN**.
+
+Corte de Actions 2026-11-16T05:40:54.644Z. El frontend acumulativo Plus/job 133114268509 completó las regresiones y el build. Los gates funcionales completos de Lite y Plus seguían en curso. Los runners de resumen 43811600006 y 43811603241 terminaron. El job backend-security Plus 133114399868 terminó correctamente y la mutación seguía en curso. Las corridas observadas se originaron con los commits técnicos.
+
+IN-H-06 queda **VERIFYING_CI**. Siguiente acción: terminar la verificación de los runs existentes para cerrar el alcance funcional bilateral y avanzar a IN-H-07.
+
+---
+
 # r565 — IN-H-04 verificado; IN-H-05 publicado
 
 IN-H-04 PASS_SCOPED funcional: Lite 4416c62ce9b9eb85aea1ac1ed8313d5de058eac5 acumulativo 43800325604/job 133078766494 2617 aprobadas, 8 expected fail, 34 TODO, cuatro pruebas IN-H-04; H1d 43800325614/job 133078766397 22 y Scientific 43800325549/job 133078766293 456. Plus 29aa0238ad06d661a28ca7622fd0edcda3358e01 acumulativo 43800343151/backend 133078828409 3151 aprobadas, 1 skipped, 11 xfailed, fuente, servicio y literal HTTP IN-H-04 PASS; frontend 133078827994 1055 y 28 TODO; H1d 43800343210/job 133078827942 38 y Native 43800343189/job 133078828087 26/52. Jobs y logs revisados; no acredita E2E visual específico.
