@@ -1,3 +1,13 @@
+# r560 — IN-H-01 verificado funcionalmente
+
+Lite f9a4d71d119e05f1fba7fd0210f453f1c0e49a2b: acumulativo 43778573123/job 133010374602, 2606 aprobadas, 8 expected fail y 34 TODO; IN-H-01 cuatro pruebas ejecutadas; H1d 43778573058/job 133010374476 22 aprobadas; Scientific 43778573118/job 133010374658 456. Plus 5451deb23aedf68c5d7b8b3df9f4228352460bf1: acumulativo 43778578000/backend 133010389891 3143 aprobadas, 1 skipped, 11 xfailed; frontend 133010390166 1055 aprobadas y 28 TODO; H1d 43778578045/job 133010389998 38; Native 43778578031/job 133010390106 26 desktop y 52 tablet/móvil. Jobs y logs revisados; IN-H-01 PASS_SCOPED funcional, sin afirmar E2E visual dedicado.
+
+Seguridad Plus 43778578058: backend-security SUCCESS, frontend-audit skipped, mutación 133010546339 en curso. Mutación previa 43770667767/job 132985769853 también en curso. S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. No duplicar corridas.
+
+Siguiente acción única: IN-H-02, fuente cosh(x)<2 y solución (-ln(2+sqrt(3)),ln(2+sqrt(3))); test-first bilateral, límites estrictos, canal literal y fallback; después revisar CI.
+
+---
+
 # r559 — IN-H-01 implementado y en verificación
 
 La sección 3.C de la matriz congelada abre con IN-H-01. La fila pide resolver `\sinh x>0` y espera `(0,\infty)`. El cero se excluye porque sinh es estrictamente creciente en ℝ y sinh(0)=0. Fuente: `qa/certification/legacy_sources/ejercicios_trigonometria.md.gz`, blob `3a41b0c2e0d79f2eef48e4684dc1324689d0a0fb`. IN-I-07 ya tiene evidencia funcional bilateral en r558.
