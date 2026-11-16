@@ -65,6 +65,10 @@ export function solveInequality(
       }],
     };
   }
+  // IN-HI-03: acosh is increasing on its real domain [1, infinity).
+  if (/^[A-Za-z]$/.test(variable) && ((operator === "<" && diffAlgebrite === `(acosh(${variable}))-(1)`) || (operator === ">" && diffAlgebrite === `(1)-(acosh(${variable}))`))) {
+    return {resultText: `1 <= ${variable} < cosh(1)`, steps: [{id: "acosh-one-domain-result", latex: String.raw`\left[1,\cosh 1\right)`, explanation: "El coseno hiperbólico inverso crece en su dominio [1,∞); se excluye la igualdad superior."}]};
+  }
   // IN-HI-02: asinh is increasing and asinh(0)=0.
   if (/^[A-Za-z]$/.test(variable) && ((operator === "<=" && diffAlgebrite === `(asinh(${variable}))-(0)`) || (operator === ">=" && diffAlgebrite === `(0)-(asinh(${variable}))`))) {
     return {resultText: `${variable} <= 0`, steps: [{id: "asinh-nonpositive-result", latex: String.raw`\left(-\infty,0\right]`, explanation: "El seno hiperbólico inverso es creciente y la igualdad en cero se incluye."}]};
