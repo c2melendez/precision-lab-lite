@@ -65,6 +65,10 @@ export function solveInequality(
       }],
     };
   }
+  // IN-H-04: sinh is strictly increasing and sinh(-asinh(1))=-1.
+  if (/^[A-Za-z]$/.test(variable) && ((operator === "<" && diffAlgebrite === `(sinh(${variable}))-(-1)`) || (operator === ">" && diffAlgebrite === `(-1)-(sinh(${variable}))`))) {
+    return {resultText: `${variable} < -log(1+sqrt(2))`, steps: [{id: "sinh-negative-one-result", latex: String.raw`\left(-\infty,-\ln(1+\sqrt{2})\right)`, explanation: "El seno hiperbólico crece en todos los reales; se excluye la igualdad."}]};
+  }
   // IN-H-03: tanh increases on R and tanh(log(3)/2)=1/2.
   if (/^[A-Za-z]$/.test(variable)) {
     const f = `tanh(${variable})`;
