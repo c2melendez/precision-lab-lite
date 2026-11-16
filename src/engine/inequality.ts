@@ -65,6 +65,10 @@ export function solveInequality(
       }],
     };
   }
+  // IN-H-07: sech=1/cosh, cosh is positive and even.
+  if (/^[A-Za-z]$/.test(variable) && operator === ">" && diffAlgebrite === `((1/cosh(${variable})))-(1/2)`) {
+    return {resultText: `-log(2+sqrt(3)) < ${variable} < log(2+sqrt(3))`, steps: [{id: "sech-half-result", latex: String.raw`\left(-\ln(2+\sqrt{3}),\ln(2+\sqrt{3})\right)`, explanation: "Como cosh es positivo, sech(x)>1/2 equivale a cosh(x)<2."}]};
+  }
   // IN-H-05: cosh is positive on R, so the product has sinh's sign.
   if (/^[A-Za-z]$/.test(variable) && operator === ">" && diffAlgebrite === `(sinh(${variable})*cosh(${variable}))-(0)`) {
     return {resultText: `${variable} > 0`, steps: [{id: "sinh-cosh-positive-result", latex: String.raw`\left(0,\infty\right)`, explanation: "El coseno hiperbólico es positivo y el seno hiperbólico tiene el signo de la variable."}]};

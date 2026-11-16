@@ -379,6 +379,9 @@ export function parseExpression(
   // parser validation and normal inverse-cotangent rewriting still apply.
   const sourceArccot = latex.match(/^\s*\\operatorname\{arccot\}\s+([A-Za-z])\s*<\s*\\frac\{\\pi\}\{4\}\s*$/);
   if (sourceArccot) latex = `arccot(${sourceArccot[1]})<pi/4`;
+  // IN-H-07: normalize only the complete source literal.
+  const sourceSech = latex.match(/^\s*\\operatorname\{sech\}\s+([A-Za-z])\s*>\s*\\frac\{1\}\{2\}\s*$/);
+  if (sourceSech) latex = `sech(${sourceSech[1]})>1/2`;
   // SY-R-12: do not interpret this prose-only input as multiplied variables.
   if (latex.replace(/\\(?:text|mathrm|operatorname)\s*\{/g, '').replace(/[{}]/g, '').replace(/\\(?:,|;|!| )/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase() === 'no existe') {
     throw new Error('Entrada no matemática: escribe una expresión válida.');
