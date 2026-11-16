@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 561,
+  "revision": 562,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "6d1e5186bdc9a0314fddc457c1e5a391859613de",
   "baseline_case": "TRIG-IN-H-02",
-  "baseline_status": "WAIT",
+  "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
     "cumulative": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-IN-H-02",
-    "previous_id": "TRIG-IN-H-01",
-    "status": "WAIT",
-    "action": "Revisar jobs y logs del SHA técnico y mutaciones pendientes; verificar límites, equivalencia y literal."
+    "id": "TRIG-IN-H-03",
+    "previous_id": "TRIG-IN-H-02",
+    "status": "IDENTIFY",
+    "action": "Test-first bilateral tanh(x)<=1/2, frontera ln(3)/2 incluida y canal literal; revisar mutación pendiente."
   },
   "blockers": [
     {
@@ -79,21 +79,20 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-16T00:49:09.211Z",
+  "updated_utc": "2026-11-16T01:41:19.188Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
-      "input_fingerprint": "277995bae45e3d728492fc247c68b9bfc4094a68c08b26dd82728cf6feda2e19",
-      "head_sha": "f9a4d71d119e05f1fba7fd0210f453f1c0e49a2b",
+      "head_sha": "6d1e5186bdc9a0314fddc457c1e5a391859613de",
       "decision": "REVIEW",
-      "reason": "SHA técnico nuevo; recalcular huella y revisar CI antes de reutilizar.",
-      "run_id": 43778573123,
-      "evidence_sha": "f9a4d71d119e05f1fba7fd0210f453f1c0e49a2b",
+      "reason": "Jobs y logs revisados; verificar huella para reutilización.",
+      "run_id": 43782562607,
+      "evidence_sha": "6d1e5186bdc9a0314fddc457c1e5a391859613de",
       "logs_reviewed": true,
       "evidence_executed": true,
       "jobs": [
         {
-          "id": 133010374602,
+          "id": 133022839135,
           "conclusion": "success"
         }
       ],
@@ -101,17 +100,16 @@
     },
     "h1d": {
       "gate": "h1d",
-      "input_fingerprint": "55754129bd0bce00e3939839382cb674d3d1d7d0a633876bd732bd8ce440486d",
-      "head_sha": "f9a4d71d119e05f1fba7fd0210f453f1c0e49a2b",
+      "head_sha": "6d1e5186bdc9a0314fddc457c1e5a391859613de",
       "decision": "REVIEW",
-      "reason": "SHA técnico nuevo; recalcular huella y revisar CI antes de reutilizar.",
-      "run_id": 43778573058,
-      "evidence_sha": "f9a4d71d119e05f1fba7fd0210f453f1c0e49a2b",
+      "reason": "Jobs y logs revisados; verificar huella para reutilización.",
+      "run_id": 43782562615,
+      "evidence_sha": "6d1e5186bdc9a0314fddc457c1e5a391859613de",
       "logs_reviewed": true,
       "evidence_executed": true,
       "jobs": [
         {
-          "id": 133010374476,
+          "id": 133022839007,
           "conclusion": "success"
         }
       ],
@@ -128,17 +126,16 @@
     },
     "scientific": {
       "gate": "scientific",
-      "input_fingerprint": "fa7c93647e51a8a563769796e5457a6edc7660a2f7e724717bb6a200b32943fa",
-      "head_sha": "f9a4d71d119e05f1fba7fd0210f453f1c0e49a2b",
+      "head_sha": "6d1e5186bdc9a0314fddc457c1e5a391859613de",
       "decision": "REVIEW",
-      "reason": "SHA técnico nuevo; recalcular huella y revisar CI antes de reutilizar.",
-      "run_id": 43778573118,
-      "evidence_sha": "f9a4d71d119e05f1fba7fd0210f453f1c0e49a2b",
+      "reason": "Jobs y logs revisados; verificar huella para reutilización.",
+      "run_id": 43782562652,
+      "evidence_sha": "6d1e5186bdc9a0314fddc457c1e5a391859613de",
       "logs_reviewed": true,
       "evidence_executed": true,
       "jobs": [
         {
-          "id": 133010374658,
+          "id": 133022839099,
           "conclusion": "success"
         }
       ],

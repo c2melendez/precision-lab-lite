@@ -1,3 +1,13 @@
+# r562 — IN-H-02 verificado funcionalmente
+
+Lite 6d1e5186bdc9a0314fddc457c1e5a391859613de: acumulativo 43782562607/job 133022839135 2609 aprobadas, 8 expected fail, 34 TODO; tres pruebas IN-H-02 ejecutadas; H1d 43782562615/job 133022839007 22 aprobadas, Scientific 43782562652/job 133022839099 456. Plus 15dda34414755cc665564ec5ca88e3ef9723e066: acumulativo 43782570937/backend job 133022865516 3145 aprobadas, 1 skipped, 11 xfailed, IN-H-02 servicio y literal HTTP PASSED; frontend job 133022865750 1055 aprobadas, 28 TODO; H1d 43782570995/job 133022865295 38; Native 43782570960/job 133022865280 26 desktop y 52 tablet/móvil. Jobs y logs revisados. IN-H-02 PASS_SCOPED funcional; no acredita E2E visual específico.
+
+Seguridad 43782571029 backend-security SUCCESS, frontend-audit skipped, mutación job 133022999281 en curso. S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. No duplicar corridas.
+
+Siguiente acción: IN-H-03, fuente tanh(x)<=1/2 y solución (-∞,ln(3)/2]; test-first bilateral, extremo incluido y canal literal; revisar seguridad en curso.
+
+---
+
 # r561 — IN-H-02 implementado, CI pendiente
 
 Lite 6d1e5186bdc9a0314fddc457c1e5a391859613de: cosh(x)<2 requiere (-ln(2+sqrt(3)),ln(2+sqrt(3))) con extremos abiertos; test-first falló, corrección y siete pruebas locales IN-H-01/02 aprobaron. Plus 15dda34414755cc665564ec5ca88e3ef9723e066: el servicio devuelve intervalo equivalente con acosh(2); se verifica equivalencia a la fuente y se corrige el literal HTTP. 271 pruebas locales de casos, parser y seguridad aprobadas. CI Lite acumulativo 43782562607, H1d 43782562615 y Scientific 43782562652 en curso; Plus acumulativo 43782570937, H1d 43782570995, Native 43782570960 y seguridad 43782571029 en cola o curso. Sin PASS hasta revisar jobs y logs. S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
