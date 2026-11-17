@@ -65,6 +65,10 @@ export function solveInequality(
       }],
     };
   }
+  // IN-HI-05: atanh increases on (-1, 1) and atanh(1/2)=ln(3)/2.
+  if (/^[A-Za-z]$/.test(variable) && operator === ">=" && ["ln(3)/2", "((1)/(2))*ln(3)"].some(t => diffAlgebrite === `(atanh(${variable}))-(${t})`)) {
+    return {resultText: `1/2 <= ${variable} < 1`, steps: [{id: "atanh-half-domain-result", latex: String.raw`\left[\frac{1}{2},1\right)`, explanation: "La tangente hiperbólica inversa crece en (-1,1); atanh(1/2)=ln(3)/2."}]};
+  }
   // IN-HI-04: acosh is nonnegative throughout its real domain.
   if (/^[A-Za-z]$/.test(variable) && ((operator === ">=" && diffAlgebrite === `(acosh(${variable}))-(0)`) || (operator === "<=" && diffAlgebrite === `(0)-(acosh(${variable}))`))) {
     return {resultText: `${variable} >= 1`, steps: [{id: "acosh-nonnegative-domain-result", latex: String.raw`\left[1,\infty\right)`, explanation: "El coseno hiperbólico inverso es no negativo en todo su dominio real [1,∞)."}]};
