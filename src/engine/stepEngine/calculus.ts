@@ -83,6 +83,19 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-D-03: tan(x)/x = (sin(x)/x)/cos(x) near zero.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`tan(${variable})/${variable}`, `((tan(${variable}))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: "1", confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "tan-sin-cos", latex: String.raw`\frac{\tan ${variable}}{${variable}}=\frac{\sin ${variable}/${variable}}{\cos ${variable}}`, explanation: "Usamos la definición de tangente y el límite fundamental del seno." },
+        { id: "result", latex: "1", explanation: "El límite de sinc y coseno en cero es uno." },
+      ],
+    };
+  }
+
   // LM-D-02: use the exact half-angle identity to avoid cancellation near zero.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`(1-cos(${variable}))/${variable}^2`, `((1-cos(${variable}))/(${variable}^(2)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
