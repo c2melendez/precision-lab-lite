@@ -65,6 +65,10 @@ export function solveInequality(
       }],
     };
   }
+  // IN-HI-04: acosh is nonnegative throughout its real domain.
+  if (/^[A-Za-z]$/.test(variable) && ((operator === ">=" && diffAlgebrite === `(acosh(${variable}))-(0)`) || (operator === "<=" && diffAlgebrite === `(0)-(acosh(${variable}))`))) {
+    return {resultText: `${variable} >= 1`, steps: [{id: "acosh-nonnegative-domain-result", latex: String.raw`\left[1,\infty\right)`, explanation: "El coseno hiperbólico inverso es no negativo en todo su dominio real [1,∞)."}]};
+  }
   // IN-HI-03: acosh is increasing on its real domain [1, infinity).
   if (/^[A-Za-z]$/.test(variable) && ((operator === "<" && diffAlgebrite === `(acosh(${variable}))-(1)`) || (operator === ">" && diffAlgebrite === `(1)-(acosh(${variable}))`))) {
     return {resultText: `1 <= ${variable} < cosh(1)`, steps: [{id: "acosh-one-domain-result", latex: String.raw`\left[1,\cosh 1\right)`, explanation: "El coseno hiperbólico inverso crece en su dominio [1,∞); se excluye la igualdad superior."}]};
