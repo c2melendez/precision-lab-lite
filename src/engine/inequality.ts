@@ -65,6 +65,10 @@ export function solveInequality(
       }],
     };
   }
+  // IN-HI-06: atanh is increasing on (-1,1) and vanishes at zero.
+  if (/^[A-Za-z]$/.test(variable) && ((operator === "<" && diffAlgebrite === `(atanh(${variable}))-(0)`) || (operator === ">" && diffAlgebrite === `(0)-(atanh(${variable}))`))) {
+    return {resultText: `-1 < ${variable} < 0`, steps: [{id: "atanh-negative-domain-result", latex: String.raw`\left(-1,0\right)`, explanation: "La tangente hiperbólica inversa crece en (-1,1) y vale cero en el origen; ambos extremos se excluyen."}]};
+  }
   // IN-HI-05: atanh increases on (-1, 1) and atanh(1/2)=ln(3)/2.
   if (/^[A-Za-z]$/.test(variable) && operator === ">=" && ["ln(3)/2", "((1)/(2))*ln(3)"].some(t => diffAlgebrite === `(atanh(${variable}))-(${t})`)) {
     return {resultText: `1/2 <= ${variable} < 1`, steps: [{id: "atanh-half-domain-result", latex: String.raw`\left[\frac{1}{2},1\right)`, explanation: "La tangente hiperbólica inversa crece en (-1,1); atanh(1/2)=ln(3)/2."}]};
