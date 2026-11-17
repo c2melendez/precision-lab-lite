@@ -1,3 +1,13 @@
+# r577 — IN-HI-06 verificado funcionalmente
+
+IN-HI-06: Lite 94acd93e385e0f01812083c0beef812278e5d926 acumulativo 44096864674/job 134086172502 ejecutó 2664 pruebas aprobadas, incluidas cinco IN-HI-06; H1d 44096864514/job 134086169021 ejecutó 22 y Scientific 44096864440/job 134086169138 ejecutó 456. Plus e120bdae7c0dcd957c40ae9f951652195f54f705 acumulativo 44096876770/backend 134086212603 ejecutó 3186 aprobadas, 1 skipped y 11 xfailed, con fuente, servicio y literal HTTP IN-HI-06 aprobados; frontend 134086213035 ejecutó 1055. H1d 44096876753/job 134086212028 aprobó 38; Native 44096876985/job 134086213369 aprobó 26 escritorio y 52 tablet/móvil. Logs revisados; PASS_SCOPED funcional, sin acreditar E2E visual específico de la fila ni certificación global.
+
+Seguridad Plus 44096876802: backend-security 134086442454 success; frontend-audit skipped; mutación 134086524393 en curso. S19 REVIEW, S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: reconciliar continuity.json con los SHA técnicos y huellas actuales, revisar mutación sin duplicar y avanzar a IN-HI-07. El índice previo necesita RECONCILE.
+
+---
+
 # r576 — IN-HI-05 verificado funcionalmente; restaurados gates de navegador
 
 Corrección CI: Lite 99db51905f132eea89868741714e97c1e9bdbe17 y Plus d58019fbdffca8b7f3cf1ba37837204f4626f861 fijan rollup al valor de cada lockfile durante instalación de Playwright. H1d Lite 44066917006/job 133982853576 ejecutó 22 pruebas y Scientific 44066917021/job 133982853389 ejecutó 456. H1d Plus 44066925541/job 133982885007 ejecutó 38, Native 44066925265/job 133982884198 ejecutó 26 escritorio y 52 tablet/móvil. Logs verifican ejecución real, no reutilización.
