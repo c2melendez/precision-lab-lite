@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 577,
+  "revision": 578,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "94acd93e385e0f01812083c0beef812278e5d926",
-  "baseline_case": "TRIG-IN-HI-06",
+  "technical_baseline_sha": "9313c0c9637341327b4a8fc0860945022dcf1c65",
+  "baseline_case": "TRIG-IN-HI-07",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-IN-HI-07",
-    "previous_id": "TRIG-IN-HI-06",
-    "status": "READY",
-    "action": "Implementar y validar bilateralmente arcoth(x)>ln(2) en (1,5/3), conservar bloqueos y no duplicar mutación."
+    "id": "TRIG-LM-D-01",
+    "previous_id": "TRIG-IN-HI-07",
+    "status": "REVIEW",
+    "action": "Revisar evidencia preexistente de LM-D-01 y determinar siguiente fila pendiente antes de implementar; conservar bloqueos y no duplicar."
   },
   "blockers": [
     {
@@ -79,22 +79,22 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-17T16:41:13.713655Z",
+  "updated_utc": "2026-11-17T19:44:40.803889Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
-      "input_fingerprint": "32fc0cc065655ba58754f1a943bdee3686c27c71ffbb06b304d21876875dcc70",
-      "head_sha": "ffcf694f254f8a706aff7b5d1ff7011a95d441a0",
+      "input_fingerprint": "3bf233950a492a6ac52dfdb76b126fe4044e3d69f997aa88dba8e1577ff50af8",
+      "head_sha": "6ae37a1bda2dd7dab354cb6f5a31d731fe52fd63",
       "decision": "REUSE",
       "reason": "Logs y ejecución revisados para insumos equivalentes; alcance funcional acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 44096864674,
-      "evidence_sha": "94acd93e385e0f01812083c0beef812278e5d926",
+      "run_id": 44140436638,
+      "evidence_sha": "9313c0c9637341327b4a8fc0860945022dcf1c65",
       "jobs": [
         {
-          "id": 134086172502,
+          "id": 134241438707,
           "status": "completed",
           "conclusion": "success"
         }
@@ -102,18 +102,18 @@
     },
     "h1d": {
       "gate": "h1d",
-      "input_fingerprint": "addabaddd9fcfc312f7bcd2acdc68f3ca06628e93591f60309b33504f27f4f6c",
-      "head_sha": "ffcf694f254f8a706aff7b5d1ff7011a95d441a0",
+      "input_fingerprint": "aaeb33f1db808bc3ab60f967a69280dec959f87be6553320d2056853cc69e9da",
+      "head_sha": "6ae37a1bda2dd7dab354cb6f5a31d731fe52fd63",
       "decision": "REUSE",
       "reason": "Logs y ejecución revisados para insumos equivalentes; alcance funcional acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 44096864514,
-      "evidence_sha": "94acd93e385e0f01812083c0beef812278e5d926",
+      "run_id": 44140435811,
+      "evidence_sha": "9313c0c9637341327b4a8fc0860945022dcf1c65",
       "jobs": [
         {
-          "id": 134086169021,
+          "id": 134241436573,
           "status": "completed",
           "conclusion": "success"
         }
@@ -121,8 +121,8 @@
     },
     "security": {
       "gate": "security",
-      "input_fingerprint": "38b31a003c5fb8eef8fbee75aa003aed95dc5318bd88e45c81c2aa87b2f6ec94",
-      "head_sha": "ffcf694f254f8a706aff7b5d1ff7011a95d441a0",
+      "input_fingerprint": "94bfe4c032668c90c738dff584fabe9d34e6f14ba1592a92f4b6b6ddf3ebefc8",
+      "head_sha": "6ae37a1bda2dd7dab354cb6f5a31d731fe52fd63",
       "decision": "REVIEW",
       "reason": "Huella de árboles completos; revisar evidencia y condiciones actuales.",
       "logs_reviewed": false,
@@ -131,18 +131,18 @@
     },
     "scientific": {
       "gate": "scientific",
-      "input_fingerprint": "edc4b587fbf973d763474a6bc8b28d304e6a2dd58ece7eb9c445adfc7c724d1c",
-      "head_sha": "ffcf694f254f8a706aff7b5d1ff7011a95d441a0",
+      "input_fingerprint": "381f318b1a89808164fc04b8b980865d0363c9618cb8125a67055524058f5e45",
+      "head_sha": "6ae37a1bda2dd7dab354cb6f5a31d731fe52fd63",
       "decision": "REUSE",
       "reason": "Logs y ejecución revisados para insumos equivalentes; alcance funcional acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
-      "run_id": 44096864440,
-      "evidence_sha": "94acd93e385e0f01812083c0beef812278e5d926",
+      "run_id": 44140435833,
+      "evidence_sha": "9313c0c9637341327b4a8fc0860945022dcf1c65",
       "jobs": [
         {
-          "id": 134086169138,
+          "id": 134241436671,
           "status": "completed",
           "conclusion": "success"
         }
