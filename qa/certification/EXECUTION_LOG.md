@@ -1,3 +1,13 @@
+# r580 — LM-D-02 pruebas funcionales verificadas; integración literal Lite por revisar
+
+Lite bccd793068f09280954238b4c709de25edb3f1da acumulativo 44172864800/job 134356313344 ejecutó 2672 pruebas, incluidas cuatro LM-D-02; H1d 44172864907/job 134356313474 ejecutó 22 y Scientific 44172864899/job 134356313831 ejecutó 456. Plus abcba4291f0550144185eb5277c94802872d411f acumulativo 44172880652/backend 134356367273 ejecutó 3192 aprobadas, 1 skipped y 11 xfailed; LM-D-02 fuente, servicio bilateral y HTTP pasaron; frontend 134356366596 aprobó 1055; H1d 44172880628/job 134356366830 aprobó 38. Logs revisados.
+
+En Lite las pruebas verifican el parser del literal y calcLimit por separado; falta demostrar que la expresión procedente del literal se conecta al caso exacto en el recorrido de usuario. No declarar PASS de ese canal ni E2E visual específico. La regresión aritmética exacta se limita a la forma reconocida. S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: verificar el recorrido literal→motor de LM-D-02 en Lite y corregirlo si es necesario; después reconciliar continuity.json y seguir la matriz. Evitar corridas duplicadas.
+
+---
+
 # r579 — LM-D-01 evidencia preexistente revisada
 
 La matriz de límites directos comienza con LM-D-01, lim(x→0) sin(x)/x=1. En Lite el acumulativo 44140436638/job 134241438707 ejecutó las cinco pruebas de tests/trigonometryLmD01.audit.test.ts; la prueba del motor señala NUMERIC_FALLBACK, no exactitud simbólica. En Plus el acumulativo 44140447587/job 134241476418 ejecutó cuatro pruebas de tests/test_trigonometry_lm_d01.py, incluidas fuente, servicio y muestreo. El test de endpoint es condicional (if_present); su PASS no demuestra por sí solo que el canal HTTP estuviera presente. No se alega E2E visual específico.
