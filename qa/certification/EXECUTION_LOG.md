@@ -1,3 +1,13 @@
+# r581 — LM-D-02 verificado en parser y motor
+
+Lite fc078ef17dd0b0f33c889162227fcb588aa3fa8f acumulativo 44182693887/job 134390920241 ejecutó 2673 pruebas aprobadas, incluidas cinco LM-D-02; la nueva prueba conecta la expresión parseada al resultado exacto del motor. H1d 44182693960/job 134390921037 ejecutó 22 y Scientific 44182693935/job 134390921924 ejecutó 456. Logs revisados.
+
+Plus conserva evidencia en abcba4291f0550144185eb5277c94802872d411f, acumulativo 44172880652/backend 134356367273 3192 aprobadas, 1 skipped y 11 xfailed, incluyendo fuente, servicio bilateral y HTTP LM-D-02. Resultado funcional PASS_SCOPED, sin afirmar E2E visual específico ni certificación global.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente acción: reconciliar continuity.json con SHA técnicos y huellas vigentes, revisar mutación sin duplicar y avanzar a LM-D-03.
+
+---
+
 # r580 — LM-D-02 pruebas funcionales verificadas; integración literal Lite por revisar
 
 Lite bccd793068f09280954238b4c709de25edb3f1da acumulativo 44172864800/job 134356313344 ejecutó 2672 pruebas, incluidas cuatro LM-D-02; H1d 44172864907/job 134356313474 ejecutó 22 y Scientific 44172864899/job 134356313831 ejecutó 456. Plus abcba4291f0550144185eb5277c94802872d411f acumulativo 44172880652/backend 134356367273 ejecutó 3192 aprobadas, 1 skipped y 11 xfailed; LM-D-02 fuente, servicio bilateral y HTTP pasaron; frontend 134356366596 aprobó 1055; H1d 44172880628/job 134356366830 aprobó 38. Logs revisados.
