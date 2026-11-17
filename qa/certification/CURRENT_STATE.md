@@ -1,3 +1,13 @@
+# r578 — IN-HI-07 verificado funcionalmente
+
+IN-HI-07: Lite 9313c0c9637341327b4a8fc0860945022dcf1c65 acumulativo 44140436638/job 134241438707 ejecutó 2668 pruebas aprobadas, incluidas cuatro IN-HI-07; H1d 44140435811/job 134241436573 ejecutó 22 y Scientific 44140435833/job 134241436671 ejecutó 456. Plus 18ce66bc13b7beb3d72916b39804ae6c489d3580 acumulativo 44140447587/backend 134241476418 ejecutó 3189 aprobadas, 1 skipped y 11 xfailed, con fuente, servicio y literal HTTP IN-HI-07 aprobados; frontend 134241477316 ejecutó 1055. H1d 44140446097/job 134241474985 aprobó 38; Native 44140446163/job 134241469451 aprobó 26 escritorio y 52 tablet/móvil. Logs revisados; PASS_SCOPED funcional, sin acreditar E2E visual específico de la fila ni certificación global.
+
+Seguridad Plus 44140446149: backend-security 134241785209 success; frontend-audit skipped; mutación 134241846135 en curso. S19 REVIEW, S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: reconciliar continuity.json con los SHA técnicos y huellas actuales, revisar mutación sin duplicar y consultar la siguiente fila de la matriz. El índice previo necesita RECONCILE.
+
+---
+
 # r577 — IN-HI-06 verificado funcionalmente
 
 IN-HI-06: Lite 94acd93e385e0f01812083c0beef812278e5d926 acumulativo 44096864674/job 134086172502 ejecutó 2664 pruebas aprobadas, incluidas cinco IN-HI-06; H1d 44096864514/job 134086169021 ejecutó 22 y Scientific 44096864440/job 134086169138 ejecutó 456. Plus e120bdae7c0dcd957c40ae9f951652195f54f705 acumulativo 44096876770/backend 134086212603 ejecutó 3186 aprobadas, 1 skipped y 11 xfailed, con fuente, servicio y literal HTTP IN-HI-06 aprobados; frontend 134086213035 ejecutó 1055. H1d 44096876753/job 134086212028 aprobó 38; Native 44096876985/job 134086213369 aprobó 26 escritorio y 52 tablet/móvil. Logs revisados; PASS_SCOPED funcional, sin acreditar E2E visual específico de la fila ni certificación global.
