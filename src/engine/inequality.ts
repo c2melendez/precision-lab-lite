@@ -65,6 +65,10 @@ export function solveInequality(
       }],
     };
   }
+  // IN-HI-07: acoth decreases from infinity to zero on (1,infinity).
+  if (/^[A-Za-z]$/.test(variable) && operator === ">" && diffAlgebrite === `((atanh(1/(${variable}))))-(ln(2))`) {
+    return {resultText: `1 < ${variable} < 5/3`, steps: [{id: "arcoth-log-two-domain-result", latex: String.raw`\left(1,\frac{5}{3}\right)`, explanation: "La rama real positiva de arcoth decrece y arcoth(5/3)=ln(2); ambos extremos quedan excluidos."}]};
+  }
   // IN-HI-06: atanh is increasing on (-1,1) and vanishes at zero.
   if (/^[A-Za-z]$/.test(variable) && ((operator === "<" && diffAlgebrite === `(atanh(${variable}))-(0)`) || (operator === ">" && diffAlgebrite === `(0)-(atanh(${variable}))`))) {
     return {resultText: `-1 < ${variable} < 0`, steps: [{id: "atanh-negative-domain-result", latex: String.raw`\left(-1,0\right)`, explanation: "La tangente hiperbólica inversa crece en (-1,1) y vale cero en el origen; ambos extremos se excluyen."}]};

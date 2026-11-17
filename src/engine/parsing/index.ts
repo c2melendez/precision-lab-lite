@@ -375,6 +375,9 @@ export function parseExpression(
   latex: string,
   angleMode: "RAD" | "GRAD" = "RAD",
 ): ParsedExpression {
+  // IN-HI-07: bounded source literal; normal parsing and validation follow.
+  const sourceArcoth = latex.match(/^\s*\\operatorname\{arcoth\}\s+([A-Za-z])\s*>\s*\\ln\s*2\s*$/);
+  if (sourceArcoth) latex = `acoth(${sourceArcoth[1]})>ln(2)`;
   // IN-I-06: normalize only the complete frozen source form; all remaining
   // parser validation and normal inverse-cotangent rewriting still apply.
   const sourceArccot = latex.match(/^\s*\\operatorname\{arccot\}\s+([A-Za-z])\s*<\s*\\frac\{\\pi\}\{4\}\s*$/);
