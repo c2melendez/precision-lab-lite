@@ -1,3 +1,13 @@
+# r574 — IN-HI-04 verificado funcionalmente
+
+IN-HI-04: Lite a61c3de2be2320008c4f6505a96ea2254f2408a9, acumulativo 44019593342/job 133825617081 ejecutó 2655 pruebas aprobadas incluyendo cinco IN-HI-04; H1d 44019593292/job 133825616895 ejecutó 22 y Scientific 44019593406/job 133825617096 ejecutó 456. Plus 44077dde98a845d504f2f118477c704ff01708d4, acumulativo 44019601726/backend 133825643859 ejecutó 3180 aprobadas, 1 skipped y 11 xfailed; fuente, servicio y literal HTTP IN-HI-04 PASS; frontend 133825644253 aprobó 1055. H1d 44019601966/job 133825644034 aprobó 38 y Native 44019601826/job 133825643970 aprobó 26 escritorio y 52 tablet/móvil. Logs revisados; PASS_SCOPED funcional, sin acreditar E2E visual específico de la fila.
+
+Seguridad Plus 44019601763: backend-security 133825782322 success; frontend-audit skipped; mutación 133825834992 en curso. S19 REVIEW, S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+Siguiente acción: reconciliar continuity.json con los SHA técnicos y las huellas actuales, revisar mutación sin duplicar, iniciar IN-HI-05 de la matriz congelada. El índice previo necesita RECONCILE.
+
+---
+
 # r573 — IN-HI-03 verificado funcionalmente; reconciliación pendiente
 
 IN-HI-03: Lite commit técnico 16c177ade1b87ee2794b7c6b6027a8ad2572a9b0; acumulativo 43860683028/job 133276373543 ejecutó 2650 pruebas aprobadas, incluyendo cuatro IN-HI-03; H1d 43860683081/job 133276373424 ejecutó 22 y Scientific 43860683089/job 133276373578 ejecutó 456. Plus commit técnico b809bcda7d915a236880111083208297c65ae73f restaura parser y prueba completos; acumulativo 43982415777/backend 133701954947 ejecutó 3177 aprobadas, 1 skipped y 11 xfailed, incluidas fuente, servicio y literal HTTP IN-HI-03; frontend 133701955461 aprobó 1055. H1d 43982415757/job 133701954988 aprobó 38; Native 43982415765/job 133701954960 aprobó 26 escritorio y 52 tablet/móvil. Logs revisados; evidencia funcional acotada, no E2E visual específico de la fila ni certificación global.
