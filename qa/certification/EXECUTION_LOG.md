@@ -1,3 +1,11 @@
+# r579 — LM-D-01 evidencia preexistente revisada
+
+La matriz de límites directos comienza con LM-D-01, lim(x→0) sin(x)/x=1. En Lite el acumulativo 44140436638/job 134241438707 ejecutó las cinco pruebas de tests/trigonometryLmD01.audit.test.ts; la prueba del motor señala NUMERIC_FALLBACK, no exactitud simbólica. En Plus el acumulativo 44140447587/job 134241476418 ejecutó cuatro pruebas de tests/test_trigonometry_lm_d01.py, incluidas fuente, servicio y muestreo. El test de endpoint es condicional (if_present); su PASS no demuestra por sí solo que el canal HTTP estuviera presente. No se alega E2E visual específico.
+
+La evidencia anterior es válida únicamente para el alcance observado; determinar los requisitos de canal y aceptación de la matriz antes de declarar cierre completo. La siguiente fila congelada es LM-D-02, lim(x→0) (1−cos x)/x²=1/2. Preparar pruebas bilaterales con oráculo independiente. No duplicar mutación Plus 44140446149/job 134241846135 mientras esté en curso. S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN.
+
+---
+
 # r578 — IN-HI-07 verificado funcionalmente
 
 IN-HI-07: Lite 9313c0c9637341327b4a8fc0860945022dcf1c65 acumulativo 44140436638/job 134241438707 ejecutó 2668 pruebas aprobadas, incluidas cuatro IN-HI-07; H1d 44140435811/job 134241436573 ejecutó 22 y Scientific 44140435833/job 134241436671 ejecutó 456. Plus 18ce66bc13b7beb3d72916b39804ae6c489d3580 acumulativo 44140447587/backend 134241476418 ejecutó 3189 aprobadas, 1 skipped y 11 xfailed, con fuente, servicio y literal HTTP IN-HI-07 aprobados; frontend 134241477316 ejecutó 1055. H1d 44140446097/job 134241474985 aprobó 38; Native 44140446163/job 134241469451 aprobó 26 escritorio y 52 tablet/móvil. Logs revisados; PASS_SCOPED funcional, sin acreditar E2E visual específico de la fila ni certificación global.
