@@ -59,7 +59,7 @@ jobs:
         run: npm ci
       - name: Install Playwright test runner
         if: steps.certification_guard.outputs.skip != 'true'
-        run: npm install --no-save --package-lock=false @playwright/test@1.63.0 @axe-core/playwright@4.13.0
+        run: npm install --no-save --package-lock=false rollup@4.62.5 @playwright/test@1.63.0 @axe-core/playwright@4.13.0
       - name: Install Chromium
         if: steps.certification_guard.outputs.skip != 'true'
         run: npx playwright install --with-deps chromium

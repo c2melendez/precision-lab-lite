@@ -156,7 +156,7 @@ jobs:
         run: npm ci
       - name: Install Playwright runner
         if: steps.certification_guard.outputs.skip != 'true'
-        run: npm install --no-save --package-lock=false @playwright/test
+        run: npm install --no-save --package-lock=false rollup@4.62.5 @playwright/test
       - name: Validate scientific E2E specs before browser installation
         if: steps.certification_guard.outputs.skip != 'true'
         run: npx playwright test --list e2e/syntax309-*.spec.ts
