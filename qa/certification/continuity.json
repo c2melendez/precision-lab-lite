@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "revision": 572,
+  "revision": 573,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "16c177ade1b87ee2794b7c6b6027a8ad2572a9b0",
   "baseline_case": "TRIG-IN-HI-03",
-  "baseline_status": "WAIT",
+  "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
     "cumulative": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-IN-HI-03",
-    "previous_id": "TRIG-IN-HI-02",
-    "status": "WAIT",
-    "action": "Reintentar publicación Plus tras error GraphQL y revisar CI bilateral."
+    "id": "TRIG-IN-HI-04",
+    "previous_id": "TRIG-IN-HI-03",
+    "status": "READY",
+    "action": "Implementar y validar bilateralmente arcosh(x)>=0 con dominio [1,infinito); conservar bloqueos y no duplicar mutación."
   },
   "blockers": [
     {
@@ -79,76 +79,74 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-16T11:47:23.724Z",
+  "updated_utc": "2026-11-17T04:46:43.263608Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
-      "input_fingerprint": "f246c4a456f3891da875ac8e446bbddd22d40591f9d50b9381e51126dcc23228",
-      "head_sha": "8d14510e5c2ddf597d21b2898ede5ced0ffbcf4e",
-      "decision": "REVIEW",
-      "reason": "SHA técnico nuevo; recalcular huella y revisar CI.",
-      "run_id": 43811599984,
-      "evidence_sha": "8d14510e5c2ddf597d21b2898ede5ced0ffbcf4e",
-      "logs_reviewed": false,
-      "evidence_executed": false,
+      "input_fingerprint": "0dbffb1550d6524f63f76d14053a900aaeea248f02f6e83c2ac0f496ce20fc8b",
+      "head_sha": "4840f796c0d1287c1f2185b08cf086c269619bac",
+      "decision": "REUSE",
+      "reason": "Logs y ejecución revisados para insumos equivalentes; alcance funcional acotado.",
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "run_id": 43860683028,
+      "evidence_sha": "16c177ade1b87ee2794b7c6b6027a8ad2572a9b0",
       "jobs": [
         {
-          "id": 133114258134,
-          "name": "cumulative",
-          "status": "in_progress",
-          "conclusion": null
+          "id": 133276373543,
+          "status": "completed",
+          "conclusion": "success"
         }
-      ],
-      "acceptance_revision": "2026-10-16-continuity-v1"
+      ]
     },
     "h1d": {
       "gate": "h1d",
-      "input_fingerprint": "6bcbdd82e7497f79f96d43707e79cfdd528804ac5096d9f9cd16bc0e0cb04073",
-      "head_sha": "8d14510e5c2ddf597d21b2898ede5ced0ffbcf4e",
-      "decision": "REVIEW",
-      "reason": "SHA técnico nuevo; recalcular huella y revisar CI.",
-      "run_id": 43811600069,
-      "evidence_sha": "8d14510e5c2ddf597d21b2898ede5ced0ffbcf4e",
-      "logs_reviewed": false,
-      "evidence_executed": false,
+      "input_fingerprint": "4036c11bc15a885d697da063a7ca1aec1007f61803b4dfed47d7872d76807d0c",
+      "head_sha": "4840f796c0d1287c1f2185b08cf086c269619bac",
+      "decision": "REUSE",
+      "reason": "Logs y ejecución revisados para insumos equivalentes; alcance funcional acotado.",
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "acceptance_revision": "2026-10-16-continuity-v1",
+      "run_id": 43860683081,
+      "evidence_sha": "16c177ade1b87ee2794b7c6b6027a8ad2572a9b0",
       "jobs": [
         {
-          "id": 133114258205,
-          "name": "h1d",
-          "status": "in_progress",
-          "conclusion": null
+          "id": 133276373424,
+          "status": "completed",
+          "conclusion": "success"
         }
-      ],
-      "acceptance_revision": "2026-10-16-continuity-v1"
+      ]
     },
     "security": {
       "gate": "security",
-      "input_fingerprint": "b3cfa57349962e48c6003f681885538d46c3de4ee3f8d88426366e617c71ac8c",
-      "head_sha": "8d14510e5c2ddf597d21b2898ede5ced0ffbcf4e",
+      "input_fingerprint": "c79e67491aa22b8e328cdcd716102645c4d0df1fe2d2761b3e3043c5219544cd",
+      "head_sha": "4840f796c0d1287c1f2185b08cf086c269619bac",
       "decision": "REVIEW",
-      "reason": "SHA técnico nuevo; recalcular huella y revisar CI.",
+      "reason": "Huella calculada sobre árboles completos; revisar condiciones vigentes y evidencia aplicable.",
       "logs_reviewed": false,
-      "evidence_executed": false
+      "evidence_executed": false,
+      "acceptance_revision": "2026-10-16-continuity-v1"
     },
     "scientific": {
       "gate": "scientific",
-      "input_fingerprint": "fe384c1f0837786703c93f71b0e7b3f1845565fb4ab7f6b8befffccb6f4675b7",
-      "head_sha": "8d14510e5c2ddf597d21b2898ede5ced0ffbcf4e",
-      "decision": "REVIEW",
-      "reason": "SHA técnico nuevo; recalcular huella y revisar CI.",
-      "run_id": 43811599990,
-      "evidence_sha": "8d14510e5c2ddf597d21b2898ede5ced0ffbcf4e",
-      "logs_reviewed": false,
-      "evidence_executed": false,
+      "input_fingerprint": "765aa2e54cef4ff840ee8c58ae5fc0a0072f9718b2a63f881e28f32bbefc8eb5",
+      "head_sha": "4840f796c0d1287c1f2185b08cf086c269619bac",
+      "decision": "REUSE",
+      "reason": "Logs y ejecución revisados para insumos equivalentes; alcance funcional acotado.",
+      "logs_reviewed": true,
+      "evidence_executed": true,
+      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
+      "run_id": 43860683089,
+      "evidence_sha": "16c177ade1b87ee2794b7c6b6027a8ad2572a9b0",
       "jobs": [
         {
-          "id": 133114258165,
-          "name": "scientific-ui",
-          "status": "in_progress",
-          "conclusion": null
+          "id": 133276373578,
+          "status": "completed",
+          "conclusion": "success"
         }
-      ],
-      "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1"
+      ]
     }
   },
   "previous_accepted": {
