@@ -1,3 +1,11 @@
+# r583 — LM-D-03 fix applied; gates in progress on 17d48908
+
+Lite fix SHA 17d4890854ce81132a24eeb8f293c54cb5fb7c0d: Certification Runner 44200198238 SUCCESS. CI 44200198222 failure on npm audit (independent S25, not blocking). Cumulative 44200198258, H1d 44200198209, Scientific 44200198232 all in_progress. Prior classification harness/oracle. Next: WAIT and confirm on completion before advancing.
+
+Plus prior LM-D-02 retained. S19 REVIEW; S25, SG28/DIST and EV-D-01 BLOCKED; global OPEN.
+
+---
+
 # r582 — LM-D-03 cumulative failed on regex; H1d success; fix applied
 
 Lite 58a4e56029c881629c8be2dd42ae42253a9bf912: H1d 44199284871/job 134448862692 success (22 tests). Cumulative 44199284597/job 134448860902 failed in Unit and parity regression: tests/trigonometryLmD03.audit.test.ts threw Invalid regular expression /^limit\(/ Unterminated group. Classification: harness/oracle (test regex). Fix committed 17d4890854ce81132a24eeb8f293c54cb5fb7c0d changing toContain('limit('). Awaiting new CI runs on the fix SHA.
