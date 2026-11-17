@@ -8,5 +8,6 @@ describe('LM-D-02',()=>{
  it('anchors the frozen row',()=>{const text=gunzipSync(readFileSync(new URL('../qa/certification/legacy_sources/ejercicios_trigonometria.md.gz',import.meta.url))).toString();const row=text.split('\n').find(x=>x.includes('| LM-D-02 |'));expect(row).toContain(source);expect(row).toContain(String.raw`\frac{1}{2}`);});
  it('parses the literal',()=>{expect(parseExpression(source,'RAD').algebrite.replace(/\s+/g,'')).toMatch(/^limit\(/);});
  it('computes the limit',()=>{const r=calcLimit('(1-cos(x))/x^2','x','0',0,'both');expect(r.resultLatex).toBe(String.raw`\frac{1}{2}`);expect(r.confidence).toBe('SYMBOLIC');});
+ it('connects the parsed source body to the exact engine',()=>{const p=parseExpression(String.raw`\frac{1-\cos x}{x^{2}}`,'RAD');const r=calcLimit(p.algebrite,'x','0',0,'both');expect(r.resultLatex).toBe(String.raw`\frac{1}{2}`);expect(r.confidence).toBe('SYMBOLIC');});
  it('checks the independent half-angle identity on both sides',()=>{for(const x of [-.1,-.01,.01,.1])expect(2*(Math.sin(x/2)/x)**2).toBeCloseTo(.5,3);});
 });

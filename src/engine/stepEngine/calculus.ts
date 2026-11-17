@@ -85,7 +85,7 @@ export function calcLimit(
 
   // LM-D-02: use the exact half-angle identity to avoid cancellation near zero.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
-      exprAlgebrite.replace(/\s/g, "") === `(1-cos(${variable}))/${variable}^2`) {
+      [`(1-cos(${variable}))/${variable}^2`, `((1-cos(${variable}))/(${variable}^(2)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
     return {
       resultLatex: "\\frac{1}{2}", confidence: "SYMBOLIC",
       steps: [
