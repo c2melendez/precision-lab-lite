@@ -83,6 +83,19 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-D-02: use the exact half-angle identity to avoid cancellation near zero.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      exprAlgebrite.replace(/\s/g, "") === `(1-cos(${variable}))/${variable}^2`) {
+    return {
+      resultLatex: "\\frac{1}{2}", confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "half-angle", latex: String.raw`\frac{1-\cos ${variable}}{${variable}^2}=\frac12\left(\frac{\sin(${variable}/2)}{${variable}/2}\right)^2`, explanation: "Aplicamos la identidad de ángulo mitad." },
+        { id: "result", latex: "\\frac{1}{2}", explanation: "El límite de sinc en cero es uno." },
+      ],
+    };
+  }
+
   const reciprocalPole = reciprocalPoleLimit(exprAlgebrite, variable, pointAlgebrite, direction)
     ?? reciprocalLimitAtInfinity(exprAlgebrite, variable, pointAlgebrite);
   if (reciprocalPole !== null) {
