@@ -1,3 +1,11 @@
+# r585 — LM-D-04 tests and symbolic fix published; gates in progress on f403041
+
+Lite SHA f403041cfba4b55afc3987a4788b077c9e688151 (from test 4518a54 + symbolic 07b1d60 + precision fix): Certification Runner 44422000156 SUCCESS. Cumulative 44421999868 in_progress, H1d 44422000091 in_progress, Scientific 44422000182 in_progress, CI 44422001029 in_progress. Prior test SHA cumulative/CI failed as expected (missing product support). Classification: product (special-case symbolic limit sin(3x)/sin(5x)=3/5 using sinc ratio). Awaiting completion to confirm PASS_SCOPED.
+
+Plus status from prior: LM-D-03 evidence retained. S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente acción: WAIT for Lite cumulative/H1d/Scientific on f403041; on success reconcile continuity.json and advance matrix if PASS_SCOPED. Do not duplicate runs. (Event H1d run 44421123225 on 4518a54 succeeded but superseded.)
+
+---
+
 # r584 — LM-D-03 verificado funcionalmente
 
 Lite 567c2459dab6e3b568063d84547e33a51474b657 acumulativo 44202237843/job 134459002131 ejecutó 2678 pruebas aprobadas, incluidas cinco LM-D-03; H1d 44202237915/job 134459001668 ejecutó 22 y Scientific 44202240173/job 134459007569 ejecutó 456. Plus 2fb197e317f3a84cf405ec7027e60f1a11b623b6 acumulativo 44202243228/backend 134459017665 ejecutó 3195 aprobadas, 1 skipped y 11 xfailed; fuente, servicio bilateral y HTTP LM-D-03 pasaron; frontend 134459017183 aprobó 1055. H1d 44202243381/job 134459017335 aprobó 38. Logs revisados; PASS_SCOPED funcional, sin afirmar E2E visual específico ni certificación global.
