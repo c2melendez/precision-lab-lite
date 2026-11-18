@@ -1,3 +1,11 @@
+# r584 — LM-D-03 verificado funcionalmente
+
+Lite 567c2459dab6e3b568063d84547e33a51474b657 acumulativo 44202237843/job 134459002131 ejecutó 2678 pruebas aprobadas, incluidas cinco LM-D-03; H1d 44202237915/job 134459001668 ejecutó 22 y Scientific 44202240173/job 134459007569 ejecutó 456. Plus 2fb197e317f3a84cf405ec7027e60f1a11b623b6 acumulativo 44202243228/backend 134459017665 ejecutó 3195 aprobadas, 1 skipped y 11 xfailed; fuente, servicio bilateral y HTTP LM-D-03 pasaron; frontend 134459017183 aprobó 1055. H1d 44202243381/job 134459017335 aprobó 38. Logs revisados; PASS_SCOPED funcional, sin afirmar E2E visual específico ni certificación global.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente acción: reconciliar continuity.json con SHA técnicos y huellas vigentes, revisar mutación sin duplicar y avanzar a LM-D-04.
+
+---
+
 # r583 — LM-D-03 fix applied; gates in progress on 17d48908
 
 Lite fix SHA 17d4890854ce81132a24eeb8f293c54cb5fb7c0d (from 58a4e56029c881629c8be2dd42ae42253a9bf912): Certification Runner 44200198238 SUCCESS. CI 44200198222 failure on npm audit (known independent S25 debt, not blocking IN625 per protocol). Cumulative 44200198258 in_progress (unit tests running). H1d 44200198209 in_progress. Scientific 44200198232 in_progress. Classification prior: harness/oracle (regex). Awaiting completion to confirm PASS and advance.
