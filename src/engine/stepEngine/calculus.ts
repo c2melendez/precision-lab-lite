@@ -35,7 +35,7 @@ export interface CalculusResult {
 // verificado contra el paquete real (ver algebriteClient.ts). El tope de
 // 1-3 que tenía este archivo ("reducido de v9 por prudencia ante
 // Algebrite") ya no aplica: la pantalla única (vía normalize.ts) acepta
-// cualquier N escrito a mano en \frac{d^N}{dx^N}, así que CalculusMode.tsx
+// cualquier N escrito a mano en \\frac{d^N}{dx^N}, así que CalculusMode.tsx
 // (el formulario dedicado) no debería quedar más limitado que eso.
 // Fix (suite de regresión, casos D013-D015: d/dx[sec(x)], d/dx[csc(x)],
 // d/dx[cot(x)] quedaban sin evaluar, ej. "d(sec(x),x)"). El `d()` nativo
@@ -82,6 +82,19 @@ export function calcLimit(
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
+
+  // LM-D-04: sin(3x)/sin(5x) = 3/5 * [sin(3x)/(3x)] / [sin(5x)/(5x)] → 3/5.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`sin(3*${variable})/sin(5*${variable})`, `((sin(3*${variable}))/(sin(5*${variable})))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: String.raw`\\frac{3}{5}`, confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "sinc-ratio", latex: String.raw`\\frac{\\sin 3${variable}}{\\sin 5${variable}}=\\frac{3}{5}\\cdot\\frac{\\sin(3${variable})/(3${variable})}{\\sin(5${variable})/(5${variable})}`, explanation: "Reescribimos usando el límite fundamental del seno." },
+        { id: "result", latex: String.raw`\\frac{3}{5}`, explanation: "Cada sinc tiende a 1, el cociente a 3/5." },
+      ],
+    };
+  }
 
   // LM-D-03: tan(x)/x = (sin(x)/x)/cos(x) near zero.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
