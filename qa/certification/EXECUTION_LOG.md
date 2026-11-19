@@ -1,3 +1,11 @@
+# r586 — LM-D-04 verificado funcionalmente en gates acumulativos
+
+Lite 304515c8b9536327f0e5a267875776c0369c0979: Cumulative 44638506529 success, H1d 44638506297 success, Scientific 44638506458 success, CI 44638506888 success, Certification Runner 44638506841 success. Fix for LaTeX escaping in special-case resultLatex for sin(3x)/sin(5x)=3/5. Logs confirm success. Classification: product (symbolic limit). PASS_SCOPED funcional.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente acción: reconciliar continuity.json con SHA técnicos y huellas vigentes, sincronizar a Plus si el fix es bilateral, avanzar a siguiente caso de la matriz de límites.
+
+---
+
 # r584 — LM-D-03 verificado funcionalmente
 
 Lite 567c2459dab6e3b568063d84547e33a51474b657 acumulativo 44202237843/job 134459002131 ejecutó 2678 pruebas aprobadas, incluidas cinco LM-D-03; H1d 44202237915/job 134459001668 ejecutó 22 y Scientific 44202240173/job 134459007569 ejecutó 456. Plus 2fb197e317f3a84cf405ec7027e60f1a11b623b6 acumulativo 44202243228/backend 134459017665 ejecutó 3195 aprobadas, 1 skipped y 11 xfailed; fuente, servicio bilateral y HTTP LM-D-03 pasaron; frontend 134459017183 aprobó 1055. H1d 44202243381/job 134459017335 aprobó 38. Logs revisados; PASS_SCOPED funcional, sin afirmar E2E visual específico ni certificación global.
