@@ -87,11 +87,11 @@ export function calcLimit(
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`sin(3*${variable})/sin(5*${variable})`, `((sin(3*${variable}))/(sin(5*${variable})))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
     return {
-      resultLatex: String.raw`\\frac{3}{5}`, confidence: "SYMBOLIC",
+      resultLatex: String.raw`\frac{3}{5}`, confidence: "SYMBOLIC",
       steps: [
         { id: "original", latex: limitLatex, explanation: "Límite planteado." },
-        { id: "sinc-ratio", latex: String.raw`\\frac{\\sin 3${variable}}{\\sin 5${variable}}=\\frac{3}{5}\\cdot\\frac{\\sin(3${variable})/(3${variable})}{\\sin(5${variable})/(5${variable})}`, explanation: "Reescribimos usando el límite fundamental del seno." },
-        { id: "result", latex: String.raw`\\frac{3}{5}`, explanation: "Cada sinc tiende a 1, el cociente a 3/5." },
+        { id: "sinc-ratio", latex: String.raw`\frac{\sin 3${variable}}{\sin 5${variable}}=\frac{3}{5}\cdot\frac{\sin(3${variable})/(3${variable})}{\sin(5${variable})/(5${variable})}`, explanation: "Reescribimos usando el límite fundamental del seno." },
+        { id: "result", latex: String.raw`\frac{3}{5}`, explanation: "Cada sinc tiende a 1, el cociente a 3/5." },
       ],
     };
   }
