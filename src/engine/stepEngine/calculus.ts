@@ -83,6 +83,19 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-D-12: |x sin(1/x)| <= |x| for x != 0.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`${variable}*sin(1/${variable})`, `${variable}*sin((1)/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: "0", confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "squeeze", latex: String.raw`\left|${variable}\sin\frac{1}{${variable}}\right|\leq |${variable}|`, explanation: "El seno tiene valor absoluto menor o igual que uno." },
+        { id: "result", latex: "0", explanation: "La cota tiende a cero por ambos lados; aplicamos el teorema del sándwich." },
+      ],
+    };
+  }
+
   // LM-D-11: |sin(x)/x| <= 1/|x|, hence the limit at either infinity is zero.
   if (/^[A-Za-z]$/.test(variable) && (pointAlgebrite === "oo" || pointAlgebrite === "-oo") &&
       [`sin(${variable})/${variable}`, `((${`sin(${variable})`})/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
