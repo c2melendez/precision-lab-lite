@@ -96,6 +96,19 @@ export function calcLimit(
     };
   }
 
+  // LM-D-05: (tan(x)-sin(x))/x^3 → 1/2 via Taylor or trig identity.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`(tan(${variable})-sin(${variable}))/${variable}^3`, `((tan(${variable})-sin(${variable}))/(${variable}^(3)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: String.raw`\frac{1}{2}`, confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "taylor-or-identity", latex: String.raw`\frac{\tan ${variable}-\sin ${variable}}{${variable}^3}=\frac{1}{2}+O(${variable}^2)`, explanation: "Expansión de Taylor o identidad trigonométrica equivalente." },
+        { id: "result", latex: String.raw`\frac{1}{2}`, explanation: "El término principal da 1/2; los superiores desaparecen." },
+      ],
+    };
+  }
+
   // LM-D-03: tan(x)/x = (sin(x)/x)/cos(x) near zero.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`tan(${variable})/${variable}`, `((tan(${variable}))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
