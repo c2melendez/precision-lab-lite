@@ -37,3 +37,12 @@ Lite fc078ef17dd0b0f33c889162227fcb588aa3fa8f acumulativo 44182693887/job 134390
 Plus conserva evidencia en abcba4291f0550144185eb5277c94802872d411f, acumulativo 44172880652/backend 134356367273 3192 aprobadas, 1 skipped y 11 xfailed, incluyendo fuente, servicio bilateral y HTTP LM-D-02. Resultado funcional PASS_SCOPED, sin afirmar E2E visual específico ni certificación global.
 
 S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente acción: reconciliar continuity.json con SHA técnicos y huellas vigentes, revisar mutación sin duplicar y avanzar a LM-D-03.
+
+# r594 — LM-D-07 evidencia funcional bilateral verificada
+
+Lite 9eda9e25fedc3216ad7e2e7ec8ac26d295be147a: acumulativo 44877376791/job 136764951590: 2698 PASS, 8 expected fail, 34 TODO, cinco pruebas LM-D-07; H1d 44877376794: 22 PASS; Scientific 44877376833: 456 PASS. Plus f891c28724d0f1c5ea7b64e3bb9ceb1a941b6236: acumulativo 44877379711/backend 136764962060: 3207 PASS, 1 skipped, 11 xfail, tres pruebas LM-D-07; frontend 136764961865: 1055 PASS, 28 TODO; H1d 44877379707: 38 PASS. Logs y ejecución verificados. PASS_SCOPED funcional, sin afirmar E2E visual específico ni certificación global.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-D-08, reproducir fila congelada y agregar regresión bilateral.
+
+---
+
