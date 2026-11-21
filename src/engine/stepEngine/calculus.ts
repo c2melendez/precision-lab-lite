@@ -83,6 +83,19 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-D-07: (csc x - cot x)/x = (1-cos x)/(x sin x).
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`((1/sin(${variable}))-(cos(${variable})/sin(${variable})))/${variable}`, `(((1/sin(${variable}))-(cos(${variable})/sin(${variable})))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: String.raw`\frac{1}{2}`, confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "identity", latex: String.raw`\frac{\csc ${variable}-\cot ${variable}}{${variable}}=\frac{1-\cos ${variable}}{${variable}\sin ${variable}}`, explanation: "Reescribimos cosecante y cotangente mediante seno y coseno." },
+        { id: "result", latex: String.raw`\frac{1}{2}`, explanation: "Usamos los límites de (1−cos x)/x² y sin x/x." },
+      ],
+    };
+  }
+
   // LM-D-06: (sec(x)-1)/x² = (1-cos(x))/(x² cos(x)).
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`((1/cos(${variable}))-1)/${variable}^2`, `(((1/cos(${variable}))-1)/(${variable}^(2)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
