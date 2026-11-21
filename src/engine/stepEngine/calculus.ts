@@ -83,6 +83,19 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-I-02: arctan is differentiable at zero with derivative 1.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`arctan(${variable})/${variable}`, `((arctan(${variable}))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: "1", confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "derivative", latex: String.raw`(\arctan ${variable})'=\frac{1}{1+${variable}^2}`, explanation: "Aplicamos la derivada del arcotangente cerca de cero." },
+        { id: "result", latex: "1", explanation: "El cociente incremental en cero es la derivada, que vale uno." },
+      ],
+    };
+  }
+
   // LM-I-01: arcsin is differentiable at zero with derivative 1.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`arcsin(${variable})/${variable}`, `((arcsin(${variable}))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
