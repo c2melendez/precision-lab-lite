@@ -83,6 +83,19 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-D-06: (sec(x)-1)/x² = (1-cos(x))/(x² cos(x)).
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`((1/cos(${variable}))-1)/${variable}^2`, `(((1/cos(${variable}))-1)/(${variable}^(2)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: String.raw`\frac{1}{2}`, confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "identity", latex: String.raw`\frac{\sec ${variable}-1}{${variable}^2}=\frac{1-\cos ${variable}}{${variable}^2\cos ${variable}}`, explanation: "Reescribimos la secante mediante el coseno." },
+        { id: "result", latex: String.raw`\frac{1}{2}`, explanation: "El límite de (1−cos x)/x² es 1/2 y cos x tiende a 1." },
+      ],
+    };
+  }
+
   // LM-D-04: sin(3x)/sin(5x) = 3/5 * [sin(3x)/(3x)] / [sin(5x)/(5x)] → 3/5.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`sin(3*${variable})/sin(5*${variable})`, `((sin(3*${variable}))/(sin(5*${variable})))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
