@@ -1,3 +1,11 @@
+# r600 — LM-D-13 evidencia funcional bilateral verificada
+
+Lite f42c666faaccbddd6b8eedd84a04704ef3ea5866: acumulativo 44936787647/job 136945053152: 2721 PASS, 8 expected fail, 34 TODO, tres pruebas LM-D-13; H1d 44936787571: 22 PASS; Scientific 44936787575: 456 PASS. Plus d83bd906a1b595a5c76075a052b9a480b72f165f: acumulativo 44936790898/backend 136945063184: 3225 PASS, 1 skipped, 11 xfail, tres pruebas LM-D-13; frontend 136945063407: 1055 PASS, 28 TODO; H1d 44936790901: 38 PASS. Logs y ejecución verificados. PASS_SCOPED funcional; sin afirmar E2E visual ni ejecución literal completa.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-I-01, anclar fila congelada, reproducir y agregar regresión bilateral.
+
+---
+
 # r599 — LM-D-12 evidencia funcional bilateral verificada
 
 Lite efeb824f4c5b10b0b98f383043fefcec947d69d7: acumulativo 44926001095/job 136912108473: 2718 PASS, 8 expected fail, 34 TODO, cuatro pruebas LM-D-12; H1d 44926001120: 22 PASS; Scientific 44926001051: 456 PASS. Plus 606de33e6a50407f7f462fa794d72af74a77dec3: acumulativo 44926004559/backend 136912118112: 3222 PASS, 1 skipped, 11 xfail, tres pruebas LM-D-12; frontend 136912117937: 1055 PASS, 28 TODO; H1d 44926004655: 38 PASS. Logs y ejecución verificados. PASS_SCOPED funcional; sin afirmar E2E visual ni ejecución literal completa.
