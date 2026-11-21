@@ -83,6 +83,20 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-D-09: tangent has opposite infinite limits at pi/2.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite.replace(/\s/g, "") === "pi/2" &&
+      exprAlgebrite.replace(/\s/g, "") === `tan(${variable})` && direction !== "both") {
+    const resultLatex = direction === "left" ? String.raw`+\infty` : String.raw`-\infty`;
+    return {
+      resultLatex, confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite lateral planteado." },
+        { id: "identity", latex: String.raw`\tan ${variable}=\frac{\sin ${variable}}{\cos ${variable}}`, explanation: "El seno tiende a 1; el coseno tiende a cero con signo según el lado." },
+        { id: "result", latex: resultLatex, explanation: direction === "left" ? "El coseno se aproxima por valores positivos." : "El coseno se aproxima por valores negativos." },
+      ],
+    };
+  }
+
   // LM-D-08: x cot x = cos x / (sin x / x).
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       exprAlgebrite.replace(/\s/g, "") === `${variable}*(cos(${variable})/sin(${variable}))`) {
