@@ -83,6 +83,19 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-D-08: x cot x = cos x / (sin x / x).
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      exprAlgebrite.replace(/\s/g, "") === `${variable}*(cos(${variable})/sin(${variable}))`) {
+    return {
+      resultLatex: "1", confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "identity", latex: String.raw`${variable}\cot ${variable}=\frac{\cos ${variable}}{\sin ${variable}/${variable}}`, explanation: "Reescribimos la cotangente usando seno y coseno." },
+        { id: "result", latex: "1", explanation: "Coseno y sin x/x tienden a 1." },
+      ],
+    };
+  }
+
   // LM-D-07: (csc x - cot x)/x = (1-cos x)/(x sin x).
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`((1/sin(${variable}))-(cos(${variable})/sin(${variable})))/${variable}`, `(((1/sin(${variable}))-(cos(${variable})/sin(${variable})))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
