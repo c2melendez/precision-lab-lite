@@ -83,6 +83,19 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-I-01: arcsin is differentiable at zero with derivative 1.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`arcsin(${variable})/${variable}`, `((arcsin(${variable}))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: "1", confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "derivative", latex: String.raw`(\arcsin ${variable})'=\frac{1}{\sqrt{1-${variable}^2}}`, explanation: "Aplicamos la derivada del arcoseno cerca de cero." },
+        { id: "result", latex: "1", explanation: "El cociente incremental en cero es la derivada, que vale uno." },
+      ],
+    };
+  }
+
   // LM-D-12: |x sin(1/x)| <= |x| for x != 0.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`${variable}*sin(1/${variable})`, `${variable}*sin((1)/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
