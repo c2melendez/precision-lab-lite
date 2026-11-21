@@ -83,6 +83,19 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-D-11: |sin(x)/x| <= 1/|x|, hence the limit at either infinity is zero.
+  if (/^[A-Za-z]$/.test(variable) && (pointAlgebrite === "oo" || pointAlgebrite === "-oo") &&
+      [`sin(${variable})/${variable}`, `((${`sin(${variable})`})/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: "0", confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "squeeze", latex: String.raw`\left|\frac{\sin ${variable}}{${variable}}\right|\leq\frac{1}{|${variable}|}`, explanation: "El seno tiene valor absoluto menor o igual que uno." },
+        { id: "result", latex: "0", explanation: "La cota tiende a cero; aplicamos el teorema del sándwich." },
+      ],
+    };
+  }
+
   // LM-D-09: tangent has opposite infinite limits at pi/2.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite.replace(/\s/g, "") === "pi/2" &&
       exprAlgebrite.replace(/\s/g, "") === `tan(${variable})` && direction !== "both") {
