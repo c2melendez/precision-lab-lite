@@ -1,3 +1,13 @@
+# r590 — LM-D-05 Lite gates SUCCESS on 07192dc; Plus in progress
+
+Lite SHA 07192dc9509584cba3971cfc6e889a966edfa984: special-case symbolic for (tan(x)-sin(x))/x^3 = 1/2 (Algebrite numeric fallback). Certification Runner 44843812894 SUCCESS. Cumulative 44843812808 SUCCESS, H1d 44843812830 SUCCESS, Scientific 44843812798 SUCCESS, CI 44843812849 SUCCESS. Local tests 5/5 PASS. Classification: product (symbolic limit). PASS_SCOPED funcional confirmed for Lite.
+
+Plus SHA dd9cdc648a5eaef029f9043146df5ee1928f8216: test only (SymPy resolves exactly). Certification Runner 44843820156 SUCCESS. H1d 44843820212 SUCCESS. Cumulative 44843820180 in_progress, CI 44843820149 in_progress. Classification: harness/test. Awaiting remaining gates.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente acción: WAIT for Plus cumulative/CI on dd9cdc6; on success reconcile continuity.json and advance to LM-D-06. Do not duplicate runs.
+
+---
+
 # r589 — LM-D-05 technical fix published; gates in progress on 07192dc
 
 Lite SHA 07192dc9509584cba3971cfc6e889a966edfa984: special-case symbolic for (tan(x)-sin(x))/x^3 = 1/2 (Algebrite numeric fallback). Certification Runner 44843812894 SUCCESS. Cumulative 44843812808 in_progress, H1d 44843812830 in_progress, Scientific 44843812798 in_progress, CI 44843812849 in_progress. Local tests 5/5 PASS. Classification: product (symbolic limit). Awaiting completion to confirm PASS_SCOPED.
