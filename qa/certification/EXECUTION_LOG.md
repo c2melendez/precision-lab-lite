@@ -100,3 +100,12 @@ S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-I-
 
 ---
 
+
+# r601 — LM-I-01 evidencia funcional bilateral verificada
+
+Lite a97c41fdea3f9ef6c2961e7306aec2ae619cad50: acumulativo 44947644577/job 136978376164: 2725 PASS, 8 expected fail, 34 TODO, cuatro pruebas LM-I-01; H1d 44947644605: 22 PASS; Scientific 44947644783: 456 PASS. Plus e444b8cfae28acaf0d0b61e54fe6da4230485385: acumulativo 44947648970/backend 136978389141: 3228 PASS, 1 skipped, 11 xfail, tres pruebas LM-I-01; frontend 136978389426: 1055 PASS, 28 TODO; H1d 44947649026: 38 PASS. Logs y ejecución verificados. PASS_SCOPED funcional; sin afirmar E2E visual ni ejecución literal completa.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-I-02, anclar fila congelada, reproducir y agregar regresión bilateral.
+
+---
+
