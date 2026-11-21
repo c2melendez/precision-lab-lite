@@ -1,3 +1,11 @@
+# r596 — LM-D-09 evidencia funcional bilateral verificada
+
+Lite 7786044bc991b4b09aa1768ff9720b799b517ca5: acumulativo 44895512883/job 136820188708: 2706 PASS, 8 expected fail, 34 TODO, tres pruebas LM-D-09; H1d 44895512895: 22 PASS; Scientific 44895512950: 456 PASS. Plus 2b90f7804d379ee5b4ab938554ac29f9fc4d2557: acumulativo 44895518107/backend 136820204502: 3213 PASS, 1 skipped, 11 xfail, tres pruebas LM-D-09; frontend 136820204753: 1055 PASS, 28 TODO; H1d 44895518077: 38 PASS. Logs y ejecución verificados. PASS_SCOPED funcional en servicio y HTTP Plus, sin afirmar E2E visual ni ejecución literal completa.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-D-10, anclar fila congelada, reproducir y agregar regresión bilateral.
+
+---
+
 # r595 — LM-D-08 evidencia funcional bilateral verificada
 
 Lite 28a310099d4e0362e4f6decc1bb6d0116eb7b3a4: acumulativo 44886101598/job 136791606966: 2703 PASS, 8 expected fail, 34 TODO, cinco pruebas LM-D-08; H1d 44886101584: 22 PASS; Scientific 44886101578: 456 PASS. Plus 67d78cdb2a2bd73e526cf37098168abb49b6ab7b: acumulativo 44886103994/backend 136791613319: 3210 PASS, 1 skipped, 11 xfail, tres pruebas LM-D-08; frontend 136791613209: 1055 PASS, 28 TODO; H1d 44886104008: 38 PASS. Logs y ejecución verificados. PASS_SCOPED funcional, sin afirmar E2E visual específico ni certificación global.
