@@ -147,3 +147,14 @@ S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-I-
 
 ---
 
+
+# r607 — TRIG-LM-I-06 evidencia funcional bilateral verificada
+
+Lite 8fa9c64bd0952c66942e776e70d1448b36711acf: acumulativo 44986607827/job 137098443001: 2743 PASS, 8 expected fail, 34 TODO, incluidas dos pruebas LM-I-06; H1d 44986607711/job 137098442715: 22 PASS; científico 44986607815/job 137098442924: 456 PASS.
+
+Plus 168c8c9c0b45dcb61da98fcb20e23bb660644591: acumulativo 44986611272, frontend job 137098453810: 1055 PASS, 28 TODO; backend job 137098453963: 3243 PASS, 1 skipped y 11 xfail, incluidas tres pruebas LM-I-06. H1d 44986611264/job 137098453794: 38 PASS. Logs revisados y ejecución real verificada. PASS_SCOPED funcional bilateral, sin afirmar cobertura visual específica ni certificación global.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-I-07, anclar fila y verificar límite de arctan(x) en menos infinito y paridad bilateral. Evitar corridas duplicadas.
+
+---
+
