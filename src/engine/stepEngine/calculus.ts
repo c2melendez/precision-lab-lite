@@ -83,6 +83,15 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-I-08: arccos is continuous on its real domain up to 1 from the left.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "1" && direction === "left" &&
+      exprAlgebrite.replace(/\s/g, "") === `arccos(${variable})`) {
+    return { resultLatex: "0", confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "result", latex: "0", explanation: "Por continuidad en el dominio real, arccos(1) = 0." },
+    ] };
+  }
+
   // LM-I-06: arctan approaches ±π/2 at the corresponding infinite endpoint.
   if (/^[A-Za-z]$/.test(variable) && isInfinite && exprAlgebrite.replace(/\s/g, "") === `arctan(${variable})`) {
     const resultLatex = pointAlgebrite === "-oo" ? String.raw`-\frac{\pi}{2}` : String.raw`\frac{\pi}{2}`;
