@@ -118,3 +118,10 @@ S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-I-
 
 ---
 
+# r603 — LM-I-03 evidencia funcional Lite en progreso (Scientific pendiente)
+
+Lite c4e2f35bf68d04989a731f56d9a96954500d3c78: acumulativo 44968070163/job 137041494405 SUCCESS (Unit/parity + build); H1d 44968070149 SUCCESS; CI 44968070233 SUCCESS; Certification Runner 44968070227 SUCCESS. Scientific UI 44968070170 aún in_progress. Fix: exact inverse trig ratio in calculus.ts + audit test. Logs confirman success en gates completados. PASS_SCOPED funcional parcial; sin afirmar E2E visual completo ni bilateral Plus.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: confirmar Scientific, reconciliar continuidad y avanzar matriz si bilateral verde.
+
+---
