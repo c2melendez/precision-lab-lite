@@ -83,6 +83,16 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-I-09: for positive x, π/2 − arctan(x) = arctan(1/x).
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "oo" &&
+      exprAlgebrite.replace(/\s/g, "") === `${variable}*(pi/2-arctan(${variable}))`) {
+    return { resultLatex: "1", confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "identity", latex: String.raw`\frac{\pi}{2}-\arctan ${variable}=\arctan(1/${variable})`, explanation: "Identidad válida para valores positivos." },
+      { id: "result", latex: "1", explanation: "Con u = 1/x, el cociente arctan(u)/u tiende a 1." },
+    ] };
+  }
+
   // LM-I-08: arccos is continuous on its real domain up to 1 from the left.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "1" && direction === "left" &&
       exprAlgebrite.replace(/\s/g, "") === `arccos(${variable})`) {
