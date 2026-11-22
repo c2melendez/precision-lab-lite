@@ -235,3 +235,14 @@ S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-H-
 
 ---
 
+
+# r615 — TRIG-LM-H-03 evidencia funcional bilateral verificada
+
+Lite b42a9fbd963f4e900f6421afbe89c9aa8305e5f8: acumulativo 45023786554/job 137212245781: 2764 PASS, 8 expected fail, 34 TODO, incluidas tres pruebas LM-H-03; H1d 45023786547/job 137212246093: 22 PASS; científico 45023786611/job 137212245858: 456 PASS.
+
+Plus d9df7e6370114c3cc9cca195f180377aa304eea8: acumulativo 45023790877, frontend job 137212260245: 1055 PASS, 28 TODO; backend job 137212259949: 3267 PASS, 1 skipped y 11 xfail, incluidas tres pruebas LM-H-03. H1d 45023790847/job 137212260013: 38 PASS. Logs revisados y ejecución real verificada. PASS_SCOPED funcional bilateral, sin afirmar cobertura visual específica ni certificación global. Gate de mutación/seguridad Plus 45009396612, job 137168236451, sigue en curso; no se declara PASS ni se duplica.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-H-04, anclar fila y verificar límite (sinh(x)−x)/x³ en cero y paridad bilateral. Evitar corridas duplicadas.
+
+---
+
