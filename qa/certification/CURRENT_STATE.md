@@ -1,8 +1,10 @@
-# r603 — LM-I-03 evidencia funcional Lite en progreso (Scientific pendiente)
+# r603 — LM-I-03 evidencia funcional bilateral verificada
 
-Lite c4e2f35bf68d04989a731f56d9a96954500d3c78: acumulativo 44968070163/job 137041494405 SUCCESS (Unit/parity + build); H1d 44968070149 SUCCESS; CI 44968070233 SUCCESS; Certification Runner 44968070227 SUCCESS. Scientific UI 44968070170 aún in_progress. Fix: exact inverse trig ratio in calculus.ts + audit test. Logs confirman success en gates completados. PASS_SCOPED funcional parcial; sin afirmar E2E visual completo ni bilateral Plus.
+Lite c4e2f35bf68d04989a731f56d9a96954500d3c78: special-case symbolic for arcsin(3*x)/arctan(2*x) = 3/2 in calculus.ts. Cumulative 44968070163 SUCCESS; H1d 44968070149 SUCCESS; CI 44968070233 SUCCESS; Certification Runner 44968070227 SUCCESS; Scientific UI E2E 44968070170 SUCCESS. Classification: product. PASS_SCOPED funcional for Lite.
 
-S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: confirmar Scientific, reconciliar continuidad y avanzar matriz si bilateral verde.
+Plus bfaa8b13842f3dfd845f63bb8c04ea544cc1bd24: test coverage for asin(3*x)/atan(2*x) = 3/2. Cumulative 44968073812 SUCCESS; H1d SUCCESS; CI 44968073743 SUCCESS; Certification Runner SUCCESS. Classification: harness/test. PASS_SCOPED funcional bilateral for LM-I-03.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-I-04, anclar fila congelada, reproducir y agregar regresión bilateral. Do not duplicate runs.
 
 ---
 
