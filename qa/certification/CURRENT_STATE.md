@@ -1,3 +1,11 @@
+# r603 — LM-I-03 evidencia funcional Lite en progreso (Scientific pendiente)
+
+Lite c4e2f35bf68d04989a731f56d9a96954500d3c78: acumulativo 44968070163/job 137041494405 SUCCESS (Unit/parity + build); H1d 44968070149 SUCCESS; CI 44968070233 SUCCESS; Certification Runner 44968070227 SUCCESS. Scientific UI 44968070170 aún in_progress. Fix: exact inverse trig ratio in calculus.ts + audit test. Logs confirman success en gates completados. PASS_SCOPED funcional parcial; sin afirmar E2E visual completo ni bilateral Plus.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: confirmar Scientific, reconciliar continuidad y avanzar matriz si bilateral verde.
+
+---
+
 # r602 — LM-I-02 evidencia funcional bilateral verificada
 
 Lite 4e6e8af2acbf46e5041fce18d1f3af250dcb075c: acumulativo 44957993270/job 137010262355: 2729 PASS, 8 expected fail, 34 TODO, cuatro pruebas LM-I-02; H1d 44957993266: 22 PASS; Scientific 44957993300: 456 PASS. Plus 425aca92ced04bef34f88089fc4e8b3e29ee2b0f: acumulativo 44957997426/backend 137010274909: 3231 PASS, 1 skipped, 11 xfail, tres pruebas LM-I-02; frontend 137010275056: 1055 PASS, 28 TODO; H1d 44957997427: 38 PASS. Logs y ejecución verificados. PASS_SCOPED funcional; sin afirmar E2E visual ni ejecución literal completa.
