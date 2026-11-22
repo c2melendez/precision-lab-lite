@@ -202,3 +202,14 @@ S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-I-
 
 ---
 
+
+# r612 — TRIG-LM-I-11 evidencia funcional bilateral verificada
+
+Lite 1bac2c68d8272d52aa4e30236c5846c8ac640ad6: acumulativo 45009391761/job 137168113613: 2756 PASS, 8 expected fail, 34 TODO, incluidas dos pruebas LM-I-11; H1d 45009391723/job 137168113482: 22 PASS; científico 45009391647/job 137168113282: 456 PASS.
+
+Plus 1a60e92781f10387a4d09d096cc5ac9042a46c0c: acumulativo 45009396590, frontend job 137168129723: 1055 PASS, 28 TODO; backend job 137168129603: 3258 PASS, 1 skipped y 11 xfail, incluidas tres pruebas LM-I-11. H1d 45009396555/job 137168129616: 38 PASS. Logs acumulativos revisados y ejecución real verificada. PASS_SCOPED funcional bilateral, sin afirmar cobertura visual específica ni certificación global. Gate de mutación/seguridad Plus 45009396612 sigue en curso; no se declara PASS ni se duplica.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-H-01, anclar fila y verificar límite sinh(x)/x en cero y paridad bilateral. Evitar corridas duplicadas.
+
+---
+
