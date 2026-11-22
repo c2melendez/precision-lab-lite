@@ -83,6 +83,15 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-H-10: coth(x) = 1/tanh(x) diverges to +∞ from the right of zero.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" && direction === "right" &&
+      exprAlgebrite.replace(/\s/g, "") === `(1/tanh(${variable}))`) {
+    return { resultLatex: String.raw`+\infty`, confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "result", latex: String.raw`+\infty`, explanation: "La tangente hiperbólica tiende a cero por valores positivos." },
+    ] };
+  }
+
   // LM-H-09: cosh(x) − sinh(x) = exp(−x).
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "oo" &&
       [`cosh(${variable})-sinh(${variable})`, `(cosh(${variable})-sinh(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
