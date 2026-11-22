@@ -16,6 +16,8 @@ describe('LM-I-04', () => {
       const result = calcLimit('(x-arctan(x))/x^3', 'x', '0', 0, direction);
       expect(result.resultLatex).toBe(String.raw`\frac{1}{3}`);
       expect(result.confidence).toBe('SYMBOLIC');
+      expect(result.steps.find(step => step.id === 'taylor')?.latex).toContain(String.raw`\arctan`);
+      expect(result.steps.find(step => step.id === 'taylor')?.latex).not.toContain(String.raw`\\arctan`);
     }
   });
   it('connects the parsed matrix body to the engine', () => {

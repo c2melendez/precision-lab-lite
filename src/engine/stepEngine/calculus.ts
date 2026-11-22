@@ -87,11 +87,11 @@ export function calcLimit(
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`(${variable}-arctan(${variable}))/${variable}^3`, `((${variable}-arctan(${variable}))/(${variable}^(3)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
     return {
-      resultLatex: String.raw`\\frac{1}{3}`, confidence: "SYMBOLIC",
+      resultLatex: String.raw`\frac{1}{3}`, confidence: "SYMBOLIC",
       steps: [
         { id: "original", latex: limitLatex, explanation: "Límite planteado." },
-        { id: "taylor", latex: String.raw`\\arctan ${variable}=${variable}-\\frac{${variable}^3}{3}+O(${variable}^5)`, explanation: "Expansión de Taylor del arcotangente en cero." },
-        { id: "result", latex: String.raw`\\frac{1}{3}`, explanation: "El término principal de x − arctan x es x³/3; el cociente tiende a 1/3." },
+        { id: "taylor", latex: String.raw`\arctan ${variable}=${variable}-\frac{${variable}^3}{3}+O(${variable}^5)`, explanation: "Expansión de Taylor del arcotangente en cero." },
+        { id: "result", latex: String.raw`\frac{1}{3}`, explanation: "El término principal de x − arctan x es x³/3; el cociente tiende a 1/3." },
       ],
     };
   }
