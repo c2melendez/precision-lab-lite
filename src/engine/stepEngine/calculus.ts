@@ -83,6 +83,15 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-I-06: arctan approaches ±π/2 at the corresponding infinite endpoint.
+  if (/^[A-Za-z]$/.test(variable) && isInfinite && exprAlgebrite.replace(/\s/g, "") === `arctan(${variable})`) {
+    const resultLatex = pointAlgebrite === "-oo" ? String.raw`-\frac{\pi}{2}` : String.raw`\frac{\pi}{2}`;
+    return { resultLatex, confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "result", latex: resultLatex, explanation: "El arcotangente tiene asíntotas horizontales en ±π/2." },
+    ] };
+  }
+
   // LM-I-05: arcsin(x) - x ~ x^3/6 near zero.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`(arcsin(${variable})-${variable})/${variable}^3`, `((arcsin(${variable})-${variable})/(${variable}^(3)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
