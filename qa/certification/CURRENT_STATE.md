@@ -1,3 +1,13 @@
+# r624 — TRIG-LM-HI-01 evidencia funcional bilateral verificada
+
+Lite 5b14e059b586f55b7c560b6d6dc9f0b15d454c97: acumulativo 45073550458/job 137365669114: 2786 PASS, 8 expected fail, 34 TODO, incluidas dos pruebas LM-HI-01; H1d 45073550396/job 137365669031: 22 PASS; científico 45073550408/job 137365668852: 456 PASS.
+
+Plus b0d051461d1a08922f1474dc7e0617c55807f907: acumulativo 45073553372, frontend job 137365678335: 1055 PASS, 28 TODO; backend job 137365678543: 3294 PASS, 1 skipped y 11 xfail, incluidas tres pruebas LM-HI-01. H1d 45073553446/job 137365678375: 38 PASS. Logs revisados y ejecución real verificada. PASS_SCOPED funcional bilateral, sin afirmar cobertura visual específica ni certificación global. Gate de mutación Plus 45009396612/job 137168236451 cancelado sin informe final, no es PASS.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-HI-02, anclar fila y verificar límite artanh(x)/x en cero y paridad bilateral. Evitar corridas duplicadas.
+
+---
+
 # r623 — TRIG-LM-H-11 evidencia funcional bilateral verificada
 
 Lite 11a767332daca2c02aa1dba0d42754985c09851a: acumulativo 45068258369/job 137349186124: 2784 PASS, 8 expected fail, 34 TODO, incluidas dos pruebas LM-H-11; H1d 45068258308/job 137349186204: 22 PASS; científico 45068258354/job 137349186351: 456 PASS.
