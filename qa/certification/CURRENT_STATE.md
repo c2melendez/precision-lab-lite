@@ -1,3 +1,13 @@
+# r606 — TRIG-LM-I-05 evidencia funcional bilateral verificada
+
+Lite df21d12eb33f4cdbacd6873c60746f2a7e637e1c: acumulativo 44978022624/job 137072160252, 2741 PASS, 8 expected fail y 34 TODO; LM-I-05 cuatro pruebas. H1d 44978022683/job 137072160263: 22 PASS; científico 44978022635/job 137072160282: 456 PASS.
+
+Plus 519209b4728a4257d6d8e00396432781c5c17495: acumulativo 44978026221, frontend job 137072170936: 1055 PASS y 28 TODO; backend job 137072171106: 3240 PASS, 1 skipped y 11 xfail, incluidas tres pruebas LM-I-05. H1d 44978026185/job 137072170917: 38 PASS. Logs revisados y ejecución real de los gates verificada. PASS_SCOPED funcional bilateral, no certificación global ni cobertura visual específica de la fila.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-I-06, verificar la fila de arctan(x) en infinito y paridad bilateral. Evitar corridas duplicadas.
+
+---
+
 # r605 — TRIG-LM-I-04 evidencia funcional bilateral verificada
 
 Lite a5192de4be9bd32fc67749a67475f0053703dec0: acumulativo 44973192915/job 137057227623: 2737 PASS, 8 expected fail, 34 TODO; H1d 44973192903/job 137057226911: 22 PASS; Scientific UI 44973192920/job 137057226810: 456 PASS. La prueba LM-I-04 ejecutó cuatro casos.
