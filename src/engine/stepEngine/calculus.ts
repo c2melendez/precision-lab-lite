@@ -83,6 +83,16 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-H-07: sinh(x)/exp(x) = (1-exp(-2x))/2.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "oo" &&
+      [`sinh(${variable})/exp(${variable})`, `((sinh(${variable}))/(e^(${variable})))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return { resultLatex: String.raw`\frac{1}{2}`, confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "identity", latex: String.raw`\frac{\sinh ${variable}}{e^{${variable}}}=\frac{1-e^{-2${variable}}}{2}`, explanation: "Aplicamos la definición exponencial del seno hiperbólico." },
+      { id: "result", latex: String.raw`\frac{1}{2}`, explanation: "La exponencial negativa tiende a cero." },
+    ] };
+  }
+
   // LM-H-05/06: tanh has horizontal asymptotes at ±1.
   if (/^[A-Za-z]$/.test(variable) && isInfinite &&
       exprAlgebrite.replace(/\s/g, "") === `tanh(${variable})`) {
