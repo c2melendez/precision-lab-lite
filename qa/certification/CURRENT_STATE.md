@@ -1,3 +1,13 @@
+# r611 — TRIG-LM-I-10 evidencia funcional bilateral verificada
+
+Lite 331209607d5559a0d62f162744584be79571eb70: acumulativo 45004266796/job 137152248710: 2754 PASS, 8 expected fail, 34 TODO, incluidas dos pruebas LM-I-10; H1d 45004266761/job 137152249133: 22 PASS; científico 45004266751/job 137152248843: 456 PASS.
+
+Plus e5ab1fe7c80c207111455cd0075b82794891627b: acumulativo 45004271106, frontend job 137152260812: 1055 PASS, 28 TODO; backend job 137152261046: 3255 PASS, 1 skipped y 11 xfail, incluidas tres pruebas LM-I-10. H1d 45004271083/job 137152260611: 38 PASS. Logs revisados y ejecución real verificada. PASS_SCOPED funcional bilateral, sin afirmar cobertura visual específica ni certificación global.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-I-11, anclar fila y verificar límite de arccot(x) en menos infinito y paridad bilateral. Evitar corridas duplicadas.
+
+---
+
 # r610 — TRIG-LM-I-09 evidencia funcional bilateral verificada
 
 Lite f18bdd3c87a1948f0021af038fe6c36f41295238: acumulativo 44999616715/job 137138059860: 2752 PASS, 8 expected fail, 34 TODO, incluidas tres pruebas LM-I-09; H1d 44999616804/job 137138059704: 22 PASS; científico 44999616714/job 137138059786: 456 PASS.
