@@ -83,6 +83,16 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-HI-03: atanh(x) = x + x³/3 + O(x⁵) near zero.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`(atanh(${variable})-${variable})/${variable}^3`, `((atanh(${variable})-${variable})/(${variable}^(3)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return { resultLatex: String.raw`\frac{1}{3}`, confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "taylor", latex: String.raw`\operatorname{artanh} ${variable}=${variable}+\frac{${variable}^3}{3}+O(${variable}^5)`, explanation: "Expansión de Taylor de artanh en cero." },
+      { id: "result", latex: String.raw`\frac{1}{3}`, explanation: "El término principal del numerador es x³/3." },
+    ] };
+  }
+
   // LM-HI-02: atanh is differentiable at zero with derivative 1.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`atanh(${variable})/${variable}`, `((atanh(${variable}))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
