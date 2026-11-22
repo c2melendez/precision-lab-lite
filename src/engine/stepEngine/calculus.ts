@@ -83,6 +83,15 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-H-01: sinh is differentiable at zero with derivative cosh(0) = 1.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`sinh(${variable})/${variable}`, `((sinh(${variable}))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return { resultLatex: "1", confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "result", latex: "1", explanation: "Por la derivada de sinh en cero, el límite es cosh(0) = 1." },
+    ] };
+  }
+
   // LM-I-10/11: principal arccotangent has range (0, π).
   if (/^[A-Za-z]$/.test(variable) && isInfinite &&
       exprAlgebrite.replace(/\s/g, "") === `(pi/2-arctan(${variable}))`) {
