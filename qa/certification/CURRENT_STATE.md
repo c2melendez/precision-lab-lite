@@ -1,3 +1,13 @@
+# r609 — TRIG-LM-I-08 evidencia funcional bilateral verificada
+
+Lite 75f40eb5b6a867fb784c0d14556cbac90d0dd7fc: acumulativo 44995054105/job 137124186001: 2749 PASS, 8 expected fail, 34 TODO, incluidas tres pruebas LM-I-08; H1d 44995054086/job 137124185732: 22 PASS; científico 44995054102/job 137124185884: 456 PASS.
+
+Plus 6d20c5cbf5b88ea9f6efcf899d4df58f876f86e8: acumulativo 44995057605, frontend job 137124197716: 1055 PASS, 28 TODO; backend job 137124197492: 3249 PASS, 1 skipped y 11 xfail, incluidas tres pruebas LM-I-08. H1d 44995057644/job 137124197637: 38 PASS. Logs revisados y ejecución real verificada. PASS_SCOPED funcional bilateral, sin afirmar cobertura visual específica ni certificación global.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-I-09, anclar fila y verificar límite x(π/2−arctan x) en infinito y paridad bilateral. Evitar corridas duplicadas.
+
+---
+
 # r608 — TRIG-LM-I-07 evidencia funcional bilateral verificada
 
 Lite cc3eae31250bca83d0a1f2b6c431d498434cf327: acumulativo 44991030677/job 137111904093: 2746 PASS, 8 expected fail, 34 TODO, incluidas tres pruebas LM-I-07; H1d 44991030682/job 137111904029: 22 PASS; científico 44991030656/job 137111903943: 456 PASS.
