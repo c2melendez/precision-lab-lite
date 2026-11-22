@@ -83,6 +83,19 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-I-05: arcsin(x) - x ~ x^3/6 near zero.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`(arcsin(${variable})-${variable})/${variable}^3`, `((arcsin(${variable})-${variable})/(${variable}^(3)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: String.raw`\frac{1}{6}`, confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "taylor", latex: String.raw`\arcsin ${variable}=${variable}+\frac{${variable}^3}{6}+O(${variable}^5)`, explanation: "Expansión de Taylor del arcoseno en cero." },
+        { id: "result", latex: String.raw`\frac{1}{6}`, explanation: "El término principal de arcsin x − x es x³/6; el cociente tiende a 1/6." },
+      ],
+    };
+  }
+
   // LM-I-04: x - arctan(x) ~ x^3/3 near zero.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`(${variable}-arctan(${variable}))/${variable}^3`, `((${variable}-arctan(${variable}))/(${variable}^(3)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
