@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 617,
+  "revision": 618,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "2e9facd6bdb031c06c8a62cdb6b473eb73466357",
-  "baseline_case": "TRIG-LM-H-05",
+  "technical_baseline_sha": "0adeece25ab2c54a008b671c6335da330d4a5a96",
+  "baseline_case": "TRIG-LM-H-06",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-LM-H-06",
-    "previous_id": "TRIG-LM-H-05",
+    "id": "TRIG-LM-H-07",
+    "previous_id": "TRIG-LM-H-06",
     "status": "READY",
-    "action": "Anclar fila LM-H-06; verificar límite tanh(x) en menos infinito y regresiones bilaterales."
+    "action": "Anclar fila LM-H-07; verificar límite sinh(x)/exp(x) en infinito y regresiones bilaterales."
   },
   "blockers": [
     {
@@ -79,22 +79,22 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-22T15:47:44.098517+00:00",
+  "updated_utc": "2026-11-22T16:49:48.461400+00:00",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
-      "input_fingerprint": "05df30527906cc265b826b71235fa8c548395f85060612e4763f36c15652f8ee",
-      "head_sha": "2e9facd6bdb031c06c8a62cdb6b473eb73466357",
+      "input_fingerprint": "d87897887bc5481ca9a9193f795d75c820efbd01ab87ba592f2b80a343970b44",
+      "head_sha": "0adeece25ab2c54a008b671c6335da330d4a5a96",
       "decision": "REUSE",
       "reason": "Ejecución y logs revisados en SHA técnico; alcance funcional acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45034736640,
-      "evidence_sha": "2e9facd6bdb031c06c8a62cdb6b473eb73466357",
+      "run_id": 45040360975,
+      "evidence_sha": "0adeece25ab2c54a008b671c6335da330d4a5a96",
       "jobs": [
         {
-          "id": 137245849357,
+          "id": 137263205078,
           "status": "completed",
           "conclusion": "success"
         }
@@ -102,18 +102,18 @@
     },
     "h1d": {
       "gate": "h1d",
-      "input_fingerprint": "bedec0dce5477f1a33289c42fe30eb87d93c6162b4f4fe880fca0db671a61283",
-      "head_sha": "2e9facd6bdb031c06c8a62cdb6b473eb73466357",
+      "input_fingerprint": "bca17b3882e89b6c09fb059df3aa5942fc473758f74dd370bb761d08dcbef2c4",
+      "head_sha": "0adeece25ab2c54a008b671c6335da330d4a5a96",
       "decision": "REUSE",
       "reason": "Ejecución y logs revisados en SHA técnico; alcance funcional acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45034736689,
-      "evidence_sha": "2e9facd6bdb031c06c8a62cdb6b473eb73466357",
+      "run_id": 45040361049,
+      "evidence_sha": "0adeece25ab2c54a008b671c6335da330d4a5a96",
       "jobs": [
         {
-          "id": 137245849508,
+          "id": 137263204575,
           "status": "completed",
           "conclusion": "success"
         }
@@ -131,18 +131,18 @@
     },
     "scientific": {
       "gate": "scientific",
-      "input_fingerprint": "df141c398abd22236adfe2ee3a100fbe4639e782d9d160df70a8adf630097c54",
-      "head_sha": "2e9facd6bdb031c06c8a62cdb6b473eb73466357",
+      "input_fingerprint": "319db4aefcf046d16cd63f13c412063e7a7192149f1336df9213e256928cd09b",
+      "head_sha": "0adeece25ab2c54a008b671c6335da330d4a5a96",
       "decision": "REUSE",
       "reason": "Ejecución y logs revisados en SHA técnico; alcance funcional acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
-      "run_id": 45034736697,
-      "evidence_sha": "2e9facd6bdb031c06c8a62cdb6b473eb73466357",
+      "run_id": 45040360997,
+      "evidence_sha": "0adeece25ab2c54a008b671c6335da330d4a5a96",
       "jobs": [
         {
-          "id": 137245849414,
+          "id": 137263204762,
           "status": "completed",
           "conclusion": "success"
         }
