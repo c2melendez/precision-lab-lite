@@ -83,6 +83,15 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-H-11: cosh(x) diverges to positive infinity at either infinite end.
+  if (/^[A-Za-z]$/.test(variable) && isInfinite &&
+      exprAlgebrite.replace(/\s/g, "") === `cosh(${variable})`) {
+    return { resultLatex: String.raw`+\infty`, confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "result", latex: String.raw`+\infty`, explanation: "El coseno hiperbólico crece sin límite en ambos extremos." },
+    ] };
+  }
+
   // LM-H-10: coth(x) = 1/tanh(x) diverges to +∞ from the right of zero.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" && direction === "right" &&
       exprAlgebrite.replace(/\s/g, "") === `(1/tanh(${variable}))`) {
