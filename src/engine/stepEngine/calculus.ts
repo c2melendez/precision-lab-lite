@@ -83,6 +83,15 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-HI-01: asinh is differentiable at zero with derivative 1.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`asinh(${variable})/${variable}`, `((asinh(${variable}))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return { resultLatex: "1", confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "result", latex: "1", explanation: "La derivada de arsinh en cero es 1." },
+    ] };
+  }
+
   // LM-H-11: cosh(x) diverges to positive infinity at either infinite end.
   if (/^[A-Za-z]$/.test(variable) && isInfinite &&
       exprAlgebrite.replace(/\s/g, "") === `cosh(${variable})`) {
