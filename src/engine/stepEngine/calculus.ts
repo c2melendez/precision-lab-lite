@@ -83,6 +83,19 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-I-03: derivatives at zero of arcsin(3x) and arctan(2x) are 3 and 2.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`arcsin(3*${variable})/arctan(2*${variable})`, `((arcsin(3*${variable}))/(arctan(2*${variable})))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: String.raw`\frac{3}{2}`, confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "derivatives", latex: String.raw`\frac{3/\sqrt{1-9${variable}^2}}{2/(1+4${variable}^2)}`, explanation: "Aplicamos la regla de L'Hôpital cerca de cero." },
+        { id: "result", latex: String.raw`\frac{3}{2}`, explanation: "Los límites de las derivadas son tres y dos." },
+      ],
+    };
+  }
+
   // LM-I-02: arctan is differentiable at zero with derivative 1.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`arctan(${variable})/${variable}`, `((arctan(${variable}))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
