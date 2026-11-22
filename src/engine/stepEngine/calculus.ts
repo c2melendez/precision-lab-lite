@@ -83,6 +83,16 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-H-02: cosh(x) = 1 + x²/2 + O(x⁴) near zero.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`(cosh(${variable})-1)/${variable}^2`, `((cosh(${variable})-1)/(${variable}^(2)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return { resultLatex: String.raw`\frac{1}{2}`, confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "taylor", latex: String.raw`\cosh ${variable}=1+\frac{${variable}^2}{2}+O(${variable}^4)`, explanation: "Expansión de Taylor del coseno hiperbólico en cero." },
+      { id: "result", latex: String.raw`\frac{1}{2}`, explanation: "El término principal del numerador es x²/2." },
+    ] };
+  }
+
   // LM-H-01: sinh is differentiable at zero with derivative cosh(0) = 1.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`sinh(${variable})/${variable}`, `((sinh(${variable}))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
