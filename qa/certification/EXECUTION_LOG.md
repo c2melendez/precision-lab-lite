@@ -312,3 +312,14 @@ S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-H-
 
 ---
 
+
+# r622 — TRIG-LM-H-10 evidencia funcional bilateral verificada
+
+Lite 46df082b8c1bbefd936642b7848b06da3a59d996: acumulativo 45062439474/job 137331132037: 2782 PASS, 8 expected fail, 34 TODO, incluidas dos pruebas LM-H-10; H1d 45062439602/job 137331132315: 22 PASS; científico 45062439478/job 137331132108: 456 PASS.
+
+Plus 87496114d766e4e68fcad6eeb99a5ca3579adc93: acumulativo 45062445190, frontend job 137331149614: 1055 PASS, 28 TODO; backend job 137331149863: 3288 PASS, 1 skipped y 11 xfail, incluidas tres pruebas LM-H-10. H1d 45062445155/job 137331149386: 38 PASS. Logs revisados y ejecución real verificada. PASS_SCOPED funcional bilateral, sin afirmar cobertura visual específica ni certificación global. Gate de mutación Plus 45009396612/job 137168236451 cancelado sin informe final, no es PASS.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-H-11, anclar fila y verificar límite cosh(x) en infinito y paridad bilateral. Evitar corridas duplicadas.
+
+---
+
