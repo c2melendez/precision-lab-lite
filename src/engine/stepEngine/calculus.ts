@@ -83,6 +83,16 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-H-08: cosh(x)/sinh(x) tends to 1 at positive infinity.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "oo" &&
+      [`cosh(${variable})/sinh(${variable})`, `((cosh(${variable}))/(sinh(${variable})))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return { resultLatex: "1", confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "identity", latex: String.raw`\frac{\cosh ${variable}}{\sinh ${variable}}=\frac{1+e^{-2${variable}}}{1-e^{-2${variable}}}`, explanation: "Dividimos numerador y denominador por la exponencial creciente." },
+      { id: "result", latex: "1", explanation: "La exponencial negativa tiende a cero." },
+    ] };
+  }
+
   // LM-H-07: sinh(x)/exp(x) = (1-exp(-2x))/2.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "oo" &&
       [`sinh(${variable})/exp(${variable})`, `((sinh(${variable}))/(e^(${variable})))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
