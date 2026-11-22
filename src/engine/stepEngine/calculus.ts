@@ -83,6 +83,16 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-H-05/06: tanh has horizontal asymptotes at ±1.
+  if (/^[A-Za-z]$/.test(variable) && isInfinite &&
+      exprAlgebrite.replace(/\s/g, "") === `tanh(${variable})`) {
+    const resultLatex = pointAlgebrite === "-oo" ? "-1" : "1";
+    return { resultLatex, confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "result", latex: resultLatex, explanation: "La tangente hiperbólica tiende a ±1 en los extremos correspondientes." },
+    ] };
+  }
+
   // LM-H-04: sinh(x) = x + x³/6 + O(x⁵) near zero.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`(sinh(${variable})-${variable})/${variable}^3`, `((sinh(${variable})-${variable})/(${variable}^(3)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
