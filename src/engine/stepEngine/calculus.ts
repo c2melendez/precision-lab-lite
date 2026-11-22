@@ -83,6 +83,16 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-H-09: cosh(x) − sinh(x) = exp(−x).
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "oo" &&
+      [`cosh(${variable})-sinh(${variable})`, `(cosh(${variable})-sinh(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return { resultLatex: "0", confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "identity", latex: String.raw`\cosh ${variable}-\sinh ${variable}=e^{-${variable}}`, explanation: "Aplicamos las definiciones exponenciales." },
+      { id: "result", latex: "0", explanation: "La exponencial negativa tiende a cero." },
+    ] };
+  }
+
   // LM-H-08: cosh(x)/sinh(x) tends to 1 at positive infinity.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "oo" &&
       [`cosh(${variable})/sinh(${variable})`, `((cosh(${variable}))/(sinh(${variable})))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
