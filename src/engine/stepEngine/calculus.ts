@@ -83,6 +83,15 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-HI-02: atanh is differentiable at zero with derivative 1.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`atanh(${variable})/${variable}`, `((atanh(${variable}))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return { resultLatex: "1", confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "result", latex: "1", explanation: "La derivada de artanh en cero es 1." },
+    ] };
+  }
+
   // LM-HI-01: asinh is differentiable at zero with derivative 1.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`asinh(${variable})/${variable}`, `((asinh(${variable}))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
