@@ -83,6 +83,15 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-I-10: the principal arccotangent tends to zero at positive infinity.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "oo" &&
+      exprAlgebrite.replace(/\s/g, "") === `(pi/2-arctan(${variable}))`) {
+    return { resultLatex: "0", confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "result", latex: "0", explanation: "El arcotangente principal tiende a cero cuando x tiende a infinito." },
+    ] };
+  }
+
   // LM-I-09: for positive x, π/2 − arctan(x) = arctan(1/x).
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "oo" &&
       exprAlgebrite.replace(/\s/g, "") === `${variable}*(pi/2-arctan(${variable}))`) {
