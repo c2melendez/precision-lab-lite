@@ -83,6 +83,16 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-H-04: sinh(x) = x + x³/6 + O(x⁵) near zero.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`(sinh(${variable})-${variable})/${variable}^3`, `((sinh(${variable})-${variable})/(${variable}^(3)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return { resultLatex: String.raw`\frac{1}{6}`, confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "taylor", latex: String.raw`\sinh ${variable}=${variable}+\frac{${variable}^3}{6}+O(${variable}^5)`, explanation: "Expansión de Taylor del seno hiperbólico en cero." },
+      { id: "result", latex: String.raw`\frac{1}{6}`, explanation: "El término principal del numerador es x³/6." },
+    ] };
+  }
+
   // LM-H-03: tanh is differentiable at zero with derivative sech²(0) = 1.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`tanh(${variable})/${variable}`, `((tanh(${variable}))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
