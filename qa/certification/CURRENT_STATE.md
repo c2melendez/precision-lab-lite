@@ -1,3 +1,13 @@
+# r605 — TRIG-LM-I-04 evidencia funcional bilateral verificada
+
+Lite a5192de4be9bd32fc67749a67475f0053703dec0: acumulativo 44973192915/job 137057227623: 2737 PASS, 8 expected fail, 34 TODO; H1d 44973192903/job 137057226911: 22 PASS; Scientific UI 44973192920/job 137057226810: 456 PASS. La prueba LM-I-04 ejecutó cuatro casos.
+
+Plus 0c05fa3bfdaa8f643923aee11c87d2e53f788aa5: acumulativo 44973195708/backend 137057236581: 3237 PASS, 1 skipped, 11 xfail; frontend 137057236186: 1055 PASS, 28 TODO; H1d 44973195775/job 137057236705: 38 PASS. La prueba LM-I-04 ejecutó tres casos. Logs revisados, ejecución sin reutilización para estos SHA. Clasificación PASS_SCOPED funcional bilateral; no implica certificación global ni ejecución literal completa.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-I-05, anclar fila congelada, reproducir y verificar paridad y regresiones. No duplicar corridas.
+
+---
+
 # r604 — LM-I-04 technical published; gates in progress on 115f184
 
 Lite SHA 115f184a71651665a45f8c87cdb2285a8c49249d: special-case symbolic for (x-arctan(x))/x^3 = 1/3 (Algebrite numeric fallback). Certification Runner, Cumulative, H1d, Scientific, CI in progress (runs 44971156523, 44971156558, 44971156548, 44971156578, 44971156575). Classification: product (symbolic limit). Awaiting completion to confirm PASS_SCOPED.
