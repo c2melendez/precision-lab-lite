@@ -1,3 +1,13 @@
+# r604 — LM-I-04 technical published; gates in progress on 115f184
+
+Lite SHA 115f184a71651665a45f8c87cdb2285a8c49249d: special-case symbolic for (x-arctan(x))/x^3 = 1/3 (Algebrite numeric fallback). Certification Runner, Cumulative, H1d, Scientific, CI in progress (runs 44971156523, 44971156558, 44971156548, 44971156578, 44971156575). Classification: product (symbolic limit). Awaiting completion to confirm PASS_SCOPED.
+
+Plus SHA fe739d4700b32e5f8c9a0194daa84c9dbc57469a: test coverage for (x-atan(x))/x**3 = 1/3 (SymPy exact). Certification Runner, H1d, CI, Cumulative in progress. Classification: harness/test. Awaiting gates.
+
+S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente acción: WAIT for Lite and Plus cumulative/H1d/Scientific/CI on the new SHAs; on success reconcile continuity.json and advance to LM-I-05. Do not duplicate runs.
+
+---
+
 # r603 — LM-I-03 evidencia funcional bilateral verificada
 
 Lite c4e2f35bf68d04989a731f56d9a96954500d3c78: special-case symbolic for arcsin(3*x)/arctan(2*x) = 3/2 in calculus.ts. Cumulative 44968070163 SUCCESS; H1d 44968070149 SUCCESS; CI 44968070233 SUCCESS; Certification Runner 44968070227 SUCCESS; Scientific UI E2E 44968070170 SUCCESS. Classification: product. PASS_SCOPED funcional for Lite.
