@@ -6,6 +6,13 @@ import {derivative} from '../src/engine/algebriteClient';
 import {rewriteReciprocalFunctions} from '../src/engine/parsing';
 
 const source = gunzipSync(readFileSync(new URL('../qa/certification/legacy_sources/ejercicios_trigonometria.md.gz', import.meta.url))).toString();
+const sourceInputs = [
+  String.raw`\sinh x`, String.raw`\cosh x`, String.raw`\tanh x`,
+  String.raw`\operatorname{csch} x`, String.raw`\operatorname{sech} x`, String.raw`\coth x`,
+  String.raw`\sinh(3x)`, String.raw`\ln\left(\cosh x\right)`,
+  String.raw`\left(x\sinh x\right)`, String.raw`\tanh^{2}x`,
+  String.raw`\left(e^{x}\cosh x\right)`, String.raw`\left(\cosh^{2}x-\sinh^{2}x\right)`,
+];
 const cases: [string, string, string, number[], (x: number) => number][] = [
   ['DV-H-01','sinh(x)',String.raw`\cosh x`,[-1,0,1],x=>Math.cosh(x)],
   ['DV-H-02','cosh(x)',String.raw`\sinh x`,[-1,0,1],x=>Math.sinh(x)],
@@ -25,6 +32,7 @@ describe('TR324 direct hyperbolic derivatives',()=>{
   it.each(cases)('%s matches its matrix row and independent oracle', (id, expression, expected, samples, oracle)=>{
     const line = source.split('\n').find(row=>row.includes(`| ${id} |`));
     expect(line).toBeDefined();
+    expect(line!.split('|')[2]).toContain(sourceInputs[Number(id.slice(-2))-1]);
     expect(line!.split('|')[3]).toContain(expected);
     const result = derivative(rewriteReciprocalFunctions(expression),'x',1);
     expect(result).not.toMatch(/\bd\s*\(/);
