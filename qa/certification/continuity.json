@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 627,
+  "revision": 628,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "afa35c08a27710a0501d3f76e82d43e89dccea66",
@@ -10,8 +10,8 @@
   "next_action": {
     "id": "TRIG-LM-HI-05",
     "previous_id": "TRIG-LM-HI-04",
-    "status": "READY",
-    "action": "Verificar el límite (arsinh(x) - ln x) cuando x tiende a infinito."
+    "status": "IN_PROGRESS",
+    "action": "Verificar el límite (arsinh(x) - ln x) cuando x tiende a infinito. Especialización añadida en calculus.ts."
   },
-  "updated_utc": "2026-11-23T00:55:00+00:00"
+  "updated_utc": "2026-11-23T01:07:00+00:00"
 }
