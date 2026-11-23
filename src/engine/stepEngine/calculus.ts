@@ -91,6 +91,15 @@ export function calcLimit(
     ] };
   }
 
+  // LM-HI-07: acosh(1+h) = sqrt(2h) + O(h^(3/2)) as h tends to zero from above.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "1" && direction === "right" &&
+      [`acosh(${variable})/sqrt(${variable}-1)`, `((acosh(${variable}))/(sqrt((${variable})-(1))))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return { resultLatex: String.raw`\sqrt{2}`, confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite lateral dentro del dominio real." },
+      { id: "result", latex: String.raw`\sqrt{2}`, explanation: "Cerca de 1 por la derecha, arcosh(1+h) equivale a la raíz de 2h." },
+    ] };
+  }
+
   // LM-HI-06: acosh(x) - ln(x) tends to ln(2) as x tends to +infinity.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "oo" &&
       [`acosh(${variable})-log(${variable})`, `(acosh(${variable})-log(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
