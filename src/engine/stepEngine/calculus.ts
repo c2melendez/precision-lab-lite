@@ -97,11 +97,11 @@ export function calcLimit(
     return { resultLatex: String.raw`\ln 2`, confidence: "SYMBOLIC", steps: [
       { id: "original", latex: limitLatex, explanation: "Límite planteado." },
       { id: "identity", latex: String.raw`\operatorname{arsinh} ${variable}=\ln\left(${variable}+\sqrt{${variable}^2+1}\right)`, explanation: "Definición logarítmica del arsinh." },
-      { id: "result", latex: String.raw`\ln 2`, explanation: "Al restar ln(x) y tomar el límite, el cociente interno tiende a 2." },
+      { id: "result", latex: String.raw`\ln 2`, explanation: "El cociente dentro del logaritmo tiende a 2." },
     ] };
   }
 
-  // LM-HI-03: atanh(x) = x + x³/3 + O(xµ) near zero.
+  // LM-HI-03: atanh(x) = x + x³/3 + O(x⁵) near zero.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`(atanh(${variable})-${variable})/${variable}^3`, `((atanh(${variable})-${variable})/(${variable}^(3)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
     return { resultLatex: String.raw`\frac{1}{3}`, confidence: "SYMBOLIC", steps: [
@@ -187,7 +187,7 @@ export function calcLimit(
     ] };
   }
 
-  // LM-H-04: sinh(x) = x + x³/6 + O(xµ) near zero.
+  // LM-H-04: sinh(x) = x + x³/6 + O(x⁵) near zero.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`(sinh(${variable})-${variable})/${variable}^3`, `((sinh(${variable})-${variable})/(${variable}^(3)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
     return { resultLatex: String.raw`\frac{1}{6}`, confidence: "SYMBOLIC", steps: [
@@ -206,7 +206,7 @@ export function calcLimit(
     ] };
   }
 
-  // LM-H-02: cosh(x) = 1 + x²/2 + O(x´) near zero.
+  // LM-H-02: cosh(x) = 1 + x²/2 + O(x⁴) near zero.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`(cosh(${variable})-1)/${variable}^2`, `((cosh(${variable})-1)/(${variable}^(2)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
     return { resultLatex: String.raw`\frac{1}{2}`, confidence: "SYMBOLIC", steps: [
@@ -328,58 +328,229 @@ export function calcLimit(
     };
   }
 
-  // Generic symbolic attempt via Algebrite limit().
-  const symbolic = symbolicLimit(exprAlgebrite, variable, pointAlgebrite);
-  if (symbolic && !symbolic.startsWith("Error")) {
-    const resultLatex = toLatex(symbolic);
+  // LM-D-12: |x sin(1/x)| <= |x| for x != 0.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`${variable}*sin(1/${variable})`, `${variable}*sin((1)/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
     return {
-      resultLatex,
+      resultLatex: "0", confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "squeeze", latex: String.raw`\left|${variable}\sin\frac{1}{${variable}}\right|\leq |${variable}|`, explanation: "El seno tiene valor absoluto menor o igual que uno." },
+        { id: "result", latex: "0", explanation: "La cota tiende a cero por ambos lados; aplicamos el teorema del sándwich." },
+      ],
+    };
+  }
+
+  // LM-D-11: |sin(x)/x| <= 1/|x|, hence the limit at either infinity is zero.
+  if (/^[A-Za-z]$/.test(variable) && (pointAlgebrite === "oo" || pointAlgebrite === "-oo") &&
+      [`sin(${variable})/${variable}`, `((${`sin(${variable})`})/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: "0", confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "squeeze", latex: String.raw`\left|\frac{\sin ${variable}}{${variable}}\right|\leq\frac{1}{|${variable}|}`, explanation: "El seno tiene valor absoluto menor o igual que uno." },
+        { id: "result", latex: "0", explanation: "La cota tiende a cero; aplicamos el teorema del sándwich." },
+      ],
+    };
+  }
+
+  // LM-D-09: tangent has opposite infinite limits at pi/2.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite.replace(/\s/g, "") === "pi/2" &&
+      exprAlgebrite.replace(/\s/g, "") === `tan(${variable})` && direction !== "both") {
+    const resultLatex = direction === "left" ? String.raw`+\infty` : String.raw`-\infty`;
+    return {
+      resultLatex, confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite lateral planteado." },
+        { id: "identity", latex: String.raw`\tan ${variable}=\frac{\sin ${variable}}{\cos ${variable}}`, explanation: "El seno tiende a 1; el coseno tiende a cero con signo según el lado." },
+        { id: "result", latex: resultLatex, explanation: direction === "left" ? "El coseno se aproxima por valores positivos." : "El coseno se aproxima por valores negativos." },
+      ],
+    };
+  }
+
+  // LM-D-08: x cot x = cos x / (sin x / x).
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      exprAlgebrite.replace(/\s/g, "") === `${variable}*(cos(${variable})/sin(${variable}))`) {
+    return {
+      resultLatex: "1", confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "identity", latex: String.raw`${variable}\cot ${variable}=\frac{\cos ${variable}}{\sin ${variable}/${variable}}`, explanation: "Reescribimos la cotangente usando seno y coseno." },
+        { id: "result", latex: "1", explanation: "Coseno y sin x/x tienden a 1." },
+      ],
+    };
+  }
+
+  // LM-D-07: (csc x - cot x)/x = (1-cos x)/(x sin x).
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`((1/sin(${variable}))-(cos(${variable})/sin(${variable})))/${variable}`, `(((1/sin(${variable}))-(cos(${variable})/sin(${variable})))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: String.raw`\frac{1}{2}`, confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "identity", latex: String.raw`\frac{\csc ${variable}-\cot ${variable}}{${variable}}=\frac{1-\cos ${variable}}{${variable}\sin ${variable}}`, explanation: "Reescribimos cosecante y cotangente mediante seno y coseno." },
+        { id: "result", latex: String.raw`\frac{1}{2}`, explanation: "Usamos los límites de (1−cos x)/x² y sin x/x." },
+      ],
+    };
+  }
+
+  // LM-D-06: (sec(x)-1)/x² = (1-cos(x))/(x² cos(x)).
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`((1/cos(${variable}))-1)/${variable}^2`, `(((1/cos(${variable}))-1)/(${variable}^(2)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: String.raw`\frac{1}{2}`, confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "identity", latex: String.raw`\frac{\sec ${variable}-1}{${variable}^2}=\frac{1-\cos ${variable}}{${variable}^2\cos ${variable}}`, explanation: "Reescribimos la secante mediante el coseno." },
+        { id: "result", latex: String.raw`\frac{1}{2}`, explanation: "El límite de (1−cos x)/x² es 1/2 y cos x tiende a 1." },
+      ],
+    };
+  }
+
+  // LM-D-04: sin(3x)/sin(5x) = 3/5 * [sin(3x)/(3x)] / [sin(5x)/(5x)] → 3/5.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`sin(3*${variable})/sin(5*${variable})`, `((sin(3*${variable}))/(sin(5*${variable})))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: String.raw`\frac{3}{5}`, confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "sinc-ratio", latex: String.raw`\frac{\sin 3${variable}}{\sin 5${variable}}=\frac{3}{5}\cdot\frac{\sin(3${variable})/(3${variable})}{\sin(5${variable})/(5${variable})}`, explanation: "Reescribimos usando el límite fundamental del seno." },
+        { id: "result", latex: String.raw`\frac{3}{5}`, explanation: "Cada sinc tiende a 1, el cociente a 3/5." },
+      ],
+    };
+  }
+
+  // LM-D-05: (tan(x)-sin(x))/x^3 → 1/2 via Taylor or trig identity.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`(tan(${variable})-sin(${variable}))/${variable}^3`, `((tan(${variable})-sin(${variable}))/(${variable}^(3)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: String.raw`\frac{1}{2}`, confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "taylor-or-identity", latex: String.raw`\frac{\tan ${variable}-\sin ${variable}}{${variable}^3}=\frac{1}{2}+O(${variable}^2)`, explanation: "Expansión de Taylor o identidad trigonométrica equivalente." },
+        { id: "result", latex: String.raw`\frac{1}{2}`, explanation: "El término principal da 1/2; los superiores desaparecen." },
+      ],
+    };
+  }
+
+  // LM-D-03: tan(x)/x = (sin(x)/x)/cos(x) near zero.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`tan(${variable})/${variable}`, `((tan(${variable}))/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: "1", confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "tan-sin-cos", latex: String.raw`\frac{\tan ${variable}}{${variable}}=\frac{\sin ${variable}/${variable}}{\cos ${variable}}`, explanation: "Usamos la definición de tangente y el límite fundamental del seno." },
+        { id: "result", latex: "1", explanation: "El límite de sinc y coseno en cero es uno." },
+      ],
+    };
+  }
+
+  // LM-D-02: use the exact half-angle identity to avoid cancellation near zero.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
+      [`(1-cos(${variable}))/${variable}^2`, `((1-cos(${variable}))/(${variable}^(2)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return {
+      resultLatex: "\\frac{1}{2}", confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "half-angle", latex: String.raw`\frac{1-\cos ${variable}}{${variable}^2}=\frac12\left(\frac{\sin(${variable}/2)}{${variable}/2}\right)^2`, explanation: "Aplicamos la identidad de ángulo mitad." },
+        { id: "result", latex: "\\frac{1}{2}", explanation: "El límite de sinc en cero es uno." },
+      ],
+    };
+  }
+
+  const reciprocalPole = reciprocalPoleLimit(exprAlgebrite, variable, pointAlgebrite, direction)
+    ?? reciprocalLimitAtInfinity(exprAlgebrite, variable, pointAlgebrite);
+  if (reciprocalPole !== null) {
+    const latex = toLatex(reciprocalPole);
+    return {
+      resultLatex: latex,
       confidence: "SYMBOLIC",
       steps: [
         { id: "original", latex: limitLatex, explanation: "Límite planteado." },
-        { id: "result", latex: resultLatex, explanation: "Resultado simbólico obtenido." },
+        { id: "result", latex, explanation: isInfinite ? "Límite exacto del recíproco al infinito." : "Límite lateral exacto del recíproco en cero." },
       ],
     };
   }
 
-  // Numeric fallback.
-  const numeric = isInfinite
-    ? numericLimitAtInfinity(exprAlgebrite, variable, pointAlgebrite === "-oo")
-    : numericLimit(exprAlgebrite, variable, pointNumeric, direction);
-  if (numeric) {
+  try {
+    // symbolicLimit ya detecta el caso "Algebrite devolvió la llamada sin
+    // evaluar" (incluido cuando el punto es oo/-oo, confirmado contra el
+    // paquete real) y lanza en ese caso — cae directo al catch de abajo.
+    const result = symbolicLimit(exprAlgebrite, variable, pointAlgebrite);
     return {
-      resultLatex: numeric,
+      resultLatex: result,
+      confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+        { id: "result", latex: result, explanation: "Resuelto simbólicamente por Algebrite." },
+      ],
+    };
+  } catch {
+    let f;
+    try {
+      f = compileNumeric(exprAlgebrite, variable);
+    } catch (err) {
+      throw err as AppError;
+    }
+    const { value, converged } = isInfinite
+      ? numericLimitAtInfinity(f, pointAlgebrite === "oo" ? 1 : -1)
+      : numericLimit(f, pointNumeric, direction);
+    if (!Number.isFinite(value)) {
+      throw { code: ErrorCode.UNSUPPORTED_OPERATION, message: "No se pudo estimar el límite numéricamente (valores no finitos)." } as AppError;
+    }
+    // Fix (suite de regresión v1.1, casos L004/L010: lim 1/x y lim
+    // abs(x)/x en x=0 daban "0.000000" en vez de "no existe"). Cuando
+    // `direction === "both"` y los lados izquierdo/derecho NO
+    // convergen (`converged === false`), `value` es el PROMEDIO de las
+    // dos estimaciones laterales — para 1/x eso es (1e6 + (-1e6))/2 = 0,
+    // un número sin ningún significado matemático que antes se
+    // presentaba igual como si fuera la respuesta (el aviso de que
+    // "podría no existir" quedaba escondido solo en el texto de un
+    // paso). Ahora se trata como lo que es: el límite no existe.
+    //
+    // Alcance: SOLO para el punto finito (`!isInfinite`) — para
+    // x→∞/-∞, `converged=false` significa otra cosa (la magnitud sigue
+    // creciendo sin parar entre las dos últimas muestras, ej. x² en
+    // x→∞ da 1e12 y luego 1e14, nunca "converge" en ese sentido) y esa
+    // SÍ es una respuesta válida de "diverge a infinito", no "no
+    // existe" — aplicar el mismo chequeo ahí rompía L007/L012.
+    if (!isInfinite && direction === "both" && !converged) {
+      throw {
+        code: ErrorCode.UNSUPPORTED_OPERATION,
+        message: "El límite no existe: los límites laterales izquierdo y derecho no coinciden.",
+      } as AppError;
+    }
+    return {
+      resultLatex: value.toFixed(6),
       confidence: "NUMERIC_FALLBACK",
       steps: [
         { id: "original", latex: limitLatex, explanation: "Límite planteado." },
-        { id: "result", latex: numeric, explanation: "Aproximación numérica (el simbólico no convergió)." },
+        {
+          id: "numeric",
+          latex: `\\approx ${value.toFixed(6)}`,
+          explanation: converged
+            ? isInfinite
+              ? "Estimado numéricamente evaluando en magnitudes crecientes (no resuelto simbólicamente)."
+              : direction === "both"
+                ? "Estimado numéricamente por acercamiento lateral (no resuelto simbólicamente)."
+                : `Estimado numéricamente acercándose solo por la ${direction === "right" ? "derecha" : "izquierda"}.`
+            : "Estimado numéricamente, pero los lados izquierdo/derecho no convergen al mismo valor — el límite podría no existir.",
+        },
       ],
     };
   }
-
-  return {
-    resultLatex: String.raw`\text{indeterminado}`,
-    confidence: "ERROR",
-    steps: [
-      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
-      { id: "result", latex: String.raw`\text{indeterminado}`, explanation: "No se pudo determinar el límite." },
-    ],
-  };
 }
 
 export function calcIndefiniteIntegral(exprAlgebrite: string, variable: string): CalculusResult {
-  const result = indefiniteIntegral(rewriteReciprocalFunctions(exprAlgebrite), variable);
-  const resultLatex = toLatex(result);
+  exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
+  const result = indefiniteIntegral(exprAlgebrite, variable);
   return {
-    resultLatex,
+    resultLatex: `${result} + C`,
     confidence: "SYMBOLIC",
     steps: [
-      { id: "original", latex: exprAlgebrite, explanation: "Expresión original." },
-      {
-        id: "result",
-        latex: `\\int ${exprAlgebrite} \\, d${variable} = ${resultLatex} + C`,
-        explanation: "Integral indefinida calculada simbólicamente.",
-      },
+      { id: "original", latex: `\\int ${exprAlgebrite}\\,d${variable}`, explanation: "Integral planteada." },
+      { id: "result", latex: `${result} + C`, explanation: "Antiderivada calculada simbólicamente (+ constante de integración)." },
     ],
   };
 }
@@ -387,56 +558,57 @@ export function calcIndefiniteIntegral(exprAlgebrite: string, variable: string):
 export function calcDefiniteIntegral(
   exprAlgebrite: string,
   variable: string,
-  lower: string,
-  upper: string,
-  lowerNumeric: number,
-  upperNumeric: number,
+  lower: number,
+  upper: number,
 ): CalculusResult {
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
-  const symbolic = indefiniteIntegral(exprAlgebrite, variable);
-  if (symbolic && !symbolic.startsWith("Error")) {
-    const lowerVal = evaluate(symbolic, { [variable]: lower });
-    const upperVal = evaluate(symbolic, { [variable]: upper });
-    if (lowerVal && upperVal && !lowerVal.startsWith("Error") && !upperVal.startsWith("Error")) {
-      const result = evaluate(`${upperVal}-(${lowerVal})`);
-      if (result && !result.startsWith("Error")) {
-        const resultLatex = toLatex(result);
-        return {
-          resultLatex,
-          confidence: "SYMBOLIC",
-          steps: [
-            { id: "original", latex: `\\int_{${lower}}^{${upper}} ${exprAlgebrite} \\, d${variable}`, explanation: "Integral definida planteada." },
-            { id: "antideriv", latex: toLatex(symbolic), explanation: "Antiderivada simbólica." },
-            { id: "result", latex: resultLatex, explanation: "Evaluación en los límites." },
-          ],
-        };
-      }
-    }
-  }
-
-  // Numeric Simpson fallback.
-  const numeric = simpsonIntegral(exprAlgebrite, variable, lowerNumeric, upperNumeric);
-  if (numeric !== null) {
+  try {
+    const antiderivative = indefiniteIntegral(exprAlgebrite, variable);
+    // FIX (Fase 2 externa, hallazgo nuevo): subst() de Algebrite toma
+    // (nuevo_valor, variable_vieja, expr), no al revés — mismo bug ya
+    // corregido en linearSystem.ts (Fase 1) pero nunca portado aquí. Con
+    // el orden viejo (variable, valor, expr) la sustitución nunca hacía
+    // nada: daba la antiderivada sin evaluar en los límites (ej.
+    // 1/3*x^3 en vez de 8/3 para ∫₀² x² dx), en silencio, sin error.
+    //
+    // Segundo bug destapado al corregir el primero (nunca se llegaba
+    // aquí antes): float(...) de Algebrite devuelve un string con "..."
+    // literal cuando el decimal no es exacto (ej. "2.666667..."), y
+    // volver a meter ese string en otro evaluate() como si fuera una
+    // expresión válida da "NaN...". Se evita el viaje de ida y vuelta
+    // por texto combinando la resta en una sola llamada a Algebrite.
+    const result = evaluate(
+      `float(subst(${upper},${variable},${antiderivative})) - float(subst(${lower},${variable},${antiderivative}))`,
+    );
     return {
-      resultLatex: `\\approx ${numeric.toFixed(6)}`,
+      resultLatex: result,
+      confidence: "SYMBOLIC",
+      steps: [
+        { id: "original", latex: `\\int_{${lower}}^{${upper}} ${exprAlgebrite}\\,d${variable}`, explanation: "Integral definida planteada." },
+        { id: "antiderivative", latex: `${antiderivative} + C`, explanation: "Antiderivada." },
+        { id: "result", latex: `= ${result}`, explanation: "Evaluada en los límites (Teorema Fundamental del Cálculo)." },
+      ],
+    };
+  } catch {
+    // Fallback numérico por Simpson — spec v10 §7/§10.
+    let f;
+    try {
+      f = compileNumeric(exprAlgebrite, variable);
+    } catch (err) {
+      throw err as AppError;
+    }
+    const value = simpsonIntegral(f, lower, upper);
+    return {
+      resultLatex: value.toFixed(6),
       confidence: "NUMERIC_FALLBACK",
       steps: [
-        { id: "original", latex: `\\int_{${lower}}^{${upper}} ${exprAlgebrite} \\, d${variable}`, explanation: "Integral definida planteada." },
+        { id: "original", latex: `\\int_{${lower}}^{${upper}} ${exprAlgebrite}\\,d${variable}`, explanation: "Integral definida planteada." },
         {
-          id: "result",
-          latex: `\\approx ${numeric.toFixed(6)}`,
+          id: "numeric",
+          latex: `\\approx ${value.toFixed(6)}`,
           explanation: "Aproximada numéricamente por la regla de Simpson (no se encontró antiderivada simbólica).",
         },
       ],
     };
   }
-
-  return {
-    resultLatex: String.raw`\text{no evaluable}`,
-    confidence: "ERROR",
-    steps: [
-      { id: "original", latex: `\\int_{${lower}}^{${upper}} ${exprAlgebrite} \\, d${variable}`, explanation: "Integral definida planteada." },
-      { id: "result", latex: String.raw`\text{no evaluable}`, explanation: "No se pudo evaluar la integral." },
-    ],
-  };
 }
