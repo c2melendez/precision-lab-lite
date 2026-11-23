@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 637,
+  "revision": 638,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "fb51031b007f560bb1f108cb41e3807afa76b74d",
-  "baseline_case": "TRIG-DV-D-07..10",
+  "technical_baseline_sha": "5ebc065bc2e315d954eaff5a17cda697e85fd0af",
+  "baseline_case": "TRIG-DV-D-11..14",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-DV-D-11",
-    "previous_id": "TRIG-DV-D-10",
+    "id": "TRIG-DV-I-01",
+    "previous_id": "TRIG-DV-D-14",
     "status": "READY",
-    "action": "Verificar derivadas trigonométricas directas restantes y sus dominios."
+    "action": "Verificar derivadas trigonométricas inversas y sus dominios."
   },
   "blockers": [
     {
@@ -79,22 +79,22 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-23T10:40:39.364195+00:00",
+  "updated_utc": "2026-11-23T11:39:58.459407+00:00",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
-      "input_fingerprint": "74ed8e1fcd2e7b411f3d3494891cea09dc68b5f4ef1d23b39c290fa8fc3c6cdc",
-      "head_sha": "fb51031b007f560bb1f108cb41e3807afa76b74d",
+      "input_fingerprint": "ccb2e449a23e5da4891f8cab47e2ec162262e56e55f5769856ac0a697f773957",
+      "head_sha": "5ebc065bc2e315d954eaff5a17cda697e85fd0af",
       "decision": "REUSE",
       "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45149260776,
-      "evidence_sha": "fb51031b007f560bb1f108cb41e3807afa76b74d",
+      "run_id": 45158499483,
+      "evidence_sha": "5ebc065bc2e315d954eaff5a17cda697e85fd0af",
       "jobs": [
         {
-          "id": 137606181430,
+          "id": 137637495346,
           "status": "completed",
           "conclusion": "success"
         }
@@ -102,18 +102,18 @@
     },
     "h1d": {
       "gate": "h1d",
-      "input_fingerprint": "f6e2260b0983692b86a8ea23e73b9a8d63b0f68772f1d70bcc748dbc0b75b508",
-      "head_sha": "fb51031b007f560bb1f108cb41e3807afa76b74d",
+      "input_fingerprint": "da7a930e78e7091c9b2adb9941c41cc9f89e91a7242c5ef01e5d41b84858e63d",
+      "head_sha": "5ebc065bc2e315d954eaff5a17cda697e85fd0af",
       "decision": "REUSE",
       "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45149260472,
-      "evidence_sha": "fb51031b007f560bb1f108cb41e3807afa76b74d",
+      "run_id": 45158499531,
+      "evidence_sha": "5ebc065bc2e315d954eaff5a17cda697e85fd0af",
       "jobs": [
         {
-          "id": 137606180353,
+          "id": 137637497626,
           "status": "completed",
           "conclusion": "success"
         }
@@ -131,18 +131,18 @@
     },
     "scientific": {
       "gate": "scientific",
-      "input_fingerprint": "4f90ff93ec130b05a4185bfd198dfa6830678f5b4e2bede68f885dc64da1f028",
-      "head_sha": "fb51031b007f560bb1f108cb41e3807afa76b74d",
+      "input_fingerprint": "18dea18c107fdc556390574f32558f7ac5cf8fe2a35b13692a6a190ea25046d5",
+      "head_sha": "5ebc065bc2e315d954eaff5a17cda697e85fd0af",
       "decision": "REUSE",
       "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
-      "run_id": 45149260593,
-      "evidence_sha": "fb51031b007f560bb1f108cb41e3807afa76b74d",
+      "run_id": 45158499491,
+      "evidence_sha": "5ebc065bc2e315d954eaff5a17cda697e85fd0af",
       "jobs": [
         {
-          "id": 137606180466,
+          "id": 137637495186,
           "status": "completed",
           "conclusion": "success"
         }
