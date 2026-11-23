@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 635,
+  "revision": 636,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "74eef18606fa38863edee5288f8dbe42cb363b52",
-  "baseline_case": "TRIG-DV-D-01",
+  "technical_baseline_sha": "7a84eebb15bec7688fab8305677fd2543783dffd",
+  "baseline_case": "TRIG-DV-D-02..06",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-DV-D-02",
-    "previous_id": "TRIG-DV-D-01",
+    "id": "TRIG-DV-D-07",
+    "previous_id": "TRIG-DV-D-06",
     "status": "READY",
-    "action": "Verificar derivadas trigonométricas directas siguientes con oráculos independientes y paridad."
+    "action": "Verificar derivadas trigonométricas compuestas siguientes con paridad."
   },
   "blockers": [
     {
@@ -79,22 +79,22 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-23T08:43:26.722374+00:00",
+  "updated_utc": "2026-11-23T09:39:47.117444+00:00",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
-      "input_fingerprint": "0a41a1767ebd03cffbd76a9e048717e5b9b8e69490784bce77741bf85dbe228f",
-      "head_sha": "74eef18606fa38863edee5288f8dbe42cb363b52",
+      "input_fingerprint": "708f0b454800e32617d934a1feb9c0749a3b4683bb6f17766e0e6b12bbe49161",
+      "head_sha": "7a84eebb15bec7688fab8305677fd2543783dffd",
       "decision": "REUSE",
       "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45133376143,
-      "evidence_sha": "74eef18606fa38863edee5288f8dbe42cb363b52",
+      "run_id": 45141109317,
+      "evidence_sha": "7a84eebb15bec7688fab8305677fd2543783dffd",
       "jobs": [
         {
-          "id": 137553792319,
+          "id": 137579046723,
           "status": "completed",
           "conclusion": "success"
         }
@@ -102,18 +102,18 @@
     },
     "h1d": {
       "gate": "h1d",
-      "input_fingerprint": "b76733e44856337b3a8486b79221276c5ae2f292bc126d58bf8a8623993b0bee",
-      "head_sha": "74eef18606fa38863edee5288f8dbe42cb363b52",
+      "input_fingerprint": "79cf2926ebca46af7981ad55e6575ecbd772b7ac3726792dd19913522f48b775",
+      "head_sha": "7a84eebb15bec7688fab8305677fd2543783dffd",
       "decision": "REUSE",
       "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45133376250,
-      "evidence_sha": "74eef18606fa38863edee5288f8dbe42cb363b52",
+      "run_id": 45141109396,
+      "evidence_sha": "7a84eebb15bec7688fab8305677fd2543783dffd",
       "jobs": [
         {
-          "id": 137553792662,
+          "id": 137579047385,
           "status": "completed",
           "conclusion": "success"
         }
@@ -131,18 +131,18 @@
     },
     "scientific": {
       "gate": "scientific",
-      "input_fingerprint": "3cbb99fcc1dfba254fa283d220959b3b987ffbccb8c12b47d936d2e4315f7ff2",
-      "head_sha": "74eef18606fa38863edee5288f8dbe42cb363b52",
+      "input_fingerprint": "5daf2a04233ef3a43fdd900bf3bdb120359d789df2c067e0ddea79b11e173332",
+      "head_sha": "7a84eebb15bec7688fab8305677fd2543783dffd",
       "decision": "REUSE",
       "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
-      "run_id": 45133376121,
-      "evidence_sha": "74eef18606fa38863edee5288f8dbe42cb363b52",
+      "run_id": 45141109344,
+      "evidence_sha": "7a84eebb15bec7688fab8305677fd2543783dffd",
       "jobs": [
         {
-          "id": 137553792299,
+          "id": 137579047351,
           "status": "completed",
           "conclusion": "success"
         }
