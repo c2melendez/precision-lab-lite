@@ -428,9 +428,15 @@ export function derivative(expressionAlgebrite: string, variable: string, order:
     let expr: string = expressionAlgebrite;
     for (let i = 0; i < order; i++) {
       expr = Algebrite.run(`d(${expr},${variable})`);
+      // Algebrite leaves unsupported derivatives as d(...), including inside
+      // larger expressions. Never present that unevaluated call as a result.
+      if (/\bd\s*\(/.test(expr)) {
+        throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, "La derivada simbólica quedó sin resolver.");
+      }
     }
     return expr;
   } catch (err) {
+    if ((err as AppError).code) throw err;
     throw toAppError(ErrorCode.COMPLEXITY_LIMIT, `No se pudo derivar de orden ${order}: ${String(err)}`);
   }
 }
