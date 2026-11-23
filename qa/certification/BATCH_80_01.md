@@ -2,6 +2,8 @@
 
 Fuente congelada `qa/certification/legacy_sources/ejercicios_trigonometria.md.gz`; SHA-256 descomprimido `8d3904fd1c53f8af694caf66171b99caf821ca5d94dfbef8677d73b7a76054f7`. Snapshot del producto `87630eb3f8e9e9533f0419bfe9652006c505f619`. Los estados se refieren únicamente a este producto. La selección consta de 80 IDs consecutivos a partir de DV-I-04. REVIEW significa evidencia histórica aún no reconciliada; no presume ausencia de cobertura ni PASS. PASS_SCOPED no acredita UI específica ni cierre global.
 
+> Acumulativo previo 45201778979 SUCCESS, job 137786875509: 2847 pruebas aprobadas; 18 pruebas DV-I-07..12 ejecutadas. Detectado y corregido anclaje por línea de matriz en commit técnico a9285c438ef434b8855b5f6b284f1ec6474e3cab; 18/18 focales locales. CI del nuevo SHA pendiente de verificación. No declarar cierre completo.
+
 | ID | Estado | Evidencia y alcance / pendiente |
 |---|---|---|
 | DV-I-04 | PASS_SCOPED | `tests/trigonometryDvI04I06.audit.test.ts`; acumulativo [45185735176](https://github.com/c2melendez/precision-lab-lite/actions/runs/45185735176); SHA `87630eb3f8e9e9533f0419bfe9652006c505f619`; UI específica pendiente. |

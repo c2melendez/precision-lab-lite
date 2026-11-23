@@ -1,3 +1,9 @@
+## Reconciliación de acumulativos — 2026-11-23 UTC
+
+Acumulativo previo 45201778979 SUCCESS, job 137786875509: 2847 pruebas aprobadas; 18 pruebas DV-I-07..12 ejecutadas. Detectado y corregido anclaje por línea de matriz en commit técnico a9285c438ef434b8855b5f6b284f1ec6474e3cab; 18/18 focales locales. CI del nuevo SHA pendiente de verificación. No declarar cierre completo. S25, SG28/DIST y EV-D-01 permanecen bloqueados; certificación global abierta.
+
+Siguiente: Revisar CI del SHA a9285c438ef434b8855b5f6b284f1ec6474e3cab y completar pruebas Lite de DV-H-01..12 y DV-HI-01..10, dominios y paridad; no duplicar corridas.
+
 ## Lote 80-01: verificación en curso — 2026-11-23 UTC
 
 SHA técnico `e9e57d7897d355d538cb15018397bdbfe3bc544e`; acumulativo [45201778979](https://github.com/c2melendez/precision-lab-lite/actions/runs/45201778979) en curso. Lite: el acumulativo 45196484977 falló por tres errores del evaluador del test; 45201208750 falló por timeout de 5s en DV-I-07. Corrección y timeout acotado sin relajar oráculos; 18/18 focales locales, tsc aprobado. No declarar PASS hasta revisar CI y canales aplicables. Conservar bloqueos globales.

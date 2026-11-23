@@ -1,3 +1,9 @@
+## Reconciliación de acumulativos — 2026-11-23 UTC
+
+Acumulativo previo 45201778979 SUCCESS, job 137786875509: 2847 pruebas aprobadas; 18 pruebas DV-I-07..12 ejecutadas. Detectado y corregido anclaje por línea de matriz en commit técnico a9285c438ef434b8855b5f6b284f1ec6474e3cab; 18/18 focales locales. CI del nuevo SHA pendiente de verificación. No declarar cierre completo. S25, SG28/DIST y EV-D-01 permanecen bloqueados; certificación global abierta.
+
+Siguiente: Revisar CI del SHA a9285c438ef434b8855b5f6b284f1ec6474e3cab y completar pruebas Lite de DV-H-01..12 y DV-HI-01..10, dominios y paridad; no duplicar corridas.
+
 # r586 — LM-D-04 verificado funcionalmente en gates acumulativos
 
 Lite 304515c8b9536327f0e5a267875776c0369c0979: Cumulative 44638506529 success, H1d 44638506297 success, Scientific 44638506458 success, CI 44638506888 success, Certification Runner 44638506841 success. Fix for LaTeX escaping in special-case resultLatex for sin(3x)/sin(5x)=3/5. Logs confirm success. Classification: product (symbolic limit). PASS_SCOPED funcional.
