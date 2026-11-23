@@ -173,7 +173,7 @@ describe('DV-I-07 through DV-I-12 — numeric equivalence and real domain', () =
   });
 
   it.each(rows)('%s anchors the frozen matrix row', (row) => {
-    const line = matrixText.split('\\n').find((candidate) => candidate.includes(`| ${row.id} |`));
+    const line = matrixText.split('\n').find((candidate) => candidate.includes(`| ${row.id} |`));
     expect(line).toBeDefined();
     const core = row.matrixLatex.replace(/\\\\/g, '\\');
     expect(line).toContain(core);
