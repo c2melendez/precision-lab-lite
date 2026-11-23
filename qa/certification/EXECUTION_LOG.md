@@ -1,3 +1,9 @@
+## TR324 DV-H-01..12: CI revisado — 2026-11-23 UTC
+
+El acumulativo Lite [45217595942](https://github.com/c2melendez/precision-lab-lite/actions/runs/45217595942), job 137842841206, ejecutó `tests/trigonometryDvHBatch.audit.test.ts` en el SHA técnico `fa355ca500beddda6f81330785428ef1542f2552`: 2870 PASS, 8 expected fail y 34 TODO en el acumulativo. La evidencia cubre resultados numéricos interiores y anclaje de resultado de las doce filas, no comprueba entrada literal, límites, dominios ni UI. Las filas siguen EN_CURSO; no hay cierre completo nuevo. S25, SG28/DIST y EV-D-01 siguen bloqueados.
+
+Siguiente: reforzar anclaje de entradas y dominios DV-H/DV-HI y ampliar el resto de las 80 filas, evitando corridas equivalentes.
+
 ## TR324 DV-H-01..12: paridad funcional en curso — 2026-11-23 UTC
 
 Lite commit técnico `fa355ca500beddda6f81330785428ef1542f2552`: 12 pruebas parametrizadas de derivadas hiperbólicas directas, ancladas al resultado de cada fila y comparadas con fórmulas numéricas independientes en puntos interiores; 23 pruebas focales y typecheck locales aprobados. Acumulativo [45217595942](https://github.com/c2melendez/precision-lab-lite/actions/runs/45217595942) en curso. Falta CI, anclaje de entrada por fila, canales de usuario y pruebas de dominios/extremos. Para DV-HI-01..10, acumulativo anterior Lite [45215179382](https://github.com/c2melendez/precision-lab-lite/actions/runs/45215179382), job 137834283625, ejecutó las pruebas y terminó con 2858 aprobadas, 8 expected fail y 34 TODO; no acredita cierre de dominio o UI. Certificación global abierta; S25, SG28/DIST y EV-D-01 siguen bloqueados.
