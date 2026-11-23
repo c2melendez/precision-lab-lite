@@ -1,3 +1,9 @@
+## TR324 DV-H-01..12: paridad funcional en curso — 2026-11-23 UTC
+
+Lite commit técnico `fa355ca500beddda6f81330785428ef1542f2552`: 12 pruebas parametrizadas de derivadas hiperbólicas directas, ancladas al resultado de cada fila y comparadas con fórmulas numéricas independientes en puntos interiores; 23 pruebas focales y typecheck locales aprobados. Acumulativo [45217595942](https://github.com/c2melendez/precision-lab-lite/actions/runs/45217595942) en curso. Falta CI, anclaje de entrada por fila, canales de usuario y pruebas de dominios/extremos. Para DV-HI-01..10, acumulativo anterior Lite [45215179382](https://github.com/c2melendez/precision-lab-lite/actions/runs/45215179382), job 137834283625, ejecutó las pruebas y terminó con 2858 aprobadas, 8 expected fail y 34 TODO; no acredita cierre de dominio o UI. Certificación global abierta; S25, SG28/DIST y EV-D-01 siguen bloqueados.
+
+Siguiente: revisar CI del nuevo SHA, reforzar anclaje de entradas y verificar dominios, extremos y estabilidad de DV-H/DV-HI sin duplicar corridas.
+
 ## TR324 DV-HI-01..10: implementación en verificación — 2026-11-23 UTC
 
 Lite commit técnico `7cbbed39b3b15608da407e420b4a90442ec0ad29` introduce reescritura de funciones hiperbólicas inversas para derivación y conserva la guarda de derivadas sin resolver. Diez expresiones pasan comprobaciones numéricas en puntos interiores, con fórmulas independientes y tolerancia acorde a la salida decimal de Algebrite; 29 pruebas focales y typecheck locales PASS. El acumulativo [45215179382](https://github.com/c2melendez/precision-lab-lite/actions/runs/45215179382) está en curso. No es cierre: pendientes CI, entradas literales y UI, dominio y extremos, estabilidad numérica y paridad completa. El acumulativo anterior [45212128253](https://github.com/c2melendez/precision-lab-lite/actions/runs/45212128253) es SUCCESS para el SHA de la protección anterior, no demuestra este cambio. Bloqueos S25, SG28/DIST y EV-D-01 conservados.

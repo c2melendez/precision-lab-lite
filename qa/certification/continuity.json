@@ -41,7 +41,7 @@
   "next_action": {
     "id": "TRIG-BATCH-80-01",
     "status": "IN_PROGRESS",
-    "action": "Revisar acumulativo Lite 45215179382 del SHA 7cbbed39b3b15608da407e420b4a90442ec0ad29; verificar dominio, extremos, estabilidad y canales DV-HI-01..10, y continuar paridad DV-H-01..12."
+    "action": "Revisar acumulativo Lite 45217595942 del SHA fa355ca500beddda6f81330785428ef1542f2552; verificar entradas, dominios, extremos y estabilidad de DV-H/DV-HI."
   },
   "blockers": [
     {
@@ -516,6 +516,10 @@
     "latest_lite_ci_status": "WAIT",
     "lite_inverse_implementation_sha": "7cbbed39b3b15608da407e420b4a90442ec0ad29",
     "lite_inverse_cumulative_run_id": 45215179382,
-    "lite_inverse_ci_status": "WAIT"
+    "lite_inverse_ci_status": "SUCCESS",
+    "lite_direct_hyperbolic_sha": "fa355ca500beddda6f81330785428ef1542f2552",
+    "lite_direct_cumulative_run_id": 45217595942,
+    "lite_direct_ci_status": "WAIT",
+    "lite_inverse_logs_reviewed": true
   }
 }
