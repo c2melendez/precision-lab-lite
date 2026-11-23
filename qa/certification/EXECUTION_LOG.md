@@ -1,3 +1,9 @@
+## TR324 DV-HI-01..10: implementación en verificación — 2026-11-23 UTC
+
+Lite commit técnico `7cbbed39b3b15608da407e420b4a90442ec0ad29` introduce reescritura de funciones hiperbólicas inversas para derivación y conserva la guarda de derivadas sin resolver. Diez expresiones pasan comprobaciones numéricas en puntos interiores, con fórmulas independientes y tolerancia acorde a la salida decimal de Algebrite; 29 pruebas focales y typecheck locales PASS. El acumulativo [45215179382](https://github.com/c2melendez/precision-lab-lite/actions/runs/45215179382) está en curso. No es cierre: pendientes CI, entradas literales y UI, dominio y extremos, estabilidad numérica y paridad completa. El acumulativo anterior [45212128253](https://github.com/c2melendez/precision-lab-lite/actions/runs/45212128253) es SUCCESS para el SHA de la protección anterior, no demuestra este cambio. Bloqueos S25, SG28/DIST y EV-D-01 conservados.
+
+Siguiente: revisar CI del SHA 7cbbed39; verificar límites, fuera de dominio, estabilidad y canales de DV-HI-01..10; continuar DV-H-01..12 Lite.
+
 ## TR324: derivadas hiperbólicas inversas — 2026-11-23 UTC
 
 Lite devolvía derivadas sin resolver como SYMBOLIC para DV-HI-01..10. El commit técnico `649c068f9d4d41f9a8a1bb07b2c7cb484f802a44` rechaza expresamente el resultado no resuelto con UNSUPPORTED_OPERATION; 29 pruebas focales y typecheck locales aprobados. Esto no implementa las derivadas: los 10 casos siguen bloqueados en Lite hasta una solución matemática con dominio y paridad. Acumulativo previo Lite [45210932463](https://github.com/c2melendez/precision-lab-lite/actions/runs/45210932463), job 137819215611, SUCCESS con 2847 PASS, 8 expected fail y pruebas DV-I-07..12 ejecutadas; no demuestra el nuevo SHA. Verificar CI del nuevo SHA sin duplicarlo. Plus conserva evidencia parcial de servicio y HTTP, no cierre bilateral. S25, SG28/DIST y EV-D-01 permanecen bloqueados; certificación global abierta.
