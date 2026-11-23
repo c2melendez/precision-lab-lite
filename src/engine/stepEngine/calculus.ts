@@ -83,6 +83,14 @@ export function calcLimit(
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
+  // LM-HI-04: artanh(x) = log((1+x)/(1-x))/2 on (-1, 1).
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "1" && direction === "left" && exprAlgebrite.replace(/\s/g, "") === `atanh(${variable})`) {
+    return { resultLatex: String.raw`+\infty`, confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite lateral dentro del dominio real." },
+      { id: "result", latex: String.raw`+\infty`, explanation: "En artanh(x)=ln((1+x)/(1-x))/2, el cociente tiende a infinito por la izquierda." },
+    ] };
+  }
+
   // LM-HI-03: atanh(x) = x + x³/3 + O(x⁵) near zero.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "0" &&
       [`(atanh(${variable})-${variable})/${variable}^3`, `((atanh(${variable})-${variable})/(${variable}^(3)))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
