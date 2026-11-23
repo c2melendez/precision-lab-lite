@@ -420,12 +420,37 @@ export function evaluate(expressionLatex: string): string {
  * `d()` de cientos de vueltas no tiene utilidad matemática real y sí
  * puede colgar el worker con expresiones grandes.
  */
+/** Rewrites inverse hyperbolics only for differentiation, preserving nested arguments. */
+function expandInverseHyperbolicForDerivative(expression: string): string {
+  let output = '';
+  for (let i = 0; i < expression.length;) {
+    const match = expression.slice(i).match(/^(asinh|acosh|atanh)\s*\(/);
+    if (match && (i === 0 || !/[\w]/.test(expression[i - 1]))) {
+      const open = i + match[0].length - 1;
+      let end = open + 1;
+      let depth = 1;
+      while (end < expression.length && depth > 0) {
+        if (expression[end] === '(') depth++;
+        if (expression[end] === ')') depth--;
+        end++;
+      }
+      if (depth !== 0) return expression;
+      const a = `(${expandInverseHyperbolicForDerivative(expression.slice(open + 1, end - 1))})`;
+      if (match[1] === 'asinh') output += `log(${a}+sqrt(${a}^2+1))`;
+      if (match[1] === 'acosh') output += `log(${a}+sqrt(${a}-1)*sqrt(${a}+1))`;
+      if (match[1] === 'atanh') output += `(log((1+${a})/(1-${a}))/2)`;
+      i = end;
+    } else output += expression[i++];
+  }
+  return output;
+}
+
 export function derivative(expressionAlgebrite: string, variable: string, order: number = 1): string {
   if (!Number.isInteger(order) || order < 1 || order > 20) {
     throw toAppError(ErrorCode.COMPLEXITY_LIMIT, `Orden de derivada fuera de rango (1-20): ${order}.`);
   }
   try {
-    let expr: string = expressionAlgebrite;
+    let expr: string = expandInverseHyperbolicForDerivative(expressionAlgebrite);
     for (let i = 0; i < order; i++) {
       expr = Algebrite.run(`d(${expr},${variable})`);
       // Algebrite leaves unsupported derivatives as d(...), including inside
