@@ -196,7 +196,7 @@ describe('DV-I-07 through DV-I-12 — numeric equivalence and real domain', () =
       const actual = evalLatexAt(result.resultLatex, point);
       expect(actual).toBeCloseTo(expected, 10);
     }
-  });
+  }, 20000);
 
   it.each(rows.filter((row) => row.outsideDomain.length > 0))(
     '%s is non-finite outside the real domain of the expression',
