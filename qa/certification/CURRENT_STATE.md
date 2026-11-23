@@ -1,3 +1,7 @@
+## LM-HI-05 — PASS_SCOPED (2026-11-23 UTC)
+
+SHA técnico `3fc7245fa71207f92de06149edc0688592943bc6`; cumulative: run 45107803042, jobs [137472990981], h1d: run 45107803158, jobs [137472991081], scientific: run 45107803065, jobs [137472990897]. Registros de ejecución revisados. Siguiente caso: LM-HI-06. Certificación global OPEN; bloqueos conservados.
+
 ## Actualización LM-HI-04 — 2026-11-23 UTC
 
 PASS_SCOPED en `afa35c08a27710a0501d3f76e82d43e89dccea66`. Evidencia ejecutada y registros revisados: cumulative: run 45090526128, jobs [137418800846], h1d: run 45090526102, jobs [137418801507], scientific: run 45090526093, jobs [137418800586]. Próximo caso: TRIG-LM-HI-05. La certificación global permanece OPEN; se conservan los bloqueos existentes.

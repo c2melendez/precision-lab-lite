@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 630,
+  "revision": 631,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "afa35c08a27710a0501d3f76e82d43e89dccea66",
-  "baseline_case": "TRIG-LM-HI-04",
+  "technical_baseline_sha": "3fc7245fa71207f92de06149edc0688592943bc6",
+  "baseline_case": "TRIG-LM-HI-05",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-LM-HI-05",
-    "previous_id": "TRIG-LM-HI-04",
-    "status": "IN_PROGRESS",
-    "action": "Verificar LM-HI-05 y el motor restaurado en el SHA técnico 3fc7245fa71207f92de06149edc0688592943bc6; revisar CI y logs antes de cerrar."
+    "id": "TRIG-LM-HI-06",
+    "previous_id": "TRIG-LM-HI-05",
+    "status": "READY",
+    "action": "Verificar límite arcosh(x)-ln(x) en infinito en Lite y Plus."
   },
   "blockers": [
     {
@@ -79,22 +79,22 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-23T01:25:00+00:00",
+  "updated_utc": "2026-11-23T04:46:27.553857+00:00",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
-      "input_fingerprint": "placeholder",
-      "head_sha": "afa35c08a27710a0501d3f76e82d43e89dccea66",
+      "input_fingerprint": "6260503616b2e7d1e94f0e4df2e0eb8dd3c9f02b7f035548e3ce1f1beac08a85",
+      "head_sha": "3fc7245fa71207f92de06149edc0688592943bc6",
       "decision": "REUSE",
-      "reason": "Ejecución y logs revisados en SHA técnico; alcance funcional acotado.",
+      "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45090526128,
-      "evidence_sha": "afa35c08a27710a0501d3f76e82d43e89dccea66",
+      "run_id": 45107803042,
+      "evidence_sha": "3fc7245fa71207f92de06149edc0688592943bc6",
       "jobs": [
         {
-          "id": 137418800846,
+          "id": 137472990981,
           "status": "completed",
           "conclusion": "success"
         }
@@ -102,18 +102,18 @@
     },
     "h1d": {
       "gate": "h1d",
-      "input_fingerprint": "placeholder",
-      "head_sha": "afa35c08a27710a0501d3f76e82d43e89dccea66",
+      "input_fingerprint": "bb907ffce051c21f23f03ad15c92806d2c6408881c9832da5b5de994240e980b",
+      "head_sha": "3fc7245fa71207f92de06149edc0688592943bc6",
       "decision": "REUSE",
-      "reason": "Ejecución y logs revisados en SHA técnico; alcance funcional acotado.",
+      "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45090526102,
-      "evidence_sha": "afa35c08a27710a0501d3f76e82d43e89dccea66",
+      "run_id": 45107803158,
+      "evidence_sha": "3fc7245fa71207f92de06149edc0688592943bc6",
       "jobs": [
         {
-          "id": 137418801507,
+          "id": 137472991081,
           "status": "completed",
           "conclusion": "success"
         }
@@ -131,18 +131,18 @@
     },
     "scientific": {
       "gate": "scientific",
-      "input_fingerprint": "placeholder",
-      "head_sha": "afa35c08a27710a0501d3f76e82d43e89dccea66",
+      "input_fingerprint": "41cadcb87fe9a5ba0690a11c4a357605d3143bc3d937e7f47fc6f10ddfd10d10",
+      "head_sha": "3fc7245fa71207f92de06149edc0688592943bc6",
       "decision": "REUSE",
-      "reason": "Ejecución y logs revisados en SHA técnico; alcance funcional acotado.",
+      "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
-      "run_id": 45090526093,
-      "evidence_sha": "afa35c08a27710a0501d3f76e82d43e89dccea66",
+      "run_id": 45107803065,
+      "evidence_sha": "3fc7245fa71207f92de06149edc0688592943bc6",
       "jobs": [
         {
-          "id": 137418800586,
+          "id": 137472990897,
           "status": "completed",
           "conclusion": "success"
         }

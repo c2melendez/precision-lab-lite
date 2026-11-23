@@ -356,3 +356,9 @@ S19 REVIEW; S25, SG28/DIST y EV-D-01 BLOCKED; global OPEN. Siguiente: TRIG-LM-HI
 
 ---
 
+
+
+## LM-HI-05 — PASS_SCOPED (2026-11-23 UTC)
+
+SHA técnico `3fc7245fa71207f92de06149edc0688592943bc6`; cumulative: run 45107803042, jobs [137472990981], h1d: run 45107803158, jobs [137472991081], scientific: run 45107803065, jobs [137472990897]. Registros de ejecución revisados. Siguiente caso: LM-HI-06. Certificación global OPEN; bloqueos conservados.
+
