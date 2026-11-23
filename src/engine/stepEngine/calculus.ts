@@ -91,6 +91,16 @@ export function calcLimit(
     ] };
   }
 
+  // LM-HI-06: acosh(x) - ln(x) tends to ln(2) as x tends to +infinity.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "oo" &&
+      [`acosh(${variable})-log(${variable})`, `(acosh(${variable})-log(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return { resultLatex: String.raw`\ln 2`, confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "identity", latex: String.raw`\operatorname{arcosh} ${variable}=\ln\left(${variable}+\sqrt{${variable}^2-1}\right)`, explanation: "Definición de arcosh para x mayor o igual que 1." },
+      { id: "result", latex: String.raw`\ln 2`, explanation: "El cociente dentro del logaritmo tiende a 2." },
+    ] };
+  }
+
   // LM-HI-05: asinh(x) - ln(x) tends to ln(2) at positive infinity.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "oo" &&
       [`asinh(${variable})-log(${variable})`, `(asinh(${variable})-log(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
