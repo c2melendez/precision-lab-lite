@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 639,
+  "revision": 640,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "3b58199f6f67fe0abbee511e72889ee3556ebcaa",
-  "baseline_case": "TRIG-DV-I-01..03",
+  "technical_baseline_sha": "87630eb3f8e9e9533f0419bfe9652006c505f619",
+  "baseline_case": "TRIG-DV-I-04..06",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-DV-I-04",
-    "previous_id": "TRIG-DV-I-03",
-    "status": "READY",
-    "action": "Verificar derivadas inversas restantes y dominio real, incluyendo arccot, arcsec y arccsc."
+    "id": "TRIG-BATCH-80-01",
+    "previous_id": "TRIG-DV-I-06",
+    "status": "IN_PROGRESS",
+    "action": "Reconciliar y ejecutar lote de 80 casos identificado en BATCH_80_01.md; revisar entradas, oráculos, dominios, canales y CI por producto."
   },
   "blockers": [
     {
@@ -79,22 +79,22 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-23T12:40:12.044570+00:00",
+  "updated_utc": "2026-11-23T13:58:10.243489+00:00",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
-      "input_fingerprint": "e444e9bb5e3ed9e22bcaa135c7b92e4fcdf5384112ea03e23aafc5888546a94d",
-      "head_sha": "3b58199f6f67fe0abbee511e72889ee3556ebcaa",
+      "input_fingerprint": "85f5c123ed321b12885be9ebf8f35567e61f38d5d1decf8cb76558f1fa6a97ea",
+      "head_sha": "87630eb3f8e9e9533f0419bfe9652006c505f619",
       "decision": "REUSE",
       "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45167432554,
-      "evidence_sha": "3b58199f6f67fe0abbee511e72889ee3556ebcaa",
+      "run_id": 45185735176,
+      "evidence_sha": "87630eb3f8e9e9533f0419bfe9652006c505f619",
       "jobs": [
         {
-          "id": 137667912614,
+          "id": 137730716065,
           "status": "completed",
           "conclusion": "success"
         }
@@ -102,18 +102,18 @@
     },
     "h1d": {
       "gate": "h1d",
-      "input_fingerprint": "7ad859c77f7d5e1bacb6f5faac3691ee0e564937f4e7c6699d870c16f8a2260d",
-      "head_sha": "3b58199f6f67fe0abbee511e72889ee3556ebcaa",
+      "input_fingerprint": "b5f6c8755fe695c5890660b4528af57f1f975f66939a5bfaecdacc3f27b74885",
+      "head_sha": "87630eb3f8e9e9533f0419bfe9652006c505f619",
       "decision": "REUSE",
       "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45167432506,
-      "evidence_sha": "3b58199f6f67fe0abbee511e72889ee3556ebcaa",
+      "run_id": 45185735217,
+      "evidence_sha": "87630eb3f8e9e9533f0419bfe9652006c505f619",
       "jobs": [
         {
-          "id": 137667912307,
+          "id": 137730715728,
           "status": "completed",
           "conclusion": "success"
         }
@@ -131,18 +131,18 @@
     },
     "scientific": {
       "gate": "scientific",
-      "input_fingerprint": "9739de97d233c6e511448696335c59ed714c160d25345f9f02e1b27577058ebe",
-      "head_sha": "3b58199f6f67fe0abbee511e72889ee3556ebcaa",
+      "input_fingerprint": "6644a5c2e40b6d307ec2dbda23968454754cacef82132eb03c79c5cd8813a642",
+      "head_sha": "87630eb3f8e9e9533f0419bfe9652006c505f619",
       "decision": "REUSE",
       "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
-      "run_id": 45167432247,
-      "evidence_sha": "3b58199f6f67fe0abbee511e72889ee3556ebcaa",
+      "run_id": 45185735144,
+      "evidence_sha": "87630eb3f8e9e9533f0419bfe9652006c505f619",
       "jobs": [
         {
-          "id": 137667910897,
+          "id": 137730715706,
           "status": "completed",
           "conclusion": "success"
         }
