@@ -1,3 +1,9 @@
+## DV-H-01..12: anclaje de entrada y CI — 2026-11-23 UTC
+
+Lite SHA técnico `7fdadaf9289eb1ccf911884900ad80d79311daaf`: entradas y resultados de las 12 filas anclados a la fuente en `tests/trigonometryDvHBatch.audit.test.ts`, con oráculo numérico en puntos interiores. [Acumulativo 45228151225](https://github.com/c2melendez/precision-lab-lite/actions/runs/45228151225), job 137880145675: pruebas ejecutadas, 2870 PASS, 8 expected fail y 34 TODO. Pendientes: verificar canal literal completo, dominios, extremos, UI y paridad; no declarar cierre. S25, SG28/DIST y EV-D-01 continúan bloqueados.
+
+Siguiente: ampliar el lote de 80 y completar dominios y canales, evitando repetir el acumulativo ya verificado.
+
 ## TR324 DV-H-01..12: CI revisado — 2026-11-23 UTC
 
 El acumulativo Lite [45217595942](https://github.com/c2melendez/precision-lab-lite/actions/runs/45217595942), job 137842841206, ejecutó `tests/trigonometryDvHBatch.audit.test.ts` en el SHA técnico `fa355ca500beddda6f81330785428ef1542f2552`: 2870 PASS, 8 expected fail y 34 TODO en el acumulativo. La evidencia cubre resultados numéricos interiores y anclaje de resultado de las doce filas, no comprueba entrada literal, límites, dominios ni UI. Las filas siguen EN_CURSO; no hay cierre completo nuevo. S25, SG28/DIST y EV-D-01 siguen bloqueados.

@@ -41,7 +41,7 @@
   "next_action": {
     "id": "TRIG-BATCH-80-01",
     "status": "IN_PROGRESS",
-    "action": "Completar anclaje de entrada, dominios y extremos DV-H/DV-HI en ambos motores, y ampliar las restantes filas del lote de 80."
+    "action": "Ampliar el lote a 80 casos y verificar entradas literales, dominios, extremos, estabilidad y canales de DV-H/DV-HI sin duplicar CI."
   },
   "blockers": [
     {
@@ -521,6 +521,10 @@
     "lite_direct_cumulative_run_id": 45217595942,
     "lite_direct_ci_status": "SUCCESS",
     "lite_inverse_logs_reviewed": true,
-    "lite_direct_logs_reviewed": true
+    "lite_direct_logs_reviewed": true,
+    "lite_input_anchor_sha": "7fdadaf9289eb1ccf911884900ad80d79311daaf",
+    "lite_input_anchor_run_id": 45228151225,
+    "lite_input_anchor_status": "SUCCESS",
+    "lite_input_anchor_logs_reviewed": true
   }
 }
