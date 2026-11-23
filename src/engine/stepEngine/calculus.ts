@@ -91,6 +91,15 @@ export function calcLimit(
     ] };
   }
 
+  // LM-HI-08: arcoth(x) = atanh(1/x) tends to zero at positive infinity.
+  if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "oo" &&
+      [`(atanh(1/(${variable})))`, `atanh(1/(${variable}))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
+    return { resultLatex: "0", confidence: "SYMBOLIC", steps: [
+      { id: "original", latex: limitLatex, explanation: "Límite planteado." },
+      { id: "result", latex: "0", explanation: "Como 1/x tiende a cero y atanh es continua en cero, el límite es cero." },
+    ] };
+  }
+
   // LM-HI-07: acosh(1+h) = sqrt(2h) + O(h^(3/2)) as h tends to zero from above.
   if (/^[A-Za-z]$/.test(variable) && pointAlgebrite === "1" && direction === "right" &&
       [`acosh(${variable})/sqrt(${variable}-1)`, `((acosh(${variable}))/(sqrt((${variable})-(1))))`].includes(exprAlgebrite.replace(/\s/g, ""))) {
