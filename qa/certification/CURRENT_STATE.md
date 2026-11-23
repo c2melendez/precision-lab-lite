@@ -1,3 +1,7 @@
+## Lote 80-01: verificación en curso — 2026-11-23 UTC
+
+SHA técnico `e9e57d7897d355d538cb15018397bdbfe3bc544e`; acumulativo [45201778979](https://github.com/c2melendez/precision-lab-lite/actions/runs/45201778979) en curso. Lite: el acumulativo 45196484977 falló por tres errores del evaluador del test; 45201208750 falló por timeout de 5s en DV-I-07. Corrección y timeout acotado sin relajar oráculos; 18/18 focales locales, tsc aprobado. No declarar PASS hasta revisar CI y canales aplicables. Conservar bloqueos globales.
+
 ## DV-I-04..06 y lote 80 — 2026-11-23 UTC
 
 PASS_SCOPED de DV-I-04..06 para las pruebas ejecutadas; SHA técnico `87630eb3f8e9e9533f0419bfe9652006c505f619`; cumulative: run 45185735176, jobs [137730716065], h1d: run 45185735217, jobs [137730715728], scientific: run 45185735144, jobs [137730715706]. Los canales no cubiertos continúan pendientes. Preparado BATCH_80_01.md con 80 IDs; la asignación no acredita ejecución. Certificación global OPEN y bloqueos conservados.

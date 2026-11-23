@@ -7,12 +7,12 @@ Fuente congelada `qa/certification/legacy_sources/ejercicios_trigonometria.md.gz
 | DV-I-04 | PASS_SCOPED | `tests/trigonometryDvI04I06.audit.test.ts`; acumulativo [45185735176](https://github.com/c2melendez/precision-lab-lite/actions/runs/45185735176); SHA `87630eb3f8e9e9533f0419bfe9652006c505f619`; UI específica pendiente. |
 | DV-I-05 | PASS_SCOPED | `tests/trigonometryDvI04I06.audit.test.ts`; acumulativo [45185735176](https://github.com/c2melendez/precision-lab-lite/actions/runs/45185735176); SHA `87630eb3f8e9e9533f0419bfe9652006c505f619`; UI específica pendiente. |
 | DV-I-06 | PASS_SCOPED | `tests/trigonometryDvI04I06.audit.test.ts`; acumulativo [45185735176](https://github.com/c2melendez/precision-lab-lite/actions/runs/45185735176); SHA `87630eb3f8e9e9533f0419bfe9652006c505f619`; UI específica pendiente. |
-| DV-I-07 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| DV-I-08 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| DV-I-09 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| DV-I-10 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| DV-I-11 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| DV-I-12 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
+| DV-I-07 | EN_CURSO | Corrección de evaluador local 18/18; acumulativo en curso; SHA `e9e57d7897d355d538cb15018397bdbfe3bc544e`, [run 45201778979](https://github.com/c2melendez/precision-lab-lite/actions/runs/45201778979). |
+| DV-I-08 | EN_CURSO | Corrección de evaluador local 18/18; acumulativo en curso; SHA `e9e57d7897d355d538cb15018397bdbfe3bc544e`, [run 45201778979](https://github.com/c2melendez/precision-lab-lite/actions/runs/45201778979). |
+| DV-I-09 | EN_CURSO | Corrección de evaluador local 18/18; acumulativo en curso; SHA `e9e57d7897d355d538cb15018397bdbfe3bc544e`, [run 45201778979](https://github.com/c2melendez/precision-lab-lite/actions/runs/45201778979). |
+| DV-I-10 | EN_CURSO | Corrección de evaluador local 18/18; acumulativo en curso; SHA `e9e57d7897d355d538cb15018397bdbfe3bc544e`, [run 45201778979](https://github.com/c2melendez/precision-lab-lite/actions/runs/45201778979). |
+| DV-I-11 | EN_CURSO | Corrección de evaluador local 18/18; acumulativo en curso; SHA `e9e57d7897d355d538cb15018397bdbfe3bc544e`, [run 45201778979](https://github.com/c2melendez/precision-lab-lite/actions/runs/45201778979). |
+| DV-I-12 | EN_CURSO | Corrección de evaluador local 18/18; acumulativo en curso; SHA `e9e57d7897d355d538cb15018397bdbfe3bc544e`, [run 45201778979](https://github.com/c2melendez/precision-lab-lite/actions/runs/45201778979). |
 | DV-H-01 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
 | DV-H-02 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
 | DV-H-03 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
