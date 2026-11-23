@@ -27,16 +27,16 @@ Fuente congelada `qa/certification/legacy_sources/ejercicios_trigonometria.md.gz
 | DV-H-10 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
 | DV-H-11 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
 | DV-H-12 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| DV-HI-01 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| DV-HI-02 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| DV-HI-03 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| DV-HI-04 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| DV-HI-05 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| DV-HI-06 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| DV-HI-07 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| DV-HI-08 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| DV-HI-09 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| DV-HI-10 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
+| DV-HI-01 | BLOCKED | Lite: derivada inversa sin resolver; ahora UNSUPPORTED_OPERATION. Regresión local en `tests/trigonometryDvHiUnsupported.audit.test.ts`; commit `649c068f9d4d41f9a8a1bb07b2c7cb484f802a44`; CI pendiente. Implementación y dominio pendientes. |
+| DV-HI-02 | BLOCKED | Lite: derivada inversa sin resolver; ahora UNSUPPORTED_OPERATION. Regresión local en `tests/trigonometryDvHiUnsupported.audit.test.ts`; commit `649c068f9d4d41f9a8a1bb07b2c7cb484f802a44`; CI pendiente. Implementación y dominio pendientes. |
+| DV-HI-03 | BLOCKED | Lite: derivada inversa sin resolver; ahora UNSUPPORTED_OPERATION. Regresión local en `tests/trigonometryDvHiUnsupported.audit.test.ts`; commit `649c068f9d4d41f9a8a1bb07b2c7cb484f802a44`; CI pendiente. Implementación y dominio pendientes. |
+| DV-HI-04 | BLOCKED | Lite: derivada inversa sin resolver; ahora UNSUPPORTED_OPERATION. Regresión local en `tests/trigonometryDvHiUnsupported.audit.test.ts`; commit `649c068f9d4d41f9a8a1bb07b2c7cb484f802a44`; CI pendiente. Implementación y dominio pendientes. |
+| DV-HI-05 | BLOCKED | Lite: derivada inversa sin resolver; ahora UNSUPPORTED_OPERATION. Regresión local en `tests/trigonometryDvHiUnsupported.audit.test.ts`; commit `649c068f9d4d41f9a8a1bb07b2c7cb484f802a44`; CI pendiente. Implementación y dominio pendientes. |
+| DV-HI-06 | BLOCKED | Lite: derivada inversa sin resolver; ahora UNSUPPORTED_OPERATION. Regresión local en `tests/trigonometryDvHiUnsupported.audit.test.ts`; commit `649c068f9d4d41f9a8a1bb07b2c7cb484f802a44`; CI pendiente. Implementación y dominio pendientes. |
+| DV-HI-07 | BLOCKED | Lite: derivada inversa sin resolver; ahora UNSUPPORTED_OPERATION. Regresión local en `tests/trigonometryDvHiUnsupported.audit.test.ts`; commit `649c068f9d4d41f9a8a1bb07b2c7cb484f802a44`; CI pendiente. Implementación y dominio pendientes. |
+| DV-HI-08 | BLOCKED | Lite: derivada inversa sin resolver; ahora UNSUPPORTED_OPERATION. Regresión local en `tests/trigonometryDvHiUnsupported.audit.test.ts`; commit `649c068f9d4d41f9a8a1bb07b2c7cb484f802a44`; CI pendiente. Implementación y dominio pendientes. |
+| DV-HI-09 | BLOCKED | Lite: derivada inversa sin resolver; ahora UNSUPPORTED_OPERATION. Regresión local en `tests/trigonometryDvHiUnsupported.audit.test.ts`; commit `649c068f9d4d41f9a8a1bb07b2c7cb484f802a44`; CI pendiente. Implementación y dominio pendientes. |
+| DV-HI-10 | BLOCKED | Lite: derivada inversa sin resolver; ahora UNSUPPORTED_OPERATION. Regresión local en `tests/trigonometryDvHiUnsupported.audit.test.ts`; commit `649c068f9d4d41f9a8a1bb07b2c7cb484f802a44`; CI pendiente. Implementación y dominio pendientes. |
 | IT-D-01 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
 | IT-D-02 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
 | IT-D-03 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |

@@ -41,7 +41,7 @@
   "next_action": {
     "id": "TRIG-BATCH-80-01",
     "status": "IN_PROGRESS",
-    "action": "Revisar CI del SHA a9285c438ef434b8855b5f6b284f1ec6474e3cab y completar pruebas Lite de DV-H-01..12 y DV-HI-01..10, dominios y paridad; no duplicar corridas."
+    "action": "Implementar derivadas hiperbólicas inversas con dominio y regla de cadena para DV-HI-01..10, completar paridad Lite y verificar CI del commit 649c068f9d4d41f9a8a1bb07b2c7cb484f802a44 sin duplicar corridas."
   },
   "blockers": [
     {
@@ -508,6 +508,11 @@
     "logs_reviewed": true,
     "verified_run_sha": "e9e57d7897d355d538cb15018397bdbfe3bc544e",
     "verified_run_id": 45201778979,
-    "new_technical_sha": "a9285c438ef434b8855b5f6b284f1ec6474e3cab"
+    "new_technical_sha": "a9285c438ef434b8855b5f6b284f1ec6474e3cab",
+    "unresolved_inverse_hyperbolic_cases": "DV-HI-01..10",
+    "lite_protection_sha": "649c068f9d4d41f9a8a1bb07b2c7cb484f802a44",
+    "lite_previous_cumulative_run_id": 45210932463,
+    "lite_previous_cumulative_logs_reviewed": true,
+    "latest_lite_ci_status": "WAIT"
   }
 }
