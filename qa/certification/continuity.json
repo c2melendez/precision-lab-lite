@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 633,
+  "revision": 634,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "b9e499e2ebfb1054aa5fb8a169cdd1b40baedb94",
-  "baseline_case": "TRIG-LM-HI-07",
+  "technical_baseline_sha": "e1e2fcf9a3e6fc58873de3d1193e4c3a33bfac3b",
+  "baseline_case": "TRIG-LM-HI-08",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,10 +39,10 @@
     }
   },
   "next_action": {
-    "id": "TRIG-LM-HI-08",
-    "previous_id": "TRIG-LM-HI-07",
+    "id": "TRIG-DV-D-01",
+    "previous_id": "TRIG-LM-HI-08",
     "status": "READY",
-    "action": "Verificar límite de arcoth(x) cuando x tiende a infinito."
+    "action": "Revisar cobertura y certificar derivada de sin(x) en Lite y Plus conforme a la matriz."
   },
   "blockers": [
     {
@@ -79,22 +79,22 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-23T06:40:58.271450+00:00",
+  "updated_utc": "2026-11-23T07:43:56.705148+00:00",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
-      "input_fingerprint": "39a1b26179c8f52e0a44031b980eeaada4d55bf44005fd9b06b8d143dd85b5f8",
-      "head_sha": "b9e499e2ebfb1054aa5fb8a169cdd1b40baedb94",
+      "input_fingerprint": "43a73832a6809b9f948e479e10968c931cd56c0b78bf79373dc0fd091085a43d",
+      "head_sha": "e1e2fcf9a3e6fc58873de3d1193e4c3a33bfac3b",
       "decision": "REUSE",
       "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45119556526,
-      "evidence_sha": "b9e499e2ebfb1054aa5fb8a169cdd1b40baedb94",
+      "run_id": 45125902335,
+      "evidence_sha": "e1e2fcf9a3e6fc58873de3d1193e4c3a33bfac3b",
       "jobs": [
         {
-          "id": 137509952984,
+          "id": 137530045826,
           "status": "completed",
           "conclusion": "success"
         }
@@ -102,18 +102,18 @@
     },
     "h1d": {
       "gate": "h1d",
-      "input_fingerprint": "d5fe3ad8d9c3f6052f5b7dedf764d02b790fc0a02c17cf0c913f4066ce863109",
-      "head_sha": "b9e499e2ebfb1054aa5fb8a169cdd1b40baedb94",
+      "input_fingerprint": "a76b7b8862389eca12c2077baf9549a660e3b3dc68922937c725391c02475fde",
+      "head_sha": "e1e2fcf9a3e6fc58873de3d1193e4c3a33bfac3b",
       "decision": "REUSE",
       "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45119556614,
-      "evidence_sha": "b9e499e2ebfb1054aa5fb8a169cdd1b40baedb94",
+      "run_id": 45125902286,
+      "evidence_sha": "e1e2fcf9a3e6fc58873de3d1193e4c3a33bfac3b",
       "jobs": [
         {
-          "id": 137509952988,
+          "id": 137530045818,
           "status": "completed",
           "conclusion": "success"
         }
@@ -131,18 +131,18 @@
     },
     "scientific": {
       "gate": "scientific",
-      "input_fingerprint": "e963013fdbb833dfce6b0c0ef023b1bca34762b3fe2e23b19a72cc8c3c7bcc47",
-      "head_sha": "b9e499e2ebfb1054aa5fb8a169cdd1b40baedb94",
+      "input_fingerprint": "8e952ee24480738e4d586bcc399c09119fea95b5dbb4c7c4fc660b8f00c438fc",
+      "head_sha": "e1e2fcf9a3e6fc58873de3d1193e4c3a33bfac3b",
       "decision": "REUSE",
       "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
-      "run_id": 45119556645,
-      "evidence_sha": "b9e499e2ebfb1054aa5fb8a169cdd1b40baedb94",
+      "run_id": 45125902309,
+      "evidence_sha": "e1e2fcf9a3e6fc58873de3d1193e4c3a33bfac3b",
       "jobs": [
         {
-          "id": 137509953127,
+          "id": 137530045857,
           "status": "completed",
           "conclusion": "success"
         }
