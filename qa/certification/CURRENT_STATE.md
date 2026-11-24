@@ -1,3 +1,9 @@
+## TR324 IT-D-01..18: primera auditoría Lite — 2026-11-24 UTC
+
+Lite SHA `b965462f568451f65efa3fe42d0a69e467aba268`: doce pruebas locales comparan la derivada de la primitiva con oráculo numérico interior; seis fallos esperados estrictos por integral sin resolver: IT-D-05/08/13/14/16/18. La prueba ancla el ID, no verifica entrada literal ni ramas de la primitiva. CI pendiente. No hay cierre completo; conservar S25, SG28/DIST, EV-D-01.
+
+Siguiente: revisar CI SHA nuevo, corregir las seis capacidades no resueltas en bloque, validar dominios y paridad Plus.
+
 ## DV-H-01..12: anclaje de entrada y CI — 2026-11-23 UTC
 
 Lite SHA técnico `7fdadaf9289eb1ccf911884900ad80d79311daaf`: entradas y resultados de las 12 filas anclados a la fuente en `tests/trigonometryDvHBatch.audit.test.ts`, con oráculo numérico en puntos interiores. [Acumulativo 45228151225](https://github.com/c2melendez/precision-lab-lite/actions/runs/45228151225), job 137880145675: pruebas ejecutadas, 2870 PASS, 8 expected fail y 34 TODO. Pendientes: verificar canal literal completo, dominios, extremos, UI y paridad; no declarar cierre. S25, SG28/DIST y EV-D-01 continúan bloqueados.

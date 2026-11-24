@@ -37,24 +37,24 @@ Fuente congelada `qa/certification/legacy_sources/ejercicios_trigonometria.md.gz
 | DV-HI-08 | EN_CURSO | Lite: prueba numérica local en puntos interiores y protección de derivadas no resueltas; SHA `7cbbed39b3b15608da407e420b4a90442ec0ad29`; [CI 45215179382](https://github.com/c2melendez/precision-lab-lite/actions/runs/45215179382) pendiente. Falta dominio, extremos, estabilidad y canales. |
 | DV-HI-09 | EN_CURSO | Lite: prueba numérica local en puntos interiores y protección de derivadas no resueltas; SHA `7cbbed39b3b15608da407e420b4a90442ec0ad29`; [CI 45215179382](https://github.com/c2melendez/precision-lab-lite/actions/runs/45215179382) pendiente. Falta dominio, extremos, estabilidad y canales. |
 | DV-HI-10 | EN_CURSO | Lite: prueba numérica local en puntos interiores y protección de derivadas no resueltas; SHA `7cbbed39b3b15608da407e420b4a90442ec0ad29`; [CI 45215179382](https://github.com/c2melendez/precision-lab-lite/actions/runs/45215179382) pendiente. Falta dominio, extremos, estabilidad y canales. |
-| IT-D-01 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-02 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-03 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-04 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-05 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-06 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-07 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-08 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-09 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-10 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-11 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-12 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-13 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-14 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-15 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-16 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-17 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
-| IT-D-18 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
+| IT-D-01 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-02 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-03 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-04 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-05 | BLOCKED | Lite: XFAIL estricto: integral no resuelta; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-06 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-07 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-08 | BLOCKED | Lite: XFAIL estricto: integral no resuelta; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-09 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-10 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-11 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-12 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-13 | BLOCKED | Lite: XFAIL estricto: integral no resuelta; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-14 | BLOCKED | Lite: XFAIL estricto: integral no resuelta; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-15 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-16 | BLOCKED | Lite: XFAIL estricto: integral no resuelta; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-17 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-18 | BLOCKED | Lite: XFAIL estricto: integral no resuelta; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
 | IT-I-01 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
 | IT-I-02 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
 | IT-I-03 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
