@@ -5,6 +5,12 @@ import {readFileSync} from 'node:fs';
 import {derivative, indefiniteIntegral} from '../src/engine/algebriteClient';
 import {rewriteReciprocalFunctions} from '../src/engine/parsing';
 
+function realNumber(value: string): number {
+ const text = value.trim();
+ if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?(?:\.\.\.)?$/i.test(text)) throw new Error(`Not a real number: ${text}`);
+ return parseFloat(text);
+}
+
 const source = gunzipSync(readFileSync(new URL('../qa/certification/legacy_sources/ejercicios_trigonometria.md.gz',import.meta.url))).toString();
 const rows: [string,string,(x:number)=>number][] = [
  ['IT-D-01','sin(x)',Math.sin], ['IT-D-02','cos(x)',Math.cos],
@@ -18,13 +24,16 @@ const rows: [string,string,(x:number)=>number][] = [
  ['IT-D-17','sin(3*x)',x=>Math.sin(3*x)], ['IT-D-18','cos(x)/(1+sin(x)^2)',x=>Math.cos(x)/(1+Math.sin(x)**2)],
 ];
 describe('TR324 IT-D antiderivatives',()=>{
+ it.each(['1+2*i', '1+x', '1/0', ''])('rejects a non-real or non-numeric oracle value %s', value => {
+  expect(() => realNumber(value)).toThrow();
+ });
  const unresolved = new Set(['IT-D-08','IT-D-14']);
  for(const [id, expression, oracle] of rows) (unresolved.has(id) ? it.fails : it)(`${id} differentiates back to its integrand`, ()=>{
   expect(source.split('\n').some(line=>line.includes(`| ${id} |`))).toBe(true);
   const result = indefiniteIntegral(rewriteReciprocalFunctions(expression),'x');
   const d = derivative(result,'x',1);
   for(const x of [-1.1,-.6,.6,1.1]){
-   const value = parseFloat(Algebrite.run(`float(subst(${x},x,${d}))`));
+   const value = realNumber(Algebrite.run(`float(subst(${x},x,${d}))`));
    expect(Number.isFinite(value)).toBe(true);
    expect(value).toBeCloseTo(oracle(x),5);
   }
@@ -34,7 +43,7 @@ describe('TR324 IT-D antiderivatives',()=>{
   const result = indefiniteIntegral(rewriteReciprocalFunctions(yExpression),'y');
   const d = derivative(result,'y',1);
   for(const y of [-.6,.6]){
-   const value = parseFloat(Algebrite.run(`float(subst(${y},y,${d}))`));
+   const value = realNumber(Algebrite.run(`float(subst(${y},y,${d}))`));
    expect(value).toBeCloseTo(oracle(y),5);
   }
  });
