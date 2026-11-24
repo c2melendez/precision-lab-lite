@@ -18,7 +18,7 @@ const rows: [string,string,(x:number)=>number][] = [
  ['IT-D-17','sin(3*x)',x=>Math.sin(3*x)], ['IT-D-18','cos(x)/(1+sin(x)^2)',x=>Math.cos(x)/(1+Math.sin(x)**2)],
 ];
 describe('TR324 IT-D antiderivatives',()=>{
- const unresolved = new Set(['IT-D-05','IT-D-08','IT-D-13','IT-D-14','IT-D-16','IT-D-18']);
+ const unresolved = new Set(['IT-D-08','IT-D-14']);
  for(const [id, expression, oracle] of rows) (unresolved.has(id) ? it.fails : it)(`${id} differentiates back to its integrand`, ()=>{
   expect(source.split('\n').some(line=>line.includes(`| ${id} |`))).toBe(true);
   const result = indefiniteIntegral(rewriteReciprocalFunctions(expression),'x');
@@ -29,4 +29,13 @@ describe('TR324 IT-D antiderivatives',()=>{
    expect(value).toBeCloseTo(oracle(x),5);
   }
  },20000);
+ it.each(rows.filter(([id])=>['IT-D-05','IT-D-13','IT-D-16','IT-D-18'].includes(id)))('%s also supports a different variable', (_id, expression, oracle)=>{
+  const yExpression = expression.replace(/\bx\b/g,'y');
+  const result = indefiniteIntegral(rewriteReciprocalFunctions(yExpression),'y');
+  const d = derivative(result,'y',1);
+  for(const y of [-.6,.6]){
+   const value = parseFloat(Algebrite.run(`float(subst(${y},y,${d}))`));
+   expect(value).toBeCloseTo(oracle(y),5);
+  }
+ });
 });

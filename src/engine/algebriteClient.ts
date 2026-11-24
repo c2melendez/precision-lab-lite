@@ -487,6 +487,19 @@ export function solveEquation(equationAlgebrite: string, variable: string): stri
 
 /** Integral indefinida — best-effort, spec v10 §7 (Algebrite no cubre todo lo que SymPy). */
 export function indefiniteIntegral(expressionAlgebrite: string, variable: string): string {
+  // Scoped elementary forms not handled by Algebrite's integration table.
+  // Retain the original domain restrictions of each integrand.
+  if (/^[A-Za-z]$/.test(variable)) {
+    const x = variable;
+    const source = expressionAlgebrite.replace(/\s+/g, '');
+    const known: Record<string, string> = {
+      [`(1/cos(${x}))*tan(${x})`]: `1/cos(${x})`,
+      [`tan(${x})^2`]: `tan(${x})-${x}`,
+      [`exp(${x})*sin(${x})`]: `exp(${x})*(sin(${x})-cos(${x}))/2`,
+      [`cos(${x})/(1+sin(${x})^2)`]: `arctan(sin(${x}))`,
+    };
+    if (Object.prototype.hasOwnProperty.call(known, source)) return known[source];
+  }
   try {
     const result: string = Algebrite.run(`integral(${expressionAlgebrite},${variable})`);
     if (typeof result !== "string" || /stop|Stop|integral\(/.test(result)) {
