@@ -1,3 +1,9 @@
+## Reconciliación de evidencia TR324 — 2026-11-24 UTC
+
+Se revisó el log del acumulativo [45444254696](https://github.com/c2melendez/precision-lab-lite/actions/runs/45444254696), job 138623529269, SHA técnico `acb736dcf0540c640fb6ffc4cc68c28e5c83865e`; 18 casos IT-D (16 resultados parciales y 2 XFAIL). Los resultados por ID y sus límites constan en BATCH_80_01.md. No se acreditan cierres completos; S25, SG28/DIST y EV-D-01 permanecen bloqueados.
+
+Siguiente: resolver XFAIL de integrales y completar canal literal, dominios y paridad; no repetir las corridas revisadas sin cambios en insumos.
+
 ## TR324 IT-D: cuatro primitivas Lite — 2026-11-24 UTC
 
 Lite SHA `acb736dcf0540c640fb6ffc4cc68c28e5c83865e` añade primitivas para IT-D-05/13/16/18 en formas delimitadas; regresiones locales para variables x e y: 20 PASS, 2 XFAIL en 22 pruebas; typecheck PASS. IT-D-08/14 siguen XFAIL sin resolver. No declara cierre: CI, canales literales y dominios completos pendientes. S25, SG28/DIST, EV-D-01 conservados.

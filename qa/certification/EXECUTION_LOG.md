@@ -1,3 +1,7 @@
+## 2026-11-24 — reconciliación CI TR324
+
+Evidencia por ID añadida a BATCH_80_01.md para 18 filas; ver CURRENT_STATE.md. No se ejecutaron nuevas corridas ni se declararon cierres. Se conservan los bloqueos contractuales.
+
 ## TR324 IT-D: cuatro primitivas Lite — 2026-11-24 UTC
 
 Lite SHA `acb736dcf0540c640fb6ffc4cc68c28e5c83865e` añade primitivas para IT-D-05/13/16/18 en formas delimitadas; regresiones locales para variables x e y: 20 PASS, 2 XFAIL en 22 pruebas; typecheck PASS. IT-D-08/14 siguen XFAIL sin resolver. No declara cierre: CI, canales literales y dominios completos pendientes. S25, SG28/DIST, EV-D-01 conservados.

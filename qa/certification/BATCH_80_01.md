@@ -86,3 +86,32 @@ Fuente congelada `qa/certification/legacy_sources/ejercicios_trigonometria.md.gz
 | IT-HI-02 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
 | IT-HI-03 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
 | IT-HI-04 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
+
+## Reconciliación CI por caso — 2026-11-24
+
+Resultados de pruebas existentes; no constituyen PASS contractual. La información siguiente actualiza las menciones históricas de CI pendiente; no modifica ni borra el historial. Fuente y hash arriba. Falta verificar entrada literal, dominios completos y otros canales.
+
+Lite `acb736dcf0540c640fb6ffc4cc68c28e5c83865e`, [acumulativo 45444254696](https://github.com/c2melendez/precision-lab-lite/actions/runs/45444254696), job 138623529269; `tests/trigonometryItDBatch.audit.test.ts`: derivada de primitiva frente a oráculo numérico en cuatro puntos; el anclaje verifica ID, no entrada literal.
+
+| Caso | Resultado acotado ejecutado |
+|---|---|
+| IT-D-01 | PASS parcial |
+| IT-D-02 | PASS parcial |
+| IT-D-03 | PASS parcial |
+| IT-D-04 | PASS parcial |
+| IT-D-05 | PASS parcial |
+| IT-D-06 | PASS parcial |
+| IT-D-07 | PASS parcial |
+| IT-D-08 | XFAIL |
+| IT-D-09 | PASS parcial |
+| IT-D-10 | PASS parcial |
+| IT-D-11 | PASS parcial |
+| IT-D-12 | PASS parcial |
+| IT-D-13 | PASS parcial |
+| IT-D-14 | XFAIL |
+| IT-D-15 | PASS parcial |
+| IT-D-16 | PASS parcial |
+| IT-D-17 | PASS parcial |
+| IT-D-18 | PASS parcial |
+
+XFAIL permanece FAIL o pendiente de resolución; PASS parcial no es cierre. S25, SG28/DIST y EV-D-01 permanecen abiertos.
