@@ -1,3 +1,9 @@
+## TR324 IT-D: oráculo Lite reforzado — 2026-11-24 UTC
+
+Lite técnico `98bd2ee792ddc079012cdf5ba32887d8979c8db9`: se evita que parseFloat acepte un prefijo numérico seguido de términos complejos o simbólicos, conservando decimales truncados de Algebrite. Prueba focal local: 24 PASS y 2 XFAIL, incluidos cuatro controles negativos; typecheck local PASS. CI acumulativo [45506641836](https://github.com/c2melendez/precision-lab-lite/actions/runs/45506641836) en curso; no hay cierre adicional ni corrida nueva de 80 casos. No cambia Plus. IT-D-08/14 siguen XFAIL en Lite; S25, SG28/DIST y EV-D-01 siguen bloqueados.
+
+Siguiente: revisar logs del acumulativo del SHA técnico, resolver integrales y validar canal literal y dominios en ambos productos.
+
 ## Reconciliación de evidencia TR324 — 2026-11-24 UTC
 
 Se revisó el log del acumulativo [45444254696](https://github.com/c2melendez/precision-lab-lite/actions/runs/45444254696), job 138623529269, SHA técnico `acb736dcf0540c640fb6ffc4cc68c28e5c83865e`; 18 casos IT-D (16 resultados parciales y 2 XFAIL). Los resultados por ID y sus límites constan en BATCH_80_01.md. No se acreditan cierres completos; S25, SG28/DIST y EV-D-01 permanecen bloqueados.
