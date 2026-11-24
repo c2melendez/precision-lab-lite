@@ -41,7 +41,7 @@
   "next_action": {
     "id": "TRIG-BATCH-80-01",
     "status": "IN_PROGRESS",
-    "action": "Revisar CI Lite b965462f568451f65efa3fe42d0a69e467aba268, resolver IT-D-05/08/13/14/16/18 y verificar dominios y paridad Plus."
+    "action": "Revisar CI Lite acb736dcf0540c640fb6ffc4cc68c28e5c83865e; verificar literal y dominios, resolver IT-D-08/14 y ampliar paridad."
   },
   "blockers": [
     {
@@ -529,12 +529,10 @@
     "lite_it_d_sha": "b965462f568451f65efa3fe42d0a69e467aba268",
     "lite_it_d_ci": "WAIT",
     "lite_it_d_unresolved": [
-      "IT-D-05",
       "IT-D-08",
-      "IT-D-13",
-      "IT-D-14",
-      "IT-D-16",
-      "IT-D-18"
-    ]
+      "IT-D-14"
+    ],
+    "lite_it_d_fix_sha": "acb736dcf0540c640fb6ffc4cc68c28e5c83865e",
+    "lite_it_d_fix_ci": "WAIT"
   }
 }

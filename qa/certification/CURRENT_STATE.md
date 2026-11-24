@@ -1,3 +1,9 @@
+## TR324 IT-D: cuatro primitivas Lite — 2026-11-24 UTC
+
+Lite SHA `acb736dcf0540c640fb6ffc4cc68c28e5c83865e` añade primitivas para IT-D-05/13/16/18 en formas delimitadas; regresiones locales para variables x e y: 20 PASS, 2 XFAIL en 22 pruebas; typecheck PASS. IT-D-08/14 siguen XFAIL sin resolver. No declara cierre: CI, canales literales y dominios completos pendientes. S25, SG28/DIST, EV-D-01 conservados.
+
+Siguiente: revisar CI del SHA nuevo, cubrir entradas literales y dominio, resolver IT-D-08/14 y ampliar paridad bilateral.
+
 ## TR324 IT-D-01..18: primera auditoría Lite — 2026-11-24 UTC
 
 Lite SHA `b965462f568451f65efa3fe42d0a69e467aba268`: doce pruebas locales comparan la derivada de la primitiva con oráculo numérico interior; seis fallos esperados estrictos por integral sin resolver: IT-D-05/08/13/14/16/18. La prueba ancla el ID, no verifica entrada literal ni ramas de la primitiva. CI pendiente. No hay cierre completo; conservar S25, SG28/DIST, EV-D-01.

@@ -41,7 +41,7 @@ Fuente congelada `qa/certification/legacy_sources/ejercicios_trigonometria.md.gz
 | IT-D-02 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
 | IT-D-03 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
 | IT-D-04 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
-| IT-D-05 | BLOCKED | Lite: XFAIL estricto: integral no resuelta; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-05 | EN_CURSO | Lite: primitiva en forma delimitada y pruebas locales x/y; SHA `acb736dcf0540c640fb6ffc4cc68c28e5c83865e`; CI, canal literal y dominio pendientes. |
 | IT-D-06 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
 | IT-D-07 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
 | IT-D-08 | BLOCKED | Lite: XFAIL estricto: integral no resuelta; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
@@ -49,12 +49,12 @@ Fuente congelada `qa/certification/legacy_sources/ejercicios_trigonometria.md.gz
 | IT-D-10 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
 | IT-D-11 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
 | IT-D-12 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
-| IT-D-13 | BLOCKED | Lite: XFAIL estricto: integral no resuelta; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-13 | EN_CURSO | Lite: primitiva en forma delimitada y pruebas locales x/y; SHA `acb736dcf0540c640fb6ffc4cc68c28e5c83865e`; CI, canal literal y dominio pendientes. |
 | IT-D-14 | BLOCKED | Lite: XFAIL estricto: integral no resuelta; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
 | IT-D-15 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
-| IT-D-16 | BLOCKED | Lite: XFAIL estricto: integral no resuelta; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-16 | EN_CURSO | Lite: primitiva en forma delimitada y pruebas locales x/y; SHA `acb736dcf0540c640fb6ffc4cc68c28e5c83865e`; CI, canal literal y dominio pendientes. |
 | IT-D-17 | EN_CURSO | Lite: PASS parcial local, derivada numérica interior; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
-| IT-D-18 | BLOCKED | Lite: XFAIL estricto: integral no resuelta; SHA `b965462f568451f65efa3fe42d0a69e467aba268`; CI, fuente literal y dominios pendientes. |
+| IT-D-18 | EN_CURSO | Lite: primitiva en forma delimitada y pruebas locales x/y; SHA `acb736dcf0540c640fb6ffc4cc68c28e5c83865e`; CI, canal literal y dominio pendientes. |
 | IT-I-01 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
 | IT-I-02 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
 | IT-I-03 | REVIEW | Reconciliar prueba, oráculo, canal y evidencia en GitHub. |
