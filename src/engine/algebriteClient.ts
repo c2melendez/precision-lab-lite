@@ -511,7 +511,7 @@ export function indefiniteIntegral(expressionAlgebrite: string, variable: string
   }
   try {
     const result: string = Algebrite.run(`integral(${expressionAlgebrite},${variable})`);
-    if (typeof result !== "string" || /stop|Stop|integral\(/.test(result)) {
+    if (typeof result !== "string" || /stop|Stop|integral\(|Unsupported function/i.test(result)) {
       throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, "Algebrite no pudo resolver esta integral.");
     }
     return result;
@@ -968,3 +968,4 @@ export function simplifyExpression(expressionAlgebrite: string): string {
 }
 
 export { ErrorCode };
+
