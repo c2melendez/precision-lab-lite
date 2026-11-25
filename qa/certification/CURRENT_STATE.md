@@ -1,3 +1,7 @@
+## 2026-11-25 — paridad de formas equivalentes de 1/x²
+
+Plus SHA técnico `ea4222d7d803dc3088131f4211b84c771b95c366`: pruebas HTTP para `(1/x)^2`, `x^(-2)`, `1/(x*x)` y `1/(x)^2` sobre [-1,1], [1,-1] y [1,2]. Resultado local 12 PASS, una advertencia de dependencia; [acumulativo 45680944720](https://github.com/c2melendez/precision-lab-plus/actions/runs/45680944720) en curso. Lite ya cubre estas formas en `58e369e5ec84c571bf540af591df90770819e5fe`, [CI 45661127323](https://github.com/c2melendez/precision-lab-lite/actions/runs/45661127323) verificado. No se asignaron IDs de matriz nuevos ni se verifica convergencia general. Siguiente: revisar CI Plus sin duplicarlo y continuar IT-HI-01/10 y cobertura por caso. S25, SG28/DIST y EV-D-01 permanecen bloqueados.
+
 ## 2026-11-25 — CI verificado para formas equivalentes
 
 Lite SHA técnico `58e369e5ec84c571bf540af591df90770819e5fe`: [acumulativo 45661127323](https://github.com/c2melendez/precision-lab-lite/actions/runs/45661127323), job 139370918071 SUCCESS; log revisado, 3042 PASS, 15 XFAIL, 34 TODO; ejecutó las 8 pruebas definiteIntegralEquivalentPoles. CI, H1d, Scientific UI y Certification Runner reportaron SUCCESS para el mismo SHA. Alcance: cuatro representaciones de 1/x², cruces de cero y controles finitos; no demuestra convergencia general. No son 80 IDs nuevos ni cierre de matriz. Siguiente: abordar IT-HI-01/10 preservando ramas complejas y ampliar evidencia por caso sin duplicar gates. S25, SG28/DIST y EV-D-01 permanecen BLOCKED; certificación global OPEN.
