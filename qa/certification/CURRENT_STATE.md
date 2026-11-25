@@ -1,3 +1,14 @@
+## TR324 Reconciliación de índices bilaterales y CI verificado — 2026-11-25 UTC
+
+Evidencia de CI verificada bilateralmente para los SHAs técnicos vigentes:
+- Plus SHA técnico `c2d66e7124ce7f2bbc652009e610293f30044ab4`: acumulativo [45582006410](https://github.com/c2melendez/precision-lab-plus/actions/runs/45582006410) completó SUCCESS. Job backend [139094132064](https://github.com/c2melendez/precision-lab-plus/actions/runs/45582006410/job/139094132064): 3554 passed, 1 skipped, 35 xfailed. Job frontend [139094131945](https://github.com/c2melendez/precision-lab-plus/actions/runs/45582006410/job/139094131945): 150 archivos de test passed, 1055 passed, 28 todo. Reconciliación HTTP de los 80 casos originales: 70 PASSED (parcial) y 10 XFAIL. H1d [45582006239](https://github.com/c2melendez/precision-lab-plus/actions/runs/45582006239) job 139094131149 completó SUCCESS.
+- Lite SHA técnico `0000dbfcb0006e26d198f979fd2ee393bba41f1e`: acumulativo [45572462518](https://github.com/c2melendez/precision-lab-lite/actions/runs/45572462518) completó SUCCESS. Job [139062212120](https://github.com/c2melendez/precision-lab-lite/actions/runs/45572462518/job/139062212120): 3020 PASS, 15 XFAIL, 34 TODO con 12 pruebas de polos IT-D ejecutadas. H1d [45572462464](https://github.com/c2melendez/precision-lab-lite/actions/runs/45572462464) job 139062212137 completó SUCCESS. Scientific UI [45572462594](https://github.com/c2melendez/precision-lab-lite/actions/runs/45572462594) job 139062212076 completó SUCCESS.
+
+Índices actualizados: `continuity.json` (revisión 643 en Lite, 639 en Plus), `CURRENT_STATE.md` y `BATCH_80_01.md`. Bloqueos S25, SG28/DIST y EV-D-01 permanecen activos; certificación global OPEN.
+
+Siguiente: extender en Lite las guardas de integral definida para rechazar resultados no finitos (DOMAIN_ERROR) en paridad con Plus, y resolver estabilidad numérica IT-HI-01/10 preservando ramas complejas.
+
+
 ## TR324 IT-D-08/14: respuestas no finitas en Plus — 2026-11-25 UTC
 
 Plus SHA técnico `c2d66e7124ce7f2bbc652009e610293f30044ab4` evita devolver success=true con nan, oo, -oo o zoo para una integral definida; responde DOMAIN_ERROR con mensaje de valor no finito o indeterminado. Pruebas HTTP: cot(x) en intervalos que incluyen 0 y sec(x)^3 cruzando pi/2, normales y reversos; dos intervalos válidos conservan resultados finitos. La integral formal no resuelta csch(x)^2 conserva aviso y representación existente, no se considera PASS de convergencia. Pruebas locales de integral: 17 PASS; derivadas: 10 PASS. [Acumulativo Plus 45582006410](https://github.com/c2melendez/precision-lab-plus/actions/runs/45582006410) en curso. No detecta toda singularidad si el motor reporta un valor finito; no declara cierre ni lote de 80. S25, SG28/DIST y EV-D-01 siguen bloqueados.

@@ -192,8 +192,96 @@ SHA `721cad1b3935fc14289c5675cedad26c33eb32b2`: regresión local para x=+1e8 apr
 
 ## IT-D-08/14: dominios definidos Lite en verificación
 
-SHA `0000dbfcb0006e26d198f979fd2ee393bba41f1e`, `tests/trigonometryItDDefinitePoles.audit.test.ts`: 12 pruebas locales cubren polos periódicos, intervalos seguros y literales; [CI 45572462518](https://github.com/c2melendez/precision-lab-lite/actions/runs/45572462518) en curso. Guarda limitada a formas específicas; paridad, UI y dominios generales pendientes. No es cierre contractual.
+SHA `0000dbfcb0006e26d198f979fd2ee393bba41f1e`, `tests/trigonometryItDDefinitePoles.audit.test.ts`: 12 pruebas locales cubren polos periódicos, intervalos seguros y literales; [CI 45572462518](https://github.com/c2melendez/precision-lab-lite/actions/runs/45572462518) completó SUCCESS (job 139062212120: 3020 PASS, 15 XFAIL, 34 TODO). Guarda limitada a formas específicas; paridad, UI y dominios generales pendientes. No es cierre contractual.
 
 ## IT-D-08/14: respuestas no finitas Plus
 
-SHA Plus `c2d66e7124ce7f2bbc652009e610293f30044ab4`: pruebas HTTP locales de cot y sec³ que retornaban nan/oo ahora devuelven DOMAIN_ERROR; intervalos finitos conservan success. [CI 45582006410](https://github.com/c2melendez/precision-lab-plus/actions/runs/45582006410) en curso. Quedan pendientes singularidades que produzcan resultados finitos, formas equivalentes y canales completos; no hay PASS contractual.
+SHA Plus `c2d66e7124ce7f2bbc652009e610293f30044ab4`: pruebas HTTP locales de cot y sec³ que retornaban nan/oo ahora devuelven DOMAIN_ERROR; intervalos finitos conservan success. [CI 45582006410](https://github.com/c2melendez/precision-lab-plus/actions/runs/45582006410) completó SUCCESS (backend job 139094132064: 3554 passed, 1 skipped, 35 xfailed; frontend job 139094131945: 1055 passed, 28 todo). Quedan pendientes singularidades que produzcan resultados finitos, formas equivalentes y canales completos; no hay PASS contractual.
+
+
+## Reconciliación de evidencia HTTP Plus del lote original (25-11-2026)
+
+Se cotejaron los 80 IDs originales con el log del job backend [139094132064](https://github.com/c2melendez/precision-lab-plus/actions/runs/45582006410/job/139094132064), corrida 45582006410 exitosa sobre SHA técnico `c2d66e7124ce7f2bbc652009e610293f30044ab4`. Resultado por prueba HTTP: 70 PASSED y 10 XFAIL. La tabla refleja el resultado de esa prueba, no la certificación integral del caso: no acredita por sí sola dominio completo, entrada literal de matriz, UI, oráculo independiente ni paridad Lite. XFAIL conserva el bloqueo y no es PASS. No se ejecutó una corrida nueva para esta reconciliación. Las seis filas IT-HI-05..10 agregadas fuera de los 80 originales se excluyen del cómputo. Las filas y evidencias anteriores conservan su alcance histórico.
+
+| ID | Resultado HTTP en CI | Prueba parametrizada |
+|---|---|---|
+| DV-I-04 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_i04_i06.py::test_http_derivative_endpoint` |
+| DV-I-05 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_i04_i06.py::test_http_derivative_endpoint` |
+| DV-I-06 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_i04_i06.py::test_http_derivative_endpoint` |
+| DV-I-07 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_i07_i12.py::test_http_derivative_endpoint` |
+| DV-I-08 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_i07_i12.py::test_http_derivative_endpoint` |
+| DV-I-09 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_i07_i12.py::test_http_derivative_endpoint` |
+| DV-I-10 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_i07_i12.py::test_http_derivative_endpoint` |
+| DV-I-11 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_i07_i12.py::test_http_derivative_endpoint` |
+| DV-I-12 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_i07_i12.py::test_http_derivative_endpoint` |
+| DV-H-01 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-H-02 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-H-03 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-H-04 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-H-05 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-H-06 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-H-07 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-H-08 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-H-09 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-H-10 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-H-11 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-H-12 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-HI-01 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-HI-02 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-HI-03 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-HI-04 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-HI-05 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-HI-06 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-HI-07 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-HI-08 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-HI-09 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| DV-HI-10 | PASSED (parcial) | `backend/tests/test_trigonometry_dv_h_hi_batch.py::test_http` |
+| IT-D-01 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-02 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-03 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-04 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-05 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-06 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-07 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-08 | XFAIL | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-09 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-10 | XFAIL | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-11 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-12 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-13 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-14 | XFAIL | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-15 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-16 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-17 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-D-18 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-I-01 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_inverse_integral_http_numeric` |
+| IT-I-02 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_inverse_integral_http_numeric` |
+| IT-I-03 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_inverse_integral_http_numeric` |
+| IT-I-04 | XFAIL | `backend/tests/test_trig_it_d_batch_audit.py::test_inverse_integral_http_numeric` |
+| IT-I-05 | XFAIL | `backend/tests/test_trig_it_d_batch_audit.py::test_inverse_integral_http_numeric` |
+| IT-I-06 | XFAIL | `backend/tests/test_trig_it_d_batch_audit.py::test_inverse_integral_http_numeric` |
+| IT-I-07 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_inverse_integral_http_numeric` |
+| IT-I-08 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_inverse_integral_http_numeric` |
+| IT-I-09 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_inverse_integral_http_numeric` |
+| IT-I-10 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_inverse_integral_http_numeric` |
+| IT-I-11 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_inverse_integral_http_numeric` |
+| IT-H-01 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-H-02 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-H-03 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-H-04 | XFAIL | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-H-05 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-H-06 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-H-07 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-H-08 | XFAIL | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-H-09 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-H-10 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-H-11 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-H-12 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-H-13 | XFAIL | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-H-14 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-H-15 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-H-16 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_integral_http_numeric` |
+| IT-HI-01 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_inverse_integral_http_numeric` |
+| IT-HI-02 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_inverse_integral_http_numeric` |
+| IT-HI-03 | PASSED (parcial) | `backend/tests/test_trig_it_d_batch_audit.py::test_inverse_integral_http_numeric` |
+| IT-HI-04 | XFAIL | `backend/tests/test_trig_it_d_batch_audit.py::test_inverse_integral_http_numeric` |

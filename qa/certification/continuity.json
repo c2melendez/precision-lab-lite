@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 642,
+  "revision": 643,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "a60650d74653530abd362bf6781c0a4b355a5c9c",
-  "baseline_case": "TRIG-CALC-LITERAL-CHANNEL",
+  "technical_baseline_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
+  "baseline_case": "TRIG-IT-D-08-14-POLES",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -41,7 +41,7 @@
   "next_action": {
     "id": "TRIG-BATCH-80-01",
     "status": "IN_PROGRESS",
-    "action": "Implementar primitivas IT-D-08 (integral de cot) e IT-D-14 (integral de sec^3) con prueba de canal literal y dominio; después ampliar paridad. Canal literal de los cuatro operadores de Cálculo ya verificado en a60650d74653530abd362bf6781c0a4b355a5c9c."
+    "action": "Paridad de guardas de integral definida no finita en Lite con Plus (DOMAIN_ERROR), y estabilidad num\u00e9rica IT-HI-01/10 preservando ramas complejas."
   },
   "blockers": [
     {
@@ -50,7 +50,7 @@
       "run_id": 43538686314,
       "job_id": 132273991849,
       "classification": "ACCEPTANCE_REVIEW",
-      "exit_condition": "Evaluar informe ya producido y criterios de aceptación por perfil; supervivientes/timeouts y jobs omitidos no son PASS. Conservar el shutdown histórico sin relanzar inputs idénticos.",
+      "exit_condition": "Evaluar informe ya producido y criterios de aceptaci\u00f3n por perfil; supervivientes/timeouts y jobs omitidos no son PASS. Conservar el shutdown hist\u00f3rico sin relanzar inputs id\u00e9nticos.",
       "current_run_id": 43559502112,
       "current_job_id": 132339909267,
       "last_shutdown_run_id": 43695734343,
@@ -63,7 +63,7 @@
     {
       "id": "H2-SG28-DIST-01..08",
       "status": "BLOCKED",
-      "exit_condition": "Evidencia contractual multinodo real; aislamiento desactivado por defecto, sin activación en producción."
+      "exit_condition": "Evidencia contractual multinodo real; aislamiento desactivado por defecto, sin activaci\u00f3n en producci\u00f3n."
     },
     {
       "id": "EV-D-01",
@@ -76,24 +76,25 @@
     "qa/certification/README.md",
     "qa/certification/CURRENT_STATE.md",
     "qa/certification/EXECUTION_LOG.md",
-    "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
+    "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md",
+    "qa/certification/BATCH_80_01.md"
   ],
-  "updated_utc": "2026-11-25T06:58:08.426890+00:00",
+  "updated_utc": "2026-11-25T11:07:12.285312+00:00",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
-      "input_fingerprint": "85f5c123ed321b12885be9ebf8f35567e61f38d5d1decf8cb76558f1fa6a97ea",
-      "head_sha": "87630eb3f8e9e9533f0419bfe9652006c505f619",
+      "input_fingerprint": "f28649823d23033e38849a0c484c899c5253187fb0617cc4cbbf34ee72c85ba4",
+      "head_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
       "decision": "REUSE",
-      "reason": "Ejecución y registros revisados; alcance acotado.",
+      "reason": "Ejecuci\u00f3n y registros revisados; alcance acotado (3020 PASS, 15 XFAIL, 34 TODO).",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45185735176,
-      "evidence_sha": "87630eb3f8e9e9533f0419bfe9652006c505f619",
+      "run_id": 45572462518,
+      "evidence_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
       "jobs": [
         {
-          "id": 137730716065,
+          "id": 139062212120,
           "status": "completed",
           "conclusion": "success"
         }
@@ -101,18 +102,18 @@
     },
     "h1d": {
       "gate": "h1d",
-      "input_fingerprint": "b5f6c8755fe695c5890660b4528af57f1f975f66939a5bfaecdacc3f27b74885",
-      "head_sha": "87630eb3f8e9e9533f0419bfe9652006c505f619",
+      "input_fingerprint": "3d1977707f95188e4c6aefe4c51185b1d9e6679730c2c34df54b57f3a734b2d8",
+      "head_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
       "decision": "REUSE",
-      "reason": "Ejecución y registros revisados; alcance acotado.",
+      "reason": "Ejecuci\u00f3n y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45185735217,
-      "evidence_sha": "87630eb3f8e9e9533f0419bfe9652006c505f619",
+      "run_id": 45572462464,
+      "evidence_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
       "jobs": [
         {
-          "id": 137730715728,
+          "id": 139062212137,
           "status": "completed",
           "conclusion": "success"
         }
@@ -123,25 +124,25 @@
       "input_fingerprint": "94bfe4c032668c90c738dff584fabe9d34e6f14ba1592a92f4b6b6ddf3ebefc8",
       "head_sha": "6ae37a1bda2dd7dab354cb6f5a31d731fe52fd63",
       "decision": "REVIEW",
-      "reason": "Advisories externos requieren revisión actual.",
+      "reason": "Advisories externos requieren revisi\u00f3n actual.",
       "logs_reviewed": false,
       "evidence_executed": false,
       "acceptance_revision": "2026-10-16-continuity-v1"
     },
     "scientific": {
       "gate": "scientific",
-      "input_fingerprint": "6644a5c2e40b6d307ec2dbda23968454754cacef82132eb03c79c5cd8813a642",
-      "head_sha": "87630eb3f8e9e9533f0419bfe9652006c505f619",
+      "input_fingerprint": "1fe18aede717ed59ef8205cd4f4299e918827ddd4acdd8beeab07e6d63eb32b5",
+      "head_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
       "decision": "REUSE",
-      "reason": "Ejecución y registros revisados; alcance acotado.",
+      "reason": "Ejecuci\u00f3n y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
-      "run_id": 45185735144,
-      "evidence_sha": "87630eb3f8e9e9533f0419bfe9652006c505f619",
+      "run_id": 45572462594,
+      "evidence_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
       "jobs": [
         {
-          "id": 137730715706,
+          "id": 139062212076,
           "status": "completed",
           "conclusion": "success"
         }
@@ -198,7 +199,7 @@
         "input_fingerprint": "c3a65efcec8d8bd0da76de9421bce46f9a9694aa785a1d05d31b555d547fc7b2",
         "head_sha": "b50826167714fd0126746bfbe3d34bc15d65d33f",
         "decision": "REVIEW",
-        "reason": "Revisión por perfil. Este corte no prueba ausencia de otras corridas.",
+        "reason": "Revisi\u00f3n por perfil. Este corte no prueba ausencia de otras corridas.",
         "logs_reviewed": false,
         "evidence_executed": false
       },
@@ -509,7 +510,7 @@
     "verified_run_sha": "e9e57d7897d355d538cb15018397bdbfe3bc544e",
     "verified_run_id": 45201778979,
     "new_technical_sha": "a9285c438ef434b8855b5f6b284f1ec6474e3cab",
-    "unresolved_inverse_hyperbolic_cases": "DV-HI-01..10: implementación pendiente de certificación",
+    "unresolved_inverse_hyperbolic_cases": "DV-HI-01..10: implementaci\u00f3n pendiente de certificaci\u00f3n",
     "lite_protection_sha": "649c068f9d4d41f9a8a1bb07b2c7cb484f802a44",
     "lite_previous_cumulative_run_id": 45210932463,
     "lite_previous_cumulative_logs_reviewed": true,
@@ -543,6 +544,10 @@
       "IT-D-14"
     ],
     "lite_it_d_fix_sha": "acb736dcf0540c640fb6ffc4cc68c28e5c83865e",
-    "lite_it_d_fix_ci": "WAIT"
+    "lite_it_d_fix_ci": "WAIT",
+    "lite_pole_guards_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
+    "lite_pole_guards_run_id": 45572462518,
+    "lite_pole_guards_status": "SUCCESS",
+    "lite_pole_guards_logs_reviewed": true
   }
 }
