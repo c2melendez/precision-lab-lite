@@ -1,3 +1,9 @@
+## TR324 IT-HI-01/10: regresión de estabilidad — 2026-11-25 UTC
+
+Lite SHA técnico `721cad1b3935fc14289c5675cedad26c33eb32b2` amplía `tests/trigonometryItHIBatch.audit.test.ts`: pruebas independientes de primitivas para x=+1e8 pasan; para x=-1e8 ambas devuelven infinito y son XFAIL estricto por cancelación. Prueba focal 26 PASS, 2 XFAIL; no se ha corregido el producto. [Acumulativo 45565408211](https://github.com/c2melendez/precision-lab-lite/actions/runs/45565408211) en curso. IT-HI-01/10 siguen FAIL de estabilidad; falta encontrar representación estable que preserve ramas complejas, y validar literalidad, dominios y paridad. S25, SG28/DIST y EV-D-01 siguen bloqueados.
+
+Lite [acumulativo 45563389626](https://github.com/c2melendez/precision-lab-lite/actions/runs/45563389626), job 139032242023, SHA `a60650d74653530abd362bf6781c0a4b355a5c9c`: 2998 PASS, 15 XFAIL, 34 TODO, incluidas 10 pruebas del canal literal. La cobertura de ese canal no cierra la matriz. Siguiente: revisar CI 45565408211 y corregir estabilidad sin modificar ramas complejas.
+
 ## TR324 canal literal de Cálculo — 2026-11-25 UTC
 
 Lite SHA técnico `a60650d74653530abd362bf6781c0a4b355a5c9c` corrige el canal literal de Cálculo. El teclado inserta el operador completo (`\frac{d}{dx}(...)`, `\int ...\,dx`, `\int_a^b ...\,dx`, `\lim_{x\to a} ...`); el parser conserva esa forma y la UI la reenvía, pero el motor esperaba solo el operando. Antes de corregir: `\frac{d}{dx}(x^2)` devolvía `2` (derivaba la llamada `d(...)` sin evaluar), `\int x^2\,dx` devolvía `1/12*x^4` (doble integración) y la integral definida y el límite se rechazaban con operador desconocido (`defintegral`, `limit`). La corrección desenvuelve el operando en los cuatro puntos de entrada, usa los límites y el punto literales cuando existen, limpia la elipsis truncada de `float()` (`0.333333...`) y rechaza en vez de inventar cuando una función conocida llega como producto (`sech^(2)*x`, `d*x/sqrt(x^(2)-1)`).

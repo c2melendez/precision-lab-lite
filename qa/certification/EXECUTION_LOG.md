@@ -1,3 +1,9 @@
+## TR324 IT-HI-01/10: regresión de estabilidad — 2026-11-25 UTC
+
+Lite SHA técnico `721cad1b3935fc14289c5675cedad26c33eb32b2` amplía `tests/trigonometryItHIBatch.audit.test.ts`: pruebas independientes de primitivas para x=+1e8 pasan; para x=-1e8 ambas devuelven infinito y son XFAIL estricto por cancelación. Prueba focal 26 PASS, 2 XFAIL; no se ha corregido el producto. [Acumulativo 45565408211](https://github.com/c2melendez/precision-lab-lite/actions/runs/45565408211) en curso. IT-HI-01/10 siguen FAIL de estabilidad; falta encontrar representación estable que preserve ramas complejas, y validar literalidad, dominios y paridad. S25, SG28/DIST y EV-D-01 siguen bloqueados.
+
+Lite [acumulativo 45563389626](https://github.com/c2melendez/precision-lab-lite/actions/runs/45563389626), job 139032242023, SHA `a60650d74653530abd362bf6781c0a4b355a5c9c`: 2998 PASS, 15 XFAIL, 34 TODO, incluidas 10 pruebas del canal literal. La cobertura de ese canal no cierra la matriz. Siguiente: revisar CI 45565408211 y corregir estabilidad sin modificar ramas complejas.
+
 ## TR324 canal literal de Cálculo — 2026-11-25 UTC
 
 Lite SHA técnico `a60650d74653530abd362bf6781c0a4b355a5c9c`. Diagnóstico reproducible sobre el HEAD previo (`05ff3946`): `\frac{d}{dx}(x^2)` → `2`; `\int x^2\,dx` → `1/12*x^4`; `\int_0^1 x^2\,dx` → rechazo por `defintegral` desconocido; `\lim_{x\to 0}\frac{\sin x}{x}` → rechazo por `limit` desconocido; los resultados definidos arrastraban la elipsis de Algebrite. Causa: el motor recibía el texto parseado de la plantilla completa y no el operando.

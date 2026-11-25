@@ -185,3 +185,7 @@ Las tres filas tienen primitivas para formas específicas en `94e8ac22e7608ee79b
 ## IT-HI-02 y estabilidad de IT-HI-01 — Lite
 
 IT-HI-02: primitiva de acosh en `39b1cd185716b4f4e50eda0c99447d25340b3bd5`, resultado interior local; [CI 45557928390](https://github.com/c2melendez/precision-lab-lite/actions/runs/45557928390) en curso. IT-HI-01: evaluación numérica de la primitiva en x=-100000000 produce Infinity.0 por cancelación; FAIL de estabilidad y corrección pendiente. No son cierres contractuales.
+
+## IT-HI-01/10: estabilidad de primitivas Lite
+
+SHA `721cad1b3935fc14289c5675cedad26c33eb32b2`: regresión local para x=+1e8 aprobada y x=-1e8 XFAIL por Infinity.0 en ambas primitivas; [CI 45565408211](https://github.com/c2melendez/precision-lab-lite/actions/runs/45565408211) en curso. IT-HI-10 es extra al lote original. Ambas filas sin cierre; pendiente corrección que preserve ramas y dominios.
