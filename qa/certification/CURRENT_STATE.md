@@ -1,3 +1,9 @@
+## 2026-11-25 — Lite: rechazo de resultados no finitos (CI pendiente)
+
+SHA técnico `7cd7e31a8340413536e042864cb4ab18cfb475a4`: `calcDefiniteIntegral` rechaza resultados simbólicos o numéricos no finitos con DOMAIN_ERROR y preserva resultados complejos finitos. Pruebas locales: 17 PASS (5 regresiones nuevas y 12 polos existentes); typecheck PASS. Acumulativo [45618692308](https://github.com/c2melendez/precision-lab-lite/actions/runs/45618692308) y demás gates en cola; no se declara PASS de CI. No son 17 filas de matriz ni 80 casos nuevos.
+
+Limitación reproducida en prueba exploratoria: integral de `1/x^2` en [-1,1] devuelve -2 pese al polo interior; la nueva guarda solo detecta resultados no finitos y no certifica convergencia. Siguiente: revisar CI del SHA técnico y abordar detección general de singularidades, estabilidad IT-HI-01/10 y paridad, sin repetir gates en curso. S25, SG28/DIST y EV-D-01 permanecen bloqueados.
+
 ## TR324 Reconciliación de índices bilaterales y CI verificado — 2026-11-25 UTC
 
 Evidencia de CI verificada bilateralmente para los SHAs técnicos vigentes:
