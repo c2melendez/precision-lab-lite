@@ -1,3 +1,11 @@
+## TR324 IT-HI-02 y estabilidad IT-HI-01 — 2026-11-25 UTC
+
+Lite SHA técnico `39b1cd185716b4f4e50eda0c99447d25340b3bd5` agrega primitiva específica para acosh (IT-HI-02) usando raíces separadas; pruebas locales IT-HI e IT-D: 44 PASS y 2 XFAIL, incluyendo derivación y diferencias finitas en puntos interiores, x/y. [Acumulativo 45557928390](https://github.com/c2melendez/precision-lab-lite/actions/runs/45557928390) en curso. Falta validación de ramas complejas, extremos y canal literal; no se declara cierre.
+
+Hallazgo independiente: la primitiva previa IT-HI-01, evaluada mediante Algebrite en x=-100000000, devuelve Infinity.0 por cancelación numérica; la misma expresión en x=-100 es finita. No atribuir PASS de estabilidad; corregir y añadir regresión antes del cierre. IT-HI-04/05/06 siguen sin implementar; S25, SG28/DIST y EV-D-01 bloqueados.
+
+[Acumulativo previo 45550227135](https://github.com/c2melendez/precision-lab-lite/actions/runs/45550227135), job 138989382550, SHA `94e8ac22e7608ee79ba6ad0d4bfdc93496b1c320`: 2987 PASS, 15 XFAIL, 34 TODO; 23 pruebas IT-HI ejecutadas. Siguiente: corregir estabilidad IT-HI-01/10, revisar CI nuevo y probar ramas/literalidad bilateral.
+
 ## TR324 IT-HI-01/03/10: primitivas Lite — 2026-11-25 UTC
 
 Lite SHA técnico `94e8ac22e7608ee79ba6ad0d4bfdc93496b1c320` incorpora primitivas en formas específicas para IT-HI-01, IT-HI-03 e IT-HI-10 usando logaritmos; el último caso está fuera del lote de 80. La prueba focal comprueba derivada simbólica y diferencias finitas numéricas en puntos interiores, variables x/y: IT-HI e IT-D acumulan 43 PASS y 2 XFAIL; el recuento incluye anclajes y comprobaciones de error, no son 43 casos certificados. IT-HI-02/04/05/06 permanecen sin implementar. [Acumulativo 45550227135](https://github.com/c2melendez/precision-lab-lite/actions/runs/45550227135) en curso. Faltan dominios completos, ramas, entrada literal, interfaz y paridad; S25, SG28/DIST y EV-D-01 siguen bloqueados.

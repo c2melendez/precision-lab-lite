@@ -181,3 +181,7 @@ SHA `17f66fcb7f6f61d58c35e93095de408cf537f80e`; `tests/trigonometryItHIBatch.aud
 ## TR324 IT-HI-01/03/10: Lite en verificación
 
 Las tres filas tienen primitivas para formas específicas en `94e8ac22e7608ee79ba6ad0d4bfdc93496b1c320`, comprobadas localmente con derivada y diferencias finitas en puntos interiores; [CI 45550227135](https://github.com/c2melendez/precision-lab-lite/actions/runs/45550227135) en curso. IT-HI-10 es adicional al lote. No son PASS contractual: faltan ramas, dominios, literalidad y UI.
+
+## IT-HI-02 y estabilidad de IT-HI-01 — Lite
+
+IT-HI-02: primitiva de acosh en `39b1cd185716b4f4e50eda0c99447d25340b3bd5`, resultado interior local; [CI 45557928390](https://github.com/c2melendez/precision-lab-lite/actions/runs/45557928390) en curso. IT-HI-01: evaluación numérica de la primitiva en x=-100000000 produce Infinity.0 por cancelación; FAIL de estabilidad y corrección pendiente. No son cierres contractuales.
