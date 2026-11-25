@@ -495,6 +495,9 @@ export function indefiniteIntegral(expressionAlgebrite: string, variable: string
     const known: Record<string, string> = {
       [`(1/cos(${x}))*tan(${x})`]: `1/cos(${x})`,
       [`tan(${x})^2`]: `tan(${x})-${x}`,
+      [`asinh(${x})`]: `${x}*log(${x}+sqrt(${x}^2+1))-sqrt(${x}^2+1)`,
+      [`atanh(${x})`]: `(${x}*log((1+${x})/(1-${x}))+log(1-${x}^2))/2`,
+      [`${x}*asinh(${x})`]: `((2*${x}^2+1)*log(${x}+sqrt(${x}^2+1))-${x}*sqrt(${x}^2+1))/4`,
       [`${x}*arctan(${x})`]: `((${x}^2+1)*arctan(${x})-${x})/2`,
       [`arcsin(${x})/sqrt(1-${x}^2)`]: `arcsin(${x})^2/2`,
       [`(1/cosh(${x}))^2`]: `tanh(${x})`,
@@ -968,4 +971,5 @@ export function simplifyExpression(expressionAlgebrite: string): string {
 }
 
 export { ErrorCode };
+
 
