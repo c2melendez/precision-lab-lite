@@ -1,3 +1,13 @@
+## TR324 canal literal de Cálculo — 2026-11-25 UTC
+
+Lite SHA técnico `a60650d74653530abd362bf6781c0a4b355a5c9c`. Diagnóstico reproducible sobre el HEAD previo (`05ff3946`): `\frac{d}{dx}(x^2)` → `2`; `\int x^2\,dx` → `1/12*x^4`; `\int_0^1 x^2\,dx` → rechazo por `defintegral` desconocido; `\lim_{x\to 0}\frac{\sin x}{x}` → rechazo por `limit` desconocido; los resultados definidos arrastraban la elipsis de Algebrite. Causa: el motor recibía el texto parseado de la plantilla completa y no el operando.
+
+Corrección: módulo `src/engine/stepEngine/calculusOperators.ts` (desenvolvimiento estricto de la llamada y guarda de funciones desaplicadas) y cambios en los cuatro puntos de entrada de `calculus.ts` (operando, límites/punto literales, limpieza de elipsis, rechazo fail-closed). Pruebas `tests/calculusLiteralChannel.audit.test.ts` 10/10 y oráculo `tests/support/latexNumeric.ts` (falla cerrado ante LaTeX no modelado).
+
+Evidencia ejecutada en `a60650d7`: acumulativo [45563389626](https://github.com/c2melendez/precision-lab-lite/actions/runs/45563389626) job 139032242023, 525 archivos / 2998 PASS / 15 XFAIL / 34 TODO, `calculusLiteralChannel` ejecutado; H1d [45563389578](https://github.com/c2melendez/precision-lab-lite/actions/runs/45563389578) job 139032241694, 22 PASS; Scientific UI E2E [45563389644](https://github.com/c2melendez/precision-lab-lite/actions/runs/45563389644) job 139032241954, 456 PASS; CI [45563389748](https://github.com/c2melendez/precision-lab-lite/actions/runs/45563389748) job 139032241973; Certification Runner [45563389586](https://github.com/c2melendez/precision-lab-lite/actions/runs/45563389586). Los tres fallos de álgebra observados en la suite local pasan aislados y en CI: flaqueo por carga, no regresión. No se declara cierre de IT-D-08/14, dominios ni paridad. S25, SG28/DIST y EV-D-01 bloqueados.
+
+Siguiente: primitivas IT-D-08 (∫cot) e IT-D-14 (∫sec³) con canal literal y dominio; después paridad.
+
 ## TR324 IT-HI-02 y estabilidad IT-HI-01 — 2026-11-25 UTC
 
 Lite SHA técnico `39b1cd185716b4f4e50eda0c99447d25340b3bd5` agrega primitiva específica para acosh (IT-HI-02) usando raíces separadas; pruebas locales IT-HI e IT-D: 44 PASS y 2 XFAIL, incluyendo derivación y diferencias finitas en puntos interiores, x/y. [Acumulativo 45557928390](https://github.com/c2melendez/precision-lab-lite/actions/runs/45557928390) en curso. Falta validación de ramas complejas, extremos y canal literal; no se declara cierre.

@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 641,
+  "revision": 642,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "87630eb3f8e9e9533f0419bfe9652006c505f619",
-  "baseline_case": "TRIG-DV-I-04..06",
+  "technical_baseline_sha": "a60650d74653530abd362bf6781c0a4b355a5c9c",
+  "baseline_case": "TRIG-CALC-LITERAL-CHANNEL",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -41,7 +41,7 @@
   "next_action": {
     "id": "TRIG-BATCH-80-01",
     "status": "IN_PROGRESS",
-    "action": "Revisar CI Lite acb736dcf0540c640fb6ffc4cc68c28e5c83865e; verificar literal y dominios, resolver IT-D-08/14 y ampliar paridad."
+    "action": "Implementar primitivas IT-D-08 (integral de cot) e IT-D-14 (integral de sec^3) con prueba de canal literal y dominio; después ampliar paridad. Canal literal de los cuatro operadores de Cálculo ya verificado en a60650d74653530abd362bf6781c0a4b355a5c9c."
   },
   "blockers": [
     {
@@ -78,7 +78,7 @@
     "qa/certification/EXECUTION_LOG.md",
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md"
   ],
-  "updated_utc": "2026-11-23T15:08:46.933719+00:00",
+  "updated_utc": "2026-11-25T06:58:08.426890+00:00",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
@@ -513,7 +513,17 @@
     "lite_protection_sha": "649c068f9d4d41f9a8a1bb07b2c7cb484f802a44",
     "lite_previous_cumulative_run_id": 45210932463,
     "lite_previous_cumulative_logs_reviewed": true,
-    "latest_lite_ci_status": "WAIT",
+    "latest_lite_ci_status": "SUCCESS",
+    "lite_literal_channel_sha": "a60650d74653530abd362bf6781c0a4b355a5c9c",
+    "lite_literal_channel_runs": {
+      "cumulative": 45563389626,
+      "h1d": 45563389578,
+      "scientific": 45563389644,
+      "ci": 45563389748,
+      "certification_runner": 45563389586
+    },
+    "lite_literal_channel_logs_reviewed": true,
+    "lite_literal_channel_status": "SUCCESS",
     "lite_inverse_implementation_sha": "7cbbed39b3b15608da407e420b4a90442ec0ad29",
     "lite_inverse_cumulative_run_id": 45215179382,
     "lite_inverse_ci_status": "SUCCESS",
