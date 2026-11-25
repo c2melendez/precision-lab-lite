@@ -22,12 +22,48 @@ import {
 import { reciprocalPoleLimit, reciprocalLimitAtInfinity } from "../reciprocalLimit";
 import { compileNumeric, numericLimit, numericLimitAtInfinity, simpsonIntegral } from "../numericFallback";
 import { rewriteReciprocalFunctions } from "../parsing";
+import { findBareFunctionToken, operandOf, parseCalculusOperator } from "./calculusOperators";
 import type { Step, AppError, ResultConfidence } from "../../types";
 
 export interface CalculusResult {
   resultLatex: string;
   steps: Step[];
   confidence: ResultConfidence;
+}
+
+/**
+ * Rejects operands where a known function was parsed as a product
+ * (`\operatorname{sech}^{2}x` -> `sech^(2)*x`). Algebrite would treat the
+ * bare name as a constant and return a plausible but wrong antiderivative;
+ * refusing is the honest outcome.
+ */
+function assertNoBareFunction(operand: string, variable: string): void {
+  const token = findBareFunctionToken(operand, variable);
+  if (token) {
+    const error: AppError = {
+      code: ErrorCode.UNSUPPORTED_OPERATION,
+      message: `La función "${token}" debe escribirse aplicada a su argumento, por ejemplo ${token}(x).`,
+    };
+    throw error;
+  }
+}
+
+/** Converts a literal bound (`0`, `pi`, `-1`) to a finite number or refuses. */
+function resolveLiteralBound(text: string): number {
+  const trimmed = text.trim();
+  const numeric = Number(trimmed);
+  if (Number.isFinite(numeric)) return numeric;
+  // Algebrite prints truncated decimals with a literal ellipsis ("3.141593...").
+  const raw = evaluate(`float(${trimmed})`).replace(/\.{3}$/, "").trim();
+  const value = Number(raw);
+  if (!Number.isFinite(value)) {
+    const error: AppError = {
+      code: ErrorCode.UNSUPPORTED_OPERATION,
+      message: `El límite de integración "${trimmed}" no es un número real finito.`,
+    };
+    throw error;
+  }
+  return value;
 }
 
 // Fase 3 (paridad con la pantalla única): el orden de derivada ya no
@@ -48,13 +84,15 @@ export interface CalculusResult {
 // igual, no solo la derivada — se importa desde ahí en vez de duplicar
 // la lógica acá.
 export function calcDerivative(exprAlgebrite: string, variable: string, order: number): CalculusResult {
-  const result = symbolicDerivative(rewriteReciprocalFunctions(exprAlgebrite), variable, order);
+  const operand = operandOf(exprAlgebrite, ["d", "derivative"]);
+  assertNoBareFunction(operand, variable);
+  const result = symbolicDerivative(rewriteReciprocalFunctions(operand), variable, order);
   const resultLatex = toLatex(result);
   return {
     resultLatex,
     confidence: "SYMBOLIC",
     steps: [
-      { id: "original", latex: exprAlgebrite, explanation: "Expresión original." },
+      { id: "original", latex: operand, explanation: "Expresión original." },
       {
         id: "result",
         latex: `\\frac{d${order > 1 ? `^${order}` : ""}}{d${variable}${order > 1 ? `^${order}` : ""}} = ${resultLatex}`,
@@ -79,7 +117,17 @@ export function calcLimit(
   pointNumeric: number,
   direction: LimitDirection = "both",
 ): CalculusResult {
+  const call = parseCalculusOperator(exprAlgebrite);
+  if (call?.name === "limit") {
+    exprAlgebrite = call.args[0];
+    if (call.args[2]) pointAlgebrite = call.args[2];
+  }
+  assertNoBareFunction(exprAlgebrite, variable);
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
+  if (pointAlgebrite !== "oo" && pointAlgebrite !== "-oo") {
+    const literal = Number(pointAlgebrite);
+    pointNumeric = Number.isFinite(literal) ? literal : pointNumeric;
+  }
   const isInfinite = pointAlgebrite === "oo" || pointAlgebrite === "-oo";
   const limitLatex = `\\lim_{${variable}\\to ${pointAlgebrite}${direction === "right" ? "^+" : direction === "left" ? "^-" : ""}} ${exprAlgebrite}`;
 
@@ -571,7 +619,9 @@ export function calcLimit(
 }
 
 export function calcIndefiniteIntegral(exprAlgebrite: string, variable: string): CalculusResult {
-  exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
+  const operand = operandOf(exprAlgebrite, ["integral"]);
+  assertNoBareFunction(operand, variable);
+  exprAlgebrite = rewriteReciprocalFunctions(operand);
   const result = indefiniteIntegral(exprAlgebrite, variable);
   return {
     resultLatex: `${result} + C`,
@@ -589,6 +639,15 @@ export function calcDefiniteIntegral(
   lower: number,
   upper: number,
 ): CalculusResult {
+  const call = parseCalculusOperator(exprAlgebrite);
+  if (call?.name === "defintegral") {
+    exprAlgebrite = call.args[0];
+    lower = resolveLiteralBound(call.args[1]);
+    upper = resolveLiteralBound(call.args[2]);
+  } else if (call?.name === "integral") {
+    exprAlgebrite = call.args[0];
+  }
+  assertNoBareFunction(exprAlgebrite, variable);
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
   // The FTC cannot cross the pole at zero. Reject these exact forms before
   // entering the catch/fallback, which would otherwise return a finite value.
@@ -617,13 +676,17 @@ export function calcDefiniteIntegral(
     const result = evaluate(
       `float(subst(${upper},${variable},${antiderivative})) - float(subst(${lower},${variable},${antiderivative}))`,
     );
+    // Algebrite truncates `float()` output with a literal ellipsis
+    // (e.g. "0.333333..."). Strip it so the answer is a usable number
+    // instead of a string that no downstream consumer can parse.
+    const cleanResult = /^-?\d+(?:\.\d+)?\.{3}$/.test(result) ? result.replace(/\.{3}$/, "") : result;
     return {
-      resultLatex: result,
+      resultLatex: cleanResult,
       confidence: "SYMBOLIC",
       steps: [
         { id: "original", latex: `\\int_{${lower}}^{${upper}} ${exprAlgebrite}\\,d${variable}`, explanation: "Integral definida planteada." },
         { id: "antiderivative", latex: `${antiderivative} + C`, explanation: "Antiderivada." },
-        { id: "result", latex: `= ${result}`, explanation: "Evaluada en los límites (Teorema Fundamental del Cálculo)." },
+        { id: "result", latex: `= ${cleanResult}`, explanation: "Evaluada en los límites (Teorema Fundamental del Cálculo)." },
       ],
     };
   } catch {
