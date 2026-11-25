@@ -1,3 +1,9 @@
+## 2026-11-25 — paridad parcial para polos de potencias recíprocas
+
+Lite `b16665e621dac4e3e4850d902d997d024e3ade43`: [acumulativo 45629401854](https://github.com/c2melendez/precision-lab-lite/actions/runs/45629401854), job 139258227146 SUCCESS, log revisado: 3034 PASS, 15 XFAIL, 34 TODO, con 9 pruebas de `definiteIntegralInversePower` ejecutadas.
+
+Plus `5897cdc4e341d98aa410029187d760b731461c6c`: 6 pruebas HTTP adicionales para 1/x² y 1/x³, cruces, límites invertidos y controles finitos; suite local 14 PASS, 1 advertencia de dependencia. [Acumulativo 45639907561](https://github.com/c2melendez/precision-lab-plus/actions/runs/45639907561) en curso; no declarar CI PASS hasta revisar logs. [Seguridad 45582006420](https://github.com/c2melendez/precision-lab-plus/actions/runs/45582006420) terminó CANCELLED; no acredita seguridad ni cierre S25. No se asignaron nuevos IDs de matriz; no son 80 casos nuevos ni cierre global. Las guardas no demuestran convergencia general. Siguiente: revisar CI Plus y reconciliar índices; continuar IT-HI-01/10, cobertura de singularidades y paridad. S25, SG28/DIST y EV-D-01 permanecen bloqueados.
+
 ## 2026-11-25 — polos de potencias recíprocas y CI previo
 
 Lite `7cd7e31a8340413536e042864cb4ab18cfb475a4`: [acumulativo 45618692308](https://github.com/c2melendez/precision-lab-lite/actions/runs/45618692308), job 139220751446 SUCCESS; log ejecutado: 3025 PASS, 15 XFAIL, 34 TODO, incluidas las cinco pruebas definiteIntegralNonfinite. No acredita cierre global.
