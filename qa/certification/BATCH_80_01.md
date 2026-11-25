@@ -142,3 +142,21 @@ SHA Lite `f2caf06a985770703493e9cdb6d07438ac63feb5`; [acumulativo 45522841583](h
 ## IT-H-06 y IT-H-10 — dominio Lite en verificación
 
 El SHA `c4bedba0b8ee6bcf73ea37ed552884f2b94cc1a1` incorpora `tests/trigonometryItHDefiniteDomain.audit.test.ts`: rechaza intervalos que incluyen el polo en cero y verifica intervalos positivos en x/y. Evidencia local y [CI en curso 45530232061](https://github.com/c2melendez/precision-lab-lite/actions/runs/45530232061). Ambas filas siguen EN_CURSO: formas equivalentes, demás dominios, canal literal y UI pendientes; no es PASS contractual.
+
+## TR324 IT-I-01..11 — auditoría Lite
+
+SHA Lite `b94a96b56ec0746fcd8d7b7335ce07359a6ffa19`; prueba `tests/trigonometryItIBatch.audit.test.ts`, [acumulativo 45537278744](https://github.com/c2melendez/precision-lab-lite/actions/runs/45537278744) en curso. Resultados locales en puntos interiores, anclaje de ID, no entrada literal; no son PASS contractual.
+
+| Caso | Resultado local Lite |
+|---|---|
+| IT-I-01 | Resultado parcial: derivada numérica interior |
+| IT-I-02 | Resultado parcial: derivada numérica interior |
+| IT-I-03 | Resultado parcial: derivada numérica interior |
+| IT-I-04 | Resultado parcial: derivada numérica interior |
+| IT-I-05 | XFAIL: integral sin resolver |
+| IT-I-06 | XFAIL: integral sin resolver |
+| IT-I-07 | Resultado parcial: derivada numérica interior |
+| IT-I-08 | Resultado parcial: derivada numérica interior |
+| IT-I-09 | Resultado parcial: derivada numérica interior |
+| IT-I-10 | Resultado parcial: derivada numérica interior |
+| IT-I-11 | XFAIL: derivada sin resolver |

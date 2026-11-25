@@ -1,3 +1,9 @@
+## TR324 IT-I-01..11: integrales inversas Lite — 2026-11-25 UTC
+
+Lite SHA técnico `b94a96b56ec0746fcd8d7b7335ce07359a6ffa19`: auditoría de 11 IDs y soporte específico para IT-I-07/08; comparación numérica en cuatro puntos interiores y variables x/y para las dos reglas nuevas. IT-I-05/06 permanecen XFAIL por integral sin resolver; IT-I-11 XFAIL porque la derivada de la primitiva quedó sin resolver, no demuestra por sí solo error del resultado. Pruebas focales IT-I e IT-D: 41 PASS y 5 XFAIL (3 de IT-I y 2 de IT-D); CI acumulativo [45537278744](https://github.com/c2melendez/precision-lab-lite/actions/runs/45537278744) en curso. No se verifica literalidad, dominio completo ni UI; no hay cierre contractual. S25, SG28/DIST y EV-D-01 siguen bloqueados.
+
+[Acumulativo previo 45530232061](https://github.com/c2melendez/precision-lab-lite/actions/runs/45530232061), job 138923412619, SHA `c4bedba0b8ee6bcf73ea37ed552884f2b94cc1a1`: 2943 PASS, 12 XFAIL y 34 TODO; 12 pruebas de polos IT-H ejecutadas. Siguiente: revisar CI 45537278744 y resolver XFAIL, validar literalidad y dominio bilateral.
+
 ## TR324 IT-H-06/10: polos en integrales definidas — 2026-11-25 UTC
 
 Lite SHA técnico `c4bedba0b8ee6bcf73ea37ed552884f2b94cc1a1` rechaza con DOMAIN_ERROR las dos formas específicas csch(x)^2 y csch(x)*coth(x) cuando el intervalo incluye cero, evitando un valor finito incorrecto por aplicación del teorema fundamental a través de un polo. Antes de corregir: 2 pruebas fallidas. Después: 32 PASS y 2 XFAIL en pruebas focales IT-H y regresión IT-D; incluye intervalos cruzados, invertidos, extremo cero, intervalos positivos y variables x/y. Typecheck local PASS. [Acumulativo 45530232061](https://github.com/c2melendez/precision-lab-lite/actions/runs/45530232061) en curso; esta guarda cubre solo las formas exactas y no certifica dominios generales ni entrada literal. S25, SG28/DIST y EV-D-01 siguen bloqueados.
