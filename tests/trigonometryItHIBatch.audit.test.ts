@@ -24,3 +24,25 @@ describe('IT-HI added primitives',()=>{
  });
 });
 
+
+
+describe('TR324 IT-HI-01/10: numerical stability at large arguments',()=>{
+ const largeCases = [
+  ['01','asinh(x)',(x:number)=>x*Math.asinh(x)-Math.hypot(x,1)],
+  ['10','x*asinh(x)',(x:number)=>((2*x*x+1)*Math.asinh(x)-x*Math.hypot(x,1))/4],
+ ] as const;
+ for(const [id,expression,oracle] of largeCases){
+  it(`IT-HI-${id} stays finite and accurate at large positive x`,()=>{
+   const x=1e8;const primitive=indefiniteIntegral(expression,'x');
+   const raw=Algebrite.run(`float(subst(${x},x,${primitive}))`).trim();
+   const value=parseFloat(raw);expect(Number.isFinite(value)).toBe(true);
+   expect(Math.abs((value-oracle(x))/oracle(x))).toBeLessThan(1e-6);
+  });
+  it.fails(`IT-HI-${id} stays finite and accurate at large negative x`,()=>{
+   const x=-1e8;const primitive=indefiniteIntegral(expression,'x');
+   const raw=Algebrite.run(`float(subst(${x},x,${primitive}))`).trim();
+   const value=parseFloat(raw);expect(Number.isFinite(value)).toBe(true);
+   expect(Math.abs((value-oracle(x))/oracle(x))).toBeLessThan(1e-6);
+  });
+ }
+});
