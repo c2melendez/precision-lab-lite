@@ -160,3 +160,20 @@ SHA Lite `b94a96b56ec0746fcd8d7b7335ce07359a6ffa19`; prueba `tests/trigonometryI
 | IT-I-09 | Resultado parcial: derivada numérica interior |
 | IT-I-10 | Resultado parcial: derivada numérica interior |
 | IT-I-11 | XFAIL: derivada sin resolver |
+
+## TR324 IT-HI: auditoría Lite en verificación
+
+SHA `17f66fcb7f6f61d58c35e93095de408cf537f80e`; `tests/trigonometryItHIBatch.audit.test.ts`; [CI 45543566207](https://github.com/c2melendez/precision-lab-lite/actions/runs/45543566207) en curso. La verificación de error es guarda, no cálculo aprobado; 07–09 solo prueban puntos interiores. IDs 05–10 fuera del lote original.
+
+| Caso | Resultado local Lite |
+|---|---|
+| IT-HI-01 | BLOCKED: integral no implementada; UNSUPPORTED_OPERATION |
+| IT-HI-02 | BLOCKED: integral no implementada; UNSUPPORTED_OPERATION |
+| IT-HI-03 | BLOCKED: integral no implementada; UNSUPPORTED_OPERATION |
+| IT-HI-04 | BLOCKED: integral no implementada; UNSUPPORTED_OPERATION |
+| IT-HI-05 | BLOCKED: integral no implementada; UNSUPPORTED_OPERATION |
+| IT-HI-06 | BLOCKED: integral no implementada; UNSUPPORTED_OPERATION |
+| IT-HI-07 | Resultado parcial interior |
+| IT-HI-08 | Resultado parcial interior |
+| IT-HI-09 | Resultado parcial interior |
+| IT-HI-10 | BLOCKED: integral no implementada; UNSUPPORTED_OPERATION |

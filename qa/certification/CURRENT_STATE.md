@@ -1,3 +1,9 @@
+## TR324 IT-HI-01..10: evitar resultados falsos Lite — 2026-11-25 UTC
+
+Lite SHA técnico `17f66fcb7f6f61d58c35e93095de408cf537f80e`: Algebrite devolvía texto `Unsupported function` como si fuera una primitiva; se convierte en UNSUPPORTED_OPERATION. Auditoría local de 10 IDs IT-HI: 01–06 y 10 son capacidades no implementadas, respuesta de error verificada; 07–09 dan resultado numérico parcial en puntos interiores. Cuatro IDs 01–04 pertenecen al lote 80 y 05–10 son adicionales. Focal IT-HI e IT-D: 40 PASS (incluyen validaciones de error/anclajes, no significan 40 casos certificados), 2 XFAIL IT-D. [Acumulativo 45543566207](https://github.com/c2melendez/precision-lab-lite/actions/runs/45543566207) en curso. Falta CI, capacidades, entrada literal, dominio y UI. S25, SG28/DIST y EV-D-01 siguen bloqueados.
+
+[Acumulativo previo 45537278744](https://github.com/c2melendez/precision-lab-lite/actions/runs/45537278744), job 138946852174, SHA `b94a96b56ec0746fcd8d7b7335ce07359a6ffa19`: 2964 PASS, 15 XFAIL, 34 TODO; prueba IT-I de 24 tests ejecutada. Siguiente: revisar CI nuevo, implementar capacidades hiperbólicas inversas y validar paridad, literalidad y dominios.
+
 ## TR324 IT-I-01..11: integrales inversas Lite — 2026-11-25 UTC
 
 Lite SHA técnico `b94a96b56ec0746fcd8d7b7335ce07359a6ffa19`: auditoría de 11 IDs y soporte específico para IT-I-07/08; comparación numérica en cuatro puntos interiores y variables x/y para las dos reglas nuevas. IT-I-05/06 permanecen XFAIL por integral sin resolver; IT-I-11 XFAIL porque la derivada de la primitiva quedó sin resolver, no demuestra por sí solo error del resultado. Pruebas focales IT-I e IT-D: 41 PASS y 5 XFAIL (3 de IT-I y 2 de IT-D); CI acumulativo [45537278744](https://github.com/c2melendez/precision-lab-lite/actions/runs/45537278744) en curso. No se verifica literalidad, dominio completo ni UI; no hay cierre contractual. S25, SG28/DIST y EV-D-01 siguen bloqueados.
