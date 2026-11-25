@@ -193,3 +193,7 @@ SHA `721cad1b3935fc14289c5675cedad26c33eb32b2`: regresión local para x=+1e8 apr
 ## IT-D-08/14: dominios definidos Lite en verificación
 
 SHA `0000dbfcb0006e26d198f979fd2ee393bba41f1e`, `tests/trigonometryItDDefinitePoles.audit.test.ts`: 12 pruebas locales cubren polos periódicos, intervalos seguros y literales; [CI 45572462518](https://github.com/c2melendez/precision-lab-lite/actions/runs/45572462518) en curso. Guarda limitada a formas específicas; paridad, UI y dominios generales pendientes. No es cierre contractual.
+
+## IT-D-08/14: respuestas no finitas Plus
+
+SHA Plus `c2d66e7124ce7f2bbc652009e610293f30044ab4`: pruebas HTTP locales de cot y sec³ que retornaban nan/oo ahora devuelven DOMAIN_ERROR; intervalos finitos conservan success. [CI 45582006410](https://github.com/c2melendez/precision-lab-plus/actions/runs/45582006410) en curso. Quedan pendientes singularidades que produzcan resultados finitos, formas equivalentes y canales completos; no hay PASS contractual.
