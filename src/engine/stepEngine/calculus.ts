@@ -706,6 +706,9 @@ export function calcDefiniteIntegral(
     // (e.g. "0.333333..."). Strip it so the answer is a usable number
     // instead of a string that no downstream consumer can parse.
     const cleanResult = /^-?\d+(?:\.\d+)?\.{3}$/.test(result) ? result.replace(/\.{3}$/, "") : result;
+    if (/(?:Infinity|NaN|\bzoo\b|\boo\b)/i.test(cleanResult)) {
+      throw { code: ErrorCode.DOMAIN_ERROR, message: "La integral definida produjo un valor no finito o indeterminado." } as AppError;
+    }
     return {
       resultLatex: cleanResult,
       confidence: "SYMBOLIC",
@@ -715,7 +718,8 @@ export function calcDefiniteIntegral(
         { id: "result", latex: `= ${cleanResult}`, explanation: "Evaluada en los límites (Teorema Fundamental del Cálculo)." },
       ],
     };
-  } catch {
+  } catch (err) {
+    if ((err as AppError)?.code === ErrorCode.DOMAIN_ERROR) throw err;
     // Fallback numérico por Simpson — spec v10 §7/§10.
     let f;
     try {
@@ -724,6 +728,9 @@ export function calcDefiniteIntegral(
       throw err as AppError;
     }
     const value = simpsonIntegral(f, lower, upper);
+    if (!Number.isFinite(value)) {
+      throw { code: ErrorCode.DOMAIN_ERROR, message: "La integral definida produjo un valor no finito o indeterminado." } as AppError;
+    }
     return {
       resultLatex: value.toFixed(6),
       confidence: "NUMERIC_FALLBACK",
