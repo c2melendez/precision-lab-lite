@@ -1,3 +1,9 @@
+## TR324 IT-HI-01/03/10: primitivas Lite — 2026-11-25 UTC
+
+Lite SHA técnico `94e8ac22e7608ee79ba6ad0d4bfdc93496b1c320` incorpora primitivas en formas específicas para IT-HI-01, IT-HI-03 e IT-HI-10 usando logaritmos; el último caso está fuera del lote de 80. La prueba focal comprueba derivada simbólica y diferencias finitas numéricas en puntos interiores, variables x/y: IT-HI e IT-D acumulan 43 PASS y 2 XFAIL; el recuento incluye anclajes y comprobaciones de error, no son 43 casos certificados. IT-HI-02/04/05/06 permanecen sin implementar. [Acumulativo 45550227135](https://github.com/c2melendez/precision-lab-lite/actions/runs/45550227135) en curso. Faltan dominios completos, ramas, entrada literal, interfaz y paridad; S25, SG28/DIST y EV-D-01 siguen bloqueados.
+
+El [acumulativo anterior 45543566207](https://github.com/c2melendez/precision-lab-lite/actions/runs/45543566207), job 138967653535, SHA `17f66fcb7f6f61d58c35e93095de408cf537f80e`, ejecutó 20 pruebas IT-HI; 2984 PASS, 15 XFAIL y 34 TODO globales. Siguiente: revisar CI nuevo y completar ramas, polos y literalidad bilateral.
+
 ## TR324 IT-HI-01..10: evitar resultados falsos Lite — 2026-11-25 UTC
 
 Lite SHA técnico `17f66fcb7f6f61d58c35e93095de408cf537f80e`: Algebrite devolvía texto `Unsupported function` como si fuera una primitiva; se convierte en UNSUPPORTED_OPERATION. Auditoría local de 10 IDs IT-HI: 01–06 y 10 son capacidades no implementadas, respuesta de error verificada; 07–09 dan resultado numérico parcial en puntos interiores. Cuatro IDs 01–04 pertenecen al lote 80 y 05–10 son adicionales. Focal IT-HI e IT-D: 40 PASS (incluyen validaciones de error/anclajes, no significan 40 casos certificados), 2 XFAIL IT-D. [Acumulativo 45543566207](https://github.com/c2melendez/precision-lab-lite/actions/runs/45543566207) en curso. Falta CI, capacidades, entrada literal, dominio y UI. S25, SG28/DIST y EV-D-01 siguen bloqueados.

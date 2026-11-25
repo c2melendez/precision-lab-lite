@@ -177,3 +177,7 @@ SHA `17f66fcb7f6f61d58c35e93095de408cf537f80e`; `tests/trigonometryItHIBatch.aud
 | IT-HI-08 | Resultado parcial interior |
 | IT-HI-09 | Resultado parcial interior |
 | IT-HI-10 | BLOCKED: integral no implementada; UNSUPPORTED_OPERATION |
+
+## TR324 IT-HI-01/03/10: Lite en verificación
+
+Las tres filas tienen primitivas para formas específicas en `94e8ac22e7608ee79ba6ad0d4bfdc93496b1c320`, comprobadas localmente con derivada y diferencias finitas en puntos interiores; [CI 45550227135](https://github.com/c2melendez/precision-lab-lite/actions/runs/45550227135) en curso. IT-HI-10 es adicional al lote. No son PASS contractual: faltan ramas, dominios, literalidad y UI.
