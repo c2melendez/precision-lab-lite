@@ -1,3 +1,9 @@
+## TR324 IT-H-06/10: polos en integrales definidas — 2026-11-25 UTC
+
+Lite SHA técnico `c4bedba0b8ee6bcf73ea37ed552884f2b94cc1a1` rechaza con DOMAIN_ERROR las dos formas específicas csch(x)^2 y csch(x)*coth(x) cuando el intervalo incluye cero, evitando un valor finito incorrecto por aplicación del teorema fundamental a través de un polo. Antes de corregir: 2 pruebas fallidas. Después: 32 PASS y 2 XFAIL en pruebas focales IT-H y regresión IT-D; incluye intervalos cruzados, invertidos, extremo cero, intervalos positivos y variables x/y. Typecheck local PASS. [Acumulativo 45530232061](https://github.com/c2melendez/precision-lab-lite/actions/runs/45530232061) en curso; esta guarda cubre solo las formas exactas y no certifica dominios generales ni entrada literal. S25, SG28/DIST y EV-D-01 siguen bloqueados.
+
+[Acumulativo previo 45522841583](https://github.com/c2melendez/precision-lab-lite/actions/runs/45522841583), job 138898750735, SHA `f2caf06a985770703493e9cdb6d07438ac63feb5`: 2931 PASS, 12 XFAIL y 34 TODO; archivo IT-H 39 pruebas ejecutadas. Siguiente: revisar CI del nuevo SHA; ampliar análisis de polos, canal literal y paridad Plus.
+
 ## TR324 IT-H: siete primitivas Lite — 2026-11-25 UTC
 
 Lite SHA técnico `f2caf06a985770703493e9cdb6d07438ac63feb5`: agrega primitivas de formas específicas para IT-H-05/06/07/09/10/15/16. Pruebas focales locales IT-H e IT-D: 57 PASS y 4 XFAIL, incluyendo variables x e y; typecheck local PASS. IT-H-04/08 permanecen XFAIL; CI acumulativo [45522841583](https://github.com/c2melendez/precision-lab-lite/actions/runs/45522841583) en curso. La cobertura es interior y acotada: siguen pendientes entrada literal, dominios/polos, UI y paridad; no se declara PASS contractual. S25, SG28/DIST y EV-D-01 permanecen bloqueados.

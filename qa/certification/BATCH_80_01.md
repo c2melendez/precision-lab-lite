@@ -138,3 +138,7 @@ SHA Lite `f2caf06a985770703493e9cdb6d07438ac63feb5`; [acumulativo 45522841583](h
 | IT-H-14 | Resultado parcial: derivada en puntos interiores |
 | IT-H-15 | Resultado parcial: derivada en puntos interiores |
 | IT-H-16 | Resultado parcial: derivada en puntos interiores |
+
+## IT-H-06 y IT-H-10 — dominio Lite en verificación
+
+El SHA `c4bedba0b8ee6bcf73ea37ed552884f2b94cc1a1` incorpora `tests/trigonometryItHDefiniteDomain.audit.test.ts`: rechaza intervalos que incluyen el polo en cero y verifica intervalos positivos en x/y. Evidencia local y [CI en curso 45530232061](https://github.com/c2melendez/precision-lab-lite/actions/runs/45530232061). Ambas filas siguen EN_CURSO: formas equivalentes, demás dominios, canal literal y UI pendientes; no es PASS contractual.
