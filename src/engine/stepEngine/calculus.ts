@@ -684,7 +684,9 @@ export function calcDefiniteIntegral(
     // makes the improper integral diverge; evaluating an antiderivative
     // across it may otherwise return a misleading finite value.
     const inversePower = new RegExp(`^1/\\(?${x}(?:\\^\\(?([1-9]\\d*)\\)?)?\\)?$`).exec(source);
-    if (inversePower) {
+    const equivalentSquare = source === `(1/${x})^2` || source === `${x}^(-2)`
+      || source === `1/(${x}*${x})` || source === `1/(${x})^2`;
+    if (inversePower || equivalentSquare) {
       throw {code: ErrorCode.DOMAIN_ERROR, message: 'La integral cruza un polo en cero.'} as AppError;
     }
     if (source === `(1/sinh(${x}))^2` || source === `(1/sinh(${x}))*(1/tanh(${x}))`) {
