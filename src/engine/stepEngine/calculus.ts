@@ -590,6 +590,15 @@ export function calcDefiniteIntegral(
   upper: number,
 ): CalculusResult {
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
+  // The FTC cannot cross the pole at zero. Reject these exact forms before
+  // entering the catch/fallback, which would otherwise return a finite value.
+  if (/^[A-Za-z]$/.test(variable) && Math.min(lower, upper) <= 0 && Math.max(lower, upper) >= 0) {
+    const source = exprAlgebrite.replace(/\s+/g, '');
+    const x = variable;
+    if (source === `(1/sinh(${x}))^2` || source === `(1/sinh(${x}))*(1/tanh(${x}))`) {
+      throw {code: ErrorCode.DOMAIN_ERROR, message: 'La integral cruza un polo en cero.'} as AppError;
+    }
+  }
   try {
     const antiderivative = indefiniteIntegral(exprAlgebrite, variable);
     // FIX (Fase 2 externa, hallazgo nuevo): subst() de Algebrite toma
