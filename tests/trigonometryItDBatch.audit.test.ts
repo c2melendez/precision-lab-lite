@@ -27,7 +27,7 @@ describe('TR324 IT-D antiderivatives',()=>{
  it.each(['1+2*i', '1+x', '1/0', ''])('rejects a non-real or non-numeric oracle value %s', value => {
   expect(() => realNumber(value)).toThrow();
  });
- const unresolved = new Set(['IT-D-08','IT-D-14']);
+ const unresolved = new Set<string>([]);
  for(const [id, expression, oracle] of rows) (unresolved.has(id) ? it.fails : it)(`${id} differentiates back to its integrand`, ()=>{
   expect(source.split('\n').some(line=>line.includes(`| ${id} |`))).toBe(true);
   const result = indefiniteIntegral(rewriteReciprocalFunctions(expression),'x');

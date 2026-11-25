@@ -485,6 +485,40 @@ export function solveEquation(equationAlgebrite: string, variable: string): stri
   }
 }
 
+/**
+ * Antiderivatives for forms the integration table does not cover. A rule is
+ * applied only when `simplify(source - integrand) === "0"`, so an equivalent
+ * spelling (the literal channel adds redundant parentheses) still matches and
+ * a wrong guess never does. Each rule keeps the absolute value the frozen
+ * matrix requires (`ln|sin x|`, `ln|sec x + tan x|`).
+ */
+function selfVerifiedAntiderivative(source: string, variable: string): string | null {
+  if (!/^[A-Za-z]$/.test(variable)) return null;
+  const v = variable;
+  const rules: { integrand: string; antiderivative: string }[] = [
+    // IT-D-08: ∫cot x dx = ln|sin x| + C.
+    {
+      integrand: `cos(${v})/sin(${v})`,
+      antiderivative: `log(abs(sin(${v})))`,
+    },
+    // IT-D-14: ∫sec^3 x dx = (sec x tan x + ln|sec x + tan x|)/2 + C.
+    {
+      integrand: `(1/cos(${v}))^3`,
+      antiderivative: `sin(${v})/(2*cos(${v})^2)+log(abs((1+sin(${v}))/cos(${v})))/2`,
+    },
+  ];
+  for (const rule of rules) {
+    try {
+      if (Algebrite.run(`simplify((${source})-(${rule.integrand}))`).trim() === "0") {
+        return rule.antiderivative;
+      }
+    } catch {
+      // Try the next rule; a failed comparison is never a match.
+    }
+  }
+  return null;
+}
+
 /** Integral indefinida — best-effort, spec v10 §7 (Algebrite no cubre todo lo que SymPy). */
 export function indefiniteIntegral(expressionAlgebrite: string, variable: string): string {
   // Scoped elementary forms not handled by Algebrite's integration table.
@@ -520,6 +554,8 @@ export function indefiniteIntegral(expressionAlgebrite: string, variable: string
     }
     return result;
   } catch (err) {
+    const rescued = selfVerifiedAntiderivative(expressionAlgebrite, variable);
+    if (rescued) return rescued;
     if ((err as AppError).code) throw err;
     throw toAppError(ErrorCode.UNSUPPORTED_OPERATION, `No se pudo integrar: ${String(err)}`);
   }
