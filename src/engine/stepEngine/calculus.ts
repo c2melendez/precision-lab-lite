@@ -680,6 +680,13 @@ export function calcDefiniteIntegral(
   if (/^[A-Za-z]$/.test(variable) && Math.min(lower, upper) <= 0 && Math.max(lower, upper) >= 0) {
     const source = exprAlgebrite.replace(/\s+/g, '');
     const x = variable;
+    // For 1/x^n (integer n >= 1), a zero in the integration interval
+    // makes the improper integral diverge; evaluating an antiderivative
+    // across it may otherwise return a misleading finite value.
+    const inversePower = new RegExp(`^1/\\(?${x}(?:\\^\\(?([1-9]\\d*)\\)?)?\\)?$`).exec(source);
+    if (inversePower) {
+      throw {code: ErrorCode.DOMAIN_ERROR, message: 'La integral cruza un polo en cero.'} as AppError;
+    }
     if (source === `(1/sinh(${x}))^2` || source === `(1/sinh(${x}))*(1/tanh(${x}))`) {
       throw {code: ErrorCode.DOMAIN_ERROR, message: 'La integral cruza un polo en cero.'} as AppError;
     }
