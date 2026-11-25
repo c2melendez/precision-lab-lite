@@ -649,6 +649,32 @@ export function calcDefiniteIntegral(
   }
   assertNoBareFunction(exprAlgebrite, variable);
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
+  // The FTC is invalid across poles. Handle the two verified trigonometric
+  // primitives before the numerical fallback, which can otherwise conceal a
+  // divergent improper integral with a finite principal-value-like result.
+  if (/^[A-Za-z]$/.test(variable) && Number.isFinite(lower) && Number.isFinite(upper)) {
+    let source = exprAlgebrite.replace(/\s+/g, '');
+    // Remove only parentheses which enclose the entire expression.
+    while (source.startsWith('(') && source.endsWith(')')) {
+      let depth = 0, closesAt = -1;
+      for (let i = 0; i < source.length; i++) {
+        if (source[i] === '(') depth++;
+        if (source[i] === ')' && --depth === 0) { closesAt = i; break; }
+      }
+      if (closesAt !== source.length - 1) break;
+      source = source.slice(1, -1);
+    }
+    const x = variable;
+    const offset = source === `cos(${x})/sin(${x})` ? 0
+      : new RegExp(`^\\(+1/cos\\(${x}\\)\\)+\\^\\(?3\\)?$`).test(source) ? Math.PI / 2 : null;
+    if (offset !== null) {
+      const low = Math.min(lower, upper), high = Math.max(lower, upper);
+      const tolerance = 4 * Number.EPSILON * Math.max(1, Math.abs(low), Math.abs(high));
+      const first = Math.ceil((low - tolerance - offset) / Math.PI);
+      const last = Math.floor((high + tolerance - offset) / Math.PI);
+      if (first <= last) throw {code: ErrorCode.DOMAIN_ERROR, message: 'La integral cruza un polo trigonométrico.'} as AppError;
+    }
+  }
   // The FTC cannot cross the pole at zero. Reject these exact forms before
   // entering the catch/fallback, which would otherwise return a finite value.
   if (/^[A-Za-z]$/.test(variable) && Math.min(lower, upper) <= 0 && Math.max(lower, upper) >= 0) {
@@ -712,3 +738,4 @@ export function calcDefiniteIntegral(
     };
   }
 }
+
