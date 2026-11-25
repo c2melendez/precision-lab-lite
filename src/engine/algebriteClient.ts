@@ -532,6 +532,7 @@ export function indefiniteIntegral(expressionAlgebrite: string, variable: string
       [`asinh(${x})`]: `${x}*log(${x}+sqrt(${x}^2+1))-sqrt(${x}^2+1)`,
       [`acosh(${x})`]: `${x}*log(${x}+sqrt(${x}-1)*sqrt(${x}+1))-sqrt(${x}-1)*sqrt(${x}+1)`,
       [`atanh(${x})`]: `(${x}*log((1+${x})/(1-${x}))+log(1-${x}^2))/2`,
+      [`(atanh(1/(${x})))`]: `(${x}*log((${x}+1)/(${x}-1))+log(${x}^2-1))/2`,
       [`${x}*asinh(${x})`]: `((2*${x}^2+1)*log(${x}+sqrt(${x}^2+1))-${x}*sqrt(${x}^2+1))/4`,
       [`${x}*arctan(${x})`]: `((${x}^2+1)*arctan(${x})-${x})/2`,
       [`arcsin(${x})/sqrt(1-${x}^2)`]: `arcsin(${x})^2/2`,
