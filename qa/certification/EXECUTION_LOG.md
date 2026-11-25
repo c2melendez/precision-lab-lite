@@ -1,3 +1,9 @@
+## 2026-11-25 — polos de potencias recíprocas y CI previo
+
+Lite `7cd7e31a8340413536e042864cb4ab18cfb475a4`: [acumulativo 45618692308](https://github.com/c2melendez/precision-lab-lite/actions/runs/45618692308), job 139220751446 SUCCESS; log ejecutado: 3025 PASS, 15 XFAIL, 34 TODO, incluidas las cinco pruebas definiteIntegralNonfinite. No acredita cierre global.
+
+Lite `b16665e621dac4e3e4850d902d997d024e3ade43` rechaza integrales de formas reconocidas 1/x^n con n entero positivo si el intervalo contiene cero, en lugar de devolver valores finitos falsos; pruebas locales 26 PASS (9 nuevas y 17 regresiones), typecheck PASS. [Acumulativo 45629401854](https://github.com/c2melendez/precision-lab-lite/actions/runs/45629401854) y demás gates en cola. Estas pruebas no son 26 casos de matriz ni un lote nuevo de 80. La guarda no detecta toda singularidad, formas equivalentes, ni demuestra convergencia general. Quedan pendientes IT-HI-01/10, paridad Plus, interfaz, y bloqueos S25, SG28/DIST y EV-D-01. Siguiente: revisar CI del SHA técnico, reconciliar índices y continuar detección de polos/paridad sin duplicar corridas.
+
 ## 2026-11-25 — Lite: rechazo de resultados no finitos (CI pendiente)
 
 SHA técnico `7cd7e31a8340413536e042864cb4ab18cfb475a4`: `calcDefiniteIntegral` rechaza resultados simbólicos o numéricos no finitos con DOMAIN_ERROR y preserva resultados complejos finitos. Pruebas locales: 17 PASS (5 regresiones nuevas y 12 polos existentes); typecheck PASS. Acumulativo [45618692308](https://github.com/c2melendez/precision-lab-lite/actions/runs/45618692308) y demás gates en cola; no se declara PASS de CI. No son 17 filas de matriz ni 80 casos nuevos.
