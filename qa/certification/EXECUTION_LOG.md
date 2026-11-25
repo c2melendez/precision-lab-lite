@@ -1,3 +1,11 @@
+## TR324 IT-H: siete primitivas Lite — 2026-11-25 UTC
+
+Lite SHA técnico `f2caf06a985770703493e9cdb6d07438ac63feb5`: agrega primitivas de formas específicas para IT-H-05/06/07/09/10/15/16. Pruebas focales locales IT-H e IT-D: 57 PASS y 4 XFAIL, incluyendo variables x e y; typecheck local PASS. IT-H-04/08 permanecen XFAIL; CI acumulativo [45522841583](https://github.com/c2melendez/precision-lab-lite/actions/runs/45522841583) en curso. La cobertura es interior y acotada: siguen pendientes entrada literal, dominios/polos, UI y paridad; no se declara PASS contractual. S25, SG28/DIST y EV-D-01 permanecen bloqueados.
+
+El acumulativo previo [45515093710](https://github.com/c2melendez/precision-lab-lite/actions/runs/45515093710), job 138872356042, ejecutó el test IT-H de 32 pruebas; 2917 PASS, 19 XFAIL y 34 TODO globales.
+
+Siguiente: revisar CI del SHA técnico; probar dominios y literalidad y resolver IT-H-04/08 y fallos Plus.
+
 ## TR324 IT-H-01..16: auditoría Lite — 2026-11-25 UTC
 
 Lite `2a78f07a856a55ead3212fa9612b5b132da659ee` agrega `tests/trigonometryItHBatch.audit.test.ts`: 16 anclajes de ID a matriz y derivación numérica en cuatro puntos interiores; 7 casos con resultado parcial y 9 XFAIL estrictos (04–10, 15–16) por integral sin resolver. Prueba focal local 23 PASS, 9 XFAIL; no valida entradas literales ni dominios completos. Acumulativo [45515093710](https://github.com/c2melendez/precision-lab-lite/actions/runs/45515093710) en espera. No hay cierre contractual ni lote nuevo de 80. Se conservan S25, SG28/DIST y EV-D-01.

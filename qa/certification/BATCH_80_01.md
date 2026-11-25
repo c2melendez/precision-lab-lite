@@ -115,3 +115,26 @@ Lite `acb736dcf0540c640fb6ffc4cc68c28e5c83865e`, [acumulativo 45444254696](https
 | IT-D-18 | PASS parcial |
 
 XFAIL permanece FAIL o pendiente de resolución; PASS parcial no es cierre. S25, SG28/DIST y EV-D-01 permanecen abiertos.
+
+## TR324 IT-H: implementación Lite en verificación
+
+SHA Lite `f2caf06a985770703493e9cdb6d07438ac63feb5`; [acumulativo 45522841583](https://github.com/c2melendez/precision-lab-lite/actions/runs/45522841583) en curso. Cada resultado listado es local y acotado a las formas de `tests/trigonometryItHBatch.audit.test.ts` y puntos interiores; falta CI, canal literal, dominios y UI. No es PASS contractual.
+
+| Caso | Estado Lite local |
+|---|---|
+| IT-H-01 | Resultado parcial: derivada en puntos interiores |
+| IT-H-02 | Resultado parcial: derivada en puntos interiores |
+| IT-H-03 | Resultado parcial: derivada en puntos interiores |
+| IT-H-04 | XFAIL: integral sin resolver |
+| IT-H-05 | Resultado parcial: derivada en puntos interiores |
+| IT-H-06 | Resultado parcial: derivada en puntos interiores |
+| IT-H-07 | Resultado parcial: derivada en puntos interiores |
+| IT-H-08 | XFAIL: integral sin resolver |
+| IT-H-09 | Resultado parcial: derivada en puntos interiores |
+| IT-H-10 | Resultado parcial: derivada en puntos interiores |
+| IT-H-11 | Resultado parcial: derivada en puntos interiores |
+| IT-H-12 | Resultado parcial: derivada en puntos interiores |
+| IT-H-13 | Resultado parcial: derivada en puntos interiores |
+| IT-H-14 | Resultado parcial: derivada en puntos interiores |
+| IT-H-15 | Resultado parcial: derivada en puntos interiores |
+| IT-H-16 | Resultado parcial: derivada en puntos interiores |
