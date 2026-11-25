@@ -495,6 +495,13 @@ export function indefiniteIntegral(expressionAlgebrite: string, variable: string
     const known: Record<string, string> = {
       [`(1/cos(${x}))*tan(${x})`]: `1/cos(${x})`,
       [`tan(${x})^2`]: `tan(${x})-${x}`,
+      [`(1/cosh(${x}))^2`]: `tanh(${x})`,
+      [`(1/sinh(${x}))^2`]: `-1/tanh(${x})`,
+      [`(1/cosh(${x}))`]: `arctan(sinh(${x}))`,
+      [`(1/cosh(${x}))*tanh(${x})`]: `-1/cosh(${x})`,
+      [`(1/sinh(${x}))*(1/tanh(${x}))`]: `-1/sinh(${x})`,
+      [`sinh(${x})*cosh(${x})`]: `sinh(${x})^2/2`,
+      [`exp(${x})*cosh(${x})`]: `exp(2*${x})/4+${x}/2`,
       [`exp(${x})*sin(${x})`]: `exp(${x})*(sin(${x})-cos(${x}))/2`,
       [`cos(${x})/(1+sin(${x})^2)`]: `arctan(sin(${x}))`,
     };
