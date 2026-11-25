@@ -189,3 +189,7 @@ IT-HI-02: primitiva de acosh en `39b1cd185716b4f4e50eda0c99447d25340b3bd5`, resu
 ## IT-HI-01/10: estabilidad de primitivas Lite
 
 SHA `721cad1b3935fc14289c5675cedad26c33eb32b2`: regresión local para x=+1e8 aprobada y x=-1e8 XFAIL por Infinity.0 en ambas primitivas; [CI 45565408211](https://github.com/c2melendez/precision-lab-lite/actions/runs/45565408211) en curso. IT-HI-10 es extra al lote original. Ambas filas sin cierre; pendiente corrección que preserve ramas y dominios.
+
+## IT-D-08/14: dominios definidos Lite en verificación
+
+SHA `0000dbfcb0006e26d198f979fd2ee393bba41f1e`, `tests/trigonometryItDDefinitePoles.audit.test.ts`: 12 pruebas locales cubren polos periódicos, intervalos seguros y literales; [CI 45572462518](https://github.com/c2melendez/precision-lab-lite/actions/runs/45572462518) en curso. Guarda limitada a formas específicas; paridad, UI y dominios generales pendientes. No es cierre contractual.
