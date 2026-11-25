@@ -1,3 +1,11 @@
+## TR324 IT-H-01..16: auditoría Lite — 2026-11-25 UTC
+
+Lite `2a78f07a856a55ead3212fa9612b5b132da659ee` agrega `tests/trigonometryItHBatch.audit.test.ts`: 16 anclajes de ID a matriz y derivación numérica en cuatro puntos interiores; 7 casos con resultado parcial y 9 XFAIL estrictos (04–10, 15–16) por integral sin resolver. Prueba focal local 23 PASS, 9 XFAIL; no valida entradas literales ni dominios completos. Acumulativo [45515093710](https://github.com/c2melendez/precision-lab-lite/actions/runs/45515093710) en espera. No hay cierre contractual ni lote nuevo de 80. Se conservan S25, SG28/DIST y EV-D-01.
+
+Acumulativo anterior Lite [45506641836](https://github.com/c2melendez/precision-lab-lite/actions/runs/45506641836), job 138843445758, SHA `98bd2ee792ddc079012cdf5ba32887d8979c8db9`: pruebas ejecutadas, 2894 PASS, 10 XFAIL y 34 TODO; test IT-D 26 pruebas. No equivale a cierre de la matriz.
+
+Siguiente: revisar CI 45515093710 y resolver primitivas IT-H, dominios y paridad sin duplicar gates.
+
 ## TR324 IT-D: oráculo Lite reforzado — 2026-11-24 UTC
 
 Lite técnico `98bd2ee792ddc079012cdf5ba32887d8979c8db9`: se evita que parseFloat acepte un prefijo numérico seguido de términos complejos o simbólicos, conservando decimales truncados de Algebrite. Prueba focal local: 24 PASS y 2 XFAIL, incluidos cuatro controles negativos; typecheck local PASS. CI acumulativo [45506641836](https://github.com/c2melendez/precision-lab-lite/actions/runs/45506641836) en curso; no hay cierre adicional ni corrida nueva de 80 casos. No cambia Plus. IT-D-08/14 siguen XFAIL en Lite; S25, SG28/DIST y EV-D-01 siguen bloqueados.
