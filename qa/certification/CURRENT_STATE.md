@@ -1,3 +1,7 @@
+## 2026-11-25 — CI verificado para formas equivalentes
+
+Lite SHA técnico `58e369e5ec84c571bf540af591df90770819e5fe`: [acumulativo 45661127323](https://github.com/c2melendez/precision-lab-lite/actions/runs/45661127323), job 139370918071 SUCCESS; log revisado, 3042 PASS, 15 XFAIL, 34 TODO; ejecutó las 8 pruebas definiteIntegralEquivalentPoles. CI, H1d, Scientific UI y Certification Runner reportaron SUCCESS para el mismo SHA. Alcance: cuatro representaciones de 1/x², cruces de cero y controles finitos; no demuestra convergencia general. No son 80 IDs nuevos ni cierre de matriz. Siguiente: abordar IT-HI-01/10 preservando ramas complejas y ampliar evidencia por caso sin duplicar gates. S25, SG28/DIST y EV-D-01 permanecen BLOCKED; certificación global OPEN.
+
 ## 2026-11-25 — polos en formas equivalentes de 1/x²
 
 Lite SHA técnico `58e369e5ec84c571bf540af591df90770819e5fe`: al cruzar cero, `(1/x)^2`, `x^(-2)`, `1/(x*x)` y `1/(x)^2` devolvían -2 en [-1,1]; ahora se rechazan con DOMAIN_ERROR, con controles finitos y límites invertidos. Cuatro suites focales 34 PASS (ocho pruebas nuevas); typecheck PASS. [Acumulativo 45661127323](https://github.com/c2melendez/precision-lab-lite/actions/runs/45661127323) y gates asociados en cola; no declarar CI PASS. Estas formas son casos de regresión, no 80 IDs nuevos; no demuestra ausencia de singularidades generales ni cierra matriz. Sigue pendiente estabilidad IT-HI-01/10 preservando ramas, paridad y bloqueos S25, SG28/DIST y EV-D-01. Siguiente: revisar gates por SHA, reconciliar índices y continuar lote sin duplicar.
