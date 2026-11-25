@@ -1,3 +1,7 @@
+## 2026-11-25 — TR324 IT-HI-04 primitiva Lite
+
+Lite SHA técnico `1541136f276e854cab2cc57a12b1a07ba1a446c2`: primitiva para arcoth en la forma normalizada atanh(1/x), antes no admitida. Pruebas focales: 54 PASS, 2 XFAIL existentes; oráculo numérico y derivada en ramas reales |x|>1 con variables x/y, y parser del operador. Typecheck PASS. [Acumulativo 45717635630](https://github.com/c2melendez/precision-lab-lite/actions/runs/45717635630) en cola; no declarar PASS de CI. Un ID de matriz abordado, no 54 IDs ni lote de 80. Faltan ejecución literal completa de integral, extremos, ramas complejas, paridad y UI; no se cierra el caso. Siguiente: revisar CI, completar pruebas de dominio y paridad, y estabilidad IT-HI-01/10. S25, SG28/DIST y EV-D-01 permanecen BLOCKED; global OPEN.
+
 ## 2026-11-25 — CI Plus: integrales impropias
 
 SHA técnico Plus `c3f0f528e6e8a58ab729d67474ab52003fec5bc4`: [acumulativo 45699808846](https://github.com/c2melendez/precision-lab-plus/actions/runs/45699808846), backend job 139506627225 SUCCESS, log revisado: 3578 PASS, 1 SKIP, 35 XFAIL, 1 advertencia; se ejecutaron seis pruebas HTTP `test_improper_integral_domains.py`. Frontend job 139506626602 SUCCESS. Se cubren cuatro polos interiores divergentes y dos controles convergentes, incluida una singularidad integrable; no se acredita convergencia general ni 80 IDs nuevos. Siguiente: estabilidad IT-HI-01/10 preservando ramas complejas, y ampliar evidencia por caso sin duplicar gates. S25, SG28/DIST y EV-D-01 siguen BLOCKED; global OPEN.
