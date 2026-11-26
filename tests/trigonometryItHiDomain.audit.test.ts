@@ -30,15 +30,11 @@ describe('IT-HI domain guards on definite integrals', () => {
   });
 
   describe('atanh domain (-1, 1)', () => {
-    it('rejects an interval that reaches +1', () => {
-      expect(() => calcDefiniteIntegral('atanh(x)', 'x', 0, 1)).toThrow(
-        expect.objectContaining({ code: ErrorCode.DOMAIN_ERROR }),
-      );
+    it('evaluates the convergent improper endpoint: reaches +1', () => {
+      expect(Number(calcDefiniteIntegral('atanh(x)', 'x', 0, 1).resultLatex)).toBeCloseTo(Math.log(2), 10);
     });
-    it('rejects an interval that reaches -1', () => {
-      expect(() => calcDefiniteIntegral('atanh(x)', 'x', -1, 0)).toThrow(
-        expect.objectContaining({ code: ErrorCode.DOMAIN_ERROR }),
-      );
+    it('evaluates the convergent improper endpoint: reaches -1', () => {
+      expect(Number(calcDefiniteIntegral('atanh(x)', 'x', -1, 0).resultLatex)).toBeCloseTo(-Math.log(2), 10);
     });
     it('rejects an interval that crosses the domain', () => {
       expect(() => calcDefiniteIntegral('atanh(x)', 'x', -2, 2)).toThrow(
@@ -51,16 +47,25 @@ describe('IT-HI domain guards on definite integrals', () => {
     });
   });
 
+  it('preserves orientation and both finite atanh endpoint limits', () => {
+    expect(Number(calcDefiniteIntegral('atanh(x)', 'x', 1, 0).resultLatex)).toBeCloseTo(-Math.log(2), 10);
+    expect(Number(calcDefiniteIntegral('atanh(x)', 'x', -1, 1).resultLatex)).toBeCloseTo(0, 10);
+    expect(() => calcDefiniteIntegral('atanh(x)', 'x', 1, 2)).toThrow(expect.objectContaining({code: ErrorCode.DOMAIN_ERROR}));
+  });
+
   describe('arcoth domain |x| > 1 (via atanh(1/x))', () => {
     it('rejects an interval that intersects [-1, 1]', () => {
       expect(() => calcDefiniteIntegral('atanh(1/(x))', 'x', 0, 2)).toThrow(
         expect.objectContaining({ code: ErrorCode.DOMAIN_ERROR }),
       );
     });
-    it('rejects an interval that touches the pole at 1', () => {
-      expect(() => calcDefiniteIntegral('atanh(1/(x))', 'x', 1, 3)).toThrow(
-        expect.objectContaining({ code: ErrorCode.DOMAIN_ERROR }),
-      );
+    it('evaluates the convergent improper endpoint: at 1', () => {
+      expect(Number(calcDefiniteIntegral('atanh(1/(x))', 'x', 1, 3).resultLatex)).toBeCloseTo(Math.log(2), 10);
+    });
+    it('checks the negative endpoint and reversed orientation', () => {
+      expect(Number(calcDefiniteIntegral('atanh(1/(x))', 'x', -3, -1).resultLatex)).toBeCloseTo(-Math.log(2), 10);
+      expect(Number(calcDefiniteIntegral('atanh(1/(x))', 'x', 3, 1).resultLatex)).toBeCloseTo(-Math.log(2), 10);
+      expect(() => calcDefiniteIntegral('atanh(1/x)', 'x', -2, 2)).toThrow(expect.objectContaining({code: ErrorCode.DOMAIN_ERROR}));
     });
     it('accepts an interval entirely above 1', () => {
       const result = calcDefiniteIntegral('atanh(1/(x))', 'x', 2, 4);

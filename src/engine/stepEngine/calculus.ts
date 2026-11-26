@@ -19,6 +19,7 @@ import {
   toLatex,
   ErrorCode,
 } from "../algebriteClient";
+import { assertInverseHyperbolicIntegralDomain, inverseHyperbolicEndpointIntegral } from "./itHiDomainGuards";
 import { reciprocalPoleLimit, reciprocalLimitAtInfinity } from "../reciprocalLimit";
 import { compileNumeric, numericLimit, numericLimitAtInfinity, simpsonIntegral } from "../numericFallback";
 import { rewriteReciprocalFunctions } from "../parsing";
@@ -649,6 +650,21 @@ export function calcDefiniteIntegral(
   }
   assertNoBareFunction(exprAlgebrite, variable);
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
+  assertInverseHyperbolicIntegralDomain(exprAlgebrite, variable, lower, upper);
+  const endpointValue = inverseHyperbolicEndpointIntegral(exprAlgebrite, variable, lower, upper);
+  if (endpointValue !== null) {
+    if (!Number.isFinite(endpointValue)) {
+      throw { code: ErrorCode.DOMAIN_ERROR, message: "La integral impropia produjo un valor no finito." } as AppError;
+    }
+    return {
+      resultLatex: endpointValue.toString(),
+      confidence: "NUMERIC_FALLBACK",
+      steps: [
+        { id: "original", latex: `\\int_{${lower}}^{${upper}} ${exprAlgebrite}\\,d${variable}`, explanation: "Integral impropia en un extremo." },
+        { id: "result", latex: `\\approx ${endpointValue}`, explanation: "Evaluación mediante el límite finito de la primitiva (t log|t| tiende a cero). No se aplica valor principal." },
+      ],
+    };
+  }
   // The FTC is invalid across poles. Handle the two verified trigonometric
   // primitives before the numerical fallback, which can otherwise conceal a
   // divergent improper integral with a finite principal-value-like result.
