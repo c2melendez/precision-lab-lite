@@ -60,11 +60,11 @@ describe('IT-HI domain guards on definite integrals', () => {
       );
     });
     it('evaluates the convergent improper endpoint: at 1', () => {
-      expect(Number(calcDefiniteIntegral('atanh(1/(x))', 'x', 1, 3).resultLatex)).toBeCloseTo(Math.log(2), 10);
+      expect(Number(calcDefiniteIntegral('atanh(1/(x))', 'x', 1, 3).resultLatex)).toBeCloseTo(2 * Math.log(2), 10);
     });
     it('checks the negative endpoint and reversed orientation', () => {
-      expect(Number(calcDefiniteIntegral('atanh(1/(x))', 'x', -3, -1).resultLatex)).toBeCloseTo(-Math.log(2), 10);
-      expect(Number(calcDefiniteIntegral('atanh(1/(x))', 'x', 3, 1).resultLatex)).toBeCloseTo(-Math.log(2), 10);
+      expect(Number(calcDefiniteIntegral('atanh(1/(x))', 'x', -3, -1).resultLatex)).toBeCloseTo(-2 * Math.log(2), 10);
+      expect(Number(calcDefiniteIntegral('atanh(1/(x))', 'x', 3, 1).resultLatex)).toBeCloseTo(-2 * Math.log(2), 10);
       expect(() => calcDefiniteIntegral('atanh(1/x)', 'x', -2, 2)).toThrow(expect.objectContaining({code: ErrorCode.DOMAIN_ERROR}));
     });
     it('accepts an interval entirely above 1', () => {
