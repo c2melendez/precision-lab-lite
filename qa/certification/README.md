@@ -1,3 +1,7 @@
+# Política operativa vigente v2.0
+
+Leer [SYSTEM_V2.md](SYSTEM_V2.md) y EXECUTION_PROTOCOL.md antes de continuar. La política P0–P3 de familias, lotes adaptativos y cola elegible prevalece sobre cuotas de 80 y selección serial históricas. Conservar contratos, gates y bloqueos. El piloto `certification-batch-v2` genera observaciones por ID, no certificación automática. Verificar corridas y evidencias antes de aceptar; mantener el runner histórico para gates.
+
 # Precision Lab — Certification System
 
 Este directorio es la fuente canónica de continuidad del sistema de certificación.
