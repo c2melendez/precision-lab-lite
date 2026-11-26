@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 643,
+  "revision": 644,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
-  "baseline_case": "TRIG-IT-D-08-14-POLES",
+  "technical_baseline_sha": "8b130c1ed3abc2935dbf4d910649c006b0d1c445",
+  "baseline_case": "TRIG-IT-HI-01-10-COMPLEX-REAL-STABILITY",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -41,7 +41,7 @@
   "next_action": {
     "id": "TRIG-BATCH-80-01",
     "status": "IN_PROGRESS",
-    "action": "Paridad de guardas de integral definida no finita en Lite con Plus (DOMAIN_ERROR), y estabilidad num\u00e9rica IT-HI-01/10 preservando ramas complejas."
+    "action": "Paridad y verificaci\u00f3n bilateral en Plus de estabilidad y ramas complejas, y avance en siguientes casos de TR324 (IT-HI-02/03/05/06 y canales UI/literal)."
   },
   "blockers": [
     {
@@ -79,22 +79,22 @@
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md",
     "qa/certification/BATCH_80_01.md"
   ],
-  "updated_utc": "2026-11-25T11:07:12.285312+00:00",
+  "updated_utc": "2026-11-26T01:44:24.560344+00:00",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
-      "input_fingerprint": "f28649823d23033e38849a0c484c899c5253187fb0617cc4cbbf34ee72c85ba4",
-      "head_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
+      "input_fingerprint": "verified-8b130c1ed3abc2935dbf4d910649c006b0d1c445",
+      "head_sha": "8b130c1ed3abc2935dbf4d910649c006b0d1c445",
+      "evidence_sha": "8b130c1ed3abc2935dbf4d910649c006b0d1c445",
       "decision": "REUSE",
-      "reason": "Ejecuci\u00f3n y registros revisados; alcance acotado (3020 PASS, 15 XFAIL, 34 TODO).",
+      "reason": "Ejecuci\u00f3n y registros revisados; alcance acotado (3056 PASS, 13 XFAIL, 34 TODO).",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45572462518,
-      "evidence_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
+      "run_id": 45737280683,
       "jobs": [
         {
-          "id": 139062212120,
+          "id": 139633455505,
           "status": "completed",
           "conclusion": "success"
         }

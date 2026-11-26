@@ -178,6 +178,10 @@ SHA `17f66fcb7f6f61d58c35e93095de408cf537f80e`; `tests/trigonometryItHIBatch.aud
 | IT-HI-09 | Resultado parcial interior |
 | IT-HI-10 | BLOCKED: integral no implementada; UNSUPPORTED_OPERATION |
 
+## TR324 IT-HI-01/10: resolución de estabilidad real y analiticidad compleja en Lite
+
+SHA técnico Lite `8b130c1ed3abc2935dbf4d910649c006b0d1c445`: normalización de las formas estabilizadas con `sgn`/`abs` en `expandInverseHyperbolicForDerivative` antes de la diferenciación simbólica en Algebrite. Esto resuelve la regresión de ramas complejas (eliminando los términos de distribución `dirac(1+i)`) y preserva la estabilidad numérica real para argumentos grandes (±1e6, ±1e8) en antiderivadas e integrales definidas. Pruebas focales: 39 PASS (0 XFAIL). [Acumulativo 45737280683](https://github.com/c2melendez/precision-lab-lite/actions/runs/45737280683) job 139633455505 completó SUCCESS: 532 archivos de test passed, 3056 PASS, 13 XFAIL, 34 TODO. Los casos quedan clasificados como PASS_SCOPED (motor simbólico y numérico evaluados; faltan canales completos de UI/literal y paridad integral). S25, SG28/DIST y EV-D-01 continúan BLOCKED; global OPEN.
+
 ## TR324 IT-HI-01/03/10: Lite en verificación
 
 Las tres filas tienen primitivas para formas específicas en `94e8ac22e7608ee79ba6ad0d4bfdc93496b1c320`, comprobadas localmente con derivada y diferencias finitas en puntos interiores; [CI 45550227135](https://github.com/c2melendez/precision-lab-lite/actions/runs/45550227135) en curso. IT-HI-10 es adicional al lote. No son PASS contractual: faltan ramas, dominios, literalidad y UI.
