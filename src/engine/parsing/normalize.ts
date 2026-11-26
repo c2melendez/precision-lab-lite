@@ -906,6 +906,9 @@ export function preprocessLatex(latex: string): string {
     throw parseError("Doble superíndice sin agrupar: usa (x^{2})^{3} o x^{2^{3}}.");
   }
   validateInputStructureG3(latex);
+  // The TR324 source writes arcoth x without parentheses. Anchor the
+  // single-letter argument before generic operatorname normalization.
+  latex = latex.replace(/\\operatorname\{arcoth\}\s+([A-Za-z])(?![A-Za-z0-9_])/g, "\\operatorname{arcoth}($1)");
   latex = normalizeExternalSyntaxF3c(normalizeExternalSyntax(normalizeUnicodePaste(normalizePastedLatex(latex))));
   // SY-F-24: operatorname sech with an unparenthesized numeral is a function call.
   latex = latex.replace(/\\operatorname\{sech\}\s*([0-9]+(?:\.[0-9]+)?)(?![0-9.])/g, "\\sech($1)");

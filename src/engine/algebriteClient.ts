@@ -547,6 +547,11 @@ export function indefiniteIntegral(expressionAlgebrite: string, variable: string
       [`cos(${x})/(1+sin(${x})^2)`]: `arctan(sin(${x}))`,
     };
     if (Object.prototype.hasOwnProperty.call(known, source)) return known[source];
+    // The literal calculus parser may wrap the normalized operand in
+    // additional parentheses, while preserving the same arcoth argument.
+    if (new RegExp(`^\\(*atanh\\(1/\\(${x}\\)\\)\\)*$`).test(source)) {
+      return known[`(atanh(1/(${x})))`];
+    }
   }
   try {
     const result: string = Algebrite.run(`integral(${expressionAlgebrite},${variable})`);
