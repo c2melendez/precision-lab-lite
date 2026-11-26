@@ -1,3 +1,9 @@
+## 2026-11-25 — TR324 IT-HI-04 canal literal
+
+Lite `1541136f276e854cab2cc57a12b1a07ba1a446c2`: [acumulativo 45717635630](https://github.com/c2melendez/precision-lab-lite/actions/runs/45717635630) SUCCESS, job 139567686333 log revisado: 3044 PASS, 15 XFAIL, 34 TODO; ejecutada suite IT-HI.
+
+Lite técnico `f7f31512e1dfb7742027aad3596c77724cb1de91`: corrige parser de arcoth con argumento sin paréntesis y envolturas adicionales del operando de integral. Antes, el texto de la matriz producía acoth*x y UNSUPPORTED_OPERATION; ahora prueba extrae la expresión integral de la fuente y verifica por diferencias finitas en ambas ramas reales. Tres suites focales 39 PASS, 2 XFAIL; typecheck PASS. [Acumulativo 45726266843](https://github.com/c2melendez/precision-lab-lite/actions/runs/45726266843) en cola. Un ID abordado, no 80; condición de dominio anotada en la matriz no se interpreta como parte de la entrada, faltan extremos, ramas complejas, UI y paridad. Siguiente: revisar CI del SHA técnico y avanzar IT-HI-01/10. S25, SG28/DIST y EV-D-01 permanecen BLOCKED.
+
 ## 2026-11-25 — TR324 IT-HI-04 primitiva Lite
 
 Lite SHA técnico `1541136f276e854cab2cc57a12b1a07ba1a446c2`: primitiva para arcoth en la forma normalizada atanh(1/x), antes no admitida. Pruebas focales: 54 PASS, 2 XFAIL existentes; oráculo numérico y derivada en ramas reales |x|>1 con variables x/y, y parser del operador. Typecheck PASS. [Acumulativo 45717635630](https://github.com/c2melendez/precision-lab-lite/actions/runs/45717635630) en cola; no declarar PASS de CI. Un ID de matriz abordado, no 54 IDs ni lote de 80. Faltan ejecución literal completa de integral, extremos, ramas complejas, paridad y UI; no se cierra el caso. Siguiente: revisar CI, completar pruebas de dominio y paridad, y estabilidad IT-HI-01/10. S25, SG28/DIST y EV-D-01 permanecen BLOCKED; global OPEN.
