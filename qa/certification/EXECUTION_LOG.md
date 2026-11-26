@@ -1,3 +1,7 @@
+## 2026-11-25 — regresión compleja IT-HI-01/10
+
+SHA técnico Lite `183ecd91c32c1100965ed3c0de81e7608522a223` modifica primitivas asinh con sgn/abs para estabilidad real. En exploración local, derivar ambas primitivas y sustituir x=1+i produce términos `dirac(1+i)`: la compatibilidad de rama compleja no está preservada/acreditada; clasificación FAIL de regresión, no cierre. SHA `7da131f302f2246aa5c072da7122e656965665e3` añade dos pruebas XFAIL estrictas, una por función, para impedir su contabilización como PASS. Dos suites focales 37 PASS y 2 XFAIL; [acumulativo 45733164085](https://github.com/c2melendez/precision-lab-lite/actions/runs/45733164085) en curso. IT-HI-01/10 son dos IDs investigados, no 80; falta corregir sin perder estabilidad real ni ramas complejas, y comprobar dominios/canales. S25, SG28/DIST y EV-D-01 permanecen BLOCKED.
+
 ## 2026-11-25 — TR324 IT-HI-04 canal literal
 
 Lite `1541136f276e854cab2cc57a12b1a07ba1a446c2`: [acumulativo 45717635630](https://github.com/c2melendez/precision-lab-lite/actions/runs/45717635630) SUCCESS, job 139567686333 log revisado: 3044 PASS, 15 XFAIL, 34 TODO; ejecutada suite IT-HI.
