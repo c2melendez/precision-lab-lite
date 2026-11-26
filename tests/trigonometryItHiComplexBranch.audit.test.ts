@@ -3,7 +3,7 @@ import Algebrite from 'algebrite';
 import {indefiniteIntegral,derivative} from '../src/engine/algebriteClient';
 
 describe('TR324 IT-HI complex branch preservation',()=>{
-  it.fails.each(['asinh(x)','x*asinh(x)'])(
+  it.each(['asinh(x)','x*asinh(x)'])(
     '%s must not introduce distributions into its complex derivative', expression=>{
       const primitive=indefiniteIntegral(expression,'x');
       const differentiated=derivative(primitive,'x',1);

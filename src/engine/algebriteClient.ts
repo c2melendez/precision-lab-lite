@@ -422,6 +422,12 @@ export function evaluate(expressionLatex: string): string {
  */
 /** Rewrites inverse hyperbolics only for differentiation, preserving nested arguments. */
 function expandInverseHyperbolicForDerivative(expression: string): string {
+  // Normalize stabilized real asinh forms before differentiating so
+  // complex derivatives stay holomorphic and do not introduce dirac distributions.
+  expression = expression.replace(
+    /sgn\(([A-Za-z]+)\)\s*\*\s*log\(abs\(\1\)\s*\+\s*sqrt\(\1\^2\s*\+\s*1\)\)/g,
+    (_m, v) => "log(" + v + "+sqrt(" + v + "^2+1))"
+  );
   let output = '';
   for (let i = 0; i < expression.length;) {
     const match = expression.slice(i).match(/^(asinh|acosh|atanh)\s*\(/);
