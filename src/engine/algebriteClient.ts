@@ -529,11 +529,16 @@ export function indefiniteIntegral(expressionAlgebrite: string, variable: string
     const known: Record<string, string> = {
       [`(1/cos(${x}))*tan(${x})`]: `1/cos(${x})`,
       [`tan(${x})^2`]: `tan(${x})-${x}`,
-      [`asinh(${x})`]: `${x}*log(${x}+sqrt(${x}^2+1))-sqrt(${x}^2+1)`,
+      // IT-HI-01: log(x+sqrt(x^2+1)) loses all significant digits for large
+      // negative x (x+sqrt(x^2+1) cancels to 0). sgn(x)*log(|x|+sqrt(x^2+1))
+      // is the same real branch and keeps the argument near 2|x|; Algebrite
+      // evaluates sgn(0)=1, so the primitive stays exact at x=0.
+      [`asinh(${x})`]: `${x}*sgn(${x})*log(abs(${x})+sqrt(${x}^2+1))-sqrt(${x}^2+1)`,
       [`acosh(${x})`]: `${x}*log(${x}+sqrt(${x}-1)*sqrt(${x}+1))-sqrt(${x}-1)*sqrt(${x}+1)`,
       [`atanh(${x})`]: `(${x}*log((1+${x})/(1-${x}))+log(1-${x}^2))/2`,
       [`(atanh(1/(${x})))`]: `(${x}*log((${x}+1)/(${x}-1))+log(${x}^2-1))/2`,
-      [`${x}*asinh(${x})`]: `((2*${x}^2+1)*log(${x}+sqrt(${x}^2+1))-${x}*sqrt(${x}^2+1))/4`,
+      // IT-HI-10: same cancellation fix as IT-HI-01, applied to x*asinh(x).
+      [`${x}*asinh(${x})`]: `((2*${x}^2+1)*sgn(${x})*log(abs(${x})+sqrt(${x}^2+1))-${x}*sqrt(${x}^2+1))/4`,
       [`${x}*arctan(${x})`]: `((${x}^2+1)*arctan(${x})-${x})/2`,
       [`arcsin(${x})/sqrt(1-${x}^2)`]: `arcsin(${x})^2/2`,
       [`(1/cosh(${x}))^2`]: `tanh(${x})`,

@@ -4,6 +4,7 @@ import {gunzipSync} from 'node:zlib';
 import {readFileSync} from 'node:fs';
 const source=gunzipSync(readFileSync(new URL('../qa/certification/legacy_sources/ejercicios_trigonometria.md.gz',import.meta.url))).toString();
 import {indefiniteIntegral,derivative} from '../src/engine/algebriteClient';
+import {calcDefiniteIntegral} from '../src/engine/stepEngine/calculus';
 import {rewriteReciprocalFunctions} from '../src/engine/parsing';
 const cases:[string,string,(x:number)=>number,number[]][]=[
  ['01','asinh(x)',Math.asinh,[-2,-.5,.5,2]],['02','acosh(x)',Math.acosh,[1.2,1.5,2,3]],['03','atanh(x)',Math.atanh,[-.8,-.3,.3,.8]],['04','acoth(x)',x=>Math.atanh(1/x),[-3,-2,2,3]],['05','asech(x)',x=>Math.acosh(1/x),[.1,.3,.6,.9]],['06','acsch(x)',x=>Math.asinh(1/x),[.2,.5,1,2]],['07','1/sqrt(x^2+1)',x=>1/Math.sqrt(x*x+1),[-2,-.5,.5,2]],['08','1/sqrt(x^2-1)',x=>1/Math.sqrt(x*x-1),[1.2,1.5,2,3]],['09','1/(1-x^2)',x=>1/(1-x*x),[-.8,-.3,.3,.8]],['10','x*asinh(x)',x=>x*Math.asinh(x),[-2,-.5,.5,2]]];
@@ -32,19 +33,27 @@ describe('TR324 IT-HI-01/10: numerical stability at large arguments',()=>{
   ['10','x*asinh(x)',(x:number)=>((2*x*x+1)*Math.asinh(x)-x*Math.hypot(x,1))/4],
  ] as const;
  for(const [id,expression,oracle] of largeCases){
-  it(`IT-HI-${id} stays finite and accurate at large positive x`,()=>{
-   const x=1e8;const primitive=indefiniteIntegral(expression,'x');
-   const raw=Algebrite.run(`float(subst(${x},x,${primitive}))`).trim();
-   const value=parseFloat(raw);expect(Number.isFinite(value)).toBe(true);
-   expect(Math.abs((value-oracle(x))/oracle(x))).toBeLessThan(1e-6);
-  });
-  it.fails(`IT-HI-${id} stays finite and accurate at large negative x`,()=>{
-   const x=-1e8;const primitive=indefiniteIntegral(expression,'x');
-   const raw=Algebrite.run(`float(subst(${x},x,${primitive}))`).trim();
-   const value=parseFloat(raw);expect(Number.isFinite(value)).toBe(true);
-   expect(Math.abs((value-oracle(x))/oracle(x))).toBeLessThan(1e-6);
+  for(const x of [-1e8,-1e6,1e6,1e8]){
+   it(`IT-HI-${id} stays finite and accurate at x=${x}`,()=>{
+    const primitive=indefiniteIntegral(expression,'x');
+    const raw=Algebrite.run(`float(subst(${x},x,${primitive}))`).trim();
+    const value=parseFloat(raw);expect(Number.isFinite(value)).toBe(true);
+    expect(Math.abs((value-oracle(x))/oracle(x))).toBeLessThan(1e-9);
+   });
+  }
+  it(`IT-HI-${id} primitive remains exact at zero`,()=>{
+   const primitive=indefiniteIntegral(expression,'x');
+   const value=parseFloat(Algebrite.run(`float(subst(0,x,${primitive}))`).trim());
+   expect(value).toBeCloseTo(oracle(0),12);
   });
  }
+ it('IT-HI-01 definite integral across a large negative interval stays finite',()=>{
+  const result=calcDefiniteIntegral('asinh(x)','x',-1e8,0);
+  const value=parseFloat(result.resultLatex);
+  const oracle=-1-(1e8*Math.asinh(1e8)-Math.hypot(1e8,1));
+  expect(Number.isFinite(value)).toBe(true);
+  expect(Math.abs((value-oracle)/oracle)).toBeLessThan(1e-9);
+ });
 });
 
 describe('IT-HI-04 literal matrix input',()=>{
