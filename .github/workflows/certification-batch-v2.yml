@@ -1,0 +1,54 @@
+name: Certification Batch v2 - MV153 pilot
+on:
+  push:
+    branches: [qa/syntax-audit-in625-a1]
+    paths:
+      - 'scripts/certification/batch_v2.py'
+      - 'scripts/certification/test_batch_v2.py'
+      - '.github/workflows/certification-batch-v2.yml'
+  pull_request:
+    paths:
+      - 'scripts/certification/batch_v2.py'
+      - 'scripts/certification/test_batch_v2.py'
+      - '.github/workflows/certification-batch-v2.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify frozen sources and observation guard
+        run: python3 -m unittest discover -s scripts/certification -p test_batch_v2.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Execute MV153 suites
+        id: batch
+        shell: bash
+        run: |
+          set +e
+          npx --no-install vitest run tests/matricesMv*.audit.test.ts --reporter=junit --outputFile="$RUNNER_TEMP/mv153.xml"
+          code=$?
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          exit "$code"
+      - name: Generate per-ID observations
+        if: always() && steps.batch.outputs.code != ''
+        run: |
+          python3 scripts/certification/batch_v2.py --product lite --xml "$RUNNER_TEMP/mv153.xml" --output "$RUNNER_TEMP/mv153.json" --sha "$GITHUB_SHA" --run "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --exit-code "${{ steps.batch.outputs.code }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mv153-lite-observations
+          path: |
+            ${{ runner.temp }}/mv153.xml
+            ${{ runner.temp }}/mv153.json
+          if-no-files-found: warn
+          retention-days: 14
