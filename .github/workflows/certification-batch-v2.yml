@@ -52,3 +52,19 @@ jobs:
             ${{ runner.temp }}/mv153.json
           if-no-files-found: warn
           retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: certification-v2-source-lite
+          include-hidden-files: true
+          path: |
+            qa/certification/SYSTEM_V2.md
+            qa/certification/EXECUTION_PROTOCOL.md
+            qa/certification/CONTINUATION_PROMPT.md
+            qa/certification/README.md
+            qa/certification/V2_MIGRATION.md
+            scripts/certification/batch_v2.py
+            scripts/certification/test_batch_v2.py
+            .github/workflows/certification-batch-v2.yml
+          if-no-files-found: error
+          retention-days: 14

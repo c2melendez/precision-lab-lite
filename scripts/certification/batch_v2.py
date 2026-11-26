@@ -43,12 +43,16 @@ def fixture(root):
             raise ValueError("invalid row: "+r["id"])
     return rows, sha(data)
 
+def product_is_vitest(case):
+    return case.get("classname", "").endswith(".audit.test.ts")
+
 def observations(xml, ids):
     mapped = {i:[] for i in ids}
     unmapped = []
     for case in ET.parse(xml).iter("testcase"):
         name = case.get("name","")
-        matches = {f"MV-{m[0].upper()}-{m[1]}" for m in ID_RE.findall(name)}
+        leaf = name.rsplit(" > ",1)[-1] if product_is_vitest(case) else name
+        matches = {f"MV-{m[0].upper()}-{m[1]}" for m in ID_RE.findall(leaf)}
         status = ("FAIL_OBSERVED" if case.find("failure") is not None or case.find("error") is not None
                   else "SKIPPED_OBSERVED" if case.find("skipped") is not None
                   else "TEST_OK_OBSERVED")
