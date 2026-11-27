@@ -24,13 +24,13 @@ function numeric(input: string): number {
 }
 
 describe("Trigonometry EV-H-01..03 hyperbolic origin", () => {
-  it("rows and exact values", () => {
-    expect(rowOf("EV-H-01")).toContain("\\sinh(0)");
-    expect(rowOf("EV-H-02")).toContain("\\cosh(0)");
-    expect(rowOf("EV-H-03")).toContain("\\tanh(0)");
-    expect(run("sinh(0)")).toBe("0");
-    expect(run("cosh(0)")).toBe("1");
-    expect(run("tanh(0)")).toBe("0");
+  it.each([
+    ["EV-H-01", "sinh(0)", "\\sinh(0)", "0"],
+    ["EV-H-02", "cosh(0)", "\\cosh(0)", "1"],
+    ["EV-H-03", "tanh(0)", "\\tanh(0)", "0"],
+  ])("%s row and exact value", (id, input, literal, expected) => {
+    expect(rowOf(id)).toContain(literal);
+    expect(run(input)).toBe(expected);
   });
 });
 
@@ -56,17 +56,14 @@ describe("Trigonometry EV-H-04..09 hyperbolic values at ln 2", () => {
 });
 
 describe("Trigonometry EV-H-10..12 hyperbolic approximations and identity", () => {
-  it("rows exist with documented approximations", () => {
-    expect(rowOf("EV-H-10")).toContain("\\sinh(1)");
-    expect(rowOf("EV-H-10")).toContain("1.175201194");
-    expect(rowOf("EV-H-11")).toContain("\\cosh(1)");
-    expect(rowOf("EV-H-11")).toContain("1.543080635");
-    expect(rowOf("EV-H-12")).toContain("\\cosh^{2}(1)-\\sinh^{2}(1)");
-  });
-
-  it("values match at the documented precision", () => {
-    expect(numeric("sinh(1)")).toBeCloseTo(1.175201194, 6);
-    expect(numeric("cosh(1)")).toBeCloseTo(1.543080635, 6);
-    expect(numeric("cosh(1)^2-sinh(1)^2")).toBeCloseTo(1, 6);
+  const cases: Array<[string, string, string, string, number]> = [
+    ["EV-H-10", "sinh(1)", "\\sinh(1)", "1.175201194", 1.175201194],
+    ["EV-H-11", "cosh(1)", "\\cosh(1)", "1.543080635", 1.543080635],
+    ["EV-H-12", "cosh(1)^2-sinh(1)^2", "\\cosh^{2}(1)-\\sinh^{2}(1)", "", 1],
+  ];
+  it.each(cases)("%s row and numeric value", (id, input, literal, documented, expected) => {
+    expect(rowOf(id)).toContain(literal);
+    if (documented) expect(rowOf(id)).toContain(documented);
+    expect(numeric(input)).toBeCloseTo(expected, 6);
   });
 });

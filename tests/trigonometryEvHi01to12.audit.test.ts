@@ -49,13 +49,13 @@ function domainError(input: string): AppErr {
 }
 
 describe("Trigonometry EV-HI-01..03 inverse hyperbolic origin", () => {
-  it("rows and exact values", () => {
-    expect(rowOf("EV-HI-01")).toContain("\\operatorname{arsinh}(0)");
-    expect(rowOf("EV-HI-02")).toContain("\\operatorname{arcosh}(1)");
-    expect(rowOf("EV-HI-03")).toContain("\\operatorname{artanh}(0)");
-    expect(run("arsinh(0)")).toBe("0");
-    expect(run("arcosh(1)")).toBe("0");
-    expect(run("artanh(0)")).toBe("0");
+  it.each([
+    ["EV-HI-01", "arsinh(0)", "\\operatorname{arsinh}(0)"],
+    ["EV-HI-02", "arcosh(1)", "\\operatorname{arcosh}(1)"],
+    ["EV-HI-03", "artanh(0)", "\\operatorname{artanh}(0)"],
+  ])("%s row and exact value", (id, input, literal) => {
+    expect(rowOf(id)).toContain(literal);
+    expect(run(input)).toBe("0");
   });
 });
 
@@ -104,17 +104,17 @@ describe("Trigonometry EV-HI-10..12 composition and real domain", () => {
 });
 
 describe("Trigonometry EV-HI-04..09 exact symbolic equivalence", () => {
-  const exactCases: Array<[string, string]> = [
-    ["arsinh(1)", "ln(1+sqrt(2))"],
-    ["arcosh(2)", "ln(2+sqrt(3))"],
-    ["artanh(1/2)", "ln(3)/2"],
-    ["arcsch(1)", "ln(1+sqrt(2))"],
-    ["arsech(1/2)", "ln(2+sqrt(3))"],
-    ["arcoth(2)", "ln(3)/2"],
+  const exactCases: Array<[string, string, string]> = [
+    ["EV-HI-04", "arsinh(1)", "ln(1+sqrt(2))"],
+    ["EV-HI-05", "arcosh(2)", "ln(2+sqrt(3))"],
+    ["EV-HI-06", "artanh(1/2)", "ln(3)/2"],
+    ["EV-HI-07", "arcsch(1)", "ln(1+sqrt(2))"],
+    ["EV-HI-08", "arsech(1/2)", "ln(2+sqrt(3))"],
+    ["EV-HI-09", "arcoth(2)", "ln(3)/2"],
   ];
 
-  for (const [input, expected] of exactCases) {
-    it(`${input} is exactly equivalent to the frozen logarithmic form`, () => {
+  for (const [id, input, expected] of exactCases) {
+    it(`${id} ${input} is exactly equivalent to the frozen logarithmic form`, () => {
       const actual = run(input);
       const difference = String(evaluate(`simplify((${actual})-(${expected}))`)).replace(/\\s+/g, "");
       expect(difference).toBe("0");

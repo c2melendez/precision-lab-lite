@@ -72,7 +72,12 @@ def trig_matches(name, ids):
 
 def trig_context(case, leaf, ids):
     """Candidate attribution only; a single-case suite is not an acceptance oracle."""
-    direct = trig_matches(leaf, ids)
+    # Batch ranges in Python leaf names are not single-case evidence.
+    # Preserve individual pytest parameters with an explicit ID.
+    if re.search(r"\d{2}(?:_to_|_through_|\.{2}|–|—)\d{2}", leaf, re.I):
+        direct = set()
+    else:
+        direct = trig_matches(leaf, ids)
     name = case.get("name", "")
     classname = case.get("classname", "")
     # Only exact, single-case suite filenames; never expand a range or batch.
@@ -106,12 +111,21 @@ def observations(xml, ids, matrix='MV153'):
         else:
             matches = {f"MV-{m[0].upper()}-{m[1]}" for m in ID_RE.findall(leaf)}
         # Presence-only checks are not execution of the mathematical case.
-        if matrix == "TR324" and re.search(r"matrix contains|source[_ ]row|source integrity|source.*present|anchors? .*?(?:row|matrix|oracle|equation)|^test_source(?:$|_row$)|^test_original_row$", leaf, re.I):
+        if matrix == "TR324" and re.search(r"matrix contains|source[_ ]row|source integrity|source.*present|anchors? .*?(?:row|matrix|oracle|equation)|^test_source(?:$|_row$)|^test_original_row$|source[_ ]anchor|official row documents|official .*? row exists", leaf, re.I):
             matches = set()
         status = ("FAIL_OBSERVED" if case.find("failure") is not None or case.find("error") is not None
                   else "SKIPPED_OBSERVED" if case.find("skipped") is not None
                   else "TEST_OK_OBSERVED")
+        # Only explicit capability-negative naming is classified as such.
+        # Required domain rejection is a different, valid contract witness.
+        role = ("capability_negative" if re.search(r"\[capability-negative\]|capability_unsupported", leaf, re.I)
+                else "contract_negative" if re.search(r"domain[_ ]error|out[_ -]of[_ -]domain|outside the real domain", leaf, re.I)
+                else "unclassified")
+        if matrix == "TR324" and role == "capability_negative" and status == "TEST_OK_OBSERVED":
+            status = "CAPABILITY_NEGATIVE_OBSERVED"
         item = {"name":name,"classname":case.get("classname",""),"status":status,"seconds":case.get("time",""),"mapping_basis":basis}
+        if matrix == "TR324":
+            item["evidence_role"] = role
         if len(matches)==1 and next(iter(matches)) in mapped:
             mapped[next(iter(matches))].append(item)
         else:
@@ -124,6 +138,8 @@ def row_state(items):
         return "FAIL_OBSERVED"
     if "SKIPPED_OBSERVED" in states:
         return "REVIEW_SKIPPED"
+    if "CAPABILITY_NEGATIVE_OBSERVED" in states:
+        return "REVIEW_CAPABILITY_NEGATIVE"
     if states=={"TEST_OK_OBSERVED"}:
         return "REVIEW_CONTEXT_ONLY" if all(i.get("mapping_basis")=="single_case_context" for i in items) else "REVIEW_TEST_OK"
     return "REVIEW_NO_MAPPED_TEST"

@@ -42,6 +42,27 @@ class BatchV2Tests(unittest.TestCase):
         self.assertEqual(row_state(mapped["EC-D-02"]),"REVIEW_NO_MAPPED_TEST")
         self.assertEqual(len(other),2)
 
+    def test_range_anchor_and_capability_are_not_positive_witnesses(self):
+        ids=["IT-HI-01","IT-HI-02","EV-H-01","EV-H-02","EV-H-03","EV-HI-11"]
+        xml="""<testsuite>
+        <testcase name="test_ev_h_01_to_03_values"/>
+        <testcase name="test_inverse_hyperbolic_source_anchor[IT-HI-01-expected0]"/>
+        <testcase name="test_it_hi_02_capability_unsupported"/>
+        <testcase name="test_numeric[EV-H-02]"/>
+        <testcase name="test_ev_hi_11_domain_error"/>
+        </testsuite>"""
+        with tempfile.TemporaryDirectory() as temp:
+            path=Path(temp)/"report.xml"
+            path.write_text(xml)
+            mapped,other=observations(path,ids,"TR324")
+        self.assertEqual(row_state(mapped["EV-H-01"]),"REVIEW_NO_MAPPED_TEST")
+        self.assertEqual(row_state(mapped["IT-HI-01"]),"REVIEW_NO_MAPPED_TEST")
+        self.assertEqual(row_state(mapped["IT-HI-02"]),"REVIEW_CAPABILITY_NEGATIVE")
+        self.assertEqual(row_state(mapped["EV-H-02"]),"REVIEW_TEST_OK")
+        self.assertEqual(row_state(mapped["EV-HI-11"]),"REVIEW_TEST_OK")
+        self.assertEqual(mapped["EV-HI-11"][0]["evidence_role"],"contract_negative")
+        self.assertEqual(len(other),2)
+
     def test_conservative_mapping(self):
         xml = """<testsuites><testsuite>
         <testcase classname="tests/matricesMvA01to25.audit.test.ts" name="Group MV-A-01..25 &gt; MV-A-04 evaluates"/>
