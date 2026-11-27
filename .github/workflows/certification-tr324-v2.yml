@@ -1,0 +1,48 @@
+name: Certification Batch v2 - TR324
+on:
+  push:
+    branches: [qa/syntax-audit-in625-a1]
+    paths:
+      - 'scripts/certification/batch_v2.py'
+      - 'scripts/certification/test_batch_v2.py'
+      - '.github/workflows/certification-tr324-v2.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  observations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate frozen sources and mapping
+        run: python3 -m unittest discover -s scripts/certification -p test_batch_v2.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Execute existing trig suites
+        id: batch
+        shell: bash
+        run: |
+          set +e
+          npx --no-install vitest run tests/trigonometry*.audit.test.ts tests/trigAliasDegreeSingularity.audit.test.ts tests/exhaustive-module01-trigonometry.test.ts --reporter=junit --outputFile="$RUNNER_TEMP/tr324.xml"
+          code=$?
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          exit "$code"
+      - name: Generate observations (not certification)
+        if: always() && steps.batch.outputs.code != ''
+        run: python3 scripts/certification/batch_v2.py --matrix TR324 --product lite --xml "$RUNNER_TEMP/tr324.xml" --output "$RUNNER_TEMP/tr324.json" --sha "$GITHUB_SHA" --run "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --exit-code "${{ steps.batch.outputs.code }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tr324-lite-observations
+          path: |
+            ${{ runner.temp }}/tr324.xml
+            ${{ runner.temp }}/tr324.json
+          if-no-files-found: warn
+          retention-days: 14

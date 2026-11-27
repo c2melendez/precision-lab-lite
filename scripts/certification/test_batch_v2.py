@@ -1,12 +1,29 @@
 import tempfile
 import unittest
 from pathlib import Path
-from batch_v2 import observations,row_state,sources,fixture,ROOT
+from batch_v2 import observations,row_state,sources,fixture,ROOT,trig_fixture,trig_matches
 
 class BatchV2Tests(unittest.TestCase):
     def test_real_sources_and_fixture(self):
         self.assertEqual(len(sources(ROOT)),9)
         self.assertEqual(len(fixture(ROOT)[0]),153)
+
+    def test_trig_source_and_mapping(self):
+        rows,digest=trig_fixture(ROOT)
+        self.assertEqual(len(rows),324)
+        ids={r["id"] for r in rows}
+        self.assertEqual(trig_matches("test_it_hi_01_numeric",ids),{"IT-HI-01"})
+        self.assertEqual(trig_matches("EV-D-01 and EV-D-02",ids),{"EV-D-01","EV-D-02"})
+        self.assertEqual(trig_matches("IT-HI-99",ids),set())
+        xml='<testsuite><testcase name="matrix contains IT-HI-01"/><testcase name="test_numeric[IT-HI-02-expression]"><skipped/></testcase><testcase name="IT-HI-03"><failure/></testcase></testsuite>'
+        with tempfile.TemporaryDirectory() as temp:
+            path=Path(temp)/"report.xml"
+            path.write_text(xml)
+            mapped,other=observations(path,ids,"TR324")
+        self.assertEqual(row_state(mapped["IT-HI-01"]),"REVIEW_NO_MAPPED_TEST")
+        self.assertEqual(row_state(mapped["IT-HI-02"]),"REVIEW_SKIPPED")
+        self.assertEqual(row_state(mapped["IT-HI-03"]),"FAIL_OBSERVED")
+        self.assertEqual(len(other),1)
 
     def test_conservative_mapping(self):
         xml = """<testsuites><testsuite>
