@@ -532,6 +532,32 @@ export function indefiniteIntegral(expressionAlgebrite: string, variable: string
   if (/^[A-Za-z]$/.test(variable)) {
     const x = variable;
     const source = expressionAlgebrite.replace(/\s+/g, '');
+    // Exact real primitives. The logarithms below use the engine's natural
+    // log, not the calculator's input convention for base 10. Restrict the
+    // overrides to the selected variable and canonical reciprocal shape.
+    const reciprocalPrimitives: Record<string, string> = {
+      arccos: `${x}*arccos(1/(${x}))-log(abs(${x})+sqrt(${x}^2-1))`,
+      arcsin: `${x}*arcsin(1/(${x}))+log(abs(${x})+sqrt(${x}^2-1))`,
+      acosh: `${x}*log((1+sqrt(1-${x}^2))/${x})+arcsin(${x})`,
+      asinh: `abs(${x})*log((1+sqrt(1+${x}^2))/abs(${x}))+log(abs(${x})+sqrt(1+${x}^2))`,
+    };
+    // Recognize only balanced outer parentheses (not partial expressions).
+    let operand = source;
+    while (operand.startsWith("(") && operand.endsWith(")")) {
+      let depth = 0, closesAt = -1;
+      for (let i = 0; i < operand.length; i++) {
+        if (operand[i] === "(") depth++;
+        if (operand[i] === ")" && --depth === 0) { closesAt = i; break; }
+      }
+      if (closesAt !== operand.length - 1) break;
+      operand = operand.slice(1, -1);
+    }
+    for (const [name, primitive] of Object.entries(reciprocalPrimitives)) {
+      if (operand === `${name}(1/(${x}))` || operand === `${name}(1/${x})`) return primitive;
+    }
+    if (operand === `1/(${x}*sqrt(${x}^2-1))`) {
+      return `arctan(sqrt(${x}^2-1))`;
+    }
     const known: Record<string, string> = {
       [`(1/cos(${x}))*tan(${x})`]: `1/cos(${x})`,
       [`tan(${x})^2`]: `tan(${x})-${x}`,

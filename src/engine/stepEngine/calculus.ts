@@ -660,7 +660,7 @@ export function calcDefiniteIntegral(
       resultLatex: endpointValue.toString(),
       confidence: "NUMERIC_FALLBACK",
       steps: [
-        { id: "original", latex: `\\int_{${lower}}^{${upper}} ${exprAlgebrite}\\,d${variable}`, explanation: "Integral impropia en un extremo." },
+        { id: "original", latex: `\\int_{${lower}}^{${upper}} ${exprAlgebrite}\\,d${variable}`, explanation: "Integral impropia con singularidad integrable." },
         { id: "result", latex: `\\approx ${endpointValue}`, explanation: "Evaluación mediante el límite finito de la primitiva (t log|t| tiende a cero). No se aplica valor principal." },
       ],
     };
