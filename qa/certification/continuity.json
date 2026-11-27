@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "revision": 644,
+  "revision": 645,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
-  "technical_baseline_sha": "8b130c1ed3abc2935dbf4d910649c006b0d1c445",
-  "baseline_case": "TRIG-IT-HI-01-10-COMPLEX-REAL-STABILITY",
+  "technical_baseline_sha": "aa89238d114f42f12b648ca420c8c29f253cf5c6",
+  "baseline_case": "TR324-V2-RECONCILIATION",
   "baseline_status": "PASS_SCOPED",
   "global_certification": "OPEN",
   "gates": {
@@ -39,9 +39,9 @@
     }
   },
   "next_action": {
-    "id": "TRIG-BATCH-80-01",
+    "id": "TR324-V2-REFRESH-REPAIR",
     "status": "IN_PROGRESS",
-    "action": "Paridad y verificaci\u00f3n bilateral en Plus de estabilidad y ramas complejas, y avance en siguientes casos de TR324 (IT-HI-02/03/05/06 y canales UI/literal)."
+    "action": "Corregir los filtros de certification-tr324-v2.yml para que los cambios de motor, parser, pruebas y fuentes relevantes regeneren observaciones; después verificar TR324 Plus actualizado y resolver IT-HI-06/04 (ramas reales, discrepancia de fuente IT-HI-06, HTTP/literal), manteniendo revisión compleja/UI y bloqueos."
   },
   "blockers": [
     {
@@ -50,7 +50,7 @@
       "run_id": 43538686314,
       "job_id": 132273991849,
       "classification": "ACCEPTANCE_REVIEW",
-      "exit_condition": "Evaluar informe ya producido y criterios de aceptaci\u00f3n por perfil; supervivientes/timeouts y jobs omitidos no son PASS. Conservar el shutdown hist\u00f3rico sin relanzar inputs id\u00e9nticos.",
+      "exit_condition": "Evaluar informe ya producido y criterios de aceptación por perfil; supervivientes/timeouts y jobs omitidos no son PASS. Conservar el shutdown histórico sin relanzar inputs idénticos.",
       "current_run_id": 43559502112,
       "current_job_id": 132339909267,
       "last_shutdown_run_id": 43695734343,
@@ -63,7 +63,7 @@
     {
       "id": "H2-SG28-DIST-01..08",
       "status": "BLOCKED",
-      "exit_condition": "Evidencia contractual multinodo real; aislamiento desactivado por defecto, sin activaci\u00f3n en producci\u00f3n."
+      "exit_condition": "Evidencia contractual multinodo real; aislamiento desactivado por defecto, sin activación en producción."
     },
     {
       "id": "EV-D-01",
@@ -79,22 +79,22 @@
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md",
     "qa/certification/BATCH_80_01.md"
   ],
-  "updated_utc": "2026-11-26T01:44:24.560344+00:00",
+  "updated_utc": "2026-11-27T04:49:00Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
-      "input_fingerprint": "verified-8b130c1ed3abc2935dbf4d910649c006b0d1c445",
-      "head_sha": "8b130c1ed3abc2935dbf4d910649c006b0d1c445",
-      "evidence_sha": "8b130c1ed3abc2935dbf4d910649c006b0d1c445",
+      "input_fingerprint": "b81b42cc7537183616a2d5f1e279fc136ecf65f48fab2c69c8a095fafff24115",
+      "head_sha": "aa89238d114f42f12b648ca420c8c29f253cf5c6",
+      "evidence_sha": "aa89238d114f42f12b648ca420c8c29f253cf5c6",
       "decision": "REUSE",
-      "reason": "Ejecuci\u00f3n y registros revisados; alcance acotado (3056 PASS, 13 XFAIL, 34 TODO).",
+      "reason": "Log revisado: 3070 passed, 13 expected fail, 34 todo, typecheck/build ejecutados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45737280683,
+      "run_id": 45920446566,
       "jobs": [
         {
-          "id": 139633455505,
+          "id": 140249641059,
           "status": "completed",
           "conclusion": "success"
         }
@@ -102,18 +102,18 @@
     },
     "h1d": {
       "gate": "h1d",
-      "input_fingerprint": "3d1977707f95188e4c6aefe4c51185b1d9e6679730c2c34df54b57f3a734b2d8",
-      "head_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
+      "input_fingerprint": "53162bdf13bda041d3bcfb31af9576ee27a71655099b46c0b08954f7ae82db80",
+      "head_sha": "aa89238d114f42f12b648ca420c8c29f253cf5c6",
+      "evidence_sha": "aa89238d114f42f12b648ca420c8c29f253cf5c6",
       "decision": "REUSE",
-      "reason": "Ejecuci\u00f3n y registros revisados; alcance acotado.",
+      "reason": "Log revisado: 22 pruebas H1d ejecutadas.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-16-continuity-v1",
-      "run_id": 45572462464,
-      "evidence_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
+      "run_id": 45920446591,
       "jobs": [
         {
-          "id": 139062212137,
+          "id": 140249641017,
           "status": "completed",
           "conclusion": "success"
         }
@@ -124,7 +124,7 @@
       "input_fingerprint": "94bfe4c032668c90c738dff584fabe9d34e6f14ba1592a92f4b6b6ddf3ebefc8",
       "head_sha": "6ae37a1bda2dd7dab354cb6f5a31d731fe52fd63",
       "decision": "REVIEW",
-      "reason": "Advisories externos requieren revisi\u00f3n actual.",
+      "reason": "Advisories externos requieren revisión actual.",
       "logs_reviewed": false,
       "evidence_executed": false,
       "acceptance_revision": "2026-10-16-continuity-v1"
@@ -134,7 +134,7 @@
       "input_fingerprint": "1fe18aede717ed59ef8205cd4f4299e918827ddd4acdd8beeab07e6d63eb32b5",
       "head_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
       "decision": "REUSE",
-      "reason": "Ejecuci\u00f3n y registros revisados; alcance acotado.",
+      "reason": "Ejecución y registros revisados; alcance acotado.",
       "logs_reviewed": true,
       "evidence_executed": true,
       "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
@@ -199,7 +199,7 @@
         "input_fingerprint": "c3a65efcec8d8bd0da76de9421bce46f9a9694aa785a1d05d31b555d547fc7b2",
         "head_sha": "b50826167714fd0126746bfbe3d34bc15d65d33f",
         "decision": "REVIEW",
-        "reason": "Revisi\u00f3n por perfil. Este corte no prueba ausencia de otras corridas.",
+        "reason": "Revisión por perfil. Este corte no prueba ausencia de otras corridas.",
         "logs_reviewed": false,
         "evidence_executed": false
       },
@@ -510,7 +510,7 @@
     "verified_run_sha": "e9e57d7897d355d538cb15018397bdbfe3bc544e",
     "verified_run_id": 45201778979,
     "new_technical_sha": "a9285c438ef434b8855b5f6b284f1ec6474e3cab",
-    "unresolved_inverse_hyperbolic_cases": "DV-HI-01..10: implementaci\u00f3n pendiente de certificaci\u00f3n",
+    "unresolved_inverse_hyperbolic_cases": "DV-HI-01..10: implementación pendiente de certificación",
     "lite_protection_sha": "649c068f9d4d41f9a8a1bb07b2c7cb484f802a44",
     "lite_previous_cumulative_run_id": 45210932463,
     "lite_previous_cumulative_logs_reviewed": true,
@@ -549,5 +549,106 @@
     "lite_pole_guards_run_id": 45572462518,
     "lite_pole_guards_status": "SUCCESS",
     "lite_pole_guards_logs_reviewed": true
+  },
+  "v2_reconciliation": {
+    "prior_evidence": {
+      "cumulative": {
+        "gate": "cumulative",
+        "input_fingerprint": "verified-8b130c1ed3abc2935dbf4d910649c006b0d1c445",
+        "head_sha": "8b130c1ed3abc2935dbf4d910649c006b0d1c445",
+        "evidence_sha": "8b130c1ed3abc2935dbf4d910649c006b0d1c445",
+        "decision": "REUSE",
+        "reason": "Ejecución y registros revisados; alcance acotado (3056 PASS, 13 XFAIL, 34 TODO).",
+        "logs_reviewed": true,
+        "evidence_executed": true,
+        "acceptance_revision": "2026-10-16-continuity-v1",
+        "run_id": 45737280683,
+        "jobs": [
+          {
+            "id": 139633455505,
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      "h1d": {
+        "gate": "h1d",
+        "input_fingerprint": "3d1977707f95188e4c6aefe4c51185b1d9e6679730c2c34df54b57f3a734b2d8",
+        "head_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
+        "decision": "REUSE",
+        "reason": "Ejecución y registros revisados; alcance acotado.",
+        "logs_reviewed": true,
+        "evidence_executed": true,
+        "acceptance_revision": "2026-10-16-continuity-v1",
+        "run_id": 45572462464,
+        "evidence_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
+        "jobs": [
+          {
+            "id": 139062212137,
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      "security": {
+        "gate": "security",
+        "input_fingerprint": "94bfe4c032668c90c738dff584fabe9d34e6f14ba1592a92f4b6b6ddf3ebefc8",
+        "head_sha": "6ae37a1bda2dd7dab354cb6f5a31d731fe52fd63",
+        "decision": "REVIEW",
+        "reason": "Advisories externos requieren revisión actual.",
+        "logs_reviewed": false,
+        "evidence_executed": false,
+        "acceptance_revision": "2026-10-16-continuity-v1"
+      },
+      "scientific": {
+        "gate": "scientific",
+        "input_fingerprint": "1fe18aede717ed59ef8205cd4f4299e918827ddd4acdd8beeab07e6d63eb32b5",
+        "head_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
+        "decision": "REUSE",
+        "reason": "Ejecución y registros revisados; alcance acotado.",
+        "logs_reviewed": true,
+        "evidence_executed": true,
+        "acceptance_revision": "2026-10-17-scientific-through-X19-file-read-v1",
+        "run_id": 45572462594,
+        "evidence_sha": "0000dbfcb0006e26d198f979fd2ee393bba41f1e",
+        "jobs": [
+          {
+            "id": 139062212076,
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      }
+    },
+    "artifact_verified": true,
+    "tr324": {
+      "run_id": 45920446553,
+      "job_id": 140249641103,
+      "artifact_id": 15164392007,
+      "sha": "aa89238d114f42f12b648ca420c8c29f253cf5c6",
+      "counts": {
+        "REVIEW_TEST_OK": 135,
+        "REVIEW_CONTEXT_ONLY": 119,
+        "REVIEW_NO_MAPPED_TEST": 70
+      },
+      "certification_pass_count": 0
+    },
+    "mv153": {
+      "run_id": 45920446530,
+      "job_id": 140249641318,
+      "artifact_id": 15164457066,
+      "sha": "aa89238d114f42f12b648ca420c8c29f253cf5c6",
+      "counts": {
+        "REVIEW_TEST_OK": 127,
+        "REVIEW_NO_MAPPED_TEST": 26
+      },
+      "certification_pass_count": 0
+    },
+    "peer": {
+      "sha": "1342b0f0d28cb77080933fa959735c19ac7ed421",
+      "cumulative_run": 45923550286,
+      "security_run": 45923556047,
+      "security_status": "in_progress"
+    }
   }
 }
