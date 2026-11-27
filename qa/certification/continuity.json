@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 651,
+  "revision": 652,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "1660f2026bd60a2fe03746cfbca3c6f3b84cdf89",
@@ -39,9 +39,9 @@
     }
   },
   "next_action": {
-    "id": "TR324-V2-EVALUATION-RECONCILE-IDENTITIES",
+    "id": "TR324-V2-IDENTITIES-BILATERAL",
     "status": "IN_PROGRESS",
-    "action": "Revisar TR324 Plus 46082991290 (25 IDs antes sin mapeo; 7 atribuciones de rango antiguas), gates Lite 46082947663/46082947585/46082947685/46082947602 y Plus 46082991288/46082991260/46082991322/46082991302, MV153 Plus; después lote ID 40 por producto con fuentes congeladas y oráculos independientes. Mantener S25, SG28/DIST, EV-D-01 BLOCKED; no duplicar."
+    "action": "TR324 EV bilateral verificado (61 sin mapeo por producto). Revisar gate científico Lite 46082947602 y acumulativo/CI/sintaxis Plus 46082991288/46082991322/46082991302; luego lote de 40 identidades por producto con fuente congelada, oráculos independientes, dominio y controles negativos; CL/GR siguientes. S25, SG28/DIST y EV-D-01 BLOCKED; no duplicar."
   },
   "blockers": [
     {
@@ -79,7 +79,7 @@
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md",
     "qa/certification/BATCH_80_01.md"
   ],
-  "updated_utc": "2026-11-27T23:31:51Z",
+  "updated_utc": "2026-11-27T23:33:47Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
@@ -713,6 +713,50 @@
       ],
       "reason": "JUnit verde de it.fails y validación UNSUPPORTED no prueban resultado matemático; preservar conteos crudos.",
       "certification_pass_count": 0
+    },
+    "peer_tr324": {
+      "sha": "fe90cd2729a09fabfe7a2d5a22223902b20cd496",
+      "run_id": 46082991290,
+      "job_id": 140786037995,
+      "artifact_id": 15237069916,
+      "junit_sha256": "0787f5359d0e2d13fafb1cb02e217826482da00a6739901ab5463453196b8f4e",
+      "artifact_verified": true,
+      "counts": {
+        "REVIEW_TEST_OK": 192,
+        "REVIEW_CONTEXT_ONLY": 70,
+        "REVIEW_NO_MAPPED_TEST": 61,
+        "REVIEW_SKIPPED": 1
+      },
+      "certification_pass_count": 0,
+      "transition_ids": [
+        "EV-I-02",
+        "EV-I-03",
+        "EV-I-04",
+        "EV-I-05",
+        "EV-I-06",
+        "EV-I-08",
+        "EV-I-11",
+        "EV-H-02",
+        "EV-H-03",
+        "EV-H-05",
+        "EV-H-06",
+        "EV-H-07",
+        "EV-H-08",
+        "EV-H-09",
+        "EV-H-11",
+        "EV-H-12",
+        "EV-HI-02",
+        "EV-HI-03",
+        "EV-HI-05",
+        "EV-HI-06",
+        "EV-HI-07",
+        "EV-HI-08",
+        "EV-HI-09",
+        "EV-HI-11",
+        "EV-HI-12"
+      ],
+      "tests_passed": 762,
+      "xfailed": 1
     }
   },
   "pending_tr324_v2": {
@@ -846,7 +890,51 @@
     },
     "peer": {
       "technical_sha": "fe90cd2729a09fabfe7a2d5a22223902b20cd496",
-      "run_id": 46082991290
+      "run_id": 46082991290,
+      "tr324_observations": {
+        "sha": "fe90cd2729a09fabfe7a2d5a22223902b20cd496",
+        "run_id": 46082991290,
+        "job_id": 140786037995,
+        "artifact_id": 15237069916,
+        "junit_sha256": "0787f5359d0e2d13fafb1cb02e217826482da00a6739901ab5463453196b8f4e",
+        "artifact_verified": true,
+        "counts": {
+          "REVIEW_TEST_OK": 192,
+          "REVIEW_CONTEXT_ONLY": 70,
+          "REVIEW_NO_MAPPED_TEST": 61,
+          "REVIEW_SKIPPED": 1
+        },
+        "certification_pass_count": 0,
+        "transition_ids": [
+          "EV-I-02",
+          "EV-I-03",
+          "EV-I-04",
+          "EV-I-05",
+          "EV-I-06",
+          "EV-I-08",
+          "EV-I-11",
+          "EV-H-02",
+          "EV-H-03",
+          "EV-H-05",
+          "EV-H-06",
+          "EV-H-07",
+          "EV-H-08",
+          "EV-H-09",
+          "EV-H-11",
+          "EV-H-12",
+          "EV-HI-02",
+          "EV-HI-03",
+          "EV-HI-05",
+          "EV-HI-06",
+          "EV-HI-07",
+          "EV-HI-08",
+          "EV-HI-09",
+          "EV-HI-11",
+          "EV-HI-12"
+        ],
+        "tests_passed": 762,
+        "xfailed": 1
+      }
     },
     "tr324_observations": {
       "sha": "fcbab6e41ce916ab710ab367ff05b7b2c64c0917",
@@ -885,6 +973,31 @@
         "EV-I-12"
       ]
     },
-    "reason": "Harness y pruebas individuales corregidos; TR324 Lite verificado, Plus pendiente, revisar gates de ambos SHA. Sin nuevos PASS completos."
+    "reason": "TR324, acumulativo, H1d y CI Lite verificados; gate científico pendiente.",
+    "gate_observations": {
+      "cumulative": {
+        "run_id": 46082947663,
+        "job_id": 140785894846,
+        "conclusion": "success",
+        "passed": 3089,
+        "expected_fail": 10,
+        "todo": 34
+      },
+      "h1d": {
+        "run_id": 46082947585,
+        "job_id": 140785894418,
+        "conclusion": "success",
+        "passed": 22
+      },
+      "ci": {
+        "run_id": 46082947685,
+        "job_id": 140785894652,
+        "conclusion": "success"
+      },
+      "scientific": {
+        "run_id": 46082947602,
+        "status": "in_progress"
+      }
+    }
   }
 }
