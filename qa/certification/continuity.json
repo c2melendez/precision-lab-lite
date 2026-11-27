@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 645,
+  "revision": 646,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "aa89238d114f42f12b648ca420c8c29f253cf5c6",
@@ -41,7 +41,7 @@
   "next_action": {
     "id": "TR324-V2-REFRESH-REPAIR",
     "status": "IN_PROGRESS",
-    "action": "Corregir los filtros de certification-tr324-v2.yml para que los cambios de motor, parser, pruebas y fuentes relevantes regeneren observaciones; después verificar TR324 Plus actualizado y resolver IT-HI-06/04 (ramas reales, discrepancia de fuente IT-HI-06, HTTP/literal), manteniendo revisión compleja/UI y bloqueos."
+    "action": "WAIT/RECONCILE: revisar los runs TR324 45942624538 Lite y 45942633766 Plus y gates acumulativos/H1d del SHA técnico correspondiente, obtener JSON/JUnit y comparar observaciones por ID. Después corregir IT-HI-06/04 Plus con fuente y oráculo por ramas, canal HTTP/literal; mantener revisión compleja/UI y bloqueos. No duplicar CI."
   },
   "blockers": [
     {
@@ -79,7 +79,7 @@
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md",
     "qa/certification/BATCH_80_01.md"
   ],
-  "updated_utc": "2026-11-27T04:49:00Z",
+  "updated_utc": "2026-11-27T04:54:40Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
@@ -650,5 +650,24 @@
       "security_run": 45923556047,
       "security_status": "in_progress"
     }
+  },
+  "pending_tr324_v2": {
+    "status": "WAIT",
+    "technical_sha": "63e0abf73fd83c7edeec210dc76d94863193ce8e",
+    "workflow": ".github/workflows/certification-tr324-v2.yml",
+    "run_id": 45942624538,
+    "cumulative_run_id": 45942624470,
+    "cumulative_input_fingerprint": "e111675b135cdfe083feb7cf1699c1cc4a09f85746c70c29eca8913a8f015de1",
+    "h1d_run_id": 45942624490,
+    "ci_run_id": 45942624483,
+    "runner_run_id": 45942624542,
+    "peer": {
+      "technical_sha": "5acc018da87cfbcd7299152c1593b0b09cd3ed1e",
+      "run_id": 45942633766,
+      "cumulative_run_id": 45942633674,
+      "h1d_run_id": 45942633921
+    },
+    "prior_baseline_retained": true,
+    "reason": "El baseline aceptado anterior se conserva hasta revisar ejecución nueva; no reutilizar automáticamente en SHA técnico distinto."
   }
 }
