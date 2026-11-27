@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 647,
+  "revision": 648,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "63e0abf73fd83c7edeec210dc76d94863193ce8e",
@@ -39,9 +39,9 @@
     }
   },
   "next_action": {
-    "id": "TR324-V2-IT-HI-04-06-VERIFY",
+    "id": "TR324-V2-FOUR-PRIMITIVES-VERIFY",
     "status": "IN_PROGRESS",
-    "action": "Revisar TR324 Plus 45945338885 y gates 45945338973/45945338878/45945338887/45945338977 en SHA edbd2f1; comparar JSON/JUnit por ID, diagnosticar fallos de parser/HTTP/límites, después abordar IT-HI-09 e IT-I-04/05/06, canales y mapeo según contrato; S25 y SG28/DIST y EV-D-01 BLOCKED. No duplicar."
+    "action": "Revisar TR324 Plus 46039903624 y gates 46039903541/46039903513/46039903575/46039903577 para SHA 630f1e4; comparar JSON/JUnit y diagnosticar fallos; después soporte Lite IT-I-05/06/11 e IT-HI-05/06, mapeos y canales pendientes según contrato; S25, SG28/DIST y EV-D-01 BLOCKED. No duplicar."
   },
   "blockers": [
     {
@@ -79,7 +79,7 @@
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md",
     "qa/certification/BATCH_80_01.md"
   ],
-  "updated_utc": "2026-11-27T05:22:00Z",
+  "updated_utc": "2026-11-27T17:12:07Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
@@ -667,41 +667,64 @@
   },
   "pending_tr324_v2": {
     "status": "WAIT",
-    "technical_sha": "edbd2f18e71a7a3d69a2e02acca36b83afa556c8",
+    "technical_sha": "630f1e4bfe9d985a6c35822fd3231d490bc9c138",
     "product": "plus",
     "workflow": ".github/workflows/certification-tr324-v2.yml",
-    "run_id": 45945338885,
-    "job_id": 140328630039,
-    "cumulative_run_id": 45945338973,
-    "h1d_run_id": 45945338878,
-    "ci_run_id": 45945338887,
-    "native_syntax_run_id": 45945338977,
-    "security_run_id": 45945338882,
-    "runner_run_id": 45945338886,
+    "run_id": 46039903624,
+    "job_id": 140644681473,
+    "cumulative_run_id": 46039903541,
+    "cumulative_input_fingerprint": "591b6a56c4380baddfad0a3df8419a5e8bb1f18fb703414a9e0327b5bdb517df",
+    "h1d_run_id": 46039903513,
+    "ci_run_id": 46039903575,
+    "native_syntax_run_id": 46039903577,
+    "security_run_id": 46039903658,
+    "runner_run_id": 46039903542,
     "prior_verified_run": {
       "status": "WAIT",
-      "technical_sha": "63e0abf73fd83c7edeec210dc76d94863193ce8e",
+      "technical_sha": "edbd2f18e71a7a3d69a2e02acca36b83afa556c8",
+      "product": "plus",
       "workflow": ".github/workflows/certification-tr324-v2.yml",
-      "run_id": 45942624538,
-      "cumulative_run_id": 45942624470,
-      "cumulative_input_fingerprint": "e111675b135cdfe083feb7cf1699c1cc4a09f85746c70c29eca8913a8f015de1",
-      "h1d_run_id": 45942624490,
-      "ci_run_id": 45942624483,
-      "runner_run_id": 45942624542,
-      "peer": {
-        "technical_sha": "5acc018da87cfbcd7299152c1593b0b09cd3ed1e",
-        "run_id": 45942633766,
-        "cumulative_run_id": 45942633674,
-        "h1d_run_id": 45942633921
+      "run_id": 45945338885,
+      "job_id": 140328630039,
+      "cumulative_run_id": 45945338973,
+      "h1d_run_id": 45945338878,
+      "ci_run_id": 45945338887,
+      "native_syntax_run_id": 45945338977,
+      "security_run_id": 45945338882,
+      "runner_run_id": 45945338886,
+      "prior_verified_run": {
+        "status": "WAIT",
+        "technical_sha": "63e0abf73fd83c7edeec210dc76d94863193ce8e",
+        "workflow": ".github/workflows/certification-tr324-v2.yml",
+        "run_id": 45942624538,
+        "cumulative_run_id": 45942624470,
+        "cumulative_input_fingerprint": "e111675b135cdfe083feb7cf1699c1cc4a09f85746c70c29eca8913a8f015de1",
+        "h1d_run_id": 45942624490,
+        "ci_run_id": 45942624483,
+        "runner_run_id": 45942624542,
+        "peer": {
+          "technical_sha": "5acc018da87cfbcd7299152c1593b0b09cd3ed1e",
+          "run_id": 45942633766,
+          "cumulative_run_id": 45942633674,
+          "h1d_run_id": 45942633921
+        },
+        "prior_baseline_retained": true,
+        "reason": "El baseline aceptado anterior se conserva hasta revisar ejecución nueva; no reutilizar automáticamente en SHA técnico distinto."
       },
+      "cases": [
+        "IT-HI-04",
+        "IT-HI-06"
+      ],
       "prior_baseline_retained": true,
-      "reason": "El baseline aceptado anterior se conserva hasta revisar ejecución nueva; no reutilizar automáticamente en SHA técnico distinto."
+      "reason": "Corrección publicada, CI iniciado. No contar nuevos PASS completos."
     },
     "cases": [
-      "IT-HI-04",
-      "IT-HI-06"
+      "IT-I-04",
+      "IT-I-05",
+      "IT-I-06",
+      "IT-HI-09"
     ],
     "prior_baseline_retained": true,
-    "reason": "Corrección publicada, CI iniciado. No contar nuevos PASS completos."
+    "reason": "Cuatro reparaciones publicadas, CI iniciado; verificar evidencia por ID antes de aceptar."
   }
 }
