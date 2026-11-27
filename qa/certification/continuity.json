@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 649,
+  "revision": 650,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "63e0abf73fd83c7edeec210dc76d94863193ce8e",
@@ -39,9 +39,9 @@
     }
   },
   "next_action": {
-    "id": "TR324-V2-LITE-FIVE-PRIMITIVES-VERIFY",
+    "id": "TR324-V2-LITE-GATES-AND-MAPPING",
     "status": "IN_PROGRESS",
-    "action": "Revisar TR324 Lite 46042450137 y gates 46042450257/46042450293/46042450256/46042450311 para SHA 1660f20; validar 5 casos y controles, comparar artefactos; revisar CI Plus 46039903575; después brechas de mapeo por familia y canal, distinguir prueba negativa de capability y anclajes; S25, SG28/DIST y EV-D-01 BLOCKED. No duplicar."
+    "action": "Reconciliar acumulativo Lite 46042450257, H1d 46042450293, CI 46042450256, UI 46042450311 de SHA 1660f20 y CI Plus 46039903575; TR324 Lite ya revisado. Después abordar brechas por familia, 70 Lite/86 Plus sin mapeo, anclajes fuente y distinguir expected fail/prueba de capability negativa; evitar duplicados; S25, SG28/DIST, EV-D-01 BLOCKED."
   },
   "blockers": [
     {
@@ -79,7 +79,7 @@
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md",
     "qa/certification/BATCH_80_01.md"
   ],
-  "updated_utc": "2026-11-27T17:31:08Z",
+  "updated_utc": "2026-11-27T17:31:48Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
@@ -622,18 +622,29 @@
     },
     "artifact_verified": true,
     "tr324": {
-      "run_id": 45942624538,
-      "job_id": 140320115612,
-      "artifact_id": 15172893111,
-      "sha": "63e0abf73fd83c7edeec210dc76d94863193ce8e",
+      "sha": "1660f2026bd60a2fe03746cfbca3c6f3b84cdf89",
+      "run_id": 46042450137,
+      "job_id": 140653316067,
+      "artifact_id": 15220806761,
+      "junit_sha256": "4ec784a35266face880f2fc9eb675842889d1bb01e08e9d649cc9064bcd12b08",
+      "artifact_verified": true,
       "counts": {
         "REVIEW_TEST_OK": 135,
         "REVIEW_CONTEXT_ONLY": 119,
         "REVIEW_NO_MAPPED_TEST": 70
       },
       "certification_pass_count": 0,
-      "artifact_verified": true,
-      "transition_ids": []
+      "positive_recovery_ids": [
+        "IT-I-05",
+        "IT-I-06",
+        "IT-I-11",
+        "IT-HI-05",
+        "IT-HI-06"
+      ],
+      "junit_testcases": 795,
+      "failures": 0,
+      "errors": 0,
+      "reason": "Se revisó JUnit y código: reemplazo de pruebas negativas/expected fail por pruebas de resultado matemático; gates acumulativos aún activos."
     },
     "mv153": {
       "run_id": 45920446530,
@@ -653,16 +664,18 @@
       "security_status": "in_progress"
     },
     "prior_tr324": {
-      "run_id": 45920446553,
-      "job_id": 140249641103,
-      "artifact_id": 15164392007,
-      "sha": "aa89238d114f42f12b648ca420c8c29f253cf5c6",
+      "run_id": 45942624538,
+      "job_id": 140320115612,
+      "artifact_id": 15172893111,
+      "sha": "63e0abf73fd83c7edeec210dc76d94863193ce8e",
       "counts": {
         "REVIEW_TEST_OK": 135,
         "REVIEW_CONTEXT_ONLY": 119,
         "REVIEW_NO_MAPPED_TEST": 70
       },
-      "certification_pass_count": 0
+      "certification_pass_count": 0,
+      "artifact_verified": true,
+      "transition_ids": []
     },
     "tr324_review_correction": {
       "artifact_id": 15172893111,
@@ -768,6 +781,31 @@
       "IT-HI-06"
     ],
     "prior_baseline_retained": true,
-    "reason": "Cinco reparaciones publicadas Lite, CI iniciado; verificar ejecución y no contar pruebas negativas como resultados matemáticos."
+    "reason": "TR324 Lite verificado, faltan acumulativo/H1d/CI/UI; no duplicar.",
+    "tr324_observations": {
+      "sha": "1660f2026bd60a2fe03746cfbca3c6f3b84cdf89",
+      "run_id": 46042450137,
+      "job_id": 140653316067,
+      "artifact_id": 15220806761,
+      "junit_sha256": "4ec784a35266face880f2fc9eb675842889d1bb01e08e9d649cc9064bcd12b08",
+      "artifact_verified": true,
+      "counts": {
+        "REVIEW_TEST_OK": 135,
+        "REVIEW_CONTEXT_ONLY": 119,
+        "REVIEW_NO_MAPPED_TEST": 70
+      },
+      "certification_pass_count": 0,
+      "positive_recovery_ids": [
+        "IT-I-05",
+        "IT-I-06",
+        "IT-I-11",
+        "IT-HI-05",
+        "IT-HI-06"
+      ],
+      "junit_testcases": 795,
+      "failures": 0,
+      "errors": 0,
+      "reason": "Se revisó JUnit y código: reemplazo de pruebas negativas/expected fail por pruebas de resultado matemático; gates acumulativos aún activos."
+    }
   }
 }
