@@ -6,6 +6,18 @@ on:
       - 'scripts/certification/batch_v2.py'
       - 'scripts/certification/test_batch_v2.py'
       - '.github/workflows/certification-tr324-v2.yml'
+      - 'qa/certification/legacy_sources/MANIFEST.json'
+      - 'qa/certification/legacy_sources/*.gz'
+      - 'qa/certification/matrices_ejecutables.jsonl'
+      - 'src/**'
+      - 'tests/trigonometry*.audit.test.ts'
+      - 'tests/trigAliasDegreeSingularity.audit.test.ts'
+      - 'tests/exhaustive-module01-trigonometry.test.ts'
+      - 'tests/support/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vite.config.ts'
+      - 'tsconfig*.json'
   workflow_dispatch:
 permissions:
   contents: read
