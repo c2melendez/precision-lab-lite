@@ -25,6 +25,23 @@ class BatchV2Tests(unittest.TestCase):
         self.assertEqual(row_state(mapped["IT-HI-03"]),"FAIL_OBSERVED")
         self.assertEqual(len(other),1)
 
+    def test_trig_context_is_not_acceptance(self):
+        ids=["EC-D-01","EC-D-02","LM-HI-01"]
+        xml="""<testsuite>
+        <testcase classname="tests/trigonometryEcD01.audit.test.ts" name="EC-D-01 &gt; solves both roots"/>
+        <testcase classname="tests.test_trigonometry_lm_hi01" name="test_service"/>
+        <testcase classname="tests/trigonometryEcD02.audit.test.ts" name="EC-D-02 &gt; anchors the equation in the frozen matrix"/>
+        <testcase classname="tests/test_trigonometry_ec_d01_d02" name="test_service"/>
+        </testsuite>"""
+        with tempfile.TemporaryDirectory() as temp:
+            path=Path(temp)/"report.xml"
+            path.write_text(xml)
+            mapped,other=observations(path,ids,"TR324")
+        self.assertEqual(row_state(mapped["EC-D-01"]),"REVIEW_CONTEXT_ONLY")
+        self.assertEqual(row_state(mapped["LM-HI-01"]),"REVIEW_CONTEXT_ONLY")
+        self.assertEqual(row_state(mapped["EC-D-02"]),"REVIEW_NO_MAPPED_TEST")
+        self.assertEqual(len(other),2)
+
     def test_conservative_mapping(self):
         xml = """<testsuites><testsuite>
         <testcase classname="tests/matricesMvA01to25.audit.test.ts" name="Group MV-A-01..25 &gt; MV-A-04 evaluates"/>

@@ -70,6 +70,27 @@ def trig_matches(name, ids):
             result.add(token)
     return result
 
+def trig_context(case, leaf, ids):
+    """Candidate attribution only; a single-case suite is not an acceptance oracle."""
+    direct = trig_matches(leaf, ids)
+    name = case.get("name", "")
+    classname = case.get("classname", "")
+    # Only exact, single-case suite filenames; never expand a range or batch.
+    match = re.fullmatch(r"(?:tests[/.])?(?:test_trigonometry_|trigonometry)(EV|EC|IN|LM|DV|IT|ID|CL|GR)[_-]?(HI|D|I|H)?[_-]?(\d{2})(?:_matrix_latex|\.audit\.test\.ts)?", classname, re.I)
+    suite = set()
+    if match:
+        candidate = "-".join(v.upper() for v in match.groups() if v)
+        if candidate in ids:
+            suite.add(candidate)
+    if " > " in name:
+        group = name.rsplit(" > ",1)[0]
+        # Range summaries (including abbreviated endpoints) are not unique.
+        if not re.search(r"\.\.|through|to\d|–|—|\bto\b",group,re.I):
+            suite |= trig_matches(group, ids)
+    if direct:
+        return direct, "explicit_leaf"
+    return suite, "single_case_context"
+
 def product_is_vitest(case):
     return case.get("classname", "").endswith(".audit.test.ts")
 
@@ -79,14 +100,18 @@ def observations(xml, ids, matrix='MV153'):
     for case in ET.parse(xml).iter("testcase"):
         name = case.get("name","")
         leaf = name.rsplit(" > ",1)[-1] if product_is_vitest(case) else name
-        matches = trig_matches(leaf, mapped) if matrix == "TR324" else {f"MV-{m[0].upper()}-{m[1]}" for m in ID_RE.findall(leaf)}
+        basis = "explicit_leaf"
+        if matrix == "TR324":
+            matches,basis = trig_context(case,leaf,mapped)
+        else:
+            matches = {f"MV-{m[0].upper()}-{m[1]}" for m in ID_RE.findall(leaf)}
         # Presence-only checks are not execution of the mathematical case.
-        if matrix == "TR324" and re.search(r"matrix contains|source row|source integrity|source.*present", leaf, re.I):
+        if matrix == "TR324" and re.search(r"matrix contains|source[_ ]row|source integrity|source.*present|anchors? .*?(?:row|matrix|oracle|equation)|^test_source(?:$|_row$)|^test_original_row$", leaf, re.I):
             matches = set()
         status = ("FAIL_OBSERVED" if case.find("failure") is not None or case.find("error") is not None
                   else "SKIPPED_OBSERVED" if case.find("skipped") is not None
                   else "TEST_OK_OBSERVED")
-        item = {"name":name,"classname":case.get("classname",""),"status":status,"seconds":case.get("time","")}
+        item = {"name":name,"classname":case.get("classname",""),"status":status,"seconds":case.get("time",""),"mapping_basis":basis}
         if len(matches)==1 and next(iter(matches)) in mapped:
             mapped[next(iter(matches))].append(item)
         else:
@@ -100,7 +125,7 @@ def row_state(items):
     if "SKIPPED_OBSERVED" in states:
         return "REVIEW_SKIPPED"
     if states=={"TEST_OK_OBSERVED"}:
-        return "REVIEW_TEST_OK"
+        return "REVIEW_CONTEXT_ONLY" if all(i.get("mapping_basis")=="single_case_context" for i in items) else "REVIEW_TEST_OK"
     return "REVIEW_NO_MAPPED_TEST"
 
 def report(root, xml, product, commit, run, attempt, exit_code, matrix='MV153'):
