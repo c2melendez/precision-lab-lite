@@ -51,3 +51,16 @@ describe('TR324 definite integrals numeric observation',()=>{
   expect(Math.abs(row.numeric_oracle-0.307426799)).toBeGreaterThan(0.00005);
  });
 });
+
+describe('ID-D-12 improper logarithmic integral controls',()=>{
+ it('ID-D-12 reversed, full interval and selected variable',()=>{
+  const operand=parseExpression('ln(sin(y))','RAD').algebrite;
+  expect(real(calcDefiniteIntegral(operand,'y',Math.PI/2,0).resultLatex)).toBeCloseTo(Math.PI*Math.LN2/2,12);
+  expect(real(calcDefiniteIntegral(operand,'y',0,Math.PI).resultLatex)).toBeCloseTo(-Math.PI*Math.LN2,12);
+  expect(real(calcDefiniteIntegral(operand,'y',Math.PI/2,Math.PI).resultLatex)).toBeCloseTo(-Math.PI*Math.LN2/2,12);
+ });
+ it('base ten is not the natural-log identity',()=>{
+  const operand=parseExpression('log(sin(x))','RAD').algebrite;
+  expect(operand).not.toBe(parseExpression('ln(sin(x))','RAD').algebrite);
+ });
+});

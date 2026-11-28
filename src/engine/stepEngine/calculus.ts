@@ -650,6 +650,37 @@ export function calcDefiniteIntegral(
   }
   assertNoBareFunction(exprAlgebrite, variable);
   exprAlgebrite = rewriteReciprocalFunctions(exprAlgebrite);
+  // ID-D-12: symmetry and sin(2t)=2 sin(t) cos(t) give the exact
+  // improper integral over [0, pi/2]. The logarithmic endpoints are
+  // integrable. Use only the exact natural-log operand and exact bounds.
+  // Do not extend this identity to arbitrary intervals or base-ten logs.
+  if (/^[A-Za-z]$/.test(variable)) {
+    const x = variable;
+    const unwrap = (s: string): string => {
+      while (s.startsWith("(") && s.endsWith(")")) {
+        let depth = 0, close = -1;
+        for (let i=0; i<s.length; i++) {
+          if (s[i] === "(") depth++;
+          if (s[i] === ")" && --depth === 0) { close=i; break; }
+        }
+        if (close !== s.length-1) break;
+        s=s.slice(1,-1);
+      }
+      return s;
+    };
+    const src=unwrap(exprAlgebrite.replace(/\s+/g,""));
+    const logCall=/^(?:ln|log)\((.*)\)$/.exec(src);
+    const sinCall=logCall && /^sin\((.*)\)$/.exec(unwrap(logCall[1]));
+    const endpoints=[0,Math.PI/2,Math.PI];
+    if (sinCall && unwrap(sinCall[1])===x && endpoints.includes(lower) && endpoints.includes(upper)) {
+      const factor=(endpoints.indexOf(upper)-endpoints.indexOf(lower))/2;
+      const value=-factor*Math.PI*Math.LN2;
+      return {resultLatex:String(value), confidence:"NUMERIC_FALLBACK", steps:[
+        {id:"original",latex:exprAlgebrite,explanation:"Integral impropia con singularidad logarítmica integrable."},
+        {id:"result",latex:String(value),explanation:"Simetría de seno y fórmula de ángulo doble; se evalúan los límites impropios, no el valor en el extremo."},
+      ]};
+    }
+  }
   assertInverseHyperbolicIntegralDomain(exprAlgebrite, variable, lower, upper);
   const endpointValue = inverseHyperbolicEndpointIntegral(exprAlgebrite, variable, lower, upper);
   if (endpointValue !== null) {
