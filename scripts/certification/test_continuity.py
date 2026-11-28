@@ -139,6 +139,18 @@ class ContinuityTests(unittest.TestCase):
         self.run['checkout_sha'] = 'unavailable'
         self.assertEqual(self.decision(), 'REFRESH')
 
+    def test_newer_unavailable_checkout_blocks_older_green(self):
+        newer = dict(self.run, id=2, created_at='2026-10-16T20:30:00Z',
+                     checkout_sha='unavailable')
+        self.live['runs'] = [self.run, newer]
+        self.assertEqual(self.decision(), 'REFRESH')
+
+    def test_mismatched_checkout_on_equivalent_documentary_event(self):
+        self.trees['merge'] = copy.deepcopy(self.base)
+        self.trees['merge']['src/math.ts'][2] = 'new input'
+        self.run['checkout_sha'] = 'merge'
+        self.assertEqual(self.decision(), 'REVIEW')
+
     def test_incomplete_or_duplicate_jobs_cannot_reuse(self):
         job = copy.deepcopy(self.run['jobs'][0])
         self.run['jobs'] = [job, dict(job)]

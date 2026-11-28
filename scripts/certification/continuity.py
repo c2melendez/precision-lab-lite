@@ -110,17 +110,34 @@ def plan(state, live, tree_at, now=None):
                 same = fingerprint(cache[candidate], gate,
                                    state['prose_only_paths']) == inputs
             except (KeyError, ValueError, subprocess.CalledProcessError):
-                unavailable.append(run['id'])
+                # An unavailable executed tree cannot be silently superseded
+                # by an older green when this event may cover the same inputs.
+                unavailable.append(run)
                 continue
             if same:
                 relevant.append((run, bool(observed)))
-            elif observed and run['head_sha'] == live['head_sha']:
-                # A different executed tree cannot cover this HEAD even
-                # when Actions metadata advertises the same event SHA.
-                relevant.append((run, False))
+            elif observed:
+                try:
+                    event = run['head_sha']
+                    if event not in cache:
+                        cache[event] = tree_at(event)
+                    event_same = fingerprint(cache[event], gate,
+                                             state['prose_only_paths']) == inputs
+                except (KeyError, ValueError, subprocess.CalledProcessError):
+                    unavailable.append(run)
+                    continue
+                if event_same:
+                    # A different executed tree cannot cover the current
+                    # inputs even when the event tree is equivalent.
+                    relevant.append((run, False))
         # API order is not authoritative; most recent attempt supersedes old green.
-        relevant.sort(key=lambda pair: (parse_time(pair[0]['created_at']), pair[0].get('run_attempt', 1), pair[0]['id']), reverse=True)
-        if relevant:
+        def order(run):
+            return (parse_time(run['created_at']), run.get('run_attempt', 1), run['id'])
+        relevant.sort(key=lambda pair: order(pair[0]), reverse=True)
+        if relevant and any(order(run) >= order(relevant[0][0]) for run in unavailable):
+            item.update(decision='REFRESH', reason='newer workflow observation has unavailable source objects; do not reuse older green',
+                        unavailable_run_ids=[run['id'] for run in unavailable])
+        elif relevant:
             run, checkout_verified = relevant[0]
             item['run_id'] = run['id']
             item['event_head_sha'] = run['head_sha']
@@ -149,7 +166,7 @@ def plan(state, live, tree_at, now=None):
             else:
                 item.update(decision='REVIEW', reason='cancelled/skipped/neutral run is not PASS; establish why before rerunning')
         elif unavailable:
-            item.update(decision='REFRESH', reason='workflow runs exist but source objects unavailable; fetch evidence commits before scheduling', unavailable_run_ids=unavailable)
+            item.update(decision='REFRESH', reason='workflow runs exist but source objects unavailable; fetch evidence commits before scheduling', unavailable_run_ids=[run['id'] for run in unavailable])
         results.append(item)
     return {'repository': state['repository'], 'branch': state['canonical_branch'],
             'observed_head': live['head_sha'], 'state_revision': state['revision'],
