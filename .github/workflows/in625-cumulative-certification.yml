@@ -63,13 +63,13 @@ jobs:
           cache: npm
       - name: Install dependencies
         if: steps.certification_guard.outputs.skip != 'true'
-        run: npm ci
+        run: bash scripts/certification/frontend-runner.sh install
       - name: Typecheck
         if: steps.certification_guard.outputs.skip != 'true'
-        run: npm run typecheck
+        run: bash scripts/certification/frontend-runner.sh typecheck
       - name: Unit and parity regression
         if: steps.certification_guard.outputs.skip != 'true'
-        run: npm test
+        run: bash scripts/certification/frontend-runner.sh test
       - name: Production build
         if: steps.certification_guard.outputs.skip != 'true'
-        run: npm run build
+        run: bash scripts/certification/frontend-runner.sh build
