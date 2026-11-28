@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "scope": "principal-real-root-rational-sum",
+  "source": {
+    "repository": "c2melendez/desafio-gramatical",
+    "commit": "a9e042cfa4857ba475a81cba05b6dd26ee8fc131",
+    "path": "qa/certification/rdg/evidence/MAT-ARIT-01-v79-OP04-pass.json"
+  },
+  "cases": [
+    {
+      "id": "math-m3-aritmetica-operaciones-clasificar-intermedio-12",
+      "content_hash": "b7c19f11778ca9c04bf1ce46d6c3e99fe7d52cb01fecc56d66d1d2fe3a35f796",
+      "stimulus": "Calcula √(9/289) + 7/17 − 12/17.",
+      "expression": "sqrt(9/289)+7/17-12/17",
+      "expected": "-2/17"
+    },
+    {
+      "id": "math-m3-aritmetica-operaciones-clasificar-intermedio-13",
+      "content_hash": "f7df60455c176f12b2d0a716a31fbb7ed5e8b0535aecf7861af2d4f83d03a659",
+      "stimulus": "Calcula √(16/324) + 9/18 − 5/18.",
+      "expression": "sqrt(16/324)+9/18-5/18",
+      "expected": "4/9"
+    },
+    {
+      "id": "math-m3-aritmetica-operaciones-clasificar-intermedio-14",
+      "content_hash": "99796b8cf7582253f0f3d3d893380419fb89ef96e227069f171b06f9f46f48ff",
+      "stimulus": "Calcula √(25/361) + 11/19 − 20/19.",
+      "expression": "sqrt(25/361)+11/19-20/19",
+      "expected": "-4/19"
+    }
+  ]
+}

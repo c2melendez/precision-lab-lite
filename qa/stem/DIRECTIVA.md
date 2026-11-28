@@ -1,0 +1,4 @@
+# Piloto STEM 1
+Directiva transversal aprobada: [Academia Play, revisión congelada](https://github.com/c2melendez/Academia_Play/blob/c87be80eba0b89a00a9f702475e40f9c0cd3492f/sistema-maestro/stem/DIRECTIVA.md). Aplicar sin sustituir el protocolo local ni transferir PASS, permisos o criterios. Consultar activos de PHUMA, Academia Play y Precision Lab ante una necesidad compatible.
+
+Fixture vendorizado para ejecución offline y sin dependencias externas: [origen exacto](https://github.com/c2melendez/Academia_Play/blob/c87be80eba0b89a00a9f702475e40f9c0cd3492f/sistema-maestro/stem/arithmetic-pilot.json), blob Git fcea552a7aee4431261d195bf81a3423fc1bf544. Los tests nativos contrastan tres casos por ID. El resultado es observación de paridad limitada, no promoción de estado. No altera matrices, runner, seguridad ni continuidad. Una actualización del fixture requiere contrastar origen, hash y regresión.
