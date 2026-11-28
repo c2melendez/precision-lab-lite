@@ -28,6 +28,10 @@ No excluir `qa/certification/**`: fixtures JSONL, verificadores, contratos de ac
 
 La selección conservadora puede ejecutar de más cuando cambia un insumo ajeno al gate. Solo reducir `inputs` tras revisar dependencias reales y añadir pruebas de que no excluye regresiones. El planificador no altera checks requeridos ni sustituye los gates de cierre.
 
+## STEM-05 — identidad real de checkout
+
+El SHA del evento de Actions (`head_sha`) no necesariamente identifica el árbol ejecutado: un PR puede usar un merge sintético. El planificador exige `checkout_sha` obtenido de los logs de los pasos obligatorios, y compara su huella técnica contra HEAD. Una coincidencia del SHA del evento sin checkout comprobado queda REVIEW (o WAIT si sigue en ejecución); un checkout no recuperable queda REFRESH. La salida conserva `event_head_sha` y `evidence_sha` real por separado. Si los jobs obligatorios usan checkouts distintos, no sintetizar un SHA común: conservar REVIEW. Los jobs deben tener IDs positivos únicos, estado completed y conclusión success; metadatos incompletos no permiten REUSE. Esta mejora no omite gates, no cambia alcance de certificación ni acredita PASS.
+
 ## Formato de observaciones
 
 Ejemplo de estructura (los placeholders deben reemplazarse con datos de GitHub):
@@ -42,11 +46,12 @@ Ejemplo de estructura (los placeholders deben reemplazarse con datos de GitHub):
     "id": 123,
     "path": ".github/workflows/in625-cumulative-certification.yml",
     "head_sha": "SHA_DEL_RUN",
+    "checkout_sha": "SHA_REAL_COMPROBADO_EN_LOGS",
     "created_at": "ISO8601_UTC_DEL_RUN",
     "run_attempt": 1,
     "status": "completed",
     "conclusion": "success",
-    "jobs": [{"id": 456, "conclusion": "success"}],
+    "jobs": [{"id": 456, "status": "completed", "conclusion": "success"}],
     "logs_reviewed": false,
     "evidence_executed": false,
     "acceptance_revision": null

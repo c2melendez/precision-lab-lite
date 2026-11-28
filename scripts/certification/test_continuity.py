@@ -24,9 +24,10 @@ class ContinuityTests(unittest.TestCase):
         self.trees['head']['qa/certification/CURRENT_STATE.md'][2] = 'new prose'
         self.run = {'id': 1, 'path': '.github/workflows/test.yml', 'head_sha': 'old',
                     'created_at': '2026-10-16T20:00:00Z', 'run_attempt': 1,
+                    'checkout_sha': 'old',
                     'status': 'completed', 'conclusion': 'success', 'logs_reviewed': True,
                     'evidence_executed': True,
-                    'acceptance_revision': 'v1', 'jobs': [{'id': 20, 'conclusion': 'success'}]}
+                    'acceptance_revision': 'v1', 'jobs': [{'id': 20, 'status': 'completed', 'conclusion': 'success'}]}
         self.live = {'repository': 'o/r', 'branch': 'qa/cert', 'head_sha': 'head',
                      'fetched_at': '2026-10-16T21:00:00Z', 'runs': [self.run]}
 
@@ -112,6 +113,51 @@ class ContinuityTests(unittest.TestCase):
         self.assertEqual(self.decision(), 'REVIEW')
         self.run['logs_reviewed'] = True
         self.state['gates']['unit']['acceptance_revision'] = 'v2'
+        self.assertEqual(self.decision(), 'REVIEW')
+
+    def test_green_event_sha_without_checkout_requires_review(self):
+        del self.run['checkout_sha']
+        self.assertEqual(self.decision(), 'REVIEW')
+
+    def test_pr_checkout_with_different_technical_inputs_cannot_reuse(self):
+        self.run['head_sha'] = 'head'
+        self.trees['merge'] = copy.deepcopy(self.base)
+        self.trees['merge']['src/math.ts'][2] = 'different merge input'
+        self.run['checkout_sha'] = 'merge'
+        self.assertEqual(self.decision(), 'REVIEW')
+
+    def test_pr_checkout_equivalent_uses_real_origin_not_event_sha(self):
+        self.trees['merge'] = copy.deepcopy(self.base)
+        self.trees['unrelated_event_head'] = {'unrelated': ['100644', 'blob', 'x']}
+        self.run.update(head_sha='unrelated_event_head', checkout_sha='merge')
+        result = plan(self.state, self.live, self.trees.__getitem__, self.now)['gates'][0]
+        self.assertEqual(result['decision'], 'REUSE')
+        self.assertEqual(result['evidence_sha'], 'merge')
+        self.assertEqual(result['event_head_sha'], 'unrelated_event_head')
+
+    def test_unknown_checkout_requires_refresh(self):
+        self.run['checkout_sha'] = 'unavailable'
+        self.assertEqual(self.decision(), 'REFRESH')
+
+    def test_newer_unavailable_checkout_blocks_older_green(self):
+        newer = dict(self.run, id=2, created_at='2026-10-16T20:30:00Z',
+                     checkout_sha='unavailable')
+        self.live['runs'] = [self.run, newer]
+        self.assertEqual(self.decision(), 'REFRESH')
+
+    def test_mismatched_checkout_on_equivalent_documentary_event(self):
+        self.trees['merge'] = copy.deepcopy(self.base)
+        self.trees['merge']['src/math.ts'][2] = 'new input'
+        self.run['checkout_sha'] = 'merge'
+        self.assertEqual(self.decision(), 'REVIEW')
+
+    def test_incomplete_or_duplicate_jobs_cannot_reuse(self):
+        job = copy.deepcopy(self.run['jobs'][0])
+        self.run['jobs'] = [job, dict(job)]
+        self.assertEqual(self.decision(), 'REVIEW')
+        self.run['jobs'] = [dict(job, status='in_progress')]
+        self.assertEqual(self.decision(), 'REVIEW')
+        self.run['jobs'] = [dict(job, id=None)]
         self.assertEqual(self.decision(), 'REVIEW')
 
     def test_expired_or_future_snapshot_fails_closed(self):
