@@ -1,0 +1,405 @@
+[
+  {
+    "id": "ID-D-01",
+    "literal": "\\int_{0}^{\\pi}\\sin x\\,dx",
+    "source_expected": "2",
+    "expression": "sin(x)",
+    "lower": "0",
+    "upper": "pi",
+    "exact_oracle": "2",
+    "numeric_oracle": 2
+  },
+  {
+    "id": "ID-D-02",
+    "literal": "\\int_{0}^{\\pi/2}\\cos x\\,dx",
+    "source_expected": "1",
+    "expression": "cos(x)",
+    "lower": "0",
+    "upper": "pi/2",
+    "exact_oracle": "1",
+    "numeric_oracle": 1
+  },
+  {
+    "id": "ID-D-03",
+    "literal": "\\int_{0}^{\\pi/4}\\sec^{2}x\\,dx",
+    "source_expected": "1",
+    "expression": "sec(x)^2",
+    "lower": "0",
+    "upper": "pi/4",
+    "exact_oracle": "1",
+    "numeric_oracle": 1
+  },
+  {
+    "id": "ID-D-04",
+    "literal": "\\int_{0}^{\\pi/4}\\tan x\\,dx",
+    "source_expected": "\\frac{1}{2}\\ln 2\\approx 0.346573590",
+    "expression": "tan(x)",
+    "lower": "0",
+    "upper": "pi/4",
+    "exact_oracle": "log(2)/2",
+    "numeric_oracle": 0.34657359027997264
+  },
+  {
+    "id": "ID-D-05",
+    "literal": "\\int_{0}^{\\pi}\\sin^{2}x\\,dx",
+    "source_expected": "\\frac{\\pi}{2}",
+    "expression": "sin(x)^2",
+    "lower": "0",
+    "upper": "pi",
+    "exact_oracle": "pi/2",
+    "numeric_oracle": 1.5707963267948966
+  },
+  {
+    "id": "ID-D-06",
+    "literal": "\\int_{0}^{\\pi/2}\\sin^{3}x\\,dx",
+    "source_expected": "\\frac{2}{3}",
+    "expression": "sin(x)^3",
+    "lower": "0",
+    "upper": "pi/2",
+    "exact_oracle": "2/3",
+    "numeric_oracle": 0.6666666666666666
+  },
+  {
+    "id": "ID-D-07",
+    "literal": "\\int_{0}^{\\pi/2}\\sin x\\cos x\\,dx",
+    "source_expected": "\\frac{1}{2}",
+    "expression": "sin(x)*cos(x)",
+    "lower": "0",
+    "upper": "pi/2",
+    "exact_oracle": "1/2",
+    "numeric_oracle": 0.5
+  },
+  {
+    "id": "ID-D-08",
+    "literal": "\\int_{-\\pi}^{\\pi}\\sin x\\,dx",
+    "source_expected": "0",
+    "expression": "sin(x)",
+    "lower": "-pi",
+    "upper": "pi",
+    "exact_oracle": "0",
+    "numeric_oracle": 0
+  },
+  {
+    "id": "ID-D-09",
+    "literal": "\\int_{0}^{\\pi/3}\\sec x\\,dx",
+    "source_expected": "\\ln\\left(2+\\sqrt{3}\\right)\\approx 1.316957897",
+    "expression": "sec(x)",
+    "lower": "0",
+    "upper": "pi/3",
+    "exact_oracle": "log(2+sqrt(3))",
+    "numeric_oracle": 1.3169578969248166
+  },
+  {
+    "id": "ID-D-10",
+    "literal": "\\int_{\\pi/6}^{\\pi/2}\\csc x\\,dx",
+    "source_expected": "\\ln\\left(2+\\sqrt{3}\\right)",
+    "expression": "csc(x)",
+    "lower": "pi/6",
+    "upper": "pi/2",
+    "exact_oracle": "log(2+sqrt(3))",
+    "numeric_oracle": 1.3169578969248166
+  },
+  {
+    "id": "ID-D-11",
+    "literal": "\\int_{0}^{\\pi}x\\sin x\\,dx",
+    "source_expected": "\\pi",
+    "expression": "x*sin(x)",
+    "lower": "0",
+    "upper": "pi",
+    "exact_oracle": "pi",
+    "numeric_oracle": 3.141592653589793
+  },
+  {
+    "id": "ID-D-12",
+    "literal": "\\int_{0}^{\\pi/2}\\ln(\\sin x)\\,dx",
+    "source_expected": "-\\frac{\\pi}{2}\\ln 2\\approx -1.088793045",
+    "expression": "ln(sin(x))",
+    "lower": "0",
+    "upper": "pi/2",
+    "exact_oracle": "-pi*log(2)/2",
+    "numeric_oracle": -1.088793045151801
+  },
+  {
+    "id": "ID-I-01",
+    "literal": "\\int_{0}^{1}\\arcsin x\\,dx",
+    "source_expected": "\\frac{\\pi}{2}-1\\approx 0.570796327",
+    "expression": "arcsin(x)",
+    "lower": "0",
+    "upper": "1",
+    "exact_oracle": "pi/2-1",
+    "numeric_oracle": 0.5707963267948966
+  },
+  {
+    "id": "ID-I-02",
+    "literal": "\\int_{0}^{1}\\arccos x\\,dx",
+    "source_expected": "1",
+    "expression": "arccos(x)",
+    "lower": "0",
+    "upper": "1",
+    "exact_oracle": "1",
+    "numeric_oracle": 1
+  },
+  {
+    "id": "ID-I-03",
+    "literal": "\\int_{0}^{1}\\arctan x\\,dx",
+    "source_expected": "\\frac{\\pi}{4}-\\frac{1}{2}\\ln 2\\approx 0.438825",
+    "expression": "arctan(x)",
+    "lower": "0",
+    "upper": "1",
+    "exact_oracle": "pi/4-log(2)/2",
+    "numeric_oracle": 0.43882457311747564
+  },
+  {
+    "id": "ID-I-04",
+    "literal": "\\int_{0}^{1}\\operatorname{arccot} x\\,dx",
+    "source_expected": "\\frac{\\pi}{4}+\\frac{1}{2}\\ln 2\\approx 1.131972",
+    "expression": "arccot(x)",
+    "lower": "0",
+    "upper": "1",
+    "exact_oracle": "pi/4+log(2)/2",
+    "numeric_oracle": 1.131971753677421
+  },
+  {
+    "id": "ID-I-05",
+    "literal": "\\int_{0}^{1}\\frac{dx}{1+x^{2}}",
+    "source_expected": "\\frac{\\pi}{4}",
+    "expression": "1/(1+x^2)",
+    "lower": "0",
+    "upper": "1",
+    "exact_oracle": "pi/4",
+    "numeric_oracle": 0.7853981633974483
+  },
+  {
+    "id": "ID-I-06",
+    "literal": "\\int_{0}^{1/2}\\frac{dx}{\\sqrt{1-x^{2}}}",
+    "source_expected": "\\frac{\\pi}{6}",
+    "expression": "1/sqrt(1-x^2)",
+    "lower": "0",
+    "upper": "1/2",
+    "exact_oracle": "pi/6",
+    "numeric_oracle": 0.5235987755982988
+  },
+  {
+    "id": "ID-I-07",
+    "literal": "\\int_{1}^{2}\\frac{dx}{x\\sqrt{x^{2}-1}}",
+    "source_expected": "\\frac{\\pi}{3}",
+    "expression": "1/(x*sqrt(x^2-1))",
+    "lower": "1",
+    "upper": "2",
+    "exact_oracle": "pi/3",
+    "numeric_oracle": 1.0471975511965976
+  },
+  {
+    "id": "ID-I-08",
+    "literal": "\\int_{-1}^{1}\\arcsin x\\,dx",
+    "source_expected": "0",
+    "expression": "arcsin(x)",
+    "lower": "-1",
+    "upper": "1",
+    "exact_oracle": "0",
+    "numeric_oracle": 0
+  },
+  {
+    "id": "ID-I-09",
+    "literal": "\\int_{0}^{\\infty}\\frac{dx}{1+x^{2}}",
+    "source_expected": "\\frac{\\pi}{2}",
+    "expression": "1/(1+x^2)",
+    "lower": "0",
+    "upper": "oo",
+    "exact_oracle": "pi/2",
+    "numeric_oracle": 1.5707963267948966,
+    "capability": "infinite_bounds_phase1"
+  },
+  {
+    "id": "ID-H-01",
+    "literal": "\\int_{0}^{1}\\sinh x\\,dx",
+    "source_expected": "\\cosh 1-1\\approx 0.543080635",
+    "expression": "sinh(x)",
+    "lower": "0",
+    "upper": "1",
+    "exact_oracle": "cosh(1)-1",
+    "numeric_oracle": 0.5430806348152437
+  },
+  {
+    "id": "ID-H-02",
+    "literal": "\\int_{0}^{\\ln 2}\\cosh x\\,dx",
+    "source_expected": "\\frac{3}{4}",
+    "expression": "cosh(x)",
+    "lower": "0",
+    "upper": "ln(2)",
+    "exact_oracle": "3/4",
+    "numeric_oracle": 0.75
+  },
+  {
+    "id": "ID-H-03",
+    "literal": "\\int_{0}^{1}\\operatorname{sech}^{2}x\\,dx",
+    "source_expected": "\\tanh 1\\approx 0.761594156",
+    "expression": "sech(x)^2",
+    "lower": "0",
+    "upper": "1",
+    "exact_oracle": "tanh(1)",
+    "numeric_oracle": 0.7615941559557649
+  },
+  {
+    "id": "ID-H-04",
+    "literal": "\\int_{0}^{\\ln 2}\\tanh x\\,dx",
+    "source_expected": "\\ln\\frac{5}{4}\\approx 0.223143551",
+    "expression": "tanh(x)",
+    "lower": "0",
+    "upper": "ln(2)",
+    "exact_oracle": "log(5/4)",
+    "numeric_oracle": 0.22314355131420976
+  },
+  {
+    "id": "ID-H-05",
+    "literal": "\\int_{0}^{1}x\\sinh x\\,dx",
+    "source_expected": "e^{-1}\\approx 0.367879441",
+    "expression": "x*sinh(x)",
+    "lower": "0",
+    "upper": "1",
+    "exact_oracle": "exp(-1)",
+    "numeric_oracle": 0.36787944117144233
+  },
+  {
+    "id": "ID-H-06",
+    "literal": "\\int_{-1}^{1}\\sinh x\\,dx",
+    "source_expected": "0",
+    "expression": "sinh(x)",
+    "lower": "-1",
+    "upper": "1",
+    "exact_oracle": "0",
+    "numeric_oracle": 0
+  },
+  {
+    "id": "ID-H-07",
+    "literal": "\\int_{-1}^{1}\\cosh x\\,dx",
+    "source_expected": "2\\sinh 1\\approx 2.350402387",
+    "expression": "cosh(x)",
+    "lower": "-1",
+    "upper": "1",
+    "exact_oracle": "2*sinh(1)",
+    "numeric_oracle": 2.3504023872876028
+  },
+  {
+    "id": "ID-H-08",
+    "literal": "\\int_{0}^{1}\\cosh^{2}x\\,dx",
+    "source_expected": "\\frac{\\sinh 2}{4}+\\frac{1}{2}\\approx 1.406715102",
+    "expression": "cosh(x)^2",
+    "lower": "0",
+    "upper": "1",
+    "exact_oracle": "sinh(2)/4+1/2",
+    "numeric_oracle": 1.4067151019617548
+  },
+  {
+    "id": "ID-H-09",
+    "literal": "\\int_{0}^{1}\\operatorname{sech} x\\,dx",
+    "source_expected": "\\arctan(\\sinh 1)\\approx 0.865769483",
+    "expression": "sech(x)",
+    "lower": "0",
+    "upper": "1",
+    "exact_oracle": "atan(sinh(1))",
+    "numeric_oracle": 0.8657694832396586
+  },
+  {
+    "id": "ID-H-10",
+    "literal": "\\int_{0}^{\\infty}\\operatorname{sech}^{2}x\\,dx",
+    "source_expected": "1",
+    "expression": "sech(x)^2",
+    "lower": "0",
+    "upper": "oo",
+    "exact_oracle": "1",
+    "numeric_oracle": 1,
+    "capability": "infinite_bounds_phase1"
+  },
+  {
+    "id": "ID-HI-01",
+    "literal": "\\int_{0}^{1}\\operatorname{arsinh} x\\,dx",
+    "source_expected": "\\ln\\left(1+\\sqrt{2}\\right)-\\sqrt{2}+1\\approx 0.467160025",
+    "expression": "asinh(x)",
+    "lower": "0",
+    "upper": "1",
+    "exact_oracle": "log(1+sqrt(2))-sqrt(2)+1",
+    "numeric_oracle": 0.4671600246464479
+  },
+  {
+    "id": "ID-HI-02",
+    "literal": "\\int_{1}^{2}\\operatorname{arcosh} x\\,dx",
+    "source_expected": "2\\ln\\left(2+\\sqrt{3}\\right)-\\sqrt{3}\\approx 0.901864986",
+    "expression": "acosh(x)",
+    "lower": "1",
+    "upper": "2",
+    "exact_oracle": "2*log(2+sqrt(3))-sqrt(3)",
+    "numeric_oracle": 0.901864986280756
+  },
+  {
+    "id": "ID-HI-03",
+    "literal": "\\int_{0}^{1/2}\\operatorname{artanh} x\\,dx",
+    "source_expected": "\\frac{3}{4}\\ln 3-\\ln 2\\approx 0.130812036",
+    "expression": "atanh(x)",
+    "lower": "0",
+    "upper": "1/2",
+    "exact_oracle": "3*log(3)/4-log(2)",
+    "numeric_oracle": 0.130812035941137
+  },
+  {
+    "id": "ID-HI-04",
+    "literal": "\\int_{2}^{3}\\operatorname{arcoth} x\\,dx",
+    "source_expected": "3\\ln 2-\\frac{3}{2}\\ln 3\\approx 0.431523109",
+    "expression": "acoth(x)",
+    "lower": "2",
+    "upper": "3",
+    "exact_oracle": "3*log(2)-3*log(3)/2",
+    "numeric_oracle": 0.4315231086776712
+  },
+  {
+    "id": "ID-HI-05",
+    "literal": "\\int_{0}^{1}\\frac{dx}{\\sqrt{x^{2}+1}}",
+    "source_expected": "\\ln\\left(1+\\sqrt{2}\\right)",
+    "expression": "1/sqrt(x^2+1)",
+    "lower": "0",
+    "upper": "1",
+    "exact_oracle": "log(1+sqrt(2))",
+    "numeric_oracle": 0.881373587019543
+  },
+  {
+    "id": "ID-HI-06",
+    "literal": "\\int_{1}^{2}\\frac{dx}{\\sqrt{x^{2}-1}}",
+    "source_expected": "\\ln\\left(2+\\sqrt{3}\\right)",
+    "expression": "1/sqrt(x^2-1)",
+    "lower": "1",
+    "upper": "2",
+    "exact_oracle": "log(2+sqrt(3))",
+    "numeric_oracle": 1.3169578969248166
+  },
+  {
+    "id": "ID-HI-07",
+    "literal": "\\int_{0}^{1/2}\\frac{dx}{1-x^{2}}",
+    "source_expected": "\\frac{1}{2}\\ln 3",
+    "expression": "1/(1-x^2)",
+    "lower": "0",
+    "upper": "1/2",
+    "exact_oracle": "log(3)/2",
+    "numeric_oracle": 0.5493061443340549
+  },
+  {
+    "id": "ID-HI-08",
+    "literal": "\\int_{0}^{1}x\\operatorname{arsinh} x\\,dx",
+    "source_expected": "\\frac{3}{4}\\ln\\left(1+\\sqrt{2}\\right)-\\frac{\\sqrt{2}}{4}\\approx 0.307426799",
+    "expression": "x*asinh(x)",
+    "lower": "0",
+    "upper": "1",
+    "exact_oracle": "3*log(1+sqrt(2))/4-sqrt(2)/4",
+    "numeric_oracle": 0.30747679967138347,
+    "source_discrepancy": "Printed decimal differs from the exact expression by 0.0000500006713835; exact expression confirmed by independent quadrature."
+  },
+  {
+    "id": "ID-HI-09",
+    "literal": "\\int_{-1}^{1}\\operatorname{arsinh} x\\,dx",
+    "source_expected": "0",
+    "expression": "asinh(x)",
+    "lower": "-1",
+    "upper": "1",
+    "exact_oracle": "0",
+    "numeric_oracle": 0
+  }
+]

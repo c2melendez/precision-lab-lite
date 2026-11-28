@@ -9,6 +9,7 @@ on:
       - 'qa/certification/legacy_sources/MANIFEST.json'
       - 'qa/certification/legacy_sources/*.gz'
       - 'qa/certification/matrices_ejecutables.jsonl'
+      - 'qa/certification/tr324_definite_integrals.json'
       - 'src/**'
       - 'tests/trigonometry*.audit.test.ts'
       - 'tests/trigAliasDegreeSingularity.audit.test.ts'
