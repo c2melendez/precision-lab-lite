@@ -28,7 +28,7 @@ jobs:
           node-version: 22
           cache: npm
       - name: Install dependencies
-        run: npm ci
+        run: bash scripts/certification/frontend-runner.sh install
       - name: Vendor deepmerge patch regressions
         run: node --test vendor/deepmerge/test/prototype-poisoning.node-test.cjs
       - name: QA dependency audit (hard gate)
@@ -42,11 +42,11 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
       - name: Typecheck
-        run: npm run typecheck
+        run: bash scripts/certification/frontend-runner.sh typecheck
       - name: Unit and parity tests
-        run: npm test
+        run: bash scripts/certification/frontend-runner.sh test
       - name: Production build
-        run: npm run build
+        run: bash scripts/certification/frontend-runner.sh build
       - name: Upload production build
         if: always()
         uses: actions/upload-artifact@v7
