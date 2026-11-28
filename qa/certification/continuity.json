@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 653,
+  "revision": 654,
   "repository": "c2melendez/precision-lab-lite",
   "canonical_branch": "qa/syntax-audit-in625-a1",
   "technical_baseline_sha": "fcbab6e41ce916ab710ab367ff05b7b2c64c0917",
@@ -39,9 +39,9 @@
     }
   },
   "next_action": {
-    "id": "TR324-V2-DEFINITE-INTEGRALS-DIAGNOSE",
+    "id": "TR324-V2-DEFINITE-CORRECTIONS-VERIFY",
     "status": "IN_PROGRESS",
-    "action": "Revisar TR324 Lite 46085734736 y Plus 46085744310 para SHA 1269e25/55cdb62; comparar por ID, clasificar fallos, consolidar reparaciones y revisar acumulativo/H1d/CI. Dos límites infinitos capability negativa, discrepancia fuente ID-HI-08 preservada. Después CL/GR. S25, SG28/DIST, EV-D-01 BLOCKED; no duplicar."
+    "action": "Revisar TR324 Lite 46085989158 y Plus 46086002606; comparar 4 casos corregidos por ID, controles, artefactos y gates en SHA exacto; después CL/GR (21 por producto). ID-I-09/ID-H-10 capability negativa, EV-D-01, S25, SG28/DIST BLOCKED. No duplicar."
   },
   "blockers": [
     {
@@ -79,7 +79,7 @@
     "qa/certification/GLOBAL_CERTIFICATION_DASHBOARD.md",
     "qa/certification/BATCH_80_01.md"
   ],
-  "updated_utc": "2026-11-28T00:02:42Z",
+  "updated_utc": "2026-11-28T00:05:30Z",
   "evidence": {
     "cumulative": {
       "gate": "cumulative",
@@ -622,6 +622,45 @@
     },
     "artifact_verified": true,
     "tr324": {
+      "sha": "1269e253fc938f2e7488e53b273456558214ac67",
+      "run_id": 46085734736,
+      "artifact_id": 15239315600,
+      "junit_sha256": "0584e8cf1ff753ba300cdcf5015f28b6a81ed05a4f32370c31ef7619f345c0b2",
+      "artifact_verified": true,
+      "counts": {
+        "REVIEW_CONTEXT_ONLY": 129,
+        "REVIEW_TEST_OK": 171,
+        "FAIL_OBSERVED": 1,
+        "REVIEW_CAPABILITY_NEGATIVE": 2,
+        "REVIEW_NO_MAPPED_TEST": 21
+      },
+      "certification_pass_count": 0,
+      "fail_ids": [
+        "ID-D-12"
+      ],
+      "capability_negative_ids": [
+        "ID-I-09",
+        "ID-H-10"
+      ]
+    },
+    "mv153": {
+      "run_id": 45920446530,
+      "job_id": 140249641318,
+      "artifact_id": 15164457066,
+      "sha": "aa89238d114f42f12b648ca420c8c29f253cf5c6",
+      "counts": {
+        "REVIEW_TEST_OK": 127,
+        "REVIEW_NO_MAPPED_TEST": 26
+      },
+      "certification_pass_count": 0
+    },
+    "peer": {
+      "sha": "1342b0f0d28cb77080933fa959735c19ac7ed421",
+      "cumulative_run": 45923550286,
+      "security_run": 45923556047,
+      "security_status": "in_progress"
+    },
+    "prior_tr324": {
       "sha": "fcbab6e41ce916ab710ab367ff05b7b2c64c0917",
       "run_id": 46082947729,
       "job_id": 140785894820,
@@ -657,48 +696,6 @@
         "EV-D-12",
         "EV-I-12"
       ]
-    },
-    "mv153": {
-      "run_id": 45920446530,
-      "job_id": 140249641318,
-      "artifact_id": 15164457066,
-      "sha": "aa89238d114f42f12b648ca420c8c29f253cf5c6",
-      "counts": {
-        "REVIEW_TEST_OK": 127,
-        "REVIEW_NO_MAPPED_TEST": 26
-      },
-      "certification_pass_count": 0
-    },
-    "peer": {
-      "sha": "1342b0f0d28cb77080933fa959735c19ac7ed421",
-      "cumulative_run": 45923550286,
-      "security_run": 45923556047,
-      "security_status": "in_progress"
-    },
-    "prior_tr324": {
-      "sha": "1660f2026bd60a2fe03746cfbca3c6f3b84cdf89",
-      "run_id": 46042450137,
-      "job_id": 140653316067,
-      "artifact_id": 15220806761,
-      "junit_sha256": "4ec784a35266face880f2fc9eb675842889d1bb01e08e9d649cc9064bcd12b08",
-      "artifact_verified": true,
-      "counts": {
-        "REVIEW_TEST_OK": 135,
-        "REVIEW_CONTEXT_ONLY": 119,
-        "REVIEW_NO_MAPPED_TEST": 70
-      },
-      "certification_pass_count": 0,
-      "positive_recovery_ids": [
-        "IT-I-05",
-        "IT-I-06",
-        "IT-I-11",
-        "IT-HI-05",
-        "IT-HI-06"
-      ],
-      "junit_testcases": 795,
-      "failures": 0,
-      "errors": 0,
-      "reason": "Se revisó JUnit y código: reemplazo de pruebas negativas/expected fail por pruebas de resultado matemático; gates acumulativos aún activos."
     },
     "tr324_review_correction": {
       "artifact_id": 15172893111,
@@ -782,261 +779,304 @@
   },
   "pending_tr324_v2": {
     "status": "WAIT",
-    "technical_sha": "1269e253fc938f2e7488e53b273456558214ac67",
     "product": "lite",
-    "run_id": 46085734736,
-    "job_id": 140794737686,
-    "cumulative_run_id": 46085734763,
-    "cumulative_input_fingerprint": "13b8fd1f5b97e9b014fff7022b654d6b95876d8b5fafa5e4af39a26653a82542",
-    "h1d_run_id": 46085734801,
-    "ci_run_id": 46085734727,
-    "additional_ui_or_syntax_run_id": 46085734757,
-    "runner_run_id": 46085734816,
+    "technical_sha": "883efbdbb1f6b7b6087ec94b6723b1a2634fcded",
+    "run_id": 46085989158,
+    "job_id": 140795549141,
+    "cumulative_run_id": 46085989002,
+    "cumulative_input_fingerprint": "a4f38e640dc4756a722977bfab84ac352fe3773d2f4c963d975220ee86bd236b",
+    "h1d_run_id": 46085989120,
+    "ci_run_id": 46085989114,
+    "additional_ui_or_syntax_run_id": 46085988993,
+    "runner_run_id": 46085988976,
     "prior_verified_run": {
       "status": "WAIT",
-      "technical_sha": "fcbab6e41ce916ab710ab367ff05b7b2c64c0917",
+      "technical_sha": "1269e253fc938f2e7488e53b273456558214ac67",
       "product": "lite",
-      "run_id": 46082947729,
-      "job_id": 140785894820,
-      "cumulative_run_id": 46082947663,
-      "cumulative_input_fingerprint": "65d0eeb59c3656b04c22d0bbef663cdd6ad06d12fa428c8b7308d81b9024f9d2",
-      "h1d_run_id": 46082947585,
-      "ci_run_id": 46082947685,
-      "additional_ui_or_syntax_run_id": 46082947602,
-      "runner_run_id": 46082947573,
-      "mv153_run_id": 46082947627,
+      "run_id": 46085734736,
+      "job_id": 140794737686,
+      "cumulative_run_id": 46085734763,
+      "cumulative_input_fingerprint": "13b8fd1f5b97e9b014fff7022b654d6b95876d8b5fafa5e4af39a26653a82542",
+      "h1d_run_id": 46085734801,
+      "ci_run_id": 46085734727,
+      "additional_ui_or_syntax_run_id": 46085734757,
+      "runner_run_id": 46085734816,
       "prior_verified_run": {
         "status": "WAIT",
-        "technical_sha": "1660f2026bd60a2fe03746cfbca3c6f3b84cdf89",
+        "technical_sha": "fcbab6e41ce916ab710ab367ff05b7b2c64c0917",
         "product": "lite",
-        "workflow": ".github/workflows/certification-tr324-v2.yml",
-        "run_id": 46042450137,
-        "job_id": 140653316067,
-        "cumulative_run_id": 46042450257,
-        "cumulative_input_fingerprint": "3089883892172f71432996626061febe517066b86298ef3bbbcbc1e6fa257871",
-        "h1d_run_id": 46042450293,
-        "ci_run_id": 46042450256,
-        "scientific_ui_run_id": 46042450311,
-        "runner_run_id": 46042450298,
+        "run_id": 46082947729,
+        "job_id": 140785894820,
+        "cumulative_run_id": 46082947663,
+        "cumulative_input_fingerprint": "65d0eeb59c3656b04c22d0bbef663cdd6ad06d12fa428c8b7308d81b9024f9d2",
+        "h1d_run_id": 46082947585,
+        "ci_run_id": 46082947685,
+        "additional_ui_or_syntax_run_id": 46082947602,
+        "runner_run_id": 46082947573,
+        "mv153_run_id": 46082947627,
         "prior_verified_run": {
           "status": "WAIT",
-          "technical_sha": "630f1e4bfe9d985a6c35822fd3231d490bc9c138",
-          "product": "plus",
+          "technical_sha": "1660f2026bd60a2fe03746cfbca3c6f3b84cdf89",
+          "product": "lite",
           "workflow": ".github/workflows/certification-tr324-v2.yml",
-          "run_id": 46039903624,
-          "job_id": 140644681473,
-          "cumulative_run_id": 46039903541,
-          "cumulative_input_fingerprint": "591b6a56c4380baddfad0a3df8419a5e8bb1f18fb703414a9e0327b5bdb517df",
-          "h1d_run_id": 46039903513,
-          "ci_run_id": 46039903575,
-          "native_syntax_run_id": 46039903577,
-          "security_run_id": 46039903658,
-          "runner_run_id": 46039903542,
-          "prior_verified_run": {
-            "status": "WAIT",
-            "technical_sha": "edbd2f18e71a7a3d69a2e02acca36b83afa556c8",
-            "product": "plus",
-            "workflow": ".github/workflows/certification-tr324-v2.yml",
-            "run_id": 45945338885,
-            "job_id": 140328630039,
-            "cumulative_run_id": 45945338973,
-            "h1d_run_id": 45945338878,
-            "ci_run_id": 45945338887,
-            "native_syntax_run_id": 45945338977,
-            "security_run_id": 45945338882,
-            "runner_run_id": 45945338886,
-            "prior_verified_run": {
-              "status": "WAIT",
-              "technical_sha": "63e0abf73fd83c7edeec210dc76d94863193ce8e",
-              "workflow": ".github/workflows/certification-tr324-v2.yml",
-              "run_id": 45942624538,
-              "cumulative_run_id": 45942624470,
-              "cumulative_input_fingerprint": "e111675b135cdfe083feb7cf1699c1cc4a09f85746c70c29eca8913a8f015de1",
-              "h1d_run_id": 45942624490,
-              "ci_run_id": 45942624483,
-              "runner_run_id": 45942624542,
-              "peer": {
-                "technical_sha": "5acc018da87cfbcd7299152c1593b0b09cd3ed1e",
-                "run_id": 45942633766,
-                "cumulative_run_id": 45942633674,
-                "h1d_run_id": 45942633921
-              },
-              "prior_baseline_retained": true,
-              "reason": "El baseline aceptado anterior se conserva hasta revisar ejecución nueva; no reutilizar automáticamente en SHA técnico distinto."
-            },
-            "cases": [
-              "IT-HI-04",
-              "IT-HI-06"
-            ],
-            "prior_baseline_retained": true,
-            "reason": "Corrección publicada, CI iniciado. No contar nuevos PASS completos."
-          },
-          "cases": [
-            "IT-I-04",
-            "IT-I-05",
-            "IT-I-06",
-            "IT-HI-09"
-          ],
-          "prior_baseline_retained": true,
-          "reason": "Cuatro reparaciones publicadas, CI iniciado; verificar evidencia por ID antes de aceptar."
-        },
-        "peer": {
-          "technical_sha": "630f1e4bfe9d985a6c35822fd3231d490bc9c138",
-          "run_id": 46039903624,
-          "ci_run_id": 46039903575,
-          "security_run_id": 46039903658
-        },
-        "cases": [
-          "IT-I-05",
-          "IT-I-06",
-          "IT-I-11",
-          "IT-HI-05",
-          "IT-HI-06"
-        ],
-        "prior_baseline_retained": true,
-        "reason": "TR324 Lite verificado, faltan acumulativo/H1d/CI/UI; no duplicar.",
-        "tr324_observations": {
-          "sha": "1660f2026bd60a2fe03746cfbca3c6f3b84cdf89",
           "run_id": 46042450137,
           "job_id": 140653316067,
-          "artifact_id": 15220806761,
-          "junit_sha256": "4ec784a35266face880f2fc9eb675842889d1bb01e08e9d649cc9064bcd12b08",
-          "artifact_verified": true,
-          "counts": {
-            "REVIEW_TEST_OK": 135,
-            "REVIEW_CONTEXT_ONLY": 119,
-            "REVIEW_NO_MAPPED_TEST": 70
+          "cumulative_run_id": 46042450257,
+          "cumulative_input_fingerprint": "3089883892172f71432996626061febe517066b86298ef3bbbcbc1e6fa257871",
+          "h1d_run_id": 46042450293,
+          "ci_run_id": 46042450256,
+          "scientific_ui_run_id": 46042450311,
+          "runner_run_id": 46042450298,
+          "prior_verified_run": {
+            "status": "WAIT",
+            "technical_sha": "630f1e4bfe9d985a6c35822fd3231d490bc9c138",
+            "product": "plus",
+            "workflow": ".github/workflows/certification-tr324-v2.yml",
+            "run_id": 46039903624,
+            "job_id": 140644681473,
+            "cumulative_run_id": 46039903541,
+            "cumulative_input_fingerprint": "591b6a56c4380baddfad0a3df8419a5e8bb1f18fb703414a9e0327b5bdb517df",
+            "h1d_run_id": 46039903513,
+            "ci_run_id": 46039903575,
+            "native_syntax_run_id": 46039903577,
+            "security_run_id": 46039903658,
+            "runner_run_id": 46039903542,
+            "prior_verified_run": {
+              "status": "WAIT",
+              "technical_sha": "edbd2f18e71a7a3d69a2e02acca36b83afa556c8",
+              "product": "plus",
+              "workflow": ".github/workflows/certification-tr324-v2.yml",
+              "run_id": 45945338885,
+              "job_id": 140328630039,
+              "cumulative_run_id": 45945338973,
+              "h1d_run_id": 45945338878,
+              "ci_run_id": 45945338887,
+              "native_syntax_run_id": 45945338977,
+              "security_run_id": 45945338882,
+              "runner_run_id": 45945338886,
+              "prior_verified_run": {
+                "status": "WAIT",
+                "technical_sha": "63e0abf73fd83c7edeec210dc76d94863193ce8e",
+                "workflow": ".github/workflows/certification-tr324-v2.yml",
+                "run_id": 45942624538,
+                "cumulative_run_id": 45942624470,
+                "cumulative_input_fingerprint": "e111675b135cdfe083feb7cf1699c1cc4a09f85746c70c29eca8913a8f015de1",
+                "h1d_run_id": 45942624490,
+                "ci_run_id": 45942624483,
+                "runner_run_id": 45942624542,
+                "peer": {
+                  "technical_sha": "5acc018da87cfbcd7299152c1593b0b09cd3ed1e",
+                  "run_id": 45942633766,
+                  "cumulative_run_id": 45942633674,
+                  "h1d_run_id": 45942633921
+                },
+                "prior_baseline_retained": true,
+                "reason": "El baseline aceptado anterior se conserva hasta revisar ejecución nueva; no reutilizar automáticamente en SHA técnico distinto."
+              },
+              "cases": [
+                "IT-HI-04",
+                "IT-HI-06"
+              ],
+              "prior_baseline_retained": true,
+              "reason": "Corrección publicada, CI iniciado. No contar nuevos PASS completos."
+            },
+            "cases": [
+              "IT-I-04",
+              "IT-I-05",
+              "IT-I-06",
+              "IT-HI-09"
+            ],
+            "prior_baseline_retained": true,
+            "reason": "Cuatro reparaciones publicadas, CI iniciado; verificar evidencia por ID antes de aceptar."
           },
-          "certification_pass_count": 0,
-          "positive_recovery_ids": [
+          "peer": {
+            "technical_sha": "630f1e4bfe9d985a6c35822fd3231d490bc9c138",
+            "run_id": 46039903624,
+            "ci_run_id": 46039903575,
+            "security_run_id": 46039903658
+          },
+          "cases": [
             "IT-I-05",
             "IT-I-06",
             "IT-I-11",
             "IT-HI-05",
             "IT-HI-06"
           ],
-          "junit_testcases": 795,
-          "failures": 0,
-          "errors": 0,
-          "reason": "Se revisó JUnit y código: reemplazo de pruebas negativas/expected fail por pruebas de resultado matemático; gates acumulativos aún activos."
-        }
-      },
-      "peer": {
-        "technical_sha": "fe90cd2729a09fabfe7a2d5a22223902b20cd496",
-        "run_id": 46082991290,
-        "tr324_observations": {
-          "sha": "fe90cd2729a09fabfe7a2d5a22223902b20cd496",
+          "prior_baseline_retained": true,
+          "reason": "TR324 Lite verificado, faltan acumulativo/H1d/CI/UI; no duplicar.",
+          "tr324_observations": {
+            "sha": "1660f2026bd60a2fe03746cfbca3c6f3b84cdf89",
+            "run_id": 46042450137,
+            "job_id": 140653316067,
+            "artifact_id": 15220806761,
+            "junit_sha256": "4ec784a35266face880f2fc9eb675842889d1bb01e08e9d649cc9064bcd12b08",
+            "artifact_verified": true,
+            "counts": {
+              "REVIEW_TEST_OK": 135,
+              "REVIEW_CONTEXT_ONLY": 119,
+              "REVIEW_NO_MAPPED_TEST": 70
+            },
+            "certification_pass_count": 0,
+            "positive_recovery_ids": [
+              "IT-I-05",
+              "IT-I-06",
+              "IT-I-11",
+              "IT-HI-05",
+              "IT-HI-06"
+            ],
+            "junit_testcases": 795,
+            "failures": 0,
+            "errors": 0,
+            "reason": "Se revisó JUnit y código: reemplazo de pruebas negativas/expected fail por pruebas de resultado matemático; gates acumulativos aún activos."
+          }
+        },
+        "peer": {
+          "technical_sha": "fe90cd2729a09fabfe7a2d5a22223902b20cd496",
           "run_id": 46082991290,
-          "job_id": 140786037995,
-          "artifact_id": 15237069916,
-          "junit_sha256": "0787f5359d0e2d13fafb1cb02e217826482da00a6739901ab5463453196b8f4e",
+          "tr324_observations": {
+            "sha": "fe90cd2729a09fabfe7a2d5a22223902b20cd496",
+            "run_id": 46082991290,
+            "job_id": 140786037995,
+            "artifact_id": 15237069916,
+            "junit_sha256": "0787f5359d0e2d13fafb1cb02e217826482da00a6739901ab5463453196b8f4e",
+            "artifact_verified": true,
+            "counts": {
+              "REVIEW_TEST_OK": 192,
+              "REVIEW_CONTEXT_ONLY": 70,
+              "REVIEW_NO_MAPPED_TEST": 61,
+              "REVIEW_SKIPPED": 1
+            },
+            "certification_pass_count": 0,
+            "transition_ids": [
+              "EV-I-02",
+              "EV-I-03",
+              "EV-I-04",
+              "EV-I-05",
+              "EV-I-06",
+              "EV-I-08",
+              "EV-I-11",
+              "EV-H-02",
+              "EV-H-03",
+              "EV-H-05",
+              "EV-H-06",
+              "EV-H-07",
+              "EV-H-08",
+              "EV-H-09",
+              "EV-H-11",
+              "EV-H-12",
+              "EV-HI-02",
+              "EV-HI-03",
+              "EV-HI-05",
+              "EV-HI-06",
+              "EV-HI-07",
+              "EV-HI-08",
+              "EV-HI-09",
+              "EV-HI-11",
+              "EV-HI-12"
+            ],
+            "tests_passed": 762,
+            "xfailed": 1
+          }
+        },
+        "tr324_observations": {
+          "sha": "fcbab6e41ce916ab710ab367ff05b7b2c64c0917",
+          "run_id": 46082947729,
+          "job_id": 140785894820,
+          "artifact_id": 15237681797,
+          "junit_sha256": "20c57719bb2446e2de56c31c32053b4e361bf945c5117a27264afec2c5820a68",
           "artifact_verified": true,
           "counts": {
-            "REVIEW_TEST_OK": 192,
-            "REVIEW_CONTEXT_ONLY": 70,
-            "REVIEW_NO_MAPPED_TEST": 61,
-            "REVIEW_SKIPPED": 1
+            "REVIEW_TEST_OK": 134,
+            "REVIEW_CONTEXT_ONLY": 129,
+            "REVIEW_NO_MAPPED_TEST": 61
           },
           "certification_pass_count": 0,
           "transition_ids": [
-            "EV-I-02",
-            "EV-I-03",
-            "EV-I-04",
-            "EV-I-05",
-            "EV-I-06",
-            "EV-I-08",
-            "EV-I-11",
+            "EV-H-01",
             "EV-H-02",
             "EV-H-03",
-            "EV-H-05",
-            "EV-H-06",
-            "EV-H-07",
-            "EV-H-08",
-            "EV-H-09",
+            "EV-H-10",
             "EV-H-11",
             "EV-H-12",
+            "EV-HI-01",
             "EV-HI-02",
-            "EV-HI-03",
-            "EV-HI-05",
-            "EV-HI-06",
-            "EV-HI-07",
-            "EV-HI-08",
-            "EV-HI-09",
-            "EV-HI-11",
-            "EV-HI-12"
+            "EV-HI-03"
           ],
-          "tests_passed": 762,
-          "xfailed": 1
+          "reclassified_context_ids": [
+            "EV-D-04",
+            "EV-D-05",
+            "EV-D-06",
+            "EV-D-07",
+            "EV-D-08",
+            "EV-D-09",
+            "EV-D-10",
+            "EV-D-11",
+            "EV-D-12",
+            "EV-I-12"
+          ]
+        },
+        "reason": "TR324, acumulativo, H1d y CI Lite verificados; gate científico pendiente.",
+        "gate_observations": {
+          "cumulative": {
+            "run_id": 46082947663,
+            "job_id": 140785894846,
+            "conclusion": "success",
+            "passed": 3089,
+            "expected_fail": 10,
+            "todo": 34
+          },
+          "h1d": {
+            "run_id": 46082947585,
+            "job_id": 140785894418,
+            "conclusion": "success",
+            "passed": 22
+          },
+          "ci": {
+            "run_id": 46082947685,
+            "job_id": 140785894652,
+            "conclusion": "success"
+          },
+          "scientific": {
+            "run_id": 46082947602,
+            "status": "in_progress"
+          }
         }
       },
-      "tr324_observations": {
-        "sha": "fcbab6e41ce916ab710ab367ff05b7b2c64c0917",
-        "run_id": 46082947729,
-        "job_id": 140785894820,
-        "artifact_id": 15237681797,
-        "junit_sha256": "20c57719bb2446e2de56c31c32053b4e361bf945c5117a27264afec2c5820a68",
-        "artifact_verified": true,
-        "counts": {
-          "REVIEW_TEST_OK": 134,
-          "REVIEW_CONTEXT_ONLY": 129,
-          "REVIEW_NO_MAPPED_TEST": 61
-        },
-        "certification_pass_count": 0,
-        "transition_ids": [
-          "EV-H-01",
-          "EV-H-02",
-          "EV-H-03",
-          "EV-H-10",
-          "EV-H-11",
-          "EV-H-12",
-          "EV-HI-01",
-          "EV-HI-02",
-          "EV-HI-03"
-        ],
-        "reclassified_context_ids": [
-          "EV-D-04",
-          "EV-D-05",
-          "EV-D-06",
-          "EV-D-07",
-          "EV-D-08",
-          "EV-D-09",
-          "EV-D-10",
-          "EV-D-11",
-          "EV-D-12",
-          "EV-I-12"
-        ]
+      "peer": {
+        "technical_sha": "55cdb620961b67233cc7f074d70efaaac331a8a5",
+        "run_id": 46085744310
       },
-      "reason": "TR324, acumulativo, H1d y CI Lite verificados; gate científico pendiente.",
-      "gate_observations": {
-        "cumulative": {
-          "run_id": 46082947663,
-          "job_id": 140785894846,
-          "conclusion": "success",
-          "passed": 3089,
-          "expected_fail": 10,
-          "todo": 34
-        },
-        "h1d": {
-          "run_id": 46082947585,
-          "job_id": 140785894418,
-          "conclusion": "success",
-          "passed": 22
-        },
-        "ci": {
-          "run_id": 46082947685,
-          "job_id": 140785894652,
-          "conclusion": "success"
-        },
-        "scientific": {
-          "run_id": 46082947602,
-          "status": "in_progress"
-        }
-      }
+      "reason": "40 integrales definidas por producto, 38 positivas y 2 capability negativas; CI activado; verificar JSON/JUnit y diagnosticar."
+    },
+    "prior_failed_observations": {
+      "sha": "1269e253fc938f2e7488e53b273456558214ac67",
+      "run_id": 46085734736,
+      "artifact_id": 15239315600,
+      "junit_sha256": "0584e8cf1ff753ba300cdcf5015f28b6a81ed05a4f32370c31ef7619f345c0b2",
+      "artifact_verified": true,
+      "counts": {
+        "REVIEW_CONTEXT_ONLY": 129,
+        "REVIEW_TEST_OK": 171,
+        "FAIL_OBSERVED": 1,
+        "REVIEW_CAPABILITY_NEGATIVE": 2,
+        "REVIEW_NO_MAPPED_TEST": 21
+      },
+      "certification_pass_count": 0,
+      "fail_ids": [
+        "ID-D-12"
+      ],
+      "capability_negative_ids": [
+        "ID-I-09",
+        "ID-H-10"
+      ]
     },
     "peer": {
-      "technical_sha": "55cdb620961b67233cc7f074d70efaaac331a8a5",
-      "run_id": 46085744310
+      "technical_sha": "cc0b29be0a4140242b63f4f77d89d77d026feeb6",
+      "run_id": 46086002606
     },
-    "reason": "40 integrales definidas por producto, 38 positivas y 2 capability negativas; CI activado; verificar JSON/JUnit y diagnosticar."
+    "cases": [
+      "ID-D-12"
+    ],
+    "reason": "Reparaciones publicadas, TR324 y gates en curso. No acreditar hasta revisar artefactos."
   }
 }
